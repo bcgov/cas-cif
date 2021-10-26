@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*", "../*", "__generated__/*"]
+    },
+    "allowJs": true,
+    "downlevelIteration": true
+  },
+  "exclude": [".next", "node_modules", "public", "cypress"],
+  "include": ["./**/*", "./.eslintrc.js"]
+}
