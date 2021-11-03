@@ -4,6 +4,7 @@ import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/relay/client";
 import "normalize.css";
 import BCGovTypography from "components/BCGovTypography";
+import PageRedirectHandler from "components/PageRedirectHandler";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
@@ -16,8 +17,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <RelayEnvironmentProvider environment={env}>
-      <BCGovTypography />
-      <Component {...pageProps} {...relayProps} />
+      <PageRedirectHandler>
+        <BCGovTypography />
+        <Component {...pageProps} {...relayProps} />
+      </PageRedirectHandler>
     </RelayEnvironmentProvider>
   );
 }

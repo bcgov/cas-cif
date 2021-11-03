@@ -9,33 +9,19 @@
     "priority": 0,
     "path": "/admin"
   },
-  "NON_IDIR_USER": {
-    "pgRole": "your_external_user_role",
-    "priority": 10,
-    "path": "/your_external_user_role"
-  },
   "UNAUTHORIZED_IDIR_USER": {
     "pgRole": "cif_guest",
     "priority": 50,
     "path": "/unauthorized_idir"
   },
-
   "cif_internal": {
     "pgRole": "cif_internal",
     "priority": 0,
-    "path": "/cif_internal"
+    "path": "/dashboard"
   },
-
-  "cif_external": {
-    "pgRole": "cif_external",
-    "priority": 0,
-    "path": "/cif_external"
-  },
-
   "cif_admin": {
     "pgRole": "cif_admin",
     "priority": 0,
-    "path": "/cif_admin"
+    "path": "/admin"
   }
-
 }

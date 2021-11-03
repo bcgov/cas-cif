@@ -10,10 +10,12 @@
     "predev": "yarn run build:schema && yarn run build:relay",
     "build": "yarn run build:schema && yarn run build:relay && yarn run build:next",
     "build:schema": "postgraphile -X -c postgres://localhost/cif -s cif --export-schema-graphql server/schema.graphql --export-schema-json server/schema.json --classic-ids --sort-export && echo >> server/schema.json",
-    "build:relay": "relay-compiler --verbose"
+    "build:relay": "relay-compiler --verbose",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
+    "@types/jest": "^27.0.2",
     "@types/react-relay": "^11.0.2",
     "@types/relay-runtime": "^12.0.0",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
@@ -28,7 +30,7 @@
     "eslint-plugin-jest": "^25.2.1",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-relay": "^1.8.2",
-    "jest": "^27.2.5",
+    "jest": "^27.3.1",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
     "ts-node": "^10.3.0",
@@ -36,6 +38,7 @@
   },
   "dependencies": {
     "@bcgov-cas/sso-express": "^1.0.0-alpha.3",
+    "@bcgov-cas/sso-react": "^1.0.0-alpha.10",
     "@bcgov/bc-sans": "^1.0.1",
     "@button-inc/bcgov-theme": "^1.0.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -58,6 +61,7 @@
     "morgan": "^1.10.0",
     "next": "^11.1.2",
     "normalize.css": "^8.0.1",
+    "path-to-regexp": "^6.2.0",
     "pg": "^8.7.1",
     "postgraphile": "^4.12.4",
     "postgraphile-log-consola": "^1.0.1",

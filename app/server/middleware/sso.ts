@@ -20,7 +20,7 @@ const keycloakConfig = {
   realm: "pisrwwhx",
   "auth-server-url": `https://${ssoServerHost}/auth`,
   "ssl-required": "external",
-  resource: "cas-ciip-portal",
+  resource: "cas-cif",
   "public-client": true,
   "confidential-port": 0,
 };

@@ -25,7 +25,6 @@ const UsersQuery = graphql`
 
 function Users({ preloadedQuery }: RelayProps<{}, usersQuery>) {
   const { query } = usePreloadedQuery(UsersQuery, preloadedQuery);
-  console.log("rendering", query);
   return (
     <DefaultLayout session={query.session}>
       <ul>

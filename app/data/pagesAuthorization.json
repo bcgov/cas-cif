@@ -1,0 +1,11 @@
+[
+  {
+    "routePath": "/",
+    "isProtected": false
+  },
+  {
+    "routePath": "/admin(.*)",
+    "isProtected": true,
+    "allowedRoles": ["cif_admin", "Realm Administrator"]
+  }
+]
