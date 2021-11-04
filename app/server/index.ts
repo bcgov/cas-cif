@@ -12,7 +12,6 @@ import headersMiddleware from "./middleware/headers";
 import graphQlMiddleware from "./middleware/graphql";
 import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
-import authorizationMiddleware from "./middleware/authorization";
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
 const dev = process.env.NODE_ENV !== "production";
@@ -50,8 +49,6 @@ app.prepare().then(async () => {
   server.use(cookieParser());
 
   server.use(graphQlMiddleware());
-
-  server.use(authorizationMiddleware());
 
   server.get("*", async (req, res) => {
     return handle(req, res);
