@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getUserGroupLandingRoute } from "lib/userGroups";
 import type { PageRedirectHandlerQuery } from "__generated__/PageRedirectHandlerQuery.graphql";
-import { isRouteAuthorized } from "lib/authorization";
-import {
-  usePreloadedQuery,
-  useQueryLoader,
-  graphql,
-  PreloadedQuery,
-} from "react-relay";
+import { graphql, fetchQuery, useRelayEnvironment } from "react-relay";
 import { SessionTimeoutHandler, SessionRefresher } from "@bcgov-cas/sso-react";
+import { isRouteAuthorized } from "lib/authorization";
+import { getUserGroupLandingRoute } from "lib/userGroups";
 
 const sessionQuery = graphql`
   query PageRedirectHandlerQuery {
@@ -19,16 +14,23 @@ const sessionQuery = graphql`
   }
 `;
 
-interface Props {
-  queryReference: PreloadedQuery<PageRedirectHandlerQuery>;
-}
+const PageRenderer: React.FC = () => {
+  const [userGroups, setUserGroups] = useState<readonly string[]>([]);
 
-const PageRenderer: React.FC<Props> = ({ children, queryReference }) => {
-  console.log("rendering");
-
-  const { session } = usePreloadedQuery(sessionQuery, queryReference);
-  console.log("session", session);
   const router = useRouter();
+  const environment = useRelayEnvironment();
+
+  useEffect(() => {
+    const checkSessionAndGroups = async () => {
+      const { session } = await fetchQuery<PageRedirectHandlerQuery>(
+        environment,
+        sessionQuery,
+        {}
+      ).toPromise();
+      setUserGroups(session?.userGroups || []);
+    };
+    checkSessionAndGroups();
+  }, []);
 
   const handleSessionExpired = () => {
     router.push({
@@ -40,55 +42,50 @@ const PageRenderer: React.FC<Props> = ({ children, queryReference }) => {
     });
   };
 
-  const canAccess = isRouteAuthorized(router.pathname, session?.userGroups);
-  console.log("canAccess", canAccess);
-  // user is not logged in
-  if (!canAccess && !session) {
-    router.push({
-      pathname: "/login-redirect",
-      query: {
-        redirectTo: router.asPath,
-      },
-    });
-    return null;
-  }
+  // useEffect(() => {
+  //   const handleRouteChange = (url) => {
+  //     if (url.startsWith("/login-redirect")) {
+  //       return;
+  //     }
 
-  // Redirect users attempting to access a page that their group doesn't allow
-  // to their landing route.
-  if (!canAccess) {
-    router.push({
-      pathname: getUserGroupLandingRoute(session?.userGroups),
-    });
-    return null;
-  }
+  //     const canAccess = isRouteAuthorized(url, userGroups);
+  //     // user is not logged in
+  //     if (!canAccess && userGroups.length === 0) {
+  //       router.push({
+  //         pathname: "/login-redirect",
+  //         query: {
+  //           redirectTo: url,
+  //         },
+  //       });
+  //       return null;
+  //     }
 
-  return (
-    <>
-      {session && (
-        <>
-          <SessionRefresher />
-          <SessionTimeoutHandler onSessionExpired={handleSessionExpired} />
-        </>
-      )}
+  //     // Redirect users attempting to access a page that their group doesn't allow
+  //     // to their landing route.
+  //     if (!canAccess) {
+  //       router.push({
+  //         pathname: getUserGroupLandingRoute(userGroups),
+  //       });
+  //       return null;
+  //     }
+  //   };
 
-      {children}
-    </>
-  );
+  //   router.events.on("routeChangeStart", handleRouteChange);
+
+  //   return () => {
+  //     router.events.off("routeChangeStart", handleRouteChange);
+  //   };
+  // }, []);
+
+  if (userGroups.length > 0)
+    return (
+      <>
+        <SessionRefresher />
+        <SessionTimeoutHandler onSessionExpired={handleSessionExpired} />
+      </>
+    );
+
+  return null;
 };
 
-const SessionQueryLoader = ({ children }) => {
-  const [queryReference, loadQuery] =
-    useQueryLoader<PageRedirectHandlerQuery>(sessionQuery);
-
-  useEffect(() => {
-    loadQuery({});
-  }, [loadQuery]);
-
-  console.log("queryReference", queryReference);
-
-  return queryReference != null ? (
-    <PageRenderer queryReference={queryReference}>{children}</PageRenderer>
-  ) : null;
-};
-
-export default SessionQueryLoader;
+export default PageRenderer;

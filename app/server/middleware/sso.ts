@@ -36,8 +36,6 @@ export default function middleware(sessionStore) {
       if (req.query.redirectTo) return req.query.redirectTo;
 
       const groups = getUserGroups(req);
-      console.log("groups", groups);
-      console.log("landingroute", getUserGroupLandingRoute(groups));
 
       return getUserGroupLandingRoute(groups);
     },

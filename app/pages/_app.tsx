@@ -17,10 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <RelayEnvironmentProvider environment={env}>
-      <PageRedirectHandler>
-        <BCGovTypography />
-        <Component {...pageProps} {...relayProps} />
-      </PageRedirectHandler>
+      {typeof window !== "undefined" && <PageRedirectHandler />}
+      <BCGovTypography />
+      <Component {...pageProps} {...relayProps} />
     </RelayEnvironmentProvider>
   );
 }

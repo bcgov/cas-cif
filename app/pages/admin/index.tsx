@@ -22,6 +22,10 @@ function Users({ preloadedQuery }: RelayProps<{}, adminQuery>) {
       <Link href="admin/users">
         <a>Users</a>
       </Link>
+
+      <Link href="dashboard">
+        <a>Dashboard</a>
+      </Link>
     </DefaultLayout>
   );
 }

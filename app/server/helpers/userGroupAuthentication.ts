@@ -12,7 +12,7 @@ export const getUserGroups = (req) => {
     !req.kauth.grant.id_token.content ||
     !req.kauth.grant.id_token.content.groups
   )
-    return [groupConstants.GUEST];
+    return [];
 
   const brokerSessionId = req.kauth.grant.id_token.content.broker_session_id;
   const { groups } = req.kauth.grant.id_token.content;
