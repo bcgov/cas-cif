@@ -22,3 +22,4 @@ util_functions/upsert_timestamp_columns [schemas/private trigger_functions/updat
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
 mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function
+tables/project 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
