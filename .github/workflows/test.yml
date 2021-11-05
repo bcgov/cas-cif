@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: asdf install
+      - name: asdf setup
         uses: asdf-vm/actions/setup@v1
       - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: "5.34"
       - name: install pg perl library
         run: sudo apt-get install -y libpq-dev libdbd-pg-perl
       - uses: actions/cache@v2
@@ -22,6 +20,7 @@ jobs:
           cache-name: cache-dev-dependencies
         with:
           path: |
+            ~/.bashrc
             ~/.asdf
             ~/.perl5
             ~/.cache/yarn
@@ -31,6 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
       - run: make install_dev_tools
+      - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
       - run: yarn install --frozen-lockfile
         working-directory: ./app
 
@@ -44,6 +44,7 @@ jobs:
           cache-name: cache-dev-dependencies
         with:
           path: |
+            ~/.bashrc
             ~/.asdf
             ~/.perl5
             ~/.cache/yarn
@@ -62,6 +63,7 @@ jobs:
           cache-name: cache-dev-dependencies
         with:
           path: |
+            ~/.bashrc
             ~/.asdf
             ~/.perl5
             ~/.cache/yarn
@@ -75,21 +77,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: asdf setup
+        uses: asdf-vm/actions/setup@v1
+      - uses: shogo82148/actions-setup-perl@v1
+      - name: install pg perl library
+        run: sudo apt-get install -y libpq-dev libdbd-pg-perl
       - uses: actions/cache@v2
         env:
           cache-name: cache-dev-dependencies
         with:
           path: |
+            ~/.bashrc
             ~/.asdf
             ~/.perl5
             ~/.cache/yarn
             ~/.cache/Cypress
             ./app/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
-      - run: source ~/.asdf/asdf.sh
-      - run: |
-          source ~/.asdf/asdf.sh
-          make db_unit_tests
+      - run: make db_unit_tests
+
   build-schema-image:
     runs-on: ubuntu-latest
     steps:
