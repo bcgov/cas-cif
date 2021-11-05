@@ -101,4 +101,4 @@ jobs:
           image_name: cas-cif-schema
           image_tag: latest,${{ github.sha }}
           dockerfile: schema/Dockerfile
-          context: schema
+          context: "."
