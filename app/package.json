@@ -11,7 +11,9 @@
     "build": "yarn run build:schema && yarn run build:relay && yarn run build:next",
     "build:schema": "postgraphile -X -c postgres://localhost/cif -s cif --export-schema-graphql server/schema.graphql --export-schema-json server/schema.json --classic-ids --sort-export && echo >> server/schema.json",
     "build:relay": "relay-compiler --verbose",
-    "test": "jest"
+    "pretest": "yarn run build:relay",
+    "test": "jest",
+    "audit-deps": "improved-yarn-audit"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -32,6 +34,7 @@
     "eslint-plugin-jest": "^25.2.1",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-relay": "^1.8.2",
+    "improved-yarn-audit": "^3.0.0",
     "jest": "^27.3.1",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
