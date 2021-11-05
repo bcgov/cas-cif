@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: asdf install
+        uses: asdf-vm/actions/setup@v1
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5.34"
+      - name: install pg perl library
+        run: sudo apt-get install -y libpq-dev libdbd-pg-perl
       - uses: actions/cache@v2
         env:
           cache-name: cache-dev-dependencies
@@ -19,14 +26,29 @@ jobs:
             ~/.perl5
             ~/.cache/yarn
             ~/.cache/Cypress
+            ./app/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
-      - name: asdf install
-        uses: asdf-vm/actions/install@v1
-      - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: "5.34"
-      - name: install pg perl library
-        run: sudo apt-get install -y libpq-dev libdbd-pg-perl
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
       - run: make install_dev_tools
       - run: yarn install --frozen-lockfile
+        working-directory: ./app
+
+  yarn-test:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        env:
+          cache-name: cache-dev-dependencies
+        with:
+          path: |
+            ~/.asdf
+            ~/.perl5
+            ~/.cache/yarn
+            ~/.cache/Cypress
+            ./app/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - run: yarn test
         working-directory: ./app
