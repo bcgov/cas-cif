@@ -87,7 +87,9 @@ jobs:
             ./app/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
       - run: source ~/.asdf/asdf.sh
-      - run: make db_unit_tests
+      - run: |
+          source ~/.asdf/asdf.sh
+          make db_unit_tests
   build-schema-image:
     runs-on: ubuntu-latest
     steps:
