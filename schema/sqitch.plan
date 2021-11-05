@@ -1,0 +1,24 @@
+%syntax-version=1.0.0
+%project=cif
+%uri=https://github.com/bcgov/cif
+
+
+create_roles 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the roles used by the application
+schemas/main 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif schema
+schemas/private 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private schema
+util_functions/verify_function_not_present 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.verify_function_not_present function
+util_functions/verify_grant 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.verify_grant function
+util_functions/verify_policy 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.verify_policy function
+util_functions/verify_policy_not_present 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.verify_policy_not_present function
+util_functions/verity_type_not_present 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.verity_type_not_present function
+util_functions/grant_permissions 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.grant_permissions function
+util_functions/read_only_user_policies 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.read_only_user_policies function
+util_functions/upsert_policy 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.upsert_policy function
+tables/connect_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.connect_session table
+types/keycloak_jwt 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.keycloak_jwt type
+functions/session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.session function
+trigger_functions/update_timestamps 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.update_timestamps trigger function
+util_functions/upsert_timestamp_columns [schemas/private trigger_functions/update_timestamps] 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the upsert_timestamp_columns function
+tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
+trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
+mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function

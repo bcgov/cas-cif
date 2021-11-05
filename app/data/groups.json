@@ -1,0 +1,27 @@
+{
+  "Guest": {
+    "pgRole": "cif_guest",
+    "priority": 100,
+    "path": "/"
+  },
+  "Realm Administrator": {
+    "pgRole": "cif_admin",
+    "priority": 0,
+    "path": "/admin"
+  },
+  "UNAUTHORIZED_IDIR_USER": {
+    "pgRole": "cif_guest",
+    "priority": 50,
+    "path": "/unauthorized_idir"
+  },
+  "cif_internal": {
+    "pgRole": "cif_internal",
+    "priority": 0,
+    "path": "/internal"
+  },
+  "cif_admin": {
+    "pgRole": "cif_admin",
+    "priority": 0,
+    "path": "/admin"
+  }
+}
