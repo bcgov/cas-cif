@@ -29,4 +29,21 @@ describe("The isRouteAuthorized function", () => {
     expect(isRouteAuthorized("/", ["cif_guest"])).toBe(true);
     expect(isRouteAuthorized("/", [])).toBe(true);
   });
+
+  it("allows unauthenticated users to access the /login-redirect route", () => {
+    expect(isRouteAuthorized("/login-redirect", ["cif_guest"])).toBe(true);
+    expect(isRouteAuthorized("/login-redirect", [])).toBe(true);
+    expect(
+      isRouteAuthorized(
+        `/login-redirect?redirectTo=${encodeURIComponent("/some/page")}`,
+        ["cif_guest"]
+      )
+    ).toBe(true);
+    expect(
+      isRouteAuthorized(
+        `/login-redirect?redirectTo=${encodeURIComponent("/some/page")}`,
+        []
+      )
+    ).toBe(true);
+  });
 });

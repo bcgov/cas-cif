@@ -10,7 +10,7 @@ export const compactGroups = (groups) => {
   return groups.filter((group) => allDefinedGroups.includes(group));
 };
 
-export const getPriorityGroupData = (validGroups) => {
+export const getPriorityGroupData = (validGroups: readonly string[]) => {
   // Find the highest priority group
   let priorityGroup = {
     name: "Guest",
@@ -29,14 +29,14 @@ export const getPriorityGroupData = (validGroups) => {
   return priorityGroup;
 };
 
-export const getPriorityGroup = (groupNames) => {
+export const getPriorityGroup = (groupNames: readonly string[]) => {
   const validGroups = compactGroups(groupNames);
   const priorityGroupData = getPriorityGroupData(validGroups);
 
   return priorityGroupData.name;
 };
 
-export const getUserGroupLandingRoute = (groupNames) => {
+export const getUserGroupLandingRoute = (groupNames: readonly string[]) => {
   const validGroups = compactGroups(groupNames);
   const priorityGroupData = getPriorityGroupData(validGroups);
 

@@ -17,7 +17,7 @@
   "cif_internal": {
     "pgRole": "cif_internal",
     "priority": 0,
-    "path": "/dashboard"
+    "path": "/internal"
   },
   "cif_admin": {
     "pgRole": "cif_admin",

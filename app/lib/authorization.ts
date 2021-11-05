@@ -7,15 +7,13 @@ export const isRouteAuthorized = (
 ) => {
   const authRules = pagesAuthorization.find(({ routePaths }) =>
     routePaths.some((routePath) =>
-      match(routePath, { decode: decodeURIComponent })(route)
+      match(routePath, { decode: decodeURIComponent, endsWith: "?" })(route)
     )
   );
 
   if (!authRules) {
     return false;
   }
-
-  console.log(authRules);
 
   const { isProtected, allowedRoles = [] } = authRules;
 

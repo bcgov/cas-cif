@@ -1,19 +1,22 @@
 import { getClientEnvironment } from "./client";
-import { getUserGroups } from "server/helpers/userGroupAuthentication";
 import { getUserGroupLandingRoute } from "lib/userGroups";
 import { isRouteAuthorized } from "lib/authorization";
+import type { NextPageContext } from "next";
+import { WiredOptions } from "relay-nextjs/wired/component";
 
-const withRelayOptions = {
+const withRelayOptions: WiredOptions<any> = {
   fallback: <div>Loading...</div>,
   createClientEnvironment: () => getClientEnvironment()!,
-  createServerEnvironment: async (ctx) => {
+  createServerEnvironment: async (ctx: NextPageContext) => {
     const { createServerEnvironment } = await import("./server");
     return createServerEnvironment({ cookieHeader: ctx.req.headers.cookie });
   },
-  serverSideProps: async (ctx) => {
+  serverSideProps: async (ctx: NextPageContext) => {
     // Server-side redirection of the user to their landing route, if they are logged in
+    const { getUserGroups } = await import("server/helpers/userGroupAuthentication");
+
     const groups = getUserGroups(ctx.req);
-    const isAuthorized = isRouteAuthorized(ctx.req.path, groups);
+    const isAuthorized = isRouteAuthorized(ctx.req.url, groups);
 
     if (isAuthorized) return {};
 
@@ -21,7 +24,7 @@ const withRelayOptions = {
       return {
         redirect: {
           destination: `/login-redirect?redirectTo=${encodeURIComponent(
-            ctx.req.path
+            ctx.req.url
           )}`,
         },
       };

@@ -2,11 +2,11 @@ import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import Link from "next/link";
-import { adminQuery } from "__generated__/adminQuery.graphql";
+import { adminLandingQuery } from "__generated__/adminLandingQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 
 const AdminQuery = graphql`
-  query adminQuery {
+  query adminLandingQuery {
     query {
       session {
         ...DefaultLayout_session
@@ -15,10 +15,10 @@ const AdminQuery = graphql`
   }
 `;
 
-function Users({ preloadedQuery }: RelayProps<{}, adminQuery>) {
+function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
   const { query } = usePreloadedQuery(AdminQuery, preloadedQuery);
   return (
-    <DefaultLayout session={query.session}>
+    <DefaultLayout session={query.session} title="CIF Projects Administration">
       <Link href="admin/users">
         <a>Users</a>
       </Link>
@@ -30,4 +30,4 @@ function Users({ preloadedQuery }: RelayProps<{}, adminQuery>) {
   );
 }
 
-export default withRelay(Users, AdminQuery, withRelayOptions);
+export default withRelay(AdminLanding, AdminQuery, withRelayOptions);

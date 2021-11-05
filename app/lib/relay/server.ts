@@ -2,9 +2,6 @@ import { Network, Environment, Store, RecordSource } from "relay-runtime";
 
 export function createServerNetwork({ cookieHeader }) {
   return Network.create(async (params, variables) => {
-    console.log(cookieHeader);
-    console.log("params", params);
-    console.log("variables", variables);
     const response = await fetch("http://localhost:3004/graphql", {
       method: "POST",
       credentials: "include",

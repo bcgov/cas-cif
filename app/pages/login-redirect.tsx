@@ -3,7 +3,7 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 
 import type { loginRedirectQuery } from "__generated__/loginRedirectQuery.graphql";
-import withRelayOptions from "lib/relay/withRelayOptions";
+import defaultRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
 
 const loginRedirect = graphql`
@@ -35,6 +35,30 @@ const LoginRedirect = ({
       </p>
     </DefaultLayout>
   );
+};
+
+export const withRelayOptions = {
+  ...defaultRelayOptions,
+  serverSideProps: async (ctx) => {
+    const props = await defaultRelayOptions.serverSideProps(ctx);
+    if ("redirect" in props) return props;
+
+    const { getUserGroups } = await import(
+      "server/helpers/userGroupAuthentication"
+    );
+
+    const groups = getUserGroups(ctx.req);
+    if (groups.length === 0) return {};
+
+    // we don't care about the actual base here, just want to parse the search params
+    const url = new URL(ctx.req.url, "https://example.org/");
+
+    return {
+      redirect: {
+        destination: url.searchParams.get("redirectTo") || "/",
+      },
+    };
+  },
 };
 
 export default withRelay(LoginRedirect, loginRedirect, withRelayOptions);

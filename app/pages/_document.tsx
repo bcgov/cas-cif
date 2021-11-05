@@ -63,7 +63,7 @@ class MyDocument extends Document<DocumentProps> {
           <link rel="icon" href="/icons/bcid-favicon-32x32.png" />
           <relayDocument.Script />
         </Head>
-        <title>cif</title>
+        <title>CleanBC Industry Fund</title>
         <body>
           <Main />
           <NextScript />
