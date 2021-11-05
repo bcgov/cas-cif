@@ -70,3 +70,21 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
       - run: yarn audit-deps
         working-directory: ./app
+  db-unit-tests:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        env:
+          cache-name: cache-dev-dependencies
+        with:
+          path: |
+            ~/.asdf
+            ~/.perl5
+            ~/.cache/yarn
+            ~/.cache/Cypress
+            ./app/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - run: source ~/.asdf/asdf.sh
+      - run: make db_unit_tests
