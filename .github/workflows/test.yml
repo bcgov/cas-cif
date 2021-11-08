@@ -14,7 +14,6 @@ jobs:
         uses: ./.github/actions/dev-env-setup
       - run: make install_dev_tools
       - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
-      - run: which sqitch
       - run: yarn install --frozen-lockfile
         working-directory: ./app
 
