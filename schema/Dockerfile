@@ -3,6 +3,8 @@ FROM perl:5.34
 
 ENV USER_ID=1001
 ENV HOME=/root
+WORKDIR ${HOME}
+
 COPY schema/ ${HOME}/schema/
 COPY mocks_schema/ ${HOME}/mocks_schema/
 COPY cpanfile ${HOME}/cpanfile
@@ -24,4 +26,3 @@ RUN useradd -ms /bin/bash -d ${HOME} --uid ${USER_ID} schema_deployer
 RUN chown -R schema_deployer:0 ${HOME} && chmod -R g+rwX ${HOME}
 
 USER ${USER_ID}
-WORKDIR ${HOME}
