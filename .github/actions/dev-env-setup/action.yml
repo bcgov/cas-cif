@@ -9,6 +9,14 @@ runs:
     - name: install pg perl library
       run: sudo apt-get install -y libpq-dev libdbd-pg-perl
       shell: bash
+    - name: set perl env variables
+      shell: bash
+      run: |
+        echo "PERL5LIB=/home/runner/perl5/lib/perl5" >> $GITHUB_ENV
+        echo "PERL_LOCAL_LIB_ROOT=/home/runner/perl5" >> $GITHUB_ENV
+        echo "PERL_MB_OPT=--install_base '/home/runner/perl5'" >> $GITHUB_ENV
+        echo "PERL_MM_OPT=INSTALL_BASE=/home/runner/perl5" >> $GITHUB_ENV
+        echo "/home/runner/perl5/bin" >> $GITHUB_PATH
     - uses: actions/cache@v2
       env:
         cache-name: cache-dev-dependencies
@@ -16,7 +24,7 @@ runs:
         path: |
           ~/.bashrc
           ~/.asdf
-          ~/work/_actions/shogo82148/actions-setup-perl/v1/scripts/lib
+          ~/perl5
           ~/.cache/yarn
           ~/.cache/Cypress
           ./app/node_modules
