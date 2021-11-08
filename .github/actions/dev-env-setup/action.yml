@@ -11,7 +11,7 @@ runs:
       shell: bash
     - name: set perl env variables
       shell: bash
-      run: |
+      run: | # pragma: allowlist secret
         echo "PERL5LIB=/home/runner/perl5/lib/perl5" >> $GITHUB_ENV
         echo "PERL_LOCAL_LIB_ROOT=/home/runner/perl5" >> $GITHUB_ENV
         echo "PERL_MB_OPT=--install_base '/home/runner/perl5'" >> $GITHUB_ENV
