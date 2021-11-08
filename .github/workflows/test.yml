@@ -10,27 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: asdf install
-        uses: asdf-vm/actions/setup@v1
-      - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: "5.34"
-      - name: install pg perl library
-        run: sudo apt-get install -y libpq-dev libdbd-pg-perl
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.asdf
-            ~/.perl5
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: make install_dev_tools
+      - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
       - run: yarn install --frozen-lockfile
         working-directory: ./app
 
@@ -39,17 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.asdf
-            ~/.perl5
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: yarn test
         working-directory: ./app
   yarn-audit:
@@ -57,16 +31,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.asdf
-            ~/.perl5
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: yarn audit-deps
         working-directory: ./app
+  db-unit-tests:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: make db_unit_tests
+
+  build-schema-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+        with:
+          gcloud_service_key: ${{ secrets.GCR_KEY }}
+          project_id: ggl-cas-storage
+          image_name: cas-cif-schema
+          image_tag: latest,${{ github.sha }}
+          dockerfile: schema/Dockerfile
+          context: "."
