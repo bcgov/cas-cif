@@ -13,7 +13,9 @@ const withRelayOptions: WiredOptions<any> = {
   },
   serverSideProps: async (ctx: NextPageContext) => {
     // Server-side redirection of the user to their landing route, if they are logged in
-    const { getUserGroups } = await import("server/helpers/userGroupAuthentication");
+    const { getUserGroups } = await import(
+      "server/helpers/userGroupAuthentication"
+    );
 
     const groups = getUserGroups(ctx.req);
     const isAuthorized = isRouteAuthorized(ctx.req.url, groups);

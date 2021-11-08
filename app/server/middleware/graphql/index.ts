@@ -36,26 +36,20 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const postgraphileMiddleware = () => {
-  return postgraphile(
-    pgPool,
-    process.env.DATABASE_SCHEMA || "cif",
-    {
-      ...postgraphileOptions,
-      graphileBuildOptions: {
-        connectionFilterAllowNullInput: true,
-        connectionFilterRelations: true,
-      },
-      pgSettings: (req: Request) => {
-        const opts = {
-          ...authenticationPgSettings(req),
-          ...generateDatabaseMockOptions(req.cookies, [
-            "mocks.mocked_timestamp",
-          ]),
-        };
-        return opts;
-      },
-    }
-  );
+  return postgraphile(pgPool, process.env.DATABASE_SCHEMA || "cif", {
+    ...postgraphileOptions,
+    graphileBuildOptions: {
+      connectionFilterAllowNullInput: true,
+      connectionFilterRelations: true,
+    },
+    pgSettings: (req: Request) => {
+      const opts = {
+        ...authenticationPgSettings(req),
+        ...generateDatabaseMockOptions(req.cookies, ["mocks.mocked_timestamp"]),
+      };
+      return opts;
+    },
+  });
 };
 
 export default postgraphileMiddleware;

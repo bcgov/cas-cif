@@ -175,4 +175,3 @@ db_unit_tests: | start_pg drop_test_db create_test_db deploy_test_db_migrations
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
-
