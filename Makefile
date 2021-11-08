@@ -14,6 +14,7 @@ SQITCH_VERSION=${word 3,${shell ${SQITCH} --version}}
 SQITCH_MIN_VERSION=1.1.0
 DB_NAME=cif
 PG_PROVE=pg_prove -h localhost
+PGTAP_VERSION=1.1.0
 
 help: ## Show this help.
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
@@ -34,13 +35,13 @@ install_asdf_tools:
 install_pgtap: ## install pgTAP extension into postgres
 install_pgtap: start_pg
 install_pgtap:
-	@git clone https://github.com/theory/pgtap.git && \
-		cd pgtap && \
-		git checkout v1.1.0;
-	@$(MAKE) -C pgtap
-	@$(MAKE) -C pgtap install
-	@$(MAKE) -C pgtap installcheck
-	@rm -rf pgtap
+	@$(PSQL) -d postgres -tc "select count(*) from pg_available_extensions where name='pgtap' and default_version='$(PGTAP_VERSION)';" | \
+		grep -q 1 || \
+		(git clone https://github.com/theory/pgtap.git --depth 1 --branch v$(PGTAP_VERSION) && \
+		$(MAKE) -C pgtap && \
+		$(MAKE) -C pgtap install && \
+		$(MAKE) -C pgtap installcheck && \
+		rm -rf pgtap)
 
 .PHONY: install_cpanm
 install_cpanm: ## install the cpanm tool
