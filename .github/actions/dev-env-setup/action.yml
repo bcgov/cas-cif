@@ -1,0 +1,25 @@
+name: "Set up CIF dev environment"
+description: "Sets up asdf, perl, and configures the cache"
+runs:
+  using: composite
+  steps:
+    - name: asdf setup
+      uses: asdf-vm/actions/setup@v1
+    - uses: shogo82148/actions-setup-perl@v1
+    - name: install pg perl library
+      run: sudo apt-get install -y libpq-dev libdbd-pg-perl
+      shell: bash
+    - uses: actions/cache@v2
+      env:
+        cache-name: cache-dev-dependencies
+      with:
+        path: |
+          ~/.bashrc
+          ~/.asdf
+          ~/work/_actions/shogo82148/actions-setup-perl/v1/scripts/lib
+          ~/.cache/yarn
+          ~/.cache/Cypress
+          ./app/node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-

@@ -10,25 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: asdf setup
-        uses: asdf-vm/actions/setup@v1
-      - uses: shogo82148/actions-setup-perl@v1
-      - name: install pg perl library
-        run: sudo apt-get install -y libpq-dev libdbd-pg-perl
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.bashrc
-            ~/.asdf
-            ~/work/_actions/shogo82148/actions-setup-perl/v1/scripts/lib
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: make install_dev_tools
       - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
       - run: which sqitch
@@ -40,18 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.bashrc
-            ~/.asdf
-            ~/work/_actions/shogo82148/actions-setup-perl/v1/scripts/lib
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: yarn test
         working-directory: ./app
   yarn-audit:
@@ -59,18 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.bashrc
-            ~/.asdf
-            ~/work/_actions/shogo82148/actions-setup-perl/v1/scripts/lib
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: yarn audit-deps
         working-directory: ./app
   db-unit-tests:
@@ -78,23 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: asdf setup
-        uses: asdf-vm/actions/setup@v1
-      - uses: shogo82148/actions-setup-perl@v1
-      - name: install pg perl library
-        run: sudo apt-get install -y libpq-dev libdbd-pg-perl
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-dev-dependencies
-        with:
-          path: |
-            ~/.bashrc
-            ~/.asdf
-            ~/work/_actions/shogo82148/actions-setup-perl/v1/scripts/lib
-            ~/.cache/yarn
-            ~/.cache/Cypress
-            ./app/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
       - run: make db_unit_tests
 
   build-schema-image:
