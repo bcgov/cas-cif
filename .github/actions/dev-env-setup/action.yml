@@ -18,16 +18,22 @@ runs:
         echo "PERL_MM_OPT=INSTALL_BASE=/home/runner/perl5" >> $GITHUB_ENV
         echo "/home/runner/perl5/bin" >> $GITHUB_PATH
     - uses: actions/cache@v2
-      env:
-        cache-name: cache-dev-dependencies
+      id: asdf-cache
       with:
         path: |
-          ~/.bashrc
           ~/.asdf
+        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}
+    - uses: actions/cache@v2
+      id: perl-cache
+      with:
+        path: |
           ~/perl5
+        key: ${{ runner.os }}-perl-cache-${{ hashFiles('cpanfile') }}
+    - uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: |
           ~/.cache/yarn
           ~/.cache/Cypress
           ./app/node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.tool-versions', 'cpanfile', 'app/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
+        key: ${{ runner.os }}-yarn-cache-${{ hashFiles('app/yarn.lock') }}
