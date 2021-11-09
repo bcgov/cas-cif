@@ -52,8 +52,17 @@ jobs:
         uses: ./.github/actions/dev-env-setup
       - run: pre-commit run --all-files
 
-  build-schema-image:
+  docker-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: gcr.io/ggl-cas-storage/cas-cif-app
+            dockerfile: app/Dockerfile
+            cache-name: app
+          - image: gcr.io/ggl-cas-storage/cas-cif-schema
+            dockerfile: schema/Dockerfile
+            cache-name: schema
     steps:
       - uses: actions/checkout@v2
       - name: Set up Docker Buildx
@@ -61,6 +70,14 @@ jobs:
         uses: docker/setup-buildx-action@v1
         with:
           install: true
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ matrix.image }}
+          tags: |
+            type=sha,format=long,prefix=
+            latest
       - name: Login to GCR
         uses: docker/login-action@v1
         with:
@@ -71,20 +88,20 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-schema-${{ github.sha }}
+          key: ${{ runner.os }}-buildx-${{ matrix.cache-name }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-schema
+            ${{ runner.os }}-buildx-${{ matrix.cache-name }}
       - name: Build image
         uses: docker/build-push-action@v2
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          file: schema/Dockerfile
-          tags: ggl-cas-storage/cas-cif-schema:latest,ggl-cas-storage/cas-cif-schema:${{ github.sha }}
+          file: ${{ matrix.dockerfile }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-
         # Temp fix
         # https://github.com/docker/build-push-action/issues/252
         # https://github.com/moby/buildkit/issues/1896
@@ -93,45 +110,8 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  build-app-image:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-        with:
-          install: true
-      - name: Login to GCR
-        uses: docker/login-action@v1
-        with:
-          registry: gcr.io
-          username: _json_key
-          password: ${{ secrets.GCR_KEY }}
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-app-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-app
-      - name: Build image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          builder: ${{ steps.buildx.outputs.name }}
-          push: true
-          file: app/Dockerfile
-          tags: ggl-cas-storage/cas-cif-app:latest,ggl-cas-storage/cas-cif-app:${{ github.sha }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
   e2e:
-    needs: ["build-schema-image", "build-app-image", "install-dev-tools"]
+    needs: ["docker-build", "install-dev-tools"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
