@@ -64,3 +64,16 @@ jobs:
           image_tag: latest,${{ github.sha }}
           dockerfile: schema/Dockerfile
           context: "."
+
+  build-app-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+        with:
+          gcloud_service_key: ${{ secrets.GCR_KEY }}
+          project_id: ggl-cas-storage
+          image_name: cas-cif-app
+          image_tag: latest,${{ github.sha }}
+          dockerfile: app/Dockerfile
+          context: "."

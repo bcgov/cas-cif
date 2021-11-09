@@ -1,5 +1,6 @@
 .next/
 __generated__/
+dist/
 *.min.css
 server/schema.json
 server/schema.graphql

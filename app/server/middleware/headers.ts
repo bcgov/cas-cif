@@ -2,7 +2,7 @@ import helmet from "helmet";
 
 const headersMiddleware = () => {
   const helmetMiddleware = helmet({
-    contentSecurityPolicy: process.env.NODE_ENV === "production",
+    contentSecurityPolicy: false,
   });
   return (req, res, next) => {
     // Tell search + crawlers not to index non-production environments:
