@@ -77,3 +77,15 @@ jobs:
           image_tag: latest,${{ github.sha }}
           dockerfile: app/Dockerfile
           context: "."
+
+  e2e:
+    needs: ["build-schema-image", "build-app-image", "install-dev-tools"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - name: start postgres and create database
+        run: make start_pg && make create_db
+      - name: deploy migrations
+        run: docker run -p 5432:5432 gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} "sqitch deploy"
