@@ -120,5 +120,6 @@ jobs:
         uses: ./.github/actions/dev-env-setup
       - name: start postgres and create database
         run: make start_pg && make create_db
+      - run: createuser -s postgres
       - name: deploy migrations
         run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
