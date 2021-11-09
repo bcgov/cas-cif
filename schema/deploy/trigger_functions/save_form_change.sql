@@ -5,15 +5,16 @@ begin;
 
 create or replace function cif_private.save_form_change()
   returns trigger as $$
-
 declare
   query text;
   schema_table text;
+  keys text;
+  vals text;
   next_id integer;
   next_jsonb_record jsonb;
   next_record_type text;
 begin
-  schema_table := new.form_data_schema_name || '.' || new.form_data_table_name;
+  schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
   if (select triggers_save from cif.change_status where status = new.change_status) then
 
     if new.operation = 'INSERT' then
@@ -26,9 +27,23 @@ begin
         next_record_type
       );
       raise notice '%', query;
-      EXECUTE query using next_jsonb_record;
+      execute query using next_jsonb_record;
+      
     elsif new.operation = 'UPDATE' then
-      raise notice 'UPDATE STUFF NOW';
+
+      keys := (select array_to_string(array(select quote_ident(key) from jsonb_each(new.new_form_data)), ','));
+      vals := (select array_to_string(array(select quote_literal(value) from jsonb_each_text(new.new_form_data)), ','));
+
+      query := format(
+        'update %s set (%s) = (%s) where id = $1',
+        schema_table,
+        keys,
+        vals
+      );
+
+      raise notice '%', query;
+      execute query using new.form_data_record_id;
+
     elsif new.operation = 'DELETE' then
       raise notice 'NO DELETE, BAD DYLAN!';
     end if;
