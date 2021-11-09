@@ -17,10 +17,14 @@ begin
   if (select triggers_save from cif.change_status where status = new.change_status) then
 
     if new.operation = 'INSERT' then
-      next_jsonb_record = new.new_form_data || jsonb_build_object('id', new.form_data_record_id);
-      next_record_type = 'null::' || schema_table;
+      next_jsonb_record := new.new_form_data || jsonb_build_object('id', new.form_data_record_id);
+      next_record_type := 'null::' || schema_table;
 
-      query := 'insert into ' || schema_table || ' overriding system value select * from json_populate_record('|| next_record_type ||', ''' || next_jsonb_record::text || ''');';
+      query := format(
+        'insert into %s overriding system value select * from json_populate_record('|| next_record_type ||', %s);', 
+        schema_table, 
+        quote_literal(next_jsonb_record)
+      );
       raise notice '%', query;
       EXECUTE query;
     elsif new.operation = 'UPDATE' then
