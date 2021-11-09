@@ -59,10 +59,11 @@ jobs:
         include:
           - image: gcr.io/ggl-cas-storage/cas-cif-app
             dockerfile: app/Dockerfile
-            cache-name: app
+            name: app
           - image: gcr.io/ggl-cas-storage/cas-cif-schema
             dockerfile: schema/Dockerfile
-            cache-name: schema
+            name: schema
+    name: Build ${{ matrix.name }} docker image
     steps:
       - uses: actions/checkout@v2
       - name: Set up Docker Buildx
@@ -88,9 +89,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ matrix.cache-name }}-${{ github.sha }}
+          key: ${{ runner.os }}-buildx-${{ matrix.name }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ matrix.cache-name }}
+            ${{ runner.os }}-buildx-${{ matrix.name }}
       - name: Build image
         uses: docker/build-push-action@v2
         with:
@@ -120,4 +121,4 @@ jobs:
       - name: start postgres and create database
         run: make start_pg && make create_db
       - name: deploy migrations
-        run: docker run gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} "sqitch deploy"
+        run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
