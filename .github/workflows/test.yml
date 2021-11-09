@@ -56,27 +56,79 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
         with:
-          gcloud_service_key: ${{ secrets.GCR_KEY }}
-          project_id: ggl-cas-storage
-          image_name: cas-cif-schema
-          image_tag: latest,${{ github.sha }}
-          dockerfile: schema/Dockerfile
-          context: "."
+          install: true
+      - name: Login to GCR
+        uses: docker/login-action@v1
+        with:
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GCR_KEY }}
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-schema-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-schema
+      - name: Build image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          file: schema/Dockerfile
+          tags: ggl-cas-storage/cas-cif-schema:latest,ggl-cas-storage/cas-cif-schema:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+        # Temp fix
+        # https://github.com/docker/build-push-action/issues/252
+        # https://github.com/moby/buildkit/issues/1896
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   build-app-image:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
         with:
-          gcloud_service_key: ${{ secrets.GCR_KEY }}
-          project_id: ggl-cas-storage
-          image_name: cas-cif-app
-          image_tag: latest,${{ github.sha }}
-          dockerfile: app/Dockerfile
-          context: "."
+          install: true
+      - name: Login to GCR
+        uses: docker/login-action@v1
+        with:
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GCR_KEY }}
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-app-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-app
+      - name: Build image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          file: app/Dockerfile
+          tags: ggl-cas-storage/cas-cif-app:latest,ggl-cas-storage/cas-cif-app:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   e2e:
     needs: ["build-schema-image", "build-app-image", "install-dev-tools"]
@@ -88,4 +140,4 @@ jobs:
       - name: start postgres and create database
         run: make start_pg && make create_db
       - name: deploy migrations
-        run: docker run -p 5432:5432 gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} "sqitch deploy"
+        run: docker run gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} "sqitch deploy"
