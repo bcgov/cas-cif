@@ -8,19 +8,20 @@ create or replace function cif_private.save_form_change()
 
 declare
   query text;
-  keys text;
-  values text;
   schema_table text;
-
+  next_id integer;
+  next_jsonb_record jsonb;
+  next_record_type text;
 begin
-  keys := (select array_to_string(array(select jsonb_object_keys(new.new_form_data)), ','));
-  values := (select array_to_string(array((select quote_literal(value::text) from jsonb_each(new.new_form_data))), ','));
   schema_table := new.form_data_schema_name || '.' || new.form_data_table_name;
   if (select triggers_save from cif.change_status where status = new.change_status) then
 
     if new.operation = 'INSERT' then
-      query := 'insert into ' || schema_table || '(id,' || keys ||') overriding system value values ('|| new.form_data_record_id ||', '|| values || ')';
-    raise notice '%', query;
+      next_jsonb_record = new.new_form_data || jsonb_build_object('id', new.form_data_record_id);
+      next_record_type = 'null::' || schema_table;
+
+      query := 'insert into ' || schema_table || ' overriding system value select * from json_populate_record('|| next_record_type ||', ''' || next_jsonb_record::text || ''');';
+      raise notice '%', query;
       EXECUTE query;
     elsif new.operation = 'UPDATE' then
       raise notice 'UPDATE STUFF NOW';
