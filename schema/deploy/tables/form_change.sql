@@ -2,7 +2,7 @@
 
 begin;
 
-create table cif.form_changes (
+create table cif.form_change (
   id integer primary key generated always as identity,
   new_form_data jsonb,
   operation varchar(1000),
@@ -14,8 +14,8 @@ create table cif.form_changes (
 );
 
 create trigger save_form_change
-    after update of change_status on cif.form_changes
+    after update of change_status on cif.form_change
     for each row
-    execute procedure cif_private.save_form_changes();
+    execute procedure cif_private.save_form_change();
 
 commit;

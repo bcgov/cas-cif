@@ -23,7 +23,7 @@ tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Cr
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
 mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function
 tables/project 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
-trigger_functions/save_form_changes [schemas/private] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been saved
-tables/form_changes 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
+trigger_functions/save_form_change [schemas/private] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been saved
+tables/form_change 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
 tables/change_status 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
 

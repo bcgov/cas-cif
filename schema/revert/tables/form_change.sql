@@ -2,6 +2,6 @@
 
 begin;
 
-drop table cif.form_changes;
+drop table cif.form_change;
 
 commit;

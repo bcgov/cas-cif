@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif_private.save_form_changes()
+create or replace function cif_private.save_form_change()
   returns trigger as $$
 
 declare
@@ -32,9 +32,9 @@ begin
 end;
 $$ language plpgsql;
 
-grant execute on function cif_private.save_form_changes to cif_internal, cif_external, cif_admin;
+grant execute on function cif_private.save_form_change to cif_internal, cif_external, cif_admin;
 
-comment on function cif_private.save_form_changes()
+comment on function cif_private.save_form_change()
   is $$
   a trigger to set created_at and updated_at columns.
   example usage:
@@ -47,7 +47,7 @@ comment on function cif_private.save_form_changes()
   create trigger _100_timestamps
     before insert or update on some_schema.some_table
     for each row
-    execute procedure cif_private.save_form_changes();
+    execute procedure cif_private.save_form_change();
   $$;
 
 commit;
