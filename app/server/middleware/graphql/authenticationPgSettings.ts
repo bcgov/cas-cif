@@ -10,7 +10,6 @@ const AS_CIF_EXTERNAL = process.argv.includes("AS_CIF_EXTERNAL");
 
 const AS_CIF_ADMIN = process.argv.includes("AS_CIF_ADMIN");
 
-
 const AS_UNAUTHORIZED_IDIR = process.argv.includes("AS_UNAUTHORIZED_IDIR");
 const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
 
@@ -19,7 +18,6 @@ const allowCypressForRole = (roleName, req) => {
 };
 
 const authenticationPgSettings = (req) => {
-
   if (AS_CIF_INTERNAL || allowCypressForRole("cif_internal", req)) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000000",
@@ -46,7 +44,6 @@ const authenticationPgSettings = (req) => {
       role: "cif_admin",
     };
   }
-
 
   if (AS_UNAUTHORIZED_IDIR || allowCypressForRole("unauthorized_idir", req)) {
     return {

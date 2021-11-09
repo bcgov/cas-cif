@@ -6,7 +6,7 @@ begin;
 do
 $do$
 begin
-  
+
   if not exists (
     select true
     from   pg_catalog.pg_roles
@@ -14,7 +14,7 @@ begin
 
     create role cif_internal;
   end if;
-  
+
   if not exists (
     select true
     from   pg_catalog.pg_roles
@@ -22,7 +22,7 @@ begin
 
     create role cif_external;
   end if;
-  
+
   if not exists (
     select true
     from   pg_catalog.pg_roles
@@ -30,7 +30,7 @@ begin
 
     create role cif_admin;
   end if;
-  
+
   if not exists (
     select true
     from   pg_catalog.pg_roles
@@ -38,7 +38,7 @@ begin
 
     create role cif_guest;
   end if;
-  
+
 
 end
 $do$;

@@ -39,9 +39,7 @@ const DefaultLayout: React.FC<Props> = ({
         isLoggedIn={Boolean(session)}
         title={title}
         userProfileDropdown={
-          <UserProfileDropdown
-            user={session ? session.cifUserBySub : null}
-          />
+          <UserProfileDropdown user={session ? session.cifUserBySub : null} />
         }
       >
         {runtimeConfig.SITEWIDE_NOTICE && (

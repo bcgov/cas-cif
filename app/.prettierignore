@@ -3,3 +3,4 @@ __generated__/
 *.min.css
 server/schema.json
 server/schema.graphql
+coverage
