@@ -21,12 +21,12 @@ begin
       next_record_type := 'null::' || schema_table;
 
       query := format(
-        'insert into %s overriding system value select * from json_populate_record('|| next_record_type ||', %s);', 
+        'insert into %s overriding system value select * from jsonb_populate_record(%s, $1);', 
         schema_table, 
-        quote_literal(next_jsonb_record)
+        next_record_type
       );
       raise notice '%', query;
-      EXECUTE query;
+      EXECUTE query using next_jsonb_record;
     elsif new.operation = 'UPDATE' then
       raise notice 'UPDATE STUFF NOW';
     elsif new.operation = 'DELETE' then
