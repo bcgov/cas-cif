@@ -13,4 +13,9 @@ create table cif.form_changes (
   change_reason varchar(10000)
 );
 
+create trigger save_form_change
+    after update of change_status on cif.form_changes
+    for each row
+    execute procedure cif_private.save_form_changes();
+
 commit;

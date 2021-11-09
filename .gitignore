@@ -4,3 +4,4 @@ __generated__
 dist
 app/coverage/
 chart/**/charts/
+.scratch
