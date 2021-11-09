@@ -26,4 +26,4 @@ tables/project 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.b
 trigger_functions/save_form_change [schemas/private] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been saved
 tables/form_change 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
 tables/change_status 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
-
+mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
