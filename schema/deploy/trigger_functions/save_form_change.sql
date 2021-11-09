@@ -45,7 +45,8 @@ begin
       execute query using new.form_data_record_id;
 
     elsif new.operation = 'DELETE' then
-      raise notice 'NO DELETE, BAD DYLAN!';
+      raise notice 'This trigger cannot delete records.';
+      return null;
     end if;
   end if;
   return new;
