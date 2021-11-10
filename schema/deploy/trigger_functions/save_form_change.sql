@@ -15,27 +15,27 @@ declare
   next_record_type text;
 begin
   schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
+  keys := (select array_to_string(array(select quote_ident(key) from jsonb_each(new.new_form_data)), ','));
+  vals := (select array_to_string(array(select quote_literal(value) from jsonb_each_text(new.new_form_data)), ','));
+
   if (select triggers_save from cif.change_status where status = new.change_status) then
 
     if new.operation = 'INSERT' then
-      next_jsonb_record := new.new_form_data || jsonb_build_object('id', new.form_data_record_id);
-      next_record_type := 'null::' || schema_table;
 
       query := format(
-        'insert into %s overriding system value select * from jsonb_populate_record(%s, $1);', 
+        'insert into %s (id, %s) overriding system value values (%s , %s)', 
         schema_table, 
-        next_record_type
+        keys,
+        new.form_data_record_id,
+        vals
       );
       raise notice '%', query;
       execute query using next_jsonb_record;
       
     elsif new.operation = 'UPDATE' then
 
-      keys := (select array_to_string(array(select quote_ident(key) from jsonb_each(new.new_form_data)), ','));
-      vals := (select array_to_string(array(select quote_literal(value) from jsonb_each_text(new.new_form_data)), ','));
-
       query := format(
-        'update %s set (%s) = (%s) where id = $1',
+        'update %s set (%s) = (row(%s)) where id = $1',
         schema_table,
         keys,
         vals
