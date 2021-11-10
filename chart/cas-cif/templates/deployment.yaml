@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cas-cif.fullname" . }}
+  labels:
+    component: app
+{{ include "cas-cif.labels" . | indent 4 }}
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    name: {{ template "cas-cif.fullname" . }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: app
+{{ include "cas-cif.selectorLabels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+        component: app
+{{ include "cas-cif.labels" . | indent 8 }}
+    spec:
+      initContainers:
+      # The init container waits until the sqitch changes are deployed to the db
+      - env:
+          - name: SQITCH_TARGET
+            value: "db:pg:"
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGDATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            value: {{ template "cas-cif.fullname" . }}-patroni
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+        name: {{ template "cas-cif.fullname" . }}-schema-deploy-data
+        image: {{ .Values.image.schema.repository }}:{{ default .Values.defaultImageTag .Values.image.schema.tag }}
+        imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.schema.pullPolicy }}
+        resources:
+          limits:
+            cpu: 50m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        command:
+          - /usr/bin/env
+          - bash
+          - -c
+          - |
+            set -euo pipefail;
+            pushd schema;
+            while [ "$(sqitch status | tail -1)" != "Nothing to deploy (up-to-date)" ]; do
+              echo "Waiting 10s for migrations to complete..."
+              sleep 10;
+            done;
+      containers:
+      - name: {{ template "cas-cif.fullname" . }}
+        imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.app.pullPolicy }}
+        image: {{ .Values.image.app.repository }}:{{ default .Values.defaultImageTag .Values.image.app.tag }}
+        env:
+          - name: SESSION_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: session-secret
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                key: database-app-user
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-app-password
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGDATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: {{ template "cas-cif.fullname" . }}
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            value: {{ template "cas-cif.fullname" . }}-patroni
+          - name: PORT
+            value: {{ .Values.app.port | quote }}
+          - name: SITEWIDE_NOTICE
+            value: {{ .Values.app.sitewide_notice.content | quote }}
+          - name: HOST
+            value: http{{ if index .Values "nginx-sidecar" "sslTermination" }}s{{ end }}://{{ index .Values "nginx-sidecar" "hostName" }}
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+        ports:
+        - containerPort: {{ .Values.app.port }}
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: {{ .Values.app.probesPort }}
+          # we want the readiness threshold to fail fast,
+          # to prevent any request from going to a pod that is not ready
+          failureThreshold: 1
+          successThreshold: 1
+          periodSeconds: 5
+          timeoutSeconds: 5
+          initialDelaySeconds: 5
+        livenessProbe:
+          # the liveness probe is here to ensure that a pod does not get
+          # stuck in a shutdown state. It needs to allow enough time for
+          # the registered shutdown handler to run to completion.
+          httpGet:
+            path: /live
+            port: {{ .Values.app.probesPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+{{- include "nginx-sidecar.deployment-container.tpl" (index .Values "nginx-sidecar") | indent 6 }}
+      volumes:
+{{- include "nginx-sidecar.deployment-volumes.tpl" (index .Values "nginx-sidecar") | nindent 8 }}
+      restartPolicy: Always

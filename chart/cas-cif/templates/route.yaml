@@ -1,0 +1,20 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ template "cas-cif.fullname" . }}{{ if not (index .Values "nginx-sidecar" "sslTermination") }}-insecure{{ end }}
+  labels: {{ include "cas-cif.labels" . | nindent 4 }}
+
+spec:
+  host: {{ index .Values "nginx-sidecar" "hostName" }}
+  port:
+    targetPort: {{ template "cas-cif.fullname" . }}
+{{- if index .Values "nginx-sidecar" "sslTermination" }}
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: Redirect
+{{- end }}
+  to:
+    kind: Service
+    name: {{ template "cas-cif.fullname" . }}
+    weight: 100
+  wildcardPolicy: None

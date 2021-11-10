@@ -175,3 +175,11 @@ db_unit_tests: | start_pg drop_test_db create_test_db deploy_test_db_migrations
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
+
+
+.PHONY: lint_chart
+lint_chart: ## Checks the configured helm chart template definitions against the remote schema
+lint_chart:
+	@set -euo pipefail; \
+	helm dep up ./chart/cas-cif; \
+	helm template -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
