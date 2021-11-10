@@ -1,7 +1,7 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server/index.js",
   "license": "MIT",
   "scripts": {
     "format": "prettier --write .",
@@ -9,12 +9,15 @@
     "build:next": "next build",
     "dev": "nodemon",
     "predev": "yarn run build:schema && yarn run build:relay",
-    "build": "yarn run build:schema && yarn run build:relay && yarn run build:next",
+    "build": "yarn run build:server && yarn run build:schema && yarn run build:relay && yarn run build:next",
+    "build:server": "tsc --project tsconfig.server.json",
     "build:schema": "postgraphile -X -c postgres://localhost/cif -s cif --export-schema-graphql server/schema.graphql --export-schema-json server/schema.json --classic-ids --sort-export && echo >> server/schema.json",
     "build:relay": "relay-compiler --verbose",
     "pretest": "yarn run build:relay",
     "test": "jest",
-    "audit-deps": "improved-yarn-audit"
+    "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && cypress run",
+    "audit-deps": "improved-yarn-audit",
+    "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -41,7 +44,8 @@
     "prettier": "^2.4.1",
     "react-test-renderer": "^17.0.2",
     "ts-node": "^10.3.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "wait-on": "^6.0.0"
   },
   "dependencies": {
     "@bcgov-cas/sso-express": "^1.0.0-alpha.3",
