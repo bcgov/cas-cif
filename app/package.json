@@ -15,6 +15,7 @@
     "build:relay": "relay-compiler --verbose",
     "pretest": "yarn run build:relay",
     "test": "jest",
+    "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && cypress run",
     "audit-deps": "improved-yarn-audit",
     "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js"
   },
@@ -43,7 +44,8 @@
     "prettier": "^2.4.1",
     "react-test-renderer": "^17.0.2",
     "ts-node": "^10.3.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "wait-on": "^6.0.0"
   },
   "dependencies": {
     "@bcgov-cas/sso-express": "^1.0.0-alpha.3",

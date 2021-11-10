@@ -123,3 +123,8 @@ jobs:
       - run: createuser -s postgres
       - name: deploy migrations
         run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
+      - name: start app
+        run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }}
+      - name: run e2e tests
+        run: yarn test:e2e
+        working-directory: ./app

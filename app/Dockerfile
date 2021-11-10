@@ -51,4 +51,4 @@ RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 CYPRESS_INSTALL_BINARY=0 \
 EXPOSE 3000 9000
 USER ${USER_ID}
 
-CMD ["yarn", "start"]
+CMD ["/usr/bin/env", "bash", "-c", "yarn start"]
