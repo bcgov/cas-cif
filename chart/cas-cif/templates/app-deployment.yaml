@@ -30,12 +30,12 @@ spec:
           - name: PGUSER
             valueFrom:
               secretKeyRef:
-                key: database-user
+                key: database-app-user
                 name: {{ template "cas-cif.fullname" . }}
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
-                key: database-password
+                key: database-app-password
                 name: {{ template "cas-cif.fullname" . }}
           - name: PGDATABASE
             valueFrom:
@@ -67,7 +67,6 @@ spec:
           - -c
           - |
             set -euo pipefail;
-            pushd schema;
             while [ "$(sqitch status | tail -1)" != "Nothing to deploy (up-to-date)" ]; do
               echo "Waiting 10s for migrations to complete..."
               sleep 10;

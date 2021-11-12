@@ -91,7 +91,7 @@ DAG cas_cif_acme_renewal
 Renews site certificates for the cif app
 """
 acme_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVAL,
-                       default_args=acme_renewal_args)
+                       default_args=acme_renewal_args, is_paused_upon_creation=True)
 
 cert_renewal_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -116,7 +116,7 @@ cert_renewal_task >> reload_nginx_task
 """
 
 cif_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
-                             schedule_interval=SCHEDULE_INTERVAL, is_paused_upon_creation=False)
+                             schedule_interval=SCHEDULE_INTERVAL, is_paused_upon_creation=True)
 
 create_backup_task(cif_full_backup_dag,
                    cif_namespace, 'cas-cif-patroni')

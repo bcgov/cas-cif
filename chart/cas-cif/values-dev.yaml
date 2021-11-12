@@ -14,3 +14,14 @@ cas-postgres:
       kubernetesSecret: gcp-c53ff1-dev-cif-backups-service-account-key # pragma: allowlist secret
     # options below are required if walE.enable is true
   namespace: c53ff1-dev
+  gcs:
+    bucketSuffix: cif-backups
+
+cert-issue:
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+
+deploy-db:
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+
+download-dags:
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca

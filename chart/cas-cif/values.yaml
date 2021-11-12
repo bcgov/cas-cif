@@ -78,3 +78,22 @@ autoscaling:
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+
+cert-issue:
+  enabled: false
+  airflowEndpoint: ~
+  dagId: cas_cif_acme_issue
+  helm:
+    hook: post-install
+
+deploy-db:
+  airflowEndpoint: ~
+  dagId: cas_cif_deploy_db
+  helm:
+    hook: false
+
+download-dags:
+  airflowEndpoint: ~
+  dagId: fetch_and_save_dag_from_github
+  helm:
+    hook: "pre-install,pre-upgrade"
