@@ -1,0 +1,26 @@
+{
+  version: 1,
+  config: {
+    /*
+     * There can be entries here for:
+     *
+     * - `class`: for tables, composite types, views and materialized views
+     * - `attribute`: for columns/attributes (of any 'class' type)
+     * - `constraint`: for table constraints
+     * - `procedure`: for functions/procedures
+     */
+    class: {
+      /*
+       * The next level describes the named type. We've just used the table
+       * name `"post"` but it could be `"my_schema.post"` if you have multiple
+       * tables with the same name and you don't want this rule to apply to
+       * all of them.
+       */
+      "cif.project": {
+        tags: {
+          omit: ["create", "update", "delete"],
+        },
+      },
+    },
+  },
+}
