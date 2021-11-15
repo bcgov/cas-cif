@@ -1,7 +1,7 @@
 -- Revert cif:trigger_functions/save_form_changes from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function cif_private.save_form_change;
 
-COMMIT;
+commit;
