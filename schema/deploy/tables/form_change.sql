@@ -14,7 +14,7 @@ create table cif.form_change (
 );
 
 create trigger save_form_change
-    after update of change_status on cif.form_change
+    after insert or update of change_status on cif.form_change
     for each row
     execute procedure cif_private.save_form_change();
 

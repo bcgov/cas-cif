@@ -1,6 +1,6 @@
 begin;
 
-SELECT * FROM no_plan();
+select plan(9);
 
 create schema mock_schema;
 
@@ -24,7 +24,7 @@ create table mock_schema.mock_table (
 );
 
 create trigger trigger_under_test
-    after update of change_status on mock_schema.mock_form_change
+    after insert or update of change_status on mock_schema.mock_form_change
     for each row
     execute procedure cif_private.save_form_change();
 
@@ -115,14 +115,25 @@ select is(
   'A record should be updated when a pending change is saved'
 );
 
--- -- on delete nothing happens and a notice is printed
--- insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
--- values (
---   '{"text_col":"test_delete", "required_col":"req"}',
---   'DELETE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_saved'
--- );
+-- on delete nothing happens and a notice is printed
+select throws_ok(
+  $$
+    insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
+    values (
+      '{"text_col":"test_delete", "required_col":"req"}',
+      'DELETE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_saved'
+    )
+  $$,
+  'Cannot save change with operation DELETE',
+  'a change record with the DELETE operation should throw an exception'
+);
 
+select is(
+  (select count(*) from mock_schema.mock_form_change where operation='DELETE'),
+  0::bigint,
+  'No record should be inserted on DELETE'
+);
 
-select * from finish();
+select finish();
 
 rollback;

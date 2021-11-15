@@ -14,6 +14,11 @@ declare
   next_jsonb_record jsonb;
   next_record_type text;
 begin
+
+  if new.operation not in ('INSERT', 'UPDATE') then
+    raise exception 'Cannot save change with operation %', new.operation;
+  end if;
+
   schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
   keys := (select array_to_string(array(select quote_ident(key) from jsonb_each(new.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_literal(value) from jsonb_each_text(new.new_form_data)), ','));
@@ -34,6 +39,7 @@ begin
       
     elsif new.operation = 'UPDATE' then
 
+      -- it is necessary to put the values in a row(...) in case there is only one value;
       query := format(
         'update %s set (%s) = (row(%s)) where id = $1',
         schema_table,
@@ -43,10 +49,6 @@ begin
 
       raise notice '%', query;
       execute query using new.form_data_record_id;
-
-    elsif new.operation = 'DELETE' then
-      raise notice 'This trigger cannot delete records.';
-      return null;
     end if;
   end if;
   return new;
