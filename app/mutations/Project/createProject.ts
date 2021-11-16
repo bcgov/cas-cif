@@ -1,18 +1,21 @@
-import type {Environment} from 'react-relay';
-import type {CreateProjectInput, createProjectMutation} from 'createProjectMutation.graphql';
+import type { Environment } from "react-relay";
+import type {
+  CreateProjectInput,
+  createProjectMutation,
+} from "createProjectMutation.graphql";
 
-import {commitMutation, graphql} from 'react-relay';
+import { commitMutation, graphql } from "react-relay";
 
 export default function commitProjectMutation(
   environment: Environment,
-  input: CreateProjectInput,
+  input: CreateProjectInput
 ) {
   return commitMutation<createProjectMutation>(environment, {
     mutation: graphql`
       mutation createProjectMutation($input: CreateProjectInput!) {
         createProject(input: $input) {
           query {
-            allFormChanges(filter: {changeStatus: { equalTo: "pending" }}) {
+            allFormChanges(filter: { changeStatus: { equalTo: "pending" } }) {
               edges {
                 node {
                   id
@@ -30,8 +33,12 @@ export default function commitProjectMutation(
         }
       }
     `,
-    variables: {input},
-    onCompleted: response => {console.log(response)},
-    onError: error => {console.error(error)}
+    variables: { input },
+    onCompleted: (response) => {
+      console.log(response);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
   });
-};
+}

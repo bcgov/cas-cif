@@ -11,7 +11,7 @@ create table mock_schema.mock_form_change (
   form_data_schema_name varchar(1000),
   form_data_table_name varchar(1000),
   form_data_record_id integer,
-  change_status varchar(1000) default 'pending' 
+  change_status varchar(1000) default 'pending'
 );
 
 create table mock_schema.mock_table (
@@ -40,7 +40,7 @@ select has_function('cif_private', 'save_form_change', 'Function save_form_chang
 
 -- setting up pending change
 
-insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
+insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"text_col":"test text", "int_col":234, "bool_col": true, "required_col": "req", "defaulted_col": 1}',
   'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
@@ -63,7 +63,7 @@ select is(
 );
 
 -- doesnt insert if the data is missing required fields
-insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
+insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"text_col":"test2 text"}',
   'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
@@ -77,7 +77,7 @@ select throws_ok(
 );
 
 -- inserts with default value if data is missing
-insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
+insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"text_col":"test3", "required_col":"required"}',
   'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
@@ -95,7 +95,7 @@ select results_eq(
 );
 
 -- on update an existing record is committed, only if the change status is marked as trigger change
-insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
+insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"text_col":"test_update"}',
   'UPDATE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test3'), 'test_pending'
@@ -118,7 +118,7 @@ select is(
 -- on delete nothing happens and a notice is printed
 select throws_ok(
   $$
-    insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) 
+    insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
     values (
       '{"text_col":"test_delete", "required_col":"req"}',
       'DELETE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_saved'

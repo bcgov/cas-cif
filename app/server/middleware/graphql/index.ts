@@ -5,7 +5,7 @@ import { makePluginHook, PostGraphileOptions } from "postgraphile";
 import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PostgraphileLogConsola from "postgraphile-log-consola";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
-import {TagsFilePlugin} from "postgraphile/plugins";
+import { TagsFilePlugin } from "postgraphile/plugins";
 import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
 
