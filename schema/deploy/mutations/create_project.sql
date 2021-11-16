@@ -4,8 +4,10 @@
 begin;
 
 create or replace function cif.create_project(project cif.project)
-returns cif.project
+returns cif.form_change
 as $function$
+declare
+  change_row cif.form_change;
 begin
 
   insert into cif.form_change(
@@ -24,8 +26,8 @@ begin
     nextval(pg_get_serial_sequence('cif.project', 'id')),
     'pending',
     'create new project'
-  );
-  return null;
+  ) returning * into change_row;
+  return change_row;
 end;
 $function$ language plpgsql strict volatile;
 
