@@ -1,8 +1,12 @@
 import { Network, Environment, Store, RecordSource } from "relay-runtime";
+import getConfig from "next/config";
+const {
+  serverRuntimeConfig: { PORT },
+} = getConfig();
 
 export function createServerNetwork({ cookieHeader }) {
   return Network.create(async (params, variables) => {
-    const response = await fetch("http://localhost:3004/graphql", {
+    const response = await fetch(`http://localhost:${PORT}/graphql`, {
       method: "POST",
       credentials: "include",
       headers: {
