@@ -1,44 +1,32 @@
 import type { Environment } from "react-relay";
 import type {
-  CreateProjectInput,
-  createProjectMutation,
+  createProjectMutationVariables,
+  createProjectMutation as CreateProjectMutationType,
 } from "createProjectMutation.graphql";
+import BaseMutation from "mutations/BaseMutation";
+import { graphql } from "react-relay";
 
-import { commitMutation, graphql } from "react-relay";
 
-export default function commitProjectMutation(
-  environment: Environment,
-  input: CreateProjectInput
-) {
-  return commitMutation<createProjectMutation>(environment, {
-    mutation: graphql`
-      mutation createProjectMutation($input: CreateProjectInput!) {
-        createProject(input: $input) {
-          query {
-            allFormChanges(filter: { changeStatus: { equalTo: "pending" } }) {
-              edges {
-                node {
-                  id
-                  newFormData
-                  operation
-                  formDataSchemaName
-                  formDataTableName
-                  formDataRecordId
-                  changeStatus
-                  changeReason
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: { input },
-    onCompleted: (response) => {
-      console.log(response);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+const mutation = graphql`
+mutation createProjectMutation($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    formChange {
+      id
+      newFormData
+    }
+  }
 }
+`;
+
+const createProjectMutation = async (
+  environment: Environment,
+  variables: createProjectMutationVariables
+) => {
+  const m = new BaseMutation<CreateProjectMutationType>(
+    "create-project-mutation"
+  );
+  return m.performMutation(environment, mutation, variables);
+};
+
+
+export default createProjectMutation;

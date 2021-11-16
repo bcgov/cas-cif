@@ -10,6 +10,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import Card from "@button-inc/bcgov-theme/Card";
 import commitProjectMutation from "mutations/Project/createProject";
 import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
+import router from "next/router";
 
 const ProjectsQuery = graphql`
   query projectsQuery {
@@ -44,11 +45,18 @@ function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const { query } = usePreloadedQuery(ProjectsQuery, preloadedQuery);
   const [identifier, setIdentifier] = useState("");
   const [description, setDescription] = useState("");
-  const stageProject = async () => {
-    await commitProjectMutation(preloadedQuery.environment, {
-      project: {
+  const createDraftProject = async () => {
+    const response = await commitProjectMutation(preloadedQuery.environment, {
+      input: {
+        project: {
         cifIdentifier: Number(identifier),
         description: description,
+      },
+    }});
+    router.push({
+      pathname: "/internal/create-project",
+      query: {
+        id: response.createProject.formChange.id,
       },
     });
     setIdentifier("");
@@ -102,7 +110,7 @@ function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Col span={3}>
-          <Button name="create-project" onClick={stageProject}>
+          <Button name="create-project" onClick={createDraftProject}>
             Create Project
           </Button>
         </Grid.Col>
