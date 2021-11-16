@@ -30,12 +30,12 @@ spec:
           - name: PGUSER
             valueFrom:
               secretKeyRef:
-                key: database-app-user
+                key: database-owner-user
                 name: {{ template "cas-cif.fullname" . }}
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
-                key: database-app-password
+                key: database-owner-password
                 name: {{ template "cas-cif.fullname" . }}
           - name: PGDATABASE
             valueFrom:
