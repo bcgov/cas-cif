@@ -39,6 +39,16 @@ begin
     create role cif_guest;
   end if;
 
+  if not exists (
+    select true
+    from   pg_catalog.pg_roles
+    where  rolname = 'cif_app') then
+
+    create user cif_app;
+  end if;
+
+  grant cif_admin, cif_internal, cif_external, cif_guest to cif_app;
+  execute format('grant create, connect on database %I to cif_app', current_database());
 
 end
 $do$;
