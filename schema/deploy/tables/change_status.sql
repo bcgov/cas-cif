@@ -10,7 +10,21 @@ create table cif.change_status (
 
 select cif_private.upsert_timestamp_columns('cif', 'change_status');
 
--- no RLS, these are static
+do
+$grant$
+begin
+
+-- Grant cif_internal permissions
+perform cif_private.grant_permissions('select', 'change_status', 'cif_internal');
+
+-- Grant cif_admin permissions
+perform cif_private.grant_permissions('select', 'change_status', 'cif_admin');
+
+-- Grant cif_external no permissions
+-- Grant cif_guest no permissions
+
+end
+$grant$;
 
 comment on table cif.change_status is 'Table containing the different status that a change can have';
 comment on column cif.change_status.status is 'The name of the status, e.g. "pending", "saved", ...';

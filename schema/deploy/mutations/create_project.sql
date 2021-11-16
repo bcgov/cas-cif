@@ -30,14 +30,6 @@ end;
 $function$ language plpgsql strict volatile;
 
 grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
+grant usage, select on sequence cif.project_id_seq to cif_internal, cif_external, cif_admin;
 
 commit;
-
-
-/**
-FOR TESTING:
-
-  with record as (select jsonb_populate_record(null::cif.project, '{"cif_identifier": 4444, "description": "new proj"}'))
-    select cif.create_project((select * from record)::cif.project);
-
-**/
