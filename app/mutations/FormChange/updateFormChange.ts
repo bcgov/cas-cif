@@ -1,53 +1,41 @@
 import type { Environment } from "react-relay";
 import type {
-  UpdateFormChangeInput,
-  updateFormChangeMutation,
+  updateFormChangeMutationVariables,
+  updateFormChangeMutation as updateFormChangeMutationType,
 } from "updateFormChangeMutation.graphql";
+import BaseMutation from "mutations/BaseMutation";
+import { graphql } from "react-relay";
 
-import { commitMutation, graphql } from "react-relay";
+const mutation = graphql`
+mutation updateFormChangeMutation($input: UpdateFormChangeInput!) {
+  updateFormChange(input: $input) {
+    formChange {
+      id
+      newFormData
+    }
+  }
+}`;
 
-export default function commitFormChangeMutation(
+const updateFormChangeMutation = async (
   environment: Environment,
-  input: UpdateFormChangeInput
-) {
-  return commitMutation<updateFormChangeMutation>(environment, {
-    mutation: graphql`
-      mutation updateFormChangeMutation($input: UpdateFormChangeInput!) {
-        updateFormChange(input: $input) {
-          query {
-            allFormChanges(filter: { changeStatus: { equalTo: "pending" } }) {
-              edges {
-                node {
-                  id
-                  newFormData
-                  operation
-                  formDataSchemaName
-                  formDataTableName
-                  formDataRecordId
-                  changeStatus
-                  changeReason
-                }
-              }
-            }
-            allProjects {
-              edges {
-                node {
-                  id
-                  cifIdentifier
-                  description
-                }
-              }
-            }
-          }
+  variables: updateFormChangeMutationVariables
+) => {
+  const optimisticResponse = {
+    updateFormChange: {
+      formChange: {
+        id: variables.input.id,
+        newFormData: {
+          ...variables.input.formChangePatch.newFormData
         }
-      }
-    `,
-    variables: { input },
-    onCompleted: (response) => {
-      console.log(response);
+      },
     },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-}
+  };
+
+  const m = new BaseMutation<updateFormChangeMutationType>(
+    "update-form-change-mutation"
+  );
+  return m.performMutation(environment, mutation, variables, optimisticResponse);
+};
+
+
+export default updateFormChangeMutation;

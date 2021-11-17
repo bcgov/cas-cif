@@ -6,16 +6,15 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   placeholder,
   onChange,
   label,
+  value
 }) => {
   return (
     <Input
       id={id}
-      onChange={(e) => {
-        console.log(e);
-        onChange(e.target.value);
-      }}
+      onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       label={label}
+      value={value}
       size="medium"
     ></Input>
   );

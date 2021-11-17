@@ -1,112 +1,99 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { projectsQuery } from "__generated__/projectsQuery.graphql";
+import { createProjectQuery } from "__generated__/createProjectQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { useState } from "react";
-// import Card from "@button-inc/bcgov-theme/Card";
-// import commitProjectMutation from "mutations/Project/createProject";
-// import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
 import Form from "lib/theme/service-development-toolkit-form";
 import { JSONSchema7 } from "json-schema";
+import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
+import router from "next/router";
 
 const CreateProjectQuery = graphql`
-  query createProjectQuery {
+  query createProjectQuery($id: ID!) {
     query {
       session {
         ...DefaultLayout_session
+      }
+      formChange(id: $id) {
+        id
+        newFormData
       }
     }
   }
 `;
 
-const projectSchema: JSONSchema7 = {
-  title: "Project",
+const schema: JSONSchema7 = {
   type: "object",
+  required: ["cif_identifier", "description"],
   properties: {
-    cifIdentifier: {
-      type: "number",
-    },
-    description: {
-      type: "string",
-    },
-  },
+    cif_identifier: {type: "number", title: "CIF Identifier"},
+    description: {type: "string", title: "Description"}
+  }
 };
 
-function CreateProject({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
+const uiSchema = {
+  cif_identifier: {
+    "ui:placeholder": "1234",
+    "ui:col-md": 4
+  },
+  description: {
+    "ui:placeholder": "describe the project...",
+    "ui:col-md": 12
+  }
+}
+
+function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
-  const [identifier, setIdentifier] = useState("");
-  const [description, setDescription] = useState("");
-  // const stageProject = async () => {
-  //   await commitProjectMutation(preloadedQuery.environment, {
-  //     project: {
-  //       cifIdentifier: Number(identifier),
-  //       description: description,
-  //     },
-  //   });
-  //   setIdentifier("");
-  //   setDescription("");
-  // };
+  if (!query.formChange.id) return null;
 
-  // const approveStagedProject = async (id: string) => {
-  //   console.log(id);
-  //   console.log("HECK YES! APPROVED!");
-  //   await updateFormChangeMutation(preloadedQuery.environment, {
-  //     id: id,
-  //     formChangePatch: { changeStatus: "saved" },
-  //   });
-  // };
+  // Function: stage the change data in the form_change table
+  const storeResult = async (result) => {
+    console.log(query.formChange.id)
+    const variables = {
+      input: {
+        id: query.formChange.id,
+        formChangePatch: {
+          newFormData: result,
+        }
+      }
+    };
+    await updateFormChangeMutation(preloadedQuery.environment, variables);
+  };
 
-  // const rejectStagedProject = async (id: string) => {
-  //   console.log(id);
-  //   console.log("REEEEJECTED!");
-  //   // await updateFormChangeMutation(preloadedQuery.environment, { id: id, formChangePatch: {changeStatus: 'rejected'} } );
-  // };
+  const onValueChanged = async (change) => {
+    const { formData } = change;
+    await storeResult(formData);
+  };
+
+  // Function: approve staged change, triggering an insert on the project table & redirect to the project page
+  const saveProject = async () => {
+    await updateFormChangeMutation(preloadedQuery.environment, {
+      input: {
+        id: query.formChange.id,
+        formChangePatch: { changeStatus: "saved" }
+      }
+    });
+    await router.push({
+      pathname: "/internal/projects",
+    });
+  };
+
+  const formData = {
+    cif_identifier: query.formChange.newFormData.cif_identifier || null,
+    description: query.formChange.newFormData.description || null
+  }
 
   return (
-    <Form
-      schema={projectSchema}
-      onChange={(change) => {
-        console.log(change);
-      }}
-    />
-    // <DefaultLayout session={query.session} title="CIF Projects Management">
-    //   <Grid.Row>
-    //     <Grid.Col span={2}>
-    //       <p>
-    //         <em>Project Identifier</em>
-    //       </p>
-    //     </Grid.Col>
-    //     <Grid.Col span={4}>
-    //       <Input
-    //         name="project-identifier"
-    //         value={identifier}
-    //         onInput={(e) => setIdentifier(e.target.value)}
-    //       />
-    //     </Grid.Col>
-    //   </Grid.Row>
-    //   <Grid.Row>
-    //     <Grid.Col span={2}>
-    //       <p>
-    //         <em>Project Description</em>
-    //       </p>
-    //     </Grid.Col>
-    //     <Grid.Col span={4}>
-    //       <Input
-    //         name="project-description"
-    //         value={description}
-    //         onInput={(e) => setDescription(e.target.value)}
-    //       />
-    //     </Grid.Col>
-    //   </Grid.Row>
-    //   <Grid.Row>
-    //     <Grid.Col span={3}>
-    //       <Button name="create-project" onClick={stageProject}>
-    //         Create Project
-    //       </Button>
-    //     </Grid.Col>
-    //   </Grid.Row>
-    // </DefaultLayout>
+    <DefaultLayout session={query.session} title="CIF Projects Management">
+      <h1>Create Project</h1>
+      <Form
+        schema={schema}
+        uiSchema={uiSchema}
+        formData={formData}
+        onSubmit={saveProject}
+        onChange={onValueChanged}
+      />
+    </DefaultLayout>
   );
 }
 

@@ -3,13 +3,10 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { projectsQuery } from "__generated__/projectsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { useState } from "react";
 import Button from "@button-inc/bcgov-theme/Button";
-import Input from "@button-inc/bcgov-theme/Input";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import Card from "@button-inc/bcgov-theme/Card";
 import commitProjectMutation from "mutations/Project/createProject";
-import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
 import router from "next/router";
 
 const ProjectsQuery = graphql`
@@ -43,75 +40,38 @@ const ProjectsQuery = graphql`
 
 function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const { query } = usePreloadedQuery(ProjectsQuery, preloadedQuery);
-  const [identifier, setIdentifier] = useState("");
-  const [description, setDescription] = useState("");
   const createDraftProject = async () => {
     const response = await commitProjectMutation(preloadedQuery.environment, {
       input: {
         project: {
-        cifIdentifier: Number(identifier),
-        description: description,
+        cifIdentifier: Number(""),
+        description: "",
       },
     }});
-    router.push({
+    await router.push({
       pathname: "/internal/create-project",
       query: {
         id: response.createProject.formChange.id,
       },
     });
-    setIdentifier("");
-    setDescription("");
   };
 
-  const approveStagedProject = async (id: string) => {
+  const resumeStagedProject = async (id: string) => {
     console.log(id);
-    console.log("HECK YES! APPROVED!");
-    await updateFormChangeMutation(preloadedQuery.environment, {
-      id: id,
-      formChangePatch: { changeStatus: "saved" },
+    await router.push({
+      pathname: "/internal/create-project",
+      query: {
+        id: id,
+      },
     });
-  };
-
-  const rejectStagedProject = async (id: string) => {
-    console.log(id);
-    console.log("REEEEJECTED!");
-    // await updateFormChangeMutation(preloadedQuery.environment, { id: id, formChangePatch: {changeStatus: 'rejected'} } );
   };
 
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
       <Grid.Row>
-        <Grid.Col span={2}>
-          <p>
-            <em>Project Identifier</em>
-          </p>
-        </Grid.Col>
         <Grid.Col span={4}>
-          <Input
-            name="project-identifier"
-            value={identifier}
-            onInput={(e) => setIdentifier(e.target.value)}
-          />
-        </Grid.Col>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Col span={2}>
-          <p>
-            <em>Project Description</em>
-          </p>
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Input
-            name="project-description"
-            value={description}
-            onInput={(e) => setDescription(e.target.value)}
-          />
-        </Grid.Col>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Col span={3}>
           <Button name="create-project" onClick={createDraftProject}>
-            Create Project
+            + Create Project
           </Button>
         </Grid.Col>
       </Grid.Row>
@@ -134,13 +94,8 @@ function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
             <p>Reason: {node.changeReason}</p>
             <Grid.Row>
               <Grid.Col span={3}>
-                <Button onClick={() => approveStagedProject(node.id)}>
-                  Approve
-                </Button>
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <Button onClick={() => rejectStagedProject(node.id)}>
-                  Reject
+                <Button onClick={() => resumeStagedProject(node.id)}>
+                  Resume
                 </Button>
               </Grid.Col>
             </Grid.Row>
