@@ -1,5 +1,6 @@
 import { WidgetProps } from "@rjsf/core";
 import Input from "@button-inc/bcgov-theme/Input";
+import getRequiredLabel from "../utils/getRequiredLabel";
 
 const TextWidget: React.FunctionComponent<WidgetProps> = ({
   id,
@@ -14,7 +15,7 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
       id={id}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      label={label}
+      label={getRequiredLabel(label, required)}
       value={value}
       size="medium"
       required={required}
