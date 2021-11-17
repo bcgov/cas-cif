@@ -1,5 +1,4 @@
-import React from "react";
-import { ThemeProps, WidgetProps, withTheme } from "@rjsf/core";
+import { WidgetProps } from "@rjsf/core";
 import Input from "@button-inc/bcgov-theme/Input";
 
 const TextWidget: React.FunctionComponent<WidgetProps> = ({
@@ -19,10 +18,4 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   );
 };
 
-const Theme: ThemeProps = {
-  widgets: {
-    TextWidget: TextWidget,
-  },
-};
-
-export default withTheme(Theme);
+export default TextWidget;
