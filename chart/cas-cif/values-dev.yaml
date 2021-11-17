@@ -1,5 +1,6 @@
-sitewide_notice:
-  content: <div class="alert alert-warning">This is the DEV environment.</div>
+app:
+  sitewide_notice:
+    content: <div class="alert alert-warning">This is the DEV environment.</div>
 
 nginx-sidecar:
   hostName: cas-cif-dev.apps.silver.devops.gov.bc.ca
