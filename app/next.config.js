@@ -22,7 +22,7 @@ module.exports = {
     return configWithPlugins;
   },
   serverRuntimeConfig: {
-    PORT: process.env.PORT,
+    PORT: process.env.PORT || "3004",
   },
   publicRuntimeConfig: {
     SITEWIDE_NOTICE: process.env.SITEWIDE_NOTICE,
