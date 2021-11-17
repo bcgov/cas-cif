@@ -4,13 +4,10 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { projectsQuery } from "__generated__/projectsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useState } from "react";
-import Button from "@button-inc/bcgov-theme/Button";
-import Input from "@button-inc/bcgov-theme/Input";
-import Grid from "@button-inc/bcgov-theme/Grid";
 // import Card from "@button-inc/bcgov-theme/Card";
 // import commitProjectMutation from "mutations/Project/createProject";
 // import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
-import Form from "lib/themes/service-development-toolkit-form";
+import Form from "lib/theme/service-development-toolkit-form";
 import { JSONSchema7 } from "json-schema";
 
 const CreateProjectQuery = graphql`
