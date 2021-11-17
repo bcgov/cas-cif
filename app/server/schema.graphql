@@ -2913,40 +2913,6 @@ type CreateFormChangePayload {
   query: Query
 }
 
-"""All input for the `createProject` mutation."""
-input CreateProjectInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  project: ProjectInput!
-}
-
-"""The output of our `createProject` mutation."""
-type CreateProjectPayload {
-  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
-  changeStatusByChangeStatus: ChangeStatus
-
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  formChange: FormChange
-
-  """An edge for our `FormChange`. May be used by Relay 1."""
-  formChangeEdge(
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `createUserFromSession` mutation."""
 input CreateUserFromSessionInput {
   """
@@ -3614,12 +3580,6 @@ type Mutation {
     """
     input: CreateFormChangeInput!
   ): CreateFormChangePayload
-  createProject(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateProjectInput!
-  ): CreateProjectPayload
   createUserFromSession(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -3884,33 +3844,6 @@ input ProjectFilter {
 
   """Filter by the object’s `updatedBy` field."""
   updatedBy: IntFilter
-}
-
-"""An input for mutations affecting `Project`"""
-input ProjectInput {
-  """Unique numeric identifier internal to the CIF team"""
-  cifIdentifier: Int!
-
-  """created at timestamp"""
-  createdAt: Datetime
-
-  """created by user id"""
-  createdBy: Int
-
-  """deleted at timestamp"""
-  deletedAt: Datetime
-
-  """deleted by user id"""
-  deletedBy: Int
-
-  """Description of the project"""
-  description: String!
-
-  """updated at timestamp"""
-  updatedAt: Datetime
-
-  """updated by user id"""
-  updatedBy: Int
 }
 
 """A connection to a list of `Project` values."""

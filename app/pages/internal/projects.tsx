@@ -42,12 +42,8 @@ function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const { query } = usePreloadedQuery(ProjectsQuery, preloadedQuery);
   const createDraftProject = async () => {
     const response = await commitProjectMutation(preloadedQuery.environment, {
-      input: {
-        project: {
-        cifIdentifier: Number(""),
-        description: "",
-      },
-    }});
+      input: {}
+    });
     await router.push({
       pathname: "/internal/create-project",
       query: {

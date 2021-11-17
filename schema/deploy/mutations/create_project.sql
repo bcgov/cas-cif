@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif.create_project(project cif.project)
+create or replace function cif.create_project()
 returns cif.form_change
 as $function$
 declare
@@ -19,7 +19,7 @@ begin
     change_status,
     change_reason
   ) values (
-    to_jsonb($1) - 'id',
+    '{}',
     'INSERT',
     'cif',
     'project',
