@@ -10,6 +10,8 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 // import Card from "@button-inc/bcgov-theme/Card";
 // import commitProjectMutation from "mutations/Project/createProject";
 // import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
+import Form from "lib/themes/service-development-toolkit-form";
+import { JSONSchema7 } from "json-schema";
 
 const CreateProjectQuery = graphql`
   query createProjectQuery {
@@ -20,6 +22,19 @@ const CreateProjectQuery = graphql`
     }
   }
 `;
+
+const projectSchema: JSONSchema7 = {
+  title: "Project",
+  type: "object",
+  properties: {
+    cifIdentifier: {
+      type: "number",
+    },
+    description: {
+      type: "string",
+    },
+  },
+};
 
 function CreateProject({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
@@ -52,7 +67,7 @@ function CreateProject({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   // };
 
   return (
-    <p>HELLO PIERRE!</p>
+    <Form schema={projectSchema} />
     // <DefaultLayout session={query.session} title="CIF Projects Management">
     //   <Grid.Row>
     //     <Grid.Col span={2}>
