@@ -192,7 +192,7 @@ install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 install: CHART_DIR=./chart/cas-cif
 install: CHART_INSTANCE=cas-cif
 install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
-										--set image.defaultImageTag=$(GIT_SHA1) \
+										--set defaultImageTag=$(GIT_SHA1) \
 	  								--set download-dags.dagConfiguration="$$dagConfig" \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 install:
@@ -209,6 +209,6 @@ install:
 	helm dep up $(CHART_DIR); \
 	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
 		echo 'Installing the application and issuing SSL certificate'; \
-		helm install $(HELM_OPTS) --set nginx-sidecar.sslTermination=false $(CHART_INSTANCE) $(CHART_DIR); \
+		helm install $(HELM_OPTS) --set cert-issue.enabled=true --set nginx-sidecar.sslTermination=false $(CHART_INSTANCE) $(CHART_DIR); \
 	fi; \
 	helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR);

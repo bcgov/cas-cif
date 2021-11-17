@@ -56,6 +56,7 @@ nginx-sidecar:
   # set to false to deploy the application with an insecure route,
   # and issue an SSL certificate using acme.sh
   sslTermination: true
+  objectNamePrefix: cas-cif
   port: 3001
   internalPort: 3000
   caServerSecret: ~ # pragma: allowlist secret
