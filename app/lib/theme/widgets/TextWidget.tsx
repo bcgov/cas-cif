@@ -6,8 +6,8 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   placeholder,
   onChange,
   label,
-  value
-  required
+  value,
+  required,
 }) => {
   return (
     <Input
