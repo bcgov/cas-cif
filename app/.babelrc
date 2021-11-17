@@ -2,6 +2,7 @@
   "presets": ["next/babel"],
   "plugins": [
     ["relay"],
+    ["styled-components", { "ssr": true }],
     [
       "module-resolver",
       { "root": [".", ".."], "extensions": [".js", ".jsx", ".ts", ".tsx"] }
