@@ -10,10 +10,13 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   return (
     <Input
       id={id}
-      onChange={onChange}
+      onChange={(e) => {
+        console.log(e);
+        onChange(e.target.value);
+      }}
       placeholder={placeholder}
       label={label}
-      size="large"
+      size="medium"
     ></Input>
   );
 };

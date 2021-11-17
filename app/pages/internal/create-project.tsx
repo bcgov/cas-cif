@@ -64,7 +64,12 @@ function CreateProject({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   // };
 
   return (
-    <Form schema={projectSchema} />
+    <Form
+      schema={projectSchema}
+      onChange={(change) => {
+        console.log(change);
+      }}
+    />
     // <DefaultLayout session={query.session} title="CIF Projects Management">
     //   <Grid.Row>
     //     <Grid.Col span={2}>
