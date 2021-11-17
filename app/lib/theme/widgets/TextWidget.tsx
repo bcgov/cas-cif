@@ -7,6 +7,7 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   onChange,
   label,
   value
+  required
 }) => {
   return (
     <Input
@@ -16,6 +17,7 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
       label={label}
       value={value}
       size="medium"
+      required={required}
     ></Input>
   );
 };
