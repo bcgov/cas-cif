@@ -175,3 +175,40 @@ db_unit_tests: | start_pg drop_test_db create_test_db deploy_test_db_migrations
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
+
+
+.PHONY: lint_chart
+lint_chart: ## Checks the configured helm chart template definitions against the remote schema
+lint_chart:
+	@set -euo pipefail; \
+	helm dep up ./chart/cas-cif; \
+	helm template -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
+
+
+.PHONY: install
+install: ## Installs the helm chart on the OpenShift cluster
+install: GIT_SHA1=$(shell git rev-parse HEAD)
+install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+install: CHART_DIR=./chart/cas-cif
+install: CHART_INSTANCE=cas-cif
+install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
+										--set defaultImageTag=$(GIT_SHA1) \
+	  								--set download-dags.dagConfiguration="$$dagConfig" \
+										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
+install:
+	@set -euo pipefail; \
+	if [ -z '$(CIF_NAMESPACE_PREFIX)' ]; then \
+		echo "CIF_NAMESPACE_PREFIX is not set"; \
+		exit 1; \
+	fi; \
+	if [ -z '$(ENVIRONMENT)' ]; then \
+		echo "ENVIRONMENT is not set"; \
+		exit 1; \
+	fi; \
+	dagConfig=$$(echo '{"org": "bcgov", "repo": "cas-cif", "ref": "$(GIT_SHA1)", "path": "dags/cas_cif_dags.py"}' | base64 -w0); \
+	helm dep up $(CHART_DIR); \
+	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
+		echo 'Installing the application and issuing SSL certificate'; \
+		helm install $(HELM_OPTS) --set cert-issue.enabled=true --set nginx-sidecar.sslTermination=false $(CHART_INSTANCE) $(CHART_DIR); \
+	fi; \
+	helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR);

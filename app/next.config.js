@@ -21,6 +21,9 @@ module.exports = {
 
     return configWithPlugins;
   },
+  serverRuntimeConfig: {
+    PORT: process.env.PORT || "3004",
+  },
   publicRuntimeConfig: {
     SITEWIDE_NOTICE: process.env.SITEWIDE_NOTICE,
     ENABLE_DB_MOCKS: process.env.ENABLE_DB_MOCKS,

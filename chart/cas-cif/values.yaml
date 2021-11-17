@@ -1,0 +1,100 @@
+defaultImageTag: latest # set to the GIT SHA1 in the Makefile
+defaultImagePullPolicy: IfNotPresent
+
+replicaCount: 2
+
+image:
+  app:
+    repository: gcr.io/ggl-cas-storage/cas-cif-app
+  schema:
+    repository: gcr.io/ggl-cas-storage/cas-cif-schema
+  psql:
+    repository: gcr.io/ggl-cas-storage/cas-postgres
+    tag: "0.3.0"
+
+cas-postgres:
+  patroni:
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+      requests:
+        cpu: 15m
+        memory: 600Mi
+    persistentVolume:
+      size: 10Gi
+      storageClass: netapp-block-standard
+    replicaCount: 3
+    env:
+      ALLOW_NOSSL: true
+      USE_WALG_BACKUP: "true"
+      USE_WALG_RESTORE: "true"
+    walE:
+      enable: true
+      gcsBucket: ~
+      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
+      kubernetesSecret: ~
+    # options below are required if walE.enable is true
+  namespace: ~
+  gcs:
+    bucketSuffix: ~
+
+app:
+  sitewide_notice:
+    content: ""
+  port: 3000
+  probesPort: 9000
+
+db:
+  name: cif
+  appUser: cif_app
+  ownerUser: cif
+  preInitCommand: ""
+
+nginx-sidecar:
+  hostName: ~
+  # set to false to deploy the application with an insecure route,
+  # and issue an SSL certificate using acme.sh
+  sslTermination: true
+  objectNamePrefix: cas-cif
+  port: 3001
+  internalPort: 3000
+  caServerSecret: ~ # pragma: allowlist secret
+  caServerKey: ~
+  caAccountEmail: ggircs@gov.bc.ca
+  storageClassName: netapp-file-standard
+  renewalDays: 60
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+cert-issue:
+  enabled: false
+  airflowEndpoint: ~
+  dagId: cas_cif_acme_issue
+  helm:
+    hook: post-install
+
+deploy-db:
+  airflowEndpoint: ~
+  dagId: cas_cif_deploy_db
+  helm:
+    hook: false
+
+download-dags:
+  airflowEndpoint: ~
+  dagId: fetch_and_save_dag_from_github
+  helm:
+    hook: "pre-install,pre-upgrade"

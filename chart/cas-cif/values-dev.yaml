@@ -1,0 +1,28 @@
+app:
+  sitewide_notice:
+    content: <div class="alert alert-warning">This is the DEV environment.</div>
+
+nginx-sidecar:
+  hostName: cas-cif-dev.apps.silver.devops.gov.bc.ca
+
+cas-postgres:
+  patroni:
+    walE:
+      enable: true
+      # the GCS bucket name should be {{ namespace }}-{{ gcs.bucketSuffix }}
+      gcsBucket: c53ff1-dev-cif-backups
+      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
+      kubernetesSecret: gcp-c53ff1-dev-cif-backups-service-account-key # pragma: allowlist secret
+    # options below are required if walE.enable is true
+  namespace: c53ff1-dev
+  gcs:
+    bucketSuffix: cif-backups
+
+cert-issue:
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+
+deploy-db:
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+
+download-dags:
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca

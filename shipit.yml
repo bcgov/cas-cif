@@ -1,0 +1,4 @@
+deploy:
+  override:
+    - make install:
+        timeout: 5000

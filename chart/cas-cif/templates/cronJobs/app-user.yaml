@@ -1,0 +1,68 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "cas-cif.fullname" . }}-app-user
+  labels: {{ include "cas-cif.labels" . | nindent 4 }}
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels: {{ include "cas-cif.labels" . | nindent 14 }}
+        spec:
+          activeDeadlineSeconds: 600
+          restartPolicy: Never
+          containers:
+            - env:
+                - name: PGUSER
+                  value: postgres
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password-superuser
+                      name: {{ template "cas-cif.fullname" . }}-patroni
+                - name: PGDATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: {{ template "cas-cif.fullname" . }}
+                - name: PGPORT
+                  value: "5432"
+                - name: PGHOST
+                  value: {{ template "cas-cif.fullname" . }}-patroni
+                - name: CIF_APP_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-app-user
+                      name: {{ template "cas-cif.fullname" . }}
+                - name: CIF_APP_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-app-password
+                      name: {{ template "cas-cif.fullname" . }}
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.namespace
+              name: {{ template "cas-cif.fullname" . }}-app-user
+              image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 128Mi
+                requests:
+                  cpu: 100m
+                  memory: 64Mi
+              command:
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  set -euo pipefail;
+                  create-user-db -d $(PGDATABASE) -u $(CIF_APP_USER) -p $(CIF_APP_PASSWORD)
