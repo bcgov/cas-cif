@@ -8,8 +8,8 @@ import { graphql } from "react-relay";
 
 
 const mutation = graphql`
-mutation createProjectMutation {
-  createProject {
+mutation createProjectMutation($input: CreateProjectInput!) {
+  createProject(input: $input) {
     formChange {
       id
       newFormData
