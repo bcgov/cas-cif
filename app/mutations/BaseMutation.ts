@@ -2,10 +2,7 @@ import {
   commitMutation as commitMutationDefault,
   GraphQLTaggedNode,
 } from "react-relay";
-import {
-  DeclarativeMutationConfig,
-  MutationParameters,
-} from "relay-runtime";
+import { DeclarativeMutationConfig, MutationParameters } from "relay-runtime";
 import type { Environment } from "react-relay";
 
 interface BaseMutationType extends MutationParameters {
@@ -32,7 +29,6 @@ export default class BaseMutation<T extends BaseMutationType = never> {
     optimisticResponse?: any,
     updater?: (...args: any[]) => any
   ) {
-
     const { configs } = this;
     async function commitMutation(
       commitEnvironment,
@@ -51,10 +47,8 @@ export default class BaseMutation<T extends BaseMutationType = never> {
             reject(error);
           },
           onCompleted: (response, errors) => {
-            if (errors)
-              reject(errors)
-            else
-              resolve(response);
+            if (errors) reject(errors);
+            else resolve(response);
           },
         } as any);
       });

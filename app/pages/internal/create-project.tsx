@@ -26,21 +26,21 @@ const schema: JSONSchema7 = {
   type: "object",
   required: ["cif_identifier", "description"],
   properties: {
-    cif_identifier: {type: "number", title: "CIF Identifier"},
-    description: {type: "string", title: "Description"}
-  }
+    cif_identifier: { type: "number", title: "CIF Identifier" },
+    description: { type: "string", title: "Description" },
+  },
 };
 
 const uiSchema = {
   cif_identifier: {
     "ui:placeholder": "1234",
-    "ui:col-md": 4
+    "ui:col-md": 4,
   },
   description: {
     "ui:placeholder": "describe the project...",
-    "ui:col-md": 12
-  }
-}
+    "ui:col-md": 12,
+  },
+};
 
 function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
@@ -48,14 +48,14 @@ function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
 
   // Function: stage the change data in the form_change table
   const storeResult = async (result) => {
-    console.log(query.formChange.id)
+    console.log(query.formChange.id);
     const variables = {
       input: {
         id: query.formChange.id,
         formChangePatch: {
           newFormData: result,
-        }
-      }
+        },
+      },
     };
     await updateFormChangeMutation(preloadedQuery.environment, variables);
   };
@@ -70,8 +70,8 @@ function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
     await updateFormChangeMutation(preloadedQuery.environment, {
       input: {
         id: query.formChange.id,
-        formChangePatch: { changeStatus: "saved" }
-      }
+        formChangePatch: { changeStatus: "saved" },
+      },
     });
     await router.push({
       pathname: "/internal/projects",
@@ -80,8 +80,8 @@ function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
 
   const formData = {
     cif_identifier: query.formChange.newFormData.cif_identifier || null,
-    description: query.formChange.newFormData.description || null
-  }
+    description: query.formChange.newFormData.description || null,
+  };
 
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">

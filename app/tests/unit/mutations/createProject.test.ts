@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import EasyGraphQLTester from "easygraphql-tester";
-import {mutation}  from "mutations/Project/createProject";
+import { mutation } from "mutations/Project/createProject";
 
 const schemaCode = fs.readFileSync(
   path.join(__dirname, "../../../server", "schema.graphql"),
@@ -11,7 +11,6 @@ const schemaCode = fs.readFileSync(
 const mutationString = (mutation as any).default.params.text;
 
 describe("createProject mutation", () => {
-
   let tester;
   beforeEach(() => {
     tester = new EasyGraphQLTester(schemaCode);
@@ -23,7 +22,7 @@ describe("createProject mutation", () => {
       tester.mock(mutationString, {
         input: {
           formChange: {
-            cif_identifier: "123"
+            cif_identifier: "123",
           },
         },
       });
@@ -33,7 +32,6 @@ describe("createProject mutation", () => {
 
     expect(error.message).toEqual(
       'Variable "$input" got invalid value { formChange: { cif_identifier: "123" } }; Field "formChange" is not defined by type "CreateProjectInput".'
-
     );
   });
 
@@ -43,9 +41,7 @@ describe("createProject mutation", () => {
     });
 
     expect(test).toBeDefined();
-    expect(typeof test.data.createProject.formChange.id).toBe(
-      "string"
-    );
+    expect(typeof test.data.createProject.formChange.id).toBe("string");
   });
 
   it("Should return a newFormData object if valid", () => {

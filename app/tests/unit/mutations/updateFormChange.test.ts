@@ -33,7 +33,7 @@ describe("UpdateFormChange mutation", () => {
       tester.mock(mutationString, {
         input: {
           formChange: {
-            id: 'abc'
+            id: "abc",
           },
         },
       });
@@ -48,31 +48,29 @@ describe("UpdateFormChange mutation", () => {
   it("Should return a string relay ID if valid", () => {
     const test = tester.mock(mutationString, {
       input: {
-        id: 'abc',
+        id: "abc",
         formChangePatch: {
           newFormData: {
-            cif_identifier: 'test',
-            description: 'test'
-          }
-        }
+            cif_identifier: "test",
+            description: "test",
+          },
+        },
       },
     });
 
     expect(test).toBeDefined();
-    expect(typeof test.data.updateFormChange.formChange.id).toBe(
-      "string"
-    );
+    expect(typeof test.data.updateFormChange.formChange.id).toBe("string");
   });
   it("Should return newFormData if valid", () => {
     const test = tester.mock(mutationString, {
       input: {
-        id: 'abc',
+        id: "abc",
         formChangePatch: {
           newFormData: {
-            cif_identifier: 'test',
-            description: 'test'
-          }
-        }
+            cif_identifier: "test",
+            description: "test",
+          },
+        },
       },
     });
 

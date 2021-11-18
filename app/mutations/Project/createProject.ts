@@ -6,16 +6,15 @@ import type {
 import BaseMutation from "mutations/BaseMutation";
 import { graphql } from "react-relay";
 
-
 const mutation = graphql`
-mutation createProjectMutation($input: CreateProjectInput!) {
-  createProject(input: $input) {
-    formChange {
-      id
-      newFormData
+  mutation createProjectMutation($input: CreateProjectInput!) {
+    createProject(input: $input) {
+      formChange {
+        id
+        newFormData
+      }
     }
   }
-}
 `;
 
 const createProjectMutation = async (
@@ -27,7 +26,6 @@ const createProjectMutation = async (
   );
   return m.performMutation(environment, mutation, variables);
 };
-
 
 export default createProjectMutation;
 export { mutation };
