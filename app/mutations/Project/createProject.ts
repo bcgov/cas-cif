@@ -30,3 +30,4 @@ const createProjectMutation = async (
 
 
 export default createProjectMutation;
+export { mutation };
