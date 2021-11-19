@@ -7,6 +7,7 @@ import Document, {
 } from "next/document";
 
 import { createRelayDocument, RelayDocument } from "relay-nextjs/document";
+import { ServerStyleSheet } from "styled-components";
 
 interface DocumentProps {
   relayDocument: RelayDocument;
@@ -15,18 +16,29 @@ interface DocumentProps {
 class MyDocument extends Document<DocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
     const relayDocument = createRelayDocument();
+    const sheet = new ServerStyleSheet();
 
     const renderPage = ctx.renderPage;
     ctx.renderPage = () =>
       renderPage({
-        enhanceApp: (App) => relayDocument.enhance(App),
+        enhanceApp: (App) => (props) => {
+          const AppWithRelay = relayDocument.enhance(App);
+          return sheet.collectStyles(<AppWithRelay {...props} />);
+        },
       });
 
     const initialProps = await Document.getInitialProps(ctx);
-
+    const styles = (
+      <>
+        {initialProps.styles}
+        {sheet.getStyleElement()}
+      </>
+    );
+    sheet.seal();
     return {
       ...initialProps,
       relayDocument,
+      styles,
     };
   }
 
