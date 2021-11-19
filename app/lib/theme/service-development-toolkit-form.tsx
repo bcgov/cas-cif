@@ -10,7 +10,6 @@ const { fields, widgets } = utils.getDefaultRegistry();
 const Theme: ThemeProps = {
   children: <SubmitButton />,
   fields: { ...fields },
-  ArrayFieldTemplate: () => <div>This is an array.</div>,
   widgets: {
     ...widgets,
     TextWidget: TextWidget,
