@@ -37,3 +37,5 @@ runs:
           ~/.cache/Cypress
           ./app/node_modules
         key: ${{ runner.os }}-yarn-cache-${{ hashFiles('app/yarn.lock') }}
+    - name: Checkout Submodules
+      run: git submodule update --init
