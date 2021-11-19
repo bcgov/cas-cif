@@ -16,6 +16,8 @@ jobs:
       - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
       - run: yarn install --frozen-lockfile
         working-directory: ./app
+        name: "Checkout Submodules"
+      - run: git submodule update --init
 
   yarn-test:
     needs: install-dev-tools
