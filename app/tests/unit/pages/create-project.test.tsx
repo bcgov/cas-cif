@@ -106,4 +106,19 @@ describe("The Create Project page", () => {
     userEvent.click(screen.getAllByRole('button')[1])
     expect(spy).toHaveBeenCalledTimes(3);
   });
+
+  it('does not call the updateFormChange mutation when the Submit Button is clicked & input values are invalid', async () => {
+    const spy = jest
+      .spyOn(
+        require("mutations/FormChange/updateFormChange"),
+        "default"
+      )
+      .mockImplementation(() => {});
+    render(<RelayEnvironmentProvider environment={environment}>
+             <CreateProject data-testid="4" CSN={true} preloadedQuery={initialQueryRef}/>
+           </RelayEnvironmentProvider>);
+
+    userEvent.click(screen.getAllByRole('button')[1])
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
 });
