@@ -58,11 +58,17 @@ jobs:
       matrix:
         include:
           - image: gcr.io/ggl-cas-storage/cas-cif-app
+            context: .
             dockerfile: app/Dockerfile
             name: app
           - image: gcr.io/ggl-cas-storage/cas-cif-schema
+            context: .
             dockerfile: schema/Dockerfile
             name: schema
+          - image: gcr.io/ggl-cas-storage/cas-cif-storage
+            context: ./storage
+            dockerfile: storage/Dockerfile
+            name: storage
     name: Build ${{ matrix.name }} docker image
     steps:
       - uses: actions/checkout@v2
@@ -95,7 +101,7 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ${{ matrix.context }}
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           file: ${{ matrix.dockerfile }}
@@ -125,6 +131,11 @@ jobs:
         run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
       - name: start app
         run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }}
+      - name: start minio
+        run: docker run -d --network=host -p 9000:9000 minio/minio:RELEASE.2021-04-22T15-44-28Z server /data
+      - name: start storage api
+        run: | # pragma: allowlist secret
+          docker run -d --network=host -e "STORAGE_API_KEY=mXZpQpJjGIyQsRRViScPfeOItOQJokod" -e "MINIO_ACCESS_KEY=minioadmin" -e "MINIO_SECRET_KEY=minioadmin" -e "MINIO_HOST_URL=minio:9000" -p 8000:8000 gcr.io/ggl-cas-storage/cas-cif-storage:${{ github.sha }}
       - name: run e2e tests
         run: yarn test:e2e
         working-directory: ./app
