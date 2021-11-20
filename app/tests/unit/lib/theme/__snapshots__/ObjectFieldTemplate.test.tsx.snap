@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Object Field Template renders a default TitleField and DescriptionField 1`] = `
+<div>
+  <fieldset
+    class="sc-dlfnuX hBsleh pg-fieldset"
+    id="test-id"
+  >
+    <h1
+      id="test-id__title"
+      title="Test Title"
+    >
+      Test Title
+    </h1>
+    <span
+      id="test-id__description"
+    >
+      Test Description
+    </span>
+  </fieldset>
+</div>
+`;
+
+exports[`The Object Field Template renders the provided TitleField and DescriptionField with the provided title and description 1`] = `
+<div>
+  <fieldset
+    class="sc-dlfnuX hBsleh pg-fieldset"
+    id="test-id"
+  >
+    <p>
+      Test 
+      Second title
+    </p>
+    <p>
+      Test 
+      Another Description
+    </p>
+  </fieldset>
+</div>
+`;
