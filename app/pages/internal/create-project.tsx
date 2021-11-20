@@ -8,7 +8,7 @@ import { JSONSchema7 } from "json-schema";
 import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
 import {useRouter} from "next/router";
 
-const CreateProjectQuery = graphql`
+export const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
     query {
       session {
@@ -42,14 +42,13 @@ const uiSchema = {
   },
 };
 
-function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
+export function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
   const router = useRouter();
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
   if (!query.formChange.id) return null;
 
   // Function: stage the change data in the form_change table
   const storeResult = async (result) => {
-    console.log(query.formChange.id);
     const variables = {
       input: {
         id: query.formChange.id,
@@ -80,8 +79,8 @@ function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
   };
 
   const formData = {
-    cif_identifier: query.formChange.newFormData.cif_identifier || null,
-    description: query.formChange.newFormData.description || null,
+    cif_identifier: query.formChange.newFormData.cif_identifier || "",
+    description: query.formChange.newFormData.description || "",
   };
 
   return (
