@@ -72,24 +72,6 @@ describe("The Create Project page", () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('calls the router when the Submit Button is clicked & input values are valid', async () => {
-    const mockRouter = { push: jest.fn(), asPath: "mock-redirect-to" };
-    const useRouter = jest.spyOn(require("next/router"), "useRouter");
-    useRouter.mockImplementation(() => {
-      return mockRouter;
-    });
-    render(<RelayEnvironmentProvider environment={environment}>
-             <CreateProject data-testid="3" CSN={true} preloadedQuery={initialQueryRef}/>
-           </RelayEnvironmentProvider>);
-
-    fireEvent.change(screen.getByLabelText('CIF Identifier*'), {target: {value: 123}})
-    expect(screen.getByLabelText('CIF Identifier*').value).toEqual('123');
-    fireEvent.change(screen.getByLabelText('Description*'), {target: {value: 'test project'}});
-    expect(screen.getByLabelText('Description*').value).toEqual('test project');
-    userEvent.click(screen.getAllByRole('button')[1])
-    expect(mockRouter.push).toHaveBeenCalledTimes(1);
-  });
-
   it('calls the updateFormChange mutation when the Submit Button is clicked & input values are valid', async () => {
     const spy = jest
       .spyOn(
@@ -98,7 +80,7 @@ describe("The Create Project page", () => {
       )
       .mockImplementation(() => {});
     render(<RelayEnvironmentProvider environment={environment}>
-             <CreateProject data-testid="4" CSN={true} preloadedQuery={initialQueryRef}/>
+             <CreateProject data-testid="3" CSN={true} preloadedQuery={initialQueryRef}/>
            </RelayEnvironmentProvider>);
 
     fireEvent.change(screen.getByLabelText('CIF Identifier*'), {target: {value: 123}})

@@ -54,20 +54,6 @@ describe("The projects page", () => {
     expect(screen.getAllByRole('button')[1]).toHaveTextContent('Create Project');
   });
 
-  it('calls the router when the Create Project Button is clicked', async () => {
-    const mockRouter = { push: jest.fn(), asPath: "mock-redirect-to" };
-    const useRouter = jest.spyOn(require("next/router"), "useRouter");
-    useRouter.mockImplementation(() => {
-      return mockRouter;
-    });
-    render(<RelayEnvironmentProvider environment={environment}>
-             <Projects data-testid="2" CSN={true} preloadedQuery={initialQueryRef}/>
-           </RelayEnvironmentProvider>);
-
-    userEvent.click(screen.getAllByRole('button')[1])
-    expect(mockRouter.push).toHaveBeenCalledTimes(1);
-  });
-
   it('calls the Create Project mutation when the Create Project Button is clicked', async () => {
     const spy = jest
       .spyOn(
@@ -76,7 +62,7 @@ describe("The projects page", () => {
       )
       .mockImplementation(() => {});
     render(<RelayEnvironmentProvider environment={environment}>
-             <Projects data-testid="3" CSN={true} preloadedQuery={initialQueryRef}/>
+             <Projects data-testid="2" CSN={true} preloadedQuery={initialQueryRef}/>
            </RelayEnvironmentProvider>);
 
     userEvent.click(screen.getAllByRole('button')[1])

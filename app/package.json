@@ -17,7 +17,8 @@
     "test": "jest",
     "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && cypress run",
     "audit-deps": "improved-yarn-audit",
-    "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js"
+    "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js",
+    "cypress": "cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
