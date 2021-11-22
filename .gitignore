@@ -5,3 +5,5 @@ dist
 app/coverage/
 chart/**/charts/
 .scratch
+cypress.env.json
+.env
