@@ -103,6 +103,7 @@
     "webpack": "^5.58.2"
   },
   "resolutions": {
-    "**/jsonpointer": "5.0.0"
+    "**/jsonpointer": "5.0.0",
+    "cypress/@cypress/request/http-signature/jsprim/json-schema": "0.4.0"
   }
 }
