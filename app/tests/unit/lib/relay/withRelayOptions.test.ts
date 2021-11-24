@@ -42,7 +42,7 @@ describe("The default withRelayOptions", () => {
       getUserGroups.mockReturnValue(["cif_internal"]);
       const ctx = {
         req: {
-          url: "/internal",
+          url: "/cif",
         },
       } as NextPageContext;
       const serverSideProps = await withRelayOptions.serverSideProps(ctx);
