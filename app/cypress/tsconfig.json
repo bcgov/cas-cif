@@ -1,4 +1,5 @@
 {
   "extends": "../tsconfig.json",
-  "exclude": [".next", ".s2i", "node_modules", "static"]
+  "exclude": [".next", ".s2i", "node_modules", "static"],
+  "types": ["cypress-file-upload"]
 }
