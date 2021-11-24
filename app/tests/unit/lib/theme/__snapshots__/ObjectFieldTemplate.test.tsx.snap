@@ -28,11 +28,11 @@ exports[`The Object Field Template renders the provided TitleField and Descripti
     id="test-id"
   >
     <p>
-      Test
+      Test 
       Second title
     </p>
     <p>
-      Test
+      Test 
       Another Description
     </p>
   </fieldset>
