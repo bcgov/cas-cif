@@ -17,8 +17,7 @@
       "*": ["*", "../*", "__generated__/*"]
     },
     "allowJs": true,
-    "downlevelIteration": true,
-    "types": ["cypress-file-upload"]
+    "downlevelIteration": true
   },
   "exclude": [".next", "node_modules", "public", "cypress"],
   "include": ["./**/*", "./.eslintrc.js"]
