@@ -1,4 +1,5 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
+import Grid from "@button-inc/bcgov-theme/Grid";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import Link from "next/link";
@@ -19,13 +20,23 @@ function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
   const { query } = usePreloadedQuery(AdminQuery, preloadedQuery);
   return (
     <DefaultLayout session={query.session} title="CIF Projects Administration">
-      <Link href="admin/users">
-        <a>Users</a>
-      </Link>
-
-      <Link href="dashboard">
-        <a>Dashboard</a>
-      </Link>
+      <div>
+        <Grid.Row>
+          <Link href="admin/users">
+            <a>Users</a>
+          </Link>
+        </Grid.Row>
+        <Grid.Row>
+          <Link href="dashboard">
+            <a>Dashboard</a>
+          </Link>
+        </Grid.Row>
+        <Grid.Row>
+          <Link href="/internal/projects">
+            <a>Projects</a>
+          </Link>
+        </Grid.Row>
+      </div>
     </DefaultLayout>
   );
 }

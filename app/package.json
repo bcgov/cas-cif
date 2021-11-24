@@ -17,10 +17,14 @@
     "test": "jest",
     "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && cypress run",
     "audit-deps": "improved-yarn-audit",
-    "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js"
+    "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js",
+    "cypress": "cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/react-relay": "^11.0.2",
@@ -31,6 +35,7 @@
     "babel-plugin-relay": "^12.0.0",
     "babel-plugin-styled-components": "^1.13.3",
     "cypress": "^8.7.0",
+    "easygraphql-tester": "^6.0.1",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-typescript": "^14.0.1",
     "eslint-config-next": "^11.1.2",
@@ -41,6 +46,7 @@
     "eslint-plugin-relay": "^1.8.2",
     "improved-yarn-audit": "^3.0.0",
     "jest": "^27.3.1",
+    "jest-mock-random": "^1.1.1",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
     "react-test-renderer": "^17.0.2",
@@ -57,6 +63,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
+    "@rjsf/core": "^3.2.0",
     "body-parser": "^1.19.0",
     "bowser": "^2.11.0",
     "connect-pg-simple": "^7.0.0",
@@ -71,6 +78,7 @@
     "graphql": "^15.6.1",
     "graphql-upload": "^12.0.0",
     "helmet": "^4.6.0",
+    "json-schema": "^0.4.0",
     "lightship": "^6.7.2",
     "morgan": "^1.10.0",
     "next": "^11.1.2",
@@ -93,5 +101,9 @@
     "relay-test-utils": "^12.0.0",
     "styled-components": "^5.2.1",
     "webpack": "^5.58.2"
+  },
+  "resolutions": {
+    "**/jsonpointer": "5.0.0",
+    "cypress/@cypress/request/http-signature/jsprim/json-schema": "0.4.0"
   }
 }

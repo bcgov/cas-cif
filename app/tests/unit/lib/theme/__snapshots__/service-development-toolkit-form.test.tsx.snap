@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Form Renders a basic test schema with a submit button 1`] = `
+<div>
+  <form
+    class="rjsf"
+  >
+    <fieldset
+      class="sc-dlfnuX hBsleh pg-fieldset"
+      id="root"
+    >
+      <div
+        class="sc-fFucqa cGKbQt pg-input"
+      >
+        <label
+          class="sc-bkzYnD LYjQs pg-input-label"
+          for="root_test_number"
+        >
+          Test Number
+        </label>
+        <input
+          aria-label="Test Number"
+          class="sc-idOiZg jxyaVq pg-input-input"
+          id="root_test_number"
+          name="root_test_number-input"
+          placeholder=""
+          value=""
+        />
+      </div>
+      <div
+        class="sc-fFucqa cGKbQt pg-input"
+      >
+        <label
+          class="sc-bkzYnD LYjQs pg-input-label"
+          for="root_test_string"
+        >
+          Test Script
+        </label>
+        <input
+          aria-label="Test Script"
+          class="sc-idOiZg jxyaVq pg-input-input"
+          id="root_test_string"
+          name="root_test_string-input"
+          placeholder=""
+          value=""
+        />
+      </div>
+    </fieldset>
+    <button
+      class="sc-bqyKOL fGARNb pg-button"
+      id="3lllllllllm77777777778"
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+`;

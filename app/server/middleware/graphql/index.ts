@@ -5,6 +5,7 @@ import { makePluginHook, PostGraphileOptions } from "postgraphile";
 import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PostgraphileLogConsola from "postgraphile-log-consola";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
+import { TagsFilePlugin } from "postgraphile/plugins";
 import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
 
@@ -13,7 +14,7 @@ const pluginHook = makePluginHook([PostgraphileLogConsola]);
 
 let postgraphileOptions: PostGraphileOptions = {
   pluginHook,
-  appendPlugins: [PgManyToManyPlugin, ConnectionFilterPlugin],
+  appendPlugins: [PgManyToManyPlugin, ConnectionFilterPlugin, TagsFilePlugin],
   classicIds: true,
   enableQueryBatching: true,
   dynamicJson: true,
