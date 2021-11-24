@@ -147,11 +147,11 @@ jobs:
           docker run -d --network=host -e "STORAGE_API_KEY=_doNotUseThisApiKeyInProduction_" -e "MINIO_ACCESS_KEY=minioadmin" -e "MINIO_SECRET_KEY=minioadmin" -e "MINIO_HOST_URL=minio:9000" -p 8000:8000 gcr.io/ggl-cas-storage/cas-cif-storage:${{ github.sha }}
       - name: run e2e tests
         env:
-          TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
-          TEST_INTERNAL_PASSWORD: ${{ secrets.TEST_INTERNAL_PASSWORD }}
-          TEST_ADMIN_USERNAME: ${{ secrets.TEST_ADMIN_USERNAME }}
-          TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
-          TEST_UNAUTHORIZED_USERNAME: ${{ secrets.TEST_UNAUTHORIZED_USERNAME }}
-          TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
+          CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
+          CYPRESS_TEST_INTERNAL_PASSWORD: ${{ secrets.TEST_INTERNAL_PASSWORD }}
+          CYPRESS_TEST_ADMIN_USERNAME: ${{ secrets.TEST_ADMIN_USERNAME }}
+          CYPRESS_TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+          CYPRESS_TEST_UNAUTHORIZED_USERNAME: ${{ secrets.TEST_UNAUTHORIZED_USERNAME }}
+          CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
         run: yarn test:e2e
         working-directory: ./app
