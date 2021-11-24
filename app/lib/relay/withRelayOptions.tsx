@@ -2,6 +2,7 @@ import { getClientEnvironment } from "./client";
 import { getUserGroupLandingRoute } from "lib/userGroups";
 import { isRouteAuthorized } from "lib/authorization";
 import type { NextPageContext } from "next";
+import type { Request } from "express";
 import { WiredOptions } from "relay-nextjs/wired/component";
 
 const withRelayOptions: WiredOptions<any> = {
@@ -17,7 +18,7 @@ const withRelayOptions: WiredOptions<any> = {
       "server/helpers/userGroupAuthentication"
     );
 
-    const groups = getUserGroups(ctx.req);
+    const groups = getUserGroups(ctx.req as Request);
     const isAuthorized = isRouteAuthorized(ctx.req.url, groups);
 
     if (isAuthorized) return {};

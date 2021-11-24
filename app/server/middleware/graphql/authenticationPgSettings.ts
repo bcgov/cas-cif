@@ -1,6 +1,8 @@
 import { getPriorityGroup } from "../../../lib/userGroups";
 import { getUserGroups } from "../../helpers/userGroupAuthentication";
 import groupData from "../../../data/groups.json";
+import { isAuthenticated } from "@bcgov-cas/sso-express";
+import type { Request } from "express";
 
 const AUTH_BYPASS_COOKIE = "mocks.auth";
 
@@ -13,11 +15,11 @@ const AS_CIF_ADMIN = process.argv.includes("AS_CIF_ADMIN");
 const AS_UNAUTHORIZED_IDIR = process.argv.includes("AS_UNAUTHORIZED_IDIR");
 const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
 
-const allowCypressForRole = (roleName, req) => {
+const allowCypressForRole = (roleName: string, req: Request) => {
   return AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE] === roleName;
 };
 
-const authenticationPgSettings = (req) => {
+const authenticationPgSettings = (req: Request) => {
   if (AS_CIF_INTERNAL || allowCypressForRole("cif_internal", req)) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000000",
@@ -57,23 +59,18 @@ const authenticationPgSettings = (req) => {
   const groups = getUserGroups(req);
   const priorityGroup = getPriorityGroup(groups);
 
-  const claims = {
+  const claimsSettings = {
     role: groupData[priorityGroup].pgRole,
   };
-  if (
-    !req.kauth ||
-    !req.kauth.grant ||
-    !req.kauth.grant.id_token ||
-    !req.kauth.grant.id_token.content
-  )
+  if (!isAuthenticated(req))
     return {
-      ...claims,
+      ...claimsSettings,
     };
 
-  const token = req.kauth.grant.id_token.content;
+  const claims = req.claims;
 
-  token.user_groups = groups.join(",");
-  token.priority_group = priorityGroup;
+  claims.user_groups = groups.join(",");
+  claims.priority_group = priorityGroup;
 
   const properties = [
     "jti",
@@ -99,11 +96,11 @@ const authenticationPgSettings = (req) => {
     "priority_group",
   ];
   properties.forEach((property) => {
-    claims[`jwt.claims.${property}`] = token[property];
+    claimsSettings[`jwt.claims.${property}`] = claims[property];
   });
 
   return {
-    ...claims,
+    ...claimsSettings,
   };
 };
 

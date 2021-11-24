@@ -41,10 +41,10 @@ app.prepare().then(async () => {
 
   server.use("/", browserSupportMiddleware());
 
-  const { middleware: sessionMiddleware, store: sessionStore } = session();
+  const { middleware: sessionMiddleware } = session();
   server.use(sessionMiddleware);
 
-  server.use(ssoMiddleware(sessionStore));
+  server.use(await ssoMiddleware());
 
   server.use(cookieParser());
 
