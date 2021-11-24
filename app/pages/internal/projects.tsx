@@ -7,7 +7,7 @@ import Button from "@button-inc/bcgov-theme/Button";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import Card from "@button-inc/bcgov-theme/Card";
 import commitProjectMutation from "mutations/Project/createProject";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 export const ProjectsQuery = graphql`
   query projectsQuery {
@@ -67,7 +67,11 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
     <DefaultLayout session={query.session} title="CIF Projects Management">
       <Grid.Row>
         <Grid.Col span={4}>
-          <Button role='button' name="create-project" onClick={createDraftProject}>
+          <Button
+            role="button"
+            name="create-project"
+            onClick={createDraftProject}
+          >
             + Create Project
           </Button>
         </Grid.Col>

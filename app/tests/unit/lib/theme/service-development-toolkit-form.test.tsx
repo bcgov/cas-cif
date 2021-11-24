@@ -1,5 +1,5 @@
 import React from "react";
-import {mockRandom} from 'jest-mock-random';
+import { mockRandom } from "jest-mock-random";
 import { render } from "@testing-library/react";
 import Form from "lib/theme/service-development-toolkit-form";
 import { JSONSchema7 } from "json-schema";

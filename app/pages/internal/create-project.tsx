@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import Form from "lib/theme/service-development-toolkit-form";
 import { JSONSchema7 } from "json-schema";
 import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 export const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -42,7 +42,9 @@ const uiSchema = {
   },
 };
 
-export function CreateProject({ preloadedQuery }: RelayProps<{}, createProjectQuery>) {
+export function CreateProject({
+  preloadedQuery,
+}: RelayProps<{}, createProjectQuery>) {
   const router = useRouter();
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
   if (!query.formChange.id) return null;
