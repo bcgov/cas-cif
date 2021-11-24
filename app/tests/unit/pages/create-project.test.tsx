@@ -3,11 +3,7 @@ import {
   CreateProject,
   CreateProjectQuery,
 } from "../../../pages/internal/create-project";
-import {
-  render,
-  screen,
-  fireEvent,
-} from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";

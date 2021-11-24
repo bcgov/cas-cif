@@ -1,6 +1,6 @@
 exclude: >
   (?x)^(
-      test\.js\.snap$
+      test\.tsx\.snap$
   )$
 repos:
   - repo: local
@@ -23,6 +23,7 @@ repos:
       - id: end-of-file-fixer
         exclude: current_version\.txt
       - id: trailing-whitespace
+        exclude: .*/__snapshots__/.*
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.1.0
     hooks:
