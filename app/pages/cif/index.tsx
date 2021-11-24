@@ -14,7 +14,7 @@ const CifLandingQuery = graphql`
   }
 `;
 
-function InternalLanding({ preloadedQuery }: RelayProps<{}, cifLandingQuery>) {
+function CifLanding({ preloadedQuery }: RelayProps<{}, cifLandingQuery>) {
   const { query } = usePreloadedQuery(CifLandingQuery, preloadedQuery);
   return (
     <DefaultLayout
@@ -24,4 +24,4 @@ function InternalLanding({ preloadedQuery }: RelayProps<{}, cifLandingQuery>) {
   );
 }
 
-export default withRelay(InternalLanding, CifLandingQuery, withRelayOptions);
+export default withRelay(CifLanding, CifLandingQuery, withRelayOptions);
