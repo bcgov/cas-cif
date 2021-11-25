@@ -1,5 +1,5 @@
 import React from "react";
-import { Projects, ProjectsQuery } from "../../../pages/internal/projects";
+import { Projects, ProjectsQuery } from "../../../pages/cif/projects";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";

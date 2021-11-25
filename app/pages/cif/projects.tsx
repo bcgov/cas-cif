@@ -46,7 +46,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       input: {},
     });
     await router.push({
-      pathname: "/internal/create-project",
+      pathname: "/cif/create-project",
       query: {
         id: response.createProject.formChange.id,
       },
@@ -56,7 +56,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const resumeStagedProject = async (id: string) => {
     console.log(id);
     await router.push({
-      pathname: "/internal/create-project",
+      pathname: "/cif/create-project",
       query: {
         id: id,
       },

@@ -38,7 +38,7 @@ describe("The default withRelayOptions", () => {
       expect(serverSideProps).toEqual({});
     });
 
-    it("should not redirect a cif_internal trying to access the /internal page", async () => {
+    it("should not redirect a cif_internal trying to access the /cif page", async () => {
       getUserGroups.mockReturnValue(["cif_internal"]);
       const ctx = {
         req: {

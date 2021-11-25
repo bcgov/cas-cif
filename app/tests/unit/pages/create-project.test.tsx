@@ -2,7 +2,7 @@ import React from "react";
 import {
   CreateProject,
   CreateProjectQuery,
-} from "../../../pages/internal/create-project";
+} from "../../../pages/cif/create-project";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
