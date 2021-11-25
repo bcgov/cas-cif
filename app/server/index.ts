@@ -12,6 +12,7 @@ import headersMiddleware from "./middleware/headers";
 import graphQlMiddleware from "./middleware/graphql";
 import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
+import createUserMiddleware from "./middleware/createUser";
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
 const dev = process.env.NODE_ENV !== "production";
@@ -46,32 +47,7 @@ app.prepare().then(async () => {
 
   server.use(await ssoMiddleware());
 
-  server.get("/auth-callback", async (req) => {
-    const createUserMutation = `
-      mutation {
-        createUserFromSession(input: {}) {
-          __typename
-        }
-      }
-    `;
-
-    const fetchOptions = {
-      method: "POST",
-      body: JSON.stringify({
-        query: createUserMutation,
-        variables: null,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        cookie: req.headers.cookie,
-      },
-    };
-
-    const response = await fetch(
-      `http://localhost:${port}/graphql`,
-      fetchOptions
-    );
-  });
+  server.get("/auth-callback", createUserMiddleware("localhost", port));
 
   server.use(cookieParser());
 
