@@ -45,7 +45,7 @@ jobs:
       - run: make deploy_db_migrations
       - run: yarn build:schema
         working-directory: ./app
-      - run: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
+      - run: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:schema\"?' && false)
   db-unit-tests:
     needs: install-dev-tools
     runs-on: ubuntu-latest
