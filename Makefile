@@ -176,6 +176,11 @@ db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
 
+.PHONY: db_style_tests
+db_style_tests: ## run the database style tests
+db_style_tests: | start_pg drop_test_db create_test_db
+db_style_tests:
+	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/style/*_test.sql --set schemas_to_test=cif,cif_private
 
 .PHONY: lint_chart
 lint_chart: ## Checks the configured helm chart template definitions against the remote schema

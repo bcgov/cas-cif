@@ -43,6 +43,15 @@ jobs:
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: make db_unit_tests
+  db-style-tests:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: git submodule update --init
+      - run: make db_style_tests
   pre-commit:
     needs: install-dev-tools
     runs-on: ubuntu-latest
