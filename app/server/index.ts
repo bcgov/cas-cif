@@ -12,6 +12,7 @@ import headersMiddleware from "./middleware/headers";
 import graphQlMiddleware from "./middleware/graphql";
 import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
+import createUserMiddleware from "./middleware/createUser";
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
 const dev = process.env.NODE_ENV !== "production";
@@ -45,6 +46,8 @@ app.prepare().then(async () => {
   server.use(sessionMiddleware);
 
   server.use(await ssoMiddleware());
+
+  server.get("/auth-callback", createUserMiddleware("localhost", port));
 
   server.use(cookieParser());
 
