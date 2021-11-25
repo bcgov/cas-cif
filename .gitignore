@@ -7,3 +7,5 @@ chart/**/charts/
 .scratch
 cypress.env.json
 .env
+
+app/cypress.env.json

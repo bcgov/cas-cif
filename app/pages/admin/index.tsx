@@ -32,7 +32,7 @@ function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
           </Link>
         </Grid.Row>
         <Grid.Row>
-          <Link href="/internal/projects">
+          <Link href="/cif/projects">
             <a>Projects</a>
           </Link>
         </Grid.Row>

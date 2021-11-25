@@ -55,8 +55,8 @@
     "wait-on": "^6.0.0"
   },
   "dependencies": {
-    "@bcgov-cas/sso-express": "^1.0.0-alpha.3",
-    "@bcgov-cas/sso-react": "^1.0.0-alpha.10",
+    "@bcgov-cas/sso-express": "^2.0.1",
+    "@bcgov-cas/sso-react": "^1.0.0",
     "@bcgov/bc-sans": "^1.0.1",
     "@button-inc/bcgov-theme": "^1.0.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -83,6 +83,7 @@
     "morgan": "^1.10.0",
     "next": "^11.1.2",
     "normalize.css": "^8.0.1",
+    "openid-client": "^5.0.2",
     "path-to-regexp": "^6.2.0",
     "pg": "^8.7.1",
     "postgraphile": "^4.12.4",

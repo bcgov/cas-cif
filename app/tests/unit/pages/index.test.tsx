@@ -20,7 +20,7 @@ describe("The index page", () => {
     });
   });
 
-  it("redirects a logged in cif_internal to the /internal route", async () => {
+  it("redirects a logged in cif_internal to the /cif route", async () => {
     getUserGroups.mockReturnValue(["cif_internal"]);
     const ctx = {
       req: {
@@ -28,7 +28,7 @@ describe("The index page", () => {
       },
     } as any;
     expect(await withRelayOptions.serverSideProps(ctx)).toEqual({
-      redirect: { destination: "/internal" },
+      redirect: { destination: "/cif" },
     });
   });
 

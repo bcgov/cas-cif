@@ -76,7 +76,7 @@ export function CreateProject({
       },
     });
     await router.push({
-      pathname: "/internal/projects",
+      pathname: "/cif/projects",
     });
   };
 

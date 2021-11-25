@@ -1,6 +1,6 @@
 import { getUserGroupLandingRoute } from "../../lib/userGroups";
 import { getUserGroups } from "../helpers/userGroupAuthentication";
-import ssoUtils from "@bcgov-cas/sso-express";
+import ssoExpress from "@bcgov-cas/sso-express";
 
 const AS_REPORTER = process.argv.includes("AS_REPORTER");
 const AS_ADMIN = process.argv.includes("AS_ADMIN");
@@ -16,22 +16,9 @@ else if (process.env.NAMESPACE.endsWith("-test"))
   ssoServerHost = "test.oidc.gov.bc.ca";
 else ssoServerHost = "oidc.gov.bc.ca";
 
-const keycloakConfig = {
-  realm: "pisrwwhx",
-  "auth-server-url": `https://${ssoServerHost}/auth`,
-  "ssl-required": "external",
-  resource: "cas-cif",
-  "public-client": true,
-  "confidential-port": 0,
-};
-
-export let keycloak;
-
-export default function middleware(sessionStore) {
-  const { ssoMiddleware, keycloak: keycloakObj } = new ssoUtils({
-    applicationHost: process.env.HOST,
+export default async function middleware() {
+  return ssoExpress({
     applicationDomain: ".gov.bc.ca",
-    sessionStore,
     getLandingRoute: (req) => {
       if (req.query.redirectTo) return req.query.redirectTo;
 
@@ -43,11 +30,11 @@ export default function middleware(sessionStore) {
       login: mockLogin,
       sessionIdleRemainingTime: mockSessionTimeout,
     },
-    accessDenied: (_req, res) => res.redirect("/403"),
-    keycloakConfig,
+    oidcConfig: {
+      baseUrl:
+        process.env.HOST || `http://localhost:${process.env.PORT || 3004}`,
+      clientId: "cas-cif",
+      oidcIssuer: `https://${ssoServerHost}/auth/realms/pisrwwhx`,
+    },
   });
-
-  keycloak = keycloakObj;
-
-  return ssoMiddleware;
 }

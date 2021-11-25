@@ -1,6 +1,6 @@
 [
   {
-    "routePaths": ["/", "/login-redirect"],
+    "routePaths": ["/", "/login-redirect", "/unauthorized_idir"],
     "isProtected": false
   },
   {
@@ -9,12 +9,12 @@
     "allowedRoles": ["cif_admin", "Realm Administrator"]
   },
   {
-    "routePaths": ["/internal"],
+    "routePaths": ["/cif"],
     "isProtected": true,
     "allowedRoles": ["cif_internal"]
   },
   {
-    "routePaths": ["/internal/(.*)"],
+    "routePaths": ["/cif/(.*)"],
     "isProtected": true,
     "allowedRoles": ["cif_internal", "cif_admin", "Realm Administrator"]
   }

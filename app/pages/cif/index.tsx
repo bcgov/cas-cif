@@ -1,11 +1,11 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { internalLandingQuery } from "__generated__/internalLandingQuery.graphql";
+import { cifLandingQuery } from "__generated__/cifLandingQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 
-const InternalLandingQuery = graphql`
-  query internalLandingQuery {
+const CifLandingQuery = graphql`
+  query cifLandingQuery {
     query {
       session {
         ...DefaultLayout_session
@@ -14,10 +14,8 @@ const InternalLandingQuery = graphql`
   }
 `;
 
-function InternalLanding({
-  preloadedQuery,
-}: RelayProps<{}, internalLandingQuery>) {
-  const { query } = usePreloadedQuery(InternalLandingQuery, preloadedQuery);
+function CifLanding({ preloadedQuery }: RelayProps<{}, cifLandingQuery>) {
+  const { query } = usePreloadedQuery(CifLandingQuery, preloadedQuery);
   return (
     <DefaultLayout
       session={query.session}
@@ -26,8 +24,4 @@ function InternalLanding({
   );
 }
 
-export default withRelay(
-  InternalLanding,
-  InternalLandingQuery,
-  withRelayOptions
-);
+export default withRelay(CifLanding, CifLandingQuery, withRelayOptions);
