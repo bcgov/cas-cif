@@ -20,8 +20,18 @@ describe("The UserProfile component", () => {
       .spyOn(require("react-relay"), "useFragment")
       .mockImplementation(() => userData);
 
-    const componentUnderTest = render(<UserProfile user={null} />);
+    const componentUnderTest = render(<UserProfile user={{} as any} />);
 
     expect(componentUnderTest.container).toMatchSnapshot();
+  });
+
+  it("returns null if the user is logged out", () => {
+    jest
+      .spyOn(require("react-relay"), "useFragment")
+      .mockImplementation(() => null);
+
+    const componentUnderTest = render(<UserProfile user={null} />);
+
+    expect(componentUnderTest.container.childElementCount).toEqual(0);
   });
 });

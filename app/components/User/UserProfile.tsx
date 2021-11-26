@@ -21,6 +21,8 @@ const UserProfile: React.FC<Props> = ({ user }) => {
       user
     ) || {};
 
+  if (user === null) return null;
+
   return (
     <>
       <Grid className="name-display" justify="end">
