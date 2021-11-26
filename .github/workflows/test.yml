@@ -35,6 +35,17 @@ jobs:
         uses: ./.github/actions/dev-env-setup
       - run: yarn audit-deps
         working-directory: ./app
+  db-schema-is-up-to-date:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: make deploy_db_migrations
+      - run: yarn build:schema
+        working-directory: ./app
+      - run: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:schema\"?' && false)
   db-unit-tests:
     needs: install-dev-tools
     runs-on: ubuntu-latest
