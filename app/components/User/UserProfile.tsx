@@ -37,7 +37,6 @@ const UserProfile: React.FC<Props> = ({ user }) => {
       <style jsx>{`
         :global(.name-display) {
           margin-right: 20px;
-          font-weight: lighter;
         }
         form {
           margin-top: auto;

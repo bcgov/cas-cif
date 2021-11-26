@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The UserProfile component matches the snapshot 1`] = `
+<div>
+  <div
+    class="sc-iBPTik cirWLn pg-grid-container name-display"
+  >
+    <div
+      class="sc-fubCzh sc-pGacB kCFBWZ elfPxV pg-grid-row"
+    >
+      a
+      , 
+      a
+    </div>
+    <div
+      class="sc-fubCzh sc-pGacB kCFBWZ elfPxV pg-grid-row"
+    >
+      a@a.a
+    </div>
+  </div>
+  <form
+    action="/logout"
+    class="jsx-4065309065"
+    method="post"
+  >
+    <button
+      class="sc-gsTEea gemKec pg-button"
+      id="eeeeeeeeeeg3lllllllllm"
+      type="submit"
+    >
+      Logout
+    </button>
+  </form>
+</div>
+`;
