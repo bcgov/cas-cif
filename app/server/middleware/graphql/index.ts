@@ -6,6 +6,7 @@ import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PostgraphileLogConsola from "postgraphile-log-consola";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import { TagsFilePlugin } from "postgraphile/plugins";
+import PostGraphileUploadFieldPlugin from "postgraphile-plugin-upload-field";
 import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
 
@@ -14,7 +15,12 @@ const pluginHook = makePluginHook([PostgraphileLogConsola]);
 
 let postgraphileOptions: PostGraphileOptions = {
   pluginHook,
-  appendPlugins: [PgManyToManyPlugin, ConnectionFilterPlugin, TagsFilePlugin],
+  appendPlugins: [
+    PgManyToManyPlugin,
+    ConnectionFilterPlugin,
+    TagsFilePlugin,
+    PostGraphileUploadFieldPlugin,
+  ],
   classicIds: true,
   enableQueryBatching: true,
   dynamicJson: true,
@@ -36,12 +42,48 @@ if (process.env.NODE_ENV === "production") {
   };
 }
 
+async function saveRemoteFile({ stream }) {
+  const response = await fetch(
+    `${process.env.STORAGE_API_HOST}/api/v1/attachments/upload`,
+    {
+      method: "POST",
+      headers: {
+        "api-key": process.env.STORAGE_API_KEY,
+        "Content-Type": "multipart/form-data",
+      },
+      body: stream,
+    }
+  );
+  try {
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function resolveUpload(upload) {
+  const { createReadStream } = upload;
+  const stream = createReadStream();
+
+  // Save tile to remote storage system
+  const { uuid } = await saveRemoteFile({ stream });
+
+  return uuid;
+}
+
 const postgraphileMiddleware = () => {
   return postgraphile(pgPool, process.env.DATABASE_SCHEMA || "cif", {
     ...postgraphileOptions,
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,
       connectionFilterRelations: true,
+      uploadFieldDefinitions: [
+        {
+          match: ({ table, column }) =>
+            table === "attachment" && column == "file",
+          resolve: resolveUpload,
+        },
+      ],
     },
     pgSettings: (req: Request) => {
       const opts = {

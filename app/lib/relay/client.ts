@@ -1,24 +1,35 @@
+import { Environment, RecordSource, Store } from "relay-runtime";
 import { getRelaySerializedState } from "relay-nextjs";
-import { withHydrateDatetime } from "relay-nextjs/date";
-import { Environment, Network, Store, RecordSource } from "relay-runtime";
+import {
+  RelayNetworkLayer,
+  urlMiddleware,
+  batchMiddleware,
+  cacheMiddleware,
+  uploadMiddleware,
+} from "react-relay-network-modern/node8";
+
+const oneMinute = 60 * 1000;
 
 export function createClientNetwork() {
-  return Network.create(async (params, variables) => {
-    const response = await fetch("/graphql", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: params.text,
-        variables,
-      }),
-    });
+  const network = new RelayNetworkLayer([
+    cacheMiddleware({
+      size: 100, // Max 100 requests
+      // Number in milliseconds, how long records stay valid in cache (default: 900000, 15 minutes).
+      // TODO: is one minute enough? How long should records stay valid?
+      ttl: oneMinute,
+    }),
+    urlMiddleware({
+      url: async () => Promise.resolve("/graphql"),
+    }),
+    batchMiddleware({
+      batchUrl: async () => Promise.resolve("/graphql"),
+      batchTimeout: 10,
+      allowMutations: true,
+    }),
+    uploadMiddleware(),
+  ]);
 
-    const json = await response.text();
-    return JSON.parse(json, withHydrateDatetime);
-  });
+  return network;
 }
 
 let clientEnv: Environment | undefined;

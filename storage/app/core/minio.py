@@ -11,6 +11,22 @@ minio_client = Minio(MINIO_HOST_URL,
                   secure=False)
 
 
+def s3_upload_raw_file(bucket_name: str, file_name: str, data: object, length: int):
+    """
+    Uploads a raw file to s3 Minio storage and returns the file response object
+    """
+    try:
+        result = minio_client.put_object(bucket_name=bucket_name,
+                                          object_name=file_name,
+                                          data=data,
+                                          length=length)
+        return result
+    except Exception as exc:
+        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f'Unknown Error During Upload Process {exc}')
+
+
+
 def s3_upload_file(destination_file_name: str, local_file_path: str, content_type: str, bucket_name: str):
     """
     Uploads a file to s3 Minio storage and returns the file response object

@@ -36,6 +36,11 @@ function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
             <a>Projects</a>
           </Link>
         </Grid.Row>
+        <Grid.Row>
+          <Link href="admin/attachments">
+            <a>Attachments</a>
+          </Link>
+        </Grid.Row>
       </div>
     </DefaultLayout>
   );
