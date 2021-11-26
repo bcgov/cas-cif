@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import Button from "@button-inc/bcgov-theme/Button";
 import { BaseNavigation } from "@button-inc/bcgov-theme/Navigation";
@@ -31,16 +30,19 @@ const Navigation: React.FC<Props> = ({
       <BaseNavigation>
         <BaseHeader>
           <BaseHeader.Group className="banner">
-            <Link href="/">
-              <a>
-                <Image
-                  src="/img/BCID_CleanBC_rev_tagline_colour.svg"
-                  alt="logo for Province of British Columbia CleanBC"
-                  height={50}
-                  width={300}
-                />
-              </a>
-            </Link>
+            {/*
+              We don't want a front end navigation here,
+              to ensure that a back-end redirect is performed when clicking on the banner image
+            */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+            <a href="/">
+              <Image
+                src="/img/BCID_CleanBC_rev_tagline_colour.svg"
+                alt="logo for Province of British Columbia CleanBC"
+                height={50}
+                width={300}
+              />
+            </a>
           </BaseHeader.Group>
           <BaseHeader.Item collapse="900">
             <h1>{title}</h1>
