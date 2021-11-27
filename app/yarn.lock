@@ -578,10 +578,10 @@
   resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-express/-/sso-express-2.0.2.tgz#20c87cca3fd2107c4a56862f1178744a4109c4fe"
   integrity sha512-MjxxLdqAHxpkYtSYNOara4fHJUR0VO3VpeF6izwGBDwIHlmsEDttNn29qtkGG7cUrFdTepl6gd+mZicVpl+LaA==
 
-"@bcgov-cas/sso-react@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-react/-/sso-react-1.0.0.tgz#040d7043a93e9e340f38549f4f143f06b15c5ef7"
-  integrity sha512-WTobMJtAY0CfJWEX9P3qZoW7/quHN05r91PVWIsvcscGvgF8IZZ2P1IBaFeobiIa5HkVe0mxvfw1v7KGma7MOA==
+"@bcgov-cas/sso-react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-react/-/sso-react-1.0.1.tgz#c8d311d828fb437823feb0e422c40c5361701cad"
+  integrity sha512-I7bX2ZRquSAoKH1FfyTE9lwbTvwOzlARNtE8+kHHMOZaZeO1QX+0ZzWFb+KluHJKFAvXdX6j/YAN7aFZakYUrw==
   dependencies:
     "@button-inc/bcgov-theme" "^1.0.1"
     lodash.throttle "^4.1.1"
