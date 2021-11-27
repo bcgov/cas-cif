@@ -6,7 +6,7 @@ import getConfig from "next/config";
 import Navigation from "components/Layout/Navigation";
 import Footer from "components/Layout/Footer";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
-import UserProfileDropdown from "components/User/UserProfileDropdown";
+import UserProfile from "components/User/UserProfile";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -26,7 +26,7 @@ const DefaultLayout: React.FC<Props> = ({
     graphql`
       fragment DefaultLayout_session on KeycloakJwt {
         cifUserBySub {
-          ...UserProfileDropdown_user
+          ...UserProfile_user
         }
       }
     `,
@@ -38,8 +38,8 @@ const DefaultLayout: React.FC<Props> = ({
       <Navigation
         isLoggedIn={Boolean(session)}
         title={title}
-        userProfileDropdown={
-          <UserProfileDropdown user={session ? session.cifUserBySub : null} />
+        userProfileComponent={
+          <UserProfile user={session ? session.cifUserBySub : null} />
         }
       >
         {runtimeConfig.SITEWIDE_NOTICE && (

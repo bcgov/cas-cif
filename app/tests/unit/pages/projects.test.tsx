@@ -55,7 +55,20 @@ describe("The projects page", () => {
   it("calls the Create Project mutation when the Create Project Button is clicked", async () => {
     const spy = jest
       .spyOn(require("mutations/Project/createProject"), "default")
-      .mockImplementation(() => {});
+      .mockImplementation(() => {
+        return {
+          createProject: {
+            formChange: {
+              id: "someid",
+            },
+          },
+        };
+      });
+
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { push: jest.fn() };
+    });
+
     render(
       <RelayEnvironmentProvider environment={environment}>
         <Projects data-testid="2" CSN={true} preloadedQuery={initialQueryRef} />

@@ -84,6 +84,11 @@ describe("The Create Project page", () => {
     const spy = jest
       .spyOn(require("mutations/FormChange/updateFormChange"), "default")
       .mockImplementation(() => {});
+
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { push: jest.fn() };
+    });
+
     render(
       <RelayEnvironmentProvider environment={environment}>
         <CreateProject

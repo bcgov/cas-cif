@@ -8,16 +8,16 @@ interface Props {
   isLoggedIn?: boolean;
   children?: React.ReactNode;
   title?: string;
-  userProfileDropdown?: React.ReactNode;
+  userProfileComponent?: React.ReactNode;
 }
 
 const Navigation: React.FC<Props> = ({
   isLoggedIn = false,
   title = "cif",
-  userProfileDropdown,
+  userProfileComponent,
 }) => {
   let rightSide = isLoggedIn ? (
-    userProfileDropdown
+    userProfileComponent
   ) : (
     <LoginForm>
       <Button variant="secondary-inverse" type="submit">
