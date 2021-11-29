@@ -80,7 +80,7 @@ const postgraphileMiddleware = () => {
       uploadFieldDefinitions: [
         {
           match: ({ table, column }) =>
-            table === "attachment" && column == "file",
+            table === "attachment" && column === "file",
           resolve: resolveUpload,
         },
       ],
