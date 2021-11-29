@@ -11,7 +11,7 @@ module.exports = {
       uploadFieldDefinitions: [
         {
           match: ({ schema, table, column, tags }) =>
-            table === "attachment" && column == "file",
+            table === "attachment" && column === "file",
         },
       ],
     },
