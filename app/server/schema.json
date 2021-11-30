@@ -384,7 +384,7 @@
             },
             {
               "name": "status",
-              "description": "The name of the status, e.g. \"pending\", \"saved\", ...",
+              "description": "The name of the status, e.g. \"pending\", \"committed\", ...",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -399,8 +399,8 @@
               "deprecationReason": null
             },
             {
-              "name": "triggersSave",
-              "description": "Whether that status should trigger a save of the record described by the change",
+              "name": "triggersCommit",
+              "description": "Whether that status should trigger a commit of the record described by the change",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -517,8 +517,8 @@
               "defaultValue": null
             },
             {
-              "name": "triggersSave",
-              "description": "Checks for equality with the object’s `triggersSave` field.",
+              "name": "triggersCommit",
+              "description": "Checks for equality with the object’s `triggersCommit` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
@@ -744,8 +744,8 @@
               "defaultValue": null
             },
             {
-              "name": "triggersSave",
-              "description": "Filter by the object’s `triggersSave` field.",
+              "name": "triggersCommit",
+              "description": "Filter by the object’s `triggersCommit` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "BooleanFilter",
@@ -836,7 +836,7 @@
             },
             {
               "name": "status",
-              "description": "The name of the status, e.g. \"pending\", \"saved\", ...",
+              "description": "The name of the status, e.g. \"pending\", \"committed\", ...",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -849,8 +849,8 @@
               "defaultValue": null
             },
             {
-              "name": "triggersSave",
-              "description": "Whether that status should trigger a save of the record described by the change",
+              "name": "triggersCommit",
+              "description": "Whether that status should trigger a commit of the record described by the change",
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
@@ -941,7 +941,7 @@
             },
             {
               "name": "status",
-              "description": "The name of the status, e.g. \"pending\", \"saved\", ...",
+              "description": "The name of the status, e.g. \"pending\", \"committed\", ...",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -950,8 +950,8 @@
               "defaultValue": null
             },
             {
-              "name": "triggersSave",
-              "description": "Whether that status should trigger a save of the record described by the change",
+              "name": "triggersCommit",
+              "description": "Whether that status should trigger a commit of the record described by the change",
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
@@ -1246,13 +1246,13 @@
               "deprecationReason": null
             },
             {
-              "name": "TRIGGERS_SAVE_ASC",
+              "name": "TRIGGERS_COMMIT_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "TRIGGERS_SAVE_DESC",
+              "name": "TRIGGERS_COMMIT_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -10487,7 +10487,7 @@
             },
             {
               "name": "status",
-              "description": "The name of the status, e.g. \"pending\", \"saved\", ...",
+              "description": "The name of the status, e.g. \"pending\", \"committed\", ...",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -15697,7 +15697,7 @@
             },
             {
               "name": "status",
-              "description": "The name of the status, e.g. \"pending\", \"saved\", ...",
+              "description": "The name of the status, e.g. \"pending\", \"committed\", ...",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,

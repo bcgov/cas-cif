@@ -13,10 +13,10 @@ create table cif.form_change (
   change_reason varchar(10000)
 );
 
-create trigger save_form_change
+create trigger commit_form_change
     after insert or update of change_status on cif.form_change
     for each row
-    execute procedure cif_private.save_form_change();
+    execute procedure cif_private.commit_form_change();
 
 do
 $grant$

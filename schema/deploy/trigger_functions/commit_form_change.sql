@@ -1,9 +1,9 @@
--- Deploy cif:trigger_functions/save_form_changes to pg
+-- Deploy cif:trigger_functions/commit_form_changes to pg
 -- requires: schemas/private
 
 begin;
 
-create or replace function cif_private.save_form_change()
+create or replace function cif_private.commit_form_change()
   returns trigger as $$
 declare
   query text;
@@ -16,14 +16,14 @@ declare
 begin
 
   if new.operation not in ('INSERT', 'UPDATE') then
-    raise exception 'Cannot save change with operation %', new.operation;
+    raise exception 'Cannot commit change with operation %', new.operation;
   end if;
 
   schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
   keys := (select array_to_string(array(select quote_ident(key) from jsonb_each(new.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(new.new_form_data)), ','));
 
-  if (select triggers_save from cif.change_status where status = new.change_status) then
+  if (select triggers_commit from cif.change_status where status = new.change_status) then
 
     if new.operation = 'INSERT' then
 
@@ -55,9 +55,9 @@ begin
 end;
 $$ language plpgsql;
 
-grant execute on function cif_private.save_form_change to cif_internal, cif_external, cif_admin;
+grant execute on function cif_private.commit_form_change to cif_internal, cif_external, cif_admin;
 
-comment on function cif_private.save_form_change()
+comment on function cif_private.commit_form_change()
   is $$
   a trigger to set created_at and updated_at columns.
   example usage:
@@ -70,7 +70,7 @@ comment on function cif_private.save_form_change()
   create trigger _100_timestamps
     before insert or update on some_schema.some_table
     for each row
-    execute procedure cif_private.save_form_change();
+    execute procedure cif_private.commit_form_change();
   $$;
 
 commit;

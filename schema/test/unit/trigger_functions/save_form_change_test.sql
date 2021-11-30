@@ -26,16 +26,16 @@ create table mock_schema.mock_table (
 create trigger trigger_under_test
     after insert or update of change_status on mock_schema.mock_form_change
     for each row
-    execute procedure cif_private.save_form_change();
+    execute procedure cif_private.commit_form_change();
 
-insert into cif.change_status (status, triggers_save, active)
+insert into cif.change_status (status, triggers_commit, active)
 values
   ('test_pending', false, true),
-  ('test_saved', true, true);
+  ('test_committed', true, true);
 
 -- make sure the funciton exists
 
-select has_function('cif_private', 'save_form_change', 'Function save_form_change should exist');
+select has_function('cif_private', 'commit_form_change', 'Function commit_form_change should exist');
 
 
 -- setting up pending change
@@ -54,12 +54,12 @@ select is(
   'No records should be created for a pending change'
 );
 
-update mock_schema.mock_form_change set change_status = 'test_saved' where id = 1;
+update mock_schema.mock_form_change set change_status = 'test_committed' where id = 1;
 
 select is(
   (select count(*) from mock_schema.mock_table where text_col='test text'),
   1::bigint,
-  'A record should be created on a saved change'
+  'A record should be created on a committed change'
 );
 
 -- doesnt insert if the data is missing required fields
@@ -71,7 +71,7 @@ values (
 
 select throws_ok(
   $$
-    update mock_schema.mock_form_change set change_status = 'test_saved' where id = 2
+    update mock_schema.mock_form_change set change_status = 'test_committed' where id = 2
   $$,
   'null value in column "required_col" violates not-null constraint'
 );
@@ -82,7 +82,7 @@ values (
   '{"text_col":"test3", "required_col":"required"}',
   'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
 );
-update mock_schema.mock_form_change set change_status = 'test_saved' where id = 3;
+update mock_schema.mock_form_change set change_status = 'test_committed' where id = 3;
 
 select results_eq(
   $$
@@ -107,12 +107,12 @@ select is(
   'No record should be updated for a pending change'
 );
 
-update mock_schema.mock_form_change set change_status = 'test_saved' where id = 4;
+update mock_schema.mock_form_change set change_status = 'test_committed' where id = 4;
 
 select is(
   (select count(*) from mock_schema.mock_table where text_col='test_update'),
   1::bigint,
-  'A record should be updated when a pending change is saved'
+  'A record should be updated when a pending change is committed'
 );
 
 -- on delete nothing happens and a notice is printed
@@ -121,10 +121,10 @@ select throws_ok(
     insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
     values (
       '{"text_col":"test_delete", "required_col":"req"}',
-      'DELETE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_saved'
+      'DELETE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_committed'
     )
   $$,
-  'Cannot save change with operation DELETE',
+  'Cannot commit change with operation DELETE',
   'a change record with the DELETE operation should throw an exception'
 );
 

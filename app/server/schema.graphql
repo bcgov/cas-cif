@@ -105,13 +105,13 @@ type ChangeStatus implements Node {
   """
   id: ID!
 
-  """The name of the status, e.g. "pending", "saved", ..."""
+  """The name of the status, e.g. "pending", "committed", ..."""
   status: String!
 
   """
-  Whether that status should trigger a save of the record described by the change
+  Whether that status should trigger a commit of the record described by the change
   """
-  triggersSave: Boolean
+  triggersCommit: Boolean
 
   """updated at timestamp"""
   updatedAt: Datetime!
@@ -143,8 +143,8 @@ input ChangeStatusCondition {
   """Checks for equality with the object’s `status` field."""
   status: String
 
-  """Checks for equality with the object’s `triggersSave` field."""
-  triggersSave: Boolean
+  """Checks for equality with the object’s `triggersCommit` field."""
+  triggersCommit: Boolean
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
@@ -208,8 +208,8 @@ input ChangeStatusFilter {
   """Filter by the object’s `status` field."""
   status: StringFilter
 
-  """Filter by the object’s `triggersSave` field."""
-  triggersSave: BooleanFilter
+  """Filter by the object’s `triggersCommit` field."""
+  triggersCommit: BooleanFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
@@ -235,13 +235,13 @@ input ChangeStatusInput {
   """deleted by user id"""
   deletedBy: Int
 
-  """The name of the status, e.g. "pending", "saved", ..."""
+  """The name of the status, e.g. "pending", "committed", ..."""
   status: String!
 
   """
-  Whether that status should trigger a save of the record described by the change
+  Whether that status should trigger a commit of the record described by the change
   """
-  triggersSave: Boolean
+  triggersCommit: Boolean
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -269,13 +269,13 @@ input ChangeStatusPatch {
   """deleted by user id"""
   deletedBy: Int
 
-  """The name of the status, e.g. "pending", "saved", ..."""
+  """The name of the status, e.g. "pending", "committed", ..."""
   status: String
 
   """
-  Whether that status should trigger a save of the record described by the change
+  Whether that status should trigger a commit of the record described by the change
   """
-  triggersSave: Boolean
+  triggersCommit: Boolean
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -347,8 +347,8 @@ enum ChangeStatusesOrderBy {
   PRIMARY_KEY_DESC
   STATUS_ASC
   STATUS_DESC
-  TRIGGERS_SAVE_ASC
-  TRIGGERS_SAVE_DESC
+  TRIGGERS_COMMIT_ASC
+  TRIGGERS_COMMIT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC
@@ -3045,7 +3045,7 @@ input DeleteChangeStatusByStatusInput {
   """
   clientMutationId: String
 
-  """The name of the status, e.g. "pending", "saved", ..."""
+  """The name of the status, e.g. "pending", "committed", ..."""
   status: String!
 }
 
@@ -4381,7 +4381,7 @@ input UpdateChangeStatusByStatusInput {
   """
   clientMutationId: String
 
-  """The name of the status, e.g. "pending", "saved", ..."""
+  """The name of the status, e.g. "pending", "committed", ..."""
   status: String!
 }
 
