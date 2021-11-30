@@ -3,80 +3,44 @@ import io
 import sys
 import magic
 import shutil
+import uuid
 import logging
 import zipfile
-from os import path
+from os import path, replace
 from pathlib import Path
 from fastapi.responses import StreamingResponse, Response
 from tempfile import NamedTemporaryFile
 from app.schema import Attachment, Attachments
 from fastapi import UploadFile, HTTPException, Depends
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_415_UNSUPPORTED_MEDIA_TYPE
-from app.core.minio import s3_upload_file, s3_delete_file, s3_list_directory, s3_get_file
+from app.core.minio import s3_upload_file, s3_delete_file, s3_list_directory, s3_get_file, s3_upload_raw_file
 from app.utils import get_file_ext, get_file_name, generate_file_name
 from app.config import ATTACHMENTS_BUCKET_NAME, ALLOWED_FILE_EXTENSIONS
 
 logger = logging.getLogger("attachments")
 
 
-def upload_attachment(files: UploadFile):
-    file = files
-
-    file_ext = get_file_ext(file.filename)
-    # Kept for future use case
-    # if file_ext not in ALLOWED_FILE_EXTENSIONS:
-    #     logger.warning("upload_document - Unsupported media type")
-    #     raise HTTPException(status_code=HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-    #                         detail=f'unsupported media type: {file_ext}')
+def upload_attachment_raw(data):
+    raw_data = io.BytesIO(data.read())
+    raw_data_size = raw_data.getbuffer().nbytes
+    uuid4 = str(uuid.uuid4())
     try:
-        replacement_file_name = generate_file_name(file.filename)
-        with NamedTemporaryFile(delete=False, suffix=file_ext) as tmp:
-            shutil.copyfileobj(file.file, tmp)
-            tmp_upload_file_path = Path(tmp.name)
-            new_file_path = str(tmp_upload_file_path.resolve())
-    except Exception as exc:
-        error_msg = f'error: {sys.exc_info()[0]}'
-        logger.error(
-            f'upload_document - Unknown Error During Upload Process {error_msg}')
-        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail=f'Unknown Error During Upload Process - Stage 1')
-    finally:
-        if file.file:
-            file.file.close()
-
-    try:
-        # get the content type
-        mime = magic.Magic(mime=True)
-        content_type = mime.from_file(new_file_path)
-        s3_path = '{}'.format(replacement_file_name)
-        # send file to minio
-        upload = s3_upload_file(
-            s3_path, new_file_path, content_type, ATTACHMENTS_BUCKET_NAME)
-
-        attachment = Attachment(s3_path=s3_path, filename=file.filename)
-        return attachment
-    except FileNotFoundError as exc:
-        logger.error(f'upload_file - unknown upload error - {str(exc)}')
-        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-                            detail=f'Unknown Error Uploading File - FileNotFound - {str(exc)}')
+        s3_upload_raw_file(ATTACHMENTS_BUCKET_NAME, uuid4, raw_data, raw_data_size)
     except Exception as exc:
         error_msg = f'error: {sys.exc_info()[0]}'
         logger.error(
             f'upload_file - Unknown Error During Upload Process {error_msg} {exc}')
         raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f'Unknown Error During Upload Process')
-    finally:
-        try:
-            tmp_upload_file_path.unlink()
-        except:
-            pass
+
+    return Attachment(uuid=uuid4)
 
 
-def delete_attachment(s3_path: str):
+def delete_attachment(uuid: str):
     """ deletes an attachment object from storage """
     try:
         try:
-            file_deleted = s3_delete_file(ATTACHMENTS_BUCKET_NAME, s3_path)
+            file_deleted = s3_delete_file(ATTACHMENTS_BUCKET_NAME, uuid)
         except Exception as exc:
             error_msg = f'error: {sys.exc_info()[0]}'
             logger.error(
@@ -92,13 +56,12 @@ def delete_attachment(s3_path: str):
         return False
 
 
-def download_attachment(attachment: Attachment):
-    """ downloads an attachment to the client by s3_path """
+def download_attachment(uuid: str):
+    """ downloads an attachment to the client by uuid """
 
     try:
         bucket_path = ATTACHMENTS_BUCKET_NAME
-        response = StreamingResponse(s3_get_file(bucket_path, attachment.s3_path))
-        # response.headers['Content-Disposition'] = attachment.filename
+        response = StreamingResponse(s3_get_file(bucket_path, uuid))
         return response
     except Exception as error:
         logger.warning(error)
@@ -109,13 +72,13 @@ def download_attachments(attachments: Attachments):
     attachment_files = []
 
     for attachment in attachments:
-        result = s3_get_file(ATTACHMENTS_BUCKET_NAME, attachment.s3_path)
-        attachment_files.append({"filename": attachment.filename, "data": result.read()})
+        result = s3_get_file(ATTACHMENTS_BUCKET_NAME, attachment.uuid)
+        attachment_files.append({"uuid": attachment.uuid, "data": result.read()})
 
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
         for file in attachment_files:
-            zip_file.writestr(file["filename"], file["data"])
+            zip_file.writestr(file["uuid"], file["data"])
     try:
         response = Response(zip_buffer.getvalue())
         response.headers['Content-Disposition'] = 'attachments.zip'

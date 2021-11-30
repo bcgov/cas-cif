@@ -7,7 +7,7 @@ from app.utils import validate_api_key
 
 
 class Attachment(BaseModel):
-    s3_path: Optional[str]
+    uuid: Optional[str]
 
     class Config:
         orm_mode = True

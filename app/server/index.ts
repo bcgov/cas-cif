@@ -13,6 +13,7 @@ import graphQlMiddleware from "./middleware/graphql";
 import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
 import createUserMiddleware from "./middleware/createUser";
+import { graphqlUploadExpress } from "graphql-upload";
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
 const dev = process.env.NODE_ENV !== "production";
@@ -50,6 +51,8 @@ app.prepare().then(async () => {
   server.get("/auth-callback", createUserMiddleware("localhost", port));
 
   server.use(cookieParser());
+
+  server.use(graphqlUploadExpress());
 
   server.use(graphQlMiddleware());
 
