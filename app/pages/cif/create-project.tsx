@@ -68,11 +68,11 @@ export function CreateProject({
   };
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
-  const saveProject = async () => {
+  const commitProject = async () => {
     await updateFormChangeMutation(preloadedQuery.environment, {
       input: {
         id: query.formChange.id,
-        formChangePatch: { changeStatus: "saved" },
+        formChangePatch: { changeStatus: "committed" },
       },
     });
     await router.push({
@@ -92,7 +92,7 @@ export function CreateProject({
         schema={schema}
         uiSchema={uiSchema}
         formData={formData}
-        onSubmit={saveProject}
+        onSubmit={commitProject}
         onChange={onValueChanged}
       />
     </DefaultLayout>

@@ -1,7 +1,7 @@
--- Verify cif:trigger_functions/save_form_changes on pg
+-- Verify cif:trigger_functions/commit_form_changes on pg
 
 begin;
 
-select pg_get_functiondef('cif_private.save_form_change()'::regprocedure);
+select pg_get_functiondef('cif_private.commit_form_change()'::regprocedure);
 
 rollback;
