@@ -36,6 +36,6 @@ comment on column cif.funding_stream.id is 'Unique ID for the funding_stream';
 comment on column cif.funding_stream.name is 'Shortname of the funding stream program';
 comment on column cif.funding_stream.description is 'Description of the funding_stream';
 
-insert into cif.funding_stream (name, description) values ('IA', 'Innovation Accelerator'), ('EP', 'Emissions Performance');
+insert into cif.funding_stream (name, description) values ('EP', 'Emissions Performance'), ('IA', 'Innovation Accelerator');
 
 COMMIT;

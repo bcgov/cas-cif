@@ -1,4 +1,5 @@
 -- Deploy cif:tables/project to pg
+-- requires: tables/funding_stream
 
 begin;
 
@@ -6,7 +7,7 @@ create table cif.project(
   id integer primary key generated always as identity,
   cif_identifier integer unique not null,
   description varchar(10000) not null,
-  funding_stream_id int not null references cif.funding_stream(id)
+  funding_stream_id integer not null references cif.funding_stream(id)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project');
