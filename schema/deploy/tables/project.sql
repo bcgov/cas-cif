@@ -8,6 +8,7 @@ create table cif.project(
   cif_identifier integer unique not null,
   description varchar(10000) not null,
   funding_stream_id integer not null references cif.funding_stream(id)
+  unique_project_id varchar(1000) not null unique
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project');
