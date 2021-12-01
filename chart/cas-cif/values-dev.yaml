@@ -18,6 +18,9 @@ cas-postgres:
   gcs:
     bucketSuffix: cif-backups
 
+db:
+  preInitCommand: "make drop_db;"
+
 cert-issue:
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
 
