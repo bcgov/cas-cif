@@ -5,7 +5,7 @@ begin;
 
 create table cif.project(
   id integer primary key generated always as identity,
-  operator_id references cif,operator(id),
+  operator_id integer references cif.operator(id),
   cif_identifier integer unique not null,
   description varchar(10000) not null,
   funding_stream_id integer not null references cif.funding_stream(id),

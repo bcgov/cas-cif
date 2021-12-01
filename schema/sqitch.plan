@@ -23,6 +23,7 @@ tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Cr
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
 mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function
 tables/funding_stream 2021-12-01T05:19:11Z Alex Zorkin <AizeeDev@BigThink> # adding funding_stream table to plan
+tables/operator [schemas/main] 2021-11-30T22:34:14Z Dylan Leard <dylan@button.is> # Create the cif.operator table
 tables/project 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
 util_functions/camel_to_snake_case 2021-12-11T00:37:54Z Matthieu Foucault <matthieu@button.is> # Add cif_private.camel_to_snake_case
 trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
@@ -31,4 +32,4 @@ tables/form_change [tables/change_status] 2021-11-04T20:58:49Z Pierre Bastianell
 mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
 tables/attachment 2021-11-24T21:24:45Z Alex Zorkin <AizeeDev@BigThink> # Add schema for attachments
 tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
-tables/operator [schemas/main] 2021-11-30T22:34:14Z Dylan Leard <dylan@button.is> # Create the cif.operator table
+
