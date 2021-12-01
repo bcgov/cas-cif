@@ -22,6 +22,7 @@ util_functions/upsert_timestamp_columns [schemas/private trigger_functions/updat
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
 mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function
+tables/funding_stream 2021-12-01T05:19:11Z Alex Zorkin <AizeeDev@BigThink> # adding funding_stream table to plan
 tables/project 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
 trigger_functions/commit_form_change [schemas/private] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
 tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
