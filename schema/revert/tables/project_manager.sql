@@ -2,6 +2,6 @@
 
 begin;
 
--- XXX Add DDLs here.
+drop table cif.project_manager;
 
 commit;
