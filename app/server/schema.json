@@ -30294,6 +30294,22 @@
               "deprecationReason": null
             },
             {
+              "name": "uniqueProjectId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "updatedAt",
               "description": "updated at timestamp",
               "args": [],
@@ -31328,6 +31344,16 @@
               "defaultValue": null
             },
             {
+              "name": "uniqueProjectId",
+              "description": "Checks for equality with the object’s `uniqueProjectId` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "updatedAt",
               "description": "Checks for equality with the object’s `updatedAt` field.",
               "type": {
@@ -31570,6 +31596,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "uniqueProjectId",
+              "description": "Filter by the object’s `uniqueProjectId` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -32883,6 +32919,18 @@
               "deprecationReason": null
             },
             {
+              "name": "UNIQUE_PROJECT_ID_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UNIQUE_PROJECT_ID_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "UPDATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -34001,6 +34049,33 @@
                     "ofType": {
                       "kind": "SCALAR",
                       "name": "Int",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "projectByUniqueProjectId",
+              "description": null,
+              "args": [
+                {
+                  "name": "uniqueProjectId",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
                       "ofType": null
                     }
                   },
