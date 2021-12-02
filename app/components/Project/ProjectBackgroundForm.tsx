@@ -9,7 +9,7 @@ interface Props {
 
 const schema: JSONSchema7 = {
   type: "object",
-  required: ["cif_identifier", "description"],
+  required: ["unique_project_id", "description"],
   properties: {
     unique_project_id: { type: "string", title: "Unique Project Identifier" },
     description: { type: "string", title: "Description" },
@@ -17,13 +17,15 @@ const schema: JSONSchema7 = {
 };
 
 const uiSchema = {
-  uniqueProjectId: {
+  unique_project_id: {
     "ui:placeholder": "2020-RFP-1-456-ABCD",
     "ui:col-md": 12,
+    "bcgov:size": "small",
   },
   description: {
     "ui:placeholder": "describe the project...",
     "ui:col-md": 12,
+    "bcgov:size": "small",
   },
 };
 
@@ -40,6 +42,7 @@ const ProjectBackgroundForm: React.FunctionComponent<Props> = ({
   return (
     <>
       <fieldset>
+        <legend>Project Background</legend>
         <Form
           schema={schema}
           uiSchema={uiSchema}

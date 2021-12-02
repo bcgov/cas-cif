@@ -7,6 +7,7 @@ import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
 import { useRouter } from "next/router";
 import ProjectBackgroundForm from "components/Project/ProjectBackgroundForm";
 import { Button } from "@button-inc/bcgov-theme";
+import Grid from "@button-inc/bcgov-theme/Grid";
 
 export const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -67,14 +68,20 @@ export function CreateProject({
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
       <h1>Create Project</h1>
-      <ProjectBackgroundForm
-        formData={query.formChange.newFormData}
-        applyChangeFromComponent={applyChangeFromComponent}
-      />
-      <Button>Save draft</Button>
-      <Button size="medium" variant="primary" onClick={commitProject}>
-        Commit Project Changes
-      </Button>
+      <Grid cols={2}>
+        <Grid.Row>
+          <Grid.Col>
+            <ProjectBackgroundForm
+              formData={query.formChange.newFormData}
+              applyChangeFromComponent={applyChangeFromComponent}
+            />
+          </Grid.Col>
+        </Grid.Row>
+
+        <Button size="medium" variant="primary" onClick={commitProject}>
+          Commit Project Changes
+        </Button>
+      </Grid>
     </DefaultLayout>
   );
 }

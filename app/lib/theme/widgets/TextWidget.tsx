@@ -9,17 +9,28 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   label,
   value,
   required,
+  uiSchema,
 }) => {
+  console.log(uiSchema);
   return (
-    <Input
-      id={id}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      label={getRequiredLabel(label, required)}
-      value={value}
-      size="medium"
-      required={required}
-    ></Input>
+    <>
+      <Input
+        id={id}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        label={getRequiredLabel(label, required)}
+        value={value}
+        size={uiSchema["bcgov:size"] || "medium"}
+        required={required}
+      ></Input>
+      <style jsx>
+        {`
+          :global(input) {
+            width: 100%;
+          }
+        `}
+      </style>
+    </>
   );
 };
 
