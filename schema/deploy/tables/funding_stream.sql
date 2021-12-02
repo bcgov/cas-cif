@@ -36,7 +36,7 @@ comment on column cif.funding_stream.id is 'Unique ID for the funding_stream';
 comment on column cif.funding_stream.name is 'Shortname of the funding stream program';
 comment on column cif.funding_stream.description is 'Description of the funding_stream';
 
--- Order is important for funding_stream. EP needs id = 1 and IA needs id = 2 because 
+-- Order is important for funding_stream. EP needs id = 1 and IA needs id = 2 because
 -- it's how the business area refers to them and is used to generate unique ids
 insert into cif.funding_stream (name, description) values ('EP', 'Emissions Performance'), ('IA', 'Innovation Accelerator');
 
