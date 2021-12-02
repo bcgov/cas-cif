@@ -26,7 +26,7 @@ const CreateProjectQuery = graphql`
         newFormData
         updatedAt
       }
-    },
+    }
     fragmentData: query {
       ...SelectOperator_query
     }

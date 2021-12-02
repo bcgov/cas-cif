@@ -39,4 +39,3 @@ comment on column cif.operator.trade_name is 'The trade name of this operator';
 comment on column cif.operator.bc_registry_id is 'The bc registry id assigned to this operator';
 
 commit;
-
