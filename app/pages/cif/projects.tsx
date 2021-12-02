@@ -19,7 +19,7 @@ export const ProjectsQuery = graphql`
         edges {
           node {
             id
-            cifIdentifier
+            uniqueProjectId
             description
           }
         }
@@ -81,7 +81,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       <h1>Projects</h1>
       {query.allProjects.edges.length === 0 && <p>None</p>}
       {query.allProjects.edges.map(({ node }) => (
-        <Card title={node.cifIdentifier} key={node.id}>
+        <Card title={node.uniqueProjectId} key={node.id}>
           <p>{node.description}</p>
         </Card>
       ))}

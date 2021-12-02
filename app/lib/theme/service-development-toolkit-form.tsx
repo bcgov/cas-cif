@@ -1,14 +1,13 @@
 import { ThemeProps, withTheme } from "@rjsf/core";
 import FieldTemplate from "./FieldTemplate";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
-import SubmitButton from "./SubmitButton";
 import TextWidget from "./widgets/TextWidget";
 import { utils } from "@rjsf/core";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
 const Theme: ThemeProps = {
-  children: <SubmitButton />,
+  children: <></>,
   fields: { ...fields },
   widgets: {
     ...widgets,
