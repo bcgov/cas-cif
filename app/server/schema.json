@@ -29589,22 +29589,6 @@
           "description": "Table containing information about a CIF Project",
           "fields": [
             {
-              "name": "cifIdentifier",
-              "description": "Unique numeric identifier internal to the CIF team",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "cifUserByCreatedBy",
               "description": "Reads a single `CifUser` that is related to this `Project`.",
               "args": [],
@@ -30295,7 +30279,7 @@
             },
             {
               "name": "uniqueProjectId",
-              "description": null,
+              "description": "Unique numeric identifier internal to the CIF team",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -31264,16 +31248,6 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "cifIdentifier",
-              "description": "Checks for equality with the object’s `cifIdentifier` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
               "type": {
@@ -31399,16 +31373,6 @@
                     "ofType": null
                   }
                 }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "cifIdentifier",
-              "description": "Filter by the object’s `cifIdentifier` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "IntFilter",
-                "ofType": null
               },
               "defaultValue": null
             },
@@ -32805,18 +32769,6 @@
           "interfaces": null,
           "enumValues": [
             {
-              "name": "CIF_IDENTIFIER_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_IDENTIFIER_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -33995,33 +33947,6 @@
                     "ofType": {
                       "kind": "SCALAR",
                       "name": "ID",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "Project",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "projectByCifIdentifier",
-              "description": null,
-              "args": [
-                {
-                  "name": "cifIdentifier",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Int",
                       "ofType": null
                     }
                   },

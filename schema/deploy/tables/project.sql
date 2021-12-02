@@ -5,7 +5,6 @@ begin;
 
 create table cif.project(
   id integer primary key generated always as identity,
-  cif_identifier integer unique not null,
   description varchar(10000) not null,
   funding_stream_id integer not null references cif.funding_stream(id)
   unique_project_id varchar(1000) not null unique
@@ -35,7 +34,7 @@ $grant$;
 
 comment on table cif.project is 'Table containing information about a CIF Project';
 comment on column cif.project.id is 'Unique ID for the project';
-comment on column cif.project.cif_identifier is 'Unique numeric identifier internal to the CIF team';
+comment on column cif.project.unique_project_id is 'Unique numeric identifier internal to the CIF team';
 comment on column cif.project.description is 'Description of the project';
 comment on column cif.project.funding_stream_id is 'The id of the funding_stream (cif.funding_stream.id) that was selected when creating the project';
 

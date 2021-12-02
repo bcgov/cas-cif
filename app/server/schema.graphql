@@ -8469,9 +8469,6 @@ type PageInfo {
 
 """Table containing information about a CIF Project"""
 type Project implements Node {
-  """Unique numeric identifier internal to the CIF team"""
-  cifIdentifier: Int!
-
   """Reads a single `CifUser` that is related to this `Project`."""
   cifUserByCreatedBy: CifUser
 
@@ -8681,6 +8678,8 @@ type Project implements Node {
 
   """Unique ID for the project"""
   rowId: Int!
+
+  """Unique numeric identifier internal to the CIF team"""
   uniqueProjectId: String!
 
   """updated at timestamp"""
@@ -8942,9 +8941,6 @@ type ProjectCifUsersByProjectManagerProjectIdAndUpdatedByManyToManyEdge {
 A condition to be used against `Project` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input ProjectCondition {
-  """Checks for equality with the object’s `cifIdentifier` field."""
-  cifIdentifier: Int
-
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -8982,9 +8978,6 @@ A filter to be used against `Project` object types. All fields are combined with
 input ProjectFilter {
   """Checks for all expressions in this list."""
   and: [ProjectFilter!]
-
-  """Filter by the object’s `cifIdentifier` field."""
-  cifIdentifier: IntFilter
 
   """Filter by the object’s `cifUserByCreatedBy` relation."""
   cifUserByCreatedBy: CifUserFilter
@@ -9355,8 +9348,6 @@ type ProjectsEdge {
 
 """Methods to use when ordering `Project`."""
 enum ProjectsOrderBy {
-  CIF_IDENTIFIER_ASC
-  CIF_IDENTIFIER_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -9681,7 +9672,6 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Project`."""
     id: ID!
   ): Project
-  projectByCifIdentifier(cifIdentifier: Int!): Project
   projectByRowId(rowId: Int!): Project
   projectByUniqueProjectId(uniqueProjectId: String!): Project
 
