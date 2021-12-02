@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Project Background Form matches the snapshot 1`] = `
+<div>
+  <fieldset
+    class="jsx-3408663875"
+  >
+    <legend
+      class="jsx-3408663875"
+    >
+      Project Background
+    </legend>
+    <form
+      class="rjsf"
+    >
+      <fieldset
+        class="sc-dlfnuX hBsleh pg-fieldset"
+        id="root"
+      >
+        <div
+          class="sc-hBEYId iNUeqH pg-input"
+        >
+          <label
+            class="sc-fodVek ensGkx pg-input-label"
+            for="root_unique_project_id"
+          >
+            Unique Project Identifier*
+          </label>
+          <input
+            aria-label="Unique Project Identifier*"
+            class="sc-fFucqa ljMVny pg-input-input"
+            id="root_unique_project_id"
+            name="root_unique_project_id-input"
+            placeholder="2020-RFP-1-456-ABCD"
+            required=""
+            value=""
+          />
+        </div>
+        <div
+          class="sc-hBEYId iNUeqH pg-input"
+        >
+          <label
+            class="sc-fodVek ensGkx pg-input-label"
+            for="root_description"
+          >
+            Description*
+          </label>
+          <input
+            aria-label="Description*"
+            class="sc-fFucqa ljMVny pg-input-input"
+            id="root_description"
+            name="root_description-input"
+            placeholder="describe the project..."
+            required=""
+            value=""
+          />
+        </div>
+      </fieldset>
+    </form>
+  </fieldset>
+</div>
+`;
