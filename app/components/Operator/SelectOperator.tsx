@@ -1,8 +1,8 @@
-import React, {useState}  from "react";
+import React, { useState } from "react";
 import type { SelectOperator_query$key } from "__generated__/SelectOperator_query.graphql";
 import { graphql, useFragment } from "react-relay";
-import { Dropdown } from 'semantic-ui-react'
-import SafeJsonParse from "../../../utils/SafeJsonParse";
+import { Dropdown } from "semantic-ui-react";
+import safeJsonParse from "lib/safeJsonParse";
 
 interface Props {
   query: SelectOperator_query$key;
@@ -10,7 +10,11 @@ interface Props {
   formChangeData: any;
 }
 
-const SelectOperator: React.FC<Props> = (props) => {
+const SelectOperator: React.FC<Props> = ({
+  query,
+  applyChange,
+  formChangeData,
+}) => {
   const queryData = useFragment(
     graphql`
       fragment SelectOperator_query on Query {
@@ -29,39 +33,47 @@ const SelectOperator: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.query,
+    query
   );
 
-  const [selectedOperator, setSelectedOperator] = useState(null);
-  console.log(selectedOperator);
-  console.log(props);
+  console.log(query)
+
+  const [selectedOperator, setSelectedOperator] = useState(
+    formChangeData.operator_id
+      ? queryData.query.allOperators.edges.find(
+          (edge) => (edge.node.rowId === formChangeData.operator_id)
+        ).node
+      : null
+  );
 
   const getData = (e, data) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(SafeJsonParse(data.value))
-    setSelectedOperator(SafeJsonParse(data.value));
-    props.applyChange({'operator_id': SafeJsonParse(data.value).rowId});
-  }
+    setSelectedOperator(safeJsonParse(data.value));
+    applyChange({ operator_id: safeJsonParse(data.value).rowId });
+  };
 
   return (
     <>
       <fieldset>
-        <legend align="center">Identity</legend>
+        <legend>Identity</legend>
         <strong>Legal Operator Name and BC Registry ID</strong>
         <Dropdown
-          placeholder='Select an Operator'
+          id="operator-dropdown"
+          placeholder="Select an Operator"
           fluid
           search
           selection
-          header
-          onChange={(e, data) => { getData(e, data)}}//setSelectedOperator(e.target.value)}}
-          options={queryData.query.allOperators.edges.map(({node}) => {
+          defaultValue={JSON.stringify(selectedOperator)}
+          onChange={(e, data) => {
+            getData(e, data);
+          }}
+          options={queryData.query.allOperators.edges.map(({ node }) => {
             return {
-                key: node.id,
-                text: `${node.legalName} (${node.bcRegistryId})`,
-                value: JSON.stringify(node)
-            }
+              key: node.id,
+              text: `${node.legalName} (${node.bcRegistryId})`,
+              value: JSON.stringify(node),
+            };
           })}
         />
         <strong>Trade Name</strong>
@@ -77,21 +89,25 @@ const SelectOperator: React.FC<Props> = (props) => {
           fieldset {
             padding: 2em;
             border: 2px solid silver;
-          },
+          }
+          ,
           legend {
             color: silver;
             padding: 2px;
             align: center;
             display: block;
-            align:center;
-          },
+            text-align: center;
+            font-size: 1.2em;
+          }
+          ,
           #operator-dropdown {
+            text-align: left;
             color: black;
           }
         `}
       </style>
     </>
-  )
+  );
 };
 
 export default SelectOperator;
