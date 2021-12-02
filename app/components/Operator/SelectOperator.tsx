@@ -2,11 +2,12 @@ import React, {useState}  from "react";
 import type { SelectOperator_query$key } from "__generated__/SelectOperator_query.graphql";
 import { graphql, useFragment } from "react-relay";
 import { Dropdown } from 'semantic-ui-react'
+import SafeJsonParse from "../../../utils/SafeJsonParse";
 
 interface Props {
   query: SelectOperator_query$key;
   applyChange: (x: any) => void;
-  formdata: any;
+  formChangeData: any;
 }
 
 const SelectOperator: React.FC<Props> = (props) => {
@@ -38,9 +39,9 @@ const SelectOperator: React.FC<Props> = (props) => {
   const getData = (e, data) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(JSON.parse(data.value))
-    setSelectedOperator(JSON.parse(data.value));
-    props.applyChange({'operator_id': JSON.parse(data.value).rowId});
+    console.log(SafeJsonParse(data.value))
+    setSelectedOperator(SafeJsonParse(data.value));
+    props.applyChange({'operator_id': SafeJsonParse(data.value).rowId});
   }
 
   return (

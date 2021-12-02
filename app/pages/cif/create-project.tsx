@@ -47,8 +47,6 @@ export function CreateProject({
   );
   if (!query.formChange.id) return null;
 
-  const fd = query.formChange.newFormData;
-
   // Function: stage the change data in the form_change table
   const storeResult = async (data) => {
     const variables = {
@@ -63,6 +61,11 @@ export function CreateProject({
   };
 
   // The applyChangeFromComponent function will require this page to be aware of the state of the newFormData object
+  const onValueChanged = async (change) => {
+    const { formData } = change;
+    await storeResult(formData);
+  };
+
   const formChangeData = query.formChange.newFormData;
 
   // A function to be called by individual components making changes to the overall form_change data
