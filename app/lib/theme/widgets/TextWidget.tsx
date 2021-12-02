@@ -11,7 +11,6 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
   required,
   uiSchema,
 }) => {
-  console.log(uiSchema);
   return (
     <>
       <Input
@@ -19,8 +18,8 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         label={getRequiredLabel(label, required)}
-        value={value}
-        size={uiSchema["bcgov:size"] || "medium"}
+        value={value || ""}
+        size={(uiSchema && uiSchema["bcgov:size"]) || "medium"}
         required={required}
       ></Input>
       <style jsx>

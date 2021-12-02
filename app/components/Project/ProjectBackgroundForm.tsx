@@ -1,6 +1,7 @@
 import React from "react";
 import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
+import FormBorder from "components/Layout/FormBorder";
 
 interface Props {
   formData: any;
@@ -11,7 +12,11 @@ const schema: JSONSchema7 = {
   type: "object",
   required: ["unique_project_id", "description"],
   properties: {
-    unique_project_id: { type: "string", title: "Unique Project Identifier" },
+    unique_project_id: {
+      type: "string",
+      title: "Unique Project Identifier",
+      pattern: "^((d{4})-RFP-([1-2])-(d{3,4})-([A-Z]{4}))$",
+    },
     description: { type: "string", title: "Description" },
   },
 };
@@ -35,30 +40,25 @@ const ProjectBackgroundForm: React.FunctionComponent<Props> = ({
 }) => {
   // We restrict the data to only the fields we care about
   const intialData = {
-    uniqueProjectId: formData.uniqueProjectId,
+    unique_project_id: formData.unique_project_id,
     description: formData.description,
   };
 
   return (
     <>
-      <fieldset>
-        <legend>Project Background</legend>
+      <FormBorder title="Background">
         <Form
           schema={schema}
           uiSchema={uiSchema}
           formData={intialData}
           onChange={(change) => {
-            applyChangeFromComponent(change.formData);
+            console.log(change);
+            if (change.errors.length === 0)
+              applyChangeFromComponent(change.formData);
           }}
+          liveValidate
         />
-      </fieldset>
-      <style jsx>
-        {`
-          fieldset > legend {
-            margin: 0 auto;
-          }
-        `}
-      </style>
+      </FormBorder>
     </>
   );
 };

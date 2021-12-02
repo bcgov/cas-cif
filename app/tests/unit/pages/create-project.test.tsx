@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  CreateProject,
-  CreateProjectQuery,
-} from "../../../pages/cif/create-project";
+import { CreateProject, CreateProjectQuery } from "pages/cif/create-project";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -21,7 +18,7 @@ environment.mock.queueOperationResolver((operation) => {
           formChange: {
             id: "mock-id",
             newFormData: {
-              cif_identifier: "",
+              project_unique_id: "",
               description: "",
             },
           },
@@ -55,11 +52,20 @@ describe("The Create Project page", () => {
       </RelayEnvironmentProvider>
     );
 
-    expect(screen.getAllByRole("button")[1]).toHaveTextContent("Submit");
+    expect(screen.getAllByRole("button")[1]).toHaveTextContent(
+      "Commit Project Changes"
+    );
     expect(screen.getAllByRole("textbox")[0]).toHaveTextContent("");
   });
 
-  it("calls the updateFormChange mutation when the user types", async () => {
+  it("calls the updateFormChange mutation when the component calls the callback", async () => {
+    const mockProjectBackground: any = { props: {} };
+    jest
+      .spyOn(require("components/Project/ProjectBackgroundForm"), "default")
+      .mockImplementation((props) => {
+        mockProjectBackground.props = props;
+      });
+
     const spy = jest
       .spyOn(require("mutations/FormChange/updateFormChange"), "default")
       .mockImplementation(() => "updated");
@@ -73,11 +79,13 @@ describe("The Create Project page", () => {
       </RelayEnvironmentProvider>
     );
 
-    fireEvent.change(screen.getAllByRole("textbox")[0], {
-      target: { value: 123 },
+    mockProjectBackground.props.applyChangeFromComponent({
+      testkey: "testvalue",
+      other: 123,
     });
-    expect(screen.getAllByRole("textbox")[0].value).toEqual("123");
+
     expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({});
   });
 
   it("calls the updateFormChange mutation when the Submit Button is clicked & input values are valid", async () => {

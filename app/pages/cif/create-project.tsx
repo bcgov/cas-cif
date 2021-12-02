@@ -65,6 +65,8 @@ export function CreateProject({
     });
   };
 
+  console.log(query.formChange.newFormData);
+
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
       <h1>Create Project</h1>
