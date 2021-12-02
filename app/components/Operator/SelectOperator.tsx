@@ -36,20 +36,15 @@ const SelectOperator: React.FC<Props> = ({
     query
   );
 
-  console.log(query)
+  const selectedOperator = formChangeData.operator_id
+  ? queryData.query.allOperators.edges.find(
+      (edge) => (edge.node.rowId === formChangeData.operator_id)
+    ).node
+  : null;
 
-  const [selectedOperator, setSelectedOperator] = useState(
-    formChangeData.operator_id
-      ? queryData.query.allOperators.edges.find(
-          (edge) => (edge.node.rowId === formChangeData.operator_id)
-        ).node
-      : null
-  );
-
-  const getData = (e, data) => {
+  const handleChange = (e, data) => {
     e.preventDefault();
     e.stopPropagation();
-    setSelectedOperator(safeJsonParse(data.value));
     applyChange({ operator_id: safeJsonParse(data.value).rowId });
   };
 
@@ -66,7 +61,7 @@ const SelectOperator: React.FC<Props> = ({
           selection
           defaultValue={JSON.stringify(selectedOperator)}
           onChange={(e, data) => {
-            getData(e, data);
+            handleChange(e, data);
           }}
           options={queryData.query.allOperators.edges.map(({ node }) => {
             return {
