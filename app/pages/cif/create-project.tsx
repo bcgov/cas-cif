@@ -50,12 +50,12 @@ export function CreateProject({
   if (!query.formChange.id) return null;
 
   // Function: stage the change data in the form_change table
-  const storeResult = async (result) => {
+  const storeResult = async (data) => {
     const variables = {
       input: {
         id: query.formChange.id,
         formChangePatch: {
-          newFormData: result,
+          newFormData: data,
         },
       },
     };
@@ -66,6 +66,20 @@ export function CreateProject({
     const { formData } = change;
     await storeResult(formData);
   };
+
+  /* Uncomment this block when the applyChangeFromComponent function is ready to be used.
+   Currenly commented out so the linter won't complain about the unused function.
+
+  // The applyChangeFromComponent function will require this page to be aware of the state of the newFormData object
+  const formChangeData = query.formChange.newFormData;
+
+  // A function to be called by individual components making changes to the overall form_change data
+  const applyChangeFromComponent = (changeObject: any)  => {
+    const updatedFormData = { ...formChangeData, ...changeObject };
+    storeResult(updatedFormData);
+  };
+
+*/
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
   const commitProject = async () => {
