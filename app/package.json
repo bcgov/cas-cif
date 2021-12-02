@@ -103,6 +103,8 @@
     "relay-nextjs": "^0.4.1",
     "relay-runtime": "^12.0.0",
     "relay-test-utils": "^12.0.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.4",
     "styled-components": "^5.2.1",
     "webpack": "^5.58.2"
   },

@@ -5,6 +5,7 @@ import { getClientEnvironment } from "../lib/relay/client";
 import "normalize.css";
 import BCGovTypography from "components/BCGovTypography";
 import SessionExpiryHandler from "components/SessionExpiryHandler";
+import 'semantic-ui-css/semantic.min.css'
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({

@@ -26,6 +26,8 @@ const CreateProjectQuery = graphql`
         newFormData
         updatedAt
       }
+    },
+    fragmentData: query {
       ...SelectOperator_query
     }
   }
@@ -44,6 +46,21 @@ export function CreateProject({
     [query.formChange.updatedAt]
   );
   if (!query.formChange.id) return null;
+
+  const fd = query.formChange.newFormData;
+
+  // Function: stage the change data in the form_change table
+  const storeResult = async (data) => {
+    const variables = {
+      input: {
+        id: query.formChange.id,
+        formChangePatch: {
+          newFormData: data,
+        },
+      },
+    };
+    await updateFormChangeMutation(preloadedQuery.environment, variables);
+  };
 
   // The applyChangeFromComponent function will require this page to be aware of the state of the newFormData object
   const formChangeData = query.formChange.newFormData;
