@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The SelectOperator component matches the snapshot 1`] = `
+<div>
+  <fieldset
+    class="jsx-355091279"
+  >
+    <legend
+      class="jsx-355091279"
+    >
+      Identity
+    </legend>
+    <strong
+      class="jsx-355091279"
+    >
+      Legal Operator Name and BC Registry ID
+    </strong>
+    <div
+      aria-expanded="false"
+      class="ui fluid search selection dropdown"
+      id="operator-dropdown"
+      role="combobox"
+    >
+      <input
+        aria-autocomplete="list"
+        autocomplete="off"
+        class="search"
+        tabindex="0"
+        type="text"
+        value=""
+      />
+      <div
+        aria-atomic="true"
+        aria-live="polite"
+        class="divider text"
+        role="alert"
+      >
+        Select an Operator
+      </div>
+      <i
+        aria-hidden="true"
+        class="dropdown icon"
+      />
+      <div
+        class="menu transition"
+        role="listbox"
+      >
+        <div
+          aria-checked="false"
+          aria-selected="true"
+          class="selected item"
+          role="option"
+          style="pointer-events: all;"
+        >
+          <span
+            class="text"
+          >
+            Test Operator LEGAL (123456789)
+          </span>
+        </div>
+        <div
+          aria-checked="false"
+          aria-selected="false"
+          class="item"
+          role="option"
+          style="pointer-events: all;"
+        >
+          <span
+            class="text"
+          >
+            Second Test Operator LEGAL (987654321)
+          </span>
+        </div>
+      </div>
+    </div>
+    <strong
+      class="jsx-355091279"
+    >
+      Trade Name
+    </strong>
+  </fieldset>
+</div>
+`;

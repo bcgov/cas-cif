@@ -37,10 +37,10 @@ const SelectOperator: React.FC<Props> = ({
   );
 
   const selectedOperator = formChangeData.operator_id
-  ? queryData.query.allOperators.edges.find(
-      (edge) => (edge.node.rowId === formChangeData.operator_id)
-    ).node
-  : null;
+    ? queryData.query.allOperators.edges.find(
+        (edge) => edge.node.rowId === formChangeData.operator_id
+      ).node
+    : null;
 
   const handleChange = (e, data) => {
     e.preventDefault();
