@@ -21,7 +21,7 @@ const schema: JSONSchema7 = {
 
 const uiSchema = {
   project_name: {
-    "ui:placeholder": "2020-RFP-1-456-ABCD",
+    "ui:placeholder": "Project Name",
     "ui:col-md": 12,
     "bcgov:size": "small",
   },

@@ -69107,7 +69107,7 @@
             },
             {
               "name": "operatorId",
-              "description": "Foreign key references the cif.operator table",
+              "description": "The name of the project",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -69216,6 +69216,22 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "ProjectManagersConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "projectName",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 }
               },
@@ -70322,8 +70338,13 @@
             {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "name": "rfpNumber",
               "description": "Checks for equality with the object’s `rfpNumber` field.",
+=======
+              "name": "projectName",
+              "description": "Checks for equality with the object’s `projectName` field.",
+>>>>>>> chore: update schema
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -70332,6 +70353,7 @@
               "defaultValue": null
             },
             {
+<<<<<<< HEAD
 =======
 =======
 <<<<<<< HEAD
@@ -70339,6 +70361,8 @@
 >>>>>>> chore: add basic SelectOperator component
 =======
 >>>>>>> refactor: update schema & reorder sqitch plan
+=======
+>>>>>>> chore: update schema
               "name": "rowId",
               "description": "Checks for equality with the object’s `rowId` field.",
               "type": {
@@ -70634,8 +70658,13 @@
             {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "name": "rfpNumber",
               "description": "Filter by the object’s `rfpNumber` field.",
+=======
+              "name": "projectName",
+              "description": "Filter by the object’s `projectName` field.",
+>>>>>>> chore: update schema
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
@@ -70644,11 +70673,14 @@
               "defaultValue": null
             },
             {
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> chore: add basic SelectOperator component
 =======
 >>>>>>> refactor: update schema & reorder sqitch plan
+=======
+>>>>>>> chore: update schema
               "name": "rowId",
               "description": "Filter by the object’s `rowId` field.",
               "type": {
@@ -71985,13 +72017,21 @@
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "RFP_NUMBER_ASC",
+=======
+              "name": "PROJECT_NAME_ASC",
+>>>>>>> chore: update schema
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "RFP_NUMBER_DESC",
+=======
+              "name": "PROJECT_NAME_DESC",
+>>>>>>> chore: update schema
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
