@@ -28,7 +28,7 @@ const CreateProjectQuery = graphql`
       }
     }
     fragmentData: query {
-      ...SelectOperator_query
+      ...Identity_query
     }
   }
 `;

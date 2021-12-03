@@ -1,17 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The SelectOperator component matches the snapshot 1`] = `
+exports[`The Identity component matches the snapshot 1`] = `
 <div>
   <fieldset
-    class="jsx-355091279"
+    class="jsx-1706115404"
   >
     <legend
-      class="jsx-355091279"
+      class="jsx-1706115404"
     >
       Identity
     </legend>
     <strong
-      class="jsx-355091279"
+      class="jsx-1706115404"
+    >
+      Project Name
+    </strong>
+    <form
+      class="rjsf"
+    >
+      <fieldset
+        class="sc-dlfnuX hBsleh pg-fieldset"
+        id="root"
+      >
+        <div
+          class="sc-fFucqa cGKbQt pg-input"
+        >
+          
+          <input
+            aria-label="root_project_name-input"
+            class="sc-idOiZg jxyaVq pg-input-input"
+            id="root_project_name"
+            name="root_project_name-input"
+            placeholder="2020-RFP-1-456-ABCD"
+            value=""
+          />
+        </div>
+      </fieldset>
+    </form>
+    <strong
+      class="jsx-1706115404"
     >
       Legal Operator Name and BC Registry ID
     </strong>
@@ -74,7 +101,7 @@ exports[`The SelectOperator component matches the snapshot 1`] = `
       </div>
     </div>
     <strong
-      class="jsx-355091279"
+      class="jsx-1706115404"
     >
       Trade Name
     </strong>

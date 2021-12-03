@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import SelectOperator from "components/Operator/SelectOperator";
+import Identity from "components/Identity/Identity";
 import { mockRandom } from "jest-mock-random";
-import { SelectOperator_query } from "__generated__/SelectOperator_query.graphql";
+import { Identity_query } from "__generated__/Identity_query.graphql";
 
 beforeEach(() => {
   mockRandom([0.3, 0.1, 0.4, 0.1, 0.5, 0.9]);
 });
 
-describe("The SelectOperator component", () => {
+describe("The Identity component", () => {
   it("matches the snapshot", () => {
-    const queryData: SelectOperator_query = {
+    const queryData: Identity_query = {
       query: {
         allOperators: {
           edges: [
@@ -34,7 +34,7 @@ describe("The SelectOperator component", () => {
           ],
         },
       },
-      " $refType": "SelectOperator_query",
+      " $refType": "Identity_query",
     };
 
     jest
@@ -42,7 +42,7 @@ describe("The SelectOperator component", () => {
       .mockImplementation(() => queryData);
 
     const componentUnderTest = render(
-      <SelectOperator
+      <Identity
         query={null}
         applyChange={() => null}
         formChangeData={{}}
@@ -53,7 +53,7 @@ describe("The SelectOperator component", () => {
   });
 
   it("renders n options for n edges in allOperators", () => {
-    const queryData: SelectOperator_query = {
+    const queryData: Identity_query = {
       query: {
         allOperators: {
           edges: [
@@ -78,7 +78,7 @@ describe("The SelectOperator component", () => {
           ],
         },
       },
-      " $refType": "SelectOperator_query",
+      " $refType": "Identity_query",
     };
 
     jest
@@ -86,7 +86,7 @@ describe("The SelectOperator component", () => {
       .mockImplementation(() => queryData);
 
     render(
-      <SelectOperator
+      <Identity
         query={null}
         applyChange={() => null}
         formChangeData={{}}
@@ -97,7 +97,7 @@ describe("The SelectOperator component", () => {
   });
 
   it("initializes the selected operator when one exists in the formChangeData", () => {
-    const queryData: SelectOperator_query = {
+    const queryData: Identity_query = {
       query: {
         allOperators: {
           edges: [
@@ -122,7 +122,7 @@ describe("The SelectOperator component", () => {
           ],
         },
       },
-      " $refType": "SelectOperator_query",
+      " $refType": "Identity_query",
     };
 
     jest
@@ -130,7 +130,7 @@ describe("The SelectOperator component", () => {
       .mockImplementation(() => queryData);
 
     render(
-      <SelectOperator
+      <Identity
         query={null}
         applyChange={() => null}
         formChangeData={{ operator_id: 1 }}

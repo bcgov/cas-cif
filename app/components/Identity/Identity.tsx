@@ -1,23 +1,40 @@
-import React, { useState } from "react";
-import type { SelectOperator_query$key } from "__generated__/SelectOperator_query.graphql";
+import React from "react";
+import type { Identity_query$key } from "__generated__/Identity_query.graphql";
 import { graphql, useFragment } from "react-relay";
 import { Dropdown } from "semantic-ui-react";
 import safeJsonParse from "lib/safeJsonParse";
+import Form from "lib/theme/service-development-toolkit-form";
+import { JSONSchema7 } from "json-schema";
 
 interface Props {
-  query: SelectOperator_query$key;
+  query: Identity_query$key;
   applyChange: (x: any) => void;
   formChangeData: any;
 }
 
-const SelectOperator: React.FC<Props> = ({
+const schema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    project_name: { type: "string", title:"" }
+  },
+};
+
+const uiSchema = {
+  project_name: {
+    "ui:placeholder": "2020-RFP-1-456-ABCD",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+  }
+};
+
+const Identity: React.FC<Props> = ({
   query,
   applyChange,
   formChangeData,
 }) => {
   const queryData = useFragment(
     graphql`
-      fragment SelectOperator_query on Query {
+      fragment Identity_query on Query {
         query {
           allOperators {
             edges {
@@ -36,22 +53,40 @@ const SelectOperator: React.FC<Props> = ({
     query
   );
 
+  // Override submit button for form with an empty fragment
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  const buttonOverride = <></>;
+
   const selectedOperator = formChangeData.operator_id
     ? queryData.query.allOperators.edges.find(
         (edge) => edge.node.rowId === formChangeData.operator_id
       ).node
     : null;
 
-  const handleChange = (e, data) => {
+  const handleDropdownChange = (e, data) => {
     e.preventDefault();
     e.stopPropagation();
     applyChange({ operator_id: safeJsonParse(data.value).rowId });
+  };
+
+  const onValueChanged = async (change) => {
+    const { formData } = change;
+    applyChange({ project_name: formData.project_name });
   };
 
   return (
     <>
       <fieldset>
         <legend>Identity</legend>
+        <strong>Project Name</strong>
+        <Form
+          schema={schema}
+          uiSchema={uiSchema}
+          formData={formChangeData}
+          onChange={onValueChanged}
+        >
+        {buttonOverride}
+        </Form>
         <strong>Legal Operator Name and BC Registry ID</strong>
         <Dropdown
           id="operator-dropdown"
@@ -61,7 +96,7 @@ const SelectOperator: React.FC<Props> = ({
           selection
           defaultValue={JSON.stringify(selectedOperator)}
           onChange={(e, data) => {
-            handleChange(e, data);
+            handleDropdownChange(e, data);
           }}
           options={queryData.query.allOperators.edges.map(({ node }) => {
             return {
@@ -76,6 +111,9 @@ const SelectOperator: React.FC<Props> = ({
       </fieldset>
       <style jsx>
         {`
+          .pg-input-label {
+            display: none;
+          }
           strong {
             font-size: 1.2em;
             margin-bottom: 1em;
@@ -105,4 +143,4 @@ const SelectOperator: React.FC<Props> = ({
   );
 };
 
-export default SelectOperator;
+export default Identity;
