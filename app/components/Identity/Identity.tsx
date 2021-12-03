@@ -15,7 +15,7 @@ interface Props {
 const schema: JSONSchema7 = {
   type: "object",
   properties: {
-    project_name: { type: "string", title:"" }
+    project_name: { type: "string", title: "" },
   },
 };
 
@@ -24,14 +24,10 @@ const uiSchema = {
     "ui:placeholder": "2020-RFP-1-456-ABCD",
     "ui:col-md": 12,
     "bcgov:size": "small",
-  }
+  },
 };
 
-const Identity: React.FC<Props> = ({
-  query,
-  applyChange,
-  formChangeData,
-}) => {
+const Identity: React.FC<Props> = ({ query, applyChange, formChangeData }) => {
   const queryData = useFragment(
     graphql`
       fragment Identity_query on Query {
@@ -85,7 +81,7 @@ const Identity: React.FC<Props> = ({
           formData={formChangeData}
           onChange={onValueChanged}
         >
-        {buttonOverride}
+          {buttonOverride}
         </Form>
         <strong>Legal Operator Name and BC Registry ID</strong>
         <Dropdown

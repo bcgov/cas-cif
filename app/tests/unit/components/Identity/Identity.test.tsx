@@ -42,11 +42,7 @@ describe("The Identity component", () => {
       .mockImplementation(() => queryData);
 
     const componentUnderTest = render(
-      <Identity
-        query={null}
-        applyChange={() => null}
-        formChangeData={{}}
-      />
+      <Identity query={null} applyChange={() => null} formChangeData={{}} />
     );
 
     expect(componentUnderTest.container).toMatchSnapshot();
@@ -86,11 +82,7 @@ describe("The Identity component", () => {
       .mockImplementation(() => queryData);
 
     render(
-      <Identity
-        query={null}
-        applyChange={() => null}
-        formChangeData={{}}
-      />
+      <Identity query={null} applyChange={() => null} formChangeData={{}} />
     );
 
     expect(screen.getAllByRole("option").length).toEqual(2);
