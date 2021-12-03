@@ -1,5 +1,7 @@
 import type { JSONSchema7 } from "json-schema";
+import React from "react";
 import FormBase from "./FormBase";
+import FormComponentProps from "./FormComponentProps";
 
 const schema: JSONSchema7 = {
   type: "object",
@@ -34,7 +36,9 @@ const createInitialData = (formData) => {
   };
 };
 
-const ProjectBackgroundForm = (props) => {
+const ProjectBackgroundForm: React.FunctionComponent<FormComponentProps> = (
+  props
+) => {
   return (
     <FormBase
       {...props}

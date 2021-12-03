@@ -2,10 +2,9 @@ import FormBorder from "components/Layout/FormBorder";
 import { useEffect, useRef } from "react";
 import Form from "lib/theme/service-development-toolkit-form";
 import { JSONSchema7 } from "json-schema";
-import { IFormComponent } from "./IFormComponent";
+import FormComponentProps from "./FormComponentProps";
 
-interface Props extends IFormComponent {
-  onFormErrors: (errorsObject: object) => void;
+interface Props extends FormComponentProps {
   createInitialData: (data: object) => object;
   schema: JSONSchema7;
   uiSchema: object;

@@ -8,11 +8,38 @@ exports[`The Project Background Form matches the snapshot 1`] = `
     <legend
       class="jsx-3408663875"
     >
-      Project Background
+      Background
     </legend>
     <form
       class="rjsf"
     >
+      <div
+        class="panel panel-danger errors"
+      >
+        <div
+          class="panel-heading"
+        >
+          <h3
+            class="panel-title"
+          >
+            Errors
+          </h3>
+        </div>
+        <ul
+          class="list-group"
+        >
+          <li
+            class="list-group-item text-danger"
+          >
+            .unique_project_id is a required property
+          </li>
+          <li
+            class="list-group-item text-danger"
+          >
+            .description is a required property
+          </li>
+        </ul>
+      </div>
       <fieldset
         class="sc-dlfnuX hBsleh pg-fieldset"
         id="root"
@@ -36,6 +63,17 @@ exports[`The Project Background Form matches the snapshot 1`] = `
             value=""
           />
         </div>
+        <div>
+          <ul
+            class="error-detail bs-callout bs-callout-info"
+          >
+            <li
+              class="text-danger"
+            >
+              is a required property
+            </li>
+          </ul>
+        </div>
         <div
           class="sc-hBEYId iNUeqH pg-input"
         >
@@ -54,6 +92,17 @@ exports[`The Project Background Form matches the snapshot 1`] = `
             required=""
             value=""
           />
+        </div>
+        <div>
+          <ul
+            class="error-detail bs-callout bs-callout-info"
+          >
+            <li
+              class="text-danger"
+            >
+              is a required property
+            </li>
+          </ul>
         </div>
       </fieldset>
     </form>
