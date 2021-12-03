@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
 import FormBorder from "components/Layout/FormBorder";
 
 interface Props {
   formData: any;
-  applyChangeFromComponent: (changeObject: object) => void;
+  applyChangesFromComponent: (changeObject: object) => void;
+  onFormErrors: (errorsObject: []) => void;
 }
 
 const schema: JSONSchema7 = {
@@ -15,7 +16,7 @@ const schema: JSONSchema7 = {
     unique_project_id: {
       type: "string",
       title: "Unique Project Identifier",
-      pattern: "^((d{4})-RFP-([1-2])-(d{3,4})-([A-Z]{4}))$",
+      pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
     },
     description: { type: "string", title: "Description" },
   },
@@ -36,7 +37,8 @@ const uiSchema = {
 
 const ProjectBackgroundForm: React.FunctionComponent<Props> = ({
   formData,
-  applyChangeFromComponent,
+  applyChangesFromComponent,
+  onFormErrors,
 }) => {
   // We restrict the data to only the fields we care about
   const intialData = {
@@ -44,20 +46,28 @@ const ProjectBackgroundForm: React.FunctionComponent<Props> = ({
     description: formData.description,
   };
 
+  const formRef = useRef();
+
+  useEffect(() => {
+    const { errors } = formRef.current.validate(intialData, schema);
+    onFormErrors(errors);
+  }, []);
+
   return (
     <>
       <FormBorder title="Background">
         <Form
+          // @ts-ignore
+          ref={formRef}
           schema={schema}
           uiSchema={uiSchema}
           formData={intialData}
           onChange={(change) => {
-            console.log(change);
-            if (change.errors.length === 0)
-              applyChangeFromComponent(change.formData);
+            applyChangesFromComponent(change.formData);
+            onFormErrors(change.errors);
           }}
           liveValidate
-        />
+        ></Form>
       </FormBorder>
     </>
   );

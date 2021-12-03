@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import ProjectBackgroundForm from "components/Project/ProjectBackgroundForm";
 import { Button } from "@button-inc/bcgov-theme";
 import Grid from "@button-inc/bcgov-theme/Grid";
+import { useState } from "react";
 
 export const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -28,6 +29,9 @@ export function CreateProject({
 }: RelayProps<{}, createProjectQuery>) {
   const router = useRouter();
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
+
+  const [hasErrors, setHasErrors] = useState(false);
+
   if (!query.formChange.id) return null;
 
   // Function: stage the change data in the form_change table
@@ -47,7 +51,7 @@ export function CreateProject({
   const formChangeData = query.formChange.newFormData;
 
   // A function to be called by individual components making changes to the overall form_change data
-  const applyChangeFromComponent = (changeObject: any) => {
+  const applyChangesFromComponent = (changeObject: any) => {
     const updatedFormData = { ...formChangeData, ...changeObject };
     storeResult(updatedFormData);
   };
@@ -65,7 +69,7 @@ export function CreateProject({
     });
   };
 
-  console.log(query.formChange.newFormData);
+  console.log("render");
 
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
@@ -75,12 +79,18 @@ export function CreateProject({
           <Grid.Col>
             <ProjectBackgroundForm
               formData={query.formChange.newFormData}
-              applyChangeFromComponent={applyChangeFromComponent}
+              applyChangesFromComponent={applyChangesFromComponent}
+              onFormErrors={(errors) => setHasErrors(errors.length > 0)}
             />
           </Grid.Col>
         </Grid.Row>
 
-        <Button size="medium" variant="primary" onClick={commitProject}>
+        <Button
+          size="medium"
+          variant="primary"
+          onClick={commitProject}
+          disabled={hasErrors}
+        >
           Commit Project Changes
         </Button>
       </Grid>
