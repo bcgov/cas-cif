@@ -30,7 +30,7 @@ export function CreateProject({
   const router = useRouter();
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
 
-  const [hasErrors, setHasErrors] = useState(false);
+  const [errors, setErrors] = useState({});
 
   if (!query.formChange.id) return null;
 
@@ -56,6 +56,10 @@ export function CreateProject({
     storeResult(updatedFormData);
   };
 
+  const onFormErrors = (incomingErrors: {}) => {
+    setErrors({ ...errors, ...incomingErrors });
+  };
+
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
   const commitProject = async () => {
     await updateFormChangeMutation(preloadedQuery.environment, {
@@ -69,8 +73,6 @@ export function CreateProject({
     });
   };
 
-  console.log("render");
-
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
       <h1>Create Project</h1>
@@ -80,7 +82,7 @@ export function CreateProject({
             <ProjectBackgroundForm
               formData={query.formChange.newFormData}
               applyChangesFromComponent={applyChangesFromComponent}
-              onFormErrors={(errors) => setHasErrors(errors.length > 0)}
+              onFormErrors={onFormErrors}
             />
           </Grid.Col>
         </Grid.Row>
@@ -89,7 +91,7 @@ export function CreateProject({
           size="medium"
           variant="primary"
           onClick={commitProject}
-          disabled={hasErrors}
+          disabled={Object.values(errors).some((val) => val)}
         >
           Commit Project Changes
         </Button>

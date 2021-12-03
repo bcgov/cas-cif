@@ -1,13 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
-import FormBorder from "components/Layout/FormBorder";
-
-interface Props {
-  formData: any;
-  applyChangesFromComponent: (changeObject: object) => void;
-  onFormErrors: (errorsObject: []) => void;
-}
+import FormBase from "./FormBase";
 
 const schema: JSONSchema7 = {
   type: "object",
@@ -35,41 +27,21 @@ const uiSchema = {
   },
 };
 
-const ProjectBackgroundForm: React.FunctionComponent<Props> = ({
-  formData,
-  applyChangesFromComponent,
-  onFormErrors,
-}) => {
-  // We restrict the data to only the fields we care about
-  const intialData = {
-    unique_project_id: formData.unique_project_id,
-    description: formData.description,
+const createInitialData = (formData) => {
+  return {
+    unique_project_id: formData.unique_project_id || undefined,
+    description: formData.description || undefined,
   };
+};
 
-  const formRef = useRef();
-
-  useEffect(() => {
-    const { errors } = formRef.current.validate(intialData, schema);
-    onFormErrors(errors);
-  }, []);
-
+const ProjectBackgroundForm = (props) => {
   return (
-    <>
-      <FormBorder title="Background">
-        <Form
-          // @ts-ignore
-          ref={formRef}
-          schema={schema}
-          uiSchema={uiSchema}
-          formData={intialData}
-          onChange={(change) => {
-            applyChangesFromComponent(change.formData);
-            onFormErrors(change.errors);
-          }}
-          liveValidate
-        ></Form>
-      </FormBorder>
-    </>
+    <FormBase
+      {...props}
+      createInitialData={createInitialData}
+      schema={schema}
+      uiSchema={uiSchema}
+    />
   );
 };
 

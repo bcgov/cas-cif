@@ -88,7 +88,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       <h1>Pending Projects</h1>
       {query.allFormChanges.edges.length === 0 && <p>None</p>}
       {query.allFormChanges.edges.map(({ node }) => {
-        const cardTitle = `${node.newFormData.cif_identifier} (${node.changeStatus})`;
+        const cardTitle = `${node.newFormData.unique_project_id} (${node.changeStatus})`;
         return (
           <Card title={cardTitle} key={node.id}>
             <p>Description: {node.newFormData.description}</p>

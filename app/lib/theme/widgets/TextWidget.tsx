@@ -15,7 +15,7 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
     <>
       <Input
         id={id}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value || undefined)}
         placeholder={placeholder}
         label={getRequiredLabel(label, required)}
         value={value || ""}
