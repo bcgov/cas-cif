@@ -10,7 +10,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import { useState } from "react";
 
-export const CreateProjectQuery = graphql`
+const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
     query {
       session {
