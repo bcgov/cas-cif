@@ -81,7 +81,7 @@ export function CreateProject({
           <Grid.Col>
             <ProjectBackgroundForm
               formData={query.formChange.newFormData}
-              applyChangesFromComponent={applyChangesFromComponent}
+              onChange={applyChangesFromComponent}
               onFormErrors={onFormErrors}
             />
           </Grid.Col>

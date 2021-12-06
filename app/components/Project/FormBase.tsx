@@ -12,7 +12,7 @@ interface Props extends FormComponentProps {
 
 const FormBase: React.FunctionComponent<Props> = ({
   formData,
-  applyChangesFromComponent,
+  onChange,
   onFormErrors,
   createInitialData,
   schema,
@@ -54,10 +54,11 @@ const FormBase: React.FunctionComponent<Props> = ({
         uiSchema={uiSchema}
         formData={initialData}
         onChange={(change) => {
-          applyChangesFromComponent(change.formData);
+          onChange(change.formData);
           onFormErrors(makeErrorsObject(change.errorSchema));
         }}
         liveValidate
+        omitExtraData
       ></Form>
     </FormBorder>
   );

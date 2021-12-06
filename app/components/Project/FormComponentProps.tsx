@@ -1,5 +1,5 @@
 export default interface FormComponentProps {
   formData: any;
-  applyChangesFromComponent: (changeObject: object) => void;
+  onChange: (changeObject: object) => void;
   onFormErrors: (errorsObject: object) => void;
 }
