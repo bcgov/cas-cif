@@ -84,7 +84,7 @@ describe("The Create Project page", () => {
       </RelayEnvironmentProvider>
     );
 
-    mockProjectBackground.props.applyChangesFromComponent({
+    mockProjectBackground.props.onChange({
       someQueryData: "testvalue",
       other: 123,
     });

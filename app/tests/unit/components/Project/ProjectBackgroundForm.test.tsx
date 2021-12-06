@@ -6,7 +6,7 @@ describe("The Project Background Form", () => {
   it("matches the snapshot", () => {
     const props: FormComponentProps = {
       formData: {},
-      applyChangesFromComponent: jest.fn(),
+      onChange: jest.fn(),
       onFormErrors: jest.fn(),
     };
 
@@ -15,11 +15,11 @@ describe("The Project Background Form", () => {
     expect(componentUnderTest.container).toMatchSnapshot();
   });
   it("triggers the applyFormChange with the proper data", () => {
-    const applySpy = jest.fn();
+    const changeSpy = jest.fn();
 
     const props: FormComponentProps = {
       formData: {},
-      applyChangesFromComponent: applySpy,
+      onChange: changeSpy,
       onFormErrors: jest.fn(),
     };
 
@@ -29,17 +29,17 @@ describe("The Project Background Form", () => {
       target: { value: "testidentifier" },
     });
 
-    expect(applySpy).toHaveBeenCalledWith({
+    expect(changeSpy).toHaveBeenCalledWith({
       rfp_number: "testidentifier",
       description: undefined,
     });
-    applySpy.mockClear();
+    changeSpy.mockClear();
 
     fireEvent.change(screen.getByLabelText("Description*"), {
       target: { value: "testdescription" },
     });
 
-    expect(applySpy).toHaveBeenCalledWith({
+    expect(changeSpy).toHaveBeenCalledWith({
       rfp_number: "testidentifier",
       description: "testdescription",
     });
@@ -50,7 +50,7 @@ describe("The Project Background Form", () => {
         rfp_number: "12345678",
         description: "d",
       },
-      applyChangesFromComponent: jest.fn(),
+      onChange: jest.fn(),
       onFormErrors: jest.fn(),
     };
 
@@ -67,7 +67,7 @@ describe("The Project Background Form", () => {
         rfp_number: "12345678",
         description: "d",
       },
-      applyChangesFromComponent: jest.fn(),
+      onChange: jest.fn(),
       onFormErrors: onFormErrorsSpy,
     };
 
@@ -89,7 +89,7 @@ describe("The Project Background Form", () => {
         rfp_number: "1999-RFP-1-123-ABCD",
         description: "d",
       },
-      applyChangesFromComponent: jest.fn(),
+      onChange: jest.fn(),
       onFormErrors: onFormErrorsSpy,
     };
 
@@ -111,7 +111,7 @@ describe("The Project Background Form", () => {
         rfp_number: "1999-RFP-1-123-ABCD",
         description: "desc",
       },
-      applyChangesFromComponent: jest.fn(),
+      onChange: jest.fn(),
       onFormErrors: onFormErrorsSpy,
     };
 
@@ -137,7 +137,7 @@ describe("The Project Background Form", () => {
         rfp_number: "1999123-RFP-1-123-ABCD",
         description: "desc",
       },
-      applyChangesFromComponent: jest.fn(),
+      onChange: jest.fn(),
       onFormErrors: onFormErrorsSpy,
     };
 
