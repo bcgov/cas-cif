@@ -21,7 +21,7 @@ const TextWidget: React.FunctionComponent<WidgetProps> = ({
         value={value || ""}
         size={(uiSchema && uiSchema["bcgov:size"]) || "medium"}
         required={required}
-      ></Input>
+      />
       <style jsx>
         {`
           :global(input) {

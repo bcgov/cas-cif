@@ -1,7 +1,7 @@
 import FormBorder from "components/Layout/FormBorder";
 import { useEffect, useRef } from "react";
 import Form from "lib/theme/service-development-toolkit-form";
-import { JSONSchema7 } from "json-schema";
+import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 
 interface Props extends FormComponentProps {
@@ -38,28 +38,28 @@ const FormBase: React.FunctionComponent<Props> = ({
   const formRef = useRef();
 
   useEffect(() => {
-    // @ts-ignore
-    const { errorSchema } = formRef.current.validate(initialData, schema);
+    const { errorSchema } = (formRef.current as any)?.validate(
+      initialData,
+      schema
+    );
     onFormErrors(makeErrorsObject(errorSchema));
   }, []);
 
   return (
-    <>
-      <FormBorder title="Background">
-        <Form
-          // @ts-ignore
-          ref={formRef}
-          schema={schema}
-          uiSchema={uiSchema}
-          formData={initialData}
-          onChange={(change) => {
-            applyChangesFromComponent(change.formData);
-            onFormErrors(makeErrorsObject(change.errorSchema));
-          }}
-          liveValidate
-        ></Form>
-      </FormBorder>
-    </>
+    <FormBorder title="Background">
+      <Form
+        // @ts-ignore
+        ref={formRef}
+        schema={schema}
+        uiSchema={uiSchema}
+        formData={initialData}
+        onChange={(change) => {
+          applyChangesFromComponent(change.formData);
+          onFormErrors(makeErrorsObject(change.errorSchema));
+        }}
+        liveValidate
+      ></Form>
+    </FormBorder>
   );
 };
 
