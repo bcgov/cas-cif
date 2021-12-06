@@ -25,12 +25,12 @@ describe("The Project Background Form", () => {
 
     render(<ProjectBackgroundForm {...props} />);
 
-    fireEvent.change(screen.getByLabelText("Unique Project Identifier*"), {
+    fireEvent.change(screen.getByLabelText("RFP Number*"), {
       target: { value: "testidentifier" },
     });
 
     expect(applySpy).toHaveBeenCalledWith({
-      unique_project_id: "testidentifier",
+      rfp_number: "testidentifier",
       description: undefined,
     });
     applySpy.mockClear();
@@ -40,14 +40,14 @@ describe("The Project Background Form", () => {
     });
 
     expect(applySpy).toHaveBeenCalledWith({
-      unique_project_id: "testidentifier",
+      rfp_number: "testidentifier",
       description: "testdescription",
     });
   });
   it("loads with the correct initial form data", () => {
     const props: FormComponentProps = {
       formData: {
-        unique_project_id: "12345678",
+        rfp_number: "12345678",
         description: "d",
       },
       applyChangesFromComponent: jest.fn(),
@@ -56,9 +56,7 @@ describe("The Project Background Form", () => {
 
     render(<ProjectBackgroundForm {...props} />);
 
-    expect(screen.getByLabelText("Unique Project Identifier*").value).toBe(
-      "12345678"
-    );
+    expect(screen.getByLabelText("RFP Number*").value).toBe("12345678");
     expect(screen.getByLabelText("Description*").value).toBe("d");
   });
   it("calls onformerrors on first render if there are errors", () => {
@@ -66,7 +64,7 @@ describe("The Project Background Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        unique_project_id: "12345678",
+        rfp_number: "12345678",
         description: "d",
       },
       applyChangesFromComponent: jest.fn(),
@@ -77,7 +75,7 @@ describe("The Project Background Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        unique_project_id: expect.anything(),
+        rfp_number: expect.anything(),
         description: null,
       })
     );
@@ -88,7 +86,7 @@ describe("The Project Background Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        unique_project_id: "1999-RFP-1-123-ABCD",
+        rfp_number: "1999-RFP-1-123-ABCD",
         description: "d",
       },
       applyChangesFromComponent: jest.fn(),
@@ -99,7 +97,7 @@ describe("The Project Background Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        unique_project_id: null,
+        rfp_number: null,
         description: null,
       })
     );
@@ -110,7 +108,7 @@ describe("The Project Background Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        unique_project_id: "1999-RFP-1-123-ABCD",
+        rfp_number: "1999-RFP-1-123-ABCD",
         description: "desc",
       },
       applyChangesFromComponent: jest.fn(),
@@ -125,7 +123,7 @@ describe("The Project Background Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        unique_project_id: null,
+        rfp_number: null,
         description: { __errors: ["is a required property"] },
       })
     );
@@ -136,7 +134,7 @@ describe("The Project Background Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        unique_project_id: "1999123-RFP-1-123-ABCD",
+        rfp_number: "1999123-RFP-1-123-ABCD",
         description: "desc",
       },
       applyChangesFromComponent: jest.fn(),
@@ -147,7 +145,7 @@ describe("The Project Background Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        unique_project_id: expect.anything(),
+        rfp_number: expect.anything(),
         description: null,
       })
     );

@@ -5,11 +5,11 @@ import FormComponentProps from "./FormComponentProps";
 
 const schema: JSONSchema7 = {
   type: "object",
-  required: ["unique_project_id", "description"],
+  required: ["rfp_number", "description"],
   properties: {
-    unique_project_id: {
+    rfp_number: {
       type: "string",
-      title: "Unique Project Identifier",
+      title: "RFP Number",
       pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
     },
     description: { type: "string", title: "Description" },
@@ -17,7 +17,7 @@ const schema: JSONSchema7 = {
 };
 
 const uiSchema = {
-  unique_project_id: {
+  rfp_number: {
     "ui:placeholder": "2020-RFP-1-456-ABCD",
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -31,7 +31,7 @@ const uiSchema = {
 
 const createInitialData = (formData) => {
   return {
-    unique_project_id: formData.unique_project_id || undefined,
+    rfp_number: formData.rfp_number || undefined,
     description: formData.description || undefined,
   };
 };
