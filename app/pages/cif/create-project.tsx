@@ -5,7 +5,7 @@ import { createProjectQuery } from "__generated__/createProjectQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import updateFormChangeMutation from "mutations/FormChange/updateFormChange";
 import { useRouter } from "next/router";
-import ProjectBackgroundForm from "components/Project/ProjectBackgroundForm";
+import ProjectForm from "components/Project/ProjectForm";
 import { Button } from "@button-inc/bcgov-theme";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import { useState } from "react";
@@ -79,7 +79,7 @@ export function CreateProject({
       <Grid cols={2}>
         <Grid.Row>
           <Grid.Col>
-            <ProjectBackgroundForm
+            <ProjectForm
               formData={query.formChange.newFormData}
               onChange={applyChangesFromComponent}
               onFormErrors={onFormErrors}

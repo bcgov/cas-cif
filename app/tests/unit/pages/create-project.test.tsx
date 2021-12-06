@@ -63,11 +63,11 @@ describe("The Create Project page", () => {
   });
 
   it("calls the updateFormChange mutation when the component calls the callback", async () => {
-    const mockProjectBackground: any = { props: {} };
+    const mockProjectForm: any = { props: {} };
     jest
-      .spyOn(require("components/Project/ProjectBackgroundForm"), "default")
+      .spyOn(require("components/Project/ProjectForm"), "default")
       .mockImplementation((props) => {
-        mockProjectBackground.props = props;
+        mockProjectForm.props = props;
         return null;
       });
 
@@ -84,7 +84,7 @@ describe("The Create Project page", () => {
       </RelayEnvironmentProvider>
     );
 
-    mockProjectBackground.props.onChange({
+    mockProjectForm.props.onChange({
       someQueryData: "testvalue",
       other: 123,
     });
@@ -102,7 +102,7 @@ describe("The Create Project page", () => {
 
   it("calls the updateFormChange mutation when the Submit Button is clicked & input values are valid", async () => {
     jest
-      .spyOn(require("components/Project/ProjectBackgroundForm"), "default")
+      .spyOn(require("components/Project/ProjectForm"), "default")
       .mockImplementation(() => {
         return null;
       });
@@ -136,11 +136,11 @@ describe("The Create Project page", () => {
   });
 
   it("Renders a disabled button when the form reports errors", async () => {
-    const mockProjectBackground: any = { props: {} };
+    const mockProjectForm: any = { props: {} };
     jest
-      .spyOn(require("components/Project/ProjectBackgroundForm"), "default")
+      .spyOn(require("components/Project/ProjectForm"), "default")
       .mockImplementation((props) => {
-        mockProjectBackground.props = props;
+        mockProjectForm.props = props;
         return null;
       });
 
@@ -158,7 +158,7 @@ describe("The Create Project page", () => {
     );
 
     act(() => {
-      mockProjectBackground.props.onFormErrors({
+      mockProjectForm.props.onFormErrors({
         testfield: { haserrors: true },
       });
     });
@@ -167,11 +167,11 @@ describe("The Create Project page", () => {
   });
 
   it("Renders an enabled button when the form reports no errors", async () => {
-    const mockProjectBackground: any = { props: {} };
+    const mockProjectForm: any = { props: {} };
     jest
-      .spyOn(require("components/Project/ProjectBackgroundForm"), "default")
+      .spyOn(require("components/Project/ProjectForm"), "default")
       .mockImplementation((props) => {
-        mockProjectBackground.props = props;
+        mockProjectForm.props = props;
         return null;
       });
 
@@ -190,7 +190,7 @@ describe("The Create Project page", () => {
     );
 
     act(() => {
-      mockProjectBackground.props.onFormErrors({
+      mockProjectForm.props.onFormErrors({
         testfield: null,
       });
     });

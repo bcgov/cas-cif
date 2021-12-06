@@ -1,7 +1,7 @@
 import type { JSONSchema7 } from "json-schema";
 import React from "react";
-import FormBase from "./FormBase";
-import FormComponentProps from "./FormComponentProps";
+import FormBase from "../Form/FormBase";
+import FormComponentProps from "../Form/FormComponentProps";
 
 const schema: JSONSchema7 = {
   type: "object",
@@ -29,24 +29,8 @@ const uiSchema = {
   },
 };
 
-const createInitialData = (formData) => {
-  return {
-    rfp_number: formData.rfp_number || undefined,
-    description: formData.description || undefined,
-  };
+const ProjectForm: React.FunctionComponent<FormComponentProps> = (props) => {
+  return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
 };
 
-const ProjectBackgroundForm: React.FunctionComponent<FormComponentProps> = (
-  props
-) => {
-  return (
-    <FormBase
-      {...props}
-      createInitialData={createInitialData}
-      schema={schema}
-      uiSchema={uiSchema}
-    />
-  );
-};
-
-export default ProjectBackgroundForm;
+export default ProjectForm;

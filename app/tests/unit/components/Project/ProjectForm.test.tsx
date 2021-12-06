@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import FormComponentProps from "components/Project/FormComponentProps";
-import ProjectBackgroundForm from "components/Project/ProjectBackgroundForm";
+import FormComponentProps from "components/Form/FormComponentProps";
+import ProjectForm from "components/Project/ProjectForm";
 
-describe("The Project Background Form", () => {
+describe("The Project Form", () => {
   it("matches the snapshot", () => {
     const props: FormComponentProps = {
       formData: {},
@@ -10,7 +10,7 @@ describe("The Project Background Form", () => {
       onFormErrors: jest.fn(),
     };
 
-    const componentUnderTest = render(<ProjectBackgroundForm {...props} />);
+    const componentUnderTest = render(<ProjectForm {...props} />);
 
     expect(componentUnderTest.container).toMatchSnapshot();
   });
@@ -23,7 +23,7 @@ describe("The Project Background Form", () => {
       onFormErrors: jest.fn(),
     };
 
-    render(<ProjectBackgroundForm {...props} />);
+    render(<ProjectForm {...props} />);
 
     fireEvent.change(screen.getByLabelText("RFP Number*"), {
       target: { value: "testidentifier" },
@@ -54,7 +54,7 @@ describe("The Project Background Form", () => {
       onFormErrors: jest.fn(),
     };
 
-    render(<ProjectBackgroundForm {...props} />);
+    render(<ProjectForm {...props} />);
 
     expect(screen.getByLabelText("RFP Number*").value).toBe("12345678");
     expect(screen.getByLabelText("Description*").value).toBe("d");
@@ -71,7 +71,7 @@ describe("The Project Background Form", () => {
       onFormErrors: onFormErrorsSpy,
     };
 
-    render(<ProjectBackgroundForm {...props} />);
+    render(<ProjectForm {...props} />);
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -93,7 +93,7 @@ describe("The Project Background Form", () => {
       onFormErrors: onFormErrorsSpy,
     };
 
-    render(<ProjectBackgroundForm {...props} />);
+    render(<ProjectForm {...props} />);
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -115,7 +115,7 @@ describe("The Project Background Form", () => {
       onFormErrors: onFormErrorsSpy,
     };
 
-    render(<ProjectBackgroundForm {...props} />);
+    render(<ProjectForm {...props} />);
 
     fireEvent.change(screen.getByLabelText("Description*"), {
       target: { value: "" },
@@ -141,7 +141,7 @@ describe("The Project Background Form", () => {
       onFormErrors: onFormErrorsSpy,
     };
 
-    render(<ProjectBackgroundForm {...props} />);
+    render(<ProjectForm {...props} />);
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({

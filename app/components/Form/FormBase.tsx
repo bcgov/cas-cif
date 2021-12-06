@@ -5,7 +5,6 @@ import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 
 interface Props extends FormComponentProps {
-  createInitialData: (data: object) => object;
   schema: JSONSchema7;
   uiSchema: object;
 }
@@ -14,16 +13,13 @@ const FormBase: React.FunctionComponent<Props> = ({
   formData,
   onChange,
   onFormErrors,
-  createInitialData,
   schema,
   uiSchema,
 }) => {
-  // We restrict the data to only the fields we care about
-  // It's important to default to `undefined` so we trigger the errors on rjsf
-  const initialData = createInitialData(formData);
-
+  // It's important to default to `undefined` when there are no errors, so that the main form knows
+  // some errors may have disappeared.
   const makeErrorsObject = (errorSchema) => {
-    const keys = Object.keys(initialData);
+    const keys = Object.keys(formData);
     const returnVal = {};
     keys.forEach((key) => {
       if (errorSchema[key]) {
@@ -39,7 +35,7 @@ const FormBase: React.FunctionComponent<Props> = ({
 
   useEffect(() => {
     const { errorSchema } = (formRef.current as any)?.validate(
-      initialData,
+      formData,
       schema
     );
     onFormErrors(makeErrorsObject(errorSchema));
@@ -52,7 +48,7 @@ const FormBase: React.FunctionComponent<Props> = ({
         ref={formRef}
         schema={schema}
         uiSchema={uiSchema}
-        formData={initialData}
+        formData={formData}
         onChange={(change) => {
           onChange(change.formData);
           onFormErrors(makeErrorsObject(change.errorSchema));
