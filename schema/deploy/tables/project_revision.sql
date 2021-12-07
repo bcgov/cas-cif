@@ -4,7 +4,7 @@ begin;
 
 create table cif.project_revision (
   id integer primary key generated always as identity,
-  project_id integer not null references cif.project(id),
+  project_id integer,
   change_status varchar(1000) default 'pending' references cif.change_status
 );
 
@@ -31,7 +31,7 @@ $grant$;
 
 comment on table cif.project_revision is 'Table containing all the changes for a project revision';
 comment on column cif.project_revision.id is 'Unique ID for the project revision';
-comment on column cif.project_revision.project_id is 'Foreign key to the associated project row';
+comment on column cif.project_revision.project_id is 'Foreign key to the associated project row. Will be null if the project hasn''t been committed yet.';
 comment on column cif.project_revision.change_status is 'Foreign key to the status of the project revision';
 
 commit;

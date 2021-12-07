@@ -4,7 +4,7 @@
 begin;
 
 create or replace function cif.create_project()
-returns cif.form_change
+returns cif.project_revision
 as $function$
 declare
   revision_row cif.project_revision;
@@ -24,6 +24,7 @@ begin
     form_data_schema_name,
     form_data_table_name,
     form_data_record_id,
+    project_revision_id,
     change_status,
     change_reason
   ) values (
@@ -32,8 +33,29 @@ begin
     'cif',
     'project',
     revision_row.project_id,
+    revision_row.id,
     'pending',
-    'create new project'
+    'Creating new project: project record'
+  );
+
+  insert into cif.form_change(
+    new_form_data,
+    operation,
+    form_data_schema_name,
+    form_data_table_name,
+    form_data_record_id,
+    project_revision_id,
+    change_status,
+    change_reason
+  ) values (
+    '{}',
+    'INSERT',
+    'cif',
+    'project_manager',
+    revision_row.project_id,
+    revision_row.id,
+    'pending',
+    'Creating new project: project_manager record'
   );
 
   return revision_row;
