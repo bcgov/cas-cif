@@ -37,7 +37,7 @@ export function CreateProject({
   preloadedQuery,
 }: RelayProps<{}, createProjectQuery>) {
   const router = useRouter();
-  const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
+  const { query, fragmentData } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
 
   const [errors, setErrors] = useState({});
   const [updateFormChange, updatingFormChange] = useDebouncedMutation(mutation);
