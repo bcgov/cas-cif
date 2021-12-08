@@ -98,8 +98,13 @@ export function CreateProject({
     storeResult(formId, changeObject);
   };
 
-  const onFormErrors = (formId: string, incomingErrors: {}) => {
+  const onFormErrors = (formId: string, incomingErrors: Array<any>) => {
     setErrors({ ...errors, [formId]: incomingErrors });
+  };
+
+  const hasErrors = (formChangeEdges, errorsObject: {}) => {
+    const ids = formChangeEdges.map((edge) => edge.node.id);
+    return ids.some((id) => errorsObject[id] && errorsObject[id].length > 0);
   };
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
@@ -137,13 +142,15 @@ export function CreateProject({
               onFormErrors={onFormErrors}
               query={query}
             />
-            {query.projectRevision.formChangesByProjectRevisionId.edges.forEach(
+
+            {query.projectRevision.formChangesByProjectRevisionId.edges.map(
               ({ node }) => {
                 const { FormComponent } = formComponentFactory.createFormFor(
                   node.formDataTableName
                 );
                 return (
                   <FormComponent
+                    key={"form-component-" + node.formDataTableName}
                     formData={node.newFormData}
                     onChange={(changeData) =>
                       applyChangesFromComponent(node.id, changeData)
@@ -162,7 +169,10 @@ export function CreateProject({
           size="medium"
           variant="primary"
           onClick={commitProject}
-          disabled={Object.values(errors).some((val) => val)}
+          disabled={hasErrors(
+            query.projectRevision.formChangesByProjectRevisionId.edges,
+            errors
+          )}
         >
           Commit Project Changes
         </Button>

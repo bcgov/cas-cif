@@ -16,21 +16,6 @@ const FormBase: React.FC<Props> = ({
   schema,
   uiSchema,
 }) => {
-  // It's important to default to `undefined` when there are no errors, so that the main form knows
-  // some errors may have disappeared.
-  const makeErrorsObject = (errorSchema) => {
-    const keys = Object.keys(formData);
-    const returnVal = {};
-    keys.forEach((key) => {
-      if (errorSchema[key]) {
-        returnVal[key] = errorSchema[key];
-      } else {
-        returnVal[key] = null;
-      }
-    });
-    return returnVal;
-  };
-
   const formRef = useRef();
 
   return (
@@ -43,7 +28,7 @@ const FormBase: React.FC<Props> = ({
         formData={formData}
         onChange={(change) => {
           onChange(change.formData);
-          onFormErrors(makeErrorsObject(change.errorSchema));
+          onFormErrors(change.errors);
         }}
         liveValidate
         omitExtraData
