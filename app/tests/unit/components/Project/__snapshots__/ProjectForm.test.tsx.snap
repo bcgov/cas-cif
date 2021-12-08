@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Project Form matches the snapshot 1`] = `
+<div>
+  <fieldset
+    class="jsx-3408663875"
+  >
+    <legend
+      class="jsx-3408663875"
+    >
+      Background
+    </legend>
+    <form
+      class="rjsf"
+    >
+      <div
+        class="panel panel-danger errors"
+      >
+        <div
+          class="panel-heading"
+        >
+          <h3
+            class="panel-title"
+          >
+            Errors
+          </h3>
+        </div>
+        <ul
+          class="list-group"
+        >
+          <li
+            class="list-group-item text-danger"
+          >
+            .rfp_number is a required property
+          </li>
+          <li
+            class="list-group-item text-danger"
+          >
+            .description is a required property
+          </li>
+        </ul>
+      </div>
+      <fieldset
+        class="sc-dlfnuX hBsleh pg-fieldset"
+        id="root"
+      >
+        <div
+          class="sc-hBEYId iNUeqH pg-input"
+        >
+          <label
+            class="sc-fodVek ensGkx pg-input-label"
+            for="root_rfp_number"
+          >
+            RFP Number*
+          </label>
+          <input
+            aria-label="RFP Number*"
+            class="sc-fFucqa ljMVny pg-input-input"
+            id="root_rfp_number"
+            name="root_rfp_number-input"
+            placeholder="2020-RFP-1-456-ABCD"
+            required=""
+            value=""
+          />
+        </div>
+        <div>
+          <ul
+            class="error-detail bs-callout bs-callout-info"
+          >
+            <li
+              class="text-danger"
+            >
+              is a required property
+            </li>
+          </ul>
+        </div>
+        <div
+          class="sc-hBEYId iNUeqH pg-input"
+        >
+          <label
+            class="sc-fodVek ensGkx pg-input-label"
+            for="root_description"
+          >
+            Description*
+          </label>
+          <input
+            aria-label="Description*"
+            class="sc-fFucqa ljMVny pg-input-input"
+            id="root_description"
+            name="root_description-input"
+            placeholder="describe the project..."
+            required=""
+            value=""
+          />
+        </div>
+        <div>
+          <ul
+            class="error-detail bs-callout bs-callout-info"
+          >
+            <li
+              class="text-danger"
+            >
+              is a required property
+            </li>
+          </ul>
+        </div>
+      </fieldset>
+    </form>
+  </fieldset>
+</div>
+`;
