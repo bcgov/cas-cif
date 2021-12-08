@@ -67,11 +67,11 @@ nginx-sidecar:
 
 resources:
   limits:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 800m
+    memory: 1Gi
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 200m
+    memory: 256Mi
 
 autoscaling:
   enabled: false
