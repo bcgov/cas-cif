@@ -21,6 +21,7 @@ const FormBase: React.FC<Props> = ({
   return (
     <FormBorder title={schema.title}>
       <Form
+        noHtml5Validate
         // @ts-ignore
         ref={formRef}
         schema={schema}
@@ -30,7 +31,6 @@ const FormBase: React.FC<Props> = ({
           onChange(change.formData);
           onFormErrors(change.errors);
         }}
-        liveValidate
         omitExtraData
       ></Form>
       <style jsx>{`
