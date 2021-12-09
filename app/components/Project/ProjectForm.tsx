@@ -23,6 +23,15 @@ const ProjectForm: React.FC<Props> = (props) => {
               }
             }
           }
+          allFundingStreams {
+            edges {
+              node {
+                rowId
+                name
+                description
+              }
+            }
+          }
         }
       }
     `,
@@ -37,9 +46,22 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   }
 
+  // If there is a funding stream selected, retrieve it to populate the description field below in the UI Schema.
+  let selectedFundingStream;
+  if (props.formData.fundingStreamId) {
+    selectedFundingStream = query.allFundingStreams.edges.find(
+      ({ node }) => node.rowId === props.formData.fundingStreamId
+    );
+  }
+
   const schema: JSONSchema7 = {
     type: "object",
-    required: ["rfpNumber", "description", "operatorId"],
+    required: [
+      "rfpNumber", 
+      "description", 
+      "operatorId", 
+      "fundingStreamId"
+    ],
     properties: {
       rfpNumber: {
         type: "string",
@@ -61,6 +83,22 @@ const ProjectForm: React.FC<Props> = (props) => {
         }),
       },
       operatorTradeName: {
+        type: "string",
+      },
+      fundingStreamId: {
+        type: "number",
+        title: "Funding Stream ID",
+        default: undefined,
+        anyOf: query.allFundingStreams.edges.map(({ node }) => {
+          return {
+            type: "number",
+            title: node.name,
+            enum: [node.rowId],
+            value: node.rowId,
+          };
+        }),
+      },
+      fundingStreamDescription: {
         type: "string",
       },
     },
@@ -90,6 +128,21 @@ const ProjectForm: React.FC<Props> = (props) => {
       "ui:options": {
         text: `${selectedOperator ? selectedOperator.node.tradeName : ""}`,
         title: "Trade Name",
+      },
+    },
+    fundingStreamId: {
+      "ui:placeholder": "Select a Funding Stream",
+      "ui:widget": "select",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+    fundingStreamDescription: {
+      "ui:col-md": 12,
+      "ui:widget": "DisplayOnly",
+      "bcgov:size": "large",
+      "ui:options": {
+        text: `${selectedFundingStream ? selectedFundingStream.node.description : ""}`,
+        title: "Description",
       },
     },
   };

@@ -86,6 +86,7 @@ describe("The Project Form", () => {
       rfpNumber: "12345678",
       description: "d",
       operatorId: 1,
+      fundingStreamId: 1,
     };
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -98,6 +99,17 @@ describe("The Project Form", () => {
                     rowId: 1,
                     legalName: "test operator",
                     bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
                   },
                 },
               ],
@@ -116,6 +128,9 @@ describe("The Project Form", () => {
     expect(screen.getByPlaceholderText("Select an Operator").value).toBe(
       "test operator (1234abcd)"
     );
+    expect(screen.getByPlaceholderText("Select a Funding Stream").value).toBe(
+      "EP"
+    );
   });
   it("calls onformerrors on first render if there are errors", () => {
     const onFormErrorsSpy = jest.fn();
@@ -124,6 +139,7 @@ describe("The Project Form", () => {
       rfpNumber: "",
       description: "",
       operatorId: 1,
+      fundingStreamId: 1,
     };
     props.onFormErrors = onFormErrorsSpy;
 
@@ -138,6 +154,17 @@ describe("The Project Form", () => {
                     rowId: 1,
                     legalName: "test operator",
                     bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
                   },
                 },
               ],
@@ -166,6 +193,7 @@ describe("The Project Form", () => {
       rfpNumber: "1999-RFP-1-123-ABCD",
       description: "d",
       operatorId: 1,
+      fundingStreamId: 1,
     };
     props.onFormErrors = onFormErrorsSpy;
     environment.mock.queueOperationResolver((operation) =>
@@ -179,6 +207,17 @@ describe("The Project Form", () => {
                     rowId: 1,
                     legalName: "test operator",
                     bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
                   },
                 },
               ],
@@ -197,6 +236,7 @@ describe("The Project Form", () => {
         rfpNumber: null,
         description: null,
         operatorId: null,
+        fundingStreamId: null,
       })
     );
   });
@@ -221,6 +261,17 @@ describe("The Project Form", () => {
                     rowId: 1,
                     legalName: "test operator",
                     bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
                   },
                 },
               ],
@@ -253,6 +304,7 @@ describe("The Project Form", () => {
       rfpNumber: "1999123-RFP-1-123-ABCD",
       description: "desc",
       operatorId: 1,
+      fundingStreamId: 1,
     };
     props.onFormErrors = onFormErrorsSpy;
 
@@ -271,6 +323,17 @@ describe("The Project Form", () => {
                 },
               ],
             },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
           };
         },
       })
@@ -285,6 +348,7 @@ describe("The Project Form", () => {
         rfpNumber: expect.anything(),
         description: null,
         operatorId: null,
+        fundingStreamId: null,
       })
     );
   });

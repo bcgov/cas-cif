@@ -6,7 +6,7 @@ import FormComponentProps from "./FormComponentProps";
 
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
-  uiSchema: object;
+  uiSchema: {};
 }
 
 const FormBase: React.FC<Props> = ({
@@ -42,7 +42,7 @@ const FormBase: React.FC<Props> = ({
   }, []);
 
   return (
-    <FormBorder title="Background">
+    <FormBorder title={schema.title}>
       <Form
         // @ts-ignore
         ref={formRef}

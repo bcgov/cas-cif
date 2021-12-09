@@ -111,7 +111,6 @@ export function CreateProject({
             />
           </Grid.Col>
         </Grid.Row>
-
         <Button
           size="medium"
           variant="primary"
