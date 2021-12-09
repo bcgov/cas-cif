@@ -34,3 +34,5 @@ tables/form_change [tables/change_status] 2021-11-04T20:58:49Z Pierre Bastianell
 mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
 tables/attachment 2021-11-24T21:24:45Z Alex Zorkin <AizeeDev@BigThink> # Add schema for attachments
 tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
+computed_columns/project_revision_project_form_change [tables/project_revision] 2021-12-09T18:55:14Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project record, within a project revision
+computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision
