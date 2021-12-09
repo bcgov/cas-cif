@@ -13,7 +13,6 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import { useMemo, useState } from "react";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
-import formComponentFactory from "components/Form/formComponentFactory";
 
 const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -23,17 +22,17 @@ const CreateProjectQuery = graphql`
       }
       projectRevision(id: $id) {
         id
-        formChangesByProjectRevisionId {
-          edges {
-            node {
-              id
-              newFormData
-              formDataTableName
-            }
-          }
+        projectManagerFormChange {
+          id
+          newFormData
+        }
+        projectFormChange {
+          id
+          newFormData
         }
       }
       ...ProjectForm_query
+      ...ProjectManagerForm_allUsers
     }
   }
 `;
@@ -102,9 +101,10 @@ export function CreateProject({
     setErrors({ ...errors, [formId]: incomingErrors });
   };
 
-  const hasErrors = (formChangeEdges, errorsObject: {}) => {
-    const ids = formChangeEdges.map((edge) => edge.node.id);
-    return ids.some((id) => errorsObject[id] && errorsObject[id].length > 0);
+  const hasErrors = (formChangeIds: Array<string>, errorsObject: {}) => {
+    return formChangeIds.some(
+      (id) => errorsObject[id] && errorsObject[id].length > 0
+    );
   };
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
@@ -142,27 +142,24 @@ export function CreateProject({
               onFormErrors={onFormErrors}
               query={query}
             />
-
-            {query.projectRevision.formChangesByProjectRevisionId.edges.map(
-              ({ node }) => {
-                const { FormComponent } = formComponentFactory.createFormFor(
-                  node.formDataTableName
-                );
-                return (
-                  <FormComponent
-                    key={"form-component-" + node.formDataTableName}
-                    formData={node.newFormData}
-                    onChange={(changeData) =>
-                      applyChangesFromComponent(node.id, changeData)
-                    }
-                    onFormErrors={(errorsData) =>
-                      onFormErrors(node.id, errorsData)
-                    }
-                    tableName={node.formDataTableName}
-                  />
-                );
+            <ProjecManagerForm
+              formData={
+                query.projectRevision.projectManagerFormChange.newFormData
               }
-            )}
+              onChange={(change) =>
+                applyChangesFromComponent(
+                  query.projectRevision.projectManagerFormChange.id,
+                  change
+                )
+              }
+              onFormErrors={(e) =>
+                onFormErrors(
+                  query.projectRevision.projectManagerFormChange.id,
+                  e
+                )
+              }
+              allUsers={query}
+            />
           </Grid.Col>
         </Grid.Row>
         <Button
@@ -170,7 +167,7 @@ export function CreateProject({
           variant="primary"
           onClick={commitProject}
           disabled={hasErrors(
-            query.projectRevision.formChangesByProjectRevisionId.edges,
+            [query.projectRevision.projectManagerFormChange.id],
             errors
           )}
         >
