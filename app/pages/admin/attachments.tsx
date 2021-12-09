@@ -1,7 +1,7 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { useMutation } from "react-relay";
+import { useMutation, loadQuery, useRelayEnvironment } from "react-relay";
 import FilePicker from "@button-inc/bcgov-theme/FilePicker";
 
 import { createAttachmentMutation } from "mutations/attachment/createAttachment";
@@ -28,7 +28,14 @@ const AttachmentsQuery = graphql`
 
 function Attachments({ preloadedQuery }: RelayProps<{}, attachmentsQuery>) {
   const { query } = usePreloadedQuery(AttachmentsQuery, preloadedQuery);
-  const [commit] = useMutation(createAttachmentMutation);
+  const [commit] = useMutation(createAttachmentMutation)
+  const environment = useRelayEnvironment();
+  
+  const refetch = () => {
+    loadQuery(environment, AttachmentsQuery, {})
+  };
+
+
   return (
     <DefaultLayout session={query.session}>
       <h2>Attachments List</h2>
@@ -51,7 +58,9 @@ function Attachments({ preloadedQuery }: RelayProps<{}, attachmentsQuery>) {
               },
             },
             onCompleted(data) {
-              console.log(data);
+              //refetch()
+              // How to re-run query direct?
+              window.location.reload()
             },
           });
         }}
