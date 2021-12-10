@@ -66,6 +66,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
+    "@mui/base": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.3",
     "@rjsf/core": "^3.2.0",
     "body-parser": "^1.19.0",
@@ -106,8 +107,6 @@
     "relay-nextjs": "^0.4.1",
     "relay-runtime": "^12.0.0",
     "relay-test-utils": "^12.0.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.4",
     "styled-components": "^5.2.1",
     "webpack": "^5.58.2"
   },

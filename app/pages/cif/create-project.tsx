@@ -26,9 +26,7 @@ const CreateProjectQuery = graphql`
         newFormData
         updatedAt
       }
-    }
-    fragmentData: query {
-      ...Identity_query
+      ...ProjectForm_query
     }
   }
 `;
@@ -37,7 +35,7 @@ export function CreateProject({
   preloadedQuery,
 }: RelayProps<{}, createProjectQuery>) {
   const router = useRouter();
-  const { query, fragmentData } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
+  const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
 
   const [errors, setErrors] = useState({});
   const [updateFormChange, updatingFormChange] = useDebouncedMutation(mutation);
@@ -58,12 +56,6 @@ export function CreateProject({
       },
     };
     await updateFormChangeMutation(preloadedQuery.environment, variables);
-  };
-
-  // The applyChangeFromComponent function will require this page to be aware of the state of the newFormData object
-  const onValueChanged = async (change) => {
-    const { formData } = change;
-    await storeResult(formData);
   };
 
   const formChangeData = query.formChange.newFormData;
@@ -129,6 +121,7 @@ export function CreateProject({
               formData={query.formChange.newFormData}
               onChange={handleChange}
               onFormErrors={onFormErrors}
+              query={query}
             />
           </Grid.Col>
         </Grid.Row>
