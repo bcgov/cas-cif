@@ -30,7 +30,7 @@ describe("The Project Form", () => {
     });
 
     expect(changeSpy).toHaveBeenCalledWith({
-      rfp_number: "testidentifier",
+      rfpNumber: "testidentifier",
       description: undefined,
     });
     changeSpy.mockClear();
@@ -40,14 +40,14 @@ describe("The Project Form", () => {
     });
 
     expect(changeSpy).toHaveBeenCalledWith({
-      rfp_number: "testidentifier",
+      rfpNumber: "testidentifier",
       description: "testdescription",
     });
   });
   it("loads with the correct initial form data", () => {
     const props: FormComponentProps = {
       formData: {
-        rfp_number: "12345678",
+        rfpNumber: "12345678",
         description: "d",
       },
       onChange: jest.fn(),
@@ -64,7 +64,7 @@ describe("The Project Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        rfp_number: "12345678",
+        rfpNumber: "12345678",
         description: "d",
       },
       onChange: jest.fn(),
@@ -75,7 +75,7 @@ describe("The Project Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        rfp_number: expect.anything(),
+        rfpNumber: expect.anything(),
         description: null,
       })
     );
@@ -86,7 +86,7 @@ describe("The Project Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        rfp_number: "1999-RFP-1-123-ABCD",
+        rfpNumber: "1999-RFP-1-123-ABCD",
         description: "d",
       },
       onChange: jest.fn(),
@@ -97,7 +97,7 @@ describe("The Project Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        rfp_number: null,
+        rfpNumber: null,
         description: null,
       })
     );
@@ -108,7 +108,7 @@ describe("The Project Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        rfp_number: "1999-RFP-1-123-ABCD",
+        rfpNumber: "1999-RFP-1-123-ABCD",
         description: "desc",
       },
       onChange: jest.fn(),
@@ -123,7 +123,7 @@ describe("The Project Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        rfp_number: null,
+        rfpNumber: null,
         description: { __errors: ["is a required property"] },
       })
     );
@@ -134,7 +134,7 @@ describe("The Project Form", () => {
 
     const props: FormComponentProps = {
       formData: {
-        rfp_number: "1999123-RFP-1-123-ABCD",
+        rfpNumber: "1999123-RFP-1-123-ABCD",
         description: "desc",
       },
       onChange: jest.fn(),
@@ -145,7 +145,7 @@ describe("The Project Form", () => {
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        rfp_number: expect.anything(),
+        rfpNumber: expect.anything(),
         description: null,
       })
     );

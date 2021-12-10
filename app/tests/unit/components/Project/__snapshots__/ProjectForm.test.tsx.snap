@@ -31,7 +31,7 @@ exports[`The Project Form matches the snapshot 1`] = `
           <li
             class="list-group-item text-danger"
           >
-            .rfp_number is a required property
+            .rfpNumber is a required property
           </li>
           <li
             class="list-group-item text-danger"
@@ -49,15 +49,15 @@ exports[`The Project Form matches the snapshot 1`] = `
         >
           <label
             class="sc-fodVek ensGkx pg-input-label"
-            for="root_rfp_number"
+            for="root_rfpNumber"
           >
             RFP Number*
           </label>
           <input
             aria-label="RFP Number*"
             class="sc-fFucqa ljMVny pg-input-input"
-            id="root_rfp_number"
-            name="root_rfp_number-input"
+            id="root_rfpNumber"
+            name="root_rfpNumber-input"
             placeholder="2020-RFP-1-456-ABCD"
             required=""
             value=""
