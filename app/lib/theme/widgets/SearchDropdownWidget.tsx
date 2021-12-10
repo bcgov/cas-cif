@@ -9,12 +9,12 @@ const SearchDropdownWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const { onChange, schema, placeholder, readonly } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option) => {
-    onChange(option.enum[0]);
+    onChange(option.value);
   };
 
   const getSelected = useCallback(() => {
     if (props.value === null || props.value === undefined) return undefined;
-    const selectedValue = schema.anyOf.find(option => option.enum[0] === props.value);
+    const selectedValue = schema.anyOf.find(option => option.value === props.value);
     return selectedValue;
   }, [schema, props.value]);
 

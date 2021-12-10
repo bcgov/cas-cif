@@ -72,6 +72,7 @@ const ProjectForm: React.FunctionComponent<Props> = (props) => {
             type: "number",
             title: `${node.legalName} (${node.bcRegistryId})`,
             enum: [node.rowId],
+            value: node.rowId,
           };
         }),
       },
