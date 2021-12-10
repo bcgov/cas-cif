@@ -17,7 +17,7 @@ select is(
     ) select form_data_table_name from cif.project_revision_project_manager_form_change((select * from record))
   ),
   'project_manager',
-  'Only returns the form change record for the project_manager'
+  'Only returns the form change record for the project_manager table'
 );
 
 select is(
