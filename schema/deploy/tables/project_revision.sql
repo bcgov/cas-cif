@@ -4,7 +4,7 @@ begin;
 
 create table cif.project_revision (
   id integer primary key generated always as identity,
-  project_id integer,
+  project_id integer references cif.project(id),
   change_status varchar(1000) default 'pending' references cif.change_status
 );
 

@@ -14,7 +14,8 @@ begin
       project_id,
       change_status
     ) values (
-      nextval(pg_get_serial_sequence('cif.project', 'id')),
+      -- project_id is null until the project is created
+      null,
       'pending'
     ) returning * into revision_row;
 
@@ -32,7 +33,7 @@ begin
     'INSERT',
     'cif',
     'project',
-    revision_row.project_id,
+    nextval(pg_get_serial_sequence('cif.project', 'id')),
     revision_row.id,
     'pending',
     'Creating new project: project record'
@@ -52,7 +53,7 @@ begin
     'INSERT',
     'cif',
     'project_manager',
-    revision_row.project_id,
+    nextval(pg_get_serial_sequence('cif.project_manager', 'id')),
     revision_row.id,
     'pending',
     'Creating new project: project_manager record'

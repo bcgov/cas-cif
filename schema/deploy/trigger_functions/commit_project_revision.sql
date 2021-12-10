@@ -13,6 +13,17 @@ begin
       set change_status = new.change_status
       where project_revision_id=new.id;
 
+
+    if (new.project_id is null) then
+      new.project_id = (
+        select form_data_record_id
+          from cif.form_change
+          where project_revision_id=new.id
+            and form_data_table_name='project'
+            and form_data_schema_name='cif'
+      );
+    end if;
+
   end if;
 
   return new;
