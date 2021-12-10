@@ -20,6 +20,4 @@ grant execute on function cif.project_revision_project_form_change to cif_intern
 
 comment on function cif.project_revision_project_form_change is 'Computed column for graphql to retrieve the change related to the project manager association, within a project revision';
 
-end;
-
 commit;
