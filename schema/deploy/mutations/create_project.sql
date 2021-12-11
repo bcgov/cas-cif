@@ -65,5 +65,6 @@ $function$ language plpgsql strict volatile;
 
 grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
 grant usage, select on sequence cif.project_id_seq to cif_internal, cif_external, cif_admin;
+grant usage, select on sequence cif.project_manager_id_seq to cif_internal, cif_external, cif_admin;
 
 commit;
