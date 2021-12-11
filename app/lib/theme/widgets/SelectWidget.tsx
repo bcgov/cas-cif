@@ -4,7 +4,6 @@ import getRequiredLabel from "../utils/getRequiredLabel";
 
 const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const { id, onChange, options, placeholder, label, required, uiSchema } = props;
-  console.log(props)
   return (
     <>
       <label htmlFor={`funding-stream-dropdown-${props.id}`}>
