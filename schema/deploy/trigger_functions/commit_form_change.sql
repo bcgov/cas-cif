@@ -20,7 +20,7 @@ begin
   end if;
 
   schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
-  keys := (select array_to_string(array(select quote_ident(lower(regexp_replace(key, '([A-Z])','_\1', 'g'))) from jsonb_each(new.new_form_data)), ','));
+  keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(new.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(new.new_form_data)), ','));
 
   if (select triggers_commit from cif.change_status where status = new.change_status) then
