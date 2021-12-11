@@ -73,7 +73,7 @@ select throws_ok(
   $$
     update mock_schema.mock_form_change set change_status = 'test_committed' where id = 2
   $$,
-  'null value in column "required_col" violates not-null constraint'
+  'null value in column "required_col" of relation "mock_table" violates not-null constraint'
 );
 
 -- inserts with default value if data is missing
