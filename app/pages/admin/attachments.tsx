@@ -3,10 +3,8 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { useMutation, loadQuery, useRelayEnvironment } from "react-relay";
 import FilePicker from "@button-inc/bcgov-theme/FilePicker";
-
-import { createAttachmentMutation } from "mutations/attachment/createAttachment";
+import createAttachmentMutation from 'mutations/attachment/createAttachment';
 import { attachmentsQuery } from "__generated__/attachmentsQuery.graphql";
-
 import withRelayOptions from "lib/relay/withRelayOptions";
 
 const AttachmentsQuery = graphql`
@@ -15,7 +13,8 @@ const AttachmentsQuery = graphql`
       session {
         ...DefaultLayout_session
       }
-      allAttachments {
+      allAttachments(first: 2147483647) @connection(key: "connection_allAttachments") {
+        __id
         edges {
           node {
             file
@@ -28,13 +27,17 @@ const AttachmentsQuery = graphql`
 
 function Attachments({ preloadedQuery }: RelayProps<{}, attachmentsQuery>) {
   const { query } = usePreloadedQuery(AttachmentsQuery, preloadedQuery);
-  const [commit] = useMutation(createAttachmentMutation)
   const environment = useRelayEnvironment();
-  
-  const refetch = () => {
-    loadQuery(environment, AttachmentsQuery, {})
-  };
 
+  const saveAttachment = async (e) => {
+    const variables = {
+      input: {
+        attachment: { file: e.target.files[0] },
+      },
+      connections: [query.allAttachments.__id]
+    };
+    await createAttachmentMutation(environment, variables)
+  }
 
   return (
     <DefaultLayout session={query.session}>
@@ -50,20 +53,7 @@ function Attachments({ preloadedQuery }: RelayProps<{}, attachmentsQuery>) {
         ))}
       </ul>
       <FilePicker
-        onChange={(e) => {
-          commit({
-            variables: {
-              input: {
-                attachment: { file: e.target.files[0] },
-              },
-            },
-            onCompleted(data) {
-              //refetch()
-              // How to re-run query direct?
-              window.location.reload()
-            },
-          });
-        }}
+        onChange={saveAttachment}
       >
         Upload
       </FilePicker>
