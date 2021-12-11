@@ -1,4 +1,4 @@
-import { graphql, DeclarativeMutationConfig } from "react-relay";
+import { graphql } from "react-relay";
 import type { Environment } from "react-relay";
 import type {
   createAttachmentMutationVariables,
@@ -7,9 +7,12 @@ import type {
 import BaseMutation from "mutations/BaseMutation";
 
 export const mutation = graphql`
-  mutation createAttachmentMutation($connections: [ID!]! $input: CreateAttachmentInput!) {
+  mutation createAttachmentMutation(
+    $connections: [ID!]!
+    $input: CreateAttachmentInput!
+  ) {
     createAttachment(input: $input) {
-      attachmentEdge @appendEdge(connections: $connections){
+      attachmentEdge @appendEdge(connections: $connections) {
         cursor
         node {
           id

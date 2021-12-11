@@ -1,9 +1,9 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { useMutation, loadQuery, useRelayEnvironment } from "react-relay";
+import { useRelayEnvironment } from "react-relay";
 import FilePicker from "@button-inc/bcgov-theme/FilePicker";
-import createAttachmentMutation from 'mutations/attachment/createAttachment';
+import createAttachmentMutation from "mutations/attachment/createAttachment";
 import { attachmentsQuery } from "__generated__/attachmentsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 
@@ -13,7 +13,8 @@ const AttachmentsQuery = graphql`
       session {
         ...DefaultLayout_session
       }
-      allAttachments(first: 2147483647) @connection(key: "connection_allAttachments") {
+      allAttachments(first: 2147483647)
+        @connection(key: "connection_allAttachments") {
         __id
         edges {
           node {
@@ -34,10 +35,10 @@ function Attachments({ preloadedQuery }: RelayProps<{}, attachmentsQuery>) {
       input: {
         attachment: { file: e.target.files[0] },
       },
-      connections: [query.allAttachments.__id]
+      connections: [query.allAttachments.__id],
     };
-    await createAttachmentMutation(environment, variables)
-  }
+    await createAttachmentMutation(environment, variables);
+  };
 
   return (
     <DefaultLayout session={query.session}>
@@ -52,11 +53,7 @@ function Attachments({ preloadedQuery }: RelayProps<{}, attachmentsQuery>) {
           </li>
         ))}
       </ul>
-      <FilePicker
-        onChange={saveAttachment}
-      >
-        Upload
-      </FilePicker>
+      <FilePicker onChange={saveAttachment}>Upload</FilePicker>
     </DefaultLayout>
   );
 }
