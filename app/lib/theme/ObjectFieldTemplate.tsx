@@ -10,21 +10,18 @@ const ObjectFieldTemplate = (props) => {
 
   return (
     <Grid cols={10}>
-      {props.description && (
-        <Grid.Row>
-          <DescriptionField
-            id={`${props.idSchema.$id}__description`}
-            description={props.description}
-            formContext={props.formContext}
-          />
-        </Grid.Row>
-      )}
-
       <Grid.Row>
         <Grid.Col span={10} id="test">
           <FormBorder
             title={props.title ? props.title : props.uiSchema["ui:title"]}
           >
+            {props.description && (
+              <DescriptionField
+                id={`${props.idSchema.$id}__description`}
+                description={props.description}
+                formContext={props.formContext}
+              />
+            )}
             {props.properties.map((prop) => prop.content)}
           </FormBorder>
         </Grid.Col>

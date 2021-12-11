@@ -2,39 +2,81 @@
 
 exports[`The Object Field Template renders a default TitleField and DescriptionField 1`] = `
 <div>
+<<<<<<< HEAD
   <fieldset
     class="sc-dkPtRN bfJYwN pg-fieldset"
     id="test-id"
+=======
+  <div
+    class="sc-jSgvzq dUsOVZ pg-grid-container"
+    cols="10"
+>>>>>>> c1952b7 (test: snapshots)
   >
-    <h1
-      id="test-id__title"
-      title="Test Title"
+    <div
+      class="sc-gKseQn sc-iBPTik diOpKM cirWLn pg-grid-row"
     >
-      Test Title
-    </h1>
-    <span
-      id="test-id__description"
-    >
-      Test Description
-    </span>
-  </fieldset>
+      <div
+        class="sc-fubCzh sc-pGacB cMGSGp elfPxV pg-grid-col"
+        id="test"
+        width="100"
+      >
+        <fieldset
+          class="jsx-3408663875"
+          id="formborder"
+        >
+          <legend
+            class="jsx-3408663875"
+          >
+            Test Title
+          </legend>
+          <span
+            id="test-id__description"
+          >
+            Test Description
+          </span>
+        </fieldset>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`The Object Field Template renders the provided TitleField and DescriptionField with the provided title and description 1`] = `
 <div>
+<<<<<<< HEAD
   <fieldset
     class="sc-dkPtRN bfJYwN pg-fieldset"
     id="test-id"
+=======
+  <div
+    class="sc-jSgvzq dUsOVZ pg-grid-container"
+    cols="10"
+>>>>>>> c1952b7 (test: snapshots)
   >
-    <p>
-      Test 
-      Second title
-    </p>
-    <p>
-      Test 
-      Another Description
-    </p>
-  </fieldset>
+    <div
+      class="sc-gKseQn sc-iBPTik diOpKM cirWLn pg-grid-row"
+    >
+      <div
+        class="sc-fubCzh sc-pGacB cMGSGp elfPxV pg-grid-col"
+        id="test"
+        width="100"
+      >
+        <fieldset
+          class="jsx-3408663875"
+          id="formborder"
+        >
+          <legend
+            class="jsx-3408663875"
+          >
+            Second title
+          </legend>
+          <p>
+            Test 
+            Another Description
+          </p>
+        </fieldset>
+      </div>
+    </div>
+  </div>
 </div>
 `;
