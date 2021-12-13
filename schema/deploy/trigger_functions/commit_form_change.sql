@@ -20,7 +20,7 @@ begin
   end if;
 
   schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
-  keys := (select array_to_string(array(select quote_ident(key) from jsonb_each(new.new_form_data)), ','));
+  keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(new.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(new.new_form_data)), ','));
 
   if (select triggers_commit from cif.change_status where status = new.change_status) then
@@ -59,18 +59,9 @@ grant execute on function cif_private.commit_form_change to cif_internal, cif_ex
 
 comment on function cif_private.commit_form_change()
   is $$
-  a trigger to set created_at and updated_at columns.
-  example usage:
-
-  create table some_schema.some_table (
-    ...
-    created_at timestamp with time zone not null default now(),
-    updated_at timestamp with time zone not null default now()
-  );
-  create trigger _100_timestamps
-    before insert or update on some_schema.some_table
-    for each row
-    execute procedure cif_private.commit_form_change();
+  A trigger set on the cif.form_change table.
+  This trigger will be used when a form_change status is committed, and will apply the change to the form_data_table_name table.
+  The new_form_data value is expected to be a flat jsonb object, with the keys being a camelCase version of the form_data_table_name columns.
   $$;
 
 commit;

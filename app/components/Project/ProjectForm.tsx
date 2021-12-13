@@ -5,9 +5,9 @@ import FormComponentProps from "../Form/FormComponentProps";
 
 const schema: JSONSchema7 = {
   type: "object",
-  required: ["rfp_number", "description"],
+  required: ["rfpNumber", "description"],
   properties: {
-    rfp_number: {
+    rfpNumber: {
       type: "string",
       title: "RFP Number",
       pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
@@ -17,7 +17,7 @@ const schema: JSONSchema7 = {
 };
 
 const uiSchema = {
-  rfp_number: {
+  rfpNumber: {
     "ui:placeholder": "2020-RFP-1-456-ABCD",
     "ui:col-md": 12,
     "bcgov:size": "small",
