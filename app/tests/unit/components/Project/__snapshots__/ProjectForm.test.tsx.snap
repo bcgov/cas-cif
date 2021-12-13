@@ -38,27 +38,32 @@ exports[`The Project Form matches the snapshot 1`] = `
           >
             .description is a required property
           </li>
+          <li
+            class="list-group-item text-danger"
+          >
+            .operator is a required property
+          </li>
         </ul>
       </div>
       <fieldset
-        class="sc-dlfnuX hBsleh pg-fieldset"
+        class="sc-dkPtRN bfJYwN pg-fieldset"
         id="root"
       >
         <div
-          class="sc-hBEYId iNUeqH pg-input"
+          class="sc-hBUSln jEYZxL pg-input"
         >
           <label
-            class="sc-fodVek ensGkx pg-input-label"
+            class="sc-fotOHu bhxnix pg-input-label"
             for="root_rfpNumber"
           >
             RFP Number*
           </label>
           <input
             aria-label="RFP Number*"
-            class="sc-fFucqa ljMVny pg-input-input"
+            class="sc-fFeiMQ jSxRsG pg-input-input"
             id="root_rfpNumber"
             name="root_rfpNumber-input"
-            placeholder="2020-RFP-1-456-ABCD"
+            placeholder=""
             required=""
             value=""
           />
@@ -75,23 +80,125 @@ exports[`The Project Form matches the snapshot 1`] = `
           </ul>
         </div>
         <div
-          class="sc-hBEYId iNUeqH pg-input"
+          class="sc-hBUSln cGjSDY pg-input"
         >
           <label
-            class="sc-fodVek ensGkx pg-input-label"
+            class="sc-fotOHu bhxnix pg-input-label"
             for="root_description"
           >
             Description*
           </label>
           <input
             aria-label="Description*"
-            class="sc-fFucqa ljMVny pg-input-input"
+            class="sc-fFeiMQ jSxRsG pg-input-input"
             id="root_description"
             name="root_description-input"
             placeholder="describe the project..."
             required=""
             value=""
           />
+        </div>
+        <div>
+          <ul
+            class="error-detail bs-callout bs-callout-info"
+          >
+            <li
+              class="text-danger"
+            >
+              is a required property
+            </li>
+          </ul>
+        </div>
+        <label>
+          Legal Operator Name and BC Registry ID*
+        </label>
+        <div
+          aria-expanded="false"
+          class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon css-symcig-MuiAutocomplete-root"
+          role="combobox"
+        >
+          <div
+            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-wb57ya-MuiFormControl-root-MuiTextField-root"
+          >
+            <div
+              class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                aria-autocomplete="list"
+                aria-invalid="false"
+                autocapitalize="none"
+                autocomplete="off"
+                class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                id="search-dropdown"
+                placeholder="Select an Operator"
+                spellcheck="false"
+                type="text"
+                value=""
+              />
+              <div
+                class="MuiAutocomplete-endAdornment css-1q60rmi-MuiAutocomplete-endAdornment"
+              >
+                <button
+                  aria-label="Clear"
+                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-clearIndicator css-1glvl0p-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-clearIndicator"
+                  tabindex="-1"
+                  title="Clear"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
+                    data-testid="CloseIcon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    />
+                  </svg>
+                  <span
+                    class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                  />
+                </button>
+                <button
+                  aria-label="Open"
+                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-popupIndicator css-qzbt6i-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-popupIndicator"
+                  tabindex="-1"
+                  title="Open"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                    data-testid="ArrowDropDownIcon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 10l5 5 5-5z"
+                    />
+                  </svg>
+                  <span
+                    class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-nnbavb"
+                >
+                  <span
+                    class="notranslate"
+                  >
+                    ​
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
         </div>
         <div>
           <ul
