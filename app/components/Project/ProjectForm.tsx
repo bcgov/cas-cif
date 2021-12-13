@@ -3,7 +3,7 @@ import React from "react";
 import FormBase from "../Form/FormBase";
 import FormComponentProps from "../Form/FormComponentProps";
 import { graphql, useFragment } from "react-relay";
-import type {ProjectForm_query$key} from "__generated__/ProjectForm_query.graphql";
+import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
 
 const schema: JSONSchema7 = {
   type: "object",

@@ -1,11 +1,10 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import { WidgetProps } from "@rjsf/core";
 import Widgets from "@rjsf/core/dist/cjs/components/widgets";
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
-
-const SearchDropdownWidget: React.FunctionComponent<WidgetProps> = (props) => {
+const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, schema, placeholder, readonly } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option) => {
@@ -14,7 +13,9 @@ const SearchDropdownWidget: React.FunctionComponent<WidgetProps> = (props) => {
 
   const getSelected = useCallback(() => {
     if (props.value === null || props.value === undefined) return undefined;
-    const selectedValue = schema.anyOf.find(option => option.value === props.value);
+    const selectedValue = schema.anyOf.find(
+      (option) => option.value === props.value
+    );
     return selectedValue;
   }, [schema, props.value]);
 

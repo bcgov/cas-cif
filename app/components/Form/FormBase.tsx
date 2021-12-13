@@ -5,7 +5,6 @@ import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 import SearchDropdownWidget from "lib/theme/widgets/SearchDropdownWidget";
 
-
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
   uiSchema: object;
