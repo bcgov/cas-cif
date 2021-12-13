@@ -55,8 +55,7 @@ describe("The Create Project page", () => {
         />
       </RelayEnvironmentProvider>
     );
-
-    expect(screen.getAllByRole("button")[1]).toHaveTextContent(
+    expect(screen.getAllByRole("button")[screen.getAllByRole("button").length-1]).toHaveTextContent(
       "Commit Project Changes"
     );
     expect(screen.getAllByRole("textbox")[0]).toHaveTextContent("");
