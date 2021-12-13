@@ -8410,10 +8410,10 @@ registry-url@^5.0.0:
   dependencies:
     rc "^1.2.8"
 
-relay-compiler-language-typescript@^14.2.1:
-  version "14.2.1"
-  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-14.2.1.tgz#6f6f806427506f641c91ebdfefa59c87ac86c3a6"
-  integrity sha512-c4oxy1fFWT9RMXtEfMZktuW8NT0iIfV5s6gh8K3CB1r4mUEnJDG631dCM4cnPYGbbjvSwOvteweFaxKqXbOg/w==
+relay-compiler-language-typescript@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-15.0.0.tgz#565900106eeb7150d70c5792ef092a2807a8e25e"
+  integrity sha512-vx6V+uBJLIyzTFz1fFiuS0J+L81juGUComb5emKNaYGZRWOPSalxyS+0/I6umrNChNDFB5uLuTnAqxia4+ZMBg==
   dependencies:
     invariant "^2.2.4"
 
