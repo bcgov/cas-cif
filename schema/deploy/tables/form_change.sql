@@ -13,6 +13,8 @@ create table cif.form_change (
   change_reason varchar(10000)
 );
 
+select cif_private.upsert_timestamp_columns('cif', 'form_change');
+
 create trigger commit_form_change
     after insert or update of change_status on cif.form_change
     for each row
