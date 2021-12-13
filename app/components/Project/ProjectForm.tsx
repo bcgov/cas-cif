@@ -31,7 +31,7 @@ const ProjectForm: React.FunctionComponent<Props> = (props) => {
 
   const schema: JSONSchema7 = {
     type: "object",
-    required: ["rfpNumber", "description"],
+    required: ["rfpNumber", "description", "operator"],
     properties: {
       rfpNumber: {
         type: "string",
@@ -41,7 +41,7 @@ const ProjectForm: React.FunctionComponent<Props> = (props) => {
       description: { type: "string", title: "Description" },
       operator: {
         type: "number",
-        title: "Operator",
+        title: "Legal Operator Name and BC Registry ID",
         anyOf: query.allOperators.edges.map(({ node }) => {
           return {
             type: "number",

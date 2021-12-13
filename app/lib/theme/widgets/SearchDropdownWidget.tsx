@@ -3,9 +3,10 @@ import { WidgetProps } from "@rjsf/core";
 import Widgets from "@rjsf/core/dist/cjs/components/widgets";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import getRequiredLabel from "../utils/getRequiredLabel";
 
 const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
-  const { onChange, schema, placeholder, readonly } = props;
+  const { onChange, schema, placeholder, readonly, label, required } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option) => {
     onChange(option.value);
@@ -19,21 +20,22 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
     return selectedValue;
   }, [schema, props.value]);
 
-  getSelected();
-
   if (readonly) return <Widgets.SelectWidget {...props} />;
 
   return (
+    <>
+    <label>{getRequiredLabel(label, required)}</label>
     <Autocomplete
-      disablePortal
       id="search-dropdown"
       options={schema.anyOf}
       defaultValue={getSelected}
       onChange={handleChange}
+      isOptionEqualToValue={(option, value) => option.value === props.value}
       getOptionLabel={(option) => option.title}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label={placeholder} />}
+      sx={{border: '2px solid #606060', borderRadius: '0.25em'}}
+      renderInput={(params) => <TextField {...params} sx={{border: 'none'}} placeholder={placeholder} />}
     />
+    </>
   );
 };
 
