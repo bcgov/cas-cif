@@ -71,8 +71,8 @@ describe("The Create Project page", () => {
         return null;
       });
 
-    const spy = jest
-      .spyOn(require("mutations/FormChange/updateFormChange"), "default")
+    const commitMutationSpy = jest
+      .spyOn(require("relay-runtime"), "commitMutation")
       .mockImplementation(() => "updated");
     render(
       <RelayEnvironmentProvider environment={environment}>
@@ -89,15 +89,27 @@ describe("The Create Project page", () => {
       other: 123,
     });
 
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(expect.any(RelayModernEnvironment), {
-      input: {
-        formChangePatch: {
-          newFormData: { other: 123, someQueryData: "testvalue" },
+    expect(commitMutationSpy).toHaveBeenCalledTimes(1);
+    expect(commitMutationSpy).toHaveBeenCalledWith(
+      expect.any(RelayModernEnvironment),
+      expect.objectContaining({
+        variables: {
+          input: {
+            formChangePatch: {
+              newFormData: { other: 123, someQueryData: "testvalue" },
+            },
+            id: "mock-id",
+          },
         },
-        id: "mock-id",
-      },
-    });
+        mutation: {
+          default: expect.objectContaining({
+            fragment: expect.objectContaining({
+              name: "updateFormChangeMutation",
+            }),
+          }),
+        },
+      })
+    );
   });
 
   it("calls the updateFormChange mutation when the Submit Button is clicked & input values are valid", async () => {
