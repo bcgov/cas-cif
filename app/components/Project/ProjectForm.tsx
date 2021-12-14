@@ -33,9 +33,9 @@ const ProjectForm: React.FC<Props> = (props) => {
   let selectedOperator;
   if (props.formData.operatorId) {
     selectedOperator = query.allOperators.edges.find(
-      ({node}) => node.rowId === props.formData.operatorId
+      ({ node }) => node.rowId === props.formData.operatorId
     );
-  };
+  }
 
   const schema: JSONSchema7 = {
     type: "object",
@@ -60,8 +60,8 @@ const ProjectForm: React.FC<Props> = (props) => {
         }),
       },
       operatorTradeName: {
-        type: "string"
-      }
+        type: "string",
+      },
     },
   };
 
@@ -88,9 +88,9 @@ const ProjectForm: React.FC<Props> = (props) => {
       "bcgov:size": "small",
       "ui:options": {
         text: `${selectedOperator ? selectedOperator.node.tradeName : ""}`,
-        title: "Trade Name"
+        title: "Trade Name",
       },
-    }
+    },
   };
   return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
 };
