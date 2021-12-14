@@ -11810,7 +11810,7 @@ type Project implements Node {
   operatorByOperatorId: Operator
 
   """Foreign key references the cif.operator table"""
-  operatorId: Int
+  operatorId: Int!
 
   """Reads and enables pagination through a set of `ProjectManager`."""
   projectManagersByProjectId(
@@ -12204,9 +12204,6 @@ input ProjectFilter {
 
   """Filter by the object’s `operatorByOperatorId` relation."""
   operatorByOperatorId: OperatorFilter
-
-  """A related `operatorByOperatorId` exists."""
-  operatorByOperatorIdExists: Boolean
 
   """Filter by the object’s `operatorId` field."""
   operatorId: IntFilter

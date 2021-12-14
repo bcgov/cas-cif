@@ -41204,9 +41204,13 @@
               "description": "Foreign key references the cif.operator table",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -42613,16 +42617,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "OperatorFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "operatorByOperatorIdExists",
-              "description": "A related `operatorByOperatorId` exists.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
                 "ofType": null
               },
               "defaultValue": null
