@@ -25,6 +25,7 @@ const CreateProjectQuery = graphql`
         newFormData
         updatedAt
       }
+      ...ProjectForm_query
     }
   }
 `;
@@ -43,7 +44,6 @@ export function CreateProject({
   );
   if (!query.formChange.id) return null;
 
-  // The applyChangeFromComponent function will require this page to be aware of the state of the newFormData object
   const formChangeData = query.formChange.newFormData;
 
   // A function to be called by individual components making changes to the overall form_change data
@@ -107,6 +107,7 @@ export function CreateProject({
               formData={query.formChange.newFormData}
               onChange={handleChange}
               onFormErrors={onFormErrors}
+              query={query}
             />
           </Grid.Col>
         </Grid.Row>

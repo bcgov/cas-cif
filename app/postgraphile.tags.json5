@@ -21,6 +21,11 @@
           omit: ["create", "update", "delete"],
         },
       },
+      "cif.operator": {
+        tags: {
+          omit: ["create", "update", "delete"],
+        },
+      },
     },
   },
 }

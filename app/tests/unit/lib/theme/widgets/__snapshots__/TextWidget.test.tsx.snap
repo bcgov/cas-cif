@@ -3,12 +3,12 @@
 exports[`The Text Widget Matches the snapshot with the value set 1`] = `
 <div>
   <div
-    class="sc-hKgJUU eYdFwB pg-input"
+    class="sc-hKwDye jvzxmJ pg-input"
   >
     
     <input
       aria-label="1-input"
-      class="sc-jSgvzq daPEoX pg-input-input"
+      class="sc-jRQBWg AhBXp pg-input-input"
       id="1"
       name="1-input"
       placeholder="test placeholder"

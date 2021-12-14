@@ -3,17 +3,17 @@
 exports[`The UserProfile component matches the snapshot 1`] = `
 <div>
   <div
-    class="sc-iBPTik cirWLn pg-grid-container name-display"
+    class="sc-iCfMLu fQKovI pg-grid-container name-display"
   >
     <div
-      class="sc-fubCzh sc-pGacB kCFBWZ elfPxV pg-grid-row"
+      class="sc-furwcr sc-pVTFL faCaEo eqAbko pg-grid-row"
     >
       a
       , 
       a
     </div>
     <div
-      class="sc-fubCzh sc-pGacB kCFBWZ elfPxV pg-grid-row"
+      class="sc-furwcr sc-pVTFL faCaEo eqAbko pg-grid-row"
     >
       a@a.a
     </div>
@@ -24,7 +24,7 @@ exports[`The UserProfile component matches the snapshot 1`] = `
     method="post"
   >
     <button
-      class="sc-gsTEea gemKec pg-button"
+      class="sc-gsDKAQ bCKoxo pg-button"
       id="eeeeeeeeeeg3lllllllllm"
       type="submit"
     >

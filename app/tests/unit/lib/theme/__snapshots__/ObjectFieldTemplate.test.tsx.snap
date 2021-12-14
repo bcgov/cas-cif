@@ -3,7 +3,7 @@
 exports[`The Object Field Template renders a default TitleField and DescriptionField 1`] = `
 <div>
   <fieldset
-    class="sc-dlfnuX hBsleh pg-fieldset"
+    class="sc-dkPtRN bfJYwN pg-fieldset"
     id="test-id"
   >
     <h1
@@ -24,7 +24,7 @@ exports[`The Object Field Template renders a default TitleField and DescriptionF
 exports[`The Object Field Template renders the provided TitleField and DescriptionField with the provided title and description 1`] = `
 <div>
   <fieldset
-    class="sc-dlfnuX hBsleh pg-fieldset"
+    class="sc-dkPtRN bfJYwN pg-fieldset"
     id="test-id"
   >
     <p>

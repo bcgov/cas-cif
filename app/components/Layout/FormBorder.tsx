@@ -2,7 +2,7 @@ interface Props {
   title: string;
 }
 
-const FormBorder: React.FunctionComponent<Props> = (props) => {
+const FormBorder: React.FC<Props> = (props) => {
   return (
     <>
       <fieldset>

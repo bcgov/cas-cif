@@ -54,7 +54,6 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   };
 
   const resumeStagedProject = async (id: string) => {
-    console.log(id);
     await router.push({
       pathname: "/cif/create-project",
       query: {
