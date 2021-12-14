@@ -35,7 +35,7 @@ const renderProjectForm = () => {
       <TestRenderer />
     </RelayEnvironmentProvider>
   );
-}
+};
 
 describe("The Project Form", () => {
   beforeEach(() => {
