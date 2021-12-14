@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { WidgetProps } from "@rjsf/core";
 import Widgets from "@rjsf/core/dist/cjs/components/widgets";
 import TextField from "@mui/material/TextField";

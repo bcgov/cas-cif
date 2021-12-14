@@ -10,7 +10,7 @@ interface Props extends FormComponentProps {
   uiSchema: object;
 }
 
-const FormBase: React.FunctionComponent<Props> = ({
+const FormBase: React.FC<Props> = ({
   formData,
   onChange,
   onFormErrors,

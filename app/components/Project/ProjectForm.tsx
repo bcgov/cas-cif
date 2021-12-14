@@ -1,5 +1,4 @@
 import type { JSONSchema7 } from "json-schema";
-import React from "react";
 import FormBase from "../Form/FormBase";
 import FormComponentProps from "../Form/FormComponentProps";
 import { graphql, useFragment } from "react-relay";
@@ -9,7 +8,7 @@ interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
 }
 
-const ProjectForm: React.FunctionComponent<Props> = (props) => {
+const ProjectForm: React.FC<Props> = (props) => {
   const { query } = useFragment(
     graphql`
       fragment ProjectForm_query on Query {

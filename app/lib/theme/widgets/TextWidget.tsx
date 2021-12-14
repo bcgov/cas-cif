@@ -2,7 +2,7 @@ import { WidgetProps } from "@rjsf/core";
 import Input from "@button-inc/bcgov-theme/Input";
 import getRequiredLabel from "../utils/getRequiredLabel";
 
-const TextWidget: React.FunctionComponent<WidgetProps> = ({
+const TextWidget: React.FC<WidgetProps> = ({
   id,
   placeholder,
   onChange,
