@@ -7,6 +7,7 @@ import SubHeader from "./SubHeader";
 
 interface Props {
   isLoggedIn?: boolean;
+  isAdmin?: boolean;
   children?: React.ReactNode;
   title?: string;
   userProfileComponent?: React.ReactNode;
@@ -16,6 +17,7 @@ const DEFAULT_MOBILE_BREAK_POINT = "900";
 
 const Navigation: React.FC<Props> = ({
   isLoggedIn = false,
+  isAdmin = false,
   title = "CleanBC Industry Fund",
   userProfileComponent,
 }) => {
@@ -60,7 +62,7 @@ const Navigation: React.FC<Props> = ({
             {rightSide}
           </BaseHeader.Group>
         </BaseHeader>
-        {isLoggedIn && <SubHeader />}
+        {isLoggedIn && <SubHeader isAdmin={isAdmin} />}
       </BaseNavigation>
       <style jsx>{`
         h1 {
