@@ -19,13 +19,12 @@ export const ProjectFundingStreamForm: React.FunctionComponent<Props> = (
   );
 
   const uiSchema = {
-    title: "Funding Stream",
     funding_stream_id: {
       "ui:placeholder": "Select a Funding Stream",
       "ui:widget": "select",
       "ui:col-md": 12,
       "bcgov:size": "small",
-    },
+    }
   };
 
   var schema: JSONSchema7 = {
