@@ -14,8 +14,8 @@ const Theme: ThemeProps = {
   widgets: {
     ...widgets,
     TextWidget: TextWidget,
-      SearchWidget: SearchDropdownWidget,
-      DisplayOnly: DisplayOnlyWidget,
+    SearchWidget: SearchDropdownWidget,
+    DisplayOnly: DisplayOnlyWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
