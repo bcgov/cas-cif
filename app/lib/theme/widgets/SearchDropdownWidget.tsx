@@ -24,9 +24,9 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
 
   return (
     <>
-      <label>{getRequiredLabel(label, required)}</label>
+      <label htmlFor={`search-dropdown-${props.id}`}>{getRequiredLabel(label, required)}</label>
       <Autocomplete
-        id="search-dropdown"
+        id={`search-dropdown-${props.id}`}
         options={schema.anyOf}
         defaultValue={getSelected}
         onChange={handleChange}

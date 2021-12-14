@@ -3,6 +3,8 @@ import FieldTemplate from "./FieldTemplate";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import TextWidget from "./widgets/TextWidget";
 import { utils } from "@rjsf/core";
+import SearchDropdownWidget from "lib/theme/widgets/SearchDropdownWidget";
+import DisplayOnlyWidget from "lib/theme/widgets/DisplayOnlyWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -12,6 +14,8 @@ const Theme: ThemeProps = {
   widgets: {
     ...widgets,
     TextWidget: TextWidget,
+      SearchWidget: SearchDropdownWidget,
+      DisplayOnly: DisplayOnlyWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
