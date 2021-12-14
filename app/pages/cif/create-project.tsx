@@ -3,9 +3,7 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { createProjectQuery } from "__generated__/createProjectQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import updateFormChangeMutation, {
-  mutation,
-} from "mutations/FormChange/updateFormChange";
+import { mutation } from "mutations/FormChange/updateFormChange";
 import updateProjectRevisionMutation from "mutations/ProjectRevision/updateProjectRevision";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
@@ -13,6 +11,8 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import { useMemo, useState } from "react";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
+import ProjecManagerForm from "components/Form/ProjectManagerForm";
+import ProjectForm from "components/Form/ProjectForm";
 
 const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -22,6 +22,7 @@ const CreateProjectQuery = graphql`
       }
       projectRevision(id: $id) {
         id
+        updatedAt
         projectManagerFormChange {
           id
           newFormData
@@ -46,20 +47,20 @@ export function CreateProject({
   const [errors, setErrors] = useState({});
   const [updateFormChange, updatingFormChange] = useDebouncedMutation(mutation);
   const lastEditedDate = useMemo(
-    () => new Date(query.formChange.updatedAt),
-    [query.formChange.updatedAt]
+    () => new Date(query.projectRevision.updatedAt),
+    [query.projectRevision.updatedAt]
   );
-  if (!query.formChange.id) return null;
+  if (!query.projectRevision.id) return null;
 
-  const formChangeData = query.formChange.newFormData;
-
-  // A function to be called by individual components making changes to the overall form_change data
-  const handleChange = (changeObject: any) => {
-    const updatedFormData = { ...formChangeData, ...changeObject };
+  const handleChange = (queriedFormChange: any, changeObject: any) => {
+    const updatedFormData = {
+      ...queriedFormChange.newFormData,
+      ...changeObject,
+    };
     return updateFormChange({
       variables: {
         input: {
-          id: query.formChange.id,
+          id: queriedFormChange.id,
           formChangePatch: {
             newFormData: updatedFormData,
           },
@@ -68,34 +69,16 @@ export function CreateProject({
       optimisticResponse: {
         updateFormChange: {
           formChange: {
-            id: query.formChange.id,
+            id: queriedFormChange.id,
             newFormData: updatedFormData,
           },
         },
       },
-      debounceKey: query.formChange.id,
+      debounceKey: queriedFormChange.id,
     });
   };
 
   if (!query.projectRevision.id) return null;
-
-  // Function: stage the change data in the form_change table - for an individual form
-  const storeResult = async (formId, data) => {
-    const variables = {
-      input: {
-        id: formId,
-        formChangePatch: {
-          newFormData: data,
-        },
-      },
-    };
-    await updateFormChangeMutation(preloadedQuery.environment, variables);
-  };
-
-  // A function to be called by individual components making changes to the overall form_change data
-  const applyChangesFromComponent = (formId: string, changeObject: any) => {
-    storeResult(formId, changeObject);
-  };
 
   const onFormErrors = (formId: string, incomingErrors: Array<any>) => {
     setErrors({ ...errors, [formId]: incomingErrors });
@@ -137,18 +120,22 @@ export function CreateProject({
         <Grid.Row>
           <Grid.Col>
             <ProjectForm
-              formData={query.formChange.newFormData}
-              onChange={handleChange}
-              onFormErrors={onFormErrors}
               query={query}
+              formData={query.projectRevision.projectFormChange.newFormData}
+              onChange={(change) =>
+                handleChange(query.projectRevision.projectFormChange, change)
+              }
+              onFormErrors={(error) =>
+                onFormErrors(query.projectRevision.projectFormChange.id, error)
+              }
             />
             <ProjecManagerForm
               formData={
                 query.projectRevision.projectManagerFormChange.newFormData
               }
               onChange={(change) =>
-                applyChangesFromComponent(
-                  query.projectRevision.projectManagerFormChange.id,
+                handleChange(
+                  query.projectRevision.projectManagerFormChange,
                   change
                 )
               }
