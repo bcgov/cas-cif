@@ -95,7 +95,7 @@ describe("The Project Form", () => {
     props.formData = {
       rfpNumber: "12345678",
       description: "d",
-      operator: 1,
+      operatorId: 1,
     };
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -143,7 +143,7 @@ describe("The Project Form", () => {
     props.formData = {
       rfpNumber: "",
       description: "",
-      operator: 1,
+      operatorId: 1,
     };
     props.onFormErrors = onFormErrorsSpy;
 
@@ -195,7 +195,7 @@ describe("The Project Form", () => {
     props.formData = {
       rfpNumber: "1999-RFP-1-123-ABCD",
       description: "d",
-      operator: 1,
+      operatorId: 1,
     };
     props.onFormErrors = onFormErrorsSpy;
     environment.mock.queueOperationResolver((operation) =>
@@ -230,7 +230,7 @@ describe("The Project Form", () => {
       expect.objectContaining({
         rfpNumber: null,
         description: null,
-        operator: null,
+        operatorId: null,
       })
     );
   });
@@ -302,7 +302,7 @@ describe("The Project Form", () => {
     props.formData = {
       rfpNumber: "1999123-RFP-1-123-ABCD",
       description: "desc",
-      operator: 1,
+      operatorId: 1,
     };
     props.onFormErrors = onFormErrorsSpy;
 
@@ -338,7 +338,7 @@ describe("The Project Form", () => {
       expect.objectContaining({
         rfpNumber: expect.anything(),
         description: null,
-        operator: null,
+        operatorId: null,
       })
     );
   });

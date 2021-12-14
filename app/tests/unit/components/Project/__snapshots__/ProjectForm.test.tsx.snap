@@ -41,7 +41,7 @@ exports[`The Project Form matches the snapshot 1`] = `
           <li
             class="list-group-item text-danger"
           >
-            .operator is a required property
+            .operatorId is a required property
           </li>
         </ul>
       </div>
@@ -211,6 +211,18 @@ exports[`The Project Form matches the snapshot 1`] = `
             </li>
           </ul>
         </div>
+        <span
+          class="jsx-1332704472 paragraph-text"
+        >
+          <label
+            class="jsx-1332704472"
+          >
+            Trade Name
+          </label>
+          <p
+            class="jsx-1332704472"
+          />
+        </span>
       </fieldset>
     </form>
   </fieldset>
