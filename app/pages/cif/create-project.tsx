@@ -13,7 +13,6 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import { useMemo, useState } from "react";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
-import SelectOperator from 'components/Operator/SelectOperator';
 
 const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -44,19 +43,6 @@ export function CreateProject({
     [query.formChange.updatedAt]
   );
   if (!query.formChange.id) return null;
-
-  // Function: stage the change data in the form_change table
-  const storeResult = async (data) => {
-    const variables = {
-      input: {
-        id: query.formChange.id,
-        formChangePatch: {
-          newFormData: data,
-        },
-      },
-    };
-    await updateFormChangeMutation(preloadedQuery.environment, variables);
-  };
 
   const formChangeData = query.formChange.newFormData;
 
