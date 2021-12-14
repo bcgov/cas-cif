@@ -29,14 +29,13 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.query
   );
 
+  // If there is an operator selected, retrieve it to populate the Trade Name below in the UI Schema.
   let selectedOperator;
   if (props.formData.operatorId) {
     selectedOperator = query.allOperators.edges.find(
       ({node}) => node.rowId === props.formData.operatorId
     );
   };
-
-  console.log(selectedOperator)
 
   const schema: JSONSchema7 = {
     type: "object",
