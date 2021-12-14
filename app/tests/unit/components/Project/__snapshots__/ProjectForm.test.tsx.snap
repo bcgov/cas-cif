@@ -109,7 +109,9 @@ exports[`The Project Form matches the snapshot 1`] = `
             </li>
           </ul>
         </div>
-        <label>
+        <label
+          for="search-dropdown-root_operatorId"
+        >
           Legal Operator Name and BC Registry ID*
         </label>
         <div
@@ -129,7 +131,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                 autocapitalize="none"
                 autocomplete="off"
                 class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
-                id="search-dropdown"
+                id="search-dropdown-root_operatorId"
                 placeholder="Select an Operator"
                 spellcheck="false"
                 type="text"
@@ -212,16 +214,12 @@ exports[`The Project Form matches the snapshot 1`] = `
           </ul>
         </div>
         <span
-          class="jsx-1332704472 paragraph-text"
+          class="paragraph-text"
         >
-          <label
-            class="jsx-1332704472"
-          >
+          <label>
             Trade Name
           </label>
-          <p
-            class="jsx-1332704472"
-          />
+          <p />
         </span>
       </fieldset>
     </form>
