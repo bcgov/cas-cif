@@ -14,10 +14,10 @@ describe("The SearchDropdown Widget", () => {
       required: false,
       schema: {
         anyOf: [
-          {value: 1, enum: [1], type: "number", title: "Option 1"},
-          {value: 2, enum: [2], type: "number", title: "Option 2"}
-        ]
-      }
+          { value: 1, enum: [1], type: "number", title: "Option 1" },
+          { value: 2, enum: [2], type: "number", title: "Option 2" },
+        ],
+      },
     };
 
     const componentUnderTest = render(<SearchDropdownWidget {...props} />);
@@ -35,10 +35,10 @@ describe("The SearchDropdown Widget", () => {
       required: false,
       schema: {
         anyOf: [
-          {value: 1, enum: [1], type: "number", title: "Option 1"},
-          {value: 2, enum: [2], type: "number", title: "Option 2"}
-        ]
-      }
+          { value: 1, enum: [1], type: "number", title: "Option 1" },
+          { value: 2, enum: [2], type: "number", title: "Option 2" },
+        ],
+      },
     };
 
     const componentUnderTest = render(<SearchDropdownWidget {...props} />);
