@@ -4,6 +4,7 @@ import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 import SearchDropdownWidget from "lib/theme/widgets/SearchDropdownWidget";
+import DisplayOnlyWidget from 'lib/theme/widgets/DisplayOnlyWidget';
 
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
@@ -56,7 +57,7 @@ const FormBase: React.FC<Props> = ({
         }}
         liveValidate
         omitExtraData
-        widgets={{ SearchWidget: SearchDropdownWidget }}
+        widgets={{ SearchWidget: SearchDropdownWidget, DisplayOnly: DisplayOnlyWidget}}
       ></Form>
     </FormBorder>
   );

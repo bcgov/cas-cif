@@ -18,6 +18,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               node {
                 rowId
                 legalName
+                tradeName
                 bcRegistryId
               }
             }
@@ -28,9 +29,18 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.query
   );
 
+  let selectedOperator;
+  if (props.formData.operatorId) {
+    selectedOperator = query.allOperators.edges.find(
+      ({node}) => node.rowId === props.formData.operatorId
+    );
+  };
+
+  console.log(selectedOperator)
+
   const schema: JSONSchema7 = {
     type: "object",
-    required: ["rfpNumber", "description", "operator"],
+    required: ["rfpNumber", "description", "operatorId"],
     properties: {
       rfpNumber: {
         type: "string",
@@ -38,7 +48,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
       },
       description: { type: "string", title: "Description" },
-      operator: {
+      operatorId: {
         type: "number",
         title: "Legal Operator Name and BC Registry ID",
         anyOf: query.allOperators.edges.map(({ node }) => {
@@ -50,6 +60,9 @@ const ProjectForm: React.FC<Props> = (props) => {
           };
         }),
       },
+      operatorTradeName: {
+        type: "string"
+      }
     },
   };
 
@@ -64,12 +77,21 @@ const ProjectForm: React.FC<Props> = (props) => {
       "ui:col-md": 12,
       "bcgov:size": "small",
     },
-    operator: {
+    operatorId: {
       "ui:placeholder": "Select an Operator",
       "ui:col-md": 12,
       "bcgov:size": "small",
       "ui:widget": "SearchWidget",
     },
+    operatorTradeName: {
+      "ui:col-md": 12,
+      "ui:widget": "DisplayOnly",
+      "bcgov:size": "small",
+      "ui:options": {
+        text: `${selectedOperator ? selectedOperator.node.tradeName : ""}`,
+        title: "Trade Name"
+      },
+    }
   };
   return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
 };
