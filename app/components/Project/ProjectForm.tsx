@@ -50,6 +50,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       operatorId: {
         type: "number",
         title: "Legal Operator Name and BC Registry ID",
+        default: undefined,
         anyOf: query.allOperators.edges.map(({ node }) => {
           return {
             type: "number",

@@ -9,7 +9,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, schema, placeholder, readonly, label, required } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option: any) => {
-    onChange(option.value);
+    onChange(option?.value);
   };
 
   const getSelected = useCallback(() => {
