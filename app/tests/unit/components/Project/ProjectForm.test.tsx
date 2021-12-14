@@ -24,34 +24,34 @@ const props: FormComponentProps = {
   onFormErrors: jest.fn(),
 };
 
-describe("The Project Form", () => {
-  it("matches the snapshot", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
+let environment;
+const TestRenderer = () => {
+  const data = useLazyLoadQuery(loadedQuery, {});
+  return <ProjectForm {...props} query={data.query} />;
+};
+const renderProjectForm = () => {
+  return render(
+    <RelayEnvironmentProvider environment={environment}>
+      <TestRenderer />
+    </RelayEnvironmentProvider>
+  );
+}
 
+describe("The Project Form", () => {
+  beforeEach(() => {
+    environment = createMockEnvironment();
+  });
+  it("matches the snapshot", () => {
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation)
     );
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    const componentUnderTest = render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    const componentUnderTest = renderProjectForm();
     expect(componentUnderTest.container).toMatchSnapshot();
   });
   it("triggers the applyFormChange with the proper data", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
-
     const changeSpy = jest.fn();
 
     props.onChange = changeSpy;
@@ -61,11 +61,7 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    renderProjectForm();
     fireEvent.change(screen.getByLabelText("RFP Number*"), {
       target: { value: "testidentifier" },
     });
@@ -86,12 +82,6 @@ describe("The Project Form", () => {
     });
   });
   it("loads with the correct initial form data", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
-
     props.formData = {
       rfpNumber: "12345678",
       description: "d",
@@ -119,11 +109,7 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    renderProjectForm();
 
     expect(screen.getByLabelText("RFP Number*").value).toBe("12345678");
     expect(screen.getByLabelText("Description*").value).toBe("d");
@@ -132,12 +118,6 @@ describe("The Project Form", () => {
     );
   });
   it("calls onformerrors on first render if there are errors", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
-
     const onFormErrorsSpy = jest.fn();
 
     props.formData = {
@@ -169,11 +149,7 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    renderProjectForm();
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -184,12 +160,6 @@ describe("The Project Form", () => {
   });
 
   it("calls onformerrors with null if there are no errors", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
-
     const onFormErrorsSpy = jest.fn();
 
     props.formData = {
@@ -220,11 +190,7 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    renderProjectForm();
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -236,12 +202,6 @@ describe("The Project Form", () => {
   });
 
   it("calls onformerrors if a fields becomes empty", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
-
     const onFormErrorsSpy = jest.fn();
 
     props.formData = {
@@ -272,11 +232,7 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    renderProjectForm();
 
     fireEvent.change(screen.getByLabelText("Description*"), {
       target: { value: "" },
@@ -291,12 +247,6 @@ describe("The Project Form", () => {
   });
 
   it("calls onformerrors if the project unique id doesnt match format", () => {
-    const environment = createMockEnvironment();
-    const TestRenderer = () => {
-      const data = useLazyLoadQuery(loadedQuery, {});
-      return <ProjectForm {...props} query={data.query} />;
-    };
-
     const onFormErrorsSpy = jest.fn();
 
     props.formData = {
@@ -328,11 +278,7 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    );
+    renderProjectForm();
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
