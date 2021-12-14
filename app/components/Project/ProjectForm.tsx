@@ -56,12 +56,7 @@ const ProjectForm: React.FC<Props> = (props) => {
 
   const schema: JSONSchema7 = {
     type: "object",
-    required: [
-      "rfpNumber", 
-      "description", 
-      "operatorId", 
-      "fundingStreamId"
-    ],
+    required: ["rfpNumber", "description", "operatorId", "fundingStreamId"],
     properties: {
       rfpNumber: {
         type: "string",
@@ -141,7 +136,9 @@ const ProjectForm: React.FC<Props> = (props) => {
       "ui:widget": "DisplayOnly",
       "bcgov:size": "large",
       "ui:options": {
-        text: `${selectedFundingStream ? selectedFundingStream.node.description : ""}`,
+        text: `${
+          selectedFundingStream ? selectedFundingStream.node.description : ""
+        }`,
         title: "Description",
       },
     },
