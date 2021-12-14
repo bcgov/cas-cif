@@ -7,6 +7,7 @@ import {
   cacheMiddleware,
   uploadMiddleware,
 } from "react-relay-network-modern/node8";
+import debounceMutationMiddleware from "./debounceMutationMiddleware";
 
 const oneMinute = 60 * 1000;
 
@@ -21,6 +22,7 @@ export function createClientNetwork() {
     urlMiddleware({
       url: async () => Promise.resolve("/graphql"),
     }),
+    debounceMutationMiddleware(),
     batchMiddleware({
       batchUrl: async () => Promise.resolve("/graphql"),
       batchTimeout: 10,
