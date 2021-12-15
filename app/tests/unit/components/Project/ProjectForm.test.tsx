@@ -134,6 +134,7 @@ describe("The Project Form", () => {
   });
 
   // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("calls onformerrors on first render if there are errors", () => {
     const onFormErrorsSpy = jest.fn();
 
@@ -189,6 +190,7 @@ describe("The Project Form", () => {
   });
 
   // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("calls onformerrors with null if there are no errors", () => {
     const onFormErrorsSpy = jest.fn();
 
@@ -245,6 +247,7 @@ describe("The Project Form", () => {
   });
 
   // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("calls onformerrors if a fields becomes empty", () => {
     const onFormErrorsSpy = jest.fn();
 
@@ -302,6 +305,7 @@ describe("The Project Form", () => {
   });
 
   // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("calls onformerrors if the project unique id doesnt match format", () => {
     const onFormErrorsSpy = jest.fn();
 

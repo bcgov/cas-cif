@@ -147,7 +147,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         },
       },
     };
-  }, [query, selectedOperator, selectedFundingStream]);
+  }, [selectedOperator, selectedFundingStream]);
 
   return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
 };

@@ -1,15 +1,7 @@
 import React from "react";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-  getByText,
-} from "@testing-library/react";
-
-const DOWN_ARROW = { keyCode: 40 };
+import { render, fireEvent, screen } from "@testing-library/react";
 
 describe("The SelectWidget Widget", () => {
   it("Matches the snapshot with no default value set", () => {
