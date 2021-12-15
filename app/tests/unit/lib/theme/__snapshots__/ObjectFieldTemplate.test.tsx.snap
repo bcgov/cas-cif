@@ -2,21 +2,15 @@
 
 exports[`The Object Field Template renders a default TitleField and DescriptionField 1`] = `
 <div>
-<<<<<<< HEAD
-  <fieldset
-    class="sc-dkPtRN bfJYwN pg-fieldset"
-    id="test-id"
-=======
   <div
-    class="sc-jSgvzq dUsOVZ pg-grid-container"
+    class="sc-jRQBWg cDwDrH pg-grid-container"
     cols="10"
->>>>>>> c1952b7 (test: snapshots)
   >
     <div
-      class="sc-gKseQn sc-iBPTik diOpKM cirWLn pg-grid-row"
+      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
     >
       <div
-        class="sc-fubCzh sc-pGacB cMGSGp elfPxV pg-grid-col"
+        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
         id="test"
         width="100"
       >
@@ -43,21 +37,15 @@ exports[`The Object Field Template renders a default TitleField and DescriptionF
 
 exports[`The Object Field Template renders the provided TitleField and DescriptionField with the provided title and description 1`] = `
 <div>
-<<<<<<< HEAD
-  <fieldset
-    class="sc-dkPtRN bfJYwN pg-fieldset"
-    id="test-id"
-=======
   <div
-    class="sc-jSgvzq dUsOVZ pg-grid-container"
+    class="sc-jRQBWg cDwDrH pg-grid-container"
     cols="10"
->>>>>>> c1952b7 (test: snapshots)
   >
     <div
-      class="sc-gKseQn sc-iBPTik diOpKM cirWLn pg-grid-row"
+      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
     >
       <div
-        class="sc-fubCzh sc-pGacB cMGSGp elfPxV pg-grid-col"
+        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
         id="test"
         width="100"
       >

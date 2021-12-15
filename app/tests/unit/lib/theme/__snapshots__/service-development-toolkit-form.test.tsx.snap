@@ -5,58 +5,15 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
   <form
     class="rjsf"
   >
-<<<<<<< HEAD
-    <fieldset
-      class="sc-dkPtRN bfJYwN pg-fieldset"
-      id="root"
-    >
-      <div
-        class="sc-hBUSln jEYZxL pg-input"
-      >
-        <label
-          class="sc-fotOHu bhxnix pg-input-label"
-          for="root_test_number"
-        >
-          Test Number
-        </label>
-        <input
-          aria-label="Test Number"
-          class="sc-fFeiMQ jSxRsG pg-input-input"
-          id="root_test_number"
-          name="root_test_number-input"
-          placeholder=""
-          value=""
-        />
-      </div>
-      <div
-        class="sc-hBUSln jEYZxL pg-input"
-      >
-        <label
-          class="sc-fotOHu bhxnix pg-input-label"
-          for="root_test_string"
-        >
-          Test Script
-        </label>
-        <input
-          aria-label="Test Script"
-          class="sc-fFeiMQ jSxRsG pg-input-input"
-          id="root_test_string"
-          name="root_test_string-input"
-          placeholder=""
-          value=""
-        />
-      </div>
-    </fieldset>
-=======
     <div
-      class="sc-jSgvzq dUsOVZ pg-grid-container"
+      class="sc-jRQBWg cDwDrH pg-grid-container"
       cols="10"
     >
       <div
-        class="sc-gKseQn sc-iBPTik diOpKM cirWLn pg-grid-row"
+        class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
       >
         <div
-          class="sc-fubCzh sc-pGacB cMGSGp elfPxV pg-grid-col"
+          class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
           id="test"
           width="100"
         >
@@ -68,17 +25,17 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
               class="jsx-3408663875"
             />
             <div
-              class="sc-crrszt bUESqZ pg-input"
+              class="sc-crHmcD bKATQK pg-input"
             >
               <label
-                class="sc-dQoVA bWYdjd pg-input-label"
+                class="sc-egiyK ewKLoj pg-input-label"
                 for="root_test_number"
               >
                 Test Number
               </label>
               <input
                 aria-label="Test Number"
-                class="sc-bqyKOL cxgcai pg-input-input"
+                class="sc-bqiRlB hrAFNs pg-input-input"
                 id="root_test_number"
                 name="root_test_number-input"
                 placeholder=""
@@ -86,17 +43,17 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
               />
             </div>
             <div
-              class="sc-crrszt bUESqZ pg-input"
+              class="sc-crHmcD bKATQK pg-input"
             >
               <label
-                class="sc-dQoVA bWYdjd pg-input-label"
+                class="sc-egiyK ewKLoj pg-input-label"
                 for="root_test_string"
               >
                 Test Script
               </label>
               <input
                 aria-label="Test Script"
-                class="sc-bqyKOL cxgcai pg-input-input"
+                class="sc-bqiRlB hrAFNs pg-input-input"
                 id="root_test_string"
                 name="root_test_string-input"
                 placeholder=""
@@ -107,7 +64,6 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
         </div>
       </div>
     </div>
->>>>>>> c1952b7 (test: snapshots)
   </form>
 </div>
 `;
