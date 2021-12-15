@@ -1,12 +1,12 @@
 import FormBorder from "components/Layout/FormBorder";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
-  uiSchema: object;
+  uiSchema: {};
 }
 
 const FormBase: React.FC<Props> = ({
@@ -33,16 +33,8 @@ const FormBase: React.FC<Props> = ({
 
   const formRef = useRef();
 
-  useEffect(() => {
-    const { errorSchema } = (formRef.current as any)?.validate(
-      formData,
-      schema
-    );
-    onFormErrors(makeErrorsObject(errorSchema));
-  }, []);
-
   return (
-    <FormBorder title="Background">
+    <FormBorder title={schema.title}>
       <Form
         // @ts-ignore
         ref={formRef}
