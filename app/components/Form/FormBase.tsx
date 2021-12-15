@@ -1,5 +1,5 @@
 import FormBorder from "components/Layout/FormBorder";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
