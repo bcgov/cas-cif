@@ -132,59 +132,6 @@ describe("The Project Form", () => {
       "1"
     );
   });
-  it("calls onformerrors on first render if there are errors", () => {
-    const onFormErrorsSpy = jest.fn();
-
-    props.formData = {
-      rfpNumber: "",
-      description: "",
-      operatorId: 1,
-      fundingStreamId: 1,
-    };
-    props.onFormErrors = onFormErrorsSpy;
-
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query() {
-          return {
-            allOperators: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    legalName: "test operator",
-                    bcRegistryId: "1234abcd",
-                  },
-                },
-              ],
-            },
-            allFundingStreams: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    name: "EP",
-                    description: "Emissions Performance",
-                  },
-                },
-              ],
-            },
-          };
-        },
-      })
-    );
-
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
-
-    renderProjectForm();
-
-    expect(onFormErrorsSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        rfpNumber: expect.anything(),
-        description: null,
-      })
-    );
-  });
 
   it("calls onformerrors with null if there are no errors", () => {
     const onFormErrorsSpy = jest.fn();

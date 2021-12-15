@@ -13,7 +13,11 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const { id, onChange, schema, placeholder, label, required, uiSchema } =
     props;
 
+  if (!(schema && schema.anyOf && typeof schema.anyOf !== 'undefined')) {
+    throw new Error('schema.anyOf does not exist!');
+  }
   const options = schema.anyOf as Array<Option>;
+
   return (
     <>
       <label htmlFor={`funding-stream-dropdown-${props.id}`}>
@@ -22,10 +26,12 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       <Dropdown
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
-        placeholder={placeholder}
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
       >
+        <option key={`option-placeholder-${id}`} value={undefined}>
+          {placeholder}
+        </option>
         {options.map((opt) => {
           return (
             <option key={opt.enum[0]} value={opt.enum[0]}>

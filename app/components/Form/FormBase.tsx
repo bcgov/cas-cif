@@ -33,14 +33,6 @@ const FormBase: React.FC<Props> = ({
 
   const formRef = useRef();
 
-  useEffect(() => {
-    const { errorSchema } = (formRef.current as any)?.validate(
-      formData,
-      schema
-    );
-    onFormErrors(makeErrorsObject(errorSchema));
-  }, [formData, makeErrorsObject, onFormErrors, formData]);
-
   return (
     <FormBorder title={schema.title}>
       <Form
