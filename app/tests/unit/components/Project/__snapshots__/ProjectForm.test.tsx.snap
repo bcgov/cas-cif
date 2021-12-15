@@ -7,9 +7,7 @@ exports[`The Project Form matches the snapshot 1`] = `
   >
     <legend
       class="jsx-3408663875"
-    >
-      Background
-    </legend>
+    />
     <form
       class="rjsf"
     >
@@ -42,6 +40,11 @@ exports[`The Project Form matches the snapshot 1`] = `
             class="list-group-item text-danger"
           >
             .operatorId is a required property
+          </li>
+          <li
+            class="list-group-item text-danger"
+          >
+            .fundingStreamId is a required property
           </li>
         </ul>
       </div>
@@ -218,6 +221,54 @@ exports[`The Project Form matches the snapshot 1`] = `
         >
           <label>
             Trade Name
+          </label>
+          <p />
+        </span>
+        <label
+          class="jsx-3703916905"
+          for="funding-stream-dropdown-root_fundingStreamId"
+        >
+          Funding Stream ID*
+        </label>
+        <div
+          class="sc-dlVxhl IHcGA pg-select"
+        >
+          <div
+            class="sc-fKVqWL bvpxhM pg-select-wrapper"
+          >
+            <select
+              aria-label="root_fundingStreamId-select"
+              class="sc-bBHxTw bDNiwq pg-select-input"
+              id="root_fundingStreamId"
+              name="root_fundingStreamId-select"
+              placeholder="Select a Funding Stream"
+              required=""
+            >
+              <option
+                class="jsx-3703916905"
+                value="42"
+              >
+                &lt;mock-value-for-field-"name"&gt;
+              </option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <ul
+            class="error-detail bs-callout bs-callout-info"
+          >
+            <li
+              class="text-danger"
+            >
+              is a required property
+            </li>
+          </ul>
+        </div>
+        <span
+          class="paragraph-text"
+        >
+          <label>
+            Description
           </label>
           <p />
         </span>
