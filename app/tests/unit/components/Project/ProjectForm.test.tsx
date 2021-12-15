@@ -132,7 +132,7 @@ describe("The Project Form", () => {
       "Select a Funding Stream"
     );
   });
-  
+
   // TODO remove skip and update with ticket #158
   it.skip("calls onformerrors on first render if there are errors", () => {
     const onFormErrorsSpy = jest.fn();

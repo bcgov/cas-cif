@@ -1,7 +1,13 @@
 import React from "react";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 
-import { render, fireEvent, screen, waitFor, getByText } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+  getByText,
+} from "@testing-library/react";
 
 const DOWN_ARROW = { keyCode: 40 };
 
@@ -43,10 +49,14 @@ describe("The SelectWidget Widget", () => {
     };
 
     const selectWidget = render(<SelectWidget {...props} />);
-    const dropdown = selectWidget.container.querySelector('#test-dropdown');
-    expect(screen.getByRole('combobox', { name: 'test-dropdown-select' }).value).toEqual('test-placeholder');
-    fireEvent.change(dropdown, {target: { value: '1' }})
-    expect(screen.getByRole('combobox', { name: 'test-dropdown-select' }).value).toEqual('1');
+    const dropdown = selectWidget.container.querySelector("#test-dropdown");
+    expect(
+      screen.getByRole("combobox", { name: "test-dropdown-select" }).value
+    ).toEqual("test-placeholder");
+    fireEvent.change(dropdown, { target: { value: "1" } });
+    expect(
+      screen.getByRole("combobox", { name: "test-dropdown-select" }).value
+    ).toEqual("1");
   });
 
   it("Matches the snapshot with a default value set", () => {

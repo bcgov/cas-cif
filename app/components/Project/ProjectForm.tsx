@@ -140,8 +140,9 @@ const ProjectForm: React.FC<Props> = (props) => {
         "ui:widget": "DisplayOnly",
         "bcgov:size": "large",
         "ui:options": {
-          text: `${selectedFundingStream ? selectedFundingStream.node.description : ""
-            }`,
+          text: `${
+            selectedFundingStream ? selectedFundingStream.node.description : ""
+          }`,
           title: "Description",
         },
       },

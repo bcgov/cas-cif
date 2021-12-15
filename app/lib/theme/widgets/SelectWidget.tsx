@@ -13,8 +13,8 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const { id, onChange, schema, placeholder, label, required, uiSchema } =
     props;
 
-  if (!(schema && schema.anyOf && typeof schema.anyOf !== 'undefined')) {
-    throw new Error('schema.anyOf does not exist!');
+  if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
+    throw new Error("schema.anyOf does not exist!");
   }
   const options = schema.anyOf as Array<Option>;
 
