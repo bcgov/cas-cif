@@ -2,9 +2,18 @@ import { WidgetProps } from "@rjsf/core";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import getRequiredLabel from "../utils/getRequiredLabel";
 
+interface Option {
+  type: string;
+  title: string;
+  enum: number[];
+  value: number;
+}
+
 const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
-  const { id, onChange, options, placeholder, label, required, uiSchema } =
+  const { id, onChange, schema, placeholder, label, required, uiSchema } =
     props;
+
+  const options = schema.anyOf as Array<Option>
   return (
     <>
       <label htmlFor={`funding-stream-dropdown-${props.id}`}>
@@ -17,10 +26,10 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
       >
-        {options.enumOptions.map((opt) => {
+        {options.map((opt) => {
           return (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
+            <option key={opt.enum[0]} value={opt.enum[0]}>
+              {opt.title}
             </option>
           );
         })}
