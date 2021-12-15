@@ -45,6 +45,7 @@ export function CreateProject({
   const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
 
   const [errors, setErrors] = useState({});
+
   const [updateFormChange, updatingFormChange] = useDebouncedMutation(mutation);
   const lastEditedDate = useMemo(
     () => new Date(query.projectRevision.updatedAt),
@@ -82,12 +83,6 @@ export function CreateProject({
 
   const onFormErrors = (formId: string, incomingErrors: Array<any>) => {
     setErrors({ ...errors, [formId]: incomingErrors });
-  };
-
-  const hasErrors = (formChangeIds: Array<string>, errorsObject: {}) => {
-    return formChangeIds.some(
-      (id) => errorsObject[id] && errorsObject[id].length > 0
-    );
   };
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
@@ -150,12 +145,12 @@ export function CreateProject({
           </Grid.Col>
         </Grid.Row>
         <Button
+          id="commit-project-button"
           size="medium"
           variant="primary"
           onClick={commitProject}
-          disabled={hasErrors(
-            [query.projectRevision.projectManagerFormChange.id],
-            errors
+          disabled={Object.keys(errors).some(
+            (key) => errors[key] && errors[key].length > 0
           )}
         >
           Commit Project Changes

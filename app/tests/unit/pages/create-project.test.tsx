@@ -21,11 +21,20 @@ const environment = createMockEnvironment();
 
 environment.mock.queueOperationResolver((operation) => {
   return MockPayloadGenerator.generate(operation, {
-    FormChange() {
+    ProjectRevision() {
       return {
-        id: "mock-id",
-        newFormData: {
-          someQueryData: "test",
+        id: "mock-proj-rev-id",
+        projectManagerFormChange: {
+          id: "mock-projectmanager-form-id",
+          newFormData: {
+            someQueryData: "test",
+          },
+        },
+        projectFormChange: {
+          id: "mock-project-form-id",
+          newFormData: {
+            someProjectData: "test2",
+          },
         },
       };
     },
@@ -64,15 +73,17 @@ describe("The Create Project page", () => {
   it("calls the updateFormChange mutation when the component calls the callback", async () => {
     const mockProjectForm: any = { props: {} };
     jest
-      .spyOn(require("components/Project/ProjectForm"), "default")
+      .spyOn(require("components/Form/ProjectForm"), "default")
       .mockImplementation((props) => {
         mockProjectForm.props = props;
         return null;
       });
 
-    const commitMutationSpy = jest
-      .spyOn(require("relay-runtime"), "commitMutation")
-      .mockImplementation(() => "updated");
+    const commitFormChangeMutationSpy = jest.fn();
+    jest
+      .spyOn(require("mutations/useDebouncedMutation"), "default")
+      .mockImplementation(() => [commitFormChangeMutationSpy, jest.fn()]);
+
     render(
       <RelayEnvironmentProvider environment={environment}>
         <CreateProject
@@ -88,38 +99,53 @@ describe("The Create Project page", () => {
       other: 123,
     });
 
-    expect(commitMutationSpy).toHaveBeenCalledTimes(1);
-    expect(commitMutationSpy).toHaveBeenCalledWith(
-      expect.any(RelayModernEnvironment),
-      expect.objectContaining({
-        variables: {
-          input: {
-            formChangePatch: {
-              newFormData: { other: 123, someQueryData: "testvalue" },
+    expect(commitFormChangeMutationSpy).toHaveBeenCalledTimes(1);
+    expect(commitFormChangeMutationSpy).toHaveBeenCalledWith({
+      debounceKey: "mock-project-form-id",
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: "mock-project-form-id",
+            newFormData: {
+              other: 123,
+              someQueryData: "testvalue",
+              someProjectData: "test2",
             },
-            id: "mock-id",
           },
         },
-        mutation: {
-          default: expect.objectContaining({
-            fragment: expect.objectContaining({
-              name: "updateFormChangeMutation",
-            }),
-          }),
+      },
+      variables: {
+        input: {
+          formChangePatch: {
+            newFormData: {
+              other: 123,
+              someQueryData: "testvalue",
+              someProjectData: "test2",
+            },
+          },
+          id: "mock-project-form-id",
         },
-      })
-    );
+      },
+    });
   });
 
   it("calls the updateFormChange mutation when the Submit Button is clicked & input values are valid", async () => {
     jest
-      .spyOn(require("components/Project/ProjectForm"), "default")
+      .spyOn(require("components/Form/ProjectForm"), "default")
+      .mockImplementation(() => {
+        return null;
+      });
+    jest
+      .spyOn(require("components/Form/ProjectManagerForm"), "default")
       .mockImplementation(() => {
         return null;
       });
 
     const spy = jest
-      .spyOn(require("mutations/FormChange/updateFormChange"), "default")
+      .spyOn(
+        require("mutations/ProjectRevision/updateProjectRevision"),
+        "default"
+      )
       .mockImplementation(() => {});
 
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
@@ -140,8 +166,8 @@ describe("The Create Project page", () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(expect.any(RelayModernEnvironment), {
       input: {
-        formChangePatch: { changeStatus: "committed" },
-        id: "mock-id",
+        projectRevisionPatch: { changeStatus: "committed" },
+        id: "mock-proj-rev-id",
       },
     });
   });
@@ -149,15 +175,16 @@ describe("The Create Project page", () => {
   it("Renders a disabled button when the form reports errors", async () => {
     const mockProjectForm: any = { props: {} };
     jest
-      .spyOn(require("components/Project/ProjectForm"), "default")
+      .spyOn(require("components/Form/ProjectForm"), "default")
       .mockImplementation((props) => {
         mockProjectForm.props = props;
         return null;
       });
 
     jest
-      .spyOn(require("mutations/FormChange/updateFormChange"), "default")
-      .mockImplementation(() => {});
+      .spyOn(require("mutations/useDebouncedMutation"), "default")
+      .mockImplementation(() => [jest.fn(), jest.fn()]);
+
     render(
       <RelayEnvironmentProvider environment={environment}>
         <CreateProject
@@ -169,26 +196,31 @@ describe("The Create Project page", () => {
     );
 
     act(() => {
-      mockProjectForm.props.onFormErrors({
-        testfield: { haserrors: true },
-      });
+      mockProjectForm.props.onFormErrors([
+        {
+          testfield: { haserrors: true },
+        },
+      ]);
     });
 
-    expect(screen.getAllByRole("button")[1]).toHaveProperty("disabled", true);
+    expect(screen.queryAllByText("Commit Project Changes")[0]).toHaveProperty(
+      "disabled",
+      true
+    );
   });
 
   it("Renders an enabled button when the form reports no errors", async () => {
     const mockProjectForm: any = { props: {} };
     jest
-      .spyOn(require("components/Project/ProjectForm"), "default")
+      .spyOn(require("components/Form/ProjectForm"), "default")
       .mockImplementation((props) => {
         mockProjectForm.props = props;
         return null;
       });
 
     jest
-      .spyOn(require("mutations/FormChange/updateFormChange"), "default")
-      .mockImplementation(() => {});
+      .spyOn(require("mutations/useDebouncedMutation"), "default")
+      .mockImplementation(() => [jest.fn(), jest.fn()]);
 
     render(
       <RelayEnvironmentProvider environment={environment}>
@@ -201,11 +233,12 @@ describe("The Create Project page", () => {
     );
 
     act(() => {
-      mockProjectForm.props.onFormErrors({
-        testfield: null,
-      });
+      mockProjectForm.props.onFormErrors([]);
     });
 
-    expect(screen.getAllByRole("button")[1]).toHaveProperty("disabled", false);
+    expect(screen.queryAllByText("Commit Project Changes")[0]).toHaveProperty(
+      "disabled",
+      false
+    );
   });
 });
