@@ -241,9 +241,13 @@ exports[`The Project Form matches the snapshot 1`] = `
               class="sc-bBHxTw bDNiwq pg-select-input"
               id="root_fundingStreamId"
               name="root_fundingStreamId-select"
-              placeholder="Select a Funding Stream"
               required=""
             >
+              <option
+                class="jsx-3703916905"
+              >
+                Select a Funding Stream
+              </option>
               <option
                 class="jsx-3703916905"
                 value="42"
