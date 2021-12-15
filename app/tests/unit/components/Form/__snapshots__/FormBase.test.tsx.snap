@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The FormBase component renders an empty form from an empty schema 1`] = `
+<div>
+  <form
+    class="rjsf"
+    novalidate=""
+  />
+</div>
+`;

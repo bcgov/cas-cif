@@ -31,6 +31,7 @@ const FormBase: React.FC<Props> = ({
           onFormErrors(change.errors);
         }}
         omitExtraData
+        liveValidate
       ></Form>
       <style jsx>{`
         :global(label) {
