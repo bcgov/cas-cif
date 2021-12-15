@@ -19,6 +19,7 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
         class="sc-iCfMLu gsBcnF pg-select-input"
         id="1"
         name="1-select"
+        placeholder="test placeholder"
       >
         <option
           class="jsx-3703916905"
@@ -62,6 +63,7 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
         class="sc-iCfMLu gsBcnF pg-select-input"
         id="1"
         name="1-select"
+        placeholder="test placeholder"
       >
         <option
           class="jsx-3703916905"

@@ -26,6 +26,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       <Dropdown
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
+        placeholder={placeholder}
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
       >
