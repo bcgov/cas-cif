@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import FormComponentProps from "components/Form/FormComponentProps";
-<<<<<<< HEAD
-import ProjectForm from "components/Project/ProjectForm";
+import ProjectForm from "components/Form/ProjectForm";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import {
   RelayEnvironmentProvider,
@@ -37,9 +36,6 @@ const renderProjectForm = () => {
     </RelayEnvironmentProvider>
   );
 };
-=======
-import ProjectForm from "components/Form/ProjectForm";
->>>>>>> 12cd1fe (refactor: fixing relay query)
 
 describe("The Project Form", () => {
   beforeEach(() => {

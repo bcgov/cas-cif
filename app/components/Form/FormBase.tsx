@@ -3,7 +3,6 @@ import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 import FormBorder from "lib/theme/components/FormBorder";
-
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
   uiSchema: {};

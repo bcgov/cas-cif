@@ -33,11 +33,14 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
     project_manager: {
       "ui:col-md": 6,
       "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
     },
   };
 
   const schema: JSONSchema7 = {
     type: "object",
+    title: "Project Manager",
+    required: ["project_manager"],
     properties: {
       project_manager: {
         type: "number",

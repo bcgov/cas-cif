@@ -49628,11 +49628,22 @@
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
               "name": "projectName",
               "description": "The name of the project",
               "args": [],
-=======
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "projectRevisionsByProjectId",
               "description": "Reads and enables pagination through a set of `ProjectRevision`.",
               "args": [
@@ -49725,18 +49736,12 @@
                   "defaultValue": "[PRIMARY_KEY_ASC]"
                 }
               ],
->>>>>>> a7567f6 (chore: schema update)
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-<<<<<<< HEAD
-                  "kind": "SCALAR",
-                  "name": "String",
-=======
                   "kind": "OBJECT",
                   "name": "ProjectRevisionsConnection",
->>>>>>> a7567f6 (chore: schema update)
                   "ofType": null
                 }
               },
@@ -51985,13 +51990,16 @@
               "defaultValue": null
             },
             {
-<<<<<<< HEAD
               "name": "projectName",
               "description": "Filter by the object’s `projectName` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
-=======
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "projectRevisionsByProjectId",
               "description": "Filter by the object’s `projectRevisionsByProjectId` relation.",
               "type": {
@@ -52007,7 +52015,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
->>>>>>> a7567f6 (chore: schema update)
                 "ofType": null
               },
               "defaultValue": null
