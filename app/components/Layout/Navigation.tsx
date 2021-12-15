@@ -3,17 +3,22 @@ import Button from "@button-inc/bcgov-theme/Button";
 import { BaseNavigation } from "@button-inc/bcgov-theme/Navigation";
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import LoginForm from "components/LoginForm";
+import SubHeader from "./SubHeader";
 
 interface Props {
   isLoggedIn?: boolean;
+  isAdmin?: boolean;
   children?: React.ReactNode;
   title?: string;
   userProfileComponent?: React.ReactNode;
 }
 
+const DEFAULT_MOBILE_BREAK_POINT = "900";
+
 const Navigation: React.FC<Props> = ({
   isLoggedIn = false,
-  title = "cif",
+  isAdmin = false,
+  title = "CleanBC Industry Fund",
   userProfileComponent,
 }) => {
   let rightSide = isLoggedIn ? (
@@ -44,7 +49,7 @@ const Navigation: React.FC<Props> = ({
               />
             </a>
           </BaseHeader.Group>
-          <BaseHeader.Item collapse="900">
+          <BaseHeader.Item collapse={DEFAULT_MOBILE_BREAK_POINT}>
             <h1>{title}</h1>
           </BaseHeader.Item>
           <BaseHeader.Group
@@ -57,6 +62,7 @@ const Navigation: React.FC<Props> = ({
             {rightSide}
           </BaseHeader.Group>
         </BaseHeader>
+        {isLoggedIn && <SubHeader isAdmin={isAdmin} />}
       </BaseNavigation>
       <style jsx>{`
         h1 {
