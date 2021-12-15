@@ -13,7 +13,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const { id, onChange, schema, placeholder, label, required, uiSchema } =
     props;
 
-  const options = schema.anyOf as Array<Option>
+  const options = schema.anyOf as Array<Option>;
   return (
     <>
       <label htmlFor={`funding-stream-dropdown-${props.id}`}>

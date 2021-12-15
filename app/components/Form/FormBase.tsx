@@ -39,7 +39,7 @@ const FormBase: React.FC<Props> = ({
       schema
     );
     onFormErrors(makeErrorsObject(errorSchema));
-  }, []);
+  }, [formData, makeErrorsObject, onFormErrors, formData]);
 
   return (
     <FormBorder title={schema.title}>
