@@ -21,7 +21,7 @@ const DefaultLayout: React.FC<Props> = ({
   children,
   title,
   session: sessionFragment,
-  width = "narrow",
+  width = "wide",
 }) => {
   const session = useFragment(
     graphql`
@@ -74,6 +74,9 @@ const DefaultLayout: React.FC<Props> = ({
 
           main {
             flex-grow: 1;
+          }
+          :global(.container.wide) {
+            max-width: 100%;
           }
         `}
       </style>
