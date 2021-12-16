@@ -7,43 +7,6 @@ exports[`The Project Form matches the snapshot upon load 1`] = `
     novalidate=""
   >
     <div
-      class="panel panel-danger errors"
-    >
-      <div
-        class="panel-heading"
-      >
-        <h3
-          class="panel-title"
-        >
-          Errors
-        </h3>
-      </div>
-      <ul
-        class="list-group"
-      >
-        <li
-          class="list-group-item text-danger"
-        >
-          .rfpNumber is a required property
-        </li>
-        <li
-          class="list-group-item text-danger"
-        >
-          .description is a required property
-        </li>
-        <li
-          class="list-group-item text-danger"
-        >
-          .operatorId is a required property
-        </li>
-        <li
-          class="list-group-item text-danger"
-        >
-          .fundingStreamId is a required property
-        </li>
-      </ul>
-    </div>
-    <div
       class="sc-jRQBWg cDwDrH pg-grid-container"
       cols="10"
     >
@@ -83,17 +46,6 @@ exports[`The Project Form matches the snapshot upon load 1`] = `
                 value=""
               />
             </div>
-            <div>
-              <ul
-                class="error-detail bs-callout bs-callout-info"
-              >
-                <li
-                  class="text-danger"
-                >
-                  is a required property
-                </li>
-              </ul>
-            </div>
             <div
               class="sc-crHmcD bKATQK pg-input"
             >
@@ -112,17 +64,6 @@ exports[`The Project Form matches the snapshot upon load 1`] = `
                 required=""
                 value=""
               />
-            </div>
-            <div>
-              <ul
-                class="error-detail bs-callout bs-callout-info"
-              >
-                <li
-                  class="text-danger"
-                >
-                  is a required property
-                </li>
-              </ul>
             </div>
             <label
               for="search-dropdown-root_operatorId"
@@ -217,17 +158,6 @@ exports[`The Project Form matches the snapshot upon load 1`] = `
                 </div>
               </div>
             </div>
-            <div>
-              <ul
-                class="error-detail bs-callout bs-callout-info"
-              >
-                <li
-                  class="text-danger"
-                >
-                  is a required property
-                </li>
-              </ul>
-            </div>
             <span
               class="paragraph-text"
             >
@@ -269,17 +199,6 @@ exports[`The Project Form matches the snapshot upon load 1`] = `
                   </option>
                 </select>
               </div>
-            </div>
-            <div>
-              <ul
-                class="error-detail bs-callout bs-callout-info"
-              >
-                <li
-                  class="text-danger"
-                >
-                  is a required property
-                </li>
-              </ul>
             </div>
             <span
               class="paragraph-text"

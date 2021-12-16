@@ -60,7 +60,7 @@ describe("The FormBase component", () => {
     expect(onFormErrorsSpy).toHaveBeenCalledWith([]);
   });
   // TODO: replace with blur when appropriate
-  it("calls onformerrors if a validation item is triggered on change", () => {
+  it("no errors are raised on change", () => {
     const onFormErrorsSpy = jest.fn();
 
     const formData = {
@@ -79,11 +79,6 @@ describe("The FormBase component", () => {
       target: { value: "" },
     });
 
-    expect(onFormErrorsSpy).toHaveBeenCalledWith([
-      expect.objectContaining({
-        message: "is a required property",
-        property: ".field",
-      }),
-    ]);
+    expect(onFormErrorsSpy).toHaveBeenCalledWith([]);
   });
 });
