@@ -10,8 +10,16 @@ interface Option {
 }
 
 const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
-  const { id, onChange, schema, placeholder, label, required, uiSchema, value } =
-    props;
+  const {
+    id,
+    onChange,
+    schema,
+    placeholder,
+    label,
+    required,
+    uiSchema,
+    value,
+  } = props;
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");

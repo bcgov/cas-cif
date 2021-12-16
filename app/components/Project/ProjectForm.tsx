@@ -40,16 +40,16 @@ const ProjectForm: React.FC<Props> = (props) => {
   );
 
   let selectedOperator = useMemo(() => {
-      return query.allOperators.edges.find(
-        ({ node }) => node.rowId === props.formData.operatorId
-      )
-    }, [query, props.formData.operatorId]);
+    return query.allOperators.edges.find(
+      ({ node }) => node.rowId === props.formData.operatorId
+    );
+  }, [query, props.formData.operatorId]);
 
   let selectedFundingStream = useMemo(() => {
-      return query.allFundingStreams.edges.find(
-        ({ node }) => node.rowId === props.formData.fundingStreamId
-      )
-    }, [query, props.formData.fundingStreamId]);
+    return query.allFundingStreams.edges.find(
+      ({ node }) => node.rowId === props.formData.fundingStreamId
+    );
+  }, [query, props.formData.fundingStreamId]);
 
   const schema: JSONSchema7 = useMemo(() => {
     return {
