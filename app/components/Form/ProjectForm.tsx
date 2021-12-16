@@ -54,6 +54,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   const schema: JSONSchema7 = useMemo(() => {
     return {
       type: "object",
+      title: "Background",
       required: ["rfpNumber", "description", "operatorId", "fundingStreamId"],
       properties: {
         rfpNumber: {
@@ -100,7 +101,7 @@ const ProjectForm: React.FC<Props> = (props) => {
 
   const uiSchema = useMemo(() => {
     return {
-      rfp_number: {
+      rfpNumber: {
         "ui:placeholder": "2020-RFP-1-456-ABCD",
         "ui:col-md": 12,
         "bcgov:size": "small",

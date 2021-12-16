@@ -102,6 +102,17 @@ describe("The Project Form", () => {
                 },
               ],
             },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
           };
         },
       })

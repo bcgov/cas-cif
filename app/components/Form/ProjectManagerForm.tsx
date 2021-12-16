@@ -16,7 +16,6 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
         allCifUsers {
           edges {
             node {
-              id
               rowId
               firstName
               lastName

@@ -1,8 +1,6 @@
-import { useRef } from "react";
 import Form from "lib/theme/service-development-toolkit-form";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
-import FormBorder from "lib/theme/components/FormBorder";
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
   uiSchema: {};
@@ -15,14 +13,10 @@ const FormBase: React.FC<Props> = ({
   schema,
   uiSchema,
 }) => {
-  const formRef = useRef();
-
   return (
-    <FormBorder title={schema.title}>
+    <>
       <Form
         noHtml5Validate
-        // @ts-ignore
-        ref={formRef}
         schema={schema}
         uiSchema={uiSchema}
         formData={formData}
@@ -38,7 +32,7 @@ const FormBase: React.FC<Props> = ({
           font-weight: bold;
         }
       `}</style>
-    </FormBorder>
+    </>
   );
 };
 
