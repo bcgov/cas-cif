@@ -129,7 +129,7 @@ describe("The Project Form", () => {
       "test operator (1234abcd)"
     );
     expect(screen.getByPlaceholderText("Select a Funding Stream").value).toBe(
-      "Select a Funding Stream"
+      "1"
     );
   });
 

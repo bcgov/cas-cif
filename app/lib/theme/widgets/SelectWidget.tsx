@@ -10,8 +10,16 @@ interface Option {
 }
 
 const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
-  const { id, onChange, schema, placeholder, label, required, uiSchema } =
-    props;
+  const {
+    id,
+    onChange,
+    schema,
+    placeholder,
+    label,
+    required,
+    uiSchema,
+    value,
+  } = props;
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");
@@ -29,6 +37,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         placeholder={placeholder}
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
+        value={value}
       >
         <option key={`option-placeholder-${id}`} value={undefined}>
           {placeholder}
