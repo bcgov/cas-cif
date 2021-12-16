@@ -39,21 +39,17 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.query
   );
 
-  // If there is an operator selected, retrieve it to populate the Trade Name below in the UI Schema.
-  let selectedOperator;
-  if (props.formData.operatorId) {
-    selectedOperator = query.allOperators.edges.find(
-      ({ node }) => node.rowId === props.formData.operatorId
-    );
-  }
+  let selectedOperator = useMemo(() => {
+      return query.allOperators.edges.find(
+        ({ node }) => node.rowId === props.formData.operatorId
+      )
+    }, [query, props.formData.operatorId]);
 
-  // If there is a funding stream selected, retrieve it to populate the description field below in the UI Schema.
-  let selectedFundingStream;
-  if (props.formData.fundingStreamId) {
-    selectedFundingStream = query.allFundingStreams.edges.find(
-      ({ node }) => node.rowId === props.formData.fundingStreamId
-    );
-  }
+  let selectedFundingStream = useMemo(() => {
+      return query.allFundingStreams.edges.find(
+        ({ node }) => node.rowId === props.formData.fundingStreamId
+      )
+    }, [query, props.formData.fundingStreamId]);
 
   const schema: JSONSchema7 = useMemo(() => {
     return {
