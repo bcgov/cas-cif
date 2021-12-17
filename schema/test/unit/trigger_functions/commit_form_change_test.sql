@@ -1,6 +1,6 @@
 begin;
 
-select plan(9);
+select plan(10);
 
 create schema mock_schema;
 
@@ -132,6 +132,18 @@ select is(
   (select count(*) from mock_schema.mock_form_change where operation='DELETE'),
   0::bigint,
   'No record should be inserted on DELETE'
+);
+
+-- on delete nothing happens and a notice is printed
+select lives_ok(
+  $$
+    insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
+    values (
+      '{}',
+      'INSERT', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_committed'
+    )
+  $$,
+  'Function does not throw an exception when trying to commit a change with an empty new_form_data'
 );
 
 select finish();
