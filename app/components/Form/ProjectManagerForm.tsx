@@ -11,7 +11,7 @@ interface Props extends FormComponentProps {
 
 const uiSchema = {
   "ui:title": "Project Manager",
-  projectManager: {
+  cifUserId: {
     "ui:placeholder": "Select a Project Manager",
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -43,7 +43,7 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
       title: "Project Manager",
       required: ["project_manager"],
       properties: {
-        projectManager: {
+        cifUserId: {
           type: "number",
           title: "Project Manager",
           default: undefined,
