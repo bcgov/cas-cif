@@ -41,7 +41,7 @@ describe("The Project Form", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
   });
-  it("matches the snapshot upon load", () => {
+  it("matches the snapshot", () => {
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation)
     );
@@ -86,6 +86,7 @@ describe("The Project Form", () => {
       rfpNumber: "12345678",
       description: "d",
       operatorId: 1,
+      fundingStreamId: 1,
     };
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -126,6 +127,238 @@ describe("The Project Form", () => {
     expect(screen.getByLabelText("Description*").value).toBe("d");
     expect(screen.getByPlaceholderText("Select an Operator").value).toBe(
       "test operator (1234abcd)"
+    );
+    expect(screen.getByPlaceholderText("Select a Funding Stream").value).toBe(
+      "1"
+    );
+  });
+
+  // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip("calls onformerrors on first render if there are errors", () => {
+    const onFormErrorsSpy = jest.fn();
+
+    props.formData = {
+      rfpNumber: "",
+      description: "",
+      operatorId: 1,
+      fundingStreamId: 1,
+    };
+    props.onFormErrors = onFormErrorsSpy;
+
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+
+    renderProjectForm();
+
+    expect(onFormErrorsSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rfpNumber: expect.anything(),
+        description: null,
+      })
+    );
+  });
+
+  // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip("calls onformerrors with null if there are no errors", () => {
+    const onFormErrorsSpy = jest.fn();
+
+    props.formData = {
+      rfpNumber: "1999-RFP-1-123-ABCD",
+      description: "d",
+      operatorId: 1,
+      fundingStreamId: 1,
+    };
+    props.onFormErrors = onFormErrorsSpy;
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+
+    renderProjectForm();
+
+    expect(onFormErrorsSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rfpNumber: null,
+        description: null,
+        operatorId: null,
+        fundingStreamId: null,
+      })
+    );
+  });
+
+  // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip("calls onformerrors if a fields becomes empty", () => {
+    const onFormErrorsSpy = jest.fn();
+
+    props.formData = {
+      rfpNumber: "1999-RFP-1-123-ABCD",
+      description: "desc",
+    };
+    props.onFormErrors = onFormErrorsSpy;
+
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+
+    renderProjectForm();
+
+    fireEvent.change(screen.getByLabelText("Description*"), {
+      target: { value: "" },
+    });
+
+    expect(onFormErrorsSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rfpNumber: null,
+        description: { __errors: ["is a required property"] },
+      })
+    );
+  });
+
+  // TODO remove skip and update with ticket #158
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip("calls onformerrors if the project unique id doesnt match format", () => {
+    const onFormErrorsSpy = jest.fn();
+
+    props.formData = {
+      rfpNumber: "1999123-RFP-1-123-ABCD",
+      description: "desc",
+      operatorId: 1,
+      fundingStreamId: 1,
+    };
+    props.onFormErrors = onFormErrorsSpy;
+
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+
+    renderProjectForm();
+
+    expect(onFormErrorsSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rfpNumber: expect.anything(),
+        description: null,
+        operatorId: null,
+        fundingStreamId: null,
+      })
     );
   });
 });
