@@ -37,18 +37,7 @@ begin
     revision_row.id,
     'pending',
     'Creating new project: project record'
-  );
-
-  insert into cif.form_change(
-    new_form_data,
-    operation,
-    form_data_schema_name,
-    form_data_table_name,
-    form_data_record_id,
-    project_revision_id,
-    change_status,
-    change_reason
-  ) values (
+  ), (
     '{}',
     'INSERT',
     'cif',

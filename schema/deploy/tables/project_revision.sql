@@ -10,6 +10,10 @@ create table cif.project_revision (
 
 select cif_private.upsert_timestamp_columns('cif', 'project_revision');
 
+create trigger commit_project_revision
+    after insert or update of change_status on cif.project_revision
+    for each row
+    execute procedure cif_private.commit_project_revision();
 
 do
 $grant$
