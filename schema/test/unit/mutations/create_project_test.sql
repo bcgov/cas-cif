@@ -9,6 +9,7 @@ truncate table cif.project_manager restart identity cascade;
 truncate table cif.project_revision restart identity cascade;
 truncate table cif.form_change restart identity cascade;
 
+alter sequence cif.project_id_seq restart with 1234;
 -- This test calls the create_project() function,
 -- effects will be tested in the following tests
 select lives_ok(
@@ -50,7 +51,7 @@ select is(
 );
 
 select is(
-  (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=2),
+  (select form_data_record_id from cif.form_change where form_data_table_name='project_manager' and project_revision_id=2),
   (select currval(pg_get_serial_sequence('cif.project_manager', 'id'))::integer),
   'Reserves the next id in the sequence for the the project_manager table'
 );
@@ -58,7 +59,7 @@ select is(
 -- prepopulates the project manager form with the project id
 select is(
   (select new_form_data from cif.form_change where form_data_table_name='project_manager' and project_revision_id=2),
-  '{ "projectId": 2 }'::jsonb,
+  '{ "projectId": 1235 }'::jsonb,
   'Populates the project_manager form with the project id'
 );
 

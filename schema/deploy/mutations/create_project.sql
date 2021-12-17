@@ -8,6 +8,7 @@ returns cif.project_revision
 as $function$
 declare
   revision_row cif.project_revision;
+  next_project_id integer;
 begin
 
   insert into cif.project_revision (
@@ -18,6 +19,8 @@ begin
       null,
       'pending'
     ) returning * into revision_row;
+
+  next_project_id :=  nextval(pg_get_serial_sequence('cif.project', 'id'));
 
   insert into cif.form_change(
     new_form_data,
@@ -33,12 +36,12 @@ begin
     'INSERT',
     'cif',
     'project',
-    nextval(pg_get_serial_sequence('cif.project', 'id')),
+    next_project_id,
     revision_row.id,
     'pending',
     'Creating new project: project record'
   ), (
-    format('{ "projectId": %s }', revision_row.id)::jsonb,
+    format('{ "projectId": %s }', next_project_id)::jsonb,
     'INSERT',
     'cif',
     'project_manager',
