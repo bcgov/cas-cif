@@ -4,7 +4,6 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { createProjectQuery } from "__generated__/createProjectQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { mutation } from "mutations/FormChange/updateFormChange";
-import updateProjectRevisionMutation from "mutations/ProjectRevision/updateProjectRevision";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 import Grid from "@button-inc/bcgov-theme/Grid";
@@ -13,6 +12,8 @@ import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
 import ProjecManagerForm from "components/Form/ProjectManagerForm";
 import ProjectForm from "components/Form/ProjectForm";
+import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
+import { useMutation } from "react-relay";
 
 const CreateProjectQuery = graphql`
   query createProjectQuery($id: ID!) {
@@ -47,6 +48,10 @@ export function CreateProject({
   const [errors, setErrors] = useState({});
 
   const [updateFormChange, updatingFormChange] = useDebouncedMutation(mutation);
+  const [updateProjectRevision, updatingProjectRevision] = useMutation(
+    updateProjectRevisionMutation
+  );
+
   const lastEditedDate = useMemo(
     () => new Date(query.projectRevision.updatedAt),
     [query.projectRevision.updatedAt]
@@ -87,14 +92,20 @@ export function CreateProject({
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
   const commitProject = async () => {
-    await updateProjectRevisionMutation(preloadedQuery.environment, {
-      input: {
-        id: query.projectRevision.id,
-        projectRevisionPatch: { changeStatus: "committed" },
+    updateProjectRevision({
+      variables: {
+        input: {
+          id: query.projectRevision.id,
+          projectRevisionPatch: { changeStatus: "committed" },
+        },
       },
-    });
-    await router.push({
-      pathname: "/cif/projects",
+      // No need for an optimistic response
+      // Since we navigate away from the page after the mutation is complete
+      onCompleted: async () => {
+        await router.push({
+          pathname: "/cif/projects",
+        });
+      },
     });
   };
 
@@ -107,7 +118,7 @@ export function CreateProject({
       <header>
         <h2>Project Overview</h2>
         <SavingIndicator
-          isSaved={!updatingFormChange}
+          isSaved={!updatingFormChange && !updatingProjectRevision}
           lastEdited={lastEditedDate}
         />
       </header>
