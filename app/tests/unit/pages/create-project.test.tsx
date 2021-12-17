@@ -8,7 +8,6 @@ import { RelayEnvironmentProvider, loadQuery } from "react-relay";
 import compiledCreateProjectQuery, {
   createProjectQuery,
 } from "__generated__/createProjectQuery.graphql";
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
 
 const environment = createMockEnvironment();
 
@@ -141,12 +140,10 @@ describe("The Create Project page", () => {
         return null;
       });
 
-    const spy = jest
-      .spyOn(
-        require("mutations/ProjectRevision/updateProjectRevision"),
-        "default"
-      )
-      .mockImplementation(() => {});
+    const spy = jest.fn();
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [spy, jest.fn()]);
 
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
       return { push: jest.fn() };
@@ -164,10 +161,13 @@ describe("The Create Project page", () => {
 
     userEvent.click(screen.getAllByRole("button")[1]);
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(expect.any(RelayModernEnvironment), {
-      input: {
-        projectRevisionPatch: { changeStatus: "committed" },
-        id: "mock-proj-rev-id",
+    expect(spy).toHaveBeenCalledWith({
+      onCompleted: expect.any(Function),
+      variables: {
+        input: {
+          id: "mock-proj-rev-id",
+          projectRevisionPatch: { changeStatus: "committed" },
+        },
       },
     });
   });
