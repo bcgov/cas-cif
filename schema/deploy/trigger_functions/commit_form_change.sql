@@ -19,6 +19,11 @@ begin
     raise exception 'Cannot commit change with operation %', new.operation;
   end if;
 
+  -- If there is no change in the form data, return the form_change record and do not touch the associated table.
+  if (new.new_form_data = '{}') then
+    return new;
+  end if;
+
   schema_table := quote_ident(new.form_data_schema_name) || '.' || quote_ident(new.form_data_table_name);
   keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(new.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(new.new_form_data)), ','));
