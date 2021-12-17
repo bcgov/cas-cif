@@ -38,7 +38,7 @@ begin
     'pending',
     'Creating new project: project record'
   ), (
-    '{}',
+    format('{ "projectId": %s }', revision_row.id)::jsonb,
     'INSERT',
     'cif',
     'project_manager',
