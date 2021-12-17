@@ -89,7 +89,7 @@ select is(
 );
 
 -- set the project_revision status to 'test_committed'
-update cif.project_revision set change_status='test_committed' where id=(select id from cif.project_revision order by id desc limit 1);
+update cif.project_revision set change_status='committed' where id=(select id from cif.project_revision order by id desc limit 1);
 
 -- make sure project_revision and form changes have change status 'test_committed'
 select results_eq(
@@ -97,15 +97,15 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('test_committed'::varchar), ('test_committed'::varchar);
+    values ('committed'::varchar), ('committed'::varchar);
   $$,
-  'the form_change rows should be have the test_committed status'
+  'the form_change rows should have the committed status'
 );
 
 -- make sure project_revision has a project id equal to the one that was in the form
 select is(
-  (select project_id from cif.project_revision where id=1),
-  (select form_data_record_id from cif.form_change where project_revision_id=1 and form_data_table_name='project'),
+  (select project_id from cif.project_revision),
+  (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
   'project_id should be set to the project_id that was in the form'
 );
 
