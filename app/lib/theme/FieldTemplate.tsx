@@ -1,9 +1,16 @@
 const FieldTemplate = ({ children, errors, help }) => {
   return (
     <>
-      {children}
-      {errors}
-      {help}
+      <div>
+        {children}
+        {errors}
+        {help}
+      </div>
+      <style jsx>{`
+        div:not(:last-child) {
+          margin-bottom: 1em;
+        }
+      `}</style>
     </>
   );
 };

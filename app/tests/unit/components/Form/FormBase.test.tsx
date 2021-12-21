@@ -53,7 +53,7 @@ describe("The FormBase component", () => {
 
     render(<FormBase {...props} />);
 
-    fireEvent.change(screen.getByLabelText("field*"), {
+    fireEvent.change(screen.getByLabelText("field"), {
       target: { value: "something" },
     });
 
@@ -75,7 +75,7 @@ describe("The FormBase component", () => {
 
     render(<FormBase {...props} />);
 
-    fireEvent.change(screen.getByLabelText("field*"), {
+    fireEvent.change(screen.getByLabelText("field"), {
       target: { value: "" },
     });
 

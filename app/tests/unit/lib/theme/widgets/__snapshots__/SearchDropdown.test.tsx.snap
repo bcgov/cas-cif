@@ -5,7 +5,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
   <label
     for="search-dropdown-1"
   >
-    Search
+    Search (optional)
   </label>
   <div
     aria-expanded="false"
@@ -103,7 +103,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with no default value se
   <label
     for="search-dropdown-1"
   >
-    Search
+    Search (optional)
   </label>
   <div
     aria-expanded="false"

@@ -72,46 +72,48 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
 
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
-      <Grid.Row>
-        <Grid.Col span={4}>
-          <Button
-            role="button"
-            name="create-project"
-            onClick={createDraftProject}
-          >
-            + Create Project
-          </Button>
-        </Grid.Col>
-      </Grid.Row>
-      <br />
-      <hr />
-      <h1>Projects</h1>
-      {query.allProjects.edges.length === 0 && <p>None</p>}
-      {query.allProjects.edges.map(({ node }) => (
-        <Card title={node.rfpNumber} key={node.id}>
-          <p>{node.description}</p>
-        </Card>
-      ))}
-      <h1>Pending Projects</h1>
-      {query.allProjectRevisions.edges.length === 0 && <p>None</p>}
-      {query.allProjectRevisions.edges.map(({ node }) => {
-        const projectChangeNode =
-          node.formChangesByProjectRevisionId.edges[0].node;
-        const cardTitle = `${projectChangeNode.newFormData.rfpNumber} (${projectChangeNode.changeStatus})`;
-        return (
-          <Card title={cardTitle} key={node.id}>
-            <p>Description: {projectChangeNode.newFormData.description}</p>
-            <p>Reason: {projectChangeNode.changeReason}</p>
-            <Grid.Row>
-              <Grid.Col span={3}>
-                <Button onClick={() => resumeStagedProject(node.id)}>
-                  Resume
-                </Button>
-              </Grid.Col>
-            </Grid.Row>
+      <Grid>
+        <Grid.Row>
+          <Grid.Col span={4}>
+            <Button
+              role="button"
+              name="create-project"
+              onClick={createDraftProject}
+            >
+              + Create Project
+            </Button>
+          </Grid.Col>
+        </Grid.Row>
+        <br />
+        <hr />
+        <h1>Projects</h1>
+        {query.allProjects.edges.length === 0 && <p>None</p>}
+        {query.allProjects.edges.map(({ node }) => (
+          <Card title={node.rfpNumber} key={node.id}>
+            <p>{node.description}</p>
           </Card>
-        );
-      })}
+        ))}
+        <h1>Pending Projects</h1>
+        {query.allProjectRevisions.edges.length === 0 && <p>None</p>}
+        {query.allProjectRevisions.edges.map(({ node }) => {
+          const projectChangeNode =
+            node.formChangesByProjectRevisionId.edges[0].node;
+          const cardTitle = `${projectChangeNode.newFormData.rfpNumber} (${projectChangeNode.changeStatus})`;
+          return (
+            <Card title={cardTitle} key={node.id}>
+              <p>Description: {projectChangeNode.newFormData.description}</p>
+              <p>Reason: {projectChangeNode.changeReason}</p>
+              <Grid.Row>
+                <Grid.Col span={3}>
+                  <Button onClick={() => resumeStagedProject(node.id)}>
+                    Resume
+                  </Button>
+                </Grid.Col>
+              </Grid.Row>
+            </Card>
+          );
+        })}
+      </Grid>
     </DefaultLayout>
   );
 }

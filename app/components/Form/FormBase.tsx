@@ -1,4 +1,4 @@
-import Form from "lib/theme/service-development-toolkit-form";
+import Form from "lib/theme/FormWithTheme";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
 interface Props extends FormComponentProps {

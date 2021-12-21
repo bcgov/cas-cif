@@ -62,7 +62,7 @@ describe("The Project Form", () => {
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
     renderProjectForm();
-    fireEvent.change(screen.getByLabelText("RFP Number*"), {
+    fireEvent.change(screen.getByLabelText("RFP Number"), {
       target: { value: "testidentifier" },
     });
 
@@ -72,7 +72,7 @@ describe("The Project Form", () => {
     });
     changeSpy.mockClear();
 
-    fireEvent.change(screen.getByLabelText("Description*"), {
+    fireEvent.change(screen.getByLabelText("Description"), {
       target: { value: "testdescription" },
     });
 
@@ -123,14 +123,19 @@ describe("The Project Form", () => {
 
     renderProjectForm();
 
-    expect(screen.getByLabelText("RFP Number*").value).toBe("12345678");
-    expect(screen.getByLabelText("Description*").value).toBe("d");
-    expect(screen.getByPlaceholderText("Select an Operator").value).toBe(
-      "test operator (1234abcd)"
+    expect(screen.getByLabelText<HTMLInputElement>("RFP Number").value).toBe(
+      "12345678"
     );
-    expect(screen.getByPlaceholderText("Select a Funding Stream").value).toBe(
-      "1"
+    expect(screen.getByLabelText<HTMLInputElement>("Description").value).toBe(
+      "d"
     );
+    expect(
+      screen.getByPlaceholderText<HTMLSelectElement>("Select an Operator").value
+    ).toBe("test operator (1234abcd)");
+    expect(
+      screen.getByPlaceholderText<HTMLSelectElement>("Select a Funding Stream")
+        .value
+    ).toBe("1");
   });
 
   // TODO remove skip and update with ticket #158

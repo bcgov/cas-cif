@@ -110,11 +110,7 @@ export function CreateProject({
   };
 
   return (
-    <DefaultLayout
-      session={query.session}
-      title="CIF Projects Management"
-      width="wide"
-    >
+    <DefaultLayout session={query.session} title="CIF Projects Management">
       <header>
         <h2>Project Overview</h2>
         <SavingIndicator
@@ -123,7 +119,7 @@ export function CreateProject({
         />
       </header>
       <Grid cols={2}>
-        <Grid.Row>
+        <Grid.Row gutter={[20, 0]}>
           <Grid.Col>
             <ProjectForm
               query={query}
@@ -135,6 +131,8 @@ export function CreateProject({
                 onFormErrors(query.projectRevision.projectFormChange.id, error)
               }
             />
+          </Grid.Col>
+          <Grid.Col>
             <ProjecManagerForm
               formData={
                 query.projectRevision.projectManagerFormChange.newFormData
@@ -155,23 +153,34 @@ export function CreateProject({
             />
           </Grid.Col>
         </Grid.Row>
-        <Button
-          id="commit-project-button"
-          size="medium"
-          variant="primary"
-          onClick={commitProject}
-          disabled={Object.keys(errors).some(
-            (key) => errors[key] && errors[key].length > 0
-          )}
-        >
-          Commit Project Changes
-        </Button>
+        <Grid.Row>
+          <Button
+            size="medium"
+            variant="primary"
+            onClick={commitProject}
+            disabled={Object.keys(errors).some(
+              (key) => errors[key] && errors[key].length > 0
+            )}
+          >
+            Submit
+          </Button>
+          <Button size="medium" variant="secondary">
+            Discard Changes
+          </Button>
+          <Button size="medium" variant="secondary">
+            Return to Project List
+          </Button>
+        </Grid.Row>
       </Grid>
       <style jsx>{`
         header {
           display: flex;
           justify-content: space-between;
           align-items: start;
+        }
+
+        :global(.pg-button) {
+          margin-right: 3em;
         }
       `}</style>
     </DefaultLayout>

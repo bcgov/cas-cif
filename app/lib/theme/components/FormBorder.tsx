@@ -5,14 +5,21 @@ interface Props {
 const FormBorder: React.FC<Props> = (props) => {
   return (
     <>
-      <fieldset id="formborder">
+      <fieldset>
         <legend>{props.title}</legend>
         {props.children}
       </fieldset>
       <style jsx>
         {`
           fieldset > legend {
-            margin: 0 auto;
+            margin: 0 1em;
+            padding: 0 1em;
+            color: #939393;
+          }
+
+          fieldset {
+            border-radius: 0.25em;
+            padding: 2em;
           }
         `}
       </style>

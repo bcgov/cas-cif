@@ -9,7 +9,7 @@ import SelectWidget from "lib/theme/widgets/SelectWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
-const Theme: ThemeProps = {
+const theme: ThemeProps = {
   children: <></>,
   fields: { ...fields },
   widgets: {
@@ -23,4 +23,4 @@ const Theme: ThemeProps = {
   FieldTemplate: FieldTemplate,
 };
 
-export default withTheme(Theme);
+export default withTheme(theme);

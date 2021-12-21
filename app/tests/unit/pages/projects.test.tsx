@@ -43,7 +43,7 @@ describe("The projects page", () => {
   it("loads the Create Project Button", async () => {
     render(
       <RelayEnvironmentProvider environment={environment}>
-        <Projects data-testid="1" CSN={true} preloadedQuery={initialQueryRef} />
+        <Projects CSN={true} preloadedQuery={initialQueryRef} />
       </RelayEnvironmentProvider>
     );
 
@@ -71,7 +71,7 @@ describe("The projects page", () => {
 
     render(
       <RelayEnvironmentProvider environment={environment}>
-        <Projects data-testid="2" CSN={true} preloadedQuery={initialQueryRef} />
+        <Projects CSN={true} preloadedQuery={initialQueryRef} />
       </RelayEnvironmentProvider>
     );
 

@@ -53,22 +53,6 @@ describe("The Create Project page", () => {
     { id: "mock-id" }
   );
 
-  it("loads the Create Project Button", async () => {
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <CreateProject
-          data-testid="1"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
-    expect(
-      screen.getAllByRole("button")[screen.getAllByRole("button").length - 1]
-    ).toHaveTextContent("Commit Project Changes");
-    expect(screen.getAllByRole("textbox")[0]).toHaveTextContent("");
-  });
-
   it("calls the updateFormChange mutation when the component calls the callback", async () => {
     const mockProjectForm: any = { props: {} };
     jest
@@ -203,10 +187,7 @@ describe("The Create Project page", () => {
       ]);
     });
 
-    expect(screen.queryAllByText("Commit Project Changes")[0]).toHaveProperty(
-      "disabled",
-      true
-    );
+    expect(screen.getByText("Submit")).toHaveProperty("disabled", true);
   });
 
   it("Renders an enabled button when the form reports no errors", async () => {
@@ -236,9 +217,6 @@ describe("The Create Project page", () => {
       mockProjectForm.props.onFormErrors([]);
     });
 
-    expect(screen.queryAllByText("Commit Project Changes")[0]).toHaveProperty(
-      "disabled",
-      false
-    );
+    expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
   });
 });

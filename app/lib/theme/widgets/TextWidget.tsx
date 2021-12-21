@@ -23,7 +23,7 @@ const TextWidget: React.FC<WidgetProps> = ({
       />
       <style jsx>
         {`
-          :global(input) {
+          :global(.pg-input) {
             width: 100%;
           }
         `}
