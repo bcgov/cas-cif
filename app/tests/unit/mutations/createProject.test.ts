@@ -21,8 +21,8 @@ describe("createProject mutation", () => {
     try {
       tester.mock(mutationString, {
         input: {
-          formChange: {
-            cif_identifier: "123",
+          someKey: {
+            someOtherKey: "123",
           },
         },
       });
@@ -31,7 +31,7 @@ describe("createProject mutation", () => {
     }
 
     expect(error.message).toEqual(
-      'Variable "$input" got invalid value { formChange: { cif_identifier: "123" } }; Field "formChange" is not defined by type "CreateProjectInput".'
+      'Variable "$input" got invalid value { someKey: { someOtherKey: "123" } }; Field "someKey" is not defined by type "CreateProjectInput".'
     );
   });
 
@@ -41,15 +41,6 @@ describe("createProject mutation", () => {
     });
 
     expect(test).toBeDefined();
-    expect(typeof test.data.createProject.formChange.id).toBe("string");
-  });
-
-  it("Should return a newFormData object if valid", () => {
-    const test = tester.mock(mutationString, {
-      input: {},
-    });
-
-    expect(test).toBeDefined();
-    expect(typeof test.data.createProject.formChange.newFormData).toBeDefined();
+    expect(typeof test.data.createProject.projectRevision.id).toBe("string");
   });
 });

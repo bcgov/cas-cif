@@ -9,7 +9,6 @@ const TextWidget: React.FC<WidgetProps> = ({
   label,
   value,
   required,
-  uiSchema,
 }) => {
   return (
     <>
@@ -19,7 +18,7 @@ const TextWidget: React.FC<WidgetProps> = ({
         placeholder={placeholder}
         label={getRequiredLabel(label, required)}
         value={value || ""}
-        size={(uiSchema && uiSchema["bcgov:size"]) || "medium"}
+        size={"medium"}
         required={required}
       />
       <style jsx>

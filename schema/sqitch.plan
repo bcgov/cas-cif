@@ -28,7 +28,11 @@ tables/project [tables/operator] 2021-11-04T20:34:23Z Pierre Bastianelli <pierre
 util_functions/camel_to_snake_case 2021-12-11T00:37:54Z Matthieu Foucault <matthieu@button.is> # Add cif_private.camel_to_snake_case
 trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
 tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
+trigger_functions/commit_project_revision 2021-12-07T00:37:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger function executed when a whole project revision is committed, triggering commit on the individual form_change records
+tables/project_revision 2021-12-07T00:39:51Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track global project revisions - containing multiple changes
 tables/form_change [tables/change_status] 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
-mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
 tables/attachment 2021-11-24T21:24:45Z Alex Zorkin <AizeeDev@BigThink> # Add schema for attachments
 tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
+mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
+computed_columns/project_revision_project_form_change [tables/project_revision] 2021-12-09T18:55:14Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project record, within a project revision
+computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision

@@ -22,7 +22,6 @@ COPY .tool-versions ${HOME}/.tool-versions
 RUN sed -i -nr '/node|yarn/p' ${HOME}/.tool-versions && \
     cat ${HOME}/.tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add && \
     asdf plugin-update --all && \
-    ${HOME}/.asdf/plugins/nodejs/bin/import-release-team-keyring && \
     asdf install && \
     asdf reshim
 

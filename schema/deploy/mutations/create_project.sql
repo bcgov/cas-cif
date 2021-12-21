@@ -4,11 +4,23 @@
 begin;
 
 create or replace function cif.create_project()
-returns cif.form_change
+returns cif.project_revision
 as $function$
 declare
-  change_row cif.form_change;
+  revision_row cif.project_revision;
+  next_project_id integer;
 begin
+
+  insert into cif.project_revision (
+      project_id,
+      change_status
+    ) values (
+      -- project_id is null until the project is created
+      null,
+      'pending'
+    ) returning * into revision_row;
+
+  next_project_id :=  nextval(pg_get_serial_sequence('cif.project', 'id'));
 
   insert into cif.form_change(
     new_form_data,
@@ -16,6 +28,7 @@ begin
     form_data_schema_name,
     form_data_table_name,
     form_data_record_id,
+    project_revision_id,
     change_status,
     change_reason
   ) values (
@@ -23,15 +36,27 @@ begin
     'INSERT',
     'cif',
     'project',
-    nextval(pg_get_serial_sequence('cif.project', 'id')),
+    next_project_id,
+    revision_row.id,
     'pending',
-    'create new project'
-  ) returning * into change_row;
-  return change_row;
+    'Creating new project: project record'
+  ), (
+    format('{ "projectId": %s }', next_project_id)::jsonb,
+    'INSERT',
+    'cif',
+    'project_manager',
+    nextval(pg_get_serial_sequence('cif.project_manager', 'id')),
+    revision_row.id,
+    'pending',
+    'Creating new project: project_manager record'
+  );
+
+  return revision_row;
 end;
 $function$ language plpgsql strict volatile;
 
 grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
 grant usage, select on sequence cif.project_id_seq to cif_internal, cif_external, cif_admin;
+grant usage, select on sequence cif.project_manager_id_seq to cif_internal, cif_external, cif_admin;
 
 commit;

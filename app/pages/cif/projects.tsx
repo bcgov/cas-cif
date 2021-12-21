@@ -24,13 +24,21 @@ export const ProjectsQuery = graphql`
           }
         }
       }
-      allFormChanges(filter: { changeStatus: { equalTo: "pending" } }) {
+      allProjectRevisions(filter: { changeStatus: { equalTo: "pending" } }) {
         edges {
           node {
             id
-            newFormData
             changeStatus
-            changeReason
+            formChangesByProjectRevisionId {
+              edges {
+                node {
+                  id
+                  newFormData
+                  changeStatus
+                  changeReason
+                }
+              }
+            }
           }
         }
       }
@@ -48,7 +56,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
     await router.push({
       pathname: "/cif/create-project",
       query: {
-        id: response.createProject.formChange.id,
+        id: response.createProject.projectRevision.id,
       },
     });
   };
@@ -85,13 +93,15 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         </Card>
       ))}
       <h1>Pending Projects</h1>
-      {query.allFormChanges.edges.length === 0 && <p>None</p>}
-      {query.allFormChanges.edges.map(({ node }) => {
-        const cardTitle = `${node.newFormData.rfpNumber} (${node.changeStatus})`;
+      {query.allProjectRevisions.edges.length === 0 && <p>None</p>}
+      {query.allProjectRevisions.edges.map(({ node }) => {
+        const projectChangeNode =
+          node.formChangesByProjectRevisionId.edges[0].node;
+        const cardTitle = `${projectChangeNode.newFormData.rfpNumber} (${projectChangeNode.changeStatus})`;
         return (
           <Card title={cardTitle} key={node.id}>
-            <p>Description: {node.newFormData.description}</p>
-            <p>Reason: {node.changeReason}</p>
+            <p>Description: {projectChangeNode.newFormData.description}</p>
+            <p>Reason: {projectChangeNode.changeReason}</p>
             <Grid.Row>
               <Grid.Col span={3}>
                 <Button onClick={() => resumeStagedProject(node.id)}>

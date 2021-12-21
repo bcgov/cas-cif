@@ -33,7 +33,7 @@ values
   ('test_pending', false, true),
   ('test_committed', true, true);
 
--- make sure the funciton exists
+-- make sure the function exists
 
 select has_function('cif_private', 'commit_form_change', 'Function commit_form_change should exist');
 

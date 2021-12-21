@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import FormComponentProps from "components/Form/FormComponentProps";
-import ProjectForm from "components/Project/ProjectForm";
+import ProjectForm from "components/Form/ProjectForm";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import {
   RelayEnvironmentProvider,

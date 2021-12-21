@@ -58,7 +58,7 @@ describe("The projects page", () => {
       .mockImplementation(() => {
         return {
           createProject: {
-            formChange: {
+            projectRevision: {
               id: "someid",
             },
           },

@@ -5,7 +5,7 @@ interface Props {
 const FormBorder: React.FC<Props> = (props) => {
   return (
     <>
-      <fieldset>
+      <fieldset id="formborder">
         <legend>{props.title}</legend>
         {props.children}
       </fieldset>

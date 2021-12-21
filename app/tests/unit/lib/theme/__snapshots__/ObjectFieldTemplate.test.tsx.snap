@@ -2,39 +2,69 @@
 
 exports[`The Object Field Template renders a default TitleField and DescriptionField 1`] = `
 <div>
-  <fieldset
-    class="sc-dkPtRN bfJYwN pg-fieldset"
-    id="test-id"
+  <div
+    class="sc-jRQBWg cDwDrH pg-grid-container"
+    cols="10"
   >
-    <h1
-      id="test-id__title"
-      title="Test Title"
+    <div
+      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
     >
-      Test Title
-    </h1>
-    <span
-      id="test-id__description"
-    >
-      Test Description
-    </span>
-  </fieldset>
+      <div
+        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+        id="test"
+        width="100"
+      >
+        <fieldset
+          class="jsx-3408663875"
+          id="formborder"
+        >
+          <legend
+            class="jsx-3408663875"
+          >
+            Test Title
+          </legend>
+          <span
+            id="test-id__description"
+          >
+            Test Description
+          </span>
+        </fieldset>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`The Object Field Template renders the provided TitleField and DescriptionField with the provided title and description 1`] = `
 <div>
-  <fieldset
-    class="sc-dkPtRN bfJYwN pg-fieldset"
-    id="test-id"
+  <div
+    class="sc-jRQBWg cDwDrH pg-grid-container"
+    cols="10"
   >
-    <p>
-      Test 
-      Second title
-    </p>
-    <p>
-      Test 
-      Another Description
-    </p>
-  </fieldset>
+    <div
+      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+    >
+      <div
+        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+        id="test"
+        width="100"
+      >
+        <fieldset
+          class="jsx-3408663875"
+          id="formborder"
+        >
+          <legend
+            class="jsx-3408663875"
+          >
+            Second title
+          </legend>
+          <p>
+            Test 
+            Another Description
+          </p>
+        </fieldset>
+      </div>
+    </div>
+  </div>
 </div>
 `;
