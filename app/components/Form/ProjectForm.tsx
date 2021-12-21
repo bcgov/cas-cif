@@ -55,13 +55,20 @@ const ProjectForm: React.FC<Props> = (props) => {
     return {
       type: "object",
       title: "Background",
-      required: ["rfpNumber", "description", "operatorId", "fundingStreamId"],
+      required: [
+        "rfpNumber",
+        "projectName",
+        "description",
+        "operatorId",
+        "fundingStreamId",
+      ],
       properties: {
         rfpNumber: {
           type: "string",
           title: "RFP Number",
           pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
         },
+        projectName: { type: "string", title: "Project Name" },
         description: { type: "string", title: "Description" },
         operatorId: {
           type: "number",
@@ -103,6 +110,11 @@ const ProjectForm: React.FC<Props> = (props) => {
     return {
       rfpNumber: {
         "ui:placeholder": "2020-RFP-1-456-ABCD",
+        "ui:col-md": 12,
+        "bcgov:size": "small",
+      },
+      projectName: {
+        "ui:placeholder": "Short project name",
         "ui:col-md": 12,
         "bcgov:size": "small",
       },

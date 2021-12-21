@@ -51,6 +51,25 @@ exports[`The Project Form matches the snapshot 1`] = `
             >
               <label
                 class="sc-egiyK ewKLoj pg-input-label"
+                for="root_projectName"
+              >
+                Project Name*
+              </label>
+              <input
+                aria-label="Project Name*"
+                class="sc-bqiRlB hrAFNs pg-input-input"
+                id="root_projectName"
+                name="root_projectName-input"
+                placeholder="Short project name"
+                required=""
+                value=""
+              />
+            </div>
+            <div
+              class="sc-crHmcD bKATQK pg-input"
+            >
+              <label
+                class="sc-egiyK ewKLoj pg-input-label"
                 for="root_description"
               >
                 Description*
