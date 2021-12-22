@@ -5,7 +5,7 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import Link from "next/link";
 import { adminLandingQuery } from "__generated__/adminLandingQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { getProjectListPageRoute } from "pageRoutes";
+import { getProjectsPageRoute } from "pageRoutes";
 
 const AdminQuery = graphql`
   query adminLandingQuery {
@@ -28,7 +28,7 @@ function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
           </Link>
         </Grid.Row>
         <Grid.Row>
-          <Link href={getProjectListPageRoute()}>
+          <Link href={getProjectsPageRoute()}>
             <a>Projects</a>
           </Link>
         </Grid.Row>

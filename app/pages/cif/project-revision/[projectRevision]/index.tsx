@@ -14,7 +14,7 @@ import ProjecManagerForm from "components/Form/ProjectManagerForm";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useMutation } from "react-relay";
-import { getProjectListPageRoute } from "pageRoutes";
+import { getProjectsPageRoute } from "pageRoutes";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -103,7 +103,7 @@ export function ProjectRevision({
       // No need for an optimistic response
       // Since we navigate away from the page after the mutation is complete
       onCompleted: async () => {
-        await router.push(getProjectListPageRoute());
+        await router.push(getProjectsPageRoute());
       },
     });
   };
