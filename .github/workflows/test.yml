@@ -150,7 +150,7 @@ jobs:
       - name: deploy migrations
         run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
       - name: start app
-        run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "yarn start AS_CYPRESS"
+        run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "yarn start ENABLE_MOCK_AUTH"
       - name: start minio
         run: docker run -d --network=host -p 9000:9000 minio/minio:RELEASE.2021-04-22T15-44-28Z server /data
       - name: start storage api

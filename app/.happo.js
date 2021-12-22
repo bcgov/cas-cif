@@ -1,21 +1,23 @@
 const { RemoteBrowserTarget } = require("happo.io");
 
+const laptopViewport = "1366x768";
+
 module.exports = {
   project: "cas-cif",
   apiKey: process.env.HAPPO_API_KEY,
   apiSecret: process.env.HAPPO_API_SECRET,
   targets: {
     chrome: new RemoteBrowserTarget("chrome", {
-      viewport: "1366×768",
+      viewport: laptopViewport,
     }),
     firefox: new RemoteBrowserTarget("firefox", {
-      viewport: "1366×768",
+      viewport: laptopViewport,
     }),
     edge: new RemoteBrowserTarget("edge", {
-      viewport: "1366×768",
+      viewport: laptopViewport,
     }),
     safari: new RemoteBrowserTarget("safari", {
-      viewport: "1366×768",
+      viewport: laptopViewport,
       scrollStitch: true,
     }),
   },

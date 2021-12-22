@@ -3,14 +3,14 @@ import { isAuthenticated } from "@bcgov-cas/sso-express/dist/helpers";
 import type { Request } from "express";
 import * as groupConstants from "../../data/group-constants";
 import { compactGroups } from "../../lib/userGroups";
-import { AS_CYPRESS, AUTH_BYPASS_COOKIE } from "../args";
+import { ENABLE_MOCK_AUTH, MOCK_AUTH_COOKIE } from "../args";
 
 const removeLeadingSlash = (str: string) =>
   str[0] === "/" ? str.slice(1) : str;
 
 export const getUserGroups = (req: Request) => {
-  if (AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE]) {
-    return [req.cookies[AUTH_BYPASS_COOKIE]];
+  if (ENABLE_MOCK_AUTH && req.cookies[MOCK_AUTH_COOKIE]) {
+    return [req.cookies[MOCK_AUTH_COOKIE]];
   }
   if (!isAuthenticated(req)) return [];
 

@@ -15,7 +15,7 @@
     "build:relay": "relay-compiler --verbose",
     "pretest": "yarn run build:relay",
     "test": "NODE_OPTIONS=\"--unhandled-rejections=strict\" jest",
-    "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && happo-e2e -- yarn cypress run",
+    "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && happo-e2e -- cypress run",
     "audit-deps": "improved-yarn-audit",
     "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js",
     "cypress": "cypress open"

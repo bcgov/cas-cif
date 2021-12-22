@@ -4,16 +4,16 @@ import groupData from "../../../data/groups.json";
 import { isAuthenticated } from "@bcgov-cas/sso-express";
 import type { Request } from "express";
 import {
-  AS_CYPRESS,
+  ENABLE_MOCK_AUTH,
   AS_CIF_INTERNAL,
   AS_CIF_EXTERNAL,
   AS_CIF_ADMIN,
   AS_UNAUTHORIZED_IDIR,
-  AUTH_BYPASS_COOKIE,
+  MOCK_AUTH_COOKIE,
 } from "../../args";
 
 const allowCypressForRole = (roleName: string, req: Request) => {
-  return AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE] === roleName;
+  return ENABLE_MOCK_AUTH && req.cookies[MOCK_AUTH_COOKIE] === roleName;
 };
 
 const authenticationPgSettings = (req: Request) => {
