@@ -55,6 +55,10 @@ module.exports = {
         "promise/prefer-await-to-then": 0,
         "no-unused-expressions": 0,
         "cypress/no-unnecessary-waiting": 0,
+        "import/no-extraneous-dependencies": [
+          "error",
+          { devDependencies: true },
+        ],
       },
     },
   ],

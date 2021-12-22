@@ -3,17 +3,14 @@ import { getUserGroups } from "../../helpers/userGroupAuthentication";
 import groupData from "../../../data/groups.json";
 import { isAuthenticated } from "@bcgov-cas/sso-express";
 import type { Request } from "express";
-
-const AUTH_BYPASS_COOKIE = "mocks.auth";
-
-const AS_CIF_INTERNAL = process.argv.includes("AS_CIF_INTERNAL");
-
-const AS_CIF_EXTERNAL = process.argv.includes("AS_CIF_EXTERNAL");
-
-const AS_CIF_ADMIN = process.argv.includes("AS_CIF_ADMIN");
-
-const AS_UNAUTHORIZED_IDIR = process.argv.includes("AS_UNAUTHORIZED_IDIR");
-const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
+import {
+  AS_CYPRESS,
+  AS_CIF_INTERNAL,
+  AS_CIF_EXTERNAL,
+  AS_CIF_ADMIN,
+  AS_UNAUTHORIZED_IDIR,
+  AUTH_BYPASS_COOKIE,
+} from "../../args";
 
 const allowCypressForRole = (roleName: string, req: Request) => {
   return AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE] === roleName;

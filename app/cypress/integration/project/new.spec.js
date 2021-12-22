@@ -1,0 +1,14 @@
+import logAxeResults from "../../plugins/logAxeResults";
+
+describe("the new project page", () => {
+  it("renders the project overview form", () => {
+    cy.mockLogin("cif_admin");
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Create Project").click();
+    cy.url().should("include", "/cif/create-project");
+    cy.get("button").contains("Submit");
+    cy.injectAxe();
+    // TODO: the entire body should be tested for accessibility
+    cy.checkA11y("main", null, logAxeResults);
+  });
+});

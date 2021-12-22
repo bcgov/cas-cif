@@ -2,11 +2,10 @@ import { getUserGroupLandingRoute } from "../../lib/userGroups";
 import { getUserGroups } from "../helpers/userGroupAuthentication";
 import ssoExpress from "@bcgov-cas/sso-express";
 
-const AS_REPORTER = process.argv.includes("AS_REPORTER");
 const AS_ADMIN = process.argv.includes("AS_ADMIN");
 const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
 
-const mockLogin = AS_REPORTER || AS_ADMIN;
+const mockLogin = AS_ADMIN;
 const mockSessionTimeout = mockLogin || AS_CYPRESS;
 
 let ssoServerHost;

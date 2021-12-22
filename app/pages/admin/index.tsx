@@ -20,7 +20,7 @@ function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
   const { query } = usePreloadedQuery(AdminQuery, preloadedQuery);
   return (
     <DefaultLayout session={query.session} title="CIF Projects Administration">
-      <div>
+      <Grid>
         <Grid.Row>
           <Link href="admin/users">
             <a>Users</a>
@@ -41,7 +41,7 @@ function AdminLanding({ preloadedQuery }: RelayProps<{}, adminLandingQuery>) {
             <a>Attachments</a>
           </Link>
         </Grid.Row>
-      </div>
+      </Grid>
     </DefaultLayout>
   );
 }

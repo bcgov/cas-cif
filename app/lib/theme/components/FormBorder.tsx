@@ -14,7 +14,6 @@ const FormBorder: React.FC<Props> = (props) => {
           fieldset > legend {
             margin: 0 1em;
             padding: 0 1em;
-            color: #939393;
           }
 
           fieldset {

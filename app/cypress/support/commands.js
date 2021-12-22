@@ -41,3 +41,8 @@ Cypress.Commands.add("logout", () =>
     retryOnStatusCodeFailure: true,
   })
 );
+
+Cypress.Commands.add("mockLogin", (roleName) => {
+  cy.setCookie("mocks.auth", roleName);
+  cy.getCookie("mocks.auth").should("exist");
+});

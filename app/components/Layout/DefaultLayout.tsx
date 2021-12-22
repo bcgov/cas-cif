@@ -64,6 +64,7 @@ const DefaultLayout: React.FC<Props> = ({
           main {
             padding: 30px 40px;
             flex-grow: 1;
+            background-color: #fafafc;
           }
         `}
       </style>
