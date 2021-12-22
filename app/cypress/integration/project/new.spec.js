@@ -10,5 +10,9 @@ describe("the new project page", () => {
     cy.injectAxe();
     // TODO: the entire body should be tested for accessibility
     cy.checkA11y("main", null, logAxeResults);
+    cy.get("body").happoScreenshot({
+      component: "New Project Page",
+      variant: "empty",
+    });
   });
 });
