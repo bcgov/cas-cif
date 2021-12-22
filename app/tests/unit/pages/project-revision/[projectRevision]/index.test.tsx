@@ -1,13 +1,13 @@
 import React from "react";
-import { CreateProject } from "pages/cif/create-project";
+import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import compiledCreateProjectQuery, {
-  createProjectQuery,
-} from "__generated__/createProjectQuery.graphql";
+import compiledProjectRevisionQuery, {
+  ProjectRevisionQuery,
+} from "__generated__/ProjectRevisionQuery.graphql";
 
 const environment = createMockEnvironment();
 
@@ -40,17 +40,17 @@ environment.mock.queueOperationResolver((operation) => {
   });
 });
 
-const query = compiledCreateProjectQuery; // can be the same, or just identical
+const query = compiledProjectRevisionQuery; // can be the same, or just identical
 const variables = {
-  id: "mock-id",
+  projectRevision: "mock-id",
 };
 environment.mock.queuePendingOperation(query, variables);
 
 describe("The Create Project page", () => {
-  const initialQueryRef = loadQuery<createProjectQuery>(
+  const initialQueryRef = loadQuery<ProjectRevisionQuery>(
     environment,
-    compiledCreateProjectQuery,
-    { id: "mock-id" }
+    compiledProjectRevisionQuery,
+    variables
   );
 
   it("calls the updateFormChange mutation when the component calls the callback", async () => {
@@ -69,7 +69,7 @@ describe("The Create Project page", () => {
 
     render(
       <RelayEnvironmentProvider environment={environment}>
-        <CreateProject
+        <ProjectRevision
           data-testid="2"
           CSN={true}
           preloadedQuery={initialQueryRef}
@@ -135,7 +135,7 @@ describe("The Create Project page", () => {
 
     render(
       <RelayEnvironmentProvider environment={environment}>
-        <CreateProject
+        <ProjectRevision
           data-testid="3"
           CSN={true}
           preloadedQuery={initialQueryRef}
@@ -171,7 +171,7 @@ describe("The Create Project page", () => {
 
     render(
       <RelayEnvironmentProvider environment={environment}>
-        <CreateProject
+        <ProjectRevision
           data-testid="4"
           CSN={true}
           preloadedQuery={initialQueryRef}
@@ -205,7 +205,7 @@ describe("The Create Project page", () => {
 
     render(
       <RelayEnvironmentProvider environment={environment}>
-        <CreateProject
+        <ProjectRevision
           data-testid="4"
           CSN={true}
           preloadedQuery={initialQueryRef}

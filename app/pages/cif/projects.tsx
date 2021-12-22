@@ -8,6 +8,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import Card from "@button-inc/bcgov-theme/Card";
 import commitProjectMutation from "mutations/Project/createProject";
 import { useRouter } from "next/router";
+import { getProjectRevisionPageRoute } from "pageRoutes";
 
 export const ProjectsQuery = graphql`
   query projectsQuery {
@@ -53,21 +54,13 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
     const response = await commitProjectMutation(preloadedQuery.environment, {
       input: {},
     });
-    await router.push({
-      pathname: "/cif/create-project",
-      query: {
-        id: response.createProject.projectRevision.id,
-      },
-    });
+    await router.push(
+      getProjectRevisionPageRoute(response.createProject.projectRevision.id)
+    );
   };
 
   const resumeStagedProject = async (id: string) => {
-    await router.push({
-      pathname: "/cif/create-project",
-      query: {
-        id: id,
-      },
-    });
+    await router.push(getProjectRevisionPageRoute(id));
   };
 
   return (

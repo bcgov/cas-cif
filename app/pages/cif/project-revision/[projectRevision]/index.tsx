@@ -1,7 +1,7 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { createProjectQuery } from "__generated__/createProjectQuery.graphql";
+import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { mutation } from "mutations/FormChange/updateFormChange";
 import { useRouter } from "next/router";
@@ -14,14 +14,15 @@ import ProjecManagerForm from "components/Form/ProjectManagerForm";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useMutation } from "react-relay";
+import { getProjectListPageRoute } from "pageRoutes";
 
-const CreateProjectQuery = graphql`
-  query createProjectQuery($id: ID!) {
+const pageQuery = graphql`
+  query ProjectRevisionQuery($projectRevision: ID!) {
     query {
       session {
         ...DefaultLayout_session
       }
-      projectRevision(id: $id) {
+      projectRevision(id: $projectRevision) {
         id
         updatedAt
         projectManagerFormChange {
@@ -39,11 +40,11 @@ const CreateProjectQuery = graphql`
   }
 `;
 
-export function CreateProject({
+export function ProjectRevision({
   preloadedQuery,
-}: RelayProps<{}, createProjectQuery>) {
+}: RelayProps<{}, ProjectRevisionQuery>) {
   const router = useRouter();
-  const { query } = usePreloadedQuery(CreateProjectQuery, preloadedQuery);
+  const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   const [errors, setErrors] = useState({});
 
@@ -102,9 +103,7 @@ export function CreateProject({
       // No need for an optimistic response
       // Since we navigate away from the page after the mutation is complete
       onCompleted: async () => {
-        await router.push({
-          pathname: "/cif/projects",
-        });
+        await router.push(getProjectListPageRoute());
       },
     });
   };
@@ -187,4 +186,4 @@ export function CreateProject({
   );
 }
 
-export default withRelay(CreateProject, CreateProjectQuery, withRelayOptions);
+export default withRelay(ProjectRevision, pageQuery, withRelayOptions);
