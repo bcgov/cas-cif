@@ -16492,6 +16492,7 @@ type Query implements Node {
     id: ID!
   ): Operator
   operatorByRowId(rowId: Int!): Operator
+  pendingNewProjectRevision: ProjectRevision
 
   """Reads a single `Project` using its globally unique `ID`."""
   project(

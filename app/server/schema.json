@@ -57241,6 +57241,18 @@
               "deprecationReason": null
             },
             {
+              "name": "pendingNewProjectRevision",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ProjectRevision",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "project",
               "description": "Reads a single `Project` using its globally unique `ID`.",
               "args": [
