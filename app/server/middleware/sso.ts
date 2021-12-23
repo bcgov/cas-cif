@@ -1,12 +1,10 @@
 import { getUserGroupLandingRoute } from "../../lib/userGroups";
 import { getUserGroups } from "../helpers/userGroupAuthentication";
 import ssoExpress from "@bcgov-cas/sso-express";
+import { ENABLE_MOCK_AUTH, AS_CIF_ADMIN, AS_CIF_INTERNAL } from "../args";
 
-const AS_ADMIN = process.argv.includes("AS_ADMIN");
-const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
-
-const mockLogin = AS_ADMIN;
-const mockSessionTimeout = mockLogin || AS_CYPRESS;
+const mockLogin = AS_CIF_ADMIN || AS_CIF_INTERNAL;
+const mockSessionTimeout = mockLogin || ENABLE_MOCK_AUTH;
 
 let ssoServerHost;
 if (!process.env.NAMESPACE || process.env.NAMESPACE.endsWith("-dev"))

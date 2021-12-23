@@ -9,8 +9,8 @@ const removeLeadingSlash = (str: string) =>
   str[0] === "/" ? str.slice(1) : str;
 
 export const getUserGroups = (req: Request) => {
-  if (ENABLE_MOCK_AUTH && req.cookies[MOCK_AUTH_COOKIE]) {
-    return [req.cookies[MOCK_AUTH_COOKIE]];
+  if (ENABLE_MOCK_AUTH && req.cookies?.[MOCK_AUTH_COOKIE]) {
+    return [req.cookies?.[MOCK_AUTH_COOKIE]];
   }
   if (!isAuthenticated(req)) return [];
 
