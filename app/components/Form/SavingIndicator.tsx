@@ -28,7 +28,7 @@ const SavingIndicator: React.FC<Props> = ({ isSaved, lastEdited }) => {
             display: inline-flex;
             justify-content: flex-end;
             align-items: baseline;
-            border: solid 1px;
+            border: solid 1px #939393;
             border-radius: 4px;
             padding: 0.5rem;
           }

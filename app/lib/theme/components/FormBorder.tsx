@@ -17,6 +17,7 @@ const FormBorder: React.FC<Props> = (props) => {
           }
 
           fieldset {
+            border: 1px solid #939393;
             border-radius: 0.25em;
             padding: 2em;
           }

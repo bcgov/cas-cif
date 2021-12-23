@@ -14,10 +14,10 @@ exports[`The Object Field Template renders a default TitleField and DescriptionF
         width="100"
       >
         <fieldset
-          class="jsx-2250130521"
+          class="jsx-4178779636"
         >
           <legend
-            class="jsx-2250130521"
+            class="jsx-4178779636"
           >
             Test Title
           </legend>
@@ -47,10 +47,10 @@ exports[`The Object Field Template renders the provided TitleField and Descripti
         width="100"
       >
         <fieldset
-          class="jsx-2250130521"
+          class="jsx-4178779636"
         >
           <legend
-            class="jsx-2250130521"
+            class="jsx-4178779636"
           >
             Second title
           </legend>
