@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import Grid from "@button-inc/bcgov-theme/Grid";
 import { graphql, useFragment } from "react-relay";
 import type { DefaultLayout_session$key } from "DefaultLayout_session.graphql";
 import getConfig from "next/config";
@@ -14,14 +13,12 @@ const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 interface Props {
   title?: string;
   session: DefaultLayout_session$key;
-  width?: "narrow" | "wide";
 }
 
 const DefaultLayout: React.FC<Props> = ({
   children,
   title,
   session: sessionFragment,
-  width = "wide",
 }) => {
   const session = useFragment(
     graphql`
@@ -54,15 +51,7 @@ const DefaultLayout: React.FC<Props> = ({
           <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
         )}
       </Navigation>
-      <main>
-        <div id="page-content">
-          <Grid cols={12} className={width}>
-            <Grid.Row justify="center" gutter={[0, 50]}>
-              <Grid.Col span={7}>{children}</Grid.Col>
-            </Grid.Row>
-          </Grid>
-        </div>
-      </main>
+      <main>{children}</main>
       <Footer />
       <style jsx>
         {`
@@ -73,10 +62,9 @@ const DefaultLayout: React.FC<Props> = ({
           }
 
           main {
+            padding: 30px 40px;
             flex-grow: 1;
-          }
-          :global(.container.wide) {
-            max-width: 100%;
+            background-color: #fafafc;
           }
         `}
       </style>

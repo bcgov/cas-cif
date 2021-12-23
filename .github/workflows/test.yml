@@ -150,7 +150,7 @@ jobs:
       - name: deploy migrations
         run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
       - name: start app
-        run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }}
+        run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "yarn start ENABLE_MOCK_AUTH"
       - name: start minio
         run: docker run -d --network=host -p 9000:9000 minio/minio:RELEASE.2021-04-22T15-44-28Z server /data
       - name: start storage api
@@ -164,5 +164,7 @@ jobs:
           CYPRESS_TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
           CYPRESS_TEST_UNAUTHORIZED_USERNAME: ${{ secrets.TEST_UNAUTHORIZED_USERNAME }}
           CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
+          HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
+          HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
         run: yarn test:e2e
         working-directory: ./app

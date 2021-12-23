@@ -11,15 +11,13 @@ exports[`The Object Field Template renders a default TitleField and DescriptionF
     >
       <div
         class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
-        id="test"
         width="100"
       >
         <fieldset
-          class="jsx-3408663875"
-          id="formborder"
+          class="jsx-4178779636"
         >
           <legend
-            class="jsx-3408663875"
+            class="jsx-4178779636"
           >
             Test Title
           </legend>
@@ -46,15 +44,13 @@ exports[`The Object Field Template renders the provided TitleField and Descripti
     >
       <div
         class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
-        id="test"
         width="100"
       >
         <fieldset
-          class="jsx-3408663875"
-          id="formborder"
+          class="jsx-4178779636"
         >
           <legend
-            class="jsx-3408663875"
+            class="jsx-4178779636"
           >
             Second title
           </legend>

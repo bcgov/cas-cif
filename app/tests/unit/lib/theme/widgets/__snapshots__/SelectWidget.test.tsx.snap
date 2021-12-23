@@ -6,7 +6,7 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
     class="jsx-3703916905"
     for="funding-stream-dropdown-1"
   >
-    Search
+    Search (optional)
   </label>
   <div
     class="sc-eCImPb dfYLVh pg-select"
@@ -50,7 +50,7 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
     class="jsx-3703916905"
     for="funding-stream-dropdown-1"
   >
-    Search
+    Search (optional)
   </label>
   <div
     class="sc-eCImPb dfYLVh pg-select"

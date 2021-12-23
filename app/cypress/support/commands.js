@@ -1,4 +1,5 @@
 import "cypress-file-upload";
+import "happo-cypress";
 
 Cypress.Commands.add("login", (username, password) => {
   // Open the login page, fill in the form with username and password and submit.
@@ -41,3 +42,8 @@ Cypress.Commands.add("logout", () =>
     retryOnStatusCodeFailure: true,
   })
 );
+
+Cypress.Commands.add("mockLogin", (roleName) => {
+  cy.setCookie("mocks.auth", roleName);
+  cy.getCookie("mocks.auth").should("exist");
+});
