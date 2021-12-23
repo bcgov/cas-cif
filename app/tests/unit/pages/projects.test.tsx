@@ -11,17 +11,13 @@ const environment = createMockEnvironment();
 
 environment.mock.queueOperationResolver((operation) => {
   return MockPayloadGenerator.generate(operation, {
-    projectsQuery() {
+    Query() {
       return {
-        query: {
-          session: null,
-          allProjects: {
-            edges: [],
-          },
-          allFormChanges: {
-            edges: [],
-          },
+        session: { cifUserBySub: {} },
+        allProjects: {
+          edges: [],
         },
+        pendingNewProjectRevision: null,
       };
     },
   });
@@ -40,19 +36,17 @@ describe("The projects page", () => {
     {}
   );
 
-  it("loads the Create Project Button", async () => {
+  it("loads the Add a Project Button", async () => {
     render(
       <RelayEnvironmentProvider environment={environment}>
         <Projects CSN={true} preloadedQuery={initialQueryRef} />
       </RelayEnvironmentProvider>
     );
 
-    expect(screen.getAllByRole("button")[1]).toHaveTextContent(
-      "Create Project"
-    );
+    expect(screen.getByText(/Add a Project/i)).toBeInTheDocument();
   });
 
-  it("calls the Create Project mutation when the Create Project Button is clicked", async () => {
+  it("calls the Add a Project mutation when the Add a Project Button is clicked", async () => {
     const spy = jest
       .spyOn(require("mutations/Project/createProject"), "default")
       .mockImplementation(() => {
@@ -75,7 +69,7 @@ describe("The projects page", () => {
       </RelayEnvironmentProvider>
     );
 
-    userEvent.click(screen.getAllByRole("button")[1]);
+    userEvent.click(screen.getByText(/Add a Project/i));
     expect(spy).toHaveBeenCalledTimes(1);
   });
 });

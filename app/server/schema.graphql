@@ -16492,6 +16492,10 @@ type Query implements Node {
     id: ID!
   ): Operator
   operatorByRowId(rowId: Int!): Operator
+
+  """
+  returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation
+  """
   pendingNewProjectRevision: ProjectRevision
 
   """Reads a single `Project` using its globally unique `ID`."""

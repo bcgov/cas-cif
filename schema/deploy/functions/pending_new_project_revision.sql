@@ -11,5 +11,5 @@ $$
 $$ language 'sql' stable;
 
 comment on function cif.pending_new_project_revision() is
-  "returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation";
+  'returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation';
 commit;

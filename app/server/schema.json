@@ -57242,7 +57242,7 @@
             },
             {
               "name": "pendingNewProjectRevision",
-              "description": null,
+              "description": "returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation",
               "args": [],
               "type": {
                 "kind": "OBJECT",

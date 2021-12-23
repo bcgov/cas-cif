@@ -12,35 +12,20 @@ import { getProjectRevisionPageRoute } from "pageRoutes";
 
 export const ProjectsQuery = graphql`
   query projectsQuery {
-    query {
-      session {
-        ...DefaultLayout_session
-      }
-      allProjects {
-        edges {
-          node {
-            id
-            rfpNumber
-            description
-          }
-        }
-      }
-      allProjectRevisions(filter: { changeStatus: { equalTo: "pending" } }) {
-        edges {
-          node {
-            id
-            changeStatus
-            formChangesByProjectRevisionId {
-              edges {
-                node {
-                  id
-                  newFormData
-                  changeStatus
-                  changeReason
-                }
-              }
-            }
-          }
+    session {
+      ...DefaultLayout_session
+    }
+
+    pendingNewProjectRevision {
+      id
+    }
+
+    allProjects {
+      edges {
+        node {
+          id
+          rfpNumber
+          description
         }
       }
     }
@@ -49,7 +34,10 @@ export const ProjectsQuery = graphql`
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const router = useRouter();
-  const { query } = usePreloadedQuery(ProjectsQuery, preloadedQuery);
+  const { allProjects, pendingNewProjectRevision, session } = usePreloadedQuery(
+    ProjectsQuery,
+    preloadedQuery
+  );
   const createDraftProject = async () => {
     const response = await commitProjectMutation(preloadedQuery.environment, {
       input: {},
@@ -59,54 +47,46 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
     );
   };
 
-  const resumeStagedProject = async (id: string) => {
-    await router.push(getProjectRevisionPageRoute(id));
+  const resumeStagedProject = async () => {
+    await router.push(
+      getProjectRevisionPageRoute(pendingNewProjectRevision.id)
+    );
   };
 
+  const createOrResumeButton = pendingNewProjectRevision ? (
+    <Button role="button" onClick={resumeStagedProject}>
+      Resume Project Draft
+    </Button>
+  ) : (
+    <Button role="button" onClick={createDraftProject}>
+      Add a Project
+    </Button>
+  );
+
   return (
-    <DefaultLayout session={query.session} title="CIF Projects Management">
+    <DefaultLayout session={session}>
+      <header>
+        <h2>CIF Projects</h2>
+        <section>
+          <p>Please note: there is a maximum of one draft project at a time.</p>
+          {createOrResumeButton}
+        </section>
+      </header>
       <Grid>
-        <Grid.Row>
-          <Grid.Col span={4}>
-            <Button
-              role="button"
-              name="create-project"
-              onClick={createDraftProject}
-            >
-              + Create Project
-            </Button>
-          </Grid.Col>
-        </Grid.Row>
-        <br />
-        <hr />
-        <h1>Projects</h1>
-        {query.allProjects.edges.length === 0 && <p>None</p>}
-        {query.allProjects.edges.map(({ node }) => (
+        <h3>Projects (temporary view)</h3>
+        {allProjects.edges.length === 0 && <p>None</p>}
+        {allProjects.edges.map(({ node }) => (
           <Card title={node.rfpNumber} key={node.id}>
             <p>{node.description}</p>
           </Card>
         ))}
-        <h1>Pending Projects</h1>
-        {query.allProjectRevisions.edges.length === 0 && <p>None</p>}
-        {query.allProjectRevisions.edges.map(({ node }) => {
-          const projectChangeNode =
-            node.formChangesByProjectRevisionId.edges[0].node;
-          const cardTitle = `${projectChangeNode.newFormData.rfpNumber} (${projectChangeNode.changeStatus})`;
-          return (
-            <Card title={cardTitle} key={node.id}>
-              <p>Description: {projectChangeNode.newFormData.description}</p>
-              <p>Reason: {projectChangeNode.changeReason}</p>
-              <Grid.Row>
-                <Grid.Col span={3}>
-                  <Button onClick={() => resumeStagedProject(node.id)}>
-                    Resume
-                  </Button>
-                </Grid.Col>
-              </Grid.Row>
-            </Card>
-          );
-        })}
       </Grid>
+      <style jsx>{`
+        header > section {
+          display: flex;
+          justify-content: space-between;
+        }
+      `}</style>
     </DefaultLayout>
   );
 }
