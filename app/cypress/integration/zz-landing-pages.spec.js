@@ -47,7 +47,7 @@ describe("When logged in as an admin", () => {
     )
       .its("redirects")
       .should((redirects) => {
-        expect(redirects[redirects.length - 1]).to.contain("/admin");
+        expect(redirects[redirects.length - 1]).to.contain("/cif");
       });
   });
 });

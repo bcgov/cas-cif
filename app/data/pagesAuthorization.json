@@ -4,17 +4,12 @@
     "isProtected": false
   },
   {
-    "routePaths": ["/admin(.*)"],
+    "routePaths": ["/admin/(.*)"],
     "isProtected": true,
     "allowedRoles": ["cif_admin", "Realm Administrator"]
   },
   {
-    "routePaths": ["/cif"],
-    "isProtected": true,
-    "allowedRoles": ["cif_internal"]
-  },
-  {
-    "routePaths": ["/cif/(.*)"],
+    "routePaths": ["/cif(.*)"],
     "isProtected": true,
     "allowedRoles": ["cif_internal", "cif_admin", "Realm Administrator"]
   }
