@@ -16,12 +16,7 @@ const CifLandingQuery = graphql`
 
 function CifLanding({ preloadedQuery }: RelayProps<{}, cifLandingQuery>) {
   const { query } = usePreloadedQuery(CifLandingQuery, preloadedQuery);
-  return (
-    <DefaultLayout
-      session={query.session}
-      title="CIF Projects Management"
-    ></DefaultLayout>
-  );
+  return <DefaultLayout session={query.session}></DefaultLayout>;
 }
 
 export default withRelay(CifLanding, CifLandingQuery, withRelayOptions);

@@ -5,7 +5,7 @@ describe("the new project page", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("button").contains("Create Project").click();
-    cy.url().should("include", "/cif/create-project");
+    cy.url().should("include", "/cif/project-revision");
     cy.get("button").contains("Submit");
     cy.injectAxe();
     // TODO: the entire body should be tested for accessibility
