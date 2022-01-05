@@ -66,10 +66,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           <BCGovLink>Resume Project Draft</BCGovLink>
         </Link>
       ) : (
-        <button
-          onClick={handleProjectCreation}
-          className={isProjectCreating ? "disabled" : ""}
-        >
+        <button onClick={handleProjectCreation} disabled={isProjectCreating}>
           Create a new Project
         </button>
       ),
