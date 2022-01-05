@@ -21,7 +21,7 @@ select cif.create_project();
 
 update cif.form_change set new_form_data=format('{
       "projectName": "name",
-      "description": "description",
+      "summary": "lorem ipsum",
       "fundingStreamId": 1,
       "rfpNumber": "1235",
       "operatorId": %s

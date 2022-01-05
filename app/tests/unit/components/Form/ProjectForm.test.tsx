@@ -7,7 +7,9 @@ import {
   useLazyLoadQuery,
   graphql,
 } from "react-relay";
-import compiledProjectFormQuery from "__generated__/ProjectFormQuery.graphql";
+import compiledProjectFormQuery, {
+  ProjectFormQuery,
+} from "__generated__/ProjectFormQuery.graphql";
 
 const loadedQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
@@ -26,7 +28,7 @@ const props: FormComponentProps = {
 
 let environment;
 const TestRenderer = () => {
-  const data = useLazyLoadQuery(loadedQuery, {});
+  const data = useLazyLoadQuery<ProjectFormQuery>(loadedQuery, {});
   return <ProjectForm {...props} query={data.query} />;
 };
 const renderProjectForm = () => {
@@ -68,23 +70,23 @@ describe("The Project Form", () => {
 
     expect(changeSpy).toHaveBeenCalledWith({
       rfpNumber: "testidentifier",
-      description: undefined,
+      summary: undefined,
     });
     changeSpy.mockClear();
 
-    fireEvent.change(screen.getByLabelText("Description"), {
-      target: { value: "testdescription" },
+    fireEvent.change(screen.getByLabelText(/summary/i), {
+      target: { value: "testsummary" },
     });
 
     expect(changeSpy).toHaveBeenCalledWith({
       rfpNumber: "testidentifier",
-      description: "testdescription",
+      summary: "testsummary",
     });
   });
   it("loads with the correct initial form data", () => {
     props.formData = {
       rfpNumber: "12345678",
-      description: "d",
+      summary: "d",
       operatorId: 1,
       fundingStreamId: 1,
     };
@@ -126,9 +128,7 @@ describe("The Project Form", () => {
     expect(screen.getByLabelText<HTMLInputElement>("RFP Number").value).toBe(
       "12345678"
     );
-    expect(screen.getByLabelText<HTMLInputElement>("Description").value).toBe(
-      "d"
-    );
+    expect(screen.getByLabelText<HTMLInputElement>("Summary").value).toBe("d");
     expect(
       screen.getByPlaceholderText<HTMLSelectElement>("Select an Operator").value
     ).toBe("test operator (1234abcd)");
@@ -145,7 +145,7 @@ describe("The Project Form", () => {
 
     props.formData = {
       rfpNumber: "",
-      description: "",
+      summary: "",
       operatorId: 1,
       fundingStreamId: 1,
     };
@@ -189,7 +189,7 @@ describe("The Project Form", () => {
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         rfpNumber: expect.anything(),
-        description: null,
+        summary: null,
       })
     );
   });
@@ -201,7 +201,7 @@ describe("The Project Form", () => {
 
     props.formData = {
       rfpNumber: "1999-RFP-1-123-ABCD",
-      description: "d",
+      summary: "d",
       operatorId: 1,
       fundingStreamId: 1,
     };
@@ -244,7 +244,7 @@ describe("The Project Form", () => {
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         rfpNumber: null,
-        description: null,
+        summary: null,
         operatorId: null,
         fundingStreamId: null,
       })
@@ -258,7 +258,7 @@ describe("The Project Form", () => {
 
     props.formData = {
       rfpNumber: "1999-RFP-1-123-ABCD",
-      description: "desc",
+      summary: "desc",
     };
     props.onFormErrors = onFormErrorsSpy;
 
@@ -297,14 +297,14 @@ describe("The Project Form", () => {
 
     renderProjectForm();
 
-    fireEvent.change(screen.getByLabelText("Description*"), {
+    fireEvent.change(screen.getByLabelText(/summary/i), {
       target: { value: "" },
     });
 
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         rfpNumber: null,
-        description: { __errors: ["is a required property"] },
+        summary: { __errors: ["is a required property"] },
       })
     );
   });
@@ -316,7 +316,7 @@ describe("The Project Form", () => {
 
     props.formData = {
       rfpNumber: "1999123-RFP-1-123-ABCD",
-      description: "desc",
+      summary: "desc",
       operatorId: 1,
       fundingStreamId: 1,
     };
@@ -360,7 +360,7 @@ describe("The Project Form", () => {
     expect(onFormErrorsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         rfpNumber: expect.anything(),
-        description: null,
+        summary: null,
         operatorId: null,
         fundingStreamId: null,
       })

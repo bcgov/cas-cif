@@ -78,22 +78,21 @@ exports[`The Project Form matches the snapshot 1`] = `
                 class="jsx-3435786090"
               >
                 <div
-                  class="sc-crHmcD bKATQK pg-input"
+                  class="sc-fFeiMQ jpQRmF pg-textarea"
                 >
                   <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_description"
+                    class="sc-bkkeKt joEfKW pg-textarea-label"
+                    for="root_summary"
                   >
-                    Description
+                    Summary
                   </label>
-                  <input
-                    aria-label="Description"
-                    class="sc-bqiRlB hrAFNs pg-input-input"
-                    id="root_description"
-                    name="root_description-input"
-                    placeholder="describe the project..."
+                  <textarea
+                    aria-label="Summary"
+                    class="sc-ieecCq fCLtjf pg-textarea-input"
+                    id="root_summary"
+                    name="root_summary-textarea"
+                    placeholder=""
                     required=""
-                    value=""
                   />
                 </div>
               </div>
@@ -216,14 +215,14 @@ exports[`The Project Form matches the snapshot 1`] = `
                   Funding Stream ID
                 </label>
                 <div
-                  class="sc-bkkeKt iEOAMi pg-select"
+                  class="sc-fKVqWL fMZYBT pg-select"
                 >
                   <div
-                    class="sc-dJjYzT juyIGG pg-select-wrapper"
+                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
                   >
                     <select
                       aria-label="root_fundingStreamId-select"
-                      class="sc-hGPBjI hXpBuL pg-select-input"
+                      class="sc-cxpSdN bpSVUb pg-select-input"
                       id="root_fundingStreamId"
                       name="root_fundingStreamId-select"
                       placeholder="Select a Funding Stream"
