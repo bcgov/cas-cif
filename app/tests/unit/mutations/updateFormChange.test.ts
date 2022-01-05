@@ -52,7 +52,7 @@ describe("UpdateFormChange mutation", () => {
         formChangePatch: {
           newFormData: {
             cif_identifier: "test",
-            description: "test",
+            summary: "test",
           },
         },
       },
@@ -68,7 +68,7 @@ describe("UpdateFormChange mutation", () => {
         formChangePatch: {
           newFormData: {
             cif_identifier: "test",
-            description: "test",
+            summary: "test",
           },
         },
       },

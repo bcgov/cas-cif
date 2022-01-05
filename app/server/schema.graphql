@@ -14316,9 +14316,6 @@ type Project implements Node {
   """deleted by user id"""
   deletedBy: Int
 
-  """Description of the project"""
-  description: String!
-
   """Reads a single `FundingStream` that is related to this `Project`."""
   fundingStreamByFundingStreamId: FundingStream
 
@@ -14416,6 +14413,9 @@ type Project implements Node {
 
   """Unique ID for the project"""
   rowId: Int!
+
+  """Summary of the project"""
+  summary: String!
 
   """updated at timestamp"""
   updatedAt: Datetime!
@@ -14938,9 +14938,6 @@ input ProjectCondition {
   """Checks for equality with the object’s `deletedBy` field."""
   deletedBy: Int
 
-  """Checks for equality with the object’s `description` field."""
-  description: String
-
   """Checks for equality with the object’s `fundingStreamId` field."""
   fundingStreamId: Int
 
@@ -14955,6 +14952,9 @@ input ProjectCondition {
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
+
+  """Checks for equality with the object’s `summary` field."""
+  summary: String
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
@@ -15000,9 +15000,6 @@ input ProjectFilter {
   """Filter by the object’s `deletedBy` field."""
   deletedBy: IntFilter
 
-  """Filter by the object’s `description` field."""
-  description: StringFilter
-
   """Filter by the object’s `fundingStreamByFundingStreamId` relation."""
   fundingStreamByFundingStreamId: FundingStreamFilter
 
@@ -15041,6 +15038,9 @@ input ProjectFilter {
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
+
+  """Filter by the object’s `summary` field."""
+  summary: StringFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
@@ -16103,8 +16103,6 @@ enum ProjectsOrderBy {
   DELETED_AT_DESC
   DELETED_BY_ASC
   DELETED_BY_DESC
-  DESCRIPTION_ASC
-  DESCRIPTION_DESC
   FUNDING_STREAM_ID_ASC
   FUNDING_STREAM_ID_DESC
   ID_ASC
@@ -16118,6 +16116,8 @@ enum ProjectsOrderBy {
   PROJECT_NAME_DESC
   RFP_NUMBER_ASC
   RFP_NUMBER_DESC
+  SUMMARY_ASC
+  SUMMARY_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC

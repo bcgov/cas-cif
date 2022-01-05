@@ -49435,22 +49435,6 @@
               "deprecationReason": null
             },
             {
-              "name": "description",
-              "description": "Description of the project",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "fundingStreamByFundingStreamId",
               "description": "Reads a single `FundingStream` that is related to this `Project`.",
               "args": [],
@@ -49774,6 +49758,22 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "summary",
+              "description": "Summary of the project",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 }
               },
@@ -51683,16 +51683,6 @@
               "defaultValue": null
             },
             {
-              "name": "description",
-              "description": "Checks for equality with the object’s `description` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "fundingStreamId",
               "description": "Checks for equality with the object’s `fundingStreamId` field.",
               "type": {
@@ -51738,6 +51728,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "summary",
+              "description": "Checks for equality with the object’s `summary` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -51892,16 +51892,6 @@
               "defaultValue": null
             },
             {
-              "name": "description",
-              "description": "Filter by the object’s `description` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "StringFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "fundingStreamByFundingStreamId",
               "description": "Filter by the object’s `fundingStreamByFundingStreamId` relation.",
               "type": {
@@ -52035,6 +52025,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "summary",
+              "description": "Filter by the object’s `summary` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -55843,18 +55843,6 @@
               "deprecationReason": null
             },
             {
-              "name": "DESCRIPTION_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "DESCRIPTION_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "FUNDING_STREAM_ID_ASC",
               "description": null,
               "isDeprecated": false,
@@ -55928,6 +55916,18 @@
             },
             {
               "name": "RFP_NUMBER_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SUMMARY_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SUMMARY_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

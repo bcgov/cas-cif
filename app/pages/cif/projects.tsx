@@ -25,7 +25,7 @@ export const ProjectsQuery = graphql`
         node {
           id
           rfpNumber
-          description
+          summary
         }
       }
     }
@@ -77,7 +77,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         {allProjects.edges.length === 0 && <p>None</p>}
         {allProjects.edges.map(({ node }) => (
           <Card title={node.rfpNumber} key={node.id}>
-            <p>{node.description}</p>
+            <p>{node.summary}</p>
           </Card>
         ))}
       </Grid>
