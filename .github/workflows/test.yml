@@ -77,8 +77,9 @@ jobs:
         run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
       - uses: actions/cache@v2
         with:
-          path: $PRE_COMMIT_HOME
-          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          path: |
+            ./.pre-commit-cache
+          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v2
       - run: pre-commit run --all-files
 
   docker-build:
