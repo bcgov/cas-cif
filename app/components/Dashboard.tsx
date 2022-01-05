@@ -78,42 +78,37 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
       <header>
         <h2>Welcome, {session.cifUserBySub?.firstName}</h2>
       </header>
-      <main>
+      <div>
         <section>
-          <header>
-            <h3>Projects</h3>
-          </header>
-          <main>
+          <h3 id="projects-heading">Projects</h3>
+          <nav aria-labelledby="projects-heading">
             <Link passHref href={getProjectsPageRoute()}>
               <BCGovLink>Projects List</BCGovLink>
             </Link>
             {addOrResumeProjectLink}
-          </main>
+          </nav>
         </section>
         <section>
-          <header>
-            <h3>Reporting Operations</h3>
-          </header>
-          <main>
+          <h3 id="reporting-op-heading">Reporting Operations</h3>
+          <nav aria-labelledby="reporting-op-heading">
             <Link passHref href={getOperatorsPageRoute()}>
               <BCGovLink>Operators</BCGovLink>
             </Link>
             <Link passHref href={getContactsPageRoute()}>
               <BCGovLink>Contacts</BCGovLink>
             </Link>
-          </main>
+          </nav>
         </section>
         {isAdmin && (
           <section>
-            <header>
-              <h3>Administration</h3>
-            </header>
-            <main></main>
+            <h3 id="admin-heading">Administration</h3>
+            <nav aria-labelledby="admin-heading"></nav>
           </section>
         )}
-      </main>
+      </div>
       <style jsx>{`
-        main {
+        div,
+        nav {
           display: flex;
           flex-wrap: wrap;
         }
@@ -125,21 +120,22 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           border-radius: 4px;
         }
 
-        section > header {
+        section > h3 {
           min-height: 5rem;
+          margin-bottom: 0;
         }
 
-        :global(section > main > *),
-        section > header {
+        :global(section > nav > *),
+        section > h3 {
           padding: 0.75rem 1.25rem;
         }
 
-        section > main {
+        section > nav {
           flex-direction: column;
         }
 
-        :global(section > main > *:not(:last-child)),
-        section > header {
+        :global(section > nav > *:not(:last-child)),
+        section > h3 {
           border-bottom: 1px solid #939393;
         }
 
