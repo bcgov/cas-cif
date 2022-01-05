@@ -28,7 +28,6 @@ repos:
     rev: v8.2.5
     hooks:
       - id: gitleaks
-        exclude: (.*/tests/.*|app/server/schema.*)
   - repo: https://github.com/jorisroovers/gitlint
     rev: v0.17.0
     hooks:
