@@ -79,6 +79,7 @@ describe("The projects page", () => {
     renderProjects();
 
     expect(screen.getByText(/resume project draft/i)).toBeInTheDocument();
+    expect(screen.queryByText(/add a project/i)).toBeNull();
   });
 
   it("calls the Add a Project mutation when the Add a Project Button is clicked", () => {
