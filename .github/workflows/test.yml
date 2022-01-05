@@ -2,8 +2,9 @@ name: Test CIF App
 
 on:
   push:
-    branches-ignore:
-      - main
+    branches: [develop]
+  pull_request:
+    branches: [develop]
 
 jobs:
   install-dev-tools:
