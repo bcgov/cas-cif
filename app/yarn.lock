@@ -2032,7 +2032,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-relay@^11.0.2":
+"@types/react-relay@*", "@types/react-relay@^11.0.2":
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-11.0.3.tgz#95097049203f2f814e1330453d037841a2a310e5"
   integrity sha512-hgKmTCswmZclKOqju/3pcVgJG3FtNrwfLLq4wtpZuQ/UJAyVeQ90SS6GiGZBr6hDZmcxNMIQCNyJ0YK5eE9Ceg==
@@ -2067,6 +2067,15 @@
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-12.0.1.tgz#a25a9755f7925a202a7ec3a49857de46943ecf02"
   integrity sha512-zYhQjy7FtTb6cgGuwBT09NLL308GIlo/tcnsfmZ095l/135TD8VladcOkowK/3o8jDAbQ2uLsMJ4No2tcxRenA==
+
+"@types/relay-test-utils@^6.0.5":
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.5.tgz#f3d4f3f2f159653ca3b8cdb4b19b45abfc6082d4"
+  integrity sha512-V7lHtLCW3fAsvHVb3LvwcUP8p983D0fUdAESSbMSgtDx75/GUP54zjRlNGif+J9ds/mk35ZunXPVy9wF4Fv3DA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-relay" "*"
+    "@types/relay-runtime" "*"
 
 "@types/scheduler@*":
   version "0.16.2"

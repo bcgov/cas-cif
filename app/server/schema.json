@@ -57241,6 +57241,18 @@
               "deprecationReason": null
             },
             {
+              "name": "pendingNewProjectRevision",
+              "description": "returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ProjectRevision",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "project",
               "description": "Reads a single `Project` using its globally unique `ID`.",
               "args": [
