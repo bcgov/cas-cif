@@ -1,4 +1,3 @@
-import { ADMIN_ROLES } from "data/group-constants";
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
@@ -13,6 +12,7 @@ import {
 import { mutation as createProjectMutation } from "mutations/Project/createProject";
 import { createProjectMutationResponse } from "__generated__/createProjectMutation.graphql";
 import { useRouter } from "next/router";
+import useIsAdmin from "hooks/useIsAdmin";
 
 interface Props {
   query: Dashboard_query$key;
@@ -51,10 +51,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
     });
   }, [createProject, isProjectCreating, router]);
 
-  const isAdmin = useMemo(
-    () => ADMIN_ROLES.some((role) => session?.userGroups?.includes(role)),
-    [session?.userGroups]
-  );
+  const isAdmin = useIsAdmin(session?.userGroups);
 
   const addOrResumeProjectLink = useMemo(
     () =>
