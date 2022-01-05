@@ -59,5 +59,14 @@ spec:
                   cpu: 100m
                   memory: 64Mi
               command:
-                - sqitch
-                - deploy
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  set -euo pipefail;
+                  sqitch deploy;
+                  if [[ "$NAMESPACE" == *-dev  ]]; then
+                  for file in data/dev/*.sql; do
+                    psql -d cif -f "${file}";
+                  done;
+                  fi;
