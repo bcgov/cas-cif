@@ -73,6 +73,12 @@ jobs:
       - name: set pre-commit cache directory
         run: |
           echo "PRE_COMMIT_HOME=$GITHUB_WORKSPACE/.pre-commit-cache" >> $GITHUB_ENV
+      - name: set PY
+        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+      - uses: actions/cache@v2
+        with:
+          path: $PRE_COMMIT_HOME
+          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}
       - run: pre-commit run --all-files
 
   docker-build:
