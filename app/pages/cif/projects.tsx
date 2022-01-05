@@ -4,11 +4,11 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { projectsQuery } from "__generated__/projectsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
-import Grid from "@button-inc/bcgov-theme/Grid";
-import Card from "@button-inc/bcgov-theme/Card";
 import commitProjectMutation from "mutations/Project/createProject";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
+import Table from "components/Table/Table";
+import ProjectTableRow from "components/Project/ProjectTableRow";
 
 export const ProjectsQuery = graphql`
   query projectsQuery {
@@ -24,13 +24,24 @@ export const ProjectsQuery = graphql`
       edges {
         node {
           id
-          rfpNumber
-          summary
+          ...ProjectTableRow_project
         }
       }
     }
   }
 `;
+
+const tableColumns = [
+  { title: "Project Name" },
+  { title: "Operator Trade Name" },
+  { title: "RFP ID" },
+  { title: "Status" },
+  { title: "Assigned To" },
+  { title: "Score" },
+  { title: "Funding Request" },
+  { title: "Next Report Due" },
+  { title: "Actions" },
+];
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const router = useRouter();
@@ -72,15 +83,13 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
           {createOrResumeButton}
         </section>
       </header>
-      <Grid>
-        <h3>Projects (temporary view)</h3>
-        {allProjects.edges.length === 0 && <p>None</p>}
+
+      <Table columns={tableColumns}>
         {allProjects.edges.map(({ node }) => (
-          <Card title={node.rfpNumber} key={node.id}>
-            <p>{node.summary}</p>
-          </Card>
+          <ProjectTableRow key={node.id} project={node} />
         ))}
-      </Grid>
+      </Table>
+
       <style jsx>{`
         header > section {
           display: flex;
