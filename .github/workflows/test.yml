@@ -70,6 +70,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
+      - name: set pre-commit cache directory
+        run: |
+          echo "PRE_COMMIT_HOME=$GITHUB_WORKSPACE/.pre-commit-cache" >> $GITHUB_ENV
       - run: pre-commit run --all-files
 
   docker-build:
