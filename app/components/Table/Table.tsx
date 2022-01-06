@@ -53,6 +53,10 @@ const Table: React.FC<Props> = ({ columns, children }) => {
           background-color: #f5f5f5;
         }
 
+        :global(tr:nth-child(odd)) {
+          background-color: white;
+        }
+
         :global(table.bc-table td) {
           border-right: 1px solid #939393;
           border-bottom: 1px solid #939393;
