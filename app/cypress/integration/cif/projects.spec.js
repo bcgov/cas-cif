@@ -1,6 +1,13 @@
 import logAxeResults from "../../plugins/logAxeResults";
 
 describe("the projects page", () => {
+  beforeEach(() => {
+    cy.sqlFixture("e2e/dbReset");
+    cy.sqlFixture("dev/001_cif_user");
+    cy.sqlFixture("dev/002_cif_operator");
+    cy.sqlFixture("dev/003_cif_project");
+  });
+
   it("displays the list of projects", () => {
     cy.mockLogin("cif_internal");
     cy.visit("/cif/projects");
