@@ -1,4 +1,4 @@
-import logAxeResults from "../../plugins/logAxeResults";
+import logAxeResults from "../../../plugins/logAxeResults";
 
 describe("the new project page", () => {
   it("renders the project overview form", () => {

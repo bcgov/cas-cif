@@ -7,7 +7,7 @@
   "Realm Administrator": {
     "pgRole": "cif_admin",
     "priority": 0,
-    "path": "/admin"
+    "path": "/cif"
   },
   "UNAUTHORIZED_IDIR_USER": {
     "pgRole": "cif_guest",
@@ -22,6 +22,6 @@
   "cif_admin": {
     "pgRole": "cif_admin",
     "priority": 0,
-    "path": "/admin"
+    "path": "/cif"
   }
 }

@@ -5,7 +5,7 @@ import subHeaderLinks from "data/subHeaderLinks";
 import { useMemo } from "react";
 import { match } from "path-to-regexp";
 
-export default function SubHeader({ isAdmin = false }) {
+export default function SubHeader() {
   const router = useRouter();
 
   const highlightedLinkName = useMemo(() => {
@@ -24,7 +24,7 @@ export default function SubHeader({ isAdmin = false }) {
     <BaseHeader header="sub">
       <ul>
         <li>
-          <Link href={isAdmin ? "/admin" : "/cif"}>
+          <Link href="/cif">
             <a
               className={highlightedLinkName === "Dashboard" ? "highlight" : ""}
             >

@@ -1,4 +1,3 @@
-import React, { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import type { DefaultLayout_session$key } from "DefaultLayout_session.graphql";
 import getConfig from "next/config";
@@ -6,7 +5,6 @@ import Navigation from "components/Layout/Navigation";
 import Footer from "components/Layout/Footer";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
 import UserProfile from "components/User/UserProfile";
-import { ADMIN_ROLES } from "data/group-constants";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -26,22 +24,15 @@ const DefaultLayout: React.FC<Props> = ({
         cifUserBySub {
           ...UserProfile_user
         }
-        userGroups
       }
     `,
     sessionFragment
-  );
-
-  const isAdmin = useMemo(
-    () => ADMIN_ROLES.some((role) => session?.userGroups?.includes(role)),
-    [session?.userGroups]
   );
 
   return (
     <div id="page-wrap">
       <Navigation
         isLoggedIn={Boolean(session)}
-        isAdmin={isAdmin}
         title={title}
         userProfileComponent={
           <UserProfile user={session ? session.cifUserBySub : null} />

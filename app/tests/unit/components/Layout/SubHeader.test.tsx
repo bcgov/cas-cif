@@ -5,15 +5,9 @@ import { mocked } from "jest-mock";
 jest.mock("next/router");
 
 describe("The SubHeader Component", () => {
-  it("Changes the dashboard link depending on the isAdmin prop", () => {
+  it("Renders the dashboard link", () => {
     mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
-    render(<SubHeader isAdmin={true} />);
-    expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
-      "href",
-      "/admin"
-    );
-    cleanup();
-    render(<SubHeader isAdmin={false} />);
+    render(<SubHeader />);
     expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
       "href",
       "/cif"

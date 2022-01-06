@@ -17,7 +17,6 @@ const DEFAULT_MOBILE_BREAK_POINT = "900";
 
 const Navigation: React.FC<Props> = ({
   isLoggedIn = false,
-  isAdmin = false,
   title = "CleanBC Industry Fund",
   userProfileComponent,
 }) => {
@@ -62,7 +61,7 @@ const Navigation: React.FC<Props> = ({
             {rightSide}
           </BaseHeader.Group>
         </BaseHeader>
-        {isLoggedIn && <SubHeader isAdmin={isAdmin} />}
+        {isLoggedIn && <SubHeader />}
       </BaseNavigation>
       <style jsx>{`
         h1 {

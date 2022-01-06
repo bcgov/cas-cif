@@ -5,33 +5,34 @@
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { getUserGroups } from "server/helpers/userGroupAuthentication";
 import type { NextPageContext } from "next";
+import { mocked } from "jest-mock";
 
 jest.mock("server/helpers/userGroupAuthentication");
 
 describe("The default withRelayOptions", () => {
   describe("serverSideProps", () => {
     it("should redirect a logged out user trying to access a protected page", async () => {
-      (getUserGroups as jest.Mock).mockReturnValue([]);
+      mocked(getUserGroups).mockReturnValue([]);
       const ctx = {
         req: {
-          url: "/admin",
+          url: "/cif",
         },
       } as NextPageContext;
       const serverSideProps = await withRelayOptions.serverSideProps(ctx);
       expect(serverSideProps).toEqual({
         redirect: {
           destination: `/login-redirect?redirectTo=${encodeURIComponent(
-            "/admin"
+            "/cif"
           )}`,
         },
       });
     });
 
-    it("should not redirect a cif_admin trying to access the /admin page", async () => {
-      getUserGroups.mockReturnValue(["cif_admin"]);
+    it("should not redirect a cif_admin trying to access the /cif page", async () => {
+      mocked(getUserGroups).mockReturnValue(["cif_admin"]);
       const ctx = {
         req: {
-          url: "/admin",
+          url: "/cif",
         },
       } as NextPageContext;
       const serverSideProps = await withRelayOptions.serverSideProps(ctx);
@@ -39,7 +40,7 @@ describe("The default withRelayOptions", () => {
     });
 
     it("should not redirect a cif_internal trying to access the /cif page", async () => {
-      getUserGroups.mockReturnValue(["cif_internal"]);
+      mocked(getUserGroups).mockReturnValue(["cif_internal"]);
       const ctx = {
         req: {
           url: "/cif",
@@ -50,7 +51,7 @@ describe("The default withRelayOptions", () => {
     });
 
     it("should not redirect a logged in user trying to access a public page", async () => {
-      getUserGroups.mockReturnValue(["cif_internal"]);
+      mocked(getUserGroups).mockReturnValue(["cif_internal"]);
       const ctx = {
         req: {
           url: "/",

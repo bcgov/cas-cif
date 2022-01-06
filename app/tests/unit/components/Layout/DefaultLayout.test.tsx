@@ -77,43 +77,22 @@ describe("The DefaultLayout component", () => {
     expect(screen.getByText("Projects")).toBeVisible();
   });
 
-  describe("it should set the destination of the Dashboard link", () => {
-    it("to /admin if the user is an admin", () => {
-      resolveQuery({
-        KeycloakJwt() {
-          return {
-            cifUserBySub: {
-              id: "1",
-            },
-            userGroups: ["cif_admin"],
-          };
-        },
-      });
-      renderDefaultLayout();
-
-      expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
-        "href",
-        "/admin"
-      );
+  it("should render the Dashboard link to /cif", () => {
+    resolveQuery({
+      KeycloakJwt() {
+        return {
+          cifUserBySub: {
+            id: "1",
+          },
+          userGroups: ["cif_admin"],
+        };
+      },
     });
+    renderDefaultLayout();
 
-    it("to /cif otherwise", () => {
-      resolveQuery({
-        KeycloakJwt() {
-          return {
-            cifUserBySub: {
-              id: "1",
-            },
-            userGroups: ["cif_internal"],
-          };
-        },
-      });
-      renderDefaultLayout();
-
-      expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
-        "href",
-        "/cif"
-      );
-    });
+    expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
+      "href",
+      "/cif"
+    );
   });
 });
