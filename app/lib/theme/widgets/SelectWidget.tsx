@@ -28,9 +28,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
 
   return (
     <>
-      <label htmlFor={`funding-stream-dropdown-${props.id}`}>
-        {getRequiredLabel(label, required)}
-      </label>
+      <label htmlFor={id}>{getRequiredLabel(label, required)}</label>
       <Dropdown
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}

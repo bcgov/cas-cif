@@ -12,6 +12,8 @@ const FormBase: React.FC<Props> = ({
   onFormErrors,
   schema,
   uiSchema,
+  formContext,
+  widgets,
 }) => {
   return (
     <>
@@ -24,7 +26,9 @@ const FormBase: React.FC<Props> = ({
           onChange(change.formData);
           onFormErrors(change.errors);
         }}
+        widgets={widgets}
         omitExtraData
+        formContext={formContext}
       ></Form>
       <style jsx>{`
         :global(label) {

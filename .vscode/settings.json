@@ -1,3 +1,17 @@
 {
-  "eslint.workingDirectories": ["app"]
+  "eslint.workingDirectories": [
+    "app"
+  ],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "cif",
+      "username": "postgres",
+      "name": "cif local",
+      "password": ""
+    }
+  ]
 }

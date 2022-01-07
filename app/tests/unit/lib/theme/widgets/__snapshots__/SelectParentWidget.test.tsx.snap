@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The SelectWidget Widget Matches the snapshot with a default value set 1`] = `
+exports[`The SelectParentWidget Widget Matches the snapshot with a default value set 1`] = `
 <div>
   <label
     class="jsx-3703916905"
-    for="1"
+    for="select-parent-dropdown-test-id"
   >
-    Search (optional)
+    Parent Label
   </label>
   <div
     class="sc-eCImPb dfYLVh pg-select"
@@ -15,42 +15,36 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
       class="sc-gKclnd kMxstE pg-select-wrapper"
     >
       <select
-        aria-label="1-select"
+        aria-label="select-parent-dropdown-test-id-select"
         class="sc-iCfMLu gsBcnF pg-select-input"
-        id="1"
-        name="1-select"
-        placeholder="test placeholder"
+        id="select-parent-dropdown-test-id"
+        name="select-parent-dropdown-test-id-select"
       >
         <option
           class="jsx-3703916905"
         >
-          test placeholder
+          parent placeholder
         </option>
         <option
           class="jsx-3703916905"
           value="1"
         >
-          Option 1
+          EP
         </option>
         <option
           class="jsx-3703916905"
           value="2"
         >
-          Option 2
+          IA
         </option>
       </select>
     </div>
   </div>
-</div>
-`;
-
-exports[`The SelectWidget Widget Matches the snapshot with no default value set 1`] = `
-<div>
   <label
     class="jsx-3703916905"
-    for="1"
+    for="select-child-dropdown-test-id"
   >
-    Search (optional)
+    Child Label
   </label>
   <div
     class="sc-eCImPb dfYLVh pg-select"
@@ -59,28 +53,15 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
       class="sc-gKclnd kMxstE pg-select-wrapper"
     >
       <select
-        aria-label="1-select"
+        aria-label="select-child-dropdown-test-id-select"
         class="sc-iCfMLu gsBcnF pg-select-input"
-        id="1"
-        name="1-select"
-        placeholder="test placeholder"
+        id="select-child-dropdown-test-id"
+        name="select-child-dropdown-test-id-select"
       >
         <option
           class="jsx-3703916905"
         >
-          test placeholder
-        </option>
-        <option
-          class="jsx-3703916905"
-          value="1"
-        >
-          Option 1
-        </option>
-        <option
-          class="jsx-3703916905"
-          value="2"
-        >
-          Option 2
+          child placeholder
         </option>
       </select>
     </div>

@@ -35,7 +35,7 @@ insert into cif.funding_stream(name, description) values ('stream', 'stream desc
 update cif.form_change set new_form_data=format('{
       "projectName": "name",
       "summary": "lorem ipsum",
-      "fundingStreamId": 1,
+      "fundingStreamRfpId": 1,
       "rfpNumber": "1235",
       "operatorId": %s
     }',
