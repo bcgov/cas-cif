@@ -6,10 +6,9 @@ import SelectParentWidget, {
 } from "../../lib/theme/widgets/SelectParentWidget";
 
 const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
-  const { query } = useFragment(
+  const { allFundingStreams, allFundingStreamRfps } = useFragment(
     graphql`
       fragment SelectRfpWidget_query on Query {
-        query {
           allFundingStreams {
             edges {
               node {
@@ -29,7 +28,6 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
             }
           }
         }
-      }
     `,
     props.formContext.query
   );
