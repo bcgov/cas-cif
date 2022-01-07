@@ -10,15 +10,16 @@ create table cif.project_revision (
 
 select cif_private.upsert_timestamp_columns('cif', 'project_revision');
 
-create trigger commit_project_revision
-    after insert or update of change_status on cif.project_revision
-    for each row
-    execute procedure cif_private.commit_project_revision();
-
-create trigger committed_changes_are_immutable
+-- We want the immutable trigger to run first to avoid doing unnecessary work
+create trigger _100_committed_changes_are_immutable
     before update on cif.project_revision
     for each row
     execute procedure cif_private.committed_changes_are_immutable();
+
+create trigger commit_project_revision
+    before insert or update of change_status on cif.project_revision
+    for each row
+    execute procedure cif_private.commit_project_revision();
 
 do
 $grant$

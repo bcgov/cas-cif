@@ -16,16 +16,18 @@ create table cif.form_change (
 
 select cif_private.upsert_timestamp_columns('cif', 'form_change');
 
+-- We want the immutable trigger to run first to avoid doing unnecessary work
+create trigger _100_committed_changes_are_immutable
+    before update on cif.form_change
+    for each row
+    execute procedure cif_private.committed_changes_are_immutable();
+
 create trigger commit_form_change
-    after insert or update of change_status on cif.form_change
+    before insert or update of change_status on cif.form_change
     for each row
     when (new.change_status = 'committed')
     execute procedure cif_private.commit_form_change();
 
-create trigger committed_changes_are_immutable
-    before update on cif.form_change
-    for each row
-    execute procedure cif_private.committed_changes_are_immutable();
 
 do
 $grant$
