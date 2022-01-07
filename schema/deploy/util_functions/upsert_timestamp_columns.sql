@@ -79,6 +79,22 @@ begin
         'comment on column ', table_schema_name, '.', table_name, '.deleted_at is ''deleted at timestamp'';'
       );
       execute(comment_string);
+
+      -- Adding the deleted_records_are_immutable trigger only with the deleted_at column
+
+      if not exists (select *
+        from information_schema.triggers
+        where event_object_table = table_name
+        and event_object_schema = table_schema_name
+        and trigger_name = '_050_immutable_deleted_records'
+      ) then
+        trigger_string := concat(
+          'create trigger _050_immutable_deleted_records before update on ', table_schema_name, '.', table_name,
+          ' for each row execute procedure cif_private.deleted_records_are_immutable()'
+        );
+        execute(trigger_string);
+      end if;
+
     end if;
 
   if not exists (select *
@@ -94,18 +110,6 @@ begin
     execute(trigger_string);
   end if;
 
-  if not exists (select *
-    from information_schema.triggers
-    where event_object_table = table_name
-    and event_object_schema = table_schema_name
-    and trigger_name = '_050_immutable_deleted_records'
-  ) then
-    trigger_string := concat(
-      'create trigger _050_immutable_deleted_records before update on ', table_schema_name, '.', table_name,
-      ' for each row execute procedure cif_private.deleted_records_are_immutable()'
-    );
-    execute(trigger_string);
-  end if;
 
 end;
 $$ language plpgsql;

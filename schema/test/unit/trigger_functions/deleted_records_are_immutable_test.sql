@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(4);
+select plan(3);
 
 -- Testing table with a deleted_at column
 
@@ -37,22 +37,5 @@ select throws_ok(
   'throws if deleted_at is set'
 );
 
--- Testing table without deleted_at column
-
-create table test_table_without_column(
-  test_col text
-);
-
-create trigger _1_trigger_under_test before update on test_table_without_column for each row
-execute procedure cif_private.deleted_records_are_immutable();
-
-insert into test_table_without_column(test_col) values ('test_value');
-
-select lives_ok(
-  $$
-    update test_table_without_column set test_col = 'updated!' where test_col = 'test_value'
-  $$,
-  'doesnt throw if there is no deleted_at column'
-);
 
 rollback;

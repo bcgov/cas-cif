@@ -5,10 +5,8 @@ begin;
 create or replace function cif_private.deleted_records_are_immutable()
 returns trigger as $$
 begin
-  if to_jsonb(old) ? 'deleted_at' then
-    if old.deleted_at is not null then
-      raise exception 'Deleted records cannot be modified';
-    end if;
+  if old.deleted_at is not null then
+    raise exception 'Deleted records cannot be modified';
   end if;
   return new;
 end;

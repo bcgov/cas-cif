@@ -1,5 +1,5 @@
 begin;
-select plan(22);
+select plan(23);
 
 create table cif.test_table_all_columns
 (
@@ -123,7 +123,18 @@ select isnt_empty(
       and event_object_schema = 'cif'
       and trigger_name = '_050_immutable_deleted_records'
   $$,
-  'the immutable deleted records trigger is added'
+  'the immutable deleted records trigger is added when deleted_at is added'
+);
+
+select is_empty(
+  $$
+    select trigger_name
+      from information_schema.triggers
+      where event_object_table = 'test_table_false_columns'
+      and event_object_schema = 'cif'
+      and trigger_name = '_050_immutable_deleted_records'
+  $$,
+  'the immutable deleted records trigger is not added when deleted_at is not added'
 );
 
 select finish();
