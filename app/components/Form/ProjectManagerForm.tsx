@@ -65,8 +65,6 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
       {...props}
       schema={schema}
       uiSchema={uiSchema}
-      formContext={{}}
-      widgets={{}}
     />
   );
 };

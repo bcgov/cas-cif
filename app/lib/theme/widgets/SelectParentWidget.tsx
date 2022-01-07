@@ -1,12 +1,18 @@
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import { useMemo, useState } from "react";
-import SelectParentComponentProps from "./SelectParentComponentProps";
+import { WidgetProps } from "@rjsf/core";
 
 export interface EntitySchema {
   list: [{ rowId: any }];
   displayField: string;
   placeholder: string;
   label: string;
+}
+
+interface SelectParentComponentProps extends WidgetProps {
+  parent: EntitySchema;
+  child: EntitySchema;
+  foreignKey: string;
 }
 
 const SelectParentWidget: React.FunctionComponent<
