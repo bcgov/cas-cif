@@ -15,6 +15,11 @@ create trigger commit_project_revision
     for each row
     execute procedure cif_private.commit_project_revision();
 
+create trigger committed_changes_are_immutable
+    before update on cif.project_revision
+    for each row
+    execute procedure cif_private.committed_changes_are_immutable();
+
 do
 $grant$
 begin

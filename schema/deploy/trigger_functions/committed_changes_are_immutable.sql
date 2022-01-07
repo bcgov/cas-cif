@@ -8,7 +8,6 @@ begin
   if (select triggers_commit from cif.change_status where status=old.change_status) then
     raise exception 'Committed records cannot be modified';
   end if;
-
   return new;
 end;
 $$ language plpgsql;

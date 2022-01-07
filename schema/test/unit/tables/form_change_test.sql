@@ -1,5 +1,5 @@
 begin;
-select plan(24);
+select plan(26);
 
 select has_table('cif', 'form_change', 'table cif.form_change exists');
 
@@ -24,6 +24,30 @@ insert into cif.form_change
   ('{}', 'insert', 'cif', 'project', 1),
   ('{}', 'insert', 'cif', 'project', 2),
   ('{}', 'insert', 'cif', 'project', 3);
+
+
+-- Trigger tests --
+
+insert into cif.change_status (status, triggers_commit) values ('testcommitted', true), ('testpending', false);
+insert into cif.form_change
+  (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) values
+  ('{}', 'insert', 'test-schema', 'test-table', 99, 'testpending'),
+  ('{}', 'insert', 'test-schema', 'test-table', 100, 'testcommitted');
+
+select lives_ok(
+  $$
+    update cif.form_change set new_form_data = '{"a": 1 }' where form_data_record_id = 99
+  $$,
+  'allows update if the change status is pending'
+);
+
+select throws_ok(
+  $$
+    update cif.form_change set new_form_data = '{"a": 1 }' where form_data_record_id = 100
+  $$,
+  'Committed records cannot be modified',
+  'prevents update if the change status is committed'
+);
 
 -- Row level security tests --
 
@@ -81,7 +105,7 @@ select results_eq(
   $$
     select count(*) from cif.form_change
   $$,
-  ARRAY['4'::bigint],
+  ARRAY['6'::bigint],
     'cif_internal can view all data from form_change'
 );
 

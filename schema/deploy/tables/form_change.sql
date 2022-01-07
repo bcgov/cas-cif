@@ -22,6 +22,11 @@ create trigger commit_form_change
     when (new.change_status = 'committed')
     execute procedure cif_private.commit_form_change();
 
+create trigger committed_changes_are_immutable
+    before update on cif.form_change
+    for each row
+    execute procedure cif_private.committed_changes_are_immutable();
+
 do
 $grant$
 begin
