@@ -55486,29 +55486,8 @@
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
-              "name": "fundingStreamByFundingStreamId",
-              "description": "Reads a single `FundingStream` that is related to this `Project`.",
-=======
-              "name": "description",
-              "description": "Description of the project",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "fundingStreamRfpByFundingStreamRfpId",
               "description": "Reads a single `FundingStreamRfp` that is related to this `Project`.",
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -57755,23 +57734,8 @@
               "defaultValue": null
             },
             {
-<<<<<<< HEAD
-              "name": "fundingStreamId",
-              "description": "Checks for equality with the object’s `fundingStreamId` field.",
-=======
-              "name": "description",
-              "description": "Checks for equality with the object’s `description` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "fundingStreamRfpId",
               "description": "Checks for equality with the object’s `fundingStreamRfpId` field.",
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
@@ -57979,23 +57943,8 @@
               "defaultValue": null
             },
             {
-<<<<<<< HEAD
-              "name": "fundingStreamByFundingStreamId",
-              "description": "Filter by the object’s `fundingStreamByFundingStreamId` relation.",
-=======
-              "name": "description",
-              "description": "Filter by the object’s `description` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "StringFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "fundingStreamRfpByFundingStreamRfpId",
               "description": "Filter by the object’s `fundingStreamRfpByFundingStreamRfpId` relation.",
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "FundingStreamRfpFilter",
@@ -61945,23 +61894,7 @@
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
-              "name": "FUNDING_STREAM_ID_ASC",
-=======
-              "name": "DESCRIPTION_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "DESCRIPTION_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "FUNDING_STREAM_RFP_ID_ASC",
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

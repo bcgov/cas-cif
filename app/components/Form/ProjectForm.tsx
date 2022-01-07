@@ -46,7 +46,6 @@ const ProjectForm: React.FC<Props> = (props) => {
         "projectName",
         "summary",
         "operatorId",
-        "fundingStreamId",
         "fundingStreamRfpId",
       ],
       properties: {

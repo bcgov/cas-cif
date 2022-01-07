@@ -59,14 +59,15 @@ exports[`The Project Form matches the snapshot 1`] = `
                     class="sc-egiyK ewKLoj pg-input-label"
                     for="root_projectName"
                   >
-                    Project Name (optional)
+                    Project Name
                   </label>
                   <input
-                    aria-label="Project Name (optional)"
+                    aria-label="Project Name"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_projectName"
                     name="root_projectName-input"
                     placeholder="Short project name"
+                    required=""
                     value=""
                   />
                 </div>
@@ -218,18 +219,10 @@ exports[`The Project Form matches the snapshot 1`] = `
                     class="sc-iwjdpV ggYxmL pg-select-wrapper"
                   >
                     <select
-<<<<<<< HEAD
-                      aria-label="root_fundingStreamId-select"
-                      class="sc-cxpSdN bpSVUb pg-select-input"
-                      id="root_fundingStreamId"
-                      name="root_fundingStreamId-select"
-                      placeholder="Select a Funding Stream"
-=======
                       aria-label="select-parent-dropdown-root_fundingStreamRfpId-select"
-                      class="sc-hGPBjI hXpBuL pg-select-input"
+                      class="sc-cxpSdN bpSVUb pg-select-input"
                       id="select-parent-dropdown-root_fundingStreamRfpId"
                       name="select-parent-dropdown-root_fundingStreamRfpId-select"
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
                       required=""
                     >
                       <option
@@ -253,14 +246,14 @@ exports[`The Project Form matches the snapshot 1`] = `
                   Funding Stream RFP
                 </label>
                 <div
-                  class="sc-bkkeKt iEOAMi pg-select"
+                  class="sc-fKVqWL fMZYBT pg-select"
                 >
                   <div
-                    class="sc-dJjYzT juyIGG pg-select-wrapper"
+                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
                   >
                     <select
                       aria-label="select-child-dropdown-root_fundingStreamRfpId-select"
-                      class="sc-hGPBjI hXpBuL pg-select-input"
+                      class="sc-cxpSdN bpSVUb pg-select-input"
                       id="select-child-dropdown-root_fundingStreamRfpId"
                       name="select-child-dropdown-root_fundingStreamRfpId-select"
                       required=""

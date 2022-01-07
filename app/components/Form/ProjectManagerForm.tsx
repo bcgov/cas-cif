@@ -60,7 +60,15 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
     };
   }, [allCifUsers]);
 
-  return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
+  return (
+    <FormBase
+      {...props}
+      schema={schema}
+      uiSchema={uiSchema}
+      formContext={{}}
+      widgets={{}}
+    />
+  );
 };
 
 export default ProjecManagerForm;

@@ -4,6 +4,8 @@ import FormComponentProps from "./FormComponentProps";
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
   uiSchema: {};
+  widgets: any;
+  formContext: any;
 }
 
 const FormBase: React.FC<Props> = ({

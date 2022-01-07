@@ -16096,16 +16096,8 @@ type Project implements Node {
   """deleted by user id"""
   deletedBy: Int
 
-<<<<<<< HEAD
-  """Reads a single `FundingStream` that is related to this `Project`."""
-  fundingStreamByFundingStreamId: FundingStream
-=======
-  """Description of the project"""
-  description: String!
-
   """Reads a single `FundingStreamRfp` that is related to this `Project`."""
   fundingStreamRfpByFundingStreamRfpId: FundingStreamRfp
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
 
   """
   The id of the funding_stream_rfp (cif.funding_stream_rfp.id) that was selected when creating the project
@@ -16726,16 +16718,8 @@ input ProjectCondition {
   """Checks for equality with the object’s `deletedBy` field."""
   deletedBy: Int
 
-<<<<<<< HEAD
-  """Checks for equality with the object’s `fundingStreamId` field."""
-  fundingStreamId: Int
-=======
-  """Checks for equality with the object’s `description` field."""
-  description: String
-
   """Checks for equality with the object’s `fundingStreamRfpId` field."""
   fundingStreamRfpId: Int
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
 
   """Checks for equality with the object’s `operatorId` field."""
   operatorId: Int
@@ -16796,18 +16780,10 @@ input ProjectFilter {
   """Filter by the object’s `deletedBy` field."""
   deletedBy: IntFilter
 
-<<<<<<< HEAD
-  """Filter by the object’s `fundingStreamByFundingStreamId` relation."""
-  fundingStreamByFundingStreamId: FundingStreamFilter
-=======
-  """Filter by the object’s `description` field."""
-  description: StringFilter
-
   """
   Filter by the object’s `fundingStreamRfpByFundingStreamRfpId` relation.
   """
   fundingStreamRfpByFundingStreamRfpId: FundingStreamRfpFilter
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
 
   """Filter by the object’s `fundingStreamRfpId` field."""
   fundingStreamRfpId: IntFilter
@@ -17909,15 +17885,8 @@ enum ProjectsOrderBy {
   DELETED_AT_DESC
   DELETED_BY_ASC
   DELETED_BY_DESC
-<<<<<<< HEAD
-  FUNDING_STREAM_ID_ASC
-  FUNDING_STREAM_ID_DESC
-=======
-  DESCRIPTION_ASC
-  DESCRIPTION_DESC
   FUNDING_STREAM_RFP_ID_ASC
   FUNDING_STREAM_RFP_ID_DESC
->>>>>>> e7ae77c (feat: funding stream rfp custom componet restructuring)
   ID_ASC
   ID_DESC
   NATURAL
