@@ -2,8 +2,6 @@ begin;
 
 select plan(3);
 
--- Testing table with a deleted_at column
-
 insert into cif.change_status (status, triggers_commit, active) values ('testcommitted', true, true), ('testpending', false, true);
 
 create table test_table_with_status(
@@ -37,5 +35,6 @@ select throws_ok(
   'throws if the change_status is committed'
 );
 
+select finish();
 
 rollback;
