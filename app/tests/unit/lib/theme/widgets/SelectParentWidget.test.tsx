@@ -58,34 +58,28 @@ const props: any = {
 describe("The SelectParentWidget Widget", () => {
   it("selects the first option from parent", async () => {
     render(<SelectParentWidget {...props} />);
-    const parentDropdown = screen.getByLabelText("Parent Label")
-    expect(parentDropdown.value).toEqual(
-      "parent placeholder"
-    );
+    const parentDropdown = screen.getByLabelText("Parent Label");
+    expect(parentDropdown.value).toEqual("parent placeholder");
     fireEvent.change(parentDropdown, { target: { value: "1" } });
     expect(parentDropdown.value).toEqual("1");
   });
 
   it("selects the first option from child", async () => {
     render(<SelectParentWidget {...props} />);
-    const childDropdown = screen.getByLabelText("Child Label")
-    const parentDropdown = screen.getByLabelText("Parent Label")
+    const childDropdown = screen.getByLabelText("Child Label");
+    const parentDropdown = screen.getByLabelText("Parent Label");
     fireEvent.change(parentDropdown, { target: { value: "2" } });
-    expect(childDropdown.value).toEqual(
-      "child placeholder"
-    );
+    expect(childDropdown.value).toEqual("child placeholder");
     fireEvent.change(childDropdown, { target: { value: "3" } });
     expect(childDropdown.value).toEqual("3");
   });
 
   it("cannot select the first option from child with non-selected parent", async () => {
     render(<SelectParentWidget {...props} />);
-    const childDropdown = screen.getByLabelText("Child Label")
-    const parentDropdown = screen.getByLabelText("Parent Label")
+    const childDropdown = screen.getByLabelText("Child Label");
+    const parentDropdown = screen.getByLabelText("Parent Label");
     fireEvent.change(parentDropdown, { target: { value: "2" } });
-    expect(childDropdown.value).toEqual(
-      "child placeholder"
-    );
+    expect(childDropdown.value).toEqual("child placeholder");
     fireEvent.change(childDropdown, { target: { value: "1" } });
     expect(childDropdown.value).toEqual("");
   });
