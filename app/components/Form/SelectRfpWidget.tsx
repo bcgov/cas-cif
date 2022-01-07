@@ -9,32 +9,32 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const { allFundingStreams, allFundingStreamRfps } = useFragment(
     graphql`
       fragment SelectRfpWidget_query on Query {
-          allFundingStreams {
-            edges {
-              node {
-                rowId
-                name
-                description
-              }
-            }
-          }
-          allFundingStreamRfps {
-            edges {
-              node {
-                rowId
-                year
-                fundingStreamId
-              }
+        allFundingStreams {
+          edges {
+            node {
+              rowId
+              name
+              description
             }
           }
         }
+        allFundingStreamRfps {
+          edges {
+            node {
+              rowId
+              year
+              fundingStreamId
+            }
+          }
+        }
+      }
     `,
     props.formContext.query
   );
 
   const parent: EntitySchema = useMemo(() => {
     return {
-      list: query.allFundingStreams.edges.map((edge) => {
+      list: allFundingStreams.edges.map((edge) => {
         const { rowId, name, description } = edge.node;
         return {
           rowId: rowId,
@@ -42,15 +42,15 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
           description: description,
         };
       }),
-      displayField: "name",
+      displayField: "description",
       placeholder: "Select a Funding Stream",
       label: "Funding Stream",
     };
-  }, [query]);
+  }, [allFundingStreams]);
 
   const child: EntitySchema = useMemo(() => {
     return {
-      list: query.allFundingStreamRfps.edges.map((edge) => {
+      list: allFundingStreamRfps.edges.map((edge) => {
         const { rowId, year, fundingStreamId } = edge.node;
         return {
           rowId: rowId,
@@ -62,7 +62,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       placeholder: "Select a Funding Stream RFP Year",
       label: "Funding Stream RFP",
     };
-  }, [query]);
+  }, [allFundingStreamRfps]);
 
   return (
     <SelectParentWidget
