@@ -234,7 +234,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                         class="jsx-3703916905"
                         value="42"
                       >
-                        &lt;mock-value-for-field-"name"&gt;
+                        &lt;mock-value-for-field-"description"&gt;
                       </option>
                     </select>
                   </div>
