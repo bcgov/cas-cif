@@ -69,7 +69,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       {...props}
       parent={parent}
       child={child}
-      foreignKey={"fundingStreamId"}
+      foreignKey="fundingStreamId"
     />
   );
 };
