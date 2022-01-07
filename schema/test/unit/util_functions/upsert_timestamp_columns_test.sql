@@ -1,5 +1,5 @@
 begin;
-select plan(20);
+select plan(23);
 
 create table cif.test_table_all_columns
 (
@@ -100,6 +100,41 @@ select hasnt_index(
 select hasnt_index(
   'cif', 'test_table_false_columns', 'cif_test_table_false_columns_deleted_by_foreign_key',
   'test_table_false_columns does not create an index when deleted_by parameter is false'
+);
+
+-- triggers are added
+
+select isnt_empty(
+  $$
+    select trigger_name
+      from information_schema.triggers
+      where event_object_table = 'test_table_all_columns'
+      and event_object_schema = 'cif'
+      and trigger_name = '_100_timestamps'
+  $$,
+  'the timestamps trigger is added'
+);
+
+select isnt_empty(
+  $$
+    select trigger_name
+      from information_schema.triggers
+      where event_object_table = 'test_table_all_columns'
+      and event_object_schema = 'cif'
+      and trigger_name = '_050_immutable_deleted_records'
+  $$,
+  'the immutable deleted records trigger is added when deleted_at is added'
+);
+
+select is_empty(
+  $$
+    select trigger_name
+      from information_schema.triggers
+      where event_object_table = 'test_table_false_columns'
+      and event_object_schema = 'cif'
+      and trigger_name = '_050_immutable_deleted_records'
+  $$,
+  'the immutable deleted records trigger is not added when deleted_at is not added'
 );
 
 select finish();
