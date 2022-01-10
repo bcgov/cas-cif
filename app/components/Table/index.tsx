@@ -6,7 +6,7 @@ interface Column {
 
 interface Props {
   columns: Column[];
-  emptyStateContents?: React.ReactElement;
+  emptyStateContents?: JSX.Element | string;
 }
 
 const Table: React.FC<Props> = ({

@@ -7,7 +7,7 @@ import Button from "@button-inc/bcgov-theme/Button";
 import commitProjectMutation from "mutations/Project/createProject";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
-import Table from "components/Table/Table";
+import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 
 export const ProjectsQuery = graphql`
