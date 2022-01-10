@@ -36,12 +36,14 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
 
   return (
     <tr>
-      <td>{projectName}</td>
-      <td>{tradeName}</td>
-      <td>{rfpNumber}</td>
-      <td>Status Here</td>
+      <td className="project-name">{projectName}</td>
+      <td className="op-trade-name">{tradeName}</td>
+      <td className="rfp-number">{rfpNumber}</td>
+      <td className="status-container">
+        <span className="status-badge">Status Here</span>
+      </td>
       <td>
-        J. Doe,
+        J. Doeloremipsum,
         <br />
         J. Doe
       </td>
@@ -51,6 +53,31 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
       <td>
         <Button onClick={handleViewClick}>View</Button>
       </td>
+      <style jsx>{`
+        .project-name,
+        .op-trade-name {
+          max-width: 15rem;
+        }
+        .rfp-number {
+          font-family: monospace;
+          font-weight: bold;
+          white-space: nowrap;
+        }
+
+        .status-container {
+          text-align: center;
+        }
+
+        .status-badge {
+          background-color: #777;
+          color: #fff;
+          padding: 0.2rem 0.6rem 0.3rem;
+          border-radius: 0.25rem;
+          border: 1px solid #d9d9d9;
+          display: inline-block;
+          white-space: nowrap;
+        }
+      `}</style>
     </tr>
   );
 };
