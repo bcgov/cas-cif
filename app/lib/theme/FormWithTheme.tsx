@@ -7,6 +7,7 @@ import { utils } from "@rjsf/core";
 import SearchDropdownWidget from "lib/theme/widgets/SearchDropdownWidget";
 import DisplayOnlyWidget from "lib/theme/widgets/DisplayOnlyWidget";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
+import SelectParentWidget from "lib/theme/widgets/SelectParentWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -20,6 +21,7 @@ const theme: ThemeProps = {
     SearchWidget: SearchDropdownWidget,
     DisplayOnly: DisplayOnlyWidget,
     SelectWidget: SelectWidget,
+    SelectParentWidget: SelectParentWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,

@@ -4,6 +4,8 @@ import FormComponentProps from "./FormComponentProps";
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
   uiSchema: {};
+  widgets?: any;
+  formContext?: any;
 }
 
 const FormBase: React.FC<Props> = ({
@@ -12,6 +14,8 @@ const FormBase: React.FC<Props> = ({
   onFormErrors,
   schema,
   uiSchema,
+  formContext,
+  widgets,
 }) => {
   return (
     <>
@@ -24,7 +28,9 @@ const FormBase: React.FC<Props> = ({
           onChange(change.formData);
           onFormErrors(change.errors);
         }}
+        widgets={widgets}
         omitExtraData
+        formContext={formContext}
       ></Form>
       <style jsx>{`
         :global(label) {

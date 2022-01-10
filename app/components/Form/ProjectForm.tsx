@@ -4,6 +4,7 @@ import FormComponentProps from "../Form/FormComponentProps";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
 import { useMemo } from "react";
+import SelectRfpWidget from "components/Form/SelectRfpWidget";
 
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
@@ -24,15 +25,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               }
             }
           }
-          allFundingStreams {
-            edges {
-              node {
-                rowId
-                name
-                description
-              }
-            }
-          }
+          ...SelectRfpWidget_query
         }
       }
     `,
@@ -45,22 +38,15 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   }, [query, props.formData.operatorId]);
 
-  let selectedFundingStream = useMemo(() => {
-    return query.allFundingStreams.edges.find(
-      ({ node }) => node.rowId === props.formData.fundingStreamId
-    );
-  }, [query, props.formData.fundingStreamId]);
-
   const schema: JSONSchema7 = useMemo(() => {
     return {
       type: "object",
-      title: "Background",
       required: [
         "rfpNumber",
         "projectName",
         "summary",
         "operatorId",
-        "fundingStreamId",
+        "fundingStreamRfpId",
       ],
       properties: {
         rfpNumber: {
@@ -86,21 +72,10 @@ const ProjectForm: React.FC<Props> = (props) => {
         operatorTradeName: {
           type: "string",
         },
-        fundingStreamId: {
+        fundingStreamRfpId: {
           type: "number",
-          title: "Funding Stream ID",
+          title: "Funding Stream RFP ID",
           default: undefined,
-          anyOf: query.allFundingStreams.edges.map(({ node }) => {
-            return {
-              type: "number",
-              title: node.name,
-              enum: [node.rowId],
-              value: node.rowId,
-            };
-          }),
-        },
-        fundingStreamDescription: {
-          type: "string",
         },
       },
     };
@@ -138,27 +113,23 @@ const ProjectForm: React.FC<Props> = (props) => {
           title: "Trade Name",
         },
       },
-      fundingStreamId: {
-        "ui:placeholder": "Select a Funding Stream",
-        "ui:widget": "select",
+      fundingStreamRfpId: {
+        "ui:widget": "SelectRfpWidget",
         "ui:col-md": 12,
         "bcgov:size": "small",
       },
-      fundingStreamDescription: {
-        "ui:col-md": 12,
-        "ui:widget": "DisplayOnly",
-        "bcgov:size": "large",
-        "ui:options": {
-          text: `${
-            selectedFundingStream ? selectedFundingStream.node.description : ""
-          }`,
-          title: "Description",
-        },
-      },
     };
-  }, [selectedOperator, selectedFundingStream]);
+  }, [selectedOperator]);
 
-  return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
+  return (
+    <FormBase
+      {...props}
+      schema={schema}
+      uiSchema={uiSchema}
+      formContext={{ query }}
+      widgets={{ SelectRfpWidget: SelectRfpWidget }}
+    />
+  );
 };
 
 export default ProjectForm;

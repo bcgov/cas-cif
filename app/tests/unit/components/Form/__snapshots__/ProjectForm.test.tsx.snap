@@ -25,9 +25,7 @@ exports[`The Project Form matches the snapshot 1`] = `
             >
               <legend
                 class="jsx-4178779636"
-              >
-                Background
-              </legend>
+              />
               <div
                 class="jsx-3435786090"
               >
@@ -210,9 +208,9 @@ exports[`The Project Form matches the snapshot 1`] = `
               >
                 <label
                   class="jsx-3703916905"
-                  for="funding-stream-dropdown-root_fundingStreamId"
+                  for="select-parent-dropdown-root_fundingStreamRfpId"
                 >
-                  Funding Stream ID
+                  Funding Stream
                 </label>
                 <div
                   class="sc-fKVqWL fMZYBT pg-select"
@@ -221,11 +219,10 @@ exports[`The Project Form matches the snapshot 1`] = `
                     class="sc-iwjdpV ggYxmL pg-select-wrapper"
                   >
                     <select
-                      aria-label="root_fundingStreamId-select"
+                      aria-label="select-parent-dropdown-root_fundingStreamRfpId-select"
                       class="sc-cxpSdN bpSVUb pg-select-input"
-                      id="root_fundingStreamId"
-                      name="root_fundingStreamId-select"
-                      placeholder="Select a Funding Stream"
+                      id="select-parent-dropdown-root_fundingStreamRfpId"
+                      name="select-parent-dropdown-root_fundingStreamRfpId-select"
                       required=""
                     >
                       <option
@@ -237,23 +234,38 @@ exports[`The Project Form matches the snapshot 1`] = `
                         class="jsx-3703916905"
                         value="42"
                       >
-                        &lt;mock-value-for-field-"name"&gt;
+                        &lt;mock-value-for-field-"description"&gt;
                       </option>
                     </select>
                   </div>
                 </div>
-              </div>
-              <div
-                class="jsx-3435786090"
-              >
-                <span
-                  class="paragraph-text"
+                <label
+                  class="jsx-3703916905"
+                  for="select-child-dropdown-root_fundingStreamRfpId"
                 >
-                  <label>
-                    Description
-                  </label>
-                  <p />
-                </span>
+                  Funding Stream RFP
+                </label>
+                <div
+                  class="sc-fKVqWL fMZYBT pg-select"
+                >
+                  <div
+                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
+                  >
+                    <select
+                      aria-label="select-child-dropdown-root_fundingStreamRfpId-select"
+                      class="sc-cxpSdN bpSVUb pg-select-input"
+                      id="select-child-dropdown-root_fundingStreamRfpId"
+                      name="select-child-dropdown-root_fundingStreamRfpId-select"
+                      required=""
+                    >
+                      <option
+                        class="jsx-3703916905"
+                      >
+                        Select a Funding Stream RFP Year
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </fieldset>
           </div>
