@@ -1,12 +1,21 @@
+import React from "react";
+
 interface Column {
   title: string;
 }
 
 interface Props {
   columns: Column[];
+  emptyStateContents?: React.ReactElement;
 }
 
-const Table: React.FC<Props> = ({ columns, children }) => {
+const Table: React.FC<Props> = ({
+  columns,
+  children,
+  emptyStateContents = <span className="no-results">No results found.</span>,
+}) => {
+  const rows = React.Children.toArray(children);
+
   return (
     <table className="bc-table">
       {/* class name is used to increase specificity of CSS selectors and override defaults */}
@@ -17,7 +26,15 @@ const Table: React.FC<Props> = ({ columns, children }) => {
           ))}
         </tr>
       </thead>
-      <tbody>{children}</tbody>
+      <tbody>
+        {rows.length > 0 ? (
+          rows
+        ) : (
+          <tr>
+            <td colSpan={columns.length}>{emptyStateContents}</td>
+          </tr>
+        )}
+      </tbody>
       <style jsx>{`
         table.bc-table {
           margin-top: 1rem;
@@ -66,6 +83,13 @@ const Table: React.FC<Props> = ({ columns, children }) => {
 
         :global(td:first-child) {
           border-left: 1px solid #939393;
+        }
+
+        :global(.no-results) {
+          width: 100%;
+          display: inline-block;
+          text-align: center;
+          font-style: italic;
         }
       `}</style>
     </table>
