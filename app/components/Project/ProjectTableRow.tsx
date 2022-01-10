@@ -68,7 +68,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         }
 
         .status-badge {
-          background-color: #777;
+          background-color: #555;
           color: #fff;
           padding: 0.2rem 0.6rem 0.3rem;
           border-radius: 0.25rem;
