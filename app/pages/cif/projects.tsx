@@ -37,7 +37,6 @@ const tableColumns = [
   { title: "RFP ID" },
   { title: "Status" },
   { title: "Assigned To" },
-  { title: "Score" },
   { title: "Funding Request" },
   { title: "Next Report Due" },
   { title: "Actions" },

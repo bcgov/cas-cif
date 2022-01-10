@@ -47,7 +47,6 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         <br />
         J. Doe
       </td>
-      <td>42</td>
       <td>$1,000,000</td>
       <td>2099-01-01 (M)</td>
       <td>
