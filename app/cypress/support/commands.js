@@ -47,3 +47,11 @@ Cypress.Commands.add("mockLogin", (roleName) => {
   cy.setCookie("mocks.auth", roleName);
   cy.getCookie("mocks.auth").should("exist");
 });
+
+Cypress.Commands.add("sqlFixture", (fixtureName) => {
+  cy.fixture(`${fixtureName}.sql`).then((fixture) =>
+    cy.exec(`psql -d cif<< EOF
+${fixture}
+EOF`)
+  );
+});

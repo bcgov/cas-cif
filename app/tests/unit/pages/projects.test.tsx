@@ -20,7 +20,10 @@ const defaultMockResolver = {
     return {
       session: { cifUserBySub: {} },
       allProjects: {
-        edges: [],
+        edges: [
+          { node: { id: "1", projectName: "Project 1" } },
+          { node: { id: "2", projectName: "Project 2" } },
+        ],
       },
       pendingNewProjectRevision: null,
     };
@@ -53,6 +56,14 @@ const renderProjects = () =>
 describe("The projects page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+  });
+
+  it("renders the list of projects", () => {
+    loadProjectsQuery();
+    renderProjects();
+
+    expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Project 2/i)).toBeInTheDocument();
   });
 
   it("loads the Add a Project Button", () => {

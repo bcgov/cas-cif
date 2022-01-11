@@ -5,7 +5,7 @@ overriding system value
 values
 
   (1, 'first operator legal name', 'first operator trade name', 'AB1234567'), -- pragma: allowlist secret
-  (2, 'second operator legal name', 'second operator trade name', 'BC1234567'), -- pragma: allowlist secret
+  (2, 'second operator legal name', 'second operator lorem ipsum dolor sit amet limited', 'BC1234567'), -- pragma: allowlist secret
   (3, 'third operator legal name', 'third operator trade name', 'EF3456789') -- pragma: allowlist secret
 
 on conflict (id) do update set
