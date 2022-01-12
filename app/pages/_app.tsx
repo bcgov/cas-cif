@@ -4,7 +4,7 @@ import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/relay/client";
 import "normalize.css";
 import BCGovTypography from "components/BCGovTypography";
-import SessionExpiryHandler from "components/SessionExpiryHandler";
+import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({

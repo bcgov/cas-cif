@@ -1,7 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import type { UserProfile_user$key } from "__generated__/UserProfile_user.graphql";
-import Button from "@button-inc/bcgov-theme/Button";
 import Grid from "@button-inc/bcgov-theme/Grid";
 
 interface Props {
@@ -31,18 +30,9 @@ const UserProfile: React.FC<Props> = ({ user }) => {
         </Grid.Row>
         <Grid.Row>{emailAddress}</Grid.Row>
       </Grid>
-      <form action="/logout" method="post">
-        <Button variant="secondary-inverse" type="submit">
-          Logout
-        </Button>
-      </form>
       <style jsx>{`
         :global(.name-display) {
           margin-right: 20px;
-        }
-        form {
-          margin-top: auto;
-          margin-bottom: auto;
         }
       `}</style>
     </>

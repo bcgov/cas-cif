@@ -6,7 +6,7 @@
 */
 
 describe("When logged in as an unauthorized user", () => {
-  after(() => cy.logout());
+  afterEach(() => cy.logout());
 
   it("The user should be redirected to the unauthorized_idir page", () => {
     cy.login(
@@ -19,11 +19,13 @@ describe("When logged in as an unauthorized user", () => {
           "/unauthorized_idir"
         );
       });
+    cy.visit("/");
+    cy.get("button").contains("Log out");
   });
 });
 
 describe("When logged in as an analyst", () => {
-  after(() => cy.logout());
+  afterEach(() => cy.logout());
 
   it("The index page redirects to the analyst dashboard", () => {
     cy.login(
@@ -34,11 +36,13 @@ describe("When logged in as an analyst", () => {
       .should((redirects) => {
         expect(redirects[redirects.length - 1]).to.contain("/cif");
       });
+    cy.visit("/");
+    cy.get("button").contains("Log out");
   });
 });
 
 describe("When logged in as an admin", () => {
-  after(() => cy.logout());
+  afterEach(() => cy.logout());
 
   it("The index page redirects to the admin dashboard", () => {
     cy.login(
@@ -49,5 +53,8 @@ describe("When logged in as an admin", () => {
       .should((redirects) => {
         expect(redirects[redirects.length - 1]).to.contain("/cif");
       });
+    cy.visit("/");
+    cy.contains("Administration");
+    cy.get("button").contains("Log out");
   });
 });
