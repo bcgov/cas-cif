@@ -1,7 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { Button } from "@button-inc/bcgov-theme";
 
-const LoginForm: React.FC = ({ children }) => {
+const LoginForm: React.FC = () => {
   const router = useRouter();
   let loginURI = "/login";
 
@@ -13,7 +14,9 @@ const LoginForm: React.FC = ({ children }) => {
   return (
     <>
       <form action={loginURI} method="post">
-        {children}
+        <Button variant="secondary-inverse" type="submit">
+          Log in
+        </Button>
       </form>
       <style jsx>{`
         form {

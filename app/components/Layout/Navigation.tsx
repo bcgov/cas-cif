@@ -1,8 +1,9 @@
 import Image from "next/image";
-import Button from "@button-inc/bcgov-theme/Button";
 import { BaseNavigation } from "@button-inc/bcgov-theme/Navigation";
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
-import LoginForm from "components/LoginForm";
+import LoginForm from "components/Session/LoginForm";
+import LogoutForm from "components/Session/LogoutForm";
+
 import SubHeader from "./SubHeader";
 
 interface Props {
@@ -21,13 +22,12 @@ const Navigation: React.FC<Props> = ({
   userProfileComponent,
 }) => {
   let rightSide = isLoggedIn ? (
-    userProfileComponent
+    <>
+      {userProfileComponent}
+      <LogoutForm />
+    </>
   ) : (
-    <LoginForm>
-      <Button variant="secondary-inverse" type="submit">
-        Login
-      </Button>
-    </LoginForm>
+    <LoginForm />
   );
   return (
     <>
