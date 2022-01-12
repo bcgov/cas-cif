@@ -32,6 +32,7 @@ trigger_functions/commit_form_change [schemas/private util_functions/camel_to_sn
 tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
 trigger_functions/committed_changes_are_immutable 2022-01-06T23:40:27Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger to prevent committed changes from being altered
 trigger_functions/commit_project_revision 2021-12-07T00:37:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger function executed when a whole project revision is committed, triggering commit on the individual form_change records
+trigger_functions/discard_project_revision 2022-01-12T16:58:56Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to propagate the deletion of a project revision to the individual form_change records
 tables/project_revision 2021-12-07T00:39:51Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track global project revisions - containing multiple changes
 tables/form_change [tables/change_status] 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
 tables/attachment 2021-11-24T21:24:45Z Alex Zorkin <alex@bigthink.io> # Add schema for attachments

@@ -21,6 +21,12 @@ create trigger commit_project_revision
     for each row
     execute procedure cif_private.commit_project_revision();
 
+create trigger discard_project_revision
+    after insert or update of deleted_at on cif.project_revision
+    for each row
+    when (new.deleted_at is not null)
+    execute procedure cif_private.discard_project_revision();
+
 do
 $grant$
 begin
