@@ -41,6 +41,7 @@ const Navigation: React.FC<Props> = ({
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages*/}
             <a href="/">
               <Image
+                priority
                 src="/img/BCID_CleanBC_rev_tagline_colour.svg"
                 alt="logo for Province of British Columbia CleanBC"
                 height={50}
