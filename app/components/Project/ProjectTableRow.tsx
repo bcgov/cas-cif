@@ -57,11 +57,17 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
       <td>
         <Money amount={totalFundingRequest} />
       </td>
-      <td>2099-01-01 (M)</td>
       <td>
-        <Button onClick={handleViewClick}>View</Button>
+        <div className="actions">
+          <Button size="small" onClick={handleViewClick}>
+            View
+          </Button>
+        </div>
       </td>
       <style jsx>{`
+        td {
+          vertical-align: top;
+        }
         .project-name,
         .op-trade-name {
           max-width: 15rem;
@@ -84,6 +90,11 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
           border: 1px solid #d9d9d9;
           display: inline-block;
           white-space: nowrap;
+        }
+
+        .actions {
+          display: flex;
+          justify-content: space-around;
         }
       `}</style>
     </tr>

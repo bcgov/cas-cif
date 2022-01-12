@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
+import { TextFilter } from "components/Table/Filters";
 
 export const ProjectsQuery = graphql`
   query projectsQuery {
@@ -21,6 +22,7 @@ export const ProjectsQuery = graphql`
     }
 
     allProjects {
+      totalCount
       edges {
         node {
           id
@@ -38,8 +40,16 @@ const tableColumns = [
   { title: "Status" },
   { title: "Assigned To" },
   { title: "Funding Request" },
-  { title: "Next Report Due" },
   { title: "Actions" },
+];
+
+const tableFilters = [
+  new TextFilter("Project Name", "projectName"),
+  new TextFilter("Operator Trade Name", "operatorTradeName"),
+  new TextFilter("RFP ID", "rfpId"),
+  new TextFilter("Status", "status"),
+  new TextFilter("Assigned To", "assignedTo"),
+  new TextFilter("Funding Request", "fundingRequest"),
 ];
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
@@ -83,7 +93,12 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         </section>
       </header>
 
-      <Table columns={tableColumns}>
+      <Table
+        paginated
+        totalRowCount={allProjects.totalCount}
+        columns={tableColumns}
+        filters={tableFilters}
+      >
         {allProjects.edges.map(({ node }) => (
           <ProjectTableRow key={node.id} project={node} />
         ))}
