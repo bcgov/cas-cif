@@ -23,7 +23,7 @@ import {
  *    }
  * }`;
  *
- * const [discardMyEntityMutation, isInFlight] = useDiscardMutation("myEntity", myTableMutation);
+ * const [discardMyEntityMutation, isInFlight] = useDiscardMutation("myEntity", mutation);
  *
  */
 
