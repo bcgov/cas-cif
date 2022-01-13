@@ -940,6 +940,13 @@
   resolved "https://registry.yarnpkg.com/@graphile-contrib/pg-many-to-many/-/pg-many-to-many-1.0.1.tgz#c6eb333c877938f7a4fda3da0ee95393b223bd08"
   integrity sha512-gFk0OaiXtO2BGHy0QIeceBsCoq8IvjkPuCN58JR1EBOuEPduZ+siwB6/SUF70ErBUiT41+qNKgTOayQfo2tU0A==
 
+"@graphile-contrib/pg-omit-archived@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@graphile-contrib/pg-omit-archived/-/pg-omit-archived-2.1.0.tgz#1b0611ed735c46d5fd5873276db4acb1f39ef1a7"
+  integrity sha512-mh/qnxHpoJ2bNIg6EUa9L/BVt97c0d3Qoa1RW5MHkbx2hliTixnsF9NfKcH6j6pNcP5GMvxdqkkPbcR5grPS0w==
+  dependencies:
+    graphile-utils "^4.5.6"
+
 "@graphile/lru@4.11.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@graphile/lru/-/lru-4.11.0.tgz#dd805ee083063488796ec0eac5a8b50b21c076f9"
@@ -5582,7 +5589,7 @@ graphile-build@4.12.2:
     pluralize "^7.0.0"
     semver "^6.0.0"
 
-graphile-utils@^4.12.2:
+graphile-utils@^4.12.2, graphile-utils@^4.5.6:
   version "4.12.2"
   resolved "https://registry.yarnpkg.com/graphile-utils/-/graphile-utils-4.12.2.tgz#2858462672eecdb53c5327ffc22abb61f4e30e06"
   integrity sha512-2UcTWWMFLFkKwbDLqlN0mF5sxLqz9y0p7I3zNOJpXtHVjrHyp7oQZsWComPsit/PWIrIgtDUagP+HPkypBRrqA==
