@@ -117,6 +117,9 @@ export function ProjectRevision({
       onCompleted: async () => {
         await router.push(getProjectsPageRoute());
       },
+      onError: async (e) => {
+        console.error("Error discarding the project", e);
+      },
     });
   };
 

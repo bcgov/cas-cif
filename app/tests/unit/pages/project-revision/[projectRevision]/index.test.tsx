@@ -219,4 +219,52 @@ describe("The Create Project page", () => {
 
     expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
   });
+
+  it("Calls the discard mutation when the user clicks the Discard Changes button", async () => {
+    jest
+      .spyOn(require("components/Form/ProjectForm"), "default")
+      .mockImplementation(() => {
+        return null;
+      });
+    jest
+      .spyOn(require("components/Form/ProjectManagerForm"), "default")
+      .mockImplementation(() => {
+        return null;
+      });
+
+    const useMutationSpy = jest.fn();
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [useMutationSpy, jest.fn()]);
+
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { push: jest.fn() };
+    });
+
+    render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectRevision
+          data-testid="3"
+          CSN={true}
+          preloadedQuery={initialQueryRef}
+        />
+      </RelayEnvironmentProvider>
+    );
+
+    await act(() => userEvent.click(screen.queryByText("Discard Changes")));
+
+    expect(useMutationSpy).toHaveBeenCalledTimes(1);
+    expect(useMutationSpy).toHaveBeenCalledWith({
+      onCompleted: expect.any(Function),
+      onError: expect.any(Function),
+      variables: {
+        input: {
+          id: "mock-proj-rev-id",
+          projectRevisionPatch: {
+            deletedAt: expect.any(String),
+          },
+        },
+      },
+    });
+  });
 });
