@@ -5,11 +5,17 @@ exclude: >
 repos:
   - repo: local
     hooks:
-      - id: eslint-prettier
-        name: Lint and Style
+      - id: prettier
+        name: Prettier
+        language: script
+        entry: ./.bin/pre-commit-format.sh
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint
         language: system
-        entry: bash -c 'pushd app; yarn format && yarn lint'
-        pass_filenames: false
+        files: \.(j|t)sx?$
+        entry: ./.bin/pre-commit-lint.sh
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
