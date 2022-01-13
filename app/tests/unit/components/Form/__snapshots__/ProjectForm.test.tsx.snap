@@ -75,6 +75,23 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3435786090"
               >
+                <label
+                  for="root_totalFundingRequest"
+                >
+                  Total Funding Request
+                </label>
+                <input
+                  class="money"
+                  id="root_totalFundingRequest"
+                  inputmode="numeric"
+                  style="border: 2px solid #606060; border-radius: 0.25em; padding: 0.5em;"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="jsx-3435786090"
+              >
                 <div
                   class="sc-fFeiMQ jpQRmF pg-textarea"
                 >
