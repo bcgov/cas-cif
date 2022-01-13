@@ -58,7 +58,11 @@ const ProjectForm: React.FC<Props> = (props) => {
           pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
         },
         projectName: { type: "string", title: "Project Name" },
-        totalFundingRequest: { type: "number", title: "Total Funding Request", default: 0 },
+        totalFundingRequest: {
+          type: "number",
+          title: "Total Funding Request",
+          default: 0,
+        },
         summary: { type: "string", title: "Summary" },
         operatorId: {
           type: "number",

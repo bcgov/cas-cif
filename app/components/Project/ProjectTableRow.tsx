@@ -54,7 +54,9 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         <br />
         J. Doe
       </td>
-      <td><Money amount={totalFundingRequest}/></td>
+      <td>
+        <Money amount={totalFundingRequest} />
+      </td>
       <td>2099-01-01 (M)</td>
       <td>
         <Button onClick={handleViewClick}>View</Button>
