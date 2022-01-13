@@ -4,6 +4,8 @@ import { isRouteAuthorized } from "lib/authorization";
 import type { NextPageContext } from "next";
 import type { Request } from "express";
 import { WiredOptions } from "relay-nextjs/wired/component";
+import { NextRouter } from "next/router";
+import safeJsonParse from "lib/safeJsonParse";
 
 const withRelayOptions: WiredOptions<any> = {
   fallback: <div>Loading...</div>,
@@ -36,6 +38,15 @@ const withRelayOptions: WiredOptions<any> = {
 
     return {
       redirect: { destination: landingRoute, permanent: false },
+    };
+  },
+  variablesFromContext: (ctx: NextPageContext | NextRouter) => {
+    const filterArgs = safeJsonParse(ctx.query.filterArgs as string);
+    const pageArgs = safeJsonParse(ctx.query.pageArgs as string);
+    return {
+      ...ctx.query,
+      ...filterArgs,
+      ...pageArgs,
     };
   },
 };

@@ -78,6 +78,7 @@ const postgraphileMiddleware = () => {
     ...postgraphileOptions,
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,
+      connectionFilterAllowEmptyObjectInput: true,
       connectionFilterRelations: true,
       uploadFieldDefinitions: [
         {

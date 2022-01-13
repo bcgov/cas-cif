@@ -9,6 +9,7 @@ module.exports = {
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,
       connectionFilterRelations: true,
+      connectionFilterAllowEmptyObjectInput: true,
       uploadFieldDefinitions: [
         {
           match: ({ schema, table, column, tags }) =>

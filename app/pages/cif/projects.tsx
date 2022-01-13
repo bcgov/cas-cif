@@ -9,10 +9,16 @@ import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
-import { TextFilter } from "components/Table/Filters";
+import { SortOnlyFilter, TextFilter } from "components/Table/Filters";
 
 export const ProjectsQuery = graphql`
-  query projectsQuery {
+  query projectsQuery(
+    $projectName: String
+    $operatorTradeName: String
+    $rfpNumber: String
+    $offset: Int
+    $pageSize: Int
+  ) {
     session {
       ...DefaultLayout_session
     }
@@ -21,7 +27,17 @@ export const ProjectsQuery = graphql`
       id
     }
 
-    allProjects {
+    allProjects(
+      first: $pageSize
+      offset: $offset
+      filter: {
+        projectName: { includesInsensitive: $projectName }
+        operatorByOperatorId: {
+          tradeName: { includesInsensitive: $operatorTradeName }
+        }
+        rfpNumber: { includesInsensitive: $rfpNumber }
+      }
+    ) {
       totalCount
       edges {
         node {
@@ -46,14 +62,15 @@ const tableColumns = [
 const tableFilters = [
   new TextFilter("Project Name", "projectName"),
   new TextFilter("Operator Trade Name", "operatorTradeName"),
-  new TextFilter("RFP ID", "rfpId"),
+  new TextFilter("RFP ID", "rfpNumber"),
   new TextFilter("Status", "status"),
-  new TextFilter("Assigned To", "assignedTo"),
-  new TextFilter("Funding Request", "fundingRequest"),
+  new SortOnlyFilter("Assigned To", "assignedTo"),
+  new SortOnlyFilter("Funding Request", "fundingRequest"),
 ];
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const router = useRouter();
+
   const { allProjects, pendingNewProjectRevision, session } = usePreloadedQuery(
     ProjectsQuery,
     preloadedQuery

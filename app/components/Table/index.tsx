@@ -110,16 +110,20 @@ const Table: React.FC<Props> = ({
             </tr>
           )}
         </tbody>
+        {paginated && (
+          <tfoot>
+            <tr>
+              <Pagination
+                totalCount={totalRowCount}
+                offset={offset}
+                pageSize={pageSize}
+                onOffsetChange={handleOffsetChange}
+                onPageSizeChange={handleMaxResultsChange}
+              />
+            </tr>
+          </tfoot>
+        )}
       </table>
-      {paginated && (
-        <Pagination
-          totalCount={totalRowCount}
-          offset={offset}
-          pageSize={pageSize}
-          onOffsetChange={handleOffsetChange}
-          onPageSizeChange={handleMaxResultsChange}
-        />
-      )}
       <style jsx>{`
         table.bc-table {
           margin-top: 1rem;
