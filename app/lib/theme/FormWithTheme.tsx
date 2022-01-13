@@ -8,6 +8,7 @@ import SearchDropdownWidget from "lib/theme/widgets/SearchDropdownWidget";
 import DisplayOnlyWidget from "lib/theme/widgets/DisplayOnlyWidget";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 import SelectParentWidget from "lib/theme/widgets/SelectParentWidget";
+import MoneyWidget from "lib/theme/widgets/MoneyWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -22,6 +23,7 @@ const theme: ThemeProps = {
     DisplayOnly: DisplayOnlyWidget,
     SelectWidget: SelectWidget,
     SelectParentWidget: SelectParentWidget,
+    MoneyWidget: MoneyWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
