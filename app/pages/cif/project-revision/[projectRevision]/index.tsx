@@ -13,8 +13,10 @@ import SavingIndicator from "components/Form/SavingIndicator";
 import ProjecManagerForm from "components/Form/ProjectManagerForm";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
+import { mutation as discardProjectRevisionMutation } from "mutations/ProjectRevision/discardProjectRevision";
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
+import useDiscardMutation from "mutations/useDiscardMutation";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -52,6 +54,8 @@ export function ProjectRevision({
   const [updateProjectRevision, updatingProjectRevision] = useMutation(
     updateProjectRevisionMutation
   );
+  const [discardProjectRevision, discardingProjectRevision] =
+    useDiscardMutation("projectRevision", discardProjectRevisionMutation);
 
   const lastEditedDate = useMemo(
     () => new Date(query.projectRevision.updatedAt),
@@ -108,12 +112,24 @@ export function ProjectRevision({
     });
   };
 
+  const discardRevision = async () => {
+    await discardProjectRevision(query.projectRevision.id, {
+      onCompleted: async () => {
+        await router.push(getProjectsPageRoute());
+      },
+    });
+  };
+
   return (
     <DefaultLayout session={query.session} title="CIF Projects Management">
       <header>
         <h2>Project Overview</h2>
         <SavingIndicator
-          isSaved={!updatingFormChange && !updatingProjectRevision}
+          isSaved={
+            !updatingFormChange &&
+            !updatingProjectRevision &&
+            !discardingProjectRevision
+          }
           lastEdited={lastEditedDate}
         />
       </header>
@@ -163,7 +179,7 @@ export function ProjectRevision({
           >
             Submit
           </Button>
-          <Button size="medium" variant="secondary">
+          <Button size="medium" variant="secondary" onClick={discardRevision}>
             Discard Changes
           </Button>
           <Button size="medium" variant="secondary">
