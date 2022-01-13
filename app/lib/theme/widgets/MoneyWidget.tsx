@@ -25,7 +25,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
         defaultValue={(schema as any).defaultValue}
         value={value}
         onValueChange={({ floatValue }) =>
-          onChange((Math.round(floatValue * 100) / 100).toFixed(2))
+          onChange(((floatValue * 100) / 100).toFixed(2))
         }
         style={{
           border: "2px solid #606060",

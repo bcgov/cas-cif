@@ -2,11 +2,11 @@ import React from "react";
 import NumberFormat from "react-number-format";
 
 interface Props {
-  amount: number;
+  amount: string;
 }
 
 export const Money: React.FC<Props> = ({ amount }) => {
-  const fixedDecimalAmount = Math.round((amount * 100) / 100).toFixed(2);
+  const fixedDecimalAmount = ((Number(amount) * 100) / 100).toFixed(2);
   return (
     <NumberFormat
       value={fixedDecimalAmount}
