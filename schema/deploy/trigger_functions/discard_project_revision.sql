@@ -9,6 +9,7 @@ begin
   update cif.form_change
     set deleted_at = now()
     where project_revision_id=new.id;
+    and deleted_at is null;
 
   return new;
 end;
