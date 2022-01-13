@@ -6,10 +6,9 @@ interface Props {
 }
 
 export const Money: React.FC<Props> = ({ amount }) => {
-  const fixedDecimalAmount = ((Number(amount) * 100) / 100).toFixed(2);
   return (
     <NumberFormat
-      value={fixedDecimalAmount}
+      value={amount}
       displayType="text"
       isNumericString
       thousandSeparator

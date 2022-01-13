@@ -13,7 +13,7 @@ create table cif.project(
   rfp_number varchar(1000) not null unique,
   summary varchar(10000) not null,
   project_name varchar(1000) not null,
-  total_funding_request numeric
+  total_funding_request numeric(20,2)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project');
