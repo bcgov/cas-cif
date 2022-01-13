@@ -1,6 +1,6 @@
 -- Deploy cif:tables/attachment to pg
 
-BEGIN;
+begin;
 
 create table cif.attachment
 (
@@ -37,4 +37,4 @@ comment on column cif.attachment.id is 'Unique ID for the attachment';
 comment on column cif.attachment.file is 'Universally Unique ID for the attachment, created by the fastapi storage micro-service';
 comment on column cif.attachment.file_name is 'Original uploaded filename';
 
-COMMIT;
+commit;

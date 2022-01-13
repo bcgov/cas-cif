@@ -1,7 +1,7 @@
 -- Deploy cif:tables/funding_stream_rfp to pg
 -- requires: tables/funding_stream
 
-BEGIN;
+begin;
 
 create table cif.funding_stream_rfp(
   id integer primary key generated always as identity,
@@ -39,4 +39,4 @@ insert into cif.funding_stream_rfp (year, funding_stream_id) values
 (2019, 1), (2020, 1), (2021, 1), (2022, 1),
 (2021, 2), (2022, 2);
 
-COMMIT;
+commit;

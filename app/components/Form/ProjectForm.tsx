@@ -5,6 +5,7 @@ import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
 import { useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
+import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
@@ -26,6 +27,7 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
           ...SelectRfpWidget_query
+          ...SelectProjectStatusWidget_query
         }
       }
     `,
@@ -77,6 +79,11 @@ const ProjectForm: React.FC<Props> = (props) => {
           title: "Funding Stream RFP ID",
           default: undefined,
         },
+        projectStatusId: {
+          type: "number",
+          title: "Project Status",
+          default: undefined,
+        },
       },
     };
   }, [query]);
@@ -118,6 +125,12 @@ const ProjectForm: React.FC<Props> = (props) => {
         "ui:col-md": 12,
         "bcgov:size": "small",
       },
+      projectStatusId: {
+        "ui:placeholder": "Select a Project Status",
+        "ui:widget": "SelectProjectStatusWidget",
+        "ui:col-md": 12,
+        "bcgov:size": "small",
+      },
     };
   }, [selectedOperator]);
 
@@ -126,8 +139,11 @@ const ProjectForm: React.FC<Props> = (props) => {
       {...props}
       schema={schema}
       uiSchema={uiSchema}
-      formContext={{ query }}
-      widgets={{ SelectRfpWidget: SelectRfpWidget }}
+      formContext={{ query, form: props.formData }}
+      widgets={{
+        SelectRfpWidget: SelectRfpWidget,
+        SelectProjectStatusWidget: SelectProjectStatusWidget,
+      }}
     />
   );
 };

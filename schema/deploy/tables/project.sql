@@ -1,6 +1,7 @@
 -- Deploy cif:tables/project to pg
 -- requires: tables/funding_stream
 -- requires: tables/funding_stream_rfp
+-- requires: tables/project_status
 
 begin;
 
@@ -8,6 +9,7 @@ create table cif.project(
   id integer primary key generated always as identity,
   operator_id integer references cif.operator(id) not null,
   funding_stream_rfp_id integer not null references cif.funding_stream_rfp(id),
+  project_status_id integer not null references cif.project_status(id),
   rfp_number varchar(1000) not null unique,
   summary varchar(10000) not null,
   project_name varchar(1000) not null
@@ -44,5 +46,6 @@ comment on column cif.project.operator_id is 'Foreign key references the cif.ope
 comment on column cif.project.project_name is 'The name of the project';
 comment on column cif.project.summary is 'Summary of the project';
 comment on column cif.project.funding_stream_rfp_id is 'The id of the funding_stream_rfp (cif.funding_stream_rfp.id) that was selected when creating the project';
+comment on column cif.project.project_status_id is 'The id of the project_status (cif.project_status.id) that the project is currently in';
 
 commit;

@@ -1,6 +1,6 @@
 -- Deploy cif:tables/funding_stream to pg
 
-BEGIN;
+begin;
 
 create table cif.funding_stream(
   id integer primary key generated always as identity,
@@ -40,4 +40,4 @@ comment on column cif.funding_stream.description is 'Description of the funding_
 -- it's how the business area refers to them and is used to generate unique ids
 insert into cif.funding_stream (name, description) values ('EP', 'Emissions Performance'), ('IA', 'Innovation Accelerator');
 
-COMMIT;
+commit;
