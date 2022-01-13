@@ -61,7 +61,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         totalFundingRequest: {
           type: "number",
           title: "Total Funding Request",
-          default: 0,
+          default: undefined,
         },
         summary: { type: "string", title: "Summary" },
         operatorId: {
