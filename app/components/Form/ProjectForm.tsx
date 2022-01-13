@@ -49,6 +49,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         "summary",
         "operatorId",
         "fundingStreamRfpId",
+        "totalFundingRequest",
       ],
       properties: {
         rfpNumber: {
@@ -57,6 +58,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
         },
         projectName: { type: "string", title: "Project Name" },
+        totalFundingRequest: { type: "number", title: "Total Funding Request", default: 0 },
         summary: { type: "string", title: "Summary" },
         operatorId: {
           type: "number",
@@ -97,6 +99,11 @@ const ProjectForm: React.FC<Props> = (props) => {
       },
       projectName: {
         "ui:placeholder": "Short project name",
+        "ui:col-md": 12,
+        "bcgov:size": "small",
+      },
+      totalFundingRequest: {
+        "ui:widget": "MoneyWidget",
         "ui:col-md": 12,
         "bcgov:size": "small",
       },
