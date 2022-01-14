@@ -2,7 +2,7 @@
 __generated__/
 dist/
 *.min.css
-server/schema.json
-server/schema.graphql
+schema/schema.json
+schema/schema.graphql
 coverage
 ../chart/**/templates/**/*.yaml
