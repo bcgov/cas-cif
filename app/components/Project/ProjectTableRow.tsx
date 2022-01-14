@@ -13,6 +13,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
     id,
     projectName,
     rfpNumber,
+    projectStatusByProjectStatusId: { name },
     operatorByOperatorId: { tradeName },
   } = useFragment(
     graphql`
@@ -22,6 +23,9 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         rfpNumber
         operatorByOperatorId {
           tradeName
+        }
+        projectStatusByProjectStatusId {
+          name
         }
       }
     `,
@@ -40,7 +44,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
       <td className="op-trade-name">{tradeName}</td>
       <td className="rfp-number">{rfpNumber}</td>
       <td className="status-container">
-        <span className="status-badge">Status Here</span>
+        <span className="status-badge">{name}</span>
       </td>
       <td>
         J. Doeloremipsum,
