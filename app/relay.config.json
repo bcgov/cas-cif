@@ -1,0 +1,19 @@
+{
+  "src": "./",
+  "language": "typescript",
+  "artifactDirectory": "./__generated__",
+  "customScalars": {
+    "Datetime": "String",
+    "JSON": "any",
+    "BigFloat": "String",
+    "Upload": "any"
+  },
+  "exclude": [
+    "**/.next/**/*",
+    "**/node_modules/**/*",
+    "**/__generated__/**/*",
+    "**/server/**/*"
+  ],
+  "noFutureProofEnums": true,
+  "schema": "./schema/schema.graphql"
+}
