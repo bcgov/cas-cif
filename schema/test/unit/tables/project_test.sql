@@ -13,6 +13,7 @@ select columns_are(
     'operator_id',
     'funding_stream_rfp_id',
     'rfp_number',
+    'project_status_id',
     'created_at',
     'created_by',
     'updated_at',
@@ -32,11 +33,11 @@ values
   ('second operator legal name', 'second operator lorem ipsum dolor sit amet limited', 'BC1234567'),
   ('third operator legal name', 'third operator trade name', 'EF3456789');
 
-insert into cif.project(operator_id, funding_stream_rfp_id, rfp_number, summary, project_name)
+insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
 values
-  (1, 1, '2019-RFP-1-000-ABCD', 'summary', 'project 1'),
-  (2, 1, '2019-RFP-0-000-EFGH', 'summary', 'project 2'),
-  (3, 1, '2019-RFP-0-000-ZXCV', 'summary', 'project 3');
+  (1, 1, 1, '2019-RFP-1-000-ABCD', 'summary', 'project 1'),
+  (2, 1, 1, '2019-RFP-0-000-EFGH', 'summary', 'project 2'),
+  (3, 1, 1, '2019-RFP-0-000-ZXCV', 'summary', 'project 3');
 
 
 
@@ -59,8 +60,8 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.project(operator_id, funding_stream_rfp_id, rfp_number, summary, project_name)
-    values (1, 1, '2020-RFP-1-000-ABCD', 'summary', 'project 4');
+    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+    values (1, 1, 1, '2020-RFP-1-000-ABCD', 'summary', 'project 4');
   $$,
     'cif_admin can insert data in project table'
 );
@@ -102,8 +103,8 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.project(operator_id, funding_stream_rfp_id, rfp_number, summary, project_name)
-    values (1, 1, '2021-RFP-1-000-ABCD', 'summary', 'project 5');
+    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+    values (1, 1, 1, '2021-RFP-1-000-ABCD', 'summary', 'project 5');
   $$,
     'cif_internal can insert data in project table'
 );
