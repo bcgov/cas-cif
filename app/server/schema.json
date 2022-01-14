@@ -54708,18 +54708,6 @@
               "deprecationReason": null
             },
             {
-              "name": "totalFundingRequest",
-              "description": "The total amount of funding requested for the project",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "BigFloat",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "updatedAt",
               "description": "updated at timestamp",
               "args": [],
@@ -58751,16 +58739,6 @@
               "defaultValue": null
             },
             {
-              "name": "totalFundingRequest",
-              "description": "Checks for equality with the object’s `totalFundingRequest` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "BigFloat",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "updatedAt",
               "description": "Checks for equality with the object’s `updatedAt` field.",
               "type": {
@@ -59013,16 +58991,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "totalFundingRequest",
-              "description": "Filter by the object’s `totalFundingRequest` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "BigFloatFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -61541,18 +61509,6 @@
             },
             {
               "name": "PRIMARY_KEY_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TOTAL_FUNDING_REQUEST_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TOTAL_FUNDING_REQUEST_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -68029,6 +67985,18 @@
               "deprecationReason": null
             },
             {
+              "name": "totalFundingRequest",
+              "description": "The total amount of funding requested for the project",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigFloat",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "updatedAt",
               "description": "updated at timestamp",
               "args": [],
@@ -70001,6 +69969,16 @@
               "defaultValue": null
             },
             {
+              "name": "totalFundingRequest",
+              "description": "Checks for equality with the object’s `totalFundingRequest` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "BigFloat",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "updatedAt",
               "description": "Checks for equality with the object’s `updatedAt` field.",
               "type": {
@@ -70313,6 +70291,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "totalFundingRequest",
+              "description": "Filter by the object’s `totalFundingRequest` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "BigFloatFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -78484,6 +78472,18 @@
             },
             {
               "name": "SUMMARY_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TOTAL_FUNDING_REQUEST_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TOTAL_FUNDING_REQUEST_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
