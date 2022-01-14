@@ -4,7 +4,7 @@ import EasyGraphQLTester from "easygraphql-tester";
 import { mutation } from "mutations/Project/createProject";
 
 const schemaCode = fs.readFileSync(
-  path.join(__dirname, "../../../server", "schema.graphql"),
+  path.join(__dirname, "../../../schema", "schema.graphql"),
   "utf8"
 );
 
