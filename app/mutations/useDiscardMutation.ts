@@ -42,13 +42,13 @@ export default function useDiscardMutation<
   const [updateMutation, isInFlight] = useMutation(mutation);
 
   const discardMutation = (
-    formChangeId: string,
+    id: string,
     config: Partial<UseMutationConfig<TMutation>>
   ) => {
     return updateMutation({
       variables: {
         input: {
-          id: formChangeId,
+          id,
           [`${relayNodeName}Patch`]: {
             deletedAt: new Date().toISOString(),
           },

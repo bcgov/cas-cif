@@ -176,13 +176,22 @@ export function ProjectRevision({
             size="medium"
             variant="primary"
             onClick={commitProject}
-            disabled={Object.keys(errors).some(
-              (key) => errors[key] && errors[key].length > 0
-            )}
+            disabled={
+              updatingProjectRevision ||
+              discardingProjectRevision ||
+              Object.keys(errors ?? {}).some(
+                (key) => errors[key] && errors[key].length > 0
+              )
+            }
           >
             Submit
           </Button>
-          <Button size="medium" variant="secondary" onClick={discardRevision}>
+          <Button
+            size="medium"
+            variant="secondary"
+            onClick={discardRevision}
+            disabled={updatingProjectRevision || discardingProjectRevision}
+          >
             Discard Changes
           </Button>
           <Button size="medium" variant="secondary">
