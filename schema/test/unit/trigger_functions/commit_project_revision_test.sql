@@ -23,6 +23,7 @@ update cif.form_change set new_form_data=format('{
       "projectName": "name",
       "summary": "lorem ipsum",
       "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
       "rfpNumber": "1235",
       "operatorId": %s
     }',

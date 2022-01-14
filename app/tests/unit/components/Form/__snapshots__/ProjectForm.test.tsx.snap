@@ -267,6 +267,37 @@ exports[`The Project Form matches the snapshot 1`] = `
                   </div>
                 </div>
               </div>
+              <div
+                class="jsx-3435786090"
+              >
+                <label
+                  class="jsx-3703916905"
+                  for="root_projectStatusId"
+                >
+                  Project Status
+                </label>
+                <div
+                  class="sc-fKVqWL fMZYBT pg-select"
+                >
+                  <div
+                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
+                  >
+                    <select
+                      aria-label="root_projectStatusId-select"
+                      class="sc-cxpSdN bpSVUb pg-select-input"
+                      id="root_projectStatusId"
+                      name="root_projectStatusId-select"
+                      placeholder="Select a Project Status"
+                    >
+                      <option
+                        class="jsx-3703916905"
+                      >
+                        Select a Project Status
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </fieldset>
           </div>
         </div>

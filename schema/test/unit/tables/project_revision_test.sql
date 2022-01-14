@@ -7,11 +7,12 @@ select plan(2);
 -- Test setup --
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.funding_stream(name, description) values ('test funding stream', 'desc');
-insert into cif.project(project_name, operator_id, funding_stream_rfp_id, rfp_number, summary)
+insert into cif.project(project_name, operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary)
   values (
     'test-project',
     (select id from cif.operator limit 1),
     (select id from cif.funding_stream_rfp limit 1),
+    (select id from cif.project_status limit 1),
     'rfp',
     'summary'
   );
