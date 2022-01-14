@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { getProjectViewPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ProjectTableRow_project$key } from "__generated__/ProjectTableRow_project.graphql";
+import Money from "lib/helpers/Money";
 
 interface Props {
   project: ProjectTableRow_project$key;
@@ -14,6 +15,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
     projectName,
     rfpNumber,
     projectStatusByProjectStatusId: { name },
+    totalFundingRequest,
     operatorByOperatorId: { tradeName },
   } = useFragment(
     graphql`
@@ -21,6 +23,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         id
         projectName
         rfpNumber
+        totalFundingRequest
         operatorByOperatorId {
           tradeName
         }
@@ -51,7 +54,9 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         <br />
         J. Doe
       </td>
-      <td>$1,000,000</td>
+      <td>
+        <Money amount={totalFundingRequest} />
+      </td>
       <td>2099-01-01 (M)</td>
       <td>
         <Button onClick={handleViewClick}>View</Button>

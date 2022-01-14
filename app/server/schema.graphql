@@ -248,6 +248,53 @@ enum AttachmentsOrderBy {
 }
 
 """
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
+"""
+A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’
+"""
+input BigFloatFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigFloat
+
+  """Equal to the specified value."""
+  equalTo: BigFloat
+
+  """Greater than the specified value."""
+  greaterThan: BigFloat
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigFloat
+
+  """Included in the specified list."""
+  in: [BigFloat!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: BigFloat
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigFloat
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigFloat
+
+  """Not equal to the specified value."""
+  notEqualTo: BigFloat
+
+  """Not included in the specified list."""
+  notIn: [BigFloat!]
+}
+
+"""
 A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
 """
 input BooleanFilter {
@@ -19828,6 +19875,9 @@ type Project implements Node {
   """Summary of the project"""
   summary: String!
 
+  """The total amount of funding requested for the project"""
+  totalFundingRequest: BigFloat
+
   """updated at timestamp"""
   updatedAt: Datetime!
 
@@ -20370,6 +20420,9 @@ input ProjectCondition {
   """Checks for equality with the object’s `summary` field."""
   summary: String
 
+  """Checks for equality with the object’s `totalFundingRequest` field."""
+  totalFundingRequest: BigFloat
+
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
 
@@ -20463,6 +20516,9 @@ input ProjectFilter {
 
   """Filter by the object’s `summary` field."""
   summary: StringFilter
+
+  """Filter by the object’s `totalFundingRequest` field."""
+  totalFundingRequest: BigFloatFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
@@ -22785,6 +22841,8 @@ enum ProjectsOrderBy {
   RFP_NUMBER_DESC
   SUMMARY_ASC
   SUMMARY_DESC
+  TOTAL_FUNDING_REQUEST_ASC
+  TOTAL_FUNDING_REQUEST_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC

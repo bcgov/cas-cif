@@ -12,7 +12,8 @@ create table cif.project(
   project_status_id integer not null references cif.project_status(id),
   rfp_number varchar(1000) not null unique,
   summary varchar(10000) not null,
-  project_name varchar(1000) not null
+  project_name varchar(1000) not null,
+  total_funding_request numeric(20,2)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project');
@@ -47,5 +48,6 @@ comment on column cif.project.project_name is 'The name of the project';
 comment on column cif.project.summary is 'Summary of the project';
 comment on column cif.project.funding_stream_rfp_id is 'The id of the funding_stream_rfp (cif.funding_stream_rfp.id) that was selected when creating the project';
 comment on column cif.project.project_status_id is 'The id of the project_status (cif.project_status.id) that the project is currently in';
+comment on column cif.project.total_funding_request is 'The total amount of funding requested for the project';
 
 commit;
