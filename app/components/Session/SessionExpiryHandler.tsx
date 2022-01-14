@@ -33,6 +33,7 @@ const SessionExpiryHandler: React.FC = () => {
   }, []);
 
   const handleSessionExpired = () => {
+    setHasSession(false);
     router.push({
       pathname: "/login-redirect",
       query: {
