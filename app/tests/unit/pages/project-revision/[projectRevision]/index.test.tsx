@@ -65,7 +65,7 @@ describe("The Create Project page", () => {
     const commitFormChangeMutationSpy = jest.fn();
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [commitFormChangeMutationSpy, jest.fn()]);
+      .mockImplementation(() => [commitFormChangeMutationSpy, false]);
 
     render(
       <RelayEnvironmentProvider environment={environment}>
@@ -127,7 +127,7 @@ describe("The Create Project page", () => {
     const spy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [spy, jest.fn()]);
+      .mockImplementation(() => [spy, false]);
 
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
       return { push: jest.fn() };
@@ -167,7 +167,7 @@ describe("The Create Project page", () => {
 
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [jest.fn(), jest.fn()]);
+      .mockImplementation(() => [jest.fn(), false]);
 
     render(
       <RelayEnvironmentProvider environment={environment}>
@@ -201,7 +201,7 @@ describe("The Create Project page", () => {
 
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [jest.fn(), jest.fn()]);
+      .mockImplementation(() => [jest.fn(), false]);
 
     render(
       <RelayEnvironmentProvider environment={environment}>
@@ -218,5 +218,87 @@ describe("The Create Project page", () => {
     });
 
     expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
+    expect(screen.getByText("Discard Changes")).toHaveProperty(
+      "disabled",
+      false
+    );
+  });
+
+  it("Calls the discard mutation when the user clicks the Discard Changes button", async () => {
+    jest
+      .spyOn(require("components/Form/ProjectForm"), "default")
+      .mockImplementation(() => {
+        return null;
+      });
+    jest
+      .spyOn(require("components/Form/ProjectManagerForm"), "default")
+      .mockImplementation(() => {
+        return null;
+      });
+
+    const useMutationSpy = jest.fn();
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [useMutationSpy, false]);
+
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { push: jest.fn() };
+    });
+
+    render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectRevision
+          data-testid="3"
+          CSN={true}
+          preloadedQuery={initialQueryRef}
+        />
+      </RelayEnvironmentProvider>
+    );
+
+    act(() => userEvent.click(screen.queryByText("Discard Changes")));
+
+    expect(useMutationSpy).toHaveBeenCalledTimes(1);
+    expect(useMutationSpy).toHaveBeenCalledWith({
+      onCompleted: expect.any(Function),
+      onError: expect.any(Function),
+      variables: {
+        input: {
+          id: "mock-proj-rev-id",
+          projectRevisionPatch: {
+            deletedAt: expect.any(String),
+          },
+        },
+      },
+    });
+  });
+
+  it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {
+    const mockProjectForm: any = { props: {} };
+    jest
+      .spyOn(require("components/Form/ProjectForm"), "default")
+      .mockImplementation((props) => {
+        mockProjectForm.props = props;
+        return null;
+      });
+
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [jest.fn(), true]);
+
+    render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectRevision
+          data-testid="2"
+          CSN={true}
+          preloadedQuery={initialQueryRef}
+        />
+      </RelayEnvironmentProvider>
+    );
+
+    expect(screen.queryByText("Submit")).toHaveProperty("disabled", true);
+    expect(screen.queryByText("Discard Changes")).toHaveProperty(
+      "disabled",
+      true
+    );
   });
 });

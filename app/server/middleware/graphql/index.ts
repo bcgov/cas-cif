@@ -7,6 +7,7 @@ import PostgraphileLogConsola from "postgraphile-log-consola";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import { TagsFilePlugin } from "postgraphile/plugins";
 import PostGraphileUploadFieldPlugin from "postgraphile-plugin-upload-field";
+import PgOmitArchived from "@graphile-contrib/pg-omit-archived";
 import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
 
@@ -20,6 +21,7 @@ let postgraphileOptions: PostGraphileOptions = {
     ConnectionFilterPlugin,
     TagsFilePlugin,
     PostGraphileUploadFieldPlugin,
+    PgOmitArchived,
   ],
   classicIds: true,
   enableQueryBatching: true,
@@ -84,6 +86,9 @@ const postgraphileMiddleware = () => {
           resolve: resolveUpload,
         },
       ],
+      pgArchivedColumnName: "deleted_at",
+      pgArchivedColumnImpliesVisible: false,
+      pgArchivedRelations: false,
     },
     pgSettings: (req: Request) => {
       const opts = {
