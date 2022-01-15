@@ -12,7 +12,7 @@
     "build": "yarn run build:server && yarn run build:schema && yarn run build:relay && yarn run build:next",
     "build:server": "tsc --project tsconfig.server.json",
     "build:schema": "postgraphile -X -c postgres://localhost/cif -s cif --export-schema-graphql schema/schema.graphql --export-schema-json schema/schema.json --classic-ids --sort-export && echo >> schema/schema.json",
-    "build:relay": "mkdir -p __generated__ && relay-compiler relay.config.json",
+    "build:relay": "mkdir -p __generated__ && relay-compiler",
     "pretest": "yarn run build:relay",
     "test": "NODE_OPTIONS=\"--unhandled-rejections=strict\" jest",
     "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && HAPPO_DOWNLOAD_ALL=true happo-e2e -- cypress run",
