@@ -4,7 +4,7 @@ import Table from "components/Table";
 describe("The Table Component", () => {
   it("renders the provided columns and rows", () => {
     render(
-      <Table columns={[{ title: "col A" }, { title: "col B" }]}>
+      <Table filters={[{ title: "col A" }, { title: "col B" }]}>
         <tr>
           <td>A 1</td>
           <td>B 1</td>
@@ -24,7 +24,7 @@ describe("The Table Component", () => {
   it("renders the provided empty state contents when there are no rows", () => {
     render(
       <Table
-        columns={[{ title: "col A" }, { title: "col B" }]}
+        filters={[{ title: "col A" }, { title: "col B" }]}
         emptyStateContents="nothing to see here"
       />
     );

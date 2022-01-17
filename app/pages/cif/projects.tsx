@@ -9,7 +9,12 @@ import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
-import { SortOnlyFilter, TextFilter } from "components/Table/Filters";
+import {
+  DisplayOnlyFilter,
+  NoHeaderFilter,
+  SortOnlyFilter,
+  TextFilter,
+} from "components/Table/Filters";
 
 export const ProjectsQuery = graphql`
   query projectsQuery(
@@ -18,6 +23,7 @@ export const ProjectsQuery = graphql`
     $rfpNumber: String
     $offset: Int
     $pageSize: Int
+    $orderBy: [ProjectsOrderBy!]
   ) {
     session {
       ...DefaultLayout_session
@@ -37,6 +43,7 @@ export const ProjectsQuery = graphql`
         }
         rfpNumber: { includesInsensitive: $rfpNumber }
       }
+      orderBy: $orderBy
     ) {
       totalCount
       edges {
@@ -49,23 +56,16 @@ export const ProjectsQuery = graphql`
   }
 `;
 
-const tableColumns = [
-  { title: "Project Name" },
-  { title: "Operator Trade Name" },
-  { title: "RFP ID" },
-  { title: "Status" },
-  { title: "Assigned To" },
-  { title: "Funding Request" },
-  { title: "Actions" },
-];
-
 const tableFilters = [
   new TextFilter("Project Name", "projectName"),
-  new TextFilter("Operator Trade Name", "operatorTradeName"),
+  new TextFilter("Operator Trade Name", "operatorTradeName", {
+    sortable: false,
+  }),
   new TextFilter("RFP ID", "rfpNumber"),
-  new TextFilter("Status", "status"),
-  new SortOnlyFilter("Assigned To", "assignedTo"),
-  new SortOnlyFilter("Funding Request", "fundingRequest"),
+  new TextFilter("Status", "status", { sortable: false }),
+  new DisplayOnlyFilter("Assigned To"),
+  new SortOnlyFilter("Funding Request", "totalFundingRequest"),
+  new NoHeaderFilter(),
 ];
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
@@ -113,7 +113,6 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       <Table
         paginated
         totalRowCount={allProjects.totalCount}
-        columns={tableColumns}
         filters={tableFilters}
       >
         {allProjects.edges.map(({ node }) => (

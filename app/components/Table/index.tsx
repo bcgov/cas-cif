@@ -4,21 +4,16 @@ import React, { useMemo } from "react";
 import FilterRow from "./FilterRow";
 import { FilterArgs, PageArgs, TableFilter } from "./Filters";
 import Pagination from "./Pagination";
-
-interface Column {
-  title: string;
-}
+import SortableHeader from "./SortableHeader";
 
 interface Props {
-  columns: Column[];
-  filters?: TableFilter[];
+  filters: TableFilter[];
   paginated?: boolean;
   totalRowCount?: number;
   emptyStateContents?: JSX.Element | string;
 }
 
 const Table: React.FC<Props> = ({
-  columns,
   filters,
   paginated,
   totalRowCount,
@@ -89,24 +84,29 @@ const Table: React.FC<Props> = ({
         {/* class name is used to increase specificity of CSS selectors and override defaults */}
         <thead>
           <tr>
-            {columns.map((c) => (
-              <th key={c.title}>{c.title}</th>
+            {filters.map((filter) => (
+              <SortableHeader
+                key={filter.title + "-header"}
+                columnName={filter.sortColumnName}
+                displayName={filter.title}
+                sortable={filter.isSortEnabled}
+                hasTableHeader={filter.hasTableHeader}
+              />
             ))}
           </tr>
-          {filters?.length > 0 && (
-            <FilterRow
-              filterArgs={filterArgs}
-              filters={filters}
-              onSubmit={applyFilterArgs}
-            />
-          )}
+
+          <FilterRow
+            filterArgs={filterArgs}
+            filters={filters}
+            onSubmit={applyFilterArgs}
+          />
         </thead>
         <tbody>
           {rows.length > 0 ? (
             rows
           ) : (
             <tr>
-              <td colSpan={columns.length}>{emptyStateContents}</td>
+              <td colSpan={filters.length}>{emptyStateContents}</td>
             </tr>
           )}
         </tbody>
@@ -129,30 +129,6 @@ const Table: React.FC<Props> = ({
           margin-top: 1rem;
           border-collapse: separate;
           border-spacing: 0;
-        }
-
-        table.bc-table th {
-          background-color: #003366;
-          color: white;
-          text-align: left;
-          padding: 0.5rem;
-          height: 4rem;
-        }
-
-        th:not(last-child) {
-          border-right: 1px solid #ccc;
-        }
-
-        th:first-child {
-          border-top-left-radius: 0.25rem;
-          border-left: 1px solid #003366;
-          border-top: 1px solid #003366;
-        }
-
-        th:last-child {
-          border-top-right-radius: 0.25rem;
-          border-right: 1px solid #003366;
-          border-top: 1px solid #003366;
         }
 
         :global(tr:nth-child(even)) {
