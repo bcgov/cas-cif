@@ -34,6 +34,7 @@ const SelectParentWidget: React.FunctionComponent<
 
   const onParentChange = (val) => {
     setSelectedParentId(parseInt(val));
+    if (!parseInt(val)) onChange(undefined);
   };
 
   let childOptions = useMemo(() => {
@@ -67,7 +68,7 @@ const SelectParentWidget: React.FunctionComponent<
       <label htmlFor={`select-child-dropdown-${id}`}>{child.label}</label>
       <Dropdown
         id={`select-child-dropdown-${id}`}
-        onChange={(e) => onChange(e.target.value || undefined)}
+        onChange={(e) => onChange(parseInt(e.target.value) || undefined)}
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
         value={value}
