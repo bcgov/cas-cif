@@ -5,6 +5,7 @@ module.exports = {
       "@graphile-contrib/pg-many-to-many",
       "postgraphile-plugin-upload-field",
       "@graphile-contrib/pg-omit-archived",
+      "@graphile-contrib/pg-order-by-related",
     ],
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,

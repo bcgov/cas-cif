@@ -1,24 +1,23 @@
 import { Input } from "@button-inc/bcgov-theme";
+import camelToSnakeCase from "lib/helpers/camelToSnakeCase";
 import React from "react";
 import type { FilterComponent } from "./types";
 
-export interface ISearchOptionSettings {
+export interface FilterSettings {
   filterable?: boolean;
   sortable?: boolean;
-  sortColumnName?: string;
+  orderByPrefix?: string;
 }
 
 export default abstract class TableFilter<T = string | number | boolean> {
-  constructor(
-    title: string,
-    argName: string,
-    settings?: ISearchOptionSettings
-  ) {
+  constructor(title: string, argName: string, settings?: FilterSettings) {
     this.title = title;
     this.argName = argName;
     this.isSearchEnabled = settings?.filterable ?? true;
     this.isSortEnabled = settings?.sortable ?? true;
-    this.sortColumnName = settings?.sortColumnName ?? argName;
+    this.orderByPrefix =
+      settings?.orderByPrefix ??
+      (argName ? camelToSnakeCase(argName).toUpperCase() : argName);
   }
 
   /**
@@ -29,16 +28,15 @@ export default abstract class TableFilter<T = string | number | boolean> {
   title: string;
 
   /**
-   * The database column name used when sorting by this filter.
-   * Defaults to be the same as argName, but it may be different.
+   * The prefix to use when generating the orderBy argument for this filter.
+   * Defaults to an uppercase version of the argName.
+   * e.g. "projectName" => "PROJECT_NAME"
    */
-  sortColumnName: string;
+  orderByPrefix: string;
 
   isSearchEnabled: boolean;
 
   isSortEnabled: boolean;
-
-  hasTableHeader: boolean = true;
 
   /**
    * The array of all relay arguments managed by this filter.

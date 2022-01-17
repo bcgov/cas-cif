@@ -6,20 +6,18 @@ import {
   faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import camelToSnakeCase from "lib/helpers/camelToSnakeCase";
 
 interface Props {
-  columnName: string;
+  orderByPrefix: string;
   displayName: string;
   sortable: boolean;
-  hasTableHeader: boolean;
 }
 
 const SORT_DIRECTION = ["ASC", "DESC"];
 const SORT_ICONS = [faCaretDown, faCaretUp];
 
 const SortableHeader: React.FC<Props> = ({
-  columnName,
+  orderByPrefix,
   displayName,
   sortable,
 }) => {
@@ -32,11 +30,7 @@ const SortableHeader: React.FC<Props> = ({
   );
 
   const getOrderbyString = (orderColumnName, sortDirection) => {
-    return (
-      camelToSnakeCase(orderColumnName).toUpperCase() +
-      "_" +
-      SORT_DIRECTION[sortDirection]
-    );
+    return orderColumnName + "_" + SORT_DIRECTION[sortDirection];
   };
 
   const triggerSort = (sortColumnName) => {
@@ -56,7 +50,7 @@ const SortableHeader: React.FC<Props> = ({
   };
 
   return (
-    <th onClick={() => sortable && triggerSort(columnName)}>
+    <th onClick={() => sortable && triggerSort(orderByPrefix)}>
       <span>{displayName}</span>
       {sortable && (
         <span role="button">
@@ -64,7 +58,7 @@ const SortableHeader: React.FC<Props> = ({
             color="white"
             icon={
               router.query.orderBy ===
-              getOrderbyString(columnName, currentSortDirection)
+              getOrderbyString(orderByPrefix, currentSortDirection)
                 ? SORT_ICONS[currentSortDirection]
                 : faSort
             }

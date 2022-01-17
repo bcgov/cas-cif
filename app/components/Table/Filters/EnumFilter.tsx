@@ -1,9 +1,9 @@
 import { Dropdown } from "@button-inc/bcgov-theme";
 import React from "react";
-import TableFilter, { ISearchOptionSettings } from "./TableFilter";
+import TableFilter, { FilterSettings } from "./TableFilter";
 import { FilterComponent } from "./types";
 
-interface EnumSettings extends ISearchOptionSettings {
+interface EnumSettings extends FilterSettings {
   renderEnumValue?: (x: string) => string;
 }
 

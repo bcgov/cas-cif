@@ -87,10 +87,9 @@ const Table: React.FC<Props> = ({
             {filters.map((filter) => (
               <SortableHeader
                 key={filter.title + "-header"}
-                columnName={filter.sortColumnName}
+                orderByPrefix={filter.orderByPrefix}
                 displayName={filter.title}
                 sortable={filter.isSortEnabled}
-                hasTableHeader={filter.hasTableHeader}
               />
             ))}
           </tr>

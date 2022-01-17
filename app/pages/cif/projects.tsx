@@ -59,10 +59,12 @@ export const ProjectsQuery = graphql`
 const tableFilters = [
   new TextFilter("Project Name", "projectName"),
   new TextFilter("Operator Trade Name", "operatorTradeName", {
-    sortable: false,
+    orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
   }),
   new TextFilter("RFP ID", "rfpNumber"),
-  new TextFilter("Status", "status", { sortable: false }),
+  new TextFilter("Status", "status", {
+    orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
+  }),
   new DisplayOnlyFilter("Assigned To"),
   new SortOnlyFilter("Funding Request", "totalFundingRequest"),
   new NoHeaderFilter(),
