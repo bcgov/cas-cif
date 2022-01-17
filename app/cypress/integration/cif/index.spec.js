@@ -1,6 +1,11 @@
 import logAxeResults from "../../plugins/logAxeResults";
 
 describe("The CIF dashboard page", () => {
+  beforeEach(() => {
+    cy.sqlFixture("e2e/dbReset");
+    cy.sqlFixture("dev/001_cif_user");
+  });
+
   it("renders for a logged in CIF internal user", () => {
     cy.mockLogin("cif_internal");
     cy.visit("/cif");

@@ -49,8 +49,8 @@ Cypress.Commands.add("mockLogin", (roleName) => {
 });
 
 Cypress.Commands.add("sqlFixture", (fixtureName) => {
-  cy.fixture(`${fixtureName}.sql`).then((fixture) =>
-    cy.exec(`psql -d cif<< EOF
+  return cy.fixture(`${fixtureName}.sql`).then((fixture) =>
+    cy.exec(`psql -v "ON_ERROR_STOP=1" -d cif<< EOF
 ${fixture}
 EOF`)
   );
