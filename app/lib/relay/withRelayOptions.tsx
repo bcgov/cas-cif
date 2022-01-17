@@ -6,6 +6,7 @@ import type { Request } from "express";
 import { WiredOptions } from "relay-nextjs/wired/component";
 import { NextRouter } from "next/router";
 import safeJsonParse from "lib/safeJsonParse";
+import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 
 const withRelayOptions: WiredOptions<any> = {
   fallback: <div>Loading...</div>,
@@ -46,6 +47,7 @@ const withRelayOptions: WiredOptions<any> = {
     return {
       ...ctx.query,
       ...filterArgs,
+      pageSize: DEFAULT_PAGE_SIZE,
       ...pageArgs,
     };
   },
