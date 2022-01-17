@@ -6,6 +6,11 @@
 */
 
 describe("When logged in as an unauthorized user", () => {
+  before(() => {
+    cy.sqlFixture("e2e/dbReset");
+    cy.sqlFixture("dev/001_cif_user");
+  });
+
   afterEach(() => cy.logout());
 
   it("The user should be redirected to the unauthorized_idir page", () => {
