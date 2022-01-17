@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSort,
@@ -8,13 +8,24 @@ import {
 import { useRouter } from "next/router";
 
 interface Props {
-  orderByPrefix: string;
+  orderByPrefix?: string;
   displayName: string;
-  sortable: boolean;
+  sortable?: boolean;
 }
 
-const SORT_DIRECTION = ["ASC", "DESC"];
-const SORT_ICONS = [faCaretDown, faCaretUp];
+const SORT_DIRECTIONS = {
+  none: {
+    icon: faSort,
+  },
+  ascending: {
+    icon: faCaretDown,
+    orderBySuffix: "_ASC",
+  },
+  descending: {
+    icon: faCaretUp,
+    orderBySuffix: "_DESC",
+  },
+};
 
 const SortableHeader: React.FC<Props> = ({
   orderByPrefix,
@@ -22,48 +33,49 @@ const SortableHeader: React.FC<Props> = ({
   sortable,
 }) => {
   const router = useRouter();
-  const sortDirectionIndex = SORT_DIRECTION.indexOf(
-    router.query.direction?.toString()
-  );
-  const [currentSortDirection, setCurrentSortDirection] = useState(
-    Math.max(sortDirectionIndex, 0)
-  );
 
-  const getOrderbyString = (orderColumnName, sortDirection) => {
-    return orderColumnName + "_" + SORT_DIRECTION[sortDirection];
-  };
+  const sortDirection = useMemo(() => {
+    const { orderBy } = router.query;
+    if (
+      !sortable ||
+      !orderBy ||
+      !(orderBy as string).startsWith(orderByPrefix)
+    ) {
+      return "none";
+    }
 
-  const triggerSort = (sortColumnName) => {
-    //Cycle
-    const sortDirection = (currentSortDirection + 1) % 2;
-    setCurrentSortDirection(sortDirection);
+    if ((orderBy as string).endsWith("_ASC")) {
+      return "ascending";
+    }
+
+    return "descending";
+  }, [router.query, orderByPrefix, sortable]);
+
+  const handleClick = () => {
+    const newSortDirection =
+      sortDirection == "none" || sortDirection == "descending"
+        ? "ascending"
+        : "descending";
 
     const url = {
       pathname: router.pathname,
       query: {
         ...router.query,
-        orderBy: getOrderbyString(sortColumnName, sortDirection),
+        orderBy:
+          orderByPrefix + SORT_DIRECTIONS[newSortDirection].orderBySuffix,
       },
     };
 
     router.replace(url, url, { shallow: true });
   };
-
   return (
-    <th onClick={() => sortable && triggerSort(orderByPrefix)}>
-      <span>{displayName}</span>
+    <th onClick={() => sortable && handleClick()} aria-sort={sortDirection}>
+      {displayName}&nbsp;
       {sortable && (
-        <span role="button">
-          <FontAwesomeIcon
-            color="white"
-            icon={
-              router.query.orderBy ===
-              getOrderbyString(orderByPrefix, currentSortDirection)
-                ? SORT_ICONS[currentSortDirection]
-                : faSort
-            }
-          />
-        </span>
+        <FontAwesomeIcon
+          color="white"
+          icon={SORT_DIRECTIONS[sortDirection].icon}
+        />
       )}
       <style>{`
         table.bc-table th {
