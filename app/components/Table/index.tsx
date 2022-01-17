@@ -180,6 +180,11 @@ const Table: React.FC<Props> = ({
           text-align: center;
           font-style: italic;
         }
+
+        :global(table.bc-table tfoot tr, table.bc-table tfoot td) {
+          border: none;
+          background-color: transparent;
+        }
       `}</style>
     </>
   );
