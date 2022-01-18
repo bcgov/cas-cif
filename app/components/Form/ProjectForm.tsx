@@ -6,6 +6,7 @@ import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.grap
 import { useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
+import GeneratedLongIdWidget from './GeneratedLongIdWidget';
 
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
@@ -23,11 +24,13 @@ const ProjectForm: React.FC<Props> = (props) => {
                 legalName
                 tradeName
                 bcRegistryId
+                operatorCode
               }
             }
           }
           ...SelectRfpWidget_query
           ...SelectProjectStatusWidget_query
+          ...GeneratedLongIdWidget_query
         }
       }
     `,
@@ -55,7 +58,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         rfpNumber: {
           type: "string",
           title: "RFP Number",
-          pattern: "^((\\d{4})-RFP-([1-2])-(\\d{3,4})-([A-Z]{4}))$",
+          pattern: "^\\d{3,4}",
         },
         projectName: { type: "string", title: "Project Name" },
         totalFundingRequest: {
@@ -98,8 +101,8 @@ const ProjectForm: React.FC<Props> = (props) => {
     return {
       rfpNumber: {
         "ui:placeholder": "2020-RFP-1-456-ABCD",
-        "ui:col-md": 12,
         "bcgov:size": "small",
+        "ui:widget": "GeneratedLongIdWidget",
       },
       projectName: {
         "ui:placeholder": "Short project name",
@@ -150,10 +153,11 @@ const ProjectForm: React.FC<Props> = (props) => {
       {...props}
       schema={schema}
       uiSchema={uiSchema}
-      formContext={{ query, form: props.formData }}
+      formContext={{ query, form: props.formData, operatorCode: selectedOperator?.node?.operatorCode }}
       widgets={{
         SelectRfpWidget: SelectRfpWidget,
         SelectProjectStatusWidget: SelectProjectStatusWidget,
+        GeneratedLongIdWidget: GeneratedLongIdWidget,
       }}
     />
   );
