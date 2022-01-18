@@ -64539,7 +64539,7 @@
             },
             {
               "name": "operatorCode",
-              "description": null,
+              "description": "The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the rfp_number",
               "args": [],
               "type": {
                 "kind": "SCALAR",

@@ -18891,6 +18891,10 @@ type Operator implements Node {
 
   """The legal name of this operator"""
   legalName: String
+
+  """
+  The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the rfp_number
+  """
   operatorCode: String
 
   """Reads and enables pagination through a set of `ProjectStatus`."""
