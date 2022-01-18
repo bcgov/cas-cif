@@ -6,7 +6,7 @@ import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.grap
 import { useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
-import GeneratedLongIdWidget from './GeneratedLongIdWidget';
+import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
 
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
@@ -153,7 +153,11 @@ const ProjectForm: React.FC<Props> = (props) => {
       {...props}
       schema={schema}
       uiSchema={uiSchema}
-      formContext={{ query, form: props.formData, operatorCode: selectedOperator?.node?.operatorCode }}
+      formContext={{
+        query,
+        form: props.formData,
+        operatorCode: selectedOperator?.node?.operatorCode,
+      }}
       widgets={{
         SelectRfpWidget: SelectRfpWidget,
         SelectProjectStatusWidget: SelectProjectStatusWidget,

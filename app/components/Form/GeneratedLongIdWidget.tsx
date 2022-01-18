@@ -1,7 +1,7 @@
-import {useMemo} from 'react';
+import { useMemo } from "react";
 import { WidgetProps } from "@rjsf/core";
 import Input from "@button-inc/bcgov-theme/Input";
-import Grid from '@button-inc/bcgov-theme/Grid';
+import Grid from "@button-inc/bcgov-theme/Grid";
 import getRequiredLabel from "lib/theme/utils/getRequiredLabel";
 import { graphql, useFragment } from "react-relay";
 
@@ -12,7 +12,7 @@ const TextWidget: React.FC<WidgetProps> = ({
   label,
   value,
   required,
-  formContext
+  formContext,
 }) => {
   const { allFundingStreamRfps } = useFragment(
     graphql`
@@ -40,11 +40,16 @@ const TextWidget: React.FC<WidgetProps> = ({
   return (
     <>
       <label htmlFor={id}>{getRequiredLabel(label, required)}</label>
-      <small>&nbsp;(year - RFP - stream id - random digits - operator code)</small>
+      <small>
+        &nbsp;(year - RFP - stream id - random digits - operator code)
+      </small>
       <Grid>
-        <Grid.Row style={{alignItems: 'center'}}>
-            {fundingStreamRfp?.node?.year || '(YEAR)'}&nbsp;-&nbsp;RFP&nbsp;-&nbsp;{fundingStreamRfp?.node?.fundingStreamId || '(STREAM ID)'}&nbsp;-&nbsp;
-          <span className='random-digits'>
+        <Grid.Row style={{ alignItems: "center" }}>
+          {fundingStreamRfp?.node?.year || "(YEAR)"}
+          &nbsp;-&nbsp;RFP&nbsp;-&nbsp;
+          {fundingStreamRfp?.node?.fundingStreamId || "(STREAM ID)"}
+          &nbsp;-&nbsp;
+          <span className="random-digits">
             <Input
               id={id}
               onChange={(e) => onChange(e.target.value || undefined)}
@@ -53,8 +58,8 @@ const TextWidget: React.FC<WidgetProps> = ({
               size={"medium"}
               required={required}
             />
-            </span>
-            &nbsp;-&nbsp;{formContext.operatorCode || '(OPERATOR CODE)'}
+          </span>
+          &nbsp;-&nbsp;{formContext.operatorCode || "(OPERATOR CODE)"}
         </Grid.Row>
       </Grid>
       <style jsx>
@@ -69,4 +74,3 @@ const TextWidget: React.FC<WidgetProps> = ({
 };
 
 export default TextWidget;
-

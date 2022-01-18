@@ -23,7 +23,7 @@ const theme: ThemeProps = {
     DisplayOnly: DisplayOnlyWidget,
     SelectWidget: SelectWidget,
     SelectParentWidget: SelectParentWidget,
-    MoneyWidget: MoneyWidget
+    MoneyWidget: MoneyWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
