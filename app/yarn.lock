@@ -8797,13 +8797,6 @@ registry-url@^5.0.0:
   dependencies:
     rc "^1.2.8"
 
-relay-compiler-language-typescript@^15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-15.0.0.tgz#565900106eeb7150d70c5792ef092a2807a8e25e"
-  integrity sha512-vx6V+uBJLIyzTFz1fFiuS0J+L81juGUComb5emKNaYGZRWOPSalxyS+0/I6umrNChNDFB5uLuTnAqxia4+ZMBg==
-  dependencies:
-    invariant "^2.2.4"
-
 relay-compiler@^13.0.1:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-13.0.1.tgz#09c713647aa7e1d8cf3de9f7fb4ee6a76b32cf26"

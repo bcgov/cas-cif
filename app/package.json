@@ -112,7 +112,6 @@
     "react-relay-network-modern": "^6.2.1",
     "react-typography": "^0.16.20",
     "relay-compiler": "^13.0.1",
-    "relay-compiler-language-typescript": "^15.0.0",
     "relay-nextjs": "^0.4.1",
     "relay-runtime": "^13.0.1",
     "relay-test-utils": "^13.0.1",
