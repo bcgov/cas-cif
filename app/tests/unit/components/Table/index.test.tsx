@@ -1,10 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import Table from "components/Table";
+import { DisplayOnlyFilter } from "components/Table/Filters";
+import { useRouter } from "next/router";
+import { mocked } from "jest-mock";
+jest.mock("next/router");
+
+mocked(useRouter).mockReturnValue({
+  route: "/",
+  query: {},
+} as any);
 
 describe("The Table Component", () => {
   it("renders the provided columns and rows", () => {
     render(
-      <Table filters={[{ title: "col A" }, { title: "col B" }]}>
+      <Table
+        filters={[
+          new DisplayOnlyFilter("col A"),
+          new DisplayOnlyFilter("col B"),
+        ]}
+      >
         <tr>
           <td>A 1</td>
           <td>B 1</td>
@@ -24,7 +38,10 @@ describe("The Table Component", () => {
   it("renders the provided empty state contents when there are no rows", () => {
     render(
       <Table
-        filters={[{ title: "col A" }, { title: "col B" }]}
+        filters={[
+          new DisplayOnlyFilter("col A"),
+          new DisplayOnlyFilter("col B"),
+        ]}
         emptyStateContents="nothing to see here"
       />
     );
