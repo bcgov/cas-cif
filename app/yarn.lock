@@ -5643,17 +5643,17 @@ gray-percentage@^2.0.0:
   resolved "https://registry.yarnpkg.com/gray-percentage/-/gray-percentage-2.0.0.tgz#b72a274d1b1379104a0050b63b207dc53fe56f99"
   integrity sha1-tyonTRsTeRBKAFC2OyB9xT/lb5k=
 
-happo-cypress@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/happo-cypress/-/happo-cypress-3.0.0.tgz#98a62222e86c75a827f765bc604cfbc4fffbd907"
-  integrity sha512-BdNvqAeXIY15/tJ1VcWoBdMGeyA5bvFvU/cjdCevR5z7IXf4K80EjFHYto6IOcrZKrKMqMJEKXv5jy9EdS3OmQ==
+happo-cypress@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/happo-cypress/-/happo-cypress-3.0.1.tgz#05a20b7ed5f8e8277c325679ca18ae17bb5a0056"
+  integrity sha512-x95Nhj1tjPzBZS8MyCyCbzXSJBJwjK2R/EJ5WQJQDHpj+bPoBP6JmT2wM5Pzoq7gt9+BhQm5IE8SIM05ltOSxQ==
   dependencies:
-    happo-e2e "^1.0.0"
+    happo-e2e "^1.0.3"
 
-happo-e2e@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/happo-e2e/-/happo-e2e-1.0.0.tgz#562c1b8a29a8f65e604513325ddeae6cde430278"
-  integrity sha512-zLb1uUhGGI6bUA9Fm5WIajRAU/O1J4ppg2ldM2WMInHq6JVsSWv5vJoQVSWYqQyQ/M3fY9IOjrsq4FU7+BXwMg==
+happo-e2e@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/happo-e2e/-/happo-e2e-1.0.3.tgz#4f8c2a28d078344f446938f2c271d4d6baab6de0"
+  integrity sha512-cfA3wPYrpW3xXjGxKRydw4diuqgHgdsJlqrVzpxAXT/553RIK40w+cPkNxx+yO/rSvU4Ttp5NccM7XKPryVoiA==
   dependencies:
     archiver "^5.3.0"
     base64-stream "^1.0.0"
