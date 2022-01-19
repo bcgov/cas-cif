@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Pagination from "components/Table/Pagination";
 
 describe("PaginationBar", () => {
@@ -107,24 +107,16 @@ describe("PaginationBar", () => {
       </table>
     );
 
-    act(() => {
-      fireEvent.click(screen.getByTitle(/go to first page/i));
-    });
+    fireEvent.click(screen.getByTitle(/go to first page/i));
     expect(handleOffsetChange).toHaveBeenCalledWith(0);
 
-    act(() => {
-      fireEvent.click(screen.getByTitle(/go to previous page/i));
-    });
+    fireEvent.click(screen.getByTitle(/go to previous page/i));
     expect(handleOffsetChange).toHaveBeenCalledWith(20);
 
-    act(() => {
-      fireEvent.click(screen.getByTitle(/go to next page/i));
-    });
+    fireEvent.click(screen.getByTitle(/go to next page/i));
     expect(handleOffsetChange).toHaveBeenCalledWith(60);
 
-    act(() => {
-      fireEvent.click(screen.getByTitle(/go to last page/i));
-    });
+    fireEvent.click(screen.getByTitle(/go to last page/i));
     expect(handleOffsetChange).toHaveBeenCalledWith(80);
   });
 
@@ -145,10 +137,8 @@ describe("PaginationBar", () => {
         </tfoot>
       </table>
     );
-    act(() => {
-      fireEvent.change(screen.getByLabelText(/items per page/i), {
-        target: { value: 50 },
-      });
+    fireEvent.change(screen.getByLabelText(/items per page/i), {
+      target: { value: 50 },
     });
 
     expect(handlePageSizeChange).toHaveBeenCalledWith(50);
