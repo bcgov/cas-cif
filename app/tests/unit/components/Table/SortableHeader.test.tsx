@@ -15,11 +15,13 @@ describe("The sortable table header", () => {
     render(
       <table>
         <thead>
-          <SortableHeader
-            sortable
-            orderByPrefix="TEST_COLUMN"
-            displayName="testdisplay"
-          />
+          <tr>
+            <SortableHeader
+              sortable
+              orderByPrefix="TEST_COLUMN"
+              displayName="testdisplay"
+            />
+          </tr>
         </thead>
       </table>
     );
@@ -33,7 +35,9 @@ describe("The sortable table header", () => {
     render(
       <table>
         <thead>
-          <SortableHeader displayName="testdisplay" />
+          <tr>
+            <SortableHeader displayName="testdisplay" />
+          </tr>
         </thead>
       </table>
     );
@@ -50,11 +54,13 @@ describe("The sortable table header", () => {
     render(
       <table>
         <thead>
-          <SortableHeader
-            sortable
-            orderByPrefix="TEST_COLUMN"
-            displayName="testdisplay"
-          />
+          <tr>
+            <SortableHeader
+              sortable
+              orderByPrefix="TEST_COLUMN"
+              displayName="testdisplay"
+            />
+          </tr>
         </thead>
       </table>
     );
