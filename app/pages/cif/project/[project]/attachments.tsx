@@ -1,10 +1,13 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
-import { graphql, usePreloadedQuery, useRelayEnvironment } from "react-relay";
+import { graphql, usePreloadedQuery } from "react-relay";
 import { attachmentsQuery } from "__generated__/attachmentsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import createAttachmentMutation from "mutations/attachment/createAttachment";
-import { FilePicker } from "@button-inc/bcgov-theme";
+import Button from "@button-inc/bcgov-theme/Button";
+import Table from "components/Table";
+import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
+import { getAttachmentUploadPageRoute } from "pageRoutes";
+import { useRouter } from "next/router";
 
 const pageQuery = graphql`
   query attachmentsQuery($project: ID!) {
@@ -12,6 +15,7 @@ const pageQuery = graphql`
       ...DefaultLayout_session
     }
     project(id: $project) {
+      id
       projectName
     }
     allAttachments(first: 2147483647)
@@ -20,11 +24,24 @@ const pageQuery = graphql`
       edges {
         node {
           file
+          ...AttachmentTableRow_attachment
         }
       }
     }
   }
 `;
+
+const tableColumns = [
+  { title: "Description" },
+  { title: "File Name" },
+  { title: "Type" },
+  { title: "Size" },
+  { title: "Uploaded by" },
+  { title: "Status Added" },
+  { title: "Flag for Review" },
+  { title: "Received" },
+  { title: "Actions" },
+];
 
 function ProjectAttachments({
   preloadedQuery,
@@ -34,32 +51,30 @@ function ProjectAttachments({
     preloadedQuery
   );
 
-  const environment = useRelayEnvironment();
+  const router = useRouter();
 
-  const saveAttachment = async (e) => {
-    const variables = {
-      input: {
-        attachment: { file: e.target.files[0] },
-      },
-      connections: [allAttachments.__id],
-    };
-    await createAttachmentMutation(environment, variables);
+  const goToUploadView = async () => {
+    await router.push(getAttachmentUploadPageRoute(project.id));
   };
+
   return (
     <DefaultLayout session={session}>
       <h2>{project.projectName}</h2>
       <h3>Attachments List</h3>
-      <ul>
-        {allAttachments.edges.map(({ node }, idx) => (
-          <li
-            key={`file-${idx}`}
-            onClick={() => console.log("downloading:", node.file)}
-          >
-            {node.file}
-          </li>
+      <Button role="button" onClick={goToUploadView}>
+        Upload New Attachment
+      </Button>
+      <Table columns={tableColumns}>
+        {allAttachments.edges.map(({ node }) => (
+          <AttachmentTableRow key={node.file} attachment={node} />
         ))}
-      </ul>
-      <FilePicker onChange={saveAttachment}>Upload</FilePicker>
+      </Table>
+      <style jsx>{`
+        header > section {
+          display: flex;
+          justify-content: space-between;
+        }
+      `}</style>
     </DefaultLayout>
   );
 }
