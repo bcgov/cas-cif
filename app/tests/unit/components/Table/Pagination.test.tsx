@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import Pagination from "components/Table/Pagination";
 
 describe("PaginationBar", () => {
@@ -87,5 +87,70 @@ describe("PaginationBar", () => {
     expect(screen.getByTitle(/go to previous page/i)).toBeEnabled();
     expect(screen.getByTitle(/go to next page/i)).toBeDisabled();
     expect(screen.getByTitle(/go to last page/i)).toBeDisabled();
+  });
+
+  it("calls onOffsetChange when the buttons are pressed", () => {
+    const handleOffsetChange = jest.fn();
+    render(
+      <table>
+        <tfoot>
+          <tr>
+            <Pagination
+              totalCount={100}
+              offset={40}
+              pageSize={20}
+              onOffsetChange={handleOffsetChange}
+              onPageSizeChange={jest.fn()}
+            />
+          </tr>
+        </tfoot>
+      </table>
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByTitle(/go to first page/i));
+    });
+    expect(handleOffsetChange).toHaveBeenCalledWith(0);
+
+    act(() => {
+      fireEvent.click(screen.getByTitle(/go to previous page/i));
+    });
+    expect(handleOffsetChange).toHaveBeenCalledWith(20);
+
+    act(() => {
+      fireEvent.click(screen.getByTitle(/go to next page/i));
+    });
+    expect(handleOffsetChange).toHaveBeenCalledWith(60);
+
+    act(() => {
+      fireEvent.click(screen.getByTitle(/go to last page/i));
+    });
+    expect(handleOffsetChange).toHaveBeenCalledWith(80);
+  });
+
+  it("calls onPageSizeChange when a page size is selected", () => {
+    const handlePageSizeChange = jest.fn();
+    render(
+      <table>
+        <tfoot>
+          <tr>
+            <Pagination
+              totalCount={100}
+              offset={40}
+              pageSize={20}
+              onOffsetChange={jest.fn()}
+              onPageSizeChange={handlePageSizeChange}
+            />
+          </tr>
+        </tfoot>
+      </table>
+    );
+    act(() => {
+      fireEvent.change(screen.getByLabelText(/items per page/i), {
+        target: { value: 50 },
+      });
+    });
+
+    expect(handlePageSizeChange).toHaveBeenCalledWith(50);
   });
 });
