@@ -100,7 +100,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   const uiSchema = useMemo(() => {
     return {
       rfpNumber: {
-        "ui:placeholder": "2020-RFP-1-456-ABCD",
+        "ui:placeholder": "123",
         "bcgov:size": "small",
         "ui:widget": "GeneratedLongIdWidget",
       },
