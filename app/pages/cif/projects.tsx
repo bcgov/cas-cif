@@ -21,6 +21,7 @@ export const ProjectsQuery = graphql`
     $projectName: String
     $operatorTradeName: String
     $rfpNumber: String
+    $status: String
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
@@ -42,6 +43,9 @@ export const ProjectsQuery = graphql`
           tradeName: { includesInsensitive: $operatorTradeName }
         }
         rfpNumber: { includesInsensitive: $rfpNumber }
+        projectStatusByProjectStatusId: {
+          name: { includesInsensitive: $status }
+        }
       }
       orderBy: $orderBy
     ) {

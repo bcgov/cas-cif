@@ -51,6 +51,7 @@ const loadProjectsQuery = (
     projectName: null,
     operatorTradeName: null,
     rfpNumber: null,
+    status: null,
     offset: null,
     pageSize: DEFAULT_PAGE_SIZE,
     orderBy: null,
