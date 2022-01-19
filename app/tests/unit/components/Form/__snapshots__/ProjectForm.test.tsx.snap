@@ -62,7 +62,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                           class="sc-bqiRlB hrAFNs pg-input-input"
                           id="root_rfpNumber"
                           name="root_rfpNumber-input"
-                          placeholder="2020-RFP-1-456-ABCD"
+                          placeholder="123"
                           required=""
                           value=""
                         />
