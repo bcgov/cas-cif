@@ -8,6 +8,7 @@ import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import { TagsFilePlugin } from "postgraphile/plugins";
 import PostGraphileUploadFieldPlugin from "postgraphile-plugin-upload-field";
 import PgOmitArchived from "@graphile-contrib/pg-omit-archived";
+import PgOrderByRelatedPlugin from "@graphile-contrib/pg-order-by-related";
 import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
 
@@ -22,6 +23,7 @@ let postgraphileOptions: PostGraphileOptions = {
     TagsFilePlugin,
     PostGraphileUploadFieldPlugin,
     PgOmitArchived,
+    PgOrderByRelatedPlugin,
   ],
   classicIds: true,
   enableQueryBatching: true,
@@ -78,6 +80,7 @@ const postgraphileMiddleware = () => {
     ...postgraphileOptions,
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,
+      connectionFilterAllowEmptyObjectInput: true,
       connectionFilterRelations: true,
       uploadFieldDefinitions: [
         {

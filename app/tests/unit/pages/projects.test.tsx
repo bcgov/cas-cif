@@ -9,8 +9,21 @@ import {
   RelayMockEnvironment,
 } from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import { projectsQuery } from "__generated__/projectsQuery.graphql";
+import {
+  projectsQuery,
+  projectsQuery$variables,
+} from "__generated__/projectsQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
+import { useRouter } from "next/router";
+import { mocked } from "jest-mock";
+jest.mock("next/router");
+
+mocked(useRouter).mockReturnValue({
+  route: "/",
+  query: {},
+  push: jest.fn(),
+} as any);
 
 let environment: RelayMockEnvironment;
 let initialQueryRef;
@@ -20,6 +33,7 @@ const defaultMockResolver = {
     return {
       session: { cifUserBySub: {} },
       allProjects: {
+        totalCount: 2,
         edges: [
           { node: { id: "1", projectName: "Project 1" } },
           { node: { id: "2", projectName: "Project 2" } },
@@ -33,11 +47,20 @@ const defaultMockResolver = {
 const loadProjectsQuery = (
   mockResolver: MockResolvers = defaultMockResolver
 ) => {
+  const variables: projectsQuery$variables = {
+    projectName: null,
+    operatorTradeName: null,
+    rfpNumber: null,
+    status: null,
+    offset: null,
+    pageSize: DEFAULT_PAGE_SIZE,
+    orderBy: null,
+  };
+
   environment.mock.queueOperationResolver((operation) => {
     return MockPayloadGenerator.generate(operation, mockResolver);
   });
 
-  const variables = {};
   environment.mock.queuePendingOperation(ProjectsQuery, variables);
   initialQueryRef = loadQuery<projectsQuery>(
     environment,
@@ -49,7 +72,7 @@ const loadProjectsQuery = (
 const renderProjects = () =>
   render(
     <RelayEnvironmentProvider environment={environment}>
-      <Projects CSN={true} preloadedQuery={initialQueryRef} />
+      <Projects CSN preloadedQuery={initialQueryRef} />
     </RelayEnvironmentProvider>
   );
 
@@ -79,6 +102,7 @@ describe("The projects page", () => {
         return {
           session: { cifUserBySub: {} },
           allProjects: {
+            totalCount: 0,
             edges: [],
           },
           pendingNewProjectRevision: {
@@ -106,9 +130,6 @@ describe("The projects page", () => {
         };
       });
 
-    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
-      return { push: jest.fn() };
-    });
     loadProjectsQuery();
     renderProjects();
     userEvent.click(screen.getByText(/Add a Project/i));

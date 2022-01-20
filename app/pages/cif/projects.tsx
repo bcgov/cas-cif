@@ -9,9 +9,23 @@ import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
+import {
+  DisplayOnlyFilter,
+  NoHeaderFilter,
+  SortOnlyFilter,
+  TextFilter,
+} from "components/Table/Filters";
 
 export const ProjectsQuery = graphql`
-  query projectsQuery {
+  query projectsQuery(
+    $projectName: String
+    $operatorTradeName: String
+    $rfpNumber: String
+    $status: String
+    $offset: Int
+    $pageSize: Int
+    $orderBy: [ProjectsOrderBy!]
+  ) {
     session {
       ...DefaultLayout_session
     }
@@ -20,7 +34,22 @@ export const ProjectsQuery = graphql`
       id
     }
 
-    allProjects {
+    allProjects(
+      first: $pageSize
+      offset: $offset
+      filter: {
+        projectName: { includesInsensitive: $projectName }
+        operatorByOperatorId: {
+          tradeName: { includesInsensitive: $operatorTradeName }
+        }
+        rfpNumber: { includesInsensitive: $rfpNumber }
+        projectStatusByProjectStatusId: {
+          name: { includesInsensitive: $status }
+        }
+      }
+      orderBy: $orderBy
+    ) {
+      totalCount
       edges {
         node {
           id
@@ -31,19 +60,23 @@ export const ProjectsQuery = graphql`
   }
 `;
 
-const tableColumns = [
-  { title: "Project Name" },
-  { title: "Operator Trade Name" },
-  { title: "RFP ID" },
-  { title: "Status" },
-  { title: "Assigned To" },
-  { title: "Funding Request" },
-  { title: "Next Report Due" },
-  { title: "Actions" },
+const tableFilters = [
+  new TextFilter("Project Name", "projectName"),
+  new TextFilter("Operator Trade Name", "operatorTradeName", {
+    orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
+  }),
+  new TextFilter("RFP ID", "rfpNumber"),
+  new TextFilter("Status", "status", {
+    orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
+  }),
+  new DisplayOnlyFilter("Assigned To"),
+  new SortOnlyFilter("Funding Request", "totalFundingRequest"),
+  new NoHeaderFilter(),
 ];
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const router = useRouter();
+
   const { allProjects, pendingNewProjectRevision, session } = usePreloadedQuery(
     ProjectsQuery,
     preloadedQuery
@@ -83,7 +116,11 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         </section>
       </header>
 
-      <Table columns={tableColumns}>
+      <Table
+        paginated
+        totalRowCount={allProjects.totalCount}
+        filters={tableFilters}
+      >
         {allProjects.edges.map(({ node }) => (
           <ProjectTableRow key={node.id} project={node} />
         ))}
