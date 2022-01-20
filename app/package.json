@@ -79,6 +79,7 @@
     "@mui/base": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.3",
     "@rjsf/core": "^3.2.0",
+    "ajv": "^8.9.0",
     "body-parser": "^1.19.0",
     "bowser": "^2.11.0",
     "connect-pg-simple": "^7.0.0",

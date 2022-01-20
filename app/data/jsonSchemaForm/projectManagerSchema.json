@@ -3,7 +3,7 @@
   "description": "Schema describing the project manager form for the CIF application",
   "type": "object",
   "title": "Project Manager",
-  "required": ["project_manager"],
+  "required": ["cifUserId"],
   "properties": {
     "cifUserId": {
       "type": "number",

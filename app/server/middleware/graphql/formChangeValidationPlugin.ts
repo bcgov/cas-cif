@@ -1,4 +1,20 @@
 import { makeWrapResolversPlugin } from "postgraphile";
+import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
+import Ajv, { ErrorObject } from "ajv";
+
+const ajv = new Ajv({ allErrors: true });
+
+function validateRecord(record: any): ErrorObject[] {
+  const schema = validationSchemas[record.form_data_table_name];
+  const jsonData = record.new_form_data;
+
+  // ajv caches compiled schemas, so we don't have to
+  // precompile schemas in advance
+  const validate = ajv.compile(schema);
+  const valid = validate(jsonData);
+
+  return valid ? [] : validate.errors;
+}
 
 export const FormChangeValidationPlugin = makeWrapResolversPlugin(
   (context) => {
@@ -6,9 +22,6 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
       context.scope.isRootMutation &&
       context.scope.fieldName === "updateProjectRevision"
     ) {
-      console.error(
-        "~~~~~~~~~~~~~~~~~~~ Loading Validation Plugin ~~~~~~~~~~~~~~~~~~~"
-      );
       return {
         // There is no need to pass a context to the resolver at this time
       };
@@ -16,9 +29,6 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
     return null;
   },
   () => async (resolver: any, _source, args, context, resolveInfo) => {
-    console.error(
-      "~~~~~~~~~~~~~~~~~~~ Executing Validation Plugin ~~~~~~~~~~~~~~~~~~~"
-    );
     const {
       identifiers: [projectRevisionId],
     } = (resolveInfo as any).graphile.build.getTypeAndIdentifiersFromNodeId(
@@ -33,7 +43,14 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
       [projectRevisionId]
     );
 
-    console.error(rows);
+    const allErrors = rows
+      .map((record) => validateRecord(record))
+      .reduce((acc, errors) => [...acc, ...errors], []) as ErrorObject[];
+
+    if (allErrors.length > 0)
+      throw new Error(
+        allErrors.map((e) => `${e.instancePath} ${e.message}`).join(" \n")
+      );
 
     const result = await resolver();
     return result;
