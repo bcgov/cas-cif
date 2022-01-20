@@ -85073,6 +85073,18 @@
               "deprecationReason": null
             },
             {
+              "name": "OPERATOR_BY_OPERATOR_ID__OPERATOR_CODE_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR_BY_OPERATOR_ID__OPERATOR_CODE_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "OPERATOR_BY_OPERATOR_ID__TRADE_NAME_ASC",
               "description": null,
               "isDeprecated": false,
