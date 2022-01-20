@@ -1,5 +1,5 @@
 begin;
-select plan(12);
+select plan(14);
 
 select has_table('cif', 'project', 'table cif.project exists');
 select columns_are(
@@ -27,19 +27,32 @@ select columns_are(
 -- Test Setup
 truncate cif.project restart identity cascade;
 truncate cif.operator restart identity cascade;
-insert into cif.operator (legal_name, trade_name, bc_registry_id)
+insert into cif.operator (legal_name, trade_name, bc_registry_id, operator_code)
 values
-  ('first operator legal name', 'first operator trade name', 'AB1234567'),
-  ('second operator legal name', 'second operator lorem ipsum dolor sit amet limited', 'BC1234567'),
-  ('third operator legal name', 'third operator trade name', 'EF3456789');
+  ('first operator legal name', 'first operator trade name', 'AB1234567', 'ABCD'),
+  ('second operator legal name', 'second operator lorem ipsum dolor sit amet limited', 'BC1234567', 'EFGH'),
+  ('third operator legal name', 'third operator trade name', 'EF3456789', 'IJKL');
 
 insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
 values
-  (1, 1, 1, '2019-RFP-1-000-ABCD', 'summary', 'project 1'),
-  (2, 1, 1, '2019-RFP-0-000-EFGH', 'summary', 'project 2'),
-  (3, 1, 1, '2019-RFP-0-000-ZXCV', 'summary', 'project 3');
+  (1, 1, 1, '000', 'summary', 'project 1'),
+  (2, 1, 1, '000', 'summary', 'project 2'),
+  (3, 1, 1, '000', 'summary', 'project 3');
 
+select is (
+  (select rfp_number from cif.project where id=1),
+  '2019-RFP-1-000-ABCD',
+  'rfp_number is generated from values in the operator and funding_stream_rfp tables'
+);
 
+select throws_like(
+  $$
+    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+    values (1, 1, 1, '000', 'summary', 'project 1');
+  $$,
+  'duplicate key value%',
+    'cif.rfp_number must be unique'
+);
 
 
 -- Row level security tests --
@@ -61,7 +74,7 @@ select lives_ok(
 select lives_ok(
   $$
     insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
-    values (1, 1, 1, '2020-RFP-1-000-ABCD', 'summary', 'project 4');
+    values (1, 1, 1, '001', 'summary', 'project 4');
   $$,
     'cif_admin can insert data in project table'
 );
@@ -104,7 +117,7 @@ select lives_ok(
 select lives_ok(
   $$
     insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
-    values (1, 1, 1, '2021-RFP-1-000-ABCD', 'summary', 'project 5');
+    values (1, 1, 1, '002', 'summary', 'project 5');
   $$,
     'cif_internal can insert data in project table'
 );

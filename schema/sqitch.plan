@@ -19,6 +19,7 @@ types/keycloak_jwt 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> #
 functions/session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.session function
 trigger_functions/update_timestamps 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.update_timestamps trigger function
 trigger_functions/deleted_records_are_immutable 2022-01-06T18:37:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to ensure that no changes to a deleted record can be saved
+trigger_functions/set_project_long_id [schemas/private] 2022-01-18T00:43:24Z Dylan Leard <dylan@button.is> # Trigger function to generate the project long id
 util_functions/upsert_timestamp_columns [schemas/private trigger_functions/update_timestamps] 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the upsert_timestamp_columns function
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
@@ -28,7 +29,7 @@ tables/funding_stream_rfp 2021-12-15T00:47:25Z Alex Zorkin <alex@bigthink.io> # 
 tables/project_status 2021-12-21T21:19:31Z Alex Zorkin <alex@bigthink.io> # creating project_status table
 tables/funding_stream_rfp_project_status 2022-01-12T20:47:40Z Alex Zorkin <alex@bigthink.io> # adding cross table between funding_stream_rfp and project_status
 tables/operator [schemas/main] 2021-11-30T22:34:14Z Dylan Leard <dylan@button.is> # Create the cif.operator table
-tables/project [tables/operator] 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
+tables/project [tables/operator trigger_functions/set_project_long_id] 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
 util_functions/camel_to_snake_case 2021-12-11T00:37:54Z Matthieu Foucault <matthieu@button.is> # Add cif_private.camel_to_snake_case
 trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
 tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row

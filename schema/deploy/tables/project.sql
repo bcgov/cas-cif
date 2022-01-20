@@ -20,6 +20,11 @@ select cif_private.upsert_timestamp_columns('cif', 'project');
 
 create index cif_project_operator_id on cif.project(operator_id);
 
+create trigger set_long_id
+  before insert on cif.project
+  for each row
+  execute procedure cif_private.set_project_long_id();
+
 do
 $grant$
 begin

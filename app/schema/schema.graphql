@@ -18892,6 +18892,11 @@ type Operator implements Node {
   """The legal name of this operator"""
   legalName: String
 
+  """
+  The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the rfp_number
+  """
+  operatorCode: String
+
   """Reads and enables pagination through a set of `ProjectStatus`."""
   projectStatusesByProjectOperatorIdAndProjectStatusId(
     """Read all values in the set after (below) this cursor."""
@@ -19176,6 +19181,9 @@ input OperatorCondition {
   """Checks for equality with the object’s `legalName` field."""
   legalName: String
 
+  """Checks for equality with the object’s `operatorCode` field."""
+  operatorCode: String
+
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
 
@@ -19234,6 +19242,9 @@ input OperatorFilter {
 
   """Negates the expression."""
   not: OperatorFilter
+
+  """Filter by the object’s `operatorCode` field."""
+  operatorCode: StringFilter
 
   """Checks for any expressions in this list."""
   or: [OperatorFilter!]
@@ -19446,6 +19457,8 @@ enum OperatorsOrderBy {
   LEGAL_NAME_ASC
   LEGAL_NAME_DESC
   NATURAL
+  OPERATOR_CODE_ASC
+  OPERATOR_CODE_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   TRADE_NAME_ASC

@@ -64538,6 +64538,18 @@
               "deprecationReason": null
             },
             {
+              "name": "operatorCode",
+              "description": "The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the rfp_number",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "projectStatusesByProjectOperatorIdAndProjectStatusId",
               "description": "Reads and enables pagination through a set of `ProjectStatus`.",
               "args": [
@@ -65563,6 +65575,16 @@
               "defaultValue": null
             },
             {
+              "name": "operatorCode",
+              "description": "Checks for equality with the object’s `operatorCode` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "rowId",
               "description": "Checks for equality with the object’s `rowId` field.",
               "type": {
@@ -65757,6 +65779,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "OperatorFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "operatorCode",
+              "description": "Filter by the object’s `operatorCode` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -66555,6 +66587,18 @@
             },
             {
               "name": "NATURAL",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR_CODE_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR_CODE_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
