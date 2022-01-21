@@ -64813,6 +64813,18 @@
               "deprecationReason": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "The name of the JSON schema to use for validation of this form data",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "newFormData",
               "description": "Unique ID for the form_change",
               "args": [],
@@ -64906,7 +64918,7 @@
             },
             {
               "name": "validationErrors",
-              "description": null,
+              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -65017,6 +65029,16 @@
             {
               "name": "formDataTableName",
               "description": "Checks for equality with the object’s `formDataTableName` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "jsonSchemaName",
+              "description": "Checks for equality with the object’s `jsonSchemaName` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -65294,6 +65316,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "Filter by the object’s `jsonSchemaName` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Filter by the object’s `newFormData` field.",
               "type": {
@@ -65513,6 +65545,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "The name of the JSON schema to use for validation of this form data",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Unique ID for the form_change",
               "type": {
@@ -65564,7 +65606,7 @@
             },
             {
               "name": "validationErrors",
-              "description": null,
+              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
               "type": {
                 "kind": "SCALAR",
                 "name": "JSON",
@@ -65674,6 +65716,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "The name of the JSON schema to use for validation of this form data",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Unique ID for the form_change",
               "type": {
@@ -65725,7 +65777,7 @@
             },
             {
               "name": "validationErrors",
-              "description": null,
+              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
               "type": {
                 "kind": "SCALAR",
                 "name": "JSON",
@@ -66488,6 +66540,18 @@
             },
             {
               "name": "ID_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JSON_SCHEMA_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JSON_SCHEMA_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

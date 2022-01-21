@@ -4,8 +4,8 @@ import Ajv, { ErrorObject } from "ajv";
 
 const ajv = new Ajv({ allErrors: true });
 
-function validateRecord(tableName: string, formData: any): ErrorObject[] {
-  const schema = validationSchemas[tableName];
+function validateRecord(schemaName: string, formData: any): ErrorObject[] {
+  const schema = validationSchemas[schemaName];
 
   // ajv caches compiled schemas on first instantiation, we don't need to
   // precompile schemas in advance
@@ -44,12 +44,13 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
     const { pgClient } = context;
     const {
       rows: [formChangeRecord],
-    } = await pgClient.query(`select * from cif.form_change where id = $1`, [
-      formChangeId,
-    ]);
+    } = await pgClient.query(
+      `select json_schema_name from cif.form_change where id = $1`,
+      [formChangeId]
+    );
 
     const errors = validateRecord(
-      formChangeRecord.form_data_table_name,
+      formChangeRecord.json_schema_name,
       args.input.formChangePatch.newFormData
     );
 

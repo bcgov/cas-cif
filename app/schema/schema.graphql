@@ -18791,6 +18791,9 @@ type FormChange implements Node {
   """
   id: ID!
 
+  """The name of the JSON schema to use for validation of this form data"""
+  jsonSchemaName: String
+
   """Unique ID for the form_change"""
   newFormData: JSON
 
@@ -18811,6 +18814,10 @@ type FormChange implements Node {
 
   """updated by user id"""
   updatedBy: Int
+
+  """
+  The validation errors computed for this record's new_form_data and the json_schema_name schema
+  """
   validationErrors: JSON
 }
 
@@ -18845,6 +18852,9 @@ input FormChangeCondition {
 
   """Checks for equality with the object’s `formDataTableName` field."""
   formDataTableName: String
+
+  """Checks for equality with the object’s `jsonSchemaName` field."""
+  jsonSchemaName: String
 
   """Checks for equality with the object’s `newFormData` field."""
   newFormData: JSON
@@ -18926,6 +18936,9 @@ input FormChangeFilter {
   """Filter by the object’s `formDataTableName` field."""
   formDataTableName: StringFilter
 
+  """Filter by the object’s `jsonSchemaName` field."""
+  jsonSchemaName: StringFilter
+
   """Filter by the object’s `newFormData` field."""
   newFormData: JSONFilter
 
@@ -18991,6 +19004,9 @@ input FormChangeInput {
   """The table on which this form change applies"""
   formDataTableName: String
 
+  """The name of the JSON schema to use for validation of this form data"""
+  jsonSchemaName: String
+
   """Unique ID for the form_change"""
   newFormData: JSON
 
@@ -19005,6 +19021,10 @@ input FormChangeInput {
 
   """updated by user id"""
   updatedBy: Int
+
+  """
+  The validation errors computed for this record's new_form_data and the json_schema_name schema
+  """
   validationErrors: JSON
 }
 
@@ -19041,6 +19061,9 @@ input FormChangePatch {
   """The table on which this form change applies"""
   formDataTableName: String
 
+  """The name of the JSON schema to use for validation of this form data"""
+  jsonSchemaName: String
+
   """Unique ID for the form_change"""
   newFormData: JSON
 
@@ -19055,6 +19078,10 @@ input FormChangePatch {
 
   """updated by user id"""
   updatedBy: Int
+
+  """
+  The validation errors computed for this record's new_form_data and the json_schema_name schema
+  """
   validationErrors: JSON
 }
 
@@ -19190,6 +19217,8 @@ enum FormChangesOrderBy {
   FORM_DATA_TABLE_NAME_DESC
   ID_ASC
   ID_DESC
+  JSON_SCHEMA_NAME_ASC
+  JSON_SCHEMA_NAME_DESC
   NATURAL
   NEW_FORM_DATA_ASC
   NEW_FORM_DATA_DESC
