@@ -4,14 +4,13 @@ import Ajv, { ErrorObject } from "ajv";
 
 const ajv = new Ajv({ allErrors: true });
 
-function validateRecord(record: any): ErrorObject[] {
-  const schema = validationSchemas[record.form_data_table_name];
-  const jsonData = record.new_form_data;
+function validateRecord(tableName: string, formData: any): ErrorObject[] {
+  const schema = validationSchemas[tableName];
 
-  // ajv caches compiled schemas, so we don't have to
+  // ajv caches compiled schemas on first instantiation, we don't need to
   // precompile schemas in advance
   const validate = ajv.compile(schema);
-  const valid = validate(jsonData);
+  const valid = validate(formData);
 
   return valid ? [] : validate.errors;
 }
@@ -20,7 +19,7 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
   (context) => {
     if (
       context.scope.isRootMutation &&
-      context.scope.fieldName === "updateProjectRevision"
+      context.scope.fieldName === "updateFormChange"
     ) {
       return {
         // There is no need to pass a context to the resolver at this time
@@ -28,31 +27,38 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
     }
     return null;
   },
-  () => async (resolver: any, _source, args, context, resolveInfo) => {
+  () => async (resolver: any, source, args, context, resolveInfo) => {
+    // If the mutation doesn't change the form data, we don't need to re-validate
+    if (args.input?.formChangePatch?.newFormData === undefined)
+      return resolver();
+
     const {
-      identifiers: [projectRevisionId],
+      identifiers: [formChangeId],
     } = (resolveInfo as any).graphile.build.getTypeAndIdentifiersFromNodeId(
       args.input.id
     );
 
-    console.error("ProjectRevisionId", projectRevisionId);
-
+    // This is the recommended way to fetch data ahead of running the
+    // resolver of the GraphQL mutation - see first "IMPORTANT" note here:
+    // https://www.graphile.org/postgraphile/make-extend-schema-plugin/#the-selectgraphqlresultfromtable-helper
     const { pgClient } = context;
-    const { rows } = await pgClient.query(
-      `select * from cif.form_change where project_revision_id = $1 and deleted_at is null`,
-      [projectRevisionId]
+    const {
+      rows: [formChangeRecord],
+    } = await pgClient.query(`select * from cif.form_change where id = $1`, [
+      formChangeId,
+    ]);
+
+    const errors = validateRecord(
+      formChangeRecord.form_data_table_name,
+      args.input.formChangePatch.newFormData
     );
 
-    const allErrors = rows
-      .map((record) => validateRecord(record))
-      .reduce((acc, errors) => [...acc, ...errors], []) as ErrorObject[];
+    args.input.formChangePatch = {
+      ...args.input.formChangePatch,
+      validationErrors: errors,
+    };
 
-    if (allErrors.length > 0)
-      throw new Error(
-        allErrors.map((e) => `${e.instancePath} ${e.message}`).join(" \n")
-      );
-
-    const result = await resolver();
+    const result = await resolver(source, args, context, resolveInfo);
     return result;
   }
 );

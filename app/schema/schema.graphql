@@ -18811,6 +18811,7 @@ type FormChange implements Node {
 
   """updated by user id"""
   updatedBy: Int
+  validationErrors: JSON
 }
 
 """
@@ -18862,6 +18863,9 @@ input FormChangeCondition {
 
   """Checks for equality with the object’s `updatedBy` field."""
   updatedBy: Int
+
+  """Checks for equality with the object’s `validationErrors` field."""
+  validationErrors: JSON
 }
 
 """
@@ -18951,6 +18955,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `updatedBy` field."""
   updatedBy: IntFilter
+
+  """Filter by the object’s `validationErrors` field."""
+  validationErrors: JSONFilter
 }
 
 """An input for mutations affecting `FormChange`"""
@@ -18998,6 +19005,7 @@ input FormChangeInput {
 
   """updated by user id"""
   updatedBy: Int
+  validationErrors: JSON
 }
 
 """
@@ -19047,6 +19055,7 @@ input FormChangePatch {
 
   """updated by user id"""
   updatedBy: Int
+  validationErrors: JSON
 }
 
 """A connection to a list of `FormChange` values."""
@@ -19212,6 +19221,8 @@ enum FormChangesOrderBy {
   UPDATED_AT_DESC
   UPDATED_BY_ASC
   UPDATED_BY_DESC
+  VALIDATION_ERRORS_ASC
+  VALIDATION_ERRORS_DESC
 }
 
 """Table containing information about a CIF funding_stream"""

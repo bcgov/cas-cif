@@ -64903,6 +64903,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "validationErrors",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -65068,6 +65080,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "Checks for equality with the object’s `validationErrors` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "defaultValue": null
@@ -65378,6 +65400,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "Filter by the object’s `validationErrors` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "JSONFilter",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -65529,6 +65561,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -65677,6 +65719,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "defaultValue": null
@@ -66622,6 +66674,18 @@
             },
             {
               "name": "UPDATED_BY_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VALIDATION_ERRORS_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VALIDATION_ERRORS_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
