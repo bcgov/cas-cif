@@ -45,3 +45,4 @@ computed_columns/project_revision_project_form_change [tables/project_revision] 
 computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision
 functions/pending_new_project_revision 2021-12-22T23:40:21Z Matthieu Foucault <matthieu@button.is> # add function returning a pending new project revision created by the current user
 tables/contact 2022-01-19T22:40:59Z Matthieu Foucault <matthieu@button.is> # add contact table
+tables/project_contact 2022-01-21T20:45:52Z Matthieu Foucault <matthieu@button.is> # add an association table for projects and contacts
