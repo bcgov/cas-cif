@@ -1,6 +1,6 @@
 begin;
 
-select plan(10);
+select plan(11);
 
 create schema mock_schema;
 
@@ -11,7 +11,8 @@ create table mock_schema.mock_form_change (
   form_data_schema_name varchar(1000),
   form_data_table_name varchar(1000),
   form_data_record_id integer,
-  change_status varchar(1000) default 'pending'
+  change_status varchar(1000) default 'pending',
+  validation_errors jsonb default '[]'
 );
 
 create table mock_schema.mock_table (
@@ -115,6 +116,22 @@ select is(
   'A record should be updated when a pending change is committed'
 );
 
+-- committing an existing record with validation_errors not empty throws
+insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status, validation_errors)
+values (
+  '{"textCol":"test_update"}',
+  'UPDATE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test3'), 'test_pending',
+  '[{"this":"is an error"},{"this":"is another error"}]'::jsonb
+);
+
+select throws_ok(
+  $$
+    update mock_schema.mock_form_change set change_status = 'test_committed' where id = 5
+  $$,
+  'Cannot commit change with validation errors: [{"this": "is an error"}, {"this": "is another error"}]'
+);
+
+
 -- on delete nothing happens and a notice is printed
 select throws_ok(
   $$
@@ -145,6 +162,7 @@ select lives_ok(
   $$,
   'Function does not throw an exception when trying to commit a change with an empty new_form_data'
 );
+
 
 select finish();
 
