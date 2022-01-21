@@ -1,5 +1,5 @@
 begin;
-select plan(26);
+select plan(27);
 
 select has_table('cif', 'form_change', 'table cif.form_change exists');
 
@@ -11,6 +11,7 @@ select has_column('cif', 'form_change', 'form_data_table_name', 'table cif.form_
 select has_column('cif', 'form_change', 'form_data_record_id', 'table cif.form_change has form_data_record_id column');
 select has_column('cif', 'form_change', 'change_status', 'table cif.form_change has change_status column');
 select has_column('cif', 'form_change', 'change_reason', 'table cif.form_change has change_reason column');
+select has_column('cif', 'form_change', 'validation_errors', 'table cif.form_change has validation_errors column');
 select has_column('cif', 'form_change', 'created_at', 'table cif.form_change has created_at column');
 select has_column('cif', 'form_change', 'updated_at', 'table cif.form_change has updated_at column');
 select has_column('cif', 'form_change', 'deleted_at', 'table cif.form_change has deleted_at column');
