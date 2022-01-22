@@ -1,7 +1,7 @@
 import Ajv, { ErrorObject } from "ajv";
-import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
+import validationSchemas from "data/jsonSchemaForm/validationSchemas";
 
-const ajv = new Ajv();
+const ajv = new Ajv({ allErrors: true });
 
 const validateRecord: (schemaName: string, formData: any) => ErrorObject[] = (
   schemaName,
