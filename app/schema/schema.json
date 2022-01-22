@@ -57620,6 +57620,30 @@
               "deprecationReason": null
             },
             {
+              "name": "fullName",
+              "description": "Computed column for graphql to retrieve the full formatted phone of a contact",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "fullPhone",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "givenName",
               "description": "The given name of this contact",
               "args": [],
@@ -57649,7 +57673,7 @@
             },
             {
               "name": "phone",
-              "description": "The phone number of this contact",
+              "description": "The phone number of this contact, stored in E.164 format",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -58936,6 +58960,26 @@
               "defaultValue": null
             },
             {
+              "name": "fullName",
+              "description": "Filter by the object’s `fullName` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "fullPhone",
+              "description": "Filter by the object’s `fullPhone` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "givenName",
               "description": "Filter by the object’s `givenName` field.",
               "type": {
@@ -59932,6 +59976,30 @@
             },
             {
               "name": "FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FULL_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FULL_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FULL_PHONE_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FULL_PHONE_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -87417,6 +87485,30 @@
             },
             {
               "name": "CONTACT_BY_CONTACT_ID__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CONTACT_BY_CONTACT_ID__FULL_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CONTACT_BY_CONTACT_ID__FULL_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CONTACT_BY_CONTACT_ID__FULL_PHONE_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CONTACT_BY_CONTACT_ID__FULL_PHONE_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

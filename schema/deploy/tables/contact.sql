@@ -40,7 +40,7 @@ comment on column cif.contact.id is 'Unique ID for the contact';
 comment on column cif.contact.given_name is 'The given name of this contact';
 comment on column cif.contact.family_name is 'The family name of this contact';
 comment on column cif.contact.email is 'The email address of this contact';
-comment on column cif.contact.phone is 'The phone number of this contact';
+comment on column cif.contact.phone is 'The phone number of this contact, stored in E.164 format';
 comment on column cif.contact.phone_ext is 'The phone extension of this contact';
 comment on column cif.contact.position is 'The position of this contact';
 comment on column cif.contact.comments is 'Any comments about this contact';

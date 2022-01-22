@@ -16737,6 +16737,12 @@ type Contact implements Node {
   """The family name of this contact"""
   familyName: String
 
+  """
+  Computed column for graphql to retrieve the full formatted phone of a contact
+  """
+  fullName: String
+  fullPhone: String
+
   """The given name of this contact"""
   givenName: String
 
@@ -16745,7 +16751,7 @@ type Contact implements Node {
   """
   id: ID!
 
-  """The phone number of this contact"""
+  """The phone number of this contact, stored in E.164 format"""
   phone: String
 
   """The phone extension of this contact"""
@@ -17111,6 +17117,12 @@ input ContactFilter {
   """Filter by the object’s `familyName` field."""
   familyName: StringFilter
 
+  """Filter by the object’s `fullName` field."""
+  fullName: StringFilter
+
+  """Filter by the object’s `fullPhone` field."""
+  fullPhone: StringFilter
+
   """Filter by the object’s `givenName` field."""
   givenName: StringFilter
 
@@ -17335,6 +17347,10 @@ enum ContactsOrderBy {
   EMAIL_DESC
   FAMILY_NAME_ASC
   FAMILY_NAME_DESC
+  FULL_NAME_ASC
+  FULL_NAME_DESC
+  FULL_PHONE_ASC
+  FULL_PHONE_DESC
   GIVEN_NAME_ASC
   GIVEN_NAME_DESC
   ID_ASC
@@ -24812,6 +24828,10 @@ enum ProjectContactsOrderBy {
   CONTACT_BY_CONTACT_ID__EMAIL_DESC
   CONTACT_BY_CONTACT_ID__FAMILY_NAME_ASC
   CONTACT_BY_CONTACT_ID__FAMILY_NAME_DESC
+  CONTACT_BY_CONTACT_ID__FULL_NAME_ASC
+  CONTACT_BY_CONTACT_ID__FULL_NAME_DESC
+  CONTACT_BY_CONTACT_ID__FULL_PHONE_ASC
+  CONTACT_BY_CONTACT_ID__FULL_PHONE_DESC
   CONTACT_BY_CONTACT_ID__GIVEN_NAME_ASC
   CONTACT_BY_CONTACT_ID__GIVEN_NAME_DESC
   CONTACT_BY_CONTACT_ID__ID_ASC

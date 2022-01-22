@@ -9,7 +9,7 @@ do $$
         'Bob' || lpad(contact_id::text, 3, '0'),
         'Loblaw' || lpad(contact_id::text, 3, '0'),
         'Bob' || lpad(contact_id::text, 3, '0') || '@example.com',
-        '1234567890',
+        '+12501234567',
         lpad(contact_id::text, 3, '0'),
         'Plant ' || lpad(contact_id::text, 3, '0') || ' Manager',
         'Bob' || lpad(contact_id::text, 3, '0') || 'Loblaw' || lpad(contact_id::text, 3, '0') || ' is a great guy'
