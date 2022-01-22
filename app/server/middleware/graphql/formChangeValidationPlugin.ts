@@ -1,33 +1,28 @@
-import { makeWrapResolversPlugin } from "postgraphile";
-import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
-import Ajv, { ErrorObject } from "ajv";
+import { GraphQLObjectType, GraphQLResolveInfo } from "graphql";
+import { Context, makeWrapResolversPlugin } from "postgraphile";
+import validateRecord from "./validateRecord";
 
-const ajv = new Ajv({ allErrors: true });
+export const filter = (context: Context<GraphQLObjectType<any, any>>) => {
+  if (
+    context.scope.isRootMutation &&
+    context.scope.fieldName === "updateFormChange"
+  ) {
+    return {
+      // There is no need to pass a context to the resolver at this time
+    };
+  }
+  return null;
+};
 
-function validateRecord(schemaName: string, formData: any): ErrorObject[] {
-  const schema = validationSchemas[schemaName];
-
-  // ajv caches compiled schemas on first instantiation, we don't need to
-  // precompile schemas in advance
-  const validate = ajv.compile(schema);
-  const valid = validate(formData);
-
-  return valid ? [] : validate.errors;
-}
-
-export const FormChangeValidationPlugin = makeWrapResolversPlugin(
-  (context) => {
-    if (
-      context.scope.isRootMutation &&
-      context.scope.fieldName === "updateFormChange"
-    ) {
-      return {
-        // There is no need to pass a context to the resolver at this time
-      };
-    }
-    return null;
-  },
-  () => async (resolver: any, source, args, context, resolveInfo) => {
+export const resolverWrapperGenerator =
+  () =>
+  async (
+    resolver: any,
+    source,
+    args: { [argName: string]: any },
+    context,
+    resolveInfo: GraphQLResolveInfo
+  ) => {
     // If the mutation doesn't change the form data, we don't need to re-validate
     if (args.input?.formChangePatch?.newFormData === undefined)
       return resolver();
@@ -61,5 +56,11 @@ export const FormChangeValidationPlugin = makeWrapResolversPlugin(
 
     const result = await resolver(source, args, context, resolveInfo);
     return result;
-  }
+  };
+
+const FormChangeValidationPlugin = makeWrapResolversPlugin(
+  filter,
+  resolverWrapperGenerator
 );
+
+export default FormChangeValidationPlugin;
