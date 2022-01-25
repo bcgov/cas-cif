@@ -7,7 +7,7 @@ create table cif.contact(
   given_name varchar(1000),
   family_name varchar(1000),
   email varchar(1000),
-  phone varchar(100),
+  phone varchar(100) constraint e164_format check (phone ~ '^\+\d{1,15}$'),
   phone_ext varchar(100),
   position varchar(1000),
   comments varchar(10000)

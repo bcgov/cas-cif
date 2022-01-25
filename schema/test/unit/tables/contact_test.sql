@@ -20,7 +20,7 @@ select has_column('cif', 'contact', 'deleted_by', 'table cif.contact has deleted
 
 insert into cif.contact
   (given_name, family_name, email, phone, phone_ext, position, comments) values
-  ('bob', 'loblaw', 'bob@loblaw', '+1 123-456-7890', '123', 'lawyer', 'bob loblaw no habla espanol');
+  ('bob', 'loblaw', 'bob@loblaw', '+11234567890', '123', 'lawyer', 'bob loblaw no habla espanol');
 
 -- Row level security tests --
 
