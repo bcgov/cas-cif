@@ -6,6 +6,13 @@ export const getOperatorsPageRoute = () => ({
   pathname: "/cif/operators/",
 });
 
+export const getOperatorViewPageRoute = (operatorId: string) => ({
+  pathname: `/cif/operator/[operator]/`,
+  query: {
+    operator: operatorId,
+  },
+});
+
 export const getContactsPageRoute = () => ({
   pathname: "/cif/contacts/",
 });
