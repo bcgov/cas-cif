@@ -9,13 +9,7 @@ interface Props {
 }
 
 const OperatorTableRow: React.FC<Props> = ({ operator }) => {
-  const {
-    id,
-    legalName,
-    tradeName,
-    bcRegistryId,
-    operatorCode
-  } = useFragment(
+  const { id, legalName, tradeName, bcRegistryId, operatorCode } = useFragment(
     graphql`
       fragment OperatorTableRow_operator on Operator {
         id

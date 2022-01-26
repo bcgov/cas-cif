@@ -37,7 +37,7 @@ const defaultMockResolver = {
           { node: { id: "1", legalName: "Operator 1" } },
           { node: { id: "2", legalName: "Operator 2" } },
         ],
-      }
+      },
     };
   },
 };
