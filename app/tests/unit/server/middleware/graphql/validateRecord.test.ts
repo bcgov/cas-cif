@@ -5,7 +5,7 @@ jest.mock("data/jsonSchemaForm/validationSchemas", () => ({
     $schema: "http://json-schema.org/draft-07/schema",
     description: "test schema",
     type: "object",
-    required: ["required_prop", "formatted_prop"],
+    required: ["required_prop", "formatted_prop", "enum_prop"],
     properties: {
       formatted_prop: {
         type: "string",
@@ -13,6 +13,11 @@ jest.mock("data/jsonSchemaForm/validationSchemas", () => ({
         pattern: "^\\d{3,4}",
       },
       required_prop: { type: "string", title: "Required" },
+      enum_prop: {
+        type: "number",
+        title: "Enum",
+        anyOf: undefined,
+      },
     },
   },
 }));
@@ -27,10 +32,11 @@ describe("The validateRecord function", () => {
       formatted_prop: "invalid!",
     });
 
-    expect(result.length).toEqual(2);
+    expect(result.length).toEqual(3);
     expect(result.map((error) => error.message)).toEqual([
       'should match pattern "^\\d{3,4}"',
       "should have required property 'required_prop'",
+      "should have required property 'enum_prop'",
     ]);
   });
 
@@ -38,6 +44,7 @@ describe("The validateRecord function", () => {
     const result = validateRecord("test_schema", {
       formatted_prop: "0987",
       required_prop: "test string...",
+      enum_prop: 123,
     });
 
     expect(result).toEqual([]);

@@ -4,7 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_allUsers$key } from "__generated__/ProjectManagerForm_allUsers.graphql";
 import FormBase from "./FormBase";
 import FormComponentProps from "./FormComponentProps";
-import getProjectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
+import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 
 interface Props extends FormComponentProps {
   allUsers: ProjectManagerForm_allUsers$key;
@@ -39,7 +39,7 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
   );
 
   const schema: JSONSchema7 = useMemo(() => {
-    const initialSchema = getProjectManagerSchema();
+    const initialSchema = projectManagerSchema;
 
     initialSchema.properties.cifUserId = {
       ...initialSchema.properties.cifUserId,
