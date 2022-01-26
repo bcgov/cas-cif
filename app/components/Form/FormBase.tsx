@@ -11,22 +11,23 @@ interface Props extends FormComponentProps {
 const FormBase: React.FC<Props> = ({
   formData,
   onChange,
-  onFormErrors,
   schema,
   uiSchema,
   formContext,
   widgets,
+  setRef,
 }) => {
   return (
     <>
       <Form
+        // @ts-ignore
+        ref={setRef}
         noHtml5Validate
         schema={schema}
         uiSchema={uiSchema}
         formData={formData}
         onChange={(change) => {
           onChange(change.formData);
-          onFormErrors(change.errors);
         }}
         widgets={widgets}
         omitExtraData

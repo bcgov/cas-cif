@@ -7,7 +7,7 @@ import { mutation } from "mutations/FormChange/updateFormChange";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 import Grid from "@button-inc/bcgov-theme/Grid";
-import { useMemo, useState } from "react";
+import { useMemo, useRef } from "react";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
 import ProjecManagerForm from "components/Form/ProjectManagerForm";
@@ -45,10 +45,11 @@ const pageQuery = graphql`
 export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
+  const projectFormRef = useRef(null);
+  const projectManagerFormRef = useRef(null);
+
   const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
-
-  const [errors, setErrors] = useState({});
 
   const [updateFormChange, updatingFormChange] = useDebouncedMutation(mutation);
   const [updateProjectRevision, updatingProjectRevision] = useMutation(
@@ -61,6 +62,7 @@ export function ProjectRevision({
     () => new Date(query.projectRevision.updatedAt),
     [query.projectRevision.updatedAt]
   );
+
   if (!query.projectRevision.id) return null;
 
   const handleChange = (queriedFormChange: any, changeObject: any) => {
@@ -89,14 +91,29 @@ export function ProjectRevision({
     });
   };
 
-  if (!query.projectRevision.id) return null;
+  const triggerFormSelfValidation = (formObject: any): [] => {
+    formObject.onSubmit({
+      preventDefault: () => {},
+      persist: () => {},
+    });
 
-  const onFormErrors = (formId: string, incomingErrors: Array<any>) => {
-    setErrors({ ...errors, [formId]: incomingErrors });
+    // Effectively validating the form a second time to retrieve the errors
+    const validationResult = formObject.validate(formObject.state.formData);
+    return validationResult.errors;
   };
 
   // Function: approve staged change, triggering an insert on the project table & redirect to the project page
   const commitProject = async () => {
+    const errors = [
+      ...triggerFormSelfValidation(projectFormRef.current),
+      ...triggerFormSelfValidation(projectManagerFormRef.current),
+    ];
+
+    if (errors.length > 0) {
+      console.error("Errors found in form:", errors);
+      return;
+    }
+
     updateProjectRevision({
       variables: {
         input: {
@@ -140,18 +157,17 @@ export function ProjectRevision({
         <Grid.Row gutter={[20, 0]}>
           <Grid.Col>
             <ProjectForm
+              setRef={projectFormRef}
               query={query}
               formData={query.projectRevision.projectFormChange.newFormData}
               onChange={(change) =>
                 handleChange(query.projectRevision.projectFormChange, change)
               }
-              onFormErrors={(error) =>
-                onFormErrors(query.projectRevision.projectFormChange.id, error)
-              }
             />
           </Grid.Col>
           <Grid.Col>
             <ProjecManagerForm
+              setRef={projectManagerFormRef}
               formData={
                 query.projectRevision.projectManagerFormChange.newFormData
               }
@@ -159,12 +175,6 @@ export function ProjectRevision({
                 handleChange(
                   query.projectRevision.projectManagerFormChange,
                   change
-                )
-              }
-              onFormErrors={(e) =>
-                onFormErrors(
-                  query.projectRevision.projectManagerFormChange.id,
-                  e
                 )
               }
               allUsers={query}
@@ -176,13 +186,7 @@ export function ProjectRevision({
             size="medium"
             variant="primary"
             onClick={commitProject}
-            disabled={
-              updatingProjectRevision ||
-              discardingProjectRevision ||
-              Object.keys(errors ?? {}).some(
-                (key) => errors[key] && errors[key].length > 0
-              )
-            }
+            disabled={updatingProjectRevision || discardingProjectRevision}
           >
             Submit
           </Button>
