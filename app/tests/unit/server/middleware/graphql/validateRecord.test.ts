@@ -33,10 +33,10 @@ describe("The validateRecord function", () => {
     });
 
     expect(result.length).toEqual(3);
-    expect(result.map((error) => error.message)).toEqual([
-      'should match pattern "^\\d{3,4}"',
-      "should have required property 'required_prop'",
+    expect(result.map((error) => error.message).sort()).toEqual([
       "should have required property 'enum_prop'",
+      "should have required property 'required_prop'",
+      'should match pattern "^\\d{3,4}"',
     ]);
   });
 
