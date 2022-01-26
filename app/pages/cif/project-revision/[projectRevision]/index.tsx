@@ -102,7 +102,10 @@ export function ProjectRevision({
     return validationResult.errors;
   };
 
-  // Function: approve staged change, triggering an insert on the project table & redirect to the project page
+  /**
+   *  Function: approve staged change, trigger an insert on the project
+   *  table & redirect to the project page
+   */
   const commitProject = async () => {
     const errors = [
       ...triggerFormSelfValidation(projectFormRef.current),
@@ -110,7 +113,7 @@ export function ProjectRevision({
     ];
 
     if (errors.length > 0) {
-      console.error("Errors found in form:", errors);
+      console.log("Could not submit a form with errors: ", errors);
       return;
     }
 

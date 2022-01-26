@@ -46,6 +46,21 @@ const variables = {
 };
 environment.mock.queuePendingOperation(query, variables);
 
+const generateMockForm = (errors: any[] = []) => {
+  return (props: any) => {
+    props.setRef.current = {
+      onSubmit: jest.fn(),
+      validate: jest.fn(() => ({
+        errors: errors,
+      })),
+      state: {
+        formData: {},
+      },
+    };
+    return null;
+  };
+};
+
 describe("The Create Project page", () => {
   const initialQueryRef = loadQuery<ProjectRevisionQuery>(
     environment,
@@ -53,7 +68,7 @@ describe("The Create Project page", () => {
     variables
   );
 
-  it("calls the updateFormChange mutation when the component calls the callback", async () => {
+  it("calls the updateFormChange mutation when the form reports changes through the onChange property", async () => {
     const mockProjectForm: any = { props: {} };
     jest
       .spyOn(require("components/Form/ProjectForm"), "default")
@@ -112,17 +127,13 @@ describe("The Create Project page", () => {
     });
   });
 
-  it("calls the updateFormChange mutation when the Submit Button is clicked & input values are valid", async () => {
+  it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
     jest
       .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation(() => {
-        return null;
-      });
+      .mockImplementation(generateMockForm());
     jest
       .spyOn(require("components/Form/ProjectManagerForm"), "default")
-      .mockImplementation(() => {
-        return null;
-      });
+      .mockImplementation(generateMockForm());
 
     const spy = jest.fn();
     jest
@@ -143,7 +154,8 @@ describe("The Create Project page", () => {
       </RelayEnvironmentProvider>
     );
 
-    userEvent.click(screen.getAllByRole("button")[1]);
+    userEvent.click(screen.queryByText("Submit"));
+
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({
       onCompleted: expect.any(Function),
@@ -156,41 +168,35 @@ describe("The Create Project page", () => {
     });
   });
 
-  it("Renders a disabled button when the form reports errors", async () => {
-    const mockProjectForm: any = { props: {} };
+  it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
     jest
       .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation((props) => {
-        mockProjectForm.props = props;
-        return null;
-      });
-
+      .mockImplementation(generateMockForm([{ thereIsAnError: true }]));
     jest
-      .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [jest.fn(), false]);
+      .spyOn(require("components/Form/ProjectManagerForm"), "default")
+      .mockImplementation(generateMockForm());
+
+    const spy = jest.fn();
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [spy, false]);
 
     render(
       <RelayEnvironmentProvider environment={environment}>
         <ProjectRevision
-          data-testid="4"
+          data-testid="3"
           CSN={true}
           preloadedQuery={initialQueryRef}
         />
       </RelayEnvironmentProvider>
     );
 
-    act(() => {
-      mockProjectForm.props.onFormErrors([
-        {
-          testfield: { haserrors: true },
-        },
-      ]);
-    });
+    userEvent.click(screen.queryByText("Submit"));
 
-    expect(screen.getByText("Submit")).toHaveProperty("disabled", true);
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 
-  it("Renders an enabled button when the form reports no errors", async () => {
+  it("Renders an enabled submit and discard changes button", async () => {
     const mockProjectForm: any = { props: {} };
     jest
       .spyOn(require("components/Form/ProjectForm"), "default")
@@ -212,10 +218,6 @@ describe("The Create Project page", () => {
         />
       </RelayEnvironmentProvider>
     );
-
-    act(() => {
-      mockProjectForm.props.onFormErrors([]);
-    });
 
     expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
     expect(screen.getByText("Discard Changes")).toHaveProperty(

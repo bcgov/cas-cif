@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
-import projectSchema from "data/jsonSchemaForm/projectSchema.json";
+import getProjectSchema from "data/jsonSchemaForm/projectSchema";
 
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
@@ -45,16 +45,18 @@ const ProjectForm: React.FC<Props> = (props) => {
   }, [query, props.formData.operatorId]);
 
   const schema: JSONSchema7 = useMemo(() => {
-    (projectSchema.properties.operatorId as JSONSchema7).anyOf =
-      query.allOperators.edges.map(({ node }) => {
+    const initialSchema = getProjectSchema();
+    initialSchema.properties.operatorId.anyOf = query.allOperators.edges.map(
+      ({ node }) => {
         return {
           type: "number",
           title: `${node.legalName} (${node.bcRegistryId})`,
           enum: [node.rowId],
           value: node.rowId,
         };
-      });
-    return projectSchema as JSONSchema7;
+      }
+    );
+    return initialSchema as JSONSchema7;
   }, [query]);
 
   const uiSchema = useMemo(() => {

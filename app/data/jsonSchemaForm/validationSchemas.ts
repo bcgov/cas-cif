@@ -1,9 +1,9 @@
-import projectManagerSchema from "./projectManagerSchema.json";
-import projectSchema from "./projectSchema.json";
+import getProjectManagerSchema from "./projectManagerSchema";
+import getProjectSchema from "./projectSchema";
 
 const validationSchemas = {
-  project_manager: projectManagerSchema,
-  project: projectSchema,
+  project_manager: getProjectManagerSchema,
+  project: getProjectSchema,
 };
 
 export default validationSchemas;
