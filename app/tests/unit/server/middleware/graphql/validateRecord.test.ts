@@ -33,11 +33,22 @@ describe("The validateRecord function", () => {
     });
 
     expect(result.length).toEqual(3);
-    expect(result.map((error) => error.message).sort()).toEqual([
-      "should have required property 'enum_prop'",
-      "should have required property 'required_prop'",
-      'should match pattern "^\\d{3,4}"',
-    ]);
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          keyword: "pattern",
+          params: { pattern: "^\\d{3,4}" },
+        }),
+        expect.objectContaining({
+          keyword: "required",
+          params: { missingProperty: "required_prop" },
+        }),
+        expect.objectContaining({
+          keyword: "required",
+          params: { missingProperty: "enum_prop" },
+        }),
+      ])
+    );
   });
 
   it("Should return an empty array if there are no errors", () => {
