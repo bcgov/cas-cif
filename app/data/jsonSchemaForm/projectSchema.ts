@@ -1,7 +1,6 @@
 export default function getProjectSchema() {
   return {
     $schema: "http://json-schema.org/draft-07/schema",
-    description: "Schema describing the project form for the CIF application",
     type: "object",
     required: [
       "rfpNumber",

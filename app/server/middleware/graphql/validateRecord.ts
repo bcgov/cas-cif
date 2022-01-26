@@ -1,5 +1,5 @@
 import Ajv, { ErrorObject } from "ajv";
-import validationSchemas from "data/jsonSchemaForm/validationSchemas";
+import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -7,7 +7,7 @@ const validateRecord: (schemaName: string, formData: any) => ErrorObject[] = (
   schemaName,
   formData
 ) => {
-  const schema = validationSchemas[schemaName];
+  const schema = validationSchemas[schemaName]();
 
   if (!schema)
     throw new Error("No json schema found for schema with name " + schemaName);
