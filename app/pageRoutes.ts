@@ -30,3 +30,10 @@ export const getProjectViewPageRoute = (projectId: string) => ({
     project: projectId,
   },
 });
+
+export const getContactViewPageRoute = (contactId: string) => ({
+  pathname: `/cif/contact/[contact]/`,
+  query: {
+    contact: contactId,
+  },
+});

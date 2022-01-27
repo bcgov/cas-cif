@@ -26,6 +26,23 @@
           omit: ["create", "update", "delete"],
         },
       },
+      "cif.contact": {
+        tags: {
+          omit: ["create", "update", "delete"],
+        },
+      },
+    },
+    procedure: {
+      "cif.contact_full_name": {
+        tags: {
+          sortable: true,
+        },
+      },
+      "cif.contact_full_phone": {
+        tags: {
+          sortable: true,
+        },
+      },
     },
   },
 }
