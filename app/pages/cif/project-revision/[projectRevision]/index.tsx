@@ -16,6 +16,7 @@ import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevi
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
+import ProjectContactForm from "components/Form/ProjectContactForm";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -37,6 +38,7 @@ const pageQuery = graphql`
       }
       ...ProjectForm_query
       ...ProjectManagerForm_allUsers
+      ...ProjectContactForm_query
     }
   }
 `;
@@ -185,6 +187,12 @@ export function ProjectRevision({
                 )
               }
               allUsers={query}
+            />
+            <ProjectContactForm
+              query={query}
+              onChange={() => {}}
+              onFormErrors={() => {}}
+              formData={{}}
             />
           </Grid.Col>
         </Grid.Row>
