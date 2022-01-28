@@ -8,6 +8,12 @@ import { RelayEnvironmentProvider, loadQuery } from "react-relay";
 import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
 } from "__generated__/ProjectRevisionQuery.graphql";
+import ProjectForm from "components/Form/ProjectForm";
+import ProjectManagerForm from "components/Form/ProjectManagerForm";
+import { mocked } from "jest-mock";
+
+jest.mock("components/Form/ProjectForm");
+jest.mock("components/Form/ProjectManagerForm");
 
 const environment = createMockEnvironment();
 
@@ -47,8 +53,8 @@ const variables = {
 environment.mock.queuePendingOperation(query, variables);
 
 const generateMockForm = (errors: any[] = []) => {
-  return (props: any) => {
-    props.setRef.current = {
+  return (props: any, ref: any) => {
+    ref.current = {
       onSubmit: jest.fn(),
       validate: jest.fn(() => ({
         errors: errors,
@@ -62,6 +68,14 @@ const generateMockForm = (errors: any[] = []) => {
 };
 
 describe("The Create Project page", () => {
+  beforeEach(() => {
+    mocked(ProjectForm).render.mockReset();
+    mocked(ProjectManagerForm).render.mockReset();
+
+    mocked(ProjectForm).render.mockImplementation(() => null);
+    mocked(ProjectManagerForm).render.mockImplementation(() => null);
+  });
+
   const initialQueryRef = loadQuery<ProjectRevisionQuery>(
     environment,
     compiledProjectRevisionQuery,
@@ -70,12 +84,11 @@ describe("The Create Project page", () => {
 
   it("calls the updateFormChange mutation when the form reports changes through the onChange property", async () => {
     const mockProjectForm: any = { props: {} };
-    jest
-      .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation((props) => {
-        mockProjectForm.props = props;
-        return null;
-      });
+
+    mocked(ProjectForm).render.mockImplementation((props) => {
+      mockProjectForm.props = props;
+      return null;
+    });
 
     const commitFormChangeMutationSpy = jest.fn();
     jest
@@ -128,12 +141,8 @@ describe("The Create Project page", () => {
   });
 
   it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
-    jest
-      .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation(generateMockForm());
-    jest
-      .spyOn(require("components/Form/ProjectManagerForm"), "default")
-      .mockImplementation(generateMockForm());
+    mocked(ProjectForm).render.mockImplementation(generateMockForm());
+    mocked(ProjectManagerForm).render.mockImplementation(generateMockForm());
 
     const spy = jest.fn();
     jest
@@ -169,12 +178,10 @@ describe("The Create Project page", () => {
   });
 
   it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
-    jest
-      .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation(generateMockForm([{ thereIsAnError: true }]));
-    jest
-      .spyOn(require("components/Form/ProjectManagerForm"), "default")
-      .mockImplementation(generateMockForm());
+    mocked(ProjectForm).render.mockImplementation(
+      generateMockForm([{ thereIsAnError: true }])
+    );
+    mocked(ProjectManagerForm).render.mockImplementation(generateMockForm());
 
     const spy = jest.fn();
     jest
@@ -198,12 +205,10 @@ describe("The Create Project page", () => {
 
   it("Renders an enabled submit and discard changes button", async () => {
     const mockProjectForm: any = { props: {} };
-    jest
-      .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation((props) => {
-        mockProjectForm.props = props;
-        return null;
-      });
+    mocked(ProjectForm).render.mockImplementation((props) => {
+      mockProjectForm.props = props;
+      return null;
+    });
 
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
@@ -227,17 +232,6 @@ describe("The Create Project page", () => {
   });
 
   it("Calls the discard mutation when the user clicks the Discard Changes button", async () => {
-    jest
-      .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation(() => {
-        return null;
-      });
-    jest
-      .spyOn(require("components/Form/ProjectManagerForm"), "default")
-      .mockImplementation(() => {
-        return null;
-      });
-
     const useMutationSpy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
@@ -276,12 +270,10 @@ describe("The Create Project page", () => {
 
   it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {
     const mockProjectForm: any = { props: {} };
-    jest
-      .spyOn(require("components/Form/ProjectForm"), "default")
-      .mockImplementation((props) => {
-        mockProjectForm.props = props;
-        return null;
-      });
+    mocked(ProjectForm).render.mockImplementation((props) => {
+      mockProjectForm.props = props;
+      return null;
+    });
 
     jest
       .spyOn(require("react-relay"), "useMutation")

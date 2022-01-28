@@ -24,15 +24,21 @@ describe("The FormBase component", () => {
     expect(formUnderTest.container).toMatchSnapshot();
   });
 
-  it("passes the ref through", () => {
+  it("passes the ref through with an HTML form element", () => {
     const props = {
       schema: {},
       uiSchema: {},
-      setRef: jest.fn(),
     } as any;
 
-    render(<FormBase {...props} />);
+    const refUnderTest = jest.fn();
 
-    expect(props.setRef).toHaveBeenCalledTimes(1);
+    render(<FormBase {...props} ref={refUnderTest} />);
+
+    expect(refUnderTest).toHaveBeenCalledTimes(1);
+    expect(refUnderTest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        formElement: expect.any(HTMLFormElement),
+      })
+    );
   });
 });
