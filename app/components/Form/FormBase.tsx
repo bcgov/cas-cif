@@ -9,25 +9,20 @@ interface Props extends FormComponentProps {
   formContext?: any;
 }
 
-const FormBase: React.ForwardRefRenderFunction<any, Props> = (
-  { formData, onChange, schema, uiSchema, formContext, widgets },
-  ref
-) => {
+const FormBase: React.ForwardRefRenderFunction<any, Props> = (props, ref) => {
+  const { onChange } = props;
+
   return (
     <>
       <Form
+        {...props}
         // @ts-ignore
         ref={ref}
         noHtml5Validate
-        schema={schema}
-        uiSchema={uiSchema}
-        formData={formData}
+        omitExtraData
         onChange={(change) => {
           onChange(change.formData);
         }}
-        widgets={widgets}
-        omitExtraData
-        formContext={formContext}
       ></Form>
       <style jsx>{`
         :global(label) {
