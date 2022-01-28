@@ -1,5 +1,5 @@
 begin;
-select plan(28);
+select plan(29);
 
 select has_table('cif', 'form_change', 'table cif.form_change exists');
 
@@ -11,6 +11,7 @@ select has_column('cif', 'form_change', 'form_data_table_name', 'table cif.form_
 select has_column('cif', 'form_change', 'form_data_record_id', 'table cif.form_change has form_data_record_id column');
 select has_column('cif', 'form_change', 'change_status', 'table cif.form_change has change_status column');
 select has_column('cif', 'form_change', 'change_reason', 'table cif.form_change has change_reason column');
+select col_not_null('cif', 'form_change', 'change_reason', 'table cif.form_change has change_reason column with not null constraint');
 select has_column('cif', 'form_change', 'json_schema_name', 'table cif.form_change has json_schema_name column');
 select has_column('cif', 'form_change', 'validation_errors', 'table cif.form_change has validation_errors column');
 select has_column('cif', 'form_change', 'created_at', 'table cif.form_change has created_at column');
@@ -22,19 +23,19 @@ select has_column('cif', 'form_change', 'deleted_by', 'table cif.form_change has
 
 
 insert into cif.form_change
-  (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id) values
-  ('{}', 'insert', 'cif', 'project', 1),
-  ('{}', 'insert', 'cif', 'project', 2),
-  ('{}', 'insert', 'cif', 'project', 3);
+  (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason) values
+  ('{}', 'insert', 'cif', 'project', 1, 'test reason'),
+  ('{}', 'insert', 'cif', 'project', 2, 'test reason'),
+  ('{}', 'insert', 'cif', 'project', 3, 'test reason');
 
 
 -- Trigger tests --
 
 insert into cif.change_status (status, triggers_commit) values ('testcommitted', true), ('testpending', false);
 insert into cif.form_change
-  (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status) values
-  ('{}', 'insert', 'test-schema', 'test-table', 99, 'testpending'),
-  ('{}', 'insert', 'test-schema', 'test-table', 100, 'testcommitted');
+  (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status, change_reason) values
+  ('{}', 'insert', 'test-schema', 'test-table', 99, 'testpending', 'test reason'),
+  ('{}', 'insert', 'test-schema', 'test-table', 100, 'testcommitted', 'test reason');
 
 select lives_ok(
   $$
@@ -69,8 +70,8 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.form_change (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id)
-      values ('{}', 'insert', 'cif', 'project', 4);
+    insert into cif.form_change (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason)
+      values ('{}', 'insert', 'cif', 'project', 4, 'test reason');
   $$,
     'cif_admin can insert data in form_change table'
 );
@@ -113,8 +114,8 @@ select results_eq(
 
 select lives_ok(
   $$
-    insert into cif.form_change (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id)
-      values ('{}', 'insert', 'cif', 'project', 5);
+    insert into cif.form_change (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason)
+      values ('{}', 'insert', 'cif', 'project', 5, 'test reason');
   $$,
     'cif_internal can insert data in form_change table'
 );

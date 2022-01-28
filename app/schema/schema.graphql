@@ -18746,7 +18746,7 @@ type DeleteProjectStatusPayload {
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
   """The reason for the change"""
-  changeReason: String
+  changeReason: String!
 
   """
   The change status of this form change, foreign key to cif.change_status.
@@ -18976,7 +18976,7 @@ input FormChangeFilter {
 """An input for mutations affecting `FormChange`"""
 input FormChangeInput {
   """The reason for the change"""
-  changeReason: String
+  changeReason: String!
 
   """
   The change status of this form change, foreign key to cif.change_status.
