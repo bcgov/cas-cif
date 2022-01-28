@@ -16,7 +16,7 @@ as $add_contact_form_change$
     change_reason
   ) values (
     format(
-      '{ "projectId": %s, "contact_index": %s }',
+      '{ "projectId": %s, "contactIndex": %s }',
       (select form_data_record_id from cif.form_change where form_data_schema_name='cif' and form_data_table_name='project' and project_revision_id=$1),
       $2
     )::jsonb,
