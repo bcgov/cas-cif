@@ -1,6 +1,7 @@
 import Form from "lib/theme/FormWithTheme";
 import type { JSONSchema7 } from "json-schema";
 import FormComponentProps from "./FormComponentProps";
+import { forwardRef } from "react";
 interface Props extends FormComponentProps {
   schema: JSONSchema7;
   uiSchema: {};
@@ -8,20 +9,15 @@ interface Props extends FormComponentProps {
   formContext?: any;
 }
 
-const FormBase: React.FC<Props> = ({
-  formData,
-  onChange,
-  schema,
-  uiSchema,
-  formContext,
-  widgets,
-  setRef,
-}) => {
+const FormBase: React.ForwardRefRenderFunction<any, Props> = (
+  { formData, onChange, schema, uiSchema, formContext, widgets },
+  ref
+) => {
   return (
     <>
       <Form
         // @ts-ignore
-        ref={setRef}
+        ref={ref}
         noHtml5Validate
         schema={schema}
         uiSchema={uiSchema}
@@ -42,4 +38,4 @@ const FormBase: React.FC<Props> = ({
   );
 };
 
-export default FormBase;
+export default forwardRef(FormBase);

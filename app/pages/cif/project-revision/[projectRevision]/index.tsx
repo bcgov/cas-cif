@@ -160,7 +160,7 @@ export function ProjectRevision({
         <Grid.Row gutter={[20, 0]}>
           <Grid.Col>
             <ProjectForm
-              setRef={projectFormRef}
+              ref={projectFormRef}
               query={query}
               formData={query.projectRevision.projectFormChange.newFormData}
               onChange={(change) =>
@@ -170,7 +170,7 @@ export function ProjectRevision({
           </Grid.Col>
           <Grid.Col>
             <ProjecManagerForm
-              setRef={projectManagerFormRef}
+              ref={projectManagerFormRef}
               formData={
                 query.projectRevision.projectManagerFormChange.newFormData
               }

@@ -3,7 +3,7 @@ import FormBase from "../Form/FormBase";
 import FormComponentProps from "../Form/FormComponentProps";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
@@ -13,7 +13,10 @@ interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
 }
 
-const ProjectForm: React.FC<Props> = (props) => {
+const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
+  props,
+  ref
+) => {
   const { query } = useFragment(
     graphql`
       fragment ProjectForm_query on Query {
@@ -113,6 +116,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   return (
     <FormBase
       {...props}
+      ref={ref}
       schema={schema}
       uiSchema={uiSchema}
       formContext={{
@@ -129,4 +133,4 @@ const ProjectForm: React.FC<Props> = (props) => {
   );
 };
 
-export default ProjectForm;
+export default forwardRef(ProjectForm);
