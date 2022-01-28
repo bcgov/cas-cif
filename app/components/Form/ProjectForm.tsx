@@ -3,16 +3,20 @@ import FormBase from "../Form/FormBase";
 import FormComponentProps from "../Form/FormComponentProps";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
+import projectSchema from "data/jsonSchemaForm/projectSchema";
 
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
 }
 
-const ProjectForm: React.FC<Props> = (props) => {
+const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
+  props,
+  ref
+) => {
   const { query } = useFragment(
     graphql`
       fragment ProjectForm_query on Query {
@@ -44,57 +48,18 @@ const ProjectForm: React.FC<Props> = (props) => {
   }, [query, props.formData.operatorId]);
 
   const schema: JSONSchema7 = useMemo(() => {
-    return {
-      type: "object",
-      required: [
-        "rfpNumber",
-        "projectName",
-        "summary",
-        "operatorId",
-        "fundingStreamRfpId",
-        "totalFundingRequest",
-      ],
-      properties: {
-        rfpNumber: {
-          type: "string",
-          title: "RFP Number",
-          pattern: "^\\d{3,4}",
-        },
-        projectName: { type: "string", title: "Project Name" },
-        totalFundingRequest: {
+    const initialSchema = projectSchema;
+    initialSchema.properties.operatorId.anyOf = query.allOperators.edges.map(
+      ({ node }) => {
+        return {
           type: "number",
-          title: "Total Funding Request",
-          default: undefined,
-        },
-        summary: { type: "string", title: "Summary" },
-        operatorId: {
-          type: "number",
-          title: "Legal Operator Name and BC Registry ID",
-          default: undefined,
-          anyOf: query.allOperators.edges.map(({ node }) => {
-            return {
-              type: "number",
-              title: `${node.legalName} (${node.bcRegistryId})`,
-              enum: [node.rowId],
-              value: node.rowId,
-            };
-          }),
-        },
-        operatorTradeName: {
-          type: "string",
-        },
-        fundingStreamRfpId: {
-          type: "number",
-          title: "Funding Stream RFP ID",
-          default: undefined,
-        },
-        projectStatusId: {
-          type: "number",
-          title: "Project Status",
-          default: undefined,
-        },
-      },
-    };
+          title: `${node.legalName} (${node.bcRegistryId})`,
+          enum: [node.rowId],
+          value: node.rowId,
+        };
+      }
+    );
+    return initialSchema as JSONSchema7;
   }, [query]);
 
   const uiSchema = useMemo(() => {
@@ -151,6 +116,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   return (
     <FormBase
       {...props}
+      ref={ref}
       schema={schema}
       uiSchema={uiSchema}
       formContext={{
@@ -167,4 +133,4 @@ const ProjectForm: React.FC<Props> = (props) => {
   );
 };
 
-export default ProjectForm;
+export default forwardRef(ProjectForm);

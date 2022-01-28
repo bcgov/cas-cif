@@ -11,6 +11,7 @@ import PgOmitArchived from "@graphile-contrib/pg-omit-archived";
 import PgOrderByRelatedPlugin from "@graphile-contrib/pg-order-by-related";
 import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
+import FormChangeValidationPlugin from "./formChangeValidationPlugin";
 
 // Use consola for logging instead of default logger
 const pluginHook = makePluginHook([PostgraphileLogConsola]);
@@ -24,6 +25,7 @@ let postgraphileOptions: PostGraphileOptions = {
     PostGraphileUploadFieldPlugin,
     PgOmitArchived,
     PgOrderByRelatedPlugin,
+    FormChangeValidationPlugin,
   ],
   classicIds: true,
   enableQueryBatching: true,

@@ -1,9 +1,10 @@
 import type { JSONSchema7 } from "json-schema";
-import React, { useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_allUsers$key } from "__generated__/ProjectManagerForm_allUsers.graphql";
 import FormBase from "./FormBase";
 import FormComponentProps from "./FormComponentProps";
+import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 
 interface Props extends FormComponentProps {
   allUsers: ProjectManagerForm_allUsers$key;
@@ -19,7 +20,10 @@ const uiSchema = {
   },
 };
 
-const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
+const ProjecManagerForm: React.ForwardRefRenderFunction<any, Props> = (
+  props,
+  ref
+) => {
   const { allCifUsers } = useFragment(
     graphql`
       fragment ProjectManagerForm_allUsers on Query {
@@ -38,29 +42,23 @@ const ProjecManagerForm: React.FunctionComponent<Props> = (props) => {
   );
 
   const schema: JSONSchema7 = useMemo(() => {
-    return {
-      type: "object",
-      title: "Project Manager",
-      required: ["project_manager"],
-      properties: {
-        cifUserId: {
+    const initialSchema = projectManagerSchema;
+
+    initialSchema.properties.cifUserId = {
+      ...initialSchema.properties.cifUserId,
+      anyOf: allCifUsers.edges.map(({ node }) => {
+        return {
           type: "number",
-          title: "Project Manager",
-          default: undefined,
-          anyOf: allCifUsers.edges.map(({ node }) => {
-            return {
-              type: "number",
-              title: node.firstName + " " + node.lastName,
-              enum: [node.rowId],
-              value: node.rowId,
-            };
-          }),
-        },
-      },
+          title: `${node.firstName} ${node.lastName}`,
+          enum: [node.rowId],
+          value: node.rowId,
+        };
+      }),
     };
+    return initialSchema as JSONSchema7;
   }, [allCifUsers]);
 
-  return <FormBase {...props} schema={schema} uiSchema={uiSchema} />;
+  return <FormBase {...props} ref={ref} schema={schema} uiSchema={uiSchema} />;
 };
 
-export default ProjecManagerForm;
+export default forwardRef(ProjecManagerForm);

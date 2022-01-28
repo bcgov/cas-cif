@@ -7,9 +7,9 @@ select plan(2);
 insert into cif.project_revision(id, change_status)
   overriding system value
   values (1, 'pending'), (2, 'pending');
-insert into cif.form_change(id, form_data_schema_name, form_data_table_name, project_revision_id)
+insert into cif.form_change(id, form_data_schema_name, form_data_table_name, project_revision_id, change_reason)
   overriding system value
-  values (1, 'cif', 'project', 1), (2, 'cif', 'some_other_table', 1), (3, 'test_schema_name', 'project', 1);
+  values (1, 'cif', 'project', 1, 'test reason'), (2, 'cif', 'some_other_table', 1, 'test reason'), (3, 'test_schema_name', 'project', 1, 'test reason');
 
 select is(
   (

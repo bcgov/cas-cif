@@ -64641,9 +64641,13 @@
               "description": "The reason for the change",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -64813,6 +64817,18 @@
               "deprecationReason": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "The name of the JSON schema to use for validation of this form data",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "newFormData",
               "description": "Unique ID for the form_change",
               "args": [],
@@ -64899,6 +64915,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -65013,6 +65041,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "Checks for equality with the object’s `jsonSchemaName` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Checks for equality with the object’s `newFormData` field.",
               "type": {
@@ -65068,6 +65106,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "Checks for equality with the object’s `validationErrors` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "defaultValue": null
@@ -65272,6 +65320,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "Filter by the object’s `jsonSchemaName` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Filter by the object’s `newFormData` field.",
               "type": {
@@ -65378,6 +65436,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "Filter by the object’s `validationErrors` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "JSONFilter",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -65394,9 +65462,13 @@
               "name": "changeReason",
               "description": "The reason for the change",
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
@@ -65481,6 +65553,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "The name of the JSON schema to use for validation of this form data",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Unique ID for the form_change",
               "type": {
@@ -65526,6 +65608,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "defaultValue": null
@@ -65632,6 +65724,16 @@
               "defaultValue": null
             },
             {
+              "name": "jsonSchemaName",
+              "description": "The name of the JSON schema to use for validation of this form data",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "newFormData",
               "description": "Unique ID for the form_change",
               "type": {
@@ -65677,6 +65779,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "defaultValue": null
@@ -66441,6 +66553,18 @@
               "deprecationReason": null
             },
             {
+              "name": "JSON_SCHEMA_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JSON_SCHEMA_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "NATURAL",
               "description": null,
               "isDeprecated": false,
@@ -66622,6 +66746,18 @@
             },
             {
               "name": "UPDATED_BY_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VALIDATION_ERRORS_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VALIDATION_ERRORS_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

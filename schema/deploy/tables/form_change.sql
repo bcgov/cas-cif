@@ -11,7 +11,9 @@ create table cif.form_change (
   form_data_record_id integer,
   project_revision_id integer references cif.project_revision(id),
   change_status varchar(1000) default 'pending' references cif.change_status,
-  change_reason varchar(10000)
+  change_reason varchar(10000) not null,
+  json_schema_name varchar(1000),
+  validation_errors jsonb default '[]'
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'form_change');
@@ -60,5 +62,7 @@ comment on column cif.form_change.form_data_record_id is 'The id of the record o
 comment on column cif.form_change.project_revision_id is 'The project revision this change might be associated with (if known)';
 comment on column cif.form_change.change_status is 'The change status of this form change, foreign key to cif.change_status.';
 comment on column cif.form_change.change_reason is 'The reason for the change';
+comment on column cif.form_change.json_schema_name is 'The name of the JSON schema to use for validation of this form data';
+comment on column cif.form_change.validation_errors is 'The validation errors computed for this record''s new_form_data and the json_schema_name schema';
 
 commit;

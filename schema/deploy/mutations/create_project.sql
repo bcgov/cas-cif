@@ -30,7 +30,8 @@ begin
     form_data_record_id,
     project_revision_id,
     change_status,
-    change_reason
+    change_reason,
+    json_schema_name
   ) values (
     '{}',
     'INSERT',
@@ -39,7 +40,8 @@ begin
     next_project_id,
     revision_row.id,
     'pending',
-    'Creating new project: project record'
+    'Creating new project: project record',
+    'project'
   ), (
     format('{ "projectId": %s }', next_project_id)::jsonb,
     'INSERT',
@@ -48,7 +50,8 @@ begin
     nextval(pg_get_serial_sequence('cif.project_manager', 'id')),
     revision_row.id,
     'pending',
-    'Creating new project: project_manager record'
+    'Creating new project: project_manager record',
+    'project_manager'
   );
 
   return revision_row;
