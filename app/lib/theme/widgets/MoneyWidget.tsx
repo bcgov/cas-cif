@@ -1,6 +1,6 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
-import getRequiredLabel from "../utils/getRequiredLabel";
+import { generateLabelComponent } from "../utils/generateLabelComponent";
 
 export const MoneyWidget: React.FC<WidgetProps> = ({
   schema,
@@ -10,10 +10,11 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
   required,
   onChange,
   value,
+  uiSchema,
 }) => {
   return (
     <>
-      <label htmlFor={id}>{getRequiredLabel(label, required)}</label>
+      {generateLabelComponent(label, required, id, uiSchema)}
       <NumberFormat
         thousandSeparator
         fixedDecimalScale

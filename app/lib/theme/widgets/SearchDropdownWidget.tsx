@@ -3,10 +3,11 @@ import { WidgetProps } from "@rjsf/core";
 import Widgets from "@rjsf/core/dist/cjs/components/widgets";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import getRequiredLabel from "../utils/getRequiredLabel";
+import { generateLabelComponent } from "../utils/generateLabelComponent";
 
 const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
-  const { onChange, schema, placeholder, readonly, label, required } = props;
+  const { onChange, schema, placeholder, readonly, label, required, uiSchema } =
+    props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option: any) => {
     onChange(option?.value);
@@ -24,9 +25,12 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
 
   return (
     <>
-      <label htmlFor={`search-dropdown-${props.id}`}>
-        {getRequiredLabel(label, required)}
-      </label>
+      {generateLabelComponent(
+        label,
+        required,
+        `search-dropdown-${props.id}`,
+        uiSchema
+      )}
       <Autocomplete
         id={`search-dropdown-${props.id}`}
         options={schema.anyOf}

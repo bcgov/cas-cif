@@ -13,7 +13,8 @@ as $add_contact_form_change$
     form_data_record_id,
     project_revision_id,
     change_status,
-    change_reason
+    change_reason,
+    json_schema_name
   ) values (
     format(
       '{ "projectId": %s, "contactIndex": %s }',
@@ -26,7 +27,8 @@ as $add_contact_form_change$
     nextval(pg_get_serial_sequence('cif.project_contact', 'id')),
     $1,
     'pending',
-    'Creating new project: secondary project_contact record'
+    'Creating new project: secondary project_contact record',
+    'project_contact'
   ) returning *;
 $add_contact_form_change$ language sql volatile;
 

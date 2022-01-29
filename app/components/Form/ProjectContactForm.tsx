@@ -4,23 +4,26 @@ import { useMemo } from "react";
 import { graphql, useFragment, useMutation } from "react-relay";
 import { ProjectContactForm_query$key } from "__generated__/ProjectContactForm_query.graphql";
 import FormBase from "./FormBase";
-import FormComponentProps from "./FormComponentProps";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
+import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
+import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
+import useDebouncedMutation from "mutations/useDebouncedMutation";
 
-interface Props extends FormComponentProps {
+interface Props {
   query: ProjectContactForm_query$key;
 }
 
 const uiSchema = {
   "ui:title": "Primary Contact",
-  cifUserId: {
+  contactId: {
     "ui:placeholder": "Select a Contact",
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "SearchWidget",
+    "ui:options": { label: false },
   },
 };
 
@@ -58,33 +61,22 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     props.query
   );
 
-  const availableContacts = useMemo(() => {
-    return query.allContacts.edges.map(({ node }) => {
-      return {
-        type: "number",
-        title: node.fullName,
-        enum: [node.rowId],
-        value: node.rowId,
-      } as JSONSchema7Definition;
-    });
+  const contactSchema = useMemo(() => {
+    const schema = projectContactSchema;
+    schema.properties.contactId.anyOf = query.allContacts.edges.map(
+      ({ node }) => {
+        return {
+          type: "number",
+          title: node.fullName,
+          enum: [node.rowId],
+          value: node.rowId,
+        } as JSONSchema7Definition;
+      }
+    );
+    return schema as JSONSchema7;
   }, [query]);
 
-  const schema: JSONSchema7 = {
-    type: "object",
-    required: ["cifUserId"],
-    properties: {
-      cifUserId: {
-        title: "Primary Contact",
-        type: "number",
-        default: undefined,
-        anyOf: availableContacts,
-      },
-    },
-  };
-
-  const [addContactMutation, isAddingContact] = useMutation(
-    addContactToRevisionMutation
-  );
+  const [addContactMutation] = useMutation(addContactToRevisionMutation);
 
   const addContact = (contactIndex: number) => {
     addContactMutation({
@@ -100,22 +92,54 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
   };
 
+  const [applyUpdateFormChangeMutation] = useDebouncedMutation(
+    updateFormChangeMutation
+  );
+
+  const updateFormChange = (formChangeId: string, formData: any) => {
+    console.log("updateFormChange", formChangeId, formData);
+    applyUpdateFormChangeMutation({
+      variables: {
+        input: {
+          id: formChangeId,
+          formChangePatch: {
+            newFormData: formData,
+          },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: formChangeId,
+            newFormData: formData,
+          },
+        },
+      },
+      debounceKey: formChangeId,
+    });
+  };
+
+  const allForms = useMemo(() => {
+    const contactForms = [
+      ...query.projectRevision.formChangesByProjectRevisionId.edges.map(
+        ({ node }) => node
+      ),
+    ];
+    contactForms.sort(
+      (a, b) => a.newFormData.contactId - b.newFormData.contactId
+    );
+    return contactForms;
+  }, [query]);
+
+  const [primaryContactForm, ...alternateContactForms] = allForms;
+
   return (
     <Grid cols={10}>
       <Grid.Row>
         <Grid.Col span={10}>
           <FormBorder title="Project Contacts">
             <Grid.Row>
-              <Grid.Col span={7}>
-                {query.projectRevision.formChangesByProjectRevisionId.edges.map(
-                  (edge) => (
-                    <span key={edge.node.id}>
-                      {JSON.stringify(edge.node.newFormData)}
-                    </span>
-                  )
-                )}
-                <label>Contacts for current status</label>
-              </Grid.Col>
+              <Grid.Col span={7} />
               <Grid.Col span={3}>
                 <Button style={{ marginRight: "auto" }}>
                   View Contact List
@@ -123,10 +147,17 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               </Grid.Col>
             </Grid.Row>
             <Grid.Row>
+              <label>Primary Contact</label>
+            </Grid.Row>
+            <Grid.Row>
               <Grid.Col span={10}>
                 <FormBase
-                  {...props}
-                  schema={schema}
+                  formData={primaryContactForm.newFormData}
+                  onChange={(change) => {
+                    updateFormChange(primaryContactForm.id, change);
+                  }}
+                  onFormErrors={() => {}}
+                  schema={contactSchema}
                   uiSchema={uiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                 />
@@ -135,28 +166,34 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             <Grid.Row>
               <label>Secondary Contacts</label>
             </Grid.Row>
+            {alternateContactForms.map((form) => (
+              <Grid.Row key={form.id}>
+                <Grid.Col span={10}>
+                  <FormBase
+                    formData={form.newFormData}
+                    onChange={(change) => {
+                      updateFormChange(form.id, change);
+                    }}
+                    onFormErrors={() => {}}
+                    schema={contactSchema}
+                    uiSchema={uiSchema}
+                    ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                  />
+                </Grid.Col>
+              </Grid.Row>
+            ))}
+
             <Grid.Row>
-              <Grid.Col span={7}>
-                <FormBase
-                  {...props}
-                  schema={schema}
-                  uiSchema={uiSchema}
-                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                />
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <br />
+              <Grid.Col span={10}>
                 <Button
                   style={{ marginRight: "auto" }}
-                  size="large"
-                  disabled={isAddingContact}
                   onClick={() =>
                     addContact(
-                      Math.max(
-                        ...query.projectRevision.formChangesByProjectRevisionId.edges.map(
-                          ({ node }) => node.newFormData.contactIndex
-                        )
-                      ) + 1
+                      alternateContactForms.length > 0
+                        ? alternateContactForms[
+                            alternateContactForms.length - 1
+                          ].newFormData.contactIndex + 1
+                        : primaryContactForm.newFormData.contactIndex + 1
                     )
                   }
                 >
