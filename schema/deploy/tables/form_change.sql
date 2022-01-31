@@ -5,14 +5,14 @@ begin;
 create table cif.form_change (
   id integer primary key generated always as identity,
   new_form_data jsonb,
-  operation varchar(1000),
-  form_data_schema_name varchar(1000),
-  form_data_table_name varchar(1000),
+  operation varchar(1000) not null,
+  form_data_schema_name varchar(1000) not null,
+  form_data_table_name varchar(1000) not null,
   form_data_record_id integer,
   project_revision_id integer references cif.project_revision(id),
-  change_status varchar(1000) default 'pending' references cif.change_status,
+  change_status varchar(1000) default 'pending' references cif.change_status not null,
   change_reason varchar(10000) not null,
-  json_schema_name varchar(1000),
+  json_schema_name varchar(1000) not null,
   validation_errors jsonb default '[]'
 );
 

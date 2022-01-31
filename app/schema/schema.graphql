@@ -18751,7 +18751,7 @@ type FormChange implements Node {
   """
   The change status of this form change, foreign key to cif.change_status.
   """
-  changeStatus: String
+  changeStatus: String!
 
   """Reads a single `ChangeStatus` that is related to this `FormChange`."""
   changeStatusByChangeStatus: ChangeStatus
@@ -18781,10 +18781,10 @@ type FormChange implements Node {
   formDataRecordId: Int
 
   """The schema on which this form change applies"""
-  formDataSchemaName: String
+  formDataSchemaName: String!
 
   """The table on which this form change applies"""
-  formDataTableName: String
+  formDataTableName: String!
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -18792,13 +18792,13 @@ type FormChange implements Node {
   id: ID!
 
   """The name of the JSON schema to use for validation of this form data"""
-  jsonSchemaName: String
+  jsonSchemaName: String!
 
   """Unique ID for the form_change"""
   newFormData: JSON
 
   """The SQL operation this form change describes: INSERT or UPDATE"""
-  operation: String
+  operation: String!
 
   """Reads a single `ProjectRevision` that is related to this `FormChange`."""
   projectRevisionByProjectRevisionId: ProjectRevision
@@ -18893,9 +18893,6 @@ input FormChangeFilter {
 
   """Filter by the object’s `changeStatusByChangeStatus` relation."""
   changeStatusByChangeStatus: ChangeStatusFilter
-
-  """A related `changeStatusByChangeStatus` exists."""
-  changeStatusByChangeStatusExists: Boolean
 
   """Filter by the object’s `cifUserByCreatedBy` relation."""
   cifUserByCreatedBy: CifUserFilter
@@ -18999,19 +18996,19 @@ input FormChangeInput {
   formDataRecordId: Int
 
   """The schema on which this form change applies"""
-  formDataSchemaName: String
+  formDataSchemaName: String!
 
   """The table on which this form change applies"""
-  formDataTableName: String
+  formDataTableName: String!
 
   """The name of the JSON schema to use for validation of this form data"""
-  jsonSchemaName: String
+  jsonSchemaName: String!
 
   """Unique ID for the form_change"""
   newFormData: JSON
 
   """The SQL operation this form change describes: INSERT or UPDATE"""
-  operation: String
+  operation: String!
 
   """The project revision this change might be associated with (if known)"""
   projectRevisionId: Int

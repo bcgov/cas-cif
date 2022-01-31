@@ -10,9 +10,6 @@ declare
   schema_table text;
   keys text;
   vals text;
-  next_id integer;
-  next_jsonb_record jsonb;
-  next_record_type text;
 begin
 
   if new.operation not in ('INSERT', 'UPDATE') then
@@ -38,16 +35,28 @@ begin
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(new.new_form_data)), ','));
 
   if new.operation = 'INSERT' then
+    if new.form_data_record_id is not null then
 
-    query := format(
-      'insert into %s (id, %s) overriding system value values (%s , %s)',
-      schema_table,
-      keys,
-      new.form_data_record_id,
-      vals
-    );
-    raise notice '%', query;
-    execute query using next_jsonb_record;
+      query := format(
+        'insert into %s (id, %s) overriding system value values (%s , %s)',
+        schema_table,
+        keys,
+        new.form_data_record_id,
+        vals
+      );
+      raise debug '%', query;
+      execute query;
+    else
+      query := format(
+        'insert into %s (%s) values (%s) returning id',
+        schema_table,
+        keys,
+        vals
+      );
+      raise debug '%', query;
+      execute query into new.form_data_record_id;
+    end if;
+
 
   elsif new.operation = 'UPDATE' then
 
@@ -59,7 +68,7 @@ begin
       vals
     );
 
-    raise notice '%', query;
+    raise debug '%', query;
     execute query using new.form_data_record_id;
   end if;
 
