@@ -182,8 +182,9 @@ select is(
   'A record should be inserted when a pending change is committed'
 );
 
-select ok(
-  ((select form_data_record_id from mock_schema.mock_form_change) is not null),
+select is(
+  (select form_data_record_id::bigint from mock_schema.mock_form_change),
+  (select currval(pg_get_serial_sequence('mock_schema.mock_table', 'id'))),
   'form_data_record_id should be set when committing a change without specifying the record id'
 );
 
