@@ -8,7 +8,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
-import { mutation as deletePendingFormChangeMutation } from "mutations/FormChange/deletePendingFormChange";
+import { mutation as discardFormChangeMutation } from "mutations/FormChange/discardFormChange";
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
@@ -102,10 +102,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
   };
 
-  const [deleteContact] = useMutation(deletePendingFormChangeMutation);
-  const deleteFormChange = (formChangeId: string) => {
+  const [discardFormChange] = useMutation(discardFormChangeMutation);
+  const deleteContact = (formChangeId: string) => {
     const date = new Date().toISOString();
-    deleteContact({
+    discardFormChange({
       variables: {
         input: {
           id: formChangeId,
@@ -114,19 +114,17 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           },
         },
       },
+      optimisticResponse: {
+        updateFormChange: {
+          __typename: "UpdateFormChangePayload",
+        },
+      },
       updater: (store) => {
         const connectionId = ConnectionHandler.getConnectionID(
           query.projectRevision.id,
           "connection_formChangesByProjectRevisionId"
         );
-
-        console.log(connectionId);
-
         const connectionRecord = store.get(connectionId);
-
-        console.log(connectionRecord);
-        console.log(store);
-
         ConnectionHandler.deleteNode(connectionRecord, formChangeId);
       },
     });
@@ -219,9 +217,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   />
                 </Grid.Col>
                 <Grid.Col>
-                  <Button onClick={() => deleteFormChange(form.id)}>
-                    Delete
-                  </Button>
+                  <Button onClick={() => deleteContact(form.id)}>Delete</Button>
                 </Grid.Col>
               </Grid.Row>
             ))}
