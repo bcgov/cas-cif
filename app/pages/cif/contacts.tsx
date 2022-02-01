@@ -7,7 +7,7 @@ import { NoHeaderFilter, TextFilter } from "components/Table/Filters";
 import Table from "components/Table";
 import ContactTableRow from "components/Contact/ContactTableRow";
 import { Button } from "@button-inc/bcgov-theme";
-import useCreateContactFormChange from "mutations/Contact/createContactFormChange";
+import { useCreateNewContactFormChange } from "mutations/Contact/createNewContactFormChange";
 import { useRouter } from "next/router";
 import { createContactFormChangeMutation$data } from "__generated__/createContactFormChangeMutation.graphql";
 import { getContactFormPageRoute } from "pageRoutes";
@@ -56,7 +56,7 @@ const tableFilters = [
 function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
   const { session, allContacts } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
-  const [addContact, isAddingContact] = useCreateContactFormChange();
+  const [addContact, isAddingContact] = useCreateNewContactFormChange();
 
   const handleAddContact = () => {
     addContact({

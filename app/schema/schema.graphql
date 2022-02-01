@@ -17479,19 +17479,27 @@ type CreateCifUserPayload {
   query: Query
 }
 
-"""All input for the create `FormChange` mutation."""
+"""All input for the `createFormChange` mutation."""
 input CreateFormChangeInput {
+  changeReason: String!
+  changeStatus: String
+
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-
-  """The `FormChange` to be created by this mutation."""
-  formChange: FormChangeInput!
+  formDataRecordId: Int
+  formDataSchemaName: String!
+  formDataTableName: String!
+  jsonSchemaName: String!
+  newFormData: JSON
+  operation: String!
+  projectRevisionId: Int
+  validationErrors: JSON
 }
 
-"""The output of our create `FormChange` mutation."""
+"""The output of our `createFormChange` mutation."""
 type CreateFormChangePayload {
   """Reads a single `ChangeStatus` that is related to this `FormChange`."""
   changeStatusByChangeStatus: ChangeStatus
@@ -17507,8 +17515,6 @@ type CreateFormChangePayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-
-  """The `FormChange` that was created by this mutation."""
   formChange: FormChange
 
   """An edge for our `FormChange`. May be used by Relay 1."""
@@ -18903,6 +18909,7 @@ input FormChangeFilter {
   validationErrors: JSONFilter
 }
 
+<<<<<<< chore/archived-at-refactor
 """An input for mutations affecting `FormChange`"""
 input FormChangeInput {
   """The reason for the change"""
@@ -18952,6 +18959,8 @@ input FormChangeInput {
   validationErrors: JSON
 }
 
+=======
+>>>>>>> feat: edit contact form
 """
 The type of change operation, defining the action taken when the form_change is committed.
 """
@@ -21972,8 +21981,6 @@ type Mutation {
     """
     input: CreateCifUserInput!
   ): CreateCifUserPayload
-
-  """Creates a single `FormChange`."""
   createFormChange(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.

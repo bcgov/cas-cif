@@ -58554,9 +58554,33 @@
         {
           "kind": "INPUT_OBJECT",
           "name": "CreateFormChangeInput",
-          "description": "All input for the create `FormChange` mutation.",
+          "description": "All input for the `createFormChange` mutation.",
           "fields": null,
           "inputFields": [
+            {
+              "name": "changeReason",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "changeStatus",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
             {
               "name": "clientMutationId",
               "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
@@ -58568,16 +58592,98 @@
               "defaultValue": null
             },
             {
-              "name": "formChange",
-              "description": "The `FormChange` to be created by this mutation.",
+              "name": "formDataRecordId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "formDataSchemaName",
+              "description": null,
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "FormChangeInput",
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "formDataTableName",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "jsonSchemaName",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "newFormData",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "operation",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "projectRevisionId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "validationErrors",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
               },
               "defaultValue": null
             }
@@ -58589,7 +58695,7 @@
         {
           "kind": "OBJECT",
           "name": "CreateFormChangePayload",
-          "description": "The output of our create `FormChange` mutation.",
+          "description": "The output of our `createFormChange` mutation.",
           "fields": [
             {
               "name": "changeStatusByChangeStatus",
@@ -58641,7 +58747,7 @@
             },
             {
               "name": "formChange",
-              "description": "The `FormChange` that was created by this mutation.",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -63291,6 +63397,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
+<<<<<<< chore/archived-at-refactor
           "name": "FormChangeInput",
           "description": "An input for mutations affecting `FormChange`",
           "fields": null,
@@ -63493,6 +63600,10 @@
           "kind": "INPUT_OBJECT",
           "name": "FormChangeOperationFilter",
           "description": "A filter to be used against FormChangeOperation fields. All fields are combined with a logical ‘and.’",
+=======
+          "name": "FormChangePatch",
+          "description": "Represents an update to a `FormChange`. Fields that are set will be updated.",
+>>>>>>> feat: edit contact form
           "fields": null,
           "inputFields": [
             {
@@ -74878,7 +74989,7 @@
             },
             {
               "name": "createFormChange",
-              "description": "Creates a single `FormChange`.",
+              "description": null,
               "args": [
                 {
                   "name": "input",

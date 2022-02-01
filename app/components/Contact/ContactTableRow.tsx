@@ -1,18 +1,20 @@
 import Button from "@button-inc/bcgov-theme/Button";
+import useCreateEditContactFormChange from "mutations/Contact/createEditContactFormChange";
 import { useRouter } from "next/router";
-import { getContactViewPageRoute } from "pageRoutes";
+import { getContactFormPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ContactTableRow_contact$key } from "__generated__/ContactTableRow_contact.graphql";
+import { createEditContactFormChangeMutation$data } from "__generated__/createEditContactFormChangeMutation.graphql";
 
 interface Props {
   contact: ContactTableRow_contact$key;
 }
 
 const ContactTableRow: React.FC<Props> = ({ contact }) => {
-  const { id, fullName, fullPhone, position } = useFragment(
+  const { rowId, fullName, fullPhone, position } = useFragment(
     graphql`
       fragment ContactTableRow_contact on Contact {
-        id
+        rowId
         fullName
         fullPhone
         position
@@ -22,9 +24,18 @@ const ContactTableRow: React.FC<Props> = ({ contact }) => {
   );
 
   const router = useRouter();
+  const [startContactRevision, isStartingContactRevision] =
+    useCreateEditContactFormChange();
 
-  const handleViewClick = () => {
-    router.push(getContactViewPageRoute(id));
+  const handleEditContact = () => {
+    startContactRevision({
+      variables: { contactRowId: rowId },
+      onCompleted: (response: createEditContactFormChangeMutation$data) => {
+        router.push(
+          getContactFormPageRoute(response.createFormChange.formChange.id)
+        );
+      },
+    });
   };
 
   return (
@@ -34,8 +45,12 @@ const ContactTableRow: React.FC<Props> = ({ contact }) => {
       <td>{position}</td>
       <td>
         <div className="actions">
-          <Button size="small" onClick={handleViewClick}>
-            View
+          <Button
+            size="small"
+            disabled={isStartingContactRevision}
+            onClick={handleEditContact}
+          >
+            Edit
           </Button>
         </div>
       </td>
