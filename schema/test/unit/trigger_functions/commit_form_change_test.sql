@@ -1,6 +1,6 @@
 begin;
 
-select plan(11);
+select plan(13);
 
 create schema mock_schema;
 
@@ -25,7 +25,7 @@ create table mock_schema.mock_table (
 );
 
 create trigger trigger_under_test
-    after insert or update of change_status on mock_schema.mock_form_change
+    before insert or update of change_status on mock_schema.mock_form_change
     for each row
     execute procedure cif_private.commit_form_change();
 
@@ -163,6 +163,30 @@ select lives_ok(
   'Function does not throw an exception when trying to commit a change with an empty new_form_data'
 );
 
+-- setting up pending change without specifying the record id
+delete from mock_schema.mock_form_change;
+delete from mock_schema.mock_table;
+insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, change_status)
+values (
+  '{"textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
+  'INSERT', 'mock_schema', 'mock_table', 'test_pending'
+);
+
+update mock_schema.mock_form_change set change_status = 'test_committed';
+
+-- it should set the form_data_record_id using a sequence on the form_data_table_name id column if not provided
+
+select is(
+  (select count(*) from mock_schema.mock_table where text_col='test text'),
+  1::bigint,
+  'A record should be inserted when a pending change is committed'
+);
+
+select is(
+  (select form_data_record_id::bigint from mock_schema.mock_form_change),
+  (select currval(pg_get_serial_sequence('mock_schema.mock_table', 'id'))),
+  'form_data_record_id should be set when committing a change without specifying the record id'
+);
 
 select finish();
 
