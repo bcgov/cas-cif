@@ -8,9 +8,11 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
+import { mutation as deletePendingFormChangeMutation } from "mutations/FormChange/deletePendingFormChange";
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
+import { ConnectionHandler } from "react-relay";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -33,11 +35,19 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       fragment ProjectContactForm_query on Query {
         query {
           projectRevision(id: $projectRevision) {
+            id
             rowId
             formChangesByProjectRevisionId(
-              filter: { formDataTableName: { equalTo: "project_contact" } }
+              filter: {
+                formDataTableName: { equalTo: "project_contact" }
+                deletedAt: { isNull: true }
+              }
               first: 2147483647
-            ) @connection(key: "connection_formChangesByProjectRevisionId") {
+            )
+              @connection(
+                key: "connection_formChangesByProjectRevisionId"
+                filters: ["deletedAt"]
+              ) {
               __id
               edges {
                 node {
@@ -92,12 +102,40 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
   };
 
+  const [deleteContact] = useMutation(deletePendingFormChangeMutation);
+  const deleteFormChange = (formChangeId: string) => {
+    const date = new Date().toISOString();
+    deleteContact({
+      variables: {
+        input: {
+          id: formChangeId,
+          formChangePatch: {
+            deletedAt: date,
+          },
+        },
+      },
+      updater: (store) => {
+        const connectionId = ConnectionHandler.getConnectionID(
+          query.projectRevision.id,
+          "connection_formChangesByProjectRevisionId"
+        );
+
+        console.log(connectionId);
+
+        const connectionRecord = store.get(connectionId);
+
+        console.log(connectionRecord);
+        console.log(store);
+
+        ConnectionHandler.deleteNode(connectionRecord, formChangeId);
+      },
+    });
+  };
+
   const [applyUpdateFormChangeMutation] = useDebouncedMutation(
     updateFormChangeMutation
   );
-
   const updateFormChange = (formChangeId: string, formData: any) => {
-    console.log("updateFormChange", formChangeId, formData);
     applyUpdateFormChangeMutation({
       variables: {
         input: {
@@ -168,7 +206,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             </Grid.Row>
             {alternateContactForms.map((form) => (
               <Grid.Row key={form.id}>
-                <Grid.Col span={10}>
+                <Grid.Col span={8}>
                   <FormBase
                     formData={form.newFormData}
                     onChange={(change) => {
@@ -179,6 +217,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     uiSchema={uiSchema}
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   />
+                </Grid.Col>
+                <Grid.Col>
+                  <Button onClick={() => deleteFormChange(form.id)}>
+                    Delete
+                  </Button>
                 </Grid.Col>
               </Grid.Row>
             ))}
