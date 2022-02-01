@@ -17,6 +17,7 @@ import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/dele
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
+import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -48,6 +49,7 @@ export function ProjectRevision({
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const projectFormRef = useRef(null);
   const projectManagerFormRef = useRef(null);
+  const projectContactFormRef = useRef<ISupportExternalValidation>(null);
 
   const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
@@ -111,6 +113,7 @@ export function ProjectRevision({
     const errors = [
       ...triggerFormSelfValidation(projectFormRef.current),
       ...triggerFormSelfValidation(projectManagerFormRef.current),
+      ...projectContactFormRef.current.selfValidate(),
     ];
 
     if (errors.length > 0) {
@@ -190,9 +193,9 @@ export function ProjectRevision({
             />
             <ProjectContactForm
               query={query}
-              onChange={() => {}}
-              onFormErrors={() => {}}
-              formData={{}}
+              setValidatingForm={(validator) =>
+                (projectContactFormRef.current = validator)
+              }
             />
           </Grid.Col>
         </Grid.Row>

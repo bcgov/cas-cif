@@ -1,6 +1,6 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { graphql, useFragment, useMutation } from "react-relay";
 import { ProjectContactForm_query$key } from "__generated__/ProjectContactForm_query.graphql";
 import FormBase from "./FormBase";
@@ -13,8 +13,10 @@ import { mutation as updateFormChangeMutation } from "mutations/FormChange/updat
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import { ConnectionHandler } from "react-relay";
+import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
+import validateFormWithErrors from "./Utils/validateFormWithErrors";
 
-interface Props {
+interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;
 }
 
@@ -30,6 +32,8 @@ const uiSchema = {
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
+  const formRefs = useRef({});
+
   const { query } = useFragment(
     graphql`
       fragment ProjectContactForm_query on Query {
@@ -127,6 +131,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         const connectionRecord = store.get(connectionId);
         ConnectionHandler.deleteNode(connectionRecord, formChangeId);
       },
+      onCompleted: () => {
+        delete formRefs.current[formChangeId];
+      },
     });
   };
 
@@ -169,6 +176,15 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
 
+  props.setValidatingForm({
+    selfValidate: () => {
+      return Object.keys(formRefs.current).reduce((agg, formId) => {
+        const formObject = formRefs.current[formId];
+        return [...agg, ...validateFormWithErrors(formObject)];
+      }, []);
+    },
+  });
+
   return (
     <Grid cols={10}>
       <Grid.Row>
@@ -188,6 +204,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             <Grid.Row>
               <Grid.Col span={10}>
                 <FormBase
+                  ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
                   formData={primaryContactForm.newFormData}
                   onChange={(change) => {
                     updateFormChange(primaryContactForm.id, change);
@@ -206,6 +223,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               <Grid.Row key={form.id}>
                 <Grid.Col span={8}>
                   <FormBase
+                    ref={(el) => (formRefs.current[form.id] = el)}
                     formData={form.newFormData}
                     onChange={(change) => {
                       updateFormChange(form.id, change);
