@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks";
-import useDiscardMutation from "mutations/useDiscardMutation";
+import useArchiveMutation from "mutations/useArchiveMutation";
 
-describe("The useDiscardMutation hook", () => {
+describe("The useArchiveMutation hook", () => {
   it("should call the relay hook with the passed id and the current date, with a properly named patch field", () => {
     const mockMutationFunction = jest.fn();
 
@@ -14,7 +14,7 @@ describe("The useDiscardMutation hook", () => {
         current: [mutationUnderTest],
       },
     } = renderHook(() =>
-      useDiscardMutation(
+      useArchiveMutation(
         "testTableName",
         "some_irrelevant_graphql_for_this_test" as any
       )
@@ -26,7 +26,7 @@ describe("The useDiscardMutation hook", () => {
       variables: {
         input: {
           id: "test_project_revision_id",
-          testTableNamePatch: { deletedAt: expect.anything() },
+          testTableNamePatch: { archivedAt: expect.anything() },
         },
       },
     });
@@ -44,7 +44,7 @@ describe("The useDiscardMutation hook", () => {
         current: [, inFlightUnderTest],
       },
     } = renderHook(() =>
-      useDiscardMutation(
+      useArchiveMutation(
         "testTableName",
         "some_irrelevant_graphql_for_this_test" as any
       )

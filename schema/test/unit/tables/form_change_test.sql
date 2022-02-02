@@ -1,5 +1,5 @@
 begin;
-select plan(29);
+select plan(27);
 
 select has_table('cif', 'form_change', 'table cif.form_change exists');
 
@@ -16,10 +16,8 @@ select has_column('cif', 'form_change', 'json_schema_name', 'table cif.form_chan
 select has_column('cif', 'form_change', 'validation_errors', 'table cif.form_change has validation_errors column');
 select has_column('cif', 'form_change', 'created_at', 'table cif.form_change has created_at column');
 select has_column('cif', 'form_change', 'updated_at', 'table cif.form_change has updated_at column');
-select has_column('cif', 'form_change', 'deleted_at', 'table cif.form_change has deleted_at column');
 select has_column('cif', 'form_change', 'created_by', 'table cif.form_change has created_by column');
 select has_column('cif', 'form_change', 'updated_by', 'table cif.form_change has updated_by column');
-select has_column('cif', 'form_change', 'deleted_by', 'table cif.form_change has deleted_by column');
 
 
 insert into cif.form_change
@@ -83,6 +81,8 @@ select lives_ok(
     'cif_admin can change data in form_change table'
 );
 
+
+
 select results_eq(
   $$
     select count(id) from cif.form_change where new_form_data = '{"project_name": "created by admin"}'
@@ -91,14 +91,12 @@ select results_eq(
     'Data was changed by cif_admin'
 );
 
-select throws_like(
+select lives_ok(
   $$
-    delete from cif.form_change where id=1
+    delete from cif.form_change where id=1;
   $$,
-  'permission denied%',
-    'Administrator cannot delete rows from table form_change'
+    'cif_admin can delete data in form_change table'
 );
-
 
 -- cif_internal
 set role cif_internal;
@@ -135,12 +133,11 @@ select results_eq(
     'Data was changed by cif_internal'
 );
 
-select throws_like(
+select lives_ok(
   $$
-    delete from cif.form_change where id=1
+    delete from cif.form_change where form_data_record_id=1;
   $$,
-  'permission denied%',
-    'cif_internal cannot delete rows from table_form_change'
+    'cif_internal can delete data in form_change table'
 );
 
 select finish();

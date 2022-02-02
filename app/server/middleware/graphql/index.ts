@@ -91,7 +91,7 @@ const postgraphileMiddleware = () => {
           resolve: resolveUpload,
         },
       ],
-      pgArchivedColumnName: "deleted_at",
+      pgArchivedColumnName: "archived_at",
       pgArchivedColumnImpliesVisible: false,
       pgArchivedRelations: false,
     },

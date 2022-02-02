@@ -18,8 +18,8 @@ select columns_are(
     'created_by',
     'updated_at',
     'updated_by',
-    'deleted_at',
-    'deleted_by'
+    'archived_at',
+    'archived_by'
   ],
   'columns in cif.project match expected columns'
 );

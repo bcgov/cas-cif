@@ -12,10 +12,10 @@ select has_column('cif', 'contact', 'position', 'table cif.contact has position 
 select has_column('cif', 'contact', 'comments', 'table cif.contact has comments column');
 select has_column('cif', 'contact', 'created_at', 'table cif.contact has created_at column');
 select has_column('cif', 'contact', 'updated_at', 'table cif.contact has updated_at column');
-select has_column('cif', 'contact', 'deleted_at', 'table cif.contact has deleted_at column');
+select has_column('cif', 'contact', 'archived_at', 'table cif.contact has archived_at column');
 select has_column('cif', 'contact', 'created_by', 'table cif.contact has created_by column');
 select has_column('cif', 'contact', 'updated_by', 'table cif.contact has updated_by column');
-select has_column('cif', 'contact', 'deleted_by', 'table cif.contact has deleted_by column');
+select has_column('cif', 'contact', 'archived_by', 'table cif.contact has archived_by column');
 
 
 insert into cif.contact

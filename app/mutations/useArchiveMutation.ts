@@ -7,27 +7,27 @@ import {
 
 /**
  *
- * This hook creates a discard mutation by wrapping the relay `useMutation` hook and
- * setting the mutation variables with a `deletedAt` value.
+ * This hook creates an archive mutation by wrapping the relay `useMutation` hook and
+ * setting the mutation variables with a `archivedAt` value.
  *
  * @param relayNodeName the name of the relay node the mutation is applied to, e.g. "projectRevision", "formChange", ...
  * @param mutation the GraphQL 'update' mutation on the relay node
- * @returns a tuple with the discard mutation and a boolean indicating if the mutation is in flight
+ * @returns a tuple with the archinf mutation and a boolean indicating if the mutation is in flight
  *
  * example usage:
  *
  * const mutation = graphql`
- *    mutation discardMyEntityMutation($input: UpdateMyEntityInput!) {
+ *    mutation archiveMyEntityMutation($input: UpdateMyEntityInput!) {
  *     updateMyEntity(input: $input) {
  *      __typename
  *    }
  * }`;
  *
- * const [discardMyEntityMutation, isInFlight] = useDiscardMutation("myEntity", mutation);
+ * const [archiveMyEntityMutation, isInFlight] = useArchiveMutation("myEntity", mutation);
  *
  */
 
-export default function useDiscardMutation<
+export default function useArchiveMutation<
   TMutation extends MutationParameters
 >(
   relayNodeName: string,
@@ -41,7 +41,7 @@ export default function useDiscardMutation<
 ] {
   const [updateMutation, isInFlight] = useMutation(mutation);
 
-  const discardMutation = (
+  const archiveMutation = (
     id: string,
     config: Partial<UseMutationConfig<TMutation>>
   ) => {
@@ -50,7 +50,7 @@ export default function useDiscardMutation<
         input: {
           id,
           [`${relayNodeName}Patch`]: {
-            deletedAt: new Date().toISOString(),
+            archivedAt: new Date().toISOString(),
           },
         },
       },
@@ -58,5 +58,5 @@ export default function useDiscardMutation<
     });
   };
 
-  return [discardMutation, isInFlight];
+  return [archiveMutation, isInFlight];
 }

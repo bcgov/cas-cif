@@ -23,10 +23,10 @@ begin
       new.updated_by = user_id;
     end if;
   elsif tg_op = 'UPDATE' then
-    if to_jsonb(new) ? 'deleted_at' then
-      if old.deleted_at is distinct from new.deleted_at and new.deleted_at is not null then
-        new.deleted_at = now();
-        new.deleted_by = user_id;
+    if to_jsonb(new) ? 'archived_at' then
+      if old.archived_at is distinct from new.archived_at and new.archived_at is not null then
+        new.archived_at = now();
+        new.archived_by = user_id;
       end if;
     end if;
     if to_jsonb(new) ? 'updated_at' then

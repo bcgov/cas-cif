@@ -8,11 +8,11 @@ create table cif.project_revision (
   change_status varchar(1000) default 'pending' references cif.change_status
 );
 
-select cif_private.upsert_timestamp_columns('cif', 'project_revision');
+select cif_private.upsert_timestamp_columns('cif', 'project_revision', add_archive => false);
 
 -- We want the immutable trigger to run first to avoid doing unnecessary work
 create trigger _100_committed_changes_are_immutable
-    before update on cif.project_revision
+    before update or delete on cif.project_revision
     for each row
     execute procedure cif_private.committed_changes_are_immutable();
 
@@ -21,12 +21,6 @@ create trigger commit_project_revision
     for each row
     execute procedure cif_private.commit_project_revision();
 
-create trigger discard_project_revision
-    after insert or update of deleted_at on cif.project_revision
-    for each row
-    when (new.deleted_at is not null)
-    execute procedure cif_private.discard_project_revision();
-
 do
 $grant$
 begin
@@ -34,11 +28,13 @@ begin
 perform cif_private.grant_permissions('select', 'project_revision', 'cif_internal');
 perform cif_private.grant_permissions('insert', 'project_revision', 'cif_internal');
 perform cif_private.grant_permissions('update', 'project_revision', 'cif_internal');
+perform cif_private.grant_permissions('delete', 'project_revision', 'cif_internal');
 
 -- Grant cif_admin permissions
 perform cif_private.grant_permissions('select', 'project_revision', 'cif_admin');
 perform cif_private.grant_permissions('insert', 'project_revision', 'cif_admin');
 perform cif_private.grant_permissions('update', 'project_revision', 'cif_admin');
+perform cif_private.grant_permissions('delete', 'project_revision', 'cif_admin');
 
 -- Grant cif_external no permissions
 -- Grant cif_guest no permissions

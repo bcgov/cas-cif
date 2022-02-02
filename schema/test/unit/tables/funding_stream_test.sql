@@ -7,10 +7,10 @@ select has_column('cif', 'funding_stream', 'name', 'table cif.funding_stream has
 select has_column('cif', 'funding_stream', 'description', 'table cif.funding_stream has description column');
 select has_column('cif', 'funding_stream', 'created_at', 'table cif.funding_stream has created_at column');
 select has_column('cif', 'funding_stream', 'updated_at', 'table cif.funding_stream has updated_at column');
-select has_column('cif', 'funding_stream', 'deleted_at', 'table cif.funding_stream has deleted_at column');
+select has_column('cif', 'funding_stream', 'archived_at', 'table cif.funding_stream has archived_at column');
 select has_column('cif', 'funding_stream', 'created_by', 'table cif.funding_stream has created_by column');
 select has_column('cif', 'funding_stream', 'updated_by', 'table cif.funding_stream has updated_by column');
-select has_column('cif', 'funding_stream', 'deleted_by', 'table cif.funding_stream has deleted_by column');
+select has_column('cif', 'funding_stream', 'archived_by', 'table cif.funding_stream has archived_by column');
 
 
 -- Row level security tests --

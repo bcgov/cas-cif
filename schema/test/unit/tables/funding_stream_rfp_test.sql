@@ -6,10 +6,10 @@ select has_column('cif', 'funding_stream_rfp', 'id', 'table cif.funding_stream_r
 select has_column('cif', 'funding_stream_rfp', 'year', 'table cif.funding_stream_rfp has year column');
 select has_column('cif', 'funding_stream_rfp', 'created_at', 'table cif.funding_stream_rfp has created_at column');
 select has_column('cif', 'funding_stream_rfp', 'updated_at', 'table cif.funding_stream_rfp has updated_at column');
-select has_column('cif', 'funding_stream_rfp', 'deleted_at', 'table cif.funding_stream_rfp has deleted_at column');
+select has_column('cif', 'funding_stream_rfp', 'archived_at', 'table cif.funding_stream_rfp has archived_at column');
 select has_column('cif', 'funding_stream_rfp', 'created_by', 'table cif.funding_stream_rfp has created_by column');
 select has_column('cif', 'funding_stream_rfp', 'updated_by', 'table cif.funding_stream_rfp has updated_by column');
-select has_column('cif', 'funding_stream_rfp', 'deleted_by', 'table cif.funding_stream_rfp has deleted_by column');
+select has_column('cif', 'funding_stream_rfp', 'archived_by', 'table cif.funding_stream_rfp has archived_by column');
 
 
 -- Row level security tests --

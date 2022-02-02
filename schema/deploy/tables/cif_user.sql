@@ -23,19 +23,19 @@ begin
 perform cif_private.grant_permissions('select', 'cif_user', 'cif_internal');
 perform cif_private.grant_permissions('insert', 'cif_user', 'cif_internal');
 perform cif_private.grant_permissions('update', 'cif_user', 'cif_internal',
-  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by']);
+  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
 
 -- Grant cif_external permissions
 perform cif_private.grant_permissions('select', 'cif_user', 'cif_external');
 perform cif_private.grant_permissions('insert', 'cif_user', 'cif_external');
 perform cif_private.grant_permissions('update', 'cif_user', 'cif_external',
-  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by']);
+  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
 
 -- Grant cif_admin permissions
 perform cif_private.grant_permissions('select', 'cif_user', 'cif_admin');
 perform cif_private.grant_permissions('insert', 'cif_user', 'cif_admin');
 perform cif_private.grant_permissions('update', 'cif_user', 'cif_admin',
-  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by']);
+  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
 
 
 -- Grant cif_guest permissions

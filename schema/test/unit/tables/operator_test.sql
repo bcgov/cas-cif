@@ -8,10 +8,10 @@ select has_column('cif', 'operator', 'trade_name', 'table cif.operator has trade
 select has_column('cif', 'operator', 'bc_registry_id', 'table cif.operator has bc_registry_id column');
 select has_column('cif', 'operator', 'created_at', 'table cif.operator has created_at column');
 select has_column('cif', 'operator', 'updated_at', 'table cif.operator has updated_at column');
-select has_column('cif', 'operator', 'deleted_at', 'table cif.operator has deleted_at column');
+select has_column('cif', 'operator', 'archived_at', 'table cif.operator has archived_at column');
 select has_column('cif', 'operator', 'created_by', 'table cif.operator has created_by column');
 select has_column('cif', 'operator', 'updated_by', 'table cif.operator has updated_by column');
-select has_column('cif', 'operator', 'deleted_by', 'table cif.operator has deleted_by column');
+select has_column('cif', 'operator', 'archived_by', 'table cif.operator has archived_by column');
 
 
 insert into cif.operator
