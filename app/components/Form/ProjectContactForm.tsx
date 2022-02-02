@@ -21,13 +21,14 @@ interface Props extends ValidatingFormProps {
 }
 
 const uiSchema = {
-  "ui:title": "Primary Contact",
   contactId: {
     "ui:placeholder": "Select a Contact",
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "SearchWidget",
-    "ui:options": { label: false },
+    "ui:options": {
+      label: false,
+    },
   },
 };
 
@@ -207,6 +208,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               <Grid.Row>
                 <Grid.Col span={6}>
                   <FormBase
+                    id="primaryContactForm"
                     ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
                     formData={primaryContactForm.newFormData}
                     onChange={(change) => {
@@ -232,6 +234,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 <Grid.Row key={form.id}>
                   <Grid.Col span={8}>
                     <FormBase
+                      id={`form-${form.id}`}
                       ref={(el) => (formRefs.current[form.id] = el)}
                       formData={form.newFormData}
                       onChange={(change) => {
