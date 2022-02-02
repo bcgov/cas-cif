@@ -29,11 +29,11 @@ create function cif.create_form_change(
     coalesce(new_form_data, (
       select new_form_data
       from cif.form_change
-      where form_data_record_id = form_data_record_id
-      and form_data_schema_name = form_data_schema_name
-      and form_data_table_name = form_data_table_name
+      where form_data_record_id = create_form_change.form_data_record_id
+      and form_data_schema_name = create_form_change.form_data_schema_name
+      and form_data_table_name = create_form_change.form_data_table_name
       and change_status = 'committed'
-      order by updated_at desc
+      order by updated_at, id desc
       limit 1
     )),
     operation,
@@ -47,5 +47,11 @@ create function cif.create_form_change(
     validation_errors
   ) returning *;
 $create_form_change$ language sql;
+
+comment on function cif.create_form_change is
+$comment$
+Creates a new form_change record.
+If new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.
+$comment$;
 
 commit;
