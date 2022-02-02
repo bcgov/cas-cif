@@ -14,7 +14,7 @@ import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import { ConnectionHandler } from "react-relay";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
-import validateFormWithErrors from "./Utils/validateFormWithErrors";
+import validateFormWithErrors from "../../lib/helpers/validateFormWithErrors";
 
 interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;

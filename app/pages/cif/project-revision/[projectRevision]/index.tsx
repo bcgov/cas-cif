@@ -18,6 +18,7 @@ import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -94,25 +95,14 @@ export function ProjectRevision({
     });
   };
 
-  const triggerFormSelfValidation = (formObject: any): [] => {
-    formObject.onSubmit({
-      preventDefault: () => {},
-      persist: () => {},
-    });
-
-    // Effectively validating the form a second time to retrieve the errors
-    const validationResult = formObject.validate(formObject.state.formData);
-    return validationResult.errors;
-  };
-
   /**
    *  Function: approve staged change, trigger an insert on the project
    *  table & redirect to the project page
    */
   const commitProject = async () => {
     const errors = [
-      ...triggerFormSelfValidation(projectFormRef.current),
-      ...triggerFormSelfValidation(projectManagerFormRef.current),
+      ...validateFormWithErrors(projectFormRef.current),
+      ...validateFormWithErrors(projectManagerFormRef.current),
       ...projectContactFormRef.current.selfValidate(),
     ];
 
