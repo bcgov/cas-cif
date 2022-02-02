@@ -1,5 +1,5 @@
 begin;
-select plan(27);
+select plan(28);
 
 select has_table('cif', 'form_change', 'table cif.form_change exists');
 
@@ -48,6 +48,14 @@ select throws_ok(
   $$,
   'Committed records cannot be modified',
   'prevents update if the change status is committed'
+);
+
+select throws_ok(
+  $$
+  delete from cif.form_change where form_data_record_id = 100
+  $$,
+  'Committed records cannot be modified',
+  'prevents delete if the change status is committed'
 );
 
 -- Row level security tests --

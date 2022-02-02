@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(2);
+select plan(3);
 
 -- Test setup --
 insert into cif.operator(legal_name) values ('test operator');
@@ -36,6 +36,14 @@ select throws_ok(
   $$,
   'Committed records cannot be modified',
   'prevents update if the change status is committed'
+);
+
+select throws_ok(
+  $$
+    delete from cif.project_revision where change_status='testcommitted'
+  $$,
+  'Committed records cannot be modified',
+  'prevents delete if the change status is committed'
 );
 
 select finish();
