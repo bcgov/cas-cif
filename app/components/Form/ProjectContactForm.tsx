@@ -185,6 +185,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     },
   });
 
+  const clearPrimaryContact = () => {
+    const { contactId, ...newFormData } = primaryContactForm.newFormData;
+    updateFormChange(primaryContactForm.id, newFormData);
+  };
+
   return (
     <>
       <Grid cols={10} align="center">
@@ -215,7 +220,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 </Grid.Col>
                 <Grid.Col span={4} className="right-aligned-column">
                   <Button variant="secondary">Show Details</Button>
-                  <Button variant="secondary">Clear</Button>
+                  <Button variant="secondary" onClick={clearPrimaryContact}>
+                    Clear
+                  </Button>
                 </Grid.Col>
               </Grid.Row>
               <Grid.Row>
