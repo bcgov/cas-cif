@@ -14,7 +14,8 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   };
 
   const getSelected = useCallback(() => {
-    if (props.value === null || props.value === undefined) return undefined;
+    console.log("recomputed", props.value);
+    if (props.value === null || props.value === undefined) return "";
     const selectedValue = schema.anyOf.find(
       (option) => (option as any).value === props.value
     );
@@ -34,16 +35,17 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
       <Autocomplete
         id={`search-dropdown-${props.id}`}
         options={schema.anyOf}
-        defaultValue={getSelected}
+        defaultValue={getSelected()}
+        value={getSelected()}
         onChange={handleChange}
         isOptionEqualToValue={(option) =>
           props.value ? option.value === props.value : true
         }
-        getOptionLabel={(option) => option.title}
+        getOptionLabel={(option) => (option ? option.title : "")}
         sx={{ border: "2px solid #606060", borderRadius: "0.25em" }}
-        renderInput={(params) => (
-          <TextField {...params} placeholder={placeholder} />
-        )}
+        renderInput={(params) => {
+          return <TextField {...params} placeholder={placeholder} />;
+        }}
       />
     </>
   );
