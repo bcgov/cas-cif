@@ -186,47 +186,26 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   });
 
   return (
-    <Grid cols={10}>
-      <Grid.Row>
-        <Grid.Col span={10}>
-          <FormBorder title="Project Contacts">
-            <Grid.Row>
-              <Grid.Col span={7} />
-              <Grid.Col span={3}>
-                <Button style={{ marginRight: "auto" }}>
-                  View Contact List
-                </Button>
-              </Grid.Col>
-            </Grid.Row>
-            <Grid.Row>
-              <label>Primary Contact</label>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Col span={10}>
-                <FormBase
-                  ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
-                  formData={primaryContactForm.newFormData}
-                  onChange={(change) => {
-                    updateFormChange(primaryContactForm.id, change);
-                  }}
-                  onFormErrors={() => {}}
-                  schema={contactSchema}
-                  uiSchema={uiSchema}
-                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                />
-              </Grid.Col>
-            </Grid.Row>
-            <Grid.Row>
-              <label>Secondary Contacts</label>
-            </Grid.Row>
-            {alternateContactForms.map((form) => (
-              <Grid.Row key={form.id}>
-                <Grid.Col span={8}>
+    <>
+      <Grid cols={10} align="center">
+        <Grid.Row>
+          <Grid.Col span={10}>
+            <FormBorder title="Project Contacts">
+              <Grid.Row>
+                <Grid.Col span={10} className="right-aligned-column">
+                  <Button>View Contact List</Button>
+                </Grid.Col>
+              </Grid.Row>
+              <Grid.Row>
+                <label>Primary Contact</label>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Col span={6}>
                   <FormBase
-                    ref={(el) => (formRefs.current[form.id] = el)}
-                    formData={form.newFormData}
+                    ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
+                    formData={primaryContactForm.newFormData}
                     onChange={(change) => {
-                      updateFormChange(form.id, change);
+                      updateFormChange(primaryContactForm.id, change);
                     }}
                     onFormErrors={() => {}}
                     schema={contactSchema}
@@ -234,34 +213,74 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   />
                 </Grid.Col>
-                <Grid.Col>
-                  <Button onClick={() => deleteContact(form.id)}>Delete</Button>
+                <Grid.Col span={4} className="right-aligned-column">
+                  <Button variant="secondary">Show Details</Button>
+                  <Button variant="secondary">Clear</Button>
                 </Grid.Col>
               </Grid.Row>
-            ))}
+              <Grid.Row>
+                <label>Secondary Contacts</label>
+              </Grid.Row>
+              {alternateContactForms.map((form) => (
+                <Grid.Row key={form.id}>
+                  <Grid.Col span={8}>
+                    <FormBase
+                      ref={(el) => (formRefs.current[form.id] = el)}
+                      formData={form.newFormData}
+                      onChange={(change) => {
+                        updateFormChange(form.id, change);
+                      }}
+                      onFormErrors={() => {}}
+                      schema={contactSchema}
+                      uiSchema={uiSchema}
+                      ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={2} className="right-aligned-column">
+                    <Button
+                      variant="secondary"
+                      onClick={() => deleteContact(form.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Grid.Col>
+                </Grid.Row>
+              ))}
 
-            <Grid.Row>
-              <Grid.Col span={10}>
-                <Button
-                  style={{ marginRight: "auto" }}
-                  onClick={() =>
-                    addContact(
-                      alternateContactForms.length > 0
-                        ? alternateContactForms[
-                            alternateContactForms.length - 1
-                          ].newFormData.contactIndex + 1
-                        : primaryContactForm.newFormData.contactIndex + 1
-                    )
-                  }
-                >
-                  Add
-                </Button>
-              </Grid.Col>
-            </Grid.Row>
-          </FormBorder>
-        </Grid.Col>
-      </Grid.Row>
-    </Grid>
+              <Grid.Row>
+                <Grid.Col span={10}>
+                  <Button
+                    style={{ marginRight: "auto" }}
+                    onClick={() =>
+                      addContact(
+                        alternateContactForms.length > 0
+                          ? alternateContactForms[
+                              alternateContactForms.length - 1
+                            ].newFormData.contactIndex + 1
+                          : primaryContactForm.newFormData.contactIndex + 1
+                      )
+                    }
+                  >
+                    Add
+                  </Button>
+                </Grid.Col>
+              </Grid.Row>
+            </FormBorder>
+          </Grid.Col>
+        </Grid.Row>
+      </Grid>
+      <style jsx>{`
+        :global(.right-aligned-column > .pg-button) {
+          margin-left: 0.4em;
+          margin-right: 0em;
+        }
+        :global(.right-aligned-column) {
+          display: flex;
+          justify-content: flex-end;
+          align-items: flex-start;
+        }
+      `}</style>
+    </>
   );
 };
 
