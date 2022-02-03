@@ -220,9 +220,15 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   />
                 </Grid.Col>
-                <Grid.Col span={4} className="right-aligned-column">
-                  <Button variant="secondary">Show Details</Button>
-                  <Button variant="secondary" onClick={clearPrimaryContact}>
+                <Grid.Col span={4}>
+                  <Button variant="secondary" size="small">
+                    Show Details
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={clearPrimaryContact}
+                  >
                     Clear
                   </Button>
                 </Grid.Col>
@@ -232,7 +238,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               </Grid.Row>
               {alternateContactForms.map((form) => (
                 <Grid.Row key={form.id}>
-                  <Grid.Col span={8}>
+                  <Grid.Col span={6}>
                     <FormBase
                       id={`form-${form.id}`}
                       ref={(el) => (formRefs.current[form.id] = el)}
@@ -246,9 +252,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       ObjectFieldTemplate={EmptyObjectFieldTemplate}
                     />
                   </Grid.Col>
-                  <Grid.Col span={2} className="right-aligned-column">
+                  <Grid.Col span={4}>
                     <Button
                       variant="secondary"
+                      size="small"
                       onClick={() => deleteContact(form.id)}
                     >
                       Remove
@@ -278,7 +285,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         </Grid.Row>
       </Grid>
       <style jsx>{`
-        :global(.right-aligned-column > .pg-button) {
+        :global(button.pg-button) {
           margin-left: 0.4em;
           margin-right: 0em;
         }
