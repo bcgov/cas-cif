@@ -1,0 +1,450 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The ProjectContactForm Matches the snapshot with a primary contact and multiple secondary contacts 1`] = `
+<div>
+  <div
+    class="sc-jRQBWg cDwDrH pg-grid-container"
+    cols="10"
+  >
+    <div
+      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+    >
+      <div
+        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+        width="100"
+      >
+        <fieldset
+          class="jsx-4178779636"
+        >
+          <legend
+            class="jsx-4178779636"
+          >
+            Project Contacts
+          </legend>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <div
+              class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col right-aligned-column"
+              width="100"
+            >
+              <button
+                class="sc-jcFjpl dFodJy pg-button"
+                id="rfj9pgbamipnij312z1gfh"
+              >
+                View Contact List
+              </button>
+            </div>
+          </div>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <label
+              class="jsx-1069952119"
+            >
+              Primary Contact
+            </label>
+          </div>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <div
+              class="sc-furwcr sc-pVTFL irDrcf eqAbko pg-grid-col"
+              width="60"
+            >
+              <form
+                class="rjsf"
+                id="primaryContactForm"
+                novalidate=""
+              >
+                <div
+                  class="jsx-3435786090"
+                >
+                  <div
+                    class="jsx-3435786090"
+                  >
+                    <div
+                      aria-expanded="false"
+                      class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon css-symcig-MuiAutocomplete-root"
+                      role="combobox"
+                    >
+                      <div
+                        class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-wb57ya-MuiFormControl-root-MuiTextField-root"
+                      >
+                        <div
+                          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root"
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-invalid="false"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                            id="search-dropdown-root_contactId"
+                            placeholder="Select a Contact"
+                            spellcheck="false"
+                            type="text"
+                            value="Mister Test 2"
+                          />
+                          <div
+                            class="MuiAutocomplete-endAdornment css-1q60rmi-MuiAutocomplete-endAdornment"
+                          >
+                            <button
+                              aria-label="Clear"
+                              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-clearIndicator css-1glvl0p-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-clearIndicator"
+                              tabindex="-1"
+                              title="Clear"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
+                                data-testid="CloseIcon"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                            <button
+                              aria-label="Open"
+                              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-popupIndicator css-qzbt6i-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-popupIndicator"
+                              tabindex="-1"
+                              title="Open"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                                data-testid="ArrowDropDownIcon"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M7 10l5 5 5-5z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                          </div>
+                          <fieldset
+                            aria-hidden="true"
+                            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                          >
+                            <legend
+                              class="css-nnbavb"
+                            >
+                              <span
+                                class="notranslate"
+                              >
+                                ​
+                              </span>
+                            </legend>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div
+              class="sc-furwcr sc-pVTFL bXKSoN eqAbko pg-grid-col right-aligned-column"
+              width="40"
+            >
+              <button
+                class="sc-jcFjpl VmKuo pg-button"
+                id="9ypccs8jjzu68oe6ez5v6w"
+              >
+                Show Details
+              </button>
+              <button
+                class="sc-jcFjpl VmKuo pg-button"
+                id="xnqqccmwgulwah4wxcp7e"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <label
+              class="jsx-1069952119"
+            >
+              Secondary Contacts
+            </label>
+          </div>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <div
+              class="sc-furwcr sc-pVTFL kYaPVx eqAbko pg-grid-col"
+              width="80"
+            >
+              <form
+                class="rjsf"
+                id="form-Form ID 2"
+                novalidate=""
+              >
+                <div
+                  class="jsx-3435786090"
+                >
+                  <div
+                    class="jsx-3435786090"
+                  >
+                    <div
+                      aria-expanded="false"
+                      class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon css-symcig-MuiAutocomplete-root"
+                      role="combobox"
+                    >
+                      <div
+                        class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-wb57ya-MuiFormControl-root-MuiTextField-root"
+                      >
+                        <div
+                          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root"
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-invalid="false"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                            id="search-dropdown-root_contactId"
+                            placeholder="Select a Contact"
+                            spellcheck="false"
+                            type="text"
+                            value="Mister Test 3"
+                          />
+                          <div
+                            class="MuiAutocomplete-endAdornment css-1q60rmi-MuiAutocomplete-endAdornment"
+                          >
+                            <button
+                              aria-label="Clear"
+                              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-clearIndicator css-1glvl0p-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-clearIndicator"
+                              tabindex="-1"
+                              title="Clear"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
+                                data-testid="CloseIcon"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                            <button
+                              aria-label="Open"
+                              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-popupIndicator css-qzbt6i-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-popupIndicator"
+                              tabindex="-1"
+                              title="Open"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                                data-testid="ArrowDropDownIcon"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M7 10l5 5 5-5z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                          </div>
+                          <fieldset
+                            aria-hidden="true"
+                            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                          >
+                            <legend
+                              class="css-nnbavb"
+                            >
+                              <span
+                                class="notranslate"
+                              >
+                                ​
+                              </span>
+                            </legend>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div
+              class="sc-furwcr sc-pVTFL kGJjgX eqAbko pg-grid-col right-aligned-column"
+              width="20"
+            >
+              <button
+                class="sc-jcFjpl VmKuo pg-button"
+                id="cny8ih6ca8t5ewg2nr6dsp"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <div
+              class="sc-furwcr sc-pVTFL kYaPVx eqAbko pg-grid-col"
+              width="80"
+            >
+              <form
+                class="rjsf"
+                id="form-Form ID 3"
+                novalidate=""
+              >
+                <div
+                  class="jsx-3435786090"
+                >
+                  <div
+                    class="jsx-3435786090"
+                  >
+                    <div
+                      aria-expanded="false"
+                      class="MuiAutocomplete-root MuiAutocomplete-hasClearIcon MuiAutocomplete-hasPopupIcon css-symcig-MuiAutocomplete-root"
+                      role="combobox"
+                    >
+                      <div
+                        class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-wb57ya-MuiFormControl-root-MuiTextField-root"
+                      >
+                        <div
+                          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root"
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-invalid="false"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                            id="search-dropdown-root_contactId"
+                            placeholder="Select a Contact"
+                            spellcheck="false"
+                            type="text"
+                            value="Mister Test"
+                          />
+                          <div
+                            class="MuiAutocomplete-endAdornment css-1q60rmi-MuiAutocomplete-endAdornment"
+                          >
+                            <button
+                              aria-label="Clear"
+                              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-clearIndicator css-1glvl0p-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-clearIndicator"
+                              tabindex="-1"
+                              title="Clear"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
+                                data-testid="CloseIcon"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                            <button
+                              aria-label="Open"
+                              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-popupIndicator css-qzbt6i-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-popupIndicator"
+                              tabindex="-1"
+                              title="Open"
+                              type="button"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                                data-testid="ArrowDropDownIcon"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M7 10l5 5 5-5z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                          </div>
+                          <fieldset
+                            aria-hidden="true"
+                            class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                          >
+                            <legend
+                              class="css-nnbavb"
+                            >
+                              <span
+                                class="notranslate"
+                              >
+                                ​
+                              </span>
+                            </legend>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div
+              class="sc-furwcr sc-pVTFL kGJjgX eqAbko pg-grid-col right-aligned-column"
+              width="20"
+            >
+              <button
+                class="sc-jcFjpl VmKuo pg-button"
+                id="zch6pzpajlpswuvgpls4b"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div
+            class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          >
+            <div
+              class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+              width="100"
+            >
+              <button
+                class="sc-jcFjpl dFodJy pg-button"
+                id="0ryiwpifbzlblb6c2skhkld"
+                style="margin-right: auto;"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>
+`;

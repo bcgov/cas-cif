@@ -14,7 +14,7 @@ import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import { ConnectionHandler } from "react-relay";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
-import validateFormWithErrors from "../../lib/helpers/validateFormWithErrors";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 
 interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;
@@ -170,7 +170,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       ),
     ];
     contactForms.sort(
-      (a, b) => a.newFormData.contactId - b.newFormData.contactId
+      (a, b) => a.newFormData.contactIndex - b.newFormData.contactIndex
     );
     return contactForms;
   }, [query]);
@@ -251,7 +251,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       variant="secondary"
                       onClick={() => deleteContact(form.id)}
                     >
-                      Delete
+                      Remove
                     </Button>
                   </Grid.Col>
                 </Grid.Row>
@@ -262,12 +262,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   <Button
                     style={{ marginRight: "auto" }}
                     onClick={() =>
+                      // allForms is already sorted by contactIndex
                       addContact(
-                        alternateContactForms.length > 0
-                          ? alternateContactForms[
-                              alternateContactForms.length - 1
-                            ].newFormData.contactIndex + 1
-                          : primaryContactForm.newFormData.contactIndex + 1
+                        allForms[allForms.length - 1].newFormData.contactIndex +
+                          1
                       )
                     }
                   >
