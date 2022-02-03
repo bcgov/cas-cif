@@ -112,7 +112,7 @@ const getMockQueryPayload = () => ({
 
 describe("The ProjectContactForm", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
 
     environment = createMockEnvironment();
 
@@ -123,9 +123,8 @@ describe("The ProjectContactForm", () => {
     environment.mock.queuePendingOperation(compiledProjectContactFormQuery, {});
   });
 
-  it("Matches the snapshot with a primary contact and multiple secondary contacts", () => {
-    const componentUnderTest = renderProjectForm();
-    expect(componentUnderTest.container).toMatchSnapshot();
+  it("Renders a primary contact and multiple secondary contacts", () => {
+    renderProjectForm();
 
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
 
@@ -180,6 +179,47 @@ describe("The ProjectContactForm", () => {
           __typename: "UpdateFormChangePayload",
         },
       },
+    });
+  });
+
+  it("Clears the primary contact field when the Clear button is pressed", () => {
+    const mutationSpy = jest.fn();
+    jest
+      .spyOn(require("mutations/useDebouncedMutation"), "default")
+      .mockImplementation(() => [mutationSpy, jest.fn()]);
+
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [jest.fn(), jest.fn()]);
+
+    renderProjectForm();
+    const clearButton = screen.getAllByText("Clear")[0];
+    clearButton.click();
+
+    expect(mutationSpy).toHaveBeenCalledWith({
+      variables: {
+        input: {
+          id: "Form ID 1",
+          formChangePatch: {
+            newFormData: {
+              contactIndex: 1,
+              projectId: 10,
+            },
+          },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: "Form ID 1",
+            newFormData: {
+              contactIndex: 1,
+              projectId: 10,
+            },
+          },
+        },
+      },
+      debounceKey: "Form ID 1",
     });
   });
 
