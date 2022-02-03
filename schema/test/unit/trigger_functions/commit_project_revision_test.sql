@@ -16,6 +16,7 @@ values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somema
 
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.funding_stream(name, description) values ('stream', 'stream description');
+insert into cif.contact(given_name, family_name) values ('John', 'Test');
 
 select cif.create_project();
 
@@ -43,6 +44,19 @@ update cif.form_change set new_form_data=format('{
   )::jsonb
   where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_manager';
 
+update cif.form_change set new_form_data=format('{
+      "projectId": %s,
+      "contactIndex": %s,
+      "contactId": %s
+    }',
+    (select form_data_record_id from cif.form_change
+        where form_data_table_name='project'
+        and project_revision_id=(select id from cif.project_revision order by id desc limit 1)),
+    1,
+    (select id from cif.contact order by id desc limit 1)
+  )::jsonb
+  where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_contact';
+
 -- make sure the function exists
 select has_function('cif_private', 'commit_project_revision', 'Function commit_project_revision should exist');
 
@@ -53,9 +67,9 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('pending'::varchar), ('pending'::varchar);
+    values ('pending'::varchar), ('pending'::varchar), ('pending'::varchar);
   $$,
-  'Two form changes should be initialized with the pending status'
+  'Three form changes should be initialized with the pending status'
 );
 
 -- make sure project_revision has a null project id
@@ -78,7 +92,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id = (select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('test_pending'::varchar), ('test_pending'::varchar);
+    values ('test_pending'::varchar), ('test_pending'::varchar), ('test_pending'::varchar);
   $$,
   'the form_change rows should be have the test_pending status'
 );
@@ -98,7 +112,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('committed'::varchar), ('committed'::varchar);
+    values ('committed'::varchar), ('committed'::varchar), ('committed'::varchar);
   $$,
   'the form_change rows should have the committed status'
 );
@@ -109,7 +123,6 @@ select is(
   (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
   'project_id should be set to the project_id that was in the form'
 );
-
 
 select finish();
 
