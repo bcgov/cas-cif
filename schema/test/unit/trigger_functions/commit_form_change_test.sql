@@ -1,6 +1,6 @@
 begin;
 
-select plan(13);
+select plan(15);
 
 create schema mock_schema;
 
@@ -21,8 +21,10 @@ create table mock_schema.mock_table (
   int_col integer,
   bool_col boolean,
   required_col text not null,
-  defaulted_col int default 99
+  defaulted_col int default 99,
+  archived_at timestamptz
 );
+
 
 create trigger trigger_under_test
     before insert or update of change_status on mock_schema.mock_form_change
@@ -44,7 +46,7 @@ select has_function('cif_private', 'commit_form_change', 'Function commit_form_c
 insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
-  'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
+  'create', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
 );
 
 -- for insert a new record is created, only if the change status is marked as trigger change
@@ -67,7 +69,7 @@ select is(
 insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"textCol":"test2 text"}',
-  'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
+  'create', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
 );
 
 select throws_ok(
@@ -81,7 +83,7 @@ select throws_ok(
 insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"textCol":"test3", "requiredCol":"required"}',
-  'INSERT', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
+  'create', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_pending'
 );
 update mock_schema.mock_form_change set change_status = 'test_committed' where id = 3;
 
@@ -99,7 +101,7 @@ select results_eq(
 insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
 values (
   '{"textCol":"test_update"}',
-  'UPDATE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test3'), 'test_pending'
+  'update', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test3'), 'test_pending'
 );
 
 select is(
@@ -120,7 +122,7 @@ select is(
 insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status, validation_errors)
 values (
   '{"textCol":"test_update"}',
-  'UPDATE', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test3'), 'test_pending',
+  'update', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test3'), 'test_pending',
   '[{"this":"is an error"},{"this":"is another error"}]'::jsonb
 );
 
@@ -151,16 +153,32 @@ select is(
   'No record should be inserted on DELETE'
 );
 
--- on delete nothing happens and a notice is printed
 select lives_ok(
   $$
-    insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
+    insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, change_status)
     values (
       '{}',
-      'INSERT', 'mock_schema', 'mock_table', (select id from mock_schema.mock_table where text_col='test_pending'), 'test_committed'
+      'create', 'mock_schema', 'mock_table', 'test_committed'
     )
   $$,
   'Function does not throw an exception when trying to commit a change with an empty new_form_data'
+);
+set client_min_messages to debug;
+-- archive test
+select lives_ok(
+  $$
+    insert into mock_schema.mock_form_change(operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status)
+    values (
+      'archive', 'mock_schema', 'mock_table', 1, 'test_committed'
+    )
+  $$,
+  'a change record with the archive operation should not throw an exception'
+);
+reset client_min_messages;
+select is(
+  (select archived_at from mock_schema.mock_table where id=1),
+  now(),
+  'The record should be archived when the committed change operation is archive'
 );
 
 -- setting up pending change without specifying the record id
@@ -169,7 +187,7 @@ delete from mock_schema.mock_table;
 insert into mock_schema.mock_form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, change_status)
 values (
   '{"textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
-  'INSERT', 'mock_schema', 'mock_table', 'test_pending'
+  'create', 'mock_schema', 'mock_table', 'test_pending'
 );
 
 update mock_schema.mock_form_change set change_status = 'test_committed';

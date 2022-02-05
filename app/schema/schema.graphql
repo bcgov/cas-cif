@@ -17339,8 +17339,8 @@ type FormChange implements Node {
   """Unique ID for the form_change"""
   newFormData: JSON
 
-  """The SQL operation this form change describes: INSERT or UPDATE"""
-  operation: String!
+  """The operation this form change describes: create, update or archive"""
+  operation: FormChangeOperation!
 
   """Reads a single `ProjectRevision` that is related to this `FormChange`."""
   projectRevisionByProjectRevisionId: ProjectRevision
@@ -17396,7 +17396,7 @@ input FormChangeCondition {
   newFormData: JSON
 
   """Checks for equality with the object’s `operation` field."""
-  operation: String
+  operation: FormChangeOperation
 
   """Checks for equality with the object’s `projectRevisionId` field."""
   projectRevisionId: Int
@@ -17467,7 +17467,7 @@ input FormChangeFilter {
   not: FormChangeFilter
 
   """Filter by the object’s `operation` field."""
-  operation: StringFilter
+  operation: FormChangeOperationFilter
 
   """Checks for any expressions in this list."""
   or: [FormChangeFilter!]
@@ -17525,8 +17525,8 @@ input FormChangeInput {
   """Unique ID for the form_change"""
   newFormData: JSON
 
-  """The SQL operation this form change describes: INSERT or UPDATE"""
-  operation: String!
+  """The operation this form change describes: create, update or archive"""
+  operation: FormChangeOperation!
 
   """The project revision this change might be associated with (if known)"""
   projectRevisionId: Int
@@ -17541,6 +17541,57 @@ input FormChangeInput {
   The validation errors computed for this record's new_form_data and the json_schema_name schema
   """
   validationErrors: JSON
+}
+
+"""
+The type of change operation, defining the action taken when the form_change is committed.
+"""
+enum FormChangeOperation {
+  ARCHIVE
+  CREATE
+  UPDATE
+}
+
+"""
+A filter to be used against FormChangeOperation fields. All fields are combined with a logical ‘and.’
+"""
+input FormChangeOperationFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: FormChangeOperation
+
+  """Equal to the specified value."""
+  equalTo: FormChangeOperation
+
+  """Greater than the specified value."""
+  greaterThan: FormChangeOperation
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: FormChangeOperation
+
+  """Included in the specified list."""
+  in: [FormChangeOperation!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: FormChangeOperation
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: FormChangeOperation
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: FormChangeOperation
+
+  """Not equal to the specified value."""
+  notEqualTo: FormChangeOperation
+
+  """Not included in the specified list."""
+  notIn: [FormChangeOperation!]
 }
 
 """
@@ -17576,8 +17627,8 @@ input FormChangePatch {
   """Unique ID for the form_change"""
   newFormData: JSON
 
-  """The SQL operation this form change describes: INSERT or UPDATE"""
-  operation: String
+  """The operation this form change describes: create, update or archive"""
+  operation: FormChangeOperation
 
   """The project revision this change might be associated with (if known)"""
   projectRevisionId: Int

@@ -22,9 +22,9 @@ select has_column('cif', 'form_change', 'updated_by', 'table cif.form_change has
 
 insert into cif.form_change
   (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason, json_schema_name) values
-  ('{}', 'insert', 'cif', 'project', 1, 'test reason', 'project'),
-  ('{}', 'insert', 'cif', 'project', 2, 'test reason', 'project'),
-  ('{}', 'insert', 'cif', 'project', 3, 'test reason', 'project');
+  ('{}', 'create', 'cif', 'project', 1, 'test reason', 'project'),
+  ('{}', 'create', 'cif', 'project', 2, 'test reason', 'project'),
+  ('{}', 'create', 'cif', 'project', 3, 'test reason', 'project');
 
 
 -- Trigger tests --
@@ -32,8 +32,8 @@ insert into cif.form_change
 insert into cif.change_status (status, triggers_commit) values ('testcommitted', true), ('testpending', false);
 insert into cif.form_change
   (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_status, change_reason, json_schema_name) values
-  ('{}', 'insert', 'test-schema', 'test-table', 99, 'testpending', 'test reason', 'test-schema'),
-  ('{}', 'insert', 'test-schema', 'test-table', 100, 'testcommitted', 'test reason', 'test-schema');
+  ('{}', 'create', 'test-schema', 'test-table', 99, 'testpending', 'test reason', 'test-schema'),
+  ('{}', 'create', 'test-schema', 'test-table', 100, 'testcommitted', 'test reason', 'test-schema');
 
 select lives_ok(
   $$
@@ -77,7 +77,7 @@ select lives_ok(
 select lives_ok(
   $$
     insert into cif.form_change (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason, json_schema_name)
-      values ('{}', 'insert', 'cif', 'project', 4, 'test reason', 'project');
+      values ('{}', 'create', 'cif', 'project', 4, 'test reason', 'project');
   $$,
     'cif_admin can insert data in form_change table'
 );
@@ -121,7 +121,7 @@ select results_eq(
 select lives_ok(
   $$
     insert into cif.form_change (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason, json_schema_name)
-      values ('{}', 'insert', 'cif', 'project', 5, 'test reason', 'project');
+      values ('{}', 'create', 'cif', 'project', 5, 'test reason', 'project');
   $$,
     'cif_internal can insert data in form_change table'
 );

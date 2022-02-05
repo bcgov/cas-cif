@@ -10,9 +10,9 @@ insert into cif.project_revision(id, change_status)
 insert into cif.form_change(id, operation, form_data_schema_name, form_data_table_name, project_revision_id, change_reason, json_schema_name)
   overriding system value
   values
-    (1, 'INSERT', 'cif', 'project', 1, 'test reason', 'project'),
-    (2, 'INSERT', 'cif', 'some_other_table', 1, 'test reason', 'some_other_table'),
-    (3, 'INSERT', 'test_schema_name', 'project', 1, 'test reason', 'project');
+    (1, 'create', 'cif', 'project', 1, 'test reason', 'project'),
+    (2, 'create', 'cif', 'some_other_table', 1, 'test reason', 'some_other_table'),
+    (3, 'create', 'test_schema_name', 'project', 1, 'test reason', 'project');
 
 select is(
   (

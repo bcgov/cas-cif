@@ -34,7 +34,7 @@ begin
     json_schema_name
   ) values (
     '{}',
-    'INSERT',
+    'create',
     'cif',
     'project',
     next_project_id,
@@ -44,7 +44,7 @@ begin
     'project'
   ), (
     format('{ "projectId": %s }', next_project_id)::jsonb,
-    'INSERT',
+    'create',
     'cif',
     'project_manager',
     nextval(pg_get_serial_sequence('cif.project_manager', 'id')),
