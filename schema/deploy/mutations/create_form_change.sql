@@ -3,7 +3,7 @@
 begin;
 
 create function cif.create_form_change(
-  operation varchar(1000),
+  operation cif.form_change_operation,
   json_schema_name varchar(1000),
   form_data_schema_name varchar(1000),
   form_data_table_name varchar(1000),

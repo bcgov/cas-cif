@@ -58660,8 +58660,8 @@
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
+                  "kind": "ENUM",
+                  "name": "FormChangeOperation",
                   "ofType": null
                 }
               },
@@ -63396,178 +63396,6 @@
           "possibleTypes": null
         },
         {
-          "kind": "INPUT_OBJECT",
-<<<<<<< chore/archived-at-refactor
-          "name": "FormChangeInput",
-          "description": "An input for mutations affecting `FormChange`",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "changeReason",
-              "description": "The reason for the change",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "changeStatus",
-              "description": "The change status of this form change, foreign key to cif.change_status.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "createdAt",
-              "description": "created at timestamp",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "createdBy",
-              "description": "created by user id",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "formDataRecordId",
-              "description": "The id of the record on which this form change applies",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "formDataSchemaName",
-              "description": "The schema on which this form change applies",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "formDataTableName",
-              "description": "The table on which this form change applies",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "jsonSchemaName",
-              "description": "The name of the JSON schema to use for validation of this form data",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "newFormData",
-              "description": "Unique ID for the form_change",
-              "type": {
-                "kind": "SCALAR",
-                "name": "JSON",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "operation",
-              "description": "The operation this form change describes: create, update or archive",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "ENUM",
-                  "name": "FormChangeOperation",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "projectRevisionId",
-              "description": "The project revision this change might be associated with (if known)",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "updatedAt",
-              "description": "updated at timestamp",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "updatedBy",
-              "description": "updated by user id",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "validationErrors",
-              "description": "The validation errors computed for this record's new_form_data and the json_schema_name schema",
-              "type": {
-                "kind": "SCALAR",
-                "name": "JSON",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
           "kind": "ENUM",
           "name": "FormChangeOperation",
           "description": "The type of change operation, defining the action taken when the form_change is committed.",
@@ -63600,10 +63428,6 @@
           "kind": "INPUT_OBJECT",
           "name": "FormChangeOperationFilter",
           "description": "A filter to be used against FormChangeOperation fields. All fields are combined with a logical ‘and.’",
-=======
-          "name": "FormChangePatch",
-          "description": "Represents an update to a `FormChange`. Fields that are set will be updated.",
->>>>>>> feat: edit contact form
           "fields": null,
           "inputFields": [
             {
@@ -74989,7 +74813,7 @@
             },
             {
               "name": "createFormChange",
-              "description": null,
+              "description": "Creates a new form_change record.\nIf new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.\n",
               "args": [
                 {
                   "name": "input",

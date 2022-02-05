@@ -7,7 +7,7 @@ $$
   select * from cif.form_change
   where form_data_table_name = 'contact'
   and form_data_schema_name = 'cif'
-  and operation = 'INSERT'
+  and operation = 'create'
   and change_status = 'pending'
   and created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()))
   limit 1;

@@ -21,7 +21,7 @@ select results_eq(
     change_status,
     validation_errors
   from cif.create_form_change(
-    operation => 'INSERT',
+    operation => 'create',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
@@ -43,7 +43,7 @@ select results_eq(
   )
   $$,
   $$values (
-    'INSERT'::varchar(1000),
+    'create'::cif.form_change_operation,
     'project'::varchar(1000),
     'cif'::varchar(1000),
     'project'::varchar(1000),
@@ -82,7 +82,7 @@ select results_eq(
   from cif.form_change
   $$,
   $$values (
-    'INSERT'::varchar(1000),
+    'create'::cif.form_change_operation,
     'project'::varchar(1000),
     'cif'::varchar(1000),
     'project'::varchar(1000),
@@ -112,7 +112,7 @@ select results_eq(
   select
     new_form_data
   from cif.create_form_change(
-    operation => 'UPDATE',
+    operation => 'update',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
@@ -136,7 +136,7 @@ select results_eq(
 );
 
 select cif.create_form_change(
-  operation => 'INSERT',
+  operation => 'create',
   json_schema_name => 'project',
   form_data_schema_name => 'cif',
   form_data_table_name => 'project',
@@ -149,7 +149,7 @@ select results_eq(
   select
     new_form_data
   from cif.create_form_change(
-    operation => 'UPDATE',
+    operation => 'update',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
@@ -168,7 +168,7 @@ select results_eq(
   select
     new_form_data
   from cif.create_form_change(
-    operation => 'UPDATE',
+    operation => 'update',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'other_table',
@@ -184,7 +184,7 @@ select results_eq(
 
 -- create an update for our comitted project, but don't commit it yet
 select cif.create_form_change(
-    operation => 'UPDATE',
+    operation => 'update',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
@@ -209,7 +209,7 @@ select results_eq(
   select
     new_form_data->>'projectName'
   from cif.create_form_change(
-    operation => 'UPDATE',
+    operation => 'update',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
@@ -230,7 +230,7 @@ select results_eq(
   select
     new_form_data->>'projectName'
   from cif.create_form_change(
-    operation => 'UPDATE',
+    operation => 'update',
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',

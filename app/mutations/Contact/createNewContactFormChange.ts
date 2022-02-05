@@ -9,7 +9,7 @@ export const mutation = graphql`
         formDataSchemaName: "cif"
         formDataTableName: "contact"
         jsonSchemaName: "contact"
-        operation: "INSERT"
+        operation: CREATE
         changeReason: "Created from contact form"
       }
     ) {
