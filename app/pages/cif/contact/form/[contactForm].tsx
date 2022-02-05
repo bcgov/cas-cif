@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import ContactForm from "components/Contact/ContactForm";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import SavingIndicator from "components/Form/SavingIndicator";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { getContactsPageRoute } from "pageRoutes";
 
@@ -24,15 +24,21 @@ const pageQuery = graphql`
   }
 `;
 
-function ProjectOverview({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
+function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
   const { session, formChange } = usePreloadedQuery(pageQuery, preloadedQuery);
   const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
   const router = useRouter();
 
   const lastEditedDate = useMemo(
-    () => new Date(formChange.updatedAt),
-    [formChange.updatedAt]
+    () => new Date(formChange?.updatedAt),
+    [formChange?.updatedAt]
   );
+  useEffect(() => {
+    if (!formChange) router.replace("/404");
+  }, [formChange, router]);
+  if (!formChange) {
+    return null;
+  }
 
   const isEditing = formChange.formDataRecordId !== null;
 
@@ -101,4 +107,4 @@ function ProjectOverview({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
   );
 }
 
-export default withRelay(ProjectOverview, pageQuery, withRelayOptions);
+export default withRelay(ContactFormPage, pageQuery, withRelayOptions);

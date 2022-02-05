@@ -51,7 +51,6 @@ $create_form_change$ language sql;
 comment on function cif.create_form_change is
 $comment$
 Creates a new form_change record.
-If new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.
-$comment$;
+If new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.$comment$;
 
 commit;
