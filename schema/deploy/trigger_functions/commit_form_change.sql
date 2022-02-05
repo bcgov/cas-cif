@@ -12,7 +12,7 @@ declare
   vals text;
 begin
 
-  if new.operation not in ('INSERT', 'UPDATE') then
+  if new.operation::name != all(enum_range(null::cif.form_change_operation)::name[]) then
     raise exception 'Cannot commit change with operation %', new.operation;
   end if;
 
@@ -34,7 +34,7 @@ begin
   keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(new.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(new.new_form_data)), ','));
 
-  if new.operation = 'INSERT' then
+  if new.operation = 'create' then
     if new.form_data_record_id is not null then
 
       query := format(
@@ -58,7 +58,7 @@ begin
     end if;
 
 
-  elsif new.operation = 'UPDATE' then
+  elsif new.operation = 'update' then
 
     -- it is necessary to put the values in a row(...) in case there is only one value;
     query := format(
@@ -66,6 +66,14 @@ begin
       schema_table,
       keys,
       vals
+    );
+
+    raise debug '%', query;
+    execute query using new.form_data_record_id;
+  elsif new.operation = 'archive' then
+    query := format(
+      'update %s set archived_at = now() where id = $1',
+      schema_table
     );
 
     raise debug '%', query;

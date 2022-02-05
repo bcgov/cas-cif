@@ -231,7 +231,7 @@ describe("The Create Project page", () => {
     );
   });
 
-  it("Calls the discard mutation when the user clicks the Discard Changes button", async () => {
+  it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
     const useMutationSpy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
@@ -260,9 +260,6 @@ describe("The Create Project page", () => {
       variables: {
         input: {
           id: "mock-proj-rev-id",
-          projectRevisionPatch: {
-            deletedAt: expect.any(String),
-          },
         },
       },
     });

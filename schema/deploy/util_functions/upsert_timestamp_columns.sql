@@ -8,7 +8,7 @@ create or replace function cif_private.upsert_timestamp_columns(
   table_name text,
   add_create boolean default true,
   add_update boolean default true,
-  add_delete boolean default true,
+  add_archive boolean default true,
   user_table_schema_name text default 'cif',
   user_table_name text default 'cif_user'
 )
@@ -61,36 +61,36 @@ begin
       );
       execute(comment_string);
     end if;
-    if add_delete = true then
+    if add_archive = true then
       column_string := concat(
         'alter table ', table_schema_name, '.', table_name,
-        ' add column if not exists deleted_by int references ',
+        ' add column if not exists archived_by int references ',
         user_table_schema_name, '.', user_table_name, '(id)',
-        ', add column if not exists deleted_at timestamptz'
+        ', add column if not exists archived_at timestamptz'
       );
       execute(column_string);
       index_string := concat(
-        'create index if not exists ', table_schema_name, '_', table_name, '_deleted_by_foreign_key on ',
-        table_schema_name, '.', table_name, '(deleted_by)'
+        'create index if not exists ', table_schema_name, '_', table_name, '_archived_by_foreign_key on ',
+        table_schema_name, '.', table_name, '(archived_by)'
       );
       execute(index_string);
       comment_string := concat(
-        'comment on column ', table_schema_name, '.', table_name, '.deleted_by is ''deleted by user id'';',
-        'comment on column ', table_schema_name, '.', table_name, '.deleted_at is ''deleted at timestamp'';'
+        'comment on column ', table_schema_name, '.', table_name, '.archived_by is ''archived by user id'';',
+        'comment on column ', table_schema_name, '.', table_name, '.archived_at is ''archived at timestamp'';'
       );
       execute(comment_string);
 
-      -- Adding the deleted_records_are_immutable trigger only with the deleted_at column
+      -- Adding the archived_records_are_immutable trigger only with the archived_at column
 
       if not exists (select *
         from information_schema.triggers
         where event_object_table = table_name
         and event_object_schema = table_schema_name
-        and trigger_name = '_050_immutable_deleted_records'
+        and trigger_name = '_050_immutable_archived_records'
       ) then
         trigger_string := concat(
-          'create trigger _050_immutable_deleted_records before update on ', table_schema_name, '.', table_name,
-          ' for each row execute procedure cif_private.deleted_records_are_immutable()'
+          'create trigger _050_immutable_archived_records before update on ', table_schema_name, '.', table_name,
+          ' for each row execute procedure cif_private.archived_records_are_immutable()'
         );
         execute(trigger_string);
       end if;
@@ -116,9 +116,9 @@ $$ language plpgsql;
 
 comment on function cif_private.upsert_timestamp_columns(text, text, boolean, boolean, boolean, text, text)
   is $$
-  an internal function that adds the created/updated/deleted at/by columns, indices on fkeys,
+  an internal function that adds the created/updated/archived at/by columns, indices on fkeys,
   applies the _100_timestamps trigger,
-  applies the _050_immutable_deleted_records trigger
+  applies the _050_immutable_archived_records trigger
 
   example usage:
 
@@ -126,11 +126,11 @@ comment on function cif_private.upsert_timestamp_columns(text, text, boolean, bo
     ...
   );
   select cif_private.upsert_timestamp_columns(
-  table_schema_name := 'some_schema',
-  table_name := 'some_table',
-  add_create := true,
-  add_update := true,
-  add_delete := true);
+  table_schema_name => 'some_schema',
+  table_name => 'some_table',
+  add_create => true,
+  add_update => true,
+  add_archive => true);
   $$;
 
 commit;

@@ -1,5 +1,5 @@
 begin;
-select plan(6);
+select plan(5);
 
 insert into cif.cif_user (uuid, first_name, last_name, email_address)
 values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somemail.com'),
@@ -71,14 +71,6 @@ select isnt(
   (select id from cif.pending_new_project_revision()),
   null,
   'Project revision should exist after creation'
-);
-
-update cif.project_revision set deleted_at = now() where id=(select id from cif.project_revision order by id desc limit 1);
-
-select is(
-  (select id from cif.pending_new_project_revision()),
-  null,
-  'Project revision should not exist after being marked deleted'
 );
 
 select finish();

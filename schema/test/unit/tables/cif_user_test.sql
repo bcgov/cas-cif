@@ -9,10 +9,10 @@ select has_column('cif', 'cif_user', 'email_address', 'table cif.cif_user has em
 select has_column('cif', 'cif_user', 'uuid', 'table cif.cif_user has uuid column');
 select has_column('cif', 'cif_user', 'created_at', 'table cif.cif_user has created_at column');
 select has_column('cif', 'cif_user', 'updated_at', 'table cif.cif_user has updated_at column');
-select has_column('cif', 'cif_user', 'deleted_at', 'table cif.cif_user has deleted_at column');
+select has_column('cif', 'cif_user', 'archived_at', 'table cif.cif_user has archived_at column');
 select has_column('cif', 'cif_user', 'created_by', 'table cif.cif_user has created_by column');
 select has_column('cif', 'cif_user', 'updated_by', 'table cif.cif_user has updated_by column');
-select has_column('cif', 'cif_user', 'deleted_by', 'table cif.cif_user has deleted_by column');
+select has_column('cif', 'cif_user', 'archived_by', 'table cif.cif_user has archived_by column');
 
 
 insert into cif.cif_user

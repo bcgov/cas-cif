@@ -6,10 +6,10 @@ select has_column('cif', 'funding_stream_rfp_project_status', 'id', 'table cif.f
 select has_column('cif', 'funding_stream_rfp_project_status', 'funding_stream_rfp_id', 'table cif.funding_stream_rfp_project_status has funding_stream_rfp_id column');
 select has_column('cif', 'funding_stream_rfp_project_status', 'project_status_id', 'table cif.funding_stream_rfp_project_status has project_status_id column');
 select has_column('cif', 'funding_stream_rfp_project_status', 'updated_at', 'table cif.funding_stream_rfp_project_status has updated_at column');
-select has_column('cif', 'funding_stream_rfp_project_status', 'deleted_at', 'table cif.funding_stream_rfp_project_status has deleted_at column');
+select has_column('cif', 'funding_stream_rfp_project_status', 'archived_at', 'table cif.funding_stream_rfp_project_status has archived_at column');
 select has_column('cif', 'funding_stream_rfp_project_status', 'created_by', 'table cif.funding_stream_rfp_project_status has created_by column');
 select has_column('cif', 'funding_stream_rfp_project_status', 'updated_by', 'table cif.funding_stream_rfp_project_status has updated_by column');
-select has_column('cif', 'funding_stream_rfp_project_status', 'deleted_by', 'table cif.funding_stream_rfp_project_status has deleted_by column');
+select has_column('cif', 'funding_stream_rfp_project_status', 'archived_by', 'table cif.funding_stream_rfp_project_status has archived_by column');
 
 
 -- Row level security tests --

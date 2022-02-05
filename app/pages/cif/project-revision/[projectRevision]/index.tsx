@@ -13,10 +13,9 @@ import SavingIndicator from "components/Form/SavingIndicator";
 import ProjecManagerForm from "components/Form/ProjectManagerForm";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
-import { mutation as discardProjectRevisionMutation } from "mutations/ProjectRevision/discardProjectRevision";
+import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
-import useDiscardMutation from "mutations/useDiscardMutation";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -56,7 +55,7 @@ export function ProjectRevision({
     updateProjectRevisionMutation
   );
   const [discardProjectRevision, discardingProjectRevision] =
-    useDiscardMutation("projectRevision", discardProjectRevisionMutation);
+    useDeleteProjectRevisionMutation();
 
   const lastEditedDate = useMemo(
     () => new Date(query.projectRevision.updatedAt),
@@ -133,7 +132,12 @@ export function ProjectRevision({
   };
 
   const discardRevision = async () => {
-    await discardProjectRevision(query.projectRevision.id, {
+    await discardProjectRevision({
+      variables: {
+        input: {
+          id: query.projectRevision.id,
+        },
+      },
       onCompleted: async () => {
         await router.push(getProjectsPageRoute());
       },

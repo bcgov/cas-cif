@@ -23,8 +23,8 @@ create table test_table_all (
   created_by int references cif.cif_user,
   updated_at timestamp with time zone not null default now(),
   updated_by int references cif.cif_user,
-  deleted_at timestamp with time zone,
-  deleted_by int references cif.cif_user
+  archived_at timestamp with time zone,
+  archived_by int references cif.cif_user
 );
 
 create table test_table_no_trigger_columns (
@@ -74,12 +74,12 @@ select isnt (
   'trigger sets updated_at on update'
 );
 
--- Sets deleted_by on update when deleted_at is changed
-update test_table_all set deleted_at=now();
+-- Sets archived_by on update when archived_at is changed
+update test_table_all set archived_at=now();
 select is (
-  (select deleted_by from test_table_all where id=1),
+  (select archived_by from test_table_all where id=1),
   (select id from cif.cif_user where uuid='11111111-1111-1111-1111-111111111112'),
-  'trigger sets deleted_by on update of deleted_at column'
+  'trigger sets archived_by on update of archived_at column'
 );
 
 -- Trigger does not error on insert when no created_at/by columns exist

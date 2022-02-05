@@ -18,7 +18,7 @@ tables/connect_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.i
 types/keycloak_jwt 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.keycloak_jwt type
 functions/session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.session function
 trigger_functions/update_timestamps 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.update_timestamps trigger function
-trigger_functions/deleted_records_are_immutable 2022-01-06T18:37:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to ensure that no changes to a deleted record can be saved
+trigger_functions/archived_records_are_immutable 2022-01-06T18:37:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to ensure that no changes to a deleted record can be saved
 trigger_functions/set_project_long_id [schemas/private] 2022-01-18T00:43:24Z Dylan Leard <dylan@button.is> # Trigger function to generate the project long id
 util_functions/upsert_timestamp_columns [schemas/private trigger_functions/update_timestamps] 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the upsert_timestamp_columns function
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
@@ -31,11 +31,11 @@ tables/funding_stream_rfp_project_status 2022-01-12T20:47:40Z Alex Zorkin <alex@
 tables/operator [schemas/main] 2021-11-30T22:34:14Z Dylan Leard <dylan@button.is> # Create the cif.operator table
 tables/project [tables/operator trigger_functions/set_project_long_id] 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
 util_functions/camel_to_snake_case 2021-12-11T00:37:54Z Matthieu Foucault <matthieu@button.is> # Add cif_private.camel_to_snake_case
-trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
+types/form_change_operation 2022-02-04T22:17:52Z Matthieu Foucault <matthieu@button.is> # add enum type for form_change.operation column
+trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case types/form_change_operation ] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
 tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
 trigger_functions/committed_changes_are_immutable 2022-01-06T23:40:27Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger to prevent committed changes from being altered
 trigger_functions/commit_project_revision 2021-12-07T00:37:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger function executed when a whole project revision is committed, triggering commit on the individual form_change records
-trigger_functions/discard_project_revision 2022-01-12T16:58:56Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to propagate the deletion of a project revision to the individual form_change records
 tables/project_revision 2021-12-07T00:39:51Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track global project revisions - containing multiple changes
 tables/form_change [tables/change_status] 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
 tables/attachment 2021-11-24T21:24:45Z Alex Zorkin <alex@bigthink.io> # Add schema for attachments
