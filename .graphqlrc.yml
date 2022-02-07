@@ -1,0 +1,3 @@
+# Allows autocompletion of GraphQL queries with the VSCode GraphQL extension
+schema: "app/schema/schema.graphql"
+documents: "app/**/*.{graphql,js,ts,jsx,tsx}"
