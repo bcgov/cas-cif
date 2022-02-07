@@ -5,6 +5,7 @@ import { ContactFormQuery } from "__generated__/ContactFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import ContactForm from "components/Contact/ContactForm";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
 import SavingIndicator from "components/Form/SavingIndicator";
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
@@ -27,6 +28,7 @@ const pageQuery = graphql`
 function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
   const { session, formChange } = usePreloadedQuery(pageQuery, preloadedQuery);
   const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
+  const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
   const router = useRouter();
 
   const lastEditedDate = useMemo(
@@ -82,6 +84,19 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
     });
   };
 
+  const handleDiscard = () => {
+    deleteFormChange({
+      variables: {
+        input: {
+          id: formChange.id,
+        },
+      },
+      onCompleted: () => {
+        router.push(getContactsPageRoute());
+      },
+    });
+  };
+
   return (
     <DefaultLayout session={session}>
       <header>
@@ -93,8 +108,10 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
       </header>
       <ContactForm
         formData={formChange.newFormData}
+        disabled={isDeletingFormChange || isUpdatingFormChange}
         onChange={handleChange}
         onSubmit={handleSubmit}
+        onDiscard={handleDiscard}
       />
       <style jsx>{`
         header {

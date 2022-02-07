@@ -8,7 +8,12 @@ const uiSchema = {
   comments: { "ui:widget": "TextAreaWidget" },
 };
 
-const ContactForm: React.FC<FormComponentProps> = (props) => {
+interface Props extends FormComponentProps {
+  disabled?: boolean;
+  onDiscard: () => void;
+}
+
+const ContactForm: React.FC<Props> = (props) => {
   return (
     <FormBase
       {...props}
@@ -16,6 +21,9 @@ const ContactForm: React.FC<FormComponentProps> = (props) => {
       uiSchema={uiSchema}
     >
       <Button type="submit">Submit</Button>
+      <Button type="button" onClick={props.onDiscard}>
+        Discard Changes
+      </Button>
     </FormBase>
   );
 };

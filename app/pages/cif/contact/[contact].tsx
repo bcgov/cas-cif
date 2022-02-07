@@ -13,6 +13,9 @@ const pageQuery = graphql`
   query ContactViewQuery($contact: ID!) {
     session {
       ...DefaultLayout_session
+      cifUserBySub {
+        id
+      }
     }
     contact(id: $contact) {
       id
@@ -21,6 +24,12 @@ const pageQuery = graphql`
       fullPhone
       email
       position
+      pendingFormChange {
+        id
+        cifUserByCreatedBy {
+          id
+        }
+      }
     }
   }
 `;
@@ -42,17 +51,42 @@ function ContactViewPage({ preloadedQuery }: RelayProps<{}, ContactViewQuery>) {
     });
   };
 
+  let editButton = null;
+  if (!contact.pendingFormChange) {
+    editButton = (
+      <Button
+        size="small"
+        disabled={isStartingContactRevision}
+        onClick={handleEditContact}
+      >
+        Edit
+      </Button>
+    );
+  } else {
+    const editedByCurrentUser =
+      session.cifUserBySub.id ===
+      contact.pendingFormChange.cifUserByCreatedBy.id;
+    editButton = (
+      <div>
+        <Button
+          size="small"
+          disabled={!editedByCurrentUser}
+          onClick={handleEditContact}
+        >
+          Resume Editing
+        </Button>
+        {!editedByCurrentUser && (
+          <div>This contact is currently being edited by another user.</div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <DefaultLayout session={session}>
       <header>
         <h2>Contact Information</h2>
-        <Button
-          size="small"
-          disabled={isStartingContactRevision}
-          onClick={handleEditContact}
-        >
-          Edit
-        </Button>
+        {editButton}
       </header>
       <dl>
         <dt>Name</dt>

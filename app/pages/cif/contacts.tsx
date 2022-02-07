@@ -9,7 +9,7 @@ import ContactTableRow from "components/Contact/ContactTableRow";
 import { Button } from "@button-inc/bcgov-theme";
 import { useCreateNewContactFormChange } from "mutations/Contact/createNewContactFormChange";
 import { useRouter } from "next/router";
-import { createContactFormChangeMutation$data } from "__generated__/createContactFormChangeMutation.graphql";
+import { createNewContactFormChangeMutation$data } from "__generated__/createNewContactFormChangeMutation.graphql";
 import { getContactFormPageRoute } from "pageRoutes";
 
 const pageQuery = graphql`
@@ -43,6 +43,9 @@ const pageQuery = graphql`
         }
       }
     }
+    pendingNewContactFormChange {
+      id
+    }
   }
 `;
 
@@ -54,14 +57,15 @@ const tableFilters = [
 ];
 
 function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
-  const { session, allContacts } = usePreloadedQuery(pageQuery, preloadedQuery);
+  const { session, allContacts, pendingNewContactFormChange } =
+    usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
   const [addContact, isAddingContact] = useCreateNewContactFormChange();
 
   const handleAddContact = () => {
     addContact({
       variables: {},
-      onCompleted: (response: createContactFormChangeMutation$data) => {
+      onCompleted: (response: createNewContactFormChangeMutation$data) => {
         router.push(
           getContactFormPageRoute(response.createFormChange.formChange.id)
         );
@@ -69,14 +73,24 @@ function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
     });
   };
 
+  const handleResumeAddContact = () => {
+    router.push(getContactFormPageRoute(pendingNewContactFormChange.id));
+  };
+
+  const createOrResumeButton = pendingNewContactFormChange ? (
+    <Button onClick={handleResumeAddContact}>Resume Contact Creation</Button>
+  ) : (
+    <Button onClick={handleAddContact} disabled={isAddingContact}>
+      Add a Contact
+    </Button>
+  );
+
   return (
     <DefaultLayout session={session}>
       <header>
         <h2>Contacts</h2>
+        {createOrResumeButton}
       </header>
-      <Button onClick={handleAddContact} disabled={isAddingContact}>
-        Add a Contact
-      </Button>
       <Table
         paginated
         totalRowCount={allContacts.totalCount}

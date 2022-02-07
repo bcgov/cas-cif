@@ -33,7 +33,7 @@ create function cif.create_form_change(
       and form_data_schema_name = create_form_change.form_data_schema_name
       and form_data_table_name = create_form_change.form_data_table_name
       and change_status = 'committed'
-      order by updated_at, id desc
+      order by updated_at desc, id desc
       limit 1
     )),
     operation,

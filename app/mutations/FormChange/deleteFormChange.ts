@@ -1,4 +1,5 @@
-import { graphql } from "react-relay";
+import { graphql, useMutation } from "react-relay";
+import { deleteFormChangeMutation } from "__generated__/deleteFormChangeMutation.graphql";
 
 export const mutation = graphql`
   mutation deleteFormChangeMutation(
@@ -10,3 +11,7 @@ export const mutation = graphql`
     }
   }
 `;
+
+export const useDeleteFormChange = () => {
+  return useMutation<deleteFormChangeMutation>(mutation);
+};

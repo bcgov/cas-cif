@@ -55595,6 +55595,18 @@
               "deprecationReason": null
             },
             {
+              "name": "pendingFormChange",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FormChange",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "phone",
               "description": "The phone number of this contact, stored in E.164 format",
               "args": [],
@@ -74813,7 +74825,7 @@
             },
             {
               "name": "createFormChange",
-              "description": "Creates a new form_change record.\nIf new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.\n",
+              "description": "Creates a new form_change record.\nIf new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.",
               "args": [
                 {
                   "name": "input",

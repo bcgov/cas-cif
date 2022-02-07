@@ -16695,6 +16695,7 @@ type Contact implements Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
+  pendingFormChange: FormChange
 
   """The phone number of this contact, stored in E.164 format"""
   phone: String
@@ -21933,7 +21934,6 @@ type Mutation {
   """
   Creates a new form_change record.
   If new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.
-
   """
   createFormChange(
     """
