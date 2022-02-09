@@ -9,6 +9,7 @@ import DisplayOnlyWidget from "lib/theme/widgets/DisplayOnlyWidget";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 import SelectParentWidget from "lib/theme/widgets/SelectParentWidget";
 import MoneyWidget from "lib/theme/widgets/MoneyWidget";
+import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -24,6 +25,7 @@ const theme: ThemeProps = {
     SelectWidget: SelectWidget,
     SelectParentWidget: SelectParentWidget,
     MoneyWidget: MoneyWidget,
+    PhoneNumberWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,

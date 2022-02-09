@@ -6,6 +6,7 @@ import { JSONSchema7 } from "json-schema";
 
 const uiSchema = {
   comments: { "ui:widget": "TextAreaWidget" },
+  phone: { "ui:widget": "PhoneNumberWidget" },
 };
 
 interface Props extends FormComponentProps {
