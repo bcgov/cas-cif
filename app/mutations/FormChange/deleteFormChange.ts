@@ -1,9 +1,12 @@
 import { graphql } from "react-relay";
 
 export const mutation = graphql`
-  mutation deleteFormChangeMutation($input: DeleteFormChangeInput!) {
+  mutation deleteFormChangeMutation(
+    $connections: [ID!]!
+    $input: DeleteFormChangeInput!
+  ) {
     deleteFormChange(input: $input) {
-      __typename
+      deletedFormChangeId @deleteEdge(connections: $connections)
     }
   }
 `;

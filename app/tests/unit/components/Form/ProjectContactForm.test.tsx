@@ -167,18 +167,10 @@ describe("The ProjectContactForm", () => {
       variables: {
         input: {
           id: "Form ID 2",
-          formChangePatch: {
-            deletedAt: expect.any(String),
-          },
         },
+        connections: expect.any(Array),
       },
       onCompleted: expect.any(Function),
-      updater: expect.any(Function),
-      optimisticResponse: {
-        updateFormChange: {
-          __typename: "UpdateFormChangePayload",
-        },
-      },
     });
   });
 

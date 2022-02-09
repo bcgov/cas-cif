@@ -12,7 +12,6 @@ import { mutation as deleteFormChangeMutation } from "mutations/FormChange/delet
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
-import { ConnectionHandler } from "react-relay";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 
@@ -102,28 +101,14 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const [discardFormChange] = useMutation(deleteFormChangeMutation);
   const deleteContact = (formChangeId: string) => {
-    const date = new Date().toISOString();
     discardFormChange({
       variables: {
         input: {
           id: formChangeId,
-          formChangePatch: {
-            deletedAt: date,
-          },
         },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          __typename: "UpdateFormChangePayload",
-        },
-      },
-      updater: (store) => {
-        const connectionId = ConnectionHandler.getConnectionID(
-          query.projectRevision.id,
-          "connection_formChangesByProjectRevisionId"
-        );
-        const connectionRecord = store.get(connectionId);
-        ConnectionHandler.deleteNode(connectionRecord, formChangeId);
+        connections: [
+          query.projectRevision.formChangesByProjectRevisionId.__id,
+        ],
       },
       onCompleted: () => {
         delete formRefs.current[formChangeId];
