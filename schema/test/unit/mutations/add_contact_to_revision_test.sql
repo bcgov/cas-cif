@@ -31,7 +31,7 @@ select results_eq(
   $$
     values(
       '2',
-      'INSERT'::varchar,
+      'create'::cif.form_change_operation,
       'cif'::varchar,
       'project_contact'::varchar,
       currval(pg_get_serial_sequence('cif.project_contact', 'id'))::int,

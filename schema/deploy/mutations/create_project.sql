@@ -54,7 +54,7 @@ begin
     'project_manager'
   ), (
     format('{ "projectId": %s, "contactIndex": 1 }', next_project_id)::jsonb,
-    'INSERT',
+    'create',
     'cif',
     'project_contact',
     nextval(pg_get_serial_sequence('cif.project_contact', 'id')),
