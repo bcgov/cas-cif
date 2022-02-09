@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(4);
 
 insert into cif.change_status (status, triggers_commit, active) values ('testcommitted', true, true), ('testpending', false, true);
 
@@ -18,13 +18,26 @@ select lives_ok(
   $$
     update test_table_with_status set test_col = 'test_changed_active' where test_col = 'test_active'
   $$,
-  'doesnt throw if the change status isn''t committed'
+  'doesnt throw on an update if the change status isn''t committed'
 );
 
 select is(
   (select count(*) from test_table_with_status where test_col = 'test_changed_active'),
   1::bigint,
   'allows the record to be updated if the change status isn''t committed'
+);
+
+select results_eq(
+  $$
+    with deleted as (
+      delete from test_table_with_status where test_col = 'test_changed_active' returning *
+    )
+    select count(*) from deleted;
+  $$,
+  $$
+  values (1::bigint)
+  $$,
+  'allows the record to be deleted if the change status isn''t committed'
 );
 
 select throws_ok(
