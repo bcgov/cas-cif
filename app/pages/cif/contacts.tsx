@@ -6,6 +6,11 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { NoHeaderFilter, TextFilter } from "components/Table/Filters";
 import Table from "components/Table";
 import ContactTableRow from "components/Contact/ContactTableRow";
+import { Button } from "@button-inc/bcgov-theme";
+import useCreateContactFormChange from "mutations/Contact/createContactFormChange";
+import { useRouter } from "next/router";
+import { createContactFormChangeMutation$data } from "__generated__/createContactFormChangeMutation.graphql";
+import { getContactFormPageRoute } from "pageRoutes";
 
 const pageQuery = graphql`
   query contactsQuery(
@@ -50,11 +55,28 @@ const tableFilters = [
 
 function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
   const { session, allContacts } = usePreloadedQuery(pageQuery, preloadedQuery);
+  const router = useRouter();
+  const [addContact, isAddingContact] = useCreateContactFormChange();
+
+  const handleAddContact = () => {
+    addContact({
+      variables: {},
+      onCompleted: (response: createContactFormChangeMutation$data) => {
+        router.push(
+          getContactFormPageRoute(response.createFormChange.formChange.id)
+        );
+      },
+    });
+  };
+
   return (
     <DefaultLayout session={session}>
       <header>
         <h2>Contacts</h2>
       </header>
+      <Button onClick={handleAddContact} disabled={isAddingContact}>
+        Add a Contact
+      </Button>
       <Table
         paginated
         totalRowCount={allContacts.totalCount}

@@ -6,7 +6,7 @@ const FormBorder: React.FC<Props> = (props) => {
   return (
     <>
       <fieldset>
-        <legend>{props.title}</legend>
+        {props.title && <legend>{props.title}</legend>}
         {props.children}
       </fieldset>
       <style jsx>
