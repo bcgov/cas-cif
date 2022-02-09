@@ -115,8 +115,10 @@ describe("The Create Project page", () => {
     );
 
     mockProjectForm.props.onChange({
-      someQueryData: "testvalue",
-      other: 123,
+      formData: {
+        someQueryData: "testvalue",
+        other: 123,
+      },
     });
 
     expect(commitFormChangeMutationSpy).toHaveBeenCalledTimes(1);

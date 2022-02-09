@@ -4,9 +4,9 @@ import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_allUsers$key } from "__generated__/ProjectManagerForm_allUsers.graphql";
 import FormBase from "./FormBase";
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
-import { FormProps } from "@rjsf/core";
+import FormComponentProps from "./Interfaces/FormComponentProps";
 
-interface Props extends FormProps<any> {
+interface Props extends FormComponentProps {
   allUsers: ProjectManagerForm_allUsers$key;
 }
 

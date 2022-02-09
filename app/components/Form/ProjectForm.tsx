@@ -7,9 +7,8 @@ import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
-import { FormProps } from "@rjsf/core";
-
-interface Props extends FormProps<any> {
+import FormComponentProps from "./Interfaces/FormComponentProps";
+interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
 }
 

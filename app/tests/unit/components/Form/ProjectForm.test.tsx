@@ -68,20 +68,28 @@ describe("The Project Form", () => {
       target: { value: "testidentifier" },
     });
 
-    expect(changeSpy).toHaveBeenCalledWith({
-      rfpNumber: "testidentifier",
-      summary: undefined,
-    });
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        formData: {
+          rfpNumber: "testidentifier",
+          summary: undefined,
+        },
+      })
+    );
     changeSpy.mockClear();
 
     fireEvent.change(screen.getByLabelText(/summary/i), {
       target: { value: "testsummary" },
     });
 
-    expect(changeSpy).toHaveBeenCalledWith({
-      rfpNumber: "testidentifier",
-      summary: "testsummary",
-    });
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        formData: {
+          rfpNumber: "testidentifier",
+          summary: "testsummary",
+        },
+      })
+    );
   });
   it("loads with the correct initial form data", () => {
     props.formData = {
