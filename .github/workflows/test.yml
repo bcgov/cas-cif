@@ -207,5 +207,5 @@ jobs:
           target: "http://localhost:3004/"
           rules_file_name: ".zap/rules.tsv"
           cmd_options: "-a -d -T 5 -m 2"
-          issue_title: OWAP Baseline
-          fail_action: true
+          issue_title: OWASP Baseline
+          fail_action: false
