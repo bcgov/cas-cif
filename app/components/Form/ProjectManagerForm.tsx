@@ -3,10 +3,10 @@ import React, { forwardRef, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_allUsers$key } from "__generated__/ProjectManagerForm_allUsers.graphql";
 import FormBase from "./FormBase";
-import FormComponentProps from "./FormComponentProps";
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
+import { FormProps } from "@rjsf/core";
 
-interface Props extends FormComponentProps {
+interface Props extends FormProps<any> {
   allUsers: ProjectManagerForm_allUsers$key;
 }
 

@@ -18,9 +18,6 @@ type AddContactToRevisionPayload {
   cifUserByCreatedBy: CifUser
 
   """Reads a single `CifUser` that is related to this `FormChange`."""
-  cifUserByDeletedBy: CifUser
-
-  """Reads a single `CifUser` that is related to this `FormChange`."""
   cifUserByUpdatedBy: CifUser
 
   """

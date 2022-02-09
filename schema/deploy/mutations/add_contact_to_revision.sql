@@ -21,7 +21,7 @@ as $add_contact_form_change$
       (select form_data_record_id from cif.form_change where form_data_schema_name='cif' and form_data_table_name='project' and project_revision_id=$1),
       $2
     )::jsonb,
-    'INSERT',
+    'create',
     'cif',
     'project_contact',
     nextval(pg_get_serial_sequence('cif.project_contact', 'id')),

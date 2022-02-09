@@ -80,18 +80,6 @@
               "deprecationReason": null
             },
             {
-              "name": "cifUserByDeletedBy",
-              "description": "Reads a single `CifUser` that is related to this `FormChange`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "CifUser",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "cifUserByUpdatedBy",
               "description": "Reads a single `CifUser` that is related to this `FormChange`.",
               "args": [],

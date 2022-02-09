@@ -8,7 +8,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
-import { mutation as discardFormChangeMutation } from "mutations/FormChange/discardFormChange";
+import { mutation as deleteFormChangeMutation } from "mutations/FormChange/deleteFormChange";
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
@@ -43,16 +43,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             id
             rowId
             formChangesByProjectRevisionId(
-              filter: {
-                formDataTableName: { equalTo: "project_contact" }
-                deletedAt: { isNull: true }
-              }
+              filter: { formDataTableName: { equalTo: "project_contact" } }
               first: 2147483647
-            )
-              @connection(
-                key: "connection_formChangesByProjectRevisionId"
-                filters: ["deletedAt"]
-              ) {
+            ) @connection(key: "connection_formChangesByProjectRevisionId") {
               __id
               edges {
                 node {
@@ -107,7 +100,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
   };
 
-  const [discardFormChange] = useMutation(discardFormChangeMutation);
+  const [discardFormChange] = useMutation(deleteFormChangeMutation);
   const deleteContact = (formChangeId: string) => {
     const date = new Date().toISOString();
     discardFormChange({
@@ -214,7 +207,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     onChange={(change) => {
                       updateFormChange(primaryContactForm.id, change);
                     }}
-                    onFormErrors={() => {}}
                     schema={contactSchema}
                     uiSchema={uiSchema}
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
@@ -246,7 +238,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       onChange={(change) => {
                         updateFormChange(form.id, change);
                       }}
-                      onFormErrors={() => {}}
                       schema={contactSchema}
                       uiSchema={uiSchema}
                       ObjectFieldTemplate={EmptyObjectFieldTemplate}

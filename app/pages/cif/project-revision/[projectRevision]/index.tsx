@@ -163,7 +163,10 @@ export function ProjectRevision({
               query={query}
               formData={query.projectRevision.projectFormChange.newFormData}
               onChange={(change) =>
-                handleChange(query.projectRevision.projectFormChange, change)
+                handleChange(
+                  query.projectRevision.projectFormChange,
+                  change.formData
+                )
               }
             />
           </Grid.Col>
@@ -176,7 +179,7 @@ export function ProjectRevision({
               onChange={(change) =>
                 handleChange(
                   query.projectRevision.projectManagerFormChange,
-                  change
+                  change.formData
                 )
               }
               allUsers={query}
