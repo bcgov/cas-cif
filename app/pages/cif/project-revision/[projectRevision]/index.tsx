@@ -16,6 +16,9 @@ import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevi
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
+import ProjectContactForm from "components/Form/ProjectContactForm";
+import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -37,6 +40,7 @@ const pageQuery = graphql`
       }
       ...ProjectForm_query
       ...ProjectManagerForm_allUsers
+      ...ProjectContactForm_query
     }
   }
 `;
@@ -46,6 +50,7 @@ export function ProjectRevision({
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const projectFormRef = useRef(null);
   const projectManagerFormRef = useRef(null);
+  const projectContactFormRef = useRef<ISupportExternalValidation>(null);
 
   const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
@@ -90,25 +95,15 @@ export function ProjectRevision({
     });
   };
 
-  const triggerFormSelfValidation = (formObject: any): [] => {
-    formObject.onSubmit({
-      preventDefault: () => {},
-      persist: () => {},
-    });
-
-    // Effectively validating the form a second time to retrieve the errors
-    const validationResult = formObject.validate(formObject.state.formData);
-    return validationResult.errors;
-  };
-
   /**
    *  Function: approve staged change, trigger an insert on the project
    *  table & redirect to the project page
    */
   const commitProject = async () => {
     const errors = [
-      ...triggerFormSelfValidation(projectFormRef.current),
-      ...triggerFormSelfValidation(projectManagerFormRef.current),
+      ...validateFormWithErrors(projectFormRef.current),
+      ...validateFormWithErrors(projectManagerFormRef.current),
+      ...projectContactFormRef.current.selfValidate(),
     ];
 
     if (errors.length > 0) {
@@ -168,7 +163,10 @@ export function ProjectRevision({
               query={query}
               formData={query.projectRevision.projectFormChange.newFormData}
               onChange={(change) =>
-                handleChange(query.projectRevision.projectFormChange, change)
+                handleChange(
+                  query.projectRevision.projectFormChange,
+                  change.formData
+                )
               }
             />
           </Grid.Col>
@@ -181,10 +179,16 @@ export function ProjectRevision({
               onChange={(change) =>
                 handleChange(
                   query.projectRevision.projectManagerFormChange,
-                  change
+                  change.formData
                 )
               }
               allUsers={query}
+            />
+            <ProjectContactForm
+              query={query}
+              setValidatingForm={(validator) =>
+                (projectContactFormRef.current = validator)
+              }
             />
           </Grid.Col>
         </Grid.Row>

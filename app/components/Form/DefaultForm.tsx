@@ -1,6 +1,4 @@
-import FormComponentProps from "./FormComponentProps";
-
-interface Props extends FormComponentProps {
+interface Props {
   tableName: string;
 }
 

@@ -31,6 +31,7 @@ set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
 -- fill the forms and commit the current project revision
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.funding_stream(name, description) values ('stream', 'stream description');
+insert into cif.contact(given_name, family_name) values ('John', 'Test');
 
 update cif.form_change set new_form_data=format('{
       "projectName": "name",
@@ -55,6 +56,20 @@ update cif.form_change set new_form_data=format('{
     (select id from cif.cif_user order by id desc limit 1)
   )::jsonb
   where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_manager';
+
+update cif.form_change set new_form_data=format('{
+      "projectId": %s,
+      "contactIndex": %s,
+      "contactId": %s
+    }',
+    (select form_data_record_id from cif.form_change
+        where form_data_table_name='project'
+        and project_revision_id=(select id from cif.project_revision order by id desc limit 1)),
+    1,
+    (select id from cif.contact order by id desc limit 1)
+  )::jsonb
+  where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_contact';
+
 
 update cif.project_revision set change_status='committed' where id=(select id from cif.project_revision order by id desc limit 1);
 

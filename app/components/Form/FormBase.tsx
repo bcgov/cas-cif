@@ -1,33 +1,19 @@
 import Form from "lib/theme/FormWithTheme";
-import type { JSONSchema7 } from "json-schema";
-import FormComponentProps from "./FormComponentProps";
 import { forwardRef } from "react";
-interface Props extends FormComponentProps {
-  schema: JSONSchema7;
-  uiSchema: {};
-  widgets?: any;
-  formContext?: any;
-}
+import { FormProps } from "@rjsf/core";
 
-const FormBase: React.ForwardRefRenderFunction<any, Props> = (
-  { formData, onChange, schema, uiSchema, formContext, widgets },
+const FormBase: React.ForwardRefRenderFunction<any, FormProps<any>> = (
+  props,
   ref
 ) => {
   return (
     <>
       <Form
+        {...props}
         // @ts-ignore
         ref={ref}
         noHtml5Validate
-        schema={schema}
-        uiSchema={uiSchema}
-        formData={formData}
-        onChange={(change) => {
-          onChange(change.formData);
-        }}
-        widgets={widgets}
         omitExtraData
-        formContext={formContext}
       ></Form>
       <style jsx>{`
         :global(label) {

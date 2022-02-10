@@ -1,6 +1,5 @@
 import type { JSONSchema7 } from "json-schema";
 import FormBase from "../Form/FormBase";
-import FormComponentProps from "../Form/FormComponentProps";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
 import { forwardRef, useMemo } from "react";
@@ -8,7 +7,7 @@ import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
-
+import FormComponentProps from "./Interfaces/FormComponentProps";
 interface Props extends FormComponentProps {
   query: ProjectForm_query$key;
 }

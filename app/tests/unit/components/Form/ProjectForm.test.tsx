@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import FormComponentProps from "components/Form/FormComponentProps";
 import ProjectForm from "components/Form/ProjectForm";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import {
@@ -10,6 +9,7 @@ import {
 import compiledProjectFormQuery, {
   ProjectFormQuery,
 } from "__generated__/ProjectFormQuery.graphql";
+import { FormProps } from "@rjsf/core";
 
 const loadedQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
@@ -20,10 +20,10 @@ const loadedQuery = graphql`
   }
 `;
 
-const props: FormComponentProps = {
+const props: FormProps<any> = {
   formData: {},
   onChange: jest.fn(),
-  onFormErrors: jest.fn(),
+  schema: {},
 };
 
 let environment;
@@ -68,20 +68,28 @@ describe("The Project Form", () => {
       target: { value: "testidentifier" },
     });
 
-    expect(changeSpy).toHaveBeenCalledWith({
-      rfpNumber: "testidentifier",
-      summary: undefined,
-    });
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        formData: {
+          rfpNumber: "testidentifier",
+          summary: undefined,
+        },
+      })
+    );
     changeSpy.mockClear();
 
     fireEvent.change(screen.getByLabelText(/summary/i), {
       target: { value: "testsummary" },
     });
 
-    expect(changeSpy).toHaveBeenCalledWith({
-      rfpNumber: "testidentifier",
-      summary: "testsummary",
-    });
+    expect(changeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        formData: {
+          rfpNumber: "testidentifier",
+          summary: "testsummary",
+        },
+      })
+    );
   });
   it("loads with the correct initial form data", () => {
     props.formData = {

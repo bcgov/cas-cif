@@ -10,10 +10,12 @@ import compiledProjectRevisionQuery, {
 } from "__generated__/ProjectRevisionQuery.graphql";
 import ProjectForm from "components/Form/ProjectForm";
 import ProjectManagerForm from "components/Form/ProjectManagerForm";
+import ProjectContactForm from "components/Form/ProjectContactForm";
 import { mocked } from "jest-mock";
 
 jest.mock("components/Form/ProjectForm");
 jest.mock("components/Form/ProjectManagerForm");
+jest.mock("components/Form/ProjectContactForm");
 
 const environment = createMockEnvironment();
 
@@ -71,9 +73,16 @@ describe("The Create Project page", () => {
   beforeEach(() => {
     mocked(ProjectForm).render.mockReset();
     mocked(ProjectManagerForm).render.mockReset();
+    mocked(ProjectContactForm).mockReset();
 
     mocked(ProjectForm).render.mockImplementation(() => null);
     mocked(ProjectManagerForm).render.mockImplementation(() => null);
+    mocked(ProjectContactForm).mockImplementation((props) => {
+      props.setValidatingForm({
+        selfValidate: jest.fn().mockImplementation(() => []),
+      });
+      return null;
+    });
   });
 
   const initialQueryRef = loadQuery<ProjectRevisionQuery>(
@@ -106,8 +115,10 @@ describe("The Create Project page", () => {
     );
 
     mockProjectForm.props.onChange({
-      someQueryData: "testvalue",
-      other: 123,
+      formData: {
+        someQueryData: "testvalue",
+        other: 123,
+      },
     });
 
     expect(commitFormChangeMutationSpy).toHaveBeenCalledTimes(1);
