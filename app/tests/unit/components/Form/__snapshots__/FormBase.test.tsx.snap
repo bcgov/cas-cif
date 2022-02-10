@@ -51,14 +51,6 @@ exports[`The FormBase component renders a test schema 1`] = `
         </div>
       </div>
     </div>
-    <div>
-      <button
-        class="btn btn-info"
-        type="submit"
-      >
-        Submit
-      </button>
-    </div>
   </form>
 </div>
 `;

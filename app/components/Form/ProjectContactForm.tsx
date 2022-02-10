@@ -8,7 +8,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
-import { mutation as deleteFormChangeMutation } from "mutations/FormChange/deleteFormChange";
+import { useDeleteFormChangeWithConnection } from "mutations/FormChange/deleteFormChange";
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
@@ -97,7 +97,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
   };
 
-  const [discardFormChange] = useMutation(deleteFormChangeMutation);
+  const [discardFormChange] = useDeleteFormChangeWithConnection();
   const deleteContact = (formChangeId: string) => {
     discardFormChange({
       variables: {

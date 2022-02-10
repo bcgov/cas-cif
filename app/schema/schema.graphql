@@ -21900,6 +21900,13 @@ input KeycloakJwtFilter {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  addContactToRevision(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: AddContactToRevisionInput!
+  ): AddContactToRevisionPayload
+
   """Creates a single `Attachment`."""
   createAttachment(
     """
