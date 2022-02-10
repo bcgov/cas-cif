@@ -1,18 +1,31 @@
 begin;
-select plan(20);
+select plan(12);
 
 select has_table('cif', 'operator', 'table cif.operator exists');
-select has_column('cif', 'operator', 'id', 'table cif.operator has id column');
-select has_column('cif', 'operator', 'legal_name', 'table cif.operator has legal_name column');
-select has_column('cif', 'operator', 'trade_name', 'table cif.operator has trade_name column');
-select has_column('cif', 'operator', 'bc_registry_id', 'table cif.operator has bc_registry_id column');
-select has_column('cif', 'operator', 'created_at', 'table cif.operator has created_at column');
-select has_column('cif', 'operator', 'updated_at', 'table cif.operator has updated_at column');
-select has_column('cif', 'operator', 'archived_at', 'table cif.operator has archived_at column');
-select has_column('cif', 'operator', 'created_by', 'table cif.operator has created_by column');
-select has_column('cif', 'operator', 'updated_by', 'table cif.operator has updated_by column');
-select has_column('cif', 'operator', 'archived_by', 'table cif.operator has archived_by column');
 
+select columns_are(
+  'cif',
+  'operator',
+  ARRAY[
+    'id',
+    'legal_name',
+    'trade_name',
+    'bc_registry_id',
+    'swrs_organisation_id',
+    'legal_name_updated_by_cif',
+    'trade_name_updated_by_cif',
+    'operator_code',
+    'created_at',
+    'created_by',
+    'updated_at',
+    'updated_by',
+    'archived_at',
+    'archived_by'
+  ],
+  'columns in cif.operator match expected columns'
+);
+
+select has_trigger( 'cif', 'operator', 'operator_data_manually_updated', 'operator table has the operator_data_manually_updated trigger' );
 
 insert into cif.operator
   (legal_name, trade_name, bc_registry_id) values
