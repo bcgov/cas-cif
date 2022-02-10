@@ -1,0 +1,23 @@
+name: "Local CIF app run"
+description: "Runs the CIF app locally"
+runs:
+  using: composite
+  steps:
+    - name: start postgres and create database
+      shell: bash
+      run: make start_pg && make create_db
+    - run: createuser -s postgres
+      shell: bash
+    - name: deploy migrations
+      shell: bash
+      run: docker run --network=host -e "PGUSER=postgres" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
+    - name: start app
+      shell: bash
+      run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "yarn start ENABLE_MOCK_AUTH"
+    - name: start minio
+      shell: bash
+      run: docker run -d --network=host -p 9000:9000 minio/minio:RELEASE.2021-04-22T15-44-28Z server /data
+    - name: start storage api
+      shell: bash
+      run: | # pragma: allowlist secret
+        docker run -d --network=host -e "STORAGE_API_KEY=_doNotUseThisApiKeyInProduction_" -e "MINIO_ACCESS_KEY=minioadmin" -e "MINIO_SECRET_KEY=minioadmin" -e "MINIO_HOST_URL=minio:9000" -p 8000:8000 gcr.io/ggl-cas-storage/cas-cif-storage:${{ github.sha }}
