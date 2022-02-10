@@ -10,4 +10,6 @@ create function cif.contact_pending_form_change(cif.contact) returns cif.form_ch
   and change_status = 'pending';
 $$ language sql stable;
 
+comment on function cif.contact_pending_form_change(cif.contact) is 'Returns the pending form change editing the contact, if it exists.';
+
 commit;
