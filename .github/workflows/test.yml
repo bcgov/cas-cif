@@ -2,7 +2,7 @@ name: Test CIF App
 
 on:
   push:
-    branches: [develop, chore/owasp-scan]
+    branches: [develop]
   pull_request:
     branches: [develop]
 
