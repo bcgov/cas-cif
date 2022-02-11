@@ -38,3 +38,8 @@ deploy-db:
 
 download-dags:
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+
+ggircs:
+  namespace: 9212c9-dev
+  prefix: 9212c9
+  environment: dev

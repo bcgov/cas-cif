@@ -98,3 +98,10 @@ download-dags:
   dagId: fetch_and_save_dag_from_github
   helm:
     hook: "pre-install,pre-upgrade"
+
+ggircs:
+  namespace: ~
+  prefix: ~
+  environment: ~
+  service: cas-ggircs-patroni
+  instanceName: cas-ggircs
