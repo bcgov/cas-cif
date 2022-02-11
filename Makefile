@@ -109,7 +109,7 @@ drop_foreign_test_db:
 	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \
 		grep -q 0 || \
 		$(PSQL) -d postgres -c "DROP DATABASE foreign_test_db" && \
-		$(PSQL) -d postgres -c "DROP USER foreign_user";
+		$(PSQL) -d postgres -c "DROP USER IF EXISTS foreign_user";
 
 .PHONY: create_foreign_test_db
 create_foreign_test_db: ## Ensure that the $(DB_NAME)_test database exists
