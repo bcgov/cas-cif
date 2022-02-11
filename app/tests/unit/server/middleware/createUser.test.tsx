@@ -1,44 +1,38 @@
+/**
+ * @jest-environment node
+ */
+
 import createUserMiddleware from "server/middleware/createUser";
-
-global.fetch = jest
-  .fn()
-  .mockImplementation(() => Promise.resolve({ ok: true }));
-
-beforeEach(() => {
-  fetch.mockClear();
-});
 
 describe("The create user middleware", () => {
   it("calls the local graphql endpoint with a createUserFromSession mutation and the request cookies", async () => {
-    const middlewareUnderTest = createUserMiddleware(
-      "somehost.example.com",
-      123987
-    );
+    const performQuery = jest
+      .spyOn(require("server/middleware/graphql"), "performQuery")
+      .mockImplementation(() => {
+        return {
+          data: {
+            createUserFromSession: {
+              __typename: "CreateUserFromSessionPayload",
+            },
+          },
+        };
+      });
 
-    await middlewareUnderTest(
-      { headers: { cookie: "testsessioncookie" } } as any,
-      null,
-      jest.fn()
-    );
+    const middlewareUnderTest = createUserMiddleware();
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      "http://somehost.example.com:123987/graphql",
-      {
-        body: '{"query":"\\nmutation {\\n  createUserFromSession(input: {}) {\\n    __typename\\n  }\\n}\\n","variables":null}',
-        headers: {
-          "Content-Type": "application/json",
-          cookie: "testsessioncookie",
-        },
-        method: "POST",
-      }
+    const req = { claims: { sub: "1234" } } as any;
+    await middlewareUnderTest(req, null, jest.fn());
+
+    expect(performQuery).toHaveBeenCalledWith(
+      expect.stringContaining("createUserFromSession(input: {})"),
+
+      {},
+      req
     );
   });
 
   it("does not break the middleware chain", async () => {
-    const middlewareUnderTest = createUserMiddleware(
-      "somehost.example.com",
-      123987
-    );
+    const middlewareUnderTest = createUserMiddleware();
 
     const next = jest.fn();
 
@@ -47,41 +41,24 @@ describe("The create user middleware", () => {
     expect(next).toHaveBeenCalled();
   });
 
-  it("throws on network error", async () => {
-    global.fetch = jest.fn().mockImplementation(() => {
-      throw new Error("Network Error");
-    });
+  it("throws on error", async () => {
+    jest
+      .spyOn(require("server/middleware/graphql"), "performQuery")
+      .mockImplementation(() => {
+        return {
+          errors: [{ message: "error" }],
+          data: {
+            createUserFromSession: {
+              __typename: "CreateUserFromSessionPayload",
+            },
+          },
+        };
+      });
 
-    const middlewareUnderTest = createUserMiddleware("a", 1);
-
-    await expect(async () => {
-      await middlewareUnderTest(
-        { headers: { cookie: "acookie" } } as any,
-        null,
-        jest.fn()
-      );
-    }).rejects.toThrow("Network Error");
-  });
-
-  it("throws on http error", async () => {
-    fetch.mockImplementation(() =>
-      Promise.resolve({
-        ok: false,
-        status: 599,
-        statusText: "Bad Test Server Error",
-      })
-    );
-
-    const middlewareUnderTest = createUserMiddleware("a", 1);
+    const middlewareUnderTest = createUserMiddleware();
 
     await expect(async () => {
-      await middlewareUnderTest(
-        { headers: { cookie: "acookie" } } as any,
-        null,
-        jest.fn()
-      );
-    }).rejects.toThrow(
-      "Failed to create user from session: Bad Test Server Error"
-    );
+      await middlewareUnderTest({ claims: {} } as any, null, jest.fn());
+    }).rejects.toThrow("Failed to create user from session:");
   });
 });
