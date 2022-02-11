@@ -55,8 +55,14 @@ cif_app_user = PythonOperator(
     op_args=['cas-cif-app-user', cif_namespace],
     dag=deploy_db_dag)
 
+cif_import_operator = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='cif_import_operator',
+    op_args=['cas-cif-swrs-operator-import', cif_namespace],
+    dag=deploy_db_dag)
 
-cif_db_init >> cif_app_schema >> cif_app_user
+
+cif_db_init >> cif_app_schema >> cif_app_user >> cif_import_operator
 
 """
 ###############################################################################
