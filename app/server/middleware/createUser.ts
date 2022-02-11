@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-
+import { performQuery } from "./graphql";
 // This middleware calls the createUserFromSession mutation.
 // The request to that mutation is made with the current session
 // cookies to ensure authentication.
@@ -12,28 +12,13 @@ mutation {
 }
 `;
 
-const createUserMiddleware = (host: string, port: number) => {
+const createUserMiddleware = () => {
   return async (req: Request, _res: Response, next: NextFunction) => {
-    const fetchOptions = {
-      method: "POST",
-      body: JSON.stringify({
-        query: createUserMutation,
-        variables: null,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        cookie: req.headers.cookie,
-      },
-    };
+    const response = await performQuery(createUserMutation, {}, req);
 
-    const response = await fetch(
-      `http://${host}:${port}/graphql`,
-      fetchOptions
-    );
-
-    if (!response?.ok) {
+    if (response.errors) {
       throw new Error(
-        `Failed to create user from session: ${response.statusText}`
+        `Failed to create user from session:\n${response.errors.join("\n")}`
       );
     }
 

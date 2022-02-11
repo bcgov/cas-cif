@@ -48,7 +48,7 @@ app.prepare().then(async () => {
 
   server.use(await ssoMiddleware());
 
-  server.get("/auth-callback", createUserMiddleware("localhost", port));
+  server.get("/auth-callback", createUserMiddleware());
 
   server.use(cookieParser());
 
