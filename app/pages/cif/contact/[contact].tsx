@@ -34,7 +34,9 @@ const pageQuery = graphql`
   }
 `;
 
-function ContactViewPage({ preloadedQuery }: RelayProps<{}, ContactViewQuery>) {
+export function ContactViewPage({
+  preloadedQuery,
+}: RelayProps<{}, ContactViewQuery>) {
   const { session, contact } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
   const [startContactRevision, isStartingContactRevision] =
