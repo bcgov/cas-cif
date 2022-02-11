@@ -16695,6 +16695,8 @@ type Contact implements Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
+
+  """Returns the pending form change editing the contact, if it exists."""
   pendingFormChange: FormChange
 
   """The phone number of this contact, stored in E.164 format"""

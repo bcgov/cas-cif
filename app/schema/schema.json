@@ -55596,7 +55596,7 @@
             },
             {
               "name": "pendingFormChange",
-              "description": null,
+              "description": "Returns the pending form change editing the contact, if it exists.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -99125,6 +99125,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Operator",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "pendingNewContactFormChange",
+              "description": "returns a form_change for a new contact in the pending state for the current user, i.e. allows to resume a contact creation",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FormChange",
                 "ofType": null
               },
               "isDeprecated": false,
