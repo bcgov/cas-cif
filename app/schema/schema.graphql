@@ -487,6 +487,11 @@ type ChangeStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -520,6 +525,11 @@ type ChangeStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -555,6 +565,11 @@ type ChangeStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -588,6 +603,11 @@ type ChangeStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -735,6 +755,11 @@ type ChangeStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1500,6 +1525,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1533,6 +1563,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1568,6 +1603,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1601,6 +1641,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1636,6 +1681,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1669,6 +1719,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1704,6 +1759,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1737,6 +1797,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1772,6 +1837,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1805,6 +1875,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1849,6 +1924,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1882,6 +1962,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1917,6 +2002,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -1950,6 +2040,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -1985,6 +2080,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2018,6 +2118,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2053,6 +2158,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2086,6 +2196,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2121,6 +2236,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2154,6 +2274,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2189,6 +2314,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2222,6 +2352,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2257,6 +2392,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2290,6 +2430,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2325,6 +2470,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2358,6 +2508,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2393,6 +2548,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2426,6 +2586,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2461,6 +2626,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2494,6 +2664,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2529,6 +2704,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2562,6 +2742,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2597,6 +2782,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2630,6 +2820,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2665,6 +2860,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2698,6 +2898,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2733,6 +2938,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2766,6 +2976,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2801,6 +3016,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2834,6 +3054,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2869,6 +3094,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2902,6 +3132,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -2937,6 +3172,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -2970,6 +3210,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3005,6 +3250,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3038,6 +3288,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3073,6 +3328,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3106,6 +3366,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3141,6 +3406,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3174,6 +3444,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3209,6 +3484,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3242,6 +3522,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3277,6 +3562,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3310,6 +3600,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3345,6 +3640,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3378,6 +3678,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3413,6 +3718,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3446,6 +3756,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3481,6 +3796,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3514,6 +3834,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3549,6 +3874,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3582,6 +3912,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3617,6 +3952,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3650,6 +3990,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3685,6 +4030,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3718,6 +4068,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3753,6 +4108,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3786,6 +4146,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3821,6 +4186,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3854,6 +4224,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3889,6 +4264,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3922,6 +4302,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -3957,6 +4342,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -3990,6 +4380,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4025,6 +4420,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4058,6 +4458,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4093,6 +4498,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4126,6 +4536,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4161,6 +4576,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4194,6 +4614,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4229,6 +4654,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4262,6 +4692,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4297,6 +4732,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4330,6 +4770,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4365,6 +4810,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4398,6 +4848,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4433,6 +4888,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4466,6 +4926,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4501,6 +4966,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4534,6 +5004,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4569,6 +5044,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4602,6 +5082,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4637,6 +5122,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4670,6 +5160,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4705,6 +5200,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4738,6 +5238,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4773,6 +5278,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4806,6 +5316,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -4841,6 +5356,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4875,6 +5395,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -4908,6 +5433,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5025,6 +5555,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5060,6 +5595,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5097,6 +5637,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5130,6 +5675,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5165,6 +5715,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5198,6 +5753,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5233,6 +5793,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5266,6 +5831,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5301,6 +5871,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5334,6 +5909,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5369,6 +5949,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5402,6 +5987,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5437,6 +6027,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5470,6 +6065,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5505,6 +6105,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5538,6 +6143,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5573,6 +6183,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5606,6 +6221,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5649,6 +6269,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5682,6 +6307,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5717,6 +6347,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5750,6 +6385,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5785,6 +6425,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5818,6 +6463,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5853,6 +6503,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5886,6 +6541,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5921,6 +6581,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -5954,6 +6619,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -5989,6 +6659,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6023,6 +6698,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6056,6 +6736,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6227,6 +6912,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6260,6 +6950,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6295,6 +6990,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6328,6 +7028,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6363,6 +7068,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6396,6 +7106,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6431,6 +7146,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6464,6 +7184,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6499,6 +7224,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6532,6 +7262,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6567,6 +7302,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6600,6 +7340,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6635,6 +7380,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6668,6 +7418,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6703,6 +7458,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6736,6 +7496,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6771,6 +7536,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6804,6 +7574,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -6839,6 +7614,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6873,6 +7653,11 @@ type CifUser implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -6906,6 +7691,11 @@ type CifUser implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -7229,6 +8019,11 @@ type CifUserCifUsersByAttachmentArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7290,6 +8085,11 @@ type CifUserCifUsersByAttachmentArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -7353,6 +8153,11 @@ type CifUserCifUsersByAttachmentCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7414,6 +8219,11 @@ type CifUserCifUsersByAttachmentCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -7477,6 +8287,11 @@ type CifUserCifUsersByAttachmentUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7538,6 +8353,11 @@ type CifUserCifUsersByAttachmentUpdatedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -7601,6 +8421,11 @@ type CifUserCifUsersByChangeStatusArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7662,6 +8487,11 @@ type CifUserCifUsersByChangeStatusArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -7725,6 +8555,11 @@ type CifUserCifUsersByChangeStatusCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7786,6 +8621,11 @@ type CifUserCifUsersByChangeStatusCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -7849,6 +8689,11 @@ type CifUserCifUsersByChangeStatusUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7911,6 +8756,11 @@ type CifUserCifUsersByChangeStatusUpdatedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -7970,6 +8820,11 @@ type CifUserCifUsersByCifUserArchivedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8031,6 +8886,11 @@ type CifUserCifUsersByCifUserArchivedByAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8090,6 +8950,11 @@ type CifUserCifUsersByCifUserCreatedByAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8151,6 +9016,11 @@ type CifUserCifUsersByCifUserCreatedByAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8210,6 +9080,11 @@ type CifUserCifUsersByCifUserUpdatedByAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8271,6 +9146,11 @@ type CifUserCifUsersByCifUserUpdatedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8330,6 +9210,11 @@ type CifUserCifUsersByContactArchivedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8391,6 +9276,11 @@ type CifUserCifUsersByContactArchivedByAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8450,6 +9340,11 @@ type CifUserCifUsersByContactCreatedByAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8511,6 +9406,11 @@ type CifUserCifUsersByContactCreatedByAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8571,6 +9471,11 @@ type CifUserCifUsersByContactUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8630,6 +9535,11 @@ type CifUserCifUsersByContactUpdatedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8820,6 +9730,11 @@ type CifUserCifUsersByFundingStreamArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -8881,6 +9796,11 @@ type CifUserCifUsersByFundingStreamArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -8944,6 +9864,11 @@ type CifUserCifUsersByFundingStreamCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9005,6 +9930,11 @@ type CifUserCifUsersByFundingStreamCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9068,6 +9998,11 @@ type CifUserCifUsersByFundingStreamRfpArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9129,6 +10064,11 @@ type CifUserCifUsersByFundingStreamRfpArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9192,6 +10132,11 @@ type CifUserCifUsersByFundingStreamRfpCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9253,6 +10198,11 @@ type CifUserCifUsersByFundingStreamRfpCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9320,6 +10270,11 @@ type CifUserCifUsersByFundingStreamRfpProjectStatusArchivedByAndCreatedByManyToM
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9385,6 +10340,11 @@ type CifUserCifUsersByFundingStreamRfpProjectStatusArchivedByAndUpdatedByManyToM
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9452,6 +10412,11 @@ type CifUserCifUsersByFundingStreamRfpProjectStatusCreatedByAndArchivedByManyToM
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9517,6 +10482,11 @@ type CifUserCifUsersByFundingStreamRfpProjectStatusCreatedByAndUpdatedByManyToMa
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9584,6 +10554,11 @@ type CifUserCifUsersByFundingStreamRfpProjectStatusUpdatedByAndArchivedByManyToM
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9650,6 +10625,11 @@ type CifUserCifUsersByFundingStreamRfpProjectStatusUpdatedByAndCreatedByManyToMa
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9711,6 +10691,11 @@ type CifUserCifUsersByFundingStreamRfpUpdatedByAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9774,6 +10759,11 @@ type CifUserCifUsersByFundingStreamRfpUpdatedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9836,6 +10826,11 @@ type CifUserCifUsersByFundingStreamUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -9897,6 +10892,11 @@ type CifUserCifUsersByFundingStreamUpdatedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -9961,6 +10961,11 @@ type CifUserCifUsersByOperatorArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10020,6 +11025,11 @@ type CifUserCifUsersByOperatorArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10081,6 +11091,11 @@ type CifUserCifUsersByOperatorCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10140,6 +11155,11 @@ type CifUserCifUsersByOperatorCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10201,6 +11221,11 @@ type CifUserCifUsersByOperatorUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10260,6 +11285,11 @@ type CifUserCifUsersByOperatorUpdatedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10321,6 +11351,11 @@ type CifUserCifUsersByProjectArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10380,6 +11415,11 @@ type CifUserCifUsersByProjectArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10443,6 +11483,11 @@ type CifUserCifUsersByProjectContactArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10504,6 +11549,11 @@ type CifUserCifUsersByProjectContactArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10567,6 +11617,11 @@ type CifUserCifUsersByProjectContactCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10628,6 +11683,11 @@ type CifUserCifUsersByProjectContactCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10691,6 +11751,11 @@ type CifUserCifUsersByProjectContactUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10753,6 +11818,11 @@ type CifUserCifUsersByProjectContactUpdatedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10813,6 +11883,11 @@ type CifUserCifUsersByProjectCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10872,6 +11947,11 @@ type CifUserCifUsersByProjectCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -10935,6 +12015,11 @@ type CifUserCifUsersByProjectManagerArchivedByAndCifUserIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -10996,6 +12081,11 @@ type CifUserCifUsersByProjectManagerArchivedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11059,6 +12149,11 @@ type CifUserCifUsersByProjectManagerArchivedByAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11120,6 +12215,11 @@ type CifUserCifUsersByProjectManagerCifUserIdAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11183,6 +12283,11 @@ type CifUserCifUsersByProjectManagerCifUserIdAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11244,6 +12349,11 @@ type CifUserCifUsersByProjectManagerCifUserIdAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11307,6 +12417,11 @@ type CifUserCifUsersByProjectManagerCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11368,6 +12483,11 @@ type CifUserCifUsersByProjectManagerCreatedByAndCifUserIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11431,6 +12551,11 @@ type CifUserCifUsersByProjectManagerCreatedByAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11492,6 +12617,11 @@ type CifUserCifUsersByProjectManagerUpdatedByAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11555,6 +12685,11 @@ type CifUserCifUsersByProjectManagerUpdatedByAndCifUserIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11616,6 +12751,11 @@ type CifUserCifUsersByProjectManagerUpdatedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11803,6 +12943,11 @@ type CifUserCifUsersByProjectStatusArchivedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11864,6 +13009,11 @@ type CifUserCifUsersByProjectStatusArchivedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -11927,6 +13077,11 @@ type CifUserCifUsersByProjectStatusCreatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -11988,6 +13143,11 @@ type CifUserCifUsersByProjectStatusCreatedByAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -12051,6 +13211,11 @@ type CifUserCifUsersByProjectStatusUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -12113,6 +13278,11 @@ type CifUserCifUsersByProjectStatusUpdatedByAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -12173,6 +13343,11 @@ type CifUserCifUsersByProjectUpdatedByAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -12232,6 +13407,11 @@ type CifUserCifUsersByProjectUpdatedByAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -12333,6 +13513,11 @@ type CifUserContactsByProjectContactArchivedByAndContactIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -12395,6 +13580,11 @@ type CifUserContactsByProjectContactCreatedByAndContactIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -12456,6 +13646,11 @@ type CifUserContactsByProjectContactUpdatedByAndContactIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -12845,6 +14040,11 @@ type CifUserFundingStreamRfpsByFundingStreamRfpProjectStatusArchivedByAndFunding
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -12912,6 +14112,11 @@ type CifUserFundingStreamRfpsByFundingStreamRfpProjectStatusCreatedByAndFundingS
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -12981,6 +14186,11 @@ type CifUserFundingStreamRfpsByFundingStreamRfpProjectStatusUpdatedByAndFundingS
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13048,6 +14258,11 @@ type CifUserFundingStreamRfpsByProjectArchivedByAndFundingStreamRfpIdManyToManyE
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13111,6 +14326,11 @@ type CifUserFundingStreamRfpsByProjectCreatedByAndFundingStreamRfpIdManyToManyEd
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -13176,6 +14396,11 @@ type CifUserFundingStreamRfpsByProjectUpdatedByAndFundingStreamRfpIdManyToManyEd
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13236,6 +14461,11 @@ type CifUserFundingStreamsByFundingStreamRfpArchivedByAndFundingStreamIdManyToMa
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -13301,6 +14531,11 @@ type CifUserFundingStreamsByFundingStreamRfpCreatedByAndFundingStreamIdManyToMan
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13364,6 +14599,11 @@ type CifUserFundingStreamsByFundingStreamRfpUpdatedByAndFundingStreamIdManyToMan
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -13463,6 +14703,11 @@ type CifUserOperatorsByProjectArchivedByAndOperatorIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13523,6 +14768,11 @@ type CifUserOperatorsByProjectCreatedByAndOperatorIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13582,6 +14832,11 @@ type CifUserOperatorsByProjectUpdatedByAndOperatorIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -13815,6 +15070,11 @@ type CifUserProjectStatusesByFundingStreamRfpProjectStatusArchivedByAndProjectSt
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -13880,6 +15140,11 @@ type CifUserProjectStatusesByFundingStreamRfpProjectStatusCreatedByAndProjectSta
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -13947,6 +15212,11 @@ type CifUserProjectStatusesByFundingStreamRfpProjectStatusUpdatedByAndProjectSta
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -14012,6 +15282,11 @@ type CifUserProjectStatusesByProjectArchivedByAndProjectStatusIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -14073,6 +15348,11 @@ type CifUserProjectStatusesByProjectCreatedByAndProjectStatusIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -14136,6 +15416,11 @@ type CifUserProjectStatusesByProjectUpdatedByAndProjectStatusIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -14197,6 +15482,11 @@ type CifUserProjectsByProjectContactArchivedByAndProjectIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -14260,6 +15550,11 @@ type CifUserProjectsByProjectContactCreatedByAndProjectIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -14321,6 +15616,11 @@ type CifUserProjectsByProjectContactUpdatedByAndProjectIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -14384,6 +15684,11 @@ type CifUserProjectsByProjectManagerArchivedByAndProjectIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -14445,6 +15750,11 @@ type CifUserProjectsByProjectManagerCifUserIdAndProjectIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -14508,6 +15818,11 @@ type CifUserProjectsByProjectManagerCreatedByAndProjectIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -14569,6 +15884,11 @@ type CifUserProjectsByProjectManagerUpdatedByAndProjectIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -15251,6 +16571,11 @@ type Contact implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -15285,6 +16610,11 @@ type Contact implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -15318,6 +16648,11 @@ type Contact implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -15391,6 +16726,11 @@ type Contact implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -15424,6 +16764,11 @@ type Contact implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -15496,6 +16841,11 @@ type ContactCifUsersByProjectContactContactIdAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -15558,6 +16908,11 @@ type ContactCifUsersByProjectContactContactIdAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -15619,6 +16974,11 @@ type ContactCifUsersByProjectContactContactIdAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -15814,6 +17174,11 @@ type ContactProjectsByProjectContactContactIdAndProjectIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -17866,6 +19231,11 @@ type FundingStream implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -17900,6 +19270,11 @@ type FundingStream implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -17933,6 +19308,11 @@ type FundingStream implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -17976,6 +19356,11 @@ type FundingStream implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18053,6 +19438,11 @@ type FundingStreamCifUsersByFundingStreamRfpFundingStreamIdAndArchivedByManyToMa
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18115,6 +19505,11 @@ type FundingStreamCifUsersByFundingStreamRfpFundingStreamIdAndCreatedByManyToMan
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18176,6 +19571,11 @@ type FundingStreamCifUsersByFundingStreamRfpFundingStreamIdAndUpdatedByManyToMan
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18386,6 +19786,11 @@ type FundingStreamRfp implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18419,6 +19824,11 @@ type FundingStreamRfp implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18454,6 +19864,11 @@ type FundingStreamRfp implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18487,6 +19902,11 @@ type FundingStreamRfp implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18522,6 +19942,11 @@ type FundingStreamRfp implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18555,6 +19980,11 @@ type FundingStreamRfp implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18608,6 +20038,11 @@ type FundingStreamRfp implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18647,6 +20082,11 @@ type FundingStreamRfp implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18680,6 +20120,11 @@ type FundingStreamRfp implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18715,6 +20160,11 @@ type FundingStreamRfp implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18748,6 +20198,11 @@ type FundingStreamRfp implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18824,6 +20279,11 @@ type FundingStreamRfpCifUsersByFundingStreamRfpProjectStatusFundingStreamRfpIdAn
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -18889,6 +20349,11 @@ type FundingStreamRfpCifUsersByFundingStreamRfpProjectStatusFundingStreamRfpIdAn
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -18956,6 +20421,11 @@ type FundingStreamRfpCifUsersByFundingStreamRfpProjectStatusFundingStreamRfpIdAn
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -19019,6 +20489,11 @@ type FundingStreamRfpCifUsersByProjectFundingStreamRfpIdAndArchivedByManyToManyE
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -19079,6 +20554,11 @@ type FundingStreamRfpCifUsersByProjectFundingStreamRfpIdAndCreatedByManyToManyEd
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -19138,6 +20618,11 @@ type FundingStreamRfpCifUsersByProjectFundingStreamRfpIdAndUpdatedByManyToManyEd
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -19338,6 +20823,11 @@ type FundingStreamRfpOperatorsByProjectFundingStreamRfpIdAndOperatorIdManyToMany
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -19651,6 +21141,11 @@ type FundingStreamRfpProjectStatusesByFundingStreamRfpProjectStatusFundingStream
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -19715,6 +21210,11 @@ type FundingStreamRfpProjectStatusesByProjectFundingStreamRfpIdAndProjectStatusI
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -20203,6 +21703,25 @@ enum FundingStreamsOrderBy {
   UPDATED_AT_DESC
   UPDATED_BY_ASC
   UPDATED_BY_DESC
+}
+
+"""
+Indicates whether archived items should be included in the results or not.
+"""
+enum IncludeArchivedOption {
+  """Only include archived items (i.e. exclude non-archived items)."""
+  EXCLUSIVELY
+
+  """
+  If there is a parent GraphQL record and it is archived then this is equivalent to YES, in all other cases this is equivalent to NO.
+  """
+  INHERIT
+
+  """Exclude archived items."""
+  NO
+
+  """Include archived items."""
+  YES
 }
 
 """
@@ -20956,6 +22475,11 @@ type Operator implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -20990,6 +22514,11 @@ type Operator implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21023,6 +22552,11 @@ type Operator implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21063,6 +22597,11 @@ type Operator implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21111,6 +22650,11 @@ type Operator implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21144,6 +22688,11 @@ type Operator implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21217,6 +22766,11 @@ type OperatorCifUsersByProjectOperatorIdAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21277,6 +22831,11 @@ type OperatorCifUsersByProjectOperatorIdAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21336,6 +22895,11 @@ type OperatorCifUsersByProjectOperatorIdAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21511,6 +23075,11 @@ type OperatorFundingStreamRfpsByProjectOperatorIdAndFundingStreamRfpIdManyToMany
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21572,6 +23141,11 @@ type OperatorProjectStatusesByProjectOperatorIdAndProjectStatusIdManyToManyEdge 
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21774,6 +23348,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21817,6 +23396,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21850,6 +23434,11 @@ type Project implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21885,6 +23474,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21918,6 +23512,11 @@ type Project implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -21953,6 +23552,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -21986,6 +23590,11 @@ type Project implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -22021,6 +23630,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22054,6 +23668,11 @@ type Project implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -22089,6 +23708,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22122,6 +23746,11 @@ type Project implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -22182,6 +23811,11 @@ type Project implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22215,6 +23849,11 @@ type Project implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -22407,6 +24046,11 @@ type ProjectCifUsersByProjectContactProjectIdAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22468,6 +24112,11 @@ type ProjectCifUsersByProjectContactProjectIdAndCreatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -22531,6 +24180,11 @@ type ProjectCifUsersByProjectContactProjectIdAndUpdatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22592,6 +24246,11 @@ type ProjectCifUsersByProjectManagerProjectIdAndArchivedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -22655,6 +24314,11 @@ type ProjectCifUsersByProjectManagerProjectIdAndCifUserIdManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22717,6 +24381,11 @@ type ProjectCifUsersByProjectManagerProjectIdAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -22778,6 +24447,11 @@ type ProjectCifUsersByProjectManagerProjectIdAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -23230,6 +24904,11 @@ type ProjectContactsByProjectContactProjectIdAndContactIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -23931,6 +25610,11 @@ type ProjectRevision implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -23971,6 +25655,11 @@ type ProjectRevision implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24004,6 +25693,11 @@ type ProjectRevision implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -24612,6 +26306,11 @@ type ProjectStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24645,6 +26344,11 @@ type ProjectStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -24680,6 +26384,11 @@ type ProjectStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24713,6 +26422,11 @@ type ProjectStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -24748,6 +26462,11 @@ type ProjectStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24781,6 +26500,11 @@ type ProjectStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -24827,6 +26551,11 @@ type ProjectStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24861,6 +26590,11 @@ type ProjectStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24894,6 +26628,11 @@ type ProjectStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -24937,6 +26676,11 @@ type ProjectStatus implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -24970,6 +26714,11 @@ type ProjectStatus implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -25043,6 +26792,11 @@ type ProjectStatusCifUsersByFundingStreamRfpProjectStatusProjectStatusIdAndArchi
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -25108,6 +26862,11 @@ type ProjectStatusCifUsersByFundingStreamRfpProjectStatusProjectStatusIdAndCreat
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -25175,6 +26934,11 @@ type ProjectStatusCifUsersByFundingStreamRfpProjectStatusProjectStatusIdAndUpdat
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -25238,6 +27002,11 @@ type ProjectStatusCifUsersByProjectProjectStatusIdAndArchivedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -25298,6 +27067,11 @@ type ProjectStatusCifUsersByProjectProjectStatusIdAndCreatedByManyToManyEdge {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -25357,6 +27131,11 @@ type ProjectStatusCifUsersByProjectProjectStatusIdAndUpdatedByManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -25529,6 +27308,11 @@ type ProjectStatusFundingStreamRfpsByFundingStreamRfpProjectStatusProjectStatusI
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -25595,6 +27379,11 @@ type ProjectStatusFundingStreamRfpsByProjectProjectStatusIdAndFundingStreamRfpId
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -25682,6 +27471,11 @@ type ProjectStatusOperatorsByProjectProjectStatusIdAndOperatorIdManyToManyEdge {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -26161,6 +27955,11 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -26194,6 +27993,11 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -26229,6 +28033,11 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -26262,6 +28071,11 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -26333,6 +28147,11 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -26366,6 +28185,11 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -26401,6 +28225,11 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -26434,6 +28263,11 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -26469,6 +28303,11 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -26502,6 +28341,11 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -26571,6 +28415,11 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
 
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
     """Only read the last `n` values of the set."""
     last: Int
 
@@ -26604,6 +28453,11 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int

@@ -2,6 +2,7 @@ import type { Request } from "express";
 import { postgraphile } from "postgraphile";
 import { pgPool } from "../../db";
 import { makePluginHook, PostGraphileOptions } from "postgraphile";
+import PostgraphileRc from "../../../.postgraphilerc";
 import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PostgraphileLogConsola from "postgraphile-log-consola";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
@@ -81,9 +82,7 @@ const postgraphileMiddleware = () => {
   return postgraphile(pgPool, process.env.DATABASE_SCHEMA || "cif", {
     ...postgraphileOptions,
     graphileBuildOptions: {
-      connectionFilterAllowNullInput: true,
-      connectionFilterAllowEmptyObjectInput: true,
-      connectionFilterRelations: true,
+      ...PostgraphileRc.options.graphileBuildOptions,
       uploadFieldDefinitions: [
         {
           match: ({ table, column }) =>
@@ -91,9 +90,6 @@ const postgraphileMiddleware = () => {
           resolve: resolveUpload,
         },
       ],
-      pgArchivedColumnName: "archived_at",
-      pgArchivedColumnImpliesVisible: false,
-      pgArchivedRelations: false,
     },
     pgSettings: (req: Request) => {
       const opts = {
