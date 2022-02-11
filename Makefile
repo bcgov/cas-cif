@@ -103,6 +103,22 @@ create_test_db:
 		$(PSQL) -d postgres -c "CREATE DATABASE $(DB_NAME)_test" &&\
 		$(PSQL) -d $(DB_NAME)_test -c "create extension if not exists pgtap";
 
+.PHONY: drop_foregin_test_db
+drop_foreign_test_db: ## Drop the $(DB_NAME) database if it exists
+drop_foreign_test_db:
+	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \
+		grep -q 0 || \
+		$(PSQL) -d postgres -c "DROP DATABASE foreign_test_db" && \
+		$(PSQL) -d postgres -c "DROP USER foreign_user";
+
+.PHONY: create_foreign_test_db
+create_foreign_test_db: ## Ensure that the $(DB_NAME)_test database exists
+create_foreign_test_db:
+	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \
+		grep -q 1 || \
+		$(PSQL) -d postgres -c "CREATE DATABASE foreign_test_db" &&\
+		$(PSQL) -d foreign_test_db -f "./schema/data/test_setup/external_database_setup.sql";
+
 .PHONY: drop_test_db
 drop_test_db: ## Drop the $(DB_NAME)_test database if it exists
 drop_test_db:
@@ -170,7 +186,7 @@ verify_test_db_migrations:
 
 .PHONY: db_unit_tests
 db_unit_tests: ## run the database unit tests
-db_unit_tests: | start_pg drop_test_db create_test_db deploy_test_db_migrations
+db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
