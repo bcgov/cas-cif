@@ -103,6 +103,22 @@ create_test_db:
 		$(PSQL) -d postgres -c "CREATE DATABASE $(DB_NAME)_test" &&\
 		$(PSQL) -d $(DB_NAME)_test -c "create extension if not exists pgtap";
 
+.PHONY: drop_foreign_test_db
+drop_foreign_test_db: ## Drop the $(DB_NAME) database if it exists
+drop_foreign_test_db:
+	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \
+		grep -q 0 || \
+		$(PSQL) -d postgres -c "DROP DATABASE foreign_test_db" && \
+		$(PSQL) -d postgres -c "DROP USER IF EXISTS foreign_user";
+
+.PHONY: create_foreign_test_db
+create_foreign_test_db: ## Ensure that the $(DB_NAME)_test database exists
+create_foreign_test_db:
+	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \
+		grep -q 1 || \
+		$(PSQL) -d postgres -c "CREATE DATABASE foreign_test_db" &&\
+		$(PSQL) -d foreign_test_db -f "./schema/data/test_setup/external_database_setup.sql";
+
 .PHONY: drop_test_db
 drop_test_db: ## Drop the $(DB_NAME)_test database if it exists
 drop_test_db:
@@ -170,7 +186,7 @@ verify_test_db_migrations:
 
 .PHONY: db_unit_tests
 db_unit_tests: ## run the database unit tests
-db_unit_tests: | start_pg drop_test_db create_test_db deploy_test_db_migrations
+db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
@@ -186,23 +202,29 @@ lint_chart: ## Checks the configured helm chart template definitions against the
 lint_chart:
 	@set -euo pipefail; \
 	helm dep up ./chart/cas-cif; \
-	helm template -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
+	helm template --set ggircs.namespace=dummy-namespace -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
 
 
 .PHONY: install
 install: ## Installs the helm chart on the OpenShift cluster
 install: GIT_SHA1=$(shell git rev-parse HEAD)
 install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+install: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 install: CHART_DIR=./chart/cas-cif
 install: CHART_INSTANCE=cas-cif
 install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
 										--set defaultImageTag=$(GIT_SHA1) \
 	  								--set download-dags.dagConfiguration="$$dagConfig" \
+										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 install:
 	@set -euo pipefail; \
 	if [ -z '$(CIF_NAMESPACE_PREFIX)' ]; then \
 		echo "CIF_NAMESPACE_PREFIX is not set"; \
+		exit 1; \
+	fi; \
+	if [ -z '$(GGIRCS_NAMESPACE_PREFIX)' ]; then \
+		echo "GGIRCS_NAMESPACE_PREFIX is not set"; \
 		exit 1; \
 	fi; \
 	if [ -z '$(ENVIRONMENT)' ]; then \

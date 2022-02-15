@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ template "cas-cif.fullname" . }}-swrs-operator-import
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-cif.labels" . | indent 4 }}
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels:
+{{ include "cas-cif.labels" . | indent 14 }}
+        spec:
+          activeDeadlineSeconds: 600
+          restartPolicy: Never
+          containers:
+            - env:
+                - name: GGIRCS_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: ggircs-readonly-user
+                      name: cas-ggircs
+                - name: GGIRCS_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: ggircs-readonly-password
+                      name: cas-ggircs
+                - name: GGIRCS_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: cas-ggircs
+                - name: GGIRCS_PORT
+                  value: "5432"
+                - name: GGIRCS_HOST
+                  value: "{{ .Values.ggircs.service }}.{{ .Values.ggircs.namespace }}"
+              name: {{ template "cas-cif.fullname" . }}-swrs-operator-import
+              image: {{ .Values.image.psql.repository }}:{{ .Values.image.psql.tag }}
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 128Mi
+                requests:
+                  cpu: 100m
+                  memory: 64Mi
+              command:
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  set -euo pipefail;
+                  psql<<EOF
+                    select cif_private.import_swrs_operators('$(GGIRCS_HOST)', '$(GGIRCS_DATABASE)', '$(GGIRCS_PORT)', '$(GGIRCS_USER)', '$(GGIRCS_PASSWORD)');
+                  EOF

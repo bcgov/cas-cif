@@ -20,6 +20,8 @@ functions/session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # 
 trigger_functions/update_timestamps 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.update_timestamps trigger function
 trigger_functions/archived_records_are_immutable 2022-01-06T18:37:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to ensure that no changes to a deleted record can be saved
 trigger_functions/set_project_long_id [schemas/private] 2022-01-18T00:43:24Z Dylan Leard <dylan@button.is> # Trigger function to generate the project long id
+trigger_functions/operator_data_manually_updated [schemas/private] 2022-02-10T00:35:00Z Dylan Leard <dylan@button.is> # Trigger function sets boolean values in the operator table if the legal_name or trade_name is manually updated by a cif user
+trigger_functions/protect_manually_updated_operator_data [schemas/private] 2022-02-10T19:15:30Z Dylan Leard <dylan@button.is> # Trigger function to protect manually updated operator data from being overwritten by automatic upserts
 util_functions/upsert_timestamp_columns [schemas/private trigger_functions/update_timestamps] 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the upsert_timestamp_columns function
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
@@ -32,7 +34,7 @@ tables/operator [schemas/main] 2021-11-30T22:34:14Z Dylan Leard <dylan@button.is
 tables/project [tables/operator trigger_functions/set_project_long_id] 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
 util_functions/camel_to_snake_case 2021-12-11T00:37:54Z Matthieu Foucault <matthieu@button.is> # Add cif_private.camel_to_snake_case
 types/form_change_operation 2022-02-04T22:17:52Z Matthieu Foucault <matthieu@button.is> # add enum type for form_change.operation column
-trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case types/form_change_operation ] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
+trigger_functions/commit_form_change [schemas/private util_functions/camel_to_snake_case types/form_change_operation] 2021-11-08T22:54:27Z Dylan Leard <dylan@button.is> # Trigger function to apply changes to a table once the change has been committed
 tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Table to constrain the status of a form_change row
 trigger_functions/committed_changes_are_immutable 2022-01-06T23:40:27Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger to prevent committed changes from being altered
 trigger_functions/commit_project_revision 2021-12-07T00:37:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger function executed when a whole project revision is committed, triggering commit on the individual form_change records
@@ -49,3 +51,4 @@ computed_columns/project_revision_project_form_change [tables/project_revision] 
 computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision
 functions/pending_new_project_revision 2021-12-22T23:40:21Z Matthieu Foucault <matthieu@button.is> # add function returning a pending new project revision created by the current user
 mutations/add_contact_to_revision 2022-01-27T23:48:16Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Custom mutation that prepopulates an insert to the form change table for a new contact on a a project revision
+util_functions/import_swrs_operators [tables/operator schemas/private] 2022-02-09T17:17:00Z Dylan Leard <dylan@button.is> # Add function to import operators from swrs using a foreign data wrapper
