@@ -75,6 +75,6 @@ spec:
                 - -c
                 - |
                   set -euo pipefail;
-                  psql<<EOF
+                  psql -v "ON_ERROR_STOP=1"<<EOF
                     select cif_private.import_swrs_operators('$(GGIRCS_HOST)', '$(GGIRCS_DATABASE)', '$(GGIRCS_PORT)', '$(GGIRCS_USER)', '$(GGIRCS_PASSWORD)');
                   EOF
