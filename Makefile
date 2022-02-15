@@ -209,16 +209,22 @@ lint_chart:
 install: ## Installs the helm chart on the OpenShift cluster
 install: GIT_SHA1=$(shell git rev-parse HEAD)
 install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+install: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 install: CHART_DIR=./chart/cas-cif
 install: CHART_INSTANCE=cas-cif
 install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
 										--set defaultImageTag=$(GIT_SHA1) \
 	  								--set download-dags.dagConfiguration="$$dagConfig" \
+										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 install:
 	@set -euo pipefail; \
 	if [ -z '$(CIF_NAMESPACE_PREFIX)' ]; then \
 		echo "CIF_NAMESPACE_PREFIX is not set"; \
+		exit 1; \
+	fi; \
+	if [ -z '$(GGIRCS_NAMESPACE_PREFIX)' ]; then \
+		echo "GGIRCS_NAMESPACE_PREFIX is not set"; \
 		exit 1; \
 	fi; \
 	if [ -z '$(ENVIRONMENT)' ]; then \

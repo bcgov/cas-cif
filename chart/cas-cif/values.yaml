@@ -100,6 +100,5 @@ download-dags:
     hook: "pre-install,pre-upgrade"
 
 ggircs:
-  namespace: ~
   service: cas-ggircs-patroni
   instanceName: cas-ggircs
