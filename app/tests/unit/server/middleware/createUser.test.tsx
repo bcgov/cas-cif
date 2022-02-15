@@ -2,10 +2,14 @@
  * @jest-environment node
  */
 
+import { UNAUTHORIZED_IDIR_USER } from "data/group-constants";
 import createUserMiddleware from "server/middleware/createUser";
 
 describe("The create user middleware", () => {
-  it("calls the local graphql endpoint with a createUserFromSession mutation and the request cookies", async () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("calls the local graphql endpoint with a createUserFromSession mutation and the session data", async () => {
     const performQuery = jest
       .spyOn(require("server/middleware/graphql"), "performQuery")
       .mockImplementation(() => {
@@ -21,7 +25,7 @@ describe("The create user middleware", () => {
     const middlewareUnderTest = createUserMiddleware();
 
     const req = { claims: { sub: "1234" } } as any;
-    await middlewareUnderTest(req, null, jest.fn());
+    await middlewareUnderTest(req);
 
     expect(performQuery).toHaveBeenCalledWith(
       expect.stringContaining("createUserFromSession(input: {})"),
@@ -31,14 +35,24 @@ describe("The create user middleware", () => {
     );
   });
 
-  it("does not break the middleware chain", async () => {
+  it("does not call the local graphql endpoint if the user is not authorized", async () => {
+    const performQuery = jest.spyOn(
+      require("server/middleware/graphql"),
+      "performQuery"
+    );
+
+    jest
+      .spyOn(require("server/helpers/userGroupAuthentication"), "getUserGroups")
+      .mockImplementationOnce(() => {
+        return [UNAUTHORIZED_IDIR_USER];
+      });
+
     const middlewareUnderTest = createUserMiddleware();
 
-    const next = jest.fn();
+    const req = { claims: { sub: "1234" } } as any;
+    await middlewareUnderTest(req);
 
-    await middlewareUnderTest({ headers: { cookie: "" } } as any, null, next);
-
-    expect(next).toHaveBeenCalled();
+    expect(performQuery).not.toHaveBeenCalled();
   });
 
   it("throws on error", async () => {
@@ -58,7 +72,7 @@ describe("The create user middleware", () => {
     const middlewareUnderTest = createUserMiddleware();
 
     await expect(async () => {
-      await middlewareUnderTest({ claims: {} } as any, null, jest.fn());
+      await middlewareUnderTest({ claims: {} } as any);
     }).rejects.toThrow("Failed to create user from session:");
   });
 });

@@ -64,7 +64,7 @@
     "wait-on": "^6.0.0"
   },
   "dependencies": {
-    "@bcgov-cas/sso-express": "^2.0.2",
+    "@bcgov-cas/sso-express": "^3.0.0",
     "@bcgov-cas/sso-react": "^1.0.1",
     "@bcgov/bc-sans": "^1.0.1",
     "@button-inc/bcgov-theme": "^1.0.1",

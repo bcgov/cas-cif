@@ -1,8 +1,9 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request } from "express";
+import { getUserGroups } from "../helpers/userGroupAuthentication";
 import { performQuery } from "./graphql";
+import { UNAUTHORIZED_IDIR_USER } from "../../data/group-constants";
+
 // This middleware calls the createUserFromSession mutation.
-// The request to that mutation is made with the current session
-// cookies to ensure authentication.
 
 const createUserMutation = `
 mutation {
@@ -13,7 +14,11 @@ mutation {
 `;
 
 const createUserMiddleware = () => {
-  return async (req: Request, _res: Response, next: NextFunction) => {
+  return async (req: Request) => {
+    if (getUserGroups(req).includes(UNAUTHORIZED_IDIR_USER)) {
+      return;
+    }
+
     const response = await performQuery(createUserMutation, {}, req);
 
     if (response.errors) {
@@ -21,8 +26,6 @@ const createUserMiddleware = () => {
         `Failed to create user from session:\n${response.errors.join("\n")}`
       );
     }
-
-    next();
   };
 };
 
