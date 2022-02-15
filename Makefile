@@ -215,7 +215,7 @@ install: CHART_INSTANCE=cas-cif
 install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
 										--set defaultImageTag=$(GIT_SHA1) \
 	  								--set download-dags.dagConfiguration="$$dagConfig" \
-										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
+										--set ggircs.namespace="$(GGIRCS_NAMESPACE)" \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 install:
 	@set -euo pipefail; \
