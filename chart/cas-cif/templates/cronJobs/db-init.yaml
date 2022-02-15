@@ -69,7 +69,7 @@ spec:
 {{ .Values.db.preInitCommand | indent 18 }}
                   create-user-db -d $(CIF_DATABASE) -u $(CIF_USER) -p $(CIF_PASSWORD) --owner;
                   alter-role $(CIF_USER) createrole;
-                  psql<<EOF
+                  psql -v "ON_ERROR_STOP=1"<<EOF
                     create extension if not exists postgres_fdw;
                     grant usage on foreign data wrapper postgres_fdw to $(CIF_USER);
                   EOF
