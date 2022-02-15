@@ -73748,18 +73748,6 @@
               "deprecationReason": null
             },
             {
-              "name": "LEGAL_NAME_UPDATED_BY_CIF_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "LEGAL_NAME_UPDATED_BY_CIF_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "NATURAL",
               "description": null,
               "isDeprecated": false,
@@ -73773,18 +73761,6 @@
             },
             {
               "name": "PRIMARY_KEY_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TRADE_NAME_UPDATED_BY_CIF_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TRADE_NAME_UPDATED_BY_CIF_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -74690,16 +74666,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "legalNameUpdatedByCif",
-              "description": "Filter by the object’s `legalNameUpdatedByCif` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "BooleanFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -78423,6 +78389,16 @@
               "defaultValue": null
             },
             {
+              "name": "legalNameUpdatedByCif",
+              "description": "Filter by the object’s `legalNameUpdatedByCif` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "BooleanFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "not",
               "description": "Negates the expression.",
               "type": {
@@ -79671,6 +79647,18 @@
               "deprecationReason": null
             },
             {
+              "name": "LEGAL_NAME_UPDATED_BY_CIF_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEGAL_NAME_UPDATED_BY_CIF_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "NATURAL",
               "description": null,
               "isDeprecated": false,
@@ -79732,6 +79720,18 @@
             },
             {
               "name": "TRADE_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TRADE_NAME_UPDATED_BY_CIF_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TRADE_NAME_UPDATED_BY_CIF_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
