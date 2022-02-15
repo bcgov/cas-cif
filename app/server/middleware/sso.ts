@@ -2,6 +2,7 @@ import { getUserGroupLandingRoute } from "../../lib/userGroups";
 import { getUserGroups } from "../helpers/userGroupAuthentication";
 import ssoExpress from "@bcgov-cas/sso-express";
 import { ENABLE_MOCK_AUTH, AS_CIF_ADMIN, AS_CIF_INTERNAL } from "../args";
+import createUserMiddleware from "./createUser";
 
 const mockLogin = AS_CIF_ADMIN || AS_CIF_INTERNAL;
 const mockSessionTimeout = mockLogin || ENABLE_MOCK_AUTH;
@@ -33,5 +34,6 @@ export default async function middleware() {
       clientId: "cas-cif",
       oidcIssuer: `https://${ssoServerHost}/auth/realms/pisrwwhx`,
     },
+    onAuthCallback: createUserMiddleware(),
   });
 }

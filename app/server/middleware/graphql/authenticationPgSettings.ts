@@ -13,7 +13,7 @@ import {
 } from "../../args";
 
 const allowCypressForRole = (roleName: string, req: Request) => {
-  return ENABLE_MOCK_AUTH && req.cookies[MOCK_AUTH_COOKIE] === roleName;
+  return ENABLE_MOCK_AUTH && req.cookies?.[MOCK_AUTH_COOKIE] === roleName;
 };
 
 const authenticationPgSettings = (req: Request) => {
