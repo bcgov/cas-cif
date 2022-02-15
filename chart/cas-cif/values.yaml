@@ -101,7 +101,5 @@ download-dags:
 
 ggircs:
   namespace: ~
-  prefix: ~
-  environment: ~
   service: cas-ggircs-patroni
   instanceName: cas-ggircs

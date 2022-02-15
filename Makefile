@@ -103,7 +103,7 @@ create_test_db:
 		$(PSQL) -d postgres -c "CREATE DATABASE $(DB_NAME)_test" &&\
 		$(PSQL) -d $(DB_NAME)_test -c "create extension if not exists pgtap";
 
-.PHONY: drop_foregin_test_db
+.PHONY: drop_foreign_test_db
 drop_foreign_test_db: ## Drop the $(DB_NAME) database if it exists
 drop_foreign_test_db:
 	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \

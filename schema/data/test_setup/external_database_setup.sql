@@ -1,9 +1,3 @@
-do $$
-  begin
-    RAISE NOTICE '*** BEGIN EXTERNAL TEST DATABASE SETUP ***';
-  end
-$$;
-
 create user foreign_user with password 'foreign_password';
 grant all privileges on database foreign_test_db to foreign_user;
 create schema swrs;
@@ -32,9 +26,3 @@ values
 
 grant usage on schema swrs to foreign_user;
 grant select on all tables in schema swrs to foreign_user;
-
-do $$
-  begin
-    RAISE NOTICE '*** END EXTERNAL TEST DATABASE SETUP ***';
-  end
-$$;
