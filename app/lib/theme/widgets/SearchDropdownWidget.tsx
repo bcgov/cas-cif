@@ -14,7 +14,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   };
 
   const getSelected = useCallback(() => {
-    if (props.value === null || props.value === undefined) return "";
+    if (props.value === null || props.value === undefined) return null;
     const selectedValue = schema.anyOf.find(
       (option) => (option as any).value === props.value
     );

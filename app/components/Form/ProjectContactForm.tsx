@@ -34,32 +34,30 @@ const uiSchema = {
 const ProjectContactForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
 
-  const { query } = useFragment(
+  const { projectRevision, allContacts } = useFragment(
     graphql`
       fragment ProjectContactForm_query on Query {
-        query {
-          projectRevision(id: $projectRevision) {
-            id
-            rowId
-            formChangesByProjectRevisionId(
-              filter: { formDataTableName: { equalTo: "project_contact" } }
-              first: 2147483647
-            ) @connection(key: "connection_formChangesByProjectRevisionId") {
-              __id
-              edges {
-                node {
-                  id
-                  newFormData
-                }
+        projectRevision(id: $projectRevision) {
+          id
+          rowId
+          formChangesByProjectRevisionId(
+            filter: { formDataTableName: { equalTo: "project_contact" } }
+            first: 2147483647
+          ) @connection(key: "connection_formChangesByProjectRevisionId") {
+            __id
+            edges {
+              node {
+                id
+                newFormData
               }
             }
           }
-          allContacts {
-            edges {
-              node {
-                rowId
-                fullName
-              }
+        }
+        allContacts {
+          edges {
+            node {
+              rowId
+              fullName
             }
           }
         }
@@ -70,18 +68,20 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const contactSchema = useMemo(() => {
     const schema = projectContactSchema;
-    schema.properties.contactId.anyOf = query.allContacts.edges.map(
-      ({ node }) => {
+    schema.properties.contactId = {
+      ...schema.properties.contactId,
+      anyOf: allContacts.edges.map(({ node }) => {
         return {
           type: "number",
           title: node.fullName,
           enum: [node.rowId],
           value: node.rowId,
         } as JSONSchema7Definition;
-      }
-    );
+      }),
+    };
+
     return schema as JSONSchema7;
-  }, [query]);
+  }, [allContacts]);
 
   const [addContactMutation] = useMutation(addContactToRevisionMutation);
 
@@ -89,12 +89,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     addContactMutation({
       variables: {
         input: {
-          revisionId: query.projectRevision.rowId,
+          revisionId: projectRevision.rowId,
           contactIndex: contactIndex,
         },
-        connections: [
-          query.projectRevision.formChangesByProjectRevisionId.__id,
-        ],
+        connections: [projectRevision.formChangesByProjectRevisionId.__id],
       },
     });
   };
@@ -106,9 +104,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         input: {
           id: formChangeId,
         },
-        connections: [
-          query.projectRevision.formChangesByProjectRevisionId.__id,
-        ],
+        connections: [projectRevision.formChangesByProjectRevisionId.__id],
       },
       onCompleted: () => {
         delete formRefs.current[formChangeId];
@@ -143,7 +139,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const allForms = useMemo(() => {
     const contactForms = [
-      ...query.projectRevision.formChangesByProjectRevisionId.edges.map(
+      ...projectRevision.formChangesByProjectRevisionId.edges.map(
         ({ node }) => node
       ),
     ];
@@ -151,7 +147,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       (a, b) => a.newFormData.contactIndex - b.newFormData.contactIndex
     );
     return contactForms;
-  }, [query]);
+  }, [projectRevision]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
 
@@ -187,10 +183,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 <Grid.Col span={6}>
                   <FormBase
                     id="primaryContactForm"
+                    idPrefix="primaryContactForm"
                     ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
                     formData={primaryContactForm.newFormData}
                     onChange={(change) => {
-                      updateFormChange(primaryContactForm.id, change);
+                      updateFormChange(primaryContactForm.id, change.formData);
                     }}
                     schema={contactSchema}
                     uiSchema={uiSchema}
@@ -218,10 +215,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   <Grid.Col span={6}>
                     <FormBase
                       id={`form-${form.id}`}
+                      idPrefix={`form-${form.id}`}
                       ref={(el) => (formRefs.current[form.id] = el)}
                       formData={form.newFormData}
                       onChange={(change) => {
-                        updateFormChange(form.id, change);
+                        updateFormChange(form.id, change.formData);
                       }}
                       schema={contactSchema}
                       uiSchema={uiSchema}

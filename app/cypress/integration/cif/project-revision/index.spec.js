@@ -4,10 +4,12 @@ describe("the new project page", () => {
   beforeEach(() => {
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
+    cy.sqlFixture("dev/004_cif_contact");
   });
 
   it("renders the project overview form", () => {
     cy.mockLogin("cif_admin");
+
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
     cy.url().should("include", "/cif/project-revision");
@@ -19,5 +21,18 @@ describe("the new project page", () => {
       component: "New Project Page",
       variant: "empty",
     });
+
+    cy.get("input[id=search-dropdown-primaryContactForm_contactId]").click();
+    //cy.contains('Loblaw003, Bob003').click();
+    cy.get("[role=option]").contains("Loblaw003").click();
+
+    // Bad practice
+    // But this is a reported issue with mui-autocomplete https://github.com/cypress-io/cypress/issues/6716
+    cy.wait(200);
+
+    cy.get("button").contains("Add").click();
+    cy.get("button").contains("Add").click();
+    cy.get("button").contains("Add").click();
+    cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
   });
 });
