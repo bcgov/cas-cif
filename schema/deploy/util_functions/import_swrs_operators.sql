@@ -4,8 +4,6 @@
 
 begin;
 
-create extension if not exists postgres_fdw;
-
 -- Creates a foreign table and imports the operators from the ggircs database into the operator table in the cif database.
 create or replace function cif_private.import_swrs_operators(
   ggircs_host text,
