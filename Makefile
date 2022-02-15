@@ -117,7 +117,8 @@ create_foreign_test_db:
 	@$(PSQL) -d postgres -tc "SELECT count(*) FROM pg_database WHERE datname = 'foreign_test_db'" | \
 		grep -q 1 || \
 		$(PSQL) -d postgres -c "CREATE DATABASE foreign_test_db" &&\
-		$(PSQL) -d foreign_test_db -f "./schema/data/test_setup/external_database_setup.sql";
+		$(PSQL) -d foreign_test_db -f "./schema/data/test_setup/external_database_setup.sql" &&\
+		$(PSQL) -d $(DB_NAME)_test -c "create extension if not exists postgres_fdw";
 
 .PHONY: drop_test_db
 drop_test_db: ## Drop the $(DB_NAME)_test database if it exists
