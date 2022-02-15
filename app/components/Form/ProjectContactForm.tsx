@@ -86,7 +86,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   const [addContactMutation] = useMutation(addContactToRevisionMutation);
 
   const addContact = (contactIndex: number) => {
-    console.error(contactIndex);
     addContactMutation({
       variables: {
         input: {
@@ -184,6 +183,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 <Grid.Col span={6}>
                   <FormBase
                     id="primaryContactForm"
+                    idPrefix="primaryContactForm"
                     ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
                     formData={primaryContactForm.newFormData}
                     onChange={(change) => {
@@ -215,6 +215,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   <Grid.Col span={6}>
                     <FormBase
                       id={`form-${form.id}`}
+                      idPrefix={`form-${form.id}`}
                       ref={(el) => (formRefs.current[form.id] = el)}
                       formData={form.newFormData}
                       onChange={(change) => {
@@ -241,14 +242,13 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 <Grid.Col span={10}>
                   <Button
                     style={{ marginRight: "auto" }}
-                    onClick={() => {
-                      console.log(allForms);
+                    onClick={() =>
                       // allForms is already sorted by contactIndex
                       addContact(
                         allForms[allForms.length - 1].newFormData.contactIndex +
                           1
-                      );
-                    }}
+                      )
+                    }
                   >
                     Add
                   </Button>
