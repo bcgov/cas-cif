@@ -49,7 +49,12 @@ export function ContactViewPage({
   };
 
   const editButton = contact.pendingFormChange ? (
-    <Button size="small" onClick={handleEditContact}>
+    <Button
+      size="small"
+      onClick={() =>
+        router.push(getContactFormPageRoute(contact.pendingFormChange.id))
+      }
+    >
       Resume Editing
     </Button>
   ) : (
