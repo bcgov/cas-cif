@@ -8,7 +8,7 @@ import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 
 let environment;
 
-const loadContactData = (partialContact = {}, partialSession = {}) => {
+const loadContactData = (partialContact = {}) => {
   environment.mock.queueOperationResolver((operation) => {
     return MockPayloadGenerator.generate(operation, {
       Contact() {
@@ -21,14 +21,6 @@ const loadContactData = (partialContact = {}, partialSession = {}) => {
           position: "Test Position",
           pendingFormChange: null,
           ...partialContact,
-        };
-      },
-      Session() {
-        return {
-          cifUserBySub: {
-            id: "mock-cif-user-id",
-          },
-          ...partialSession,
         };
       },
     });
@@ -61,9 +53,10 @@ describe("ContactViewPage", () => {
     expect(screen.getByText("(123) 456-7890")).toBeInTheDocument();
     expect(screen.getByText("foo@bar.com")).toBeInTheDocument();
     expect(screen.getByText("Test Position")).toBeInTheDocument();
+    expect(screen.getByText("Edit")).toBeInTheDocument();
   });
 
-  it("renders a disabled edit button when the contact is being edited by a different user", () => {
+  it("renders a resume edit button when the contact already has a pending form change", () => {
     render(
       <RelayEnvironmentProvider environment={environment}>
         <ContactViewPage
@@ -71,20 +64,12 @@ describe("ContactViewPage", () => {
           preloadedQuery={loadContactData({
             pendingFormChange: {
               id: "mock-form-change-id",
-              cifUserByCreatedBy: {
-                id: "mock-other-cif-user-id",
-              },
             },
           })}
         />
       </RelayEnvironmentProvider>
     );
 
-    expect(screen.getByText("Resume Editing")).toBeDisabled();
-    expect(
-      screen.getByText(
-        "This contact is currently being edited by another user."
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText("Resume Editing")).toBeInTheDocument();
   });
 });
