@@ -1,13 +1,13 @@
 interface Props {
-  title: string;
+  title?: string;
 }
 
-const FormBorder: React.FC<Props> = (props) => {
+const FormBorder: React.FC<Props> = ({ title, children }) => {
   return (
     <>
       <fieldset>
-        <legend>{props.title}</legend>
-        {props.children}
+        {title && <legend>{title}</legend>}
+        {children}
       </fieldset>
       <style jsx>
         {`

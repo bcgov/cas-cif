@@ -1,6 +1,5 @@
-import { ErrorSchema, IChangeEvent } from "@rjsf/core";
+import { FormProps } from "@rjsf/core";
 
-export default interface FormComponentProps {
-  formData: any;
-  onChange?: (e: IChangeEvent<any>, es?: ErrorSchema) => any;
-}
+type FormComponentProps<T = any> = Partial<FormProps<T>>;
+
+export default FormComponentProps;

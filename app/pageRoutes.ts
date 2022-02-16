@@ -17,6 +17,13 @@ export const getContactsPageRoute = () => ({
   pathname: "/cif/contacts/",
 });
 
+export const getContactFormPageRoute = (contactFormId: string) => ({
+  pathname: `/cif/contact/form/[contactForm]/`,
+  query: {
+    contactForm: contactFormId,
+  },
+});
+
 export const getProjectRevisionPageRoute = (projectRevisionId: string) => ({
   pathname: `/cif/project-revision/[projectRevision]/`,
   query: {

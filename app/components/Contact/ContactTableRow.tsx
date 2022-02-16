@@ -23,7 +23,7 @@ const ContactTableRow: React.FC<Props> = ({ contact }) => {
 
   const router = useRouter();
 
-  const handleViewClick = () => {
+  const handleViewContact = () => {
     router.push(getContactViewPageRoute(id));
   };
 
@@ -34,7 +34,7 @@ const ContactTableRow: React.FC<Props> = ({ contact }) => {
       <td>{position}</td>
       <td>
         <div className="actions">
-          <Button size="small" onClick={handleViewClick}>
+          <Button size="small" onClick={handleViewContact}>
             View
           </Button>
         </div>

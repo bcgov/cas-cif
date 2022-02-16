@@ -16696,6 +16696,9 @@ type Contact implements Node {
   """
   id: ID!
 
+  """Returns the pending form change editing the contact, if it exists."""
+  pendingFormChange: FormChange
+
   """The phone number of this contact, stored in E.164 format"""
   phone: String
 
@@ -17479,19 +17482,27 @@ type CreateCifUserPayload {
   query: Query
 }
 
-"""All input for the create `FormChange` mutation."""
+"""All input for the `createFormChange` mutation."""
 input CreateFormChangeInput {
+  changeReason: String!
+  changeStatus: String
+
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-
-  """The `FormChange` to be created by this mutation."""
-  formChange: FormChangeInput!
+  formDataRecordId: Int
+  formDataSchemaName: String!
+  formDataTableName: String!
+  jsonSchemaName: String!
+  newFormData: JSON
+  operation: FormChangeOperation!
+  projectRevisionId: Int
+  validationErrors: JSON
 }
 
-"""The output of our create `FormChange` mutation."""
+"""The output of our `createFormChange` mutation."""
 type CreateFormChangePayload {
   """Reads a single `ChangeStatus` that is related to this `FormChange`."""
   changeStatusByChangeStatus: ChangeStatus
@@ -17507,8 +17518,6 @@ type CreateFormChangePayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-
-  """The `FormChange` that was created by this mutation."""
   formChange: FormChange
 
   """An edge for our `FormChange`. May be used by Relay 1."""
@@ -18901,55 +18910,6 @@ input FormChangeFilter {
 
   """Filter by the object’s `validationErrors` field."""
   validationErrors: JSONFilter
-}
-
-"""An input for mutations affecting `FormChange`"""
-input FormChangeInput {
-  """The reason for the change"""
-  changeReason: String!
-
-  """
-  The change status of this form change, foreign key to cif.change_status.
-  """
-  changeStatus: String
-
-  """created at timestamp"""
-  createdAt: Datetime
-
-  """created by user id"""
-  createdBy: Int
-
-  """The id of the record on which this form change applies"""
-  formDataRecordId: Int
-
-  """The schema on which this form change applies"""
-  formDataSchemaName: String!
-
-  """The table on which this form change applies"""
-  formDataTableName: String!
-
-  """The name of the JSON schema to use for validation of this form data"""
-  jsonSchemaName: String!
-
-  """Unique ID for the form_change"""
-  newFormData: JSON
-
-  """The operation this form change describes: create, update or archive"""
-  operation: FormChangeOperation!
-
-  """The project revision this change might be associated with (if known)"""
-  projectRevisionId: Int
-
-  """updated at timestamp"""
-  updatedAt: Datetime
-
-  """updated by user id"""
-  updatedBy: Int
-
-  """
-  The validation errors computed for this record's new_form_data and the json_schema_name schema
-  """
-  validationErrors: JSON
 }
 
 """
@@ -21973,7 +21933,10 @@ type Mutation {
     input: CreateCifUserInput!
   ): CreateCifUserPayload
 
-  """Creates a single `FormChange`."""
+  """
+  Creates a new form_change record.
+  If new_form_data is not provided, the latest committed form_data record for the same table and record id will be used.
+  """
   createFormChange(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -28605,6 +28568,11 @@ type Query implements Node {
   ): Operator
   operatorByRowId(rowId: Int!): Operator
   operatorBySwrsOrganisationId(swrsOrganisationId: Int!): Operator
+
+  """
+  returns a form_change for a new contact in the pending state for the current user, i.e. allows to resume a contact creation
+  """
+  pendingNewContactFormChange: FormChange
 
   """
   returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation

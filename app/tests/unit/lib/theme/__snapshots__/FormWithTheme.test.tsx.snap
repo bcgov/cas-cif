@@ -22,9 +22,6 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
             <fieldset
               class="jsx-4178779636"
             >
-              <legend
-                class="jsx-4178779636"
-              />
               <div
                 class="jsx-3435786090"
               >

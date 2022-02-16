@@ -1,10 +1,11 @@
-import type { Environment } from "react-relay";
+import { Environment } from "react-relay";
 import type {
   updateFormChangeMutationVariables,
   updateFormChangeMutation as updateFormChangeMutationType,
 } from "updateFormChangeMutation.graphql";
 import BaseMutation from "mutations/BaseMutation";
 import { graphql } from "react-relay";
+import useDebouncedMutation from "mutations/useDebouncedMutation";
 
 const mutation = graphql`
   mutation updateFormChangeMutation($input: UpdateFormChangeInput!) {
@@ -43,5 +44,9 @@ const updateFormChangeMutation = async (
   );
 };
 
+const useUpdateFormChange = () => {
+  return useDebouncedMutation<updateFormChangeMutationType>(mutation);
+};
+
 export default updateFormChangeMutation;
-export { mutation };
+export { mutation, useUpdateFormChange };
