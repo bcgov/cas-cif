@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getOperatorViewPageRoute } from "pageRoutes";
+import { getOperatorEditPageRoute, getOperatorViewPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { OperatorTableRow_operator$key } from "__generated__/OperatorTableRow_operator.graphql";
 
@@ -27,6 +27,9 @@ const OperatorTableRow: React.FC<Props> = ({ operator }) => {
   const handleViewClick = () => {
     router.push(getOperatorViewPageRoute(id));
   };
+  const handleEditClick = () => {
+    router.push(getOperatorEditPageRoute(id));
+  };
 
   return (
     <tr>
@@ -38,6 +41,9 @@ const OperatorTableRow: React.FC<Props> = ({ operator }) => {
         <div className="actions">
           <Button size="small" onClick={handleViewClick}>
             View
+          </Button>
+          <Button size="small" onClick={handleEditClick}>
+            Edit
           </Button>
         </div>
       </td>
