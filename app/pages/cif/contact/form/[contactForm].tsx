@@ -10,6 +10,7 @@ import SavingIndicator from "components/Form/SavingIndicator";
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { getContactsPageRoute } from "pageRoutes";
+import { ISubmitEvent } from "@rjsf/core";
 
 const pageQuery = graphql`
   query ContactFormQuery($contactForm: ID!) {
@@ -66,7 +67,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
     });
   };
 
-  const handleSubmit = ({ formData }) => {
+  const handleSubmit = ({ formData }: ISubmitEvent<any>) => {
     updateFormChange({
       variables: {
         input: {
@@ -77,7 +78,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
           },
         },
       },
-      debounceKey: formChange.id,
+      debounceKey: `${formChange.id}-submit`,
       onCompleted: () => {
         router.push(getContactsPageRoute());
       },
