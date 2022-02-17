@@ -44,7 +44,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
 
   const isEditing = formChange.formDataRecordId !== null;
 
-  const handleChange = (formData) => {
+  const handleChange = ({ formData }) => {
     updateFormChange({
       variables: {
         input: {
@@ -108,7 +108,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
       </header>
       <ContactForm
         formData={formChange.newFormData}
-        disabled={isDeletingFormChange || isUpdatingFormChange}
+        disabled={isDeletingFormChange}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onDiscard={handleDiscard}
