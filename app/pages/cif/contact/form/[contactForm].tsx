@@ -10,6 +10,7 @@ import SavingIndicator from "components/Form/SavingIndicator";
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { getContactsPageRoute } from "pageRoutes";
+import { ISubmitEvent } from "@rjsf/core";
 
 const pageQuery = graphql`
   query ContactFormQuery($contactForm: ID!) {
@@ -44,7 +45,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
 
   const isEditing = formChange.formDataRecordId !== null;
 
-  const handleChange = (formData) => {
+  const handleChange = ({ formData }) => {
     updateFormChange({
       variables: {
         input: {
@@ -66,7 +67,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
     });
   };
 
-  const handleSubmit = ({ formData }) => {
+  const handleSubmit = ({ formData }: ISubmitEvent<any>) => {
     updateFormChange({
       variables: {
         input: {
@@ -77,7 +78,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
           },
         },
       },
-      debounceKey: formChange.id,
+      debounceKey: `${formChange.id}-submit`,
       onCompleted: () => {
         router.push(getContactsPageRoute());
       },
@@ -108,7 +109,7 @@ function ContactFormPage({ preloadedQuery }: RelayProps<{}, ContactFormQuery>) {
       </header>
       <ContactForm
         formData={formChange.newFormData}
-        disabled={isDeletingFormChange || isUpdatingFormChange}
+        disabled={isDeletingFormChange}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onDiscard={handleDiscard}

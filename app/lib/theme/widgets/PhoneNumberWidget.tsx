@@ -2,7 +2,7 @@ import { WidgetProps } from "@rjsf/core";
 import getRequiredLabel from "../utils/getRequiredLabel";
 import NumberFormat from "react-number-format";
 
-const TextWidget: React.FC<WidgetProps> = ({
+const PhoneNumberWidget: React.FC<WidgetProps> = ({
   schema,
   id,
   disabled,
@@ -22,6 +22,7 @@ const TextWidget: React.FC<WidgetProps> = ({
         disabled={disabled}
         format="(###) ###-####"
         mask="_"
+        aria-label={label}
         defaultValue={(schema as any).defaultValue}
         value={value?.replace("+1", "")}
         onValueChange={({ value: newValue }) => onChange(`+1${newValue}`)}
@@ -36,4 +37,4 @@ const TextWidget: React.FC<WidgetProps> = ({
   );
 };
 
-export default TextWidget;
+export default PhoneNumberWidget;
