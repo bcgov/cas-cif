@@ -24076,6 +24076,11 @@ type Operator implements Node {
   """
   operatorCode: String
 
+  """
+  Returns the pending form change editing the operator created by the current user, if it exists.
+  """
+  pendingFormChange: FormChange
+
   """Reads and enables pagination through a set of `ProjectStatus`."""
   projectStatusesByProjectOperatorIdAndProjectStatusId(
     """Read all values in the set after (below) this cursor."""

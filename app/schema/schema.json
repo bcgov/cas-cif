@@ -81753,6 +81753,18 @@
               "deprecationReason": null
             },
             {
+              "name": "pendingFormChange",
+              "description": "Returns the pending form change editing the operator created by the current user, if it exists.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FormChange",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "projectStatusesByProjectOperatorIdAndProjectStatusId",
               "description": "Reads and enables pagination through a set of `ProjectStatus`.",
               "args": [
