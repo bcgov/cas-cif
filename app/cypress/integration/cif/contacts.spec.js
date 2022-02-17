@@ -5,7 +5,7 @@ describe("The contacts page", () => {
     cy.mockLogin("cif_internal");
   });
 
-  it("Allows creating a contact", () => {
+  it("Allows creating and editing a contact", () => {
     cy.visit("/cif/contacts");
     cy.get("h2").contains("Contacts");
     cy.get("button").contains("Add").click();
@@ -18,5 +18,14 @@ describe("The contacts page", () => {
     });
     cy.get("button").contains("Submit").click();
     cy.get("table").contains("Loblaw, Bob");
+    cy.get("table").contains("View").click();
+    cy.contains("Contact Information");
+    cy.get("body").happoScreenshot({
+      component: "View contact",
+    });
+    cy.get("button").contains("Edit").click();
+    cy.get("input[aria-label='Given Name']").clear().type("Rob");
+    cy.get("button").contains("Submit").click();
+    cy.get("table").contains("Loblaw, Rob");
   });
 });
