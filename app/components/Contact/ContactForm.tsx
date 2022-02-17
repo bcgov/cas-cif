@@ -20,8 +20,10 @@ const ContactForm: React.FC<Props> = (props) => {
       schema={contactSchema as JSONSchema7}
       uiSchema={uiSchema}
     >
-      <Button type="submit">Submit</Button>
-      <Button type="button" onClick={props.onDiscard}>
+      <Button type="submit" style={{ marginRight: "1rem" }}>
+        Submit
+      </Button>
+      <Button type="button" variant="secondary" onClick={props.onDiscard}>
         Discard Changes
       </Button>
     </FormBase>
