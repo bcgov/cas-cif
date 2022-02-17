@@ -1,19 +1,15 @@
 import { Button } from "@button-inc/bcgov-theme";
 import FormBase from "components/Form/FormBase";
-import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
 import contactSchema from "data/jsonSchemaForm/contactSchema";
 import { JSONSchema7 } from "json-schema";
+import { FormPageFactoryComponentProps } from "lib/pages/relayFormPageFactory";
 
 const uiSchema = {
   comments: { "ui:widget": "TextAreaWidget" },
   phone: { "ui:widget": "PhoneNumberWidget" },
 };
 
-interface Props extends FormComponentProps {
-  onDiscard: () => void;
-}
-
-const ContactForm: React.FC<Props> = (props) => {
+const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
   return (
     <FormBase
       {...props}
