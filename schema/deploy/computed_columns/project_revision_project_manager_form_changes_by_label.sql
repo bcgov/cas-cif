@@ -11,10 +11,11 @@ $computed_column$
 
   with project_form_change_history as (
     select *
-      from cif.form_change
+      from cif.form_change fc
       where project_revision_id = $1.id
         and form_data_schema_name='cif'
         and form_data_table_name='project_manager'
+        and fc.created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()))
     union
     select fc.*
       from cif.form_change fc
@@ -26,6 +27,7 @@ $computed_column$
         and change_status = 'committed'
         and form_data_record_id is not null
         and fc.updated_at = (select max(updated_at) from cif.form_change where form_data_record_id = pm.id)
+        and fc.created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()))
   )
   select label, project_form_change_history.id as form_change_id, new_form_data
     from project_form_change_history
