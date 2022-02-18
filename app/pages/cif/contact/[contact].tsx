@@ -21,6 +21,7 @@ const pageQuery = graphql`
       fullPhone
       email
       position
+      comments
       pendingFormChange {
         id
       }
@@ -77,14 +78,29 @@ export function ContactViewPage({
         <dt>Email</dt>
         <dd>{contact.email}</dd>
 
-        <dt>Position</dt>
-        <dd>{contact.position}</dd>
+        {contact.position && (
+          <>
+            <dt>Position</dt>
+            <dd>{contact.position}</dd>
+          </>
+        )}
+
+        {contact.comments && (
+          <>
+            <dt>Comments</dt>
+            <dd className="preformatted">{contact.comments}</dd>
+          </>
+        )}
       </dl>
       <style jsx>{`
         header {
           display: flex;
           justify-content: space-between;
           align-items: start;
+        }
+
+        .preformatted {
+          white-space: pre-wrap;
         }
       `}</style>
     </DefaultLayout>
