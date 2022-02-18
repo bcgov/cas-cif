@@ -2,7 +2,7 @@ const schema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Operator",
-  required: ["legalName", "tradeName", "bcRegistryId", "operatorCode"],
+  required: ["legalName", "tradeName"],
   properties: {
     legalName: {
       type: "string",
