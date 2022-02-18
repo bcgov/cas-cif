@@ -17,7 +17,8 @@
       "*": ["*", "../*", "__generated__/*"]
     },
     "allowJs": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "incremental": true
   },
   "exclude": [".next", "node_modules", "public", "cypress"],
   "include": ["./**/*", "./.eslintrc.js"]
