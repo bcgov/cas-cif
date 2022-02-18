@@ -1,6 +1,7 @@
 begin;
+SET client_min_messages TO WARNING; -- don't show all the truncate messages
 
-select * from no_plan();
+select plan(7);
 
 -- Setting up the test data for the following scenario:
 -- For our project (id = 1), we have multiple revisions:
@@ -21,6 +22,8 @@ values
   ('00000000-0000-0000-0000-000000000001', 'user 2', 'Testuser', 'cif_external@somemail.com'),
   ('00000000-0000-0000-0000-000000000002', 'user 3', 'Testuser', 'cif_admin@somemail.com'),
   ('00000000-0000-0000-0000-000000000003', 'user 4', 'Testuser', 'cif@somemail.com');
+
+set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
 
 insert into cif.operator(id, legal_name)
   overriding system value
@@ -104,32 +107,7 @@ update cif.form_change set updated_at = updated_at + interval '2 hours' where id
 update cif.form_change set updated_at = updated_at + interval '3 hours' where id in (6,7);
 update cif.form_change set updated_at = updated_at + interval '5 hours' where id in (8,9);
 
-
-  select'MATTHIEU-------------------------------------------';
-
-
-  with project_form_change_history as (
-    select *
-      from cif.form_change
-      where project_revision_id = 3
-        and form_data_schema_name='cif'
-        and form_data_table_name='project_manager'
-    union
-    select fc.*
-      from cif.form_change fc
-      join cif.project_manager pm on
-        fc.form_data_record_id = pm.id
-        and pm.project_id = 1
-        and form_data_schema_name='cif'
-        and form_data_table_name='project_manager'
-        and change_status = 'committed'
-        and form_data_record_id is not null
-        and fc.updated_at = (select max(updated_at) from cif.form_change where form_data_record_id = pm.id)
-  )
-  select label, project_form_change_history.id as id, operation, form_data_record_id, new_form_data from project_form_change_history
-  right join cif.project_manager_label pml
-  on cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id;
-
+/** TESTS **/
 
 select is(
   (
@@ -163,7 +141,10 @@ select is(
       where label='2 Label'
   ),
   '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}'::jsonb,
-  'The new_form_data returned for the record with label "2 Label" matches the data that was updated in revision 2.'
+  $$
+    The new_form_data returned for the record with label "2 Label" matches the data that was updated in revision 2.
+    (Function returns latest committed form_change record)
+  $$
 );
 
 select is(
@@ -175,7 +156,10 @@ select is(
       where label='3 Label'
   ),
   NULL,
-  'The new_form_data returned is NULL for the record with label "3 Label". It was archived in revision 3'
+  $$
+    The new_form_data returned is NULL for the record with label "3 Label". It is currently being archived in revision 3
+    (Function returns the pending form_change record in favor of the latest committed record)
+  $$
 );
 
 select is(
@@ -200,6 +184,20 @@ select is(
   ),
   0::bigint,
   'Only returns data for the project matching the project_revision''s project_id. (Does not return data from other projects)'
+);
+
+set jwt.claims.sub to '00000000-0000-0000-0000-000000000001';
+
+select is(
+  (
+    with record as (
+      select row(project_revision.*)::cif.project_revision
+      from cif.project_revision where id=3
+    ) select new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record))
+      where label='4 Label'
+  ),
+  NULL,
+  'The new_form_data returned is null if it was not created by the current user.'
 );
 
 select finish();
