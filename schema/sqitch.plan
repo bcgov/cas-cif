@@ -45,7 +45,6 @@ tables/contact 2022-01-19T22:40:59Z Matthieu Foucault <matthieu@button.is> # add
 tables/project_contact 2022-01-21T20:45:52Z Matthieu Foucault <matthieu@button.is> # add an association table for projects and contacts
 computed_columns/contact_full_name 2022-01-21T21:33:00Z Matthieu Foucault <matthieu@button.is> # add a computed column for a contact's full name
 computed_columns/contact_full_phone 2022-01-21T21:33:18Z Matthieu Foucault <matthieu@button.is> # add a computed column for a contact's full phone number
-mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
 computed_columns/project_revision_project_form_change [tables/project_revision] 2021-12-09T18:55:14Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project record, within a project revision
 functions/pending_new_project_revision 2021-12-22T23:40:21Z Matthieu Foucault <matthieu@button.is> # add function returning a pending new project revision created by the current user
 mutations/create_form_change 2022-02-01T00:52:42Z Matthieu Foucault <matthieu@button.is> # add custom mutation to create a form change
@@ -53,9 +52,9 @@ functions/pending_new_contact_form_change 2022-02-02T15:57:04Z Matthieu Foucault
 computed_columns/contact_pending_form_change 2022-02-07T18:30:37Z Matthieu Foucault <matthieu@button.is> # add a computed column returning the pending form_change for a given contact
 mutations/add_contact_to_revision 2022-01-27T23:48:16Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Custom mutation that prepopulates an insert to the form change table for a new contact on a a project revision
 util_functions/import_swrs_operators [tables/operator schemas/private] 2022-02-09T17:17:00Z Dylan Leard <dylan@button.is> # Add function to import operators from swrs using a foreign data wrapper
-tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
 tables/project_manager_label [schemas/main] 2022-02-17T23:44:42Z Dylan Leard <dylan@button.is> # Table contains the possible labels that a cif_user can be assigned to as a manager of a project
-types/manager_form_changes_by_label_composite_return [schemas/main] 2022-02-18T20:58:37Z Dylan Leard <dylan@button.is> # Add custom composite return type for computed column project_revision_project_manager_form_changes_by_label
+tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
+mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
 computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision
 types/manager_form_changes_by_label_composite_return [schemas/main] 2022-02-18T20:58:37Z Dylan Leard <dylan@button.is> # Add custom composite return type for computed column project_revision_project_manager_form_changes_by_label
 computed_columns/project_revision_project_manager_form_changes_by_label [tables/project_revision tables/project_manager] 2022-02-18T21:32:45Z Dylan Leard <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the set of form changes related to the project manager association by project_manager_label, within a project revision
