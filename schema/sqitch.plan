@@ -55,4 +55,6 @@ mutations/add_contact_to_revision 2022-01-27T23:48:16Z Pierre Bastianelli <pierr
 util_functions/import_swrs_operators [tables/operator schemas/private] 2022-02-09T17:17:00Z Dylan Leard <dylan@button.is> # Add function to import operators from swrs using a foreign data wrapper
 tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
 tables/project_manager_label [schemas/main] 2022-02-17T23:44:42Z Dylan Leard <dylan@button.is> # Table contains the possible labels that a cif_user can be assigned to as a manager of a project
+types/manager_form_changes_by_label_composite_return [schemas/main] 2022-02-18T20:58:37Z Dylan Leard <dylan@button.is> # Add custom composite return type for computed column project_revision_project_manager_form_changes_by_label
 computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision
+
