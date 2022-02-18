@@ -12,9 +12,9 @@ export const getOperatorViewPageRoute = (operatorId: string) => ({
 });
 
 export const getOperatorFormPageRoute = (operatorFormId: string) => ({
-  pathname: `/cif/operator/form/[operatorForm]/`,
+  pathname: `/cif/operator/form/[form]/`,
   query: {
-    operatorForm: operatorFormId,
+    form: operatorFormId,
   },
 });
 

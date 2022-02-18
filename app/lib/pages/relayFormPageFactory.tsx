@@ -1,4 +1,4 @@
-import { RelayProps, withRelay } from "relay-nextjs";
+import { RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
@@ -7,31 +7,32 @@ import { useRouter } from "next/router";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import SavingIndicator from "components/Form/SavingIndicator";
 import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
-import withRelayOptions from "lib/relay/withRelayOptions";
 import { relayFormPageFactoryQuery } from "__generated__/relayFormPageFactoryQuery.graphql";
+import { GraphQLTaggedNode } from "relay-runtime";
 
 export interface FormPageFactoryComponentProps extends FormComponentProps {
   onDiscard: () => void;
 }
 
-const getRelayFormPage = (
+const pageQuery = graphql`
+  query relayFormPageFactoryQuery($form: ID!) {
+    session {
+      ...DefaultLayout_session
+    }
+    formChange(id: $form) {
+      id
+      newFormData
+      formDataRecordId
+      updatedAt
+    }
+  }
+`;
+
+const relayFormPageFactory = (
+  resourceName: string,
   onSubmitOrDiscardRoute: any,
   FormComponent: React.FC<FormPageFactoryComponentProps>
 ) => {
-  const pageQuery = graphql`
-    query relayFormPageFactoryQuery($formChangeId: ID!) {
-      session {
-        ...DefaultLayout_session
-      }
-      formChange(id: $formChangeId) {
-        id
-        newFormData
-        formDataRecordId
-        updatedAt
-      }
-    }
-  `;
-
   function FormPage({
     preloadedQuery,
   }: RelayProps<{}, relayFormPageFactoryQuery>) {
@@ -56,7 +57,9 @@ const getRelayFormPage = (
 
     const isEditing = formChange.formDataRecordId !== null;
 
-    const handleChange = (formData) => {
+    const handleChange = ({ formData }) => {
+      console.log("handleChange", formData);
+
       updateFormChange({
         variables: {
           input: {
@@ -75,6 +78,7 @@ const getRelayFormPage = (
           },
         },
         debounceKey: formChange.id,
+        onError: (e) => console.log(e),
       });
     };
 
@@ -93,6 +97,7 @@ const getRelayFormPage = (
         onCompleted: () => {
           router.push(onSubmitOrDiscardRoute);
         },
+        onError: (e) => console.log(e),
       });
     };
 
@@ -112,7 +117,9 @@ const getRelayFormPage = (
     return (
       <DefaultLayout session={session}>
         <header>
-          <h2>{isEditing ? "Edit" : "New"} Contact</h2>
+          <h2>
+            {isEditing ? "Edit" : "New"} {resourceName}
+          </h2>
           <SavingIndicator
             isSaved={!isUpdatingFormChange}
             lastEdited={lastEditedDate}
@@ -136,7 +143,12 @@ const getRelayFormPage = (
     );
   }
 
-  return withRelay(FormPage, pageQuery, withRelayOptions);
+  return [FormPage, pageQuery] as [
+    ({
+      preloadedQuery,
+    }: RelayProps<{}, relayFormPageFactoryQuery>) => JSX.Element,
+    GraphQLTaggedNode
+  ];
 };
 
-export default getRelayFormPage;
+export default relayFormPageFactory;

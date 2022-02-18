@@ -17,12 +17,12 @@ const schema = {
     bcRegistryId: {
       type: "string",
       title: "BC Registry ID",
-      pattern: "^[a-zA-Z]{1,2,3}\\d{7}",
+      pattern: "^[a-zA-Z]{1,3}[0-9]{7}$",
     },
     operatorCode: {
       type: "string",
       title: "Operator Code",
-      pattern: "^[A-Z]{4}",
+      pattern: "^[A-Z]{4}$",
     },
   },
 };
