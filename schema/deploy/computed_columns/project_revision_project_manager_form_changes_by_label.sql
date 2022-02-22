@@ -22,12 +22,7 @@ $computed_column$
       join cif.project_manager pm on
         fc.form_data_record_id = pm.id
         and pm.project_id = $1.project_id
-        and form_data_schema_name='cif'
-        and form_data_table_name='project_manager'
-        and change_status = 'committed'
-        and form_data_record_id is not null
-        and fc.updated_at = (select max(updated_at) from cif.form_change where form_data_record_id = pm.id)
-        and fc.created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()))
+        and (fc.updated_at, fc.id) = (select max(updated_at), max(id) from cif.form_change where form_data_record_id = pm.id)
   )
   select label, row(project_form_change_history.*) as form_change
     from project_form_change_history
