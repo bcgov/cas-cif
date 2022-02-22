@@ -66283,6 +66283,41 @@
         },
         {
           "kind": "INPUT_OBJECT",
+          "name": "DeleteProjectManagerLabelByLabelInput",
+          "description": "All input for the `deleteProjectManagerLabelByLabel` mutation.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "clientMutationId",
+              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "label",
+              "description": "The label that project managers can be assigned to a project as",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
           "name": "DeleteProjectManagerLabelByRowIdInput",
           "description": "All input for the `deleteProjectManagerLabelByRowId` mutation.",
           "fields": null,
@@ -79087,12 +79122,12 @@
           "description": "The type of change operation, defining the action taken when the form_change is committed.",
           "fields": [
             {
-              "name": "formChangeId",
+              "name": "formChange",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "Int",
+                "kind": "OBJECT",
+                "name": "FormChange",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -79105,18 +79140,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "newFormData",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "JSON",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -79153,31 +79176,11 @@
               "defaultValue": null
             },
             {
-              "name": "formChangeId",
-              "description": "Filter by the object’s `formChangeId` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "IntFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "label",
               "description": "Filter by the object’s `label` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "newFormData",
-              "description": "Filter by the object’s `newFormData` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JSONFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -80261,6 +80264,33 @@
               "deprecationReason": null
             },
             {
+              "name": "deleteProjectManagerLabelByLabel",
+              "description": "Deletes a single `ProjectManagerLabel` using a unique key.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "DeleteProjectManagerLabelByLabelInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteProjectManagerLabelPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "deleteProjectManagerLabelByRowId",
               "description": "Deletes a single `ProjectManagerLabel` using a unique key.",
               "args": [
@@ -80894,6 +80924,33 @@
                     "ofType": {
                       "kind": "INPUT_OBJECT",
                       "name": "UpdateProjectManagerLabelInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateProjectManagerLabelPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updateProjectManagerLabelByLabel",
+              "description": "Updates a single `ProjectManagerLabel` using a unique key and a patch.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "UpdateProjectManagerLabelByLabelInput",
                       "ofType": null
                     }
                   },
@@ -108094,6 +108151,33 @@
               "deprecationReason": null
             },
             {
+              "name": "projectManagerLabelByLabel",
+              "description": null,
+              "args": [
+                {
+                  "name": "label",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ProjectManagerLabel",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "projectManagerLabelByRowId",
               "description": null,
               "args": [
@@ -110929,6 +111013,55 @@
                 "ofType": {
                   "kind": "INPUT_OBJECT",
                   "name": "ProjectManagerPatch",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateProjectManagerLabelByLabelInput",
+          "description": "All input for the `updateProjectManagerLabelByLabel` mutation.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "clientMutationId",
+              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "label",
+              "description": "The label that project managers can be assigned to a project as",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "projectManagerLabelPatch",
+              "description": "An object where the defined keys will be set on the `ProjectManagerLabel` being updated.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectManagerLabelPatch",
                   "ofType": null
                 }
               },

@@ -19856,6 +19856,18 @@ input DeleteProjectManagerInput {
   id: ID!
 }
 
+"""All input for the `deleteProjectManagerLabelByLabel` mutation."""
+input DeleteProjectManagerLabelByLabelInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The label that project managers can be assigned to a project as"""
+  label: String!
+}
+
 """All input for the `deleteProjectManagerLabelByRowId` mutation."""
 input DeleteProjectManagerLabelByRowIdInput {
   """
@@ -23278,9 +23290,8 @@ input KeycloakJwtFilter {
 The type of change operation, defining the action taken when the form_change is committed.
 """
 type ManagerFormChangesByLabelCompositeReturn {
-  formChangeId: Int
+  formChange: FormChange
   label: String
-  newFormData: JSON
 }
 
 """
@@ -23290,14 +23301,8 @@ input ManagerFormChangesByLabelCompositeReturnFilter {
   """Checks for all expressions in this list."""
   and: [ManagerFormChangesByLabelCompositeReturnFilter!]
 
-  """Filter by the object’s `formChangeId` field."""
-  formChangeId: IntFilter
-
   """Filter by the object’s `label` field."""
   label: StringFilter
-
-  """Filter by the object’s `newFormData` field."""
-  newFormData: JSONFilter
 
   """Negates the expression."""
   not: ManagerFormChangesByLabelCompositeReturnFilter
@@ -23613,6 +23618,14 @@ type Mutation {
   ): DeleteProjectManagerLabelPayload
 
   """Deletes a single `ProjectManagerLabel` using a unique key."""
+  deleteProjectManagerLabelByLabel(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteProjectManagerLabelByLabelInput!
+  ): DeleteProjectManagerLabelPayload
+
+  """Deletes a single `ProjectManagerLabel` using a unique key."""
   deleteProjectManagerLabelByRowId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -23822,6 +23835,14 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: UpdateProjectManagerLabelInput!
+  ): UpdateProjectManagerLabelPayload
+
+  """Updates a single `ProjectManagerLabel` using a unique key and a patch."""
+  updateProjectManagerLabelByLabel(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateProjectManagerLabelByLabelInput!
   ): UpdateProjectManagerLabelPayload
 
   """Updates a single `ProjectManagerLabel` using a unique key and a patch."""
@@ -31219,6 +31240,7 @@ type Query implements Node {
     """
     id: ID!
   ): ProjectManagerLabel
+  projectManagerLabelByLabel(label: String!): ProjectManagerLabel
   projectManagerLabelByRowId(rowId: Int!): ProjectManagerLabel
 
   """Reads a single `ProjectRevision` using its globally unique `ID`."""
@@ -32101,6 +32123,23 @@ input UpdateProjectManagerInput {
   An object where the defined keys will be set on the `ProjectManager` being updated.
   """
   projectManagerPatch: ProjectManagerPatch!
+}
+
+"""All input for the `updateProjectManagerLabelByLabel` mutation."""
+input UpdateProjectManagerLabelByLabelInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The label that project managers can be assigned to a project as"""
+  label: String!
+
+  """
+  An object where the defined keys will be set on the `ProjectManagerLabel` being updated.
+  """
+  projectManagerLabelPatch: ProjectManagerLabelPatch!
 }
 
 """All input for the `updateProjectManagerLabelByRowId` mutation."""
