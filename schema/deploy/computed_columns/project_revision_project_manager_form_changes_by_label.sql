@@ -29,7 +29,7 @@ $computed_column$
         and fc.updated_at = (select max(updated_at) from cif.form_change where form_data_record_id = pm.id)
         and fc.created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()))
   )
-  select label, project_form_change_history.id as form_change_id, new_form_data
+  select label, row(project_form_change_history.*) as form_change
     from project_form_change_history
     right join cif.project_manager_label pml
       on cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id;
