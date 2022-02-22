@@ -19,7 +19,7 @@ select columns_are(
   'columns in cif.project_manager_label match expected columns'
 );
 
-select index_is_unique( 'cif', 'project_manager_label', 'cif_project_manager_label_uindex', 'There is a unique index on the label column' );
+select col_is_unique( 'cif', 'project_manager_label', 'label', 'There is a unique constraint on the label column' );
 
 -- Row level security tests --
 

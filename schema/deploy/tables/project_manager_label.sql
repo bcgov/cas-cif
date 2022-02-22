@@ -5,10 +5,8 @@ begin;
 
 create table cif.project_manager_label (
   id integer primary key generated always as identity,
-  label varchar(1000) not null
+  label varchar(1000) not null unique
 );
-
-create unique index cif_project_manager_label_uindex on cif.project_manager_label (label);
 
 select cif_private.upsert_timestamp_columns('cif', 'project_manager_label');
 
