@@ -86032,6 +86032,18 @@
               "deprecationReason": null
             },
             {
+              "name": "pendingProjectRevision",
+              "description": "Returns the pending project revision for the project, created by the current user",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ProjectRevision",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "projectContactsByProjectId",
               "description": "Reads and enables pagination through a set of `ProjectContact`.",
               "args": [

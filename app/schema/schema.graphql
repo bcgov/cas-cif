@@ -25293,6 +25293,11 @@ type Project implements Node {
   """Foreign key references the cif.operator table"""
   operatorId: Int!
 
+  """
+  Returns the pending project revision for the project, created by the current user
+  """
+  pendingProjectRevision: ProjectRevision
+
   """Reads and enables pagination through a set of `ProjectContact`."""
   projectContactsByProjectId(
     """Read all values in the set after (below) this cursor."""
