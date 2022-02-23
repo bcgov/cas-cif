@@ -10,12 +10,13 @@ as
 $computed_column$
 
   with project_form_change_history as (
-    select *
+    select fc.*
       from cif.form_change fc
+      join cif.project_manager_label pml on cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id
+        and (fc.updated_at, fc.id) = (select max(updated_at), max(id) from cif.form_change where cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id)
       where project_revision_id = $1.id
         and form_data_schema_name='cif'
         and form_data_table_name='project_manager'
-        and fc.created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()))
     union
     select fc.*
       from cif.form_change fc

@@ -1,7 +1,7 @@
 begin;
 SET client_min_messages TO WARNING; -- don't show all the truncate messages
 
-select plan(7);
+select plan(6);
 
 /** Basic Setup: Entities needed by dependency **/
 
@@ -66,7 +66,7 @@ insert into cif.project_revision(id, change_status, project_id)
       delete 1 record created in revision 1
       update 1 record created in revision 1
     Revision 3 (pending) - This pending revision is the main focus of the tests:
-      create 1 record
+      create 1 record -> one user creates a record in form_change with id=6 another user creates a record for the same label in form_change with id=11 (concurrency check)
       delete 1 record created in revision 1
     Revision 2 (committed):
       update 1 record (same record updated in revision 2) with the exact same updated_at value. This ensures that records with identical updated_at values are ordered by id desc.
@@ -85,11 +85,19 @@ insert into cif.form_change(
     (3, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
     (4, 'archive', 'cif', 'project_manager', 1, 2, 'test reason', 'project',null),
     (5, 'update', 'cif', 'project_manager', 2, 2, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 2}'),
-    (6, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}'),
+    (6, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'),
     (7, 'archive', 'cif', 'project_manager', 3, 3, 'test reason', 'project', null),
     (8, 'create', 'cif', 'project_manager', null, 4, 'test reason', 'project', '{"projectId": 2, "cifUserId": 4, "projectManagerLabelId": 1}'),
     (9, 'create', 'cif', 'project_manager', null, 5, 'test reason', 'project', '{"projectId": 2, "cifUserId": 3, "projectManagerLabelId": 3}'),
     (10, 'update', 'cif', 'project_manager', 2, 6, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}');
+
+set jwt.claims.sub to '00000000-0000-0000-0000-000000000001';
+insert into cif.form_change(
+  id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, change_reason, json_schema_name, new_form_data)
+  overriding system value
+  values
+(11, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}');
+
 -- Commit Revisions 1, 2 and 4.
 update cif.project_revision set change_status = 'committed' where id in (1,2,4,6);
 
@@ -99,7 +107,7 @@ alter table cif.form_change disable trigger _100_timestamps;
 -- Ensure the updated_at timestamps make sense (Not all are updated at the same time, group and stagger the updates by revision)
 update cif.form_change set updated_at = updated_at + interval '1 hour' where id in (1,2,3);
 update cif.form_change set updated_at = updated_at + interval '2 hours' where id in (4,5,10);
-update cif.form_change set updated_at = updated_at + interval '3 hours' where id in (6,7);
+update cif.form_change set updated_at = updated_at + interval '3 hours' where id in (6,7,11);
 update cif.form_change set updated_at = updated_at + interval '5 hours' where id in (8,9);
 
 -- with record as (
@@ -173,7 +181,10 @@ select is(
       where label='4 Label'
   ),
   '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}'::jsonb,
-  'The new_form_data returned for the record with label "4 Label" matches the data that was created in revision 3.'
+  $$
+    The new_form_data returned for the record with label "4 Label" matches the data that was created in revision 3 form_change id=11.
+    Function returns the pending form_change with id=11 in favor of the form_change with id=3. Checks that in the case of concurrent editing, the latest pending record is returned (by updated_at, id))
+  $$
 );
 
 select is(
@@ -186,20 +197,6 @@ select is(
   ),
   0::bigint,
   'Only returns data for the project matching the project_revision''s project_id. (Does not return data from other projects)'
-);
-
-set jwt.claims.sub to '00000000-0000-0000-0000-000000000001';
-
-select is(
-  (
-    with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=3
-    ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
-      where label='4 Label'
-  ),
-  NULL,
-  'The new_form_data returned is null if it was not created by the current user.'
 );
 
 select finish();
