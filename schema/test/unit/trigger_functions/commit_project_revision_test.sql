@@ -35,7 +35,8 @@ update cif.form_change set new_form_data=format('{
 
 update cif.form_change set new_form_data=format('{
       "projectId": %s,
-      "cifUserId": %s
+      "cifUserId": %s,
+      "projectManagerLabelId": 1
     }',
     (select form_data_record_id from cif.form_change
         where form_data_table_name='project'
