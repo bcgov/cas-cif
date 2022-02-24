@@ -6,8 +6,8 @@ begin;
 create table cif.operator(
   id integer primary key generated always as identity,
   swrs_organisation_id integer unique,
-  cif_legal_name varchar(1000),
-  cif_trade_name varchar(1000),
+  legal_name varchar(1000),
+  trade_name varchar(1000),
   swrs_legal_name varchar(1000),
   swrs_trade_name varchar(1000),
   bc_registry_id varchar(100),
