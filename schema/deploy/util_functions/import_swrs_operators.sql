@@ -65,10 +65,22 @@ $function$
         operators_to_insert as (
           select
               swrs_operator.swrs_organisation_id as swrs_organisation_id,
-              business_legal_name, english_trade_name,
-              (select id from cif.operator where swrs_operator.swrs_organisation_id=cif.operator.swrs_organisation_id) as existing_operator_id
+              business_legal_name as swrs_legal_name,
+              english_trade_name as swrs_trade_name,
+              case
+                -- if cif_operator is null (new operator) or cif_operator exists and the swrs and cif names
+                -- are identical (no manual update from the frontend), then we update the cif name.
+                when cif_operator.swrs_legal_name=cif_operator.legal_name then business_legal_name
+                else cif_operator.legal_name
+              end as legal_name,
+              case
+                when cif_operator.swrs_trade_name=cif_operator.trade_name then english_trade_name
+                else cif_operator.trade_name
+              end as trade_name,
+              cif_operator.id as existing_operator_id
           from swrs_operator
           inner join latest_reports on report_id = latest_reports.id
+          left join cif.operator as cif_operator on swrs_operator.swrs_organisation_id = cif_operator.swrs_organisation_id
         )
         insert into cif.form_change(
           new_form_data,
@@ -82,12 +94,24 @@ $function$
           json_schema_name
         ) (
           select
-            format('{"swrs_organisation_id": %s , "legal_name": %s , "trade_name": %s }',
+            format('{
+                "swrs_organisation_id": %s ,
+                "swrs_legal_name": %s,
+                "swrs_trade_name": %s,
+                "legal_name": %s ,
+                "trade_name": %s
+              }',
               operators_to_insert.swrs_organisation_id,
               quote_ident(operators_to_insert.business_legal_name),
-              quote_ident(operators_to_insert.english_trade_name)
+              quote_ident(operators_to_insert.english_trade_name),
+              quote_ident(operators_to_insert.legal_name),
+              quote_ident(operators_to_insert.trade_name)
             )::jsonb,
-            case when operators_to_insert.existing_operator_id is null then 'create'::cif.form_change_operation else 'update'::cif.form_change_operation end,
+            case
+              when operators_to_insert.existing_operator_id is null
+                then 'create'::cif.form_change_operation
+                else 'update'::cif.form_change_operation
+            end,
             'cif',
             'operator',
             operators_to_insert.existing_operator_id,
