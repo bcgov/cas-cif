@@ -6,20 +6,15 @@ begin;
 create table cif.operator(
   id integer primary key generated always as identity,
   swrs_organisation_id integer unique,
-  legal_name varchar(1000),
-  trade_name varchar(1000),
+  cif_legal_name varchar(1000),
+  cif_trade_name varchar(1000),
+  swrs_legal_name varchar(1000),
+  swrs_trade_name varchar(1000),
   bc_registry_id varchar(100),
-  operator_code varchar(10),
-  legal_name_updated_by_cif boolean default false,
-  trade_name_updated_by_cif boolean default false
+  operator_code varchar(10)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'operator');
-
-create trigger operator_data_manually_updated
-  before update of legal_name, trade_name on cif.operator
-  for each row
-  execute procedure cif_private.operator_data_manually_updated();
 
 create trigger protect_manually_updated_operator_data
   before update of legal_name, trade_name on cif.operator
