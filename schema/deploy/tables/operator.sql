@@ -16,14 +16,6 @@ create table cif.operator(
 
 select cif_private.upsert_timestamp_columns('cif', 'operator');
 
-create trigger protect_manually_updated_operator_data
-  before update of legal_name, trade_name on cif.operator
-  for each row
-  execute procedure cif_private.protect_manually_updated_operator_data();
-
--- This trigger should be disabled by default and enabled only when importing data from SWRS
-alter table cif.operator disable trigger protect_manually_updated_operator_data;
-
 do
 $grant$
 begin
