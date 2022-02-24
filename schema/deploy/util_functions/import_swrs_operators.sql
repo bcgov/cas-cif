@@ -61,18 +61,43 @@ $function$
               on r.swrs_organisation_id = latest_reporting_period.swrs_organisation_id
               and r.reporting_period_duration = latest_reporting_period.last_reporting_period
           group by r.swrs_organisation_id
+        ),
+        operators_to_insert as (
+          select
+              swrs_operator.swrs_organisation_id as swrs_organisation_id,
+              business_legal_name, english_trade_name,
+              (select id from cif.operator where swrs_operator.swrs_organisation_id=cif.operator.swrs_organisation_id) as existing_operator_id
+          from swrs_operator
+          inner join latest_reports on report_id = latest_reports.id
         )
-        insert into cif.operator(swrs_organisation_id, legal_name, trade_name)
-          (
-            select
-              swrs_operator.swrs_organisation_id,
-              business_legal_name, english_trade_name
-            from swrs_operator
-            join latest_reports on report_id = latest_reports.id
-          ) on conflict(swrs_organisation_id) do update
-            set
-              legal_name = excluded.legal_name,
-              trade_name = excluded.trade_name;
+        insert into cif.form_change(
+          new_form_data,
+          operation,
+          form_data_schema_name,
+          form_data_table_name,
+          form_data_record_id,
+          project_revision_id,
+          change_status,
+          change_reason,
+          json_schema_name
+        ) (
+          select
+            format('{"swrs_organisation_id": %s , "legal_name": %s , "trade_name": %s }',
+              operators_to_insert.swrs_organisation_id,
+              quote_ident(operators_to_insert.business_legal_name),
+              quote_ident(operators_to_insert.english_trade_name)
+            )::jsonb,
+            case when operators_to_insert.existing_operator_id is null then 'create'::cif.form_change_operation else 'update'::cif.form_change_operation end,
+            'cif',
+            'operator',
+            operators_to_insert.existing_operator_id,
+            null,
+            'committed',
+            'Operator automatically imported from SWRS',
+            'operator'
+          from operators_to_insert
+        )
+
       $$;
 
     drop server swrs_import_server cascade;
