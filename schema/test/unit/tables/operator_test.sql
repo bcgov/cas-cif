@@ -1,5 +1,5 @@
 begin;
-select plan(12);
+select plan(11);
 
 select has_table('cif', 'operator', 'table cif.operator exists');
 
@@ -10,10 +10,10 @@ select columns_are(
     'id',
     'legal_name',
     'trade_name',
+    'swrs_legal_name',
+    'swrs_trade_name',
     'bc_registry_id',
     'swrs_organisation_id',
-    'legal_name_updated_by_cif',
-    'trade_name_updated_by_cif',
     'operator_code',
     'created_at',
     'created_by',
@@ -24,8 +24,6 @@ select columns_are(
   ],
   'columns in cif.operator match expected columns'
 );
-
-select has_trigger( 'cif', 'operator', 'operator_data_manually_updated', 'operator table has the operator_data_manually_updated trigger' );
 
 insert into cif.operator
   (legal_name, trade_name, bc_registry_id) values
