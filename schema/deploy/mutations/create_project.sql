@@ -43,7 +43,7 @@ begin
     'Creating new project: project record',
     'project'
   ), (
-    format('{ "projectId": %s }', next_project_id)::jsonb,
+    format('{ "projectId": %s, "projectManagerLabelId": 1 }', next_project_id)::jsonb,
     'create',
     'cif',
     'project_manager',

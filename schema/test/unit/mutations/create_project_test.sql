@@ -60,7 +60,7 @@ select is(
 -- prepopulates the project manager form with the project id
 select is(
   (select new_form_data from cif.form_change where form_data_table_name='project_manager' and project_revision_id=2),
-  '{ "projectId": 1235 }'::jsonb,
+  '{ "projectId": 1235, "projectManagerLabelId": 1 }'::jsonb,
   'Populates the project_manager form with the project id'
 );
 
