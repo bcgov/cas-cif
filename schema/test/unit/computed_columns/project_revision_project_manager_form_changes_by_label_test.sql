@@ -184,10 +184,7 @@ select is(
       where (r).project_manager_label.label = '2 Label'
   ),
   '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'::jsonb,
-  $$
-    The new_form_data returned for the record with label "2 Label" matches the data that was updated in revision 3.
-    (Function returns latest committed form_change record, ordered by id if records have identical updated_at values)
-  $$
+    'The new_form_data returned for the record with label "2 Label" matches the data that was updated in revision 3.'
 );
 
 select is(
@@ -199,10 +196,7 @@ select is(
       where (r).project_manager_label.label = '3 Label'
   ),
   NULL,
-  $$
-    The new_form_data returned is NULL for the record with label "3 Label". It is currently being archived in revision 3
-    (Function returns the pending form_change record in favor of the latest committed record)
-  $$
+    'The new_form_data returned is NULL for the record with label "3 Label". It is currently being archived in revision 3'
 );
 
 select is(
@@ -229,7 +223,7 @@ select is(
       where ((r).form_change.new_form_data->'projectId')::int = 2
   ),
   0::bigint,
-  'Only returns data for the project matching the project_revision''s project_id. (Does not return data from other projects)'
+  'Function only returns data for the project matching the project_revision''s project_id. (Does not return data from other projects)'
 );
 
 select finish();
