@@ -35,18 +35,6 @@ update cif.form_change set new_form_data=format('{
 
 update cif.form_change set new_form_data=format('{
       "projectId": %s,
-      "cifUserId": %s,
-      "projectManagerLabelId": 1
-    }',
-    (select form_data_record_id from cif.form_change
-        where form_data_table_name='project'
-        and project_revision_id=(select id from cif.project_revision order by id desc limit 1)),
-    (select id from cif.cif_user order by id desc limit 1)
-  )::jsonb
-  where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_manager';
-
-update cif.form_change set new_form_data=format('{
-      "projectId": %s,
       "contactIndex": %s,
       "contactId": %s
     }',
@@ -68,7 +56,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('pending'::varchar), ('pending'::varchar), ('pending'::varchar);
+    values ('pending'::varchar), ('pending'::varchar);
   $$,
   'Three form changes should be initialized with the pending status'
 );
@@ -93,7 +81,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id = (select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('test_pending'::varchar), ('test_pending'::varchar), ('test_pending'::varchar);
+    values ('test_pending'::varchar), ('test_pending'::varchar);
   $$,
   'the form_change rows should be have the test_pending status'
 );
@@ -113,7 +101,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('committed'::varchar), ('committed'::varchar), ('committed'::varchar);
+    values ('committed'::varchar), ('committed'::varchar);
   $$,
   'the form_change rows should have the committed status'
 );
