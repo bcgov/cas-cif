@@ -63972,7 +63972,7 @@
         {
           "kind": "INPUT_OBJECT",
           "name": "CreateProjectRevisionInput",
-          "description": "All input for the create `ProjectRevision` mutation.",
+          "description": "All input for the `createProjectRevision` mutation.",
           "fields": null,
           "inputFields": [
             {
@@ -63986,14 +63986,14 @@
               "defaultValue": null
             },
             {
-              "name": "projectRevision",
-              "description": "The `ProjectRevision` to be created by this mutation.",
+              "name": "projectId",
+              "description": null,
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ProjectRevisionInput",
+                  "kind": "SCALAR",
+                  "name": "Int",
                   "ofType": null
                 }
               },
@@ -64007,7 +64007,7 @@
         {
           "kind": "OBJECT",
           "name": "CreateProjectRevisionPayload",
-          "description": "The output of our create `ProjectRevision` mutation.",
+          "description": "The output of our `createProjectRevision` mutation.",
           "fields": [
             {
               "name": "changeStatusByChangeStatus",
@@ -64071,7 +64071,7 @@
             },
             {
               "name": "projectRevision",
-              "description": "The `ProjectRevision` that was created by this mutation.",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -79604,7 +79604,7 @@
             },
             {
               "name": "createProjectRevision",
-              "description": "Creates a single `ProjectRevision`.",
+              "description": null,
               "args": [
                 {
                   "name": "input",
@@ -98516,77 +98516,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "ProjectRevisionInput",
-          "description": "An input for mutations affecting `ProjectRevision`",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "changeStatus",
-              "description": "Foreign key to the status of the project revision",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "createdAt",
-              "description": "created at timestamp",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "createdBy",
-              "description": "created by user id",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "projectId",
-              "description": "Foreign key to the associated project row. Will be null if the project hasn't been committed yet.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "updatedAt",
-              "description": "updated at timestamp",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "updatedBy",
-              "description": "updated by user id",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null

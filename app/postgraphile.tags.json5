@@ -36,6 +36,11 @@
           omit: ["create"],
         },
       },
+      "cif.project_revision": {
+        tags: {
+          omit: ["create"],
+        },
+      },
     },
     procedure: {
       "cif.contact_full_name": {

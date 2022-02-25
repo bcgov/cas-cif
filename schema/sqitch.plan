@@ -59,3 +59,4 @@ computed_columns/project_revision_project_manager_form_changes_by_label [tables/
 computed_columns/project_pending_project_revision 2022-02-16T17:14:03Z Matthieu Foucault <matthieu@button.is> # add a computed column to return a pending revision for a project
 computed_columns/operator_pending_form_change 2022-02-16T21:48:38Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A computed column returning a potential existing form change for an operator, scoped by the current user
 functions/pending_new_form_change_for_table 2022-03-05T00:09:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # a custom query that returns a pending form change for the current user for a given table name. Allows to resume an object creation
+mutations/create_project_revision 2022-02-24T19:17:45Z Matthieu Foucault <matthieu@button.is> # add function to create a project revision for a given project
