@@ -51,6 +51,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 newFormData
               }
             }
+            cursor
           }
         }
         allContacts {

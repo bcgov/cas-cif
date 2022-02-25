@@ -39,7 +39,7 @@ const pageQuery = graphql`
         }
       }
       ...ProjectForm_query
-      ...ProjectManagerForm_allUsers
+      ...ProjectManagerForm_query
       ...ProjectContactForm_query
     }
   }
@@ -49,7 +49,7 @@ export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const projectFormRef = useRef(null);
-  const projectManagerFormRef = useRef(null);
+  const projectManagerFormRef = useRef<ISupportExternalValidation>(null);
   const projectContactFormRef = useRef<ISupportExternalValidation>(null);
 
   const router = useRouter();
@@ -102,7 +102,7 @@ export function ProjectRevision({
   const commitProject = async () => {
     const errors = [
       ...validateFormWithErrors(projectFormRef.current),
-      ...validateFormWithErrors(projectManagerFormRef.current),
+      ...projectManagerFormRef.current.selfValidate(),
       ...projectContactFormRef.current.selfValidate(),
     ];
 
@@ -172,17 +172,10 @@ export function ProjectRevision({
           </Grid.Col>
           <Grid.Col>
             <ProjecManagerForm
-              ref={projectManagerFormRef}
-              formData={
-                query.projectRevision.projectManagerFormChange.newFormData
+              query={query}
+              setValidatingForm={(validator) =>
+                (projectContactFormRef.current = validator)
               }
-              onChange={(change) =>
-                handleChange(
-                  query.projectRevision.projectManagerFormChange,
-                  change.formData
-                )
-              }
-              allUsers={query}
             />
             <ProjectContactForm
               query={query}
