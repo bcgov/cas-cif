@@ -57,7 +57,7 @@ insert into cif.project_revision(id, change_status, project_id)
 /**
   Create form_change records for testing.
   There are 12 form_change records in total.
-  10 form_change records are for project with id = 1
+  9 form_change records are for project with id = 1
   There are 3 revisions within these 10 form_change records.
   The flow is:
     Revision id=1 (committed):
@@ -67,10 +67,9 @@ insert into cif.project_revision(id, change_status, project_id)
       update 1 record created in revision 1
       (one update is an unchanged record from revision 1)
     Revision id=3 (pending) - This pending revision is the main focus of the tests:
-      create 1 record -> one user creates a record in form_change with id=6 another user creates a record for the same label in form_change with id=11 (concurrency check)
+      create 1 record
       delete 1 record
-      update 1 record (user 1)
-      update 1 record (user 2) - concurrency check
+      update 1 record
   There are 2 revisions for project with id = 2
     These are here to make sure that the function does not return any form_change records for projects outside the scope of the project_revision passed as a parameter.
     Revision id=4 is committed
@@ -98,16 +97,6 @@ insert into cif.form_change(
     -- Create a record in a different project (pending)
     (11, 'update', 'cif', 'project_manager', null, 5, 'test reason', 'project', '{"projectId": 2, "cifUserId": 3, "projectManagerLabelId": 1}');
 
--- update a record concurrently in the same pending revision (3) as a different user
-set jwt.claims.sub to '00000000-0000-0000-0000-000000000001';
-insert into cif.form_change(
-  id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, change_reason, json_schema_name, new_form_data)
-  overriding system value
-  values
-    (12, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}');
-
-set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
-
 -- Commit / Update Revisions as user 1.
 update cif.project_revision set change_status = 'committed' where id in (1,2,4);
 
@@ -120,20 +109,13 @@ update cif.form_change set updated_at = updated_at + interval '2 hours' where id
 update cif.form_change set updated_at = updated_at + interval '3 hours' where id in (7,8,9,10);
 update cif.form_change set updated_at = updated_at + interval '4 hours' where id  = 11;
 
--- Update revsiion 12 as user 2
-set jwt.claims.sub to '00000000-0000-0000-0000-000000000001';
-update cif.form_change set updated_at = updated_at + interval '4 hours' where id  = 12;
-
--- return to user 1 for testing
-set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
-
 /**
   What form_change data should be returned for each manager label record in revision 3:
 
   1 Label: null (archived in revision 2)
   2 Label: '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}' - (updated in revision 3)
   3 Label: null (archived in revision 3)
-  4 Label: '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}' - (created by user 2 in revision 3 AFTER user 1 created it in the same revision)
+  4 Label: '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}' - (created by user 2 in revision 3 AFTER user 1 created it in the same revision)
 
 **/
 
@@ -159,8 +141,8 @@ select is(
       on fc.project_revision_id = pr.id
       and pr.project_id = 1
   ),
-  10::bigint,
-  'There are 10 total form_change records for the project with id = 1'
+  9::bigint,
+  'There are 9 total form_change records for the project with id = 1'
 );
 
 select is(
@@ -207,11 +189,8 @@ select is(
     ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
       where (r).project_manager_label.label = '4 Label'
   ),
-  '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}'::jsonb,
-  $$
-    The new_form_data returned for the record with label "4 Label" matches the data that was created in revision 3 form_change id=12.
-    Function returns the pending form_change with id=12 in favor of the form_change with id=7. Checks that in the case of concurrent editing, the latest pending record is returned (by updated_at, id))
-  $$
+  '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'::jsonb,
+  'The new_form_data returned for the record with label "4 Label" matches the data that was created in revision 3.'
 );
 
 select is(
