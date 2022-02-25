@@ -79119,7 +79119,7 @@
         {
           "kind": "OBJECT",
           "name": "ManagerFormChangesByLabelCompositeReturn",
-          "description": "The type of change operation, defining the action taken when the form_change is committed.",
+          "description": "A composite return type for the project_revision_project_manager_form_changes_by_label computed column. Returns a record for each active label and the last related form_change if it exists.",
           "fields": [
             {
               "name": "formChange",
@@ -79134,12 +79134,12 @@
               "deprecationReason": null
             },
             {
-              "name": "label",
+              "name": "projectManagerLabel",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "ProjectManagerLabel",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -79148,73 +79148,6 @@
           ],
           "inputFields": null,
           "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "ManagerFormChangesByLabelCompositeReturnFilter",
-          "description": "A filter to be used against `ManagerFormChangesByLabelCompositeReturn` object types. All fields are combined with a logical ‘and.’",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "and",
-              "description": "Checks for all expressions in this list.",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "ManagerFormChangesByLabelCompositeReturnFilter",
-                    "ofType": null
-                  }
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "label",
-              "description": "Filter by the object’s `label` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "StringFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "not",
-              "description": "Negates the expression.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "ManagerFormChangesByLabelCompositeReturnFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "or",
-              "description": "Checks for any expressions in this list.",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "ManagerFormChangesByLabelCompositeReturnFilter",
-                    "ofType": null
-                  }
-                }
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },
@@ -97500,16 +97433,6 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "Cursor",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "filter",
-                  "description": "A filter to be used in determining which values should be returned by the collection.",
-                  "type": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "ManagerFormChangesByLabelCompositeReturnFilter",
                     "ofType": null
                   },
                   "defaultValue": null
