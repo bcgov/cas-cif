@@ -23287,28 +23287,11 @@ input KeycloakJwtFilter {
 }
 
 """
-The type of change operation, defining the action taken when the form_change is committed.
+A composite return type for the project_revision_project_manager_form_changes_by_label computed column. Returns a record for each active label and the last related form_change if it exists.
 """
 type ManagerFormChangesByLabelCompositeReturn {
   formChange: FormChange
-  label: String
-}
-
-"""
-A filter to be used against `ManagerFormChangesByLabelCompositeReturn` object types. All fields are combined with a logical ‘and.’
-"""
-input ManagerFormChangesByLabelCompositeReturnFilter {
-  """Checks for all expressions in this list."""
-  and: [ManagerFormChangesByLabelCompositeReturnFilter!]
-
-  """Filter by the object’s `label` field."""
-  label: StringFilter
-
-  """Negates the expression."""
-  not: ManagerFormChangesByLabelCompositeReturnFilter
-
-  """Checks for any expressions in this list."""
-  or: [ManagerFormChangesByLabelCompositeReturnFilter!]
+  projectManagerLabel: ProjectManagerLabel
 }
 
 """
@@ -28348,11 +28331,6 @@ type ProjectRevision implements Node {
 
     """Read all values in the set before (above) this cursor."""
     before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ManagerFormChangesByLabelCompositeReturnFilter
 
     """Only read the first `n` values of the set."""
     first: Int

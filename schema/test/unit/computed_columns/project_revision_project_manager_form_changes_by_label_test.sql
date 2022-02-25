@@ -1,7 +1,7 @@
 begin;
 SET client_min_messages TO WARNING; -- don't show all the truncate messages
 
-select plan(6);
+select plan(7);
 
 /** Basic Setup: Entities needed by dependency **/
 
@@ -56,64 +56,68 @@ insert into cif.project_revision(id, change_status, project_id)
 
 /**
   Create form_change records for testing.
-  There are 9 form_change records in total.
-  7 form_change records are for project with id = 1
-  There are 3 revisions within these 7 form_change records.
+  There are 12 form_change records in total.
+  9 form_change records are for project with id = 1
+  There are 3 revisions within these 10 form_change records.
   The flow is:
-    Revision 1 (committed):
+    Revision id=1 (committed):
       create 3 records
-    Revision 2 (committed):
+    Revision id=2 (committed):
       delete 1 record created in revision 1
       update 1 record created in revision 1
-    Revision 3 (pending) - This pending revision is the main focus of the tests:
-      create 1 record -> one user creates a record in form_change with id=6 another user creates a record for the same label in form_change with id=11 (concurrency check)
-      delete 1 record created in revision 1
-    Revision 2 (committed):
-      update 1 record (same record updated in revision 2) with the exact same updated_at value. This ensures that records with identical updated_at values are ordered by id desc.
+      (one update is an unchanged record from revision 1)
+    Revision id=3 (pending) - This pending revision is the main focus of the tests:
+      create 1 record
+      delete 1 record
+      update 1 record
   There are 2 revisions for project with id = 2
     These are here to make sure that the function does not return any form_change records for projects outside the scope of the project_revision passed as a parameter.
-    Revision 4 is committed
-    Revision 5 is pending
+    Revision id=4 is committed
+    Revision id=5 is pending
 **/
 
 insert into cif.form_change(
   id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, change_reason, json_schema_name, new_form_data)
   overriding system value
   values
+    -- Create 3 records in revision 1 (committed) non-archived label ids: 1,2,3
     (1, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 1}'),
     (2, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 2}'),
     (3, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
+    -- Archive a record and update a record in revision 2 (committed) non-archived label ids:: 2,3
     (4, 'archive', 'cif', 'project_manager', 1, 2, 'test reason', 'project',null),
-    (5, 'update', 'cif', 'project_manager', 2, 2, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 2}'),
-    (6, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'),
-    (7, 'archive', 'cif', 'project_manager', 3, 3, 'test reason', 'project', null),
-    (8, 'create', 'cif', 'project_manager', null, 4, 'test reason', 'project', '{"projectId": 2, "cifUserId": 4, "projectManagerLabelId": 1}'),
-    (9, 'create', 'cif', 'project_manager', null, 5, 'test reason', 'project', '{"projectId": 2, "cifUserId": 3, "projectManagerLabelId": 3}'),
-    (10, 'update', 'cif', 'project_manager', 2, 6, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}');
+    (5, 'update', 'cif', 'project_manager', 2, 2, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}'),
+    (6, 'update', 'cif', 'project_manager', 3, 2, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
+    -- Create a record, update a record and archive a record in revision 3 (pending) non-archived label ids: 2,4
+    (7, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'),
+    (8, 'archive', 'cif', 'project_manager', 3, 3, 'test reason', 'project', null),
+    (9, 'update', 'cif', 'project_manager', 2, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'),
+    -- Create a record in a different project (committed)
+    (10, 'create', 'cif', 'project_manager', null, 4, 'test reason', 'project', '{"projectId": 2, "cifUserId": 4, "projectManagerLabelId": 1}'),
+    -- Create a record in a different project (pending)
+    (11, 'update', 'cif', 'project_manager', null, 5, 'test reason', 'project', '{"projectId": 2, "cifUserId": 3, "projectManagerLabelId": 1}');
 
-set jwt.claims.sub to '00000000-0000-0000-0000-000000000001';
-insert into cif.form_change(
-  id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, change_reason, json_schema_name, new_form_data)
-  overriding system value
-  values
-(11, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}');
-
--- Commit Revisions 1, 2 and 4.
-update cif.project_revision set change_status = 'committed' where id in (1,2,4,6);
+-- Commit / Update Revisions as user 1.
+update cif.project_revision set change_status = 'committed' where id in (1,2,4);
 
 alter table cif.form_change disable trigger _100_committed_changes_are_immutable;
 alter table cif.form_change disable trigger _100_timestamps;
 
 -- Ensure the updated_at timestamps make sense (Not all are updated at the same time, group and stagger the updates by revision)
 update cif.form_change set updated_at = updated_at + interval '1 hour' where id in (1,2,3);
-update cif.form_change set updated_at = updated_at + interval '2 hours' where id in (4,5,10);
-update cif.form_change set updated_at = updated_at + interval '3 hours' where id in (6,7,11);
-update cif.form_change set updated_at = updated_at + interval '5 hours' where id in (8,9);
+update cif.form_change set updated_at = updated_at + interval '2 hours' where id in (4,5,6);
+update cif.form_change set updated_at = updated_at + interval '3 hours' where id in (7,8,9,10);
+update cif.form_change set updated_at = updated_at + interval '4 hours' where id  = 11;
 
--- with record as (
--- select row(project_revision.*)::cif.project_revision
---       from cif.project_revision where id=3
---     ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r;
+/**
+  What form_change data should be returned for each manager label record in revision 3:
+
+  1 Label: null (archived in revision 2)
+  2 Label: '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}' - (updated in revision 3)
+  3 Label: null (archived in revision 3)
+  4 Label: '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}' - (created by user 2 in revision 3 AFTER user 1 created it in the same revision)
+
+**/
 
 /** TESTS **/
 
@@ -122,7 +126,7 @@ select set_eq(
     with record as (
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=3
-    ) select label::text from cif.project_revision_project_manager_form_changes_by_label((select * from record))
+    ) select (r).project_manager_label.label from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
   $$,
   $$
     select label::text from cif.project_manager_label
@@ -132,11 +136,22 @@ select set_eq(
 
 select is(
   (
+    select count(*) from cif.form_change fc
+    join cif.project_revision pr
+      on fc.project_revision_id = pr.id
+      and pr.project_id = 1
+  ),
+  9::bigint,
+  'There are 9 total form_change records for the project with id = 1'
+);
+
+select is(
+  (
     with record as (
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=3
     ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
-      where label='1 Label'
+      where (r).project_manager_label.label = '1 Label'
   ),
   NULL,
   'The new_form_data returned is NULL for the record with label "1 Label". It was archived in revision 2'
@@ -148,13 +163,10 @@ select is(
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=3
     ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
-      where label='2 Label'
+      where (r).project_manager_label.label = '2 Label'
   ),
-  '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}'::jsonb,
-  $$
-    The new_form_data returned for the record with label "2 Label" matches the data that was updated in revision 6.
-    (Function returns latest committed form_change record, ordered by id if records have identical updated_at values)
-  $$
+  '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'::jsonb,
+    'The new_form_data returned for the record with label "2 Label" matches the data that was updated in revision 3.'
 );
 
 select is(
@@ -163,13 +175,10 @@ select is(
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=3
     ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
-      where label='3 Label'
+      where (r).project_manager_label.label = '3 Label'
   ),
   NULL,
-  $$
-    The new_form_data returned is NULL for the record with label "3 Label". It is currently being archived in revision 3
-    (Function returns the pending form_change record in favor of the latest committed record)
-  $$
+    'The new_form_data returned is NULL for the record with label "3 Label". It is currently being archived in revision 3'
 );
 
 select is(
@@ -178,13 +187,10 @@ select is(
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=3
     ) select (r).form_change.new_form_data from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
-      where label='4 Label'
+      where (r).project_manager_label.label = '4 Label'
   ),
-  '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 4}'::jsonb,
-  $$
-    The new_form_data returned for the record with label "4 Label" matches the data that was created in revision 3 form_change id=11.
-    Function returns the pending form_change with id=11 in favor of the form_change with id=3. Checks that in the case of concurrent editing, the latest pending record is returned (by updated_at, id))
-  $$
+  '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'::jsonb,
+  'The new_form_data returned for the record with label "4 Label" matches the data that was created in revision 3.'
 );
 
 select is(
@@ -193,10 +199,10 @@ select is(
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=3
     ) select count(*) from cif.project_revision_project_manager_form_changes_by_label((select * from record)) r
-      where cast((r).form_change.new_form_data->>'projectId' as integer) = 2
+      where ((r).form_change.new_form_data->'projectId')::int = 2
   ),
   0::bigint,
-  'Only returns data for the project matching the project_revision''s project_id. (Does not return data from other projects)'
+  'Function only returns data for the project matching the project_revision''s project_id. (Does not return data from other projects)'
 );
 
 select finish();
