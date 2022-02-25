@@ -10,7 +10,7 @@ as
 $computed_column$
 
   with latest_changes as (
-    select distinct on (new_form_data->'projectManagerLabelId') * from cif.form_change
+    select * from cif.form_change
     where project_revision_id = $1.id
     order by new_form_data->'projectManagerLabelId', updated_at desc, id desc
   ) select row(pml.*), row(latest_changes.*) as form_change
