@@ -4,10 +4,10 @@
 begin;
 
 create type cif.manager_form_changes_by_label_composite_return as (
-  label text,
+  project_manager_label cif.project_manager_label,
   form_change cif.form_change
 );
 
-comment on type cif.manager_form_changes_by_label_composite_return is 'The type of change operation, defining the action taken when the form_change is committed.';
+comment on type cif.manager_form_changes_by_label_composite_return is 'A composite return type for the project_revision_project_manager_form_changes_by_label computed column. Returns a record for each active label and the last related form_change if it exists.';
 
 commit;

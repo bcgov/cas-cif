@@ -9,26 +9,14 @@ returns setof cif.manager_form_changes_by_label_composite_return
 as
 $computed_column$
 
-  with project_form_change_history as (
-    select fc.*
-      from cif.form_change fc
-      join cif.project_manager_label pml on cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id
-        and (fc.updated_at, fc.id) = (select max(updated_at), max(id) from cif.form_change where cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id)
-      where project_revision_id = $1.id
-        and form_data_schema_name='cif'
-        and form_data_table_name='project_manager'
-    union
-    select fc.*
-      from cif.form_change fc
-      join cif.project_manager pm on
-        fc.form_data_record_id = pm.id
-        and pm.project_id = $1.project_id
-        and (fc.updated_at, fc.id) = (select max(updated_at), max(id) from cif.form_change where form_data_record_id = pm.id)
-  )
-  select label, row(project_form_change_history.*) as form_change
-    from project_form_change_history
+  with latest_changes as (
+    select distinct on (new_form_data->'projectManagerLabelId') * from cif.form_change
+    where project_revision_id = $1.id
+    order by new_form_data->'projectManagerLabelId', updated_at desc, id desc
+  ) select row(pml.*), row(latest_changes.*) as form_change
+    from latest_changes
     right join cif.project_manager_label pml
-      on cast(new_form_data->>'projectManagerLabelId' as integer) = pml.id;
+      on (new_form_data->'projectManagerLabelId')::int = pml.id;
 
 $computed_column$ language sql stable;
 
