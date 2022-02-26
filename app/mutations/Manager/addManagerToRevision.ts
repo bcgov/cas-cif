@@ -3,7 +3,7 @@ import { MutationConfig } from "relay-runtime";
 import { addManagerToRevisionMutation } from "__generated__/addManagerToRevisionMutation.graphql";
 
 export const mutation = graphql`
-  mutation addManagerToRevisionMutation($projectRevisionId: Int! $newFormData: JSON!) {
+  mutation addManagerToRevisionMutation($projectRevision: ID! $projectRevisionId: Int! $newFormData: JSON!) {
     createFormChange(
       input: {
         formDataSchemaName: "cif"
@@ -15,9 +15,25 @@ export const mutation = graphql`
         newFormData: $newFormData
       }
     ) {
-      formChange {
-          id
-          newFormData
+      query {
+        projectRevision(id: $projectRevision) {
+          managerFormChanges: projectManagerFormChangesByLabel {
+            edges {
+              cursor
+              node {
+                projectManagerLabel {
+                  id
+                  rowId
+                  label
+                }
+                formChange {
+                  id
+                  newFormData
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -36,3 +52,4 @@ export const useAddManagerToRevisionMutation = (
 };
 
 export default useAddManagerToRevisionMutation;
+

@@ -101,8 +101,9 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   const addManager = (data: any) => {
     applyAddManagerToRevision({
       variables: {
-        connections: [projectRevision.managerFormChanges.__id],
-        projectRevisionId: projectRevision.rowId, newFormData: data,
+        projectRevision: projectRevision.id,
+        projectRevisionId: projectRevision.rowId,
+        newFormData: data,
       }
     });
   };
