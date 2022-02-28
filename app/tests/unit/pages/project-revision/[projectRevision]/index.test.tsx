@@ -31,12 +31,6 @@ environment.mock.queueOperationResolver((operation) => {
     ProjectRevision() {
       return {
         id: "mock-proj-rev-id",
-        projectManagerFormChange: {
-          id: "mock-projectmanager-form-id",
-          newFormData: {
-            someQueryData: "test",
-          },
-        },
         projectFormChange: {
           id: "mock-project-form-id",
           newFormData: {
@@ -72,11 +66,16 @@ const generateMockForm = (errors: any[] = []) => {
 describe("The Create Project page", () => {
   beforeEach(() => {
     mocked(ProjectForm).render.mockReset();
-    mocked(ProjectManagerForm).render.mockReset();
+    mocked(ProjectManagerForm).mockReset();
     mocked(ProjectContactForm).mockReset();
 
     mocked(ProjectForm).render.mockImplementation(() => null);
-    mocked(ProjectManagerForm).render.mockImplementation(() => null);
+    mocked(ProjectManagerForm).mockImplementation((props) => {
+      props.setValidatingForm({
+        selfValidate: jest.fn().mockImplementation(() => []),
+      });
+      return null;
+    });
     mocked(ProjectContactForm).mockImplementation((props) => {
       props.setValidatingForm({
         selfValidate: jest.fn().mockImplementation(() => []),
@@ -153,7 +152,12 @@ describe("The Create Project page", () => {
 
   it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
     mocked(ProjectForm).render.mockImplementation(generateMockForm());
-    mocked(ProjectManagerForm).render.mockImplementation(generateMockForm());
+    mocked(ProjectManagerForm).mockImplementation((props) => {
+      props.setValidatingForm({
+        selfValidate: jest.fn().mockImplementation(() => []),
+      });
+      return null;
+    });
 
     const spy = jest.fn();
     jest
@@ -192,7 +196,12 @@ describe("The Create Project page", () => {
     mocked(ProjectForm).render.mockImplementation(
       generateMockForm([{ thereIsAnError: true }])
     );
-    mocked(ProjectManagerForm).render.mockImplementation(generateMockForm());
+    mocked(ProjectManagerForm).mockImplementation((props) => {
+      props.setValidatingForm({
+        selfValidate: jest.fn().mockImplementation(() => []),
+      });
+      return null;
+    });
 
     const spy = jest.fn();
     jest
