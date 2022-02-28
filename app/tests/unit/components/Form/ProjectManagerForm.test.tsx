@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from '@testing-library/user-event';
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerForm from "components/Form/ProjectManagerForm";
 import {
@@ -48,54 +47,61 @@ const getMockQueryPayload = () => ({
   Query() {
     return {
       projectRevision: {
-          id: 'Test Revision ID',
-          rowId: 1,
-          managerFormChanges:{
-            edges: [
-              {
-                node: {
-                  projectManagerLabel: {
-                    id: 'Test Label 1 ID',
-                    rowId: 1,
-                    label: 'Test Label 1'
-                  },
-                  formChange: null
-                }
-              },
-              {
-                node: {
-                  projectManagerLabel: {
-                    id: 'Test Label 2 ID',
-                    rowId: 2,
-                    label: 'Test Label 2'
-                  },
-                  formChange: {id: 'Change 2 ID', newFormData: {cifUserId: 2, projectId: 1, projectManagerLabelId: 2}}
-                }
-              },
-            ]
-          },
-          projectFormChange: {
-            formDataRecordId: 1
-          }
-        },
-        allCifUsers: {
+        id: "Test Revision ID",
+        rowId: 1,
+        managerFormChanges: {
           edges: [
             {
               node: {
-                rowId: 1,
-                firstName: 'Test First Name 1',
-                lastName: 'Test Last Name 1'
-              }
+                projectManagerLabel: {
+                  id: "Test Label 1 ID",
+                  rowId: 1,
+                  label: "Test Label 1",
+                },
+                formChange: null,
+              },
             },
             {
               node: {
-                rowId: 2,
-                firstName: 'Test First Name 2',
-                lastName: 'Test Last Name 2'
-              }
+                projectManagerLabel: {
+                  id: "Test Label 2 ID",
+                  rowId: 2,
+                  label: "Test Label 2",
+                },
+                formChange: {
+                  id: "Change 2 ID",
+                  newFormData: {
+                    cifUserId: 2,
+                    projectId: 1,
+                    projectManagerLabelId: 2,
+                  },
+                },
+              },
             },
-          ]
-        }
+          ],
+        },
+        projectFormChange: {
+          formDataRecordId: 1,
+        },
+      },
+      allCifUsers: {
+        edges: [
+          {
+            node: {
+              rowId: 1,
+              firstName: "Test First Name 1",
+              lastName: "Test Last Name 1",
+            },
+          },
+          {
+            node: {
+              rowId: 2,
+              firstName: "Test First Name 2",
+              lastName: "Test Last Name 2",
+            },
+          },
+        ],
+      },
     };
   },
 });
@@ -120,7 +126,9 @@ describe("The ProjectManagerForm", () => {
 
   it("Renders any data contained in a formChange", () => {
     renderProjectForm();
-    expect(screen.getAllByPlaceholderText("Select a Project Manager")[1]).toHaveValue('Test First Name 2 Test Last Name 2');
+    expect(
+      screen.getAllByPlaceholderText("Select a Project Manager")[1]
+    ).toHaveValue("Test First Name 2 Test Last Name 2");
   });
 
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
@@ -131,15 +139,15 @@ describe("The ProjectManagerForm", () => {
 
     renderProjectForm();
 
-    fireEvent.click(screen.getAllByTitle('Open')[0]);
-    fireEvent.click(screen.getByText('Test First Name 1 Test Last Name 1'));
+    fireEvent.click(screen.getAllByTitle("Open")[0]);
+    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
 
     expect(mutationSpy).toHaveBeenCalledWith({
       variables: {
-        projectRevision: 'Test Revision ID',
+        projectRevision: "Test Revision ID",
         projectRevisionId: 1,
-        newFormData: {cifUserId: 1, projectId: 1, projectManagerLabelId: 1},
-      }
+        newFormData: { cifUserId: 1, projectId: 1, projectManagerLabelId: 1 },
+      },
     });
   });
 
@@ -158,8 +166,8 @@ describe("The ProjectManagerForm", () => {
         input: {
           id: "Change 2 ID",
         },
-        projectRevision: "Test Revision ID"
-      }
+        projectRevision: "Test Revision ID",
+      },
     });
   });
 

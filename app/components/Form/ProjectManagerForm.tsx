@@ -15,7 +15,6 @@ import { mutation as updateFormChangeMutation } from "mutations/FormChange/updat
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 
-
 interface Props extends ValidatingFormProps {
   query: ProjectManagerForm_query$key;
 }
@@ -29,7 +28,7 @@ const uiSchema = {
     "ui:options": {
       label: false,
     },
-  }
+  },
 };
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
@@ -92,15 +91,14 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   }, [allCifUsers]);
 
   // Add a manager to the project revision
-  const [applyAddManagerToRevision] =
-  useAddManagerToRevisionMutation();
+  const [applyAddManagerToRevision] = useAddManagerToRevisionMutation();
   const addManager = (data: any) => {
     applyAddManagerToRevision({
       variables: {
         projectRevision: projectRevision.id,
         projectRevisionId: projectRevision.rowId,
         newFormData: data,
-      }
+      },
     });
   };
 
@@ -112,8 +110,8 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         input: {
           id: id,
         },
-        projectRevision: projectRevision.id
-      }
+        projectRevision: projectRevision.id,
+      },
     });
   };
 
@@ -121,32 +119,40 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     updateFormChangeMutation
   );
   // Update an existing project_manager form change if it exists, otherwise create one
-  const createOrUpdateFormChange = (formChangeId: string, labelId: number, change: any) => {
-    const data = {...change, projectManagerLabelId: labelId, projectId: projectRevision.projectFormChange.formDataRecordId};
+  const createOrUpdateFormChange = (
+    formChangeId: string,
+    labelId: number,
+    change: any
+  ) => {
+    const data = {
+      ...change,
+      projectManagerLabelId: labelId,
+      projectId: projectRevision.projectFormChange.formDataRecordId,
+    };
 
     // If a form_change already exists, and the payload contains a cifUserId update it
     if (formChangeId && change.cifUserId) {
-    applyUpdateFormChangeMutation({
-      variables: {
-        input: {
-          id: formChangeId,
-          formChangePatch: {
-            newFormData: data,
-          },
-        },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
+      applyUpdateFormChangeMutation({
+        variables: {
+          input: {
             id: formChangeId,
-            newFormData: data,
+            formChangePatch: {
+              newFormData: data,
+            },
           },
         },
-      },
-      debounceKey: formChangeId,
-    });
-    // If a form_change does not exist, and the payload contains a cifUserId create a form_change record
-  } else if (change.cifUserId) {
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: formChangeId,
+              newFormData: data,
+            },
+          },
+        },
+        debounceKey: formChangeId,
+      });
+      // If a form_change does not exist, and the payload contains a cifUserId create a form_change record
+    } else if (change.cifUserId) {
       addManager(data);
     }
     // If a form_change exists, and the payload does not contain a cifUserId delete it
@@ -170,36 +176,42 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         <Grid.Row>
           <Grid.Col span={10}>
             <FormBorder title="Project Managers">
-              {projectRevision.managerFormChanges.edges.map(({node}) => (
+              {projectRevision.managerFormChanges.edges.map(({ node }) => (
                 <React.Fragment key={node.projectManagerLabel.id}>
-                 <Grid.Row>
-                 <label>{node.projectManagerLabel.label}</label>
-                </Grid.Row>
-                <Grid.Row >
-                  <Grid.Col span={6}>
-                    <FormBase
-                      id={`form-manager-${node.projectManagerLabel.label}`}
-                      idPrefix={`form-${node.projectManagerLabel.id}`}
-                      ref={(el) => (formRefs.current[node.projectManagerLabel.id] = el)}
-                      formData={node.formChange?.newFormData}
-                      onChange={(change) => {
-                        createOrUpdateFormChange(node.formChange?.id, node.projectManagerLabel.rowId, change.formData);
-                      }}
-                      schema={managerSchema}
-                      uiSchema={uiSchema}
-                      ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      onClick={() => deleteManager(node.formChange?.id)}
-                    >
-                      Clear
-                    </Button>
-                  </Grid.Col>
-                </Grid.Row>
+                  <Grid.Row>
+                    <label>{node.projectManagerLabel.label}</label>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Col span={6}>
+                      <FormBase
+                        id={`form-manager-${node.projectManagerLabel.label}`}
+                        idPrefix={`form-${node.projectManagerLabel.id}`}
+                        ref={(el) =>
+                          (formRefs.current[node.projectManagerLabel.id] = el)
+                        }
+                        formData={node.formChange?.newFormData}
+                        onChange={(change) => {
+                          createOrUpdateFormChange(
+                            node.formChange?.id,
+                            node.projectManagerLabel.rowId,
+                            change.formData
+                          );
+                        }}
+                        schema={managerSchema}
+                        uiSchema={uiSchema}
+                        ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() => deleteManager(node.formChange?.id)}
+                      >
+                        Clear
+                      </Button>
+                    </Grid.Col>
+                  </Grid.Row>
                 </React.Fragment>
               ))}
             </FormBorder>

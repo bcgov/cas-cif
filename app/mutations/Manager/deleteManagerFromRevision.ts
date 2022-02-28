@@ -3,10 +3,11 @@ import { MutationConfig } from "relay-runtime";
 import { deleteManagerFromRevisionMutation } from "__generated__/deleteManagerFromRevisionMutation.graphql";
 
 export const mutation = graphql`
-  mutation deleteManagerFromRevisionMutation($input: DeleteFormChangeInput! $projectRevision: ID!) {
-    deleteFormChange(
-      input: $input
-    ) {
+  mutation deleteManagerFromRevisionMutation(
+    $input: DeleteFormChangeInput!
+    $projectRevision: ID!
+  ) {
+    deleteFormChange(input: $input) {
       deletedFormChangeId
       query {
         projectRevision(id: $projectRevision) {
@@ -44,4 +45,3 @@ export const useDeleteManagerFromRevisionMutation = (
 };
 
 export default useDeleteManagerFromRevisionMutation;
-
