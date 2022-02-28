@@ -170,7 +170,7 @@ export function ProjectRevision({
             <ProjecManagerForm
               query={query}
               setValidatingForm={(validator) =>
-                (projectContactFormRef.current = validator)
+                (projectManagerFormRef.current = validator)
               }
             />
             <ProjectContactForm
