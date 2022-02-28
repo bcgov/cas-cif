@@ -1,6 +1,6 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import React, { useRef, useMemo } from "react";
-import { graphql, useFragment, useMutation } from "react-relay";
+import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_query$key } from "__generated__/ProjectManagerForm_query.graphql";
 import FormBase from "./FormBase";
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
@@ -10,7 +10,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevision";
-import { mutation as deleteFormChangeMutation } from "mutations/FormChange/deleteFormChange";
+import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -40,10 +40,8 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         projectRevision(id: $projectRevision) {
           id
           rowId
-          projectId
           managerFormChanges: projectManagerFormChangesByLabel {
             edges {
-              cursor
               node {
                 projectManagerLabel {
                   id
@@ -74,8 +72,6 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
-  console.log(projectRevision.managerFormChanges)
 
   // Dynamically build the schema from the list of cif_users
   const managerSchema = useMemo(() => {
@@ -109,32 +105,26 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   };
 
   // Delete a manager from the project revision
-  const [discardFormChange] = useMutation(deleteFormChangeMutation);
+  const [discardFormChange] = useDeleteManagerFromRevisionMutation();
   const deleteManager = (id: string) => {
-    console.log(id)
-    // discardFormChange({
-    //   variables: {
-    //     input: {
-    //       id: formChange.node.id,
-    //     },
-    //     connections: [projectRevision.managerFormChanges.__id],
-    //   },
-    //   onCompleted: () => {
-    //     // delete formRefs.current[formChangeId];
-    //     console.log('deleted')
-    //   },
-    // });
+    discardFormChange({
+      variables: {
+        input: {
+          id: id,
+        },
+        projectRevision: projectRevision.id
+      }
+    });
   };
 
   const [applyUpdateFormChangeMutation] = useDebouncedMutation(
     updateFormChangeMutation
   );
-  // Update and existing project_manager form change if it exists, otherwise create one
+  // Update an existing project_manager form change if it exists, otherwise create one
   const createOrUpdateFormChange = (formChangeId: string, labelId: number, change: any) => {
-    console.log(formChangeId, change);
     const data = {...change, projectManagerLabelId: labelId, projectId: projectRevision.projectFormChange.formDataRecordId};
-    console.log(data)
 
+    // If a form_change already exists, and the payload contains a cifUserId update it
     if (formChangeId && change.cifUserId) {
     applyUpdateFormChangeMutation({
       variables: {
@@ -149,19 +139,19 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         updateFormChange: {
           formChange: {
             id: formChangeId,
-            newFormData: change,
+            newFormData: data,
           },
         },
       },
       debounceKey: formChangeId,
     });
+    // If a form_change does not exist, and the payload contains a cifUserId create a form_change record
   } else if (change.cifUserId) {
-      console.log('CREATE: ', data);
       addManager(data);
     }
+    // If a form_change exists, and the payload does not contain a cifUserId delete it
     else if (formChangeId && !change.cifUserId) {
-      console.log('DELETE: ', change)
-      // deleteManager(formChange.id)
+      deleteManager(formChangeId);
     }
   };
 
@@ -181,11 +171,11 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           <Grid.Col span={10}>
             <FormBorder title="Project Managers">
               {projectRevision.managerFormChanges.edges.map(({node}) => (
-                <>
+                <React.Fragment key={node.projectManagerLabel.id}>
                  <Grid.Row>
                  <label>{node.projectManagerLabel.label}</label>
                 </Grid.Row>
-                <Grid.Row key={node.projectManagerLabel.id}>
+                <Grid.Row >
                   <Grid.Col span={6}>
                     <FormBase
                       id={`form-manager-${node.projectManagerLabel.label}`}
@@ -210,7 +200,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
                     </Button>
                   </Grid.Col>
                 </Grid.Row>
-                </>
+                </React.Fragment>
               ))}
             </FormBorder>
           </Grid.Col>

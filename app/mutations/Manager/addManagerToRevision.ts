@@ -19,7 +19,6 @@ export const mutation = graphql`
         projectRevision(id: $projectRevision) {
           managerFormChanges: projectManagerFormChangesByLabel {
             edges {
-              cursor
               node {
                 projectManagerLabel {
                   id
