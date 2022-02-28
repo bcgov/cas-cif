@@ -5,10 +5,6 @@ const mutation = graphql`
     updateProjectRevision(input: $input) {
       projectRevision {
         id
-        projectManagerFormChange {
-          id
-          newFormData
-        }
         projectFormChange {
           id
           newFormData

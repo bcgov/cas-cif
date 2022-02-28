@@ -55,7 +55,6 @@ util_functions/import_swrs_operators [tables/operator schemas/private] 2022-02-0
 tables/project_manager_label [schemas/main] 2022-02-17T23:44:42Z Dylan Leard <dylan@button.is> # Table contains the possible labels that a cif_user can be assigned to as a manager of a project
 tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects
 mutations/create_project [tables/project] 2021-11-09T21:34:55Z Dylan Leard <dylan@button.is> # Custom mutation to create a project
-computed_columns/project_revision_project_manager_form_change [tables/project_revision] 2021-12-09T19:32:45Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the form change related to the project manager association, within a project revision
 types/manager_form_changes_by_label_composite_return [schemas/main] 2022-02-18T20:58:37Z Dylan Leard <dylan@button.is> # Add custom composite return type for computed column project_revision_project_manager_form_changes_by_label
 computed_columns/project_revision_project_manager_form_changes_by_label [tables/project_revision tables/project_manager] 2022-02-18T21:32:45Z Dylan Leard <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the set of form changes related to the project manager association by project_manager_label, within a project revision
 computed_columns/project_pending_project_revision 2022-02-16T17:14:03Z Matthieu Foucault <matthieu@button.is> # add a computed column to return a pending revision for a project

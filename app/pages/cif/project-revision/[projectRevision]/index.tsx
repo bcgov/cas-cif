@@ -29,10 +29,6 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         updatedAt
-        projectManagerFormChange {
-          id
-          newFormData
-        }
         projectFormChange {
           id
           newFormData
