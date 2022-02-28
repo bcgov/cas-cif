@@ -47,13 +47,18 @@ select is_empty(
 
 select results_eq(
   $$
-    select (new_form_data->'swrs_organisation_id')::int, operation::text, change_reason::text from cif.form_change where form_data_table_name='operator'
+    select
+      (new_form_data->'swrs_organisation_id')::int,
+      operation::text,
+      change_reason::text,
+      change_status::text
+    from cif.form_change where form_data_table_name='operator'
   $$,
   $$
     values
-      (1, 'create', 'Operator automatically created from SWRS'),
-      (2, 'create', 'Operator automatically created from SWRS'),
-      (3, 'create', 'Operator automatically created from SWRS')
+      (1, 'create', 'Operator automatically created from SWRS','committed'),
+      (2, 'create', 'Operator automatically created from SWRS','committed'),
+      (3, 'create', 'Operator automatically created from SWRS','committed')
   $$,
   'The form_change records should reflect the content of the operator table'
 );
@@ -119,7 +124,7 @@ insert into swrs_operator(id, report_id, swrs_organisation_id, business_legal_na
     (6,6,3,'Updated Legal Name','Updated Trade Name');
 
 
-select cif_private.import_swrs_operators_from_existing_fdw();
+select cif_private.import_swrs_operators_from_fdw('swrs_operator', 'swrs_report');
 
 drop server test_swrs_server cascade;
 
@@ -132,16 +137,17 @@ select results_eq(
       new_form_data->>'trade_name',
       new_form_data->>'legal_name',
       operation::text,
-      change_reason::text
+      change_reason::text,
+      change_status::text
     from cif.form_change where form_data_table_name='operator'
   $$,
   $$
     values
-      (1,'2020 trade name 1','2020 legal name 1','2020 trade name 1','2020 legal name 1', 'create', 'Operator automatically created from SWRS'),
-      (2,'2020 trade name 2','2020 legal name 2','2020 trade name 2','2020 legal name 2', 'create', 'Operator automatically created from SWRS'),
-      (3,'2020 trade name 3','2020 legal name 3','2020 trade name 3','2020 legal name 3', 'create', 'Operator automatically created from SWRS'),
-      (2,'new trade for operator 2','new legal for operator 2','changed_by_cif','changed by cif','update','Operator automatically updated from SWRS'),
-      (3,'Updated Trade Name','Updated Legal Name','Updated Trade Name','Updated Legal Name','update','Operator automatically updated from SWRS')
+      (1,'2020 trade name 1','2020 legal name 1','2020 trade name 1','2020 legal name 1', 'create', 'Operator automatically created from SWRS','committed'),
+      (2,'2020 trade name 2','2020 legal name 2','2020 trade name 2','2020 legal name 2', 'create', 'Operator automatically created from SWRS','committed'),
+      (3,'2020 trade name 3','2020 legal name 3','2020 trade name 3','2020 legal name 3', 'create', 'Operator automatically created from SWRS','committed'),
+      (2,'new trade for operator 2','new legal for operator 2','changed_by_cif','changed by cif','update','Operator automatically updated from SWRS','committed'),
+      (3,'Updated Trade Name','Updated Legal Name','Updated Trade Name','Updated Legal Name','update','Operator automatically updated from SWRS','committed')
   $$,
   'legal_name and trade_name are preserved if modified manually, and updated if still set to the SWRS value'
 );
