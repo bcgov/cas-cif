@@ -20,8 +20,6 @@ functions/session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # 
 trigger_functions/update_timestamps 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.update_timestamps trigger function
 trigger_functions/archived_records_are_immutable 2022-01-06T18:37:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to ensure that no changes to a deleted record can be saved
 trigger_functions/set_project_long_id [schemas/private] 2022-01-18T00:43:24Z Dylan Leard <dylan@button.is> # Trigger function to generate the project long id
-trigger_functions/operator_data_manually_updated [schemas/private] 2022-02-10T00:35:00Z Dylan Leard <dylan@button.is> # Trigger function sets boolean values in the operator table if the legal_name or trade_name is manually updated by a cif user
-trigger_functions/protect_manually_updated_operator_data [schemas/private] 2022-02-10T19:15:30Z Dylan Leard <dylan@button.is> # Trigger function to protect manually updated operator data from being overwritten by automatic upserts
 util_functions/upsert_timestamp_columns [schemas/private trigger_functions/update_timestamps] 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the upsert_timestamp_columns function
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
@@ -51,6 +49,7 @@ mutations/create_form_change 2022-02-01T00:52:42Z Matthieu Foucault <matthieu@bu
 functions/pending_new_contact_form_change 2022-02-02T15:57:04Z Matthieu Foucault <matthieu@button.is> # add function allowing the current user to retrieve a draft contact
 computed_columns/contact_pending_form_change 2022-02-07T18:30:37Z Matthieu Foucault <matthieu@button.is> # add a computed column returning the pending form_change for a given contact
 mutations/add_contact_to_revision 2022-01-27T23:48:16Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Custom mutation that prepopulates an insert to the form change table for a new contact on a a project revision
+util_functions/import_swrs_operators_from_fdw 2022-02-28T19:55:13Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # a function importing operators from existing reports and operators swrs data tables. Meant to be used in conjunction with a foreign data wrapper, as setup in util_functions/import_swrs_operators
 util_functions/import_swrs_operators [tables/operator schemas/private] 2022-02-09T17:17:00Z Dylan Leard <dylan@button.is> # Add function to import operators from swrs using a foreign data wrapper
 tables/project_manager_label [schemas/main] 2022-02-17T23:44:42Z Dylan Leard <dylan@button.is> # Table contains the possible labels that a cif_user can be assigned to as a manager of a project
 tables/project_manager 2021-11-30T22:00:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track project manager assignments to projects

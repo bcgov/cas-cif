@@ -26,3 +26,4 @@ values
 
 grant usage on schema swrs to foreign_user;
 grant select on all tables in schema swrs to foreign_user;
+grant insert on all tables in schema swrs to foreign_user;

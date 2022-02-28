@@ -81741,18 +81741,6 @@
               "deprecationReason": null
             },
             {
-              "name": "legalNameUpdatedByCif",
-              "description": "A flag indicating whether the legal name has been manually updated by a cif user. This is used in the import_swrs_operators function to ensure user edited data is not overwritten",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "operatorCode",
               "description": "The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the rfp_number",
               "args": [],
@@ -82011,6 +81999,18 @@
               "deprecationReason": null
             },
             {
+              "name": "swrsLegalName",
+              "description": "The legal name of this operator as last imported from SWRS",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "swrsOrganisationId",
               "description": "The organisation ID from the ggircs database as assigned by the federal Single Window Reporting System",
               "args": [],
@@ -82023,8 +82023,8 @@
               "deprecationReason": null
             },
             {
-              "name": "tradeName",
-              "description": "The trade name of this operator",
+              "name": "swrsTradeName",
+              "description": "The trade name of this operator as last imported from SWRS",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -82035,12 +82035,12 @@
               "deprecationReason": null
             },
             {
-              "name": "tradeNameUpdatedByCif",
-              "description": "A flag indicating whether the trade name has been manually updated by a cif user. This is used in the import_swrs_operators function to ensure user edited data is not overwritten",
+              "name": "tradeName",
+              "description": "The trade name of this operator",
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Boolean",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -82864,16 +82864,6 @@
               "defaultValue": null
             },
             {
-              "name": "legalNameUpdatedByCif",
-              "description": "Checks for equality with the object’s `legalNameUpdatedByCif` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "operatorCode",
               "description": "Checks for equality with the object’s `operatorCode` field.",
               "type": {
@@ -82894,6 +82884,16 @@
               "defaultValue": null
             },
             {
+              "name": "swrsLegalName",
+              "description": "Checks for equality with the object’s `swrsLegalName` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "swrsOrganisationId",
               "description": "Checks for equality with the object’s `swrsOrganisationId` field.",
               "type": {
@@ -82904,8 +82904,8 @@
               "defaultValue": null
             },
             {
-              "name": "tradeName",
-              "description": "Checks for equality with the object’s `tradeName` field.",
+              "name": "swrsTradeName",
+              "description": "Checks for equality with the object’s `swrsTradeName` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -82914,11 +82914,11 @@
               "defaultValue": null
             },
             {
-              "name": "tradeNameUpdatedByCif",
-              "description": "Checks for equality with the object’s `tradeNameUpdatedByCif` field.",
+              "name": "tradeName",
+              "description": "Checks for equality with the object’s `tradeName` field.",
               "type": {
                 "kind": "SCALAR",
-                "name": "Boolean",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -83093,16 +83093,6 @@
               "defaultValue": null
             },
             {
-              "name": "legalNameUpdatedByCif",
-              "description": "Filter by the object’s `legalNameUpdatedByCif` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "BooleanFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "not",
               "description": "Negates the expression.",
               "type": {
@@ -83171,6 +83161,16 @@
               "defaultValue": null
             },
             {
+              "name": "swrsLegalName",
+              "description": "Filter by the object’s `swrsLegalName` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "swrsOrganisationId",
               "description": "Filter by the object’s `swrsOrganisationId` field.",
               "type": {
@@ -83181,8 +83181,8 @@
               "defaultValue": null
             },
             {
-              "name": "tradeName",
-              "description": "Filter by the object’s `tradeName` field.",
+              "name": "swrsTradeName",
+              "description": "Filter by the object’s `swrsTradeName` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
@@ -83191,11 +83191,11 @@
               "defaultValue": null
             },
             {
-              "name": "tradeNameUpdatedByCif",
-              "description": "Filter by the object’s `tradeNameUpdatedByCif` field.",
+              "name": "tradeName",
+              "description": "Filter by the object’s `tradeName` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
-                "name": "BooleanFilter",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -84351,18 +84351,6 @@
               "deprecationReason": null
             },
             {
-              "name": "LEGAL_NAME_UPDATED_BY_CIF_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "LEGAL_NAME_UPDATED_BY_CIF_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "NATURAL",
               "description": null,
               "isDeprecated": false,
@@ -84405,6 +84393,18 @@
               "deprecationReason": null
             },
             {
+              "name": "SWRS_LEGAL_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SWRS_LEGAL_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "SWRS_ORGANISATION_ID_ASC",
               "description": null,
               "isDeprecated": false,
@@ -84417,6 +84417,18 @@
               "deprecationReason": null
             },
             {
+              "name": "SWRS_TRADE_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SWRS_TRADE_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "TRADE_NAME_ASC",
               "description": null,
               "isDeprecated": false,
@@ -84424,18 +84436,6 @@
             },
             {
               "name": "TRADE_NAME_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TRADE_NAME_UPDATED_BY_CIF_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TRADE_NAME_UPDATED_BY_CIF_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -105301,18 +105301,6 @@
               "deprecationReason": null
             },
             {
-              "name": "OPERATOR_BY_OPERATOR_ID__LEGAL_NAME_UPDATED_BY_CIF_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "OPERATOR_BY_OPERATOR_ID__LEGAL_NAME_UPDATED_BY_CIF_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "OPERATOR_BY_OPERATOR_ID__OPERATOR_CODE_ASC",
               "description": null,
               "isDeprecated": false,
@@ -105320,6 +105308,18 @@
             },
             {
               "name": "OPERATOR_BY_OPERATOR_ID__OPERATOR_CODE_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR_BY_OPERATOR_ID__SWRS_LEGAL_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR_BY_OPERATOR_ID__SWRS_LEGAL_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -105337,6 +105337,18 @@
               "deprecationReason": null
             },
             {
+              "name": "OPERATOR_BY_OPERATOR_ID__SWRS_TRADE_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR_BY_OPERATOR_ID__SWRS_TRADE_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "OPERATOR_BY_OPERATOR_ID__TRADE_NAME_ASC",
               "description": null,
               "isDeprecated": false,
@@ -105344,18 +105356,6 @@
             },
             {
               "name": "OPERATOR_BY_OPERATOR_ID__TRADE_NAME_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "OPERATOR_BY_OPERATOR_ID__TRADE_NAME_UPDATED_BY_CIF_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "OPERATOR_BY_OPERATOR_ID__TRADE_NAME_UPDATED_BY_CIF_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
