@@ -51,11 +51,11 @@ const DefaultLayout: React.FC<Props> = ({
             display: flex;
             flex-direction: column;
           }
-
           main {
             padding: 30px 40px;
             flex-grow: 1;
             background-color: #fafafc;
+            margin: auto;
           }
         `}
       </style>
