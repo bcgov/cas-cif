@@ -2,14 +2,17 @@ import Form from "lib/theme/FormWithTheme";
 import { forwardRef } from "react";
 import { FormProps, AjvError } from "@rjsf/core";
 import { customTransformErrors } from "lib/theme/customTransformErrors";
-import { customFormats, customFormatsErrorMessages } from "data/jsonSchemaForm/customFormats";
+import {
+  customFormats,
+  customFormatsErrorMessages,
+} from "data/jsonSchemaForm/customFormats";
 
 const FormBase: React.ForwardRefRenderFunction<any, FormProps<any>> = (
   props,
   ref
 ) => {
   console.log(props);
-  console.log(ref)
+  console.log(ref);
 
   const transformErrors = (errors: AjvError[]) => {
     return customTransformErrors(errors, customFormatsErrorMessages);

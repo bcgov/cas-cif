@@ -6,15 +6,16 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
     <>
       <div>
         {children}
-        {rawErrors ?
+        {rawErrors ? (
           <div className={"error-div"}>
-            <FontAwesomeIcon id="error-icon" icon={faExclamationTriangle} />{errors}
+            <FontAwesomeIcon id="error-icon" icon={faExclamationTriangle} />
+            {errors}
           </div>
-          :
-            <div className={"error-div"}>
-              <div>&nbsp;</div>
-            </div>
-        }
+        ) : (
+          <div className={"error-div"}>
+            <div>&nbsp;</div>
+          </div>
+        )}
         {help}
       </div>
       <style jsx>{`
