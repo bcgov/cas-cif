@@ -28,8 +28,21 @@ const pageQuery = graphql`
   }
 `;
 
+/**
+ * A factory function that creates a page component for a form_change record.
+ *
+ * It abstracts away the submit, discard and change behaviours from the
+ * individual forms, as well as the relay form change query, session and layouts.
+ *
+ * @param resourceTitle The title of the resource, for which the form is being created (e.g. "Operator")
+ * @param onSubmitOrDiscardRoute The route to navigate to when the form is submitted or discarded
+ * @param FormComponent The form component to render
+ * @returns a tuple [FormPage, query] where FormPage is the page component to render, and query is the relay query.
+ *          it is meant to be used in the withRelay HOC (e.g. withRelay(FormPage, query, withRelayOptions)).
+ */
+
 const relayFormPageFactory = (
-  resourceName: string,
+  resourceTitle: string,
   onSubmitOrDiscardRoute: any,
   FormComponent: React.FC<FormPageFactoryComponentProps>
 ) => {
@@ -118,7 +131,7 @@ const relayFormPageFactory = (
       <DefaultLayout session={session}>
         <header>
           <h2>
-            {isEditing ? "Edit" : "New"} {resourceName}
+            {isEditing ? "Edit" : "New"} {resourceTitle}
           </h2>
           <SavingIndicator
             isSaved={!isUpdatingFormChange}
