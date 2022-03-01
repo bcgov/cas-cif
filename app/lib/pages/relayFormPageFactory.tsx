@@ -53,6 +53,7 @@ const relayFormPageFactory = (
       pageQuery,
       preloadedQuery
     );
+
     const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
     const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
     const router = useRouter();
@@ -61,6 +62,7 @@ const relayFormPageFactory = (
       () => new Date(formChange?.updatedAt),
       [formChange?.updatedAt]
     );
+
     useEffect(() => {
       if (!formChange) router.replace("/404");
     }, [formChange, router]);
@@ -71,8 +73,6 @@ const relayFormPageFactory = (
     const isEditing = formChange.formDataRecordId !== null;
 
     const handleChange = ({ formData }) => {
-      console.log("handleChange", formData);
-
       updateFormChange({
         variables: {
           input: {
