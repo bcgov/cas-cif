@@ -19,10 +19,12 @@ const pageQuery = graphql`
       rowId
       legalName
       tradeName
+      swrsLegalName
+      swrsTradeName
       operatorCode
       swrsOrganisationId
       pendingFormChange {
-        __typename
+        id
       }
     }
   }
@@ -48,7 +50,12 @@ function OperatorOverview({
   };
 
   const editButton = operator.pendingFormChange ? (
-    <Button size="small" onClick={handleEditOperator}>
+    <Button
+      size="small"
+      onClick={() =>
+        router.push(getOperatorFormPageRoute(operator.pendingFormChange.id))
+      }
+    >
       Resume Editing
     </Button>
   ) : (
@@ -79,6 +86,16 @@ function OperatorOverview({
 
         <dt>Imported from SWRS</dt>
         <dd>{operator.swrsOrganisationId ? "Yes" : "No"}</dd>
+
+        {operator.swrsOrganisationId && (
+          <>
+            <dt>Legal Name (SWRS)</dt>
+            <dd>{operator.swrsLegalName}</dd>
+
+            <dt>Trade Name (SWRS)</dt>
+            <dd>{operator.swrsTradeName}</dd>
+          </>
+        )}
       </dl>
       <style jsx>{`
         header {
