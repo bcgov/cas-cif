@@ -50,7 +50,7 @@ describe("the new project page", () => {
     // Check error message accessibility
     cy.checkA11y(".error-detail", null, logAxeResults);
     cy.get("body").happoScreenshot({
-      component: "New Project Page",
+      component: "Project Page with errors",
       variant: "empty",
     });
     cy.get('.error-detail').should("have.length", 8);
