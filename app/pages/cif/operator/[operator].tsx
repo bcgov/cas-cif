@@ -30,7 +30,7 @@ const pageQuery = graphql`
   }
 `;
 
-function OperatorOverview({
+export function OperatorViewPage({
   preloadedQuery,
 }: RelayProps<{}, OperatorViewQuery>) {
   const { session, operator } = usePreloadedQuery(pageQuery, preloadedQuery);
@@ -108,4 +108,4 @@ function OperatorOverview({
   );
 }
 
-export default withRelay(OperatorOverview, pageQuery, withRelayOptions);
+export default withRelay(OperatorViewPage, pageQuery, withRelayOptions);
