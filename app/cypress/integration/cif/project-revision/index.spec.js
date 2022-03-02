@@ -44,7 +44,7 @@ describe("the new project page", () => {
     cy.get("button").contains("Add a Project").click();
     cy.url().should("include", "/cif/project-revision");
 
-    cy.get('#root_rfpNumber').type('1');
+    cy.get("#root_rfpNumber").type("1");
     cy.get("button").contains("Submit").click();
     cy.injectAxe();
     // Check error message accessibility
@@ -53,10 +53,12 @@ describe("the new project page", () => {
       component: "Project Page with errors",
       variant: "empty",
     });
-    cy.get('.error-detail').should("have.length", 8);
+    cy.get(".error-detail").should("have.length", 8);
     // Renders a custom error message for a custom format validation error
-    cy.get('.error-detail').first().should("contain", "random RFP digits should be 3 or 4 digits");
+    cy.get(".error-detail")
+      .first()
+      .should("contain", "random RFP digits should be 3 or 4 digits");
     // Renderes the default error message for a required field
-    cy.get('.error-detail').last().should("contain", "is a required property");
+    cy.get(".error-detail").last().should("contain", "is a required property");
   });
 });

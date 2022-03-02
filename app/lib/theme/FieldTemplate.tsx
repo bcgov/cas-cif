@@ -8,7 +8,10 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
         {children}
         {rawErrors ? (
           <div className={"error-div"}>
-            <FontAwesomeIcon className="error-icon" icon={faExclamationTriangle} />
+            <FontAwesomeIcon
+              className="error-icon"
+              icon={faExclamationTriangle}
+            />
             {errors}
           </div>
         ) : (
