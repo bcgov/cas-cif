@@ -11,9 +11,6 @@ const FormBase: React.ForwardRefRenderFunction<any, FormProps<any>> = (
   props,
   ref
 ) => {
-  console.log(props);
-  console.log(ref);
-
   const transformErrors = (errors: AjvError[]) => {
     return customTransformErrors(errors, customFormatsErrorMessages);
   };

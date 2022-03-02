@@ -8,7 +8,7 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
         {children}
         {rawErrors ? (
           <div className={"error-div"}>
-            <FontAwesomeIcon id="error-icon" icon={faExclamationTriangle} />
+            <FontAwesomeIcon className="error-icon" icon={faExclamationTriangle} />
             {errors}
           </div>
         ) : (
@@ -22,7 +22,7 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
         div:not(:last-child) {
           margin-bottom: 1em;
         }
-        :global(#error-icon) {
+        :global(.error-icon) {
           color: #cd2026;
         }
         :global(.error-div) {
