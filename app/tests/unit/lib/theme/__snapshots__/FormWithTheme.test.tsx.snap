@@ -6,7 +6,7 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
     class="rjsf"
   >
     <div
-      class="jsx-3435786090"
+      class="jsx-2194225068"
     >
       <div
         class="sc-jRQBWg cDwDrH pg-grid-container"
@@ -23,7 +23,7 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
               class="jsx-4178779636"
             >
               <div
-                class="jsx-3435786090"
+                class="jsx-2194225068"
               >
                 <div
                   class="sc-crHmcD bKATQK pg-input"
@@ -43,9 +43,18 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
                     value=""
                   />
                 </div>
+                <div
+                  class="jsx-2194225068 error-div"
+                >
+                  <div
+                    class="jsx-2194225068"
+                  >
+                     
+                  </div>
+                </div>
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-2194225068"
               >
                 <div
                   class="sc-crHmcD bKATQK pg-input"
@@ -65,9 +74,27 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
                     value=""
                   />
                 </div>
+                <div
+                  class="jsx-2194225068 error-div"
+                >
+                  <div
+                    class="jsx-2194225068"
+                  >
+                     
+                  </div>
+                </div>
               </div>
             </fieldset>
           </div>
+        </div>
+      </div>
+      <div
+        class="jsx-2194225068 error-div"
+      >
+        <div
+          class="jsx-2194225068"
+        >
+           
         </div>
       </div>
     </div>
