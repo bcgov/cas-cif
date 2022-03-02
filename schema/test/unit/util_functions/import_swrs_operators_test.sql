@@ -48,7 +48,7 @@ select is_empty(
 select results_eq(
   $$
     select
-      (new_form_data->'swrs_organisation_id')::int,
+      (new_form_data->'swrsOrganisationId')::int,
       operation::text,
       change_reason::text,
       change_status::text
@@ -81,11 +81,11 @@ select results_eq(
 select results_eq(
   $$
     select
-      (new_form_data->'swrs_organisation_id')::int,
-      new_form_data->>'swrs_trade_name',
-      new_form_data->>'swrs_legal_name',
-      new_form_data->>'trade_name',
-      new_form_data->>'legal_name',
+      (new_form_data->'swrsOrganisationId')::int,
+      new_form_data->>'swrsTradeName',
+      new_form_data->>'swrsLegalName',
+      new_form_data->>'tradeName',
+      new_form_data->>'legalName',
       operation::text,
       change_reason::text
     from cif.form_change where form_data_table_name='operator'
@@ -131,11 +131,11 @@ drop server test_swrs_server cascade;
 select results_eq(
   $$
     select
-      (new_form_data->'swrs_organisation_id')::int,
-      new_form_data->>'swrs_trade_name',
-      new_form_data->>'swrs_legal_name',
-      new_form_data->>'trade_name',
-      new_form_data->>'legal_name',
+      (new_form_data->'swrsOrganisationId')::int,
+      new_form_data->>'swrsTradeName',
+      new_form_data->>'swrsLegalName',
+      new_form_data->>'tradeName',
+      new_form_data->>'legalName',
       operation::text,
       change_reason::text,
       change_status::text
