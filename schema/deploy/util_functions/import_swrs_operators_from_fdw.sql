@@ -72,11 +72,11 @@ begin
       ) (
         select
           format('{
-              "swrs_organisation_id": %%s,
-              "swrs_legal_name": "%%s",
-              "swrs_trade_name": "%%s",
-              "legal_name": "%%s",
-              "trade_name": "%%s"
+              "swrsOrganisationId": %%s,
+              "swrsLegalName": "%%s",
+              "swrsTradeName": "%%s",
+              "legalName": "%%s",
+              "tradeName": "%%s"
             }',
             operators_to_insert.swrs_organisation_id,
             operators_to_insert.swrs_legal_name,
