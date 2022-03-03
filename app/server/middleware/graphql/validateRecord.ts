@@ -3,7 +3,7 @@ import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
 
 const ajv = new Ajv({ allErrors: true });
 // AJV needs to be made aware of any custom formats used in the schema
-ajv.addFormat('rfpDigits', /\d{3,4}/);
+ajv.addFormat("rfpDigits", /\d{3,4}/);
 
 const validateRecord: (schemaName: string, formData: any) => ErrorObject[] = (
   schemaName,

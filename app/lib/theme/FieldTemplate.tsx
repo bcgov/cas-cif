@@ -6,19 +6,18 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
     <>
       <div>
         {children}
-        {rawErrors ? (
-          <div className={"error-div"}>
-            <FontAwesomeIcon
-              className="error-icon"
-              icon={faExclamationTriangle}
-            />
-            {errors}
-          </div>
-        ) : (
-          <div className={"error-div"}>
-            <div>&nbsp;</div>
-          </div>
-        )}
+
+        <div className="error-div">
+          {rawErrors ? (
+            <>
+              <FontAwesomeIcon
+                className="error-icon"
+                icon={faExclamationTriangle}
+              />
+              {errors}
+            </>
+          ) : null}
+        </div>
         {help}
       </div>
       <style jsx>{`
@@ -29,9 +28,17 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
           color: #cd2026;
         }
         :global(.error-div) {
-          height: 5%;
+          height: 1.5rem;
           display: flex;
           padding-top: 10px;
+        }
+        :global(ul.error-detail) {
+          padding: 0;
+          list-style: none;
+          margin-left: 0.5rem;
+        }
+        :global(li.text-danger) {
+          color: #cd2026 !important;
         }
       `}</style>
     </>

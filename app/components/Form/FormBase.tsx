@@ -30,20 +30,6 @@ const FormBase: React.ForwardRefRenderFunction<any, FormProps<any>> = (
         :global(label) {
           font-weight: bold;
         }
-        .errors {
-          margin: 1em 0 0 0;
-          padding: 20px;
-          background: #ce5c5c;
-          color: white;
-          font-size: 20px;
-        }
-        :global(ul.error-detail) {
-          padding: 0;
-          list-style: none;
-        }
-        :global(li.text-danger) {
-          color: #cd2026 !important;
-        }
       `}</style>
     </>
   );

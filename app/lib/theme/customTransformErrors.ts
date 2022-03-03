@@ -8,11 +8,17 @@ export const customTransformErrors = (
   return errors
     .filter((error) => error.name !== "oneOf")
     .map((error) => {
-      if (error.name !== "format") return error;
-      if (!customFormatsErrorMessages[error.params.format]) return error;
-      return {
-        ...error,
-        message: customFormatsErrorMessages[error.params.format],
-      };
+      if (!["format", "required"].includes(error.name)) return error;
+      if (error.name === "required")
+        return {
+          ...error,
+          message: `Please enter a value`,
+        };
+      if (customFormatsErrorMessages[error.params.format])
+        return {
+          ...error,
+          message: customFormatsErrorMessages[error.params.format],
+        };
+      return error;
     });
 };

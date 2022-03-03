@@ -8,5 +8,5 @@ export const customFormats = {
 };
 
 export const customFormatsErrorMessages = {
-  rfpDigits: "random RFP digits should be 3 or 4 digits",
+  rfpDigits: "Please enter 3 or 4 digits for the random RFP digits",
 };
