@@ -4,6 +4,7 @@ describe("the new project page", () => {
   beforeEach(() => {
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
+    cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/004_cif_contact");
   });
 
@@ -34,5 +35,33 @@ describe("the new project page", () => {
     cy.get("button").contains("Add").click();
     cy.get("button").contains("Add").click();
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
+  });
+
+  it("properly displays validation errors", () => {
+    cy.mockLogin("cif_admin");
+
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+    cy.url().should("include", "/cif/project-revision");
+
+    cy.get("#root_rfpNumber").type("1");
+    cy.get("button").contains("Submit").click();
+    cy.injectAxe();
+    // Check error message accessibility
+    cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.get("body").happoScreenshot({
+      component: "Project Page with errors",
+      variant: "empty",
+    });
+    cy.get(".error-detail").should("have.length", 8);
+    // Renders a custom error message for a custom format validation error
+    cy.get(".error-detail")
+      .first()
+      .should(
+        "contain",
+        "Please enter 3 or 4 digits for the random RFP digits"
+      );
+    // Renderes the default error message for a required field
+    cy.get(".error-detail").last().should("contain", "Please enter a value");
   });
 });

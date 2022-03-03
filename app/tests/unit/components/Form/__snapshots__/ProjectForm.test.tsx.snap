@@ -7,7 +7,7 @@ exports[`The Project Form matches the snapshot 1`] = `
     novalidate=""
   >
     <div
-      class="jsx-3435786090"
+      class="jsx-3883368021"
     >
       <div
         class="sc-jRQBWg cDwDrH pg-grid-container"
@@ -24,7 +24,7 @@ exports[`The Project Form matches the snapshot 1`] = `
               class="jsx-4178779636"
             >
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <label
                   class="jsx-2369701424"
@@ -69,9 +69,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                     (OPERATOR CODE)
                   </div>
                 </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <div
                   class="sc-crHmcD bKATQK pg-input"
@@ -92,9 +95,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                     value=""
                   />
                 </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <label
                   for="root_totalFundingRequest"
@@ -109,9 +115,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                   type="text"
                   value=""
                 />
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <div
                   class="sc-fFeiMQ jpQRmF pg-textarea"
@@ -131,9 +140,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                     required=""
                   />
                 </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <label
                   for="search-dropdown-root_operatorId"
@@ -206,9 +218,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                     </div>
                   </div>
                 </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <span
                   class="paragraph-text"
@@ -218,9 +233,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                   </label>
                   <p />
                 </span>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <label
                   class="jsx-3703916905"
@@ -282,9 +300,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                     </select>
                   </div>
                 </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-3435786090"
+                class="jsx-3883368021"
               >
                 <label
                   class="jsx-3703916905"
@@ -313,11 +334,17 @@ exports[`The Project Form matches the snapshot 1`] = `
                     </select>
                   </div>
                 </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
               </div>
             </fieldset>
           </div>
         </div>
       </div>
+      <div
+        class="jsx-3883368021 error-div"
+      />
     </div>
   </form>
 </div>

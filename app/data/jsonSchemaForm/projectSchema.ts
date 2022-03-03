@@ -13,7 +13,7 @@ const projectSchema = {
     rfpNumber: {
       type: "string",
       title: "RFP Number",
-      pattern: "^\\d{3,4}",
+      format: "rfpDigits",
     },
     projectName: { type: "string", title: "Project Name" },
     totalFundingRequest: {
