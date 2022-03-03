@@ -6,7 +6,7 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
     class="rjsf"
   >
     <div
-      class="jsx-2194225068"
+      class="jsx-3883368021"
     >
       <div
         class="sc-jRQBWg cDwDrH pg-grid-container"
@@ -23,7 +23,7 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
               class="jsx-4178779636"
             >
               <div
-                class="jsx-2194225068"
+                class="jsx-3883368021"
               >
                 <div
                   class="sc-crHmcD bKATQK pg-input"
@@ -44,17 +44,11 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
                   />
                 </div>
                 <div
-                  class="jsx-2194225068 error-div"
-                >
-                  <div
-                    class="jsx-2194225068"
-                  >
-                     
-                  </div>
-                </div>
+                  class="jsx-3883368021 error-div"
+                />
               </div>
               <div
-                class="jsx-2194225068"
+                class="jsx-3883368021"
               >
                 <div
                   class="sc-crHmcD bKATQK pg-input"
@@ -75,28 +69,16 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
                   />
                 </div>
                 <div
-                  class="jsx-2194225068 error-div"
-                >
-                  <div
-                    class="jsx-2194225068"
-                  >
-                     
-                  </div>
-                </div>
+                  class="jsx-3883368021 error-div"
+                />
               </div>
             </fieldset>
           </div>
         </div>
       </div>
       <div
-        class="jsx-2194225068 error-div"
-      >
-        <div
-          class="jsx-2194225068"
-        >
-           
-        </div>
-      </div>
+        class="jsx-3883368021 error-div"
+      />
     </div>
   </form>
 </div>

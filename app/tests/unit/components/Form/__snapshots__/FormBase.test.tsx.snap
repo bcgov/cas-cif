@@ -7,7 +7,7 @@ exports[`The FormBase component renders a test schema 1`] = `
     novalidate=""
   >
     <div
-      class="jsx-2194225068"
+      class="jsx-3883368021"
     >
       <div
         class="sc-jRQBWg cDwDrH pg-grid-container"
@@ -24,7 +24,7 @@ exports[`The FormBase component renders a test schema 1`] = `
               class="jsx-4178779636"
             >
               <div
-                class="jsx-2194225068"
+                class="jsx-3883368021"
               >
                 <div
                   class="sc-crHmcD bKATQK pg-input"
@@ -46,28 +46,16 @@ exports[`The FormBase component renders a test schema 1`] = `
                   />
                 </div>
                 <div
-                  class="jsx-2194225068 error-div"
-                >
-                  <div
-                    class="jsx-2194225068"
-                  >
-                     
-                  </div>
-                </div>
+                  class="jsx-3883368021 error-div"
+                />
               </div>
             </fieldset>
           </div>
         </div>
       </div>
       <div
-        class="jsx-2194225068 error-div"
-      >
-        <div
-          class="jsx-2194225068"
-        >
-           
-        </div>
-      </div>
+        class="jsx-3883368021 error-div"
+      />
     </div>
   </form>
 </div>
