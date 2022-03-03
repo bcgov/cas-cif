@@ -4,7 +4,7 @@
  */
 
 export const customFormats = {
-  rfpDigits: "d{3,4}",
+  rfpDigits: /\d{3,4}/,
 };
 
 export const customFormatsErrorMessages = {
