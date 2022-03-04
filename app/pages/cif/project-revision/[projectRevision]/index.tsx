@@ -10,7 +10,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import { useMemo, useRef } from "react";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
-import ProjecManagerForm from "components/Form/ProjectManagerForm";
+import ProjecManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
@@ -33,9 +33,10 @@ const pageQuery = graphql`
           id
           newFormData
         }
+        ...ProjectManagerFormGroup_revision
       }
       ...ProjectForm_query
-      ...ProjectManagerForm_query
+      ...ProjectManagerFormGroup_query
       ...ProjectContactForm_query
     }
   }
@@ -167,8 +168,10 @@ export function ProjectRevision({
             />
           </Grid.Col>
           <Grid.Col>
-            <ProjecManagerForm
+            <ProjecManagerFormGroup
               query={query}
+              revision={query.projectRevision}
+              projectManagerFormRef={projectManagerFormRef}
               setValidatingForm={(validator) =>
                 (projectManagerFormRef.current = validator)
               }

@@ -21,21 +21,7 @@ export const mutation = graphql`
     ) {
       query {
         projectRevision(id: $projectRevision) {
-          managerFormChanges: projectManagerFormChangesByLabel {
-            edges {
-              node {
-                projectManagerLabel {
-                  id
-                  rowId
-                  label
-                }
-                formChange {
-                  id
-                  newFormData
-                }
-              }
-            }
-          }
+          ...ProjectManagerFormGroup_revision
         }
       }
     }
