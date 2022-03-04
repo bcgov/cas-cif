@@ -34,10 +34,10 @@ select results_eq(
       'create'::cif.form_change_operation,
       'cif'::varchar,
       'project_contact'::varchar,
-      currval(pg_get_serial_sequence('cif.project_contact', 'id'))::int,
+      null::integer,
       (select id from cif.project_revision order by id desc limit 1),
       'pending'::varchar,
-      'Creating new project: secondary project_contact record'::varchar,
+      'Add secondary project_contact record'::varchar,
       'project_contact'::varchar
     )
   $$,
