@@ -12,6 +12,7 @@ import compiledProjectContactFormQuery, {
 } from "__generated__/ProjectContactFormQuery.graphql";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { mocked } from "jest-mock";
+import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
 
 jest.mock("lib/helpers/validateFormWithErrors");
 
@@ -20,6 +21,9 @@ const loadedQuery = graphql`
     query {
       # Spread the fragment you want to test here
       ...ProjectContactForm_query
+      projectRevision(id: "Test Project Revision ID") {
+        ...ProjectContactForm_projectRevision
+      }
     }
   }
 `;
@@ -33,7 +37,13 @@ const TestRenderer = () => {
   const data = useLazyLoadQuery<ProjectContactFormQuery>(loadedQuery, {
     projectRevision: "test-project-revision",
   });
-  return <ProjectContactForm {...props} query={data.query} />;
+  return (
+    <ProjectContactForm
+      {...props}
+      query={data.query}
+      projectRevision={data.query.projectRevision}
+    />
+  );
 };
 const renderProjectForm = () => {
   return render(
@@ -44,46 +54,54 @@ const renderProjectForm = () => {
 };
 
 const getMockQueryPayload = () => ({
+  ProjectRevision() {
+    const result: ProjectContactForm_projectRevision = {
+      " $fragmentType": "ProjectContactForm_projectRevision",
+      id: "Test Project Revision ID",
+      rowId: 1234,
+      projectContactFormChanges: {
+        __id: "connection Id",
+        edges: [
+          {
+            node: {
+              id: "Form ID 1",
+              operation: "CREATE",
+              newFormData: {
+                projectId: 10,
+                contactId: 2,
+                contactIndex: 1,
+              },
+            },
+          },
+          {
+            node: {
+              id: "Form ID 2",
+              operation: "CREATE",
+              newFormData: {
+                projectId: 10,
+                contactId: 3,
+                contactIndex: 2,
+              },
+            },
+          },
+          {
+            node: {
+              id: "Form ID 3",
+              operation: "CREATE",
+              newFormData: {
+                projectId: 10,
+                contactId: 1,
+                contactIndex: 5,
+              },
+            },
+          },
+        ],
+      },
+    };
+    return result;
+  },
   Query() {
     return {
-      projectRevision: {
-        id: "Test Project Revision ID",
-        rowId: 1234,
-        formChangesByProjectRevisionId: {
-          edges: [
-            {
-              node: {
-                id: "Form ID 1",
-                newFormData: {
-                  projectId: 10,
-                  contactId: 2,
-                  contactIndex: 1,
-                },
-              },
-            },
-            {
-              node: {
-                id: "Form ID 2",
-                newFormData: {
-                  projectId: 10,
-                  contactId: 3,
-                  contactIndex: 2,
-                },
-              },
-            },
-            {
-              node: {
-                id: "Form ID 3",
-                newFormData: {
-                  projectId: 10,
-                  contactId: 1,
-                  contactIndex: 5,
-                },
-              },
-            },
-          ],
-        },
-      },
       allContacts: {
         edges: [
           {
@@ -227,7 +245,7 @@ describe("The ProjectContactForm", () => {
       selfValidate: expect.any(Function),
     });
 
-    props.setValidatingForm.mock.calls[0][0].selfValidate();
+    mocked(props.setValidatingForm).mock.calls[0][0].selfValidate();
 
     // Once per form
     expect(mocked(validateFormWithErrors)).toHaveBeenCalledTimes(3);
