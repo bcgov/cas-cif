@@ -50,12 +50,12 @@ const DefaultLayout: React.FC<Props> = ({
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-color: #fafafc;
           }
-
           main {
             padding: 30px 40px;
             flex-grow: 1;
-            background-color: #fafafc;
+            margin: auto;
           }
         `}
       </style>

@@ -103,7 +103,9 @@ export function ContactViewPage({
           justify-content: space-between;
           align-items: start;
         }
-
+        header h2 {
+          padding-right: 10px;
+        }
         .preformatted {
           white-space: pre-wrap;
         }
