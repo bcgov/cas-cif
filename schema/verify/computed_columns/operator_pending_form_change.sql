@@ -1,7 +1,7 @@
 -- Verify cif:computed_columns/operator_pending_form_change on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select pg_get_functiondef('cif.operator_pending_form_change(cif.operator)'::regprocedure);
 
-ROLLBACK;
+rollback;
