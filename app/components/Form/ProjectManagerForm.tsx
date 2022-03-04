@@ -1,13 +1,12 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import React, { useRef, useMemo } from "react";
+import React, { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_managerFormChange$key } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
 import FormBase from "./FormBase";
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
-import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
+import FormComponentProps from "./Interfaces/FormComponentProps";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import { Button } from "@button-inc/bcgov-theme";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevision";
 import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
 import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
@@ -15,12 +14,13 @@ import useDebouncedMutation from "mutations/useDebouncedMutation";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FieldLabel from "lib/theme/widgets/FieldLabel";
 
-interface Props extends ValidatingFormProps {
+interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
   allCifUsers: any;
   projectId: number;
   projectRevisionId: string;
   projectRevisionRowId: number;
+  formRefs: any;
 }
 
 const uiSchema = {
@@ -36,9 +36,13 @@ const uiSchema = {
 };
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
-  const formRefs = useRef({});
-  const { allCifUsers, projectId, projectRevisionId, projectRevisionRowId } =
-    props;
+  const {
+    allCifUsers,
+    projectId,
+    projectRevisionId,
+    projectRevisionRowId,
+    formRefs,
+  } = props;
 
   const change = useFragment(
     graphql`
@@ -190,19 +194,10 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
       addManager(data);
     }
     // If a form_change exists, and the payload does not contain a cifUserId delete it
-    else if (formChangeId && !change.cifUserId && !discardInFlight) {
+    else if (formChangeId && !formChange.cifUserId && !discardInFlight) {
       deleteManager(formChangeId);
     }
   };
-
-  props.setValidatingForm({
-    selfValidate: () => {
-      return Object.keys(formRefs.current).reduce((agg, formId) => {
-        const formObject = formRefs.current[formId];
-        return [...agg, ...validateFormWithErrors(formObject)];
-      }, []);
-    },
-  });
 
   return (
     <>

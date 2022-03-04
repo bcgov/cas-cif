@@ -1,7 +1,9 @@
+import { useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormGroup_query$key } from "__generated__/ProjectManagerFormGroup_query.graphql";
 import { ProjectManagerFormGroup_revision$key } from "__generated__/ProjectManagerFormGroup_revision.graphql";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import ProjectManagerForm from "./ProjectManagerForm";
@@ -13,6 +15,7 @@ interface Props extends ValidatingFormProps {
 }
 
 const ProjectManagerFormGroup: React.FC<Props> = (props) => {
+  const formRefs = useRef({});
   const { allCifUsers } = useFragment(
     graphql`
       fragment ProjectManagerFormGroup_query on Query {
@@ -53,6 +56,15 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
     props.revision
   );
 
+  props.setValidatingForm({
+    selfValidate: () => {
+      return Object.keys(formRefs.current).reduce((agg, formId) => {
+        const formObject = formRefs.current[formId];
+        return [...agg, ...validateFormWithErrors(formObject)];
+      }, []);
+    },
+  });
+
   return (
     <>
       <Grid cols={10} align="center">
@@ -67,9 +79,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
                   projectId={projectRevision.projectFormChange.formDataRecordId}
                   projectRevisionId={projectRevision.id}
                   projectRevisionRowId={projectRevision.rowId}
-                  setValidatingForm={(validator) =>
-                    (props.projectManagerFormRef.current = validator)
-                  }
+                  formRefs={formRefs}
                 />
               ))}
             </FormBorder>
