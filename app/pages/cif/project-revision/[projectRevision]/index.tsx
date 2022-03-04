@@ -34,6 +34,7 @@ const pageQuery = graphql`
           newFormData
         }
         ...ProjectManagerFormGroup_revision
+        ...ProjectContactForm_projectRevision
       }
       ...ProjectForm_query
       ...ProjectManagerFormGroup_query
@@ -178,6 +179,7 @@ export function ProjectRevision({
             />
             <ProjectContactForm
               query={query}
+              projectRevision={query.projectRevision}
               setValidatingForm={(validator) =>
                 (projectContactFormRef.current = validator)
               }

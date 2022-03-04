@@ -33,6 +33,7 @@ begin
       'project_manager' as json_schema_name
     from cif.project_manager
     where project_manager.project_id = $1
+    and archived_at is null
   union
     select
       id,
@@ -42,6 +43,7 @@ begin
       'project_contact' as json_schema_name
     from cif.project_contact
     where project_contact.project_id = $1
+    and archived_at is null
   )
   loop
     perform cif.create_form_change(

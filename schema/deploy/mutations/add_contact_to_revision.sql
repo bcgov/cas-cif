@@ -10,7 +10,6 @@ as $add_contact_form_change$
     operation,
     form_data_schema_name,
     form_data_table_name,
-    form_data_record_id,
     project_revision_id,
     change_status,
     change_reason,
@@ -24,10 +23,9 @@ as $add_contact_form_change$
     'create',
     'cif',
     'project_contact',
-    nextval(pg_get_serial_sequence('cif.project_contact', 'id')),
     $1,
     'pending',
-    'Creating new project: secondary project_contact record',
+    'Add secondary project_contact record',
     'project_contact'
   ) returning *;
 $add_contact_form_change$ language sql volatile;

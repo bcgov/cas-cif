@@ -9,14 +9,18 @@ import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
 import { useDeleteFormChangeWithConnection } from "mutations/FormChange/deleteFormChange";
-import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
+import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
-import useDebouncedMutation from "mutations/useDebouncedMutation";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
+import {
+  ProjectContactForm_projectRevision$key,
+  FormChangeOperation,
+} from "__generated__/ProjectContactForm_projectRevision.graphql";
 
 interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;
+  projectRevision: ProjectContactForm_projectRevision$key;
 }
 
 const uiSchema = {
@@ -34,25 +38,30 @@ const uiSchema = {
 const ProjectContactForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
 
-  const { projectRevision, allContacts } = useFragment(
+  const projectRevision = useFragment(
     graphql`
-      fragment ProjectContactForm_query on Query {
-        projectRevision(id: $projectRevision) {
-          id
-          rowId
-          formChangesByProjectRevisionId(
-            filter: { formDataTableName: { equalTo: "project_contact" } }
-            first: 2147483647
-          ) @connection(key: "connection_formChangesByProjectRevisionId") {
-            __id
-            edges {
-              node {
-                id
-                newFormData
-              }
+      fragment ProjectContactForm_projectRevision on ProjectRevision {
+        id
+        rowId
+        projectContactFormChanges(first: 500)
+          @connection(key: "connection_projectContactFormChanges") {
+          __id
+          edges {
+            node {
+              id
+              newFormData
+              operation
             }
           }
         }
+      }
+    `,
+    props.projectRevision
+  );
+
+  const { allContacts } = useFragment(
+    graphql`
+      fragment ProjectContactForm_query on Query {
         allContacts {
           edges {
             node {
@@ -92,29 +101,56 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           revisionId: projectRevision.rowId,
           contactIndex: contactIndex,
         },
-        connections: [projectRevision.formChangesByProjectRevisionId.__id],
+        connections: [projectRevision.projectContactFormChanges.__id],
       },
     });
   };
 
   const [discardFormChange] = useDeleteFormChangeWithConnection();
-  const deleteContact = (formChangeId: string) => {
-    discardFormChange({
-      variables: {
-        input: {
-          id: formChangeId,
+  const [applyUpdateFormChangeMutation] = useUpdateFormChange();
+
+  const deleteContact = (
+    formChangeId: string,
+    formChangeOperation: FormChangeOperation
+  ) => {
+    if (formChangeOperation === "CREATE") {
+      discardFormChange({
+        variables: {
+          input: {
+            id: formChangeId,
+          },
+          connections: [projectRevision.projectContactFormChanges.__id],
         },
-        connections: [projectRevision.formChangesByProjectRevisionId.__id],
-      },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-      },
-    });
+        onCompleted: () => {
+          delete formRefs.current[formChangeId];
+        },
+      });
+    } else {
+      applyUpdateFormChangeMutation({
+        variables: {
+          input: {
+            id: formChangeId,
+            formChangePatch: {
+              operation: "ARCHIVE",
+            },
+          },
+        },
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: formChangeId,
+              operation: "ARCHIVE",
+            },
+          },
+        },
+        onCompleted: () => {
+          delete formRefs.current[formChangeId];
+        },
+        debounceKey: formChangeId,
+      });
+    }
   };
 
-  const [applyUpdateFormChangeMutation] = useDebouncedMutation(
-    updateFormChangeMutation
-  );
   const updateFormChange = (formChangeId: string, formData: any) => {
     applyUpdateFormChangeMutation({
       variables: {
@@ -139,9 +175,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const allForms = useMemo(() => {
     const contactForms = [
-      ...projectRevision.formChangesByProjectRevisionId.edges.map(
-        ({ node }) => node
-      ),
+      ...projectRevision.projectContactFormChanges.edges
+        .filter(({ node }) => node.operation !== "ARCHIVE")
+        .map(({ node }) => node),
     ];
     contactForms.sort(
       (a, b) => a.newFormData.contactIndex - b.newFormData.contactIndex
@@ -230,7 +266,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     <Button
                       variant="secondary"
                       size="small"
-                      onClick={() => deleteContact(form.id)}
+                      onClick={() => deleteContact(form.id, form.operation)}
                     >
                       Remove
                     </Button>

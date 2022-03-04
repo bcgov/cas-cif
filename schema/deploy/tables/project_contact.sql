@@ -9,8 +9,11 @@ create table cif.project_contact (
   contact_index integer not null
 );
 
-create unique index project_contact_project_id_contact_id_unique_index on cif.project_contact (project_id, contact_index);
 select cif_private.upsert_timestamp_columns('cif', 'project_contact');
+
+create unique index project_contact_project_id_contact_id_unique_index
+  on cif.project_contact (project_id, contact_index)
+  where archived_at is null;
 
 do
 $grant$

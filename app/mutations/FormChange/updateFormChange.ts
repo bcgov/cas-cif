@@ -13,6 +13,10 @@ const mutation = graphql`
       formChange {
         id
         newFormData
+        operation
+        projectRevisionByProjectRevisionId {
+          ...ProjectContactForm_projectRevision
+        }
       }
     }
   }

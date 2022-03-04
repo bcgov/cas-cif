@@ -16,7 +16,7 @@ import { mocked } from "jest-mock";
 jest.mock("lib/helpers/validateFormWithErrors");
 
 const loadedQuery = graphql`
-  query ProjectContactFormQuery($projectRevision: ID!) @relay_test_operation {
+  query ProjectContactFormQuery @relay_test_operation {
     query {
       # Spread the fragment you want to test here
       ...ProjectContactForm_query

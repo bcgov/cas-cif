@@ -47,7 +47,7 @@ begin
     'create',
     'cif',
     'project_contact',
-    nextval(pg_get_serial_sequence('cif.project_contact', 'id')),
+    null,
     revision_row.id,
     'pending',
     'Creating new project: primary project_contact record',
@@ -60,6 +60,5 @@ $function$ language plpgsql strict volatile;
 
 grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
 grant usage, select on sequence cif.project_id_seq to cif_internal, cif_external, cif_admin;
-grant usage, select on sequence cif.project_contact_id_seq to cif_internal, cif_external, cif_admin;
 
 commit;
