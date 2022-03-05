@@ -84,10 +84,18 @@ const SelectParentWidget: React.FunctionComponent<
           );
         })}
       </Dropdown>
-      <style jsx>
+      <style jsx global>
         {`
           :global(input) {
             width: 100%;
+          }
+          .pg-select-wrapper{
+            padding: 9px 2px 9px 2px;
+            margin-bottom: 5px;
+            margin-top:2px;
+          }
+          .pg-select-input {
+            color:rgba(0,0,0,0.5);
           }
         `}
       </style>

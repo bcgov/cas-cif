@@ -39,6 +39,16 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           padding: "0.5em",
         }}
       />
+      <style jsx global>
+        {`
+          .money:focus {
+            outline-style: solid;
+            outline-width: 4px;
+            outline-color: #3B99FC;
+            outline-offset: 1px;
+          }
+        `}
+      </style>
     </>
   );
 };
