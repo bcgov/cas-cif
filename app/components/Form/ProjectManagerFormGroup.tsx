@@ -7,11 +7,12 @@ import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import ProjectManagerForm from "./ProjectManagerForm";
+import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
 
 interface Props extends ValidatingFormProps {
   query: ProjectManagerFormGroup_query$key;
   revision: ProjectManagerFormGroup_revision$key;
-  projectManagerFormRef: any;
+  projectManagerFormRef: { selfValidate: () => ISupportExternalValidation };
 }
 
 const ProjectManagerFormGroup: React.FC<Props> = (props) => {

@@ -1,5 +1,5 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import React, { useMemo } from "react";
+import React, { useMemo, MutableRefObject } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_managerFormChange$key } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
 import FormBase from "./FormBase";
@@ -16,11 +16,19 @@ import FieldLabel from "lib/theme/widgets/FieldLabel";
 
 interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
-  allCifUsers: any;
+  allCifUsers: {
+    edges: ReadonlyArray<{
+      readonly node: {
+        readonly rowId: number;
+        readonly firstName: string | null;
+        readonly lastName: string | null;
+      };
+    }>;
+  };
   projectId: number;
   projectRevisionId: string;
   projectRevisionRowId: number;
-  formRefs: any;
+  formRefs: MutableRefObject<{}>;
 }
 
 const uiSchema = {
@@ -82,7 +90,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Add a manager to the project revision
   const [applyAddManagerToRevision] = useAddManagerToRevisionMutation();
-  const addManager = (data: any) => {
+  const addManager = (data: JSON) => {
     applyAddManagerToRevision({
       variables: {
         projectRevision: projectRevisionId,
@@ -160,7 +168,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   const createOrUpdateFormChange = (
     formChangeId: string,
     labelId: number,
-    formChange: any
+    formChange: { cifUserId: number }
   ) => {
     const data = {
       ...formChange,
