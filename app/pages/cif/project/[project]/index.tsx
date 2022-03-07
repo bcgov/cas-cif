@@ -1,11 +1,11 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { ProjectOverwiewQuery } from "__generated__/ProjectOverwiewQuery.graphql";
+import { ProjectOverviewQuery } from "__generated__/ProjectOverviewQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 
 export const pageQuery = graphql`
-  query ProjectOverwiewQuery($project: ID!) {
+  query ProjectOverviewQuery($project: ID!) {
     session {
       ...DefaultLayout_session
     }
@@ -52,9 +52,9 @@ export const pageQuery = graphql`
   }
 `;
 
-export function ProjectOverview({
+export function ProjectViewPage({
   preloadedQuery,
-}: RelayProps<{}, ProjectOverwiewQuery>) {
+}: RelayProps<{}, ProjectOverviewQuery>) {
   const { session, project } = usePreloadedQuery(pageQuery, preloadedQuery);
   return (
     <DefaultLayout session={session}>
@@ -142,4 +142,4 @@ export function ProjectOverview({
   );
 }
 
-export default withRelay(ProjectOverview, pageQuery, withRelayOptions);
+export default withRelay(ProjectViewPage, pageQuery, withRelayOptions);
