@@ -1,143 +1,114 @@
-import React from "react";
-import {
-  ProjectOverview,
-  pageQuery,
-} from "../../../pages/cif/project/[project]/index";
+import { ProjectViewPage } from "pages/cif/project/[project]/index";
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import {
-  ProjectOverwiewQuery,
-  ProjectOverwiewQuery$variables,
-} from "__generated__/ProjectOverwiewQuery.graphql";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { useRouter } from "next/router";
-import { mocked } from "jest-mock";
-jest.mock("next/router");
+import compiledProjectViewQuery, {
+  ProjectOverviewQuery,
+} from "__generated__/ProjectOverviewQuery.graphql";
+import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 
-mocked(useRouter).mockReturnValue({
-  route: "/",
-  query: {},
-  push: jest.fn(),
-} as any);
+let environment;
 
-let environment: RelayMockEnvironment;
-let initialQueryRef;
-
-const defaultMockResolver = {
-  Query() {
-    return {
-      session: { cifUserBySub: {} },
-      project: {
-        projectName: "Project 1",
-        rfpNumber: "12345",
-        totalFundingRequest: "1.00",
-        summary: "Summary 1",
-        operatorByOperatorId: {
-          legalName: "Operator 1 legal name",
-          bcRegistryId: "BC7654231",
-          tradeName: "Operator 1 trade name",
-        },
-        fundingStreamRfpByFundingStreamRfpId: {
-          year: 2022,
-          fundingStreamByFundingStreamId: {
-            description: "Emissions Performance",
-          },
-        },
-        projectStatusByProjectStatusId: {
-          name: "Technical Review",
-        },
-        contactsByProjectContactProjectIdAndContactId: {
-          edges: [
-            {
-              node: {
-                id: "1",
-                familyName: "Contact family name 1",
-                givenName: "Contact given name 1",
+const loadProjectData = (partialProject = {}) => {
+  environment.mock.queueOperationResolver((operation) => {
+    return MockPayloadGenerator.generate(operation, {
+      Project () {
+        return {
+          id: "mock-project-id",
+            projectName: "Project 1",
+            rfpNumber: "12345",
+            totalFundingRequest: "1.00",
+            summary: "Summary 1",
+            operatorByOperatorId: {
+              legalName: "Operator 1 legal name",
+              bcRegistryId: "BC7654231",
+              tradeName: "Operator 1 trade name",
+            },
+            fundingStreamRfpByFundingStreamRfpId: {
+              year: 2022,
+              fundingStreamByFundingStreamId: {
+                description: "Emissions Performance",
               },
             },
-            {
-              node: {
-                id: "2",
-                familyName: "Contact family name 2",
-                givenName: "Contact given name 2",
-              },
+            projectStatusByProjectStatusId: {
+              name: "Technical Review",
             },
-            {
-              node: {
-                id: "3",
-                familyName: "Contact family name 3",
-                givenName: "Contact given name 3",
-              },
-            },
-          ],
-        },
-        projectManagersByProjectId: {
-          edges: [
-            {
-              node: {
-                cifUserByCifUserId: {
-                  firstName: "Manager first name 1",
-                  lastName: "Manager last name 1",
-                  id: "1",
-                },
-              },
-            },
-            {
-                node: {
-                  cifUserByCifUserId: {
-                    firstName: "Manager first name 2",
-                    lastName: "Manager last name 2",
-                    id: "2",
+            contactsByProjectContactProjectIdAndContactId: {
+              edges: [
+                {
+                  node: {
+                    id: "1",
+                    familyName: "Contact family name 1",
+                    givenName: "Contact given name 1",
                   },
                 },
-              },
-          ],
-        },
-      },
-    };
-  },
-};
-
-const loadProjectOverwiewQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-  const variables: ProjectOverwiewQuery$variables = {
-    project: null,
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
+                {
+                  node: {
+                    id: "2",
+                    familyName: "Contact family name 2",
+                    givenName: "Contact given name 2",
+                  },
+                },
+                {
+                  node: {
+                    id: "3",
+                    familyName: "Contact family name 3",
+                    givenName: "Contact given name 3",
+                  },
+                },
+              ],
+            },
+            projectManagersByProjectId: {
+              edges: [
+                {
+                  node: {
+                    cifUserByCifUserId: {
+                      firstName: "Manager first name 1",
+                      lastName: "Manager last name 1",
+                      id: "1",
+                    },
+                  },
+                },
+                {
+                    node: {
+                      cifUserByCifUserId: {
+                        firstName: "Manager first name 2",
+                        lastName: "Manager last name 2",
+                        id: "2",
+                      },
+                    },
+                  },
+              ],
+            },
+          ...partialProject
+        }
+      }
+    });
   });
 
-  environment.mock.queuePendingOperation(pageQuery, variables);
-  initialQueryRef = loadQuery<ProjectOverwiewQuery>(
+  const variables = {
+    project: "mock-project-id",
+  };
+  environment.mock.queuePendingOperation(compiledProjectViewQuery, variables);
+  return loadQuery<ProjectOverviewQuery>(
     environment,
-    pageQuery,
+    compiledProjectViewQuery,
     variables
   );
 };
 
-const renderProjectDetails = () =>
-  render(
-    <RelayEnvironmentProvider environment={environment}>
-      <ProjectOverview CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
-  );
-
-describe("The project details page", () => {
+describe("ProjectViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
   });
 
-  it("renders the project details", () => {
-    loadProjectOverwiewQuery();
-    renderProjectDetails();
+  it("displays the project details", () => {
+    render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectViewPage CSN preloadedQuery={loadProjectData()} />
+      </RelayEnvironmentProvider>
+    );
+
+    
 
     expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
     expect(screen.getByText(/12345/i)).toBeInTheDocument();
