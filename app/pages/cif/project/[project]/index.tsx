@@ -100,16 +100,15 @@ export function ProjectViewPage({
         <dt>Project Manager</dt>
         {project.projectManagersByProjectId.edges.length > 0 ? (
           <>
-          {project.projectManagersByProjectId.edges.map(
-            (manager) => (
-              <dd key={manager.node.cifUserByCifUserId.id}>{manager.node.cifUserByCifUserId.firstName} {manager.node.cifUserByCifUserId.lastName}</dd>
-            )
-          )}
-        </>
+            {project.projectManagersByProjectId.edges.map((manager) => (
+              <dd key={manager.node.cifUserByCifUserId.id}>
+                {manager.node.cifUserByCifUserId.firstName}{" "}
+                {manager.node.cifUserByCifUserId.lastName}
+              </dd>
+            ))}
+          </>
         ) : (
-
-            <dd>n/a</dd>
-      
+          <dd>n/a</dd>
         )}
 
         <dt>Project Contacts</dt>
@@ -118,13 +117,14 @@ export function ProjectViewPage({
           <>
             {project.contactsByProjectContactProjectIdAndContactId.edges.map(
               (contact) => (
-                <dd key={contact.node.id}>{contact.node.givenName} {contact.node.familyName}</dd>
+                <dd key={contact.node.id}>
+                  {contact.node.givenName} {contact.node.familyName}
+                </dd>
               )
             )}
           </>
         ) : (
-            <dd>n/a</dd>
-      
+          <dd>n/a</dd>
         )}
       </dl>
       <style jsx>{`
