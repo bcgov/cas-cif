@@ -53,7 +53,7 @@ describe("the new project page", () => {
       component: "Project Page with errors",
       variant: "empty",
     });
-    cy.get(".error-detail").should("have.length", 8);
+    cy.get(".error-detail").should("have.length", 11);
     // Renders a custom error message for a custom format validation error
     cy.get(".error-detail")
       .first()
