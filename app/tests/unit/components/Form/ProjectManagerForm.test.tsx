@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
-import ProjectManagerForm from "components/Form/ProjectManagerForm";
+import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import {
   graphql,
   RelayEnvironmentProvider,
@@ -19,7 +19,10 @@ const loadedQuery = graphql`
   query ProjectManagerFormQuery($projectRevision: ID!) @relay_test_operation {
     query {
       # Spread the fragment you want to test here
-      ...ProjectManagerForm_query
+      ...ProjectManagerFormGroup_query
+      projectRevision(id: $projectRevision) {
+        ...ProjectManagerFormGroup_revision
+      }
     }
   }
 `;
@@ -33,7 +36,14 @@ const TestRenderer = () => {
   const data = useLazyLoadQuery<ProjectManagerFormQuery>(loadedQuery, {
     projectRevision: "test-project-revision",
   });
-  return <ProjectManagerForm {...props} query={data.query} />;
+  return (
+    <ProjectManagerFormGroup
+      {...props}
+      query={data.query}
+      revision={data.query.projectRevision}
+      projectManagerFormRef={null}
+    />
+  );
 };
 const renderProjectForm = () => {
   return render(
@@ -70,10 +80,29 @@ const getMockQueryPayload = () => ({
                 },
                 formChange: {
                   id: "Change 2 ID",
+                  operation: "CREATE",
                   newFormData: {
                     cifUserId: 2,
                     projectId: 1,
                     projectManagerLabelId: 2,
+                  },
+                },
+              },
+            },
+            {
+              node: {
+                projectManagerLabel: {
+                  id: "Test Label 3 ID",
+                  rowId: 3,
+                  label: "Test Label 3",
+                },
+                formChange: {
+                  id: "Change 3 ID",
+                  operation: "UPDATE",
+                  newFormData: {
+                    cifUserId: 2,
+                    projectId: 1,
+                    projectManagerLabelId: 3,
                   },
                 },
               },
@@ -121,7 +150,7 @@ describe("The ProjectManagerForm", () => {
 
   it("Renders a form for each Project Manager Label", () => {
     renderProjectForm();
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+    expect(screen.getAllByRole("textbox")).toHaveLength(3);
   });
 
   it("Renders any data contained in a formChange", () => {
@@ -143,6 +172,29 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
 
     expect(mutationSpy).toHaveBeenCalledWith({
+      optimisticResponse: {
+        createFormChange: {
+          query: {
+            projectRevision: {
+              managerFormChanges: {
+                edges: {
+                  change: {
+                    projectManagerLabel: {},
+                    formChange: {
+                      id: "new",
+                      newFormData: {
+                        cifUserId: 1,
+                        projectId: 1,
+                        projectManagerLabelId: 1,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       variables: {
         projectRevision: "Test Revision ID",
         projectRevisionId: 1,
@@ -151,23 +203,58 @@ describe("The ProjectManagerForm", () => {
     });
   });
 
-  it("Calls the deleteFormChange mutation when the remove button is clicked", () => {
-    const mutationSpy = jest.fn();
+  it("Deletes the formChange record when the remove button is clicked and the formChange operation is 'CREATE'", () => {
+    const deleteMutationSpy = jest.fn();
+    const inFlight = false;
     jest
       .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
+      .mockImplementation(() => [deleteMutationSpy, inFlight]);
 
     renderProjectForm();
     const clearButton = screen.getAllByText("Clear")[1];
     clearButton.click();
 
-    expect(mutationSpy).toHaveBeenCalledWith({
+    expect(deleteMutationSpy).toHaveBeenCalledWith({
+      onError: expect.any(Function),
       variables: {
         input: {
           id: "Change 2 ID",
         },
         projectRevision: "Test Revision ID",
       },
+    });
+  });
+
+  it("Updates the formChange record with operation = 'ARCHIVE' when the remove button is clicked and the formChange operation is 'UPDATE'", () => {
+    const deleteMutationSpy = jest.fn();
+    const inFlight = false;
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [deleteMutationSpy, inFlight]);
+
+    renderProjectForm();
+    const clearButton = screen.getAllByText("Clear")[2];
+    clearButton.click();
+
+    expect(deleteMutationSpy).toHaveBeenCalledWith({
+      onError: expect.any(Function),
+      variables: {
+        input: {
+          formChangePatch: {
+            operation: "ARCHIVE",
+          },
+          id: "Change 3 ID",
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: "Change 3 ID",
+            newFormData: {},
+          },
+        },
+      },
+      debounceKey: "Change 3 ID",
     });
   });
 
@@ -186,6 +273,6 @@ describe("The ProjectManagerForm", () => {
     props.setValidatingForm.mock.calls[0][0].selfValidate();
 
     // Once per form
-    expect(mocked(validateFormWithErrors)).toHaveBeenCalledTimes(2);
+    expect(mocked(validateFormWithErrors)).toHaveBeenCalledTimes(3);
   });
 });
