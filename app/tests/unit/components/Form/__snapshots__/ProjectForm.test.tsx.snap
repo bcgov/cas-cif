@@ -227,7 +227,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                 class="jsx-3883368021"
               >
                 <label
-                  class="jsx-1412212994"
+                  class="jsx-3791744649"
                   for="select-parent-dropdown-root_fundingStreamRfpId"
                 >
                   Funding Stream
@@ -246,12 +246,12 @@ exports[`The Project Form matches the snapshot 1`] = `
                       required=""
                     >
                       <option
-                        class="jsx-1412212994"
+                        class="jsx-3791744649"
                       >
                         Select a Funding Stream
                       </option>
                       <option
-                        class="jsx-1412212994"
+                        class="jsx-3791744649"
                         value="42"
                       >
                         &lt;mock-value-for-field-"description"&gt;
@@ -260,7 +260,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                   </div>
                 </div>
                 <label
-                  class="jsx-1412212994"
+                  class="jsx-3791744649"
                   for="select-child-dropdown-root_fundingStreamRfpId"
                 >
                   Funding Stream RFP
@@ -279,7 +279,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                       required=""
                     >
                       <option
-                        class="jsx-1412212994"
+                        class="jsx-3791744649"
                       >
                         Select a Funding Stream RFP Year
                       </option>
