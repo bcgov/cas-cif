@@ -32,8 +32,9 @@ export const pageQuery = graphql`
         edges {
           node {
             id
-            familyName
-            givenName
+            fullName
+            fullPhone
+            email
           }
         }
       }
@@ -72,15 +73,12 @@ export function ProjectViewPage({
         <dd>{project.totalFundingRequest}</dd>
 
         <dt>Summary</dt>
-        <dd>{project.summary}</dd>
+        <dd className="preformatted">{project.summary}</dd>
 
-        <dt>Legal Operator Name and BC Registry ID</dt>
-        <dd>
-          {project.operatorByOperatorId.legalName} (
-          {project.operatorByOperatorId.bcRegistryId})
-        </dd>
+        <dt>Proponent Legal Name</dt>
+        <dd>{project.operatorByOperatorId.legalName}</dd>
 
-        <dt>Trade Name</dt>
+        <dt>Proponent Trade Name</dt>
         <dd>{project.operatorByOperatorId.tradeName}</dd>
 
         <dt>Funding Stream</dt>
@@ -88,11 +86,9 @@ export function ProjectViewPage({
           {
             project.fundingStreamRfpByFundingStreamRfpId
               .fundingStreamByFundingStreamId.description
-          }
+          }{" "}
+          - {project.fundingStreamRfpByFundingStreamRfpId.year}
         </dd>
-
-        <dt>Funding Stream RFP</dt>
-        <dd>{project.fundingStreamRfpByFundingStreamRfpId.year}</dd>
 
         <dt>Project Status</dt>
         <dd>{project.projectStatusByProjectStatusId.name}</dd>
@@ -118,7 +114,8 @@ export function ProjectViewPage({
             {project.contactsByProjectContactProjectIdAndContactId.edges.map(
               (contact) => (
                 <dd key={contact.node.id}>
-                  {contact.node.givenName} {contact.node.familyName}
+                  {contact.node.fullName}, {contact.node.fullPhone},{" "}
+                  {contact.node.email}
                 </dd>
               )
             )}
