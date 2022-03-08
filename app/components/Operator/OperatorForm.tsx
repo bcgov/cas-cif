@@ -7,8 +7,10 @@ import { FormPageFactoryComponentProps } from "lib/pages/relayFormPageFactory";
 const OperatorForm: React.FC<FormPageFactoryComponentProps> = (props) => {
   return (
     <FormBase {...props} schema={operatorSchema as JSONSchema7} uiSchema={{}}>
-      <Button type="submit">Submit</Button>
-      <Button type="button" onClick={props.onDiscard}>
+      <Button type="submit" style={{ marginRight: "1rem" }}>
+        Submit
+      </Button>
+      <Button type="button" variant="secondary" onClick={props.onDiscard}>
         Discard Changes
       </Button>
     </FormBase>

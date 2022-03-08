@@ -65,8 +65,8 @@ describe("the operators page", () => {
       "have.value",
       "ABCD"
     );
-    cy.get("input[aria-label='Trade Name']").clear().type("Updated Trade Name");
+    cy.get("input[aria-label='Trade Name']").clear().type("Updated");
     cy.get("button").contains("Submit").click();
-    cy.get("table").contains("Updated Trade Name");
+    cy.get("table").contains("Updated");
   });
 });
