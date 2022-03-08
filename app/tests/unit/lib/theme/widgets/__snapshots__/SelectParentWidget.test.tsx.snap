@@ -3,7 +3,7 @@
 exports[`The SelectParentWidget Widget Matches the snapshot with a default value set 1`] = `
 <div>
   <label
-    class="jsx-3703916905"
+    class="jsx-1412212994"
     for="select-parent-dropdown-test-id"
   >
     Parent Label
@@ -21,18 +21,18 @@ exports[`The SelectParentWidget Widget Matches the snapshot with a default value
         name="select-parent-dropdown-test-id-select"
       >
         <option
-          class="jsx-3703916905"
+          class="jsx-1412212994"
         >
           parent placeholder
         </option>
         <option
-          class="jsx-3703916905"
+          class="jsx-1412212994"
           value="1"
         >
           EP
         </option>
         <option
-          class="jsx-3703916905"
+          class="jsx-1412212994"
           value="2"
         >
           IA
@@ -41,7 +41,7 @@ exports[`The SelectParentWidget Widget Matches the snapshot with a default value
     </div>
   </div>
   <label
-    class="jsx-3703916905"
+    class="jsx-1412212994"
     for="select-child-dropdown-test-id"
   >
     Child Label
@@ -59,7 +59,7 @@ exports[`The SelectParentWidget Widget Matches the snapshot with a default value
         name="select-child-dropdown-test-id-select"
       >
         <option
-          class="jsx-3703916905"
+          class="jsx-1412212994"
         >
           child placeholder
         </option>
