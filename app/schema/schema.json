@@ -107858,6 +107858,33 @@
               "deprecationReason": null
             },
             {
+              "name": "pendingNewFormChangeForTable",
+              "description": "returns a form_change for a table in the pending state for the current user, i.e. allows to resume the creation of any table row",
+              "args": [
+                {
+                  "name": "tablename",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FormChange",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "pendingNewProjectRevision",
               "description": "returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation",
               "args": [],

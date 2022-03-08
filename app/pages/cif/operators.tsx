@@ -22,7 +22,6 @@ export const OperatorsQuery = graphql`
     session {
       ...DefaultLayout_session
     }
-
     allOperators(
       first: $pageSize
       offset: $offset
@@ -42,6 +41,11 @@ export const OperatorsQuery = graphql`
         }
       }
     }
+    pendingNewOperatorFormChange: pendingNewFormChangeForTable(
+      tablename: "operator"
+    ) {
+      id
+    }
   }
 `;
 
@@ -56,10 +60,8 @@ const tableFilters = [
 export function Operators({ preloadedQuery }: RelayProps<{}, operatorsQuery>) {
   // const router = useRouter();
 
-  const { allOperators, session } = usePreloadedQuery(
-    OperatorsQuery,
-    preloadedQuery
-  );
+  const { allOperators, session, pendingNewOperatorFormChange } =
+    usePreloadedQuery(OperatorsQuery, preloadedQuery);
 
   const addNewOperator = async () => {
     // TODO Implement Create Operator
@@ -69,15 +71,17 @@ export function Operators({ preloadedQuery }: RelayProps<{}, operatorsQuery>) {
     console.log("Implement Create Operator");
   };
 
+  const createOrResumeButton = pendingNewOperatorFormChange ? (
+    <Button onClick={() => {}}>Resume Contact Creation</Button>
+  ) : (
+    <Button onClick={addNewOperator}>Add an Operator</Button>
+  );
+
   return (
     <DefaultLayout session={session}>
       <header>
         <h2>CIF Operators</h2>
-        <section>
-          <Button role="button" onClick={addNewOperator}>
-            Add an Operator
-          </Button>
-        </section>
+        <section>{createOrResumeButton}</section>
       </header>
 
       <Table
