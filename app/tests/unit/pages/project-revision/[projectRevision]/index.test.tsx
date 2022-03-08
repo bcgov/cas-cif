@@ -9,12 +9,12 @@ import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
 } from "__generated__/ProjectRevisionQuery.graphql";
 import ProjectForm from "components/Form/ProjectForm";
-import ProjectManagerForm from "components/Form/ProjectManagerForm";
+import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { mocked } from "jest-mock";
 
 jest.mock("components/Form/ProjectForm");
-jest.mock("components/Form/ProjectManagerForm");
+jest.mock("components/Form/ProjectManagerFormGroup");
 jest.mock("components/Form/ProjectContactForm");
 
 const environment = createMockEnvironment();
@@ -66,11 +66,11 @@ const generateMockForm = (errors: any[] = []) => {
 describe("The Create Project page", () => {
   beforeEach(() => {
     mocked(ProjectForm).render.mockReset();
-    mocked(ProjectManagerForm).mockReset();
+    mocked(ProjectManagerFormGroup).mockReset();
     mocked(ProjectContactForm).mockReset();
 
     mocked(ProjectForm).render.mockImplementation(() => null);
-    mocked(ProjectManagerForm).mockImplementation((props) => {
+    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
       props.setValidatingForm({
         selfValidate: jest.fn().mockImplementation(() => []),
       });
@@ -152,7 +152,7 @@ describe("The Create Project page", () => {
 
   it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
     mocked(ProjectForm).render.mockImplementation(generateMockForm());
-    mocked(ProjectManagerForm).mockImplementation((props) => {
+    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
       props.setValidatingForm({
         selfValidate: jest.fn().mockImplementation(() => []),
       });
@@ -196,7 +196,7 @@ describe("The Create Project page", () => {
     mocked(ProjectForm).render.mockImplementation(
       generateMockForm([{ thereIsAnError: true }])
     );
-    mocked(ProjectManagerForm).mockImplementation((props) => {
+    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
       props.setValidatingForm({
         selfValidate: jest.fn().mockImplementation(() => []),
       });
