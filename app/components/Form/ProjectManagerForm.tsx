@@ -90,7 +90,11 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Add a manager to the project revision
   const [applyAddManagerToRevision] = useAddManagerToRevisionMutation();
-  const addManager = (data: JSON) => {
+  const addManager = (data: {
+    cifUserId: number;
+    projectManagerLabelId: number;
+    projectId: number;
+  }) => {
     applyAddManagerToRevision({
       variables: {
         projectRevision: projectRevisionId,

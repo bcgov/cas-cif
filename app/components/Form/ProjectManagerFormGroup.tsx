@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, MutableRefObject } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormGroup_query$key } from "__generated__/ProjectManagerFormGroup_query.graphql";
 import { ProjectManagerFormGroup_revision$key } from "__generated__/ProjectManagerFormGroup_revision.graphql";
@@ -7,12 +7,11 @@ import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import ProjectManagerForm from "./ProjectManagerForm";
-import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
 
 interface Props extends ValidatingFormProps {
   query: ProjectManagerFormGroup_query$key;
   revision: ProjectManagerFormGroup_revision$key;
-  projectManagerFormRef: { selfValidate: () => ISupportExternalValidation };
+  projectManagerFormRef: MutableRefObject<{}>;
 }
 
 const ProjectManagerFormGroup: React.FC<Props> = (props) => {
