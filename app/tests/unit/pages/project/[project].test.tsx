@@ -20,7 +20,6 @@ const loadProjectData = (partialProject = {}) => {
           summary: "Summary 1",
           operatorByOperatorId: {
             legalName: "Operator 1 legal name",
-            bcRegistryId: "BC7654231",
             tradeName: "Operator 1 trade name",
           },
           fundingStreamRfpByFundingStreamRfpId: {
@@ -37,22 +36,19 @@ const loadProjectData = (partialProject = {}) => {
               {
                 node: {
                   id: "1",
-                  familyName: "Contact family name 1",
-                  givenName: "Contact given name 1",
+                  fullName: "Contact full name 1",
                 },
               },
               {
                 node: {
                   id: "2",
-                  familyName: "Contact family name 2",
-                  givenName: "Contact given name 2",
+                  fullName: "Contact full name 2",
                 },
               },
               {
                 node: {
                   id: "3",
-                  familyName: "Contact family name 3",
-                  givenName: "Contact given name 3",
+                  fullName: "Contact full name 3",
                 },
               },
             ],
@@ -113,17 +109,13 @@ describe("ProjectViewPage", () => {
     expect(screen.getByText(/1.00/i)).toBeInTheDocument();
     expect(screen.getByText(/Summary 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Operator 1 legal name/i)).toBeInTheDocument();
-    expect(screen.getByText(/BC7654231/i)).toBeInTheDocument();
     expect(screen.getByText(/Operator 1 trade name/i)).toBeInTheDocument();
     expect(screen.getByText(/2022/i)).toBeInTheDocument();
     expect(screen.getByText(/Emissions Performance/i)).toBeInTheDocument();
     expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact family name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact given name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact family name 2/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact given name 2/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact family name 3/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact given name 3/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact full name 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact full name 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact full name 3/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager first name 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager last name 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager first name 2/i)).toBeInTheDocument();
