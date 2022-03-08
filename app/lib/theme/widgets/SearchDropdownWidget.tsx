@@ -75,6 +75,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
             outline-style: solid;
             outline-width: 4px;
             outline-color: #3B99FC;
+            outline-offset: 1px;
           }
         `}
       </style>
