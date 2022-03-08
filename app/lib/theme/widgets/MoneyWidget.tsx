@@ -44,7 +44,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           .money:focus {
             outline-style: solid;
             outline-width: 4px;
-            outline-color: #3B99FC;
+            outline-color: #3b99fc;
             outline-offset: 1px;
           }
         `}

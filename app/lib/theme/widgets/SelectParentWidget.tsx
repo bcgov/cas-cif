@@ -89,13 +89,13 @@ const SelectParentWidget: React.FunctionComponent<
           :global(input) {
             width: 100%;
           }
-          .pg-select-wrapper{
+          .pg-select-wrapper {
             padding: 9px 2px 9px 2px;
             margin-bottom: 5px;
-            margin-top:2px;
+            margin-top: 2px;
           }
           .pg-select-input {
-            color:#8e8e8e;
+            color: #8e8e8e;
           }
         `}
       </style>

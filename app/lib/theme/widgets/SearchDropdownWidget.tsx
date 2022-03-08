@@ -4,7 +4,7 @@ import Widgets from "@rjsf/core/dist/cjs/components/widgets";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import FieldLabel from "./FieldLabel";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, schema, placeholder, readonly, label, required, uiSchema } =
@@ -44,37 +44,40 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
           props.value ? option.value === props.value : true
         }
         getOptionLabel={(option) => (option ? option.title : "")}
-        sx={{ 
-          border: "2px solid #606060", 
+        sx={{
+          border: "2px solid #606060",
           borderRadius: "0.25em",
           marginTop: "0.2em",
-          '&.Mui-focused': {
-            outlineStyle:"solid",
-            outlineWidth:"4px",
-            outlineColor:"#3B99FC",
-            outlineOffset: "1px"
-          }
+          "&.Mui-focused": {
+            outlineStyle: "solid",
+            outlineWidth: "4px",
+            outlineColor: "#3B99FC",
+            outlineOffset: "1px",
+          },
         }}
-
         popupIcon={<KeyboardArrowDownIcon />}
         renderInput={(params) => {
-          return <TextField {...params} 
-          placeholder={placeholder} 
-          variant="standard" 
-          InputProps={{...params.InputProps, disableUnderline: true}}
-          sx={{
-            padding:"5px", 
-            marginLeft: "2px",
-          }} />;
+          return (
+            <TextField
+              {...params}
+              placeholder={placeholder}
+              variant="standard"
+              InputProps={{ ...params.InputProps, disableUnderline: true }}
+              sx={{
+                padding: "5px",
+                marginLeft: "2px",
+              }}
+            />
+          );
         }}
       />
 
-<style jsx global>
+      <style jsx global>
         {`
           .money:focus {
             outline-style: solid;
             outline-width: 4px;
-            outline-color: #3B99FC;
+            outline-color: #3b99fc;
             outline-offset: 1px;
           }
         `}
