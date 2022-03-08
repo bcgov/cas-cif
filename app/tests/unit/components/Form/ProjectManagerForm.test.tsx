@@ -203,6 +203,46 @@ describe("The ProjectManagerForm", () => {
     });
   });
 
+  it("Calls the update mutation when change is made in the Manager dropdown", () => {
+    const mutationSpy = jest.fn();
+    jest
+      .spyOn(require("react-relay"), "useMutation")
+      .mockImplementation(() => [mutationSpy, jest.fn()]);
+
+    renderProjectForm();
+
+    fireEvent.click(screen.getAllByTitle("Open")[1]);
+    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+
+    expect(mutationSpy).toHaveBeenCalledWith({
+      debounceKey: "Change 2 ID",
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: "Change 2 ID",
+            newFormData: {
+              cifUserId: 1,
+              projectId: 1,
+              projectManagerLabelId: 2,
+            },
+          },
+        },
+      },
+      variables: {
+        input: {
+          formChangePatch: {
+            newFormData: {
+              cifUserId: 1,
+              projectId: 1,
+              projectManagerLabelId: 2,
+            },
+          },
+          id: "Change 2 ID",
+        },
+      },
+    });
+  });
+
   it("Deletes the formChange record when the remove button is clicked and the formChange operation is 'CREATE'", () => {
     const deleteMutationSpy = jest.fn();
     const inFlight = false;
