@@ -107846,23 +107846,11 @@
               "deprecationReason": null
             },
             {
-              "name": "pendingNewContactFormChange",
-              "description": "returns a form_change for a new contact in the pending state for the current user, i.e. allows to resume a contact creation",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "FormChange",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "pendingNewFormChangeForTable",
               "description": "returns a form_change for a table in the pending state for the current user, i.e. allows to resume the creation of any table row",
               "args": [
                 {
-                  "name": "tablename",
+                  "name": "tableName",
                   "description": null,
                   "type": {
                     "kind": "NON_NULL",

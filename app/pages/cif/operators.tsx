@@ -3,11 +3,14 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { operatorsQuery } from "__generated__/operatorsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-// import { useRouter } from "next/router";
 import Button from "@button-inc/bcgov-theme/Button";
 import Table from "components/Table";
 import OperatorTableRow from "components/Operator/OperatorTableRow";
 import { NoHeaderFilter, TextFilter } from "components/Table/Filters";
+import { useCreateNewOperatorFormChange } from "mutations/Operator/createNewOperatorFormChange";
+import { useRouter } from "next/router";
+import { getOperatorFormPageRoute } from "pageRoutes";
+import { createNewOperatorFormChangeMutation$data } from "__generated__/createNewOperatorFormChangeMutation.graphql";
 
 export const OperatorsQuery = graphql`
   query operatorsQuery(
@@ -42,7 +45,7 @@ export const OperatorsQuery = graphql`
       }
     }
     pendingNewOperatorFormChange: pendingNewFormChangeForTable(
-      tablename: "operator"
+      tableName: "operator"
     ) {
       id
     }
@@ -58,23 +61,36 @@ const tableFilters = [
 ];
 
 export function Operators({ preloadedQuery }: RelayProps<{}, operatorsQuery>) {
-  // const router = useRouter();
+  const router = useRouter();
 
   const { allOperators, session, pendingNewOperatorFormChange } =
     usePreloadedQuery(OperatorsQuery, preloadedQuery);
 
-  const addNewOperator = async () => {
-    // TODO Implement Create Operator
-    // await router.push(
-    //   getCreateOperatorPageRoute()
-    // );
-    console.log("Implement Create Operator");
+  console.log(pendingNewOperatorFormChange);
+
+  const [addOperator, isAddingOperator] = useCreateNewOperatorFormChange();
+
+  const handleAddOperator = () => {
+    addOperator({
+      variables: {},
+      onCompleted: (response: createNewOperatorFormChangeMutation$data) => {
+        router.push(
+          getOperatorFormPageRoute(response.createFormChange.formChange.id)
+        );
+      },
+    });
+  };
+
+  const handleResumeAddOperator = () => {
+    router.push(getOperatorFormPageRoute(pendingNewOperatorFormChange.id));
   };
 
   const createOrResumeButton = pendingNewOperatorFormChange ? (
-    <Button onClick={() => {}}>Resume Contact Creation</Button>
+    <Button onClick={handleResumeAddOperator}>Resume Operator Creation</Button>
   ) : (
-    <Button onClick={addNewOperator}>Add an Operator</Button>
+    <Button onClick={handleAddOperator} disabled={isAddingOperator}>
+      Add an Operator
+    </Button>
   );
 
   return (
