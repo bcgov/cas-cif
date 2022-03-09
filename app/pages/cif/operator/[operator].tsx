@@ -103,6 +103,9 @@ export function OperatorViewPage({
           justify-content: space-between;
           align-items: start;
         }
+        header h2 {
+          padding-right: 10px;
+        }
       `}</style>
     </DefaultLayout>
   );
