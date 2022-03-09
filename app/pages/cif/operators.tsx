@@ -66,8 +66,6 @@ export function Operators({ preloadedQuery }: RelayProps<{}, operatorsQuery>) {
   const { allOperators, session, pendingNewOperatorFormChange } =
     usePreloadedQuery(OperatorsQuery, preloadedQuery);
 
-  console.log(pendingNewOperatorFormChange);
-
   const [addOperator, isAddingOperator] = useCreateNewOperatorFormChange();
 
   const handleAddOperator = () => {
