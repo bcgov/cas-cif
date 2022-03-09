@@ -64,4 +64,20 @@ describe("the new project page", () => {
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
   });
+
+  it.only("Allows to create and update a project", () => {
+    cy.mockLogin("cif_admin");
+
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+    cy.url().should("include", "/cif/project-revision");
+    cy.findByLabelText(/Project Name/i).type("Foo");
+    cy.findByLabelText(/Total Funding Request/i).type("100");
+    cy.findByLabelText(/Summary/i).type("Bar");
+    cy.findByLabelText(/Operator Name/i).click();
+    cy.contains("first operator").click();
+    cy.findByLabelText(/Funding Stream$/i).select("Emissions Performance");
+    cy.findByLabelText(/Funding Stream RFP/i).select("2020");
+    cy.findByLabelText(/Project Status/i).select("Project Underway");
+  });
 });
