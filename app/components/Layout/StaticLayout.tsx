@@ -12,7 +12,7 @@ interface Props {
 const StaticLayout: React.FC<Props> = ({ children, title }) => {
   return (
     <div id="page-wrap">
-      <Navigation title={title}>
+      <Navigation title={title} hideLoginButton={true}>
         {runtimeConfig.SITEWIDE_NOTICE && (
           <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
         )}
