@@ -13,7 +13,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
     role="combobox"
   >
     <div
-      class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-1nf2xzw-MuiFormControl-root-MuiTextField-root"
+      class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-d5w1v2-MuiFormControl-root-MuiTextField-root"
     >
       <div
         class="MuiInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-1pa58rh-MuiInputBase-root-MuiInput-root"
@@ -67,6 +67,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
               data-testid="KeyboardArrowDownIcon"
               focusable="false"
+              style="color: black;"
               viewBox="0 0 24 24"
             >
               <path
@@ -97,7 +98,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with no default value se
     role="combobox"
   >
     <div
-      class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-1nf2xzw-MuiFormControl-root-MuiTextField-root"
+      class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-d5w1v2-MuiFormControl-root-MuiTextField-root"
     >
       <div
         class="MuiInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-1pa58rh-MuiInputBase-root-MuiInput-root"
@@ -129,6 +130,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with no default value se
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
               data-testid="KeyboardArrowDownIcon"
               focusable="false"
+              style="color: black;"
               viewBox="0 0 24 24"
             >
               <path
