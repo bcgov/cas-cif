@@ -10,7 +10,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import { useMemo, useRef } from "react";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
-import ProjecManagerForm from "components/Form/ProjectManagerForm";
+import ProjecManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
@@ -29,17 +29,14 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         updatedAt
-        projectManagerFormChange {
-          id
-          newFormData
-        }
         projectFormChange {
           id
           newFormData
         }
+        ...ProjectManagerFormGroup_revision
       }
       ...ProjectForm_query
-      ...ProjectManagerForm_allUsers
+      ...ProjectManagerFormGroup_query
       ...ProjectContactForm_query
     }
   }
@@ -49,7 +46,7 @@ export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const projectFormRef = useRef(null);
-  const projectManagerFormRef = useRef(null);
+  const projectManagerFormRef = useRef<ISupportExternalValidation>(null);
   const projectContactFormRef = useRef<ISupportExternalValidation>(null);
 
   const router = useRouter();
@@ -102,7 +99,7 @@ export function ProjectRevision({
   const commitProject = async () => {
     const errors = [
       ...validateFormWithErrors(projectFormRef.current),
-      ...validateFormWithErrors(projectManagerFormRef.current),
+      ...projectManagerFormRef.current.selfValidate(),
       ...projectContactFormRef.current.selfValidate(),
     ];
 
@@ -171,18 +168,13 @@ export function ProjectRevision({
             />
           </Grid.Col>
           <Grid.Col>
-            <ProjecManagerForm
-              ref={projectManagerFormRef}
-              formData={
-                query.projectRevision.projectManagerFormChange.newFormData
+            <ProjecManagerFormGroup
+              query={query}
+              revision={query.projectRevision}
+              projectManagerFormRef={projectManagerFormRef}
+              setValidatingForm={(validator) =>
+                (projectManagerFormRef.current = validator)
               }
-              onChange={(change) =>
-                handleChange(
-                  query.projectRevision.projectManagerFormChange,
-                  change.formData
-                )
-              }
-              allUsers={query}
             />
             <ProjectContactForm
               query={query}

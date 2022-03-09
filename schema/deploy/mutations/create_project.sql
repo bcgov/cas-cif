@@ -43,16 +43,6 @@ begin
     'Creating new project: project record',
     'project'
   ), (
-    format('{ "projectId": %s, "projectManagerLabelId": 1 }', next_project_id)::jsonb,
-    'create',
-    'cif',
-    'project_manager',
-    nextval(pg_get_serial_sequence('cif.project_manager', 'id')),
-    revision_row.id,
-    'pending',
-    'Creating new project: project_manager record',
-    'project_manager'
-  ), (
     format('{ "projectId": %s, "contactIndex": 1 }', next_project_id)::jsonb,
     'create',
     'cif',
@@ -70,7 +60,6 @@ $function$ language plpgsql strict volatile;
 
 grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
 grant usage, select on sequence cif.project_id_seq to cif_internal, cif_external, cif_admin;
-grant usage, select on sequence cif.project_manager_id_seq to cif_internal, cif_external, cif_admin;
 grant usage, select on sequence cif.project_contact_id_seq to cif_internal, cif_external, cif_admin;
 
 commit;

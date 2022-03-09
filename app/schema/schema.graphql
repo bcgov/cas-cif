@@ -28313,7 +28313,7 @@ type ProjectRevision implements Node {
   projectByProjectId: Project
 
   """
-  Computed column for graphql to retrieve the change related to the project manager association, within a project revision
+  Computed column for graphql to retrieve the change related to the project record, within a project revision
   """
   projectFormChange: FormChange
 
@@ -28321,7 +28321,6 @@ type ProjectRevision implements Node {
   Foreign key to the associated project row. Will be null if the project hasn't been committed yet.
   """
   projectId: Int
-  projectManagerFormChange: FormChange
 
   """
   Computed column returns a composite value for each record in project_manager_label and the last related form_change if it exists

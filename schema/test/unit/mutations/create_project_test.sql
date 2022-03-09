@@ -2,10 +2,9 @@
 
 begin;
 
-select plan(6);
+select plan(4);
 
 truncate table cif.project restart identity cascade;
-truncate table cif.project_manager restart identity cascade;
 truncate table cif.project_revision restart identity cascade;
 truncate table cif.form_change restart identity cascade;
 
@@ -36,10 +35,9 @@ select results_eq(
   $$
     values
       ('project'::varchar, 'cif'::varchar, 1::integer),
-      ('project_manager'::varchar, 'cif'::varchar, 1::integer),
       ('project_contact'::varchar, 'cif'::varchar, 1::integer)
   $$,
-  'Creates 3 form_change records for the project, project_manager and project_contact tables'
+  'Creates 2 form_change records for the project and project_contact tables'
 );
 
 -- creating a second project to test the sequences
@@ -49,19 +47,6 @@ select is(
   (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=2),
   (select currval(pg_get_serial_sequence('cif.project', 'id'))::integer),
   'Reserves the next id in the sequence for the the project table'
-);
-
-select is(
-  (select form_data_record_id from cif.form_change where form_data_table_name='project_manager' and project_revision_id=2),
-  (select currval(pg_get_serial_sequence('cif.project_manager', 'id'))::integer),
-  'Reserves the next id in the sequence for the the project_manager table'
-);
-
--- prepopulates the project manager form with the project id
-select is(
-  (select new_form_data from cif.form_change where form_data_table_name='project_manager' and project_revision_id=2),
-  '{ "projectId": 1235, "projectManagerLabelId": 1 }'::jsonb,
-  'Populates the project_manager form with the project id'
 );
 
 select finish();

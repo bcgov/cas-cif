@@ -97391,7 +97391,7 @@
             },
             {
               "name": "projectFormChange",
-              "description": "Computed column for graphql to retrieve the change related to the project manager association, within a project revision",
+              "description": "Computed column for graphql to retrieve the change related to the project record, within a project revision",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -97408,18 +97408,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "projectManagerFormChange",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "FormChange",
                 "ofType": null
               },
               "isDeprecated": false,

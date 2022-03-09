@@ -12,6 +12,7 @@ $computed_column$
   with latest_changes as (
     select * from cif.form_change
     where project_revision_id = $1.id
+    and form_change.operation != 'archive'
     order by new_form_data->'projectManagerLabelId', updated_at desc, id desc
   ) select row(pml.*), row(latest_changes.*) as form_change
     from latest_changes
