@@ -72,7 +72,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
         }}
       />
 
-      <style jsx global>
+      <style jsx>
         {`
           .money:focus {
             outline-style: solid;

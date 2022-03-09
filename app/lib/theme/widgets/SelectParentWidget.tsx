@@ -1,101 +1,84 @@
-import Dropdown from "@button-inc/bcgov-theme/Dropdown";
-import { useMemo, useState } from "react";
+import { useCallback } from "react";
 import { WidgetProps } from "@rjsf/core";
+import Widgets from "@rjsf/core/dist/cjs/components/widgets";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import FieldLabel from "./FieldLabel";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-export interface EntitySchema {
-  list: [{ rowId: any }];
-  displayField: string;
-  placeholder: string;
-  label: string;
-}
+const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
+  const { onChange, schema, placeholder, readonly, label, required, uiSchema } =
+    props;
 
-interface SelectParentComponentProps extends WidgetProps {
-  parent: EntitySchema;
-  child: EntitySchema;
-  foreignKey: string;
-}
-
-const SelectParentWidget: React.FunctionComponent<
-  SelectParentComponentProps
-> = ({
-  id,
-  onChange,
-  required,
-  uiSchema,
-  value,
-  parent,
-  child,
-  foreignKey,
-}) => {
-  const parentValue = child.list.find((opt) => opt.rowId == parseInt(value))?.[
-    foreignKey
-  ];
-  const [selectedParentId, setSelectedParentId] = useState(parentValue);
-
-  const onParentChange = (val) => {
-    setSelectedParentId(parseInt(val));
-    if (!parseInt(val)) onChange(undefined);
+  const handleChange = (e: React.ChangeEvent<{}>, option: any) => {
+    onChange(option?.value);
   };
 
-  let childOptions = useMemo(() => {
-    return child.list.filter((opt) => {
-      return opt[foreignKey] === selectedParentId;
-    });
-  }, [child, foreignKey, selectedParentId]);
+  const getSelected = useCallback(() => {
+    if (props.value === null || props.value === undefined) return null;
+    const selectedValue = schema.anyOf.find(
+      (option) => (option as any).value === props.value
+    );
+    return selectedValue;
+  }, [schema, props.value]);
+
+  if (readonly) return <Widgets.SelectWidget {...props} />;
+
+  const autoCompleteId = `search-dropdown-${props.id}`;
 
   return (
     <>
-      <label htmlFor={`select-parent-dropdown-${id}`}>{parent.label}</label>
-      <Dropdown
-        id={`select-parent-dropdown-${id}`}
-        onChange={(e) => onParentChange(e.target.value || undefined)}
-        size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
+      <FieldLabel
+        label={label}
         required={required}
-        value={selectedParentId}
-      >
-        <option key={`option-placeholder-${id}`} value={undefined}>
-          {parent.placeholder}
-        </option>
-        {parent.list.map((opt) => {
+        htmlFor={autoCompleteId}
+        uiSchema={uiSchema}
+      />
+      <Autocomplete
+        id={autoCompleteId}
+        options={schema.anyOf}
+        defaultValue={getSelected()}
+        value={getSelected()}
+        onChange={handleChange}
+        isOptionEqualToValue={(option) =>
+          props.value ? option.value === props.value : true
+        }
+        getOptionLabel={(option) => (option ? option.title : "")}
+        sx={{
+          border: "2px solid #606060",
+          borderRadius: "0.25em",
+          marginTop: "0.2em",
+          "&.Mui-focused": {
+            outlineStyle: "solid",
+            outlineWidth: "4px",
+            outlineColor: "#3B99FC",
+            outlineOffset: "1px",
+          },
+        }}
+        popupIcon={<KeyboardArrowDownIcon />}
+        renderInput={(params) => {
           return (
-            <option key={opt.rowId} value={opt.rowId}>
-              {opt[parent.displayField]}
-            </option>
+            <TextField
+              {...params}
+              placeholder={placeholder}
+              variant="standard"
+              InputProps={{ ...params.InputProps, disableUnderline: true }}
+              sx={{
+                padding: "5px",
+                marginLeft: "2px",
+              }}
+            />
           );
-        })}
-      </Dropdown>
+        }}
+      />
 
-      <label htmlFor={`select-child-dropdown-${id}`}>{child.label}</label>
-      <Dropdown
-        id={`select-child-dropdown-${id}`}
-        onChange={(e) => onChange(parseInt(e.target.value) || undefined)}
-        size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
-        required={required}
-        value={value}
-      >
-        <option key={`option-placeholder-${id}`} value={undefined}>
-          {child.placeholder}
-        </option>
-        {childOptions.map((opt) => {
-          return (
-            <option key={opt.rowId} value={opt.rowId}>
-              {opt[child.displayField]}
-            </option>
-          );
-        })}
-      </Dropdown>
-      <style jsx global>
+      <style jsx>
         {`
-          :global(input) {
-            width: 100%;
-          }
-          .pg-select-wrapper {
-            padding: 9px 2px 9px 2px;
-            margin-bottom: 5px;
-            margin-top: 2px;
-          }
-          .pg-select-input {
-            color: #585555;
+          .money:focus {
+            outline-style: solid;
+            outline-width: 4px;
+            outline-color: #3b99fc;
+            outline-offset: 1px;
           }
         `}
       </style>
@@ -103,4 +86,4 @@ const SelectParentWidget: React.FunctionComponent<
   );
 };
 
-export default SelectParentWidget;
+export default SearchDropdownWidget;
