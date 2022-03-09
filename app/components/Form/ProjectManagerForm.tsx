@@ -222,50 +222,46 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <>
-      <React.Fragment key={change.projectManagerLabel.id}>
-        <Grid.Row>
-          <FieldLabel
-            label={change.projectManagerLabel.label}
-            required={false}
-            htmlFor={change.projectManagerLabel.id}
+    <React.Fragment key={change.projectManagerLabel.id}>
+      <Grid.Row>
+        <FieldLabel
+          label={change.projectManagerLabel.label}
+          required={false}
+          htmlFor={change.projectManagerLabel.id}
+          uiSchema={uiSchema}
+        />
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Col span={6}>
+          <FormBase
+            id={`form-manager-${change.projectManagerLabel.label}`}
+            idPrefix={`form-${change.projectManagerLabel.id}`}
+            ref={(el) => (formRefs.current[change.projectManagerLabel.id] = el)}
+            formData={change.formChange?.newFormData}
+            onChange={(data) => {
+              createOrUpdateFormChange(
+                change.formChange?.id,
+                change.projectManagerLabel.rowId,
+                data.formData
+              );
+            }}
+            schema={managerSchema}
             uiSchema={uiSchema}
+            ObjectFieldTemplate={EmptyObjectFieldTemplate}
           />
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Col span={6}>
-            <FormBase
-              id={`form-manager-${change.projectManagerLabel.label}`}
-              idPrefix={`form-${change.projectManagerLabel.id}`}
-              ref={(el) =>
-                (formRefs.current[change.projectManagerLabel.id] = el)
-              }
-              formData={change.formChange?.newFormData}
-              onChange={(data) => {
-                createOrUpdateFormChange(
-                  change.formChange?.id,
-                  change.projectManagerLabel.rowId,
-                  data.formData
-                );
-              }}
-              schema={managerSchema}
-              uiSchema={uiSchema}
-              ObjectFieldTemplate={EmptyObjectFieldTemplate}
-            />
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Button
-              disabled={discardInFlight || !change.formChange?.id}
-              variant="secondary"
-              size="small"
-              onClick={() => deleteManager(change.formChange?.id)}
-            >
-              Clear
-            </Button>
-          </Grid.Col>
-        </Grid.Row>
-      </React.Fragment>
-    </>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Button
+            disabled={discardInFlight || !change.formChange?.id}
+            variant="secondary"
+            size="small"
+            onClick={() => deleteManager(change.formChange?.id)}
+          >
+            Clear
+          </Button>
+        </Grid.Col>
+      </Grid.Row>
+    </React.Fragment>
   );
 };
 
