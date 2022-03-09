@@ -1,5 +1,5 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import React, { useMemo, MutableRefObject } from "react";
+import { useMemo, MutableRefObject } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_managerFormChange$key } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
 import { ProjectManagerForm_query$key } from "__generated__/ProjectManagerForm_query.graphql";
