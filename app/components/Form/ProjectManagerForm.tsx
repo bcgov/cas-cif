@@ -2,6 +2,7 @@ import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import React, { useMemo, MutableRefObject } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerForm_managerFormChange$key } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
+import { ProjectManagerForm_query$key } from "__generated__/ProjectManagerFormG_query.graphql";
 import FormBase from "./FormBase";
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import FormComponentProps from "./Interfaces/FormComponentProps";
@@ -16,15 +17,7 @@ import FieldLabel from "lib/theme/widgets/FieldLabel";
 
 interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
-  allCifUsers: {
-    edges: ReadonlyArray<{
-      readonly node: {
-        readonly rowId: number;
-        readonly firstName: string | null;
-        readonly lastName: string | null;
-      };
-    }>;
-  };
+  query: ProjectManagerForm_query$key;
   projectId: number;
   projectRevisionId: string;
   projectRevisionRowId: number;
@@ -45,12 +38,29 @@ const uiSchema = {
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
   const {
-    allCifUsers,
+    query,
     projectId,
     projectRevisionId,
     projectRevisionRowId,
     formRefs,
   } = props;
+
+  const { allCifUsers } = useFragment(
+    graphql`
+      fragment ProjectManagerForm_query on Query {
+        allCifUsers {
+          edges {
+            node {
+              rowId
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    `,
+    query
+  );
 
   const change = useFragment(
     graphql`

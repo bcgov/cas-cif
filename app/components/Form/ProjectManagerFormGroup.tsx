@@ -16,18 +16,10 @@ interface Props extends ValidatingFormProps {
 
 const ProjectManagerFormGroup: React.FC<Props> = (props) => {
   const formRefs = useRef({});
-  const { allCifUsers } = useFragment(
+  const query = useFragment(
     graphql`
       fragment ProjectManagerFormGroup_query on Query {
-        allCifUsers {
-          edges {
-            node {
-              rowId
-              firstName
-              lastName
-            }
-          }
-        }
+        ...ProjectManagerForm_query
       }
     `,
     props.query
@@ -66,7 +58,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
   });
 
   return (
-    <>
+    <div>
       <Grid cols={10} align="center">
         <Grid.Row>
           <Grid.Col span={10}>
@@ -75,7 +67,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
                 <ProjectManagerForm
                   key={node.projectManagerLabel.id}
                   managerFormChange={node}
-                  allCifUsers={allCifUsers}
+                  query={query}
                   projectId={projectRevision.projectFormChange.formDataRecordId}
                   projectRevisionId={projectRevision.id}
                   projectRevisionRowId={projectRevision.rowId}
@@ -87,17 +79,17 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         </Grid.Row>
       </Grid>
       <style jsx>{`
-        :global(button.pg-button) {
+        div :global(button.pg-button) {
           margin-left: 0.4em;
           margin-right: 0em;
         }
-        :global(.right-aligned-column) {
+        div :global(.right-aligned-column) {
           display: flex;
           justify-content: flex-end;
           align-items: flex-start;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 
