@@ -222,7 +222,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <React.Fragment key={change.projectManagerLabel.id}>
+    <>
       <Grid.Row>
         <FieldLabel
           label={change.projectManagerLabel.label}
@@ -261,7 +261,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           </Button>
         </Grid.Col>
       </Grid.Row>
-    </React.Fragment>
+    </>
   );
 };
 
