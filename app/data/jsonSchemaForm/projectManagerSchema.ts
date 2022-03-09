@@ -2,7 +2,6 @@ const projectManagerSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Project Manager",
-  required: ["cifUserId"],
   properties: {
     cifUserId: {
       type: "number",
