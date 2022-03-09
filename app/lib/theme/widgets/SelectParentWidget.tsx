@@ -95,7 +95,7 @@ const SelectParentWidget: React.FunctionComponent<
             margin-top: 2px;
           }
           .pg-select-input {
-            color: #8e8e8e;
+            color: #585555;
           }
         `}
       </style>
