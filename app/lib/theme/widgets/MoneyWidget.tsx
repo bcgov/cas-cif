@@ -13,7 +13,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
   uiSchema,
 }) => {
   return (
-    <>
+    <div>
       <FieldLabel
         label={label}
         required={required}
@@ -39,9 +39,9 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           padding: "0.5em",
         }}
       />
-      <style jsx global>
+      <style jsx>
         {`
-          .money:focus {
+          div :global(.money:focus) {
             outline-style: solid;
             outline-width: 4px;
             outline-color: #3b99fc;
@@ -49,7 +49,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           }
         `}
       </style>
-    </>
+    </div>
   );
 };
 

@@ -45,7 +45,7 @@ const SelectProjectStatus: React.FunctionComponent<WidgetProps> = (props) => {
   }, [allFundingStreamRfpProjectStatuses, fundingStreamRfpId]);
 
   return (
-    <>
+    <div>
       <label htmlFor={id}>{label}</label>
       <Dropdown
         id={id}
@@ -68,12 +68,17 @@ const SelectProjectStatus: React.FunctionComponent<WidgetProps> = (props) => {
       </Dropdown>
       <style jsx>
         {`
-          :global(input) {
+          div :global(input) {
             width: 100%;
+          }
+          div :global(.pg-select-wrapper) {
+            padding: 9px 20px 9px 2px;
+            margin-bottom: 5px;
+            margin-top: 2px;
           }
         `}
       </style>
-    </>
+    </div>
   );
 };
 

@@ -55,7 +55,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
             outlineOffset: "1px",
           },
         }}
-        popupIcon={<KeyboardArrowDownIcon />}
+        popupIcon={<KeyboardArrowDownIcon style={{ color: "black" }} />}
         renderInput={(params) => {
           return (
             <TextField
@@ -65,23 +65,12 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
               InputProps={{ ...params.InputProps, disableUnderline: true }}
               sx={{
                 padding: "5px",
-                marginLeft: "2px",
+                background: "white",
               }}
             />
           );
         }}
       />
-
-      <style jsx>
-        {`
-          .money:focus {
-            outline-style: solid;
-            outline-width: 4px;
-            outline-color: #3b99fc;
-            outline-offset: 1px;
-          }
-        `}
-      </style>
     </>
   );
 };
