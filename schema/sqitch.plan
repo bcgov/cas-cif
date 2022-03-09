@@ -28,6 +28,7 @@ tables/funding_stream 2021-12-01T05:19:11Z Alex Zorkin <alex@bigthink.io> # addi
 tables/funding_stream_rfp 2021-12-15T00:47:25Z Alex Zorkin <alex@bigthink.io> # add funding stream rfp table
 tables/project_status 2021-12-21T21:19:31Z Alex Zorkin <alex@bigthink.io> # creating project_status table
 tables/funding_stream_rfp_project_status 2022-01-12T20:47:40Z Alex Zorkin <alex@bigthink.io> # adding cross table between funding_stream_rfp and project_status
+trigger_functions/operator_swrs_organisation_is_immutable 2022-02-17T21:46:04Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # swrs_operation_id column is immutable on the operator table
 tables/operator [schemas/main] 2021-11-30T22:34:14Z Dylan Leard <dylan@button.is> # Create the cif.operator table
 tables/project [tables/operator trigger_functions/set_project_long_id] 2021-11-04T20:34:23Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Create the project table
 util_functions/camel_to_snake_case 2021-12-11T00:37:54Z Matthieu Foucault <matthieu@button.is> # Add cif_private.camel_to_snake_case
@@ -58,3 +59,4 @@ computed_columns/project_revision_project_manager_form_change [tables/project_re
 types/manager_form_changes_by_label_composite_return [schemas/main] 2022-02-18T20:58:37Z Dylan Leard <dylan@button.is> # Add custom composite return type for computed column project_revision_project_manager_form_changes_by_label
 computed_columns/project_revision_project_manager_form_changes_by_label [tables/project_revision tables/project_manager] 2022-02-18T21:32:45Z Dylan Leard <pierre.bastianelli@gov.bc.ca> # Computed column to retrieve the set of form changes related to the project manager association by project_manager_label, within a project revision
 computed_columns/project_pending_project_revision 2022-02-16T17:14:03Z Matthieu Foucault <matthieu@button.is> # add a computed column to return a pending revision for a project
+computed_columns/operator_pending_form_change 2022-02-16T21:48:38Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A computed column returning a potential existing form change for an operator, scoped by the current user

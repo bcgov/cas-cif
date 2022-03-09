@@ -33,4 +33,40 @@ describe("the operators page", () => {
     cy.get("thead th").contains("Operator Legal Name").click();
     cy.contains("third operator legal name");
   });
+
+  it("allows an operator to be edited", () => {
+    cy.visit("/cif/operators");
+    cy.get("button").contains("View").click();
+    cy.contains("Operator Information");
+    cy.get("body").happoScreenshot({
+      component: "Operator View Page",
+    });
+    cy.contains("first operator legal name");
+    cy.contains("first operator trade name");
+    cy.contains("ABCD");
+    cy.get("button").contains("Edit").click();
+    cy.contains("Edit Operator");
+    cy.get("body").happoScreenshot({
+      component: "Operator Edit Page",
+    });
+    cy.get("input[aria-label='Legal Name']").should(
+      "have.value",
+      "first operator legal name"
+    );
+    cy.get("input[aria-label='Trade Name']").should(
+      "have.value",
+      "first operator trade name"
+    );
+    cy.get("input[aria-label='BC Registry ID (optional)']").should(
+      "have.value",
+      "AB1234567"
+    );
+    cy.get("input[aria-label='Operator Code (optional)']").should(
+      "have.value",
+      "ABCD"
+    );
+    cy.get("input[aria-label='Trade Name']").clear().type("Updated");
+    cy.get("button").contains("Submit").click();
+    cy.get("table").contains("Updated");
+  });
 });

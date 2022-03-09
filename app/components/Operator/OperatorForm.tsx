@@ -1,21 +1,12 @@
 import { Button } from "@button-inc/bcgov-theme";
 import FormBase from "components/Form/FormBase";
-import contactSchema from "data/jsonSchemaForm/contactSchema";
+import operatorSchema from "data/jsonSchemaForm/operatorSchema";
 import { JSONSchema7 } from "json-schema";
 import { FormPageFactoryComponentProps } from "lib/pages/relayFormPageFactory";
 
-const uiSchema = {
-  comments: { "ui:widget": "TextAreaWidget" },
-  phone: { "ui:widget": "PhoneNumberWidget" },
-};
-
-const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
+const OperatorForm: React.FC<FormPageFactoryComponentProps> = (props) => {
   return (
-    <FormBase
-      {...props}
-      schema={contactSchema as JSONSchema7}
-      uiSchema={uiSchema}
-    >
+    <FormBase {...props} schema={operatorSchema as JSONSchema7} uiSchema={{}}>
       <Button type="submit" style={{ marginRight: "1rem" }}>
         Submit
       </Button>
@@ -26,4 +17,4 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
   );
 };
 
-export default ContactForm;
+export default OperatorForm;

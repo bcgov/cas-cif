@@ -16,6 +16,12 @@ create table cif.operator(
 
 select cif_private.upsert_timestamp_columns('cif', 'operator');
 
+create trigger swrs_organisation_id_is_immutable
+  before update of swrs_organisation_id on cif.operator
+  for each row
+  when (new.swrs_organisation_id <> old.swrs_organisation_id)
+  execute procedure cif_private.operator_swrs_organisation_is_immutable();
+
 do
 $grant$
 begin
