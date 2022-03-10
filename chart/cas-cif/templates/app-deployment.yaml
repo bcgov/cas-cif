@@ -106,6 +106,10 @@ spec:
             value: {{ .Values.app.sitewide_notice.content | quote }}
           - name: HOST
             value: http{{ if index .Values "nginx-sidecar" "sslTermination" }}s{{ end }}://{{ index .Values "nginx-sidecar" "hostName" }}
+          - name: SENTRY_ENVIRONMENT
+            value: {{ include "cas-cif.namespaceSuffix" . }}
+          - name: SENTRY_RELEASE
+            value: {{ .Values.image.app.tag }}
           - name: NAMESPACE
             valueFrom:
               fieldRef:
