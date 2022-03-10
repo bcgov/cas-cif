@@ -4,7 +4,11 @@ import {
 } from "mutations/FormChange/deleteFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { PayloadError } from "relay-runtime";
-import { deleteFormChangeMutation$data } from "__generated__/deleteFormChangeMutation.graphql";
+import {
+  deleteFormChangeMutation$data,
+  deleteFormChangeMutation$variables,
+} from "__generated__/deleteFormChangeMutation.graphql";
+import { deleteFormChangeWithConnectionMutation$variables } from "__generated__/deleteFormChangeWithConnectionMutation.graphql";
 import { updateFormChangeMutation$data } from "__generated__/updateFormChangeMutation.graphql";
 
 interface DiscardFormChangeOptions {
@@ -41,16 +45,16 @@ const useDiscardFormChange = (
   const discardFormChange = (options: DiscardFormChangeOptions) => {
     const { formChange, onCompleted, onError } = options;
     if (formChange.operation === "CREATE") {
-      deleteFormChange({
-        variables: {
-          input: {
-            id: formChange.id,
-          },
-          connections: connectionId ? [connectionId] : undefined,
+      const variables:
+        | deleteFormChangeMutation$variables
+        | deleteFormChangeWithConnectionMutation$variables = {
+        input: {
+          id: formChange.id,
         },
-        onCompleted,
-        onError,
-      });
+        connections: connectionId ? [connectionId] : undefined,
+      };
+
+      deleteFormChange({ variables, onCompleted, onError });
     } else {
       updateFormChange({
         variables: {
