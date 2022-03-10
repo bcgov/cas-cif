@@ -221,11 +221,13 @@ describe("The ProjectContactForm", () => {
       optimisticResponse: {
         updateFormChange: {
           formChange: {
+            __typename: "FormChange",
             id: "Form ID 1",
             newFormData: {
               contactIndex: 1,
               projectId: 10,
             },
+            operation: "CREATE",
           },
         },
       },

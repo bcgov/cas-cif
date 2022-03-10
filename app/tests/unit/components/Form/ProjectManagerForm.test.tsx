@@ -256,11 +256,12 @@ describe("The ProjectManagerForm", () => {
 
     expect(deleteMutationSpy).toHaveBeenCalledWith({
       onError: expect.any(Function),
+      onCompleted: undefined,
       variables: {
+        connections: undefined,
         input: {
           id: "Change 2 ID",
         },
-        projectRevision: "Test Revision ID",
       },
     });
   });
@@ -291,6 +292,7 @@ describe("The ProjectManagerForm", () => {
           formChange: {
             id: "Change 3 ID",
             newFormData: {},
+            operation: "ARCHIVE",
           },
         },
       },

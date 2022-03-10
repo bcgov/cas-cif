@@ -46,7 +46,7 @@ const useDiscardFormChange = (
           input: {
             id: formChange.id,
           },
-          connections: [connectionId],
+          connections: connectionId ? [connectionId] : undefined,
         },
         onCompleted,
         onError,
