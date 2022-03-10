@@ -26781,7 +26781,7 @@ type ProjectManager implements Node {
   """
   Foreign key to the project_manager_label table. Defines the list of labels that cif_users can be assigned to as a manager of a project
   """
-  projectManagerLabelId: Int
+  projectManagerLabelId: Int!
 
   """Unique ID for the project manager record"""
   rowId: Int!
@@ -26889,9 +26889,6 @@ input ProjectManagerFilter {
   """
   projectManagerLabelByProjectManagerLabelId: ProjectManagerLabelFilter
 
-  """A related `projectManagerLabelByProjectManagerLabelId` exists."""
-  projectManagerLabelByProjectManagerLabelIdExists: Boolean
-
   """Filter by the object’s `projectManagerLabelId` field."""
   projectManagerLabelId: IntFilter
 
@@ -26928,7 +26925,7 @@ input ProjectManagerInput {
   """
   Foreign key to the project_manager_label table. Defines the list of labels that cif_users can be assigned to as a manager of a project
   """
-  projectManagerLabelId: Int
+  projectManagerLabelId: Int!
 
   """updated at timestamp"""
   updatedAt: Datetime

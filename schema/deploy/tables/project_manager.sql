@@ -6,7 +6,7 @@ create table cif.project_manager (
   id integer primary key generated always as identity,
   project_id integer not null references cif.project(id),
   cif_user_id integer not null references cif.cif_user(id),
-  project_manager_label_id not null integer references cif.project_manager_label(id)
+  project_manager_label_id integer not null references cif.project_manager_label(id)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project_manager');

@@ -91665,9 +91665,13 @@
               "description": "Foreign key to the project_manager_label table. Defines the list of labels that cif_users can be assigned to as a manager of a project",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -92042,16 +92046,6 @@
               "defaultValue": null
             },
             {
-              "name": "projectManagerLabelByProjectManagerLabelIdExists",
-              "description": "A related `projectManagerLabelByProjectManagerLabelId` exists.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "projectManagerLabelId",
               "description": "Filter by the object’s `projectManagerLabelId` field.",
               "type": {
@@ -92174,9 +92168,13 @@
               "name": "projectManagerLabelId",
               "description": "Foreign key to the project_manager_label table. Defines the list of labels that cif_users can be assigned to as a manager of a project",
               "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
