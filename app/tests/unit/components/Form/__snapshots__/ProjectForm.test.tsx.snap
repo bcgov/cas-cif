@@ -26,123 +26,69 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
-                <label
-                  class="jsx-2369701424"
-                  for="root_rfpNumber"
-                >
-                  RFP Number
-                </label>
-                <small
-                  class="jsx-2369701424"
-                >
-                   (year - RFP - stream id - random digits - operator code)
-                </small>
                 <div
-                  class="sc-jRQBWg cDwDrH pg-grid-container"
+                  class="jsx-3921837838"
                 >
+                  <label
+                    class="jsx-3921837838"
+                    for="select-parent-dropdown-root_fundingStreamRfpId"
+                  >
+                    Funding Stream
+                  </label>
                   <div
-                    class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
-                    style="align-items: center;"
+                    class="sc-fKVqWL fMZYBT pg-select"
                   >
-                    (YEAR)
-                     - RFP - 
-                    (STREAM ID)
-                     - 
-                    <span
-                      class="jsx-2369701424 random-digits"
+                    <div
+                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
                     >
-                      <div
-                        class="sc-crHmcD bKATQK pg-input"
+                      <select
+                        aria-label="select-parent-dropdown-root_fundingStreamRfpId-select"
+                        class="sc-cxpSdN bpSVUb pg-select-input"
+                        id="select-parent-dropdown-root_fundingStreamRfpId"
+                        name="select-parent-dropdown-root_fundingStreamRfpId-select"
+                        required=""
                       >
-                        <input
-                          aria-label="root_rfpNumber-input"
-                          class="sc-bqiRlB hrAFNs pg-input-input"
-                          id="root_rfpNumber"
-                          name="root_rfpNumber-input"
-                          placeholder="123"
-                          required=""
-                          value=""
-                        />
-                      </div>
-                    </span>
-                     - 
-                    (OPERATOR CODE)
+                        <option
+                          class="jsx-3921837838"
+                        >
+                          Select a Funding Stream
+                        </option>
+                        <option
+                          class="jsx-3921837838"
+                          value="42"
+                        >
+                          &lt;mock-value-for-field-"description"&gt;
+                        </option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div
-                  class="jsx-3883368021 error-div"
-                />
-              </div>
-              <div
-                class="jsx-3883368021"
-              >
-                <div
-                  class="sc-crHmcD bKATQK pg-input"
-                >
                   <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_projectName"
+                    class="jsx-3921837838"
+                    for="select-child-dropdown-root_fundingStreamRfpId"
                   >
-                    Project Name
+                    Funding Stream RFP
                   </label>
-                  <input
-                    aria-label="Project Name"
-                    class="sc-bqiRlB hrAFNs pg-input-input"
-                    id="root_projectName"
-                    name="root_projectName-input"
-                    placeholder="Short project name"
-                    required=""
-                    value=""
-                  />
-                </div>
-                <div
-                  class="jsx-3883368021 error-div"
-                />
-              </div>
-              <div
-                class="jsx-3883368021"
-              >
-                <div
-                  class="jsx-2176156591"
-                >
-                  <label
-                    for="root_totalFundingRequest"
+                  <div
+                    class="sc-fKVqWL fMZYBT pg-select"
                   >
-                    Total Funding Request
-                  </label>
-                  <input
-                    class="money"
-                    id="root_totalFundingRequest"
-                    inputmode="numeric"
-                    style="border: 2px solid #606060; border-radius: 0.25em; padding: 0.5em;"
-                    type="text"
-                    value=""
-                  />
-                </div>
-                <div
-                  class="jsx-3883368021 error-div"
-                />
-              </div>
-              <div
-                class="jsx-3883368021"
-              >
-                <div
-                  class="sc-fFeiMQ jpQRmF pg-textarea"
-                >
-                  <label
-                    class="sc-bkkeKt joEfKW pg-textarea-label"
-                    for="root_summary"
-                  >
-                    Summary
-                  </label>
-                  <textarea
-                    aria-label="Summary"
-                    class="sc-ieecCq fCLtjf pg-textarea-input"
-                    id="root_summary"
-                    name="root_summary-textarea"
-                    placeholder=""
-                    required=""
-                  />
+                    <div
+                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
+                    >
+                      <select
+                        aria-label="select-child-dropdown-root_fundingStreamRfpId-select"
+                        class="sc-cxpSdN bpSVUb pg-select-input"
+                        id="select-child-dropdown-root_fundingStreamRfpId"
+                        name="select-child-dropdown-root_fundingStreamRfpId-select"
+                        required=""
+                      >
+                        <option
+                          class="jsx-3921837838"
+                        >
+                          Select a Funding Stream RFP Year
+                        </option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div
                   class="jsx-3883368021 error-div"
@@ -231,69 +177,123 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  class="jsx-2369701424"
+                  for="root_rfpNumber"
+                >
+                  RFP Number
+                </label>
+                <small
+                  class="jsx-2369701424"
+                >
+                   (year - RFP - stream id - random digits - operator code)
+                </small>
                 <div
-                  class="jsx-3921837838"
+                  class="sc-jRQBWg cDwDrH pg-grid-container"
+                >
+                  <div
+                    class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+                    style="align-items: center;"
+                  >
+                    (YEAR)
+                     - RFP - 
+                    (STREAM ID)
+                     - 
+                    <span
+                      class="jsx-2369701424 random-digits"
+                    >
+                      <div
+                        class="sc-crHmcD bKATQK pg-input"
+                      >
+                        <input
+                          aria-label="root_rfpNumber-input"
+                          class="sc-bqiRlB hrAFNs pg-input-input"
+                          id="root_rfpNumber"
+                          name="root_rfpNumber-input"
+                          placeholder="123"
+                          required=""
+                          value=""
+                        />
+                      </div>
+                    </span>
+                     - 
+                    (OPERATOR CODE)
+                  </div>
+                </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
+              </div>
+              <div
+                class="jsx-3883368021"
+              >
+                <div
+                  class="sc-crHmcD bKATQK pg-input"
                 >
                   <label
-                    class="jsx-3921837838"
-                    for="select-parent-dropdown-root_fundingStreamRfpId"
+                    class="sc-egiyK ewKLoj pg-input-label"
+                    for="root_projectName"
                   >
-                    Funding Stream
+                    Project Name
                   </label>
-                  <div
-                    class="sc-fKVqWL fMZYBT pg-select"
-                  >
-                    <div
-                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
-                    >
-                      <select
-                        aria-label="select-parent-dropdown-root_fundingStreamRfpId-select"
-                        class="sc-cxpSdN bpSVUb pg-select-input"
-                        id="select-parent-dropdown-root_fundingStreamRfpId"
-                        name="select-parent-dropdown-root_fundingStreamRfpId-select"
-                        required=""
-                      >
-                        <option
-                          class="jsx-3921837838"
-                        >
-                          Select a Funding Stream
-                        </option>
-                        <option
-                          class="jsx-3921837838"
-                          value="42"
-                        >
-                          &lt;mock-value-for-field-"description"&gt;
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+                  <input
+                    aria-label="Project Name"
+                    class="sc-bqiRlB hrAFNs pg-input-input"
+                    id="root_projectName"
+                    name="root_projectName-input"
+                    placeholder="Short project name"
+                    required=""
+                    value=""
+                  />
+                </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
+              </div>
+              <div
+                class="jsx-3883368021"
+              >
+                <div
+                  class="sc-fFeiMQ jpQRmF pg-textarea"
+                >
                   <label
-                    class="jsx-3921837838"
-                    for="select-child-dropdown-root_fundingStreamRfpId"
+                    class="sc-bkkeKt joEfKW pg-textarea-label"
+                    for="root_summary"
                   >
-                    Funding Stream RFP
+                    Summary
                   </label>
-                  <div
-                    class="sc-fKVqWL fMZYBT pg-select"
+                  <textarea
+                    aria-label="Summary"
+                    class="sc-ieecCq fCLtjf pg-textarea-input"
+                    id="root_summary"
+                    name="root_summary-textarea"
+                    placeholder=""
+                    required=""
+                  />
+                </div>
+                <div
+                  class="jsx-3883368021 error-div"
+                />
+              </div>
+              <div
+                class="jsx-3883368021"
+              >
+                <div
+                  class="jsx-2176156591"
+                >
+                  <label
+                    for="root_totalFundingRequest"
                   >
-                    <div
-                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
-                    >
-                      <select
-                        aria-label="select-child-dropdown-root_fundingStreamRfpId-select"
-                        class="sc-cxpSdN bpSVUb pg-select-input"
-                        id="select-child-dropdown-root_fundingStreamRfpId"
-                        name="select-child-dropdown-root_fundingStreamRfpId-select"
-                        required=""
-                      >
-                        <option
-                          class="jsx-3921837838"
-                        >
-                          Select a Funding Stream RFP Year
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+                    Total Funding Request
+                  </label>
+                  <input
+                    class="money"
+                    id="root_totalFundingRequest"
+                    inputmode="numeric"
+                    style="border: 2px solid #606060; border-radius: 0.25em; padding: 0.5em;"
+                    type="text"
+                    value=""
+                  />
                 </div>
                 <div
                   class="jsx-3883368021 error-div"
