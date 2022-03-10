@@ -105,9 +105,9 @@ export function ProjectViewPage({
 
   return (
     <DefaultLayout session={session}>
-      {amendButton}
       <header>
         <h2>Project Details</h2>
+        {amendButton}
       </header>
       <dl>
         <dt>RFP Number</dt>
@@ -176,6 +176,10 @@ export function ProjectViewPage({
           display: flex;
           justify-content: space-between;
           align-items: start;
+        }
+
+        h2 {
+          padding-right: 10px;
         }
 
         .preformatted {
