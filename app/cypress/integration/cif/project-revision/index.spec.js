@@ -65,7 +65,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").last().should("contain", "Please enter a value");
   });
 
-  it.only("Allows to create and update a project", () => {
+  it("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
