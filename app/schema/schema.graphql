@@ -28338,7 +28338,7 @@ type ProjectRevision implements Node {
   ): FormChangesConnection!
 
   """
-  Computed column for graphql to retrieve the change related to the project manager association, within a project revision
+  Computed column for graphql to retrieve the change related to the project record, within a project revision
   """
   projectFormChange: FormChange
 

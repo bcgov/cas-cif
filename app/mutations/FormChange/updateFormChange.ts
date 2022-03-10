@@ -16,6 +16,7 @@ const mutation = graphql`
         operation
         projectRevisionByProjectRevisionId {
           ...ProjectContactForm_projectRevision
+          ...ProjectManagerFormGroup_revision
         }
       }
     }

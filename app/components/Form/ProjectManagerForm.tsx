@@ -10,8 +10,7 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import { Button } from "@button-inc/bcgov-theme";
 import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevision";
 import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
-import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
-import useDebouncedMutation from "mutations/useDebouncedMutation";
+import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FieldLabel from "lib/theme/widgets/FieldLabel";
 
@@ -133,9 +132,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     });
   };
 
-  const [applyUpdateFormChangeMutation] = useDebouncedMutation(
-    updateFormChangeMutation
-  );
+  const [applyUpdateFormChangeMutation] = useUpdateFormChange();
 
   // Delete a manager from the project revision
   const [discardFormChange, discardInFlight] =
@@ -221,21 +218,21 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     }
   };
 
+  const formIdPrefix = `form-${change.projectManagerLabel.id}`;
+
   return (
     <>
       <Grid.Row>
         <FieldLabel
           label={change.projectManagerLabel.label}
           required={false}
-          htmlFor={change.projectManagerLabel.id}
+          htmlFor={`${formIdPrefix}_cifUserId`}
           uiSchema={uiSchema}
         />
-      </Grid.Row>
-      <Grid.Row>
         <Grid.Col span={6}>
           <FormBase
             id={`form-manager-${change.projectManagerLabel.label}`}
-            idPrefix={`form-${change.projectManagerLabel.id}`}
+            idPrefix={formIdPrefix}
             ref={(el) => (formRefs.current[change.projectManagerLabel.id] = el)}
             formData={change.formChange?.newFormData}
             onChange={(data) => {
