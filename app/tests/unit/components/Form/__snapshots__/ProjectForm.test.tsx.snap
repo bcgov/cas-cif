@@ -98,7 +98,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                 class="jsx-3883368021"
               >
                 <label
-                  for="search-dropdown-root_operatorId"
+                  for="root_operatorId"
                 >
                   Legal Operator Name and BC Registry ID
                 </label>

@@ -3,7 +3,7 @@
 exports[`The SearchDropdown Widget Matches the snapshot with a default value set 1`] = `
 <div>
   <label
-    for="search-dropdown-1"
+    for="1"
   >
     Search (optional)
   </label>
@@ -88,7 +88,7 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
 exports[`The SearchDropdown Widget Matches the snapshot with no default value set 1`] = `
 <div>
   <label
-    for="search-dropdown-1"
+    for="1"
   >
     Search (optional)
   </label>
