@@ -41,6 +41,9 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
       />
       <style jsx>
         {`
+          div :global(input) {
+            width: 100%;
+          }
           div :global(.money:focus) {
             outline-style: solid;
             outline-width: 4px;
