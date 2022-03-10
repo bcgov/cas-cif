@@ -38,6 +38,7 @@ const defaultMockResolver = {
           { node: { id: "2", legalName: "Operator 2" } },
         ],
       },
+      pendingNewOperatorFormChange: null,
     };
   },
 };
@@ -87,10 +88,26 @@ describe("The operators page", () => {
     expect(screen.getByText(/Operator 2/i)).toBeInTheDocument();
   });
 
-  it("loads the Add a Operator Button", () => {
+  it("displays the Add a Operator Button", () => {
     loadOperatorsQuery();
     renderOperators();
 
     expect(screen.getByText(/Add an Operator/i)).toBeInTheDocument();
+  });
+
+  it("displays the Resume Operator Creation button if there is an existing form_change", () => {
+    loadOperatorsQuery({
+      Query() {
+        return {
+          ...defaultMockResolver.Query(),
+          pendingNewOperatorFormChange: {
+            id: "abcde",
+          },
+        };
+      },
+    });
+    renderOperators();
+
+    expect(screen.getByText(/Resume Operator Creation/i)).toBeInTheDocument();
   });
 });

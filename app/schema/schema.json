@@ -107846,9 +107846,24 @@
               "deprecationReason": null
             },
             {
-              "name": "pendingNewContactFormChange",
-              "description": "returns a form_change for a new contact in the pending state for the current user, i.e. allows to resume a contact creation",
-              "args": [],
+              "name": "pendingNewFormChangeForTable",
+              "description": "returns a form_change for a table in the pending state for the current user, i.e. allows to resume the creation of any table row",
+              "args": [
+                {
+                  "name": "tableName",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "FormChange",

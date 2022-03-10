@@ -31181,9 +31181,9 @@ type Query implements Node {
   operatorBySwrsOrganisationId(swrsOrganisationId: Int!): Operator
 
   """
-  returns a form_change for a new contact in the pending state for the current user, i.e. allows to resume a contact creation
+  returns a form_change for a table in the pending state for the current user, i.e. allows to resume the creation of any table row
   """
-  pendingNewContactFormChange: FormChange
+  pendingNewFormChangeForTable(tableName: String!): FormChange
 
   """
   returns a project_revision for a new project in the pending state for the current user, i.e. allows to resume a project creation

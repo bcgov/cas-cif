@@ -34,6 +34,26 @@ describe("the operators page", () => {
     cy.contains("third operator legal name");
   });
 
+  it("allows an operator to be created and then discarded", () => {
+    cy.visit("/cif/operators");
+    cy.get("button").contains("Add an Operator").click();
+
+    cy.get("input[aria-label='Legal Name']").type("Abc");
+    cy.get("input[aria-label='Trade Name']").type("Def");
+    cy.contains("Changes saved.");
+    cy.get("button").contains("Submit").click();
+    cy.get("table").contains("Abc");
+
+    cy.get("button").contains("Add an Operator").click();
+    cy.get("h2").contains("New Operator");
+    cy.visit("/cif/operators");
+    cy.get("button").contains("Resume Operator Creation").click();
+    cy.contains("Changes saved.");
+    cy.get("button").contains("Discard Changes").click();
+    cy.contains("CIF Operators");
+    cy.get("button").contains("Add an Operator");
+  });
+
   it("allows an operator to be edited", () => {
     cy.visit("/cif/operators");
     cy.get("button").contains("View").click();

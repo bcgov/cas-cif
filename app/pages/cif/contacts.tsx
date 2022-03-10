@@ -43,7 +43,9 @@ const pageQuery = graphql`
         }
       }
     }
-    pendingNewContactFormChange {
+    pendingNewContactFormChange: pendingNewFormChangeForTable(
+      tableName: "contact"
+    ) {
       id
     }
   }
