@@ -12,6 +12,7 @@ interface Props {
   children?: React.ReactNode;
   title?: string;
   userProfileComponent?: React.ReactNode;
+  hideLoginButton?: boolean;
 }
 
 const DEFAULT_MOBILE_BREAK_POINT = "900";
@@ -20,12 +21,15 @@ const Navigation: React.FC<Props> = ({
   isLoggedIn = false,
   title = "CleanBC Industry Fund",
   userProfileComponent,
+  hideLoginButton,
 }) => {
   let rightSide = isLoggedIn ? (
     <>
       {userProfileComponent}
       <LogoutForm />
     </>
+  ) : hideLoginButton ? (
+    <></>
   ) : (
     <LoginForm />
   );
