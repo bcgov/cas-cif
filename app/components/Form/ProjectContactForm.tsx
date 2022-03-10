@@ -8,7 +8,6 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
-import { useDeleteFormChangeWithConnection } from "mutations/FormChange/deleteFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
@@ -17,6 +16,7 @@ import {
   ProjectContactForm_projectRevision$key,
   FormChangeOperation,
 } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import useDiscardFormChange from "hooks/useDiscardFormChange";
 
 interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;
@@ -119,49 +119,21 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   }, [projectRevision]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
-  const [discardFormChange] = useDeleteFormChangeWithConnection();
   const [applyUpdateFormChangeMutation] = useUpdateFormChange();
+  const [discardFormChange] = useDiscardFormChange(
+    projectRevision.projectContactFormChanges.__id
+  );
 
   const deleteContact = (
     formChangeId: string,
     formChangeOperation: FormChangeOperation
   ) => {
-    if (formChangeOperation === "CREATE") {
-      discardFormChange({
-        variables: {
-          input: {
-            id: formChangeId,
-          },
-          connections: [projectRevision.projectContactFormChanges.__id],
-        },
-        onCompleted: () => {
-          delete formRefs.current[formChangeId];
-        },
-      });
-    } else {
-      applyUpdateFormChangeMutation({
-        variables: {
-          input: {
-            id: formChangeId,
-            formChangePatch: {
-              operation: "ARCHIVE",
-            },
-          },
-        },
-        optimisticResponse: {
-          updateFormChange: {
-            formChange: {
-              id: formChangeId,
-              operation: "ARCHIVE",
-            },
-          },
-        },
-        onCompleted: () => {
-          delete formRefs.current[formChangeId];
-        },
-        debounceKey: formChangeId,
-      });
-    }
+    discardFormChange({
+      formChange: { id: formChangeId, operation: formChangeOperation },
+      onCompleted: () => {
+        delete formRefs.current[formChangeId];
+      },
+    });
   };
 
   const updateFormChange = (
