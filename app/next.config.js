@@ -1,10 +1,11 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const dotenv = require("dotenv");
+const { withSentryConfig } = require("@sentry/nextjs");
 
 dotenv.config();
 
-module.exports = {
+const nextConfig = {
   cssModules: true,
   webpack: (config) => {
     const configWithPlugins = { ...config };
@@ -30,3 +31,9 @@ module.exports = {
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   },
 };
+
+const sentryWebpackPluginOptions = {
+  silent: true,
+};
+
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
