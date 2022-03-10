@@ -102,19 +102,23 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
-                <label
-                  for="root_totalFundingRequest"
+                <div
+                  class="jsx-2176156591"
                 >
-                  Total Funding Request
-                </label>
-                <input
-                  class="money"
-                  id="root_totalFundingRequest"
-                  inputmode="numeric"
-                  style="border: 2px solid #606060; border-radius: 0.25em; padding: 0.5em;"
-                  type="text"
-                  value=""
-                />
+                  <label
+                    for="root_totalFundingRequest"
+                  >
+                    Total Funding Request
+                  </label>
+                  <input
+                    class="money"
+                    id="root_totalFundingRequest"
+                    inputmode="numeric"
+                    style="border: 2px solid #606060; border-radius: 0.25em; padding: 0.5em;"
+                    type="text"
+                    value=""
+                  />
+                </div>
                 <div
                   class="jsx-3883368021 error-div"
                 />
@@ -154,21 +158,21 @@ exports[`The Project Form matches the snapshot 1`] = `
                 </label>
                 <div
                   aria-expanded="false"
-                  class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-symcig-MuiAutocomplete-root"
+                  class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-1nmd8s9-MuiAutocomplete-root"
                   role="combobox"
                 >
                   <div
-                    class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-wb57ya-MuiFormControl-root-MuiTextField-root"
+                    class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-d5w1v2-MuiFormControl-root-MuiTextField-root"
                   >
                     <div
-                      class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root"
+                      class="MuiInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-1pa58rh-MuiInputBase-root-MuiInput-root"
                     >
                       <input
                         aria-autocomplete="list"
                         aria-invalid="false"
                         autocapitalize="none"
                         autocomplete="off"
-                        class="MuiOutlinedInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
+                        class="MuiInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-1x51dt5-MuiInputBase-input-MuiInput-input"
                         id="search-dropdown-root_operatorId"
                         placeholder="Select an Operator"
                         spellcheck="false"
@@ -188,12 +192,13 @@ exports[`The Project Form matches the snapshot 1`] = `
                           <svg
                             aria-hidden="true"
                             class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
-                            data-testid="ArrowDropDownIcon"
+                            data-testid="KeyboardArrowDownIcon"
                             focusable="false"
+                            style="color: black;"
                             viewBox="0 0 24 24"
                           >
                             <path
-                              d="M7 10l5 5 5-5z"
+                              d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
                             />
                           </svg>
                           <span
@@ -201,20 +206,6 @@ exports[`The Project Form matches the snapshot 1`] = `
                           />
                         </button>
                       </div>
-                      <fieldset
-                        aria-hidden="true"
-                        class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
-                      >
-                        <legend
-                          class="css-nnbavb"
-                        >
-                          <span
-                            class="notranslate"
-                          >
-                            ​
-                          </span>
-                        </legend>
-                      </fieldset>
                     </div>
                   </div>
                 </div>
@@ -240,64 +231,68 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
-                <label
-                  class="jsx-3703916905"
-                  for="select-parent-dropdown-root_fundingStreamRfpId"
-                >
-                  Funding Stream
-                </label>
                 <div
-                  class="sc-fKVqWL fMZYBT pg-select"
+                  class="jsx-3921837838"
                 >
-                  <div
-                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
+                  <label
+                    class="jsx-3921837838"
+                    for="select-parent-dropdown-root_fundingStreamRfpId"
                   >
-                    <select
-                      aria-label="select-parent-dropdown-root_fundingStreamRfpId-select"
-                      class="sc-cxpSdN bpSVUb pg-select-input"
-                      id="select-parent-dropdown-root_fundingStreamRfpId"
-                      name="select-parent-dropdown-root_fundingStreamRfpId-select"
-                      required=""
+                    Funding Stream
+                  </label>
+                  <div
+                    class="sc-fKVqWL fMZYBT pg-select"
+                  >
+                    <div
+                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
                     >
-                      <option
-                        class="jsx-3703916905"
+                      <select
+                        aria-label="select-parent-dropdown-root_fundingStreamRfpId-select"
+                        class="sc-cxpSdN bpSVUb pg-select-input"
+                        id="select-parent-dropdown-root_fundingStreamRfpId"
+                        name="select-parent-dropdown-root_fundingStreamRfpId-select"
+                        required=""
                       >
-                        Select a Funding Stream
-                      </option>
-                      <option
-                        class="jsx-3703916905"
-                        value="42"
-                      >
-                        &lt;mock-value-for-field-"description"&gt;
-                      </option>
-                    </select>
+                        <option
+                          class="jsx-3921837838"
+                        >
+                          Select a Funding Stream
+                        </option>
+                        <option
+                          class="jsx-3921837838"
+                          value="42"
+                        >
+                          &lt;mock-value-for-field-"description"&gt;
+                        </option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <label
-                  class="jsx-3703916905"
-                  for="select-child-dropdown-root_fundingStreamRfpId"
-                >
-                  Funding Stream RFP
-                </label>
-                <div
-                  class="sc-fKVqWL fMZYBT pg-select"
-                >
-                  <div
-                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
+                  <label
+                    class="jsx-3921837838"
+                    for="select-child-dropdown-root_fundingStreamRfpId"
                   >
-                    <select
-                      aria-label="select-child-dropdown-root_fundingStreamRfpId-select"
-                      class="sc-cxpSdN bpSVUb pg-select-input"
-                      id="select-child-dropdown-root_fundingStreamRfpId"
-                      name="select-child-dropdown-root_fundingStreamRfpId-select"
-                      required=""
+                    Funding Stream RFP
+                  </label>
+                  <div
+                    class="sc-fKVqWL fMZYBT pg-select"
+                  >
+                    <div
+                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
                     >
-                      <option
-                        class="jsx-3703916905"
+                      <select
+                        aria-label="select-child-dropdown-root_fundingStreamRfpId-select"
+                        class="sc-cxpSdN bpSVUb pg-select-input"
+                        id="select-child-dropdown-root_fundingStreamRfpId"
+                        name="select-child-dropdown-root_fundingStreamRfpId-select"
+                        required=""
                       >
-                        Select a Funding Stream RFP Year
-                      </option>
-                    </select>
+                        <option
+                          class="jsx-3921837838"
+                        >
+                          Select a Funding Stream RFP Year
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -307,31 +302,35 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
-                <label
-                  class="jsx-3703916905"
-                  for="root_projectStatusId"
-                >
-                  Project Status
-                </label>
                 <div
-                  class="sc-fKVqWL fMZYBT pg-select"
+                  class="jsx-1860521299"
                 >
-                  <div
-                    class="sc-iwjdpV ggYxmL pg-select-wrapper"
+                  <label
+                    class="jsx-1860521299"
+                    for="root_projectStatusId"
                   >
-                    <select
-                      aria-label="root_projectStatusId-select"
-                      class="sc-cxpSdN bpSVUb pg-select-input"
-                      id="root_projectStatusId"
-                      name="root_projectStatusId-select"
-                      placeholder="Select a Project Status"
+                    Project Status
+                  </label>
+                  <div
+                    class="sc-fKVqWL fMZYBT pg-select"
+                  >
+                    <div
+                      class="sc-iwjdpV ggYxmL pg-select-wrapper"
                     >
-                      <option
-                        class="jsx-3703916905"
+                      <select
+                        aria-label="root_projectStatusId-select"
+                        class="sc-cxpSdN bpSVUb pg-select-input"
+                        id="root_projectStatusId"
+                        name="root_projectStatusId-select"
+                        placeholder="Select a Project Status"
                       >
-                        Select a Project Status
-                      </option>
-                    </select>
+                        <option
+                          class="jsx-1860521299"
+                        >
+                          Select a Project Status
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div

@@ -44,7 +44,7 @@ const SelectParentWidget: React.FunctionComponent<
   }, [child, foreignKey, selectedParentId]);
 
   return (
-    <>
+    <div>
       <label htmlFor={`select-parent-dropdown-${id}`}>{parent.label}</label>
       <Dropdown
         id={`select-parent-dropdown-${id}`}
@@ -86,12 +86,17 @@ const SelectParentWidget: React.FunctionComponent<
       </Dropdown>
       <style jsx>
         {`
-          :global(input) {
+          div :global(input) {
             width: 100%;
+          }
+          div :global(.pg-select-wrapper) {
+            padding: 9px 2px 9px 2px;
+            margin-bottom: 5px;
+            margin-top: 2px;
           }
         `}
       </style>
-    </>
+    </div>
   );
 };
 

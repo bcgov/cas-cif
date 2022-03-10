@@ -27,7 +27,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
   const options = schema.anyOf as Array<Option>;
 
   return (
-    <>
+    <div>
       <label htmlFor={id}>{getRequiredLabel(label, required)}</label>
       <Dropdown
         id={id}
@@ -50,12 +50,12 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       </Dropdown>
       <style jsx>
         {`
-          :global(input) {
+          div :global(input) {
             width: 100%;
           }
         `}
       </style>
-    </>
+    </div>
   );
 };
 
