@@ -8,7 +8,7 @@ export default function Custom404() {
     <>
       <StaticLayout>
         <div>
-          <h1 className="blue">Page not found</h1>
+          <h2 className="blue">Page not found</h2>
           <p>Sorry, we couldn&apos;t find the page you were looking for.</p>
           <p>
             <Link href="/" passHref>

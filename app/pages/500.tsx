@@ -2,9 +2,8 @@ import React from "react";
 import StaticLayout from "components/Layout/StaticLayout";
 import getConfig from "next/config";
 import Link from "next/link";
-import { Button } from "@button-inc/bcgov-theme";
+import { Button, Alert } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
-import Alert from "@mui/material/Alert";
 
 const Custom500 = () => {
   const supportEmail = getConfig()?.publicRuntimeConfig.SUPPORT_EMAIL;
@@ -15,17 +14,17 @@ const Custom500 = () => {
   return (
     <>
       <StaticLayout>
-        <Alert severity="error" icon={false}>
-          <h3>Sorry, something went wrong</h3>
+        <Alert variant={"danger"}>
+          <h2>Sorry, something went wrong</h2>
           <p>
             An unexpected error occurred. If this error persists, contact us at{" "}
-            <Link href={mailtoLink}>
-              <a className={"email"}>{supportEmail}</a>
-            </Link>{" "}
+            <a href={mailtoLink} className={"email"}>
+              {supportEmail}
+            </a>{" "}
             and tell us what happened. Meanwhile you can{" "}
-            <Link href={"javascript:;"}>
-              <a onClick={() => router.back()}>refresh this page</a>
-            </Link>{" "}
+            <a href={"javascript:;"} onClick={() => router.back()}>
+              go back to the previous page
+            </a>{" "}
             or try again later.
           </p>
           <p>
