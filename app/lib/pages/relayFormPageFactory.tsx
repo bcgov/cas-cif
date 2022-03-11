@@ -140,7 +140,7 @@ const relayFormPageFactory = (
         </header>
         <FormComponent
           formData={formChange.newFormData}
-          disabled={isDeletingFormChange || isUpdatingFormChange}
+          disabled={isDeletingFormChange}
           onChange={handleChange}
           onSubmit={handleSubmit}
           onDiscard={handleDiscard}
