@@ -18,6 +18,7 @@ import authenticationPgSettings from "./authenticationPgSettings";
 import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions";
 import FormChangeValidationPlugin from "./formChangeValidationPlugin";
 import { graphql, GraphQLSchema } from "graphql";
+import * as Sentry from "@sentry/nextjs";
 
 async function saveRemoteFile({ stream }) {
   const response = await fetch(
@@ -73,8 +74,6 @@ let postgraphileOptions: PostGraphileOptions = {
   classicIds: true,
   enableQueryBatching: true,
   dynamicJson: true,
-  extendedErrors: ["hint", "detail", "errcode"],
-  showErrorStack: "json",
   graphileBuildOptions: {
     ...PostgraphileRc.options.graphileBuildOptions,
     uploadFieldDefinitions: [
@@ -87,6 +86,22 @@ let postgraphileOptions: PostGraphileOptions = {
   },
   pgSettings,
 };
+
+if (process.env.SENTRY_ENVIRONMENT) {
+  postgraphileOptions = {
+    ...postgraphileOptions,
+    handleErrors: (errors) => {
+      Sentry.captureException(errors);
+      return errors;
+    },
+  };
+} else {
+  postgraphileOptions = {
+    ...postgraphileOptions,
+    extendedErrors: ["hint", "detail", "errcode"],
+    showErrorStack: "json",
+  };
+}
 
 if (process.env.NODE_ENV === "production") {
   postgraphileOptions = {
