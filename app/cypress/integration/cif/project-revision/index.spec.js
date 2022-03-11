@@ -23,8 +23,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
-    cy.get("input[id=search-dropdown-primaryContactForm_contactId]").click();
-    //cy.contains('Loblaw003, Bob003').click();
+    cy.findByLabelText(/Primary contact/i).click();
     cy.get("[role=option]").contains("Loblaw003").click();
 
     // Bad practice
