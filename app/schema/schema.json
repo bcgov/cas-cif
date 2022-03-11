@@ -63972,7 +63972,7 @@
         {
           "kind": "INPUT_OBJECT",
           "name": "CreateProjectRevisionInput",
-          "description": "All input for the create `ProjectRevision` mutation.",
+          "description": "All input for the `createProjectRevision` mutation.",
           "fields": null,
           "inputFields": [
             {
@@ -63986,14 +63986,14 @@
               "defaultValue": null
             },
             {
-              "name": "projectRevision",
-              "description": "The `ProjectRevision` to be created by this mutation.",
+              "name": "projectId",
+              "description": null,
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ProjectRevisionInput",
+                  "kind": "SCALAR",
+                  "name": "Int",
                   "ofType": null
                 }
               },
@@ -64007,7 +64007,7 @@
         {
           "kind": "OBJECT",
           "name": "CreateProjectRevisionPayload",
-          "description": "The output of our create `ProjectRevision` mutation.",
+          "description": "The output of our `createProjectRevision` mutation.",
           "fields": [
             {
               "name": "changeStatusByChangeStatus",
@@ -64071,7 +64071,7 @@
             },
             {
               "name": "projectRevision",
-              "description": "The `ProjectRevision` that was created by this mutation.",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -79604,7 +79604,7 @@
             },
             {
               "name": "createProjectRevision",
-              "description": "Creates a single `ProjectRevision`.",
+              "description": null,
               "args": [
                 {
                   "name": "input",
@@ -97390,6 +97390,83 @@
               "deprecationReason": null
             },
             {
+              "name": "projectContactFormChanges",
+              "description": "Computed column for graphql to retrieve the change related to the project_contact records, within a project revision",
+              "args": [
+                {
+                  "name": "after",
+                  "description": "Read all values in the set after (below) this cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Cursor",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": "Read all values in the set before (above) this cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Cursor",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": "A filter to be used in determining which values should be returned by the collection.",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "FormChangeFilter",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": "Only read the first `n` values of the set.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": "Only read the last `n` values of the set.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "offset",
+                  "description": "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "FormChangesConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "projectFormChange",
               "description": "Computed column for graphql to retrieve the change related to the project record, within a project revision",
               "args": [],
@@ -98516,77 +98593,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "ProjectRevisionInput",
-          "description": "An input for mutations affecting `ProjectRevision`",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "changeStatus",
-              "description": "Foreign key to the status of the project revision",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "createdAt",
-              "description": "created at timestamp",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "createdBy",
-              "description": "created by user id",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "projectId",
-              "description": "Foreign key to the associated project row. Will be null if the project hasn't been committed yet.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "updatedAt",
-              "description": "updated at timestamp",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "updatedBy",
-              "description": "updated by user id",
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null

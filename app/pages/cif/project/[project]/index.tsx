@@ -3,6 +3,10 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { ProjectOverviewQuery } from "__generated__/ProjectOverviewQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
+import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
+import { Button } from "@button-inc/bcgov-theme";
+import { useRouter } from "next/router";
+import { getProjectRevisionPageRoute } from "pageRoutes";
 
 export const pageQuery = graphql`
   query ProjectOverviewQuery($project: ID!) {
@@ -10,6 +14,7 @@ export const pageQuery = graphql`
       ...DefaultLayout_session
     }
     project(id: $project) {
+      rowId
       projectName
       rfpNumber
       totalFundingRequest
@@ -49,6 +54,9 @@ export const pageQuery = graphql`
           }
         }
       }
+      pendingProjectRevision {
+        id
+      }
     }
   }
 `;
@@ -57,10 +65,49 @@ export function ProjectViewPage({
   preloadedQuery,
 }: RelayProps<{}, ProjectOverviewQuery>) {
   const { session, project } = usePreloadedQuery(pageQuery, preloadedQuery);
+  const router = useRouter();
+  const [createProjectRevision, isCreatingProjectRevision] =
+    useCreateProjectRevision();
+
+  const handleCreateRevision = () => {
+    createProjectRevision({
+      variables: { projectId: project.rowId },
+      onCompleted: (response) => {
+        router.push(
+          getProjectRevisionPageRoute(
+            response.createProjectRevision.projectRevision.id
+          )
+        );
+      },
+    });
+  };
+
+  const amendButton = project.pendingProjectRevision ? (
+    <Button
+      size="small"
+      onClick={() =>
+        router.push(
+          getProjectRevisionPageRoute(project.pendingProjectRevision.id)
+        )
+      }
+    >
+      Resume Project Amendment
+    </Button>
+  ) : (
+    <Button
+      size="small"
+      disabled={isCreatingProjectRevision}
+      onClick={handleCreateRevision}
+    >
+      Edit
+    </Button>
+  );
+
   return (
     <DefaultLayout session={session}>
       <header>
         <h2>Project Details</h2>
+        {amendButton}
       </header>
       <dl>
         <dt>RFP Number</dt>
@@ -129,6 +176,10 @@ export function ProjectViewPage({
           display: flex;
           justify-content: space-between;
           align-items: start;
+        }
+
+        h2 {
+          padding-right: 10px;
         }
 
         .preformatted {

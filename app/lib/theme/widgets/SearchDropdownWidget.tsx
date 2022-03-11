@@ -7,8 +7,16 @@ import FieldLabel from "./FieldLabel";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
-  const { onChange, schema, placeholder, readonly, label, required, uiSchema } =
-    props;
+  const {
+    id,
+    onChange,
+    schema,
+    placeholder,
+    readonly,
+    label,
+    required,
+    uiSchema,
+  } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option: any) => {
     onChange(option?.value);
@@ -24,18 +32,16 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
 
   if (readonly) return <Widgets.SelectWidget {...props} />;
 
-  const autoCompleteId = `search-dropdown-${props.id}`;
-
   return (
     <>
       <FieldLabel
         label={label}
         required={required}
-        htmlFor={autoCompleteId}
+        htmlFor={id}
         uiSchema={uiSchema}
       />
       <Autocomplete
-        id={autoCompleteId}
+        id={id}
         options={schema.anyOf}
         defaultValue={getSelected()}
         value={getSelected()}

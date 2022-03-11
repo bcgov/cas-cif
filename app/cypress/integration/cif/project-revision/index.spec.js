@@ -23,8 +23,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
-    cy.get("input[id=search-dropdown-primaryContactForm_contactId]").click();
-    //cy.contains('Loblaw003, Bob003').click();
+    cy.findByLabelText(/Primary contact/i).click();
     cy.get("[role=option]").contains("Loblaw003").click();
 
     // Bad practice
@@ -63,5 +62,94 @@ describe("the new project page", () => {
       );
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
+  });
+
+  it("Allows to create and update a project", () => {
+    cy.mockLogin("cif_admin");
+
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+    cy.url().should("include", "/cif/project-revision");
+    cy.findByLabelText(/Project Name/i).type("Foo");
+    cy.findByLabelText(/Total Funding Request/i).type("100");
+    cy.findByLabelText(/Summary/i).type("Bar");
+    cy.findByLabelText(/Operator Name/i).click();
+    cy.contains("first operator").click();
+    cy.findByLabelText(/Funding Stream$/i).select("Emissions Performance");
+    cy.findByLabelText(/Funding Stream RFP/i).select("2020");
+    cy.findByLabelText(/Project Status/i).select("Project Underway");
+    cy.findByLabelText(/RFP Number/i).type("123");
+    cy.findByLabelText(/tech team primary/i).click();
+    cy.contains("Swanson").click();
+    cy.findByLabelText(/tech team secondary/i).click();
+    cy.contains("Ludgate").click();
+    cy.findByLabelText(/ops team primary/i).click();
+    cy.contains("Knope").click();
+    cy.findByLabelText(/Primary contact/i).click();
+    cy.contains("Loblaw003").click();
+
+    // TODO: figure out why we need to wait when setting the primary contact
+    cy.wait(1000);
+    cy.get("button").contains("Add").click();
+    // TODO: figure out why we need to wait when setting the primary contact
+    cy.wait(1000);
+    cy.get("label")
+      .contains("Secondary Contacts")
+      .parent()
+      .find("input")
+      .last()
+      .click();
+    cy.contains("Loblaw004").click();
+    // TODO: figure out why we need to wait when setting the primary contact
+    cy.wait(1000);
+
+    cy.findByText("Submit").click();
+    cy.url().should("include", "/cif/projects");
+    cy.findByText("View").click();
+    cy.url().should("include", "/cif/project/");
+    cy.findByText("Edit").click();
+    cy.url().should("include", "/cif/project-revision/");
+
+    // Edit the project
+    // change the name, delete a manager and contact.
+    cy.findByLabelText(/Project Name/i)
+      .should("have.value", "Foo")
+      .clear()
+      .type("Bar");
+
+    cy.findByLabelText(/tech team secondary/i).should(
+      "have.value",
+      "April Ludgate"
+    );
+    cy.get("label")
+      .contains("Tech Team Secondary")
+      .parent()
+      .find("button")
+      .contains("Clear")
+      .click();
+    cy.findByLabelText(/tech team secondary/i).should("not.have.value");
+    cy.get("label")
+      .contains("Secondary Contacts")
+      .parent()
+      .find("button")
+      .contains("Remove")
+      .click();
+
+    cy.wait(1000);
+    cy.findByText("Submit").click();
+    cy.url().should("include", "/cif/projects");
+    cy.findByText("View").click();
+    cy.url().should("include", "/cif/project/");
+    cy.findByText("Edit").click();
+    cy.url().should("include", "/cif/project-revision/");
+
+    // Check the project was updated
+    cy.findByLabelText(/Project Name/i).should("have.value", "Bar");
+    cy.findByLabelText(/tech team secondary/i).should("not.have.value");
+    cy.get("legend")
+      .contains("Contacts")
+      .parent()
+      .find("input")
+      .should("have.length", 1);
   });
 });

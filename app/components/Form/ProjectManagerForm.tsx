@@ -9,11 +9,10 @@ import FormComponentProps from "./Interfaces/FormComponentProps";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import { Button } from "@button-inc/bcgov-theme";
 import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevision";
-import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
-import { mutation as updateFormChangeMutation } from "mutations/FormChange/updateFormChange";
-import useDebouncedMutation from "mutations/useDebouncedMutation";
+import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FieldLabel from "lib/theme/widgets/FieldLabel";
+import useDiscardFormChange from "hooks/useDiscardFormChange";
 
 interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
@@ -133,49 +132,20 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     });
   };
 
-  const [applyUpdateFormChangeMutation] = useDebouncedMutation(
-    updateFormChangeMutation
-  );
+  const [applyUpdateFormChangeMutation] = useUpdateFormChange();
 
   // Delete a manager from the project revision
-  const [discardFormChange, discardInFlight] =
-    useDeleteManagerFromRevisionMutation();
-  const deleteManager = (id: string) => {
-    if (change.formChange.operation === "CREATE")
-      discardFormChange({
-        variables: {
-          input: {
-            id: id,
-          },
-          projectRevision: projectRevisionId,
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
-    else
-      applyUpdateFormChangeMutation({
-        variables: {
-          input: {
-            id: id,
-            formChangePatch: {
-              operation: "ARCHIVE",
-            },
-          },
-        },
-        optimisticResponse: {
-          updateFormChange: {
-            formChange: {
-              id: id,
-              newFormData: {},
-            },
-          },
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-        debounceKey: id,
-      });
+  const [discardFormChange, discardInFlight] = useDiscardFormChange();
+  const handleClear = () => {
+    discardFormChange({
+      formChange: {
+        id: change.formChange.id,
+        operation: change.formChange.operation,
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
   };
 
   // Update an existing project_manager form change if it exists, otherwise create one
@@ -217,9 +187,11 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     }
     // If a form_change exists, and the payload does not contain a cifUserId delete it
     else if (formChangeId && !formChange.cifUserId && !discardInFlight) {
-      deleteManager(formChangeId);
+      handleClear();
     }
   };
+
+  const formIdPrefix = `form-${change.projectManagerLabel.id}`;
 
   return (
     <>
@@ -227,15 +199,13 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         <FieldLabel
           label={change.projectManagerLabel.label}
           required={false}
-          htmlFor={change.projectManagerLabel.id}
+          htmlFor={`${formIdPrefix}_cifUserId`}
           uiSchema={uiSchema}
         />
-      </Grid.Row>
-      <Grid.Row>
         <Grid.Col span={6}>
           <FormBase
             id={`form-manager-${change.projectManagerLabel.label}`}
-            idPrefix={`form-${change.projectManagerLabel.id}`}
+            idPrefix={formIdPrefix}
             ref={(el) => (formRefs.current[change.projectManagerLabel.id] = el)}
             formData={change.formChange?.newFormData}
             onChange={(data) => {
@@ -255,7 +225,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
             disabled={discardInFlight || !change.formChange?.id}
             variant="secondary"
             size="small"
-            onClick={() => deleteManager(change.formChange?.id)}
+            onClick={() => handleClear()}
           >
             Clear
           </Button>
