@@ -56,12 +56,12 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 7);
     // Renders a custom error message for a custom format validation error
     cy.get(".error-detail")
-      .first()
+      .eq(2)
       .should(
         "contain",
         "Please enter 3 or 4 digits for the random RFP digits"
       );
-    // Renderes the default error message for a required field
+    // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
   });
 });

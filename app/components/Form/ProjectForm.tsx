@@ -63,6 +63,17 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
 
   const uiSchema = useMemo(() => {
     return {
+      "ui:order": [
+        "fundingStreamRfpId",
+        "operatorId",
+        "operatorTradeName",
+        "rfpNumber",
+        "projectName",
+        "summary",
+        "totalFundingRequest",
+        "projectStatus",
+        "projectStatusId",
+      ],
       rfpNumber: {
         "ui:placeholder": "123",
         "bcgov:size": "small",
