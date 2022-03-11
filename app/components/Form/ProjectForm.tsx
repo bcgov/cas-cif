@@ -5,7 +5,6 @@ import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.grap
 import { forwardRef, useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
-import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import FormComponentProps from "./Interfaces/FormComponentProps";
 interface Props extends FormComponentProps {
@@ -33,7 +32,6 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
           }
           ...SelectRfpWidget_query
           ...SelectProjectStatusWidget_query
-          ...GeneratedLongIdWidget_query
         }
       }
     `,
@@ -75,9 +73,8 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
         "projectStatusId",
       ],
       rfpNumber: {
-        "ui:placeholder": "123",
+        "ui:placeholder": "2020-RFP-1-123-ABCD",
         "bcgov:size": "small",
-        "ui:widget": "GeneratedLongIdWidget",
       },
       projectName: {
         "ui:placeholder": "Short project name",
@@ -137,7 +134,6 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
       widgets={{
         SelectRfpWidget: SelectRfpWidget,
         SelectProjectStatusWidget: SelectProjectStatusWidget,
-        GeneratedLongIdWidget: GeneratedLongIdWidget,
       }}
     />
   );

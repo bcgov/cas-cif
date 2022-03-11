@@ -12,8 +12,7 @@ const projectSchema = {
   properties: {
     rfpNumber: {
       type: "string",
-      title: "RFP Number",
-      format: "rfpDigits",
+      title: "Proposal Reference",
     },
     projectName: { type: "string", title: "Project Name" },
     totalFundingRequest: {
