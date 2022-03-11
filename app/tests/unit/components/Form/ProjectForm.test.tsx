@@ -64,7 +64,7 @@ describe("The Project Form", () => {
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
     renderProjectForm();
-    fireEvent.change(screen.getByLabelText("RFP Number"), {
+    fireEvent.change(screen.getByLabelText("Proposal Reference"), {
       target: { value: "testidentifier" },
     });
 
@@ -133,9 +133,9 @@ describe("The Project Form", () => {
 
     renderProjectForm();
 
-    expect(screen.getByLabelText<HTMLInputElement>("RFP Number").value).toBe(
-      "12345678"
-    );
+    expect(
+      screen.getByLabelText<HTMLInputElement>("Proposal Reference").value
+    ).toBe("12345678");
     expect(screen.getByLabelText<HTMLInputElement>("Summary").value).toBe("d");
     expect(
       screen.getByPlaceholderText<HTMLSelectElement>("Select an Operator").value

@@ -177,48 +177,24 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
-                <label
-                  class="jsx-2369701424"
-                  for="root_rfpNumber"
-                >
-                  RFP Number
-                </label>
-                <small
-                  class="jsx-2369701424"
-                >
-                   (year - RFP - stream id - random digits - operator code)
-                </small>
                 <div
-                  class="sc-jRQBWg cDwDrH pg-grid-container"
+                  class="sc-crHmcD bKATQK pg-input"
                 >
-                  <div
-                    class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
-                    style="align-items: center;"
+                  <label
+                    class="sc-egiyK ewKLoj pg-input-label"
+                    for="root_rfpNumber"
                   >
-                    (YEAR)
-                     - RFP - 
-                    (STREAM ID)
-                     - 
-                    <span
-                      class="jsx-2369701424 random-digits"
-                    >
-                      <div
-                        class="sc-crHmcD bKATQK pg-input"
-                      >
-                        <input
-                          aria-label="root_rfpNumber-input"
-                          class="sc-bqiRlB hrAFNs pg-input-input"
-                          id="root_rfpNumber"
-                          name="root_rfpNumber-input"
-                          placeholder="123"
-                          required=""
-                          value=""
-                        />
-                      </div>
-                    </span>
-                     - 
-                    (OPERATOR CODE)
-                  </div>
+                    Proposal Reference
+                  </label>
+                  <input
+                    aria-label="Proposal Reference"
+                    class="sc-bqiRlB hrAFNs pg-input-input"
+                    id="root_rfpNumber"
+                    name="root_rfpNumber-input"
+                    placeholder="2020-RFP-1-123-ABCD"
+                    required=""
+                    value=""
+                  />
                 </div>
                 <div
                   class="jsx-3883368021 error-div"
