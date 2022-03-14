@@ -61,6 +61,7 @@ const tableFilters = [
 function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
   const { session, allContacts, pendingNewContactFormChange } =
     usePreloadedQuery(pageQuery, preloadedQuery);
+
   const router = useRouter();
   const [addContact, isAddingContact] = useCreateNewContactFormChange();
 
@@ -97,6 +98,7 @@ function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
         paginated
         totalRowCount={allContacts.totalCount}
         filters={tableFilters}
+        pageQuery={pageQuery}
       >
         {allContacts.edges.map(({ node }) => (
           <ContactTableRow key={node.id} contact={node} />

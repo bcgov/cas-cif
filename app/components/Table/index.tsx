@@ -1,6 +1,12 @@
+import withRelayOptions from "lib/relay/withRelayOptions";
 import safeJsonParse from "lib/safeJsonParse";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import {
+  fetchQuery,
+  GraphQLTaggedNode,
+  useRelayEnvironment,
+} from "react-relay";
 import FilterRow from "./FilterRow";
 import { FilterArgs, PageArgs, TableFilter } from "./Filters";
 import Pagination from "./Pagination";
@@ -11,6 +17,7 @@ interface Props {
   paginated?: boolean;
   totalRowCount?: number;
   emptyStateContents?: JSX.Element | string;
+  pageQuery?: GraphQLTaggedNode;
 }
 
 const Table: React.FC<Props> = ({
@@ -18,8 +25,11 @@ const Table: React.FC<Props> = ({
   paginated,
   totalRowCount,
   children,
+  pageQuery,
   emptyStateContents = <span className="no-results">No results found.</span>,
 }) => {
+  const environment = useRelayEnvironment();
+  const [isRefetching, setIsRefetching] = useState(false);
   const router = useRouter();
   const filterArgs = useMemo<FilterArgs>(
     () => safeJsonParse(router.query.filterArgs as string),
@@ -29,6 +39,43 @@ const Table: React.FC<Props> = ({
   const { offset, pageSize } = useMemo<PageArgs>(
     () => safeJsonParse(router.query.pageArgs as string),
     [router]
+  );
+
+  const handleRouteUpdate = useCallback(
+    (url, mode: "replace" | "push") => {
+      const afterFetch = () => {
+        setIsRefetching(false);
+        // At this point the data for the query should be cached,
+        // so we can update the route and re-render without suspending
+        if (mode === "replace") router.replace(url, url, { shallow: true });
+        else router.push(url, url, { shallow: true });
+      };
+
+      if (!pageQuery) {
+        afterFetch();
+        return;
+      }
+
+      if (isRefetching) {
+        return;
+      }
+
+      setIsRefetching(true);
+
+      // fetchQuery will fetch the query and write the data to the Relay store.
+      // This will ensure that when we re-render, the data is already cached and we don't suspend
+      fetchQuery(
+        environment,
+        pageQuery,
+        withRelayOptions.variablesFromContext(url)
+      ).subscribe({
+        complete: afterFetch,
+        // if the query fails, we still want to update the route,
+        // which will retry the query and let a 500 page be rendered if it fails again
+        error: afterFetch,
+      });
+    },
+    [environment, isRefetching, router, pageQuery]
   );
 
   const applyFilterArgs = (newFilterArgs: FilterArgs) => {
@@ -54,7 +101,7 @@ const Table: React.FC<Props> = ({
       },
     };
 
-    router.push(url, url, { shallow: true });
+    handleRouteUpdate(url, "push");
   };
 
   const applyPageArgs = (newPageArgs: PageArgs) => {
@@ -65,7 +112,7 @@ const Table: React.FC<Props> = ({
         pageArgs: JSON.stringify(newPageArgs),
       },
     };
-    router.push(url, url, { shallow: true });
+    handleRouteUpdate(url, "push");
   };
 
   const handleOffsetChange = (value: number) => {
@@ -90,6 +137,8 @@ const Table: React.FC<Props> = ({
                 orderByPrefix={filter.orderByPrefix}
                 displayName={filter.title}
                 sortable={filter.isSortEnabled}
+                disabled={isRefetching}
+                onRouteUpdate={handleRouteUpdate}
               />
             ))}
           </tr>
@@ -97,6 +146,7 @@ const Table: React.FC<Props> = ({
           <FilterRow
             filterArgs={filterArgs}
             filters={filters}
+            disabled={isRefetching}
             onSubmit={applyFilterArgs}
           />
         </thead>
@@ -116,6 +166,7 @@ const Table: React.FC<Props> = ({
                 totalCount={totalRowCount}
                 offset={offset}
                 pageSize={pageSize}
+                disabled={isRefetching}
                 onOffsetChange={handleOffsetChange}
                 onPageSizeChange={handleMaxResultsChange}
               />

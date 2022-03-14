@@ -11,6 +11,8 @@ interface Props {
   orderByPrefix?: string;
   displayName: string;
   sortable?: boolean;
+  disabled?: boolean;
+  onRouteUpdate: (url: any, mode: "replace" | "push") => void;
 }
 
 const SORT_DIRECTIONS = {
@@ -31,6 +33,8 @@ const SortableHeader: React.FC<Props> = ({
   orderByPrefix,
   displayName,
   sortable,
+  disabled,
+  onRouteUpdate,
 }) => {
   const router = useRouter();
 
@@ -66,10 +70,15 @@ const SortableHeader: React.FC<Props> = ({
       },
     };
 
-    router.replace(url, url, { shallow: true });
+    onRouteUpdate(url, "replace");
   };
   return (
-    <th onClick={() => sortable && handleClick()} aria-sort={sortDirection}>
+    <th
+      onClick={() => sortable && handleClick()}
+      aria-sort={sortDirection}
+      className={disabled ? "disabled" : ""}
+      aria-disabled={disabled}
+    >
       {displayName}&nbsp;
       {sortable && (
         <FontAwesomeIcon
@@ -77,8 +86,8 @@ const SortableHeader: React.FC<Props> = ({
           icon={SORT_DIRECTIONS[sortDirection].icon}
         />
       )}
-      <style>{`
-        table.bc-table th {
+      <style jsx>{`
+        th {
           position: relative;
           cursor: pointer;
           background-color: #003366;
@@ -96,6 +105,7 @@ const SortableHeader: React.FC<Props> = ({
           border-top-left-radius: 0.25rem;
           border-left: 1px solid #003366;
           border-top: 1px solid #003366;
+          padding: 0.5rem;
         }
 
         th:last-child {
@@ -104,10 +114,10 @@ const SortableHeader: React.FC<Props> = ({
           border-top: 1px solid #003366;
         }
 
-        span[role="button"] {
-          height: 100%;
-          position: absolute;
-          right: 0.75em;
+        .disabled {
+          cursor: not-allowed;
+          pointer-events: none;
+          opacity: 0.5;
         }
       `}</style>
     </th>

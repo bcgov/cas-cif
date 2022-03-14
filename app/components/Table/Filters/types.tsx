@@ -7,6 +7,7 @@ export interface PageArgs {
 
 export interface FilterComponentProps {
   onChange: (value: string | number | boolean, argName: string) => void;
+  disabled?: boolean;
   filterArgs: FilterArgs;
 }
 
