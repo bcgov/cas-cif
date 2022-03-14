@@ -29,6 +29,8 @@ const nextConfig = {
     SITEWIDE_NOTICE: process.env.SITEWIDE_NOTICE,
     ENABLE_DB_MOCKS: process.env.ENABLE_DB_MOCKS,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT,
+    SENTRY_RELEASE: process.env.SENTRY_RELEASE,
   },
 };
 
