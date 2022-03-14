@@ -183,6 +183,7 @@ describe("The Create Project page", () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({
       onCompleted: expect.any(Function),
+      updater: expect.any(Function),
       variables: {
         input: {
           id: "mock-proj-rev-id",

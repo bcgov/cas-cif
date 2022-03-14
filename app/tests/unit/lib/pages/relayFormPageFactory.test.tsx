@@ -243,6 +243,7 @@ describe("The relay form page factory", () => {
       debounceKey: "test-cif-form-id",
       onError: expect.any(Function),
       onCompleted: expect.any(Function),
+      updater: expect.any(Function),
       variables: {
         input: {
           formChangePatch: {
