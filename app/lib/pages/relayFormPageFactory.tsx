@@ -111,6 +111,11 @@ const relayFormPageFactory = (
           router.push(onSubmitOrDiscardRoute);
         },
         onError: (e) => console.log(e),
+        updater: (store) => {
+          // Invalidate the entire store, to make sure that we don't display any stale data after redirecting to the next page.
+          // This could be optimized to only invalidate the affected records.
+          store.invalidateStore();
+        },
       });
     };
 

@@ -121,6 +121,11 @@ export function ProjectRevision({
       onCompleted: async () => {
         await router.push(getProjectsPageRoute());
       },
+      updater: (store) => {
+        // Invalidate the entire store,to make sure that we don't display any stale data after redirecting to the next page.
+        // This could be optimized to only invalidate the affected records.
+        store.invalidateStore();
+      },
     });
   };
 
