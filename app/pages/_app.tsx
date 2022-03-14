@@ -5,6 +5,8 @@ import { getClientEnvironment } from "../lib/relay/client";
 import BCGovTypography from "components/BCGovTypography";
 import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
 import { Suspense } from "react";
+import * as Sentry from "@sentry/react";
+import ErrorFallback from "./500";
 
 import "normalize.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -30,11 +32,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
 
   return (
-    <RelayEnvironmentProvider environment={env}>
-      {typeof window !== "undefined" && <SessionExpiryHandler />}
-      <BCGovTypography />
-      {component}
-    </RelayEnvironmentProvider>
+    <Sentry.ErrorBoundary fallback={ErrorFallback}>
+      <RelayEnvironmentProvider environment={env}>
+        {typeof window !== "undefined" && <SessionExpiryHandler />}
+        <BCGovTypography />
+        {component}
+      </RelayEnvironmentProvider>
+    </Sentry.ErrorBoundary>
   );
 }
 

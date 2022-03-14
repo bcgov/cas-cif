@@ -6,7 +6,7 @@ import { Button, Alert } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
 
 const Custom500 = () => {
-  const supportEmail = getConfig()?.publicRuntimeConfig.SUPPORT_EMAIL;
+  const supportEmail = getConfig()?.publicRuntimeConfig?.SUPPORT_EMAIL;
   const mailtoLink = `mailto:${supportEmail}?subject=Reporting an error`;
 
   const router = useRouter();

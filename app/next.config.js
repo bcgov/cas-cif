@@ -1,10 +1,11 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const dotenv = require("dotenv");
+const { withSentryConfig } = require("@sentry/nextjs");
 
 dotenv.config();
 
-module.exports = {
+const nextConfig = {
   cssModules: true,
   webpack: (config) => {
     const configWithPlugins = { ...config };
@@ -28,5 +29,16 @@ module.exports = {
     SITEWIDE_NOTICE: process.env.SITEWIDE_NOTICE,
     ENABLE_DB_MOCKS: process.env.ENABLE_DB_MOCKS,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT,
+    SENTRY_RELEASE: process.env.SENTRY_RELEASE,
   },
 };
+
+const sentryWebpackPluginOptions = {
+  // Set to false to create a sentry release on build with the sentry CLI
+  // This will upload sourcemaps to sentry.
+  dryRun: true,
+  silent: true,
+};
+
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
