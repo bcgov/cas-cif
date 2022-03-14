@@ -46,7 +46,7 @@ const pageQuery = graphql`
 export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
-  const projectFormRef = useRef(null);
+  const projectFormRef = useRef<ISupportExternalValidation>(null);
   const projectManagerFormRef = useRef<ISupportExternalValidation>(null);
   const projectContactFormRef = useRef<ISupportExternalValidation>(null);
 
@@ -162,9 +162,11 @@ export function ProjectRevision({
         <Grid.Row gutter={[20, 0]}>
           <Grid.Col>
             <ProjectForm
-              ref={projectFormRef}
               query={query}
               formData={query.projectRevision.projectFormChange.newFormData}
+              setValidatingForm={(validator) =>
+                (projectFormRef.current = validator)
+              }
               onChange={(change) =>
                 handleChange(
                   query.projectRevision.projectFormChange,

@@ -2,19 +2,21 @@ import type { JSONSchema7 } from "json-schema";
 import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
-import { forwardRef, useMemo } from "react";
+import { useMemo, useRef } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
-import FormComponentProps from "./Interfaces/FormComponentProps";
-interface Props extends FormComponentProps {
+import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
+interface Props extends ValidatingFormProps {
   query: ProjectForm_query$key;
+  formData: any;
+  onChange: (changeData) => void;
 }
 
-const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
-  props,
-  ref
-) => {
+const ProjectForm: React.FC<Props> = (props) => {
+  const formRef = useRef();
+
   const { query } = useFragment(
     graphql`
       fragment ProjectForm_query on Query {
@@ -43,6 +45,13 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
       ({ node }) => node.rowId === props.formData.operatorId
     );
   }, [query, props.formData.operatorId]);
+
+  props.setValidatingForm({
+    selfValidate: () => {
+      const formObject = formRef.current;
+      return validateFormWithErrors(formObject);
+    },
+  });
 
   const schema: JSONSchema7 = useMemo(() => {
     const initialSchema = projectSchema;
@@ -123,7 +132,7 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
   return (
     <FormBase
       {...props}
-      ref={ref}
+      ref={(el) => (formRef.current = el)}
       schema={schema}
       uiSchema={uiSchema}
       formContext={{
@@ -139,4 +148,4 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
   );
 };
 
-export default forwardRef(ProjectForm);
+export default ProjectForm;
