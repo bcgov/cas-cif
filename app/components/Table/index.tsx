@@ -17,6 +17,12 @@ interface Props {
   paginated?: boolean;
   totalRowCount?: number;
   emptyStateContents?: JSX.Element | string;
+  /**
+   * The top-level query used by the page rendenring the table.
+   * If provided, when the table filters, ordering or pagination are updated,
+   * the table will reload the query before updating the router,
+   * preventing a render with the Suspense fallback while the new data is being fetched.
+   */
   pageQuery?: GraphQLTaggedNode;
 }
 
@@ -64,6 +70,7 @@ const Table: React.FC<Props> = ({
 
       // fetchQuery will fetch the query and write the data to the Relay store.
       // This will ensure that when we re-render, the data is already cached and we don't suspend
+      // See https://github.com/facebook/relay/blob/b8e78ca0fbbfe05f34b4854484df574d91ba2113/website/docs/guided-tour/refetching/refetching-queries-with-different-data.md#if-you-need-to-avoid-suspense
       fetchQuery(
         environment,
         pageQuery,
