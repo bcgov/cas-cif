@@ -17,6 +17,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
     projectStatusByProjectStatusId: { name },
     totalFundingRequest,
     operatorByOperatorId: { tradeName },
+    projectManagersByProjectId,
   } = useFragment(
     graphql`
       fragment ProjectTableRow_project on Project {
@@ -29,6 +30,17 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         }
         projectStatusByProjectStatusId {
           name
+        }
+        projectManagersByProjectId {
+          edges {
+            node {
+              cifUserByCifUserId {
+                id
+                firstName
+                lastName
+              }
+            }
+          }
         }
       }
     `,
@@ -50,9 +62,14 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         <span className="status-badge">{name}</span>
       </td>
       <td>
-        J. Doeloremipsum,
-        <br />
-        J. Doe
+        {projectManagersByProjectId.edges.map((manager, index) => {
+          return (
+            <span key={manager.node.cifUserByCifUserId.id}>
+              {index ? "," : ""} {manager.node.cifUserByCifUserId.firstName}{" "}
+              {manager.node.cifUserByCifUserId.lastName}
+            </span>
+          );
+        })}
       </td>
       <td>
         <Money amount={totalFundingRequest} />
