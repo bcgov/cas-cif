@@ -7,12 +7,21 @@ const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
 interface Props {
   title?: string;
+  showSubheader?: boolean;
 }
 
-const StaticLayout: React.FC<Props> = ({ children, title }) => {
+const StaticLayout: React.FC<Props> = ({
+  children,
+  title,
+  showSubheader = false,
+}) => {
   return (
     <div id="page-wrap">
-      <Navigation title={title} hideLoginButton={true}>
+      <Navigation
+        title={title}
+        hideLoginButton={true}
+        alwaysShowSubheader={showSubheader}
+      >
         {runtimeConfig.SITEWIDE_NOTICE && (
           <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
         )}

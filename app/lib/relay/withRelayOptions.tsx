@@ -7,9 +7,10 @@ import { WiredOptions } from "relay-nextjs/wired/component";
 import { NextRouter } from "next/router";
 import safeJsonParse from "lib/safeJsonParse";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
+import LoadingFallback from "components/Layout/LoadingFallback";
 
 const withRelayOptions: WiredOptions<any> = {
-  fallback: <div>Loading...</div>,
+  fallback: <LoadingFallback />,
   createClientEnvironment: () => getClientEnvironment()!,
   createServerEnvironment: async (ctx: NextPageContext) => {
     const { createServerEnvironment } = await import("./server");
