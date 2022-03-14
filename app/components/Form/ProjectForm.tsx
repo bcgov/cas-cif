@@ -8,14 +8,30 @@ import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
+import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
+import { FormValidation } from "@rjsf/core";
 interface Props extends ValidatingFormProps {
   query: ProjectForm_query$key;
+  projectRevision: ProjectForm_projectRevision$key;
   formData: any;
   onChange: (changeData) => void;
 }
 
 const ProjectForm: React.FC<Props> = (props) => {
   const formRef = useRef();
+
+  const revision = useFragment(
+    graphql`
+      fragment ProjectForm_projectRevision on ProjectRevision {
+        id
+        projectFormChange {
+          id
+          isUniqueValue(columnName: "rfpNumber")
+        }
+      }
+    `,
+    props.projectRevision
+  );
 
   const { query } = useFragment(
     graphql`
@@ -49,9 +65,24 @@ const ProjectForm: React.FC<Props> = (props) => {
   props.setValidatingForm({
     selfValidate: () => {
       const formObject = formRef.current;
+      console.log(formRef.current);
       return validateFormWithErrors(formObject);
     },
   });
+
+  const uniqueProposalReferenceValidation = (
+    formData: any,
+    errors: FormValidation
+  ) => {
+    console.log(errors);
+    if (revision.projectFormChange.isUniqueValue === false) {
+      errors.rfpNumber.addError(
+        "Proposal reference already exists in the system."
+      );
+    }
+
+    return errors;
+  };
 
   const schema: JSONSchema7 = useMemo(() => {
     const initialSchema = projectSchema;
@@ -135,6 +166,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       ref={(el) => (formRef.current = el)}
       schema={schema}
       uiSchema={uiSchema}
+      validate={uniqueProposalReferenceValidation}
       formContext={{
         query,
         form: props.formData,
