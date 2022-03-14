@@ -8,7 +8,7 @@ const FieldTemplate = ({ children, errors, help, rawErrors }) => {
         {children}
 
         <div className="error-div">
-          {rawErrors ? (
+          {rawErrors && rawErrors.length > 0 ? (
             <>
               <FontAwesomeIcon
                 className="error-icon"
