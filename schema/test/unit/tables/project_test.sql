@@ -1,5 +1,5 @@
 begin;
-select plan(14);
+select plan(15);
 
 select has_table('cif', 'project', 'table cif.project exists');
 select columns_are(
@@ -23,6 +23,7 @@ select columns_are(
   ],
   'columns in cif.project match expected columns'
 );
+select indexes_are('cif', 'project', array['cif_project_operator_id', 'cif_project_rfp_number'], 'Indexes on cif.project table match expected indexes');
 
 -- Test Setup
 truncate cif.project restart identity cascade;
