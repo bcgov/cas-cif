@@ -10,11 +10,14 @@ import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
 import { FormValidation } from "@rjsf/core";
+import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
+import { Disposable, MutationParameters } from "relay-runtime";
 interface Props extends ValidatingFormProps {
   query: ProjectForm_query$key;
   projectRevision: ProjectForm_projectRevision$key;
-  formData: any;
-  onChange: (changeData) => void;
+  updateProjectFormChange: (
+    config: UseDebouncedMutationConfig<MutationParameters>
+  ) => Disposable;
 }
 
 const ProjectForm: React.FC<Props> = (props) => {
@@ -26,6 +29,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         id
         projectFormChange {
           id
+          newFormData
           isUniqueValue(columnName: "rfpNumber")
         }
       }
@@ -58,9 +62,10 @@ const ProjectForm: React.FC<Props> = (props) => {
 
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
-      ({ node }) => node.rowId === props.formData.operatorId
+      ({ node }) =>
+        node.rowId === revision.projectFormChange.newFormData.operatorId
     );
-  }, [query, props.formData.operatorId]);
+  }, [query, revision.projectFormChange.newFormData.operatorId]);
 
   props.setValidatingForm({
     selfValidate: () => {
@@ -82,6 +87,33 @@ const ProjectForm: React.FC<Props> = (props) => {
     }
 
     return errors;
+  };
+
+  const handleChange = (changeData: any) => {
+    const updatedFormData = {
+      ...revision.projectFormChange.newFormData,
+      ...changeData,
+    };
+    return props.updateProjectFormChange({
+      variables: {
+        input: {
+          id: revision.projectFormChange.id,
+          formChangePatch: {
+            newFormData: updatedFormData,
+          },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: revision.projectFormChange.id,
+            newFormData: updatedFormData,
+            isUniqueValue: revision.projectFormChange.isUniqueValue,
+          },
+        },
+      },
+      debounceKey: revision.projectFormChange.id,
+    });
   };
 
   const schema: JSONSchema7 = useMemo(() => {
@@ -167,15 +199,17 @@ const ProjectForm: React.FC<Props> = (props) => {
       schema={schema}
       uiSchema={uiSchema}
       validate={uniqueProposalReferenceValidation}
+      formData={revision.projectFormChange.newFormData}
       formContext={{
         query,
-        form: props.formData,
+        form: revision.projectFormChange.newFormData,
         operatorCode: selectedOperator?.node?.operatorCode,
       }}
       widgets={{
         SelectRfpWidget: SelectRfpWidget,
         SelectProjectStatusWidget: SelectProjectStatusWidget,
       }}
+      onChange={(change) => handleChange(change.formData)}
     />
   );
 };

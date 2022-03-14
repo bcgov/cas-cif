@@ -3,12 +3,10 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { mutation } from "mutations/FormChange/updateProjectFormChange";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import { useMemo, useRef } from "react";
-import useDebouncedMutation from "mutations/useDebouncedMutation";
 import SavingIndicator from "components/Form/SavingIndicator";
 import ProjecManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectForm from "components/Form/ProjectForm";
@@ -18,6 +16,8 @@ import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
+import useDebouncedMutation from "mutations/useDebouncedMutation";
+import { mutation as updateProjectFormChangeMutation } from "mutations/FormChange/updateProjectFormChange";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -28,11 +28,6 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         updatedAt
-        projectFormChange {
-          id
-          newFormData
-          isUniqueValue(columnName: "rfpNumber")
-        }
         ...ProjectForm_projectRevision
         ...ProjectManagerFormGroup_revision
         ...ProjectContactForm_projectRevision
@@ -55,7 +50,8 @@ export function ProjectRevision({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   const [updateProjectFormChange, updatingProjectFormChange] =
-    useDebouncedMutation(mutation);
+    useDebouncedMutation(updateProjectFormChangeMutation);
+
   const [updateProjectRevision, updatingProjectRevision] = useMutation(
     updateProjectRevisionMutation
   );
@@ -68,33 +64,6 @@ export function ProjectRevision({
   );
 
   if (!query.projectRevision.id) return null;
-
-  const handleChange = (queriedFormChange: any, changeObject: any) => {
-    const updatedFormData = {
-      ...queriedFormChange.newFormData,
-      ...changeObject,
-    };
-    return updateProjectFormChange({
-      variables: {
-        input: {
-          id: queriedFormChange.id,
-          formChangePatch: {
-            newFormData: updatedFormData,
-          },
-        },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: queriedFormChange.id,
-            newFormData: updatedFormData,
-            isUniqueValue: queriedFormChange.isUniqueValue,
-          },
-        },
-      },
-      debounceKey: queriedFormChange.id,
-    });
-  };
 
   /**
    *  Function: approve staged change, trigger an insert on the project
@@ -167,16 +136,10 @@ export function ProjectRevision({
             <ProjectForm
               query={query}
               projectRevision={query.projectRevision}
-              formData={query.projectRevision.projectFormChange.newFormData}
               setValidatingForm={(validator) =>
                 (projectFormRef.current = validator)
               }
-              onChange={(change) =>
-                handleChange(
-                  query.projectRevision.projectFormChange,
-                  change.formData
-                )
-              }
+              updateProjectFormChange={updateProjectFormChange}
             />
           </Grid.Col>
           <Grid.Col>
