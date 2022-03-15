@@ -6,6 +6,7 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/001_cif_user");
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/004_cif_contact");
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
   it("renders the project overview form", () => {
@@ -105,6 +106,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
     cy.url().should("include", "/cif/project/");
+    cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
     cy.findByText("Edit").click();
     cy.url().should("include", "/cif/project-revision/");
 
