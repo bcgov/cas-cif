@@ -11,6 +11,7 @@ import ErrorFallback from "./500";
 import "normalize.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import LoadingFallback from "components/Layout/LoadingFallback";
 config.autoAddCss = false;
 
 const clientEnv = getClientEnvironment();
@@ -24,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const component =
     typeof window !== "undefined" ? (
-      <Suspense fallback="loading">
+      <Suspense fallback={<LoadingFallback />}>
         <Component {...pageProps} {...relayProps} />
       </Suspense>
     ) : (

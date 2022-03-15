@@ -102,6 +102,7 @@ export function Operators({ preloadedQuery }: RelayProps<{}, operatorsQuery>) {
         paginated
         totalRowCount={allOperators.totalCount}
         filters={tableFilters}
+        pageQuery={OperatorsQuery}
       >
         {allOperators.edges.map(({ node }) => (
           <OperatorTableRow key={node.id} operator={node} />

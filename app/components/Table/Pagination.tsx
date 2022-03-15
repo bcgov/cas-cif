@@ -15,6 +15,7 @@ interface Props {
    * The number of items to skip to get to the current page. Defaults to 0
    */
   offset?: number;
+  disabled;
   onOffsetChange: (offset: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 }
@@ -72,6 +73,7 @@ const FilterableTablePagination: React.FunctionComponent<Props> = ({
   totalCount,
   pageSize = DEFAULT_PAGE_SIZE,
   offset = 0,
+  disabled,
   onOffsetChange,
   onPageSizeChange,
 }) => {
@@ -88,8 +90,13 @@ const FilterableTablePagination: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <>
+    <td
+      colSpan={1000}
+      aria-disabled={disabled}
+      className={disabled ? "disabled" : ""}
+    >
       <PaginationUnstyled
+        component="div"
         count={totalCount}
         page={activePage}
         rowsPerPage={pageSize}
@@ -100,7 +107,14 @@ const FilterableTablePagination: React.FunctionComponent<Props> = ({
         components={paginationComponents}
         componentsProps={paginationComponentsProps as any}
       />
-    </>
+      <style jsx>{`
+        .disabled {
+          cursor: not-allowed;
+          pointer-events: none;
+          opacity: 0.5;
+        }
+      `}</style>
+    </td>
   );
 };
 

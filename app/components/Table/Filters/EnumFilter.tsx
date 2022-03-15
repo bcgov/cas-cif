@@ -28,11 +28,12 @@ export default class EnumFilter<T> extends TableFilter {
 
   searchOptionValues: Array<{ display: string; value: T }>;
 
-  Component: FilterComponent = ({ filterArgs, onChange }) => {
+  Component: FilterComponent = ({ filterArgs, disabled, onChange }) => {
     return (
       <td>
         <Dropdown
           name={this.argName}
+          disabled={disabled}
           value={(filterArgs[this.argName] ?? "") as string}
           aria-label={`Filter by ${this.title}`}
           onChange={(evt) =>

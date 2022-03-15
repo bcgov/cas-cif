@@ -5,12 +5,14 @@ import { TableFilter, FilterArgs } from "./Filters";
 interface Props {
   filters: TableFilter[];
   filterArgs: FilterArgs;
+  disabled?: boolean;
   onSubmit: (searchData: Record<string, string | number | boolean>) => void;
 }
 
 const FilterRow: React.FunctionComponent<Props> = ({
   filters,
   filterArgs,
+  disabled,
   onSubmit,
 }) => {
   const [searchFilters, setSearchFilters] = useState(filterArgs);
@@ -38,17 +40,23 @@ const FilterRow: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <tr onKeyDown={handleKeyDown}>
+    <tr onKeyDown={handleKeyDown} aria-disabled={disabled}>
       {filters.map((filter) => (
         <filter.Component
           key={filter.argName + filter.title}
           filterArgs={searchFilters}
+          disabled={disabled}
           onChange={handleFilterChange}
         />
       ))}
       <td>
         <div className="flex">
-          <Button variant="secondary" size="small" onClick={clearForm}>
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={clearForm}
+            disabled={disabled}
+          >
             Clear
           </Button>
           <Button
@@ -56,6 +64,7 @@ const FilterRow: React.FunctionComponent<Props> = ({
             size="small"
             variant="primary"
             onClick={() => onSubmit(searchFilters)}
+            disabled={disabled}
           >
             Apply
           </Button>

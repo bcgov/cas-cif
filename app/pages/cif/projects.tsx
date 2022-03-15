@@ -120,6 +120,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         paginated
         totalRowCount={allProjects.totalCount}
         filters={tableFilters}
+        pageQuery={ProjectsQuery}
       >
         {allProjects.edges.map(({ node }) => (
           <ProjectTableRow key={node.id} project={node} />

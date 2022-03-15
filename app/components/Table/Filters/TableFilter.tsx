@@ -50,7 +50,7 @@ export default abstract class TableFilter<T = string | number | boolean> {
 
   castValue: (value: string) => T = (value) => value as any;
 
-  Component: FilterComponent = ({ filterArgs, onChange }) => {
+  Component: FilterComponent = ({ filterArgs, disabled, onChange }) => {
     return (
       <td>
         <Input
@@ -59,6 +59,7 @@ export default abstract class TableFilter<T = string | number | boolean> {
           size="small"
           value={(filterArgs[this.argName] ?? "") as string}
           aria-label={`Filter by ${this.title}`}
+          disabled={disabled}
           onChange={(evt) =>
             onChange(this.castValue(evt.target.value) as any, this.argName)
           }
