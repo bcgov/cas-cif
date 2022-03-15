@@ -71,7 +71,7 @@ describe("The Project Form", () => {
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         formData: {
-          rfpNumber: "testidentifier",
+          proposalReference: "testidentifier",
           summary: undefined,
         },
       })
@@ -85,7 +85,7 @@ describe("The Project Form", () => {
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         formData: {
-          rfpNumber: "testidentifier",
+          proposalReference: "testidentifier",
           summary: "testsummary",
         },
       })
@@ -93,7 +93,7 @@ describe("The Project Form", () => {
   });
   it("loads with the correct initial form data", () => {
     props.formData = {
-      rfpNumber: "12345678",
+      proposalReference: "12345678",
       summary: "d",
       operatorId: 1,
       fundingStreamRfpId: 1,

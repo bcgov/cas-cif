@@ -50,6 +50,6 @@ comment on column cif.operator.swrs_trade_name is 'The trade name of this operat
 comment on column cif.operator.legal_name is 'The legal name of this operator';
 comment on column cif.operator.trade_name is 'The trade name of this operator';
 comment on column cif.operator.bc_registry_id is 'The bc registry id assigned to this operator';
-comment on column cif.operator.operator_code is 'The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the rfp_number';
+comment on column cif.operator.operator_code is 'The operator code is a set of characters that uniquely identifies the operator and is used in the cif.project table as part of the propsal_reference';
 
 commit;

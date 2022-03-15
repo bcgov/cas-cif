@@ -43,7 +43,7 @@ describe("the new project page", () => {
     cy.get("button").contains("Add a Project").click();
     cy.url().should("include", "/cif/project-revision");
 
-    cy.get("#root_rfpNumber").type("1");
+    cy.get("#root_proposalReference").type("1");
     cy.get("button").contains("Submit").click();
     cy.injectAxe();
     // Check error message accessibility

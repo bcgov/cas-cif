@@ -12,7 +12,7 @@ select columns_are(
     'total_funding_request',
     'operator_id',
     'funding_stream_rfp_id',
-    'rfp_number',
+    'proposal_reference',
     'project_status_id',
     'created_at',
     'created_by',
@@ -34,25 +34,25 @@ values
   ('second operator legal name', 'second operator lorem ipsum dolor sit amet limited', 'BC1234567', 'EFGH'),
   ('third operator legal name', 'third operator trade name', 'EF3456789', 'IJKL');
 
-insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
 values
   (1, 1, 1, '000', 'summary', 'project 1'),
   (2, 1, 1, '000', 'summary', 'project 2'),
   (3, 1, 1, '000', 'summary', 'project 3');
 
 select is (
-  (select rfp_number from cif.project where id=1),
+  (select proposal_reference from cif.project where id=1),
   '2019-RFP-1-000-ABCD',
-  'rfp_number is generated from values in the operator and funding_stream_rfp tables'
+  'proposal_reference is generated from values in the operator and funding_stream_rfp tables'
 );
 
 select throws_like(
   $$
-    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
     values (1, 1, 1, '000', 'summary', 'project 1');
   $$,
   'duplicate key value%',
-    'cif.rfp_number must be unique'
+    'cif.proposal_reference must be unique'
 );
 
 
@@ -74,7 +74,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
     values (1, 1, 1, '001', 'summary', 'project 4');
   $$,
     'cif_admin can insert data in project table'
@@ -117,7 +117,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+    insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
     values (1, 1, 1, '002', 'summary', 'project 5');
   $$,
     'cif_internal can insert data in project table'

@@ -14,7 +14,7 @@ const mutation = graphql`
         id
         newFormData
         operation
-        isUniqueValue(columnName: "rfpNumber")
+        isUniqueValue(columnName: "proposalReference")
         projectRevisionByProjectRevisionId {
           ...ProjectContactForm_projectRevision
           ...ProjectManagerFormGroup_revision

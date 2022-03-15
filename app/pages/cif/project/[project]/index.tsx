@@ -16,7 +16,7 @@ export const pageQuery = graphql`
     project(id: $project) {
       rowId
       projectName
-      rfpNumber
+      proposalReference
       totalFundingRequest
       summary
       operatorByOperatorId {
@@ -111,7 +111,7 @@ export function ProjectViewPage({
       </header>
       <dl>
         <dt>RFP Number</dt>
-        <dd>{project.rfpNumber}</dd>
+        <dd>{project.proposalReference}</dd>
 
         <dt>Project Name</dt>
         <dd>{project.projectName}</dd>

@@ -182,15 +182,15 @@ exports[`The Project Form matches the snapshot 1`] = `
                 >
                   <label
                     class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_rfpNumber"
+                    for="root_proposalReference"
                   >
                     Proposal Reference
                   </label>
                   <input
                     aria-label="Proposal Reference"
                     class="sc-bqiRlB hrAFNs pg-input-input"
-                    id="root_rfpNumber"
-                    name="root_rfpNumber-input"
+                    id="root_proposalReference"
+                    name="root_proposalReference-input"
                     placeholder="2020-RFP-1-123-ABCD"
                     required=""
                     value=""

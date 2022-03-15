@@ -4,7 +4,7 @@ begin;
 do $$
   begin
     for project_id in 1..50 loop
-      insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name, total_funding_request) values
+      insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name, total_funding_request) values
       (
         project_id % 3 + 1,
         1,

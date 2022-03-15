@@ -30,7 +30,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         projectFormChange {
           id
           newFormData
-          isUniqueValue(columnName: "rfpNumber")
+          isUniqueValue(columnName: "proposalReference")
         }
       }
     `,
@@ -81,7 +81,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   ) => {
     console.log(errors);
     if (revision.projectFormChange.isUniqueValue === false) {
-      errors.rfpNumber.addError(
+      errors.proposalReference.addError(
         "Proposal reference already exists in the system."
       );
     }
@@ -137,14 +137,14 @@ const ProjectForm: React.FC<Props> = (props) => {
         "fundingStreamRfpId",
         "operatorId",
         "operatorTradeName",
-        "rfpNumber",
+        "proposalReference",
         "projectName",
         "summary",
         "totalFundingRequest",
         "projectStatus",
         "projectStatusId",
       ],
-      rfpNumber: {
+      proposalReference: {
         "ui:placeholder": "2020-RFP-1-123-ABCD",
         "bcgov:size": "small",
       },

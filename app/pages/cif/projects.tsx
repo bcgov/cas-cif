@@ -20,7 +20,7 @@ export const ProjectsQuery = graphql`
   query projectsQuery(
     $projectName: String
     $operatorTradeName: String
-    $rfpNumber: String
+    $proposalReference: String
     $status: String
     $offset: Int
     $pageSize: Int
@@ -42,7 +42,7 @@ export const ProjectsQuery = graphql`
         operatorByOperatorId: {
           tradeName: { includesInsensitive: $operatorTradeName }
         }
-        rfpNumber: { includesInsensitive: $rfpNumber }
+        proposalReference: { includesInsensitive: $proposalReference }
         projectStatusByProjectStatusId: {
           name: { includesInsensitive: $status }
         }
@@ -65,7 +65,7 @@ const tableFilters = [
   new TextFilter("Operator Trade Name", "operatorTradeName", {
     orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
   }),
-  new TextFilter("RFP ID", "rfpNumber"),
+  new TextFilter("RFP ID", "proposalReference"),
   new TextFilter("Status", "status", {
     orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
   }),
