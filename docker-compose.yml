@@ -1,21 +1,6 @@
 version: "3.9"
 
 services:
-  # cif:
-  #   build:
-  #     context: ./app
-  #     dockerfile: Dockerfile.dev
-  #   restart: always
-  #   environment:
-  #     - PGUSER=cif_app
-  #     - PGPASSWORD=""
-  #   depends_on:
-  #       - db
-  #   ports:
-  #       - 3004:3004
-  #   command: ["yarn", "dev"]
-  #   volumes:
-  #     - ./app:/app
   db:
     build:
       context: .
