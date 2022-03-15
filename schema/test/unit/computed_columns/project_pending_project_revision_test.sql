@@ -20,8 +20,8 @@ insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_i
 overriding system value
 values
   (1, 1, 1, 1, '000', 'summary', 'project 1'),
-  (2, 2, 1, 1, '000', 'summary', 'project 2'),
-  (3, 3, 1, 1, '000', 'summary', 'project 3');
+  (2, 2, 1, 1, '001', 'summary', 'project 2'),
+  (3, 3, 1, 1, '002', 'summary', 'project 3');
 
 insert into cif.project_revision(id, change_status, project_id)
 overriding system value

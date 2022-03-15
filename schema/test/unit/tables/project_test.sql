@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(14);
 
 select has_table('cif', 'project', 'table cif.project exists');
 select columns_are(
@@ -23,7 +23,14 @@ select columns_are(
   ],
   'columns in cif.project match expected columns'
 );
-select indexes_are('cif', 'project', array['cif_project_operator_id'], 'Indexes on cif.project table match expected indexes');
+select indexes_are('cif', 'project', array[
+  'cif_project_operator_id',
+  'cif_project_archived_by_foreign_key',
+  'cif_project_created_by_foreign_key',
+  'cif_project_updated_by_foreign_key',
+  'project_pkey',
+  'project_proposal_reference_key' ],
+'Indexes on cif.project table match expected indexes');
 
 -- Test Setup
 truncate cif.project restart identity cascade;
@@ -36,20 +43,14 @@ values
 
 insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
 values
-  (1, 1, 1, '000', 'summary', 'project 1'),
-  (2, 1, 1, '000', 'summary', 'project 2'),
-  (3, 1, 1, '000', 'summary', 'project 3');
-
-select is (
-  (select proposal_reference from cif.project where id=1),
-  '2019-RFP-1-000-ABCD',
-  'proposal_reference is generated from values in the operator and funding_stream_rfp tables'
-);
+  (1, 1, 1, '2000-RFP-1-123-ABCD', 'summary', 'project 1'),
+  (2, 1, 1, '2000-RFP-1-456-ABCD', 'summary', 'project 2'),
+  (3, 1, 1, '2000-RFP-1-789-ABCD', 'summary', 'project 3');
 
 select throws_like(
   $$
     insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
-    values (1, 1, 1, '000', 'summary', 'project 1');
+    values (1, 1, 1, '2000-RFP-1-123-ABCD', 'summary', 'project 1');
   $$,
   'duplicate key value%',
     'cif.proposal_reference must be unique'
