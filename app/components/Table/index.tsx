@@ -144,7 +144,7 @@ const Table: React.FC<Props> = ({
                 orderByPrefix={filter.orderByPrefix}
                 displayName={filter.title}
                 sortable={filter.isSortEnabled}
-                disabled={isRefetching}
+                loading={isRefetching}
                 onRouteUpdate={handleRouteUpdate}
               />
             ))}

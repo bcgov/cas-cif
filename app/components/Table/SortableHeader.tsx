@@ -11,7 +11,7 @@ interface Props {
   orderByPrefix?: string;
   displayName: string;
   sortable?: boolean;
-  disabled?: boolean;
+  loading?: boolean;
   onRouteUpdate: (url: any, mode: "replace" | "push") => void;
 }
 
@@ -33,7 +33,7 @@ const SortableHeader: React.FC<Props> = ({
   orderByPrefix,
   displayName,
   sortable,
-  disabled,
+  loading,
   onRouteUpdate,
 }) => {
   const router = useRouter();
@@ -76,8 +76,8 @@ const SortableHeader: React.FC<Props> = ({
     <th
       onClick={() => sortable && handleClick()}
       aria-sort={sortDirection}
-      className={disabled ? "disabled" : ""}
-      aria-disabled={disabled}
+      className={loading ? "loading" : ""}
+      aria-disabled={loading}
     >
       {displayName}&nbsp;
       {sortable && (
@@ -114,10 +114,26 @@ const SortableHeader: React.FC<Props> = ({
           border-top: 1px solid #003366;
         }
 
-        .disabled {
+        .loading {
           cursor: not-allowed;
           pointer-events: none;
-          opacity: 0.5;
+          animation: shimmer-animation 2s infinite linear;
+          background: linear-gradient(
+            to right,
+            #003366 4%,
+            #38598a 25%,
+            #003366 36%
+          );
+          background-size: 500px 100%;
+        }
+
+        @keyframes shimmer-animation {
+          0% {
+            background-position: -500px 0;
+          }
+          100% {
+            background-position: 500px 0;
+          }
         }
       `}</style>
     </th>
