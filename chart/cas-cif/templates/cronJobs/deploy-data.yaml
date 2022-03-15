@@ -65,7 +65,7 @@ spec:
                 - |
                   set -euo pipefail;
                   sqitch deploy;
-                  if [[ "$NAMESPACE" == *-dev  ]]; then
+                  if [[ "$NAMESPACE" == *-dev || "$NAMESPACE" == *-test ]]; then
                   for file in data/dev/*.sql; do
                     psql -d cif -f "${file}";
                   done;
