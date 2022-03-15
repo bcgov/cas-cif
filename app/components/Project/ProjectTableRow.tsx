@@ -31,7 +31,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         projectStatusByProjectStatusId {
           name
         }
-        projectManagersByProjectId {
+        projectManagersByProjectId(orderBy: PROJECT_MANAGER_LABEL_ID_ASC) {
           edges {
             node {
               cifUserByCifUserId {
