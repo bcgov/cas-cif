@@ -90,7 +90,11 @@ const FilterableTablePagination: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <td aria-disabled={disabled} className={disabled ? "disabled" : ""}>
+    <td
+      colSpan={1000}
+      aria-disabled={disabled}
+      className={disabled ? "disabled" : ""}
+    >
       <PaginationUnstyled
         component="div"
         count={totalCount}
