@@ -18,8 +18,8 @@ services:
   #     - ./app:/app
   db:
     build:
-      context: ./dev/poc/db
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: dev/db/Dockerfile
     environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
@@ -29,3 +29,16 @@ services:
       - "./dev/db/data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  run-migrations:
+    image: sqitch/sqitch:latest
+    volumes:
+      - "./schema:/repo"
+    command: ["deploy", "db:postgresql://postgres:postgres@db:5432/cif"]
+    depends_on:
+      db:
+        condition: service_healthy
