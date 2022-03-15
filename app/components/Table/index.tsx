@@ -7,6 +7,7 @@ import {
   GraphQLTaggedNode,
   useRelayEnvironment,
 } from "react-relay";
+import Sentry from "@sentry/react";
 import FilterRow from "./FilterRow";
 import { FilterArgs, PageArgs, TableFilter } from "./Filters";
 import Pagination from "./Pagination";
@@ -78,9 +79,12 @@ const Table: React.FC<Props> = ({
         { fetchPolicy: "store-or-network" }
       ).subscribe({
         complete: afterFetch,
-        // if the query fails, we still want to update the route,
-        // which will retry the query and let a 500 page be rendered if it fails again
-        error: afterFetch,
+        error: (error) => {
+          Sentry.captureException(error);
+          // if the query fails, we still want to update the route,
+          // which will retry the query and let a 500 page be rendered if it fails again
+          afterFetch();
+        },
       });
     },
     [environment, isRefetching, router, pageQuery]
