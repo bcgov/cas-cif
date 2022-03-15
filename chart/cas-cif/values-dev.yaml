@@ -19,7 +19,7 @@ cas-postgres:
     bucketSuffix: cif-backups
 
 db:
-  preInitCommand: |
+  preUpgradeCommand: |
     psql<<EOF
       select pg_terminate_backend(pid) from pg_stat_activity where
       -- don't kill my own connection!

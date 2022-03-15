@@ -49,7 +49,8 @@ db:
   name: cif
   appUser: cif_app
   ownerUser: cif
-  preInitCommand: ""
+  # A shell script that will be executed in a pre-upgrade job, on the psql image.
+  preUpgradeCommand: ~
 
 nginx-sidecar:
   hostName: ~
