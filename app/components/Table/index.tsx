@@ -74,7 +74,8 @@ const Table: React.FC<Props> = ({
       fetchQuery(
         environment,
         pageQuery,
-        withRelayOptions.variablesFromContext(url)
+        withRelayOptions.variablesFromContext(url),
+        { fetchPolicy: "store-or-network" }
       ).subscribe({
         complete: afterFetch,
         // if the query fails, we still want to update the route,
