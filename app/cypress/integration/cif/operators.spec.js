@@ -7,6 +7,7 @@ describe("the operators page", () => {
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/003_cif_project");
     cy.mockLogin("cif_internal");
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
   it("displays the list of operators", () => {
