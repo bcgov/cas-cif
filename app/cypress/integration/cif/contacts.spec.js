@@ -16,6 +16,7 @@ describe("The contacts page", () => {
 
     cy.contains("Changes saved").should("be.visible");
     cy.get("input[aria-label=Phone]").type("1234567890");
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Contact form",
     });

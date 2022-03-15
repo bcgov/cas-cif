@@ -19,6 +19,7 @@ describe("the new project page", () => {
     cy.injectAxe();
     // TODO: the entire body should be tested for accessibility
     cy.checkA11y("main", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "New Project Page",
       variant: "empty",
@@ -49,6 +50,7 @@ describe("the new project page", () => {
     cy.injectAxe();
     // Check error message accessibility
     cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Project Page with errors",
       variant: "empty",

@@ -59,6 +59,7 @@ describe("the operators page", () => {
     cy.visit("/cif/operators");
     cy.get("button").contains("View").click();
     cy.contains("Operator Information");
+
     cy.get("body").happoScreenshot({
       component: "Operator View Page",
     });
@@ -67,6 +68,7 @@ describe("the operators page", () => {
     cy.contains("ABCD");
     cy.get("button").contains("Edit").click();
     cy.contains("Edit Operator");
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Operator Edit Page",
     });
