@@ -30,7 +30,6 @@ const TestRenderer = (extraProps: any) => {
       query={data.query}
       projectRevision={data.query.projectRevision}
       setValidatingForm={jest.fn()}
-      //updateProjectFormChange={jest.fn()}
       {...extraProps}
     />
   );
@@ -57,7 +56,7 @@ describe("The Project Form", () => {
     const componentUnderTest = renderProjectForm();
     expect(componentUnderTest.container).toMatchSnapshot();
   });
-  it("triggers the applyFormChange with the proper data", () => {
+  it("calls the mutation passed in with the props with the proper data on form change", () => {
     const mockUpdateProjectFormChange = jest.fn();
 
     environment.mock.queueOperationResolver((operation) =>
