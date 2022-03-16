@@ -11,8 +11,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          name: {{ .Values.ggircs.prefix }}
-          environment: {{ .Values.ggircs.environment }}
+          kubernetes.io/metadata.name: {{ .Values.ggircs.namespace }}
       podSelector:
         matchLabels:
           app.kubernetes.io/instance: {{ .Values.metabase.instanceName }}

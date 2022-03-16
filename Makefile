@@ -203,7 +203,7 @@ lint_chart: ## Checks the configured helm chart template definitions against the
 lint_chart:
 	@set -euo pipefail; \
 	helm dep up ./chart/cas-cif; \
-	helm template --set ggircs.namespace=dummy-namespace --set ggircs.prefix=dummy-prefix --set ggircs.environment=dummy-env -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
+	helm template --set ggircs.namespace=dummy-namespace -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
 
 
 .PHONY: install
@@ -217,8 +217,6 @@ install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESP
 										--set defaultImageTag=$(GIT_SHA1) \
 	  								--set download-dags.dagConfiguration="$$dagConfig" \
 										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
-										--set ggircs.prefix=$(GGIRCS_NAMESPACE_PREFIX) \
-										--set ggircs.environment=$(ENVIRONMENT) \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 install:
 	@set -euo pipefail; \
