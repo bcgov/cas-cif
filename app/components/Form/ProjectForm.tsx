@@ -70,7 +70,6 @@ const ProjectForm: React.FC<Props> = (props) => {
   props.setValidatingForm({
     selfValidate: () => {
       const formObject = formRef.current;
-      console.log(formRef.current);
       return validateFormWithErrors(formObject);
     },
   });
@@ -79,7 +78,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     formData: any,
     errors: FormValidation
   ) => {
-    console.log(errors);
     if (revision.projectFormChange.isUniqueValue === false) {
       errors.proposalReference.addError(
         "Proposal reference already exists in the system."
