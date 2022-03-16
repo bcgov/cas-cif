@@ -103,3 +103,6 @@ download-dags:
 ggircs:
   service: cas-ggircs-patroni
   instanceName: cas-ggircs
+
+metabase:
+  instanceName: cas-metabase
