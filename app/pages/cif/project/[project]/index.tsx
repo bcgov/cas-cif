@@ -43,7 +43,7 @@ export const pageQuery = graphql`
           }
         }
       }
-      projectManagersByProjectId {
+      projectManagersByProjectId(orderBy: PROJECT_MANAGER_LABEL_ID_ASC) {
         edges {
           node {
             cifUserByCifUserId {
