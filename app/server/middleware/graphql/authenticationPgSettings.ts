@@ -88,6 +88,7 @@ const authenticationPgSettings = (req: Request) => {
     "given_name",
     "family_name",
     "email",
+    "idir_userid",
     "broker_session_id",
     "user_groups",
     "priority_group",
