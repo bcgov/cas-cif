@@ -239,14 +239,8 @@ exports[`The Project Form matches the snapshot 1`] = `
                 <div
                   class="sc-fFeiMQ jpQRmF pg-textarea"
                 >
-                  <label
-                    class="sc-bkkeKt joEfKW pg-textarea-label"
-                    for="root_summary"
-                  >
-                    Summary
-                  </label>
                   <textarea
-                    aria-label="Summary"
+                    aria-label="root_summary-textarea"
                     class="sc-ieecCq fCLtjf pg-textarea-input"
                     id="root_summary"
                     name="root_summary-textarea"

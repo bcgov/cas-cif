@@ -26,7 +26,6 @@ const ProjectForm: React.FC<Props> = (props) => {
   const revision = useFragment(
     graphql`
       fragment ProjectForm_projectRevision on ProjectRevision {
-        id
         projectFormChange {
           id
           newFormData

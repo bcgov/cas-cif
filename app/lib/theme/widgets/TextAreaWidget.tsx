@@ -1,5 +1,4 @@
 import { WidgetProps } from "@rjsf/core";
-import getRequiredLabel from "../utils/getRequiredLabel";
 import Textarea from "@button-inc/bcgov-theme/Textarea";
 import FieldLabel from "./FieldLabel";
 
@@ -24,7 +23,6 @@ const TextAreaWidget: React.FC<WidgetProps> = ({
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
         placeholder={placeholder}
-        label={getRequiredLabel(label, required)}
         value={value || ""}
         size={"medium"}
         resize="vertical"
