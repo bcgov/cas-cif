@@ -177,17 +177,20 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_proposalReference"
+                >
+                  Proposal Reference
+                </label>
+                <small>
+                   
+                  (e.g. 2020-RFP-1-ABCD-123)
+                </small>
                 <div
                   class="sc-crHmcD bKATQK pg-input"
                 >
-                  <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_proposalReference"
-                  >
-                    Proposal Reference
-                  </label>
                   <input
-                    aria-label="Proposal Reference"
+                    aria-label="root_proposalReference-input"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_proposalReference"
                     name="root_proposalReference-input"
@@ -203,17 +206,16 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_projectName"
+                >
+                  Project Name
+                </label>
                 <div
                   class="sc-crHmcD bKATQK pg-input"
                 >
-                  <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_projectName"
-                  >
-                    Project Name
-                  </label>
                   <input
-                    aria-label="Project Name"
+                    aria-label="root_projectName-input"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_projectName"
                     name="root_projectName-input"
@@ -229,6 +231,11 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_summary"
+                >
+                  Summary
+                </label>
                 <div
                   class="sc-fFeiMQ jpQRmF pg-textarea"
                 >

@@ -6,7 +6,6 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
     class="jsx-9409829"
   >
     <label
-      class="jsx-9409829"
       for="1"
     >
       Search (optional)
@@ -54,7 +53,6 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
     class="jsx-9409829"
   >
     <label
-      class="jsx-9409829"
       for="1"
     >
       Search (optional)

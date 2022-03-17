@@ -80,7 +80,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   ) => {
     if (revision.projectFormChange.isUniqueValue === false) {
       errors.proposalReference.addError(
-        "Proposal reference already exists in the system."
+        "A proposal with the same proposal reference already exists. Please specify a different proposal reference."
       );
     }
 
@@ -145,6 +145,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       proposalReference: {
         "ui:placeholder": "2020-RFP-1-123-ABCD",
         "bcgov:size": "small",
+        "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
       },
       projectName: {
         "ui:placeholder": "Short project name",

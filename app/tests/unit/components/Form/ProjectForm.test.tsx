@@ -206,7 +206,9 @@ describe("The Project Form", () => {
     });
 
     expect(
-      screen.getByText(/Proposal reference already exists in the system./i)
+      screen.getByText(
+        /A proposal with the same proposal reference already exists. Please specify a different proposal reference./i
+      )
     ).toBeInTheDocument();
   });
 });

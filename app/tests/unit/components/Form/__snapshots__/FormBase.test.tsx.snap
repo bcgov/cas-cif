@@ -26,17 +26,16 @@ exports[`The FormBase component renders a test schema 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_field"
+                >
+                  field
+                </label>
                 <div
                   class="sc-crHmcD bKATQK pg-input"
                 >
-                  <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_field"
-                  >
-                    field
-                  </label>
                   <input
-                    aria-label="field"
+                    aria-label="root_field-input"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_field"
                     name="root_field-input"
