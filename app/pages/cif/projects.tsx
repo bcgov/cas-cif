@@ -65,7 +65,7 @@ const tableFilters = [
   new TextFilter("Operator Trade Name", "operatorTradeName", {
     orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
   }),
-  new TextFilter("RFP ID", "proposalReference"),
+  new TextFilter("Proposal Reference", "proposalReference"),
   new TextFilter("Status", "status", {
     orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
   }),

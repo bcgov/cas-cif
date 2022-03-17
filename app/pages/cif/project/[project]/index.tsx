@@ -110,7 +110,7 @@ export function ProjectViewPage({
         {amendButton}
       </header>
       <dl>
-        <dt>RFP Number</dt>
+        <dt>Proposal Reference</dt>
         <dd>{project.proposalReference}</dd>
 
         <dt>Project Name</dt>
