@@ -5,6 +5,7 @@ import { deleteManagerFromRevisionWithArchiveMutation } from "__generated__/dele
 
 let mutation;
 
+// Delete mutation for a form_change that was created in the same revision.
 export const deleteMutation = graphql`
   mutation deleteManagerFromRevisionMutation(
     $input: DeleteFormChangeInput!
@@ -35,6 +36,7 @@ export const deleteMutation = graphql`
   }
 `;
 
+// Delete mutation for a form_change that was created in a previous revision & should be updated with operation = 'ARCHIVE'.
 export const archiveMutation = graphql`
   mutation deleteManagerFromRevisionWithArchiveMutation(
     $input: UpdateFormChangeInput!
@@ -78,6 +80,7 @@ export const useDeleteManagerFromRevisionMutation = (
     >
   ) => Disposable
 ) => {
+  // Dynamically set the mutation to use based on the operation.
   mutation = operation === "CREATE" ? deleteMutation : archiveMutation;
   return useMutation<
     | deleteManagerFromRevisionMutation

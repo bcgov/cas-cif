@@ -140,6 +140,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   const handleClear = () => {
     let variables;
     let optimisticResponse;
+    // If the form_change has a CREATE operation then we want to delete the form_change from the database
     if (change.formChange?.operation === "CREATE")
       variables = {
         input: {
@@ -147,6 +148,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         },
         projectRevision: projectRevisionId,
       };
+    // If the form_change has an UPDATE operation then we want to update the form_change in the database with operation = 'ARCHIVE'
     else {
       variables = {
         input: {
