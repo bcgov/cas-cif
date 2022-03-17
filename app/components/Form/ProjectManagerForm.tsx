@@ -12,7 +12,7 @@ import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevis
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FieldLabel from "lib/theme/widgets/FieldLabel";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
+import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
 
 interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
@@ -135,13 +135,41 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation] = useUpdateFormChange();
 
   // Delete a manager from the project revision
-  const [discardFormChange, discardInFlight] = useDiscardFormChange();
+  const [deleteManager, deleteManagerInFlight] =
+    useDeleteManagerFromRevisionMutation(change.formChange?.operation);
   const handleClear = () => {
-    discardFormChange({
-      formChange: {
-        id: change.formChange.id,
-        operation: change.formChange.operation,
-      },
+    let variables;
+    let optimisticResponse;
+    if (change.formChange?.operation === "CREATE")
+      variables = {
+        input: {
+          id: change.formChange.id,
+        },
+        projectRevision: projectRevisionId,
+      };
+    else {
+      variables = {
+        input: {
+          id: change.formChange.id,
+          formChangePatch: {
+            operation: "ARCHIVE",
+          },
+        },
+        projectRevision: projectRevisionId,
+      };
+      optimisticResponse = {
+        updateFormChange: {
+          formChange: {
+            id: change.formChange.id,
+            operation: "ARCHIVE",
+            newFormData: {},
+          },
+        },
+      };
+    }
+    deleteManager({
+      variables,
+      optimisticResponse,
       onError: (error) => {
         console.log(error);
       },
@@ -186,7 +214,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
       addManager(data);
     }
     // If a form_change exists, and the payload does not contain a cifUserId delete it
-    else if (formChangeId && !formChange.cifUserId && !discardInFlight) {
+    else if (formChangeId && !formChange.cifUserId && !deleteManagerInFlight) {
       handleClear();
     }
   };
@@ -222,7 +250,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         </Grid.Col>
         <Grid.Col span={4}>
           <Button
-            disabled={discardInFlight || !change.formChange?.id}
+            disabled={deleteManagerInFlight || !change.formChange?.id}
             variant="secondary"
             size="small"
             onClick={() => handleClear()}
