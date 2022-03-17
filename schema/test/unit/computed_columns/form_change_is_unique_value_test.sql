@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(4);
+select plan(5);
 
 create table cif.test_table(
   id integer primary key generated always as identity,
@@ -59,6 +59,29 @@ select is(
   ),
   true,
   'Returns true if the value exists in the table on a record that is archived'
+);
+
+
+insert into cif.test_table(test_field)
+values ('an existing value');
+
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, change_reason, json_schema_name)
+values (
+  '{"testField": "an existing value"}',
+  'update',
+  'cif',
+  'test_table',
+  (select id from cif.test_table where test_field='an existing value'),
+  'testing uniqueness of values',
+  'schema'
+);
+
+select is(
+  (
+    select cif.form_change_is_unique_value((select row(form_change.*)::cif.form_change from cif.form_change where change_reason='testing uniqueness of values'), 'testField')
+  ),
+  true,
+  'Returns true if the value exists in the table on the record the form_change is trying to modify'
 );
 
 select finish();
