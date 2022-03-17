@@ -3,6 +3,7 @@ describe("The contacts page", () => {
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
     cy.mockLogin("cif_internal");
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
   it("Allows creating and editing a contact", () => {
@@ -15,6 +16,7 @@ describe("The contacts page", () => {
 
     cy.contains("Changes saved").should("be.visible");
     cy.get("input[aria-label=Phone]").type("1234567890");
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Contact form",
     });
