@@ -9,3 +9,4 @@ cypress.env.json
 .env
 
 app/cypress.env.json
+dev/db/data
