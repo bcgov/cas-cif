@@ -16,7 +16,7 @@ runs:
       run: docker run --network=host -e "PGUSER=postgres" --workdir="/root/mocks_schema" gcr.io/ggl-cas-storage/cas-cif-schema:${{ github.sha }} sqitch deploy
     - name: start app
       shell: bash
-      run: docker run -d --network=host -e "PGUSER=postgres" -e "ENABLE_DB_MOCKS='true'" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "yarn start ENABLE_MOCK_AUTH"
+      run: docker run -d --network=host -e "PGUSER=postgres" -p 3004:3004 gcr.io/ggl-cas-storage/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "ENABLE_DB_MOCKS='true' yarn start ENABLE_MOCK_AUTH"
     - name: start minio
       shell: bash
       run: docker run -d --network=host -p 9000:9000 minio/minio:RELEASE.2021-04-22T15-44-28Z server /data
