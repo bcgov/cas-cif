@@ -3,8 +3,6 @@ import { MutationConfig } from "relay-runtime";
 import { deleteManagerFromRevisionMutation } from "__generated__/deleteManagerFromRevisionMutation.graphql";
 import { deleteManagerFromRevisionWithArchiveMutation } from "__generated__/deleteManagerFromRevisionWithArchiveMutation.graphql";
 
-let mutation;
-
 // Delete mutation for a form_change that was created in the same revision.
 export const deleteMutation = graphql`
   mutation deleteManagerFromRevisionMutation(
@@ -81,7 +79,7 @@ export const useDeleteManagerFromRevisionMutation = (
   ) => Disposable
 ) => {
   // Dynamically set the mutation to use based on the operation.
-  mutation = operation === "CREATE" ? deleteMutation : archiveMutation;
+  const mutation = operation === "CREATE" ? deleteMutation : archiveMutation;
   return useMutation<
     | deleteManagerFromRevisionMutation
     | deleteManagerFromRevisionWithArchiveMutation
