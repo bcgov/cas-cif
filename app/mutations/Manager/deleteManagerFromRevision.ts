@@ -1,7 +1,26 @@
 import { useMutation, graphql, Disposable, Environment } from "react-relay";
-import { MutationConfig } from "relay-runtime";
-import { deleteManagerFromRevisionMutation } from "__generated__/deleteManagerFromRevisionMutation.graphql";
-import { deleteManagerFromRevisionWithArchiveMutation } from "__generated__/deleteManagerFromRevisionWithArchiveMutation.graphql";
+import { MutationConfig, PayloadError } from "relay-runtime";
+import {
+  deleteManagerFromRevisionMutation,
+  deleteManagerFromRevisionMutation$variables,
+  deleteManagerFromRevisionMutation$data,
+} from "__generated__/deleteManagerFromRevisionMutation.graphql";
+import {
+  deleteManagerFromRevisionWithArchiveMutation,
+  deleteManagerFromRevisionWithArchiveMutation$variables,
+  deleteManagerFromRevisionWithArchiveMutation$data,
+} from "__generated__/deleteManagerFromRevisionWithArchiveMutation.graphql";
+
+interface DeleteManagerOptions {
+  context: { operation: string; id: string; projectRevision: string };
+  onCompleted?: (
+    response:
+      | deleteManagerFromRevisionMutation$data
+      | deleteManagerFromRevisionWithArchiveMutation$data,
+    errors: PayloadError[]
+  ) => void;
+  onError?: (error: Error) => void;
+}
 
 // Delete mutation for a form_change that was created in the same revision.
 export const deleteMutation = graphql`
@@ -68,8 +87,7 @@ export const archiveMutation = graphql`
   }
 `;
 
-export const useDeleteManagerFromRevisionMutation = (
-  operation: any,
+const useDeleteMutation = (
   commitMutationFn?: (
     environment: Environment,
     config: MutationConfig<
@@ -78,12 +96,73 @@ export const useDeleteManagerFromRevisionMutation = (
     >
   ) => Disposable
 ) => {
-  // Dynamically set the mutation to use based on the operation.
-  const mutation = operation === "CREATE" ? deleteMutation : archiveMutation;
   return useMutation<
     | deleteManagerFromRevisionMutation
     | deleteManagerFromRevisionWithArchiveMutation
-  >(mutation, commitMutationFn);
+  >(deleteMutation, commitMutationFn);
+};
+
+const useArchiveMutation = (
+  commitMutationFn?: (
+    environment: Environment,
+    config: MutationConfig<
+      | deleteManagerFromRevisionMutation
+      | deleteManagerFromRevisionWithArchiveMutation
+    >
+  ) => Disposable
+) => {
+  return useMutation<
+    | deleteManagerFromRevisionMutation
+    | deleteManagerFromRevisionWithArchiveMutation
+  >(archiveMutation, commitMutationFn);
+};
+
+export const useDeleteManagerFromRevisionMutation = (): [
+  (options: DeleteManagerOptions) => void,
+  boolean
+] => {
+  const [deleteManager, isDeleting] = useDeleteMutation();
+  const [archiveManager, isArchiving] = useArchiveMutation();
+  const deleteOrArchiveManager = (options: DeleteManagerOptions) => {
+    const { context, onCompleted, onError } = options;
+    if (context.operation === "CREATE") {
+      const variables: deleteManagerFromRevisionMutation$variables = {
+        input: {
+          id: context.id,
+        },
+        projectRevision: context.projectRevision,
+      };
+
+      deleteManager({ variables, onCompleted, onError });
+    } else {
+      const variables: deleteManagerFromRevisionWithArchiveMutation$variables =
+        {
+          input: {
+            id: context.id,
+            formChangePatch: {
+              operation: "ARCHIVE",
+            },
+          },
+          projectRevision: context.projectRevision,
+        };
+      archiveManager({
+        variables,
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: context.id,
+              operation: "ARCHIVE",
+              newFormData: {},
+            },
+          },
+        },
+        onCompleted,
+        onError,
+      });
+    }
+  };
+  const inFlight = isDeleting || isArchiving;
+  return [deleteOrArchiveManager, inFlight];
 };
 
 export default useDeleteManagerFromRevisionMutation;

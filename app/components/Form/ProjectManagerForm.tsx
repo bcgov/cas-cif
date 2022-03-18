@@ -136,42 +136,14 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Delete a manager from the project revision
   const [deleteManager, deleteManagerInFlight] =
-    useDeleteManagerFromRevisionMutation(change.formChange?.operation);
+    useDeleteManagerFromRevisionMutation();
   const handleClear = () => {
-    let variables;
-    let optimisticResponse;
-    // If the form_change has a CREATE operation then we want to delete the form_change from the database
-    if (change.formChange?.operation === "CREATE")
-      variables = {
-        input: {
-          id: change.formChange.id,
-        },
-        projectRevision: projectRevisionId,
-      };
-    // If the form_change has an UPDATE operation then we want to update the form_change in the database with operation = 'ARCHIVE'
-    else {
-      variables = {
-        input: {
-          id: change.formChange.id,
-          formChangePatch: {
-            operation: "ARCHIVE",
-          },
-        },
-        projectRevision: projectRevisionId,
-      };
-      optimisticResponse = {
-        updateFormChange: {
-          formChange: {
-            id: change.formChange.id,
-            operation: "ARCHIVE",
-            newFormData: {},
-          },
-        },
-      };
-    }
     deleteManager({
-      variables,
-      optimisticResponse,
+      context: {
+        operation: change.formChange.operation,
+        id: change.formChange.id,
+        projectRevision: projectRevisionId,
+      },
       onError: (error) => {
         console.log(error);
       },
