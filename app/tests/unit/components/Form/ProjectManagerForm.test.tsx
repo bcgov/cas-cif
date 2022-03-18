@@ -262,6 +262,7 @@ describe("The ProjectManagerForm", () => {
         input: {
           id: "Change 2 ID",
         },
+        projectRevision: "Test Revision ID",
       },
     });
   });
@@ -286,6 +287,7 @@ describe("The ProjectManagerForm", () => {
           },
           id: "Change 3 ID",
         },
+        projectRevision: "Test Revision ID",
       },
       optimisticResponse: {
         updateFormChange: {
@@ -296,7 +298,6 @@ describe("The ProjectManagerForm", () => {
           },
         },
       },
-      debounceKey: "Change 3 ID",
     });
   });
 
