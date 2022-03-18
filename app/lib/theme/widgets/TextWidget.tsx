@@ -27,6 +27,7 @@ const TextWidget: React.FC<WidgetProps> = ({
         value={value || ""}
         size={"medium"}
         required={required}
+        aria-label={label}
       />
       <style jsx>
         {`

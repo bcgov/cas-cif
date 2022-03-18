@@ -41,6 +41,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
         value={value}
+        aria-label={label}
       >
         <option key={`option-placeholder-${id}`} value={undefined}>
           {placeholder}
