@@ -46,7 +46,6 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
         defaultValue={getSelected()}
         value={getSelected()}
         onChange={handleChange}
-        aria-label={label}
         isOptionEqualToValue={(option) =>
           props.value ? option.value === props.value : true
         }
