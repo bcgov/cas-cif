@@ -27,7 +27,7 @@ set new_form_data =
   "summary": "lorem ipsum",
   "fundingStreamRfpId": 1,
   "projectStatusId": 1,
-  "rfpNumber": "1235",
+  "proposalReference": "1235",
   "operatorId": 1
 }'::jsonb
 where form_data_table_name = 'project';

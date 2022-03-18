@@ -43,7 +43,7 @@ describe("the new project page", () => {
     cy.get("button").contains("Add a Project").click();
     cy.url().should("include", "/cif/project-revision");
 
-    cy.get("#root_rfpNumber").type("1");
+    cy.get("#root_proposalReference").type("1");
     cy.get("button").contains("Submit").click();
     cy.injectAxe();
     // Check error message accessibility
@@ -52,14 +52,7 @@ describe("the new project page", () => {
       component: "Project Page with errors",
       variant: "empty",
     });
-    cy.get(".error-detail").should("have.length", 7);
-    // Renders a custom error message for a custom format validation error
-    cy.get(".error-detail")
-      .eq(2)
-      .should(
-        "contain",
-        "Please enter 3 or 4 digits for the random RFP digits"
-      );
+    cy.get(".error-detail").should("have.length", 6);
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
   });
@@ -73,12 +66,17 @@ describe("the new project page", () => {
     cy.findByLabelText(/Project Name/i).type("Foo");
     cy.findByLabelText(/Total Funding Request/i).type("100");
     cy.findByLabelText(/Summary/i).type("Bar");
+    cy.findByLabelText(/Proposal Reference/i).type("TEST-123-12345");
     cy.findByLabelText(/Operator Name/i).click();
     cy.contains("first operator").click();
     cy.findByLabelText(/Funding Stream$/i).select("Emissions Performance");
     cy.findByLabelText(/Funding Stream RFP/i).select("2020");
     cy.findByLabelText(/Project Status/i).select("Project Underway");
-    cy.findByLabelText(/RFP Number/i).type("123");
+
+    // There is a bug where if cypress starts changing another form on the page too quickly,
+    // the last change is discarded and rjsf throws an error.
+    cy.contains("Changes saved.");
+
     cy.findByLabelText(/tech team primary/i).click();
     cy.contains("Swanson").click();
     cy.findByLabelText(/tech team secondary/i).click();
@@ -116,6 +114,7 @@ describe("the new project page", () => {
       .should("have.value", "Foo")
       .clear()
       .type("Bar");
+    cy.contains("Changes saved.");
 
     cy.findByLabelText(/tech team secondary/i).should(
       "have.value",
@@ -134,7 +133,6 @@ describe("the new project page", () => {
       .find("button")
       .contains("Remove")
       .click();
-
     cy.wait(1000);
     cy.findByText("Submit").click();
     cy.url().should("include", "/cif/projects");

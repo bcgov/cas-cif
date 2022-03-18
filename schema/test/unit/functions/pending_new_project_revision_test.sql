@@ -38,7 +38,7 @@ update cif.form_change set new_form_data=format('{
       "summary": "lorem ipsum",
       "fundingStreamRfpId": 1,
       "projectStatusId": 1,
-      "rfpNumber": "1235",
+      "proposalReference": "1235",
       "operatorId": %s
     }',
     (select id from cif.operator order by id desc limit 1)

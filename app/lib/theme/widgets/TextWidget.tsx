@@ -1,6 +1,7 @@
 import { WidgetProps } from "@rjsf/core";
 import Input from "@button-inc/bcgov-theme/Input";
-import getRequiredLabel from "../utils/getRequiredLabel";
+
+import FieldLabel from "./FieldLabel";
 
 const TextWidget: React.FC<WidgetProps> = ({
   id,
@@ -9,17 +10,24 @@ const TextWidget: React.FC<WidgetProps> = ({
   label,
   value,
   required,
+  uiSchema,
 }) => {
   return (
     <>
+      <FieldLabel
+        htmlFor={id}
+        label={label}
+        required={required}
+        uiSchema={uiSchema}
+      ></FieldLabel>
       <Input
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
         placeholder={placeholder}
-        label={getRequiredLabel(label, required)}
         value={value || ""}
         size={"medium"}
         required={required}
+        aria-label={label}
       />
       <style jsx>
         {`

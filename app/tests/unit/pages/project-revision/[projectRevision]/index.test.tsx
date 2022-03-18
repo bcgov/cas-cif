@@ -48,28 +48,18 @@ const variables = {
 };
 environment.mock.queuePendingOperation(query, variables);
 
-const generateMockForm = (errors: any[] = []) => {
-  return (props: any, ref: any) => {
-    ref.current = {
-      onSubmit: jest.fn(),
-      validate: jest.fn(() => ({
-        errors: errors,
-      })),
-      state: {
-        formData: {},
-      },
-    };
-    return null;
-  };
-};
-
 describe("The Create Project page", () => {
   beforeEach(() => {
-    mocked(ProjectForm).render.mockReset();
+    mocked(ProjectForm).mockReset();
     mocked(ProjectManagerFormGroup).mockReset();
     mocked(ProjectContactForm).mockReset();
 
-    mocked(ProjectForm).render.mockImplementation(() => null);
+    mocked(ProjectForm).mockImplementation((props) => {
+      props.setValidatingForm({
+        selfValidate: jest.fn().mockImplementation(() => []),
+      });
+      return null;
+    });
     mocked(ProjectManagerFormGroup).mockImplementation((props) => {
       props.setValidatingForm({
         selfValidate: jest.fn().mockImplementation(() => []),
@@ -90,75 +80,7 @@ describe("The Create Project page", () => {
     variables
   );
 
-  it("calls the updateFormChange mutation when the form reports changes through the onChange property", async () => {
-    const mockProjectForm: any = { props: {} };
-
-    mocked(ProjectForm).render.mockImplementation((props) => {
-      mockProjectForm.props = props;
-      return null;
-    });
-
-    const commitFormChangeMutationSpy = jest.fn();
-    jest
-      .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [commitFormChangeMutationSpy, false]);
-
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="2"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
-
-    mockProjectForm.props.onChange({
-      formData: {
-        someQueryData: "testvalue",
-        other: 123,
-      },
-    });
-
-    expect(commitFormChangeMutationSpy).toHaveBeenCalledTimes(1);
-    expect(commitFormChangeMutationSpy).toHaveBeenCalledWith({
-      debounceKey: "mock-project-form-id",
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: "mock-project-form-id",
-            newFormData: {
-              other: 123,
-              someQueryData: "testvalue",
-              someProjectData: "test2",
-            },
-          },
-        },
-      },
-      variables: {
-        input: {
-          formChangePatch: {
-            newFormData: {
-              other: 123,
-              someQueryData: "testvalue",
-              someProjectData: "test2",
-            },
-          },
-          id: "mock-project-form-id",
-        },
-      },
-    });
-  });
-
   it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
-    mocked(ProjectForm).render.mockImplementation(generateMockForm());
-    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
-      return null;
-    });
-
     const spy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
@@ -194,9 +116,12 @@ describe("The Create Project page", () => {
   });
 
   it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
-    mocked(ProjectForm).render.mockImplementation(
-      generateMockForm([{ thereIsAnError: true }])
-    );
+    mocked(ProjectForm).mockImplementation((props) => {
+      props.setValidatingForm({
+        selfValidate: jest.fn().mockImplementation(() => [{ error: "error!" }]),
+      });
+      return null;
+    });
     mocked(ProjectManagerFormGroup).mockImplementation((props) => {
       props.setValidatingForm({
         selfValidate: jest.fn().mockImplementation(() => []),
@@ -226,7 +151,7 @@ describe("The Create Project page", () => {
 
   it("Renders an enabled submit and discard changes button", async () => {
     const mockProjectForm: any = { props: {} };
-    mocked(ProjectForm).render.mockImplementation((props) => {
+    mocked(ProjectForm).mockImplementation((props) => {
       mockProjectForm.props = props;
       return null;
     });
@@ -288,7 +213,7 @@ describe("The Create Project page", () => {
 
   it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {
     const mockProjectForm: any = { props: {} };
-    mocked(ProjectForm).render.mockImplementation((props) => {
+    mocked(ProjectForm).mockImplementation((props) => {
       mockProjectForm.props = props;
       return null;
     });

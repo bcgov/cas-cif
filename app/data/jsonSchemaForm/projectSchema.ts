@@ -2,7 +2,7 @@ const projectSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   required: [
-    "rfpNumber",
+    "proposalReference",
     "projectName",
     "summary",
     "operatorId",
@@ -10,10 +10,9 @@ const projectSchema = {
     "totalFundingRequest",
   ],
   properties: {
-    rfpNumber: {
+    proposalReference: {
       type: "string",
-      title: "RFP Number",
-      format: "rfpDigits",
+      title: "Proposal Reference",
     },
     projectName: { type: "string", title: "Project Name" },
     totalFundingRequest: {

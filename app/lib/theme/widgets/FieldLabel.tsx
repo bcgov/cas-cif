@@ -21,7 +21,14 @@ const FieldLabel: React.FC<Props> = ({
   ) {
     return null;
   }
-  return <label htmlFor={htmlFor}>{getRequiredLabel(label, required)}</label>;
+  return (
+    <>
+      <label htmlFor={htmlFor}>{getRequiredLabel(label, required)}</label>
+      {uiSchema && uiSchema["bcgov:help-text"] && (
+        <small>&nbsp;{uiSchema["bcgov:help-text"]}</small>
+      )}
+    </>
+  );
 };
 
 export default FieldLabel;

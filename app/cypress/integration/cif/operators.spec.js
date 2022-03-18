@@ -77,14 +77,11 @@ describe("the operators page", () => {
       "have.value",
       "first operator trade name"
     );
-    cy.get("input[aria-label='BC Registry ID (optional)']").should(
+    cy.get("input[aria-label='BC Registry ID']").should(
       "have.value",
       "AB1234567"
     );
-    cy.get("input[aria-label='Operator Code (optional)']").should(
-      "have.value",
-      "ABCD"
-    );
+    cy.get("input[aria-label='Operator Code']").should("have.value", "ABCD");
     cy.get("input[aria-label='Trade Name']").clear().type("Updated");
     cy.get("button").contains("Submit").click();
     cy.get("table").contains("Updated");

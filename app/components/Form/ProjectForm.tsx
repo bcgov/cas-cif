@@ -2,20 +2,40 @@ import type { JSONSchema7 } from "json-schema";
 import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
-import { forwardRef, useMemo } from "react";
+import { useMemo, useRef } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
-import GeneratedLongIdWidget from "./GeneratedLongIdWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
-import FormComponentProps from "./Interfaces/FormComponentProps";
-interface Props extends FormComponentProps {
+import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
+import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
+import { FormValidation } from "@rjsf/core";
+import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
+import { Disposable, MutationParameters } from "relay-runtime";
+interface Props extends ValidatingFormProps {
   query: ProjectForm_query$key;
+  projectRevision: ProjectForm_projectRevision$key;
+  updateProjectFormChange: (
+    config: UseDebouncedMutationConfig<MutationParameters>
+  ) => Disposable;
 }
 
-const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
-  props,
-  ref
-) => {
+const ProjectForm: React.FC<Props> = (props) => {
+  const formRef = useRef();
+
+  const revision = useFragment(
+    graphql`
+      fragment ProjectForm_projectRevision on ProjectRevision {
+        projectFormChange {
+          id
+          newFormData
+          isUniqueValue(columnName: "proposalReference")
+        }
+      }
+    `,
+    props.projectRevision
+  );
+
   const { query } = useFragment(
     graphql`
       fragment ProjectForm_query on Query {
@@ -33,7 +53,6 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
           }
           ...SelectRfpWidget_query
           ...SelectProjectStatusWidget_query
-          ...GeneratedLongIdWidget_query
         }
       }
     `,
@@ -42,9 +61,57 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
 
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
-      ({ node }) => node.rowId === props.formData.operatorId
+      ({ node }) =>
+        node.rowId === revision.projectFormChange.newFormData.operatorId
     );
-  }, [query, props.formData.operatorId]);
+  }, [query, revision.projectFormChange.newFormData.operatorId]);
+
+  props.setValidatingForm({
+    selfValidate: () => {
+      const formObject = formRef.current;
+      return validateFormWithErrors(formObject);
+    },
+  });
+
+  const uniqueProposalReferenceValidation = (
+    formData: any,
+    errors: FormValidation
+  ) => {
+    if (revision.projectFormChange.isUniqueValue === false) {
+      errors.proposalReference.addError(
+        "A proposal with the same proposal reference already exists. Please specify a different proposal reference."
+      );
+    }
+
+    return errors;
+  };
+
+  const handleChange = (changeData: any) => {
+    const updatedFormData = {
+      ...revision.projectFormChange.newFormData,
+      ...changeData,
+    };
+    return props.updateProjectFormChange({
+      variables: {
+        input: {
+          id: revision.projectFormChange.id,
+          formChangePatch: {
+            newFormData: updatedFormData,
+          },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: revision.projectFormChange.id,
+            newFormData: updatedFormData,
+            isUniqueValue: revision.projectFormChange.isUniqueValue,
+          },
+        },
+      },
+      debounceKey: revision.projectFormChange.id,
+    });
+  };
 
   const schema: JSONSchema7 = useMemo(() => {
     const initialSchema = projectSchema;
@@ -67,17 +134,17 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
         "fundingStreamRfpId",
         "operatorId",
         "operatorTradeName",
-        "rfpNumber",
+        "proposalReference",
         "projectName",
         "summary",
         "totalFundingRequest",
         "projectStatus",
         "projectStatusId",
       ],
-      rfpNumber: {
-        "ui:placeholder": "123",
+      proposalReference: {
+        "ui:placeholder": "2020-RFP-1-123-ABCD",
         "bcgov:size": "small",
-        "ui:widget": "GeneratedLongIdWidget",
+        "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
       },
       projectName: {
         "ui:placeholder": "Short project name",
@@ -126,21 +193,23 @@ const ProjectForm: React.ForwardRefRenderFunction<any, Props> = (
   return (
     <FormBase
       {...props}
-      ref={ref}
+      ref={(el) => (formRef.current = el)}
       schema={schema}
       uiSchema={uiSchema}
+      validate={uniqueProposalReferenceValidation}
+      formData={revision.projectFormChange.newFormData}
       formContext={{
         query,
-        form: props.formData,
+        form: revision.projectFormChange.newFormData,
         operatorCode: selectedOperator?.node?.operatorCode,
       }}
       widgets={{
         SelectRfpWidget: SelectRfpWidget,
         SelectProjectStatusWidget: SelectProjectStatusWidget,
-        GeneratedLongIdWidget: GeneratedLongIdWidget,
       }}
+      onChange={(change) => handleChange(change.formData)}
     />
   );
 };
 
-export default forwardRef(ProjectForm);
+export default ProjectForm;

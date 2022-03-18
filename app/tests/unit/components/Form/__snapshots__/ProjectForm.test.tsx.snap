@@ -178,47 +178,26 @@ exports[`The Project Form matches the snapshot 1`] = `
                 class="jsx-3883368021"
               >
                 <label
-                  class="jsx-2369701424"
-                  for="root_rfpNumber"
+                  for="root_proposalReference"
                 >
-                  RFP Number
+                  Proposal Reference
                 </label>
-                <small
-                  class="jsx-2369701424"
-                >
-                   (year - RFP - stream id - random digits - operator code)
+                <small>
+                   
+                  (e.g. 2020-RFP-1-ABCD-123)
                 </small>
                 <div
-                  class="sc-jRQBWg cDwDrH pg-grid-container"
+                  class="sc-crHmcD bKATQK pg-input"
                 >
-                  <div
-                    class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
-                    style="align-items: center;"
-                  >
-                    (YEAR)
-                     - RFP - 
-                    (STREAM ID)
-                     - 
-                    <span
-                      class="jsx-2369701424 random-digits"
-                    >
-                      <div
-                        class="sc-crHmcD bKATQK pg-input"
-                      >
-                        <input
-                          aria-label="root_rfpNumber-input"
-                          class="sc-bqiRlB hrAFNs pg-input-input"
-                          id="root_rfpNumber"
-                          name="root_rfpNumber-input"
-                          placeholder="123"
-                          required=""
-                          value=""
-                        />
-                      </div>
-                    </span>
-                     - 
-                    (OPERATOR CODE)
-                  </div>
+                  <input
+                    aria-label="Proposal Reference"
+                    class="sc-bqiRlB hrAFNs pg-input-input"
+                    id="root_proposalReference"
+                    name="root_proposalReference-input"
+                    placeholder="2020-RFP-1-123-ABCD"
+                    required=""
+                    value=""
+                  />
                 </div>
                 <div
                   class="jsx-3883368021 error-div"
@@ -227,15 +206,14 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_projectName"
+                >
+                  Project Name
+                </label>
                 <div
                   class="sc-crHmcD bKATQK pg-input"
                 >
-                  <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_projectName"
-                  >
-                    Project Name
-                  </label>
                   <input
                     aria-label="Project Name"
                     class="sc-bqiRlB hrAFNs pg-input-input"
@@ -253,15 +231,14 @@ exports[`The Project Form matches the snapshot 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_summary"
+                >
+                  Summary
+                </label>
                 <div
                   class="sc-fFeiMQ jpQRmF pg-textarea"
                 >
-                  <label
-                    class="sc-bkkeKt joEfKW pg-textarea-label"
-                    for="root_summary"
-                  >
-                    Summary
-                  </label>
                   <textarea
                     aria-label="Summary"
                     class="sc-ieecCq fCLtjf pg-textarea-input"
@@ -287,6 +264,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                     Total Funding Request
                   </label>
                   <input
+                    aria-label="Total Funding Request"
                     class="money"
                     id="root_totalFundingRequest"
                     inputmode="numeric"

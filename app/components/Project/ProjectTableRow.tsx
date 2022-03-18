@@ -13,7 +13,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
   const {
     id,
     projectName,
-    rfpNumber,
+    proposalReference,
     projectStatusByProjectStatusId: { name },
     totalFundingRequest,
     operatorByOperatorId: { tradeName },
@@ -23,7 +23,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
       fragment ProjectTableRow_project on Project {
         id
         projectName
-        rfpNumber
+        proposalReference
         totalFundingRequest
         operatorByOperatorId {
           tradeName
@@ -57,7 +57,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
     <tr>
       <td className="project-name">{projectName}</td>
       <td className="op-trade-name">{tradeName}</td>
-      <td className="rfp-number">{rfpNumber}</td>
+      <td className="proposal-reference">{proposalReference}</td>
       <td className="status-container">
         <span className="status-badge">{name}</span>
       </td>
@@ -89,7 +89,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         .op-trade-name {
           max-width: 15rem;
         }
-        .rfp-number {
+        .proposal-reference {
           font-family: monospace;
           font-weight: bold;
           white-space: nowrap;

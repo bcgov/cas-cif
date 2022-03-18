@@ -42,7 +42,7 @@ values
 insert into cif.project_status (name, description) values
 ('Test Status', 'Test Status');
 
-insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
   overriding system value
   values
     (1, 1, 1, 1, '001', 'summary', 'project 1'),

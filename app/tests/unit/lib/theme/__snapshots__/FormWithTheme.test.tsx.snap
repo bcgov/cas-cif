@@ -25,17 +25,16 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_test_number"
+                >
+                  Test Number (optional)
+                </label>
                 <div
                   class="sc-crHmcD bKATQK pg-input"
                 >
-                  <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_test_number"
-                  >
-                    Test Number (optional)
-                  </label>
                   <input
-                    aria-label="Test Number (optional)"
+                    aria-label="Test Number"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_test_number"
                     name="root_test_number-input"
@@ -50,17 +49,16 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
               <div
                 class="jsx-3883368021"
               >
+                <label
+                  for="root_test_string"
+                >
+                  Test Script (optional)
+                </label>
                 <div
                   class="sc-crHmcD bKATQK pg-input"
                 >
-                  <label
-                    class="sc-egiyK ewKLoj pg-input-label"
-                    for="root_test_string"
-                  >
-                    Test Script (optional)
-                  </label>
                   <input
-                    aria-label="Test Script (optional)"
+                    aria-label="Test Script"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_test_string"
                     name="root_test_string-input"

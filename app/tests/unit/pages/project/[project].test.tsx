@@ -15,7 +15,7 @@ const loadProjectData = (partialProject = {}) => {
         return {
           id: "mock-project-id",
           projectName: "Project 1",
-          rfpNumber: "12345",
+          proposalReference: "12345",
           totalFundingRequest: "1.00",
           summary: "Summary 1",
           operatorByOperatorId: {

@@ -16,12 +16,12 @@ values
   (2, 'second operator legal name', 'second operator lorem ipsum dolor sit amet limited', 'BC1234567', 'EFGH'),
   (3, 'third operator legal name', 'third operator trade name', 'EF3456789', 'IJKL');
 
-insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, rfp_number, summary, project_name)
+insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
 overriding system value
 values
   (1, 1, 1, 1, '000', 'summary', 'project 1'),
-  (2, 2, 1, 1, '000', 'summary', 'project 2'),
-  (3, 3, 1, 1, '000', 'summary', 'project 3');
+  (2, 2, 1, 1, '001', 'summary', 'project 2'),
+  (3, 3, 1, 1, '002', 'summary', 'project 3');
 
 insert into cif.project_revision(id, change_status, project_id)
 overriding system value

@@ -50,7 +50,7 @@ const loadProjectsQuery = (
   const variables: projectsQuery$variables = {
     projectName: null,
     operatorTradeName: null,
-    rfpNumber: null,
+    proposalReference: null,
     status: null,
     offset: null,
     pageSize: DEFAULT_PAGE_SIZE,

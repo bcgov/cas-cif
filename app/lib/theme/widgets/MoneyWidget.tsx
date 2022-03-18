@@ -38,6 +38,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           borderRadius: "0.25em",
           padding: "0.5em",
         }}
+        aria-label={label}
       />
       <style jsx>
         {`
