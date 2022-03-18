@@ -43,11 +43,11 @@ describe("The SelectWidget Widget", () => {
     const selectWidget = render(<SelectWidget {...props} />);
     const dropdown = selectWidget.container.querySelector("#test-dropdown");
     expect(
-      screen.getByRole("combobox", { name: "test-dropdown-select" }).value
+      screen.getByRole("combobox", { name: "test-dropdown-label" }).value
     ).toEqual("test-placeholder");
     fireEvent.change(dropdown, { target: { value: "1" } });
     expect(
-      screen.getByRole("combobox", { name: "test-dropdown-select" }).value
+      screen.getByRole("combobox", { name: "test-dropdown-label" }).value
     ).toEqual("1");
   });
 

@@ -34,7 +34,7 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
                   class="sc-crHmcD bKATQK pg-input"
                 >
                   <input
-                    aria-label="root_test_number-input"
+                    aria-label="Test Number"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_test_number"
                     name="root_test_number-input"
@@ -58,7 +58,7 @@ exports[`The Form Renders a basic test schema with a submit button 1`] = `
                   class="sc-crHmcD bKATQK pg-input"
                 >
                   <input
-                    aria-label="root_test_string-input"
+                    aria-label="Test Script"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_test_string"
                     name="root_test_string-input"

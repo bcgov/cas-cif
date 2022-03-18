@@ -35,7 +35,7 @@ exports[`The FormBase component renders a test schema 1`] = `
                   class="sc-crHmcD bKATQK pg-input"
                 >
                   <input
-                    aria-label="root_field-input"
+                    aria-label="field"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_field"
                     name="root_field-input"

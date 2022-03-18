@@ -190,7 +190,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                   class="sc-crHmcD bKATQK pg-input"
                 >
                   <input
-                    aria-label="root_proposalReference-input"
+                    aria-label="Proposal Reference"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_proposalReference"
                     name="root_proposalReference-input"
@@ -215,7 +215,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                   class="sc-crHmcD bKATQK pg-input"
                 >
                   <input
-                    aria-label="root_projectName-input"
+                    aria-label="Project Name"
                     class="sc-bqiRlB hrAFNs pg-input-input"
                     id="root_projectName"
                     name="root_projectName-input"
@@ -240,7 +240,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                   class="sc-fFeiMQ jpQRmF pg-textarea"
                 >
                   <textarea
-                    aria-label="root_summary-textarea"
+                    aria-label="Summary"
                     class="sc-ieecCq fCLtjf pg-textarea-input"
                     id="root_summary"
                     name="root_summary-textarea"
@@ -264,6 +264,7 @@ exports[`The Project Form matches the snapshot 1`] = `
                     Total Funding Request
                   </label>
                   <input
+                    aria-label="Total Funding Request"
                     class="money"
                     id="root_totalFundingRequest"
                     inputmode="numeric"

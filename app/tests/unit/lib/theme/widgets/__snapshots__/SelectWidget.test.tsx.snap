@@ -17,7 +17,7 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
         class="sc-gKclnd kMxstE pg-select-wrapper"
       >
         <select
-          aria-label="1-select"
+          aria-label="Search"
           class="sc-iCfMLu gsBcnF pg-select-input"
           id="1"
           name="1-select"
@@ -64,7 +64,7 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
         class="sc-gKclnd kMxstE pg-select-wrapper"
       >
         <select
-          aria-label="1-select"
+          aria-label="Search"
           class="sc-iCfMLu gsBcnF pg-select-input"
           id="1"
           name="1-select"
