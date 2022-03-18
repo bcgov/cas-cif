@@ -1,5 +1,6 @@
 // Takes a 'cookies' object (key-value pairs in an object)
 export const generateForwardedCookieOptions = (cookies, fields) => {
+  if (!cookies) return {};
   return fields.reduce((acc, currentKey) => {
     if (cookies[currentKey] !== undefined)
       acc[currentKey] = cookies[currentKey];
