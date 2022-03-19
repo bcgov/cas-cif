@@ -28,7 +28,7 @@ runs:
       with:
         path: |
           ~/perl5
-        key: ${{ runner.os }}-perl-cache-${{ hashFiles('cpanfile') }}
+        key: ${{ runner.os }}-perl-cache-${{ hashFiles('cpanfile') }}-v2
     - uses: actions/cache@v2
       id: yarn-cache
       with:
