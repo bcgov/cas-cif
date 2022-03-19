@@ -17,19 +17,19 @@ runs:
         echo "PERL_MB_OPT=--install_base '/home/runner/perl5'" >> $GITHUB_ENV
         echo "PERL_MM_OPT=INSTALL_BASE=/home/runner/perl5" >> $GITHUB_ENV
         echo "/home/runner/perl5/bin" >> $GITHUB_PATH
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: asdf-cache
       with:
         path: |
           ~/.asdf
         key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: perl-cache
       with:
         path: |
           ~/perl5
         key: ${{ runner.os }}-perl-cache-${{ hashFiles('cpanfile') }}
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: yarn-cache
       with:
         path: |
