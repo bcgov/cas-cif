@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 export const pageQuery = graphql`
@@ -22,7 +22,6 @@ export const pageQuery = graphql`
       summary
       operatorByOperatorId {
         legalName
-        bcRegistryId
         tradeName
       }
       fundingStreamRfpByFundingStreamRfpId {
@@ -77,7 +76,7 @@ export function ProjectViewPage({
       variables: { projectId: project.rowId },
       onCompleted: (response) => {
         router.push(
-          getProjectRevisionPageRoute(
+          getProjectRevisionOverviewFormPageRoute(
             response.createProjectRevision.projectRevision.id
           )
         );
@@ -90,7 +89,9 @@ export function ProjectViewPage({
       size="small"
       onClick={() =>
         router.push(
-          getProjectRevisionPageRoute(project.pendingProjectRevision.id)
+          getProjectRevisionOverviewFormPageRoute(
+            project.pendingProjectRevision.id
+          )
         )
       }
     >

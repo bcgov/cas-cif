@@ -6,22 +6,22 @@ import { useMemo, useRef } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
-import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
 import { FormValidation } from "@rjsf/core";
-import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
-import { Disposable, MutationParameters } from "relay-runtime";
-interface Props extends ValidatingFormProps {
+import { mutation as updateProjectFormChangeMutation } from "mutations/FormChange/updateProjectFormChange";
+import useDebouncedMutation from "mutations/useDebouncedMutation";
+import { Button } from "@button-inc/bcgov-theme";
+import SavingIndicator from "./SavingIndicator";
+
+interface Props {
   query: ProjectForm_query$key;
   projectRevision: ProjectForm_projectRevision$key;
-  updateProjectFormChange: (
-    config: UseDebouncedMutationConfig<MutationParameters>
-  ) => Disposable;
 }
 
 const ProjectForm: React.FC<Props> = (props) => {
   const formRef = useRef();
+  const [updateProjectFormChange, updatingProjectFormChange] =
+    useDebouncedMutation(updateProjectFormChangeMutation);
 
   const revision = useFragment(
     graphql`
@@ -29,6 +29,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         projectFormChange {
           id
           newFormData
+          updatedAt
           isUniqueValue(columnName: "proposalReference")
         }
       }
@@ -66,13 +67,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   }, [query, revision.projectFormChange.newFormData.operatorId]);
 
-  props.setValidatingForm({
-    selfValidate: () => {
-      const formObject = formRef.current;
-      return validateFormWithErrors(formObject);
-    },
-  });
-
   const uniqueProposalReferenceValidation = (
     formData: any,
     errors: FormValidation
@@ -91,7 +85,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       ...revision.projectFormChange.newFormData,
       ...changeData,
     };
-    return props.updateProjectFormChange({
+    return updateProjectFormChange({
       variables: {
         input: {
           id: revision.projectFormChange.id,
@@ -190,25 +184,43 @@ const ProjectForm: React.FC<Props> = (props) => {
     };
   }, [selectedOperator]);
 
+  const lastEditedDate = useMemo(
+    () => new Date(revision.projectFormChange.updatedAt),
+    [revision.projectFormChange.updatedAt]
+  );
+
   return (
-    <FormBase
-      {...props}
-      ref={(el) => (formRef.current = el)}
-      schema={schema}
-      uiSchema={uiSchema}
-      validate={uniqueProposalReferenceValidation}
-      formData={revision.projectFormChange.newFormData}
-      formContext={{
-        query,
-        form: revision.projectFormChange.newFormData,
-        operatorCode: selectedOperator?.node?.operatorCode,
-      }}
-      widgets={{
-        SelectRfpWidget: SelectRfpWidget,
-        SelectProjectStatusWidget: SelectProjectStatusWidget,
-      }}
-      onChange={(change) => handleChange(change.formData)}
-    />
+    <>
+      <header>
+        <h2>Project Overview</h2>
+        <SavingIndicator
+          isSaved={!updatingProjectFormChange}
+          lastEdited={lastEditedDate}
+        />
+      </header>
+      <FormBase
+        {...props}
+        ref={(el) => (formRef.current = el)}
+        schema={schema}
+        uiSchema={uiSchema}
+        validate={uniqueProposalReferenceValidation}
+        formData={revision.projectFormChange.newFormData}
+        formContext={{
+          query,
+          form: revision.projectFormChange.newFormData,
+          operatorCode: selectedOperator?.node?.operatorCode,
+        }}
+        widgets={{
+          SelectRfpWidget: SelectRfpWidget,
+          SelectProjectStatusWidget: SelectProjectStatusWidget,
+        }}
+        onChange={(change) => handleChange(change.formData)}
+      >
+        <Button type="submit" style={{ marginRight: "1rem" }}>
+          Submit Project Overview
+        </Button>
+      </FormBase>
+    </>
   );
 };
 

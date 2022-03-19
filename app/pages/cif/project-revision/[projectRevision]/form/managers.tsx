@@ -1,49 +1,65 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
+import { managersFormQuery } from "__generated__/managersFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
+import { useMemo, useRef } from "react";
+import SavingIndicator from "components/Form/SavingIndicator";
+import ProjecManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
-import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
-import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
 
 const pageQuery = graphql`
-  query ProjectRevisionQuery($projectRevision: ID!) {
+  query managersFormQuery($projectRevision: ID!) {
     query {
       session {
         ...DefaultLayout_session
       }
       projectRevision(id: $projectRevision) {
         id
+        updatedAt
+        ...ProjectManagerFormGroup_revision
       }
+      ...ProjectManagerFormGroup_query
     }
   }
 `;
 
 export function ProjectRevision({
   preloadedQuery,
-}: RelayProps<{}, ProjectRevisionQuery>) {
+}: RelayProps<{}, managersFormQuery>) {
+  const projectManagerFormRef = useRef<ISupportExternalValidation>(null);
+
   const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   const [updateProjectRevision, updatingProjectRevision] = useMutation(
     updateProjectRevisionMutation
   );
-  const [discardProjectRevision, discardingProjectRevision] =
-    useDeleteProjectRevisionMutation();
 
-  const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  const lastEditedDate = useMemo(
+    () => new Date(query.projectRevision.updatedAt),
+    [query.projectRevision.updatedAt]
+  );
+
+  if (!query.projectRevision.id) return null;
 
   /**
    *  Function: approve staged change, trigger an insert on the project
    *  table & redirect to the project page
    */
   const commitProject = async () => {
+    const errors = [...projectManagerFormRef.current.selfValidate()];
+
+    if (errors.length > 0) {
+      console.log("Could not submit a form with errors: ", errors);
+      return;
+    }
+
     updateProjectRevision({
       variables: {
         input: {
@@ -64,46 +80,41 @@ export function ProjectRevision({
     });
   };
 
-  const discardRevision = async () => {
-    await discardProjectRevision({
-      variables: {
-        input: {
-          id: query.projectRevision.id,
-        },
-      },
-      onCompleted: async () => {
-        await router.push(getProjectsPageRoute());
-      },
-      onError: async (e) => {
-        console.error("Error discarding the project", e);
-      },
-    });
-  };
-
   return (
-    <DefaultLayout session={query.session}>
+    <DefaultLayout session={query.session} title="CIF Projects Management">
       <header>
-        <h2>Review and Submit Project</h2>
+        <h2>Project Overview</h2>
+        <SavingIndicator
+          isSaved={!updatingProjectRevision}
+          lastEdited={lastEditedDate}
+        />
       </header>
+
+      <ProjecManagerFormGroup
+        query={query}
+        revision={query.projectRevision}
+        projectManagerFormRef={projectManagerFormRef}
+        setValidatingForm={(validator) =>
+          (projectManagerFormRef.current = validator)
+        }
+      />
 
       <Button
         size="medium"
         variant="primary"
         onClick={commitProject}
-        disabled={updatingProjectRevision || discardingProjectRevision}
+        disabled={updatingProjectRevision}
       >
-        Submit
-      </Button>
-      <Button
-        size="medium"
-        variant="secondary"
-        onClick={discardRevision}
-        disabled={updatingProjectRevision || discardingProjectRevision}
-      >
-        Discard Changes
+        Submit Project Managers
       </Button>
 
       <style jsx>{`
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: start;
+        }
+
         :global(.pg-button) {
           margin-right: 3em;
         }

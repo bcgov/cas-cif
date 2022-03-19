@@ -6,7 +6,7 @@ import { Dashboard_query$key } from "__generated__/Dashboard_query.graphql";
 import {
   getContactsPageRoute,
   getOperatorsPageRoute,
-  getProjectRevisionPageRoute,
+  getProjectRevisionOverviewFormPageRoute,
   getProjectsPageRoute,
 } from "pageRoutes";
 import { mutation as createProjectMutation } from "mutations/Project/createProject";
@@ -49,7 +49,9 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
       variables: { input: {} },
       onCompleted: (response: createProjectMutationResponse) => {
         router.push(
-          getProjectRevisionPageRoute(response.createProject.projectRevision.id)
+          getProjectRevisionOverviewFormPageRoute(
+            response.createProject.projectRevision.id
+          )
         );
       },
     });
@@ -62,7 +64,9 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
       pendingNewProjectRevision ? (
         <Link
           passHref
-          href={getProjectRevisionPageRoute(pendingNewProjectRevision.id)}
+          href={getProjectRevisionOverviewFormPageRoute(
+            pendingNewProjectRevision.id
+          )}
         >
           <BCGovLink>Resume Project Draft</BCGovLink>
         </Link>
