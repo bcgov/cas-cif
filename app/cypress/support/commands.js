@@ -56,3 +56,13 @@ ${fixture}
 EOF`)
   );
 });
+
+Cypress.Commands.add("useMockedTime", (dateTime) => {
+  cy.setCookie(
+    "mocks.mocked_timestamp",
+    Math.round(dateTime.getTime() / 1000).toString()
+  );
+});
+Cypress.Commands.add("clearMockedTime", () => {
+  cy.clearCookie("mocks.mocked_timestamp");
+});

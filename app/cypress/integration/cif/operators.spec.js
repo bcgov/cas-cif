@@ -7,6 +7,7 @@ describe("the operators page", () => {
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/003_cif_project");
     cy.mockLogin("cif_internal");
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
   it("displays the list of operators", () => {
@@ -58,6 +59,7 @@ describe("the operators page", () => {
     cy.visit("/cif/operators");
     cy.get("button").contains("View").click();
     cy.contains("Operator Information");
+
     cy.get("body").happoScreenshot({
       component: "Operator View Page",
     });
@@ -66,6 +68,7 @@ describe("the operators page", () => {
     cy.contains("ABCD");
     cy.get("button").contains("Edit").click();
     cy.contains("Edit Operator");
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Operator Edit Page",
     });
