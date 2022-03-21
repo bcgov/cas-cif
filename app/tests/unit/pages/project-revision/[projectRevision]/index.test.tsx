@@ -72,6 +72,7 @@ describe("The Create Project page", () => {
       });
       return null;
     });
+    jest.restoreAllMocks();
   });
 
   const initialQueryRef = loadQuery<ProjectRevisionQuery>(
@@ -237,5 +238,25 @@ describe("The Create Project page", () => {
       "disabled",
       true
     );
+  });
+
+  it("redirects to the 404 page when a revision doesn't exist", async () => {
+    const spy = jest
+      .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
+      .mockImplementation(() => {
+        return true;
+      });
+    const { container } = render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectRevision
+          data-testid="3"
+          CSN={true}
+          preloadedQuery={initialQueryRef}
+        />
+      </RelayEnvironmentProvider>
+    );
+
+    expect(container.childElementCount).toEqual(0);
+    expect(spy).toHaveBeenCalledWith("mock-proj-rev-id");
   });
 });

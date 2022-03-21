@@ -40,6 +40,24 @@ const loadContactData = (partialContact = {}) => {
 describe("ContactViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    jest.restoreAllMocks();
+  });
+
+  it("renders null if the contact doesn't exist", () => {
+    const spy = jest
+      .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
+      .mockImplementation(() => {
+        return true;
+      });
+    const { container } = render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ContactViewPage CSN preloadedQuery={loadContactData()} />
+      </RelayEnvironmentProvider>
+    );
+    expect(container.childElementCount).toEqual(0);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "mock-contact-id" })
+    );
   });
 
   it("displays the contact data", () => {

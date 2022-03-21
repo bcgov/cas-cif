@@ -105,6 +105,7 @@ const loadProjectData = (partialProject = {}) => {
 describe("ProjectViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    jest.restoreAllMocks();
   });
 
   it("displays the project details", () => {
@@ -130,5 +131,22 @@ describe("ProjectViewPage", () => {
     expect(screen.getByText(/Manager last name 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager first name 2/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager last name 2/i)).toBeInTheDocument();
+  });
+
+  it("renders null if the project doesn't exist", () => {
+    const spy = jest
+      .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
+      .mockImplementation(() => {
+        return true;
+      });
+    const { container } = render(
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectViewPage CSN preloadedQuery={loadProjectData()} />
+      </RelayEnvironmentProvider>
+    );
+    expect(container.childElementCount).toEqual(0);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ projectName: "Project 1" })
+    );
   });
 });

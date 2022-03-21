@@ -41,6 +41,7 @@ const loadOperatorData = (additionalOperatorData = {}) => {
 describe("OperatorViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    jest.restoreAllMocks();
   });
 
   it("displays the operator data", () => {
@@ -91,5 +92,22 @@ describe("OperatorViewPage", () => {
     );
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
+  });
+
+  it("renders null if the operator doesn't exist", () => {
+    const spy = jest
+      .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
+      .mockImplementation(() => {
+        return true;
+      });
+    const { container } = render(
+      <RelayEnvironmentProvider environment={environment}>
+        <OperatorViewPage CSN preloadedQuery={loadOperatorData()} />
+      </RelayEnvironmentProvider>
+    );
+    expect(container.childElementCount).toEqual(0);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "mock-cif-operator-id" })
+    );
   });
 });
