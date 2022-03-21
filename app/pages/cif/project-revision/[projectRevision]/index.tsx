@@ -18,6 +18,7 @@ import ProjectContactForm from "components/Form/ProjectContactForm";
 import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import { mutation as updateProjectFormChangeMutation } from "mutations/FormChange/updateProjectFormChange";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -59,11 +60,15 @@ export function ProjectRevision({
     useDeleteProjectRevisionMutation();
 
   const lastEditedDate = useMemo(
-    () => new Date(query.projectRevision.updatedAt),
-    [query.projectRevision.updatedAt]
+    () =>
+      query.projectRevision?.updatedAt
+        ? new Date(query.projectRevision.updatedAt)
+        : null,
+    [query.projectRevision?.updatedAt]
   );
 
-  if (!query.projectRevision.id) return null;
+  const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
+  if (isRedirecting) return null;
 
   /**
    *  Function: approve staged change, trigger an insert on the project

@@ -8,6 +8,7 @@ import { ContactViewQuery } from "__generated__/ContactViewQuery.graphql";
 import { Button } from "@button-inc/bcgov-theme";
 import useCreateEditContactFormChange from "mutations/Contact/createEditContactFormChange";
 import { createEditContactFormChangeMutation$data } from "__generated__/createEditContactFormChangeMutation.graphql";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 const pageQuery = graphql`
   query ContactViewQuery($contact: ID!) {
@@ -33,9 +34,17 @@ export function ContactViewPage({
   preloadedQuery,
 }: RelayProps<{}, ContactViewQuery>) {
   const { session, contact } = usePreloadedQuery(pageQuery, preloadedQuery);
+  console.log("pagequery is", pageQuery);
+  console.log("preloaded query is", preloadedQuery);
+  console.log("contact is", contact);
   const router = useRouter();
   const [startContactRevision, isStartingContactRevision] =
     useCreateEditContactFormChange();
+
+  //check that useredirect gets called with whatever contact is in query that I load
+
+  const isRedirecting = useRedirectTo404IfFalsy(contact);
+  if (isRedirecting) return null;
 
   const handleEditContact = () => {
     startContactRevision({

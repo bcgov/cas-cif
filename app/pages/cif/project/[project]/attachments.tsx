@@ -5,6 +5,7 @@ import { attachmentsQuery } from "__generated__/attachmentsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import createAttachmentMutation from "mutations/attachment/createAttachment";
 import { FilePicker } from "@button-inc/bcgov-theme";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 const pageQuery = graphql`
   query attachmentsQuery($project: ID!) {
@@ -35,6 +36,9 @@ function ProjectAttachments({
   );
 
   const environment = useRelayEnvironment();
+
+  const isRedirecting = useRedirectTo404IfFalsy(project);
+  if (isRedirecting) return null;
 
   const saveAttachment = async (e) => {
     const variables = {

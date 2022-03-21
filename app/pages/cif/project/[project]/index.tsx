@@ -7,6 +7,7 @@ import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjec
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 export const pageQuery = graphql`
   query ProjectOverviewQuery($project: ID!) {
@@ -68,6 +69,9 @@ export function ProjectViewPage({
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
+
+  const isRedirecting = useRedirectTo404IfFalsy(project);
+  if (isRedirecting) return null;
 
   const handleCreateRevision = () => {
     createProjectRevision({
