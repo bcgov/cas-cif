@@ -6,6 +6,8 @@ import Footer from "components/Layout/Footer";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
 import UserProfile from "components/User/UserProfile";
 import GlobalAlert from "./GlobalAlert";
+import { useContext } from "react";
+import { ErrorContext } from "contexts/ErrorContext";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -30,6 +32,8 @@ const DefaultLayout: React.FC<Props> = ({
     sessionFragment
   );
 
+  const { error } = useContext(ErrorContext);
+
   return (
     <div id="page-wrap">
       <Navigation
@@ -43,8 +47,9 @@ const DefaultLayout: React.FC<Props> = ({
           <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
         )}
       </Navigation>
-      <GlobalAlert content={"brianna makes an alert"} />
+      {error && <GlobalAlert error={error} />}
       <main>{children}</main>
+
       <Footer />
       <style jsx>
         {`
