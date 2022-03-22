@@ -19,6 +19,7 @@ types/keycloak_jwt 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> #
 functions/session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.session function
 trigger_functions/update_timestamps 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.update_timestamps trigger function
 trigger_functions/archived_records_are_immutable 2022-01-06T18:37:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger to ensure that no changes to a deleted record can be saved
+trigger_functions/set_previous_form_change_id [schemas/private] 2022-03-21T23:04:27Z Dylan Leard <dylan@button.is> # Trigger function sets the previous_form_change_id fkey on insert
 util_functions/upsert_timestamp_columns [schemas/private trigger_functions/update_timestamps] 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the upsert_timestamp_columns function
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
@@ -37,7 +38,7 @@ tables/change_status [schemas/main] 2021-11-08T22:46:03Z Pierre Bastianelli <pie
 trigger_functions/committed_changes_are_immutable 2022-01-06T23:40:27Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger to prevent committed changes from being altered
 trigger_functions/commit_project_revision 2021-12-07T00:37:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger function executed when a whole project revision is committed, triggering commit on the individual form_change records
 tables/project_revision 2021-12-07T00:39:51Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A table to track global project revisions - containing multiple changes
-tables/form_change [tables/change_status] 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
+tables/form_change [tables/change_status trigger_functions/set_previous_form_change_id] 2021-11-04T20:58:49Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Form history table to track changes to records
 tables/attachment 2021-11-24T21:24:45Z Alex Zorkin <alex@bigthink.io> # Add schema for attachments
 tables/contact 2022-01-19T22:40:59Z Matthieu Foucault <matthieu@button.is> # add contact table
 tables/project_contact 2022-01-21T20:45:52Z Matthieu Foucault <matthieu@button.is> # add an association table for projects and contacts
@@ -61,4 +62,3 @@ functions/pending_new_form_change_for_table 2022-03-05T00:09:42Z Pierre Bastiane
 mutations/create_project_revision 2022-02-24T19:17:45Z Matthieu Foucault <matthieu@button.is> # add function to create a project revision for a given project
 computed_columns/project_revision_project_contact_form_changes 2022-03-03T17:16:01Z Matthieu Foucault <matthieu@button.is> # add a computed column to return a project_revision's contact form_change
 computed_columns/form_change_is_unique_value 2022-03-11T22:54:06Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A computed column that returns whether a column name already has a value in the database
-trigger_functions/set_previous_form_change_id [tables/form_change] 2022-03-21T23:04:27Z Dylan Leard <dylan@button.is> # Trigger function sets the previous_form_change_id fkey on insert
