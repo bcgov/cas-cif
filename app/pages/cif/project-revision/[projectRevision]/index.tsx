@@ -10,6 +10,7 @@ import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/dele
 import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import TaskList from "components/TaskList";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -19,6 +20,7 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        ...TaskList_projectRevision
       }
     }
   }
@@ -80,8 +82,10 @@ export function ProjectRevision({
     });
   };
 
+  const taskList = <TaskList projectRevision={query.projectRevision} />;
+
   return (
-    <DefaultLayout session={query.session}>
+    <DefaultLayout session={query.session} leftSideNav={taskList}>
       <header>
         <h2>Review and Submit Project</h2>
       </header>

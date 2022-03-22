@@ -14,12 +14,14 @@ const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 interface Props {
   title?: string;
   session: DefaultLayout_session$key;
+  leftSideNav?: React.ReactNode;
 }
 
 const DefaultLayout: React.FC<Props> = ({
   children,
   title,
   session: sessionFragment,
+  leftSideNav,
 }) => {
   const session = useFragment(
     graphql`
@@ -48,8 +50,10 @@ const DefaultLayout: React.FC<Props> = ({
         )}
       </Navigation>
       {error && <GlobalAlert error={error} />}
-      <main>{children}</main>
-
+      <div id="page-content">
+        {leftSideNav && <nav>{leftSideNav}</nav>}
+        <main>{children}</main>
+      </div>
       <Footer />
       <style jsx>
         {`
@@ -59,10 +63,24 @@ const DefaultLayout: React.FC<Props> = ({
             flex-direction: column;
             background-color: #fafafc;
           }
-          main {
+
+          #page-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: auto;
+            margin-top: 0;
+          }
+
+          main,
+          nav {
             padding: 30px 40px;
             flex-grow: 1;
-            margin: auto;
+          }
+
+          nav {
+            position: sticky;
+            top: 30px;
           }
         `}
       </style>

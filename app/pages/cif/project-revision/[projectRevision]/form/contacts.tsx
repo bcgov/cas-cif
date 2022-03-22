@@ -12,6 +12,7 @@ import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
+import TaskList from "components/TaskList";
 
 const pageQuery = graphql`
   query contactsFormQuery($projectRevision: ID!) {
@@ -23,6 +24,7 @@ const pageQuery = graphql`
         id
         updatedAt
         ...ProjectContactForm_projectRevision
+        ...TaskList_projectRevision
       }
       ...ProjectContactForm_query
     }
@@ -80,8 +82,10 @@ export function ProjectRevision({
     });
   };
 
+  const taskList = <TaskList projectRevision={query.projectRevision} />;
+
   return (
-    <DefaultLayout session={query.session} title="CIF Projects Management">
+    <DefaultLayout session={query.session} leftSideNav={taskList}>
       <header>
         <h2>Project Overview</h2>
         <SavingIndicator

@@ -3,15 +3,13 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { managersFormQuery } from "__generated__/managersFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 import { useMemo, useRef } from "react";
 import SavingIndicator from "components/Form/SavingIndicator";
-import ProjecManagerFormGroup from "components/Form/ProjectManagerFormGroup";
-import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
-import { useMutation } from "react-relay";
-import { getProjectsPageRoute } from "pageRoutes";
+import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
+// import { useMutation } from "react-relay";
 import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
+import TaskList from "components/TaskList";
 
 const pageQuery = graphql`
   query managersFormQuery($projectRevision: ID!) {
@@ -23,6 +21,7 @@ const pageQuery = graphql`
         id
         updatedAt
         ...ProjectManagerFormGroup_revision
+        ...TaskList_projectRevision
       }
       ...ProjectManagerFormGroup_query
     }
@@ -34,12 +33,7 @@ export function ProjectRevision({
 }: RelayProps<{}, managersFormQuery>) {
   const projectManagerFormRef = useRef<ISupportExternalValidation>(null);
 
-  const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
-
-  const [updateProjectRevision, updatingProjectRevision] = useMutation(
-    updateProjectRevisionMutation
-  );
 
   const lastEditedDate = useMemo(
     () => new Date(query.projectRevision.updatedAt),
@@ -49,10 +43,9 @@ export function ProjectRevision({
   if (!query.projectRevision.id) return null;
 
   /**
-   *  Function: approve staged change, trigger an insert on the project
-   *  table & redirect to the project page
+   *  Stage the project manager form_changes
    */
-  const commitProject = async () => {
+  const handleSubmit = async () => {
     const errors = [...projectManagerFormRef.current.selfValidate()];
 
     if (errors.length > 0) {
@@ -60,37 +53,19 @@ export function ProjectRevision({
       return;
     }
 
-    updateProjectRevision({
-      variables: {
-        input: {
-          id: query.projectRevision.id,
-          projectRevisionPatch: { changeStatus: "committed" },
-        },
-      },
-      // No need for an optimistic response
-      // Since we navigate away from the page after the mutation is complete
-      onCompleted: async () => {
-        await router.push(getProjectsPageRoute());
-      },
-      updater: (store) => {
-        // Invalidate the entire store,to make sure that we don't display any stale data after redirecting to the next page.
-        // This could be optimized to only invalidate the affected records.
-        store.invalidateStore();
-      },
-    });
+    // TODO
   };
 
+  const taskList = <TaskList projectRevision={query.projectRevision} />;
+
   return (
-    <DefaultLayout session={query.session} title="CIF Projects Management">
+    <DefaultLayout session={query.session} leftSideNav={taskList}>
       <header>
-        <h2>Project Overview</h2>
-        <SavingIndicator
-          isSaved={!updatingProjectRevision}
-          lastEdited={lastEditedDate}
-        />
+        <h2>Project Managers</h2>
+        <SavingIndicator isSaved={true} lastEdited={lastEditedDate} />
       </header>
 
-      <ProjecManagerFormGroup
+      <ProjectManagerFormGroup
         query={query}
         revision={query.projectRevision}
         projectManagerFormRef={projectManagerFormRef}
@@ -99,12 +74,7 @@ export function ProjectRevision({
         }
       />
 
-      <Button
-        size="medium"
-        variant="primary"
-        onClick={commitProject}
-        disabled={updatingProjectRevision}
-      >
+      <Button size="medium" variant="primary" onClick={handleSubmit}>
         Submit Project Managers
       </Button>
 

@@ -5,6 +5,7 @@ import { overviewFormQuery } from "__generated__/overviewFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 
 import ProjectForm from "components/Form/ProjectForm";
+import TaskList from "components/TaskList";
 
 const pageQuery = graphql`
   query overviewFormQuery($projectRevision: ID!) {
@@ -15,6 +16,7 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         ...ProjectForm_projectRevision
+        ...TaskList_projectRevision
       }
       ...ProjectForm_query
     }
@@ -28,8 +30,10 @@ export function ProjectRevision({
 
   if (!query.projectRevision.id) return null;
 
+  const taskList = <TaskList projectRevision={query.projectRevision} />;
+
   return (
-    <DefaultLayout session={query.session} title="CIF Projects Management">
+    <DefaultLayout session={query.session} leftSideNav={taskList}>
       <ProjectForm query={query} projectRevision={query.projectRevision} />
     </DefaultLayout>
   );

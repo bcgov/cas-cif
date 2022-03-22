@@ -56,6 +56,24 @@ export const getProjectRevisionOverviewFormPageRoute = (
   },
 });
 
+export const getProjectRevisionManagersFormPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif/project-revision/[projectRevision]/form/managers/`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
+
+export const getProjectRevisionContactsFormPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif/project-revision/[projectRevision]/form/contacts/`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
+
 ///// Project
 
 export const getProjectsPageRoute = () => ({
