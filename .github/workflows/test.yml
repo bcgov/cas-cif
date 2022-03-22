@@ -9,6 +9,8 @@ on:
 jobs:
   install-dev-tools:
     runs-on: ubuntu-latest
+    env:
+      PGUSER: postgres
     steps:
       - uses: actions/checkout@v2
       - name: dev env setup
