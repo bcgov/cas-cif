@@ -22,7 +22,7 @@ runs:
       with:
         path: |
           ~/.asdf
-        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}
+        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}-v2
     - uses: actions/cache@v2
       id: perl-cache
       with:
