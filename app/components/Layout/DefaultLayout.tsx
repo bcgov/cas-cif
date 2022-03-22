@@ -5,6 +5,7 @@ import Navigation from "components/Layout/Navigation";
 import Footer from "components/Layout/Footer";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
 import UserProfile from "components/User/UserProfile";
+import GlobalAlert from "./GlobalAlert";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -42,6 +43,7 @@ const DefaultLayout: React.FC<Props> = ({
           <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
         )}
       </Navigation>
+      <GlobalAlert content={"brianna makes an alert"} />
       <main>{children}</main>
       <Footer />
       <style jsx>
