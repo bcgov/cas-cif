@@ -12,8 +12,8 @@ const UserProfile: React.FC<Props> = ({ user }) => {
     useFragment(
       graphql`
         fragment UserProfile_user on CifUser {
-          firstName
-          lastName
+          givenName
+          familyName
           emailAddress
         }
       `,

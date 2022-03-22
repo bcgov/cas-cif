@@ -48,8 +48,8 @@ export const pageQuery = graphql`
         edges {
           node {
             cifUserByCifUserId {
-              firstName
-              lastName
+              givenName
+              familyName
               id
             }
           }
