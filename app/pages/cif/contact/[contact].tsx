@@ -34,14 +34,9 @@ export function ContactViewPage({
   preloadedQuery,
 }: RelayProps<{}, ContactViewQuery>) {
   const { session, contact } = usePreloadedQuery(pageQuery, preloadedQuery);
-  console.log("pagequery is", pageQuery);
-  console.log("preloaded query is", preloadedQuery);
-  console.log("contact is", contact);
   const router = useRouter();
   const [startContactRevision, isStartingContactRevision] =
     useCreateEditContactFormChange();
-
-  //check that useredirect gets called with whatever contact is in query that I load
 
   const isRedirecting = useRedirectTo404IfFalsy(contact);
   if (isRedirecting) return null;

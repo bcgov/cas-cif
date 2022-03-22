@@ -54,9 +54,9 @@ const relayFormPageFactory = (
       pageQuery,
       preloadedQuery
     );
-    const router = useRouter();
     const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
     const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
+    const router = useRouter();
 
     const lastEditedDate = useMemo(
       () => new Date(formChange?.updatedAt),

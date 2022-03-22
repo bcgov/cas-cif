@@ -38,6 +38,7 @@ export function OperatorViewPage({
   const router = useRouter();
   const [startOperatorRevision, isStartingOperatorRevision] =
     useCreateEditOperatorFormChange();
+
   const isRedirecting = useRedirectTo404IfFalsy(operator);
   if (isRedirecting) return null;
   const handleEditOperator = () => {
