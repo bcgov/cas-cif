@@ -12,7 +12,7 @@ import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevis
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FieldLabel from "lib/theme/widgets/FieldLabel";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
+import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
 
 interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
@@ -135,12 +135,14 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation] = useUpdateFormChange();
 
   // Delete a manager from the project revision
-  const [discardFormChange, discardInFlight] = useDiscardFormChange();
+  const [deleteManager, deleteManagerInFlight] =
+    useDeleteManagerFromRevisionMutation();
   const handleClear = () => {
-    discardFormChange({
-      formChange: {
-        id: change.formChange.id,
+    deleteManager({
+      context: {
         operation: change.formChange.operation,
+        id: change.formChange.id,
+        projectRevision: projectRevisionId,
       },
       onError: (error) => {
         console.log(error);
@@ -186,7 +188,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
       addManager(data);
     }
     // If a form_change exists, and the payload does not contain a cifUserId delete it
-    else if (formChangeId && !formChange.cifUserId && !discardInFlight) {
+    else if (formChangeId && !formChange.cifUserId && !deleteManagerInFlight) {
       handleClear();
     }
   };
@@ -222,7 +224,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         </Grid.Col>
         <Grid.Col span={4}>
           <Button
-            disabled={discardInFlight || !change.formChange?.id}
+            disabled={deleteManagerInFlight || !change.formChange?.id}
             variant="secondary"
             size="small"
             onClick={() => handleClear()}
