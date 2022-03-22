@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [develop]
 
+env:
+  PGUSER: postgres
+
 jobs:
   install-dev-tools:
     runs-on: ubuntu-latest
