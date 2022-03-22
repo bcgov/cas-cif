@@ -51,8 +51,8 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           edges {
             node {
               rowId
-              firstName
-              lastName
+              givenName
+              familyName
             }
           }
         }
@@ -87,7 +87,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
       anyOf: allCifUsers.edges.map(({ node }) => {
         return {
           type: "number",
-          title: `${node.firstName} ${node.lastName}`,
+          title: `${node.givenName} ${node.familyName}`,
           enum: [node.rowId],
           value: node.rowId,
         } as JSONSchema7Definition;

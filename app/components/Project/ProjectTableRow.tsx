@@ -36,8 +36,8 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
             node {
               cifUserByCifUserId {
                 id
-                firstName
-                lastName
+                givenName
+                familyName
               }
             }
           }

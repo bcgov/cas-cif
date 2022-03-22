@@ -25,7 +25,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
       fragment Dashboard_query on Query {
         session {
           cifUserBySub {
-            firstName
+            givenName
           }
           userGroups
         }
