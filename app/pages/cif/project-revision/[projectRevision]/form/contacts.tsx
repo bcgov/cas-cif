@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import TaskList from "components/TaskList";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 const pageQuery = graphql`
   query contactsFormQuery($projectRevision: ID!) {
@@ -27,17 +28,17 @@ const pageQuery = graphql`
 export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, contactsFormQuery>) {
+  const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
-  const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
+  const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
+  if (isRedirecting) return null;
 
-  if (!query.projectRevision.id) return null;
+  const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
     router.push(getProjectRevisionPageRoute(query.projectRevision.id));
   };
-
-  const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>

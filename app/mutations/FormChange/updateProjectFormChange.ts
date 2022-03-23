@@ -1,4 +1,6 @@
 import { graphql } from "react-relay";
+import { updateProjectFormChangeMutation } from "__generated__/updateProjectFormChangeMutation.graphql";
+import useDebouncedMutation from "mutations/useDebouncedMutation";
 
 /**
  *
@@ -7,7 +9,7 @@ import { graphql } from "react-relay";
  *
  */
 
-const mutation = graphql`
+export const mutation = graphql`
   mutation updateProjectFormChangeMutation($input: UpdateFormChangeInput!) {
     updateFormChange(input: $input) {
       formChange {
@@ -19,4 +21,6 @@ const mutation = graphql`
   }
 `;
 
-export { mutation };
+export const useUpdateProjectFormChange = () => {
+  return useDebouncedMutation<updateProjectFormChangeMutation>(mutation);
+};

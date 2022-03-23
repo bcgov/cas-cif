@@ -2,26 +2,25 @@ import type { JSONSchema7 } from "json-schema";
 import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
-import { FormValidation } from "@rjsf/core";
-import { mutation as updateProjectFormChangeMutation } from "mutations/FormChange/updateProjectFormChange";
-import useDebouncedMutation from "mutations/useDebouncedMutation";
+import { FormValidation, ISubmitEvent } from "@rjsf/core";
+import { useUpdateProjectFormChange } from "mutations/FormChange/updateProjectFormChange";
 import { Button } from "@button-inc/bcgov-theme";
 import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   query: ProjectForm_query$key;
   projectRevision: ProjectForm_projectRevision$key;
+  onSubmit: () => void;
 }
 
 const ProjectForm: React.FC<Props> = (props) => {
-  const formRef = useRef();
   const [updateProjectFormChange, updatingProjectFormChange] =
-    useDebouncedMutation(updateProjectFormChangeMutation);
+    useUpdateProjectFormChange();
 
   const revision = useFragment(
     graphql`
@@ -80,31 +79,39 @@ const ProjectForm: React.FC<Props> = (props) => {
     return errors;
   };
 
-  const handleChange = (changeData: any) => {
+  const handleChange = (
+    changeData: any,
+    changeStatus: "pending" | "staged"
+  ) => {
     const updatedFormData = {
       ...revision.projectFormChange.newFormData,
       ...changeData,
     };
-    return updateProjectFormChange({
-      variables: {
-        input: {
-          id: revision.projectFormChange.id,
-          formChangePatch: {
-            newFormData: updatedFormData,
-          },
-        },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
+    return new Promise((resolve, reject) =>
+      updateProjectFormChange({
+        variables: {
+          input: {
             id: revision.projectFormChange.id,
-            newFormData: updatedFormData,
-            isUniqueValue: revision.projectFormChange.isUniqueValue,
+            formChangePatch: {
+              newFormData: updatedFormData,
+              changeStatus,
+            },
           },
         },
-      },
-      debounceKey: revision.projectFormChange.id,
-    });
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: revision.projectFormChange.id,
+              newFormData: updatedFormData,
+              isUniqueValue: revision.projectFormChange.isUniqueValue,
+            },
+          },
+        },
+        onCompleted: resolve,
+        onError: reject,
+        debounceKey: revision.projectFormChange.id,
+      })
+    );
   };
 
   const schema: JSONSchema7 = useMemo(() => {
@@ -189,6 +196,11 @@ const ProjectForm: React.FC<Props> = (props) => {
     [revision.projectFormChange.updatedAt]
   );
 
+  const handleSubmit = async (e: ISubmitEvent<any>) => {
+    await handleChange(e.formData, "staged");
+    props.onSubmit();
+  };
+
   return (
     <>
       <header>
@@ -200,7 +212,6 @@ const ProjectForm: React.FC<Props> = (props) => {
       </header>
       <FormBase
         {...props}
-        ref={(el) => (formRef.current = el)}
         schema={schema}
         uiSchema={uiSchema}
         validate={uniqueProposalReferenceValidation}
@@ -214,7 +225,8 @@ const ProjectForm: React.FC<Props> = (props) => {
           SelectRfpWidget: SelectRfpWidget,
           SelectProjectStatusWidget: SelectProjectStatusWidget,
         }}
-        onChange={(change) => handleChange(change.formData)}
+        onChange={(change) => handleChange(change.formData, "pending")}
+        onSubmit={handleSubmit}
       >
         <Button type="submit" style={{ marginRight: "1rem" }}>
           Submit Project Overview

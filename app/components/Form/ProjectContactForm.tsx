@@ -244,7 +244,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       <Grid cols={10} align="center">
         <Grid.Row>
           <Grid.Col span={10}>
-            <FormBorder title="Project Contacts">
+            <FormBorder>
               <Grid.Row>
                 <Grid.Col span={10} className="right-aligned-column">
                   <Button>View Contact List</Button>
@@ -263,10 +263,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
                     formData={primaryContactForm.newFormData}
                     onChange={(change) => {
-                      updateFormChange(primaryContactForm, {
-                        ...change.formData,
-                        changeStatus: "pending",
-                      });
+                      updateFormChange(
+                        { ...primaryContactForm, changeStatus: "pending" },
+                        change.formData
+                      );
                     }}
                     schema={contactSchema}
                     uiSchema={uiSchema}
@@ -296,10 +296,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       ref={(el) => (formRefs.current[form.id] = el)}
                       formData={form.newFormData}
                       onChange={(change) => {
-                        updateFormChange(form, {
-                          ...change.formData,
-                          changeStatus: "pending",
-                        });
+                        updateFormChange(
+                          { ...form, changeStatus: "pending" },
+                          change.formData
+                        );
                       }}
                       schema={contactSchema}
                       uiSchema={uiSchema}

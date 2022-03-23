@@ -7,15 +7,14 @@ interface Props {
 }
 
 const SavingIndicator: React.FC<Props> = ({ isSaved, lastEdited }) => {
+  let dateString = lastEdited.toLocaleString("en-CA", {
+    timeZone: "America/Vancouver",
+    dateStyle: "short",
+  });
+  if (isNaN(Date.parse(dateString))) dateString = "Never";
   return (
     <div>
-      <span className="last-edited">
-        Last edited:{" "}
-        {lastEdited.toLocaleString("en-CA", {
-          timeZone: "America/Vancouver",
-          dateStyle: "short",
-        })}
-      </span>
+      <span className="last-edited">Last edited: {dateString}</span>
       <span>
         <FontAwesomeIcon icon={isSaved ? faCheck : faSync} />
         <span className="is-saved">

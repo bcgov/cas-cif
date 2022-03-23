@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
 import commitProjectMutation from "mutations/Project/createProject";
 import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import {
@@ -86,13 +86,15 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       input: {},
     });
     await router.push(
-      getProjectRevisionPageRoute(response.createProject.projectRevision.id)
+      getProjectRevisionOverviewFormPageRoute(
+        response.createProject.projectRevision.id
+      )
     );
   };
 
   const resumeStagedProject = async () => {
     await router.push(
-      getProjectRevisionPageRoute(pendingNewProjectRevision.id)
+      getProjectRevisionOverviewFormPageRoute(pendingNewProjectRevision.id)
     );
   };
 

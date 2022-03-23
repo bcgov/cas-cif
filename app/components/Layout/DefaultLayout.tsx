@@ -66,6 +66,7 @@ const DefaultLayout: React.FC<Props> = ({
 
           #page-content {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: flex-start;
             margin: auto;
@@ -78,9 +79,24 @@ const DefaultLayout: React.FC<Props> = ({
             flex-grow: 1;
           }
 
-          nav {
-            position: sticky;
-            top: 30px;
+          main {
+            width: 100%;
+          }
+
+          @media (min-width: 1024px) {
+            #page-content {
+              flex-direction: row;
+            }
+
+            nav {
+              position: sticky;
+              top: 30px;
+              padding-right: 0;
+            }
+
+            main {
+              min-width: 700px;
+            }
           }
         `}
       </style>

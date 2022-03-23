@@ -86,29 +86,30 @@ export function ProjectRevision({
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      <header>
-        <h2>Review and Submit Project</h2>
-      </header>
+      <div>
+        <header>
+          <h2>Review and Submit Project</h2>
+        </header>
 
-      <Button
-        size="medium"
-        variant="primary"
-        onClick={commitProject}
-        disabled={updatingProjectRevision || discardingProjectRevision}
-      >
-        Submit
-      </Button>
-      <Button
-        size="medium"
-        variant="secondary"
-        onClick={discardRevision}
-        disabled={updatingProjectRevision || discardingProjectRevision}
-      >
-        Discard Changes
-      </Button>
-
+        <Button
+          size="medium"
+          variant="primary"
+          onClick={commitProject}
+          disabled={updatingProjectRevision || discardingProjectRevision}
+        >
+          Submit
+        </Button>
+        <Button
+          size="medium"
+          variant="secondary"
+          onClick={discardRevision}
+          disabled={updatingProjectRevision || discardingProjectRevision}
+        >
+          Discard Changes
+        </Button>
+      </div>
       <style jsx>{`
-        :global(.pg-button) {
+        div :global(.pg-button) {
           margin-right: 3em;
         }
       `}</style>
