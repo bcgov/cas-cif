@@ -79,7 +79,7 @@ select is (
 );
 
 alter table cif.form_change disable trigger _100_timestamps;
--- commit the second set of pending form_change records at different times to test that order matters
+-- commit the second set of pending form_change records at different times to test that commit order matters
 update cif.form_change set change_status = 'committed', updated_at=now() where change_reason ilike 'second_pending%';
 update cif.form_change set change_status = 'committed', updated_at=now() + interval '1 hour' where change_reason ilike 'first_pending%';
 
