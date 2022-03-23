@@ -11,6 +11,7 @@ describe("the useRedirectTo404IfFalsy hook", () => {
   it("returns true if the record doesn't exist and the page should redirect", () => {
     const { result } = renderHook(() => useRedirectTo404IfFalsy(null));
     expect(result.current).toBe(true);
+    expect(useRouter().replace).toHaveBeenCalledWith("/404");
   });
 
   it("returns false if the record exists", () => {
