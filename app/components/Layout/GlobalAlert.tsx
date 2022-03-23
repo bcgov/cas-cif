@@ -1,5 +1,4 @@
 import Alert from "@button-inc/bcgov-theme/Alert";
-
 interface Props {
   error: string;
 }
