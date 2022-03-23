@@ -10,17 +10,17 @@ import { Button } from "@button-inc/bcgov-theme";
 import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
-import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import {
   ProjectContactForm_projectRevision$key,
   FormChangeOperation,
 } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
-import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import SavingIndicator from "./SavingIndicator";
 
-interface Props extends ValidatingFormProps {
+interface Props {
   query: ProjectContactForm_query$key;
+  onSubmit: () => void;
   projectRevision: ProjectContactForm_projectRevision$key;
 }
 
@@ -52,6 +52,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               id
               newFormData
               operation
+              changeStatus
+              updatedAt
             }
           }
         }
@@ -59,6 +61,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+  const { projectContactFormChanges } = projectRevision;
 
   const { allContacts } = useFragment(
     graphql`
@@ -75,6 +78,13 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
+
+  const lastEditedDate = useMemo(() => {
+    const mostRecentUpdate = projectContactFormChanges.edges
+      .map((e) => e.node.updatedAt)
+      .sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+    return new Date(mostRecentUpdate);
+  }, [projectContactFormChanges]);
 
   const contactSchema = useMemo(() => {
     const schema = projectContactSchema;
@@ -112,7 +122,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const allForms = useMemo(() => {
     const contactForms = [
-      ...projectRevision.projectContactFormChanges.edges
+      ...projectContactFormChanges.edges
         .filter(({ node }) => node.operation !== "ARCHIVE")
         .map(({ node }) => node),
     ];
@@ -120,12 +130,12 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       (a, b) => a.newFormData.contactIndex - b.newFormData.contactIndex
     );
     return contactForms;
-  }, [projectRevision]);
+  }, [projectContactFormChanges]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
-  const [applyUpdateFormChangeMutation] = useUpdateFormChange();
+  const [applyUpdateFormChangeMutation, isUpdating] = useUpdateFormChange();
   const [discardFormChange] = useDiscardFormChange(
-    projectRevision.projectContactFormChanges.__id
+    projectContactFormChanges.__id
   );
 
   const deleteContact = (
@@ -145,6 +155,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       readonly id: string;
       readonly newFormData: any;
       readonly operation: FormChangeOperation;
+      readonly changeStatus: string;
     },
     newFormData: any
   ) => {
@@ -154,6 +165,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           id: formChange.id,
           formChangePatch: {
             newFormData,
+            changeStatus: formChange.changeStatus,
           },
         },
       },
@@ -162,6 +174,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           formChange: {
             ...formChange,
             newFormData,
+            changeStatus: formChange.changeStatus,
           },
         },
       },
@@ -169,22 +182,65 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
   };
 
-  props.setValidatingForm({
-    selfValidate: () => {
-      return Object.keys(formRefs.current).reduce((agg, formId) => {
-        const formObject = formRefs.current[formId];
-        return [...agg, ...validateFormWithErrors(formObject)];
-      }, []);
-    },
-  });
-
   const clearPrimaryContact = () => {
     const { contactId, ...newFormData } = primaryContactForm.newFormData;
     updateFormChange(primaryContactForm, newFormData);
   };
 
+  const stageContactFormChanges = async () => {
+    const validationErrors = Object.keys(formRefs.current).reduce(
+      (agg, formId) => {
+        const formObject = formRefs.current[formId];
+        return [...agg, ...validateFormWithErrors(formObject)];
+      },
+      []
+    );
+
+    if (validationErrors.length > 0) return;
+
+    const completedPromises: Promise<void>[] = [];
+
+    projectContactFormChanges.edges.forEach(({ node }) => {
+      if (node.changeStatus === "pending") {
+        const promise = new Promise<void>((resolve) => {
+          applyUpdateFormChangeMutation({
+            variables: {
+              input: {
+                id: node.id,
+                formChangePatch: {
+                  changeStatus: "staged",
+                },
+              },
+            },
+            optimisticResponse: {
+              updateFormChange: {
+                formChange: {
+                  changeStatus: "staged",
+                },
+              },
+            },
+            debounceKey: node.id,
+            onCompleted: () => {
+              resolve();
+            },
+          });
+        });
+        completedPromises.push(promise);
+      }
+    });
+
+    await Promise.all(completedPromises);
+
+    props.onSubmit();
+  };
+
   return (
     <div>
+      <header>
+        <h2>Project Contacts</h2>
+        <SavingIndicator isSaved={!isUpdating} lastEdited={lastEditedDate} />
+      </header>
+
       <Grid cols={10} align="center">
         <Grid.Row>
           <Grid.Col span={10}>
@@ -207,7 +263,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
                     formData={primaryContactForm.newFormData}
                     onChange={(change) => {
-                      updateFormChange(primaryContactForm, change.formData);
+                      updateFormChange(primaryContactForm, {
+                        ...change.formData,
+                        changeStatus: "pending",
+                      });
                     }}
                     schema={contactSchema}
                     uiSchema={uiSchema}
@@ -237,7 +296,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       ref={(el) => (formRefs.current[form.id] = el)}
                       formData={form.newFormData}
                       onChange={(change) => {
-                        updateFormChange(form, change.formData);
+                        updateFormChange(form, {
+                          ...change.formData,
+                          changeStatus: "pending",
+                        });
                       }}
                       schema={contactSchema}
                       uiSchema={uiSchema}
@@ -271,6 +333,17 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     Add
                   </Button>
                 </Grid.Col>
+              </Grid.Row>
+
+              <Grid.Row>
+                <Button
+                  size="medium"
+                  variant="primary"
+                  onClick={stageContactFormChanges}
+                  disabled={isUpdating}
+                >
+                  Submit Contacts
+                </Button>
               </Grid.Row>
             </FormBorder>
           </Grid.Col>
