@@ -1,41 +1,64 @@
 import { ContactViewPage } from "pages/cif/contact/[contact]";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
+import {
+  createMockEnvironment,
+  MockPayloadGenerator,
+  RelayMockEnvironment,
+} from "relay-test-utils";
 import { render, screen } from "@testing-library/react";
 import compiledContactViewQuery, {
   ContactViewQuery,
+  ContactViewQuery$variables,
 } from "__generated__/ContactViewQuery.graphql";
 import { loadQuery, RelayEnvironmentProvider } from "react-relay";
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { useRouter } from "next/router";
+import { mocked } from "jest-mock";
 
-let environment;
+jest.mock("next/router");
 
-const loadContactData = (partialContact = {}) => {
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, {
-      Contact() {
-        return {
-          id: "mock-contact-id",
-          rowId: 42,
-          fullName: "Contact, Test",
-          fullPhone: "(123) 456-7890",
-          email: "foo@bar.com",
-          position: "Test Position",
-          pendingFormChange: null,
-          ...partialContact,
-        };
-      },
-    });
-  });
+let environment: RelayMockEnvironment;
+let initialQueryRef;
 
-  const variables = {
+const defaultMockResolver = {
+  Contact() {
+    return {
+      id: "mock-contact-id",
+      rowId: 42,
+      fullName: "Contact, Test",
+      fullPhone: "(123) 456-7890",
+      email: "foo@bar.com",
+      position: "Test Position",
+      pendingFormChange: null,
+    };
+  },
+};
+
+const loadContactQuery = (
+  mockResolver: MockResolvers = defaultMockResolver
+) => {
+  const variables: ContactViewQuery$variables = {
     contact: "mock-contact-id",
   };
+
+  environment.mock.queueOperationResolver((operation) => {
+    return MockPayloadGenerator.generate(operation, mockResolver);
+  });
+
   environment.mock.queuePendingOperation(compiledContactViewQuery, variables);
-  return loadQuery<ContactViewQuery>(
+
+  initialQueryRef = loadQuery<ContactViewQuery>(
     environment,
     compiledContactViewQuery,
     variables
   );
 };
+
+const renderContactPage = () =>
+  render(
+    <RelayEnvironmentProvider environment={environment}>
+      <ContactViewPage CSN preloadedQuery={initialQueryRef} />
+    </RelayEnvironmentProvider>
+  );
 
 describe("ContactViewPage", () => {
   beforeEach(() => {
@@ -44,28 +67,28 @@ describe("ContactViewPage", () => {
   });
 
   it("renders null if the contact doesn't exist", () => {
-    const spy = jest
-      .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
-      .mockImplementation(() => {
-        return true;
-      });
-    const { container } = render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ContactViewPage CSN preloadedQuery={loadContactData()} />
-      </RelayEnvironmentProvider>
+    const spy = jest.spyOn(
+      require("app/hooks/useRedirectTo404IfFalsy"),
+      "default"
     );
+    mocked(useRouter).mockReturnValue({
+      replace: jest.fn(),
+    } as any);
+    loadContactQuery({
+      Query() {
+        return {
+          contact: null,
+        };
+      },
+    });
+    const { container } = renderContactPage();
     expect(container.childElementCount).toEqual(0);
-    expect(spy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: "mock-contact-id" })
-    );
+    expect(spy).toHaveBeenCalledWith(null);
   });
 
   it("displays the contact data", () => {
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ContactViewPage CSN preloadedQuery={loadContactData()} />
-      </RelayEnvironmentProvider>
-    );
+    loadContactQuery();
+    renderContactPage();
 
     expect(screen.getByText("Contact, Test")).toBeInTheDocument();
     expect(screen.getByText("(123) 456-7890")).toBeInTheDocument();
@@ -75,18 +98,22 @@ describe("ContactViewPage", () => {
   });
 
   it("renders a resume edit button when the contact already has a pending form change", () => {
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ContactViewPage
-          CSN
-          preloadedQuery={loadContactData({
-            pendingFormChange: {
-              id: "mock-form-change-id",
-            },
-          })}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadContactQuery({
+      Contact() {
+        return {
+          id: "mock-contact-id",
+          rowId: 42,
+          fullName: "Contact, Test",
+          fullPhone: "(123) 456-7890",
+          email: "foo@bar.com",
+          position: "Test Position",
+          pendingFormChange: {
+            id: "mock-form-change-id",
+          },
+        };
+      },
+    });
+    renderContactPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
   });

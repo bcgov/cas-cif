@@ -3,21 +3,27 @@ import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
+import {
+  createMockEnvironment,
+  MockPayloadGenerator,
+  RelayMockEnvironment,
+} from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
 import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
+  ProjectRevisionQuery$variables,
 } from "__generated__/ProjectRevisionQuery.graphql";
 import ProjectForm from "components/Form/ProjectForm";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { mocked } from "jest-mock";
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { useRouter } from "next/router";
 
+jest.mock("next/router");
 jest.mock("components/Form/ProjectForm");
 jest.mock("components/Form/ProjectManagerFormGroup");
 jest.mock("components/Form/ProjectContactForm");
-
-const environment = createMockEnvironment();
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -26,30 +32,55 @@ const environment = createMockEnvironment();
  * just before returning the MockPayloadGenerator and looking for concreteType instances *
  */
 
-environment.mock.queueOperationResolver((operation) => {
-  return MockPayloadGenerator.generate(operation, {
-    ProjectRevision() {
-      return {
-        id: "mock-proj-rev-id",
-        projectFormChange: {
-          id: "mock-project-form-id",
-          newFormData: {
-            someProjectData: "test2",
-          },
-        },
-      };
-    },
-  });
-});
+let environment: RelayMockEnvironment;
+let initialQueryRef;
 
-const query = compiledProjectRevisionQuery; // can be the same, or just identical
-const variables = {
-  projectRevision: "mock-id",
+const defaultMockResolver = {
+  ProjectRevision() {
+    return {
+      id: "mock-proj-rev-id",
+      projectFormChange: {
+        id: "mock-project-form-id",
+        newFormData: {
+          someProjectData: "test2",
+        },
+      },
+    };
+  },
 };
-environment.mock.queuePendingOperation(query, variables);
+
+const loadProjectRevisionQuery = (
+  mockResolver: MockResolvers = defaultMockResolver
+) => {
+  const variables: ProjectRevisionQuery$variables = {
+    projectRevision: "mock-id",
+  };
+
+  environment.mock.queueOperationResolver((operation) => {
+    return MockPayloadGenerator.generate(operation, mockResolver);
+  });
+
+  environment.mock.queuePendingOperation(
+    compiledProjectRevisionQuery,
+    variables
+  );
+  initialQueryRef = loadQuery<ProjectRevisionQuery>(
+    environment,
+    compiledProjectRevisionQuery,
+    variables
+  );
+};
+
+const renderProjectRevisionPage = () =>
+  render(
+    <RelayEnvironmentProvider environment={environment}>
+      <ProjectRevision CSN preloadedQuery={initialQueryRef} />
+    </RelayEnvironmentProvider>
+  );
 
 describe("The Create Project page", () => {
   beforeEach(() => {
+    environment = createMockEnvironment();
     mocked(ProjectForm).mockReset();
     mocked(ProjectManagerFormGroup).mockReset();
     mocked(ProjectContactForm).mockReset();
@@ -75,12 +106,6 @@ describe("The Create Project page", () => {
     jest.restoreAllMocks();
   });
 
-  const initialQueryRef = loadQuery<ProjectRevisionQuery>(
-    environment,
-    compiledProjectRevisionQuery,
-    variables
-  );
-
   it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
     const spy = jest.fn();
     jest
@@ -91,15 +116,8 @@ describe("The Create Project page", () => {
       return { push: jest.fn() };
     });
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="3"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
 
     userEvent.click(screen.queryByText("Submit"));
 
@@ -135,16 +153,8 @@ describe("The Create Project page", () => {
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [spy, false]);
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="3"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
-
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
     userEvent.click(screen.queryByText("Submit"));
 
     expect(spy).toHaveBeenCalledTimes(0);
@@ -161,15 +171,8 @@ describe("The Create Project page", () => {
       .spyOn(require("mutations/useDebouncedMutation"), "default")
       .mockImplementation(() => [jest.fn(), false]);
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="4"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
 
     expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
     expect(screen.getByText("Discard Changes")).toHaveProperty(
@@ -188,15 +191,8 @@ describe("The Create Project page", () => {
       return { push: jest.fn() };
     });
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="3"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
 
     act(() => userEvent.click(screen.queryByText("Discard Changes")));
 
@@ -223,15 +219,8 @@ describe("The Create Project page", () => {
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [jest.fn(), true]);
 
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="2"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
 
     expect(screen.queryByText("Submit")).toHaveProperty("disabled", true);
     expect(screen.queryByText("Discard Changes")).toHaveProperty(
@@ -241,22 +230,25 @@ describe("The Create Project page", () => {
   });
 
   it("renders null when a revision doesn't exist", async () => {
-    const spy = jest
-      .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
-      .mockImplementation(() => {
-        return true;
-      });
-    const { container } = render(
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision
-          data-testid="3"
-          CSN={true}
-          preloadedQuery={initialQueryRef}
-        />
-      </RelayEnvironmentProvider>
+    const spy = jest.spyOn(
+      require("app/hooks/useRedirectTo404IfFalsy"),
+      "default"
     );
 
+    mocked(useRouter).mockReturnValue({
+      replace: jest.fn(),
+    } as any);
+    loadProjectRevisionQuery({
+      Query() {
+        return {
+          projectRevision: null,
+        };
+      },
+    });
+
+    const { container } = renderProjectRevisionPage();
+
     expect(container.childElementCount).toEqual(0);
-    expect(spy).toHaveBeenCalledWith("mock-proj-rev-id");
+    expect(spy).toHaveBeenCalledWith(null);
   });
 });
