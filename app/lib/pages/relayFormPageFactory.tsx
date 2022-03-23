@@ -2,13 +2,14 @@ import { RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import SavingIndicator from "components/Form/SavingIndicator";
 import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
 import { relayFormPageFactoryQuery } from "__generated__/relayFormPageFactoryQuery.graphql";
 import { GraphQLTaggedNode } from "relay-runtime";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 export interface FormPageFactoryComponentProps extends FormComponentProps {
   onDiscard: () => void;
@@ -53,7 +54,6 @@ const relayFormPageFactory = (
       pageQuery,
       preloadedQuery
     );
-
     const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
     const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
     const router = useRouter();
@@ -63,12 +63,8 @@ const relayFormPageFactory = (
       [formChange?.updatedAt]
     );
 
-    useEffect(() => {
-      if (!formChange) router.replace("/404");
-    }, [formChange, router]);
-    if (!formChange) {
-      return null;
-    }
+    const isRedirecting = useRedirectTo404IfFalsy(formChange);
+    if (isRedirecting) return null;
 
     const isEditing = formChange.formDataRecordId !== null;
 

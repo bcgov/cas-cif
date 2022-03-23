@@ -1,54 +1,73 @@
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
+import {
+  createMockEnvironment,
+  MockPayloadGenerator,
+  RelayMockEnvironment,
+} from "relay-test-utils";
 import { render, screen } from "@testing-library/react";
 import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import compiledOperatorViewQuery, {
   OperatorViewQuery,
+  OperatorViewQuery$variables,
 } from "__generated__/OperatorViewQuery.graphql";
 import { OperatorViewPage } from "pages/cif/operator/[operator]";
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
 
-let environment;
+jest.mock("next/router");
+let environment: RelayMockEnvironment;
+let initialQueryRef;
 
-const loadOperatorData = (additionalOperatorData = {}) => {
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, {
-      Operator() {
-        return {
-          id: "mock-cif-operator-id",
-          rowId: 43,
-          legalName: "Operator Legal Name",
-          tradeName: "Operator Trade Name",
-          swrsLegalName: "SWRS Legal Name",
-          swrsTradeName: "SWRS Trade Name",
-          operatorCode: "ABCZ",
-          swrsOrganisationId: "12345",
-          ...additionalOperatorData,
-        };
-      },
-    });
-  });
+const defaultMockResolver = {
+  Operator() {
+    return {
+      id: "mock-cif-operator-id",
+      rowId: 43,
+      legalName: "Operator Legal Name",
+      tradeName: "Operator Trade Name",
+      swrsLegalName: "SWRS Legal Name",
+      swrsTradeName: "SWRS Trade Name",
+      operatorCode: "ABCZ",
+      swrsOrganisationId: "12345",
+    };
+  },
+};
 
-  const variables = {
+const loadOperatorQuery = (
+  mockResolver: MockResolvers = defaultMockResolver
+) => {
+  const variables: OperatorViewQuery$variables = {
     operator: "mock-operator-id",
   };
+
+  environment.mock.queueOperationResolver((operation) => {
+    return MockPayloadGenerator.generate(operation, mockResolver);
+  });
+
   environment.mock.queuePendingOperation(compiledOperatorViewQuery, variables);
-  return loadQuery<OperatorViewQuery>(
+  initialQueryRef = loadQuery<OperatorViewQuery>(
     environment,
     compiledOperatorViewQuery,
     variables
   );
 };
 
+const renderOperatorPage = () =>
+  render(
+    <RelayEnvironmentProvider environment={environment}>
+      <OperatorViewPage CSN preloadedQuery={initialQueryRef} />
+    </RelayEnvironmentProvider>
+  );
+
 describe("OperatorViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    jest.restoreAllMocks();
   });
 
   it("displays the operator data", () => {
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <OperatorViewPage CSN preloadedQuery={loadOperatorData()} />
-      </RelayEnvironmentProvider>
-    );
+    loadOperatorQuery();
+    renderOperatorPage();
 
     expect(screen.getByText("Operator Legal Name")).toBeInTheDocument();
     expect(screen.getByText("Operator Trade Name")).toBeInTheDocument();
@@ -59,14 +78,21 @@ describe("OperatorViewPage", () => {
   });
 
   it("doesn't display swrs data if there is no swrs operator ID", () => {
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <OperatorViewPage
-          CSN
-          preloadedQuery={loadOperatorData({ swrsOrganisationId: null })}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadOperatorQuery({
+      Operator() {
+        return {
+          id: "mock-cif-operator-id",
+          rowId: 43,
+          legalName: "Operator Legal Name",
+          tradeName: "Operator Trade Name",
+          swrsLegalName: "SWRS Legal Name",
+          swrsTradeName: "SWRS Trade Name",
+          operatorCode: "ABCZ",
+          swrsOrganisationId: null,
+        };
+      },
+    });
+    renderOperatorPage();
 
     expect(screen.getByText("Operator Legal Name")).toBeInTheDocument();
     expect(screen.getByText("Operator Trade Name")).toBeInTheDocument();
@@ -77,19 +103,29 @@ describe("OperatorViewPage", () => {
   });
 
   it("renders a resume edit button when the operator already has a pending form change", () => {
-    render(
-      <RelayEnvironmentProvider environment={environment}>
-        <OperatorViewPage
-          CSN
-          preloadedQuery={loadOperatorData({
-            pendingFormChange: {
-              id: "mock-form-change-id",
-            },
-          })}
-        />
-      </RelayEnvironmentProvider>
-    );
+    loadOperatorQuery();
+    renderOperatorPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
+  });
+
+  it("renders null if the operator doesn't exist", () => {
+    const spy = jest.spyOn(
+      require("app/hooks/useRedirectTo404IfFalsy"),
+      "default"
+    );
+    mocked(useRouter).mockReturnValue({
+      replace: jest.fn(),
+    } as any);
+    loadOperatorQuery({
+      Query() {
+        return {
+          operator: null,
+        };
+      },
+    });
+    const { container } = renderOperatorPage();
+    expect(container.childElementCount).toEqual(0);
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining(null));
   });
 });

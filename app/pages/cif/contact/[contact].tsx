@@ -8,6 +8,7 @@ import { ContactViewQuery } from "__generated__/ContactViewQuery.graphql";
 import { Button } from "@button-inc/bcgov-theme";
 import useCreateEditContactFormChange from "mutations/Contact/createEditContactFormChange";
 import { createEditContactFormChangeMutation$data } from "__generated__/createEditContactFormChangeMutation.graphql";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 const pageQuery = graphql`
   query ContactViewQuery($contact: ID!) {
@@ -36,6 +37,9 @@ export function ContactViewPage({
   const router = useRouter();
   const [startContactRevision, isStartingContactRevision] =
     useCreateEditContactFormChange();
+
+  const isRedirecting = useRedirectTo404IfFalsy(contact);
+  if (isRedirecting) return null;
 
   const handleEditContact = () => {
     startContactRevision({

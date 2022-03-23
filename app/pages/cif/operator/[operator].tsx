@@ -8,6 +8,7 @@ import { createEditOperatorFormChangeMutation$data } from "__generated__/createE
 import useCreateEditOperatorFormChange from "mutations/Operator/createEditOperatorFormChange";
 import { getOperatorFormPageRoute } from "pageRoutes";
 import { Button } from "@button-inc/bcgov-theme";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 const pageQuery = graphql`
   query OperatorViewQuery($operator: ID!) {
@@ -38,6 +39,8 @@ export function OperatorViewPage({
   const [startOperatorRevision, isStartingOperatorRevision] =
     useCreateEditOperatorFormChange();
 
+  const isRedirecting = useRedirectTo404IfFalsy(operator);
+  if (isRedirecting) return null;
   const handleEditOperator = () => {
     startOperatorRevision({
       variables: { operatorRowId: operator.rowId },
