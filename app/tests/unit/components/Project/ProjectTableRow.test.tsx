@@ -26,7 +26,13 @@ const TestRenderer = () => {
   const data = useLazyLoadQuery<ProjectTableRowQuery>(loadedQuery, {
     project: "test-project",
   });
-  return <table><tbody><ProjectTableRow project={data.query.project} /></tbody></table>;
+  return (
+    <table>
+      <tbody>
+        <ProjectTableRow project={data.query.project} />
+      </tbody>
+    </table>
+  );
 };
 const renderProjectForm = () => {
   return render(

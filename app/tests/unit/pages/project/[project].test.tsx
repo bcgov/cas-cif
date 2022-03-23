@@ -90,11 +90,11 @@ const defaultMockResolver = {
           },
         ],
       },
-        
-    pendingProjectRevision: {
-      id: "1",
-    },
-  };
+
+      pendingProjectRevision: {
+        id: "1",
+      },
+    };
   },
 };
 

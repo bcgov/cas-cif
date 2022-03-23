@@ -1,4 +1,5 @@
 -- Deploy cif:computed_columns/full_name to pg
+-- requires: tables/cif_user
 
 BEGIN;
 
