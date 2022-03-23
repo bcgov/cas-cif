@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-/** 
+/**
  *  Hook that returns true if the router will redirect, false otherwise.
  *  - Example usage:
  *    const isRedirecting = useRedirectTo404IfFalsy(object);
