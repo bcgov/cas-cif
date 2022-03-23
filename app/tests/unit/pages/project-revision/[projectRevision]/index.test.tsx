@@ -240,7 +240,7 @@ describe("The Create Project page", () => {
     );
   });
 
-  it("redirects to the 404 page when a revision doesn't exist", async () => {
+  it("renders null when a revision doesn't exist", async () => {
     const spy = jest
       .spyOn(require("app/hooks/useRedirectTo404IfFalsy"), "default")
       .mockImplementation(() => {
