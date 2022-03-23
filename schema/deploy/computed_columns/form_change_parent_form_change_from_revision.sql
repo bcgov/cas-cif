@@ -3,23 +3,24 @@
 
 begin;
 
-create or replace function cif.form_change_parent_form_change_from_revision(form_change_id integer, project_revision_id integer)
-returns setof integer as
+create or replace function cif.form_change_parent_form_change_from_revision(cif.form_change, project_revision_id integer)
+returns cif.form_change as
 $$
 
 with recursive search_tree(id, previous_form_change_id) as (
     select f.id, f.previous_form_change_id, f.project_revision_id
     from cif.form_change f
-    where f.id = $1
+    where f.id = $1.id
   union
     select f.id, f.previous_form_change_id, f.project_revision_id
     from cif.form_change f, search_tree s
     where s.previous_form_change_id = f.id
 )
-select id from search_tree where project_revision_id = $2;
+select * from cif.form_change
+  where id = (select id from search_tree where project_revision_id = $2);
 
-$$ language 'sql' stable;
+$$ language 'sql' stable strict;
 
-comment on function cif.form_change_parent_form_change_from_revision(integer, integer) is
+comment on function cif.form_change_parent_form_change_from_revision is
   'returns an ancestor form_change from a specific revision for the form_change id passed in as a parameter';
 commit;

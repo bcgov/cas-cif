@@ -1,6 +1,6 @@
 begin;
 
-select plan(4);
+select plan(5);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -47,21 +47,44 @@ values
   (5, 5, 'update', 'cif', 'project', 1, 'test', 'pending', 'test_project_form_change'),
   (5, 6, 'update', 'cif', 'contact', 1, 'test', 'pending', 'test_contact_form_change');
 
-select is (
-  (select cif.form_change_parent_form_change_from_revision(8, 3)),
-  5::integer,
+
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=8), null)
+  $$,
+  $$
+  values (null::integer)
+  $$,
+  'cif.form_change_parent_form_change_from_revision should return null if not passes a revision id'
+);
+
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=8), 3)
+  $$,
+  $$
+  values (5::integer)
+  $$,
   'cif.form_change_parent_form_change_from_revision(5, 3) should return the correct form_change (id=5) from revision 3'
 );
 
-select is (
-  (select cif.form_change_parent_form_change_from_revision(8, 1)),
-  1::integer,
-  'cif.form_change_parent_form_change_from_revision(5, 1) should return the correct form_change (id=1) from revision 1'
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=8), 1)
+  $$,
+  $$
+  values (1::integer)
+  $$,
+  'cif.form_change_parent_form_change_from_revision(5, 3) should return the correct form_change (id=1) from revision 1'
 );
 
-select is (
-  (select cif.form_change_parent_form_change_from_revision(6, 2)),
-  4::integer,
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=6), 2)
+  $$,
+  $$
+  values (4::integer)
+  $$,
   'cif.form_change_parent_form_change_from_revision(6, 2) should return the correct form_change (id=4) from revision 2'
 );
 
