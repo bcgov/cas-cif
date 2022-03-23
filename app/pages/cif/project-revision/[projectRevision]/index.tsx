@@ -70,8 +70,6 @@ export function ProjectRevision({
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
 
-  if (!query.projectRevision.id) return null;
-
   /**
    *  Function: approve staged change, trigger an insert on the project
    *  table & redirect to the project page
