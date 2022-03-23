@@ -30,7 +30,6 @@ begin
     form_data_record_id,
     project_revision_id,
     change_status,
-    change_reason,
     json_schema_name
   ) values (
     '{}',
@@ -40,7 +39,6 @@ begin
     next_project_id,
     revision_row.id,
     'pending',
-    'Creating new project: project record',
     'project'
   ), (
     format('{ "projectId": %s, "contactIndex": 1 }', next_project_id)::jsonb,
@@ -50,7 +48,6 @@ begin
     null,
     revision_row.id,
     'pending',
-    'Creating new project: primary project_contact record',
     'project_contact'
   );
 

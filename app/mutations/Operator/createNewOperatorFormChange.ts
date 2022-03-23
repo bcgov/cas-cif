@@ -10,7 +10,6 @@ export const mutation = graphql`
         formDataTableName: "operator"
         jsonSchemaName: "operator"
         operation: CREATE
-        changeReason: "Created from operator form"
       }
     ) {
       formChange {

@@ -18735,7 +18735,6 @@ type CreateCifUserPayload {
 
 """All input for the `createFormChange` mutation."""
 input CreateFormChangeInput {
-  changeReason: String!
   changeStatus: String
 
   """
@@ -20098,9 +20097,6 @@ type DeleteProjectStatusPayload {
 
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
-  """The reason for the change"""
-  changeReason: String!
-
   """
   The change status of this form change, foreign key to cif.change_status.
   """
@@ -20171,9 +20167,6 @@ A condition to be used against `FormChange` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
 input FormChangeCondition {
-  """Checks for equality with the object’s `changeReason` field."""
-  changeReason: String
-
   """Checks for equality with the object’s `changeStatus` field."""
   changeStatus: String
 
@@ -20223,9 +20216,6 @@ A filter to be used against `FormChange` object types. All fields are combined w
 input FormChangeFilter {
   """Checks for all expressions in this list."""
   and: [FormChangeFilter!]
-
-  """Filter by the object’s `changeReason` field."""
-  changeReason: StringFilter
 
   """Filter by the object’s `changeStatus` field."""
   changeStatus: StringFilter
@@ -20352,9 +20342,6 @@ input FormChangeOperationFilter {
 Represents an update to a `FormChange`. Fields that are set will be updated.
 """
 input FormChangePatch {
-  """The reason for the change"""
-  changeReason: String
-
   """
   The change status of this form change, foreign key to cif.change_status.
   """
@@ -20427,8 +20414,6 @@ type FormChangesEdge {
 
 """Methods to use when ordering `FormChange`."""
 enum FormChangesOrderBy {
-  CHANGE_REASON_ASC
-  CHANGE_REASON_DESC
   CHANGE_STATUS_ASC
   CHANGE_STATUS_BY_CHANGE_STATUS__ACTIVE_ASC
   CHANGE_STATUS_BY_CHANGE_STATUS__ACTIVE_DESC

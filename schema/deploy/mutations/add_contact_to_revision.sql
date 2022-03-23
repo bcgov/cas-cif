@@ -12,7 +12,6 @@ as $add_contact_form_change$
     form_data_table_name,
     project_revision_id,
     change_status,
-    change_reason,
     json_schema_name
   ) values (
     format(
@@ -25,7 +24,6 @@ as $add_contact_form_change$
     'project_contact',
     $1,
     'pending',
-    'Add secondary project_contact record',
     'project_contact'
   ) returning *;
 $add_contact_form_change$ language sql volatile;

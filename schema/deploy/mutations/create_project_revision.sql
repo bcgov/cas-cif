@@ -18,7 +18,6 @@ begin
     form_data_table_name => 'project',
     form_data_record_id => $1,
     project_revision_id => revision_row.id,
-    change_reason => 'create project revision',
     json_schema_name => 'project'
   );
 
@@ -29,7 +28,6 @@ begin
       id,
       'update'::cif.form_change_operation as operation,
       'project_manager' as form_data_table_name,
-      'New revision: project_manager record' as change_reason,
       'project_manager' as json_schema_name
     from cif.project_manager
     where project_manager.project_id = $1
@@ -39,7 +37,6 @@ begin
       id,
       'update'::cif.form_change_operation as operation,
       'project_contact' as form_data_table_name,
-      'New revision: project_contact record' as change_reason,
       'project_contact' as json_schema_name
     from cif.project_contact
     where project_contact.project_id = $1
@@ -52,7 +49,6 @@ begin
       form_data_table_name => form_change_record.form_data_table_name,
       form_data_record_id => form_change_record.id,
       project_revision_id => revision_row.id,
-      change_reason => form_change_record.change_reason,
       json_schema_name => form_change_record.json_schema_name
     );
   end loop;
