@@ -65,8 +65,8 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         {projectManagersByProjectId.edges.map((manager, index) => {
           return (
             <span key={manager.node.cifUserByCifUserId.id}>
-              {index ? "," : ""} {manager.node.cifUserByCifUserId.firstName}{" "}
-              {manager.node.cifUserByCifUserId.lastName}
+              {index ? "," : ""} {manager.node.cifUserByCifUserId.familyName}{" "}
+              {manager.node.cifUserByCifUserId.givenName}
             </span>
           );
         })}

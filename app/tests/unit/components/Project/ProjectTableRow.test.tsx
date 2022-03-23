@@ -26,7 +26,7 @@ const TestRenderer = () => {
   const data = useLazyLoadQuery<ProjectTableRowQuery>(loadedQuery, {
     project: "test-project",
   });
-  return <ProjectTableRow project={data.query.project} />;
+  return <table><tbody><ProjectTableRow project={data.query.project} /></tbody></table>;
 };
 const renderProjectForm = () => {
   return render(
@@ -63,8 +63,8 @@ const getMockQueryPayload = () => ({
             {
               node: {
                 cifUserByCifUserId: {
-                  firstName: "Manager first name 1",
-                  lastName: "Manager last name 1",
+                  givenName: "Manager first name 1",
+                  familyName: "Manager last name 1",
                   id: "1",
                 },
               },
@@ -72,8 +72,8 @@ const getMockQueryPayload = () => ({
             {
               node: {
                 cifUserByCifUserId: {
-                  firstName: "Manager first name 2",
-                  lastName: "Manager last name 2",
+                  givenName: "Manager first name 2",
+                  familyName: "Manager last name 2",
                   id: "2",
                 },
               },

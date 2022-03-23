@@ -57,7 +57,7 @@ describe("The Dashboard", () => {
         return {
           session: {
             cifUserBySub: {
-              firstName: "Bob",
+              givenName: "Bob",
             },
             userGroups: ["cif_internal"],
           },

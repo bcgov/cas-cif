@@ -73,7 +73,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
   return (
     <>
       <header>
-        <h2>Welcome, {session.cifUserBySub?.firstName}</h2>
+        <h2>Welcome, {session.cifUserBySub?.givenName}</h2>
       </header>
       <div>
         <section>

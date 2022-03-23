@@ -8,7 +8,7 @@ interface Props {
 }
 
 const UserProfile: React.FC<Props> = ({ user }) => {
-  const { firstName, lastName, emailAddress } =
+  const { givenName, familyName, emailAddress } =
     useFragment(
       graphql`
         fragment UserProfile_user on CifUser {
@@ -26,7 +26,7 @@ const UserProfile: React.FC<Props> = ({ user }) => {
     <>
       <Grid className="name-display" justify="end">
         <Grid.Row>
-          {lastName}, {firstName}
+          {familyName}, {givenName}
         </Grid.Row>
         <Grid.Row>{emailAddress}</Grid.Row>
       </Grid>
