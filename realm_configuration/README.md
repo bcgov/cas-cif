@@ -37,4 +37,13 @@ Go to this repository `cd realm_configuration`
    3.a. Create a `users.json` file with the user information to create in the realm (see the users.json.example file) <br>
    3.b. Run `yarn run keycloak-users` <br>
    <br>
+   This script:
+
+   - logs in with the service account
+   - fetches the group IDs from the names that are passed in
+   - for each user in the `users.json`:
+     - attempts at fetching the keycloak user ID, and if not creates the user
+     - writes the `idir_user_guid` attribute for that user, with the IDIR UID as a value
+     - assigns that user to the groups
+
    Response statuses will be printed out when API calls are made.
