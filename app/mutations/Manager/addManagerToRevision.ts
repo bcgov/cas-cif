@@ -14,7 +14,6 @@ export const mutation = graphql`
         formDataTableName: "project_manager"
         jsonSchemaName: "project_manager"
         operation: CREATE
-        changeReason: "Add manager to project revision from project manager form"
         projectRevisionId: $projectRevisionId
         newFormData: $newFormData
       }
