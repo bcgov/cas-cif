@@ -62572,20 +62572,6 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "changeReason",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
               "name": "changeStatus",
               "description": null,
               "type": {
@@ -67084,22 +67070,6 @@
           "description": "Table tracking individual changes to database records",
           "fields": [
             {
-              "name": "changeReason",
-              "description": "The reason for the change",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "changeStatus",
               "description": "The change status of this form change, foreign key to cif.change_status.",
               "args": [],
@@ -67409,16 +67379,6 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "changeReason",
-              "description": "Checks for equality with the object’s `changeReason` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "changeStatus",
               "description": "Checks for equality with the object’s `changeStatus` field.",
               "type": {
@@ -67584,16 +67544,6 @@
                     "ofType": null
                   }
                 }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "changeReason",
-              "description": "Filter by the object’s `changeReason` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "StringFilter",
-                "ofType": null
               },
               "defaultValue": null
             },
@@ -68013,16 +67963,6 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "changeReason",
-              "description": "The reason for the change",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
               "name": "changeStatus",
               "description": "The change status of this form change, foreign key to cif.change_status.",
               "type": {
@@ -68287,18 +68227,6 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": [
-            {
-              "name": "CHANGE_REASON_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CHANGE_REASON_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "CHANGE_STATUS_ASC",
               "description": null,
