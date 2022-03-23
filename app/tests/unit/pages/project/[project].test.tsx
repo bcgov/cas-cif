@@ -68,28 +68,29 @@ const defaultMockResolver = {
           },
         ],
       },
-    projectManagersByProjectId: {
-      edges: [
-        {
-          node: {
-            cifUserByCifUserId: {
-              givenName: "Manager first name 1",
-              familyName: "Manager last name 1",
-              id: "1",
+      projectManagersByProjectId: {
+        edges: [
+          {
+            node: {
+              cifUserByCifUserId: {
+                givenName: "Manager first name 1",
+                familyName: "Manager last name 1",
+                id: "1",
+              },
             },
           },
-        },
-        {
-          node: {
-            cifUserByCifUserId: {
-              givenName: "Manager first name 2",
-              familyName: "Manager last name 2",
-              id: "2",
+          {
+            node: {
+              cifUserByCifUserId: {
+                givenName: "Manager first name 2",
+                familyName: "Manager last name 2",
+                id: "2",
+              },
             },
           },
-        },
-      ],
-    },
+        ],
+      },
+        
     pendingProjectRevision: {
       id: "1",
     },
