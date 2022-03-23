@@ -24,7 +24,6 @@ select results_eq(
       form_data_record_id,
       project_revision_id,
       change_status,
-      change_reason,
       json_schema_name
     from cif.add_contact_to_revision((select id from cif.project_revision order by id desc limit 1), 2)
   $$,
@@ -37,7 +36,6 @@ select results_eq(
       null::integer,
       (select id from cif.project_revision order by id desc limit 1),
       'pending'::varchar,
-      'Add secondary project_contact record'::varchar,
       'project_contact'::varchar
     )
   $$,

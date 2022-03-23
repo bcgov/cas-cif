@@ -77,25 +77,25 @@ insert into cif.project_revision(id, change_status, project_id)
 **/
 
 insert into cif.form_change(
-  id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, change_reason, json_schema_name, new_form_data)
+  id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, json_schema_name, new_form_data)
   overriding system value
   values
     -- Create 3 records in revision 1 (committed) non-archived label ids: 1,2,3
-    (1, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 1}'),
-    (2, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 2}'),
-    (3, 'create', 'cif', 'project_manager', null, 1, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
+    (1, 'create', 'cif', 'project_manager', null, 1, 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 1}'),
+    (2, 'create', 'cif', 'project_manager', null, 1, 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 2}'),
+    (3, 'create', 'cif', 'project_manager', null, 1, 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
     -- Archive a record and update a record in revision 2 (committed) non-archived label ids:: 2,3
-    (4, 'archive', 'cif', 'project_manager', 1, 2, 'test reason', 'project',null),
-    (5, 'update', 'cif', 'project_manager', 2, 2, 'test reason', 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}'),
-    (6, 'update', 'cif', 'project_manager', 3, 2, 'test reason', 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
+    (4, 'archive', 'cif', 'project_manager', 1, 2, 'project',null),
+    (5, 'update', 'cif', 'project_manager', 2, 2, 'project', '{"projectId": 1, "cifUserId": 4, "projectManagerLabelId": 2}'),
+    (6, 'update', 'cif', 'project_manager', 3, 2, 'project', '{"projectId": 1, "cifUserId": 3, "projectManagerLabelId": 3}'),
     -- Create a record, update a record and archive a record in revision 3 (pending) non-archived label ids: 2,4
-    (7, 'create', 'cif', 'project_manager', null, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'),
-    (8, 'archive', 'cif', 'project_manager', 3, 3, 'test reason', 'project', null),
-    (9, 'update', 'cif', 'project_manager', 2, 3, 'test reason', 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'),
+    (7, 'create', 'cif', 'project_manager', null, 3, 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'),
+    (8, 'archive', 'cif', 'project_manager', 3, 3, 'project', null),
+    (9, 'update', 'cif', 'project_manager', 2, 3, 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'),
     -- Create a record in a different project (committed)
-    (10, 'create', 'cif', 'project_manager', null, 4, 'test reason', 'project', '{"projectId": 2, "cifUserId": 4, "projectManagerLabelId": 1}'),
+    (10, 'create', 'cif', 'project_manager', null, 4, 'project', '{"projectId": 2, "cifUserId": 4, "projectManagerLabelId": 1}'),
     -- Create a record in a different project (pending)
-    (11, 'update', 'cif', 'project_manager', null, 5, 'test reason', 'project', '{"projectId": 2, "cifUserId": 3, "projectManagerLabelId": 1}');
+    (11, 'update', 'cif', 'project_manager', null, 5, 'project', '{"projectId": 2, "cifUserId": 3, "projectManagerLabelId": 1}');
 
 -- Commit / Update Revisions as user 1.
 update cif.project_revision set change_status = 'committed' where id in (1,2,4);

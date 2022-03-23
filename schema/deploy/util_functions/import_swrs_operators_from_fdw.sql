@@ -67,7 +67,6 @@ begin
         form_data_record_id,
         project_revision_id,
         change_status,
-        change_reason,
         json_schema_name
       ) (
         select
@@ -94,11 +93,6 @@ begin
           operators_to_insert.existing_operator_id,
           null,
           'committed',
-          format('Operator automatically %%s from SWRS',
-            (select case
-              when operators_to_insert.existing_operator_id is null then 'created' else 'updated'
-            end)
-          ),
           'operator'
         from operators_to_insert
       )

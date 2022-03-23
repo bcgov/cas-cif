@@ -7,7 +7,6 @@ create function cif.create_form_change(
   json_schema_name varchar(1000),
   form_data_schema_name varchar(1000),
   form_data_table_name varchar(1000),
-  change_reason varchar(10000),
   new_form_data jsonb default null,
   form_data_record_id integer default null,
   project_revision_id integer default null,
@@ -22,7 +21,6 @@ create function cif.create_form_change(
     form_data_record_id,
     project_revision_id,
     change_status,
-    change_reason,
     json_schema_name,
     validation_errors
   ) values (
@@ -42,7 +40,6 @@ create function cif.create_form_change(
     form_data_record_id,
     project_revision_id,
     change_status,
-    change_reason,
     json_schema_name,
     validation_errors
   ) returning *;

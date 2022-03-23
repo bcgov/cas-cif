@@ -11,19 +11,19 @@ values ('00000000-0000-0000-0000-000000000000', 'user1', 'Testuser', 'test@somem
 set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
 
 select mocks.set_mocked_time_in_transaction('2020-01-12');
-insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, change_reason, json_schema_name)
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name)
 values
-('{"test": "first_record"}'::jsonb, 'create', 'cif', 'test_table', 'test reason', 'json_schema_name'),
-('{"test": "pending_record"}'::jsonb, 'update', 'cif', 'update_test_table', 'test reason', 'json_schema_name'),
-('{"test": "non-cif-schema"}'::jsonb, 'create', 'otherschema', 'non_cif_test_table', 'test reason', 'json_schema_name');
+('{"test": "first_record"}'::jsonb, 'create', 'cif', 'test_table', 'json_schema_name'),
+('{"test": "pending_record"}'::jsonb, 'update', 'cif', 'update_test_table', 'json_schema_name'),
+('{"test": "non-cif-schema"}'::jsonb, 'create', 'otherschema', 'non_cif_test_table', 'json_schema_name');
 
 select mocks.set_mocked_time_in_transaction('2020-01-13');
-insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, change_reason, json_schema_name)
-values ('{"test": "most_recent_record"}'::jsonb, 'create', 'cif', 'test_table', 'test reason', 'json_schema_name');
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name)
+values ('{"test": "most_recent_record"}'::jsonb, 'create', 'cif', 'test_table', 'json_schema_name');
 
 select mocks.set_mocked_time_in_transaction('2020-01-11');
-insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, change_reason, json_schema_name)
-values ('{"test": "old_record"}'::jsonb, 'create', 'cif', 'test_table', 'test reason', 'json_schema_name');
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name)
+values ('{"test": "old_record"}'::jsonb, 'create', 'cif', 'test_table', 'json_schema_name');
 
 -- reset time to now();
 select mocks.set_mocked_time_in_transaction(null);

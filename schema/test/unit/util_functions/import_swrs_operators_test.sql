@@ -50,15 +50,14 @@ select results_eq(
     select
       (new_form_data->'swrsOrganisationId')::int,
       operation::text,
-      change_reason::text,
       change_status::text
     from cif.form_change where form_data_table_name='operator'
   $$,
   $$
     values
-      (1, 'create', 'Operator automatically created from SWRS','committed'),
-      (2, 'create', 'Operator automatically created from SWRS','committed'),
-      (3, 'create', 'Operator automatically created from SWRS','committed')
+      (1, 'create', 'committed'),
+      (2, 'create', 'committed'),
+      (3, 'create', 'committed')
   $$,
   'The form_change records should reflect the content of the operator table'
 );
@@ -86,15 +85,14 @@ select results_eq(
       new_form_data->>'swrsLegalName',
       new_form_data->>'tradeName',
       new_form_data->>'legalName',
-      operation::text,
-      change_reason::text
+      operation::text
     from cif.form_change where form_data_table_name='operator'
   $$,
   $$
     values
-      (1, '2020 trade name 1','2020 legal name 1','2020 trade name 1','2020 legal name 1', 'create', 'Operator automatically created from SWRS'),
-      (2, '2020 trade name 2','2020 legal name 2','2020 trade name 2','2020 legal name 2', 'create', 'Operator automatically created from SWRS'),
-      (3, '2020 trade name 3','2020 legal name 3','2020 trade name 3','2020 legal name 3', 'create', 'Operator automatically created from SWRS')
+      (1, '2020 trade name 1','2020 legal name 1','2020 trade name 1','2020 legal name 1', 'create'),
+      (2, '2020 trade name 2','2020 legal name 2','2020 trade name 2','2020 legal name 2', 'create'),
+      (3, '2020 trade name 3','2020 legal name 3','2020 trade name 3','2020 legal name 3', 'create')
   $$,
   'A form_change record is only added every time an operator is updated by the import script'
 );
@@ -137,17 +135,16 @@ select results_eq(
       new_form_data->>'tradeName',
       new_form_data->>'legalName',
       operation::text,
-      change_reason::text,
       change_status::text
     from cif.form_change where form_data_table_name='operator'
   $$,
   $$
     values
-      (1,'2020 trade name 1','2020 legal name 1','2020 trade name 1','2020 legal name 1', 'create', 'Operator automatically created from SWRS','committed'),
-      (2,'2020 trade name 2','2020 legal name 2','2020 trade name 2','2020 legal name 2', 'create', 'Operator automatically created from SWRS','committed'),
-      (3,'2020 trade name 3','2020 legal name 3','2020 trade name 3','2020 legal name 3', 'create', 'Operator automatically created from SWRS','committed'),
-      (2,'new trade for operator 2','new legal for operator 2','changed_by_cif','changed by cif','update','Operator automatically updated from SWRS','committed'),
-      (3,'Updated Trade Name','Updated Legal Name','Updated Trade Name','Updated Legal Name','update','Operator automatically updated from SWRS','committed')
+      (1,'2020 trade name 1','2020 legal name 1','2020 trade name 1','2020 legal name 1', 'create', 'committed'),
+      (2,'2020 trade name 2','2020 legal name 2','2020 trade name 2','2020 legal name 2', 'create', 'committed'),
+      (3,'2020 trade name 3','2020 legal name 3','2020 trade name 3','2020 legal name 3', 'create', 'committed'),
+      (2,'new trade for operator 2','new legal for operator 2','changed_by_cif','changed by cif','update','committed'),
+      (3,'Updated Trade Name','Updated Legal Name','Updated Trade Name','Updated Legal Name','update','committed')
   $$,
   'legal_name and trade_name are preserved if modified manually, and updated if still set to the SWRS value'
 );

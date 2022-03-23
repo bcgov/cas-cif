@@ -14,7 +14,6 @@ select results_eq(
     json_schema_name,
     form_data_schema_name,
     form_data_table_name,
-    change_reason,
     new_form_data,
     form_data_record_id,
     project_revision_id,
@@ -25,7 +24,6 @@ select results_eq(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
-    change_reason => 'Created project',
     new_form_data => format('{
         "projectName": "name",
         "summary": "lorem ipsum",
@@ -47,7 +45,6 @@ select results_eq(
     'project'::varchar(1000),
     'cif'::varchar(1000),
     'project'::varchar(1000),
-    'Created project'::varchar(10000),
     format('{
         "projectName": "name",
         "summary": "lorem ipsum",
@@ -73,7 +70,6 @@ select results_eq(
     json_schema_name,
     form_data_schema_name,
     form_data_table_name,
-    change_reason,
     new_form_data,
     form_data_record_id,
     project_revision_id,
@@ -86,7 +82,6 @@ select results_eq(
     'project'::varchar(1000),
     'cif'::varchar(1000),
     'project'::varchar(1000),
-    'Created project'::varchar(10000),
     format('{
         "projectName": "name",
         "summary": "lorem ipsum",
@@ -116,7 +111,6 @@ select results_eq(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
-    change_reason => 'Created project',
     form_data_record_id => 1234
   )
   $$,
@@ -140,7 +134,6 @@ select cif.create_form_change(
   json_schema_name => 'project',
   form_data_schema_name => 'cif',
   form_data_table_name => 'project',
-  change_reason => 'Created project',
   form_data_record_id => 4567
 );
 
@@ -153,7 +146,6 @@ select results_eq(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
-    change_reason => 'Created project',
     form_data_record_id => 4567
   )
   $$,
@@ -172,7 +164,6 @@ select results_eq(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'other_table',
-    change_reason => 'Created project',
     form_data_record_id => 1234
   )
   $$,
@@ -188,7 +179,6 @@ select cif.create_form_change(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
-    change_reason => 'Update project',
     new_form_data => format('{
         "projectName": "updated name",
         "summary": "lorem ipsum",
@@ -213,7 +203,6 @@ select results_eq(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
-    change_reason => 'Created project',
     form_data_record_id => 1234
   )
   $$,
@@ -234,7 +223,6 @@ select results_eq(
     json_schema_name => 'project',
     form_data_schema_name => 'cif',
     form_data_table_name => 'project',
-    change_reason => 'Created project',
     form_data_record_id => 1234
   )
   $$,
