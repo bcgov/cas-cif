@@ -71305,18 +71305,6 @@
               "deprecationReason": null
             },
             {
-              "name": "FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CHANGE_REASON_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CHANGE_REASON_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CHANGE_STATUS_ASC",
               "description": null,
               "isDeprecated": false,
