@@ -144,13 +144,13 @@ export function ProjectViewPage({
         <dt>Project Status</dt>
         <dd>{project.projectStatusByProjectStatusId.name}</dd>
 
-        <dt>Project Manager</dt>
+        <dt>Project Manager 123</dt>
         {project.projectManagersByProjectId.edges.length > 0 ? (
           <>
             {project.projectManagersByProjectId.edges.map((manager) => (
               <dd key={manager.node.cifUserByCifUserId.id}>
-                {manager.node.cifUserByCifUserId.firstName}{" "}
-                {manager.node.cifUserByCifUserId.lastName}
+                {manager.node.cifUserByCifUserId.familyName}{" "}
+                {manager.node.cifUserByCifUserId.givenName}
               </dd>
             ))}
           </>

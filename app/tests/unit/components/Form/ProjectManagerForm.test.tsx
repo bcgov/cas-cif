@@ -118,15 +118,15 @@ const getMockQueryPayload = () => ({
           {
             node: {
               rowId: 1,
-              firstName: "Test First Name 1",
-              lastName: "Test Last Name 1",
+              givenName: "Test First Name 1",
+              familyName: "Test Last Name 1",
             },
           },
           {
             node: {
               rowId: 2,
-              firstName: "Test First Name 2",
-              lastName: "Test Last Name 2",
+              givenName: "Test First Name 2",
+              familyName: "Test Last Name 2",
             },
           },
         ],
