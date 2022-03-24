@@ -1,6 +1,6 @@
 begin;
 
-select plan(5);
+select plan(8);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -55,7 +55,37 @@ select results_eq (
   $$
   values (null::integer)
   $$,
-  'cif.form_change_parent_form_change_from_revision should return null if not passes a revision id'
+  'cif.form_change_parent_form_change_from_revision should return null if not passed a revision id'
+);
+
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=8), 4)
+  $$,
+  $$
+  values (null::integer)
+  $$,
+  'cif.form_change_parent_form_change_from_revision should return null if the form_change does not have a parent change in the revision passed as a parameter'
+);
+
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=7), 1)
+  $$,
+  $$
+  values (null::integer)
+  $$,
+  'cif.form_change_parent_form_change_from_revision should return null if the form_change does not have a parent change'
+);
+
+select results_eq (
+  $$
+    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=8), null)
+  $$,
+  $$
+  values (null::integer)
+  $$,
+  'cif.form_change_parent_form_change_from_revision should return null if not passed a revision id'
 );
 
 select results_eq (
@@ -65,7 +95,7 @@ select results_eq (
   $$
   values (5::integer)
   $$,
-  'cif.form_change_parent_form_change_from_revision(5, 3) should return the correct form_change (id=5) from revision 3'
+  'cif.form_change_parent_form_change_from_revision(8, 3) should return the correct form_change (id=5) from revision 3'
 );
 
 select results_eq (
@@ -75,7 +105,7 @@ select results_eq (
   $$
   values (1::integer)
   $$,
-  'cif.form_change_parent_form_change_from_revision(5, 3) should return the correct form_change (id=1) from revision 1'
+  'cif.form_change_parent_form_change_from_revision(8, 3) should return the correct form_change (id=1) from revision 1'
 );
 
 select results_eq (
