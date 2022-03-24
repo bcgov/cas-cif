@@ -65,12 +65,8 @@ select is (
   'Trigger sets the correct previous_form_change_id for a form_change'
 );
 
-alter table cif.form_change disable trigger _100_timestamps;
--- commit the second set of pending form_change records at different times to test that commit order matters
-update cif.form_change set change_status = 'committed', updated_at=now() where json_schema_name ilike 'second_pending%';
-update cif.form_change set change_status = 'committed', updated_at=now() + interval '1 hour' where json_schema_name ilike 'pending%';
-
-alter table cif.form_change enable trigger _100_timestamps;
+-- Commit the pending form_change records
+update cif.form_change set change_status = 'committed' where json_schema_name ilike 'pending%';
 
 -- Create a set of form_change records for a new revision
 insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
