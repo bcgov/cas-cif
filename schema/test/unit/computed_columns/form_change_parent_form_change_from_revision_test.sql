@@ -1,6 +1,6 @@
 begin;
 
-select plan(8);
+select plan(7);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -76,16 +76,6 @@ select results_eq (
   values (null::integer)
   $$,
   'cif.form_change_parent_form_change_from_revision should return null if the form_change does not have a parent change'
-);
-
-select results_eq (
-  $$
-    select id from cif.form_change_parent_form_change_from_revision((select row(form_change.*)::cif.form_change from cif.form_change where id=8), null)
-  $$,
-  $$
-  values (null::integer)
-  $$,
-  'cif.form_change_parent_form_change_from_revision should return null if not passed a revision id'
 );
 
 select results_eq (
