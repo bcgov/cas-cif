@@ -2,3 +2,7 @@ deploy:
   override:
     - make install:
         timeout: 5000
+
+ci:
+  allow_failures:
+    - "yarn-audit"
