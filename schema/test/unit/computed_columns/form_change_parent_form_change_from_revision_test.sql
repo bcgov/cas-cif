@@ -35,17 +35,17 @@ select has_function('cif_private', 'set_previous_form_change_id', 'Function set_
 alter table cif.form_change disable trigger _set_previous_form_change_id;
 
 -- create an inital form_change record
-insert into cif.form_change(project_revision_id, previous_form_change_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status, change_reason)
+insert into cif.form_change(project_revision_id, previous_form_change_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
-  (1, null, 'create', 'cif', 'project', 1, 'test', 'pending', 'test_project_form_change'),
-  (1, null, 'create', 'cif', 'contact', 1, 'test', 'pending', 'test_contact_form_change'),
-  (2, 1, 'update', 'cif', 'project', 1, 'test', 'pending', 'test_project_form_change'),
-  (2, 2, 'update', 'cif', 'contact', 1, 'test', 'pending', 'test_contact_change'),
-  (3, 3, 'create', 'cif', 'project', 1, 'test', 'pending', 'test_contact_form_change'),
-  (3, 4, 'update', 'cif', 'contact', 1, 'test', 'pending', 'test_contact_change'),
-  (4, null, 'create', 'cif', 'project', 2, 'test', 'pending', 'test_project_2_form_change'),
-  (5, 5, 'update', 'cif', 'project', 1, 'test', 'pending', 'test_project_form_change'),
-  (5, 6, 'update', 'cif', 'contact', 1, 'test', 'pending', 'test_contact_form_change');
+  (1, null, 'create', 'cif', 'project', 1, 'test', 'pending'),
+  (1, null, 'create', 'cif', 'contact', 1, 'test', 'pending'),
+  (2, 1, 'update', 'cif', 'project', 1, 'test', 'pending'),
+  (2, 2, 'update', 'cif', 'contact', 1, 'test', 'pending'),
+  (3, 3, 'create', 'cif', 'project', 1, 'test', 'pending'),
+  (3, 4, 'update', 'cif', 'contact', 1, 'test', 'pending'),
+  (4, null, 'create', 'cif', 'project', 2, 'test', 'pending'),
+  (5, 5, 'update', 'cif', 'project', 1, 'test', 'pending'),
+  (5, 6, 'update', 'cif', 'contact', 1, 'test', 'pending');
 
 
 select results_eq (

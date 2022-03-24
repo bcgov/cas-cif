@@ -33,11 +33,11 @@ alter table cif.form_change disable trigger commit_form_change;
 select has_function('cif_private', 'set_previous_form_change_id', 'Function set_previous_form_change_id should exist');
 
 -- create an inital form_change record
-insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status, change_reason)
+insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
-  (1, 'create', 'cif', 'project', 1, 'test', 'pending', 'test_project_form_change'),
-  (2, 'create', 'cif', 'project_manager', 1, 'test', 'pending', 'test_proect_manager_form_change'),
-  (3, 'create', 'cif', 'contact', 1, 'test', 'pending', 'test_contact_form_change');
+  (1, 'create', 'cif', 'project', 1, 'test_project_form_change', 'pending'),
+  (2, 'create', 'cif', 'project_manager', 1, 'test_project_manager_form_change', 'pending'),
+  (3, 'create', 'cif', 'contact', 1, 'test_contact_form_change', 'pending');
 
 select results_eq(
   $$
@@ -53,48 +53,48 @@ select results_eq(
 update cif.form_change set change_status = 'committed';
 
 -- Create a set of pending form_change records for the same revision
-insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status, change_reason)
+insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
-  (1, 'create', 'cif', 'project', 1, 'test', 'pending', 'first_pending_project'),
-  (1, 'create', 'cif', 'project_manager', 1, 'test', 'pending', 'first_pending_project_manager'),
-  (1, 'create', 'cif', 'contact', 1, 'test', 'pending', 'first_pending_contact');
+  (1, 'create', 'cif', 'project', 1, 'first_pending_project', 'pending'),
+  (1, 'create', 'cif', 'project_manager', 1, 'first_pending_project_manager', 'pending'),
+  (1, 'create', 'cif', 'contact', 1, 'first_pending_project_manager', 'pending');
 
 select is (
-  (select previous_form_change_id from cif.form_change where change_reason='first_pending_project'),
-  (select id from cif.form_change where change_reason='test_project_form_change'),
+  (select previous_form_change_id from cif.form_change where json_schema_name='first_pending_project'),
+  (select id from cif.form_change where json_schema_name='test_project_form_change'),
   'Trigger sets the correct previous_form_change_id for a form_change'
 );
 
 -- Create a second set of pending form_change records for the same revision
-insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status, change_reason)
+insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
-  (1, 'create', 'cif', 'project', 1, 'test', 'pending', 'second_pending_project'),
-  (1, 'create', 'cif', 'project_manager', 1, 'test', 'pending', 'second_pending_project_manager'),
-  (1, 'create', 'cif', 'contact', 1, 'test', 'pending', 'second_pending_contact');
+  (1, 'create', 'cif', 'project', 1, 'second_pending_project', 'pending'),
+  (1, 'create', 'cif', 'project_manager', 1, 'second_pending_project_manager', 'pending'),
+  (1, 'create', 'cif', 'contact', 1, 'second_pending_contact', 'pending');
 
 select is (
-  (select previous_form_change_id from cif.form_change where change_reason='second_pending_project'),
-  (select id from cif.form_change where change_reason='test_project_form_change'),
+  (select previous_form_change_id from cif.form_change where json_schema_name='second_pending_project'),
+  (select id from cif.form_change where json_schema_name='test_project_form_change'),
   'Trigger sets the correct previous_form_change_id for a form_change from the latest committed form change, ignoring pending form_change records'
 );
 
 alter table cif.form_change disable trigger _100_timestamps;
 -- commit the second set of pending form_change records at different times to test that commit order matters
-update cif.form_change set change_status = 'committed', updated_at=now() where change_reason ilike 'second_pending%';
-update cif.form_change set change_status = 'committed', updated_at=now() + interval '1 hour' where change_reason ilike 'first_pending%';
+update cif.form_change set change_status = 'committed', updated_at=now() where json_schema_name ilike 'second_pending%';
+update cif.form_change set change_status = 'committed', updated_at=now() + interval '1 hour' where json_schema_name ilike 'first_pending%';
 
 alter table cif.form_change enable trigger _100_timestamps;
 
 -- Create a set of form_change records for a new revision
-insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status, change_reason)
+insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
-  (2, 'update', 'cif', 'project', 1, 'test', 'pending', 'new_project_form_change_revision_2'),
-  (2, 'update', 'cif', 'project_manager', 1, 'test', 'pending', 'new_project_manager_form_change_revision_2'),
-  (2, 'update', 'cif', 'contact', 1, 'test', 'pending', 'new_contact_form_change_revision_2');;
+  (2, 'update', 'cif', 'project', 1, 'new_project_form_change_revision_2', 'pending'),
+  (2, 'update', 'cif', 'project_manager', 1, 'new_project_manager_form_change_revision_2', 'pending'),
+  (2, 'update', 'cif', 'contact', 1, 'new_contact_form_change_revision_2', 'pending');
 
 select is (
-  (select previous_form_change_id from cif.form_change where change_reason='new_project_form_change_revision_2'),
-  (select id from cif.form_change where change_reason='first_pending_project'),
+  (select previous_form_change_id from cif.form_change where json_schema_name='new_project_form_change_revision_2'),
+  (select id from cif.form_change where json_schema_name='first_pending_project'),
   'Trigger sets the correct previous_form_change_id for the first form_change in a new revision, using the latest committed form_change'
 );
 
