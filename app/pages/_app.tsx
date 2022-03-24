@@ -4,7 +4,7 @@ import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/relay/client";
 import BCGovTypography from "components/BCGovTypography";
 import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import * as Sentry from "@sentry/react";
 import ErrorFallback from "./500";
 import { ErrorContext } from "contexts/ErrorContext";
@@ -23,6 +23,9 @@ const initialPreloadedQuery = getInitialPreloadedQuery({
 function MyApp({ Component, pageProps }: AppProps) {
   const [error, setError] = useState(null);
   const value = { error, setError };
+  useEffect(() => {
+    setError(null);
+  }, [Component]);
 
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
