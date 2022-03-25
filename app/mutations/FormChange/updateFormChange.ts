@@ -10,9 +10,6 @@ const mutation = graphql`
         newFormData
         operation
         changeStatus
-        projectRevisionByProjectRevisionId {
-          ...ProjectContactForm_projectRevision
-        }
       }
     }
   }

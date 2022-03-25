@@ -1,4 +1,5 @@
-import { graphql } from "react-relay";
+import { graphql, useMutation } from "react-relay";
+import { addContactToRevisionMutation } from "__generated__/addContactToRevisionMutation.graphql";
 
 const mutation = graphql`
   mutation addContactToRevisionMutation(
@@ -17,4 +18,8 @@ const mutation = graphql`
   }
 `;
 
-export { mutation };
+const useAddContactToRevision = () => {
+  return useMutation<addContactToRevisionMutation>(mutation);
+};
+
+export { mutation, useAddContactToRevision };

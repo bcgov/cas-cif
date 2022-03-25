@@ -7,8 +7,7 @@ import FormBase from "./FormBase";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
-import { mutation as addContactToRevisionMutation } from "mutations/Contact/addContactToRevision";
-import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import {
@@ -17,6 +16,7 @@ import {
 } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import SavingIndicator from "./SavingIndicator";
+import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -103,10 +103,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     return schema as JSONSchema7;
   }, [allContacts]);
 
-  const [addContactMutation] = useMutationWithErrorMessage(
-    addContactToRevisionMutation,
-    () => "An error occurred while attempting to add a contact."
-  );
+  const [addContactMutation, isAdding] = useAddContactToRevision();
 
   const addContact = (contactIndex: number) => {
     addContactMutation({
@@ -133,7 +130,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   }, [projectContactFormChanges]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
-  const [applyUpdateFormChangeMutation, isUpdating] = useUpdateFormChange();
+  const [applyUpdateFormChangeMutation, isUpdating] =
+    useUpdateProjectContactFormChange();
   const [discardFormChange] = useDiscardFormChange(
     projectContactFormChanges.__id
   );
@@ -238,7 +236,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Project Contacts</h2>
-        <SavingIndicator isSaved={!isUpdating} lastEdited={lastEditedDate} />
+        <SavingIndicator
+          isSaved={!isUpdating && !isAdding}
+          lastEdited={lastEditedDate}
+        />
       </header>
 
       <Grid cols={10} align="center">
