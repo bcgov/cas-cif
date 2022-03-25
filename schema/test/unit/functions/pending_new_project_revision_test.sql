@@ -1,7 +1,7 @@
 begin;
 select plan(5);
 
-insert into cif.cif_user (uuid, first_name, last_name, email_address)
+insert into cif.cif_user (uuid, given_name, family_name, email_address)
 values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somemail.com'),
        ('11111111-1111-1111-1111-111111111111', 'test1', 'Testuser', 'test1@somemail.com');
 
