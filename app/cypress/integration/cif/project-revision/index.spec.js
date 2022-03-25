@@ -122,7 +122,7 @@ describe("the new project page", () => {
 
     cy.findByLabelText(/tech team secondary/i).should(
       "have.value",
-      "April Ludgate"
+      "Ludgate, April"
     );
     cy.get("label")
       .contains("Tech Team Secondary")
