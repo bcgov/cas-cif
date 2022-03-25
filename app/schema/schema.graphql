@@ -27,9 +27,6 @@ type AddContactToRevisionPayload {
   clientMutationId: String
   formChange: FormChange
 
-  """Reads a single `FormChange` that is related to this `FormChange`."""
-  formChangeByPreviousFormChangeId: FormChange
-
   """An edge for our `FormChange`. May be used by Relay 1."""
   formChangeEdge(
     """The method to use when ordering `FormChange`."""
@@ -665,40 +662,6 @@ type ChangeStatus implements Node {
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
 
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByFormChangeChangeStatusAndPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ChangeStatusFormChangesByFormChangeChangeStatusAndPreviousFormChangeIdManyToManyConnection!
-
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
@@ -1176,68 +1139,6 @@ input ChangeStatusFilter {
 
   """Filter by the object’s `updatedBy` field."""
   updatedBy: IntFilter
-}
-
-"""
-A connection to a list of `FormChange` values, with data from `FormChange`.
-"""
-type ChangeStatusFormChangesByFormChangeChangeStatusAndPreviousFormChangeIdManyToManyConnection {
-  """
-  A list of edges which contains the `FormChange`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [ChangeStatusFormChangesByFormChangeChangeStatusAndPreviousFormChangeIdManyToManyEdge!]!
-
-  """A list of `FormChange` objects."""
-  nodes: [FormChange]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `FormChange` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `FormChange` edge in the connection, with data from `FormChange`."""
-type ChangeStatusFormChangesByFormChangeChangeStatusAndPreviousFormChangeIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `FormChange` at the end of the edge."""
-  node: FormChange
 }
 
 """An input for mutations affecting `ChangeStatus`"""
@@ -5830,74 +5731,6 @@ type CifUser implements Node {
     """The method to use when ordering `FormChange`."""
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByFormChangeCreatedByAndPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserFormChangesByFormChangeCreatedByAndPreviousFormChangeIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByFormChangeUpdatedByAndPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserFormChangesByFormChangeUpdatedByAndPreviousFormChangeIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `FormChange`."""
   formChangesByUpdatedBy(
@@ -15102,130 +14935,6 @@ input CifUserFilter {
 }
 
 """
-A connection to a list of `FormChange` values, with data from `FormChange`.
-"""
-type CifUserFormChangesByFormChangeCreatedByAndPreviousFormChangeIdManyToManyConnection {
-  """
-  A list of edges which contains the `FormChange`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserFormChangesByFormChangeCreatedByAndPreviousFormChangeIdManyToManyEdge!]!
-
-  """A list of `FormChange` objects."""
-  nodes: [FormChange]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `FormChange` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `FormChange` edge in the connection, with data from `FormChange`."""
-type CifUserFormChangesByFormChangeCreatedByAndPreviousFormChangeIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `FormChange` at the end of the edge."""
-  node: FormChange
-}
-
-"""
-A connection to a list of `FormChange` values, with data from `FormChange`.
-"""
-type CifUserFormChangesByFormChangeUpdatedByAndPreviousFormChangeIdManyToManyConnection {
-  """
-  A list of edges which contains the `FormChange`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserFormChangesByFormChangeUpdatedByAndPreviousFormChangeIdManyToManyEdge!]!
-
-  """A list of `FormChange` objects."""
-  nodes: [FormChange]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `FormChange` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `FormChange` edge in the connection, with data from `FormChange`."""
-type CifUserFormChangesByFormChangeUpdatedByAndPreviousFormChangeIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `FormChange` at the end of the edge."""
-  node: FormChange
-}
-
-"""
 A connection to a list of `FundingStreamRfp` values, with data from `FundingStreamRfpProjectStatus`.
 """
 type CifUserFundingStreamRfpsByFundingStreamRfpProjectStatusArchivedByAndFundingStreamRfpIdManyToManyConnection {
@@ -19067,9 +18776,6 @@ type CreateFormChangePayload {
   clientMutationId: String
   formChange: FormChange
 
-  """Reads a single `FormChange` that is related to this `FormChange`."""
-  formChangeByPreviousFormChangeId: FormChange
-
   """An edge for our `FormChange`. May be used by Relay 1."""
   formChangeEdge(
     """The method to use when ordering `FormChange`."""
@@ -19843,9 +19549,6 @@ type DeleteFormChangePayload {
   """The `FormChange` that was deleted by this mutation."""
   formChange: FormChange
 
-  """Reads a single `FormChange` that is related to this `FormChange`."""
-  formChangeByPreviousFormChangeId: FormChange
-
   """An edge for our `FormChange`. May be used by Relay 1."""
   formChangeEdge(
     """The method to use when ordering `FormChange`."""
@@ -20408,171 +20111,17 @@ type FormChange implements Node {
   """Reads a single `ChangeStatus` that is related to this `FormChange`."""
   changeStatusByChangeStatus: ChangeStatus
 
-  """Reads and enables pagination through a set of `ChangeStatus`."""
-  changeStatusesByFormChangePreviousFormChangeIdAndChangeStatus(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ChangeStatusCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ChangeStatusFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ChangeStatus`."""
-    orderBy: [ChangeStatusesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangeChangeStatusesByFormChangePreviousFormChangeIdAndChangeStatusManyToManyConnection!
-
   """Reads a single `CifUser` that is related to this `FormChange`."""
   cifUserByCreatedBy: CifUser
 
   """Reads a single `CifUser` that is related to this `FormChange`."""
   cifUserByUpdatedBy: CifUser
 
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByFormChangePreviousFormChangeIdAndCreatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangeCifUsersByFormChangePreviousFormChangeIdAndCreatedByManyToManyConnection!
-
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByFormChangePreviousFormChangeIdAndUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangeCifUsersByFormChangePreviousFormChangeIdAndUpdatedByManyToManyConnection!
-
   """created at timestamp"""
   createdAt: Datetime!
 
   """created by user id"""
   createdBy: Int
-
-  """Reads a single `FormChange` that is related to this `FormChange`."""
-  formChangeByPreviousFormChangeId: FormChange
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
 
   """The id of the record on which this form change applies"""
   formDataRecordId: Int
@@ -20598,53 +20147,11 @@ type FormChange implements Node {
   """The operation this form change describes: create, update or archive"""
   operation: FormChangeOperation!
 
-  """
-  returns an ancestor form_change from a specific revision for the form_change id passed in as a parameter
-  """
-  parentFormChangeFromRevision(projectRevisionId: Int!): FormChange
-
-  """The id of the form_change record that preceded this one"""
-  previousFormChangeId: Int
-
   """Reads a single `ProjectRevision` that is related to this `FormChange`."""
   projectRevisionByProjectRevisionId: ProjectRevision
 
   """The project revision this change might be associated with (if known)"""
   projectRevisionId: Int
-
-  """Reads and enables pagination through a set of `ProjectRevision`."""
-  projectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectRevisionCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectRevisionFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ProjectRevision`."""
-    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionIdManyToManyConnection!
 
   """Unique ID for the form_change"""
   rowId: Int!
@@ -20659,192 +20166,6 @@ type FormChange implements Node {
   The validation errors computed for this record's new_form_data and the json_schema_name schema
   """
   validationErrors: JSON
-}
-
-"""
-A connection to a list of `ChangeStatus` values, with data from `FormChange`.
-"""
-type FormChangeChangeStatusesByFormChangePreviousFormChangeIdAndChangeStatusManyToManyConnection {
-  """
-  A list of edges which contains the `ChangeStatus`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [FormChangeChangeStatusesByFormChangePreviousFormChangeIdAndChangeStatusManyToManyEdge!]!
-
-  """A list of `ChangeStatus` objects."""
-  nodes: [ChangeStatus]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `ChangeStatus` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `ChangeStatus` edge in the connection, with data from `FormChange`."""
-type FormChangeChangeStatusesByFormChangePreviousFormChangeIdAndChangeStatusManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByChangeStatus(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `ChangeStatus` at the end of the edge."""
-  node: ChangeStatus
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `FormChange`.
-"""
-type FormChangeCifUsersByFormChangePreviousFormChangeIdAndCreatedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [FormChangeCifUsersByFormChangePreviousFormChangeIdAndCreatedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `FormChange`."""
-type FormChangeCifUsersByFormChangePreviousFormChangeIdAndCreatedByManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByCreatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `FormChange`.
-"""
-type FormChangeCifUsersByFormChangePreviousFormChangeIdAndUpdatedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [FormChangeCifUsersByFormChangePreviousFormChangeIdAndUpdatedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `FormChange`."""
-type FormChangeCifUsersByFormChangePreviousFormChangeIdAndUpdatedByManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
 }
 
 """
@@ -20878,9 +20199,6 @@ input FormChangeCondition {
 
   """Checks for equality with the object’s `operation` field."""
   operation: FormChangeOperation
-
-  """Checks for equality with the object’s `previousFormChangeId` field."""
-  previousFormChangeId: Int
 
   """Checks for equality with the object’s `projectRevisionId` field."""
   projectRevisionId: Int
@@ -20929,18 +20247,6 @@ input FormChangeFilter {
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
 
-  """Filter by the object’s `formChangeByPreviousFormChangeId` relation."""
-  formChangeByPreviousFormChangeId: FormChangeFilter
-
-  """A related `formChangeByPreviousFormChangeId` exists."""
-  formChangeByPreviousFormChangeIdExists: Boolean
-
-  """Filter by the object’s `formChangesByPreviousFormChangeId` relation."""
-  formChangesByPreviousFormChangeId: FormChangeToManyFormChangeFilter
-
-  """Some related `formChangesByPreviousFormChangeId` exist."""
-  formChangesByPreviousFormChangeIdExist: Boolean
-
   """Filter by the object’s `formDataRecordId` field."""
   formDataRecordId: IntFilter
 
@@ -20964,9 +20270,6 @@ input FormChangeFilter {
 
   """Checks for any expressions in this list."""
   or: [FormChangeFilter!]
-
-  """Filter by the object’s `previousFormChangeId` field."""
-  previousFormChangeId: IntFilter
 
   """Filter by the object’s `projectRevisionByProjectRevisionId` relation."""
   projectRevisionByProjectRevisionId: ProjectRevisionFilter
@@ -21074,9 +20377,6 @@ input FormChangePatch {
   """The operation this form change describes: create, update or archive"""
   operation: FormChangeOperation
 
-  """The id of the form_change record that preceded this one"""
-  previousFormChangeId: Int
-
   """The project revision this change might be associated with (if known)"""
   projectRevisionId: Int
 
@@ -21090,92 +20390,6 @@ input FormChangePatch {
   The validation errors computed for this record's new_form_data and the json_schema_name schema
   """
   validationErrors: JSON
-}
-
-"""
-A connection to a list of `ProjectRevision` values, with data from `FormChange`.
-"""
-type FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionIdManyToManyConnection {
-  """
-  A list of edges which contains the `ProjectRevision`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionIdManyToManyEdge!]!
-
-  """A list of `ProjectRevision` objects."""
-  nodes: [ProjectRevision]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """
-  The count of *all* `ProjectRevision` you could get from the connection.
-  """
-  totalCount: Int!
-}
-
-"""
-A `ProjectRevision` edge in the connection, with data from `FormChange`.
-"""
-type FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByProjectRevisionId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `ProjectRevision` at the end of the edge."""
-  node: ProjectRevision
-}
-
-"""
-A filter to be used against many `FormChange` object types. All fields are combined with a logical ‘and.’
-"""
-input FormChangeToManyFormChangeFilter {
-  """
-  Every related `FormChange` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: FormChangeFilter
-
-  """
-  No related `FormChange` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: FormChangeFilter
-
-  """
-  Some related `FormChange` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: FormChangeFilter
 }
 
 """A connection to a list of `FormChange` values."""
@@ -21274,38 +20488,6 @@ enum FormChangesOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
-  FORM_CHANGES_BY_PREVIOUS_FORM_CHANGE_ID__COUNT_ASC
-  FORM_CHANGES_BY_PREVIOUS_FORM_CHANGE_ID__COUNT_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CHANGE_STATUS_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CHANGE_STATUS_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CREATED_AT_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CREATED_AT_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CREATED_BY_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__CREATED_BY_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__FORM_DATA_RECORD_ID_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__FORM_DATA_RECORD_ID_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__FORM_DATA_SCHEMA_NAME_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__FORM_DATA_SCHEMA_NAME_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__FORM_DATA_TABLE_NAME_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__FORM_DATA_TABLE_NAME_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__ID_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__ID_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__JSON_SCHEMA_NAME_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__JSON_SCHEMA_NAME_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__NEW_FORM_DATA_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__NEW_FORM_DATA_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__OPERATION_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__OPERATION_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__PREVIOUS_FORM_CHANGE_ID_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__PREVIOUS_FORM_CHANGE_ID_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__PROJECT_REVISION_ID_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__PROJECT_REVISION_ID_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__UPDATED_AT_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__UPDATED_AT_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__UPDATED_BY_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__UPDATED_BY_DESC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__VALIDATION_ERRORS_ASC
-  FORM_CHANGE_BY_PREVIOUS_FORM_CHANGE_ID__VALIDATION_ERRORS_DESC
   FORM_DATA_RECORD_ID_ASC
   FORM_DATA_RECORD_ID_DESC
   FORM_DATA_SCHEMA_NAME_ASC
@@ -21321,8 +20503,6 @@ enum FormChangesOrderBy {
   NEW_FORM_DATA_DESC
   OPERATION_ASC
   OPERATION_DESC
-  PREVIOUS_FORM_CHANGE_ID_ASC
-  PREVIOUS_FORM_CHANGE_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_ASC
@@ -29077,40 +28257,6 @@ type ProjectRevision implements Node {
   createdBy: Int
 
   """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByFormChangeProjectRevisionIdAndPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectRevisionFormChangesByFormChangeProjectRevisionIdAndPreviousFormChangeIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `FormChange`."""
   formChangesByProjectRevisionId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -29499,68 +28645,6 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `updatedBy` field."""
   updatedBy: IntFilter
-}
-
-"""
-A connection to a list of `FormChange` values, with data from `FormChange`.
-"""
-type ProjectRevisionFormChangesByFormChangeProjectRevisionIdAndPreviousFormChangeIdManyToManyConnection {
-  """
-  A list of edges which contains the `FormChange`, info from the `FormChange`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectRevisionFormChangesByFormChangeProjectRevisionIdAndPreviousFormChangeIdManyToManyEdge!]!
-
-  """A list of `FormChange` objects."""
-  nodes: [FormChange]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `FormChange` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `FormChange` edge in the connection, with data from `FormChange`."""
-type ProjectRevisionFormChangesByFormChangeProjectRevisionIdAndPreviousFormChangeIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """Reads and enables pagination through a set of `FormChange`."""
-  formChangesByPreviousFormChangeId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: FormChangeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesConnection!
-
-  """The `FormChange` at the end of the edge."""
-  node: FormChange
 }
 
 """
@@ -32660,9 +31744,6 @@ type UpdateFormChangePayload {
 
   """The `FormChange` that was updated by this mutation."""
   formChange: FormChange
-
-  """Reads a single `FormChange` that is related to this `FormChange`."""
-  formChangeByPreviousFormChangeId: FormChange
 
   """An edge for our `FormChange`. May be used by Relay 1."""
   formChangeEdge(
