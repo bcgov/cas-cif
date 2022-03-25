@@ -12,7 +12,8 @@ create table cif.form_change (
   project_revision_id integer references cif.project_revision(id) on delete cascade,
   change_status varchar(1000) default 'pending' references cif.change_status not null,
   json_schema_name varchar(1000) not null,
-  validation_errors jsonb default '[]'
+  validation_errors jsonb default '[]',
+  previous_form_change_id integer references cif.form_change(id)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'form_change', add_archive => false);
@@ -28,6 +29,11 @@ create trigger commit_form_change
     for each row
     when (new.change_status = 'committed')
     execute procedure cif_private.commit_form_change();
+
+create trigger _set_previous_form_change_id
+    before insert on cif.form_change
+    for each row
+    execute procedure cif_private.set_previous_form_change_id();
 
 
 do
@@ -64,5 +70,6 @@ comment on column cif.form_change.project_revision_id is 'The project revision t
 comment on column cif.form_change.change_status is 'The change status of this form change, foreign key to cif.change_status.';
 comment on column cif.form_change.json_schema_name is 'The name of the JSON schema to use for validation of this form data';
 comment on column cif.form_change.validation_errors is 'The validation errors computed for this record''s new_form_data and the json_schema_name schema';
+comment on column cif.form_change.previous_form_change_id is 'The id of the form_change record that preceded this one';
 
 commit;
