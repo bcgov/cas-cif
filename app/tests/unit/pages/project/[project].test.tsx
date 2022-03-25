@@ -75,18 +75,16 @@ const defaultMockResolver = {
           {
             node: {
               cifUserByCifUserId: {
-                givenName: "Manager first name 1",
-                familyName: "Manager last name 1",
-                id: "1",
+                fullName: "---- Manager full name 1",
+                id: "4",
               },
             },
           },
           {
             node: {
               cifUserByCifUserId: {
-                givenName: "Manager first name 2",
-                familyName: "Manager last name 2",
-                id: "2",
+                fullName: "Manager full name 2",
+                id: "5",
               },
             },
           },
@@ -246,13 +244,11 @@ describe("ProjectViewPage", () => {
     expect(screen.getByText(/2022/i)).toBeInTheDocument();
     expect(screen.getByText(/Emissions Performance/i)).toBeInTheDocument();
     expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact full name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact full name 2/i)).toBeInTheDocument();
     expect(screen.getByText(/Contact full name 3/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager first name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager last name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager first name 2/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager last name 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact full name 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact full name 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Manager full name 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Manager full name 2/i)).toBeInTheDocument();
   });
 
   it("renders null if the project doesn't exist", () => {

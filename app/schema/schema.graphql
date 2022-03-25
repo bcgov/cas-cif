@@ -5933,6 +5933,9 @@ type CifUser implements Node {
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
 
+  """Displays a cif_user as: family_name, given_name"""
+  fullName: String
+
   """
   Reads and enables pagination through a set of `FundingStreamRfpProjectStatus`.
   """
@@ -14880,6 +14883,9 @@ input CifUserFilter {
 
   """Some related `formChangesByUpdatedBy` exist."""
   formChangesByUpdatedByExist: Boolean
+
+  """Filter by the object’s `fullName` field."""
+  fullName: StringFilter
 
   """
   Filter by the object’s `fundingStreamRfpProjectStatusesByArchivedBy` relation.
@@ -32032,9 +32038,6 @@ type Query implements Node {
     id: ID!
   ): FormChange
   formChangeByRowId(rowId: Int!): FormChange
-
-  """Displays a users (contact, cif_user) as: family_name, given_name"""
-  fullName(col: String!): String
 
   """Reads a single `FundingStream` using its globally unique `ID`."""
   fundingStream(
