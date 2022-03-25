@@ -192,6 +192,23 @@ describe("The ProjectContactForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked", () => {
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    const removeButton = screen.getAllByText("Remove")[0];
+    removeButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
+  });
+
   it("Clears the primary contact field when the Clear button is pressed", () => {
     const mutationSpy = jest.fn();
     jest
@@ -233,6 +250,24 @@ describe("The ProjectContactForm", () => {
       },
       debounceKey: "Form ID 1",
     });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the Clear button is pressed", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    const clearButton = screen.getAllByText("Clear")[0];
+    clearButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
   });
 
   it("Validates all contact forms when validator is called", () => {
