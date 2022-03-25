@@ -6,8 +6,10 @@ import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import ProjectManagerForm from "./ProjectManagerForm";
 import { Button } from "@button-inc/bcgov-theme";
-import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import { useUpdateProjectManagerFormChange } from "mutations/ProjectManager/updateProjectManagerFormChange";
 import SavingIndicator from "./SavingIndicator";
+import useDeleteManagerFromRevisionMutation from "mutations/ProjectManager/deleteManagerFromRevision";
+import useAddManagerToRevisionMutation from "mutations/ProjectManager/addManagerToRevision";
 
 interface Props {
   query: ProjectManagerFormGroup_query$key;
@@ -54,7 +56,90 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
     props.revision
   );
 
-  const [updateFormChange, isUpdating] = useUpdateFormChange();
+  const { edges } = projectRevision.managerFormChanges;
+
+  const [deleteManager, isDeleting] = useDeleteManagerFromRevisionMutation();
+  const handleDelete = (formChangeId: string, operation) => {
+    deleteManager({
+      context: {
+        operation: operation,
+        id: formChangeId,
+        projectRevision: projectRevision.id,
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  };
+
+  const [addManager, isAdding] = useAddManagerToRevisionMutation();
+  const handleAdd = (newFormData: any, labelId: string) => {
+    addManager({
+      variables: {
+        projectRevision: projectRevision.id,
+        projectRevisionId: projectRevision.rowId,
+        newFormData,
+      },
+      optimisticResponse: {
+        createFormChange: {
+          query: {
+            projectRevision: {
+              ...projectRevision,
+              managerFormChanges: {
+                edges: edges.map(
+                  ({ node: { projectManagerLabel, formChange } }) => {
+                    if (projectManagerLabel.id === labelId) {
+                      return {
+                        node: {
+                          projectManagerLabel: projectManagerLabel,
+                          formChange: {
+                            id: "new",
+                            newFormData,
+                          },
+                        },
+                      };
+                    }
+                    return {
+                      node: {
+                        projectManagerLabel,
+                        formChange,
+                      },
+                    };
+                  }
+                ),
+              },
+            },
+          },
+        },
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  };
+
+  const [updateFormChange, isUpdating] = useUpdateProjectManagerFormChange();
+  const handleUpdate = (formChangeId: string, newFormData: any) => {
+    updateFormChange({
+      variables: {
+        input: {
+          id: formChangeId,
+          formChangePatch: {
+            newFormData,
+          },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: formChangeId,
+            newFormData,
+          },
+        },
+      },
+      debounceKey: formChangeId,
+    });
+  };
 
   const stageProjectManagersFormChanges = async () => {
     const errors = Object.keys(formRefs.current).reduce((agg, formId) => {
@@ -66,7 +151,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
     const completedPromises: Promise<void>[] = [];
 
-    projectRevision.managerFormChanges.edges.forEach(({ node }) => {
+    edges.forEach(({ node }) => {
       if (node.formChange?.changeStatus === "pending") {
         const promise = new Promise<void>((resolve, reject) => {
           updateFormChange({
@@ -100,30 +185,36 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
   };
 
   const lastEditedDate = useMemo(() => {
-    const mostRecentUpdate = projectRevision.managerFormChanges.edges
+    const mostRecentUpdate = edges
       .filter((e) => e.node.formChange)
       .map((e) => e.node.formChange.updatedAt)
       .sort((a, b) => Date.parse(b) - Date.parse(a))[0];
     return new Date(mostRecentUpdate);
-  }, [projectRevision.managerFormChanges.edges]);
+  }, [edges]);
 
   return (
     <div>
       <header>
         <h2>Project Managers</h2>
-        <SavingIndicator isSaved={!isUpdating} lastEdited={lastEditedDate} />
+        <SavingIndicator
+          isSaved={!isUpdating && !isAdding && !isDeleting}
+          lastEdited={lastEditedDate}
+        />
       </header>
       <FormBorder>
-        {projectRevision.managerFormChanges.edges.map(({ node }) => (
+        {edges.map(({ node }) => (
           <ProjectManagerForm
             key={node.projectManagerLabel.id}
             managerFormChange={node}
             query={query}
-            projectId={projectRevision.projectFormChange.formDataRecordId}
-            projectRevisionId={projectRevision.id}
-            projectRevisionRowId={projectRevision.rowId}
-            updateFormChange={updateFormChange}
+            projectRowId={projectRevision.projectFormChange.formDataRecordId}
+            onDelete={handleDelete}
+            onAdd={(newFormData) =>
+              handleAdd(newFormData, node.projectManagerLabel.id)
+            }
+            onUpdate={handleUpdate}
             formRefs={formRefs}
+            disabled={isUpdating || isAdding || isDeleting}
           />
         ))}
       </FormBorder>

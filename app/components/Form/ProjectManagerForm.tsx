@@ -1,29 +1,27 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { useMemo, MutableRefObject } from "react";
-import { Disposable, graphql, useFragment } from "react-relay";
-import { ProjectManagerForm_managerFormChange$key } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
+import { graphql, useFragment } from "react-relay";
+import {
+  FormChangeOperation,
+  ProjectManagerForm_managerFormChange$key,
+} from "__generated__/ProjectManagerForm_managerFormChange.graphql";
 import { ProjectManagerForm_query$key } from "__generated__/ProjectManagerForm_query.graphql";
 import FormBase from "./FormBase";
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import FormComponentProps from "./Interfaces/FormComponentProps";
 import { Button } from "@button-inc/bcgov-theme";
-import useAddManagerToRevisionMutation from "mutations/Manager/addManagerToRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FieldLabel from "lib/theme/widgets/FieldLabel";
-import useDeleteManagerFromRevisionMutation from "mutations/Manager/deleteManagerFromRevision";
-import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
-import { updateFormChangeMutation } from "__generated__/updateFormChangeMutation.graphql";
 
 interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
   query: ProjectManagerForm_query$key;
-  projectId: number;
-  projectRevisionId: string;
-  projectRevisionRowId: number;
-  updateFormChange: (
-    config: UseDebouncedMutationConfig<updateFormChangeMutation>
-  ) => Disposable;
+  projectRowId: number;
+  onUpdate: (formChangeId: string, newFormData: any) => void;
+  onAdd: (newFormData: any) => void;
+  onDelete: (formChangeId: string, operation: FormChangeOperation) => void;
   formRefs: MutableRefObject<{}>;
+  disabled?: boolean;
 }
 
 const uiSchema = {
@@ -39,14 +37,8 @@ const uiSchema = {
 };
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
-  const {
-    query,
-    projectId,
-    projectRevisionId,
-    projectRevisionRowId,
-    formRefs,
-    updateFormChange,
-  } = props;
+  const { query, projectRowId, formRefs, onAdd, onUpdate, onDelete, disabled } =
+    props;
 
   const { allCifUsers } = useFragment(
     graphql`
@@ -100,100 +92,27 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     return schema as JSONSchema7;
   }, [allCifUsers]);
 
-  // Add a manager to the project revision
-  const [applyAddManagerToRevision] = useAddManagerToRevisionMutation();
-  const addManager = (data: {
-    cifUserId: number;
-    projectManagerLabelId: number;
-    projectId: number;
-  }) => {
-    applyAddManagerToRevision({
-      variables: {
-        projectRevision: projectRevisionId,
-        projectRevisionId: projectRevisionRowId,
-        newFormData: data,
-      },
-      optimisticResponse: {
-        createFormChange: {
-          query: {
-            projectRevision: {
-              managerFormChanges: {
-                edges: {
-                  change: {
-                    projectManagerLabel: {},
-                    formChange: {
-                      id: "new",
-                      newFormData: data,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-  };
-
-  // Delete a manager from the project revision
-  const [deleteManager, deleteManagerInFlight] =
-    useDeleteManagerFromRevisionMutation();
-  const handleClear = () => {
-    deleteManager({
-      context: {
-        operation: change.formChange.operation,
-        id: change.formChange.id,
-        projectRevision: projectRevisionId,
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
-  };
-
   // Update an existing project_manager form change if it exists, otherwise create one
-  const createOrUpdateFormChange = (
-    formChangeId: string,
-    labelId: number,
-    formChange: { cifUserId: number }
-  ) => {
+  const createOrUpdateFormChange = (formData: { cifUserId: number }) => {
+    const {
+      formChange,
+      projectManagerLabel: { rowId: labelRowId },
+    } = change;
     const data = {
-      ...formChange,
-      projectManagerLabelId: labelId,
-      projectId: projectId,
+      ...formData,
+      projectManagerLabelId: labelRowId,
+      projectId: projectRowId,
     };
 
     // If a form_change already exists, and the payload contains a cifUserId update it
-    if (formChangeId && formChange?.cifUserId) {
-      updateFormChange({
-        variables: {
-          input: {
-            id: formChangeId,
-            formChangePatch: {
-              newFormData: data,
-            },
-          },
-        },
-        optimisticResponse: {
-          updateFormChange: {
-            formChange: {
-              id: formChangeId,
-              newFormData: data,
-            },
-          },
-        },
-        debounceKey: formChangeId,
-      });
+    if (formChange && formData?.cifUserId) {
+      onUpdate(formChange.id, data);
+
       // If a form_change does not exist, and the payload contains a cifUserId create a form_change record
-    } else if (formChange?.cifUserId) {
-      addManager(data);
-    }
-    // If a form_change exists, and the payload does not contain a cifUserId delete it
-    else if (formChangeId && !formChange.cifUserId && !deleteManagerInFlight) {
-      handleClear();
+    } else if (formData?.cifUserId) {
+      onAdd(data);
     }
   };
-
   const formIdPrefix = `form-${change.projectManagerLabel.id}`;
 
   return (
@@ -211,21 +130,19 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           ref={(el) => (formRefs.current[change.projectManagerLabel.id] = el)}
           formData={change.formChange?.newFormData}
           onChange={(data) => {
-            createOrUpdateFormChange(
-              change.formChange?.id,
-              change.projectManagerLabel.rowId,
-              data.formData
-            );
+            createOrUpdateFormChange(data.formData);
           }}
           schema={managerSchema}
           uiSchema={uiSchema}
           ObjectFieldTemplate={EmptyObjectFieldTemplate}
         />
         <Button
-          disabled={deleteManagerInFlight || !change.formChange?.id}
+          disabled={disabled || !change.formChange?.id}
           variant="secondary"
           size="small"
-          onClick={() => handleClear()}
+          onClick={() =>
+            onDelete(change.formChange.id, change.formChange.operation)
+          }
         >
           Clear
         </Button>

@@ -32,21 +32,7 @@ export const deleteMutation = graphql`
       deletedFormChangeId
       query {
         projectRevision(id: $projectRevision) {
-          managerFormChanges: projectManagerFormChangesByLabel {
-            edges {
-              node {
-                projectManagerLabel {
-                  id
-                  rowId
-                  label
-                }
-                formChange {
-                  id
-                  newFormData
-                }
-              }
-            }
-          }
+          ...ProjectManagerFormGroup_revision
         }
       }
     }
@@ -66,21 +52,7 @@ export const archiveMutation = graphql`
       }
       query {
         projectRevision(id: $projectRevision) {
-          managerFormChanges: projectManagerFormChangesByLabel {
-            edges {
-              node {
-                projectManagerLabel {
-                  id
-                  rowId
-                  label
-                }
-                formChange {
-                  id
-                  newFormData
-                }
-              }
-            }
-          }
+          ...ProjectManagerFormGroup_revision
         }
       }
     }
