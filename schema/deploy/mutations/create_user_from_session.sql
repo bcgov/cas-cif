@@ -12,7 +12,7 @@ begin
   select * from cif.session() into jwt;
 
   if ((select count(*) from cif.cif_user where uuid = jwt.sub) = 0) then
-    insert into cif.cif_user(uuid, given_name, last_name, email_address)
+    insert into cif.cif_user(uuid, given_name, family_name, email_address)
     values (jwt.sub, jwt.given_name, jwt.family_name, jwt.email);
   end if;
 
