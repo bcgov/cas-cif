@@ -26,7 +26,7 @@ export function createClientNetwork() {
     batchMiddleware({
       batchUrl: async () => Promise.resolve("/graphql"),
       batchTimeout: 10,
-      allowMutations: true,
+      allowMutations: false,
     }),
     uploadMiddleware(),
   ]);

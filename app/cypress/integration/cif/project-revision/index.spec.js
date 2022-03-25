@@ -89,7 +89,7 @@ describe("the new project page", () => {
     });
   });
 
-  it.only("Allows to create and update a project", () => {
+  it("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -158,7 +158,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/cif/project/");
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
     cy.findByText("Edit").click();
-    cy.url().should("include", "/form/overview/");
+    cy.url().should("include", "/form/overview");
 
     // Edit the project
     // change the name, delete a manager and contact.
@@ -215,10 +215,6 @@ describe("the new project page", () => {
     cy.findByText(/add project managers/i).click();
     cy.findByLabelText(/tech team secondary/i).should("not.have.value");
     cy.findByText(/add project contacts/i).click();
-    cy.get("legend")
-      .contains("Contacts")
-      .parent()
-      .find("input")
-      .should("have.length", 1);
+    cy.get("fieldset").find("input").should("have.length", 1);
   });
 });

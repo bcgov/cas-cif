@@ -68,7 +68,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
     projectRevision.managerFormChanges.edges.forEach(({ node }) => {
       if (node.formChange?.changeStatus === "pending") {
-        const promise = new Promise<void>((resolve) => {
+        const promise = new Promise<void>((resolve, reject) => {
           updateFormChange({
             variables: {
               input: {
@@ -86,9 +86,8 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
               },
             },
             debounceKey: node.formChange.id,
-            onCompleted: () => {
-              resolve();
-            },
+            onCompleted: () => resolve(),
+            onError: reject,
           });
         });
         completedPromises.push(promise);
