@@ -125,6 +125,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         input: {
           id: formChangeId,
           formChangePatch: {
+            changeStatus: "pending",
             newFormData,
           },
         },
