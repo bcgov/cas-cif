@@ -51,7 +51,7 @@ const DefaultLayout: React.FC<Props> = ({
       </Navigation>
       {error && <GlobalAlert error={error} />}
       <div id="page-content">
-        {leftSideNav && <nav>{leftSideNav}</nav>}
+        {leftSideNav && <nav aria-label="side navigation">{leftSideNav}</nav>}
         <main>{children}</main>
       </div>
       <Footer />
