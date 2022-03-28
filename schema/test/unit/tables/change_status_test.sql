@@ -14,6 +14,5 @@ select results_eq(
   'cif.change_status contains the expected values'
 );
 
-
 select finish();
 rollback;

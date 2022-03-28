@@ -25,7 +25,7 @@ const pageQuery = graphql`
   }
 `;
 
-export function ProjectRevision({
+export function ProjectContactsPage({
   preloadedQuery,
 }: RelayProps<{}, contactsFormQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
@@ -51,4 +51,4 @@ export function ProjectRevision({
   );
 }
 
-export default withRelay(ProjectRevision, pageQuery, withRelayOptions);
+export default withRelay(ProjectContactsPage, pageQuery, withRelayOptions);

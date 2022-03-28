@@ -3,7 +3,6 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { overviewFormQuery } from "__generated__/overviewFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-
 import ProjectForm from "components/Form/ProjectForm";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
@@ -26,7 +25,7 @@ const pageQuery = graphql`
   }
 `;
 
-export function ProjectRevision({
+export function ProjectOverviewForm({
   preloadedQuery,
 }: RelayProps<{}, overviewFormQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
@@ -52,4 +51,4 @@ export function ProjectRevision({
   );
 }
 
-export default withRelay(ProjectRevision, pageQuery, withRelayOptions);
+export default withRelay(ProjectOverviewForm, pageQuery, withRelayOptions);
