@@ -13,6 +13,7 @@ import { mutation as createProjectMutation } from "mutations/Project/createProje
 import { createProjectMutationResponse } from "__generated__/createProjectMutation.graphql";
 import { useRouter } from "next/router";
 import useIsAdmin from "hooks/useIsAdmin";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 interface Props {
   query: Dashboard_query$key;
@@ -37,7 +38,10 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
     queryKey
   );
 
-  const [createProject, isProjectCreating] = useMutation(createProjectMutation);
+  const [createProject, isProjectCreating] = useMutationWithErrorMessage(
+    createProjectMutation,
+    () => "An error occured"
+  );
 
   const handleProjectCreation = useCallback(() => {
     if (isProjectCreating) return;
