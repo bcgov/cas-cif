@@ -10,8 +10,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import compiledProjectContactFormQuery, {
   ProjectContactFormQuery,
 } from "__generated__/ProjectContactFormQuery.graphql";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
-import { mocked } from "jest-mock";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import userEvent from "@testing-library/user-event";
 
@@ -67,6 +65,8 @@ const getMockQueryPayload = () => ({
             node: {
               id: "Form ID 1",
               operation: "CREATE",
+              changeStatus: "pending",
+              updatedAt: "2020-01-01T00:00:00.000Z",
               newFormData: {
                 projectId: 10,
                 contactId: 2,
@@ -78,6 +78,8 @@ const getMockQueryPayload = () => ({
             node: {
               id: "Form ID 2",
               operation: "CREATE",
+              changeStatus: "pending",
+              updatedAt: "2020-01-01T00:00:00.000Z",
               newFormData: {
                 projectId: 10,
                 contactId: 3,
@@ -89,6 +91,8 @@ const getMockQueryPayload = () => ({
             node: {
               id: "Form ID 3",
               operation: "CREATE",
+              changeStatus: "pending",
+              updatedAt: "2020-01-01T00:00:00.000Z",
               newFormData: {
                 projectId: 10,
                 contactId: 1,
@@ -249,6 +253,7 @@ describe("The ProjectContactForm", () => {
         input: {
           id: "Form ID 1",
           formChangePatch: {
+            changeStatus: "pending",
             newFormData: {
               contactIndex: 1,
               projectId: 10,
@@ -261,6 +266,8 @@ describe("The ProjectContactForm", () => {
           formChange: {
             __typename: "FormChange",
             id: "Form ID 1",
+            changeStatus: "pending",
+            updatedAt: "2020-01-01T00:00:00.000Z",
             newFormData: {
               contactIndex: 1,
               projectId: 10,

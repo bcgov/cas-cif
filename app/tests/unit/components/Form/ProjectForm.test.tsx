@@ -46,66 +46,47 @@ describe("The Project Form", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
   });
-  it("matches the snapshot", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation)
-    );
 
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
-
-    const componentUnderTest = renderProjectForm();
-    expect(componentUnderTest.container).toMatchSnapshot();
-  });
   it("calls the mutation passed in with the props with the proper data on form change", () => {
-    const mockUpdateProjectFormChange = jest.fn();
-
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation)
     );
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    renderProjectForm({
-      updateProjectFormChange: mockUpdateProjectFormChange,
-    });
+    renderProjectForm();
 
     fireEvent.change(screen.getByLabelText("Proposal Reference"), {
       target: { value: "testidentifier" },
     });
 
-    expect(mockUpdateProjectFormChange).toHaveBeenCalledOnce();
-    expect(mockUpdateProjectFormChange).toHaveBeenCalledWith({
-      optimisticResponse: expect.any(Object),
-      debounceKey: expect.any(String),
-      variables: {
-        input: {
-          id: expect.any(String),
-          formChangePatch: {
-            newFormData: expect.objectContaining({
-              proposalReference: "testidentifier",
-            }),
-          },
+    expect(
+      environment.mock.getMostRecentOperation().request.variables
+    ).toMatchObject({
+      input: {
+        id: expect.any(String),
+        formChangePatch: {
+          newFormData: expect.objectContaining({
+            proposalReference: "testidentifier",
+          }),
         },
       },
     });
-    mockUpdateProjectFormChange.mockClear();
 
     fireEvent.change(screen.getByLabelText(/summary/i), {
       target: { value: "testsummary" },
     });
 
-    expect(mockUpdateProjectFormChange).toHaveBeenCalledWith({
-      optimisticResponse: expect.any(Object),
-      debounceKey: expect.any(String),
-      variables: {
-        input: {
-          id: expect.any(String),
-          formChangePatch: {
-            newFormData: expect.objectContaining({
-              proposalReference: "testidentifier",
-              summary: "testsummary",
-            }),
-          },
+    expect(
+      environment.mock.getMostRecentOperation().request.variables
+    ).toMatchObject({
+      input: {
+        id: expect.any(String),
+        formChangePatch: {
+          newFormData: expect.objectContaining({
+            proposalReference: "testidentifier",
+            summary: "testsummary",
+          }),
         },
       },
     });
@@ -192,17 +173,10 @@ describe("The Project Form", () => {
 
     environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
-    let validateFormMethod;
-
-    renderProjectForm({
-      setValidatingForm: (validator) =>
-        (validateFormMethod = validator.selfValidate),
-    });
-
-    expect(validateFormMethod).not.toBeNull();
+    renderProjectForm({});
 
     act(() => {
-      validateFormMethod();
+      screen.getByText(/submit/i).click();
     });
 
     expect(

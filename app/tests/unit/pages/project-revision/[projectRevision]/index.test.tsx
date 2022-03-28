@@ -85,79 +85,16 @@ describe("The Create Project page", () => {
     mocked(ProjectManagerFormGroup).mockReset();
     mocked(ProjectContactForm).mockReset();
 
-    mocked(ProjectForm).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
+    mocked(ProjectForm).mockImplementation(() => {
       return null;
     });
-    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
+    mocked(ProjectManagerFormGroup).mockImplementation(() => {
       return null;
     });
-    mocked(ProjectContactForm).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
+    mocked(ProjectContactForm).mockImplementation(() => {
       return null;
     });
     jest.restoreAllMocks();
-  });
-
-  it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
-    const spy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [spy, false]);
-
-    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
-      return { push: jest.fn() };
-    });
-
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
-
-    userEvent.click(screen.queryByText("Submit"));
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith({
-      onCompleted: expect.any(Function),
-      updater: expect.any(Function),
-      variables: {
-        input: {
-          id: "mock-proj-rev-id",
-          projectRevisionPatch: { changeStatus: "committed" },
-        },
-      },
-    });
-  });
-
-  it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
-    mocked(ProjectForm).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => [{ error: "error!" }]),
-      });
-      return null;
-    });
-    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
-      return null;
-    });
-
-    const spy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [spy, false]);
-
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
-    userEvent.click(screen.queryByText("Submit"));
-
-    expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it("Renders an enabled submit and discard changes button", async () => {
