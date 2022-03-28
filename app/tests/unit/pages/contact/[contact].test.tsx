@@ -4,7 +4,7 @@ import {
   MockPayloadGenerator,
   RelayMockEnvironment,
 } from "relay-test-utils";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import compiledContactViewQuery, {
   ContactViewQuery,
   ContactViewQuery$variables,
@@ -13,6 +13,8 @@ import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
+import userEvent from "@testing-library/user-event";
+// import { act } from "react-test-renderer";
 
 jest.mock("next/router");
 
@@ -116,5 +118,35 @@ describe("ContactViewPage", () => {
     renderContactPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the edit button and there's a mutation error", () => {
+    loadContactQuery({
+      Contact() {
+        return {
+          id: "mock-contact-id",
+          rowId: 42,
+          fullName: "Contact, Test",
+          fullPhone: "(123) 456-7890",
+          email: "foo@bar.com",
+          position: "Test Position",
+          pendingFormChange: null,
+        };
+      },
+    });
+    renderContactPage();
+
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+    userEvent.click(screen.getByText(/Edit/i));
+
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
   });
 });
