@@ -17,6 +17,7 @@ import {
   FormChangeOperation,
 } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;
@@ -92,7 +93,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     return schema as JSONSchema7;
   }, [allContacts]);
 
-  const [addContactMutation] = useMutation(addContactToRevisionMutation);
+  const [addContactMutation] = useMutationWithErrorMessage(
+    addContactToRevisionMutation,
+    () => "An error occured"
+  );
 
   const addContact = (contactIndex: number) => {
     addContactMutation({

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import {
@@ -13,6 +13,8 @@ import compiledProjectContactFormQuery, {
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { mocked } from "jest-mock";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import userEvent from "@testing-library/user-event";
+// import { act } from "react-test-renderer";
 
 jest.mock("lib/helpers/validateFormWithErrors");
 
@@ -169,6 +171,22 @@ describe("The ProjectContactForm", () => {
         },
       },
     });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    userEvent.click(screen.getByText(/Add/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
   });
 
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
