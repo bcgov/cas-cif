@@ -1,0 +1,9 @@
+{
+  "bcogv_idir": "<idir used to access the LDAP server>@idir",
+  "bcgov_password": "<password>",
+
+  "realm_client_id": "<client id for the realm>",
+  "realm_client_secret": "<client secret>",
+  "realm_url": "<https://dev.oidc.gov.bc.ca/>"
+  "realm_name": "<realm license plate>"
+}

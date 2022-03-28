@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "name": "import_keycloak_users",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-fetch": "^3.2.3"
+  },
+  "scripts": {
+    "idir-ids": "node --experimental-modules --es-module-specifier-resolution=node idir-ids",
+    "keycloak-users": "node --experimental-modules --es-module-specifier-resolution=node keycloak"
+  }
+}

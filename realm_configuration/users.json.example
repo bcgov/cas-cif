@@ -1,0 +1,13 @@
+[
+  {
+    "full_name": "<Jane Doe>",
+    "first_name": "<Jane>",
+    "last_name": "<Doe>",
+    "email": "Jane.Doe@gov.bc.ca",
+    "idir": "JDOE",
+    "idir_username": "jdoe@idir",
+    "idir_user_guid": "<guid>"
+  },
+
+  // all the users' information
+]
