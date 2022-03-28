@@ -19,6 +19,7 @@ export default async function update_attributes_for_user(
           ...user.attributes,
           ...attributes,
         },
+        enabled: true,
       }),
     }
   );
