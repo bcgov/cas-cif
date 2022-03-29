@@ -3,10 +3,19 @@
 
 BEGIN;
 
-create function cif.cif_user_full_name(u cif.cif_user)
-returns varchar as $$
-  select u.family_name || ', ' || u.given_name;
-$$ language sql stable;
+create or function cif.cif_user_full_name(u cif.cif_user)
+returns varchar(1000)
+as
+$computed_column$
+  select concat(
+    u.family_name,
+    (case
+      when u.family_name is not null and u.given_name is not null
+      then ', '
+      else null
+    end),
+    contact.given_name);
+$computed_column$ language sql immutable;
 
 grant execute on function cif.cif_user_full_name to cif_internal, cif_admin;
 

@@ -24,9 +24,7 @@ const UserProfile: React.FC<Props> = ({ user }) => {
   return (
     <>
       <Grid className="name-display" justify="end">
-        <Grid.Row>
-          {fullName}
-        </Grid.Row>
+        <Grid.Row>{fullName}</Grid.Row>
         <Grid.Row>{emailAddress}</Grid.Row>
       </Grid>
       <style jsx>{`

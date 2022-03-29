@@ -2,6 +2,6 @@
 
 BEGIN;
 
-drop function cif.full_name(anyelement);
+drop function cif.cif_user_full_name(cif.cif_user);
 
 COMMIT;

@@ -28,9 +28,7 @@ function Users({ preloadedQuery }: RelayProps<{}, usersQuery>) {
     <DefaultLayout session={query.session}>
       <ul>
         {query.allCifUsers.edges.map(({ node }) => (
-          <li key={node.id}>
-            {node.fullName}
-          </li>
+          <li key={node.id}>{node.fullName}</li>
         ))}
       </ul>
     </DefaultLayout>
