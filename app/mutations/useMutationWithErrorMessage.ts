@@ -31,7 +31,7 @@ export default function useMutationWithErrorMessage<
       onError: (error) => {
         config.onError?.(error);
         setError(getErrorMessage(error));
-        Sentry.captureException(getErrorMessage(error));
+        Sentry.captureException(error);
       },
     };
 
