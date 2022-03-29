@@ -43,7 +43,10 @@ describe("the useDebouncedMutation hook", () => {
 
     function Renderer({ initialMutation, commitInRender }) {
       const [mutation] = useState(initialMutation);
-      const [commitFn, isMutationInFlight] = useDebouncedMutation(mutation);
+      const [commitFn, isMutationInFlight] = useDebouncedMutation(
+        mutation,
+        () => "An error occured"
+      );
       commit = (config) =>
         ReactTestRenderer.act(() => {
           disposable = commitFn(config);
