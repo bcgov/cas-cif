@@ -23,6 +23,7 @@ const defaultMockResolver = {
     return {
       id: "mock-cif-operator-id",
       rowId: 43,
+      bcRegistryId: "XXX-BC-Registery-ID-XXX",
       legalName: "Operator Legal Name",
       tradeName: "Operator Trade Name",
       swrsLegalName: "SWRS Legal Name",
@@ -69,6 +70,7 @@ describe("OperatorViewPage", () => {
     loadOperatorQuery();
     renderOperatorPage();
 
+    expect(screen.getByText("XXX-BC-Registery-ID-XXX")).toBeInTheDocument();
     expect(screen.getByText("Operator Legal Name")).toBeInTheDocument();
     expect(screen.getByText("Operator Trade Name")).toBeInTheDocument();
     expect(screen.getByText("SWRS Legal Name")).toBeInTheDocument();
