@@ -14,7 +14,6 @@ import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { mocked } from "jest-mock";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import userEvent from "@testing-library/user-event";
-// import { act } from "react-test-renderer";
 
 jest.mock("lib/helpers/validateFormWithErrors");
 

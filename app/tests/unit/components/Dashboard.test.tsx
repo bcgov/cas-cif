@@ -46,7 +46,6 @@ const renderDashboard = () => {
     </RelayEnvironmentProvider>
   );
 };
-let errorContext;
 
 describe("The Dashboard", () => {
   beforeEach(() => {

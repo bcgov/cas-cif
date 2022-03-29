@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
-import { useFragment, graphql, useMutation } from "react-relay";
+import { useFragment, graphql } from "react-relay";
 import { Dashboard_query$key } from "__generated__/Dashboard_query.graphql";
 import {
   getContactsPageRoute,

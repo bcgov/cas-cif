@@ -14,7 +14,6 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 import userEvent from "@testing-library/user-event";
-// import { act } from "react-test-renderer";
 
 jest.mock("next/router");
 
