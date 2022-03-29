@@ -1,5 +1,5 @@
 app:
-  showKCLogin: "true"
+  showKCLogin: true
   sitewide_notice:
     content: <div class="alert alert-warning">This is the DEV environment.</div>
 
