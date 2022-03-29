@@ -95,7 +95,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const [addContactMutation] = useMutationWithErrorMessage(
     addContactToRevisionMutation,
-    () => "An error occured"
+    () => "An error occurred while attempting to add a contact."
   );
 
   const addContact = (contactIndex: number) => {
