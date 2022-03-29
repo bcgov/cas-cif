@@ -9,6 +9,7 @@ import {
 import compiledProjectFormQuery, {
   ProjectFormQuery,
 } from "__generated__/ProjectFormQuery.graphql";
+import userEvent from "@testing-library/user-event";
 
 const loadedQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
@@ -184,5 +185,133 @@ describe("The Project Form", () => {
         /A proposal with the same proposal reference already exists. Please specify a different proposal reference./i
       )
     ).toBeInTheDocument();
+  });
+
+  it("stages the form_change when clicking on the submit button", () => {
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        ProjectRevision() {
+          return {
+            id: "Test Project Revision ID",
+            projectFormChange: {
+              id: "Test Project Form Change ID",
+              isUniqueValue: true,
+              changeStatus: "pending",
+              newFormData: {
+                proposalReference: "12345678",
+                summary: "d",
+                operatorId: 1,
+                fundingStreamRfpId: 1,
+                projectName: "test project name",
+                totalFundingRequest: 12345,
+              },
+            },
+          };
+        },
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+
+    renderProjectForm();
+
+    screen.getByText(/submit/i).click();
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: { changeStatus: "staged" },
+    });
+  });
+
+  it("reverts the form_change status to 'pending' when editing", () => {
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        ProjectRevision() {
+          return {
+            id: "Test Project Revision ID",
+            projectFormChange: {
+              id: "Test Project Form Change ID",
+              isUniqueValue: true,
+              changeStatus: "staged",
+              newFormData: {
+                proposalReference: "12345678",
+                summary: "d",
+                operatorId: 1,
+                fundingStreamRfpId: 1,
+                projectName: "test project name",
+                totalFundingRequest: 12345,
+              },
+            },
+          };
+        },
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+
+    renderProjectForm();
+
+    act(() => {
+      userEvent.type(screen.getByLabelText(/project name/i), "2");
+    });
+
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: { projectName: "test project name2" },
+      },
+    });
   });
 });
