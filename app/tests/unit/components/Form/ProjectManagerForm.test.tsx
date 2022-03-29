@@ -163,7 +163,7 @@ describe("The ProjectManagerForm", () => {
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     renderProjectForm();
@@ -229,7 +229,7 @@ describe("The ProjectManagerForm", () => {
     //Warning: Invalid value for prop `disabled` on <button> tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     renderProjectForm();
@@ -291,7 +291,7 @@ describe("The ProjectManagerForm", () => {
     const deleteMutationSpy = jest.fn();
     const inFlight = false;
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
 
     renderProjectForm();
@@ -334,7 +334,7 @@ describe("The ProjectManagerForm", () => {
     const deleteMutationSpy = jest.fn();
     const inFlight = false;
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
 
     renderProjectForm();
@@ -390,7 +390,7 @@ describe("The ProjectManagerForm", () => {
 
     mocked(validateFormWithErrors).mockImplementation(() => []);
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), jest.fn()]);
 
     renderProjectForm();

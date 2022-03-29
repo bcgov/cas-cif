@@ -1,4 +1,5 @@
-import { useMutation, graphql, Disposable, Environment } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { graphql, Disposable, Environment } from "react-relay";
 import { MutationConfig, PayloadError } from "relay-runtime";
 import {
   deleteManagerFromRevisionMutation,
@@ -96,10 +97,10 @@ const useDeleteMutation = (
     >
   ) => Disposable
 ) => {
-  return useMutation<
+  return useMutationWithErrorMessage<
     | deleteManagerFromRevisionMutation
     | deleteManagerFromRevisionWithArchiveMutation
-  >(deleteMutation, commitMutationFn);
+  >(deleteMutation, () => "An error occured", commitMutationFn);
 };
 
 const useArchiveMutation = (
@@ -111,10 +112,10 @@ const useArchiveMutation = (
     >
   ) => Disposable
 ) => {
-  return useMutation<
+  return useMutationWithErrorMessage<
     | deleteManagerFromRevisionMutation
     | deleteManagerFromRevisionWithArchiveMutation
-  >(archiveMutation, commitMutationFn);
+  >(archiveMutation, () => "An error occured", commitMutationFn);
 };
 
 export const useDeleteManagerFromRevisionMutation = (): [
