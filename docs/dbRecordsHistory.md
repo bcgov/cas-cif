@@ -60,6 +60,15 @@ Now that the `form_change` is committed, it cannot be modified (triggers are ens
   operation: 'update',
   change_status: 'committed',
   form_data_table_name: 'contact',
-  form_data_record_id: 42
+  form_data_record_id: 42,
+  previous_form_change_id: 123
 }
 ```
+
+The `previous_form_change_id`, automatically created via a trigger when a `form_change` is inserted, can be used to easily retrieve the previous versions of a record.
+
+### Archiving records
+
+If a `form_change` with `operation: 'archive'` is committed, the corresponding records will be archived, i.e. its `archived_at` and `archived_by` properties will be set.
+
+Archived records are automatically filtered out by default by our GraphQL API, thanks to the [`pg-omit-archive`](https://github.com/graphile-contrib/pg-omit-archived) PostGraphile plugin.
