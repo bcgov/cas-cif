@@ -1,7 +1,6 @@
 import Alert from "@button-inc/bcgov-theme/Alert";
-interface Props {
-  error: string;
-}
+import { ErrorContext } from "contexts/ErrorContext";
+import { useContext } from "react";
 
 const GlobalAlert = (props: Props) => {
   return (

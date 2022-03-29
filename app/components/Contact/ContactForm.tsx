@@ -1,6 +1,5 @@
 import { Button } from "@button-inc/bcgov-theme";
 import FormBase from "components/Form/FormBase";
-import { ErrorDisplayer } from "components/Layout/ErrorDisplayer";
 import contactSchema from "data/jsonSchemaForm/contactSchema";
 import { JSONSchema7 } from "json-schema";
 import { FormPageFactoryComponentProps } from "lib/pages/relayFormPageFactory";
@@ -23,7 +22,6 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
       <Button type="button" variant="secondary" onClick={props.onDiscard}>
         Discard Changes
       </Button>
-      <ErrorDisplayer />
     </FormBase>
   );
 };
