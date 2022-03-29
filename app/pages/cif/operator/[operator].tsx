@@ -17,6 +17,7 @@ const pageQuery = graphql`
     }
     operator(id: $operator) {
       id
+      bcRegistryId
       rowId
       legalName
       tradeName
@@ -86,6 +87,9 @@ export function OperatorViewPage({
 
         <dt>CIF Operator Code</dt>
         <dd>{operator.operatorCode}</dd>
+
+        <dt>BC Registery ID</dt>
+        <dd>{operator.bcRegistryId}</dd>
 
         <dt>Imported from SWRS</dt>
         <dd>{operator.swrsOrganisationId ? "Yes" : "No"}</dd>
