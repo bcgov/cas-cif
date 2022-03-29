@@ -88,7 +88,7 @@ export function OperatorViewPage({
         <dt>CIF Operator Code</dt>
         <dd>{operator.operatorCode}</dd>
 
-        <dt>BC Registery ID</dt>
+        <dt>BC Registry ID</dt>
         <dd>{operator.bcRegistryId}</dd>
 
         <dt>Imported from SWRS</dt>
