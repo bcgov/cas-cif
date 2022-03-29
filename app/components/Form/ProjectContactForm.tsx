@@ -173,6 +173,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             ...formChange,
             newFormData,
             changeStatus: formChange.changeStatus,
+            // explicitely ignore the field below
+            projectRevisionByProjectRevisionId: undefined,
           },
         },
       },
@@ -210,13 +212,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 },
               },
             },
-            optimisticResponse: {
-              updateFormChange: {
-                formChange: {
-                  changeStatus: "staged",
-                },
-              },
-            },
             debounceKey: node.id,
             onCompleted: () => {
               resolve();
@@ -226,12 +221,14 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         completedPromises.push(promise);
       }
     });
+    try {
+      await Promise.all(completedPromises);
 
-    await Promise.all(completedPromises);
-
-    props.onSubmit();
+      props.onSubmit();
+    } catch (e) {
+      // the failing mutation will display an error message and send the error to sentry
+    }
   };
-
   return (
     <div>
       <header>

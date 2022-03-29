@@ -1,4 +1,5 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, within, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import {
@@ -12,8 +13,6 @@ import compiledProjectContactFormQuery, {
 } from "__generated__/ProjectContactFormQuery.graphql";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import userEvent from "@testing-library/user-event";
-
-jest.mock("lib/helpers/validateFormWithErrors");
 
 const loadedQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
@@ -41,6 +40,7 @@ const TestRenderer = () => {
       {...props}
       query={data.query}
       projectRevision={data.query.projectRevision}
+      onSubmit={jest.fn()}
     />
   );
 };
@@ -133,20 +133,23 @@ const getMockQueryPayload = () => ({
   },
 });
 
+const loadTestQuery = (mockResolver = getMockQueryPayload()) => {
+  environment.mock.queueOperationResolver((operation) =>
+    MockPayloadGenerator.generate(operation, mockResolver)
+  );
+
+  environment.mock.queuePendingOperation(compiledProjectContactFormQuery, {});
+};
+
 describe("The ProjectContactForm", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
 
     environment = createMockEnvironment();
-
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, getMockQueryPayload())
-    );
-
-    environment.mock.queuePendingOperation(compiledProjectContactFormQuery, {});
   });
 
   it("Renders a primary contact and multiple secondary contacts", () => {
+    loadTestQuery();
     renderProjectForm();
 
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
@@ -159,8 +162,8 @@ describe("The ProjectContactForm", () => {
     const mutationSpy = jest.fn();
     jest
       .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
-
+      .mockImplementation(() => [mutationSpy, false]);
+    loadTestQuery();
     renderProjectForm();
     const addButton = screen.getByText("Add");
     addButton.click();
@@ -197,9 +200,9 @@ describe("The ProjectContactForm", () => {
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
-
+      .mockImplementation(() => [mutationSpy, false]);
+    loadTestQuery();
     renderProjectForm();
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
@@ -238,11 +241,12 @@ describe("The ProjectContactForm", () => {
     const mutationSpy = jest.fn();
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
+      .mockImplementation(() => [mutationSpy, false]);
 
     jest
       .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [jest.fn(), jest.fn()]);
+      .mockImplementation(() => [jest.fn(), false]);
+    loadTestQuery();
 
     renderProjectForm();
     const clearButton = screen.getAllByText("Clear")[0];
@@ -316,5 +320,93 @@ describe("The ProjectContactForm", () => {
 
     // Once per form
     expect(mocked(validateFormWithErrors)).toHaveBeenCalledTimes(3);
+  });
+
+  it("stages the form changes when the `submit` button is clicked", () => {
+    loadTestQuery();
+    renderProjectForm();
+    screen.getByText(/submit/i).click();
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: { changeStatus: "staged" },
+    });
+  });
+
+  it("reverts the form_change status to 'pending' when editing", async () => {
+    const mockResolver = {
+      ...getMockQueryPayload(),
+      ProjectRevision() {
+        const result: ProjectContactForm_projectRevision = {
+          " $fragmentType": "ProjectContactForm_projectRevision",
+          id: "Test Project Revision ID",
+          rowId: 1234,
+          projectContactFormChanges: {
+            __id: "connection Id",
+            edges: [
+              {
+                node: {
+                  id: "Form ID 1",
+                  operation: "CREATE",
+                  changeStatus: "staged",
+                  updatedAt: "2020-01-01T00:00:00.000Z",
+                  newFormData: {
+                    projectId: 10,
+                    contactId: 2,
+                    contactIndex: 1,
+                  },
+                },
+              },
+              {
+                node: {
+                  id: "Form ID 2",
+                  operation: "CREATE",
+                  changeStatus: "staged",
+                  updatedAt: "2020-01-01T00:00:00.000Z",
+                  newFormData: {
+                    projectId: 10,
+                    contactId: 3,
+                    contactIndex: 2,
+                  },
+                },
+              },
+              {
+                node: {
+                  id: "Form ID 3",
+                  operation: "CREATE",
+                  changeStatus: "staged",
+                  updatedAt: "2020-01-01T00:00:00.000Z",
+                  newFormData: {
+                    projectId: 10,
+                    contactId: 1,
+                    contactIndex: 5,
+                  },
+                },
+              },
+            ],
+          },
+        };
+        return result;
+      },
+    };
+    loadTestQuery(mockResolver);
+    renderProjectForm();
+
+    await act(async () => {
+      userEvent.click(screen.getByLabelText(/primary contact/i));
+      await waitFor(() => screen.getByRole("presentation"));
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText("Mister Test")
+      );
+    });
+
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: { contactIndex: 1, projectId: 10, contactId: 1 },
+      },
+    });
   });
 });

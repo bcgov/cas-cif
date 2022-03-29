@@ -1,4 +1,12 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  within,
+  act,
+  waitFor,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import {
@@ -8,10 +16,8 @@ import {
 } from "react-relay";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import compiledProjectManagerFormQuery, {
-  ProjectManagerFormQuery,
-} from "__generated__/ProjectManagerFormQuery.graphql";
-
-jest.mock("lib/helpers/validateFormWithErrors");
+  ProjectManagerFormGroupQuery,
+} from "__generated__/ProjectManagerFormGroupQuery.graphql";
 
 const loadedQuery = graphql`
   query ProjectManagerFormGroupQuery($projectRevision: ID!)
@@ -32,7 +38,7 @@ const props: ValidatingFormProps = {
 
 let environment;
 const TestRenderer = () => {
-  const data = useLazyLoadQuery<ProjectManagerFormQuery>(loadedQuery, {
+  const data = useLazyLoadQuery<ProjectManagerFormGroupQuery>(loadedQuery, {
     projectRevision: "test-project-revision",
   });
   return (
@@ -80,6 +86,7 @@ const getMockQueryPayload = () => ({
                 formChange: {
                   id: "Change 2 ID",
                   operation: "CREATE",
+                  changeStatus: "pending",
                   newFormData: {
                     cifUserId: 2,
                     projectId: 1,
@@ -98,6 +105,7 @@ const getMockQueryPayload = () => ({
                 formChange: {
                   id: "Change 3 ID",
                   operation: "UPDATE",
+                  changeStatus: "pending",
                   newFormData: {
                     cifUserId: 2,
                     projectId: 1,
@@ -134,25 +142,29 @@ const getMockQueryPayload = () => ({
   },
 });
 
+const loadTestQuery = (mockResolver = getMockQueryPayload()) => {
+  environment.mock.queueOperationResolver((operation) =>
+    MockPayloadGenerator.generate(operation, mockResolver)
+  );
+
+  environment.mock.queuePendingOperation(compiledProjectManagerFormQuery, {});
+};
+
 describe("The ProjectManagerForm", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
 
     environment = createMockEnvironment();
-
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, getMockQueryPayload())
-    );
-
-    environment.mock.queuePendingOperation(compiledProjectManagerFormQuery, {});
   });
 
   it("Renders a form for each Project Manager Label", () => {
+    loadTestQuery();
     renderProjectForm();
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
   });
 
   it("Renders any data contained in a formChange", () => {
+    loadTestQuery();
     renderProjectForm();
     expect(
       screen.getAllByPlaceholderText("Select a Project Manager")[1]
@@ -160,6 +172,7 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
+    loadTestQuery();
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
@@ -178,7 +191,8 @@ describe("The ProjectManagerForm", () => {
     const mutationSpy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
+      .mockImplementation(() => [mutationSpy, false]);
+    loadTestQuery();
 
     renderProjectForm();
 
@@ -222,6 +236,7 @@ describe("The ProjectManagerForm", () => {
     jest
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
+    loadTestQuery();
 
     renderProjectForm();
     const clearButton = screen.getAllByText("Clear")[1];
@@ -246,7 +261,7 @@ describe("The ProjectManagerForm", () => {
     jest
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
-
+    loadTestQuery();
     renderProjectForm();
     const clearButton = screen.getAllByText("Clear")[2];
     clearButton.click();
@@ -270,6 +285,120 @@ describe("The ProjectManagerForm", () => {
             operation: "ARCHIVE",
           },
         },
+      },
+    });
+  });
+
+  it("stages the form changes when the `submit` button is clicked", () => {
+    loadTestQuery();
+    renderProjectForm();
+    screen.getByText(/submit/i).click();
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: { changeStatus: "staged" },
+    });
+  });
+
+  it("reverts the form_change status to 'pending' when editing", async () => {
+    loadTestQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "Test Revision ID",
+            rowId: 1,
+            managerFormChanges: {
+              edges: [
+                {
+                  node: {
+                    projectManagerLabel: {
+                      id: "Test Label 1 ID",
+                      rowId: 1,
+                      label: "Test Label 1",
+                    },
+                    formChange: null,
+                  },
+                },
+                {
+                  node: {
+                    projectManagerLabel: {
+                      id: "Test Label 2 ID",
+                      rowId: 2,
+                      label: "Test Label 2",
+                    },
+                    formChange: {
+                      id: "Change 2 ID",
+                      operation: "CREATE",
+                      changeStatus: "staged",
+                      newFormData: {
+                        cifUserId: 2,
+                        projectId: 1,
+                        projectManagerLabelId: 2,
+                      },
+                    },
+                  },
+                },
+                {
+                  node: {
+                    projectManagerLabel: {
+                      id: "Test Label 3 ID",
+                      rowId: 3,
+                      label: "Test Label 3",
+                    },
+                    formChange: {
+                      id: "Change 3 ID",
+                      operation: "UPDATE",
+                      changeStatus: "staged",
+                      newFormData: {
+                        cifUserId: 2,
+                        projectId: 1,
+                        projectManagerLabelId: 3,
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+            projectFormChange: {
+              formDataRecordId: 1,
+            },
+          },
+          allCifUsers: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  firstName: "Test First Name 1",
+                  lastName: "Test Last Name 1",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  firstName: "Test First Name 2",
+                  lastName: "Test Last Name 2",
+                },
+              },
+            ],
+          },
+        };
+      },
+    });
+    renderProjectForm();
+    await act(async () => {
+      userEvent.click(screen.getByLabelText(/test label 3/i));
+      await waitFor(() => screen.getByRole("presentation"));
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText(/Test First Name 1/i)
+      );
+    });
+
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: { cifUserId: 1, projectId: 1, projectManagerLabelId: 3 },
       },
     });
   });

@@ -136,6 +136,8 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
             id: formChangeId,
             changeStatus: "pending",
             newFormData,
+            operation: undefined,
+            projectRevisionByProjectRevisionId: undefined,
           },
         },
       },
@@ -165,13 +167,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
                 },
               },
             },
-            optimisticResponse: {
-              updateFormChange: {
-                formChange: {
-                  changeStatus: "staged",
-                },
-              },
-            },
             debounceKey: node.formChange.id,
             onCompleted: () => resolve(),
             onError: reject,
@@ -181,9 +176,13 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
       }
     });
 
-    await Promise.all(completedPromises);
+    try {
+      await Promise.all(completedPromises);
 
-    props.onSubmit();
+      props.onSubmit();
+    } catch (e) {
+      // the failing mutation will display an error message and send the error to sentry
+    }
   };
 
   const lastEditedDate = useMemo(() => {
