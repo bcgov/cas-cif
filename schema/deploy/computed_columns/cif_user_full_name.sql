@@ -3,7 +3,7 @@
 
 BEGIN;
 
-create or function cif.cif_user_full_name(u cif.cif_user)
+create or replace function cif.cif_user_full_name(u cif.cif_user)
 returns varchar(1000)
 as
 $computed_column$
@@ -14,7 +14,7 @@ $computed_column$
       then ', '
       else null
     end),
-    contact.given_name);
+    u.given_name);
 $computed_column$ language sql immutable;
 
 grant execute on function cif.cif_user_full_name to cif_internal, cif_admin;
