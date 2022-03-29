@@ -12,13 +12,13 @@ import ProjecManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectForm from "components/Form/ProjectForm";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-import { useMutation } from "react-relay";
 import { getProjectsPageRoute } from "pageRoutes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { ISupportExternalValidation } from "components/Form/Interfaces/FormValidationTypes";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 import { mutation as updateProjectFormChangeMutation } from "mutations/FormChange/updateProjectFormChange";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -56,9 +56,11 @@ export function ProjectRevision({
       () => "An error occurred when updating the form."
     );
 
-  const [updateProjectRevision, updatingProjectRevision] = useMutation(
-    updateProjectRevisionMutation
-  );
+  const [updateProjectRevision, updatingProjectRevision] =
+    useMutationWithErrorMessage(
+      updateProjectRevisionMutation,
+      () => "An error occured"
+    );
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
 

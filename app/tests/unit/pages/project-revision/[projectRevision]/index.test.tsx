@@ -109,7 +109,7 @@ describe("The Create Project page", () => {
   it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
     const spy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [spy, false]);
 
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
@@ -134,6 +134,25 @@ describe("The Create Project page", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when the Submit Button is clicked & input values are valid", () => {
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
+
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    userEvent.click(screen.queryByText("Submit"));
+
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
+  });
+
   it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
     mocked(ProjectForm).mockImplementation((props) => {
       props.setValidatingForm({
@@ -150,7 +169,7 @@ describe("The Create Project page", () => {
 
     const spy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [spy, false]);
 
     loadProjectRevisionQuery();
@@ -184,7 +203,7 @@ describe("The Create Project page", () => {
   it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
     const useMutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [useMutationSpy, false]);
 
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
@@ -208,6 +227,25 @@ describe("The Create Project page", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Discard Changes button", () => {
+    //Error discarding the project Error:
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
+
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+    userEvent.click(screen.queryByText("Discard Changes"));
+
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
+  });
+
   it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {
     const mockProjectForm: any = { props: {} };
     mocked(ProjectForm).mockImplementation((props) => {
@@ -216,7 +254,7 @@ describe("The Create Project page", () => {
     });
 
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), true]);
 
     loadProjectRevisionQuery();
