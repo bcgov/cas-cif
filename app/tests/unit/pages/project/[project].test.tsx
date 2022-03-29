@@ -227,7 +227,7 @@ describe("ProjectViewPage", () => {
     expect(errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
-        "An error occcured while attempting to edit the project."
+        "An error occurred while attempting to edit the project."
       )
     ).toBeVisible();
   });

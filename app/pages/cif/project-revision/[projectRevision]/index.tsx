@@ -53,7 +53,7 @@ export function ProjectRevision({
   const [updateProjectFormChange, updatingProjectFormChange] =
     useDebouncedMutation(
       updateProjectFormChangeMutation,
-      () => "An error occured."
+      () => "An error occured when updating the form."
     );
 
   const [updateProjectRevision, updatingProjectRevision] = useMutation(

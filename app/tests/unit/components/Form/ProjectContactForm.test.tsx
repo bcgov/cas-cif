@@ -185,7 +185,9 @@ describe("The ProjectContactForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe(
+      "An error occurred while attempting to add a contact."
+    );
   });
 
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
@@ -223,7 +225,9 @@ describe("The ProjectContactForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe(
+      "An error occurred while attempting to add a contact."
+    );
   });
 
   it("Clears the primary contact field when the Clear button is pressed", () => {
@@ -284,7 +288,9 @@ describe("The ProjectContactForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe(
+      "An error occurred while attempting to add a contact."
+    );
   });
 
   it("Validates all contact forms when validator is called", () => {

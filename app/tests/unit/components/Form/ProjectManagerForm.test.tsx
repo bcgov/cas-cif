@@ -161,7 +161,6 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
-    // Warning: Invalid value for prop `disabled` on <button> tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior
     const mutationSpy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
@@ -223,7 +222,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe("An error occured when updating the form.");
   });
 
   it("Calls the update mutation when change is made in the Manager dropdown", () => {
@@ -285,7 +284,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe("An error occured when updating the form.");
   });
 
   it("Deletes the formChange record when the remove button is clicked and the formChange operation is 'CREATE'", () => {
@@ -328,7 +327,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe("An error occured when updating the form.");
   });
 
   it("Updates the formChange record with operation = 'ARCHIVE' when the remove button is clicked and the formChange operation is 'UPDATE'", () => {
@@ -383,7 +382,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe("An error occured when updating the form.");
   });
 
   it("Validates all Manager forms when validator is called", () => {

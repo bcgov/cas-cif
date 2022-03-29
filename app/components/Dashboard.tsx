@@ -40,7 +40,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
 
   const [createProject, isProjectCreating] = useMutationWithErrorMessage(
     createProjectMutation,
-    () => "An error occured"
+    () => "An error occured when creating a project."
   );
 
   const handleProjectCreation = useCallback(() => {

@@ -52,7 +52,7 @@ const updateFormChangeMutation = async (
 const useUpdateFormChange = () => {
   return useDebouncedMutation<updateFormChangeMutationType>(
     mutation,
-    () => "An error occured"
+    () => "An error occured when updating the form."
   );
 };
 
