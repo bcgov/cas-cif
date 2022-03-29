@@ -377,10 +377,10 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
-"@bcgov-cas/sso-express@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-express/-/sso-express-3.0.0.tgz#bf78edf954b354136089d0f66762fb5534713a64"
-  integrity sha512-nPiX+wOpkKH7+ETAjKuwTCkXWKhiy+VMyqZcUARxS1TnjU2d+G09z4HbnAkkWhSIJNJ0pTcUx/Rzh1U22S+zmA==
+"@bcgov-cas/sso-express@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-express/-/sso-express-3.1.0.tgz#ea0d56316d2d665bc63a89c06518e4c0468b4c1d"
+  integrity sha512-R/vVaBvz7d5iujAfTJhnQrXxAauMfpHnT7GHVdU3DUztRw1RYYIFG4rWeMosnS/zOwtuigsJeVaCQPpyBKL+pw==
 
 "@bcgov-cas/sso-react@^1.0.1":
   version "1.0.1"
@@ -7048,8 +7048,8 @@ minimatch@^3.0.4:
 
 minimist@^1.2.0, minimist@^1.2.5:
   version "1.2.6"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
 mkdirp@^0.5.5:
   version "0.5.5"

@@ -1,8 +1,8 @@
 import { getUserGroupLandingRoute } from "../../lib/userGroups";
 import { getUserGroups } from "../helpers/userGroupAuthentication";
-import ssoExpress from "@bcgov-cas/sso-express";
 import { ENABLE_MOCK_AUTH, AS_CIF_ADMIN, AS_CIF_INTERNAL } from "../args";
 import createUserMiddleware from "./createUser";
+import ssoExpress from "@bcgov-cas/sso-express";
 
 const mockLogin = AS_CIF_ADMIN || AS_CIF_INTERNAL;
 const mockSessionTimeout = mockLogin || ENABLE_MOCK_AUTH;
@@ -23,6 +23,16 @@ export default async function middleware() {
       const groups = getUserGroups(req);
 
       return getUserGroupLandingRoute(groups);
+    },
+    getRedirectUri: (defaultRedirectUri, req) => {
+      const redirectUri = new URL(defaultRedirectUri);
+      if (req.query.redirectTo)
+        redirectUri.searchParams.append(
+          "redirectTo",
+          req.query.redirectTo.toString()
+        );
+
+      return redirectUri;
     },
     bypassAuthentication: {
       login: mockLogin,
