@@ -1,4 +1,5 @@
-import { useMutation, graphql, Disposable, Environment } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { graphql, Disposable, Environment } from "react-relay";
 import { MutationConfig } from "relay-runtime";
 import { createNewOperatorFormChangeMutation } from "__generated__/createNewOperatorFormChangeMutation.graphql";
 
@@ -25,8 +26,9 @@ export const useCreateNewOperatorFormChange = (
     config: MutationConfig<createNewOperatorFormChangeMutation>
   ) => Disposable
 ) => {
-  return useMutation<createNewOperatorFormChangeMutation>(
+  return useMutationWithErrorMessage<createNewOperatorFormChangeMutation>(
     mutation,
+    () => "An error occured",
     commitMutationFn
   );
 };

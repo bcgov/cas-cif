@@ -3,7 +3,7 @@ import {
   MockPayloadGenerator,
   RelayMockEnvironment,
 } from "relay-test-utils";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import compiledOperatorViewQuery, {
   OperatorViewQuery,
@@ -13,6 +13,7 @@ import { OperatorViewPage } from "pages/cif/operator/[operator]";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("next/router");
 let environment: RelayMockEnvironment;
@@ -109,6 +110,38 @@ describe("OperatorViewPage", () => {
     renderOperatorPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the edit button and there's a mutation error", () => {
+    loadOperatorQuery({
+      Operator() {
+        return {
+          id: "mock-cif-operator-id",
+          rowId: 43,
+          legalName: "Operator Legal Name",
+          tradeName: "Operator Trade Name",
+          swrsLegalName: "SWRS Legal Name",
+          swrsTradeName: "SWRS Trade Name",
+          operatorCode: "ABCZ",
+          swrsOrganisationId: "12345",
+          pendingFormChange: null,
+        };
+      },
+    });
+    renderOperatorPage();
+
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+    userEvent.click(screen.getByText(/Edit/i));
+
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occured");
   });
 
   it("renders null if the operator doesn't exist", () => {
