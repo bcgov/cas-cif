@@ -154,7 +154,7 @@ describe("The ProjectContactForm", () => {
   it("Calls the addContactToRevision mutation when the Add button is clicked", () => {
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     renderProjectForm();
@@ -191,7 +191,7 @@ describe("The ProjectContactForm", () => {
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     renderProjectForm();
@@ -233,7 +233,7 @@ describe("The ProjectContactForm", () => {
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), jest.fn()]);
 
     renderProjectForm();
@@ -290,7 +290,7 @@ describe("The ProjectContactForm", () => {
   it("Validates all contact forms when validator is called", () => {
     mocked(validateFormWithErrors).mockImplementation(() => []);
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), jest.fn()]);
 
     renderProjectForm();
