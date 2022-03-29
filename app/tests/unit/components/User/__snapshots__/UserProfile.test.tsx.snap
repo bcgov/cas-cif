@@ -8,7 +8,7 @@ exports[`The UserProfile component matches the snapshot 1`] = `
     <div
       class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
     >
-      , 
+      Full Name
     </div>
     <div
       class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"

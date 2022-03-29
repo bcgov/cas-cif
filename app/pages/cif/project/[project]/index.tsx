@@ -143,7 +143,7 @@ export function ProjectViewPage({
         <dt>Project Status</dt>
         <dd>{project.projectStatusByProjectStatusId.name}</dd>
 
-        <dt>Project Manager 123</dt>
+        <dt>Project Manager</dt>
         {project.projectManagersByProjectId.edges.length > 0 ? (
           <>
             {project.projectManagersByProjectId.edges.map((manager) => (

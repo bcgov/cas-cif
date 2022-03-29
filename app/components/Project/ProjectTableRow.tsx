@@ -36,8 +36,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
             node {
               cifUserByCifUserId {
                 id
-                givenName
-                familyName
+                fullName
               }
             }
           }
@@ -65,8 +64,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         {projectManagersByProjectId.edges.map((manager, index) => {
           return (
             <span key={manager.node.cifUserByCifUserId.id}>
-              {index ? "," : ""} {manager.node.cifUserByCifUserId.familyName}{" "}
-              {manager.node.cifUserByCifUserId.givenName}
+              {index ? "," : ""} {manager.node.cifUserByCifUserId.fullName}
             </span>
           );
         })}

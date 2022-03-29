@@ -11,8 +11,7 @@ describe("The UserProfile component", () => {
   it("matches the snapshot", () => {
     const userData: UserProfile_user = {
       emailAddress: "a@a.a",
-      firstName: "a",
-      lastName: "a",
+      fullName: "Full Name",
       " $refType": "UserProfile_user",
     };
 
