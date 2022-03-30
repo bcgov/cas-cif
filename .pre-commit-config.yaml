@@ -9,6 +9,7 @@ repos:
         name: Prettier
         language: script
         entry: ./.bin/pre-commit-format.sh
+        stages: [commit]
   - repo: local
     hooks:
       - id: eslint
@@ -38,3 +39,9 @@ repos:
     rev: v0.17.0
     hooks:
       - id: gitlint
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v1.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [] # optional: list of Conventional Commits types to allow
