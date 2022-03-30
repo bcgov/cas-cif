@@ -86,6 +86,13 @@ jobs:
           key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v2
       - run: pre-commit run --all-files
 
+  gitlint:
+    runs-on: ubuntu-latest
+    name: GitLint
+    steps:
+      - name: Lint commits, branches, and pull requests
+        uses: aschbacd/gitlint-action@v1.0.2
+
   docker-build:
     runs-on: ubuntu-latest
     strategy:
