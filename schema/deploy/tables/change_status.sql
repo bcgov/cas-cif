@@ -34,6 +34,7 @@ comment on column cif.change_status.active is 'Whether that status is active';
 insert into cif.change_status (status, triggers_commit, active)
 values
   ('pending', false, true),
+  ('staged', false, true),
   ('committed', true, true);
 
 commit;

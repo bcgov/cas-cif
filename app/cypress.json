@@ -8,5 +8,7 @@
     "runMode": 3,
     "openMode": 0
   },
-  "fixturesFolder": "../schema/data"
+  "fixturesFolder": "../schema/data",
+  "viewportWidth": 1366,
+  "viewportHeight": 768
 }

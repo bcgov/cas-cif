@@ -41,6 +41,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
         uiSchema={uiSchema}
       />
       <Autocomplete
+        disableClearable
         id={id}
         options={schema.anyOf}
         defaultValue={getSelected()}

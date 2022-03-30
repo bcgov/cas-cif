@@ -1,9 +1,4 @@
-import { Environment } from "react-relay";
-import type {
-  updateFormChangeMutationVariables,
-  updateFormChangeMutation as updateFormChangeMutationType,
-} from "updateFormChangeMutation.graphql";
-import BaseMutation from "mutations/BaseMutation";
+import { updateFormChangeMutation } from "updateFormChangeMutation.graphql";
 import { graphql } from "react-relay";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 
@@ -14,47 +9,17 @@ const mutation = graphql`
         id
         newFormData
         operation
-        projectRevisionByProjectRevisionId {
-          ...ProjectContactForm_projectRevision
-          ...ProjectManagerFormGroup_revision
-        }
+        changeStatus
       }
     }
   }
 `;
 
-const updateFormChangeMutation = async (
-  environment: Environment,
-  variables: updateFormChangeMutationVariables
-) => {
-  const optimisticResponse = {
-    updateFormChange: {
-      formChange: {
-        id: variables.input.id,
-        newFormData: {
-          ...variables.input.formChangePatch.newFormData,
-        },
-      },
-    },
-  };
-
-  const m = new BaseMutation<updateFormChangeMutationType>(
-    "update-form-change-mutation"
-  );
-  return m.performMutation(
-    environment,
-    mutation,
-    variables,
-    optimisticResponse
-  );
-};
-
 const useUpdateFormChange = () => {
-  return useDebouncedMutation<updateFormChangeMutationType>(
+  return useDebouncedMutation<updateFormChangeMutation>(
     mutation,
     () => "An error occurred when updating the form."
   );
 };
 
-export default updateFormChangeMutation;
 export { mutation, useUpdateFormChange };

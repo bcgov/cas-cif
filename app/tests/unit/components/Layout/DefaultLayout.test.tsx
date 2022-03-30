@@ -12,7 +12,7 @@ jest.mock("next/router");
 mocked(useRouter).mockReturnValue({ query: {} } as any);
 
 let environment;
-const TestRenderer = () => {
+const TestRenderer = (props) => {
   const data = useLazyLoadQuery<DefaultLayoutTestQuery>(
     graphql`
       query DefaultLayoutTestQuery @relay_test_operation {
@@ -25,7 +25,7 @@ const TestRenderer = () => {
     `,
     {}
   );
-  return <DefaultLayout session={data.query.session} />;
+  return <DefaultLayout session={data.query.session} {...props} />;
 };
 
 const resolveQuery = (mockResolvers) => {
@@ -35,10 +35,10 @@ const resolveQuery = (mockResolvers) => {
   environment.mock.queuePendingOperation(compiledDefaultLayoutTestQuery, {});
 };
 
-const renderDefaultLayout = () => {
+const renderDefaultLayout = (props?) => {
   return render(
     <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer />
+      <TestRenderer {...props} />
     </RelayEnvironmentProvider>
   );
 };
@@ -94,5 +94,23 @@ describe("The DefaultLayout component", () => {
       "href",
       "/cif"
     );
+  });
+
+  it("should render the `leftSideNav` prop into a `nav` element", () => {
+    resolveQuery({
+      Query() {
+        return { session: null };
+      },
+    });
+    const leftSideNav = (
+      <div>
+        <h2>left side nav</h2>
+      </div>
+    );
+    renderDefaultLayout({ leftSideNav });
+    expect(screen.getByText("left side nav")).toBeVisible();
+    expect(
+      screen.getByRole("navigation", { name: "side navigation" })
+    ).toBeVisible();
   });
 });

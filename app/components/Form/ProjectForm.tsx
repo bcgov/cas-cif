@@ -2,26 +2,25 @@ import type { JSONSchema7 } from "json-schema";
 import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
-import { ValidatingFormProps } from "./Interfaces/FormValidationTypes";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
-import { FormValidation } from "@rjsf/core";
-import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
-import { Disposable, MutationParameters } from "relay-runtime";
-interface Props extends ValidatingFormProps {
+import { FormValidation, ISubmitEvent } from "@rjsf/core";
+import { useUpdateProjectFormChange } from "mutations/FormChange/updateProjectFormChange";
+import { Button } from "@button-inc/bcgov-theme";
+import SavingIndicator from "./SavingIndicator";
+
+interface Props {
   query: ProjectForm_query$key;
   projectRevision: ProjectForm_projectRevision$key;
-  updateProjectFormChange: (
-    config: UseDebouncedMutationConfig<MutationParameters>
-  ) => Disposable;
+  onSubmit: () => void;
 }
 
 const ProjectForm: React.FC<Props> = (props) => {
-  const formRef = useRef();
+  const [updateProjectFormChange, updatingProjectFormChange] =
+    useUpdateProjectFormChange();
 
   const revision = useFragment(
     graphql`
@@ -29,6 +28,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         projectFormChange {
           id
           newFormData
+          updatedAt
           isUniqueValue(columnName: "proposalReference")
         }
       }
@@ -66,13 +66,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   }, [query, revision.projectFormChange.newFormData.operatorId]);
 
-  props.setValidatingForm({
-    selfValidate: () => {
-      const formObject = formRef.current;
-      return validateFormWithErrors(formObject);
-    },
-  });
-
   const uniqueProposalReferenceValidation = (
     formData: any,
     errors: FormValidation
@@ -86,31 +79,39 @@ const ProjectForm: React.FC<Props> = (props) => {
     return errors;
   };
 
-  const handleChange = (changeData: any) => {
+  const handleChange = (
+    changeData: any,
+    changeStatus: "pending" | "staged"
+  ) => {
     const updatedFormData = {
       ...revision.projectFormChange.newFormData,
       ...changeData,
     };
-    return props.updateProjectFormChange({
-      variables: {
-        input: {
-          id: revision.projectFormChange.id,
-          formChangePatch: {
-            newFormData: updatedFormData,
-          },
-        },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
+    return new Promise((resolve, reject) =>
+      updateProjectFormChange({
+        variables: {
+          input: {
             id: revision.projectFormChange.id,
-            newFormData: updatedFormData,
-            isUniqueValue: revision.projectFormChange.isUniqueValue,
+            formChangePatch: {
+              newFormData: updatedFormData,
+              changeStatus,
+            },
           },
         },
-      },
-      debounceKey: revision.projectFormChange.id,
-    });
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: revision.projectFormChange.id,
+              newFormData: updatedFormData,
+              isUniqueValue: revision.projectFormChange.isUniqueValue,
+            },
+          },
+        },
+        onCompleted: resolve,
+        onError: reject,
+        debounceKey: revision.projectFormChange.id,
+      })
+    );
   };
 
   const schema: JSONSchema7 = useMemo(() => {
@@ -190,25 +191,48 @@ const ProjectForm: React.FC<Props> = (props) => {
     };
   }, [selectedOperator]);
 
+  const lastEditedDate = useMemo(
+    () => new Date(revision.projectFormChange.updatedAt),
+    [revision.projectFormChange.updatedAt]
+  );
+
+  const handleSubmit = async (e: ISubmitEvent<any>) => {
+    await handleChange(e.formData, "staged");
+    props.onSubmit();
+  };
+
   return (
-    <FormBase
-      {...props}
-      ref={(el) => (formRef.current = el)}
-      schema={schema}
-      uiSchema={uiSchema}
-      validate={uniqueProposalReferenceValidation}
-      formData={revision.projectFormChange.newFormData}
-      formContext={{
-        query,
-        form: revision.projectFormChange.newFormData,
-        operatorCode: selectedOperator?.node?.operatorCode,
-      }}
-      widgets={{
-        SelectRfpWidget: SelectRfpWidget,
-        SelectProjectStatusWidget: SelectProjectStatusWidget,
-      }}
-      onChange={(change) => handleChange(change.formData)}
-    />
+    <>
+      <header>
+        <h2>Project Overview</h2>
+        <SavingIndicator
+          isSaved={!updatingProjectFormChange}
+          lastEdited={lastEditedDate}
+        />
+      </header>
+      <FormBase
+        {...props}
+        schema={schema}
+        uiSchema={uiSchema}
+        validate={uniqueProposalReferenceValidation}
+        formData={revision.projectFormChange.newFormData}
+        formContext={{
+          query,
+          form: revision.projectFormChange.newFormData,
+          operatorCode: selectedOperator?.node?.operatorCode,
+        }}
+        widgets={{
+          SelectRfpWidget: SelectRfpWidget,
+          SelectProjectStatusWidget: SelectProjectStatusWidget,
+        }}
+        onChange={(change) => handleChange(change.formData, "pending")}
+        onSubmit={handleSubmit}
+      >
+        <Button type="submit" style={{ marginRight: "1rem" }}>
+          Submit Project Overview
+        </Button>
+      </FormBase>
+    </>
   );
 };
 

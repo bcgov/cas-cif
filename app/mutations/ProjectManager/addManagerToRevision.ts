@@ -1,4 +1,5 @@
-import { useMutation, graphql, Disposable, Environment } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { graphql, Disposable, Environment } from "react-relay";
 import { MutationConfig } from "relay-runtime";
 import { addManagerToRevisionMutation } from "__generated__/addManagerToRevisionMutation.graphql";
 
@@ -33,7 +34,11 @@ export const useAddManagerToRevisionMutation = (
     config: MutationConfig<addManagerToRevisionMutation>
   ) => Disposable
 ) => {
-  return useMutation<addManagerToRevisionMutation>(mutation, commitMutationFn);
+  return useMutationWithErrorMessage<addManagerToRevisionMutation>(
+    mutation,
+    () => "An error occurred while adding a manager to the project.",
+    commitMutationFn
+  );
 };
 
 export default useAddManagerToRevisionMutation;

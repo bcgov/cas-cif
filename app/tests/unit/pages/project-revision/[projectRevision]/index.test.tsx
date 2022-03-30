@@ -13,17 +13,11 @@ import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
   ProjectRevisionQuery$variables,
 } from "__generated__/ProjectRevisionQuery.graphql";
-import ProjectForm from "components/Form/ProjectForm";
-import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
-import ProjectContactForm from "components/Form/ProjectContactForm";
 import { mocked } from "jest-mock";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 
 jest.mock("next/router");
-jest.mock("components/Form/ProjectForm");
-jest.mock("components/Form/ProjectManagerFormGroup");
-jest.mock("components/Form/ProjectContactForm");
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -81,92 +75,11 @@ const renderProjectRevisionPage = () =>
 describe("The Create Project page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
-    mocked(ProjectForm).mockReset();
-    mocked(ProjectManagerFormGroup).mockReset();
-    mocked(ProjectContactForm).mockReset();
 
-    mocked(ProjectForm).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
-      return null;
-    });
-    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
-      return null;
-    });
-    mocked(ProjectContactForm).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
-      return null;
-    });
     jest.restoreAllMocks();
   });
 
-  it("calls the updateProjectRevision mutation when the Submit Button is clicked & input values are valid", async () => {
-    const spy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [spy, false]);
-
-    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
-      return { push: jest.fn() };
-    });
-
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
-
-    userEvent.click(screen.queryByText("Submit"));
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith({
-      onCompleted: expect.any(Function),
-      updater: expect.any(Function),
-      variables: {
-        input: {
-          id: "mock-proj-rev-id",
-          projectRevisionPatch: { changeStatus: "committed" },
-        },
-      },
-    });
-  });
-
-  it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
-    mocked(ProjectForm).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => [{ error: "error!" }]),
-      });
-      return null;
-    });
-    mocked(ProjectManagerFormGroup).mockImplementation((props) => {
-      props.setValidatingForm({
-        selfValidate: jest.fn().mockImplementation(() => []),
-      });
-      return null;
-    });
-
-    const spy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [spy, false]);
-
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
-    userEvent.click(screen.queryByText("Submit"));
-
-    expect(spy).toHaveBeenCalledTimes(0);
-  });
-
   it("Renders an enabled submit and discard changes button", async () => {
-    const mockProjectForm: any = { props: {} };
-    mocked(ProjectForm).mockImplementation((props) => {
-      mockProjectForm.props = props;
-      return null;
-    });
-
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
       .mockImplementation(() => [jest.fn(), false]);
@@ -209,12 +122,6 @@ describe("The Create Project page", () => {
   });
 
   it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {
-    const mockProjectForm: any = { props: {} };
-    mocked(ProjectForm).mockImplementation((props) => {
-      mockProjectForm.props = props;
-      return null;
-    });
-
     jest
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [jest.fn(), true]);
