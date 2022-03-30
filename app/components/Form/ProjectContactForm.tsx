@@ -202,7 +202,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
     projectContactFormChanges.edges.forEach(({ node }) => {
       if (node.changeStatus === "pending") {
-        const promise = new Promise<void>((resolve) => {
+        const promise = new Promise<void>((resolve, reject) => {
           applyUpdateFormChangeMutation({
             variables: {
               input: {
@@ -216,6 +216,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             onCompleted: () => {
               resolve();
             },
+            onError: reject,
           });
         });
         completedPromises.push(promise);
