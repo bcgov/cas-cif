@@ -110,6 +110,8 @@ spec:
             value: {{ include "cas-cif.namespaceSuffix" . }}
           - name: SENTRY_RELEASE
             value: {{ .Values.image.app.tag }}
+          - name: SHOW_KC_LOGIN
+            value: {{ .Values.app.showKCLogin | quote }}
           - name: NAMESPACE
             valueFrom:
               fieldRef:
