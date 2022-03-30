@@ -137,15 +137,13 @@ const getMockQueryPayload = () => ({
           {
             node: {
               rowId: 1,
-              firstName: "Test First Name 1",
-              lastName: "Test Last Name 1",
+              fullName: "Test full name 1",
             },
           },
           {
             node: {
               rowId: 2,
-              firstName: "Test First Name 2",
-              lastName: "Test Last Name 2",
+              fullName: "Test full name 2",
             },
           },
         ],
@@ -180,7 +178,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
     expect(
       screen.getAllByPlaceholderText("Select a Project Manager")[1]
-    ).toHaveValue("Test First Name 2 Test Last Name 2");
+    ).toHaveValue("Test full name 2");
   });
 
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
@@ -188,7 +186,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
 
     expect(
       environment.mock.getMostRecentOperation().request.variables
@@ -204,7 +202,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
 
     expect(environment.mock.getMostRecentOperation().request).toMatchObject({
       variables: {
@@ -357,15 +355,13 @@ describe("The ProjectManagerForm", () => {
               {
                 node: {
                   rowId: 1,
-                  firstName: "Test First Name 1",
-                  lastName: "Test Last Name 1",
+                  fullName: "Test full name 1",
                 },
               },
               {
                 node: {
                   rowId: 2,
-                  firstName: "Test First Name 2",
-                  lastName: "Test Last Name 2",
+                  fullName: "Test full name 2",
                 },
               },
             ],
@@ -378,7 +374,7 @@ describe("The ProjectManagerForm", () => {
       userEvent.click(screen.getByLabelText(/test label 3/i));
       await waitFor(() => screen.getByRole("presentation"));
       userEvent.click(
-        within(screen.getByRole("presentation")).getByText(/Test First Name 1/i)
+        within(screen.getByRole("presentation")).getByText(/Test full name 1/i)
       );
     });
 
@@ -400,7 +396,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
@@ -417,7 +413,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
