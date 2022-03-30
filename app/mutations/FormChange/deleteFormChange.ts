@@ -25,13 +25,13 @@ export const mutation = graphql`
 export const useDeleteFormChange = () => {
   return useMutationWithErrorMessage<deleteFormChangeMutation>(
     mutation,
-    () => "An error occured when deleting."
+    () => "An error occurred when deleting."
   );
 };
 
 export const useDeleteFormChangeWithConnection = () => {
   return useMutationWithErrorMessage<deleteFormChangeWithConnectionMutation>(
     mutationWithConnection,
-    () => "An error occured when deleting."
+    () => "An error occurred when deleting."
   );
 };

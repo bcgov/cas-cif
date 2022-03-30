@@ -45,7 +45,7 @@ describe("the useDebouncedMutation hook", () => {
       const [mutation] = useState(initialMutation);
       const [commitFn, isMutationInFlight] = useDebouncedMutation(
         mutation,
-        () => "An error occured when making a change."
+        () => "An error occurred when making a change."
       );
       commit = (config) =>
         ReactTestRenderer.act(() => {

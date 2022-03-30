@@ -129,7 +129,9 @@ describe("The Dashboard", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured when creating a project.");
+    expect(getErrorMessage()).toBe(
+      "An error occurred when creating a project."
+    );
   });
 
   it("The resume project link to be displayed when a pending new project exists", () => {

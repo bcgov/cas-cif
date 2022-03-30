@@ -29,7 +29,7 @@ export const useCreateEditContactFormChange = (
 ) => {
   return useMutationWithErrorMessage<createEditContactFormChangeMutation>(
     mutation,
-    () => "An error occured when editing a contact.",
+    () => "An error occurred when editing a contact.",
     commitMutationFn
   );
 };
