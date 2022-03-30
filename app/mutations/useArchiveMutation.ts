@@ -42,7 +42,7 @@ export default function useArchiveMutation<
 ] {
   const [updateMutation, isInFlight] = useMutationWithErrorMessage(
     mutation,
-    () => "An error occured"
+    () => "An error occurred"
   );
 
   const archiveMutation = (

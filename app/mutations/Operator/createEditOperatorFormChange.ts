@@ -29,7 +29,7 @@ export const useCreateEditOperatorFormChange = (
 ) => {
   return useMutationWithErrorMessage<createEditOperatorFormChangeMutation>(
     mutation,
-    () => "An error occured",
+    () => "An error occurred when editing an operator.",
     commitMutationFn
   );
 };

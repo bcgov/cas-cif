@@ -150,7 +150,9 @@ describe("The Create Project page", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe(
+      "An error occurred when updating the project."
+    );
   });
 
   it("doesn't call the updateProjectRevision mutation when the Submit button is clicked & input values are invalid", async () => {
@@ -243,7 +245,9 @@ describe("The Create Project page", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe(
+      "An error occurred when updating the project."
+    );
   });
 
   it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {

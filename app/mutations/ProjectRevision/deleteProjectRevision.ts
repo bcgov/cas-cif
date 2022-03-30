@@ -10,5 +10,8 @@ export const mutation = graphql`
 `;
 
 export const useDeleteProjectRevisionMutation = () => {
-  return useMutationWithErrorMessage(mutation, () => "An error occured");
+  return useMutationWithErrorMessage(
+    mutation,
+    () => "An error occurred when deleting a revision."
+  );
 };

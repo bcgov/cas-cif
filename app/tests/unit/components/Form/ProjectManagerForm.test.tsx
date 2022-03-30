@@ -222,7 +222,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+    expect(getErrorMessage()).toBe("An error occurred when editing a manager.");
   });
 
   it("Calls the update mutation when change is made in the Manager dropdown", () => {
@@ -284,7 +284,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+    expect(getErrorMessage()).toBe("An error occurred when editing a manager.");
   });
 
   it("Deletes the formChange record when the remove button is clicked and the formChange operation is 'CREATE'", () => {
@@ -327,7 +327,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+    expect(getErrorMessage()).toBe("An error occurred when editing a manager.");
   });
 
   it("Updates the formChange record with operation = 'ARCHIVE' when the remove button is clicked and the formChange operation is 'UPDATE'", () => {
@@ -382,7 +382,7 @@ describe("The ProjectManagerForm", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+    expect(getErrorMessage()).toBe("An error occurred when editing a manager.");
   });
 
   it("Validates all Manager forms when validator is called", () => {

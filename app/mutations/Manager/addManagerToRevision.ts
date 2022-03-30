@@ -36,7 +36,7 @@ export const useAddManagerToRevisionMutation = (
 ) => {
   return useMutationWithErrorMessage<addManagerToRevisionMutation>(
     mutation,
-    () => "An error occured",
+    () => "An error occurred when editing a manager.",
     commitMutationFn
   );
 };

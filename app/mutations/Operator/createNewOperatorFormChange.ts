@@ -28,7 +28,7 @@ export const useCreateNewOperatorFormChange = (
 ) => {
   return useMutationWithErrorMessage<createNewOperatorFormChangeMutation>(
     mutation,
-    () => "An error occured",
+    () => "An error occurred when creating an operator.",
     commitMutationFn
   );
 };

@@ -141,7 +141,9 @@ describe("OperatorViewPage", () => {
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe("An error occured");
+    expect(getErrorMessage()).toBe(
+      "An error occurred when editing an operator."
+    );
   });
 
   it("renders null if the operator doesn't exist", () => {

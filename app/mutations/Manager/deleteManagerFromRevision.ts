@@ -100,7 +100,11 @@ const useDeleteMutation = (
   return useMutationWithErrorMessage<
     | deleteManagerFromRevisionMutation
     | deleteManagerFromRevisionWithArchiveMutation
-  >(deleteMutation, () => "An error occured", commitMutationFn);
+  >(
+    deleteMutation,
+    () => "An error occurred when removing a manager.",
+    commitMutationFn
+  );
 };
 
 const useArchiveMutation = (
@@ -115,7 +119,11 @@ const useArchiveMutation = (
   return useMutationWithErrorMessage<
     | deleteManagerFromRevisionMutation
     | deleteManagerFromRevisionWithArchiveMutation
-  >(archiveMutation, () => "An error occured", commitMutationFn);
+  >(
+    archiveMutation,
+    () => "An error occurred when deleting a manager.",
+    commitMutationFn
+  );
 };
 
 export const useDeleteManagerFromRevisionMutation = (): [
