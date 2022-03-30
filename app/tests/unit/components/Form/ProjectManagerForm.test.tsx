@@ -214,7 +214,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
@@ -276,7 +276,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
