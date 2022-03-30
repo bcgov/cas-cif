@@ -48,8 +48,7 @@ export const pageQuery = graphql`
         edges {
           node {
             cifUserByCifUserId {
-              firstName
-              lastName
+              fullName
               id
             }
           }
@@ -149,8 +148,7 @@ export function ProjectViewPage({
           <>
             {project.projectManagersByProjectId.edges.map((manager) => (
               <dd key={manager.node.cifUserByCifUserId.id}>
-                {manager.node.cifUserByCifUserId.firstName}{" "}
-                {manager.node.cifUserByCifUserId.lastName}
+                {manager.node.cifUserByCifUserId.fullName}
               </dd>
             ))}
           </>

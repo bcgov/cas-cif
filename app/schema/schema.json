@@ -1090,13 +1090,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -1109,18 +1121,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -1222,13 +1222,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -1241,18 +1253,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -1354,13 +1354,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -1373,18 +1385,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5460,13 +5460,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5479,18 +5491,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5592,13 +5592,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5611,18 +5623,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5724,13 +5724,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -5743,18 +5755,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -18323,8 +18323,8 @@
               "deprecationReason": null
             },
             {
-              "name": "firstName",
-              "description": "User's first name",
+              "name": "familyName",
+              "description": "User's last name",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -18750,6 +18750,18 @@
                   "name": "FormChangesConnection",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "fullName",
+              "description": "Displays a cif_user as: family_name, given_name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -20825,6 +20837,18 @@
               "deprecationReason": null
             },
             {
+              "name": "givenName",
+              "description": "User's first name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "id",
               "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
               "args": [],
@@ -20836,18 +20860,6 @@
                   "name": "ID",
                   "ofType": null
                 }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "lastName",
-              "description": "User's last name",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -47840,8 +47852,8 @@
               "defaultValue": null
             },
             {
-              "name": "firstName",
-              "description": "Checks for equality with the object’s `firstName` field.",
+              "name": "familyName",
+              "description": "Checks for equality with the object’s `familyName` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -47850,8 +47862,8 @@
               "defaultValue": null
             },
             {
-              "name": "lastName",
-              "description": "Checks for equality with the object’s `lastName` field.",
+              "name": "givenName",
+              "description": "Checks for equality with the object’s `givenName` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -48990,8 +49002,8 @@
               "defaultValue": null
             },
             {
-              "name": "firstName",
-              "description": "Filter by the object’s `firstName` field.",
+              "name": "familyName",
+              "description": "Filter by the object’s `familyName` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
@@ -49035,6 +49047,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "fullName",
+              "description": "Filter by the object’s `fullName` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -49220,6 +49242,16 @@
               "defaultValue": null
             },
             {
+              "name": "givenName",
+              "description": "Filter by the object’s `givenName` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "keycloakJwtsBySub",
               "description": "Filter by the object’s `keycloakJwtsBySub` relation.",
               "type": {
@@ -49235,16 +49267,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "lastName",
-              "description": "Filter by the object’s `lastName` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -52386,8 +52408,8 @@
               "defaultValue": null
             },
             {
-              "name": "firstName",
-              "description": "User's first name",
+              "name": "familyName",
+              "description": "User's last name",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -52396,8 +52418,8 @@
               "defaultValue": null
             },
             {
-              "name": "lastName",
-              "description": "User's last name",
+              "name": "givenName",
+              "description": "User's first name",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -53212,8 +53234,8 @@
               "defaultValue": null
             },
             {
-              "name": "firstName",
-              "description": "User's first name",
+              "name": "familyName",
+              "description": "User's last name",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -53222,8 +53244,8 @@
               "defaultValue": null
             },
             {
-              "name": "lastName",
-              "description": "User's last name",
+              "name": "givenName",
+              "description": "User's first name",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -59182,13 +59204,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59201,18 +59235,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59314,13 +59336,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59333,18 +59367,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59446,13 +59468,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59465,18 +59499,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59590,13 +59612,13 @@
               "deprecationReason": null
             },
             {
-              "name": "FIRST_NAME_ASC",
+              "name": "FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "FIRST_NAME_DESC",
+              "name": "FAMILY_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -59734,6 +59756,18 @@
               "deprecationReason": null
             },
             {
+              "name": "GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GIVEN_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "ID_ASC",
               "description": null,
               "isDeprecated": false,
@@ -59753,18 +59787,6 @@
             },
             {
               "name": "KEYCLOAK_JWTS_BY_SUB__COUNT_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -62590,13 +62612,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -62609,18 +62643,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -62722,13 +62744,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -62741,18 +62775,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -62854,13 +62876,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -62873,18 +62907,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -71065,13 +71087,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -71084,18 +71118,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -71197,13 +71219,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -71216,18 +71250,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -78728,13 +78750,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -78747,18 +78781,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -78860,13 +78882,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -78879,18 +78913,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -78992,13 +79014,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79011,18 +79045,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79681,13 +79703,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79700,18 +79734,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79813,13 +79835,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79832,18 +79866,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79945,13 +79967,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -79964,18 +79998,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -80509,13 +80531,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -80528,18 +80562,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -80641,13 +80663,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -80660,18 +80694,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -80773,13 +80795,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -80792,18 +80826,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -86795,13 +86817,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -86814,18 +86848,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -86927,13 +86949,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -86946,18 +86980,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -87059,13 +87081,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -87078,18 +87112,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -93140,13 +93162,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -93159,18 +93193,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -93272,13 +93294,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -93291,18 +93325,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -93404,13 +93426,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -93423,18 +93457,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -97805,13 +97827,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -97824,18 +97858,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -97937,13 +97959,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -97956,18 +97990,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98069,13 +98091,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98088,18 +98122,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98561,13 +98583,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98580,18 +98614,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98693,13 +98715,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CIF_USER_ID__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CIF_USER_ID__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CIF_USER_ID__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CIF_USER_ID__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CIF_USER_ID__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CIF_USER_ID__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98712,18 +98746,6 @@
             },
             {
               "name": "CIF_USER_BY_CIF_USER_ID__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CIF_USER_ID__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CIF_USER_ID__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98825,13 +98847,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98844,18 +98878,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98957,13 +98979,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -98976,18 +99010,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -102173,13 +102195,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -102192,18 +102226,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -102305,13 +102327,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -102324,18 +102358,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107071,13 +107093,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107090,18 +107124,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107203,13 +107225,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107222,18 +107256,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107335,13 +107357,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107354,18 +107388,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107873,13 +107895,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_ARCHIVED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -107892,18 +107926,6 @@
             },
             {
               "name": "CIF_USER_BY_ARCHIVED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_ARCHIVED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -108005,13 +108027,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_CREATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -108024,18 +108058,6 @@
             },
             {
               "name": "CIF_USER_BY_CREATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_CREATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -108137,13 +108159,25 @@
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_ASC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "CIF_USER_BY_UPDATED_BY__FIRST_NAME_DESC",
+              "name": "CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -108156,18 +108190,6 @@
             },
             {
               "name": "CIF_USER_BY_UPDATED_BY__ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "CIF_USER_BY_UPDATED_BY__LAST_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null

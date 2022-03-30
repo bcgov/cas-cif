@@ -9,7 +9,7 @@ truncate table cif.cif_user restart identity cascade;
 truncate table cif.project restart identity cascade;
 truncate table cif.funding_stream_rfp restart identity cascade;
 
-insert into cif.cif_user (uuid, first_name, last_name, email_address)
+insert into cif.cif_user (uuid, given_name, family_name, email_address)
 values
   ('00000000-0000-0000-0000-000000000000', 'user 1', 'Testuser', 'cif_internal@somemail.com'),
   ('00000000-0000-0000-0000-000000000001', 'user 2', 'Testuser', 'cif_external@somemail.com'),

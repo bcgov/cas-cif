@@ -26,7 +26,13 @@ const TestRenderer = () => {
   const data = useLazyLoadQuery<ProjectTableRowQuery>(loadedQuery, {
     project: "test-project",
   });
-  return <ProjectTableRow project={data.query.project} />;
+  return (
+    <table>
+      <tbody>
+        <ProjectTableRow project={data.query.project} />
+      </tbody>
+    </table>
+  );
 };
 const renderProjectForm = () => {
   return render(
@@ -63,8 +69,7 @@ const getMockQueryPayload = () => ({
             {
               node: {
                 cifUserByCifUserId: {
-                  firstName: "Manager first name 1",
-                  lastName: "Manager last name 1",
+                  fullName: "Manager full name 1",
                   id: "1",
                 },
               },
@@ -72,8 +77,7 @@ const getMockQueryPayload = () => ({
             {
               node: {
                 cifUserByCifUserId: {
-                  firstName: "Manager first name 2",
-                  lastName: "Manager last name 2",
+                  fullName: "Manager full name 2",
                   id: "2",
                 },
               },
@@ -106,9 +110,7 @@ describe("The ProjectTableRow", () => {
     expect(screen.getByText(/1.00/i)).toBeInTheDocument();
     expect(screen.getByText(/Operator 1 trade name/i)).toBeInTheDocument();
     expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager first name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager last name 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager first name 2/i)).toBeInTheDocument();
-    expect(screen.getByText(/Manager last name 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Manager full name 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Manager full name 2/i)).toBeInTheDocument();
   });
 });

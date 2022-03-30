@@ -16,7 +16,7 @@ select cif.create_user_from_session();
 
 select results_eq (
   $$
-    select first_name, last_name, email_address, uuid
+    select given_name, family_name, email_address, uuid
     from cif.cif_user
     where uuid = '11111111-1111-1111-1111-111111111111'::uuid
   $$,

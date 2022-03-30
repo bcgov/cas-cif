@@ -8,7 +8,7 @@ cif.project_manager, cif.project_revision,
 cif.operator, cif.contact, cif.form_change
 restart identity;
 
-insert into cif.cif_user(id, uuid, first_name, last_name)
+insert into cif.cif_user(id, uuid, given_name, family_name)
 overriding system value
 values (1, '11111111-1111-1111-1111-111111111111'::uuid, 'test', 'testerson');
 

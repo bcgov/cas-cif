@@ -5,8 +5,8 @@ create table cif.cif_user
 (
   id integer primary key generated always as identity,
   uuid uuid not null,
-  first_name varchar(1000),
-  last_name varchar(1000),
+  given_name varchar(1000),
+  family_name varchar(1000),
   email_address varchar(1000)
 );
 
@@ -23,19 +23,19 @@ begin
 perform cif_private.grant_permissions('select', 'cif_user', 'cif_internal');
 perform cif_private.grant_permissions('insert', 'cif_user', 'cif_internal');
 perform cif_private.grant_permissions('update', 'cif_user', 'cif_internal',
-  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
+  ARRAY['given_name', 'family_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
 
 -- Grant cif_external permissions
 perform cif_private.grant_permissions('select', 'cif_user', 'cif_external');
 perform cif_private.grant_permissions('insert', 'cif_user', 'cif_external');
 perform cif_private.grant_permissions('update', 'cif_user', 'cif_external',
-  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
+  ARRAY['given_name', 'family_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
 
 -- Grant cif_admin permissions
 perform cif_private.grant_permissions('select', 'cif_user', 'cif_admin');
 perform cif_private.grant_permissions('insert', 'cif_user', 'cif_admin');
 perform cif_private.grant_permissions('update', 'cif_user', 'cif_admin',
-  ARRAY['first_name', 'last_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
+  ARRAY['given_name', 'family_name', 'email_address', 'created_at', 'created_by', 'updated_at', 'updated_by', 'archived_at', 'archived_by']);
 
 
 -- Grant cif_guest permissions
@@ -77,8 +77,8 @@ $policy$;
 comment on table cif.cif_user is 'Table containing information about the application''s users ';
 comment on column cif.cif_user.id is 'Unique ID for the user';
 comment on column cif.cif_user.uuid is 'Universally Unique ID for the user, defined by the single sign-on provider';
-comment on column cif.cif_user.first_name is 'User''s first name';
-comment on column cif.cif_user.last_name is 'User''s last name';
+comment on column cif.cif_user.given_name is 'User''s first name';
+comment on column cif.cif_user.family_name is 'User''s last name';
 comment on column cif.cif_user.email_address is 'User''s email address';
 
 commit;

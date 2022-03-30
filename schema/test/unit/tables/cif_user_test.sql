@@ -3,8 +3,8 @@ select plan(34);
 
 select has_table('cif', 'cif_user', 'table cif.cif_user exists');
 select has_column('cif', 'cif_user', 'id', 'table cif.cif_user has id column');
-select has_column('cif', 'cif_user', 'first_name', 'table cif.cif_user has first_name column');
-select has_column('cif', 'cif_user', 'last_name', 'table cif.cif_user has last_name column');
+select has_column('cif', 'cif_user', 'given_name', 'table cif.cif_user has given_name column');
+select has_column('cif', 'cif_user', 'family_name', 'table cif.cif_user has family_name column');
 select has_column('cif', 'cif_user', 'email_address', 'table cif.cif_user has email_address column');
 select has_column('cif', 'cif_user', 'uuid', 'table cif.cif_user has uuid column');
 select has_column('cif', 'cif_user', 'created_at', 'table cif.cif_user has created_at column');
@@ -16,7 +16,7 @@ select has_column('cif', 'cif_user', 'archived_by', 'table cif.cif_user has arch
 
 
 insert into cif.cif_user
-  (first_name, last_name, email_address, uuid) values
+  (given_name, family_name, email_address, uuid) values
   ('foo1', 'bar', 'foo1@bar.com', '11111111-1111-1111-1111-111111111112'),
   ('foo2', 'bar', 'foo2@bar.com', '11111111-1111-1111-1111-111111111113'),
   ('foo3', 'bar', 'foo3@bar.com', '11111111-1111-1111-1111-111111111114');
@@ -39,21 +39,21 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.cif_user (uuid, first_name, last_name) values ('11111111-1111-1111-1111-111111111111'::uuid, 'test', 'testerson');
+    insert into cif.cif_user (uuid, given_name, family_name) values ('11111111-1111-1111-1111-111111111111'::uuid, 'test', 'testerson');
   $$,
     'cif_admin can insert data in cif_user table'
 );
 
 select lives_ok(
   $$
-    update cif.cif_user set first_name = 'changed by admin' where uuid='11111111-1111-1111-1111-111111111111'::uuid;
+    update cif.cif_user set given_name = 'changed by admin' where uuid='11111111-1111-1111-1111-111111111111'::uuid;
   $$,
     'cif_admin can change data in cif_user table'
 );
 
 select results_eq(
   $$
-    select count(uuid) from cif.cif_user where first_name = 'changed by admin'
+    select count(uuid) from cif.cif_user where given_name = 'changed by admin'
   $$,
     ARRAY[1::bigint],
     'Data was changed by cif_admin'
@@ -90,14 +90,14 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.cif_user set first_name = 'doood' where uuid=(select sub from cif.session())
+    update cif.cif_user set given_name = 'doood' where uuid=(select sub from cif.session())
   $$,
     'cif_internal can update data if their uuid matches the uuid of the row'
 );
 
 select results_eq(
   $$
-    select first_name from cif.cif_user where uuid=(select sub from cif.session())
+    select given_name from cif.cif_user where uuid=(select sub from cif.session())
   $$,
   ARRAY['doood'::varchar(1000)],
     'Data was changed by cif_internal'
@@ -120,11 +120,11 @@ select throws_like(
 );
 
 -- Try to update user data where uuid does not match
-update cif.cif_user set first_name = 'buddy' where uuid!=(select sub from cif.session());
+update cif.cif_user set given_name = 'buddy' where uuid!=(select sub from cif.session());
 
 select is_empty(
   $$
-    select * from cif.cif_user where first_name='buddy'
+    select * from cif.cif_user where given_name='buddy'
   $$,
     'cif_internal cannot update data if their uuid does not match the uuid of the row'
 );
@@ -143,14 +143,14 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.cif_user set first_name = 'doood' where uuid=(select sub from cif.session())
+    update cif.cif_user set given_name = 'doood' where uuid=(select sub from cif.session())
   $$,
     'cif_external can update data if their uuid matches the uuid of the row'
 );
 
 select results_eq(
   $$
-    select first_name from cif.cif_user where uuid=(select sub from cif.session())
+    select given_name from cif.cif_user where uuid=(select sub from cif.session())
   $$,
   ARRAY['doood'::varchar(1000)],
     'Data was changed by cif_external'
@@ -173,11 +173,11 @@ select throws_like(
 );
 
 -- Try to update user data where uuid does not match
-update cif.cif_user set first_name = 'buddy' where uuid!=(select sub from cif.session());
+update cif.cif_user set given_name = 'buddy' where uuid!=(select sub from cif.session());
 
 select is_empty(
   $$
-    select * from cif.cif_user where first_name='buddy'
+    select * from cif.cif_user where given_name='buddy'
   $$,
     'cif_external cannot update data if their uuid does not match the uuid of the row'
 );
@@ -205,7 +205,7 @@ select throws_like(
 
 select throws_like(
   $$
-    insert into cif.cif_user (uuid, first_name, last_name) values ('21111111-1111-1111-1111-111111111111'::uuid, 'test', 'testerson');
+    insert into cif.cif_user (uuid, given_name, family_name) values ('21111111-1111-1111-1111-111111111111'::uuid, 'test', 'testerson');
   $$,
   'permission denied%',
   'cif_guest cannot insert'

@@ -14,8 +14,7 @@ const UsersQuery = graphql`
         edges {
           node {
             id
-            firstName
-            lastName
+            fullName
           }
         }
       }
@@ -29,9 +28,7 @@ function Users({ preloadedQuery }: RelayProps<{}, usersQuery>) {
     <DefaultLayout session={query.session}>
       <ul>
         {query.allCifUsers.edges.map(({ node }) => (
-          <li key={node.id}>
-            {node.firstName} {node.lastName}
-          </li>
+          <li key={node.id}>{node.fullName}</li>
         ))}
       </ul>
     </DefaultLayout>

@@ -118,15 +118,13 @@ const getMockQueryPayload = () => ({
           {
             node: {
               rowId: 1,
-              firstName: "Test First Name 1",
-              lastName: "Test Last Name 1",
+              fullName: "Test full name 1",
             },
           },
           {
             node: {
               rowId: 2,
-              firstName: "Test First Name 2",
-              lastName: "Test Last Name 2",
+              fullName: "Test full name 2",
             },
           },
         ],
@@ -157,7 +155,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
     expect(
       screen.getAllByPlaceholderText("Select a Project Manager")[1]
-    ).toHaveValue("Test First Name 2 Test Last Name 2");
+    ).toHaveValue("Test full name 2");
   });
 
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
@@ -169,7 +167,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
 
     expect(mutationSpy).toHaveBeenCalledWith({
       optimisticResponse: {
@@ -216,7 +214,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
@@ -235,7 +233,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
 
     expect(mutationSpy).toHaveBeenCalledWith({
       debounceKey: "Change 2 ID",
@@ -278,7 +276,7 @@ describe("The ProjectManagerForm", () => {
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
-    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
