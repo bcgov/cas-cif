@@ -16,7 +16,7 @@ const mutation = graphql`
 `;
 
 const useUpdateFormChange = () => {
-  return useDebouncedMutation<updateFormChangeMutationType>(
+  return useDebouncedMutation<updateFormChangeMutation>(
     mutation,
     () => "An error occurred when updating the form."
   );

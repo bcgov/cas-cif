@@ -9,6 +9,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
+import { ErrorContext } from "contexts/ErrorContext";
 import {
   graphql,
   RelayEnvironmentProvider,
@@ -36,6 +37,15 @@ const props: ValidatingFormProps = {
   setValidatingForm: jest.fn(),
 };
 
+const errorContext = {
+  error: null,
+  setError: jest.fn().mockImplementation((error) =>
+    act(() => {
+      errorContext.error = error;
+    })
+  ),
+};
+
 let environment;
 const TestRenderer = () => {
   const data = useLazyLoadQuery<ProjectManagerFormGroupQuery>(loadedQuery, {
@@ -52,9 +62,11 @@ const TestRenderer = () => {
 };
 const renderProjectForm = () => {
   return render(
-    <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <TestRenderer />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 };
 
@@ -188,32 +200,13 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("Calls the update mutation when change is made in the Manager dropdown", () => {
-    const mutationSpy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [mutationSpy, false]);
     loadTestQuery();
-
     renderProjectForm();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
     fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
 
-    expect(mutationSpy).toHaveBeenCalledWith({
-      debounceKey: "Change 2 ID",
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: "Change 2 ID",
-            changeStatus: "pending",
-            newFormData: {
-              cifUserId: 1,
-              projectId: 1,
-              projectManagerLabelId: 2,
-            },
-          },
-        },
-      },
+    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
       variables: {
         input: {
           formChangePatch: {
@@ -243,10 +236,7 @@ describe("The ProjectManagerForm", () => {
     clearButton.click();
 
     expect(deleteMutationSpy).toHaveBeenCalledWith({
-      onError: expect.any(Function),
-      onCompleted: undefined,
       variables: {
-        connections: undefined,
         input: {
           id: "Change 2 ID",
         },
@@ -267,7 +257,6 @@ describe("The ProjectManagerForm", () => {
     clearButton.click();
 
     expect(deleteMutationSpy).toHaveBeenCalledWith({
-      onError: expect.any(Function),
       variables: {
         input: {
           formChangePatch: {
@@ -401,5 +390,72 @@ describe("The ProjectManagerForm", () => {
         newFormData: { cifUserId: 1, projectId: 1, projectManagerLabelId: 3 },
       },
     });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when a new selection is made in the Manager dropdown", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `addManagerToRevisionMutation`,
+    // Warning: RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.
+    // RelayObservable: Unhandled Error Error: at /home/briannacerkiewicz/cas-cif/app/tests/unit/components/Form/ProjectManagerForm.test.tsx:220:50
+    loadTestQuery();
+    renderProjectForm();
+
+    fireEvent.click(screen.getAllByTitle("Open")[0]);
+    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred while adding a manager to the project."
+    );
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when change is made in the Manager dropdown", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`,
+    //Warning: RelayResponseNormalizer: Payload did not contain a value for field `operation: operation`. Check that you are parsing with the same query that was used to fetch the payload.
+    loadTestQuery();
+    renderProjectForm();
+
+    fireEvent.click(screen.getAllByTitle("Open")[1]);
+    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred when updating the project manager form."
+    );
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked and the formChange operation is 'CREATE'", () => {
+    loadTestQuery();
+    renderProjectForm();
+
+    const clearButton = screen.getAllByText("Clear")[1];
+    clearButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred while removing the manager from the project."
+    );
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message hen the remove button is clicked and the formChange operation is 'UPDATE'", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `deleteManagerFromRevisionWithArchiveMutation`,
+    //Warning: RelayResponseNormalizer: Payload did not contain a value for field `query: query`. Check that you are parsing with the same query that was used to fetch the payload.
+    loadTestQuery();
+    renderProjectForm();
+
+    const clearButton = screen.getAllByText("Clear")[2];
+    clearButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred while removing the manager from the project."
+    );
   });
 });

@@ -66,9 +66,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         id: formChangeId,
         projectRevision: projectRevision.id,
       },
-      onError: (error) => {
-        console.log(error);
-      },
     });
   };
 

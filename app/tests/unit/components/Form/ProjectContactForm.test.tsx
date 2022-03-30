@@ -2,6 +2,7 @@ import { render, screen, act, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
+import { ErrorContext } from "contexts/ErrorContext";
 import {
   graphql,
   RelayEnvironmentProvider,
@@ -12,7 +13,6 @@ import compiledProjectContactFormQuery, {
   ProjectContactFormQuery,
 } from "__generated__/ProjectContactFormQuery.graphql";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
-import userEvent from "@testing-library/user-event";
 
 const loadedQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
@@ -28,6 +28,15 @@ const loadedQuery = graphql`
 
 const props: ValidatingFormProps = {
   setValidatingForm: jest.fn(),
+};
+
+const errorContext = {
+  error: null,
+  setError: jest.fn().mockImplementation((error) =>
+    act(() => {
+      errorContext.error = error;
+    })
+  ),
 };
 
 let environment;
@@ -46,9 +55,11 @@ const TestRenderer = () => {
 };
 const renderProjectForm = () => {
   return render(
-    <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <TestRenderer />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 };
 
@@ -143,8 +154,6 @@ const loadTestQuery = (mockResolver = getMockQueryPayload()) => {
 
 describe("The ProjectContactForm", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
-
     environment = createMockEnvironment();
   });
 
@@ -159,16 +168,13 @@ describe("The ProjectContactForm", () => {
   });
 
   it("Calls the addContactToRevision mutation when the Add button is clicked", () => {
-    const mutationSpy = jest.fn();
-    jest
-      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [mutationSpy, false]);
     loadTestQuery();
     renderProjectForm();
+
     const addButton = screen.getByText("Add");
     addButton.click();
 
-    expect(mutationSpy).toHaveBeenCalledWith({
+    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
       variables: {
         connections: expect.any(Array),
         input: {
@@ -180,79 +186,59 @@ describe("The ProjectContactForm", () => {
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
+    loadTestQuery();
     renderProjectForm();
-    const spy = jest.spyOn(
-      require("app/mutations/useMutationWithErrorMessage"),
-      "default"
-    );
 
     userEvent.click(screen.getByText(/Add/i));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
-    const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe(
-      "An error occurred while attempting to add a contact."
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred while adding the contact to the revision."
     );
   });
 
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
-    const mutationSpy = jest.fn();
-    jest
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
-      .mockImplementation(() => [mutationSpy, false]);
     loadTestQuery();
     renderProjectForm();
+
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
 
-    expect(mutationSpy).toHaveBeenCalledWith({
+    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
       variables: {
         input: {
           id: "Form ID 2",
         },
         connections: expect.any(Array),
       },
-      onCompleted: expect.any(Function),
     });
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked", () => {
+    loadTestQuery();
     renderProjectForm();
-    const spy = jest.spyOn(
-      require("app/mutations/useMutationWithErrorMessage"),
-      "default"
-    );
 
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
-    const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe(
-      "An error occurred while attempting to add a contact."
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred when deleting."
     );
   });
 
   it("Clears the primary contact field when the Clear button is pressed", () => {
-    const mutationSpy = jest.fn();
-    jest
-      .spyOn(require("mutations/useDebouncedMutation"), "default")
-      .mockImplementation(() => [mutationSpy, false]);
-
-    jest
-      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [jest.fn(), false]);
     loadTestQuery();
-
     renderProjectForm();
+
     const clearButton = screen.getAllByText("Clear")[0];
     clearButton.click();
 
-    expect(mutationSpy).toHaveBeenCalledWith({
+    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
       variables: {
         input: {
           id: "Form ID 1",
@@ -265,61 +251,37 @@ describe("The ProjectContactForm", () => {
           },
         },
       },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            __typename: "FormChange",
-            id: "Form ID 1",
-            changeStatus: "pending",
-            updatedAt: "2020-01-01T00:00:00.000Z",
-            newFormData: {
-              contactIndex: 1,
-              projectId: 10,
-            },
-            operation: "CREATE",
-          },
-        },
-      },
-      debounceKey: "Form ID 1",
     });
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the Clear button is pressed", () => {
     //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`
+    loadTestQuery();
     renderProjectForm();
-    const spy = jest.spyOn(
-      require("app/mutations/useMutationWithErrorMessage"),
-      "default"
-    );
 
     const clearButton = screen.getAllByText("Clear")[0];
     clearButton.click();
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
-    const getErrorMessage = spy.mock.calls[0][1] as Function;
 
-    expect(getErrorMessage()).toBe(
-      "An error occurred while attempting to add a contact."
+    expect(errorContext.setError).toBeCalledWith(
+      "An error occurred when updating the project contact form."
     );
   });
 
-  it("Validates all contact forms when validator is called", () => {
-    mocked(validateFormWithErrors).mockImplementation(() => []);
-    jest
-      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [jest.fn(), jest.fn()]);
-
+  it("Validates all contact forms when the submit button is clicked", () => {
+    loadTestQuery();
     renderProjectForm();
 
-    expect(props.setValidatingForm).toHaveBeenCalledWith({
-      selfValidate: expect.any(Function),
-    });
+    const validateFormWithErrors = jest.spyOn(
+      require("lib/helpers/validateFormWithErrors"),
+      "default"
+    );
 
-    mocked(props.setValidatingForm).mock.calls[0][0].selfValidate();
-
+    screen.getByText(/Submit/i).click();
     // Once per form
-    expect(mocked(validateFormWithErrors)).toHaveBeenCalledTimes(3);
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(3);
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {

@@ -21,7 +21,10 @@ const mutation = graphql`
 `;
 
 const useUpdateProjectManagerFormChange = () => {
-  return useDebouncedMutation<updateProjectManagerFormChangeMutation>(mutation);
+  return useDebouncedMutation<updateProjectManagerFormChangeMutation>(
+    mutation,
+    () => "An error occurred when updating the project manager form."
+  );
 };
 
 export { mutation, useUpdateProjectManagerFormChange };

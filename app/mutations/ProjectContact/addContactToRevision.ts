@@ -1,4 +1,5 @@
-import { graphql, useMutation } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { graphql } from "react-relay";
 import { addContactToRevisionMutation } from "__generated__/addContactToRevisionMutation.graphql";
 
 const mutation = graphql`
@@ -19,7 +20,10 @@ const mutation = graphql`
 `;
 
 const useAddContactToRevision = () => {
-  return useMutation<addContactToRevisionMutation>(mutation);
+  return useMutationWithErrorMessage<addContactToRevisionMutation>(
+    mutation,
+    () => "An error occurred while adding the contact to the revision."
+  );
 };
 
 export { mutation, useAddContactToRevision };

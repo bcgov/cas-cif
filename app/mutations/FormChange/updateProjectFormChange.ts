@@ -22,5 +22,8 @@ export const mutation = graphql`
 `;
 
 export const useUpdateProjectFormChange = () => {
-  return useDebouncedMutation<updateProjectFormChangeMutation>(mutation);
+  return useDebouncedMutation<updateProjectFormChangeMutation>(
+    mutation,
+    () => "An error occurred when updating the project overview."
+  );
 };
