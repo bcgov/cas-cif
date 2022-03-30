@@ -1,4 +1,5 @@
-import { graphql, useMutation } from "react-relay";
+import { graphql } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { createProjectRevisionMutation } from "__generated__/createProjectRevisionMutation.graphql";
 
 export const mutation = graphql`
@@ -12,4 +13,7 @@ export const mutation = graphql`
 `;
 
 export const useCreateProjectRevision = () =>
-  useMutation<createProjectRevisionMutation>(mutation);
+  useMutationWithErrorMessage<createProjectRevisionMutation>(
+    mutation,
+    () => "An error occurred while attempting to edit the project."
+  );

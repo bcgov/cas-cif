@@ -4,7 +4,7 @@ import {
   MockPayloadGenerator,
   RelayMockEnvironment,
 } from "relay-test-utils";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import compiledProjectViewQuery, {
   ProjectOverviewQuery,
   ProjectOverviewQuery$variables,
@@ -13,6 +13,8 @@ import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
+import userEvent from "@testing-library/user-event";
+import { ErrorContext } from "contexts/ErrorContext";
 
 jest.mock("next/router");
 let environment: RelayMockEnvironment;
@@ -116,17 +118,118 @@ const loadProjectQuery = (
   );
 };
 
+let errorContext;
 const renderProjectPage = () =>
   render(
-    <RelayEnvironmentProvider environment={environment}>
-      <ProjectViewPage CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectViewPage CSN preloadedQuery={initialQueryRef} />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 
 describe("ProjectViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    errorContext = {
+      error: null,
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          errorContext.error = error;
+        })
+      ),
+    };
     jest.restoreAllMocks();
+  });
+
+  it("displays an error when the Edit button is clicked & createProjectRevisionMutation fails", async () => {
+    loadProjectQuery({
+      Project() {
+        return {
+          rowId: "1",
+          projectName: "Project 1",
+          proposalReference: "00000",
+          totalFundingRequest: "1.00",
+          summary: "Summary 1",
+          operatorByOperatorId: {
+            legalName: "Operator 1 legal name",
+            bcRegistryId: "BC1234567",
+            tradeName: "Operator 1 trade name",
+          },
+          fundingStreamRfpByFundingStreamRfpId: {
+            year: 2022,
+            fundingStreamByFundingStreamId: {
+              description: "Emissions Performance",
+            },
+          },
+          projectStatusByProjectStatusId: {
+            name: "Technical Review",
+          },
+          contactsByProjectContactProjectIdAndContactId: {
+            edges: [
+              {
+                node: {
+                  id: "1",
+                  fullName: "Contact full name 1",
+                  fullPhone: "1234567890",
+                  email: "one@email.com",
+                },
+              },
+              {
+                node: {
+                  id: "2",
+                  fullName: "Contact full name 2",
+                  fullPhone: "2345678901",
+                  email: "two@email.com",
+                },
+              },
+              {
+                node: {
+                  id: "3",
+                  fullName: "Contact full name 3",
+                  fullPhone: "3456789012",
+                  email: "three@email.com",
+                },
+              },
+            ],
+          },
+          projectManagersByProjectId: {
+            edges: [
+              {
+                node: {
+                  cifUserByCifUserId: {
+                    firstName: "Manager first name 1",
+                    lastName: "Manager last name 1",
+                    id: "1",
+                  },
+                },
+              },
+              {
+                node: {
+                  cifUserByCifUserId: {
+                    firstName: "Manager first name 2",
+                    lastName: "Manager last name 2",
+                    id: "2",
+                  },
+                },
+              },
+            ],
+          },
+          pendingProjectRevision: null,
+        };
+      },
+    });
+    renderProjectPage();
+    userEvent.click(screen.getByText(/Edit/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(
+        "An error occurred while attempting to edit the project."
+      )
+    ).toBeVisible();
   });
 
   it("displays the project details", () => {

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import {
@@ -203,7 +203,30 @@ describe("The ProjectManagerForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when a new selection is made in the Manager dropdown", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `addManagerToRevisionMutation`,
+    // Warning: RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.
+    // RelayObservable: Unhandled Error Error: at /home/briannacerkiewicz/cas-cif/app/tests/unit/components/Form/ProjectManagerForm.test.tsx:220:50
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    renderProjectForm();
+
+    fireEvent.click(screen.getAllByTitle("Open")[0]);
+    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+  });
+
   it("Calls the update mutation when change is made in the Manager dropdown", () => {
+    //Warning: Invalid value for prop `disabled` on <button> tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior
     const mutationSpy = jest.fn();
     jest
       .spyOn(require("react-relay"), "useMutation")
@@ -243,6 +266,27 @@ describe("The ProjectManagerForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when change is made in the Manager dropdown", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`,
+    //Warning: RelayResponseNormalizer: Payload did not contain a value for field `operation: operation`. Check that you are parsing with the same query that was used to fetch the payload.
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    renderProjectForm();
+
+    fireEvent.click(screen.getAllByTitle("Open")[1]);
+    fireEvent.click(screen.getByText("Test First Name 1 Test Last Name 1"));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+  });
+
   it("Deletes the formChange record when the remove button is clicked and the formChange operation is 'CREATE'", () => {
     const deleteMutationSpy = jest.fn();
     const inFlight = false;
@@ -265,6 +309,25 @@ describe("The ProjectManagerForm", () => {
         projectRevision: "Test Revision ID",
       },
     });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked and the formChange operation is 'CREATE'", () => {
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    renderProjectForm();
+
+    const clearButton = screen.getAllByText("Clear")[1];
+    clearButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
   });
 
   it("Updates the formChange record with operation = 'ARCHIVE' when the remove button is clicked and the formChange operation is 'UPDATE'", () => {
@@ -301,7 +364,30 @@ describe("The ProjectManagerForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message hen the remove button is clicked and the formChange operation is 'UPDATE'", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `deleteManagerFromRevisionWithArchiveMutation`,
+    //Warning: RelayResponseNormalizer: Payload did not contain a value for field `query: query`. Check that you are parsing with the same query that was used to fetch the payload.
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    renderProjectForm();
+
+    const clearButton = screen.getAllByText("Clear")[2];
+    clearButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe("An error occurred when updating the form.");
+  });
+
   it("Validates all Manager forms when validator is called", () => {
+    //Warning: Invalid value for prop `disabled` on <button> tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior
+
     mocked(validateFormWithErrors).mockImplementation(() => []);
     jest
       .spyOn(require("react-relay"), "useMutation")

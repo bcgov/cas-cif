@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import {
@@ -13,6 +13,7 @@ import compiledProjectContactFormQuery, {
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { mocked } from "jest-mock";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("lib/helpers/validateFormWithErrors");
 
@@ -153,7 +154,7 @@ describe("The ProjectContactForm", () => {
   it("Calls the addContactToRevision mutation when the Add button is clicked", () => {
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     renderProjectForm();
@@ -171,10 +172,28 @@ describe("The ProjectContactForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    userEvent.click(screen.getByText(/Add/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe(
+      "An error occurred while attempting to add a contact."
+    );
+  });
+
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
     const mutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     renderProjectForm();
@@ -192,6 +211,25 @@ describe("The ProjectContactForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked", () => {
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    const removeButton = screen.getAllByText("Remove")[0];
+    removeButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe(
+      "An error occurred while attempting to add a contact."
+    );
+  });
+
   it("Clears the primary contact field when the Clear button is pressed", () => {
     const mutationSpy = jest.fn();
     jest
@@ -199,7 +237,7 @@ describe("The ProjectContactForm", () => {
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), jest.fn()]);
 
     renderProjectForm();
@@ -235,10 +273,30 @@ describe("The ProjectContactForm", () => {
     });
   });
 
+  it("calls useMutationWithErrorMessage and returns expected message when the Clear button is pressed", () => {
+    //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`
+    renderProjectForm();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+
+    const clearButton = screen.getAllByText("Clear")[0];
+    clearButton.click();
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe(
+      "An error occurred while attempting to add a contact."
+    );
+  });
+
   it("Validates all contact forms when validator is called", () => {
     mocked(validateFormWithErrors).mockImplementation(() => []);
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("app/mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), jest.fn()]);
 
     renderProjectForm();

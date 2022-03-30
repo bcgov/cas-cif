@@ -46,6 +46,7 @@ const renderDashboard = () => {
     </RelayEnvironmentProvider>
   );
 };
+
 describe("The Dashboard", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
@@ -101,6 +102,36 @@ describe("The Dashboard", () => {
       pathname: "/cif/project-revision/[projectRevision]/",
       query: { projectRevision: "<ProjectRevision-mock-id-1>" },
     });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the create project button and there's a mutation error", () => {
+    resolveQuery({
+      Query() {
+        return {
+          session: {
+            cifUserBySub: {
+              firstName: "Bob",
+            },
+            userGroups: ["cif_internal"],
+          },
+          pendingNewProjectRevision: null,
+        };
+      },
+    });
+    renderDashboard();
+    const spy = jest.spyOn(
+      require("app/mutations/useMutationWithErrorMessage"),
+      "default"
+    );
+    userEvent.click(screen.getByText(/Create a new Project/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    const getErrorMessage = spy.mock.calls[0][1] as Function;
+
+    expect(getErrorMessage()).toBe(
+      "An error occurred when creating a project."
+    );
   });
 
   it("The resume project link to be displayed when a pending new project exists", () => {

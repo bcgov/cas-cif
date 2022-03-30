@@ -1,7 +1,7 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useMemo, useRef } from "react";
-import { graphql, useFragment, useMutation } from "react-relay";
+import { graphql, useFragment } from "react-relay";
 import { ProjectContactForm_query$key } from "__generated__/ProjectContactForm_query.graphql";
 import FormBase from "./FormBase";
 import Grid from "@button-inc/bcgov-theme/Grid";
@@ -17,6 +17,7 @@ import {
   FormChangeOperation,
 } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 interface Props extends ValidatingFormProps {
   query: ProjectContactForm_query$key;
@@ -92,7 +93,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     return schema as JSONSchema7;
   }, [allContacts]);
 
-  const [addContactMutation] = useMutation(addContactToRevisionMutation);
+  const [addContactMutation] = useMutationWithErrorMessage(
+    addContactToRevisionMutation,
+    () => "An error occurred while attempting to add a contact."
+  );
 
   const addContact = (contactIndex: number) => {
     addContactMutation({

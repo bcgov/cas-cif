@@ -51,7 +51,10 @@ export function ProjectRevision({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   const [updateProjectFormChange, updatingProjectFormChange] =
-    useDebouncedMutation(updateProjectFormChangeMutation);
+    useDebouncedMutation(
+      updateProjectFormChangeMutation,
+      () => "An error occurred when updating the form."
+    );
 
   const [updateProjectRevision, updatingProjectRevision] = useMutation(
     updateProjectRevisionMutation

@@ -1,4 +1,5 @@
-import { useMutation, graphql, Disposable, Environment } from "react-relay";
+import { graphql, Disposable, Environment } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { MutationConfig } from "relay-runtime";
 import { createNewContactFormChangeMutation } from "__generated__/createNewContactFormChangeMutation.graphql";
 
@@ -25,8 +26,9 @@ export const useCreateNewContactFormChange = (
     config: MutationConfig<createNewContactFormChangeMutation>
   ) => Disposable
 ) => {
-  return useMutation<createNewContactFormChangeMutation>(
+  return useMutationWithErrorMessage<createNewContactFormChangeMutation>(
     mutation,
+    () => "An error occurred when editing a contact.",
     commitMutationFn
   );
 };
