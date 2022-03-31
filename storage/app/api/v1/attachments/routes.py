@@ -52,6 +52,17 @@ def download_attachement(
     return controller.download_attachment(attachment.uuid)
 
 
+@router.get("/download/{uuid}")
+def download_attachement(
+  uuid: str,
+  api_key: ApiKey = Depends(get_api_key_authorizer())
+):
+    """
+    Downloads a file attachment
+    """
+    return controller.download_attachment(uuid)
+
+
 @router.post("/zip")
 def download_attachements(
   attachments: Attachments,

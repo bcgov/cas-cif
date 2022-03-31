@@ -8,13 +8,13 @@ const mutation = graphql`
     $input: CreateAttachmentInput!
   ) {
     createAttachment(input: $input) {
-      attachmentEdge @appendEdge(connections: $connections) {
-        cursor
-        node {
-          id
-          file
-          fileName
-        }
+      attachment {
+        file
+        fileName
+        fileSize
+        fileType
+        cifUserId
+        projectId
       }
     }
   }
