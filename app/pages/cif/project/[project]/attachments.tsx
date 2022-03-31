@@ -3,7 +3,7 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery, useRelayEnvironment } from "react-relay";
 import { attachmentsQuery } from "__generated__/attachmentsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import createAttachmentMutation from "mutations/attachment/createAttachment";
+import { useCreateAttachment } from "mutations/attachment/createAttachment";
 import { FilePicker } from "@button-inc/bcgov-theme";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
@@ -36,19 +36,22 @@ function ProjectAttachments({
   );
 
   const environment = useRelayEnvironment();
+  const [createAttachment, isCreatingAttachment] = useCreateAttachment();
 
   const isRedirecting = useRedirectTo404IfFalsy(project);
   if (isRedirecting) return null;
 
   const saveAttachment = async (e) => {
-    const variables = {
-      input: {
-        attachment: { file: e.target.files[0] },
+    createAttachment({
+      variables: {
+        input: {
+          attachment: { file: e.target.files[0] },
+        },
+        connections: [allAttachments.__id],
       },
-      connections: [allAttachments.__id],
-    };
-    await createAttachmentMutation(environment, variables);
+    });
   };
+
   return (
     <DefaultLayout session={session}>
       <h2>{project.projectName}</h2>
