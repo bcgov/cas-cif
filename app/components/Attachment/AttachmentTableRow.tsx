@@ -18,7 +18,7 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
     fileType,
     fileSize,
     createdAt,
-    cifUserByCifUserId: { fullName },
+    cifUserByCreatedBy: { fullName },
     projectStatusByProjectStatusId: { name },
   } = useFragment(
     graphql`
@@ -30,7 +30,7 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
         fileType
         fileSize
         createdAt
-        cifUserByCifUserId {
+        cifUserByCreatedBy {
           fullName
         }
         projectStatusByProjectStatusId {

@@ -44,7 +44,7 @@ function Upload({ preloadedQuery }: RelayProps<{}, uploadAttachmentQuery>) {
           fileName: file.name,
           fileSize: bytesToSize(file.size),
           fileType: file.type,
-          cifUserId: session.cifUserBySub.rowId,
+          createdBy: session.cifUserBySub.rowId,
           projectId: project.rowId,
           projectStatusId: 1, // TODO set proper default
         },

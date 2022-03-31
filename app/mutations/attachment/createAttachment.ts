@@ -13,7 +13,7 @@ const mutation = graphql`
         fileName
         fileSize
         fileType
-        cifUserId
+        createdBy
         projectId
       }
     }
