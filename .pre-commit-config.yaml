@@ -9,6 +9,7 @@ repos:
         name: Prettier
         language: script
         entry: ./.bin/pre-commit-format.sh
+        stages: [commit]
   - repo: local
     hooks:
       - id: eslint
