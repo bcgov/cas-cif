@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import {
   createMockEnvironment,
   MockPayloadGenerator,
@@ -23,7 +23,7 @@ class PageTestingHelper<TQuery extends OperationType> {
   };
 
   constructor(
-    private component: (props: RelayProps<{}, TQuery>) => JSX.Element,
+    private pageComponent: (props: RelayProps<{}, TQuery>) => JSX.Element,
     private defaultQueryResolver: MockResolvers = {},
     private defaultQueryVariables: TQuery["variables"] = {},
     private compiledQuery: ConcreteRequest
@@ -35,18 +35,22 @@ class PageTestingHelper<TQuery extends OperationType> {
     this.environment = createMockEnvironment();
     this.errorContext = {
       error: null,
-      setError: jest.fn(),
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          this.errorContext.error = error;
+        })
+      ),
     };
     this.initialQueryRef = null;
   }
 
   private initialQueryRef: PreloadedQuery<TQuery>;
 
-  public loadQuery() {
+  public loadQuery(queryResolver?: MockResolvers) {
     this.environment.mock.queueOperationResolver((operation) => {
       return MockPayloadGenerator.generate(
         operation,
-        this.defaultQueryResolver
+        queryResolver ?? this.defaultQueryResolver
       );
     });
 
@@ -63,10 +67,10 @@ class PageTestingHelper<TQuery extends OperationType> {
   }
 
   public renderPage() {
-    render(
+    return render(
       <ErrorContext.Provider value={this.errorContext}>
         <RelayEnvironmentProvider environment={this.environment}>
-          <this.component CSN preloadedQuery={this.initialQueryRef} />
+          <this.pageComponent CSN preloadedQuery={this.initialQueryRef} />
         </RelayEnvironmentProvider>
       </ErrorContext.Provider>
     );

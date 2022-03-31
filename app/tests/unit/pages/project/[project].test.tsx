@@ -1,24 +1,14 @@
 import { ProjectViewPage } from "pages/cif/project/[project]/index";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { render, screen, act } from "@testing-library/react";
-import compiledProjectViewQuery, {
+import { screen, act } from "@testing-library/react";
+import compiledProjectOverviewQuery, {
   ProjectOverviewQuery,
-  ProjectOverviewQuery$variables,
 } from "__generated__/ProjectOverviewQuery.graphql";
-import { loadQuery, RelayEnvironmentProvider } from "react-relay";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
 import userEvent from "@testing-library/user-event";
-import { ErrorContext } from "contexts/ErrorContext";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
 
 jest.mock("next/router");
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   Project() {
@@ -46,7 +36,7 @@ const defaultMockResolver = {
         edges: [
           {
             node: {
-              id: "1",
+              id: "contact-1",
               fullName: "Contact full name 1",
               fullPhone: "1234567890",
               email: "one@email.com",
@@ -54,7 +44,7 @@ const defaultMockResolver = {
           },
           {
             node: {
-              id: "2",
+              id: "contact-2",
               fullName: "Contact full name 2",
               fullPhone: "2345678901",
               email: "two@email.com",
@@ -62,7 +52,7 @@ const defaultMockResolver = {
           },
           {
             node: {
-              id: "3",
+              id: "contact-3",
               fullName: "Contact full name 3",
               fullPhone: "3456789012",
               email: "three@email.com",
@@ -76,7 +66,7 @@ const defaultMockResolver = {
             node: {
               cifUserByCifUserId: {
                 fullName: "---- Manager full name 1",
-                id: "4",
+                id: "pm-1",
               },
             },
           },
@@ -84,7 +74,7 @@ const defaultMockResolver = {
             node: {
               cifUserByCifUserId: {
                 fullName: "Manager full name 2",
-                id: "5",
+                id: "pm-2",
               },
             },
           },
@@ -92,57 +82,27 @@ const defaultMockResolver = {
       },
 
       pendingProjectRevision: {
-        id: "1",
+        id: "revision-1",
       },
     };
   },
 };
 
-const loadProjectQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-  const variables: ProjectOverviewQuery$variables = {
-    project: "mock-project-id",
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(compiledProjectViewQuery, variables);
-  initialQueryRef = loadQuery<ProjectOverviewQuery>(
-    environment,
-    compiledProjectViewQuery,
-    variables
-  );
-};
-
-let errorContext;
-const renderProjectPage = () =>
-  render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectViewPage CSN preloadedQuery={initialQueryRef} />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
+const pageTestingHelper = new PageTestingHelper<ProjectOverviewQuery>(
+  ProjectViewPage,
+  defaultMockResolver,
+  { project: "mock-project-id" },
+  compiledProjectOverviewQuery
+);
 
 describe("ProjectViewPage", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
-    errorContext = {
-      error: null,
-      setError: jest.fn().mockImplementation((error) =>
-        act(() => {
-          errorContext.error = error;
-        })
-      ),
-    };
     jest.restoreAllMocks();
+    pageTestingHelper.reinit();
   });
 
   it("displays an error when the Edit button is clicked & createProjectRevisionMutation fails", async () => {
-    loadProjectQuery({
+    pageTestingHelper.loadQuery({
       Project() {
         return {
           rowId: "1",
@@ -168,7 +128,7 @@ describe("ProjectViewPage", () => {
             edges: [
               {
                 node: {
-                  id: "1",
+                  id: "contact-1",
                   fullName: "Contact full name 1",
                   fullPhone: "1234567890",
                   email: "one@email.com",
@@ -176,7 +136,7 @@ describe("ProjectViewPage", () => {
               },
               {
                 node: {
-                  id: "2",
+                  id: "contact-2",
                   fullName: "Contact full name 2",
                   fullPhone: "2345678901",
                   email: "two@email.com",
@@ -184,7 +144,7 @@ describe("ProjectViewPage", () => {
               },
               {
                 node: {
-                  id: "3",
+                  id: "contact-3",
                   fullName: "Contact full name 3",
                   fullPhone: "3456789012",
                   email: "three@email.com",
@@ -199,7 +159,7 @@ describe("ProjectViewPage", () => {
                   cifUserByCifUserId: {
                     firstName: "Manager first name 1",
                     lastName: "Manager last name 1",
-                    id: "1",
+                    id: "pm-1",
                   },
                 },
               },
@@ -208,7 +168,7 @@ describe("ProjectViewPage", () => {
                   cifUserByCifUserId: {
                     firstName: "Manager first name 2",
                     lastName: "Manager last name 2",
-                    id: "2",
+                    id: "pm-2",
                   },
                 },
               },
@@ -218,12 +178,20 @@ describe("ProjectViewPage", () => {
         };
       },
     });
-    renderProjectPage();
+
+    pageTestingHelper.renderPage();
+
+    pageTestingHelper.errorContext.setError.mockImplementation((error) =>
+      act(() => {
+        pageTestingHelper.errorContext.error = error;
+      })
+    );
+
     userEvent.click(screen.getByText(/Edit/i));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
-    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
         "An error occurred while attempting to create the project revision."
@@ -232,8 +200,8 @@ describe("ProjectViewPage", () => {
   });
 
   it("displays the project details", () => {
-    loadProjectQuery();
-    renderProjectPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
     expect(screen.getByText(/00000/i)).toBeInTheDocument();
@@ -259,7 +227,7 @@ describe("ProjectViewPage", () => {
     mocked(useRouter).mockReturnValue({
       replace: jest.fn(),
     } as any);
-    loadProjectQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           project: null,
@@ -267,7 +235,7 @@ describe("ProjectViewPage", () => {
       },
     });
 
-    const { container } = renderProjectPage();
+    const { container } = pageTestingHelper.renderPage();
     expect(container.childElementCount).toEqual(0);
     expect(spy).toHaveBeenCalledWith(null);
   });
