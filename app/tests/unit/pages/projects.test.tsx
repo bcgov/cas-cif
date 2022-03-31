@@ -1,6 +1,6 @@
 import React from "react";
 import { Projects, ProjectsQuery } from "../../../pages/cif/projects";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import {
@@ -17,6 +17,7 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
+import { ErrorContext } from "contexts/ErrorContext";
 jest.mock("next/router");
 
 mocked(useRouter).mockReturnValue({
@@ -68,17 +69,28 @@ const loadProjectsQuery = (
     variables
   );
 };
-
+let errorContext;
 const renderProjects = () =>
   render(
-    <RelayEnvironmentProvider environment={environment}>
-      <Projects CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <Projects CSN preloadedQuery={initialQueryRef} />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 
 describe("The projects page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    errorContext = {
+      error: null,
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          errorContext.error = error;
+        })
+      ),
+    };
+    jest.restoreAllMocks();
   });
 
   it("renders the list of projects", () => {
@@ -118,21 +130,29 @@ describe("The projects page", () => {
   });
 
   it("calls the Add a Project mutation when the Add a Project Button is clicked", () => {
-    const spy = jest
-      .spyOn(require("mutations/Project/createProject"), "default")
-      .mockImplementation(() => {
-        return {
-          createProject: {
-            projectRevision: {
-              id: "someid",
-            },
-          },
-        };
-      });
+    const spy = jest.spyOn(
+      require("mutations/Project/createProject"),
+      "useCreateProjectMutation"
+    );
 
     loadProjectsQuery();
     renderProjects();
     userEvent.click(screen.getByText(/Add a Project/i));
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it("displays an error when the Add a Project is clicked & createProjectMutation fails", () => {
+    loadProjectsQuery();
+    renderProjects();
+    userEvent.click(screen.getByText(/Add a Project/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(
+        "An error occurred while attempting to create the project."
+      )
+    ).toBeVisible();
   });
 });
