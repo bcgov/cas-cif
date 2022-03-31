@@ -18,7 +18,7 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
     fileType,
     fileSize,
     createdAt,
-    cifUserByCifUserId: { firstName, lastName },
+    cifUserByCifUserId: { fullName },
     projectStatusByProjectStatusId: { name },
   } = useFragment(
     graphql`
@@ -31,8 +31,7 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
         fileSize
         createdAt
         cifUserByCifUserId {
-          firstName
-          lastName
+          fullName
         }
         projectStatusByProjectStatusId {
           name
@@ -52,17 +51,13 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
     downloadFile(file);
   };
 
-  const formattedCifUserName = () => {
-    return firstName + " " + lastName;
-  };
-
   return (
     <tr>
       <td className="attachment-description">{description}</td>
       <td>{fileName}</td>
       <td>{fileType}</td>
       <td>{fileSize}</td>
-      <td>{formattedCifUserName()}</td>
+      <td>{fullName}</td>
       <td className="status-container">
         <span className="status-badge">{name}</span>
       </td>

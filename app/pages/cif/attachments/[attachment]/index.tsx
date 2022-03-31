@@ -17,8 +17,7 @@ const pageQuery = graphql`
       fileSize
       createdAt
       cifUserByCifUserId {
-        firstName
-        lastName
+        fullName
       }
       projectStatusByProjectStatusId {
         name
