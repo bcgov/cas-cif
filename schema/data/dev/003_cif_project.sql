@@ -1,21 +1,29 @@
 begin;
 
-
 do $$
   begin
-    for project_id in 1..50 loop
-      insert into cif.project(operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name, total_funding_request) values
+    for index in 1..50 loop
+      insert into cif.form_change(
+        new_form_data,
+        operation,
+        form_data_schema_name,
+        form_data_table_name,
+        change_status,
+        json_schema_name
+      )
+      values
       (
-        project_id % 3 + 1,
-        1,
-        project_id % 3 + 1,
-        lpad(project_id::text, 3, '0'),
-        'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        'test project ' || lpad(project_id::text, 3, '0'),
-        project_id * 1000
-        );
+        json_build_object(
+          'operatorId', '2',
+          'fundingStreamRfpId', '1',
+          'projectStatusId', '1',
+          'proposalReference', lpad(index::text, 3, '0'),
+          'summary', 'lorem ipsum dolor sit amet adipiscing eli',
+          'projectName', 'TEST-PROJECT-' || lpad(index::text, 3, '0'),
+          'totalFundingRequest', rpad(index::text, 3, '0')
+          ),
+        'create', 'cif', 'project', 'committed', 'project');
     end loop;
   end
 $$;
-
-commit;
+commit

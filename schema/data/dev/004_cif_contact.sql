@@ -1,19 +1,27 @@
 begin;
 
-
 do $$
   begin
-    for contact_id in 1..50 loop
-      insert into cif.contact(given_name, family_name, email, phone, phone_ext, position,comments) values
+    for index in 1..50 loop
+      insert into cif.form_change(
+        new_form_data,
+        operation,
+        form_data_schema_name,
+        form_data_table_name,
+        change_status,
+        json_schema_name
+      )
+      values
       (
-        'Bob' || lpad(contact_id::text, 3, '0'),
-        'Loblaw' || lpad(contact_id::text, 3, '0'),
-        'Bob' || lpad(contact_id::text, 3, '0') || '@example.com',
-        '+12501234567',
-        lpad(contact_id::text, 3, '0'),
-        'Plant ' || lpad(contact_id::text, 3, '0') || ' Manager',
-        'Bob' || lpad(contact_id::text, 3, '0') || 'Loblaw' || lpad(contact_id::text, 3, '0') || ' is a great guy'
-        );
+        json_build_object(
+          'givenName', 'GIVEN-NAME-' || lpad(index::text, 3, '0'),
+          'familyName', 'FAM-NAME-' || lpad(index::text, 3, '0'),
+          'email', 'example-' || lpad(index::text, 3, '0') || '@example.com',
+          'phone', '+14155552671',
+          'position', 'Manager',
+          'comments', 'lorem ipsum dolor sit amet consectetur adipiscing elit 🚀'
+          ),
+        'create', 'cif', 'contact', 'committed', 'project_contact');
     end loop;
   end
 $$;
