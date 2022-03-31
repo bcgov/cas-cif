@@ -1,6 +1,6 @@
 import React from "react";
 import { Operators, OperatorsQuery } from "../../../pages/cif/operators";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {
   createMockEnvironment,
@@ -16,6 +16,8 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
+import userEvent from "@testing-library/user-event";
+import { ErrorContext } from "contexts/ErrorContext";
 jest.mock("next/router");
 
 mocked(useRouter).mockReturnValue({
@@ -67,17 +69,27 @@ const loadOperatorsQuery = (
     variables
   );
 };
-
+let errorContext;
 const renderOperators = () =>
   render(
-    <RelayEnvironmentProvider environment={environment}>
-      <Operators CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <Operators CSN preloadedQuery={initialQueryRef} />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 
 describe("The operators page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    errorContext = {
+      error: null,
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          errorContext.error = error;
+        })
+      ),
+    };
   });
 
   it("renders the list of operators", () => {
@@ -93,6 +105,22 @@ describe("The operators page", () => {
     renderOperators();
 
     expect(screen.getByText(/Add an Operator/i)).toBeInTheDocument();
+  });
+
+  it("displays an error when the Edit button is clicked & createNewOperator mutation fails", () => {
+    loadOperatorsQuery();
+    renderOperators();
+
+    userEvent.click(screen.getByText(/Add an Operator/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(
+        "An error occurred while attempting to create the operator."
+      )
+    ).toBeVisible();
   });
 
   it("displays the Resume Operator Creation button if there is an existing form_change", () => {

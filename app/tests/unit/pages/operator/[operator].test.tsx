@@ -3,7 +3,7 @@ import {
   MockPayloadGenerator,
   RelayMockEnvironment,
 } from "relay-test-utils";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import compiledOperatorViewQuery, {
   OperatorViewQuery,
@@ -13,6 +13,8 @@ import { OperatorViewPage } from "pages/cif/operator/[operator]";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
+import userEvent from "@testing-library/user-event";
+import { ErrorContext } from "contexts/ErrorContext";
 
 jest.mock("next/router");
 let environment: RelayMockEnvironment;
@@ -52,17 +54,27 @@ const loadOperatorQuery = (
     variables
   );
 };
-
+let errorContext;
 const renderOperatorPage = () =>
   render(
-    <RelayEnvironmentProvider environment={environment}>
-      <OperatorViewPage CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <OperatorViewPage CSN preloadedQuery={initialQueryRef} />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 
 describe("OperatorViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    errorContext = {
+      error: null,
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          errorContext.error = error;
+        })
+      ),
+    };
     jest.restoreAllMocks();
   });
 
@@ -109,6 +121,35 @@ describe("OperatorViewPage", () => {
     renderOperatorPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
+  });
+
+  it("displays an error when the Edit button is clicked & createEditOperator mutation fails", () => {
+    loadOperatorQuery({
+      Operator() {
+        return {
+          id: "mock-cif-operator-id",
+          rowId: 43,
+          legalName: "Operator Legal Name",
+          tradeName: "Operator Trade Name",
+          swrsLegalName: "SWRS Legal Name",
+          swrsTradeName: "SWRS Trade Name",
+          operatorCode: "ABCZ",
+          swrsOrganisationId: "12345",
+          pendingFormChange: null,
+        };
+      },
+    });
+    renderOperatorPage();
+    userEvent.click(screen.getByText(/Edit/i));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(
+        "An error occurred while attempting to edit the operator."
+      )
+    ).toBeVisible();
   });
 
   it("renders null if the operator doesn't exist", () => {
