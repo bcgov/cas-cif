@@ -72,3 +72,13 @@ The `previous_form_change_id`, automatically created via a trigger when a `form_
 If a `form_change` with `operation: 'archive'` is committed, the corresponding records will be archived, i.e. its `archived_at` and `archived_by` properties will be set.
 
 Archived records are automatically filtered out by default by our GraphQL API, thanks to the [`pg-omit-archive`](https://github.com/graphile-contrib/pg-omit-archived) PostGraphile plugin.
+
+### Deleting pending `form_change`
+
+As mentioned above, committed `form_change` records are immutable. Pending `form_change` records however, can be updated, or even deleted. When a user wants to discard their changes, e.g. if they start editing a contact, but then decide to cancel the edit, we delete the `form_change` record. Deleting a pending `form_change` is okay given that the corresponding form was never submitted by the user.
+
+## Batch `form_change`, aka Project Revisions
+
+To ensure data consistency, multiple database records may need to be updated in the same transaction. This is the case for the `project` records, which have multiple entities associated to them. At the time of writing, `project_manager` and `project_contact` are examples of tables with a foreign key to a `project`. More tables will be added in future iterations of the CIF application.
+
+To allow the user to commit multiple `form_change` records within the same transaction, we use a `project_revision` table. `form_change` records have a nullable `project_revision_id` foreign key. A `project_revision` has a `change_status` and updates to that column cascade to the individual `form_change`. This means that committing a `project_revision` will automatically commit all of its `form_change`, allowing to batch updates within the same transaction. Following the logic above, `project_revision` records where `change_status = 'pending'` can be deleted and the deletion will cascade to the corresponding `form_change` records.
