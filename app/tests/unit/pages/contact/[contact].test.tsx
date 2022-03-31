@@ -14,6 +14,7 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 import userEvent from "@testing-library/user-event";
+import { ErrorContext } from "contexts/ErrorContext";
 
 jest.mock("next/router");
 
@@ -53,17 +54,27 @@ const loadContactQuery = (
     variables
   );
 };
-
+let errorContext;
 const renderContactPage = () =>
   render(
-    <RelayEnvironmentProvider environment={environment}>
-      <ContactViewPage CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <ContactViewPage CSN preloadedQuery={initialQueryRef} />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 
 describe("ContactViewPage", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
+    errorContext = {
+      error: null,
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          errorContext.error = error;
+        })
+      ),
+    };
     jest.restoreAllMocks();
   });
 
@@ -119,7 +130,7 @@ describe("ContactViewPage", () => {
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
   });
 
-  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the edit button and there's a mutation error", () => {
+  it("displays an error when the user clicks the edit button & createEditContactFormChangeMutation mutation fails", () => {
     loadContactQuery({
       Contact() {
         return {
@@ -134,18 +145,14 @@ describe("ContactViewPage", () => {
       },
     });
     renderContactPage();
-
-    const spy = jest.spyOn(
-      require("app/mutations/useMutationWithErrorMessage"),
-      "default"
-    );
     userEvent.click(screen.getByText(/Edit/i));
 
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
-    const getErrorMessage = spy.mock.calls[0][1] as Function;
-
-    expect(getErrorMessage()).toBe("An error occurred when editing a contact.");
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText("An error occurred when editing a contact.")
+    ).toBeVisible();
   });
 });

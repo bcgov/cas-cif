@@ -28,7 +28,7 @@ export const useCreateNewContactFormChange = (
 ) => {
   return useMutationWithErrorMessage<createNewContactFormChangeMutation>(
     mutation,
-    () => "An error occurred when editing a contact.",
+    () => "An error occurred when creating a contact.",
     commitMutationFn
   );
 };
