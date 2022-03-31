@@ -7,10 +7,11 @@ import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-import { useMutation } from "react-relay";
+
 import { getProjectsPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -32,9 +33,11 @@ export function ProjectRevision({
   const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
-  const [updateProjectRevision, updatingProjectRevision] = useMutation(
-    updateProjectRevisionMutation
-  );
+  const [updateProjectRevision, updatingProjectRevision] =
+    useMutationWithErrorMessage(
+      updateProjectRevisionMutation,
+      () => "An error occurred while attempting to update the project revision."
+    );
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
 

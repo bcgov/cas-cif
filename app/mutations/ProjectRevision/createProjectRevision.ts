@@ -15,5 +15,5 @@ export const mutation = graphql`
 export const useCreateProjectRevision = () =>
   useMutationWithErrorMessage<createProjectRevisionMutation>(
     mutation,
-    () => "An error occurred while attempting to edit the project."
+    () => "An error occurred while attempting to create the project revision."
   );
