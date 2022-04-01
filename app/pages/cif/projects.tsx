@@ -6,11 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
 import { useCreateProjectMutation } from "mutations/Project/createProject";
 import { useRouter } from "next/router";
-import {
-  getProjectRevisionOverviewFormPageRoute,
-  getProjectsPageRoute,
-  getProjectViewPageRoute,
-} from "pageRoutes";
+import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import {
@@ -19,7 +15,6 @@ import {
   SortOnlyFilter,
   TextFilter,
 } from "components/Table/Filters";
-import { createProjectMutation$data } from "__generated__/createProjectMutation.graphql";
 
 export const ProjectsQuery = graphql`
   query projectsQuery(

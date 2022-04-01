@@ -13,7 +13,6 @@ import {
   contactsQuery$variables,
 } from "__generated__/contactsQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 import userEvent from "@testing-library/user-event";

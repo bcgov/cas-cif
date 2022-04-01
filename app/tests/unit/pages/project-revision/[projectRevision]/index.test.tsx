@@ -162,7 +162,6 @@ describe("The Create Project page", () => {
   });
 
   it("displays an error when the user clicks the Discard Changes button & deleteProjectRevision mutation fails", () => {
-    //Error discarding the project Error:
     loadProjectRevisionQuery();
     renderProjectRevisionPage();
     userEvent.click(screen.queryByText("Discard Changes"));

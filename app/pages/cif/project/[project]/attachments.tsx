@@ -1,6 +1,6 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
-import { graphql, usePreloadedQuery, useRelayEnvironment } from "react-relay";
+import { graphql, usePreloadedQuery } from "react-relay";
 import { attachmentsQuery } from "__generated__/attachmentsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateAttachment } from "mutations/attachment/createAttachment";
@@ -35,8 +35,7 @@ function ProjectAttachments({
     preloadedQuery
   );
 
-  const environment = useRelayEnvironment();
-  const [createAttachment, isCreatingAttachment] = useCreateAttachment();
+  const [createAttachment] = useCreateAttachment();
 
   const isRedirecting = useRedirectTo404IfFalsy(project);
   if (isRedirecting) return null;
