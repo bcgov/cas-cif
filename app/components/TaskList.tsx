@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   getProjectRevisionContactsFormPageRoute,
   getProjectRevisionManagersFormPageRoute,
@@ -21,6 +22,24 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     `,
     projectRevision
   );
+  const router = useRouter();
+
+  const determineStepHighlight = (step) => {
+    if (!router || !router.pathname) return null;
+    if (router.pathname.includes(step)) {
+      return "highlight";
+    }
+    return null;
+  };
+
+  const determineSummaryHighlight = () => {
+    if (!router || !router.pathname) return null;
+    return `${
+      router.pathname === "/cif/project-revision/[projectRevision]"
+        ? "highlight"
+        : null
+    } bordered`;
+  };
 
   return (
     <div>
@@ -28,7 +47,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
       <ol>
         <li>
           <h3>1. Project Overview</h3>
-          <ul>
+          <ul className={`${determineStepHighlight("overview")} bordered`}>
             <li>
               <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
                 Add project overview
@@ -39,12 +58,12 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         <li>
           <h3>2. Project Details (optional)</h3>
           <ul>
-            <li>
+            <li className={`${determineStepHighlight("managers")} bordered`}>
               <Link href={getProjectRevisionManagersFormPageRoute(id)}>
                 Add project managers
               </Link>
             </li>
-            <li>
+            <li className={`${determineStepHighlight("contacts")} bordered`}>
               <Link href={getProjectRevisionContactsFormPageRoute(id)}>
                 Add project contacts
               </Link>
@@ -53,7 +72,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         </li>
         <li>
           <h3>3. Submit Project</h3>
-          <ul>
+          <ul className={determineSummaryHighlight()}>
             <li>
               <Link href={getProjectRevisionPageRoute(id)}>
                 Review and submit information
@@ -63,20 +82,35 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         </li>
       </ol>
       <style jsx>{`
-        ol,
+        ol {
+          list-style: none;
+          margin: 0;
+        }
+
         ul {
           list-style: none;
-          margin-left: 0;
+          margin: 0;
+        }
+
+        li {
+          text-indent: 20px;
           margin-bottom: 0;
         }
 
         h2 {
           font-size: 1.25rem;
+          margin: 0;
+          padding: 20px 0 10px 0;
+          border-bottom: 1px solid #d1d1d1;
+          text-indent: 20px;
         }
         h3 {
           font-size: 1rem;
           line-height: 1;
-          margin-bottom: 0;
+          border-bottom: 1px solid #d1d1d1;
+          text-indent: 20px;
+          padding: 10px 0 10px 0;
+          margin: 0;
         }
 
         div :global(a) {
@@ -88,10 +122,17 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           color: blue;
         }
 
+        div :global(.highlight) {
+          background-color: #fafafc;
+        }
+        div :global(.bordered) {
+          border-bottom: 1px solid #d1d1d1;
+          padding: 10px 0 10px 0;
+        }
+
         div {
-          border: 2px solid black;
           width: 400px;
-          padding: 10px;
+          background-color: #e5e5e5;
         }
       `}</style>
     </div>
