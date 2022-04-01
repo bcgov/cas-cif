@@ -82,3 +82,14 @@ As mentioned above, committed `form_change` records are immutable. Pending `form
 To ensure data consistency, multiple database records may need to be updated in the same transaction. This is the case for the `project` records, which have multiple entities associated to them. At the time of writing, `project_manager` and `project_contact` are examples of tables with a foreign key to a `project`. More tables will be added in future iterations of the CIF application.
 
 To allow the user to commit multiple `form_change` records within the same transaction, we use a `project_revision` table. `form_change` records have a nullable `project_revision_id` foreign key. A `project_revision` has a `change_status` and updates to that column cascade to the individual `form_change`. This means that committing a `project_revision` will automatically commit all of its `form_change`, allowing to batch updates within the same transaction. Following the logic above, `project_revision` records where `change_status = 'pending'` can be deleted and the deletion will cascade to the corresponding `form_change` records.
+
+### Tracking history of project revisions
+
+When looking at version control, one of two options is often used to store the history of changes: either a snapshot is used, storing the complete state of the documents at each revision, or a delta is used, only storing the changes between each revision and its parent.
+
+When tracking the history of projects, using the `project_revision` table, we are using the snapshot approach. This means that:
+
+- for a given `project_revision`, the complete snapshot of the project and its associated forms can be retrieved with a simple `join on form_change where form_change.project_revision_id = project_revision.id`
+- when a `project_revision` is created (see the `cif.create_project_revision` function), all the `form_change` records from the previous revision are copied into the new revision.
+
+Although it comes with a higher storage cost, with potentially unnecessary `form_change` records being created, this approach is simpler and results in more maintainable code.
