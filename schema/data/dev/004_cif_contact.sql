@@ -14,9 +14,9 @@ do $$
       values
       (
         json_build_object(
-          'givenName', 'GIVEN-NAME-' || lpad(index::text, 3, '0'),
-          'familyName', 'FAM-NAME-' || lpad(index::text, 3, '0'),
-          'email', 'example-' || lpad(index::text, 3, '0') || '@example.com',
+          'givenName', 'Bob' || lpad(index::text, 3, '0'),
+          'familyName', 'Loblaw' || lpad(index::text, 3, '0'),
+          'email', 'bob.l' || lpad(index::text, 3, '0') || '@example.com',
           'phone', '+14155552671',
           'position', 'Manager',
           'comments', 'lorem ipsum dolor sit amet consectetur adipiscing elit 🚀'
