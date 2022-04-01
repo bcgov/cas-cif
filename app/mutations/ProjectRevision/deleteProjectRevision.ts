@@ -1,4 +1,5 @@
-import { graphql, useMutation } from "react-relay";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { graphql } from "react-relay";
 
 export const mutation = graphql`
   mutation deleteProjectRevisionMutation($input: DeleteProjectRevisionInput!) {
@@ -9,5 +10,8 @@ export const mutation = graphql`
 `;
 
 export const useDeleteProjectRevisionMutation = () => {
-  return useMutation(mutation);
+  return useMutationWithErrorMessage(
+    mutation,
+    () => "An error occurred while attempting to delete the project revision."
+  );
 };

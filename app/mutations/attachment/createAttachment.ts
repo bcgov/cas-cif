@@ -1,12 +1,8 @@
 import { graphql } from "react-relay";
-import type { Environment } from "react-relay";
-import type {
-  createAttachmentMutationVariables,
-  createAttachmentMutation as createAttachmentMutationType,
-} from "createAttachmentMutation.graphql";
-import BaseMutation from "mutations/BaseMutation";
+import type { createAttachmentMutation } from "createAttachmentMutation.graphql";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
-export const mutation = graphql`
+const mutation = graphql`
   mutation createAttachmentMutation(
     $connections: [ID!]!
     $input: CreateAttachmentInput!
@@ -24,13 +20,10 @@ export const mutation = graphql`
   }
 `;
 
-const createAttachmentMutation = async (
-  environment: Environment,
-  variables: createAttachmentMutationVariables
-) => {
-  return new BaseMutation<createAttachmentMutationType>(
-    "create-attachment-mutation"
-  ).performMutation(environment, mutation, variables);
-};
+const useCreateAttachment = () =>
+  useMutationWithErrorMessage<createAttachmentMutation>(
+    mutation,
+    () => "An error occurred while attempting to create an attachment."
+  );
 
-export default createAttachmentMutation;
+export { mutation, useCreateAttachment };

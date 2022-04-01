@@ -16,6 +16,7 @@ import compiledProjectRevisionQuery, {
 import { mocked } from "jest-mock";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
+import { ErrorContext } from "contexts/ErrorContext";
 
 jest.mock("next/router");
 
@@ -64,18 +65,27 @@ const loadProjectRevisionQuery = (
     variables
   );
 };
-
+let errorContext;
 const renderProjectRevisionPage = () =>
   render(
-    <RelayEnvironmentProvider environment={environment}>
-      <ProjectRevision CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
+    <ErrorContext.Provider value={errorContext}>
+      <RelayEnvironmentProvider environment={environment}>
+        <ProjectRevision CSN preloadedQuery={initialQueryRef} />
+      </RelayEnvironmentProvider>
+    </ErrorContext.Provider>
   );
 
 describe("The Create Project page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
-
+    errorContext = {
+      error: null,
+      setError: jest.fn().mockImplementation((error) =>
+        act(() => {
+          errorContext.error = error;
+        })
+      ),
+    };
     jest.restoreAllMocks();
   });
 
@@ -97,7 +107,7 @@ describe("The Create Project page", () => {
   it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
     const useMutationSpy = jest.fn();
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [useMutationSpy, false]);
 
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
@@ -123,7 +133,7 @@ describe("The Create Project page", () => {
 
   it("renders a disabled submit / discard button when project revision mutations are in flight", async () => {
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), true]);
 
     loadProjectRevisionQuery();
@@ -134,6 +144,36 @@ describe("The Create Project page", () => {
       "disabled",
       true
     );
+  });
+
+  it("displays an error when the Submit Button is clicked & updateProjectRevisionMutation fails", () => {
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
+    userEvent.click(screen.queryByText("Submit"));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(
+        "An error occurred while attempting to update the project revision."
+      )
+    ).toBeVisible();
+  });
+
+  it("displays an error when the user clicks the Discard Changes button & deleteProjectRevision mutation fails", () => {
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
+    userEvent.click(screen.queryByText("Discard Changes"));
+    act(() => {
+      environment.mock.rejectMostRecentOperation(new Error());
+    });
+    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText(
+        "An error occurred while attempting to delete the project revision."
+      )
+    ).toBeVisible();
   });
 
   it("renders null when a revision doesn't exist", async () => {

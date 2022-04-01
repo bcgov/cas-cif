@@ -1,13 +1,14 @@
-import { useMutation, UseMutationConfig } from "react-relay";
+import { UseMutationConfig } from "react-relay";
 import {
   Disposable,
   GraphQLTaggedNode,
   MutationParameters,
 } from "relay-runtime";
+import useMutationWithErrorMessage from "./useMutationWithErrorMessage";
 
 /**
  *
- * This hook creates an archive mutation by wrapping the relay `useMutation` hook and
+ * This hook creates an archive mutation by wrapping the relay `useMutationWithErrorMessage` hook and
  * setting the mutation variables with a `archivedAt` value.
  *
  * @param relayNodeName the name of the relay node the mutation is applied to, e.g. "projectRevision", "formChange", ...
@@ -39,7 +40,10 @@ export default function useArchiveMutation<
   ) => Disposable,
   boolean
 ] {
-  const [updateMutation, isInFlight] = useMutation(mutation);
+  const [updateMutation, isInFlight] = useMutationWithErrorMessage(
+    mutation,
+    () => "An error occurred"
+  );
 
   const archiveMutation = (
     id: string,

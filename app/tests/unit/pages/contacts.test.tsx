@@ -1,5 +1,5 @@
 import React from "react";
-import { Operators, OperatorsQuery } from "../../../pages/cif/operators";
+import { Contacts, ContactsQuery } from "../../../pages/cif/contacts";
 import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {
@@ -9,11 +9,10 @@ import {
 } from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
 import {
-  operatorsQuery,
-  operatorsQuery$variables,
-} from "__generated__/operatorsQuery.graphql";
+  contactsQuery,
+  contactsQuery$variables,
+} from "__generated__/contactsQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 import userEvent from "@testing-library/user-event";
@@ -33,28 +32,27 @@ const defaultMockResolver = {
   Query() {
     return {
       session: { cifUserBySub: {} },
-      allOperators: {
+      allContacts: {
         totalCount: 2,
         edges: [
-          { node: { id: "1", legalName: "Operator 1" } },
-          { node: { id: "2", legalName: "Operator 2" } },
+          { node: { id: "1", fullName: "Contact 1" } },
+          { node: { id: "2", fullName: "Contact 2" } },
         ],
       },
-      pendingNewOperatorFormChange: null,
+      pendingNewContactFormChange: null,
     };
   },
 };
 
-const loadOperatorsQuery = (
+const loadContactsQuery = (
   mockResolver: MockResolvers = defaultMockResolver
 ) => {
-  const variables: operatorsQuery$variables = {
-    legalName: null,
-    tradeName: null,
-    bcRegistryId: null,
-    operatorCode: null,
+  const variables: contactsQuery$variables = {
+    fullName: null,
+    fullPhone: null,
+    position: null,
     offset: null,
-    pageSize: DEFAULT_PAGE_SIZE,
+    pageSize: null,
     orderBy: null,
   };
 
@@ -62,24 +60,24 @@ const loadOperatorsQuery = (
     return MockPayloadGenerator.generate(operation, mockResolver);
   });
 
-  environment.mock.queuePendingOperation(OperatorsQuery, variables);
-  initialQueryRef = loadQuery<operatorsQuery>(
+  environment.mock.queuePendingOperation(ContactsQuery, variables);
+  initialQueryRef = loadQuery<contactsQuery>(
     environment,
-    OperatorsQuery,
+    ContactsQuery,
     variables
   );
 };
 let errorContext;
-const renderOperators = () =>
+const renderContacts = () =>
   render(
     <ErrorContext.Provider value={errorContext}>
       <RelayEnvironmentProvider environment={environment}>
-        <Operators CSN preloadedQuery={initialQueryRef} />
+        <Contacts CSN preloadedQuery={initialQueryRef} />
       </RelayEnvironmentProvider>
     </ErrorContext.Provider>
   );
 
-describe("The operators page", () => {
+describe("The contacts page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
     errorContext = {
@@ -92,50 +90,50 @@ describe("The operators page", () => {
     };
   });
 
-  it("renders the list of operators", () => {
-    loadOperatorsQuery();
-    renderOperators();
+  it("renders the list of contacts", () => {
+    loadContactsQuery();
+    renderContacts();
 
-    expect(screen.getByText(/Operator 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Operator 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Contact 2/i)).toBeInTheDocument();
   });
 
-  it("displays the Add a Operator Button", () => {
-    loadOperatorsQuery();
-    renderOperators();
+  it("displays the Add a Contact Button", () => {
+    loadContactsQuery();
+    renderContacts();
 
-    expect(screen.getByText(/Add an Operator/i)).toBeInTheDocument();
+    expect(screen.getByText(/Add a Contact/i)).toBeInTheDocument();
   });
 
-  it("displays an error when the Edit button is clicked & createNewOperator mutation fails", () => {
-    loadOperatorsQuery();
-    renderOperators();
+  it("displays an error when the Add button is clicked & createNewContactFormChangeMutation fails", () => {
+    loadContactsQuery();
+    renderContacts();
 
-    userEvent.click(screen.getByText(/Add an Operator/i));
+    userEvent.click(screen.getByText(/Add a Contact/i));
     act(() => {
       environment.mock.rejectMostRecentOperation(new Error());
     });
     expect(errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
-        "An error occurred while attempting to create the operator."
+        "An error occurred while attempting to create the contact."
       )
     ).toBeVisible();
   });
 
-  it("displays the Resume Operator Creation button if there is an existing form_change", () => {
-    loadOperatorsQuery({
+  it("displays the Resume Contact Creation button if there is an existing form_change", () => {
+    loadContactsQuery({
       Query() {
         return {
           ...defaultMockResolver.Query(),
-          pendingNewOperatorFormChange: {
+          pendingNewContactFormChange: {
             id: "abcde",
           },
         };
       },
     });
-    renderOperators();
+    renderContacts();
 
-    expect(screen.getByText(/Resume Operator Creation/i)).toBeInTheDocument();
+    expect(screen.getByText(/Resume Contact Creation/i)).toBeInTheDocument();
   });
 });

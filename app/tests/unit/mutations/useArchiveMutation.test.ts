@@ -6,7 +6,7 @@ describe("The useArchiveMutation hook", () => {
     const mockMutationFunction = jest.fn();
 
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [mockMutationFunction, jest.fn()]);
 
     const {
@@ -36,7 +36,7 @@ describe("The useArchiveMutation hook", () => {
     const mockInFlight = jest.fn();
 
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), mockInFlight]);
 
     const {

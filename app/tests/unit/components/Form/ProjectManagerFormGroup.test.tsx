@@ -225,7 +225,7 @@ describe("The ProjectManagerForm", () => {
     const deleteMutationSpy = jest.fn();
     const inFlight = false;
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
     loadTestQuery();
 
@@ -247,7 +247,7 @@ describe("The ProjectManagerForm", () => {
     const deleteMutationSpy = jest.fn();
     const inFlight = false;
     jest
-      .spyOn(require("react-relay"), "useMutation")
+      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
     loadTestQuery();
     renderProjectForm();

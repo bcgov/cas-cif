@@ -1,10 +1,7 @@
-import type { Environment } from "react-relay";
-import type {
-  createProjectMutationVariables,
-  createProjectMutation as CreateProjectMutationType,
-} from "createProjectMutation.graphql";
-import BaseMutation from "mutations/BaseMutation";
+import type { createProjectMutation } from "createProjectMutation.graphql";
 import { graphql } from "react-relay";
+
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 const mutation = graphql`
   mutation createProjectMutation($input: CreateProjectInput!) {
@@ -16,15 +13,10 @@ const mutation = graphql`
   }
 `;
 
-const createProjectMutation = async (
-  environment: Environment,
-  variables: createProjectMutationVariables
-) => {
-  const m = new BaseMutation<CreateProjectMutationType>(
-    "create-project-mutation"
+const useCreateProjectMutation = () =>
+  useMutationWithErrorMessage<createProjectMutation>(
+    mutation,
+    () => "An error occurred while attempting to create the project."
   );
-  return m.performMutation(environment, mutation, variables);
-};
 
-export default createProjectMutation;
-export { mutation };
+export { mutation, useCreateProjectMutation };

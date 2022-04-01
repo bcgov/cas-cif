@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { createNewContactFormChangeMutation$data } from "__generated__/createNewContactFormChangeMutation.graphql";
 import { getContactFormPageRoute } from "pageRoutes";
 
-const pageQuery = graphql`
+export const ContactsQuery = graphql`
   query contactsQuery(
     $fullName: String
     $fullPhone: String
@@ -58,9 +58,9 @@ const tableFilters = [
   new NoHeaderFilter(),
 ];
 
-function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
+export function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
   const { session, allContacts, pendingNewContactFormChange } =
-    usePreloadedQuery(pageQuery, preloadedQuery);
+    usePreloadedQuery(ContactsQuery, preloadedQuery);
 
   const router = useRouter();
   const [addContact, isAddingContact] = useCreateNewContactFormChange();
@@ -98,7 +98,7 @@ function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
         paginated
         totalRowCount={allContacts.totalCount}
         filters={tableFilters}
-        pageQuery={pageQuery}
+        pageQuery={ContactsQuery}
       >
         {allContacts.edges.map(({ node }) => (
           <ContactTableRow key={node.id} contact={node} />
@@ -108,4 +108,4 @@ function Contacts({ preloadedQuery }: RelayProps<{}, contactsQuery>) {
   );
 }
 
-export default withRelay(Contacts, pageQuery, withRelayOptions);
+export default withRelay(Contacts, ContactsQuery, withRelayOptions);

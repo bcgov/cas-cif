@@ -4,7 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { projectsQuery } from "__generated__/projectsQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
-import commitProjectMutation from "mutations/Project/createProject";
+import { useCreateProjectMutation } from "mutations/Project/createProject";
 import { useRouter } from "next/router";
 import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import Table from "components/Table";
@@ -75,35 +75,43 @@ const tableFilters = [
 ];
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
-  const router = useRouter();
-
   const { allProjects, pendingNewProjectRevision, session } = usePreloadedQuery(
     ProjectsQuery,
     preloadedQuery
   );
-  const createDraftProject = async () => {
-    const response = await commitProjectMutation(preloadedQuery.environment, {
-      input: {},
+  const router = useRouter();
+
+  const [createProject, isCreatingProject] = useCreateProjectMutation();
+
+  const handleCreateProject = () => {
+    createProject({
+      variables: { input: {} },
+      onCompleted: (response) => {
+        router.push(
+          getProjectRevisionOverviewFormPageRoute(
+            response.createProject.projectRevision.id
+          )
+        );
+      },
     });
-    await router.push(
-      getProjectRevisionOverviewFormPageRoute(
-        response.createProject.projectRevision.id
-      )
-    );
   };
 
-  const resumeStagedProject = async () => {
-    await router.push(
+  const handleResumeCreateProject = () => {
+    router.push(
       getProjectRevisionOverviewFormPageRoute(pendingNewProjectRevision.id)
     );
   };
 
   const createOrResumeButton = pendingNewProjectRevision ? (
-    <Button role="button" onClick={resumeStagedProject}>
+    <Button role="button" onClick={handleResumeCreateProject}>
       Resume Project Draft
     </Button>
   ) : (
-    <Button role="button" onClick={createDraftProject}>
+    <Button
+      role="button"
+      onClick={handleCreateProject}
+      disabled={isCreatingProject}
+    >
       Add a Project
     </Button>
   );
