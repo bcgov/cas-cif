@@ -15,6 +15,7 @@ spec:
       name: {{ template "cas-cif.fullname" . }}-db-pre-upgrade
     spec:
       restartPolicy: Never
+      imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
       containers:
         - env:
             - name: PGDATABASE

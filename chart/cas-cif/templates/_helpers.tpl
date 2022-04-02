@@ -74,3 +74,10 @@ Gets the suffix of the namespace. (-dev, -tools, ... )
 {{- define "cas-cif.namespaceSuffix" }}
 {{- (split "-" .Release.Namespace)._1 | trim -}}
 {{- end }}
+
+
+{{- define "cas-cif.imagePullSecrets" }}
+{{- $artSa := (lookup "artifactory.devops.gov.bc.ca/v1alpha1" "ArtifactoryServiceAccount" .Release.Namespace .Values.artifactoryServiceAccount) }}
+{{- $artPullSecretSuffix := $artSa.spec.current_plate }}
+- name: artifacts-pull-{{ .Values.artifactoryServiceAccount }}-{{ $artPullSecretSuffix }}
+{{- end }}
