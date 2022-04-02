@@ -181,12 +181,6 @@ describe("ProjectViewPage", () => {
 
     pageTestingHelper.renderPage();
 
-    pageTestingHelper.errorContext.setError.mockImplementation((error) =>
-      act(() => {
-        pageTestingHelper.errorContext.error = error;
-      })
-    );
-
     userEvent.click(screen.getByText(/Edit/i));
     act(() => {
       pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());

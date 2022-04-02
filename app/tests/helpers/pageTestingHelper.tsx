@@ -24,9 +24,9 @@ class PageTestingHelper<TQuery extends OperationType> {
 
   constructor(
     private pageComponent: (props: RelayProps<{}, TQuery>) => JSX.Element,
+    private compiledQuery: ConcreteRequest,
     private defaultQueryResolver: MockResolvers = {},
-    private defaultQueryVariables: TQuery["variables"] = {},
-    private compiledQuery: ConcreteRequest
+    private defaultQueryVariables: TQuery["variables"] = {}
   ) {
     this.reinit();
   }

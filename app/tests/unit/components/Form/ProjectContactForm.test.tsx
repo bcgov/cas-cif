@@ -1,14 +1,8 @@
-import { render, screen, act, within, waitFor } from "@testing-library/react";
+import { screen, act, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectContactForm from "components/Form/ProjectContactForm";
-import { ErrorContext } from "contexts/ErrorContext";
-import {
-  graphql,
-  RelayEnvironmentProvider,
-  useLazyLoadQuery,
-} from "react-relay";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
+import { graphql } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectContactFormQuery, {
   ProjectContactFormQuery,
 } from "__generated__/ProjectContactFormQuery.graphql";
@@ -26,44 +20,7 @@ const loadedQuery = graphql`
   }
 `;
 
-const props: ValidatingFormProps = {
-  setValidatingForm: jest.fn(),
-};
-
-const errorContext = {
-  error: null,
-  setError: jest.fn().mockImplementation((error) =>
-    act(() => {
-      errorContext.error = error;
-    })
-  ),
-};
-
-let environment;
-const TestRenderer = () => {
-  const data = useLazyLoadQuery<ProjectContactFormQuery>(loadedQuery, {
-    projectRevision: "test-project-revision",
-  });
-  return (
-    <ProjectContactForm
-      {...props}
-      query={data.query}
-      projectRevision={data.query.projectRevision}
-      onSubmit={jest.fn()}
-    />
-  );
-};
-const renderProjectForm = () => {
-  return render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
-};
-
-const getMockQueryPayload = () => ({
+const mockQueryPayload = {
   ProjectRevision() {
     const result: ProjectContactForm_projectRevision = {
       " $fragmentType": "ProjectContactForm_projectRevision",
@@ -142,24 +99,35 @@ const getMockQueryPayload = () => ({
       },
     };
   },
-});
-
-const loadTestQuery = (mockResolver = getMockQueryPayload()) => {
-  environment.mock.queueOperationResolver((operation) =>
-    MockPayloadGenerator.generate(operation, mockResolver)
-  );
-
-  environment.mock.queuePendingOperation(compiledProjectContactFormQuery, {});
 };
+
+const defaultComponentProps = {
+  setValidatingForm: jest.fn(),
+  onSubmit: jest.fn(),
+};
+
+const componentTestingHelper =
+  new ComponentTestingHelper<ProjectContactFormQuery>({
+    component: ProjectContactForm,
+    testQuery: loadedQuery,
+    compiledQuery: compiledProjectContactFormQuery,
+    getPropsFromTestQuery: (data) => ({
+      query: data.query,
+      projectRevision: data.query.projectRevision,
+    }),
+    defaultQueryResolver: mockQueryPayload,
+    defaultQueryVariables: {},
+    defaultComponentProps: defaultComponentProps,
+  });
 
 describe("The ProjectContactForm", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
+    componentTestingHelper.reinit();
   });
 
   it("Renders a primary contact and multiple secondary contacts", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
 
@@ -168,13 +136,15 @@ describe("The ProjectContactForm", () => {
   });
 
   it("Calls the addContactToRevision mutation when the Add button is clicked", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const addButton = screen.getByText("Add");
     addButton.click();
 
-    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+    ).toMatchObject({
       variables: {
         connections: expect.any(Array),
         input: {
@@ -186,27 +156,31 @@ describe("The ProjectContactForm", () => {
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     userEvent.click(screen.getByText(/Add/i));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred while adding the contact to the revision."
     );
   });
 
   it("Calls the updateFormChange mutation when the remove button is clicked", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
 
-    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+    ).toMatchObject({
       variables: {
         input: {
           id: "Form ID 2",
@@ -217,28 +191,32 @@ describe("The ProjectContactForm", () => {
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred when deleting."
     );
   });
 
   it("Clears the primary contact field when the Clear button is pressed", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const clearButton = screen.getAllByText("Clear")[0];
     clearButton.click();
 
-    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+    ).toMatchObject({
       variables: {
         input: {
           id: "Form ID 1",
@@ -256,23 +234,25 @@ describe("The ProjectContactForm", () => {
 
   it("calls useMutationWithErrorMessage and returns expected message when the Clear button is pressed", () => {
     //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const clearButton = screen.getAllByText("Clear")[0];
     clearButton.click();
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred when updating the project contact form."
     );
   });
 
   it("Validates all contact forms when the submit button is clicked", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const validateFormWithErrors = jest.spyOn(
       require("lib/helpers/validateFormWithErrors"),
@@ -285,11 +265,12 @@ describe("The ProjectContactForm", () => {
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     screen.getByText(/submit/i).click();
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: { changeStatus: "staged" },
     });
@@ -297,7 +278,7 @@ describe("The ProjectContactForm", () => {
 
   it("reverts the form_change status to 'pending' when editing", async () => {
     const mockResolver = {
-      ...getMockQueryPayload(),
+      ...mockQueryPayload,
       ProjectRevision() {
         const result: ProjectContactForm_projectRevision = {
           " $fragmentType": "ProjectContactForm_projectRevision",
@@ -351,8 +332,9 @@ describe("The ProjectContactForm", () => {
         return result;
       },
     };
-    loadTestQuery(mockResolver);
-    renderProjectForm();
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
 
     await act(async () => {
       userEvent.click(screen.getByLabelText(/primary contact/i));
@@ -363,7 +345,8 @@ describe("The ProjectContactForm", () => {
     });
 
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: {
         changeStatus: "pending",
