@@ -19,7 +19,7 @@ do $$
           'projectStatusId', '1',
           'proposalReference', lpad(index::text, 3, '0'),
           'summary', 'lorem ipsum dolor sit amet adipiscing eli',
-          'projectName', 'TEST-PROJECT-' || lpad(index::text, 3, '0'),
+          'projectName', 'Test project' || lpad(index::text, 3, '0'),
           'totalFundingRequest', rpad(index::text, 3, '0')
           ),
         'create', 'cif', 'project', 'committed', 'project');
