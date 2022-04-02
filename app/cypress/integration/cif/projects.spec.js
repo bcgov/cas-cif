@@ -31,12 +31,12 @@ describe("the projects page", () => {
     cy.get("button").contains("Clear").click();
     cy.get("tbody tr").should("have.length", 20);
     cy.get("button[title='Go to next page']").click();
-    cy.contains("TEST-PROJECT-021");
+    cy.contains("Test Project 021");
     // click twice for descending order
     cy.get("button[title='Go to first page']").click();
-    cy.contains("TEST-PROJECT-001");
+    cy.contains("Test Project 001");
     cy.get("thead th").contains("Project Name").click();
     cy.get("thead th").contains("Project Name").click();
-    cy.contains("TEST-PROJECT-050");
+    cy.contains("Test Project 050");
   });
 });
