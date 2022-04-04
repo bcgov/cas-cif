@@ -88,12 +88,12 @@ const defaultMockResolver = {
   },
 };
 
-const pageTestingHelper = new PageTestingHelper<ProjectOverviewQuery>(
-  ProjectViewPage,
-  defaultMockResolver,
-  { project: "mock-project-id" },
-  compiledProjectOverviewQuery
-);
+const pageTestingHelper = new PageTestingHelper<ProjectOverviewQuery>({
+  pageComponent: ProjectViewPage,
+  compiledQuery: compiledProjectOverviewQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: { project: "mock-project-id" },
+});
 
 describe("ProjectViewPage", () => {
   beforeEach(() => {

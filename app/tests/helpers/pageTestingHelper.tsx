@@ -14,6 +14,13 @@ import { RelayProps } from "relay-nextjs";
 import { ConcreteRequest, OperationType } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 
+interface PageTestingHelperOptions<TQuery extends OperationType> {
+  pageComponent: (props: RelayProps<{}, TQuery>) => JSX.Element;
+  compiledQuery: ConcreteRequest;
+  defaultQueryResolver?: MockResolvers;
+  defaultQueryVariables?: TQuery["variables"];
+}
+
 class PageTestingHelper<TQuery extends OperationType> {
   public environment: RelayMockEnvironment;
 
@@ -22,12 +29,15 @@ class PageTestingHelper<TQuery extends OperationType> {
     setError: any;
   };
 
-  constructor(
-    private pageComponent: (props: RelayProps<{}, TQuery>) => JSX.Element,
-    private compiledQuery: ConcreteRequest,
-    private defaultQueryResolver: MockResolvers = {},
-    private defaultQueryVariables: TQuery["variables"] = {}
-  ) {
+  private options: PageTestingHelperOptions<TQuery>;
+
+  constructor(options: PageTestingHelperOptions<TQuery>) {
+    this.options = {
+      defaultQueryResolver: {},
+      defaultQueryVariables: {},
+      ...options,
+    };
+
     this.reinit();
   }
 
@@ -50,19 +60,19 @@ class PageTestingHelper<TQuery extends OperationType> {
     this.environment.mock.queueOperationResolver((operation) => {
       return MockPayloadGenerator.generate(
         operation,
-        queryResolver ?? this.defaultQueryResolver
+        queryResolver ?? this.options.defaultQueryResolver
       );
     });
 
     this.environment.mock.queuePendingOperation(
-      this.compiledQuery,
-      this.defaultQueryVariables
+      this.options.compiledQuery,
+      this.options.defaultQueryVariables
     );
 
     this.initialQueryRef = loadQuery<TQuery>(
       this.environment,
-      this.compiledQuery,
-      this.defaultQueryVariables
+      this.options.compiledQuery,
+      this.options.defaultQueryVariables
     );
   }
 
@@ -70,7 +80,10 @@ class PageTestingHelper<TQuery extends OperationType> {
     return render(
       <ErrorContext.Provider value={this.errorContext}>
         <RelayEnvironmentProvider environment={this.environment}>
-          <this.pageComponent CSN preloadedQuery={this.initialQueryRef} />
+          <this.options.pageComponent
+            CSN
+            preloadedQuery={this.initialQueryRef}
+          />
         </RelayEnvironmentProvider>
       </ErrorContext.Provider>
     );
