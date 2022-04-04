@@ -1,6 +1,6 @@
 import React from "react";
 import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import {
@@ -87,6 +87,26 @@ describe("The Create Project page", () => {
       ),
     };
     jest.restoreAllMocks();
+  });
+
+  it("renders the task list in the left navigation with correct highlighting", () => {
+    const router = mocked(useRouter);
+    const mockPathname = "/cif/project-revision/[projectRevision]";
+    router.mockReturnValue({
+      pathname: mockPathname,
+    } as any);
+
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "side navigation" })
+      ).getByText(/add a project/i)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/review and submit information/i).closest("ul")
+    ).toHaveClass("highlight");
   });
 
   it("Renders an enabled submit and discard changes button", async () => {

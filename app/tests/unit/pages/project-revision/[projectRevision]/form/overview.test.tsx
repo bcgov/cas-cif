@@ -73,6 +73,12 @@ describe("The Project Overview page", () => {
   });
 
   it("renders the task list in the left navigation", () => {
+    const router = mocked(useRouter);
+    const mockPathname =
+      "/cif/project-revision/[projectRevision]/form/overview";
+    router.mockReturnValue({
+      pathname: mockPathname,
+    } as any);
     loadPageQuery();
     renderPage();
     expect(
@@ -80,6 +86,9 @@ describe("The Project Overview page", () => {
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/add a project/i)
     ).toBeInTheDocument();
+    expect(screen.getByText(/add project overview/i).closest("ul")).toHaveClass(
+      "highlight"
+    );
   });
 
   it("redirects the user to the project revision page on submit", () => {
