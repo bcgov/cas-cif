@@ -22,7 +22,7 @@ do $$
           'projectName', 'Test Project ' || lpad(index::text, 3, '0'),
           'totalFundingRequest', rpad(index::text, 3, '0')
           ),
-        'create', 'cif', 'project', 'committed', 'project');
+        'create', 'cif', 'project', 'committed', 'create_project');
     end loop;
   end
 $$;

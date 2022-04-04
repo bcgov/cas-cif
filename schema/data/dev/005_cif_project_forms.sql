@@ -13,7 +13,8 @@ do $$
         form_data_schema_name,
         form_data_table_name,
         change_status,
-        json_schema_name
+        json_schema_name,
+        project_revision_id
       )
       values
       (
@@ -22,7 +23,7 @@ do $$
           'projectId', index::text,
           'contactIndex', '1'
           ),
-        'create', 'cif', 'project_contact', 'committed', 'project_contact');
+        'create', 'cif', 'project_contact', 'committed', 'project_contact','1');
       insert into cif.form_change(
         new_form_data,
         operation,
