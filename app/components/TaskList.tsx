@@ -6,6 +6,7 @@ import {
   getProjectRevisionOverviewFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
+import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
 
@@ -24,22 +25,13 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   );
   const router = useRouter();
 
-  const determineStepHighlight = (step) => {
+  const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
-    if (router.pathname.includes(step)) {
-      return "highlight";
-    }
-    return null;
-  };
-
-  const determineSummaryHighlight = () => {
-    if (!router || !router.pathname) return null;
-    return `${
-      router.pathname === "/cif/project-revision/[projectRevision]"
-        ? "highlight"
-        : null
-    } bordered`;
-  };
+    if (`${router.pathname}/` === getProjectRevisionPageRoute(id).pathname)
+      return "summary";
+    const routeParts = router.pathname.split("/");
+    return routeParts[routeParts.length - 1];
+  }, [id, router]);
 
   return (
     <div>
@@ -47,8 +39,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
       <ol>
         <li>
           <h3>1. Project Overview</h3>
-          <ul className={`${determineStepHighlight("overview")} bordered`}>
-            <li>
+          <ul>
+            <li
+              aria-current={currentStep === "overview" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
                 Add project overview
               </Link>
@@ -58,12 +53,18 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         <li>
           <h3>2. Project Details (optional)</h3>
           <ul>
-            <li className={`${determineStepHighlight("managers")} bordered`}>
+            <li
+              aria-current={currentStep === "managers" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionManagersFormPageRoute(id)}>
                 Add project managers
               </Link>
             </li>
-            <li className={`${determineStepHighlight("contacts")} bordered`}>
+            <li
+              aria-current={currentStep === "contacts" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionContactsFormPageRoute(id)}>
                 Add project contacts
               </Link>
@@ -72,8 +73,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         </li>
         <li>
           <h3>3. Submit Project</h3>
-          <ul className={determineSummaryHighlight()}>
-            <li>
+          <ul>
+            <li
+              aria-current={currentStep === "summary" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionPageRoute(id)}>
                 Review and submit information
               </Link>
@@ -122,10 +126,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           color: blue;
         }
 
-        div :global(.highlight) {
+        li[aria-current="step"] {
           background-color: #fafafc;
         }
-        div :global(.bordered) {
+
+        .bordered {
           border-bottom: 1px solid #d1d1d1;
           padding: 10px 0 10px 0;
         }
