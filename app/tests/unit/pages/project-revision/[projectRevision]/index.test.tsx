@@ -105,8 +105,8 @@ describe("The Create Project page", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/review and submit information/i).closest("ul")
-    ).toHaveClass("highlight");
+      screen.getByText(/review and submit information/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
   });
 
   it("Renders an enabled submit and discard changes button", async () => {

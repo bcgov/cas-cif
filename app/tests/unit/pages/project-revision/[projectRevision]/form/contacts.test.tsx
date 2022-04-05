@@ -88,9 +88,9 @@ describe("The Project Contacts page", () => {
       ).getByText(/add a project/i)
     ).toBeInTheDocument();
 
-    expect(screen.getByText(/add project contacts/i).closest("li")).toHaveClass(
-      "highlight"
-    );
+    expect(
+      screen.getByText(/add project contacts/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
   });
 
   it("redirects the user to the project revision page on submit", () => {

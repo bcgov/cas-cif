@@ -86,9 +86,9 @@ describe("The Project Managers form page", () => {
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/add a project/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/add project managers/i).closest("li")).toHaveClass(
-      "highlight"
-    );
+    expect(
+      screen.getByText(/add project managers/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
   });
 
   it("redirects the user to the project revision page on submit", () => {
