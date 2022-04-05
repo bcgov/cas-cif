@@ -71,6 +71,7 @@ spec:
               echo "Waiting 10s for migrations to complete..."
               sleep 10;
             done;
+      imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
       containers:
       - name: {{ template "cas-cif.fullname" . }}
         imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.app.pullPolicy }}

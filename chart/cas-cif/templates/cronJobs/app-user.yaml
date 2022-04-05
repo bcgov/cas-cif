@@ -16,6 +16,7 @@ spec:
         spec:
           activeDeadlineSeconds: 600
           restartPolicy: Never
+          imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 12 }}
           containers:
             - env:
                 - name: PGUSER

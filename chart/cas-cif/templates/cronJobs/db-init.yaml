@@ -20,6 +20,7 @@ spec:
 {{ include "cas-cif.labels" . | indent 12 }}
         spec:
           restartPolicy: Never
+          imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 12 }}
           containers:
             - env:
                 - name: PGDATABASE

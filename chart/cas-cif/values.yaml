@@ -1,15 +1,16 @@
 defaultImageTag: latest # set to the GIT SHA1 in the Makefile
 defaultImagePullPolicy: IfNotPresent
+artifactoryServiceAccount: cas-artifact-download # The name of the ArtifactoryServiceAccount object created in the cas-provision chart
 
 replicaCount: 2
 
 image:
   app:
-    repository: gcr.io/ggl-cas-storage/cas-cif-app
+    repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-cif-app
   schema:
-    repository: gcr.io/ggl-cas-storage/cas-cif-schema
+    repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-cif-schema
   psql:
-    repository: gcr.io/ggl-cas-storage/cas-postgres
+    repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-postgres
     tag: "0.3.0"
 
 cas-postgres:
