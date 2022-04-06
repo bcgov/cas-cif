@@ -52,7 +52,7 @@ describe("the new project page", () => {
 
   it("properly displays validation errors", () => {
     // load more projects to trigger unique proposal reference error
-    cy.sqlFixture("dev/003_cif_project");
+    cy.sqlFixture("dev/004_cif_project");
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
