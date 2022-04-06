@@ -72,7 +72,14 @@ describe("The Project Contacts page", () => {
     environment = createMockEnvironment();
   });
 
-  it("renders the task list in the left navigation", () => {
+  it("renders the task list in the left navigation with correct highlighting", () => {
+    const router = mocked(useRouter);
+    const mockPathname =
+      "/cif/project-revision/[projectRevision]/form/contacts";
+    router.mockReturnValue({
+      pathname: mockPathname,
+    } as any);
+
     loadPageQuery();
     renderPage();
     expect(
@@ -80,6 +87,10 @@ describe("The Project Contacts page", () => {
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/add a project/i)
     ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/add project contacts/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
   });
 
   it("redirects the user to the project revision page on submit", () => {

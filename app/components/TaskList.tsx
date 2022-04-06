@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   getProjectRevisionContactsFormPageRoute,
   getProjectRevisionManagersFormPageRoute,
   getProjectRevisionOverviewFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
+import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
 
@@ -21,6 +23,15 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     `,
     projectRevision
   );
+  const router = useRouter();
+
+  const currentStep = useMemo(() => {
+    if (!router || !router.pathname) return null;
+    if (`${router.pathname}/` === getProjectRevisionPageRoute(id).pathname)
+      return "summary";
+    const routeParts = router.pathname.split("/");
+    return routeParts[routeParts.length - 1];
+  }, [id, router]);
 
   return (
     <div>
@@ -29,7 +40,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         <li>
           <h3>1. Project Overview</h3>
           <ul>
-            <li>
+            <li
+              aria-current={currentStep === "overview" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
                 Add project overview
               </Link>
@@ -39,12 +53,18 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         <li>
           <h3>2. Project Details (optional)</h3>
           <ul>
-            <li>
+            <li
+              aria-current={currentStep === "managers" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionManagersFormPageRoute(id)}>
                 Add project managers
               </Link>
             </li>
-            <li>
+            <li
+              aria-current={currentStep === "contacts" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionContactsFormPageRoute(id)}>
                 Add project contacts
               </Link>
@@ -54,7 +74,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         <li>
           <h3>3. Submit Project</h3>
           <ul>
-            <li>
+            <li
+              aria-current={currentStep === "summary" ? "step" : false}
+              className="bordered"
+            >
               <Link href={getProjectRevisionPageRoute(id)}>
                 Review and submit information
               </Link>
@@ -63,20 +86,35 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         </li>
       </ol>
       <style jsx>{`
-        ol,
+        ol {
+          list-style: none;
+          margin: 0;
+        }
+
         ul {
           list-style: none;
-          margin-left: 0;
+          margin: 0;
+        }
+
+        li {
+          text-indent: 20px;
           margin-bottom: 0;
         }
 
         h2 {
           font-size: 1.25rem;
+          margin: 0;
+          padding: 20px 0 10px 0;
+          border-bottom: 1px solid #d1d1d1;
+          text-indent: 20px;
         }
         h3 {
           font-size: 1rem;
           line-height: 1;
-          margin-bottom: 0;
+          border-bottom: 1px solid #d1d1d1;
+          text-indent: 20px;
+          padding: 10px 0 10px 0;
+          margin: 0;
         }
 
         div :global(a) {
@@ -88,10 +126,18 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           color: blue;
         }
 
+        li[aria-current="step"] {
+          background-color: #fafafc;
+        }
+
+        .bordered {
+          border-bottom: 1px solid #d1d1d1;
+          padding: 10px 0 10px 0;
+        }
+
         div {
-          border: 2px solid black;
           width: 400px;
-          padding: 10px;
+          background-color: #e5e5e5;
         }
       `}</style>
     </div>

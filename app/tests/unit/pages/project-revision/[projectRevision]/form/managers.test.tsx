@@ -73,6 +73,12 @@ describe("The Project Managers form page", () => {
   });
 
   it("renders the task list in the left navigation", () => {
+    const router = mocked(useRouter);
+    const mockPathname =
+      "/cif/project-revision/[projectRevision]/form/managers";
+    router.mockReturnValue({
+      pathname: mockPathname,
+    } as any);
     loadPageQuery();
     renderPage();
     expect(
@@ -80,6 +86,9 @@ describe("The Project Managers form page", () => {
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/add a project/i)
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(/add project managers/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
   });
 
   it("redirects the user to the project revision page on submit", () => {
