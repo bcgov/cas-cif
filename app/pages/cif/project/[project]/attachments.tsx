@@ -32,14 +32,11 @@ const pageQuery = graphql`
 `;
 
 const tableFilters = [
-  new NoHeaderFilter(),
   new TextFilter("File Name", "fileName"),
   new TextFilter("Type", "type"),
   new TextFilter("Size", "size"),
   new TextFilter("Uploaded by", "uploadedBy"),
-  new TextFilter("Status Added", "statusAdded"),
   new TextFilter("Received", "received"),
-  new NoHeaderFilter(),
   new NoHeaderFilter(),
 ];
 
