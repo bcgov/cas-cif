@@ -3,10 +3,7 @@ import type { createAttachmentMutation } from "createAttachmentMutation.graphql"
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 const mutation = graphql`
-  mutation createAttachmentMutation(
-    $connections: [ID!]!
-    $input: CreateAttachmentInput!
-  ) {
+  mutation createAttachmentMutation($input: CreateAttachmentInput!) {
     createAttachment(input: $input) {
       attachment {
         file

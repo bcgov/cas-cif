@@ -29,7 +29,7 @@ function Upload({ preloadedQuery }: RelayProps<{}, uploadAttachmentQuery>) {
   const { session, project } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
-  const [createAttachment] = useCreateAttachment();
+  const [createAttachment, isCreatingAttachment] = useCreateAttachment();
 
   const goToProjectAttachmentsView = async () => {
     await router.push(getAttachmentsPageRoute(project.id));
@@ -51,15 +51,23 @@ function Upload({ preloadedQuery }: RelayProps<{}, uploadAttachmentQuery>) {
       },
     };
     console.log(variables);
-    createAttachment({ variables });
-
-    goToProjectAttachmentsView();
+    createAttachment({
+      variables,
+      onError: (err) => console.error(err),
+      onCompleted: goToProjectAttachmentsView,
+    });
   };
 
   return (
     <DefaultLayout session={session}>
       <h2>{project.projectName}</h2>
-      <FilePicker onChange={saveAttachment}>Upload</FilePicker>
+      {isCreatingAttachment ? (
+        <>
+          <span>Uploading file...</span>
+        </>
+      ) : (
+        <FilePicker onChange={saveAttachment}>Upload</FilePicker>
+      )}
     </DefaultLayout>
   );
 }
