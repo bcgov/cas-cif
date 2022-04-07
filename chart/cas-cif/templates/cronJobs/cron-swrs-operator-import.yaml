@@ -22,7 +22,7 @@ spec:
           restartPolicy: Never
           imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 12 }}
           containers:
-            - env: {{ include "cas-cif.cifUserPgEnv" | nindent 16 }}
+            - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 16 }}
                 - name: GGIRCS_USER
                   valueFrom:
                     secretKeyRef:
