@@ -19,14 +19,15 @@ import { generateDatabaseMockOptions } from "../../helpers/databaseMockPgOptions
 import FormChangeValidationPlugin from "./formChangeValidationPlugin";
 import { graphql, GraphQLSchema } from "graphql";
 import * as Sentry from "@sentry/nextjs";
+import config from "../../../config";
 
 async function saveRemoteFile({ stream }) {
   const response = await fetch(
-    `${process.env.STORAGE_API_HOST}/api/v1/attachments/upload`,
+    `${config.get("storageApiHost")}/api/v1/attachments/upload`,
     {
       method: "POST",
       headers: {
-        "api-key": process.env.STORAGE_API_KEY,
+        "api-key": config.get("storageApiKey"),
         "Content-Type": "multipart/form-data",
       },
       body: stream,
@@ -87,7 +88,7 @@ let postgraphileOptions: PostGraphileOptions = {
   pgSettings,
 };
 
-if (process.env.SENTRY_ENVIRONMENT) {
+if (config.get("sentryEnvironment")) {
   postgraphileOptions = {
     ...postgraphileOptions,
     handleErrors: (errors) => {
@@ -103,7 +104,7 @@ if (process.env.SENTRY_ENVIRONMENT) {
   };
 }
 
-if (process.env.NODE_ENV === "production") {
+if (config.get("env") === "production") {
   postgraphileOptions = {
     ...postgraphileOptions,
     retryOnInitFail: true,
@@ -120,7 +121,7 @@ if (process.env.NODE_ENV === "production") {
 const postgraphileMiddleware = () => {
   return postgraphile(
     pgPool,
-    process.env.DATABASE_SCHEMA || "cif",
+    config.get("databaseSchema"),
     postgraphileOptions
   );
 };
@@ -133,7 +134,7 @@ const postgraphileSchema = async () => {
   if (!postgraphileSchemaSingleton) {
     postgraphileSchemaSingleton = await createPostGraphileSchema(
       getDatabaseUrl(),
-      process.env.DATABASE_SCHEMA || "cif",
+      config.get("databaseSchema"),
       postgraphileOptions
     );
   }
