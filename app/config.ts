@@ -72,7 +72,7 @@ var config = convict({
     format: function check(val) {
       if (val.length < 24) {
         throw new Error(
-          `Invalid sessionSecret: ${val}. Must be at least 32 characaters. length: ${val.length}`
+          `Invalid sessionSecret: ${val}. Must be at least 24 characaters. length: ${val.length}`
         );
       }
     },
