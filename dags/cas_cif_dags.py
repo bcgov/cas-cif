@@ -37,22 +37,10 @@ default_args = {
 deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule_interval=None,
     default_args=default_args, is_paused_upon_creation=False)
 
-cif_db_init = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cif_db_init',
-    op_args=['cas-cif-db-init', cif_namespace],
-    dag=deploy_db_dag)
-
 cif_app_schema = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='cif_app_schema',
     op_args=['cas-cif-deploy-data', cif_namespace],
-    dag=deploy_db_dag)
-
-cif_app_user = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cif_app_user',
-    op_args=['cas-cif-app-user', cif_namespace],
     dag=deploy_db_dag)
 
 cif_import_operator = PythonOperator(
@@ -62,7 +50,7 @@ cif_import_operator = PythonOperator(
     dag=deploy_db_dag)
 
 
-cif_db_init >> cif_app_schema >> cif_app_user >> cif_import_operator
+cif_app_schema >> cif_import_operator
 
 """
 ###############################################################################

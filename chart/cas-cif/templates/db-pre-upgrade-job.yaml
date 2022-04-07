@@ -17,35 +17,7 @@ spec:
       restartPolicy: Never
       imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
       containers:
-        - env:
-            - name: PGDATABASE
-              value: postgres
-            - name: PGUSER
-              value: postgres
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password-superuser
-                  name: {{ template "cas-cif.fullname" . }}-patroni
-            - name: PGPORT
-              value: "5432"
-            - name: PGHOST
-              value: {{ template "cas-cif.fullname" . }}-patroni
-            - name: CIF_USER
-              valueFrom:
-                secretKeyRef:
-                  key: database-owner-user
-                  name: {{ template "cas-cif.fullname" . }}
-            - name: CIF_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: database-owner-password
-                  name: {{ template "cas-cif.fullname" . }}
-            - name: CIF_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  key: database-name
-                  name: {{ template "cas-cif.fullname" . }}
+        - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 10 }}
           name: {{ template "cas-cif.fullname" . }}-db-pre-upgrade
           image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
           imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}

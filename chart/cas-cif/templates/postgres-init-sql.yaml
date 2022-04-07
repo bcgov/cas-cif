@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cas-cif.fullname" . }}-postgres-init-sql
+data:
+  init.sql: |
+    \c cif
+    create extension if not exists postgres_fdw;
+    grant usage on foreign data wrapper postgres_fdw to $(CIF_USER);

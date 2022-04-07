@@ -13,7 +13,10 @@ image:
     repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-postgres
     tag: "0.3.0"
 
-cas-postgres:
+postgres:
+  persistentVolume:
+    size: 10Gi
+    storageClass: netapp-block-standard
   patroni:
     resources:
       limits:
@@ -22,9 +25,6 @@ cas-postgres:
       requests:
         cpu: 15m
         memory: 600Mi
-    persistentVolume:
-      size: 10Gi
-      storageClass: netapp-block-standard
     replicaCount: 3
     env:
       ALLOW_NOSSL: true
@@ -49,7 +49,7 @@ app:
 
 db:
   name: cif
-  appUser: cif_app
+  appUser: cifapp
   ownerUser: cif
   # A shell script that will be executed in a pre-upgrade job, on the psql image.
   preUpgradeCommand: ~

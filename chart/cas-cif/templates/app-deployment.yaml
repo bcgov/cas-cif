@@ -24,28 +24,9 @@ spec:
     spec:
       initContainers:
       # The init container waits until the sqitch changes are deployed to the db
-      - env:
+      - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 10 }}
           - name: SQITCH_TARGET
             value: "db:pg:"
-          - name: PGUSER
-            valueFrom:
-              secretKeyRef:
-                key: database-owner-user
-                name: {{ template "cas-cif.fullname" . }}
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-owner-password
-                name: {{ template "cas-cif.fullname" . }}
-          - name: PGDATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: {{ template "cas-cif.fullname" . }}
-          - name: PGPORT
-            value: "5432"
-          - name: PGHOST
-            value: {{ template "cas-cif.fullname" . }}-patroni
           - name: NAMESPACE
             valueFrom:
               fieldRef:
@@ -76,31 +57,12 @@ spec:
       - name: {{ template "cas-cif.fullname" . }}
         imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.app.pullPolicy }}
         image: {{ .Values.image.app.repository }}:{{ default .Values.defaultImageTag .Values.image.app.tag }}
-        env:
+        env: {{ include "cas-cif.appUserPgEnv" . | nindent 10 }}
           - name: SESSION_SECRET
             valueFrom:
               secretKeyRef:
                 key: session-secret
                 name: {{ template "cas-cif.fullname" . }}
-          - name: PGUSER
-            valueFrom:
-              secretKeyRef:
-                key: database-app-user
-                name: {{ template "cas-cif.fullname" . }}
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-app-password
-                name: {{ template "cas-cif.fullname" . }}
-          - name: PGDATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: {{ template "cas-cif.fullname" . }}
-          - name: PGPORT
-            value: "5432"
-          - name: PGHOST
-            value: {{ template "cas-cif.fullname" . }}-patroni
           - name: PORT
             value: {{ .Values.app.port | quote }}
           - name: SITEWIDE_NOTICE

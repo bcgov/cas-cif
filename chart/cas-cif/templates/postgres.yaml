@@ -1,0 +1,89 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: {{ template "cas-cif.fullname" . }}-postgres
+  labels: {{ include "cas-cif.labels" . | nindent 4 }}
+spec:
+  metadata:
+    labels: {{ include "cas-cif.labels" . | nindent 6 }}
+  monitoring:
+    pgmonitor:
+      exporter:
+        image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:ubi8-5.0.4-0
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:centos8-14.2-0
+  postgresVersion: 14
+  instances:
+    - name: pgha1
+      replicas: 3
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.postgres.persistentVolume.size }}
+            cpu: 15m
+            memory: 600Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        storageClassName: {{ .Values.postgres.persistentVolume.storageClass }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  postgres-operator.crunchydata.com/cluster: {{ template "cas-cif.fullname" . }}-postgres
+                  postgres-operator.crunchydata.com/instance-set: pgha1
+  proxy:
+    pgBouncer:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
+      config:
+        global:
+          client_tls_sslmode: disable
+      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbouncer:centos8-1.15-3
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  postgres-operator.crunchydata.com/cluster: {{ template "cas-cif.fullname" . }}-postgres
+                  postgres-operator.crunchydata.com/role: pgbouncer
+  users:
+    - name: cif
+      databases:
+        - cif
+      options: "CREATEROLE"
+    - name: cifapp
+      databases:
+        - cif
+  databaseInitSQL:
+    key: init.sql
+    name: {{ template "cas-cif.fullname" . }}-postgres-init-sql
+  backups:
+    pgbackrest:
+      global:
+        repo1-retention-full: "14"
+        repo1-retention-full-type: time
+      configuration:
+        - secret:
+            name: {{ template "cas-cif.fullname" . }}-pgbackrest
+      repos:
+        - name: repo1
+          gcs:
+            bucket: {{ .Release.Namespace }}-cif-backups
+          schedules:
+            full: "0 8 * * *"
+            incremental: "0 */4 * * *"

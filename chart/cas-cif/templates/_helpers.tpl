@@ -87,3 +87,68 @@ When running helm template, or using --dry-run, lookup returns an empty object
 - name: image-pull-secret-here
 {{- end }}
 {{- end }}
+
+{{- define "cas-cif.appUserSecret" }}
+{{- printf "%s-%s" (include "cas-cif.fullname" .) "postgres-pguser-cifapp" }}
+{{- end }}
+
+{{- define "cas-cif.appUserPgEnv" }}
+- name: PGUSER
+  valueFrom:
+    secretKeyRef:
+      key: user
+      name: {{ template "cas-cif.appUserSecret" . }}
+- name: PGPASSWORD
+  valueFrom:
+    secretKeyRef:
+      key: password
+      name: {{ template "cas-cif.appUserSecret" . }}
+- name: PGDATABASE
+  valueFrom:
+    secretKeyRef:
+      key: dbname
+      name: {{ template "cas-cif.appUserSecret" . }}
+- name: PGPORT
+  valueFrom:
+    secretKeyRef:
+      key: pgbouncer-port
+      name: {{ template "cas-cif.appUserSecret" . }}
+- name: PGHOST
+  valueFrom:
+    secretKeyRef:
+      key: pgbouncer-host
+      name: {{ template "cas-cif.appUserSecret" . }}
+{{- end }}
+
+
+{{- define "cas-cif.dbSecret" }}
+{{- printf "%s-%s" (include "cas-cif.fullname" .) "postgres-pguser-cif" }}
+{{- end }}
+
+{{- define "cas-cif.cifUserPgEnv" }}
+- name: PGUSER
+  valueFrom:
+    secretKeyRef:
+      key: user
+      name: {{ template "cas-cif.dbSecret" . }}
+- name: PGPASSWORD
+  valueFrom:
+    secretKeyRef:
+      key: password
+      name: {{ template "cas-cif.dbSecret" . }}
+- name: PGDATABASE
+  valueFrom:
+    secretKeyRef:
+      key: dbname
+      name: {{ template "cas-cif.dbSecret" . }}
+- name: PGPORT
+  valueFrom:
+    secretKeyRef:
+      key: pgbouncer-port
+      name: {{ template "cas-cif.dbSecret" . }}
+- name: PGHOST
+  valueFrom:
+    secretKeyRef:
+      key: pgbouncer-host
+      name: {{ template "cas-cif.dbSecret" . }}
+{{- end }}
