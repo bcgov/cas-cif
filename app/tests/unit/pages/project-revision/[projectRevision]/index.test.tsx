@@ -34,6 +34,9 @@ const defaultMockResolver = {
   ProjectRevision() {
     return {
       id: "mock-proj-rev-id",
+      projectByProjectId: {
+        proposalReference: "001",
+      },
       projectFormChange: {
         id: "mock-project-form-id",
         newFormData: {
@@ -101,13 +104,33 @@ describe("The Create Project page", () => {
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
-      ).getByText(/add a project/i)
+      ).getByText(/Editing: 001/i)
     ).toBeInTheDocument();
 
     expect(
       screen.getByText(/review and submit information/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
+
+  // it("renders task list with optional", () => {
+  //   const router = mocked(useRouter);
+  //   const mockPathname = "/cif/project-revision/[projectRevision]";
+  //   router.mockReturnValue({
+  //     pathname: mockPathname,
+  //   } as any);
+
+  //   loadProjectRevisionQuery();
+  //   renderProjectRevisionPage();
+  //   expect(
+  //     within(
+  //       screen.getByRole("navigation", { name: "side navigation" })
+  //     ).getByText(/( optional )/i)
+  //   ).toBeInTheDocument();
+
+  //   expect(
+  //     screen.getByText(/review and submit information/i).closest("li")
+  //   ).toHaveAttribute("aria-current", "step");
+  // });
 
   it("Renders an enabled submit and discard changes button", async () => {
     jest

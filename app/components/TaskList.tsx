@@ -15,15 +15,20 @@ interface Props {
 }
 
 const TaskList: React.FC<Props> = ({ projectRevision }) => {
-  const { id } = useFragment(
+  const { id, projectByProjectId } = useFragment(
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
+        projectByProjectId {
+          proposalReference
+        }
       }
     `,
     projectRevision
   );
   const router = useRouter();
+
+  let mode = projectByProjectId ? "update" : "create";
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
@@ -35,7 +40,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
 
   return (
     <div>
-      <h2>Add a Project</h2>
+      <h2>
+        {projectByProjectId
+          ? "Editing: " + projectByProjectId.proposalReference
+          : "Add a Project"}
+      </h2>
       <ol>
         <li>
           <h3>1. Project Overview</h3>
@@ -51,14 +60,14 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           </ul>
         </li>
         <li>
-          <h3>2. Project Details (optional)</h3>
+          <h3>2. Project Details {mode === "update" ? "" : "(optional)"}</h3>
           <ul>
             <li
               aria-current={currentStep === "managers" ? "step" : false}
               className="bordered"
             >
               <Link href={getProjectRevisionManagersFormPageRoute(id)}>
-                Add project managers
+                <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
               </Link>
             </li>
             <li
@@ -66,13 +75,13 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               className="bordered"
             >
               <Link href={getProjectRevisionContactsFormPageRoute(id)}>
-                Add project contacts
+                <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
               </Link>
             </li>
           </ul>
         </li>
         <li>
-          <h3>3. Submit Project</h3>
+          <h3>3. Submit changes</h3>
           <ul>
             <li
               aria-current={currentStep === "summary" ? "step" : false}
