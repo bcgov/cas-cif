@@ -1,15 +1,17 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
-const dotenv = require("dotenv");
 const { withSentryConfig } = require("@sentry/nextjs");
-
-dotenv.config();
+const config = require("./config");
 
 const nextConfig = {
   cssModules: true,
-  webpack: (config) => {
-    const configWithPlugins = { ...config };
-    configWithPlugins.plugins = config.plugins || [];
+  webpack: (inputConfig) => {
+    // inputConfig.resolve.fallback = {
+    //   ...inputConfig.resolve.fallback,
+    //   fs: false,
+    // };
+    const configWithPlugins = { ...inputConfig };
+    configWithPlugins.plugins = inputConfig.plugins || [];
 
     configWithPlugins.plugins = [
       ...configWithPlugins.plugins,
@@ -23,14 +25,14 @@ const nextConfig = {
     return configWithPlugins;
   },
   serverRuntimeConfig: {
-    PORT: process.env.PORT || "3004",
+    PORT: config.get("port"),
   },
   publicRuntimeConfig: {
-    SITEWIDE_NOTICE: process.env.SITEWIDE_NOTICE,
-    ENABLE_DB_MOCKS: process.env.ENABLE_DB_MOCKS,
-    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
-    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT,
-    SENTRY_RELEASE: process.env.SENTRY_RELEASE,
+    SITEWIDE_NOTICE: config.get("sitewideNotice"),
+    ENABLE_MOCK_TIME: config.get("enableMockTime"),
+    SUPPORT_EMAIL: config.get("supportEmail"),
+    SENTRY_ENVIRONMENT: config.get("sentryEnvironment"),
+    SENTRY_RELEASE: config.get("sentryRelease"),
   },
 };
 
