@@ -25,7 +25,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
-    cy.findByText(/Add a Project/i).click();
+    cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/managers");
     cy.injectAxe();
     cy.checkA11y("main", null, logAxeResults);
