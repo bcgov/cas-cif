@@ -21,7 +21,7 @@ app:
     content: ""
   port: 3000
   probesPort: 9000
-  showKCLogin: false
+  showKcLogin: false
 
 db:
   name: cif

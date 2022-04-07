@@ -74,7 +74,7 @@ spec:
           - name: SENTRY_RELEASE
             value: {{ .Values.image.app.tag }}
           - name: SHOW_KC_LOGIN
-            value: {{ .Values.app.showKCLogin | quote }}
+            value: {{ .Values.app.showKcLogin | quote }}
           - name: NAMESPACE
             valueFrom:
               fieldRef:
