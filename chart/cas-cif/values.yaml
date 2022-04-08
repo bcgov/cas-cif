@@ -16,11 +16,6 @@ image:
     repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-shelf-tfe-add-app
     tag: "0.1"
 
-postgres:
-  persistentVolume:
-    size: 10Gi
-    storageClass: netapp-block-standard
-
 app:
   sitewide_notice:
     content: ""
