@@ -40,7 +40,7 @@ const tableFilters = [
   new NoHeaderFilter(),
 ];
 
-function ProjectAttachments({
+export function ProjectAttachments({
   preloadedQuery,
 }: RelayProps<{}, attachmentsQuery>) {
   const { session, project, allAttachments } = usePreloadedQuery(
@@ -61,7 +61,7 @@ function ProjectAttachments({
           query: { project: project.id },
         }}
       >
-        <a>Upload New Attachment</a>
+        Upload New Attachment
       </Link>
       <Table
         paginated
