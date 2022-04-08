@@ -6,19 +6,6 @@ app:
 nginx-sidecar:
   hostName: cas-cif-dev.apps.silver.devops.gov.bc.ca
 
-cas-postgres:
-  patroni:
-    walE:
-      enable: true
-      # the GCS bucket name should be {{ namespace }}-{{ gcs.bucketSuffix }}
-      gcsBucket: c53ff1-dev-cif-backups
-      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret: gcp-c53ff1-dev-cif-backups-service-account-key # pragma: allowlist secret
-    # options below are required if walE.enable is true
-  namespace: c53ff1-dev
-  gcs:
-    bucketSuffix: cif-backups
-
 db:
   preUpgradeCommand: |
     psql<<EOF

@@ -16,13 +16,13 @@ spec:
         - "ReadWriteOnce"
         resources:
           requests:
-            storage: {{ .Values.postgres.persistentVolume.size }}
+            storage: 10Gi
             cpu: 15m
             memory: 600Mi
           limits:
             cpu: 1000m
             memory: 2Gi
-        storageClassName: {{ .Values.postgres.persistentVolume.storageClass }}
+        storageClassName: netapp-block-standard
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -71,11 +71,16 @@ spec:
   backups:
     pgbackrest:
       global:
-        repo1-retention-full: "14"
+        repo1-retention-full: "90"
         repo1-retention-full-type: time
       configuration:
-        - secret:
+        - configMap:
             name: {{ template "cas-cif.fullname" . }}-pgbackrest
+        - secret:
+            name: gcp-{{ .Release.Namespace }}-cif-backups-service-account-key
+            items:
+              - key: credentials.json
+                path: gcs-key.json
       repos:
         - name: repo1
           gcs:

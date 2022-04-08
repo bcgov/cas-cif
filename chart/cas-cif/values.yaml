@@ -12,33 +12,14 @@ image:
   psql:
     repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-postgres
     tag: "0.3.0"
+  casShelf:
+    repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-shelf-tfe-add-app
+    tag: "0.1"
 
 postgres:
   persistentVolume:
     size: 10Gi
     storageClass: netapp-block-standard
-  patroni:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-      requests:
-        cpu: 15m
-        memory: 600Mi
-    replicaCount: 3
-    env:
-      ALLOW_NOSSL: true
-      USE_WALG_BACKUP: "true"
-      USE_WALG_RESTORE: "true"
-    walE:
-      enable: true
-      gcsBucket: ~
-      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret: ~
-    # options below are required if walE.enable is true
-  namespace: ~
-  gcs:
-    bucketSuffix: ~
 
 app:
   sitewide_notice:

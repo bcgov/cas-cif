@@ -8,12 +8,12 @@ metadata:
     "helm.sh/hook": pre-upgrade
 spec:
   backoffLimit: 0
-  activeDeadlineSeconds: 300
   template:
     metadata:
       labels: {{ include "cas-cif.labels" . | nindent 8 }}
       name: {{ template "cas-cif.fullname" . }}-db-pre-upgrade
     spec:
+      activeDeadlineSeconds: 600
       restartPolicy: Never
       imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
       containers:
