@@ -14,7 +14,7 @@ export const getDatabaseUrl = () => {
 
   databaseURL += PGUSER;
   if (process.env.PGPASSWORD) {
-    databaseURL += `:${process.env.PGPASSWORD}`;
+    databaseURL += `:${encodeURIComponent(process.env.PGPASSWORD)}`;
   }
 
   databaseURL += "@";
