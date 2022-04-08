@@ -51,16 +51,13 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
       <td>{fileType}</td>
       <td>{fileSize}</td>
       <td>{fullName}</td>
-      <td className="Received">{createdAt}</td>
+      <td>{createdAt}</td>
       <td>
         <Button onClick={handleViewClick}>View</Button>
         <Button onClick={handleDownloadClick} disabled>
           Download
         </Button>
       </td>
-      <style jsx>{`
-        .attachment-description
-      `}</style>
     </tr>
   );
 };
