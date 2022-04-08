@@ -18,6 +18,68 @@ interface Props {
   onSubmit: () => void;
 }
 
+export const createProjectSchema = (tradeName) => {
+  return {
+    "ui:order": [
+      "fundingStreamRfpId",
+      "operatorId",
+      "operatorTradeName",
+      "proposalReference",
+      "projectName",
+      "summary",
+      "totalFundingRequest",
+      "projectStatus",
+      "projectStatusId",
+    ],
+    proposalReference: {
+      "ui:placeholder": "2020-RFP-1-123-ABCD",
+      "bcgov:size": "small",
+      "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
+    },
+    projectName: {
+      "ui:placeholder": "Short project name",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+    totalFundingRequest: {
+      "ui:widget": "MoneyWidget",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+    summary: {
+      "ui:col-md": 12,
+      "ui:widget": "TextAreaWidget",
+      "bcgov:size": "small",
+    },
+    operatorId: {
+      "ui:placeholder": "Select an Operator",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+    },
+    operatorTradeName: {
+      "ui:col-md": 12,
+      "ui:widget": "DisplayOnly",
+      "bcgov:size": "small",
+      "ui:options": {
+        text: `${tradeName}`,
+        title: "Trade Name",
+      },
+    },
+    fundingStreamRfpId: {
+      "ui:widget": "SelectRfpWidget",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+    projectStatusId: {
+      "ui:placeholder": "Select a Project Status",
+      "ui:widget": "SelectProjectStatusWidget",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+  };
+};
+
 const ProjectForm: React.FC<Props> = (props) => {
   const [updateProjectFormChange, updatingProjectFormChange] =
     useUpdateProjectFormChange();
@@ -58,13 +120,18 @@ const ProjectForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
       ({ node }) =>
         node.rowId === revision.projectFormChange.newFormData.operatorId
     );
   }, [query, revision.projectFormChange.newFormData.operatorId]);
+
+  const uiSchema = useMemo(() => {
+    return createProjectSchema(
+      selectedOperator ? selectedOperator.node.tradeName : ""
+    );
+  }, [selectedOperator]);
 
   const uniqueProposalReferenceValidation = (
     formData: any,
@@ -129,67 +196,7 @@ const ProjectForm: React.FC<Props> = (props) => {
     return initialSchema as JSONSchema7;
   }, [query]);
 
-  const uiSchema = useMemo(() => {
-    return {
-      "ui:order": [
-        "fundingStreamRfpId",
-        "operatorId",
-        "operatorTradeName",
-        "proposalReference",
-        "projectName",
-        "summary",
-        "totalFundingRequest",
-        "projectStatus",
-        "projectStatusId",
-      ],
-      proposalReference: {
-        "ui:placeholder": "2020-RFP-1-123-ABCD",
-        "bcgov:size": "small",
-        "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
-      },
-      projectName: {
-        "ui:placeholder": "Short project name",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-      totalFundingRequest: {
-        "ui:widget": "MoneyWidget",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-      summary: {
-        "ui:col-md": 12,
-        "ui:widget": "TextAreaWidget",
-        "bcgov:size": "small",
-      },
-      operatorId: {
-        "ui:placeholder": "Select an Operator",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-        "ui:widget": "SearchWidget",
-      },
-      operatorTradeName: {
-        "ui:col-md": 12,
-        "ui:widget": "DisplayOnly",
-        "bcgov:size": "small",
-        "ui:options": {
-          text: `${selectedOperator ? selectedOperator.node.tradeName : ""}`,
-          title: "Trade Name",
-        },
-      },
-      fundingStreamRfpId: {
-        "ui:widget": "SelectRfpWidget",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-      projectStatusId: {
-        "ui:placeholder": "Select a Project Status",
-        "ui:widget": "SelectProjectStatusWidget",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-    };
-  }, [selectedOperator]);
+  // export this and reuse over in index.tsx for project revision
 
   const lastEditedDate = useMemo(
     () => new Date(revision.projectFormChange.updatedAt),

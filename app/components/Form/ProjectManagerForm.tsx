@@ -24,16 +24,18 @@ interface Props extends FormComponentProps {
   disabled?: boolean;
 }
 
-const uiSchema = {
-  cifUserId: {
-    "ui:placeholder": "Select a Project Manager",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-    "ui:options": {
-      label: false,
+export const createProjectManagerUiSchema = () => {
+  return {
+    cifUserId: {
+      "ui:placeholder": "Select a Project Manager",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+      "ui:options": {
+        label: false,
+      },
     },
-  },
+  };
 };
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
@@ -91,6 +93,8 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
     return schema as JSONSchema7;
   }, [allCifUsers]);
+
+  const uiSchema = createProjectManagerUiSchema();
 
   // Update an existing project_manager form change if it exists, otherwise create one
   const createOrUpdateFormChange = (formData: { cifUserId: number }) => {

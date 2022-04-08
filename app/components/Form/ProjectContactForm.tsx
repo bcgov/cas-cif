@@ -24,16 +24,18 @@ interface Props {
   projectRevision: ProjectContactForm_projectRevision$key;
 }
 
-const uiSchema = {
-  contactId: {
-    "ui:placeholder": "Select a Contact",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-    "ui:options": {
-      label: false,
+export const createProjectContactUiSchema = () => {
+  return {
+    contactId: {
+      "ui:placeholder": "Select a Contact",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+      "ui:options": {
+        label: false,
+      },
     },
-  },
+  };
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
@@ -102,6 +104,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
     return schema as JSONSchema7;
   }, [allContacts]);
+
+  const uiSchema = createProjectContactUiSchema();
 
   const [addContactMutation, isAdding] = useAddContactToRevision();
 
