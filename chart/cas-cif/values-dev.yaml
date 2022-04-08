@@ -6,19 +6,6 @@ app:
 nginx-sidecar:
   hostName: cas-cif-dev.apps.silver.devops.gov.bc.ca
 
-cas-postgres:
-  patroni:
-    walE:
-      enable: true
-      # the GCS bucket name should be {{ namespace }}-{{ gcs.bucketSuffix }}
-      gcsBucket: c53ff1-dev-cif-backups
-      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret: gcp-c53ff1-dev-cif-backups-service-account-key # pragma: allowlist secret
-    # options below are required if walE.enable is true
-  namespace: c53ff1-dev
-  gcs:
-    bucketSuffix: cif-backups
-
 db:
   preUpgradeCommand: |
     psql<<EOF
@@ -26,9 +13,10 @@ db:
       -- don't kill my own connection!
       pid <> pg_backend_pid()
       -- don't kill the connections to other databases
-      and datname = '$(CIF_DATABASE)';
-      drop database if exists $(CIF_DATABASE);
-      drop user if exists $(CIF_USER);
+      and datname = '$(PGDATABASE)')';
+      drop schema sqitch if exists cascade;
+      drop schema cif if exists cascade;
+      drop schema cif_private if exists cascade;
     EOF
 
 cert-issue:

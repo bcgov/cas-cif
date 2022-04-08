@@ -49,12 +49,6 @@ cif_app_schema = PythonOperator(
     op_args=['cas-cif-deploy-data', cif_namespace],
     dag=deploy_db_dag)
 
-cif_app_user = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cif_app_user',
-    op_args=['cas-cif-app-user', cif_namespace],
-    dag=deploy_db_dag)
-
 cif_import_operator = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='cif_import_operator',
@@ -62,7 +56,7 @@ cif_import_operator = PythonOperator(
     dag=deploy_db_dag)
 
 
-cif_db_init >> cif_app_schema >> cif_app_user >> cif_import_operator
+cif_db_init >> cif_app_schema >> cif_import_operator
 
 """
 ###############################################################################
@@ -112,17 +106,3 @@ reload_nginx_task = PythonOperator(
     dag=acme_renewal_dag)
 
 cert_renewal_task >> reload_nginx_task
-
-"""
-###############################################################################
-#                                                                             #
-# DAG triggering the wal-g backup job                                         #
-#                                                                             #
-###############################################################################
-"""
-
-cif_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
-                             schedule_interval=SCHEDULE_INTERVAL, is_paused_upon_creation=True)
-
-create_backup_task(cif_full_backup_dag,
-                   cif_namespace, 'cas-cif-patroni')

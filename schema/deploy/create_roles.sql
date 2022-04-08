@@ -42,13 +42,13 @@ begin
   if not exists (
     select true
     from   pg_catalog.pg_roles
-    where  rolname = 'cif_app') then
+    where  rolname = 'cifapp') then
 
-    create user cif_app;
+    create user cifapp;
   end if;
 
-  grant cif_admin, cif_internal, cif_external, cif_guest to cif_app;
-  execute format('grant create, connect on database %I to cif_app', current_database());
+  grant cif_admin, cif_internal, cif_external, cif_guest to cifapp;
+  execute format('grant create, connect on database %I to cifapp', current_database());
 
 end
 $do$;
