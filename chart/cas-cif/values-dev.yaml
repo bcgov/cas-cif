@@ -19,15 +19,18 @@ cas-postgres:
   gcs:
     bucketSuffix: cif-backups
 
-# db:
-#   preUpgradeCommand: |
-#     psql<<EOF
-#       select pg_terminate_backend(pid) from pg_stat_activity where
-#       -- don't kill my own connection!
-#       pid <> pg_backend_pid()
-#       -- don't kill the connections to other databases
-#       and datname = '$(CIF_DATABASE)';
-#     EOF
+db:
+  preUpgradeCommand: |
+    psql<<EOF
+      select pg_terminate_backend(pid) from pg_stat_activity where
+      -- don't kill my own connection!
+      pid <> pg_backend_pid()
+      -- don't kill the connections to other databases
+      and datname = '$(PGDATABASE)')';
+      drop schema sqitch if exists cascade;
+      drop schema cif if exists cascade;
+      drop schema cif_private if exists cascade;
+    EOF
 
 cert-issue:
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca

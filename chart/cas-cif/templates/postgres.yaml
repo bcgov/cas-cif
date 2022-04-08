@@ -6,10 +6,6 @@ metadata:
 spec:
   metadata:
     labels: {{ include "cas-cif.labels" . | nindent 6 }}
-  monitoring:
-    pgmonitor:
-      exporter:
-        image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:ubi8-5.0.4-0
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:centos8-14.2-0
   postgresVersion: 14
   instances:
@@ -69,9 +65,9 @@ spec:
     - name: cifapp
       databases:
         - cif
-  databaseInitSQL:
-    key: init.sql
-    name: {{ template "cas-cif.fullname" . }}-postgres-init-sql
+    - name: postgres
+      databases:
+        - cif
   backups:
     pgbackrest:
       global:

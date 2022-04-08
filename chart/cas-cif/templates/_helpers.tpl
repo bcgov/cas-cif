@@ -40,6 +40,7 @@ helm.sh/chart: {{ include "cas-cif.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+release: {{ .Release.Name }}
 {{- end }}
 
 {{/*
@@ -151,4 +152,39 @@ When running helm template, or using --dry-run, lookup returns an empty object
     secretKeyRef:
       key: pgbouncer-host
       name: {{ template "cas-cif.dbSecret" . }}
+{{- end }}
+
+{{- define "cas-cif.superUserSecret" }}
+{{- printf "%s-%s" (include "cas-cif.fullname" .) "postgres-pguser-postgres" }}
+{{- end }}
+
+{{- define "cas-cif.superUserPgEnv" }}
+- name: PGUSER
+  valueFrom:
+    secretKeyRef:
+      key: user
+      name: {{ template "cas-cif.superUserSecret" . }}
+- name: PGPASSWORD
+  valueFrom:
+    secretKeyRef:
+      key: password
+      name: {{ template "cas-cif.superUserSecret" . }}
+- name: PGDATABASE
+  valueFrom:
+    secretKeyRef:
+      key: dbname
+      name: {{ template "cas-cif.superUserSecret" . }}
+- name: PGPORT
+  valueFrom:
+    secretKeyRef:
+      key: port
+      name: {{ template "cas-cif.superUserSecret" . }}
+- name: PGHOST
+  valueFrom:
+    secretKeyRef:
+{{/*
+  superusers cannot connect via pgbouncer so we use host instead of pgbouncer-host here
+*/}}
+      key: host
+      name: {{ template "cas-cif.superUserSecret" . }}
 {{- end }}
