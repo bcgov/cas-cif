@@ -168,6 +168,10 @@ describe("the new project page", () => {
       .type("Bar");
 
     cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Overview Form",
+      variant: "editing",
+    });
     cy.findByRole("button", { name: /submit/i }).click();
     cy.contains("Review and Submit Project");
     cy.findByText(/Edit project managers/i).click();
