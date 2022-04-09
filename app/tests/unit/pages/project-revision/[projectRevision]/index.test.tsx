@@ -112,25 +112,25 @@ describe("The Create Project page", () => {
     ).toHaveAttribute("aria-current", "step");
   });
 
-  // it("renders task list with optional", () => {
-  //   const router = mocked(useRouter);
-  //   const mockPathname = "/cif/project-revision/[projectRevision]";
-  //   router.mockReturnValue({
-  //     pathname: mockPathname,
-  //   } as any);
+  it("renders task list with optional", () => {
+    const router = mocked(useRouter);
+    const mockPathname = "/cif/project-revision/[projectRevision]";
+    router.mockReturnValue({
+      pathname: mockPathname,
+    } as any);
 
-  //   loadProjectRevisionQuery();
-  //   renderProjectRevisionPage();
-  //   expect(
-  //     within(
-  //       screen.getByRole("navigation", { name: "side navigation" })
-  //     ).getByText(/( optional )/i)
-  //   ).toBeInTheDocument();
+    loadProjectRevisionQuery();
+    renderProjectRevisionPage();
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "side navigation" })
+      ).getByText(/( optional )/i)
+    ).toBeInTheDocument();
 
-  //   expect(
-  //     screen.getByText(/review and submit information/i).closest("li")
-  //   ).toHaveAttribute("aria-current", "step");
-  // });
+    expect(
+      screen.getByText(/review and submit information/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
+  });
 
   it("Renders an enabled submit and discard changes button", async () => {
     jest
