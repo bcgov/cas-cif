@@ -90,7 +90,7 @@ describe("The Project Overview page", () => {
       ).getByText(/Editing: 001/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/add project overview/i).closest("li")
+      screen.getByText(/Edit project overview/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
 
