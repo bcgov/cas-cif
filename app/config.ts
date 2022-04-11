@@ -121,7 +121,7 @@ var config = convict({
     env: "DATABASE_SCHEMA",
   },
   sitewideNotice: {
-    doc: "Sitewide banner notice.",
+    doc: "An html notice to print at the top of the page, e.g. to identify dev/test versions of the app.",
     format: String,
     nullable: true,
     default: null,
@@ -166,7 +166,7 @@ var config = convict({
   },
   storageApiKey: {
     // Not yet used in deployments, so no validation function yet.
-    doc: "API key for storage.",
+    doc: "Api key allowing access to storage api, needs to match what's in storage api env.",
     default: null,
     env: "STORAGE_API_KEY",
   },
