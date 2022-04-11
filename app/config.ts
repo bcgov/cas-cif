@@ -68,13 +68,12 @@ var config = convict({
     env: "NAMESPACE",
   },
   sessionSecret: {
-    doc: "Secret used for cookie sessions.",
+    doc: "Secret used to encrypt session cookies.",
     format: function check(val) {
-      if (val.length < 24) {
-        throw new Error(
-          `Invalid sessionSecret: ${val}. Must be at least 24 characaters. length: ${val.length}`
-        );
-      }
+      if (typeof val !== typeof String())
+        throw new Error("sessionSecret must be of type string.");
+      if (val.length < 24)
+        throw new Error("sessionSecret must be at least 24 characters");
     },
     default: crypto.randomBytes(36).toString(),
     nullable: false,
