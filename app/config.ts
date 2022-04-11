@@ -177,6 +177,11 @@ var config = convict({
     nullable: true,
     env: "ENABLE_MOCK_AUTH",
   },
+  mockAuthCookie: {
+    default: "mocks.auth",
+    format: String,
+    env: "MOCK_AUTH_COOKIE",
+  },
   showKcLogin: {
     doc: "Show the keycloak login page.",
     default: false,
@@ -223,8 +228,6 @@ if (config.get("namespace") && config.get("cifRole")) {
 }
 
 config.validate({ allowed: "strict" });
-
-export const MOCK_AUTH_COOKIE = "mocks.auth";
 
 export default config;
 // For use in .js files

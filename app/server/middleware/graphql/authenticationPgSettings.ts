@@ -3,12 +3,12 @@ import { getUserGroups } from "../../helpers/userGroupAuthentication";
 import groupData from "../../../data/groups.json";
 import { isAuthenticated } from "@bcgov-cas/sso-express";
 import type { Request } from "express";
-import { MOCK_AUTH_COOKIE } from "../../args";
 import config from "../../../config";
 
 const allowCypressForRole = (roleName: string, req: Request) => {
   return (
-    config.get("enableMockAuth") && req.cookies?.[MOCK_AUTH_COOKIE] === roleName
+    config.get("enableMockAuth") &&
+    req.cookies?.[config.get("mockAuthCookie")] === roleName
   );
 };
 
