@@ -7,7 +7,7 @@ import compiledAttachmentsQuery, {
   attachmentsQuery,
 } from "__generated__/attachmentsQuery.graphql";
 
-jest.mock("next/router");
+jest.mock("next/dist/client/router");
 
 const defaultQueryResolver = {
   Query() {
@@ -44,11 +44,11 @@ const pageTestingHelper = new PageTestingHelper<attachmentsQuery>({
 
 describe("The project's attachment page", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.resetModules();
     pageTestingHelper.reinit();
   });
   it("renders a table with all the attachments", () => {
-    mocked(useRouter).mockReturnValueOnce({
+    mocked(useRouter).mockReturnValue({
       query: {},
     } as any);
 
@@ -59,11 +59,20 @@ describe("The project's attachment page", () => {
     expect(screen.getAllByRole("row")).toHaveLength(5);
   });
   it("has a button to upload an attachment", () => {
-    mocked(useRouter).mockReturnValueOnce({ query: {} } as any);
+    const mockPush = jest.fn();
+    mocked(useRouter).mockReturnValue({
+      query: {},
+      push: mockPush,
+    } as any);
 
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     screen.getByText("Upload New Attachment").click();
-    expect(1).toBe(2);
+
+    expect(mockPush).toHaveBeenCalledWith(
+      "/cif/project/[project]/upload-attachment?project=test-cif-project",
+      expect.anything(),
+      expect.anything()
+    );
   });
 });
