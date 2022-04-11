@@ -225,7 +225,11 @@ export function ProjectRevision({
         <header>
           <h2>Review and Submit Project</h2>
         </header>
-
+        <h3>Project Overview</h3>
+        {Object.keys(query.projectRevision.projectFormChange.newFormData)
+          .length === 0 ? (
+          "Project overview not added"
+        ) : (
         <FormBase
           tagName={"dl"}
           theme={readOnlyTheme}
@@ -237,6 +241,14 @@ export function ProjectRevision({
             form: query.projectRevision.projectFormChange.newFormData,
           }}
         />
+        )}
+        <h3>Project Contacts</h3>
+        {"contactId" in
+          query.projectRevision.projectContactFormChanges.edges[0].node
+            .newFormData ===
+        false ? (
+          "Project contacts not added"
+        ) : (
         <FormBase
           tagName={"dl"}
           theme={readOnlyTheme}
@@ -248,7 +260,13 @@ export function ProjectRevision({
             form: query.projectRevision.projectFormChange.newFormData,
           }}
         />
+        )}
 
+        <h3>Project Managers</h3>
+        {!query.projectRevision.projectManagerFormChangesByLabel.edges[0].node
+          .formChange ? (
+          "Project contacts not added"
+        ) : (
         <FormBase
           tagName={"dl"}
           theme={readOnlyTheme}
@@ -260,6 +278,7 @@ export function ProjectRevision({
             form: query.projectRevision.projectFormChange.newFormData,
           }}
         />
+        )}
 
         {/* <h2>Project Contacts</h2>
         {makeJSX(contactIds, query.allContacts.edges)}
@@ -287,6 +306,9 @@ export function ProjectRevision({
       <style jsx>{`
         div :global(.pg-button) {
           margin-right: 3em;
+        }
+        h3 {
+          margin: 1em 0 0 0;
         }
       `}</style>
     </DefaultLayout>
