@@ -34,6 +34,7 @@ const defaultMockResolver = {
   ProjectRevision() {
     return {
       id: "mock-proj-rev-id",
+      projectByProjectId: null,
       projectFormChange: {
         id: "mock-project-form-id",
         newFormData: {
@@ -101,7 +102,7 @@ describe("The Create Project page", () => {
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
-      ).getByText(/add a project/i)
+      ).getByText(/Add a Project/i)
     ).toBeInTheDocument();
 
     expect(

@@ -25,7 +25,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
-    cy.findByText(/add project managers/i).click();
+    cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/managers");
     cy.injectAxe();
     cy.checkA11y("main", null, logAxeResults);
@@ -34,7 +34,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
-    cy.findByText(/add project contacts/i).click();
+    cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/contacts");
 
     cy.findByRole("button", { name: /add/i }).click();
@@ -72,7 +72,7 @@ describe("the new project page", () => {
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 
-    cy.findByText(/add project contacts/i).click();
+    cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/contacts");
 
     cy.findByRole("button", { name: /add/i }).click();
@@ -111,7 +111,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
-    cy.findByText(/add project managers/i).click();
+    cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/managers");
 
     cy.findByLabelText(/tech team primary/i).click();
@@ -128,7 +128,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
-    cy.findByText(/add project contacts/i).click();
+    cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/contacts");
 
     cy.findByLabelText(/Primary contact/i).click();
@@ -168,9 +168,13 @@ describe("the new project page", () => {
       .type("Bar");
 
     cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Overview Form",
+      variant: "editing",
+    });
     cy.findByRole("button", { name: /submit/i }).click();
     cy.contains("Review and Submit Project");
-    cy.findByText(/add project managers/i).click();
+    cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/managers");
 
     cy.findByLabelText(/tech team secondary/i).should(
@@ -188,7 +192,7 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /submit/i }).click();
     cy.contains("Review and Submit Project");
-    cy.findByText(/add project contacts/i).click();
+    cy.findByText(/Edit project contacts/i).click();
     cy.url().should("include", "/form/contacts");
 
     cy.get("label")
@@ -212,9 +216,9 @@ describe("the new project page", () => {
 
     // Check the project was updated
     cy.findByLabelText(/Project Name/i).should("have.value", "Bar");
-    cy.findByText(/add project managers/i).click();
+    cy.findByText(/Edit project managers/i).click();
     cy.findByLabelText(/tech team secondary/i).should("not.have.value");
-    cy.findByText(/add project contacts/i).click();
+    cy.findByText(/Edit project contacts/i).click();
     cy.get("fieldset").find("input").should("have.length", 1);
   });
 });

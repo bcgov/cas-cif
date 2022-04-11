@@ -33,6 +33,9 @@ const defaultMockResolver = {
   ProjectRevision() {
     return {
       id: "mock-proj-rev-id",
+      projectByProjectId: {
+        proposalReference: "001",
+      },
       projectFormChange: {
         id: "mock-project-form-id",
         newFormData: {
@@ -84,10 +87,10 @@ describe("The Project Overview page", () => {
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
-      ).getByText(/add a project/i)
+      ).getByText(/Editing: 001/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/add project overview/i).closest("li")
+      screen.getByText(/Edit project overview/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
 
