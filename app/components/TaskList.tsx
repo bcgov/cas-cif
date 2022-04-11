@@ -54,7 +54,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               className="bordered"
             >
               <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
-                Add project overview
+                <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
               </Link>
             </li>
           </ul>
