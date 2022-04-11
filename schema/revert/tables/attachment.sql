@@ -1,7 +1,7 @@
 -- Revert cif:tables/attachment from pg
 
-BEGIN;
+begin;
 
 drop table cif.attachment;
 
-COMMIT;
+commit;

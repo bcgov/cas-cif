@@ -12,7 +12,7 @@ create table cif.attachment
   file_type varchar(100),
   file_size varchar(100),
   project_id integer not null references cif.project(id),
-  project_status_id integer not null references cif.project_status(id)
+  project_status_id integer references cif.project_status(id)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'attachment');
@@ -26,14 +26,12 @@ begin
 -- Grant cif_internal permissions
 perform cif_private.grant_permissions('select', 'attachment', 'cif_internal');
 perform cif_private.grant_permissions('insert', 'attachment', 'cif_internal');
-perform cif_private.grant_permissions('update', 'attachment', 'cif_admin',
-  ARRAY['file', 'file_name']);
+perform cif_private.grant_permissions('update', 'attachment', 'cif_internal');
 
 -- Grant cif_admin permissions
 perform cif_private.grant_permissions('select', 'attachment', 'cif_admin');
 perform cif_private.grant_permissions('insert', 'attachment', 'cif_admin');
-perform cif_private.grant_permissions('update', 'attachment', 'cif_admin',
-  ARRAY['file', 'file_name']);
+perform cif_private.grant_permissions('update', 'attachment', 'cif_admin');
 
 end
 $grant$;
