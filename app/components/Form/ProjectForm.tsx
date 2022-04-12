@@ -17,8 +17,14 @@ interface Props {
   projectRevision: ProjectForm_projectRevision$key;
   onSubmit: () => void;
 }
-
-export const createProjectSchema = (tradeName) => {
+// You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
+export const createProjectSchema = (
+  tradeName,
+  legalName?,
+  bcRegistryId?,
+  rfpStream?,
+  projectStatus?
+) => {
   return {
     "ui:order": [
       "fundingStreamRfpId",
@@ -56,6 +62,10 @@ export const createProjectSchema = (tradeName) => {
       "ui:col-md": 12,
       "bcgov:size": "small",
       "ui:widget": "SearchWidget",
+      "ui:options": {
+        text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
+        title: "Legal Operator Name and BC Registry ID",
+      },
     },
     operatorTradeName: {
       "ui:col-md": 12,
@@ -70,12 +80,18 @@ export const createProjectSchema = (tradeName) => {
       "ui:widget": "SelectRfpWidget",
       "ui:col-md": 12,
       "bcgov:size": "small",
+      "ui:options": {
+        text: `${rfpStream}`,
+      },
     },
     projectStatusId: {
       "ui:placeholder": "Select a Project Status",
       "ui:widget": "SelectProjectStatusWidget",
       "ui:col-md": 12,
       "bcgov:size": "small",
+      "ui:options": {
+        text: `${projectStatus}`,
+      },
     },
   };
 };

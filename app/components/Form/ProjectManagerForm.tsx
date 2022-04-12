@@ -24,7 +24,7 @@ interface Props extends FormComponentProps {
   disabled?: boolean;
 }
 
-export const createProjectManagerUiSchema = () => {
+export const createProjectManagerUiSchema = (contact?, role?) => {
   return {
     cifUserId: {
       "ui:placeholder": "Select a Project Manager",
@@ -33,9 +33,28 @@ export const createProjectManagerUiSchema = () => {
       "ui:widget": "SearchWidget",
       "ui:options": {
         label: false,
+        title: `${role}`,
+        text: `${contact}`,
       },
     },
   };
+};
+
+export const createProjectManagerSchema = (allCifUsers) => {
+  const schema = projectManagerSchema;
+  schema.properties.cifUserId = {
+    ...schema.properties.cifUserId,
+    anyOf: allCifUsers.edges.map(({ node }) => {
+      return {
+        type: "number",
+        title: node.fullName,
+        enum: [node.rowId],
+        value: node.rowId,
+      } as JSONSchema7Definition;
+    }),
+  };
+
+  return schema as JSONSchema7;
 };
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
@@ -78,20 +97,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Dynamically build the schema from the list of cif_users
   const managerSchema = useMemo(() => {
-    const schema = projectManagerSchema;
-    schema.properties.cifUserId = {
-      ...schema.properties.cifUserId,
-      anyOf: allCifUsers.edges.map(({ node }) => {
-        return {
-          type: "number",
-          title: node.fullName,
-          enum: [node.rowId],
-          value: node.rowId,
-        } as JSONSchema7Definition;
-      }),
-    };
-
-    return schema as JSONSchema7;
+    return createProjectManagerSchema(allCifUsers);
   }, [allCifUsers]);
 
   const uiSchema = createProjectManagerUiSchema();

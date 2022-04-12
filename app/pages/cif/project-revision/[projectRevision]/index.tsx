@@ -72,8 +72,7 @@ const pageQuery = graphql`
           node {
             rowId
             id
-            familyName
-            givenName
+            fullName
           }
         }
       }
@@ -92,6 +91,7 @@ const pageQuery = graphql`
             rowId
             legalName
             tradeName
+            bcRegistryId
           }
         }
       }
@@ -129,17 +129,65 @@ export function ProjectRevision({
     );
   }, [query]);
 
-  console.log("query", query);
+  const rfpStream = useMemo(() => {
+    return query.allFundingStreams.edges.find(
+      ({ node }) =>
+        node.rowId ===
+        query.projectRevision.projectFormChange.newFormData.fundingStreamRfpId
+    );
+  }, [query]);
 
-  console.log("selectedOperator", selectedOperator);
-  //don't need the usememo because no rerender
-  const projectUiSchema = createProjectSchema(
-    selectedOperator ? selectedOperator.node.tradeName : ""
+  const projectStatus = useMemo(() => {
+    return query.allProjectStatuses.edges.find(
+      ({ node }) =>
+        node.rowId ===
+        query.projectRevision.projectFormChange.newFormData.projectStatusId
+    );
+  }, [query]);
+
+  const selectedContact = useMemo(() => {
+    const selectedContactNode =
+      query.projectRevision.projectContactFormChanges.edges.find(
+        ({ node }) => node.newFormData.contactIndex === 1
+      );
+
+    return query.allContacts.edges.find(
+      ({ node }) =>
+        node.rowId === selectedContactNode.node.newFormData.contactId
+    );
+  }, [query]);
+
+  // const techTeamPrimary = useMemo(() => {
+  //   const techTeamPrimaryNode =
+  //     query.projectRevision.projectManagerFormChangesByLabel.edges.find(
+  //       ({ node }) => node.formChange.newFormData.projectManagerLabelId === 1
+  //     );
+
+  //   return query.allContacts.edges.find(
+  //     ({ node }) =>
+  //       node.rowId === techTeamPrimaryNode.node.formChange.newFormData.cifUserId
+  //   );
+  // }, [query]);
+
+  console.log(
+    "query.projectRevision.projectManagerFormChangesByLabel",
+    query.projectRevision.projectManagerFormChangesByLabel
   );
 
-  const projectContactsUiSchema = createProjectContactUiSchema();
+  //don't need the usememo because no rerender
+  const projectUiSchema = createProjectSchema(
+    selectedOperator ? selectedOperator.node.tradeName : "",
+    selectedOperator ? selectedOperator.node.legalName : "",
+    selectedOperator ? selectedOperator.node.bcRegistryId : "",
+    rfpStream ? rfpStream.node.name : "",
+    projectStatus ? projectStatus.node.name : ""
+  );
 
-  const projectManagerUiSchema = createProjectManagerUiSchema();
+  const projectContactsUiSchema = createProjectContactUiSchema(
+    selectedContact ? selectedContact.node.fullName : ""
+  );
+
+  // const projectManagerUiSchema = createProjectManagerUiSchema();
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
@@ -219,6 +267,11 @@ export function ProjectRevision({
   // console.log("primaryContact", primaryContact);
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
+  console.log(
+    "contacts",
+    "contactId" in
+      query.projectRevision.projectContactFormChanges.edges[0].node.newFormData
+  );
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <div>
@@ -230,18 +283,57 @@ export function ProjectRevision({
           .length === 0 ? (
           "Project overview not added"
         ) : (
-        <FormBase
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          schema={projectSchema}
-          uiSchema={projectUiSchema}
-          formData={query.projectRevision.projectFormChange.newFormData}
-          formContext={{
-            query,
-            form: query.projectRevision.projectFormChange.newFormData,
-          }}
-        />
+          <FormBase
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            schema={projectSchema}
+            uiSchema={projectUiSchema}
+            formData={query.projectRevision.projectFormChange.newFormData}
+            formContext={{
+              query,
+              form: query.projectRevision.projectFormChange.newFormData,
+            }}
+          />
         )}
+
+        <h3>Project Managers</h3>
+        {!query.projectRevision.projectManagerFormChangesByLabel.edges[0].node
+          .formChange
+          ? "Project managers not added"
+          : query.projectRevision.projectManagerFormChangesByLabel.edges.map(
+              ({ node }) => {
+                console.log("node is", node);
+                console.log(
+                  "query.projectRevision.projectManagerFormChangesByLabel.edges",
+                  query.projectRevision.projectManagerFormChangesByLabel.edges
+                );
+                const selectedManager = query.allCifUsers.edges.find(
+                  (manager) =>
+                    manager.node.rowId === node.formChange.newFormData.cifUserId
+                );
+
+                return (
+                  <FormBase
+                    key={node.formChange.newFormData.cifUserId}
+                    tagName={"dl"}
+                    theme={readOnlyTheme}
+                    schema={projectManagerSchema}
+                    uiSchema={createProjectManagerUiSchema(
+                      selectedManager.node.fullName,
+                      node.projectManagerLabel.label
+                    )}
+                    formData={
+                      query.projectRevision.projectManagerFormChangesByLabel
+                    }
+                    formContext={{
+                      query,
+                      form: query.projectRevision.projectFormChange.newFormData,
+                    }}
+                  />
+                );
+              }
+            )}
+
         <h3>Project Contacts</h3>
         {"contactId" in
           query.projectRevision.projectContactFormChanges.edges[0].node
@@ -249,35 +341,17 @@ export function ProjectRevision({
         false ? (
           "Project contacts not added"
         ) : (
-        <FormBase
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          schema={projectContactSchema}
-          uiSchema={projectContactsUiSchema}
-          formData={query.projectRevision.projectFormChange.newFormData}
-          formContext={{
-            query,
-            form: query.projectRevision.projectFormChange.newFormData,
-          }}
-        />
-        )}
-
-        <h3>Project Managers</h3>
-        {!query.projectRevision.projectManagerFormChangesByLabel.edges[0].node
-          .formChange ? (
-          "Project contacts not added"
-        ) : (
-        <FormBase
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          schema={projectManagerSchema}
-          uiSchema={projectManagerUiSchema}
-          formData={query.projectRevision.projectFormChange.newFormData}
-          formContext={{
-            query,
-            form: query.projectRevision.projectFormChange.newFormData,
-          }}
-        />
+          <FormBase
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            schema={projectContactSchema}
+            uiSchema={projectContactsUiSchema}
+            formData={query.projectRevision.projectFormChange.newFormData}
+            formContext={{
+              query,
+              form: query.projectRevision.projectContactFormChanges,
+            }}
+          />
         )}
 
         {/* <h2>Project Contacts</h2>
