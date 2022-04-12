@@ -13,9 +13,6 @@ const pageQuery = graphql`
   query uploadAttachmentQuery($project: ID!) {
     session {
       ...DefaultLayout_session
-      cifUserBySub {
-        rowId
-      }
     }
     project(id: $project) {
       id
@@ -25,7 +22,9 @@ const pageQuery = graphql`
   }
 `;
 
-function Upload({ preloadedQuery }: RelayProps<{}, uploadAttachmentQuery>) {
+export function UploadAttachment({
+  preloadedQuery,
+}: RelayProps<{}, uploadAttachmentQuery>) {
   const { session, project } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
@@ -44,9 +43,7 @@ function Upload({ preloadedQuery }: RelayProps<{}, uploadAttachmentQuery>) {
           fileName: file.name,
           fileSize: bytesToSize(file.size),
           fileType: file.type,
-          createdBy: session.cifUserBySub.rowId,
           projectId: project.rowId,
-          projectStatusId: 1, // TODO set proper default
         },
       },
     };
@@ -66,10 +63,12 @@ function Upload({ preloadedQuery }: RelayProps<{}, uploadAttachmentQuery>) {
           <span>Uploading file...</span>
         </>
       ) : (
-        <FilePicker onChange={saveAttachment}>Upload</FilePicker>
+        <FilePicker onChange={saveAttachment} name={"upload-attachment"}>
+          Upload Attachment
+        </FilePicker>
       )}
     </DefaultLayout>
   );
 }
 
-export default withRelay(Upload, pageQuery, withRelayOptions);
+export default withRelay(UploadAttachment, pageQuery, withRelayOptions);

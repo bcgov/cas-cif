@@ -104,7 +104,7 @@ type Attachment implements Node {
   """
   The id of the project_status (cif.project_status.id) that the attachment references
   """
-  projectStatusId: Int!
+  projectStatusId: Int
 
   """Unique ID for the attachment"""
   rowId: Int!
@@ -231,6 +231,9 @@ input AttachmentFilter {
   """Filter by the object’s `projectStatusByProjectStatusId` relation."""
   projectStatusByProjectStatusId: ProjectStatusFilter
 
+  """A related `projectStatusByProjectStatusId` exists."""
+  projectStatusByProjectStatusIdExists: Boolean
+
   """Filter by the object’s `projectStatusId` field."""
   projectStatusId: IntFilter
 
@@ -283,7 +286,7 @@ input AttachmentInput {
   """
   The id of the project_status (cif.project_status.id) that the attachment references
   """
-  projectStatusId: Int!
+  projectStatusId: Int
 
   """updated at timestamp"""
   updatedAt: Datetime
