@@ -14,6 +14,7 @@ import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
 import { graphqlUploadExpress } from "graphql-upload";
 import config from "../config";
+import downloadFile from "./middleware/download";
 
 const port = config.get("port");
 const dev = config.get("env") !== "production";
@@ -53,6 +54,24 @@ app.prepare().then(async () => {
   server.use(graphqlUploadExpress());
 
   server.use(graphQlMiddleware());
+
+  server.get("/download/:uuid", async (req, res) => {
+    const uuid = String(req.params.uuid);
+    const file = await downloadFile(uuid);
+    res.setHeader("Content-Encoding", "gzip");
+    res.setHeader("Content-Disposition", "attachment; filename=download.zip");
+    res.setHeader("Content-Length", file.length);
+    res.end(file);
+  });
+
+  // server.post("/download", async (req, res) => {
+  //   const uuid = String(req.body.uuid);
+  //   const file = await downloadFile(uuid);
+  //   res.setHeader("Content-Type", "application/zip");
+  //   res.setHeader("Content-Disposition", "attachment; filename=download.zip");
+  //   res.setHeader("Content-Length", file.length);
+  //   res.end(file);
+  // });
 
   server.get("*", async (req, res) => {
     return handle(req, res);
