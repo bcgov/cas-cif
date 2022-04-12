@@ -6,10 +6,10 @@ const config = require("./config");
 const nextConfig = {
   cssModules: true,
   webpack: (inputConfig) => {
-    // inputConfig.resolve.fallback = {
-    //   ...inputConfig.resolve.fallback,
-    //   fs: false,
-    // };
+    inputConfig.resolve.fallback = {
+      ...inputConfig.resolve.fallback,
+      fs: false,
+    };
     const configWithPlugins = { ...inputConfig };
     configWithPlugins.plugins = inputConfig.plugins || [];
 
