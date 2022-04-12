@@ -1,14 +1,23 @@
+import logging
 from os import path
 from minio import Minio
 from fastapi import HTTPException
 from app.config import MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_HOST_URL
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 
+logger = logging.getLogger("attachments")
 
 minio_client = Minio(MINIO_HOST_URL,
-                  access_key=MINIO_ACCESS_KEY,
-                  secret_key=MINIO_SECRET_KEY,
-                  secure=False)
+                     access_key=MINIO_ACCESS_KEY,
+                     secret_key=MINIO_SECRET_KEY,
+                     secure=False)
+
+try:
+    minio_client.list_buckets()
+    logger.info(f'Successfully connected to MINIO server on {MINIO_HOST_URL}')
+except Exception as exc:
+    logger.error(
+        "Error connecting to MINIO server on {MINIO_HOST_URL}: " + str(exc))
 
 
 def s3_upload_raw_file(bucket_name: str, file_name: str, data: object, length: int):
@@ -17,14 +26,13 @@ def s3_upload_raw_file(bucket_name: str, file_name: str, data: object, length: i
     """
     try:
         result = minio_client.put_object(bucket_name=bucket_name,
-                                          object_name=file_name,
-                                          data=data,
-                                          length=length)
+                                         object_name=file_name,
+                                         data=data,
+                                         length=length)
         return result
     except Exception as exc:
         raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f'Unknown Error During Upload Process {exc}')
-
 
 
 def s3_upload_file(destination_file_name: str, local_file_path: str, content_type: str, bucket_name: str):
@@ -66,7 +74,8 @@ def s3_list_directory(bucket_name: str, folder_name: str):
     """
     try:
         print('listing files for directory:', folder_name)
-        files = minio_client.list_objects(bucket_name, prefix=folder_name, recursive=True)
+        files = minio_client.list_objects(
+            bucket_name, prefix=folder_name, recursive=True)
         return files
     except Exception as exc:
         print('error listing directory:', exc)

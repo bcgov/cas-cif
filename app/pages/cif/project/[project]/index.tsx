@@ -8,6 +8,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
 import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import Link from "next/link";
 
 export const pageQuery = graphql`
   query ProjectOverviewQuery($project: ID!) {
@@ -15,6 +16,7 @@ export const pageQuery = graphql`
       ...DefaultLayout_session
     }
     project(id: $project) {
+      id
       rowId
       projectName
       proposalReference
@@ -174,6 +176,19 @@ export function ProjectViewPage({
           <dd>n/a</dd>
         )}
       </dl>
+
+      <dt>Project Attachments</dt>
+      <dd>
+        <Link
+          href={{
+            pathname: "/cif/project/[project]/attachments",
+            query: { project: project.id },
+          }}
+        >
+          <a>View Attachments</a>
+        </Link>
+      </dd>
+
       <style jsx>{`
         header {
           display: flex;
