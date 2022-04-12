@@ -10,8 +10,6 @@ const pageQuery = graphql`
       ...DefaultLayout_session
     }
     attachment(id: $attachment) {
-      id
-      description
       fileName
       fileType
       fileSize
@@ -31,11 +29,20 @@ function Attachment({ preloadedQuery }: RelayProps<{}, AttachmentQuery>) {
   console.log(attachment);
   return (
     <DefaultLayout session={session}>
-      <h2>{attachment.fileName}</h2>
-      <h2>{attachment.fileType}</h2>
-      <h2>{attachment.fileSize}</h2>
-      <h2>{attachment.projectStatusByProjectStatusId.name}</h2>
-      <h2>{attachment.fileName}</h2>
+      <dl>
+        <dt>File Name</dt>
+        <dd>{attachment.fileName}</dd>
+        <dt>File Type</dt>
+        <dd>{attachment.fileType}</dd>
+        <dt>File Size</dt>
+        <dd>{attachment.fileSize}</dd>
+        <dt>Created By</dt>
+        <dd>{attachment.cifUserByCreatedBy.fullName}</dd>
+        <dt>Created At</dt>
+        <dd>{attachment.createdAt}</dd>
+        <dt>Project Status</dt>
+        <dd>{attachment.projectStatusByProjectStatusId.name}</dd>
+      </dl>
     </DefaultLayout>
   );
 }

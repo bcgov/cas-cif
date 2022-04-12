@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import downloadFile from "lib/helpers/download";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { getAttachmentViewPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
@@ -35,12 +35,6 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
     attachment
   );
 
-  const router = useRouter();
-
-  const handleViewClick = () => {
-    router.push(getAttachmentViewPageRoute(id));
-  };
-
   const handleDownloadClick = () => {
     downloadFile(file);
   };
@@ -53,7 +47,7 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
       <td>{fullName}</td>
       <td>{createdAt}</td>
       <td>
-        <Button onClick={handleViewClick}>View</Button>
+        <Link href={getAttachmentViewPageRoute(id)}>View</Link>
         <Button onClick={handleDownloadClick} disabled>
           Download
         </Button>
