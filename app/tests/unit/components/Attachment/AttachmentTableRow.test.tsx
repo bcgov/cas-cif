@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
 import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
+import { useRouter } from "next/dist/client/router";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledAttachmentTableRowTestQuery, {
@@ -9,7 +9,7 @@ import compiledAttachmentTableRowTestQuery, {
 } from "__generated__/AttachmentTableRowTestQuery.graphql";
 import { AttachmentTableRow_attachment } from "__generated__/AttachmentTableRow_attachment.graphql";
 
-jest.mock("next/router");
+jest.mock("next/dist/client/router");
 
 const testQuery = graphql`
   query AttachmentTableRowTestQuery @relay_test_operation {
@@ -89,9 +89,10 @@ describe("The Attachment table row component", () => {
     const viewButton = screen.getByText("View");
     viewButton.click();
 
-    expect(routerPush).toHaveBeenCalledWith({
-      pathname: "/cif/attachments/[attachment]",
-      query: { attachment: "Cif Test Attachment ID" },
-    });
+    expect(routerPush).toHaveBeenCalledWith(
+      "/cif/attachments/[attachment]?attachment=Cif+Test+Attachment+ID",
+      expect.anything(),
+      expect.anything()
+    );
   });
 });
