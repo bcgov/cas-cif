@@ -24,7 +24,7 @@ convict.addFormat({
 var config = convict({
   env: {
     doc: "Node environment.",
-    format: ["development", "production"],
+    format: ["development", "test", "production"],
     default: "development",
     env: "NODE_ENV",
   },
