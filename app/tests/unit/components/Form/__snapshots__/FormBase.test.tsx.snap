@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The FormBase component renders a test schema 1`] = `
+exports[`The FormBase component renders a test schema with the default theme 1`] = `
 <div>
   <form
-    class="rjsf"
+    class="jsx-792729378 "
     novalidate=""
   >
     <div
@@ -49,6 +49,50 @@ exports[`The FormBase component renders a test schema 1`] = `
                 />
               </div>
             </fieldset>
+          </div>
+        </div>
+      </div>
+      <div
+        class="jsx-3883368021 error-div"
+      />
+    </div>
+  </form>
+</div>
+`;
+
+exports[`The FormBase component renders a test schema with the readonly theme 1`] = `
+<div>
+  <form
+    class="jsx-792729378 "
+    novalidate=""
+  >
+    <div
+      class="jsx-3883368021"
+    >
+      <div
+        class="sc-jRQBWg cDwDrH pg-grid-container"
+        cols="10"
+      >
+        <div
+          class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+        >
+          <div
+            class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+            width="100"
+          >
+            <div
+              class="jsx-3883368021"
+            >
+              <dt>
+                field
+              </dt>
+              <dd>
+                test
+              </dd>
+              <div
+                class="jsx-3883368021 error-div"
+              />
+            </div>
           </div>
         </div>
       </div>
