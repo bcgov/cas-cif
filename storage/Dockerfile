@@ -6,8 +6,10 @@ RUN useradd cif -M -G root -u 1021 && chmod -R 775 /storage \
   && chown -R cif:root /storage \
   && apt-get update
 
-COPY . ./
+COPY requirements.txt ./requirements.txt
 RUN pip install -r ./requirements.txt
+
+COPY . ./
 
 ENV PYTHONPATH=/storage
 
