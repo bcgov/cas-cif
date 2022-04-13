@@ -16,7 +16,9 @@ export const getDatabaseUrl = () => {
   databaseURL += PGUSER;
 
   if (config.get("pgPassword")) {
-    databaseURL += `:${encodeURIComponent(config.get("pgPassword").toString())}`;
+    databaseURL += `:${encodeURIComponent(
+      config.get("pgPassword").toString()
+    )}`;
   }
 
   databaseURL += "@";
