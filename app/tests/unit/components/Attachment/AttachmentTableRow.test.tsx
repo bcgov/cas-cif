@@ -26,7 +26,6 @@ const mockPayload = {
     const result: AttachmentTableRow_attachment = {
       " $fragmentType": "AttachmentTableRow_attachment",
       id: "Cif Test Attachment ID",
-      file: "some file data",
       fileName: "test.jpg",
       fileType: "image/jpeg",
       fileSize: "123.45 TB",
@@ -60,9 +59,15 @@ const componentTestingHelper =
     getPropsFromTestQuery: (data) => ({ attachment: data.query.attachment }),
   });
 
+const routerPush = jest.fn();
+
 describe("The Attachment table row component", () => {
   beforeEach(() => {
-    //jest.resetAllMocks();
+    jest.resetAllMocks();
+    mocked(useRouter).mockReturnValue({
+      push: routerPush,
+    } as any);
+
     componentTestingHelper.reinit();
   });
 
@@ -77,12 +82,6 @@ describe("The Attachment table row component", () => {
     expect(screen.getByText("2019-01-01")).toBeInTheDocument();
   });
   it("has a working view button", () => {
-    const routerPush = jest.fn();
-
-    mocked(useRouter).mockReturnValueOnce({
-      push: routerPush,
-    } as any);
-
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -91,6 +90,19 @@ describe("The Attachment table row component", () => {
 
     expect(routerPush).toHaveBeenCalledWith(
       "/cif/attachments/[attachment]?attachment=Cif+Test+Attachment+ID",
+      expect.anything(),
+      expect.anything()
+    );
+  });
+  it("has a working download button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const downloadButton = screen.getByText("Download");
+    downloadButton.click();
+
+    expect(routerPush).toHaveBeenCalledWith(
+      "/download/Cif%20Test%20Attachment%20ID",
       expect.anything(),
       expect.anything()
     );
