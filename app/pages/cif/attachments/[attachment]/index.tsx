@@ -17,9 +17,6 @@ const pageQuery = graphql`
       cifUserByCreatedBy {
         fullName
       }
-      projectStatusByProjectStatusId {
-        name
-      }
     }
   }
 `;
@@ -40,8 +37,6 @@ function Attachment({ preloadedQuery }: RelayProps<{}, AttachmentQuery>) {
         <dd>{attachment.cifUserByCreatedBy.fullName}</dd>
         <dt>Created At</dt>
         <dd>{attachment.createdAt}</dd>
-        <dt>Project Status</dt>
-        <dd>{attachment.projectStatusByProjectStatusId.name}</dd>
       </dl>
     </DefaultLayout>
   );
