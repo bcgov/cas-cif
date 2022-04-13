@@ -181,7 +181,7 @@ var config = convict({
     format: String,
     env: "MOCK_AUTH_COOKIE",
   },
-  showKcLogin: {
+  showKCLogin: {
     doc: "Show the keycloak login page.",
     default: false,
     format: "Boolean",
