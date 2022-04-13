@@ -5,16 +5,9 @@ const dotenv = require("dotenv");
 
 // load values from .env
 dotenv.config();
-/**
- * TODO:
- * - replace .env with json files?
- * - handle conditionals
- * - next.config.js use of dotenv-webpack
- * - handle --as-role
- * - clear out /args.ts
- * - decide on whether conditional fails error or are overwritten accordingly (if possible)
- */
+
 convict.addFormats(convictFormatWithValidator);
+
 convict.addFormat({
   name: "host",
   validate: function (val) {
@@ -59,9 +52,7 @@ var config = convict({
         !val.endsWith("-test") &&
         !val.endsWith("-prod")
       ) {
-        throw new Error(
-          `Invalid namespace: ${val}. Must end with "-dev", "-test", or "-prod".`
-        );
+        throw new Error(`Namespace must end with "-dev", "-test", or "-prod".`);
       }
     },
     default: "",
