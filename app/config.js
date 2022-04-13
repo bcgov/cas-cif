@@ -1,7 +1,7 @@
-import convict from "convict";
-import convictFormatWithValidator from "convict-format-with-validator";
-import crypto from "crypto";
-import dotenv from "dotenv";
+const convict = require("convict");
+const convictFormatWithValidator = require("convict-format-with-validator");
+const crypto = require("crypto");
+const dotenv = require("dotenv");
 
 // load values from .env
 dotenv.config();
@@ -228,6 +228,4 @@ if (config.get("namespace") && config.get("cifRole")) {
 
 config.validate({ allowed: "strict" });
 
-export default config;
-// For use in .js files
 module.exports = config;
