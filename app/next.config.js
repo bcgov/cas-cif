@@ -1,5 +1,3 @@
-const path = require("path");
-const Dotenv = require("dotenv-webpack");
 const { withSentryConfig } = require("@sentry/nextjs");
 const config = require("./config");
 
@@ -12,15 +10,6 @@ const nextConfig = {
     };
     const configWithPlugins = { ...inputConfig };
     configWithPlugins.plugins = inputConfig.plugins || [];
-
-    configWithPlugins.plugins = [
-      ...configWithPlugins.plugins,
-      // Read the .env file
-      new Dotenv({
-        path: path.join(__dirname, ".env"),
-        systemvars: true,
-      }),
-    ];
 
     return configWithPlugins;
   },
