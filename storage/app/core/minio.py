@@ -83,6 +83,19 @@ def s3_list_directory(bucket_name: str, folder_name: str):
                             detail=f'Unknown Error Listing Directory {exc}')
 
 
+def s3_get_file_stats(bucket_name: str, object_name: str):
+    """
+    Gets the file stats object from s3 minio storage
+    """
+    try:
+        stats = minio_client.stat_object(bucket_name, object_name)
+        return stats
+    except Exception as exc:
+        print('error getting file stats: ', exc)
+        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f'Unknown Error Getting File Stats {exc}')
+
+
 def s3_get_file(bucket_name: str, object_name: str):
     """
     Gets a file from s3 minio storage

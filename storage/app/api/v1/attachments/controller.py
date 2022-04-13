@@ -1,21 +1,14 @@
-import os
 import io
 import sys
-import magic
-import shutil
 import uuid
 import logging
 import zipfile
-from os import path, replace
-from pathlib import Path
 from fastapi.responses import StreamingResponse, Response
-from tempfile import NamedTemporaryFile
 from app.schema import Attachment, Attachments
 from fastapi import UploadFile, HTTPException, Depends
-from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_415_UNSUPPORTED_MEDIA_TYPE
-from app.core.minio import s3_upload_file, s3_delete_file, s3_list_directory, s3_get_file, s3_upload_raw_file
-from app.utils import get_file_ext, get_file_name, generate_file_name
-from app.config import ATTACHMENTS_BUCKET_NAME, ALLOWED_FILE_EXTENSIONS
+from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
+from app.core.minio import s3_delete_file, s3_get_file, s3_get_file_stats, s3_upload_raw_file
+from app.config import ATTACHMENTS_BUCKET_NAME
 
 logger = logging.getLogger("attachments")
 
@@ -71,9 +64,15 @@ def download_attachment(uuid: str):
 
     try:
         bucket_path = ATTACHMENTS_BUCKET_NAME
+
+        stats = s3_get_file_stats(bucket_path, uuid)
         s3_response = s3_get_file(bucket_path, uuid)
 
-        response = StreamingResponse(s3_response_iterator(s3_response))
+        response = StreamingResponse(content=s3_response_iterator(s3_response))
+        response.headers.update({
+            'fastapi-content-length': str(stats.size),
+        })
+
         return response
     except Exception as error:
         logger.warning(error)
