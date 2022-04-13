@@ -3,7 +3,7 @@ app:
     content: <div class="alert alert-warning">This is the TEST environment.</div>
 
 nginx-sidecar:
-  hostName: cas-cif-test.apps.silver.devops.gov.bc.ca
+  hostName: test.cif.gov.bc.ca
 
 db:
   preUpgradeCommand: |
