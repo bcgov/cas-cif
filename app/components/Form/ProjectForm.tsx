@@ -72,7 +72,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   ) => {
     if (revision.projectFormChange.isUniqueValue === false) {
       errors.proposalReference.addError(
-        "A proposal with the same proposal reference already exists. Please specify a different proposal reference."
+        "This proposal reference already exists, please specify a different one."
       );
     }
 
