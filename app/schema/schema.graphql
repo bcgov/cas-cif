@@ -22131,6 +22131,8 @@ enum FormChangesOrderBy {
   PREVIOUS_FORM_CHANGE_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_AT_ASC
@@ -30214,6 +30216,9 @@ type ProjectProjectStatusesByAttachmentProjectIdAndProjectStatusIdManyToManyEdge
 
 """Table containing all the changes for a project revision"""
 type ProjectRevision implements Node {
+  """Explanation of why the revision was made"""
+  changeReason: String
+
   """Foreign key to the status of the project revision"""
   changeStatus: String
 
@@ -30689,6 +30694,9 @@ A condition to be used against `ProjectRevision` object types. All fields are
 tested for equality and combined with a logical ‘and.’
 """
 input ProjectRevisionCondition {
+  """Checks for equality with the object’s `changeReason` field."""
+  changeReason: String
+
   """Checks for equality with the object’s `changeStatus` field."""
   changeStatus: String
 
@@ -30717,6 +30725,9 @@ A filter to be used against `ProjectRevision` object types. All fields are combi
 input ProjectRevisionFilter {
   """Checks for all expressions in this list."""
   and: [ProjectRevisionFilter!]
+
+  """Filter by the object’s `changeReason` field."""
+  changeReason: StringFilter
 
   """Filter by the object’s `changeStatus` field."""
   changeStatus: StringFilter
@@ -30842,6 +30853,9 @@ type ProjectRevisionFormChangesByFormChangeProjectRevisionIdAndPreviousFormChang
 Represents an update to a `ProjectRevision`. Fields that are set will be updated.
 """
 input ProjectRevisionPatch {
+  """Explanation of why the revision was made"""
+  changeReason: String
+
   """Foreign key to the status of the project revision"""
   changeStatus: String
 
@@ -30913,6 +30927,8 @@ type ProjectRevisionsEdge {
 
 """Methods to use when ordering `ProjectRevision`."""
 enum ProjectRevisionsOrderBy {
+  CHANGE_REASON_ASC
+  CHANGE_REASON_DESC
   CHANGE_STATUS_ASC
   CHANGE_STATUS_BY_CHANGE_STATUS__ACTIVE_ASC
   CHANGE_STATUS_BY_CHANGE_STATUS__ACTIVE_DESC
