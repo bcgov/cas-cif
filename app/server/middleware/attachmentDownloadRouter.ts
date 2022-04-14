@@ -1,6 +1,6 @@
-const express = require("express");
+import { Router } from "express";
 
-const attachmentDownloadRouter = express.Router();
+const attachmentDownloadRouter = Router();
 const { PORT } = process.env;
 const graphqlEndpoint = `http://localhost:${PORT || 3004}/graphql`;
 
@@ -19,9 +19,6 @@ attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
     },
   };
 
-  console.log(attachmentQueryBody);
-  console.log(graphqlEndpoint);
-
   const graphqlResult = await fetch(graphqlEndpoint, {
     method: "POST",
     headers: {
@@ -32,7 +29,6 @@ attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
   });
 
   const jsonResult = await graphqlResult.json();
-  console.log(jsonResult);
 
   const {
     data: {
@@ -62,26 +58,5 @@ attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
 
   (apiResult.body as any).pipe(res);
 });
-
-// const downloadFile = async (uuid: string) => {
-//   const response = await fetch(
-//     `${process.env.STORAGE_API_HOST}/api/v1/attachments/download/${uuid}`,
-//     {
-//       method: "GET",
-//       headers: {
-//         "api-key": process.env.STORAGE_API_KEY,
-//         "Accept-Encoding": "gzip",
-//       },
-//     }
-//   );
-
-//   console.log("*********** HEADERS **************");
-//   console.log(response.headers);
-//   try {
-//     return response.arrayBuffer;
-//   } catch (e) {
-//     console.error(e);
-//   }
-// };
 
 export default attachmentDownloadRouter;
