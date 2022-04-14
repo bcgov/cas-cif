@@ -45,7 +45,7 @@ export default async function middleware() {
       clientId: "cas-cif",
       oidcIssuer: `https://${ssoServerHost}/auth/realms/pisrwwhx`,
     },
-    ...(config.get("showKCLogin") !== true && {
+    ...(!config.get("showKCLogin") && {
       authorizationUrlParams: { kc_idp_hint: "idir" },
     }),
     onAuthCallback: createUserMiddleware(),

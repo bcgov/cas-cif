@@ -217,6 +217,10 @@ if (config.get("namespace") && config.get("cifRole")) {
   throw new Error("Cannot set both namespace and cifRole.");
 }
 
+if (config.get("namespace") && !process.env.SESSION_SECRET) {
+  throw new Error("Must set 'SESSION_SECRET' when 'NAMESPACE' is set.")
+}
+
 config.validate({ allowed: "strict" });
 
 module.exports = config;

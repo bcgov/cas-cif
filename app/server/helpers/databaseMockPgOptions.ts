@@ -14,8 +14,7 @@ export const generateForwardedCookieOptions = (cookies, fields) => {
 // creates the settings object needed for postgres to use the mocks schema by default and the fields to retrieve from the cookies
 export const generateDatabaseMockOptions = (cookies, fields) => {
   if (
-    config.get("enableMockTime") !== true &&
-    config.get("enableDbMocksCookiesOnly") !== true
+    !config.get("enableMockTime") && !config.get("enableDbMocksCookiesOnly")
   )
     return {};
 
