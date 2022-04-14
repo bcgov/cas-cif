@@ -260,7 +260,9 @@ export function ProjectRevision({
         </header>
         <h3>Project Overview</h3>
         {isOverviewEmpty ? (
-          <em>Project overview not added</em>
+          <p>
+            <em>Project overview not added</em>
+          </p>
         ) : (
           <FormBase
             tagName={"dl"}
@@ -285,7 +287,9 @@ export function ProjectRevision({
 
         <h3>Project Managers</h3>
         {areManagersEmpty ? (
-          <em>Project managers not added</em>
+          <p>
+            <em>Project managers not added</em>
+          </p>
         ) : (
           query.projectRevision.projectManagerFormChangesByLabel.edges.map(
             ({ node }) => {
@@ -320,7 +324,9 @@ export function ProjectRevision({
 
         <h3>Project Contacts</h3>
         {areContactsEmpty ? (
-          <em>Project contacts not added</em>
+          <p>
+            <em>Project contacts not added</em>
+          </p>
         ) : (
           <>
             <label>Primary Contact</label>
