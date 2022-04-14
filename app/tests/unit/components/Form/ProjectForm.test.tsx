@@ -182,7 +182,7 @@ describe("The Project Form", () => {
 
     expect(
       screen.getByText(
-        /A proposal with the same proposal reference already exists. Please specify a different proposal reference./i
+        /This proposal reference already exists, please specify a different one./i
       )
     ).toBeInTheDocument();
   });
