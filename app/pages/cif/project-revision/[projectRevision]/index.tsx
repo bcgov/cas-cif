@@ -33,7 +33,9 @@ const pageQuery = graphql`
         projectFormChange {
           newFormData
         }
-        projectContactFormChanges {
+        projectContactFormChanges(
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) {
           edges {
             node {
               newFormData
