@@ -15,20 +15,65 @@ interface Props {
 }
 
 const TaskList: React.FC<Props> = ({ projectRevision }) => {
-  const { id, projectByProjectId } = useFragment(
-    graphql`
-      fragment TaskList_projectRevision on ProjectRevision {
-        id
-        projectByProjectId {
-          proposalReference
+  const { id, projectByProjectId, formChangesByProjectRevisionId } =
+    useFragment(
+      graphql`
+        fragment TaskList_projectRevision on ProjectRevision {
+          id
+          projectByProjectId {
+            proposalReference
+          }
+          formChangesByProjectRevisionId {
+            nodes {
+              changeStatus
+              previousFormChangeId
+              jsonSchemaName
+              validationErrors
+            }
+          }
         }
-      }
-    `,
-    projectRevision
-  );
+      `,
+      projectRevision
+    );
   const router = useRouter();
 
   let mode = projectByProjectId ? "update" : "create";
+  // let isPrestine = false;
+
+  function getStatus(forms: any[]) {
+    let status = "Not Started";
+    for (const form of forms) {
+      if (form.changeStatus === "pending") {
+        status = "Incomplete";
+        break;
+      }
+      if (form.changeStatus === "staged" && form.validationErrors.length > 0) {
+        status = "Attention Required";
+        break;
+      }
+      if (
+        form.changeStatus === "staged" &&
+        form.validationErrors.length === 0
+      ) {
+        status = "Complete";
+      }
+    }
+    return status;
+  }
+
+  const projectForms = formChangesByProjectRevisionId.nodes.filter(
+    (form) => form.jsonSchemaName == "project"
+  );
+  const projectManagerForms = formChangesByProjectRevisionId.nodes.filter(
+    (form) => form.jsonSchemaName == "project_manager"
+  );
+  const projectContactForms = formChangesByProjectRevisionId.nodes.filter(
+    (form) => form.jsonSchemaName == "project_contact"
+  );
+
+  const projectOverviewStatus = getStatus(projectForms);
+  const projectManagerStatus = getStatus(projectManagerForms);
+  const projectContactStatus = getStatus(projectContactForms);
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
@@ -39,7 +84,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   }, [id, router]);
 
   return (
-    <div>
+    <div style={{ width: "500px" }}>
       <h2>
         {projectByProjectId
           ? "Editing: " + projectByProjectId.proposalReference
@@ -53,9 +98,20 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               aria-current={currentStep === "overview" ? "step" : false}
               className="bordered"
             >
-              <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
-              </Link>
+              <div className="row">
+                <div className="link">
+                  <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
+                    <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
+                  </Link>
+                </div>
+                <div className="status">
+                  {projectOverviewStatus === "Attention Required" ? (
+                    <b>{projectOverviewStatus}</b>
+                  ) : (
+                    <>{projectOverviewStatus}</>
+                  )}
+                </div>
+              </div>
             </li>
           </ul>
         </li>
@@ -66,17 +122,39 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               aria-current={currentStep === "managers" ? "step" : false}
               className="bordered"
             >
-              <Link href={getProjectRevisionManagersFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
-              </Link>
+              <div className="row">
+                <div className="link">
+                  <Link href={getProjectRevisionManagersFormPageRoute(id)}>
+                    <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
+                  </Link>
+                </div>
+                <div className="status">
+                  {projectManagerStatus === "Attention Required" ? (
+                    <b>{projectManagerStatus}</b>
+                  ) : (
+                    <>{projectManagerStatus}</>
+                  )}
+                </div>
+              </div>
             </li>
             <li
               aria-current={currentStep === "contacts" ? "step" : false}
               className="bordered"
             >
-              <Link href={getProjectRevisionContactsFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
-              </Link>
+              <div className="row">
+                <div className="link">
+                  <Link href={getProjectRevisionContactsFormPageRoute(id)}>
+                    <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
+                  </Link>
+                </div>
+                <div className="status">
+                  {projectContactStatus === "Attention Required" ? (
+                    <b>{projectContactStatus}</b>
+                  ) : (
+                    <>{projectContactStatus}</>
+                  )}
+                </div>
+              </div>
             </li>
           </ul>
         </li>
@@ -87,9 +165,13 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               aria-current={currentStep === "summary" ? "step" : false}
               className="bordered"
             >
-              <Link href={getProjectRevisionPageRoute(id)}>
-                Review and submit information
-              </Link>
+              <div className="row">
+                <div>
+                  <Link href={getProjectRevisionPageRoute(id)}>
+                    Review and submit information
+                  </Link>
+                </div>
+              </div>
             </li>
           </ul>
         </li>
@@ -135,7 +217,8 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           color: blue;
         }
 
-        li[aria-current="step"] {
+        li[aria-current="step"],
+        li[aria-current="step"] div {
           background-color: #fafafc;
         }
 
@@ -145,8 +228,18 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         }
 
         div {
-          width: 400px;
           background-color: #e5e5e5;
+        }
+        .row {
+          display: flex;
+        }
+        .link {
+          flex: 50%;
+        }
+        .status {
+          padding-right: 10px;
+          text-align: right;
+          flex: 40%;
         }
       `}</style>
     </div>
