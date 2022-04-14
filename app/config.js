@@ -218,7 +218,7 @@ if (config.get("namespace") && config.get("cifRole")) {
 }
 
 if (config.get("namespace") && !process.env.SESSION_SECRET) {
-  throw new Error("Must set 'SESSION_SECRET' when 'NAMESPACE' is set.")
+  throw new Error("Must set 'SESSION_SECRET' when 'NAMESPACE' is set.");
 }
 
 config.validate({ allowed: "strict" });
