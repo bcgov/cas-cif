@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-import { createProjectSchema } from "components/Form/ProjectForm";
+import { createProjectUiSchema } from "components/Form/ProjectForm";
 import { getProjectsPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
@@ -264,7 +264,7 @@ export function ProjectRevision({
             tagName={"dl"}
             theme={readOnlyTheme}
             schema={projectSchema as JSONSchema7}
-            uiSchema={createProjectSchema(
+            uiSchema={createProjectUiSchema(
               selectedOperator ? selectedOperator.node.tradeName : "",
               selectedOperator ? selectedOperator.node.legalName : "",
               selectedOperator ? selectedOperator.node.bcRegistryId : "",

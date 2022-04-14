@@ -18,7 +18,7 @@ interface Props {
   onSubmit: () => void;
 }
 // You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
-export const createProjectSchema = (
+export const createProjectUiSchema = (
   tradeName,
   legalName?,
   bcRegistryId?,
@@ -144,7 +144,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   }, [query, revision.projectFormChange.newFormData.operatorId]);
 
   const uiSchema = useMemo(() => {
-    return createProjectSchema(
+    return createProjectUiSchema(
       selectedOperator ? selectedOperator.node.tradeName : ""
     );
   }, [selectedOperator]);
@@ -211,8 +211,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
     return initialSchema as JSONSchema7;
   }, [query]);
-
-  // export this and reuse over in index.tsx for project revision
 
   const lastEditedDate = useMemo(
     () => new Date(revision.projectFormChange.updatedAt),

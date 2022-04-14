@@ -30,6 +30,5 @@ const formTheme: ThemeProps = {
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
 };
-// export the theme so anyone can call it with whatever theme they want
-// export default withTheme(theme);
+
 export default formTheme;

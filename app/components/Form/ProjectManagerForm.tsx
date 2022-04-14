@@ -24,6 +24,7 @@ interface Props extends FormComponentProps {
   disabled?: boolean;
 }
 
+// You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectManagerUiSchema = (contact?, role?) => {
   return {
     cifUserId: {

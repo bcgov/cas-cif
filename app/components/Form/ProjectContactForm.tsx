@@ -23,7 +23,7 @@ interface Props {
   onSubmit: () => void;
   projectRevision: ProjectContactForm_projectRevision$key;
 }
-
+// You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectContactUiSchema = (contact?) => {
   return {
     contactId: {
