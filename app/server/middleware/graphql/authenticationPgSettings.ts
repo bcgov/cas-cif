@@ -3,21 +3,20 @@ import { getUserGroups } from "../../helpers/userGroupAuthentication";
 import groupData from "../../../data/groups.json";
 import { isAuthenticated } from "@bcgov-cas/sso-express";
 import type { Request } from "express";
-import {
-  ENABLE_MOCK_AUTH,
-  AS_CIF_INTERNAL,
-  AS_CIF_EXTERNAL,
-  AS_CIF_ADMIN,
-  AS_UNAUTHORIZED_IDIR,
-  MOCK_AUTH_COOKIE,
-} from "../../args";
+import config from "../../../config";
 
 const allowCypressForRole = (roleName: string, req: Request) => {
-  return ENABLE_MOCK_AUTH && req.cookies?.[MOCK_AUTH_COOKIE] === roleName;
+  return (
+    config.get("enableMockAuth") &&
+    req.cookies?.[config.get("mockAuthCookie")] === roleName
+  );
 };
 
 const authenticationPgSettings = (req: Request) => {
-  if (AS_CIF_INTERNAL || allowCypressForRole("cif_internal", req)) {
+  if (
+    config.get("cifRole") === "CIF_INTERNAL" ||
+    allowCypressForRole("cif_internal", req)
+  ) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000000",
       "jwt.claims.user_groups": "cif_internal",
@@ -26,7 +25,10 @@ const authenticationPgSettings = (req: Request) => {
     };
   }
 
-  if (AS_CIF_EXTERNAL || allowCypressForRole("cif_external", req)) {
+  if (
+    config.get("cifRole") === "CIF_EXTERNAL" ||
+    allowCypressForRole("cif_external", req)
+  ) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000001",
       "jwt.claims.user_groups": "cif_external",
@@ -35,7 +37,10 @@ const authenticationPgSettings = (req: Request) => {
     };
   }
 
-  if (AS_CIF_ADMIN || allowCypressForRole("cif_admin", req)) {
+  if (
+    config.get("cifRole") === "CIF_ADMIN" ||
+    allowCypressForRole("cif_admin", req)
+  ) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000002",
       "jwt.claims.user_groups": "cif_admin",
@@ -44,7 +49,10 @@ const authenticationPgSettings = (req: Request) => {
     };
   }
 
-  if (AS_UNAUTHORIZED_IDIR || allowCypressForRole("unauthorized_idir", req)) {
+  if (
+    config.get("cifRole") === "UNAUTHORIZED_IDIR" ||
+    allowCypressForRole("unauthorized_idir", req)
+  ) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000000",
       "jwt.claims.user_groups": "UNAUTHORIZED_IDIR",

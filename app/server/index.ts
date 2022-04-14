@@ -13,9 +13,10 @@ import graphQlMiddleware from "./middleware/graphql";
 import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
 import { graphqlUploadExpress } from "graphql-upload";
+import config from "../config";
 
-const port = Number.parseInt(process.env.PORT, 10) || 3004;
-const dev = process.env.NODE_ENV !== "production";
+const port = config.get("port");
+const dev = config.get("env") !== "production";
 const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 

@@ -4,28 +4,32 @@
 */
 
 import pg from "pg";
+import config from "../../config";
 
 export const getDatabaseUrl = () => {
   // If authentication is disabled use the user above to connect to the database
   // Otherwise, use the PGUSER env variable
-  const PGUSER = process.env.PGUSER || "postgres";
+  const PGUSER = config.get("pgUser") || "postgres";
 
   let databaseURL = "postgres://";
 
   databaseURL += PGUSER;
-  if (process.env.PGPASSWORD) {
-    databaseURL += `:${encodeURIComponent(process.env.PGPASSWORD)}`;
+
+  if (config.get("pgPassword")) {
+    databaseURL += `:${encodeURIComponent(
+      config.get("pgPassword").toString()
+    )}`;
   }
 
   databaseURL += "@";
 
-  databaseURL += process.env.PGHOST || "localhost";
-  if (process.env.PGPORT) {
-    databaseURL += `:${process.env.PGPORT}`;
+  databaseURL += config.get("pgHost");
+  if (config.get("pgPort")) {
+    databaseURL += `:${config.get("pgPort")}`;
   }
 
   databaseURL += "/";
-  databaseURL += process.env.PGDATABASE || "cif";
+  databaseURL += config.get("pgDatabase");
 
   return databaseURL;
 };
