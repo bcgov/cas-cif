@@ -230,7 +230,7 @@ install:
 		exit 1; \
 	fi; \
 	if [ -z '$(CIIP_NAMESPACE_PREFIX)' ]; then \
-		echo "GGIRCS_NAMESPACE_PREFIX is not set"; \
+		echo "CIIP_NAMESPACE_PREFIX is not set"; \
 		exit 1; \
 	fi; \
 	if [ -z '$(ENVIRONMENT)' ]; then \
