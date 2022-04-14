@@ -113,7 +113,7 @@ const ProjectForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
+  //can't reuse these, have to make fragments for individual components
   const { query } = useFragment(
     graphql`
       fragment ProjectForm_query on Query {
