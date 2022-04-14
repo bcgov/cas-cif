@@ -231,26 +231,19 @@ export function ProjectRevision({
     0;
 
   const areManagersEmpty =
-    query.projectRevision.projectManagerFormChangesByLabel.edges
-      .map(({ node }) => node.formChange?.newFormData.cifUserId)
-      .filter((manager) => manager).length === 0
-      ? true
-      : false;
+    !query.projectRevision.projectManagerFormChangesByLabel.edges.some(
+      ({ node }) => node.formChange?.newFormData.cifUserId
+    );
 
   // need to check for the existence of contactId because users can add blank contacts
   const areContactsEmpty =
-    query.projectRevision.projectContactFormChanges.edges
-      .map(({ node }) => node.newFormData.contactId)
-      .filter((contact) => contact).length === 0
-      ? true
-      : false;
+    !query.projectRevision.projectContactFormChanges.edges.some(
+      ({ node }) => node.newFormData.contactId
+    );
 
-  const areSecondaryContactsEmpty =
-    secondaryContacts
-      .map(({ node }) => node.newFormData.contactId)
-      .filter((contact) => contact).length === 0
-      ? true
-      : false;
+  const areSecondaryContactsEmpty = !secondaryContacts.some(
+    ({ node }) => node.newFormData.contactId
+  );
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>

@@ -200,7 +200,10 @@ describe("the new project page", () => {
     cy.findByText(/Secondary contacts/i)
       .next()
       .should("have.text", "Loblaw004, Bob004");
-
+    cy.get("body").happoScreenshot({
+      component: "Project Summary Form",
+      variant: "filled",
+    });
     cy.findByRole("button", { name: /submit/i }).click();
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
@@ -253,7 +256,6 @@ describe("the new project page", () => {
     cy.wait(1000);
 
     cy.contains("Changes saved.");
-    cy.pause();
     cy.findByRole("button", { name: /submit/i }).click();
     cy.contains("Review and Submit Project");
 

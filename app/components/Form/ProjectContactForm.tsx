@@ -34,6 +34,7 @@ export const createProjectContactUiSchema = (contact?) => {
       "ui:options": {
         label: false,
         text: `${contact}`,
+        title: "",
       },
     },
   };
