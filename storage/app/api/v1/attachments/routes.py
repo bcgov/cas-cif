@@ -16,8 +16,8 @@ router = APIRouter()
 
 @router.post("/upload", response_model=Attachment)
 async def upload_attachement(
-  request: Request,
-  api_key: ApiKey = Depends(get_api_key_authorizer())
+    request: Request,
+    api_key: ApiKey = Depends(get_api_key_authorizer())
 ):
     """
     Uploads a raw file attachment
@@ -29,11 +29,10 @@ async def upload_attachement(
     return controller.upload_attachment_raw(data_file)
 
 
-
 @router.post("/delete", response_model=bool)
 def delete_attachement(
-  attachment: Attachment,
-  api_key: ApiKey = Depends(get_api_key_authorizer())
+    attachment: Attachment,
+    api_key: ApiKey = Depends(get_api_key_authorizer())
 ):
     """
     Deletes a file attachment
@@ -43,8 +42,8 @@ def delete_attachement(
 
 @router.post("/download")
 def download_attachement(
-  attachment: Attachment,
-  api_key: ApiKey = Depends(get_api_key_authorizer())
+    attachment: Attachment,
+    api_key: ApiKey = Depends(get_api_key_authorizer())
 ):
     """
     Downloads a file attachment
@@ -54,8 +53,8 @@ def download_attachement(
 
 @router.get("/download/{uuid}")
 def download_attachement(
-  uuid: str,
-  api_key: ApiKey = Depends(get_api_key_authorizer())
+    uuid: str,
+    api_key: ApiKey = Depends(get_api_key_authorizer())
 ):
     """
     Downloads a file attachment
@@ -65,8 +64,8 @@ def download_attachement(
 
 @router.post("/zip")
 def download_attachements(
-  attachments: Attachments,
-  api_key: ApiKey = Depends(get_api_key_authorizer())
+    attachments: Attachments,
+    api_key: ApiKey = Depends(get_api_key_authorizer())
 ):
     """
     Downloads multiple attachments in a zip file

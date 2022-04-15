@@ -13,9 +13,10 @@ from app.config import ATTACHMENTS_BUCKET_NAME
 logger = logging.getLogger("attachments")
 
 
-def s3_response_iterator(s3_response, chunk_size=2048):
+async def s3_response_iterator(s3_response, chunk_size=2048):
     while 1:
-        data = s3_response.read(chunk_size)
+        # this is not very useful as long as the MinIO client is synchronous
+        data = await s3_response.read(chunk_size)
         if data:
             yield data
         else:
@@ -68,8 +69,7 @@ def download_attachment(uuid: str):
         stats = s3_get_file_stats(bucket_path, uuid)
         s3_response = s3_get_file(bucket_path, uuid)
 
-        response = StreamingResponse(content=s3_response_iterator(s3_response))
-        response.headers.update({
+        response = StreamingResponse(content=s3_response_iterator(s3_response), headers={
             'fastapi-content-length': str(stats.size),
         })
 

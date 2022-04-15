@@ -47,8 +47,6 @@ attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
     }
   );
 
-  console.log(apiResult.headers);
-
   res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
   res.setHeader("Content-Type", fileType);
   res.setHeader(
