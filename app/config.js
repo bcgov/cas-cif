@@ -81,6 +81,7 @@ var config = convict({
   pgPassword: {
     doc: "Password for the PG database.",
     format: "*",
+    default: "",
     env: "PGPASSWORD",
     sensitive: true,
   },
