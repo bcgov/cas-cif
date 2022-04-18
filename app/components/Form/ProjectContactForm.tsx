@@ -75,6 +75,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               operation
               changeStatus
               updatedAt
+              formChangeByPreviousFormChangeId {
+                changeStatus
+                newFormData
+              }
             }
           }
         }
@@ -140,11 +144,17 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   }, [projectContactFormChanges]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
+
+  // console.log("primaryContactForm", primaryContactForm);
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateProjectContactFormChange();
   const [discardFormChange] = useDiscardFormChange(
     projectContactFormChanges.__id
   );
+  // console.log(
+  //   "projectContactFormChanges.edges",
+  //   projectContactFormChanges.edges
+  // );
 
   const deleteContact = (
     formChangeId: string,
@@ -174,17 +184,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           formChangePatch: {
             newFormData,
             changeStatus: formChange.changeStatus,
-          },
-        },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            ...formChange,
-            newFormData,
-            changeStatus: formChange.changeStatus,
-            // explicitely ignore the field below
-            projectRevisionByProjectRevisionId: undefined,
           },
         },
       },
@@ -237,10 +236,72 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       // the failing mutation will display an error message and send the error to sentry
     }
   };
+
+  const handleUndo = async () => {
+    let commitedContactData = [];
+
+    projectContactFormChanges.edges.forEach(({ node }) => {
+      if (node.formChangeByPreviousFormChangeId?.changeStatus === "committed") {
+        commitedContactData.push(node);
+      }
+    });
+
+    if (commitedContactData.length === 0) {
+      clearPrimaryContact();
+      alternateContactForms.map((form) => {
+        deleteContact(form.id, form.operation);
+      });
+    } else {
+      const completedPromises: Promise<void>[] = [];
+
+      commitedContactData.forEach((node) => {
+        const undoneFormData =
+          node.formChangeByPreviousFormChangeId.newFormData;
+
+        const promise = new Promise<void>((resolve, reject) => {
+          applyUpdateFormChangeMutation({
+            variables: {
+              input: {
+                id: node.id,
+                formChangePatch: {
+                  changeStatus: "pending",
+                  newFormData: undoneFormData,
+                },
+              },
+            },
+            debounceKey: node.id,
+            onCompleted: () => {
+              resolve();
+            },
+            onError: reject,
+          });
+        });
+        completedPromises.push(promise);
+      });
+      try {
+        await Promise.all(completedPromises);
+      } catch (e) {
+        // the failing mutation will display an error message and send the error to sentry
+      }
+    }
+  };
+
   return (
     <div>
       <header>
         <h2>Project Contacts</h2>
+        <Button
+          type="button"
+          style={{
+            marginRight: "1rem",
+            marginBottom: "1rem",
+            marginLeft: "0rem",
+          }}
+          variant="secondary"
+          onClick={handleUndo}
+        >
+          Undo Changes
+        </Button>
         <SavingIndicator
           isSaved={!isUpdating && !isAdding}
           lastEdited={lastEditedDate}
@@ -293,36 +354,39 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 </Grid.Col>
               </Grid.Row>
               <label>Secondary Contacts</label>
-              {alternateContactForms.map((form) => (
-                <Grid.Row key={form.id}>
-                  <Grid.Col span={6}>
-                    <FormBase
-                      id={`form-${form.id}`}
-                      idPrefix={`form-${form.id}`}
-                      ref={(el) => (formRefs.current[form.id] = el)}
-                      formData={form.newFormData}
-                      onChange={(change) => {
-                        updateFormChange(
-                          { ...form, changeStatus: "pending" },
-                          change.formData
-                        );
-                      }}
-                      schema={contactSchema}
-                      uiSchema={uiSchema}
-                      ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      onClick={() => deleteContact(form.id, form.operation)}
-                    >
-                      Remove
-                    </Button>
-                  </Grid.Col>
-                </Grid.Row>
-              ))}
+              {alternateContactForms.map((form) => {
+                // console.log("form is", form);
+                return (
+                  <Grid.Row key={form.id}>
+                    <Grid.Col span={6}>
+                      <FormBase
+                        id={`form-${form.id}`}
+                        idPrefix={`form-${form.id}`}
+                        ref={(el) => (formRefs.current[form.id] = el)}
+                        formData={form.newFormData}
+                        onChange={(change) => {
+                          updateFormChange(
+                            { ...form, changeStatus: "pending" },
+                            change.formData
+                          );
+                        }}
+                        schema={contactSchema}
+                        uiSchema={uiSchema}
+                        ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() => deleteContact(form.id, form.operation)}
+                      >
+                        Remove
+                      </Button>
+                    </Grid.Col>
+                  </Grid.Row>
+                );
+              })}
 
               <Grid.Row>
                 <Grid.Col span={10}>
