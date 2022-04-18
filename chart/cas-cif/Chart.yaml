@@ -20,4 +20,4 @@ dependencies:
     alias: deploy-db
   - name: nginx-sidecar
     repository: https://bcgov.github.io/cas-template-app
-    version: 0.1.8
+    version: 0.1.10
