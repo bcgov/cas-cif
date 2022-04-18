@@ -96,6 +96,10 @@ const ProjectForm: React.FC<Props> = (props) => {
           newFormData
           updatedAt
           isUniqueValue(columnName: "proposalReference")
+          formChangeByPreviousFormChangeId {
+            changeStatus
+            newFormData
+          }
         }
       }
     `,
@@ -154,10 +158,14 @@ const ProjectForm: React.FC<Props> = (props) => {
     changeData: any,
     changeStatus: "pending" | "staged"
   ) => {
-    const updatedFormData = {
-      ...revision.projectFormChange.newFormData,
-      ...changeData,
-    };
+    const updatedFormData =
+      Object.keys(changeData).length === 0
+        ? {}
+        : {
+            ...revision.projectFormChange.newFormData,
+            ...changeData,
+          };
+
     return new Promise((resolve, reject) =>
       updateProjectFormChange({
         variables: {
@@ -219,16 +227,37 @@ const ProjectForm: React.FC<Props> = (props) => {
   const handleError = () => {
     handleChange(revision.projectFormChange.newFormData, "staged");
   };
+  const handleUndo = async () => {
+    const undoneFormData =
+      revision.projectFormChange.formChangeByPreviousFormChangeId
+        ?.changeStatus === "committed"
+        ? {
+            ...revision.projectFormChange.formChangeByPreviousFormChangeId
+              .newFormData,
+          }
+        : {};
+
+    await handleChange(undoneFormData, "pending");
+  };
 
   return (
     <>
       <header>
         <h2>Project Overview</h2>
+        <Button
+          type="button"
+          style={{ marginRight: "1rem", marginBottom: "1rem" }}
+          variant="secondary"
+          onClick={handleUndo}
+        >
+          Undo Changes
+        </Button>
         <SavingIndicator
           isSaved={!updatingProjectFormChange}
           lastEdited={lastEditedDate}
         />
       </header>
+
       <FormBase
         {...props}
         schema={schema}
