@@ -1,6 +1,6 @@
 import { graphql } from "react-relay";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
-import { updateProjectRevisionMutation } from "updateProjectRevisionMutation.graphql"
+import { updateProjectRevisionMutation } from "updateProjectRevisionMutation.graphql";
 
 const mutation = graphql`
   mutation updateChangeReasonMutation($input: UpdateProjectRevisionInput!) {

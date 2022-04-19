@@ -1,19 +1,23 @@
-import { Button } from "@button-inc/bcgov-theme";
 import ProjectContactFormSummary from "components/Form/ProjectContactFormSummary";
 import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import TaskList from "components/TaskList";
-import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import withRelayOptions from "lib/relay/withRelayOptions";
-import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
-import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
-import { useRouter } from "next/router";
-import { getProjectsPageRoute } from "pageRoutes";
+import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { RelayProps, withRelay } from "relay-nextjs";
 import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
+import withRelayOptions from "lib/relay/withRelayOptions";
+import { useRouter } from "next/router";
+import { Button, Textarea } from "@button-inc/bcgov-theme";
+import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
+import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
+import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
+import { useMemo } from "react";
+import SavingIndicator from "components/Form/SavingIndicator";
+
+import { getProjectsPageRoute } from "pageRoutes";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import TaskList from "components/TaskList";
+import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -23,6 +27,9 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        changeReason
+        updatedAt
+        projectId
         ...ProjectFormSummary_projectRevision
         ...ProjectContactFormSummary_projectRevision
         ...ProjectManagerFormSummary_projectRevision
@@ -42,6 +49,8 @@ export function ProjectRevision({
   const router = useRouter();
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
+  const [updateChangeReason, updatingChangeReason] = useUpdateChangeReason();
+
   const [updateProjectRevision, updatingProjectRevision] =
     useMutationWithErrorMessage(
       updateProjectRevisionMutation,
@@ -49,6 +58,11 @@ export function ProjectRevision({
     );
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
+
+  const lastEditedDate = useMemo(
+    () => new Date(query.projectRevision.updatedAt),
+    [query.projectRevision.updatedAt]
+  );
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
@@ -76,6 +90,31 @@ export function ProjectRevision({
         store.invalidateStore();
       },
     });
+  };
+
+  const handleChange = (e) => {
+    return new Promise((resolve, reject) =>
+      updateChangeReason({
+        variables: {
+          input: {
+            id: query.projectRevision.id,
+            projectRevisionPatch: { changeReason: e.target.value },
+          },
+        },
+        optimisticResponse: {
+          updateProjectRevision: {
+            projectRevision: {
+              id: query.projectRevision.id,
+              changeReason: e.target.value,
+              updatedAt: query.projectRevision.updatedAt,
+            },
+          },
+        },
+        onCompleted: resolve,
+        onError: reject,
+        debounceKey: query.projectRevision.id,
+      })
+    );
   };
 
   const discardRevision = async () => {
@@ -115,11 +154,33 @@ export function ProjectRevision({
           projectRevision={query.projectRevision}
         />
 
+        {query.projectRevision.projectId && (
+          <div>
+            <h4>Please describe the reason for these changes</h4>
+            <SavingIndicator
+              isSaved={!updatingChangeReason}
+              lastEdited={lastEditedDate}
+            />
+            <Textarea
+              value={query.projectRevision.changeReason}
+              onChange={handleChange}
+              size={"medium"}
+              resize="vertical"
+            />
+          </div>
+        )}
+
         <Button
           size="medium"
           variant="primary"
           onClick={commitProject}
-          disabled={updatingProjectRevision || discardingProjectRevision}
+          disabled={
+            updatingProjectRevision ||
+            discardingProjectRevision ||
+            updatingChangeReason ||
+            (query.projectRevision.projectId &&
+              !query.projectRevision.changeReason)
+          }
         >
           Submit
         </Button>
@@ -135,6 +196,10 @@ export function ProjectRevision({
       <style jsx>{`
         div :global(.pg-button) {
           margin-right: 3em;
+        }
+        :global(textarea) {
+          width: 100%;
+          min-height: 10rem;
         }
       `}</style>
     </DefaultLayout>
