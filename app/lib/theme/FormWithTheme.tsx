@@ -1,4 +1,4 @@
-import { ThemeProps, withTheme } from "@rjsf/core";
+import { ThemeProps } from "@rjsf/core";
 import FieldTemplate from "./FieldTemplate";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import TextWidget from "./widgets/TextWidget";
@@ -13,7 +13,7 @@ import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
-const theme: ThemeProps = {
+const formTheme: ThemeProps = {
   children: <></>,
   fields: { ...fields },
   widgets: {
@@ -31,4 +31,4 @@ const theme: ThemeProps = {
   FieldTemplate: FieldTemplate,
 };
 
-export default withTheme(theme);
+export default formTheme;

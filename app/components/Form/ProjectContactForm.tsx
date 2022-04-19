@@ -23,17 +23,38 @@ interface Props {
   onSubmit: () => void;
   projectRevision: ProjectContactForm_projectRevision$key;
 }
-
-const uiSchema = {
-  contactId: {
-    "ui:placeholder": "Select a Contact",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-    "ui:options": {
-      label: false,
+// You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
+export const createProjectContactUiSchema = (contact?) => {
+  return {
+    contactId: {
+      "ui:placeholder": "Select a Contact",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+      "ui:options": {
+        label: false,
+        text: `${contact}`,
+        title: "",
+      },
     },
-  },
+  };
+};
+
+export const createProjectContactSchema = (allContacts) => {
+  const schema = projectContactSchema;
+  schema.properties.contactId = {
+    ...schema.properties.contactId,
+    anyOf: allContacts.edges.map(({ node }) => {
+      return {
+        type: "number",
+        title: node.fullName,
+        enum: [node.rowId],
+        value: node.rowId,
+      } as JSONSchema7Definition;
+    }),
+  };
+
+  return schema as JSONSchema7;
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
@@ -87,21 +108,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   }, [projectContactFormChanges]);
 
   const contactSchema = useMemo(() => {
-    const schema = projectContactSchema;
-    schema.properties.contactId = {
-      ...schema.properties.contactId,
-      anyOf: allContacts.edges.map(({ node }) => {
-        return {
-          type: "number",
-          title: node.fullName,
-          enum: [node.rowId],
-          value: node.rowId,
-        } as JSONSchema7Definition;
-      }),
-    };
-
-    return schema as JSONSchema7;
+    return createProjectContactSchema(allContacts);
   }, [allContacts]);
+
+  const uiSchema = createProjectContactUiSchema();
 
   const [addContactMutation, isAdding] = useAddContactToRevision();
 
