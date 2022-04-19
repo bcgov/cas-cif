@@ -7,7 +7,7 @@ import SelectRfpWidget from "components/Form/SelectRfpWidget";
 import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
-import { FormValidation, ISubmitEvent } from "@rjsf/core";
+import { FormValidation } from "@rjsf/core";
 import { useUpdateProjectFormChange } from "mutations/FormChange/updateProjectFormChange";
 import { Button } from "@button-inc/bcgov-theme";
 import SavingIndicator from "./SavingIndicator";
@@ -211,9 +211,12 @@ const ProjectForm: React.FC<Props> = (props) => {
     [revision.projectFormChange.updatedAt]
   );
 
-  const handleSubmit = async (e: ISubmitEvent<any>) => {
-    await handleChange(e.formData, "staged");
-    props.onSubmit();
+  // const handleSubmit = async (e: ISubmitEvent<any>) => {
+  //   props.onSubmit();
+  // };
+
+  const handleSubmitClick = async () => {
+    await handleChange(revision.projectFormChange.newFormData, "staged");
   };
 
   return (
@@ -243,7 +246,11 @@ const ProjectForm: React.FC<Props> = (props) => {
         onChange={(change) => handleChange(change.formData, "pending")}
         onSubmit={handleSubmit}
       >
-        <Button type="submit" style={{ marginRight: "1rem" }}>
+        <Button
+          type="submit"
+          style={{ marginRight: "1rem" }}
+          onClick={handleSubmitClick}
+        >
           Submit Project Overview
         </Button>
       </FormBase>

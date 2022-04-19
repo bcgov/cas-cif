@@ -15,30 +15,56 @@ interface Props {
 }
 
 const TaskList: React.FC<Props> = ({ projectRevision }) => {
-  const { id, projectByProjectId, formChangesByProjectRevisionId } =
-    useFragment(
-      graphql`
-        fragment TaskList_projectRevision on ProjectRevision {
-          id
-          projectByProjectId {
-            proposalReference
+  const {
+    id,
+    projectByProjectId,
+    projectFormChange,
+    tasklistProjectContactFormChanges,
+    projectManagerFormChangesByLabel,
+  } = useFragment(
+    graphql`
+      fragment TaskList_projectRevision on ProjectRevision {
+        id
+        projectByProjectId {
+          proposalReference
+        }
+        formChangesByProjectRevisionId {
+          nodes {
+            changeStatus
+            previousFormChangeId
+            jsonSchemaName
+            validationErrors
           }
-          formChangesByProjectRevisionId {
-            nodes {
+        }
+        projectFormChange {
+          changeStatus
+          validationErrors
+        }
+        tasklistProjectContactFormChanges: projectContactFormChanges {
+          edges {
+            node {
               changeStatus
-              previousFormChangeId
-              jsonSchemaName
               validationErrors
             }
           }
         }
-      `,
-      projectRevision
-    );
+        projectManagerFormChangesByLabel {
+          edges {
+            node {
+              formChange {
+                changeStatus
+                validationErrors
+              }
+            }
+          }
+        }
+      }
+    `,
+    projectRevision
+  );
   const router = useRouter();
 
   let mode = projectByProjectId ? "update" : "create";
-  // let isPrestine = false;
 
   function getStatus(forms: any[]) {
     let status = "Not Started";
@@ -60,16 +86,13 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     }
     return status;
   }
-
-  const projectForms = formChangesByProjectRevisionId.nodes.filter(
-    (form) => form.jsonSchemaName == "project"
+  const projectForms = [projectFormChange];
+  const projectContactForms = tasklistProjectContactFormChanges.edges.map(
+    ({ node }) => node
   );
-  const projectManagerForms = formChangesByProjectRevisionId.nodes.filter(
-    (form) => form.jsonSchemaName == "project_manager"
-  );
-  const projectContactForms = formChangesByProjectRevisionId.nodes.filter(
-    (form) => form.jsonSchemaName == "project_contact"
-  );
+  const projectManagerForms = projectManagerFormChangesByLabel.edges
+    .filter(({ node }) => node)
+    .map(({ node }) => node.formChange);
 
   const projectOverviewStatus = getStatus(projectForms);
   const projectManagerStatus = getStatus(projectManagerForms);
