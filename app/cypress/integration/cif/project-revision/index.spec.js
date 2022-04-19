@@ -269,7 +269,15 @@ describe("the new project page", () => {
       .should("have.text", "Not added");
 
     cy.findByRole("button", { name: /submit/i }).should("be.disabled");
-    cy.get("textarea").click().type("change reason");
+    cy.get("body").happoScreenshot({
+      component: "Project Revision Summary",
+      variant: "no_change_reason",
+    });
+    cy.get("textarea").click().type("foo");
+    cy.get("body").happoScreenshot({
+      component: "Project Revision Summary",
+      variant: "with_change_reason",
+    });
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.url().should("include", "/cif/projects");
