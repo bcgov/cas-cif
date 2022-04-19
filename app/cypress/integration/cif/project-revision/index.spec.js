@@ -268,6 +268,8 @@ describe("the new project page", () => {
       .next()
       .should("have.text", "Not added");
 
+    cy.findByRole("button", { name: /submit/i }).should("be.disabled");
+    cy.get("textarea").click().type("change reason");
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.url().should("include", "/cif/projects");
