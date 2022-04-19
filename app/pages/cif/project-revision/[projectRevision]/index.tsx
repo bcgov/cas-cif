@@ -60,8 +60,8 @@ export function ProjectRevision({
     useDeleteProjectRevisionMutation();
 
   const lastEditedDate = useMemo(
-    () => new Date(query.projectRevision.updatedAt),
-    [query.projectRevision.updatedAt]
+    () => new Date(query.projectRevision?.updatedAt),
+    [query.projectRevision?.updatedAt]
   );
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
