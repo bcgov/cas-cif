@@ -136,9 +136,6 @@ export function ProjectRevision({
         div :global(.pg-button) {
           margin-right: 3em;
         }
-        h3 {
-          margin: 1em 0 0 0;
-        }
       `}</style>
     </DefaultLayout>
   );
