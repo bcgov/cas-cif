@@ -98,25 +98,37 @@ describe("the new project page", () => {
     });
   });
 
+  it("undoes changes on an unsaved project when the user clicks the Undo Changes button", () => {
+    cy.mockLogin("cif_admin");
+
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+    cy.fillOverviewForm();
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.get("option")
+      .contains(/Select a Funding Stream/)
+      .should("be.selected");
+    cy.get("option")
+      .contains(/Select a Funding Stream RFP Year/)
+      .should("be.selected");
+    cy.findByLabelText(/Operator Name/i).should("have.value", "");
+    cy.findByLabelText(/Proposal Reference/i).should("have.value", "");
+    cy.findByLabelText(/Project Name/i).should("have.value", "");
+    // brianna -- this isn't working, fix
+    // cy.findByLabelText(/Total Funding Request/i).should("have.value", "");
+    cy.findByLabelText(/Project Status/i).should(
+      "have.value",
+      "Select a Project Status"
+    );
+    cy.findByLabelText(/Summary/i).should("have.value", "");
+  });
+
   it("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
-    cy.url().should("include", "/form/overview");
-    cy.findByLabelText(/Project Name/i).type("Foo");
-    cy.findByLabelText(/Total Funding Request/i).type("100");
-    cy.findByLabelText(/Summary/i).type("Bar");
-    cy.findByLabelText(/Proposal Reference/i).type("TEST-123-12345");
-    cy.findByLabelText(/Operator Name/i).click();
-    cy.contains("first operator").click();
-    cy.findByLabelText(/Funding Stream$/i).select("Emissions Performance");
-    cy.findByLabelText(/Funding Stream RFP/i).select("2020");
-    cy.findByLabelText(/Project Status/i).select("Project Underway");
-
-    // There is a bug where if cypress starts changing another form on the page too quickly,
-    // the last change is discarded and rjsf throws an error.
-    cy.contains("Changes saved");
+    cy.fillOverviewForm();
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
