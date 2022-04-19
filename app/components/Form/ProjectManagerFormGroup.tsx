@@ -40,6 +40,11 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
                 id
                 changeStatus
                 updatedAt
+                newFormData
+                formChangeByPreviousFormChangeId {
+                  changeStatus
+                  newFormData
+                }
               }
               projectManagerLabel {
                 id
@@ -187,10 +192,70 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
     return new Date(mostRecentUpdate);
   }, [edges]);
 
+  const handleUndo = async () => {
+    let undoneFormData;
+    const completedPromises: Promise<void>[] = [];
+
+    edges.forEach(({ node }) => {
+      undoneFormData =
+        node.formChange?.formChangeByPreviousFormChangeId?.changeStatus ===
+        "committed"
+          ? node.formChange.formChangeByPreviousFormChangeId.newFormData
+          : {};
+
+      const promise = new Promise<void>((resolve, reject) => {
+        updateFormChange({
+          variables: {
+            input: {
+              id: node.formChange.id,
+              formChangePatch: {
+                changeStatus: "pending",
+                newFormData: undoneFormData,
+              },
+            },
+          },
+          optimisticResponse: {
+            updateFormChange: {
+              formChange: {
+                id: node.formChange.id,
+                changeStatus: "pending",
+                newFormData: undoneFormData,
+                operation: undefined,
+                projectRevisionByProjectRevisionId: undefined,
+              },
+            },
+          },
+          debounceKey: node.formChange.id,
+          onCompleted: () => resolve(),
+          onError: reject,
+        });
+      });
+      completedPromises.push(promise);
+    });
+
+    try {
+      await Promise.all(completedPromises);
+    } catch (e) {
+      // the failing mutation will display an error message and send the error to sentry
+    }
+  };
+
   return (
     <div>
       <header>
         <h2>Project Managers</h2>
+        <Button
+          type="button"
+          style={{
+            marginRight: "1rem",
+            marginBottom: "1rem",
+            marginLeft: "0rem",
+          }}
+          variant="secondary"
+          onClick={handleUndo}
+        >
+          Undo Changes
+        </Button>
         <SavingIndicator
           isSaved={!isUpdating && !isAdding && !isDeleting}
           lastEdited={lastEditedDate}
@@ -221,6 +286,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
       >
         Submit Managers
       </Button>
+
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
