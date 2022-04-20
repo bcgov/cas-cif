@@ -67,6 +67,18 @@ jobs:
         uses: ./.github/actions/dev-env-setup
       - run: git submodule update --init
       - run: make db_style_tests
+  storage-api-unit-tests:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: pip install -r requirements_dev.txt
+        working-directory: ./storage
+      - run: python -m pytest
+        working-directory: ./storage
+
   pre-commit:
     needs: install-dev-tools
     runs-on: ubuntu-latest

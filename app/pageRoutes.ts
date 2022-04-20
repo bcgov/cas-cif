@@ -107,3 +107,7 @@ export const getAttachmentViewPageRoute = (attachmentId: string) => ({
     attachment: attachmentId,
   },
 });
+
+export const getAttachmentDownloadRoute = (attachmentId: string) => ({
+  pathname: `/download/${attachmentId}`,
+});

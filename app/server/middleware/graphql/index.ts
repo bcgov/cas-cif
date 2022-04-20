@@ -20,35 +20,7 @@ import FormChangeValidationPlugin from "./formChangeValidationPlugin";
 import { graphql, GraphQLSchema } from "graphql";
 import * as Sentry from "@sentry/nextjs";
 import config from "../../../config";
-
-async function saveRemoteFile({ stream }) {
-  const response = await fetch(
-    `${config.get("storageApiHost")}/api/v1/attachments/upload`,
-    {
-      method: "POST",
-      headers: {
-        "api-key": config.get("storageApiKey"),
-        "Content-Type": "multipart/form-data",
-      },
-      body: stream,
-    }
-  );
-  try {
-    return await response.json();
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-async function resolveUpload(upload) {
-  const { createReadStream } = upload;
-  const stream = createReadStream();
-
-  // Save tile to remote storage system
-  const { uuid } = await saveRemoteFile({ stream });
-
-  return uuid;
-}
+import resolveFileUpload from "./resolveFileUpload";
 
 // Use consola for logging instead of default logger
 const pluginHook = makePluginHook([PostgraphileLogConsola]);
@@ -81,7 +53,7 @@ let postgraphileOptions: PostGraphileOptions = {
       {
         match: ({ table, column }) =>
           table === "attachment" && column === "file",
-        resolve: resolveUpload,
+        resolve: resolveFileUpload,
       },
     ],
   },
