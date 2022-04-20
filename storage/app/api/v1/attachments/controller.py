@@ -35,7 +35,7 @@ def upload_attachment_raw(data):
     except Exception as exc:
         error_msg = f'error: {sys.exc_info()[0]}'
         logger.error(
-            f'upload_file - Unknown Error During Upload Process {error_msg} {exc} {exc.message}')
+            f'upload_file - Unknown Error During Upload Process {error_msg} {exc}')
         raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f'Unknown Error During Upload Process')
 
