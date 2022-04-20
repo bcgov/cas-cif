@@ -75,7 +75,9 @@ jobs:
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: pip install -r requirements_dev.txt
+        working-directory: ./storage
       - run: python -m pytest
+        working-directory: ./storage
 
   pre-commit:
     needs: install-dev-tools
