@@ -17,6 +17,84 @@ interface Props {
   projectRevision: ProjectForm_projectRevision$key;
   onSubmit: () => void;
 }
+// You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
+export const createProjectUiSchema = (
+  tradeName,
+  legalName?,
+  bcRegistryId?,
+  rfpStream?,
+  projectStatus?
+) => {
+  return {
+    "ui:order": [
+      "fundingStreamRfpId",
+      "operatorId",
+      "operatorTradeName",
+      "proposalReference",
+      "projectName",
+      "summary",
+      "totalFundingRequest",
+      "projectStatus",
+      "projectStatusId",
+    ],
+    proposalReference: {
+      "ui:placeholder": "2020-RFP-1-123-ABCD",
+      "bcgov:size": "small",
+      "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
+    },
+    projectName: {
+      "ui:placeholder": "Short project name",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+    totalFundingRequest: {
+      "ui:widget": "MoneyWidget",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+    },
+    summary: {
+      "ui:col-md": 12,
+      "ui:widget": "TextAreaWidget",
+      "bcgov:size": "small",
+    },
+    operatorId: {
+      "ui:placeholder": "Select an Operator",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+      "ui:options": {
+        text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
+        title: "Legal Operator Name and BC Registry ID",
+      },
+    },
+    operatorTradeName: {
+      "ui:col-md": 12,
+      "ui:widget": "DisplayOnly",
+      "bcgov:size": "small",
+      "ui:options": {
+        text: `${tradeName}`,
+        title: "Trade Name",
+      },
+    },
+    fundingStreamRfpId: {
+      "ui:widget": "SelectRfpWidget",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:options": {
+        text: `${rfpStream}`,
+      },
+    },
+    projectStatusId: {
+      "ui:placeholder": "Select a Project Status",
+      "ui:widget": "SelectProjectStatusWidget",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:options": {
+        text: `${projectStatus}`,
+      },
+    },
+  };
+};
 
 const ProjectForm: React.FC<Props> = (props) => {
   const [updateProjectFormChange, updatingProjectFormChange] =
@@ -58,7 +136,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
       ({ node }) =>
@@ -66,13 +143,19 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   }, [query, revision.projectFormChange.newFormData.operatorId]);
 
+  const uiSchema = useMemo(() => {
+    return createProjectUiSchema(
+      selectedOperator ? selectedOperator.node.tradeName : ""
+    );
+  }, [selectedOperator]);
+
   const uniqueProposalReferenceValidation = (
     formData: any,
     errors: FormValidation
   ) => {
     if (revision.projectFormChange.isUniqueValue === false) {
       errors.proposalReference.addError(
-        "A proposal with the same proposal reference already exists. Please specify a different proposal reference."
+        "This proposal reference already exists, please specify a different one."
       );
     }
 
@@ -128,68 +211,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
     return initialSchema as JSONSchema7;
   }, [query]);
-
-  const uiSchema = useMemo(() => {
-    return {
-      "ui:order": [
-        "fundingStreamRfpId",
-        "operatorId",
-        "operatorTradeName",
-        "proposalReference",
-        "projectName",
-        "summary",
-        "totalFundingRequest",
-        "projectStatus",
-        "projectStatusId",
-      ],
-      proposalReference: {
-        "ui:placeholder": "2020-RFP-1-123-ABCD",
-        "bcgov:size": "small",
-        "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
-      },
-      projectName: {
-        "ui:placeholder": "Short project name",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-      totalFundingRequest: {
-        "ui:widget": "MoneyWidget",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-      summary: {
-        "ui:col-md": 12,
-        "ui:widget": "TextAreaWidget",
-        "bcgov:size": "small",
-      },
-      operatorId: {
-        "ui:placeholder": "Select an Operator",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-        "ui:widget": "SearchWidget",
-      },
-      operatorTradeName: {
-        "ui:col-md": 12,
-        "ui:widget": "DisplayOnly",
-        "bcgov:size": "small",
-        "ui:options": {
-          text: `${selectedOperator ? selectedOperator.node.tradeName : ""}`,
-          title: "Trade Name",
-        },
-      },
-      fundingStreamRfpId: {
-        "ui:widget": "SelectRfpWidget",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-      projectStatusId: {
-        "ui:placeholder": "Select a Project Status",
-        "ui:widget": "SelectProjectStatusWidget",
-        "ui:col-md": 12,
-        "bcgov:size": "small",
-      },
-    };
-  }, [selectedOperator]);
 
   const lastEditedDate = useMemo(
     () => new Date(revision.projectFormChange.updatedAt),

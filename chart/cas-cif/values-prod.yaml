@@ -1,0 +1,14 @@
+nginx-sidecar:
+  hostName: cif.gov.bc.ca
+  caServerSecret: cas-acme-url
+  caServerKey: url
+  renewalDays: 305
+
+cert-issue:
+  airflowEndpoint: https://cas-airflow-prod.apps.silver.devops.gov.bc.ca
+
+deploy-db:
+  airflowEndpoint: https://cas-airflow-prod.apps.silver.devops.gov.bc.ca
+
+download-dags:
+  airflowEndpoint: https://cas-airflow-prod.apps.silver.devops.gov.bc.ca

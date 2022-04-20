@@ -24,16 +24,38 @@ interface Props extends FormComponentProps {
   disabled?: boolean;
 }
 
-const uiSchema = {
-  cifUserId: {
-    "ui:placeholder": "Select a Project Manager",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-    "ui:options": {
-      label: false,
+// You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
+export const createProjectManagerUiSchema = (contact?, role?) => {
+  return {
+    cifUserId: {
+      "ui:placeholder": "Select a Project Manager",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+      "ui:options": {
+        label: false,
+        title: `${role}`,
+        text: `${contact}`,
+      },
     },
-  },
+  };
+};
+
+export const createProjectManagerSchema = (allCifUsers) => {
+  const schema = projectManagerSchema;
+  schema.properties.cifUserId = {
+    ...schema.properties.cifUserId,
+    anyOf: allCifUsers.edges.map(({ node }) => {
+      return {
+        type: "number",
+        title: node.fullName,
+        enum: [node.rowId],
+        value: node.rowId,
+      } as JSONSchema7Definition;
+    }),
+  };
+
+  return schema as JSONSchema7;
 };
 
 const ProjectManagerForm: React.FC<Props> = (props) => {
@@ -76,21 +98,10 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Dynamically build the schema from the list of cif_users
   const managerSchema = useMemo(() => {
-    const schema = projectManagerSchema;
-    schema.properties.cifUserId = {
-      ...schema.properties.cifUserId,
-      anyOf: allCifUsers.edges.map(({ node }) => {
-        return {
-          type: "number",
-          title: node.fullName,
-          enum: [node.rowId],
-          value: node.rowId,
-        } as JSONSchema7Definition;
-      }),
-    };
-
-    return schema as JSONSchema7;
+    return createProjectManagerSchema(allCifUsers);
   }, [allCifUsers]);
+
+  const uiSchema = createProjectManagerUiSchema();
 
   // Update an existing project_manager form change if it exists, otherwise create one
   const createOrUpdateFormChange = (formData: { cifUserId: number }) => {

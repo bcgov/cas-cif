@@ -1,17 +1,19 @@
-import DefaultLayout from "components/Layout/DefaultLayout";
-import { withRelay, RelayProps } from "relay-nextjs";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
-import withRelayOptions from "lib/relay/withRelayOptions";
-import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
-import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
-import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-
-import { getProjectsPageRoute } from "pageRoutes";
-import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import ProjectContactFormSummary from "components/Form/ProjectContactFormSummary";
+import ProjectFormSummary from "components/Form/ProjectFormSummary";
+import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
+import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import withRelayOptions from "lib/relay/withRelayOptions";
+import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
+import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { useRouter } from "next/router";
+import { getProjectsPageRoute } from "pageRoutes";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { RelayProps, withRelay } from "relay-nextjs";
+import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -21,8 +23,15 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        ...ProjectFormSummary_projectRevision
+        ...ProjectContactFormSummary_projectRevision
+        ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
       }
+
+      ...ProjectFormSummary_query
+      ...ProjectContactFormSummary_query
+      ...ProjectManagerFormSummary_query
     }
   }
 `;
@@ -93,6 +102,18 @@ export function ProjectRevision({
         <header>
           <h2>Review and Submit Project</h2>
         </header>
+        <ProjectFormSummary
+          query={query}
+          projectRevision={query.projectRevision}
+        />
+        <ProjectManagerFormSummary
+          query={query}
+          projectRevision={query.projectRevision}
+        />
+        <ProjectContactFormSummary
+          query={query}
+          projectRevision={query.projectRevision}
+        />
 
         <Button
           size="medium"

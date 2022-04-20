@@ -1,3 +1,5 @@
+import config from "../../config";
+
 // Takes a 'cookies' object (key-value pairs in an object)
 export const generateForwardedCookieOptions = (cookies, fields) => {
   if (!cookies) return {};
@@ -8,13 +10,10 @@ export const generateForwardedCookieOptions = (cookies, fields) => {
   }, {});
 };
 
-// if the ENABLE_DB_MOCKS or ENABLE_DB_MOCKS_COOKIES_ONLY env variable is set,
+// if the ENABLE_MOCK_TIME or ENABLE_DB_MOCKS_COOKIES_ONLY env variable is set,
 // creates the settings object needed for postgres to use the mocks schema by default and the fields to retrieve from the cookies
 export const generateDatabaseMockOptions = (cookies, fields) => {
-  if (
-    process.env.ENABLE_DB_MOCKS !== "true" &&
-    process.env.ENABLE_DB_MOCKS_COOKIES_ONLY !== "true"
-  )
+  if (!config.get("enableMockTime") && !config.get("enableDbMocksCookiesOnly"))
     return {};
 
   return {
