@@ -7,6 +7,10 @@ returns trigger as $$
 declare
 begin
 
+  if (new.change_status='committed') and (new.project_id is not null) and (new.change_reason is null) then
+    raise exception 'Cannot commit change with change_reason %', new.change_reason;
+  end if;
+
   -- Propagate the change_status to all related form_change records
   -- Save the project table first do avoid foreign key violations from other potential tables.
   update cif.form_change
