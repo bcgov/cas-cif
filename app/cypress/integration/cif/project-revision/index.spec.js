@@ -275,7 +275,7 @@ describe("the new project page", () => {
     });
     cy.get("textarea").click().type("foo");
     // Allow the component to finish saving before taking screenshot
-    cy.wait(1500);
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Project Revision Summary",
       variant: "with_change_reason",
