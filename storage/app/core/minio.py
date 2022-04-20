@@ -10,6 +10,7 @@ _minio_client = None
 
 
 def get_minio_client():
+    global _minio_client
     if _minio_client is None:
         _minio_client = Minio(MINIO_HOST_URL,
                               access_key=MINIO_ACCESS_KEY,

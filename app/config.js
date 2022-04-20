@@ -158,7 +158,7 @@ var config = convict({
   storageApiKey: {
     // Not yet used in deployments, so no validation function yet.
     doc: "Api key allowing access to storage api, needs to match what's in storage api env.",
-    default: null,
+    default: "_doNotUseThisApiKeyInProduction_",
     env: "STORAGE_API_KEY",
   },
   enableMockAuth: {

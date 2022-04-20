@@ -29,8 +29,9 @@ def upload_attachment_raw(data):
     raw_data_size = raw_data.getbuffer().nbytes
     uuid4 = str(uuid.uuid4())
     try:
-        return s3_upload_raw_file(ATTACHMENTS_BUCKET_NAME,
-                                  uuid4, raw_data, raw_data_size)
+        # The upload method throws if the upload doesn't succeed
+        s3_upload_raw_file(ATTACHMENTS_BUCKET_NAME,
+                           uuid4, raw_data, raw_data_size)
     except Exception as exc:
         error_msg = f'error: {sys.exc_info()[0]}'
         logger.error(
