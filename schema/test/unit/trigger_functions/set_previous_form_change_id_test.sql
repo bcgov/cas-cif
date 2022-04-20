@@ -20,10 +20,13 @@ values
   (1, 1, 1, 1, '000', 'summary', 'project 1'),
   (2, 1, 1, 1, '001', 'summary', 'project 2');
 
-insert into cif.project_revision(id, change_status, project_id)
+insert into cif.project_revision(id, change_status, change_reason, project_id)
 overriding system value
 values
-  (1, 'committed', 1), (2, 'committed', 1), (3, 'committed', 1), (4, 'committed', 2);
+  (1, 'committed', 'reason for change', 1),
+  (2, 'committed', 'reason for change', 1),
+  (3, 'committed', 'reason for change', 1),
+  (4, 'committed', 'reason for change', 2);
 
 alter table cif.form_change disable trigger commit_form_change;
 /** END SETUP **/

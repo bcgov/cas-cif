@@ -46,7 +46,7 @@ do $$
       where project_revision_id=current_revision.id and form_data_table_name='project_contact';
 
       update cif.project_revision
-      set change_status='committed'
+      set change_reason=concat('reason for change ', index), change_status='committed'
       where id=current_revision.id;
 
     end loop;
