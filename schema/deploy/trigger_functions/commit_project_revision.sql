@@ -8,7 +8,7 @@ declare
 begin
 
   if (new.change_status='committed') and (new.project_id is not null) and (new.change_reason is null) then
-    raise exception 'Cannot commit change with change_reason %', new.change_reason;
+    raise exception 'Cannot commit change if change_reason is null.';
   end if;
 
   -- Propagate the change_status to all related form_change records
