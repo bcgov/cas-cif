@@ -1,10 +1,12 @@
+import config from "../../../config";
+
 async function saveRemoteFile({ stream }) {
   const response = await fetch(
-    `${process.env.STORAGE_API_HOST}/api/v1/attachments/upload`,
+    `${config.get("storageApiHost")}/api/v1/attachments/upload`,
     {
       method: "POST",
       headers: {
-        "api-key": process.env.STORAGE_API_KEY,
+        "api-key": config.get("storageApiKey"),
         "Content-Type": "multipart/form-data",
       },
       body: stream,
