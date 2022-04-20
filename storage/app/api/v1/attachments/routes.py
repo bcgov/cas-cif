@@ -29,26 +29,26 @@ async def upload_attachement(
     return controller.upload_attachment_raw(data_file)
 
 
-@router.post("/delete", response_model=bool)
-def delete_attachement(
-    attachment: Attachment,
-    api_key: ApiKey = Depends(get_api_key_authorizer())
-):
-    """
-    Deletes a file attachment
-    """
-    return controller.delete_attachment(attachment.uuid)
+# @router.post("/delete", response_model=bool)
+# def delete_attachement(
+#     attachment: Attachment,
+#     api_key: ApiKey = Depends(get_api_key_authorizer())
+# ):
+#     """
+#     Deletes a file attachment
+#     """
+#     return controller.delete_attachment(attachment.uuid)
 
 
-@router.post("/download")
-def download_attachement(
-    attachment: Attachment,
-    api_key: ApiKey = Depends(get_api_key_authorizer())
-):
-    """
-    Downloads a file attachment
-    """
-    return controller.download_attachment(attachment.uuid)
+# @router.post("/download")
+# def download_attachement(
+#     attachment: Attachment,
+#     api_key: ApiKey = Depends(get_api_key_authorizer())
+# ):
+#     """
+#     Downloads a file attachment
+#     """
+#     return controller.download_attachment(attachment.uuid)
 
 
 @router.get("/download/{uuid}")
@@ -62,12 +62,12 @@ def download_attachement(
     return controller.download_attachment(uuid)
 
 
-@router.post("/zip")
-def download_attachements(
-    attachments: Attachments,
-    api_key: ApiKey = Depends(get_api_key_authorizer())
-):
-    """
-    Downloads multiple attachments in a zip file
-    """
-    return controller.download_attachments(attachments)
+# @router.post("/zip")
+# def download_attachements(
+#     attachments: Attachments,
+#     api_key: ApiKey = Depends(get_api_key_authorizer())
+# ):
+#     """
+#     Downloads multiple attachments in a zip file
+#     """
+#     return controller.download_attachments(attachments)

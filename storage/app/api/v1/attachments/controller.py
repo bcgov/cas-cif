@@ -29,8 +29,8 @@ def upload_attachment_raw(data):
     raw_data_size = raw_data.getbuffer().nbytes
     uuid4 = str(uuid.uuid4())
     try:
-        s3_upload_raw_file(ATTACHMENTS_BUCKET_NAME,
-                           uuid4, raw_data, raw_data_size)
+        return s3_upload_raw_file(ATTACHMENTS_BUCKET_NAME,
+                                  uuid4, raw_data, raw_data_size)
     except Exception as exc:
         error_msg = f'error: {sys.exc_info()[0]}'
         logger.error(
@@ -70,29 +70,30 @@ def download_attachment(uuid: str):
     s3_response = s3_get_file(bucket_path, uuid)
 
     response = StreamingResponse(content=s3_response_iterator(s3_response), headers={
+        **s3_response.headers,
         'fastapi-content-length': str(stats.size),
     })
 
     return response
 
 
-# def download_attachments(attachments: Attachments):
-#     """ gets all attachments and downloads them as a zip file """
-#     attachment_files = []
+def download_attachments(attachments: Attachments):
+    """ gets all attachments and downloads them as a zip file """
+    attachment_files = []
 
-#     for attachment in attachments:
-#         result = s3_get_file(
-#             ATTACHMENTS_BUCKET_NAME, attachment.uuid)
-#         attachment_files.append(
-#             {"uuid": attachment.uuid, "data": result.read()})
+    for attachment in attachments:
+        result = s3_get_file(
+            ATTACHMENTS_BUCKET_NAME, attachment.uuid)
+        attachment_files.append(
+            {"uuid": attachment.uuid, "data": result.read()})
 
-#     zip_buffer = io.BytesIO()
-#     with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
-#         for file in attachment_files:
-#             zip_file.writestr(file["uuid"], file["data"])
-#     try:
-#         response = Response(zip_buffer.getvalue())
-#         response.headers['Content-Disposition'] = 'attachments.zip'
-#         return response
-#     except Exception as error:
-#         logger.warning(error)
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        for file in attachment_files:
+            zip_file.writestr(file["uuid"], file["data"])
+    try:
+        response = Response(zip_buffer.getvalue())
+        response.headers['Content-Disposition'] = 'attachments.zip'
+        return response
+    except Exception as error:
+        logger.warning(error)
