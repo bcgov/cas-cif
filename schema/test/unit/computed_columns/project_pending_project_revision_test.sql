@@ -23,13 +23,13 @@ values
   (2, 2, 1, 1, '001', 'summary', 'project 2'),
   (3, 3, 1, 1, '002', 'summary', 'project 3');
 
-insert into cif.project_revision(id, change_status, project_id)
+insert into cif.project_revision(id, change_status, change_reason, project_id)
 overriding system value
 values
-  (1, 'committed', 1),
-  (2, 'committed', 2),
-  (3, 'pending', 3),
-  (4, 'pending', 1);
+  (1, 'committed', 'reason for change', 1),
+  (2, 'committed', 'reason for change', 2),
+  (3, 'pending', 'reason for change', 3),
+  (4, 'pending', 'reason for change', 1);
 
 select is (
   (select id from cif.project_pending_project_revision(
