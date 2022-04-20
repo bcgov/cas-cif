@@ -211,9 +211,9 @@ const ProjectForm: React.FC<Props> = (props) => {
     [revision.projectFormChange.updatedAt]
   );
 
-  // const handleSubmit = async (e: ISubmitEvent<any>) => {
-  //   props.onSubmit();
-  // };
+  const handleSubmit = async () => {
+    props.onSubmit();
+  };
 
   const handleSubmitClick = async () => {
     await handleChange(revision.projectFormChange.newFormData, "staged");

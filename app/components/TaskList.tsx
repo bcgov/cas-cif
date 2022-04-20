@@ -48,7 +48,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             }
           }
         }
-        projectManagerFormChangesByLabel {
+        projectManagerFormChangesByLabel(first: 500)
+          @connection(key: "connection_projectManagerFormChangesByLabel") {
+          __id
           edges {
             node {
               formChange {
