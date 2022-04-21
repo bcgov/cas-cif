@@ -249,7 +249,66 @@ describe("The Project Form", () => {
       formChangePatch: { changeStatus: "staged" },
     });
   });
+  it("clicking the submit button should stage a form with validation errors", () => {
+    environment.mock.queueOperationResolver((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        ProjectRevision() {
+          return {
+            id: "Test Project Revision ID",
+            projectFormChange: {
+              id: "Test Project Form Change ID",
+              isUniqueValue: true,
+              changeStatus: "pending",
+              newFormData: {
+                proposalReference: "12345678",
+                summary: "d",
+                operatorId: 1,
+                fundingStreamRfpId: 1,
+                projectName: "test project name",
+                totalFundingRequest: null,
+              },
+            },
+          };
+        },
+        Query() {
+          return {
+            allOperators: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    legalName: "test operator",
+                    bcRegistryId: "1234abcd",
+                  },
+                },
+              ],
+            },
+            allFundingStreams: {
+              edges: [
+                {
+                  node: {
+                    rowId: 1,
+                    name: "EP",
+                    description: "Emissions Performance",
+                  },
+                },
+              ],
+            },
+          };
+        },
+      })
+    );
+    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
 
+    renderProjectForm();
+
+    screen.getByText(/submit/i).click();
+    expect(
+      environment.mock.getMostRecentOperation().request.variables.input
+    ).toMatchObject({
+      formChangePatch: { changeStatus: "staged" },
+    });
+  });
   it("reverts the form_change status to 'pending' when editing", () => {
     environment.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {

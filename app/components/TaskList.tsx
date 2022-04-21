@@ -71,17 +71,20 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   function getStatus(forms: any[]) {
     let status = "Not Started";
     for (const form of forms) {
-      if (form.changeStatus === "pending") {
+      if (form?.changeStatus === "pending") {
         status = "Incomplete";
         break;
       }
-      if (form.changeStatus === "staged" && form.validationErrors.length > 0) {
+      if (
+        form?.changeStatus === "staged" &&
+        form?.validationErrors.length > 0
+      ) {
         status = "Attention Required";
         break;
       }
       if (
-        form.changeStatus === "staged" &&
-        form.validationErrors.length === 0
+        form?.changeStatus === "staged" &&
+        form?.validationErrors.length === 0
       ) {
         status = "Complete";
       }

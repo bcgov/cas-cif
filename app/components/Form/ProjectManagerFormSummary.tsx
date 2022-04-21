@@ -17,7 +17,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
   const { projectManagerFormChangesByLabel } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
-        projectManagerFormChangesByLabel {
+        projectManagerFormChangesByLabel(first: 500) {
           edges {
             node {
               formChange {
