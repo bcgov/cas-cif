@@ -59,7 +59,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
   const managersJSX = useMemo(() => {
     return projectManagerFormChangesByLabel.edges.map(({ node }) => {
-      if (!node.formChange) return;
+      if (!node?.formChange) return;
       const nodeManager = allCifUsers.edges.find(
         (manager) =>
           manager.node.rowId === node.formChange?.newFormData.cifUserId

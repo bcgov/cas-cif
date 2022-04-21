@@ -177,7 +177,7 @@ describe("The Project Form", () => {
     renderProjectForm({});
 
     act(() => {
-      screen.getByText(/submit/i).click();
+      userEvent.click(screen.getByText(/submit/i));
     });
 
     expect(

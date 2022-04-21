@@ -216,8 +216,8 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.onSubmit();
   };
 
-  const handleSubmitClick = async () => {
-    await handleChange(revision.projectFormChange.newFormData, "staged");
+  const handleError = () => {
+    handleChange(revision.projectFormChange.newFormData, "staged");
   };
 
   return (
@@ -246,12 +246,9 @@ const ProjectForm: React.FC<Props> = (props) => {
         }}
         onChange={(change) => handleChange(change.formData, "pending")}
         onSubmit={handleSubmit}
+        onError={handleError}
       >
-        <Button
-          type="submit"
-          style={{ marginRight: "1rem" }}
-          onClick={handleSubmitClick}
-        >
+        <Button type="submit" style={{ marginRight: "1rem" }}>
           Submit Project Overview
         </Button>
       </FormBase>
