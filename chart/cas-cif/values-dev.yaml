@@ -8,12 +8,12 @@ nginx-sidecar:
 
 db:
   preUpgradeCommand: |
-    psql<<EOF
+    psql -v "ON_ERROR_STOP=1" <<EOF
       select pg_terminate_backend(pid) from pg_stat_activity where
       -- don't kill my own connection!
       pid <> pg_backend_pid()
       -- don't kill the connections to other databases
-      and datname = '$(PGDATABASE)')';
+      and datname = '$(PGDATABASE)';
       drop schema sqitch if exists cascade;
       drop schema cif if exists cascade;
       drop schema cif_private if exists cascade;
