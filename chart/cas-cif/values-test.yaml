@@ -8,9 +8,9 @@ nginx-sidecar:
 db:
   preUpgradeCommand: |
     psql -v "ON_ERROR_STOP=1" <<EOF
-      drop schema sqitch if exists cascade;
-      drop schema cif if exists cascade;
-      drop schema cif_private if exists cascade;
+      drop schema if exists sqitch cascade;
+      drop schema if exists cif cascade;
+      drop schema if exists cif_private cascade;
     EOF
 
 cert-issue:
