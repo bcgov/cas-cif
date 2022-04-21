@@ -5,11 +5,6 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
   <div
     class="jsx-9409829"
   >
-    <label
-      for="1"
-    >
-      Search (optional)
-    </label>
     <div
       class="sc-eCImPb dfYLVh pg-select"
     >
@@ -52,11 +47,6 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
   <div
     class="jsx-9409829"
   >
-    <label
-      for="1"
-    >
-      Search (optional)
-    </label>
     <div
       class="sc-eCImPb dfYLVh pg-select"
     >

@@ -2,11 +2,6 @@
 
 exports[`The SearchDropdown Widget Matches the snapshot with a default value set 1`] = `
 <div>
-  <label
-    for="1"
-  >
-    Search (optional)
-  </label>
   <div
     aria-expanded="false"
     class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-1nmd8s9-MuiAutocomplete-root"
@@ -65,11 +60,6 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
 
 exports[`The SearchDropdown Widget Matches the snapshot with no default value set 1`] = `
 <div>
-  <label
-    for="1"
-  >
-    Search (optional)
-  </label>
   <div
     aria-expanded="false"
     class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-1nmd8s9-MuiAutocomplete-root"

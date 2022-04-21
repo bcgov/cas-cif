@@ -132,7 +132,6 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         label={change.projectManagerLabel.label}
         required={false}
         htmlFor={`${formIdPrefix}_cifUserId`}
-        uiSchema={uiSchema}
       />
       <div>
         <FormBase

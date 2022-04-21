@@ -204,6 +204,8 @@ describe("The Project Form", () => {
                 fundingStreamRfpId: 1,
                 projectName: "test project name",
                 totalFundingRequest: 12345,
+                projectStatusId: 1,
+                operatorTradeName: "test trade name",
               },
             },
           };

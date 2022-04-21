@@ -196,18 +196,24 @@ const ProjectForm: React.FC<Props> = (props) => {
   };
 
   const schema: JSONSchema7 = useMemo(() => {
-    const initialSchema = projectSchema;
-    initialSchema.properties.operatorId.anyOf = query.allOperators.edges.map(
-      ({ node }) => {
-        return {
-          type: "number",
-          title: `${node.legalName} (${node.bcRegistryId})`,
-          enum: [node.rowId],
-          value: node.rowId,
-        };
-      }
-    );
-    initialSchema.required = [...initialSchema.required, "operatorTradeName"];
+    const initialSchema = {
+      ...projectSchema,
+      properties: {
+        ...projectSchema.properties,
+        operatorId: {
+          ...projectSchema.properties.operatorId,
+          anyOf: query.allOperators.edges.map(({ node }) => {
+            return {
+              type: "number",
+              title: `${node.legalName} (${node.bcRegistryId})`,
+              enum: [node.rowId],
+              value: node.rowId,
+            };
+          }),
+        },
+      },
+      required: [...projectSchema.required, "operatorTradeName"],
+    };
     return initialSchema as JSONSchema7;
   }, [query]);
 
