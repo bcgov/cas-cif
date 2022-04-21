@@ -8,6 +8,7 @@ const projectSchema = {
     "operatorId",
     "fundingStreamRfpId",
     "totalFundingRequest",
+    "projectStatusId",
   ],
   properties: {
     proposalReference: {

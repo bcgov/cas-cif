@@ -6,7 +6,6 @@ import FieldLabel from "./widgets/FieldLabel";
 const FieldTemplate: React.FC<FieldTemplateProps> = ({
   children,
   errors,
-  help,
   rawErrors,
   label,
   displayLabel,
@@ -15,27 +14,34 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
 }) => {
   return (
     <div>
-      {displayLabel && (
-        <FieldLabel label={label} required={required} htmlFor={id} />
-      )}
-      {help}
-      {children}
-
-      <div className="error-div">
-        {rawErrors && rawErrors.length > 0 ? (
-          <>
-            <FontAwesomeIcon
-              className="error-icon"
-              icon={faExclamationTriangle}
-            />
-            {errors}
-          </>
-        ) : null}
+      <div className="definition-container">
+        {displayLabel && (
+          <FieldLabel
+            label={label}
+            required={required}
+            htmlFor={id}
+            tagName="dt"
+          />
+        )}
+        {children}
       </div>
+      {rawErrors && rawErrors.length > 0 ? (
+        <div className="error-div">
+          <FontAwesomeIcon
+            className="error-icon"
+            icon={faExclamationTriangle}
+          />
+          {errors}
+        </div>
+      ) : null}
 
       <style jsx>{`
+        div.definition-container {
+          display: flex;
+        }
+
         div:not(:last-child) {
-          margin-bottom: 1em;
+          margin-bottom: 0.5em;
         }
         div :global(.error-icon) {
           color: #cd2026;

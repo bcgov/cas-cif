@@ -1,5 +1,5 @@
 import { ThemeProps } from "@rjsf/core";
-import FieldTemplate from "./FieldTemplate";
+import ReadOnlyFieldTemplate from "./ReadOnlyFieldTemplate";
 import ReadOnlyObjectFieldTemplate from "./ReadOnlyObjectFieldTemplate";
 import { utils } from "@rjsf/core";
 import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
@@ -23,7 +23,7 @@ const readOnlyTheme: ThemeProps = {
     SelectProjectStatusWidget: ReadOnlyWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
-  FieldTemplate: FieldTemplate,
+  FieldTemplate: ReadOnlyFieldTemplate,
 };
 
 export default readOnlyTheme;

@@ -3,20 +3,10 @@ import { WidgetProps } from "@rjsf/core";
 import Widgets from "@rjsf/core/dist/cjs/components/widgets";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import FieldLabel from "./FieldLabel";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
-  const {
-    id,
-    onChange,
-    schema,
-    placeholder,
-    readonly,
-    label,
-    required,
-    uiSchema,
-  } = props;
+  const { id, onChange, schema, placeholder, readonly } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option: any) => {
     onChange(option?.value);
@@ -33,52 +23,44 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   if (readonly) return <Widgets.SelectWidget {...props} />;
 
   return (
-    <>
-      <FieldLabel
-        label={label}
-        required={required}
-        htmlFor={id}
-        uiSchema={uiSchema}
-      />
-      <Autocomplete
-        disableClearable
-        id={id}
-        options={schema.anyOf}
-        defaultValue={getSelected()}
-        value={getSelected()}
-        onChange={handleChange}
-        isOptionEqualToValue={(option) =>
-          props.value ? option.value === props.value : true
-        }
-        getOptionLabel={(option) => (option ? option.title : "")}
-        sx={{
-          border: "2px solid #606060",
-          borderRadius: "0.25em",
-          marginTop: "0.2em",
-          "&.Mui-focused": {
-            outlineStyle: "solid",
-            outlineWidth: "4px",
-            outlineColor: "#3B99FC",
-            outlineOffset: "1px",
-          },
-        }}
-        popupIcon={<KeyboardArrowDownIcon style={{ color: "black" }} />}
-        renderInput={(params) => {
-          return (
-            <TextField
-              {...params}
-              placeholder={placeholder}
-              variant="standard"
-              InputProps={{ ...params.InputProps, disableUnderline: true }}
-              sx={{
-                padding: "5px",
-                background: "white",
-              }}
-            />
-          );
-        }}
-      />
-    </>
+    <Autocomplete
+      disableClearable
+      id={id}
+      options={schema.anyOf}
+      defaultValue={getSelected()}
+      value={getSelected()}
+      onChange={handleChange}
+      isOptionEqualToValue={(option) =>
+        props.value ? option.value === props.value : true
+      }
+      getOptionLabel={(option) => (option ? option.title : "")}
+      sx={{
+        border: "2px solid #606060",
+        borderRadius: "0.25em",
+        marginTop: "0.2em",
+        "&.Mui-focused": {
+          outlineStyle: "solid",
+          outlineWidth: "4px",
+          outlineColor: "#3B99FC",
+          outlineOffset: "1px",
+        },
+      }}
+      popupIcon={<KeyboardArrowDownIcon style={{ color: "black" }} />}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            placeholder={placeholder}
+            variant="standard"
+            InputProps={{ ...params.InputProps, disableUnderline: true }}
+            sx={{
+              padding: "5px",
+              background: "white",
+            }}
+          />
+        );
+      }}
+    />
   );
 };
 

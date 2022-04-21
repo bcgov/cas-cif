@@ -38,12 +38,10 @@ export const createProjectUiSchema = (
       "projectStatusId",
     ],
     proposalReference: {
-      "ui:placeholder": "2020-RFP-1-123-ABCD",
       "bcgov:size": "small",
-      "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
+      "ui:help": "(e.g. 2020-RFP-1-ABCD-123)",
     },
     projectName: {
-      "ui:placeholder": "Short project name",
       "ui:col-md": 12,
       "bcgov:size": "small",
     },
@@ -64,16 +62,15 @@ export const createProjectUiSchema = (
       "ui:widget": "SearchWidget",
       "ui:options": {
         text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
-        title: "Legal Operator Name and BC Registry ID",
       },
     },
     operatorTradeName: {
       "ui:col-md": 12,
       "ui:widget": "DisplayOnly",
       "bcgov:size": "small",
+      "ui:title": "Trade Name",
       "ui:options": {
         text: `${tradeName}`,
-        title: "Trade Name",
       },
     },
     fundingStreamRfpId: {
@@ -82,6 +79,7 @@ export const createProjectUiSchema = (
       "bcgov:size": "small",
       "ui:options": {
         text: `${rfpStream}`,
+        label: rfpStream ? true : false,
       },
     },
     projectStatusId: {
@@ -209,6 +207,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         };
       }
     );
+    initialSchema.required = [...initialSchema.required, "operatorTradeName"];
     return initialSchema as JSONSchema7;
   }, [query]);
 

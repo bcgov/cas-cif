@@ -4,16 +4,8 @@ import { graphql, useFragment } from "react-relay";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 
 const SelectProjectStatus: React.FunctionComponent<WidgetProps> = (props) => {
-  const {
-    id,
-    onChange,
-    placeholder,
-    label,
-    required,
-    uiSchema,
-    value,
-    formContext,
-  } = props;
+  const { id, onChange, placeholder, required, uiSchema, value, formContext } =
+    props;
 
   const { allFundingStreamRfpProjectStatuses } = useFragment(
     graphql`
@@ -46,7 +38,6 @@ const SelectProjectStatus: React.FunctionComponent<WidgetProps> = (props) => {
 
   return (
     <div>
-      <label htmlFor={id}>{label}</label>
       <Dropdown
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
