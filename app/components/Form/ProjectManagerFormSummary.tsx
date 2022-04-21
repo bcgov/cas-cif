@@ -53,7 +53,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
   const areManagersEmpty = useMemo(() => {
     return !projectManagerFormChangesByLabel.edges.some(
-      ({ node }) => node.formChange?.newFormData.cifUserId
+      ({ node }) => node?.formChange?.newFormData.cifUserId
     );
   }, [projectManagerFormChangesByLabel.edges]);
 
