@@ -21393,7 +21393,7 @@ type FormChange implements Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
-  isPrestine: Boolean
+  isPristine: Boolean
   isUniqueValue(columnName: String!): Boolean
 
   """The name of the JSON schema to use for validation of this form data"""
@@ -21757,8 +21757,8 @@ input FormChangeFilter {
   """Filter by the object’s `formDataTableName` field."""
   formDataTableName: StringFilter
 
-  """Filter by the object’s `isPrestine` field."""
-  isPrestine: BooleanFilter
+  """Filter by the object’s `isPristine` field."""
+  isPristine: BooleanFilter
 
   """Filter by the object’s `jsonSchemaName` field."""
   jsonSchemaName: StringFilter

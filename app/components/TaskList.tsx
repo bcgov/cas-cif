@@ -28,14 +28,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         projectByProjectId {
           proposalReference
         }
-        formChangesByProjectRevisionId {
-          nodes {
-            changeStatus
-            previousFormChangeId
-            jsonSchemaName
-            validationErrors
-          }
-        }
         projectFormChange {
           changeStatus
           validationErrors
@@ -50,7 +42,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         }
         projectManagerFormChangesByLabel(first: 500)
           @connection(key: "connection_projectManagerFormChangesByLabel") {
-          __id
           edges {
             node {
               formChange {
@@ -71,7 +62,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   function getStatus(forms: any[]) {
     let status = "Not Started";
     for (const form of forms) {
-      if (form?.changeStatus === "pending") {
+      if (form?.changeStatus === "pending" && !form.isPristine) {
         status = "Incomplete";
         break;
       }
@@ -99,9 +90,18 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     .filter(({ node }) => node)
     .map(({ node }) => node.formChange);
 
-  const projectOverviewStatus = getStatus(projectForms);
-  const projectManagerStatus = getStatus(projectManagerForms);
-  const projectContactStatus = getStatus(projectContactForms);
+  const projectOverviewStatus = useMemo(
+    () => getStatus(projectForms),
+    projectForms
+  );
+  const projectManagerStatus = useMemo(
+    () => getStatus(projectManagerForms),
+    projectManagerForms
+  );
+  const projectContactStatus = useMemo(
+    () => getStatus(projectContactForms),
+    projectForms
+  );
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
@@ -134,7 +134,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                 </div>
                 <div className="status">
                   {projectOverviewStatus === "Attention Required" ? (
-                    <b>{projectOverviewStatus}</b>
+                    <strong>{projectOverviewStatus}</strong>
                   ) : (
                     <>{projectOverviewStatus}</>
                   )}
