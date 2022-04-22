@@ -34,6 +34,7 @@ export const deleteMutation = graphql`
       query {
         projectRevision(id: $projectRevision) {
           ...ProjectManagerFormGroup_revision
+          ...TaskList_projectRevision
         }
       }
     }
@@ -54,6 +55,7 @@ export const archiveMutation = graphql`
       query {
         projectRevision(id: $projectRevision) {
           ...ProjectManagerFormGroup_revision
+          ...TaskList_projectRevision
         }
       }
     }
