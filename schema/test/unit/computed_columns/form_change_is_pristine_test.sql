@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(4);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -37,10 +37,7 @@ values (
   'schema',
   null,
   1
-);
-
-insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name, previous_form_change_id, project_revision_id)
-values (
+),(
   '{"testField": "test value"}',
   'create',
   'cif',
@@ -48,12 +45,17 @@ values (
   'schema',
   1,
   2
-);
-
-insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name, previous_form_change_id, project_revision_id)
-values (
+),(
   '{"xyz": "changed value"}',
   'create',
+  'cif',
+  'test_table',
+  'schema',
+  2,
+  2
+), (
+  '{"testField": "test value"}',
+  'archive',
   'cif',
   'test_table',
   'schema',
@@ -83,6 +85,14 @@ select is(
   ),
   false,
   'Returns false, as there are changes to the new form data'
+);
+
+select is(
+  (
+    select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=4))
+  ),
+  false,
+  'Returns false, as the form has been archived'
 );
 
 select finish();
