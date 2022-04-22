@@ -83,24 +83,27 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     return status;
   }
   const projectForms = [projectFormChange];
-  const projectContactForms = tasklistProjectContactFormChanges.edges.map(
-    ({ node }) => node
-  );
-  const projectManagerForms = projectManagerFormChangesByLabel.edges
-    .filter(({ node }) => node)
-    .map(({ node }) => node.formChange);
 
   const projectOverviewStatus = useMemo(
-    () => getStatus(projectForms),
+    () => getStatus([projectFormChange]),
     projectForms
   );
+
   const projectManagerStatus = useMemo(
-    () => getStatus(projectManagerForms),
-    projectManagerForms
+    () =>
+      getStatus(
+        projectManagerFormChangesByLabel.edges
+          .filter(({ node }) => node)
+          .map(({ node }) => node.formChange)
+      ),
+    projectManagerFormChangesByLabel.edges
   );
   const projectContactStatus = useMemo(
-    () => getStatus(projectContactForms),
-    projectForms
+    () =>
+      getStatus(
+        tasklistProjectContactFormChanges.edges.map(({ node }) => node)
+      ),
+    tasklistProjectContactFormChanges.edges
   );
 
   const currentStep = useMemo(() => {
