@@ -46,7 +46,6 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
               node {
                 rowId
                 legalName
-                tradeName
                 bcRegistryId
               }
             }
@@ -100,7 +99,6 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           theme={readOnlyTheme}
           schema={projectSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
-            selectedOperator ? selectedOperator.node.tradeName : "",
             selectedOperator ? selectedOperator.node.legalName : "",
             selectedOperator ? selectedOperator.node.bcRegistryId : "",
             rfpStream

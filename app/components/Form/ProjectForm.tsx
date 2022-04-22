@@ -19,7 +19,6 @@ interface Props {
 }
 // You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectUiSchema = (
-  tradeName,
   legalName?,
   bcRegistryId?,
   rfpStream?,
@@ -39,7 +38,7 @@ export const createProjectUiSchema = (
     ],
     proposalReference: {
       "bcgov:size": "small",
-      "ui:help": "(e.g. 2020-RFP-1-ABCD-123)",
+      "ui:help": <small>(e.g. 2020-RFP-1-ABCD-123)</small>,
     },
     projectName: {
       "ui:col-md": 12,
@@ -62,15 +61,6 @@ export const createProjectUiSchema = (
       "ui:widget": "SearchWidget",
       "ui:options": {
         text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
-      },
-    },
-    operatorTradeName: {
-      "ui:col-md": 12,
-      "ui:widget": "DisplayOnly",
-      "bcgov:size": "small",
-      "ui:title": "Trade Name",
-      "ui:options": {
-        text: `${tradeName}`,
       },
     },
     fundingStreamRfpId: {
@@ -212,7 +202,6 @@ const ProjectForm: React.FC<Props> = (props) => {
           }),
         },
       },
-      required: [...projectSchema.required, "operatorTradeName"],
     };
     return initialSchema as JSONSchema7;
   }, [query]);

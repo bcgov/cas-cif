@@ -28,9 +28,6 @@ const projectSchema = {
       default: undefined,
       anyOf: undefined,
     },
-    operatorTradeName: {
-      type: "string",
-    },
     fundingStreamRfpId: {
       type: "number",
       title: "Funding Stream RFP ID",
