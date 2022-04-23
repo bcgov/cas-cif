@@ -14,13 +14,45 @@ interface Props {
   projectRevision: TaskList_projectRevision$key;
 }
 
+const getStatus = (
+  forms: Array<{
+    changeStatus: string;
+    isPristine: boolean;
+    validationErrors: any[];
+  }>
+) => {
+  if (
+    forms.some((form) => form?.changeStatus === "pending" && !form.isPristine)
+  )
+    return "Incomplete";
+
+  if (
+    forms.some(
+      (form) =>
+        form.changeStatus === "staged" && form.validationErrors.length > 0
+    )
+  )
+    return "Attention Required";
+
+  if (
+    forms.every(
+      (form) =>
+        form.changeStatus === "staged" && form.validationErrors.length === 0
+    ) &&
+    forms.some((form) => !form.isPristine)
+  )
+    return "Complete";
+
+  return "Not Started";
+};
+
 const TaskList: React.FC<Props> = ({ projectRevision }) => {
   const {
     id,
     projectByProjectId,
     projectFormChange,
     tasklistProjectContactFormChanges,
-    projectManagerFormChangesByLabel,
+    projectManagerFormChanges,
   } = useFragment(
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
@@ -30,22 +62,26 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         }
         projectFormChange {
           changeStatus
+          isPristine
           validationErrors
         }
         tasklistProjectContactFormChanges: projectContactFormChanges {
           edges {
             node {
               changeStatus
+              isPristine
               validationErrors
             }
           }
         }
-        projectManagerFormChangesByLabel(first: 500)
-          @connection(key: "connection_projectManagerFormChangesByLabel") {
+        projectManagerFormChanges: projectManagerFormChangesByLabel(
+          first: 500
+        ) {
           edges {
             node {
               formChange {
                 changeStatus
+                isPristine
                 validationErrors
               }
             }
@@ -59,51 +95,27 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
 
   let mode = projectByProjectId ? "update" : "create";
 
-  function getStatus(forms: any[]) {
-    let status = "Not Started";
-    for (const form of forms) {
-      if (form?.changeStatus === "pending" && !form.isPristine) {
-        status = "Incomplete";
-        break;
-      }
-      if (
-        form?.changeStatus === "staged" &&
-        form?.validationErrors.length > 0
-      ) {
-        status = "Attention Required";
-        break;
-      }
-      if (
-        form?.changeStatus === "staged" &&
-        form?.validationErrors.length === 0
-      ) {
-        status = "Complete";
-      }
-    }
-    return status;
-  }
-  const projectForms = [projectFormChange];
-
   const projectOverviewStatus = useMemo(
     () => getStatus([projectFormChange]),
-    projectForms
+    [projectFormChange]
   );
 
   const projectManagerStatus = useMemo(
     () =>
       getStatus(
-        projectManagerFormChangesByLabel.edges
-          .filter(({ node }) => node)
+        projectManagerFormChanges.edges
+          .filter(({ node }) => node && node.formChange)
           .map(({ node }) => node.formChange)
       ),
-    projectManagerFormChangesByLabel.edges
+    [projectManagerFormChanges]
   );
+
   const projectContactStatus = useMemo(
     () =>
       getStatus(
         tasklistProjectContactFormChanges.edges.map(({ node }) => node)
       ),
-    tasklistProjectContactFormChanges.edges
+    [tasklistProjectContactFormChanges]
   );
 
   const currentStep = useMemo(() => {

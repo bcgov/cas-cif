@@ -81,7 +81,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         createFormChange: {
           query: {
             projectRevision: {
-              ...projectRevision,
+              projectFormChange: undefined,
               managerFormChanges: {
                 edges: edges.map(
                   ({ node: { projectManagerLabel, formChange } }) => {

@@ -17,7 +17,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
   const { projectManagerFormChangesByLabel } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
-        projectManagerFormChangesByLabel(first: 500) {
+        projectManagerFormChangesByLabel {
           edges {
             node {
               formChange {
@@ -41,7 +41,6 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
           edges {
             node {
               rowId
-              id
               fullName
             }
           }
