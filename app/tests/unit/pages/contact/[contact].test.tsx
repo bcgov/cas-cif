@@ -1,25 +1,14 @@
+import { act, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
 import { ContactViewPage } from "pages/cif/contact/[contact]";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { render, screen, act } from "@testing-library/react";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledContactViewQuery, {
   ContactViewQuery,
-  ContactViewQuery$variables,
 } from "__generated__/ContactViewQuery.graphql";
-import { loadQuery, RelayEnvironmentProvider } from "react-relay";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { useRouter } from "next/router";
-import { mocked } from "jest-mock";
-import userEvent from "@testing-library/user-event";
-import { ErrorContext } from "contexts/ErrorContext";
 
 jest.mock("next/router");
-
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   Contact() {
@@ -35,46 +24,18 @@ const defaultMockResolver = {
   },
 };
 
-const loadContactQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-  const variables: ContactViewQuery$variables = {
+const pageTestingHelper = new PageTestingHelper<ContactViewQuery>({
+  pageComponent: ContactViewPage,
+  compiledQuery: compiledContactViewQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
     contact: "mock-contact-id",
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(compiledContactViewQuery, variables);
-
-  initialQueryRef = loadQuery<ContactViewQuery>(
-    environment,
-    compiledContactViewQuery,
-    variables
-  );
-};
-let errorContext;
-const renderContactPage = () =>
-  render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <ContactViewPage CSN preloadedQuery={initialQueryRef} />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
+  },
+});
 
 describe("ContactViewPage", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
-    errorContext = {
-      error: null,
-      setError: jest.fn().mockImplementation((error) =>
-        act(() => {
-          errorContext.error = error;
-        })
-      ),
-    };
+    pageTestingHelper.reinit();
     jest.restoreAllMocks();
   });
 
@@ -86,21 +47,21 @@ describe("ContactViewPage", () => {
     mocked(useRouter).mockReturnValue({
       replace: jest.fn(),
     } as any);
-    loadContactQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           contact: null,
         };
       },
     });
-    const { container } = renderContactPage();
+    const { container } = pageTestingHelper.renderPage();
     expect(container.childElementCount).toEqual(0);
     expect(spy).toHaveBeenCalledWith(null);
   });
 
   it("displays the contact data", () => {
-    loadContactQuery();
-    renderContactPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText("Contact, Test")).toBeInTheDocument();
     expect(screen.getByText("(123) 456-7890")).toBeInTheDocument();
@@ -110,7 +71,7 @@ describe("ContactViewPage", () => {
   });
 
   it("renders a resume edit button when the contact already has a pending form change", () => {
-    loadContactQuery({
+    pageTestingHelper.loadQuery({
       Contact() {
         return {
           id: "mock-contact-id",
@@ -125,13 +86,13 @@ describe("ContactViewPage", () => {
         };
       },
     });
-    renderContactPage();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
   });
 
   it("displays an error when the user clicks the edit button & createEditContactFormChangeMutation mutation fails", () => {
-    loadContactQuery({
+    pageTestingHelper.loadQuery({
       Contact() {
         return {
           id: "mock-contact-id",
@@ -144,13 +105,13 @@ describe("ContactViewPage", () => {
         };
       },
     });
-    renderContactPage();
+    pageTestingHelper.renderPage();
     userEvent.click(screen.getByText(/Edit/i));
 
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
-    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText("An error occurred when editing a contact.")
     ).toBeVisible();
