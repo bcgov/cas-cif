@@ -1,17 +1,14 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act, fireEvent, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ProjectForm from "components/Form/ProjectForm";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
-import {
-  RelayEnvironmentProvider,
-  useLazyLoadQuery,
-  graphql,
-} from "react-relay";
+import { graphql } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectFormQuery, {
   ProjectFormQuery,
 } from "__generated__/ProjectFormQuery.graphql";
-import userEvent from "@testing-library/user-event";
+import { ProjectForm_projectRevision } from "__generated__/ProjectForm_projectRevision.graphql";
 
-const loadedQuery = graphql`
+const testQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
     query {
       # Spread the fragment you want to test here
@@ -23,46 +20,85 @@ const loadedQuery = graphql`
   }
 `;
 
-let environment;
-const TestRenderer = (extraProps: any) => {
-  const data = useLazyLoadQuery<ProjectFormQuery>(loadedQuery, {});
-  return (
-    <ProjectForm
-      query={data.query}
-      projectRevision={data.query.projectRevision}
-      setValidatingForm={jest.fn()}
-      {...extraProps}
-    />
-  );
+const mockQueryPayload = {
+  ProjectRevision() {
+    const result: Partial<ProjectForm_projectRevision> = {
+      projectFormChange: {
+        id: "Test Project Form Change ID",
+        formChangeByPreviousFormChangeId: null,
+        isUniqueValue: true,
+        newFormData: {
+          proposalReference: "12345678",
+          summary: "d",
+          operatorId: 1,
+          fundingStreamRfpId: 1,
+        },
+      },
+    };
+    return result;
+  },
+  Query() {
+    return {
+      allOperators: {
+        edges: [
+          {
+            node: {
+              rowId: 1,
+              legalName: "test operator",
+              bcRegistryId: "1234abcd",
+            },
+          },
+        ],
+      },
+      allFundingStreams: {
+        edges: [
+          {
+            node: {
+              rowId: 1,
+              name: "EP",
+              description: "Emissions Performance",
+            },
+          },
+        ],
+      },
+    };
+  },
 };
-const renderProjectForm = (extraProps: any = {}) => {
-  return render(
-    <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer {...extraProps} />
-    </RelayEnvironmentProvider>
-  );
+
+const defaultComponentProps = {
+  setValidatingForm: jest.fn(),
+  onSubmit: jest.fn(),
 };
+
+const componentTestingHelper = new ComponentTestingHelper<ProjectFormQuery>({
+  component: ProjectForm,
+  testQuery: testQuery,
+  compiledQuery: compiledProjectFormQuery,
+  getPropsFromTestQuery: (data) => ({
+    query: data.query,
+    projectRevision: data.query.projectRevision,
+  }),
+  defaultQueryResolver: mockQueryPayload,
+  defaultQueryVariables: {},
+  defaultComponentProps: defaultComponentProps,
+});
 
 describe("The Project Form", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
+    componentTestingHelper.reinit();
   });
 
   it("calls the mutation passed in with the props with the proper data on form change", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation)
-    );
-
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
-
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     fireEvent.change(screen.getByLabelText("Proposal Reference"), {
       target: { value: "testidentifier" },
     });
 
     expect(
-      environment.mock.getMostRecentOperation().request.variables
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables
     ).toMatchObject({
       input: {
         id: expect.any(String),
@@ -79,7 +115,8 @@ describe("The Project Form", () => {
     });
 
     expect(
-      environment.mock.getMostRecentOperation().request.variables
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables
     ).toMatchObject({
       input: {
         id: expect.any(String),
@@ -93,55 +130,9 @@ describe("The Project Form", () => {
     });
   });
   it("loads with the correct initial form data", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ProjectRevision() {
-          return {
-            id: "Test Project Revision ID",
-            projectFormChange: {
-              id: "Test Project Form Change ID",
-              isUniqueValue: true,
-              newFormData: {
-                proposalReference: "12345678",
-                summary: "d",
-                operatorId: 1,
-                fundingStreamRfpId: 1,
-              },
-            },
-          };
-        },
-        Query() {
-          return {
-            allOperators: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    legalName: "test operator",
-                    bcRegistryId: "1234abcd",
-                  },
-                },
-              ],
-            },
-            allFundingStreams: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    name: "EP",
-                    description: "Emissions Performance",
-                  },
-                },
-              ],
-            },
-          };
-        },
-      })
-    );
+    componentTestingHelper.loadQuery();
 
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
-
-    renderProjectForm();
+    componentTestingHelper.renderComponent();
 
     expect(
       screen.getByLabelText<HTMLInputElement>("Proposal Reference").value
@@ -152,29 +143,28 @@ describe("The Project Form", () => {
     ).toBe("test operator (1234abcd)");
   });
   it("Displays an error message upon validation when the proposal reference is not unique", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ProjectRevision() {
-          return {
-            id: "Test Project Revision ID",
-            projectFormChange: {
-              id: "Test Project Form Change ID",
-              isUniqueValue: false,
-              newFormData: {
-                proposalReference: "12345678",
-                summary: "d",
-                operatorId: 1,
-                fundingStreamRfpId: 1,
-              },
+    const mockResolver = {
+      ...mockQueryPayload,
+      ProjectRevision() {
+        const result: Partial<ProjectForm_projectRevision> = {
+          projectFormChange: {
+            id: "Test Project Form Change ID",
+            formChangeByPreviousFormChangeId: null,
+            isUniqueValue: false,
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
             },
-          };
-        },
-      })
-    );
+          },
+        };
+        return result;
+      },
+    };
 
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
-
-    renderProjectForm({});
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
 
     act(() => {
       userEvent.click(screen.getByText(/submit/i));
@@ -188,186 +178,133 @@ describe("The Project Form", () => {
   });
 
   it("stages the form_change when clicking on the submit button", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ProjectRevision() {
-          return {
-            id: "Test Project Revision ID",
-            projectFormChange: {
-              id: "Test Project Form Change ID",
-              isUniqueValue: true,
-              changeStatus: "pending",
-              newFormData: {
-                proposalReference: "12345678",
-                summary: "d",
-                operatorId: 1,
-                fundingStreamRfpId: 1,
-                projectName: "test project name",
-                totalFundingRequest: 12345,
-                projectStatusId: 1,
-                operatorTradeName: "test trade name",
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectForm_projectRevision> = {
+          projectFormChange: {
+            id: "Test Project Form Change ID",
+            isUniqueValue: true,
+            formChangeByPreviousFormChangeId: null,
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              projectName: "test project name",
+              totalFundingRequest: 12345,
+              projectStatusId: 1,
+              operatorTradeName: "test trade name",
+            },
+          },
+        };
+        return result;
+      },
+      Query() {
+        const query = {
+          allOperators: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  legalName: "test operator",
+                  bcRegistryId: "1234abcd",
+                },
               },
-            },
-          };
-        },
-        Query() {
-          return {
-            allOperators: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    legalName: "test operator",
-                    bcRegistryId: "1234abcd",
-                  },
+            ],
+          },
+          allFundingStreams: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  name: "EP",
+                  description: "Emissions Performance",
                 },
-              ],
-            },
-            allFundingStreams: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    name: "EP",
-                    description: "Emissions Performance",
-                  },
-                },
-              ],
-            },
-          };
-        },
-      })
-    );
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+              },
+            ],
+          },
+        };
+        return query;
+      },
+    });
 
-    renderProjectForm();
+    componentTestingHelper.renderComponent();
 
     screen.getByText(/submit/i).click();
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: { changeStatus: "staged" },
     });
   });
   it("clicking the submit button should stage a form with validation errors", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ProjectRevision() {
-          return {
-            id: "Test Project Revision ID",
-            projectFormChange: {
-              id: "Test Project Form Change ID",
-              isUniqueValue: true,
-              changeStatus: "pending",
-              newFormData: {
-                proposalReference: "12345678",
-                summary: "d",
-                operatorId: 1,
-                fundingStreamRfpId: 1,
-                projectName: "test project name",
-                totalFundingRequest: null,
-              },
+    const mockResolver = {
+      ...mockQueryPayload,
+      ProjectRevision() {
+        return {
+          id: "Test Project Revision ID",
+          projectFormChange: {
+            id: "Test Project Form Change ID",
+            isUniqueValue: true,
+            changeStatus: "pending",
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              projectName: "test project name",
+              totalFundingRequest: null,
             },
-          };
-        },
-        Query() {
-          return {
-            allOperators: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    legalName: "test operator",
-                    bcRegistryId: "1234abcd",
-                  },
-                },
-              ],
-            },
-            allFundingStreams: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    name: "EP",
-                    description: "Emissions Performance",
-                  },
-                },
-              ],
-            },
-          };
-        },
-      })
-    );
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+          },
+        };
+      },
+    };
 
-    renderProjectForm();
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
 
     screen.getByText(/submit/i).click();
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: { changeStatus: "staged" },
     });
   });
   it("reverts the form_change status to 'pending' when editing", () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ProjectRevision() {
-          return {
-            id: "Test Project Revision ID",
-            projectFormChange: {
-              id: "Test Project Form Change ID",
-              isUniqueValue: true,
-              changeStatus: "staged",
-              newFormData: {
-                proposalReference: "12345678",
-                summary: "d",
-                operatorId: 1,
-                fundingStreamRfpId: 1,
-                projectName: "test project name",
-                totalFundingRequest: 12345,
-              },
+    const mockResolver = {
+      ...mockQueryPayload,
+      ProjectRevision() {
+        const result: Partial<ProjectForm_projectRevision> = {
+          projectFormChange: {
+            id: "Test Project Form Change ID",
+            isUniqueValue: true,
+            formChangeByPreviousFormChangeId: null,
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              projectName: "test project name",
+              totalFundingRequest: 12345,
             },
-          };
-        },
-        Query() {
-          return {
-            allOperators: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    legalName: "test operator",
-                    bcRegistryId: "1234abcd",
-                  },
-                },
-              ],
-            },
-            allFundingStreams: {
-              edges: [
-                {
-                  node: {
-                    rowId: 1,
-                    name: "EP",
-                    description: "Emissions Performance",
-                  },
-                },
-              ],
-            },
-          };
-        },
-      })
-    );
-    environment.mock.queuePendingOperation(compiledProjectFormQuery, {});
+          },
+        };
+        return result;
+      },
+    };
 
-    renderProjectForm();
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
 
     act(() => {
       userEvent.type(screen.getByLabelText(/project name/i), "2");
     });
 
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: {
         changeStatus: "pending",
