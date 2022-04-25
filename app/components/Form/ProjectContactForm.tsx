@@ -144,17 +144,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   }, [projectContactFormChanges]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
-
-  // console.log("primaryContactForm", primaryContactForm);
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateProjectContactFormChange();
   const [discardFormChange] = useDiscardFormChange(
     projectContactFormChanges.__id
   );
-  // console.log(
-  //   "projectContactFormChanges.edges",
-  //   projectContactFormChanges.edges
-  // );
 
   const deleteContact = (
     formChangeId: string,
@@ -355,7 +349,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               </Grid.Row>
               <label>Secondary Contacts</label>
               {alternateContactForms.map((form) => {
-                // console.log("form is", form);
                 return (
                   <Grid.Row key={form.id}>
                     <Grid.Col span={6}>
