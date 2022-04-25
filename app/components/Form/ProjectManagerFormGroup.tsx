@@ -33,6 +33,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
       fragment ProjectManagerFormGroup_revision on ProjectRevision {
         id
         rowId
+        changeStatus
         managerFormChanges: projectManagerFormChangesByLabel {
           edges {
             node {
@@ -266,15 +267,16 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           />
         ))}
       </FormBorder>
-      <Button
-        size="medium"
-        variant="primary"
-        onClick={stageProjectManagersFormChanges}
-        disabled={isUpdating}
-      >
-        Submit Managers
-      </Button>
-
+      {projectRevision.changeStatus != "committed" && (
+        <Button
+          size="medium"
+          variant="primary"
+          onClick={stageProjectManagersFormChanges}
+          disabled={isUpdating}
+        >
+          Submit Managers
+        </Button>
+      )}
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
