@@ -1,22 +1,13 @@
-import React from "react";
-import { Contacts, ContactsQuery } from "../../../pages/cif/contacts";
-import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import {
-  contactsQuery,
-  contactsQuery$variables,
-} from "__generated__/contactsQuery.graphql";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { useRouter } from "next/router";
-import { mocked } from "jest-mock";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ErrorContext } from "contexts/ErrorContext";
+import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import compiledContactsQuery, {
+  contactsQuery,
+} from "__generated__/contactsQuery.graphql";
+import { Contacts } from "../../../pages/cif/contacts";
 jest.mock("next/router");
 
 mocked(useRouter).mockReturnValue({
@@ -24,9 +15,6 @@ mocked(useRouter).mockReturnValue({
   query: {},
   push: jest.fn(),
 } as any);
-
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   Query() {
@@ -44,76 +32,49 @@ const defaultMockResolver = {
   },
 };
 
-const loadContactsQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-  const variables: contactsQuery$variables = {
+const pageTestingHelper = new PageTestingHelper<contactsQuery>({
+  pageComponent: Contacts,
+  compiledQuery: compiledContactsQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
     fullName: null,
     fullPhone: null,
     position: null,
     offset: null,
     pageSize: null,
     orderBy: null,
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(ContactsQuery, variables);
-  initialQueryRef = loadQuery<contactsQuery>(
-    environment,
-    ContactsQuery,
-    variables
-  );
-};
-let errorContext;
-const renderContacts = () =>
-  render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <Contacts CSN preloadedQuery={initialQueryRef} />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
+  },
+});
 
 describe("The contacts page", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
-    errorContext = {
-      error: null,
-      setError: jest.fn().mockImplementation((error) =>
-        act(() => {
-          errorContext.error = error;
-        })
-      ),
-    };
+    pageTestingHelper.reinit();
   });
 
   it("renders the list of contacts", () => {
-    loadContactsQuery();
-    renderContacts();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText(/Contact 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Contact 2/i)).toBeInTheDocument();
   });
 
   it("displays the Add a Contact Button", () => {
-    loadContactsQuery();
-    renderContacts();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText(/Add a Contact/i)).toBeInTheDocument();
   });
 
   it("displays an error when the Add button is clicked & createNewContactFormChangeMutation fails", () => {
-    loadContactsQuery();
-    renderContacts();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     userEvent.click(screen.getByText(/Add a Contact/i));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
-    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
         "An error occurred while attempting to create the contact."
@@ -122,7 +83,7 @@ describe("The contacts page", () => {
   });
 
   it("displays the Resume Contact Creation button if there is an existing form_change", () => {
-    loadContactsQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           ...defaultMockResolver.Query(),
@@ -132,7 +93,7 @@ describe("The contacts page", () => {
         };
       },
     });
-    renderContacts();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText(/Resume Contact Creation/i)).toBeInTheDocument();
   });
