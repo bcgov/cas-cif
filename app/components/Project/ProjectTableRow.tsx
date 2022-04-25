@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getProjectViewPageRoute } from "pageRoutes";
+import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ProjectTableRow_project$key } from "__generated__/ProjectTableRow_project.graphql";
 import Money from "lib/helpers/Money";
@@ -11,13 +11,13 @@ interface Props {
 
 const ProjectTableRow: React.FC<Props> = ({ project }) => {
   const {
-    id,
     projectName,
     proposalReference,
     projectStatusByProjectStatusId: { name },
     totalFundingRequest,
     operatorByOperatorId: { tradeName },
     projectManagersByProjectId,
+    projectRevisionsByProjectId,
   } = useFragment(
     graphql`
       fragment ProjectTableRow_project on Project {
@@ -41,6 +41,15 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
             }
           }
         }
+        projectRevisionsByProjectId(
+          first: 1
+          orderBy: UPDATED_AT_DESC
+          filter: { changeStatus: { equalTo: "committed" } }
+        ) {
+          nodes {
+            id
+          }
+        }
       }
     `,
     project
@@ -49,7 +58,11 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
   const router = useRouter();
 
   const handleViewClick = () => {
-    router.push(getProjectViewPageRoute(id));
+    router.push(
+      getProjectRevisionOverviewFormPageRoute(
+        projectRevisionsByProjectId.nodes[0].id
+      )
+    );
   };
 
   return (
