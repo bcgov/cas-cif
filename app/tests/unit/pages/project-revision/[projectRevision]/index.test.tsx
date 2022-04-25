@@ -1,22 +1,13 @@
-import React from "react";
-import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
-import { act, render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { RelayEnvironmentProvider, loadQuery } from "react-relay";
+import { act, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
+import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
-  ProjectRevisionQuery$variables,
 } from "__generated__/ProjectRevisionQuery.graphql";
-import { mocked } from "jest-mock";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { useRouter } from "next/router";
-import { ErrorContext } from "contexts/ErrorContext";
 
 jest.mock("next/router");
 
@@ -26,9 +17,6 @@ jest.mock("next/router");
  * `console.log(JSON.stringify(operation, null, 2))`
  * just before returning the MockPayloadGenerator and looking for concreteType instances *
  */
-
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   ProjectRevision() {
@@ -45,48 +33,18 @@ const defaultMockResolver = {
   },
 };
 
-const loadProjectRevisionQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-  const variables: ProjectRevisionQuery$variables = {
+const pageTestingHelper = new PageTestingHelper<ProjectRevisionQuery>({
+  pageComponent: ProjectRevision,
+  compiledQuery: compiledProjectRevisionQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
     projectRevision: "mock-id",
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(
-    compiledProjectRevisionQuery,
-    variables
-  );
-  initialQueryRef = loadQuery<ProjectRevisionQuery>(
-    environment,
-    compiledProjectRevisionQuery,
-    variables
-  );
-};
-let errorContext;
-const renderProjectRevisionPage = () =>
-  render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <ProjectRevision CSN preloadedQuery={initialQueryRef} />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
+  },
+});
 
 describe("The Create Project page", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
-    errorContext = {
-      error: null,
-      setError: jest.fn().mockImplementation((error) =>
-        act(() => {
-          errorContext.error = error;
-        })
-      ),
-    };
+    pageTestingHelper.reinit();
     jest.restoreAllMocks();
   });
 
@@ -97,8 +55,8 @@ describe("The Create Project page", () => {
       pathname: mockPathname,
     } as any);
 
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -115,8 +73,8 @@ describe("The Create Project page", () => {
       .spyOn(require("mutations/useDebouncedMutation"), "default")
       .mockImplementation(() => [jest.fn(), false]);
 
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
     expect(screen.getByText("Discard Changes")).toHaveProperty(
@@ -126,7 +84,7 @@ describe("The Create Project page", () => {
   });
 
   it("Renders an empty summary before the form has been filled out", async () => {
-    loadProjectRevisionQuery({
+    pageTestingHelper.loadQuery({
       ProjectRevision() {
         return {
           id: "mock-proj-rev-id",
@@ -134,7 +92,7 @@ describe("The Create Project page", () => {
         };
       },
     });
-    renderProjectRevisionPage();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText(/Project overview not added/)).toBeInTheDocument();
     expect(screen.getByText(/Project managers not added/)).toBeInTheDocument();
@@ -142,189 +100,185 @@ describe("The Create Project page", () => {
   });
 
   it("Renders the summary with the filled-out details", async () => {
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ProjectRevision() {
-          return {
-            id: "Test Project Revision ID",
-            projectFormChange: {
-              id: "mock-project-form-id",
-              newFormData: {
-                summary: "test-summary",
-                operatorId: 3,
-                projectName: "test-proj",
-                projectStatusId: 1,
-                proposalReference: "test-prop-reference",
-                fundingStreamRfpId: 1,
-                totalFundingRequest: 5,
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "Test Project Revision ID",
+          projectFormChange: {
+            id: "mock-project-form-id",
+            newFormData: {
+              summary: "test-summary",
+              operatorId: 3,
+              projectName: "test-proj",
+              projectStatusId: 1,
+              proposalReference: "test-prop-reference",
+              fundingStreamRfpId: 1,
+              totalFundingRequest: 5,
+            },
+          },
+          projectManagerFormChangesByLabel: {
+            edges: [
+              {
+                node: {
+                  formChange: {
+                    newFormData: {
+                      cifUserId: 4,
+                      projectId: 2,
+                      projectManagerLabelId: 1,
+                    },
+                  },
+                  projectManagerLabel: {
+                    label: "Tech Team Primary",
+                  },
+                },
               },
-            },
-            projectManagerFormChangesByLabel: {
-              edges: [
-                {
-                  node: {
-                    formChange: {
-                      newFormData: {
-                        cifUserId: 4,
-                        projectId: 2,
-                        projectManagerLabelId: 1,
-                      },
-                    },
-                    projectManagerLabel: {
-                      label: "Tech Team Primary",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    formChange: {
-                      newFormData: {
-                        cifUserId: 5,
-                        projectId: 2,
-                        projectManagerLabelId: 2,
-                      },
-                    },
-                    projectManagerLabel: {
-                      label: "Tech Team Secondary",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    formChange: {
-                      newFormData: {
-                        cifUserId: 6,
-                        projectId: 2,
-                        projectManagerLabelId: 3,
-                      },
-                    },
-                    projectManagerLabel: {
-                      label: "Ops Team Primary",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    formChange: null,
-                    projectManagerLabel: {
-                      label: "Ops Team Secondary",
-                    },
-                  },
-                },
-              ],
-            },
-            projectContactFormChanges: {
-              edges: [
-                {
-                  node: {
+              {
+                node: {
+                  formChange: {
                     newFormData: {
-                      contactId: 2,
+                      cifUserId: 5,
                       projectId: 2,
-                      contactIndex: 2,
+                      projectManagerLabelId: 2,
                     },
                   },
+                  projectManagerLabel: {
+                    label: "Tech Team Secondary",
+                  },
                 },
-                {
-                  node: {
+              },
+              {
+                node: {
+                  formChange: {
                     newFormData: {
-                      contactId: 5,
+                      cifUserId: 6,
                       projectId: 2,
-                      contactIndex: 1,
+                      projectManagerLabelId: 3,
                     },
                   },
-                },
-              ],
-            },
-          };
-        },
-        Query() {
-          return {
-            allCifUsers: {
-              edges: [
-                {
-                  node: {
-                    rowId: 4,
-                    id: "WyJjaWZfdXNlcnMiLDRd",
-                    fullName: "Knope, Leslie",
+                  projectManagerLabel: {
+                    label: "Ops Team Primary",
                   },
                 },
-                {
-                  node: {
-                    rowId: 5,
-                    id: "WyJjaWZfdXNlcnMiLDVd",
-                    fullName: "Swanson, Ron",
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    label: "Ops Team Secondary",
                   },
                 },
-                {
-                  node: {
-                    rowId: 6,
-                    id: "WyJjaWZfdXNlcnMiLDZd",
-                    fullName: "Ludgate, April",
+              },
+            ],
+          },
+          projectContactFormChanges: {
+            edges: [
+              {
+                node: {
+                  newFormData: {
+                    contactId: 2,
+                    projectId: 2,
+                    contactIndex: 2,
                   },
                 },
-              ],
-            },
-            allContacts: {
-              edges: [
-                {
-                  node: {
-                    rowId: 2,
-                    id: "WyJjb250YWN0cyIsMl0=",
-                    fullName: "Loblaw002, Bob002",
+              },
+              {
+                node: {
+                  newFormData: {
+                    contactId: 5,
+                    projectId: 2,
+                    contactIndex: 1,
                   },
                 },
+              },
+            ],
+          },
+        };
+      },
+      Query() {
+        return {
+          allCifUsers: {
+            edges: [
+              {
+                node: {
+                  rowId: 4,
+                  id: "WyJjaWZfdXNlcnMiLDRd",
+                  fullName: "Knope, Leslie",
+                },
+              },
+              {
+                node: {
+                  rowId: 5,
+                  id: "WyJjaWZfdXNlcnMiLDVd",
+                  fullName: "Swanson, Ron",
+                },
+              },
+              {
+                node: {
+                  rowId: 6,
+                  id: "WyJjaWZfdXNlcnMiLDZd",
+                  fullName: "Ludgate, April",
+                },
+              },
+            ],
+          },
+          allContacts: {
+            edges: [
+              {
+                node: {
+                  rowId: 2,
+                  id: "WyJjb250YWN0cyIsMl0=",
+                  fullName: "Loblaw002, Bob002",
+                },
+              },
 
-                {
-                  node: {
-                    rowId: 5,
-                    id: "WyJjb250YWN0cyIsNV0=",
-                    fullName: "Loblaw005, Bob005",
-                  },
+              {
+                node: {
+                  rowId: 5,
+                  id: "WyJjb250YWN0cyIsNV0=",
+                  fullName: "Loblaw005, Bob005",
                 },
-              ],
-            },
-            allFundingStreamRfps: {
-              edges: [
-                {
-                  node: {
-                    fundingStreamByFundingStreamId: {
-                      name: "EP",
-                      description: "Emissions Performance",
-                    },
-                    rowId: 1,
-                    year: 2019,
+              },
+            ],
+          },
+          allFundingStreamRfps: {
+            edges: [
+              {
+                node: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                    description: "Emissions Performance",
                   },
+                  rowId: 1,
+                  year: 2019,
                 },
-              ],
-            },
-            allOperators: {
-              edges: [
-                {
-                  node: {
-                    rowId: 3,
-                    legalName: "third operator legal name",
-                    bcRegistryId: "EF3456789",
-                  },
+              },
+            ],
+          },
+          allOperators: {
+            edges: [
+              {
+                node: {
+                  rowId: 3,
+                  legalName: "third operator legal name",
+                  bcRegistryId: "EF3456789",
                 },
-              ],
-            },
-            allProjectStatuses: {
-              edges: [
-                {
-                  node: {
-                    name: "Proposal Submitted",
-                    rowId: 1,
-                  },
+              },
+            ],
+          },
+          allProjectStatuses: {
+            edges: [
+              {
+                node: {
+                  name: "Proposal Submitted",
+                  rowId: 1,
                 },
-              ],
-            },
-          };
-        },
-      })
-    );
-
-    environment.mock.queuePendingOperation(compiledProjectRevisionQuery, {});
-    renderProjectRevisionPage();
+              },
+            ],
+          },
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText(/test-summary/)).toBeInTheDocument();
     expect(screen.getByText(/third operator legal name/i)).toBeInTheDocument();
@@ -352,8 +306,8 @@ describe("The Create Project page", () => {
       return { push: jest.fn() };
     });
 
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     act(() => userEvent.click(screen.queryByText("Discard Changes")));
 
@@ -374,8 +328,8 @@ describe("The Create Project page", () => {
       .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [jest.fn(), true]);
 
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.queryByText("Submit")).toHaveProperty("disabled", true);
     expect(screen.queryByText("Discard Changes")).toHaveProperty(
@@ -385,13 +339,13 @@ describe("The Create Project page", () => {
   });
 
   it("displays an error when the Submit Button is clicked & updateProjectRevisionMutation fails", () => {
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     userEvent.click(screen.queryByText("Submit"));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
-    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
         "An error occurred while attempting to update the project revision."
@@ -400,13 +354,13 @@ describe("The Create Project page", () => {
   });
 
   it("displays an error when the user clicks the Discard Changes button & deleteProjectRevision mutation fails", () => {
-    loadProjectRevisionQuery();
-    renderProjectRevisionPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     userEvent.click(screen.queryByText("Discard Changes"));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
-    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
         "An error occurred while attempting to delete the project revision."
@@ -423,7 +377,7 @@ describe("The Create Project page", () => {
     mocked(useRouter).mockReturnValue({
       replace: jest.fn(),
     } as any);
-    loadProjectRevisionQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           projectRevision: null,
@@ -431,7 +385,7 @@ describe("The Create Project page", () => {
       },
     });
 
-    const { container } = renderProjectRevisionPage();
+    const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
     expect(spy).toHaveBeenCalledWith(null);
