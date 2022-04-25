@@ -4,6 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { managersFormQuery } from "__generated__/managersFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
+import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import TaskList from "components/TaskList";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
@@ -17,10 +18,13 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        changeStatus
         ...ProjectManagerFormGroup_revision
+        ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
       }
       ...ProjectManagerFormGroup_query
+      ...ProjectManagerFormSummary_query
     }
   }
 `;
@@ -42,11 +46,18 @@ export function ProjectManagersForm({
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      <ProjectManagerFormGroup
-        query={query}
-        revision={query.projectRevision}
-        onSubmit={handleSubmit}
-      />
+      {query.projectRevision.changeStatus === "committed" ? (
+        <ProjectManagerFormSummary
+          query={query}
+          projectRevision={query.projectRevision}
+        />
+      ) : (
+        <ProjectManagerFormGroup
+          query={query}
+          revision={query.projectRevision}
+          onSubmit={handleSubmit}
+        />
+      )}
     </DefaultLayout>
   );
 }

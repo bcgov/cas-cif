@@ -8,6 +8,7 @@ import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
+import ProjectFormSummary from "components/Form/ProjectFormSummary";
 
 const pageQuery = graphql`
   query overviewFormQuery($projectRevision: ID!) {
@@ -17,10 +18,13 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        changeStatus
         ...ProjectForm_projectRevision
         ...TaskList_projectRevision
+        ...ProjectFormSummary_projectRevision
       }
       ...ProjectForm_query
+      ...ProjectFormSummary_query
     }
   }
 `;
@@ -42,11 +46,19 @@ export function ProjectOverviewForm({
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      <ProjectForm
-        query={query}
-        projectRevision={query.projectRevision}
-        onSubmit={handleSubmit}
-      />
+      {query.projectRevision.changeStatus === "committed" ? (
+        <ProjectFormSummary
+          query={query}
+          projectRevision={query.projectRevision}
+        />
+      ) : (
+        <ProjectForm
+          query={query}
+          projectRevision={query.projectRevision}
+          onSubmit={handleSubmit}
+          disabled={query.projectRevision.changeStatus === "committed"}
+        />
+      )}
     </DefaultLayout>
   );
 }
