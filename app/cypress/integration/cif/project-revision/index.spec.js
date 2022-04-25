@@ -98,29 +98,42 @@ describe("the new project page", () => {
     });
   });
 
-  it("undoes changes on an unsaved project when the user clicks the Undo Changes button", () => {
+  it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
-
     cy.visit("/cif/projects");
+
     cy.get("button").contains("Add a Project").click();
-    cy.fillOverviewForm();
+    cy.fillOverviewForm(
+      "Emissions Performance",
+      "2020",
+      "first operator legal name (AB1234567)",
+      "TEST-123-12345",
+      "Foo",
+      "Bar",
+      "100",
+      "Project Underway"
+    );
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.get("option")
-      .contains(/Select a Funding Stream/)
-      .should("be.selected");
-    cy.get("option")
-      .contains(/Select a Funding Stream RFP Year/)
-      .should("be.selected");
-    cy.findByLabelText(/Operator Name/i).should("have.value", "");
-    cy.findByLabelText(/Proposal Reference/i).should("have.value", "");
-    cy.findByLabelText(/Project Name/i).should("have.value", "");
-    // brianna -- this isn't working, fix
-    // cy.findByLabelText(/Total Funding Request/i).should("have.value", "");
-    cy.findByLabelText(/Project Status/i).should(
-      "have.value",
+    cy.checkOverviewForm(
+      "Select a Funding Stream",
+      "Select a Funding Stream RFP Year",
+      "",
+      "",
+      "",
+      "",
+      "",
       "Select a Project Status"
     );
-    cy.findByLabelText(/Summary/i).should("have.value", "");
+
+    cy.findByText(/Add project managers/i).click();
+    cy.fillManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.checkManagersForm("", "", "");
+
+    cy.findByText(/Add project contacts/i).click();
+    cy.fillContactsForm("Loblaw003", "Loblaw004");
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.checkContactsForm("", "");
   });
 
   it("Allows to create and update a project", () => {
@@ -128,47 +141,27 @@ describe("the new project page", () => {
 
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
-    cy.fillOverviewForm();
+    cy.fillOverviewForm(
+      "Emissions Performance",
+      "2020",
+      "first operator legal name (AB1234567)",
+      "TEST-123-12345",
+      "Foo",
+      "Bar",
+      "100",
+      "Project Underway"
+    );
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
     cy.findByText(/Add project managers/i).click();
-    cy.url().should("include", "/form/managers");
+    cy.fillManagersForm("Swanson", "Ludgate", "Knope");
 
-    cy.findByLabelText(/tech team primary/i).click();
-    cy.contains("Swanson").click();
-    cy.findByLabelText(/tech team secondary/i).click();
-    cy.contains("Ludgate").click();
-    cy.findByLabelText(/ops team primary/i).click();
-    cy.contains("Knope").click();
-
-    // FIXME: adding project managers does not trigger the saving indicator
-    cy.wait(1000);
-
-    cy.contains("Changes saved");
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
     cy.findByText(/Add project contacts/i).click();
-    cy.url().should("include", "/form/contacts");
-
-    cy.findByLabelText(/Primary contact/i).click();
-    cy.contains("Loblaw003").click();
-
-    // TODO: figure out why we need to wait when setting the primary contact
-    cy.wait(1000);
-    cy.get("button").contains("Add").click();
-    // TODO: figure out why we need to wait when setting the primary contact
-    cy.wait(1000);
-    cy.get("label")
-      .contains("Secondary Contacts")
-      .parent()
-      .find("input")
-      .last()
-      .click();
-    cy.contains("Loblaw004").click();
-    // TODO: figure out why we need to wait when setting the primary contact
-    cy.wait(1000);
+    cy.fillContactsForm("Loblaw003", "Loblaw004");
 
     cy.findByRole("button", { name: /submit/i }).click();
 
@@ -184,7 +177,6 @@ describe("the new project page", () => {
     cy.findByText(/Proposal Reference/i)
       .next()
       .should("have.text", "TEST-123-12345");
-
     cy.findByText(/Project Name/i)
       .next()
       .should("have.text", "Foo");
@@ -306,5 +298,88 @@ describe("the new project page", () => {
     cy.findByLabelText(/tech team secondary/i).should("not.have.value");
     cy.findByText(/Edit project contacts/i).click();
     cy.get("fieldset").find("input").should("have.length", 1);
+  });
+
+  it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+    cy.mockLogin("cif_admin");
+    cy.visit("/cif/projects");
+    // create and save the project
+    cy.get("button").contains("Add a Project").click();
+    cy.fillOverviewForm(
+      "Emissions Performance",
+      "2020",
+      "first operator legal name (AB1234567)",
+      "TEST-123-12345",
+      "Foo",
+      "Bar",
+      "100",
+      "Project Underway"
+    );
+    cy.findByRole("button", { name: /submit/i }).click();
+
+    cy.contains("Review and Submit Project");
+    cy.findByText(/Add project managers/i).click();
+    cy.fillManagersForm("Swanson", "Ludgate", "Knope");
+    cy.findByRole("button", { name: /submit/i }).click();
+
+    cy.contains("Review and Submit Project");
+    cy.findByText(/Add project contacts/i).click();
+    cy.fillContactsForm("Loblaw003", "Loblaw004");
+    cy.findByRole("button", { name: /submit/i }).click();
+
+    cy.contains("Review and Submit Project");
+    cy.findByRole("button", { name: /submit/i }).click();
+
+    // undo overview
+    cy.findByRole("button", { name: /view/i }).click();
+    cy.findByRole("button", { name: /edit/i }).click();
+    cy.findByLabelText(/Funding Stream$/i).select("Innovation Accelerator");
+    cy.findByLabelText(/Funding Stream RFP/i).select("2021");
+    cy.findByLabelText(/Project Name/i)
+      .clear()
+      .type("New Foo");
+    cy.findByLabelText(/Total Funding Request/i)
+      .clear()
+      .type("5");
+    cy.checkOverviewForm(
+      "Innovation Accelerator",
+      "2021",
+      "first operator legal name (AB1234567)",
+      "TEST-123-12345",
+      "New Foo",
+      "Bar",
+      "$5.00",
+      "Project Underway"
+    );
+
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.checkOverviewForm(
+      "Emissions Performance",
+      "2020",
+      "first operator legal name (AB1234567)",
+      "TEST-123-12345",
+      "Foo",
+      "Bar",
+      "$100.00",
+      "Project Underway"
+    );
+
+    //undo managers
+    cy.findByText(/Edit project managers/i).click();
+    cy.findByLabelText(/tech team primary/i).click();
+    cy.contains("Ludgate").click();
+    cy.checkManagersForm("Ludgate, April", "Ludgate, April", "Knope, Leslie");
+
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.checkManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
+
+    //undo contacts
+    cy.findByText(/Edit project contacts/i).click();
+    cy.findByLabelText(/Primary contact/i).click();
+    cy.contains("Loblaw001").click();
+    cy.checkContactsForm("Loblaw001, Bob001", "Loblaw004, Bob004");
+
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.checkContactsForm("Loblaw003, Bob003", "Loblaw004, Bob004");
   });
 });

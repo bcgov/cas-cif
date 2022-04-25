@@ -66,3 +66,127 @@ Cypress.Commands.add("useMockedTime", (dateTime) => {
 Cypress.Commands.add("clearMockedTime", () => {
   cy.clearCookie("mocks.mocked_timestamp");
 });
+
+Cypress.Commands.add(
+  "fillOverviewForm",
+  (
+    fundingStream,
+    fundingStreamYear,
+    operatorName,
+    proposalReference,
+    projectName,
+    summary,
+    totalFundingRequest,
+    projectStatus
+  ) => {
+    cy.url().should("include", "/form/overview");
+    cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
+    cy.findByLabelText(/Funding Stream RFP/i).select(fundingStreamYear);
+    cy.findByLabelText(/Operator Name/i).click();
+    cy.contains(operatorName).click();
+    cy.findByLabelText(/Proposal Reference/i).type(proposalReference);
+    cy.findByLabelText(/Project Name/i).type(projectName);
+    cy.findByLabelText(/Summary/i).type(summary);
+    cy.findByLabelText(/Total Funding Request/i).type(totalFundingRequest);
+    cy.findByLabelText(/Project Status/i).select(projectStatus);
+    // There is a bug where if cypress starts changing another form on the page too quickly,
+    // the last change is discarded and rjsf throws an error.
+    cy.contains("Changes saved");
+  }
+);
+
+Cypress.Commands.add(
+  "checkOverviewForm",
+  (
+    fundingStream,
+    fundingStreamYear,
+    operatorName,
+    proposalReference,
+    projectName,
+    summary,
+    totalFundingRequest,
+    projectStatus
+  ) => {
+    cy.get("option").contains(fundingStream).should("be.selected");
+    cy.get("option").contains(fundingStreamYear).should("be.selected");
+    cy.findByLabelText(/Operator Name/i).should("have.value", operatorName);
+    cy.findByLabelText(/Proposal Reference/i).should(
+      "have.value",
+      proposalReference
+    );
+    cy.findByLabelText(/Project Name/i).should("have.value", projectName);
+    cy.findByLabelText(/Summary/i).should("have.value", summary);
+
+    cy.findByLabelText(/Total Funding Request/i).should(
+      "have.value",
+      totalFundingRequest
+    );
+    cy.get("option").contains(projectStatus).should("be.selected");
+  }
+);
+
+Cypress.Commands.add(
+  "fillManagersForm",
+  (techTeamPrimary, techTeamSecondary, opsTeamPrimary) => {
+    cy.url().should("include", "/form/managers");
+
+    cy.findByLabelText(/tech team primary/i).click();
+    cy.contains(techTeamPrimary).click();
+    cy.findByLabelText(/tech team secondary/i).click();
+    cy.contains(techTeamSecondary).click();
+    cy.findByLabelText(/ops team primary/i).click();
+    cy.contains(opsTeamPrimary).click();
+
+    // FIXME: adding project managers does not trigger the saving indicator
+    cy.wait(1000);
+    cy.contains("Changes saved");
+  }
+);
+
+Cypress.Commands.add(
+  "checkManagersForm",
+  (techTeamPrimary, techTeamSecondary, opsTeamPrimary) => {
+    cy.findByLabelText(/tech team primary/i).should(
+      "have.value",
+      techTeamPrimary
+    );
+    cy.findByLabelText(/tech team secondary/i).should(
+      "have.value",
+      techTeamSecondary
+    );
+    cy.findByLabelText(/ops team primary/i).should(
+      "have.value",
+      opsTeamPrimary
+    );
+  }
+);
+
+Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
+  cy.url().should("include", "/form/contacts");
+
+  cy.findByLabelText(/Primary contact/i).click();
+  cy.contains(primaryContact).click();
+
+  // TODO: figure out why we need to wait when setting the primary contact
+  cy.wait(1000);
+  cy.get("button").contains("Add").click();
+  // TODO: figure out why we need to wait when setting the primary contact
+  cy.wait(1000);
+  cy.get("label")
+    .contains("Secondary Contacts")
+    .parent()
+    .find("input")
+    .last()
+    .click();
+  cy.contains(secondaryContact).click();
+  // TODO: figure out why we need to wait when setting the primary contact
+  cy.wait(1000);
+});
+
+Cypress.Commands.add(
+  "checkContactsForm",
+  (primaryContact, secondaryContact) => {
+    cy.findByLabelText(/primary contact/i).should("have.value", primaryContact);
+    cy.get(`input[value="${secondaryContact}"]`).should("be.visible");
+  }
+);
