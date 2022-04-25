@@ -1,25 +1,16 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
-import FieldLabel from "./FieldLabel";
 
 const PhoneNumberWidget: React.FC<WidgetProps> = ({
   schema,
   id,
   disabled,
   label,
-  required,
   onChange,
   value,
-  uiSchema,
 }) => {
   return (
     <>
-      <FieldLabel
-        htmlFor={id}
-        label={label}
-        required={required}
-        uiSchema={uiSchema}
-      ></FieldLabel>
       <NumberFormat
         isNumericString
         allowEmptyFormatting

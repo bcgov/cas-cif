@@ -1,32 +1,33 @@
-import { UiSchema } from "@rjsf/core";
-import getRequiredLabel from "../utils/getRequiredLabel";
-
 interface Props {
   label: string;
   required: boolean;
   htmlFor: string;
-  uiSchema?: UiSchema;
+  tagName?: "label" | "dt";
 }
 
 const FieldLabel: React.FC<Props> = ({
   label,
   required,
   htmlFor,
-  uiSchema,
+  tagName = "label",
 }) => {
-  if (
-    uiSchema &&
-    uiSchema["ui:options"] &&
-    uiSchema["ui:options"].label === false
-  ) {
+  if (!label) {
     return null;
   }
+
+  const displayedLabel = label + (required ? "" : " (optional)") + " ";
+
+  if (tagName === "label")
+    return <label htmlFor={htmlFor}>{displayedLabel}</label>;
+
   return (
     <>
-      <label htmlFor={htmlFor}>{getRequiredLabel(label, required)}</label>
-      {uiSchema && uiSchema["bcgov:help-text"] && (
-        <small>&nbsp;{uiSchema["bcgov:help-text"]}</small>
-      )}
+      <dt>{displayedLabel}</dt>
+      <style jsx>{`
+        dt {
+          margin-right: 1rem;
+        }
+      `}</style>
     </>
   );
 };

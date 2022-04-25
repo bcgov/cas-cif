@@ -19,7 +19,6 @@ interface Props {
 }
 // You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectUiSchema = (
-  tradeName,
   legalName?,
   bcRegistryId?,
   rfpStream?,
@@ -38,12 +37,10 @@ export const createProjectUiSchema = (
       "projectStatusId",
     ],
     proposalReference: {
-      "ui:placeholder": "2020-RFP-1-123-ABCD",
       "bcgov:size": "small",
-      "bcgov:help-text": "(e.g. 2020-RFP-1-ABCD-123)",
+      "ui:help": <small>(e.g. 2020-RFP-1-ABCD-123)</small>,
     },
     projectName: {
-      "ui:placeholder": "Short project name",
       "ui:col-md": 12,
       "bcgov:size": "small",
     },
@@ -64,16 +61,6 @@ export const createProjectUiSchema = (
       "ui:widget": "SearchWidget",
       "ui:options": {
         text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
-        title: "Legal Operator Name and BC Registry ID",
-      },
-    },
-    operatorTradeName: {
-      "ui:col-md": 12,
-      "ui:widget": "DisplayOnly",
-      "bcgov:size": "small",
-      "ui:options": {
-        text: `${tradeName}`,
-        title: "Trade Name",
       },
     },
     fundingStreamRfpId: {
@@ -82,6 +69,7 @@ export const createProjectUiSchema = (
       "bcgov:size": "small",
       "ui:options": {
         text: `${rfpStream}`,
+        label: rfpStream ? true : false,
       },
     },
     projectStatusId: {
@@ -198,17 +186,23 @@ const ProjectForm: React.FC<Props> = (props) => {
   };
 
   const schema: JSONSchema7 = useMemo(() => {
-    const initialSchema = projectSchema;
-    initialSchema.properties.operatorId.anyOf = query.allOperators.edges.map(
-      ({ node }) => {
-        return {
-          type: "number",
-          title: `${node.legalName} (${node.bcRegistryId})`,
-          enum: [node.rowId],
-          value: node.rowId,
-        };
-      }
-    );
+    const initialSchema = {
+      ...projectSchema,
+      properties: {
+        ...projectSchema.properties,
+        operatorId: {
+          ...projectSchema.properties.operatorId,
+          anyOf: query.allOperators.edges.map(({ node }) => {
+            return {
+              type: "number",
+              title: `${node.legalName} (${node.bcRegistryId})`,
+              enum: [node.rowId],
+              value: node.rowId,
+            };
+          }),
+        },
+      },
+    };
     return initialSchema as JSONSchema7;
   }, [query]);
 

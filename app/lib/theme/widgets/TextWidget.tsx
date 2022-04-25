@@ -1,8 +1,6 @@
 import { WidgetProps } from "@rjsf/core";
 import Input from "@button-inc/bcgov-theme/Input";
 
-import FieldLabel from "./FieldLabel";
-
 const TextWidget: React.FC<WidgetProps> = ({
   id,
   placeholder,
@@ -10,16 +8,9 @@ const TextWidget: React.FC<WidgetProps> = ({
   label,
   value,
   required,
-  uiSchema,
 }) => {
   return (
-    <>
-      <FieldLabel
-        htmlFor={id}
-        label={label}
-        required={required}
-        uiSchema={uiSchema}
-      ></FieldLabel>
+    <div>
       <Input
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
@@ -31,12 +22,12 @@ const TextWidget: React.FC<WidgetProps> = ({
       />
       <style jsx>
         {`
-          :global(.pg-input, .pg-input input) {
+          div :global(.pg-input, .pg-input input) {
             width: 100%;
           }
         `}
       </style>
-    </>
+    </div>
   );
 };
 

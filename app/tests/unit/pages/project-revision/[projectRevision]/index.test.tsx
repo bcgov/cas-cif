@@ -303,7 +303,6 @@ describe("The Create Project page", () => {
                   node: {
                     rowId: 3,
                     legalName: "third operator legal name",
-                    tradeName: "third operator trade name",
                     bcRegistryId: "EF3456789",
                   },
                 },
@@ -329,7 +328,6 @@ describe("The Create Project page", () => {
 
     expect(screen.getByText(/test-summary/)).toBeInTheDocument();
     expect(screen.getByText(/third operator legal name/i)).toBeInTheDocument();
-    expect(screen.getByText(/third operator trade name/i)).toBeInTheDocument();
     expect(screen.getByText(/test-proj/i)).toBeInTheDocument();
     expect(screen.getByText(/proposal submitted/i)).toBeInTheDocument();
     expect(screen.getByText(/test-prop-reference/i)).toBeInTheDocument();

@@ -77,7 +77,7 @@ describe("the new project page", () => {
       component: "Project Overview Form",
       variant: "with errors",
     });
-    cy.get(".error-detail").should("have.length", 6);
+    cy.get(".error-detail").should("have.length", 7);
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 

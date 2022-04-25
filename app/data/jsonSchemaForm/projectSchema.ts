@@ -8,6 +8,7 @@ const projectSchema = {
     "operatorId",
     "fundingStreamRfpId",
     "totalFundingRequest",
+    "projectStatusId",
   ],
   properties: {
     proposalReference: {
@@ -26,9 +27,6 @@ const projectSchema = {
       title: "Legal Operator Name and BC Registry ID",
       default: undefined,
       anyOf: undefined,
-    },
-    operatorTradeName: {
-      type: "string",
     },
     fundingStreamRfpId: {
       type: "number",

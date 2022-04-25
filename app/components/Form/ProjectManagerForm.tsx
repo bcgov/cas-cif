@@ -32,9 +32,9 @@ export const createProjectManagerUiSchema = (contact?, role?) => {
       "ui:col-md": 12,
       "bcgov:size": "small",
       "ui:widget": "SearchWidget",
+      "ui:title": role,
       "ui:options": {
-        label: false,
-        title: `${role}`,
+        label: role ? true : false,
         text: `${contact}`,
       },
     },
@@ -132,7 +132,6 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
         label={change.projectManagerLabel.label}
         required={false}
         htmlFor={`${formIdPrefix}_cifUserId`}
-        uiSchema={uiSchema}
       />
       <div>
         <FormBase

@@ -1,6 +1,5 @@
 import { WidgetProps } from "@rjsf/core";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
-import FieldLabel from "./FieldLabel";
 
 interface Option {
   type: string;
@@ -28,12 +27,6 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
 
   return (
     <div>
-      <FieldLabel
-        htmlFor={id}
-        label={label}
-        required={required}
-        uiSchema={uiSchema}
-      ></FieldLabel>
       <Dropdown
         id={id}
         onChange={(e) => onChange(e.target.value || undefined)}
