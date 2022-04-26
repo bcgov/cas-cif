@@ -1,16 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import ProjectTableRow from "components/Project/ProjectTableRow";
-import {
-  graphql,
-  RelayEnvironmentProvider,
-  useLazyLoadQuery,
-} from "react-relay";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
+import { graphql } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectTableRowQuery, {
   ProjectTableRowQuery,
 } from "__generated__/ProjectTableRowQuery.graphql";
+import { ProjectTableRow_project } from "__generated__/ProjectTableRow_project.graphql";
 
-const loadedQuery = graphql`
+const testQuery = graphql`
   query ProjectTableRowQuery($project: ID!) @relay_test_operation {
     query {
       # Spread the fragment you want to test here
@@ -21,89 +18,77 @@ const loadedQuery = graphql`
   }
 `;
 
-let environment;
-const TestRenderer = () => {
-  const data = useLazyLoadQuery<ProjectTableRowQuery>(loadedQuery, {
-    project: "test-project",
-  });
+const mockQueryPayload = {
+  Project() {
+    const result: ProjectTableRow_project = {
+      " $fragmentType": "ProjectTableRow_project",
+      id: "mock-project-id",
+      projectName: "Project 1",
+      proposalReference: "12345",
+      totalFundingRequest: "1.00",
+
+      operatorByOperatorId: {
+        tradeName: "Operator 1 trade name",
+      },
+      projectStatusByProjectStatusId: {
+        name: "Technical Review",
+      },
+      projectManagersByProjectId: {
+        edges: [
+          {
+            node: {
+              cifUserByCifUserId: {
+                fullName: "Manager full name 1",
+                id: "1",
+              },
+            },
+          },
+          {
+            node: {
+              cifUserByCifUserId: {
+                fullName: "Manager full name 2",
+                id: "2",
+              },
+            },
+          },
+        ],
+      },
+    };
+    return result;
+  },
+};
+
+// We're using a wrapper component to avoid rendering errors with <td> elements
+// not being in a table.
+const TestWrapper: React.FC = (props: any) => {
   return (
     <table>
       <tbody>
-        <ProjectTableRow project={data.query.project} />
+        <ProjectTableRow {...props} />
       </tbody>
     </table>
   );
 };
-const renderProjectForm = () => {
-  return render(
-    <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer />
-    </RelayEnvironmentProvider>
-  );
-};
 
-const getMockQueryPayload = () => ({
-  Query() {
-    return {
-      project: {
-        id: "mock-project-id",
-        projectName: "Project 1",
-        proposalReference: "12345",
-        totalFundingRequest: "1.00",
-        summary: "Summary 1",
-        operatorByOperatorId: {
-          legalName: "Operator 1 legal name",
-          tradeName: "Operator 1 trade name",
-        },
-        fundingStreamRfpByFundingStreamRfpId: {
-          year: 2022,
-          fundingStreamByFundingStreamId: {
-            description: "Emissions Performance",
-          },
-        },
-        projectStatusByProjectStatusId: {
-          name: "Technical Review",
-        },
-        projectManagersByProjectId: {
-          edges: [
-            {
-              node: {
-                cifUserByCifUserId: {
-                  fullName: "Manager full name 1",
-                  id: "1",
-                },
-              },
-            },
-            {
-              node: {
-                cifUserByCifUserId: {
-                  fullName: "Manager full name 2",
-                  id: "2",
-                },
-              },
-            },
-          ],
-        },
-      },
-    };
-  },
-});
+const componentTestingHelper = new ComponentTestingHelper<ProjectTableRowQuery>(
+  {
+    component: TestWrapper,
+    compiledQuery: compiledProjectTableRowQuery,
+    testQuery: testQuery,
+    defaultQueryResolver: mockQueryPayload,
+    getPropsFromTestQuery: (data) => ({ project: data.query.project }),
+  }
+);
 
 describe("The ProjectTableRow", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
-
-    environment = createMockEnvironment();
-
-    environment.mock.queueOperationResolver((operation) =>
-      MockPayloadGenerator.generate(operation, getMockQueryPayload())
-    );
-
-    environment.mock.queuePendingOperation(compiledProjectTableRowQuery, {});
+    componentTestingHelper.reinit();
   });
 
   it("Renders a row with the appropriate data in each cell", () => {
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
     expect(screen.getByText(/12345/i)).toBeInTheDocument();
