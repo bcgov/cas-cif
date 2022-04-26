@@ -32,7 +32,7 @@ const getStatus = (
         form.changeStatus === "staged" && form.validationErrors.length > 0
     )
   )
-    return "Attention Required";
+    return <strong>Attention Required</strong>;
 
   if (
     forms.every(
@@ -147,13 +147,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                     <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
                   </Link>
                 </div>
-                <div className="status">
-                  {projectOverviewStatus === "Attention Required" ? (
-                    <strong>{projectOverviewStatus}</strong>
-                  ) : (
-                    <>{projectOverviewStatus}</>
-                  )}
-                </div>
+                <div className="status">{projectOverviewStatus}</div>
               </div>
             </li>
           </ul>
@@ -171,13 +165,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                     <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
                   </Link>
                 </div>
-                <div className="status">
-                  {projectManagerStatus === "Attention Required" ? (
-                    <b>{projectManagerStatus}</b>
-                  ) : (
-                    <>{projectManagerStatus}</>
-                  )}
-                </div>
+                <div className="status">{projectManagerStatus}</div>
               </div>
             </li>
             <li
@@ -190,13 +178,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                     <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
                   </Link>
                 </div>
-                <div className="status">
-                  {projectContactStatus === "Attention Required" ? (
-                    <b>{projectContactStatus}</b>
-                  ) : (
-                    <>{projectContactStatus}</>
-                  )}
-                </div>
+                <div className="status">{projectContactStatus}</div>
               </div>
             </li>
           </ul>
@@ -272,7 +254,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
 
         div {
           background-color: #e5e5e5;
-          width: 350px;
+          width: 400px;
         }
         .row {
           display: flex;
