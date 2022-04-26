@@ -7,13 +7,6 @@ begin;
 create or replace function cif.form_change_as_project(cif.form_change)
 returns cif.project
 as $$
-  declare
-    project_return cif.project;
-  begin
-    if ($1.form_data_table_name != 'project') then
-      return null;
-    end if;
-
     select
       form_data_record_id as id,
       (new_form_data->>'operatorId')::integer as operator_id,
@@ -22,12 +15,16 @@ as $$
       new_form_data->>'proposalReference' as proposal_reference,
       new_form_data->>'summary' as summary,
       new_form_data->>'projectName' as project_name,
-      (new_form_data->>'totalFundingRequest')::numeric as total_funding_request
-    from cif.form_change fc where fc.id = $1.id into project_return;
+      (new_form_data->>'totalFundingRequest')::numeric as total_funding_request,
+      null::int as created_by,
+      now()::timestamptz created_at,
+      null::int as updated_by,
+      now()::timestamptz updated_at,
+      null::int as archived_by,
+      null::timestamptz as archived_at
+    from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'project'
 
-    return project_return;
-  end;
-$$ language plpgsql stable;
+$$ language sql stable;
 
 comment on function cif.contact_pending_form_change(cif.contact) is 'Computed column returns data from the new_form_data column as if it were a project to allow graph traversal via the foreign keys.';
 
