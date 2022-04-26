@@ -1,26 +1,20 @@
 import {
-  render,
-  screen,
-  fireEvent,
-  within,
   act,
+  fireEvent,
+  screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
-import { ErrorContext } from "contexts/ErrorContext";
-import {
-  graphql,
-  RelayEnvironmentProvider,
-  useLazyLoadQuery,
-} from "react-relay";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
-import compiledProjectManagerFormQuery, {
+import { graphql } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
+import compiledProjectManagerFormGroupQuery, {
   ProjectManagerFormGroupQuery,
 } from "__generated__/ProjectManagerFormGroupQuery.graphql";
 
-const loadedQuery = graphql`
+const testQuery = graphql`
   query ProjectManagerFormGroupQuery($projectRevision: ID!)
   @relay_test_operation {
     query {
@@ -33,44 +27,7 @@ const loadedQuery = graphql`
   }
 `;
 
-const props: ValidatingFormProps = {
-  setValidatingForm: jest.fn(),
-};
-
-const errorContext = {
-  error: null,
-  setError: jest.fn().mockImplementation((error) =>
-    act(() => {
-      errorContext.error = error;
-    })
-  ),
-};
-
-let environment;
-const TestRenderer = () => {
-  const data = useLazyLoadQuery<ProjectManagerFormGroupQuery>(loadedQuery, {
-    projectRevision: "test-project-revision",
-  });
-  return (
-    <ProjectManagerFormGroup
-      {...props}
-      query={data.query}
-      revision={data.query.projectRevision}
-      onSubmit={jest.fn()}
-    />
-  );
-};
-const renderProjectForm = () => {
-  return render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
-};
-
-const getMockQueryPayload = () => ({
+const mockQueryPayload = {
   Query() {
     return {
       projectRevision: {
@@ -150,46 +107,57 @@ const getMockQueryPayload = () => ({
       },
     };
   },
-});
-
-const loadTestQuery = (mockResolver = getMockQueryPayload()) => {
-  environment.mock.queueOperationResolver((operation) =>
-    MockPayloadGenerator.generate(operation, mockResolver)
-  );
-
-  environment.mock.queuePendingOperation(compiledProjectManagerFormQuery, {});
 };
+
+const defaultComponentProps: ValidatingFormProps = {
+  setValidatingForm: jest.fn(),
+};
+
+const componentTestingHelper =
+  new ComponentTestingHelper<ProjectManagerFormGroupQuery>({
+    component: ProjectManagerFormGroup,
+    testQuery: testQuery,
+    compiledQuery: compiledProjectManagerFormGroupQuery,
+    getPropsFromTestQuery: (data) => ({
+      query: data.query,
+      projectRevision: data.query.projectRevision,
+      revision: data.query.projectRevision,
+    }),
+    defaultQueryResolver: mockQueryPayload,
+    defaultQueryVariables: { projectRevision: "Test Revision ID" },
+    defaultComponentProps: defaultComponentProps,
+  });
 
 describe("The ProjectManagerForm", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
-
-    environment = createMockEnvironment();
+    componentTestingHelper.reinit();
   });
 
   it("Renders a form for each Project Manager Label", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
   });
 
   it("Renders any data contained in a formChange", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     expect(
       screen.getAllByPlaceholderText("Select a Project Manager")[1]
     ).toHaveValue("Test full name 2");
   });
 
   it("Calls the addManagerToRevision mutation when a new selection is made in the Manager dropdown", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
     fireEvent.click(screen.getByText("Test full name 1"));
 
     expect(
-      environment.mock.getMostRecentOperation().request.variables
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables
     ).toMatchObject({
       projectRevision: "Test Revision ID",
       projectRevisionId: 1,
@@ -198,13 +166,15 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("Calls the update mutation when change is made in the Manager dropdown", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
     fireEvent.click(screen.getByText("Test full name 1"));
 
-    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+    ).toMatchObject({
       variables: {
         input: {
           formChangePatch: {
@@ -227,9 +197,9 @@ describe("The ProjectManagerForm", () => {
     jest
       .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
-    loadTestQuery();
+    componentTestingHelper.loadQuery();
 
-    renderProjectForm();
+    componentTestingHelper.renderComponent();
     const clearButton = screen.getAllByText("Clear")[1];
     clearButton.click();
 
@@ -249,8 +219,8 @@ describe("The ProjectManagerForm", () => {
     jest
       .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [deleteMutationSpy, inFlight]);
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     const clearButton = screen.getAllByText("Clear")[2];
     clearButton.click();
 
@@ -277,18 +247,19 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     screen.getByText(/submit/i).click();
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: { changeStatus: "staged" },
     });
   });
 
   it("reverts the form_change status to 'pending' when editing", async () => {
-    loadTestQuery({
+    componentTestingHelper.loadQuery({
       Query() {
         return {
           projectRevision: {
@@ -369,7 +340,7 @@ describe("The ProjectManagerForm", () => {
         };
       },
     });
-    renderProjectForm();
+    componentTestingHelper.renderComponent();
     await act(async () => {
       userEvent.click(screen.getByLabelText(/test label 3/i));
       await waitFor(() => screen.getByRole("presentation"));
@@ -379,7 +350,8 @@ describe("The ProjectManagerForm", () => {
     });
 
     expect(
-      environment.mock.getMostRecentOperation().request.variables.input
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
     ).toMatchObject({
       formChangePatch: {
         changeStatus: "pending",
@@ -392,16 +364,18 @@ describe("The ProjectManagerForm", () => {
     //Warning: Expected `optimisticResponse` to match structure of server response for mutation `addManagerToRevisionMutation`,
     // Warning: RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.
     // RelayObservable: Unhandled Error Error: at /home/briannacerkiewicz/cas-cif/app/tests/unit/components/Form/ProjectManagerForm.test.tsx:220:50
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getAllByTitle("Open")[0]);
     fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred while adding a manager to the project."
     );
   });
@@ -409,31 +383,35 @@ describe("The ProjectManagerForm", () => {
   it("calls useMutationWithErrorMessage and returns expected message when change is made in the Manager dropdown", () => {
     //Warning: Expected `optimisticResponse` to match structure of server response for mutation `updateFormChangeMutation`,
     //Warning: RelayResponseNormalizer: Payload did not contain a value for field `operation: operation`. Check that you are parsing with the same query that was used to fetch the payload.
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getAllByTitle("Open")[1]);
     fireEvent.click(screen.getByText("Test full name 1"));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred when updating the project manager form."
     );
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked and the formChange operation is 'CREATE'", () => {
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const clearButton = screen.getAllByText("Clear")[1];
     clearButton.click();
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred while removing the manager from the project."
     );
   });
@@ -441,16 +419,18 @@ describe("The ProjectManagerForm", () => {
   it("calls useMutationWithErrorMessage and returns expected message hen the remove button is clicked and the formChange operation is 'UPDATE'", () => {
     //Warning: Expected `optimisticResponse` to match structure of server response for mutation `deleteManagerFromRevisionWithArchiveMutation`,
     //Warning: RelayResponseNormalizer: Payload did not contain a value for field `query: query`. Check that you are parsing with the same query that was used to fetch the payload.
-    loadTestQuery();
-    renderProjectForm();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     const clearButton = screen.getAllByText("Clear")[2];
     clearButton.click();
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
 
-    expect(errorContext.setError).toBeCalledWith(
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred while removing the manager from the project."
     );
   });
