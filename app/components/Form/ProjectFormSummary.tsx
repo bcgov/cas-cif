@@ -23,6 +23,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
         projectFormChange {
           newFormData
+          operation
           formChangeByPreviousFormChangeId {
             newFormData
           }
@@ -201,6 +202,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
             oldData:
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
             oldUiSchema,
+            operation: projectFormChange.operation,
           }}
         />
       )}
