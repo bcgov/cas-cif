@@ -16,12 +16,12 @@ as $$
 
     select
       form_data_record_id as id,
-      (new_form_data->'operatorId')::integer as operator_id,
-      (new_form_data->'fundingStreamRfpId')::integer as funding_stream_rfp_id,
-      (new_form_data->'projectStatusId')::integer as project_status_id,
-      new_form_data->'proposalReference' as proposal_reference,
-      new_form_data->'summary' as summary,
-      new_form_data->'projectName' as project_name,
+      (new_form_data->>'operatorId')::integer as operator_id,
+      (new_form_data->>'fundingStreamRfpId')::integer as funding_stream_rfp_id,
+      (new_form_data->>'projectStatusId')::integer as project_status_id,
+      new_form_data->>'proposalReference' as proposal_reference,
+      new_form_data->>'summary' as summary,
+      new_form_data->>'projectName' as project_name,
       (new_form_data->>'totalFundingRequest')::numeric as total_funding_request
     from cif.form_change fc where fc.id = $1.id into project_return;
 
