@@ -2,7 +2,7 @@
 
 begin;
 
-select * from no_plan();
+select plan(2);
 
 /** SETUP **/
 truncate table cif.cif_user restart identity cascade;
