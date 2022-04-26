@@ -28,6 +28,7 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         changeReason
+        changeStatus
         projectId
         ...ProjectFormSummary_projectRevision
         ...ProjectContactFormSummary_projectRevision
@@ -163,40 +164,52 @@ export function ProjectRevision({
 
         {query.projectRevision.projectId && (
           <div>
-            <h4>Please describe the reason for these changes</h4>
-            <SavingIndicator isSaved={!updatingChangeReason} />
-            <Textarea
-              value={query.projectRevision.changeReason}
-              onChange={handleChange}
-              size={"medium"}
-              resize="vertical"
-            />
+            {query.projectRevision.changeStatus === "committed" ? (
+              <>
+                <h4>Reason for change</h4>
+                <p>{query.projectRevision.changeReason}</p>
+              </>
+            ) : (
+              <>
+                <h4>Please describe the reason for these changes</h4>
+                <SavingIndicator isSaved={!updatingChangeReason} />
+                <Textarea
+                  value={query.projectRevision.changeReason}
+                  onChange={handleChange}
+                  size={"medium"}
+                  resize="vertical"
+                />
+              </>
+            )}
           </div>
         )}
-
-        <Button
-          size="medium"
-          variant="primary"
-          onClick={commitProject}
-          disabled={
-            hasValidationErrors ||
-            updatingProjectRevision ||
-            discardingProjectRevision ||
-            updatingChangeReason ||
-            (query.projectRevision.projectId &&
-              !query.projectRevision.changeReason)
-          }
-        >
-          Submit
-        </Button>
-        <Button
-          size="medium"
-          variant="secondary"
-          onClick={discardRevision}
-          disabled={updatingProjectRevision || discardingProjectRevision}
-        >
-          Discard Changes
-        </Button>
+        {query.projectRevision.changeStatus != "committed" && (
+          <>
+            <Button
+              size="medium"
+              variant="primary"
+              onClick={commitProject}
+              disabled={
+                hasValidationErrors ||
+                updatingProjectRevision ||
+                discardingProjectRevision ||
+                updatingChangeReason ||
+                (query.projectRevision.projectId &&
+                  !query.projectRevision.changeReason)
+              }
+            >
+              Submit
+            </Button>
+            <Button
+              size="medium"
+              variant="secondary"
+              onClick={discardRevision}
+              disabled={updatingProjectRevision || discardingProjectRevision}
+            >
+              Discard Changes
+            </Button>
+          </>
+        )}
       </div>
       <style jsx>{`
         div :global(.pg-button) {
@@ -208,6 +221,9 @@ export function ProjectRevision({
         }
         div :global(.pg-textarea) {
           padding-top: 2px;
+        }
+        h4 {
+          margin-bottom: 0;
         }
       `}</style>
     </DefaultLayout>
