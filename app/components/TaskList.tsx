@@ -127,7 +127,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   }, [id, router]);
 
   return (
-    <div style={{ width: "500px" }}>
+    <div>
       <h2>
         {projectByProjectId
           ? "Editing: " + projectByProjectId.proposalReference
@@ -272,6 +272,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
 
         div {
           background-color: #e5e5e5;
+          width: 350px;
         }
         .row {
           display: flex;
