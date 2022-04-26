@@ -1,17 +1,14 @@
+import { act, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Dashboard from "components/Dashboard";
-import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
+import { graphql } from "react-relay";
+import { MockPayloadGenerator } from "relay-test-utils";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledDashboardTestQuery, {
   DashboardTestQuery,
 } from "__generated__/DashboardTestQuery.graphql";
-import {
-  useLazyLoadQuery,
-  graphql,
-  RelayEnvironmentProvider,
-} from "react-relay";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
-import { render, screen, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
 jest.mock("next/router");
 
@@ -19,81 +16,62 @@ const routerPush = jest.fn();
 
 mocked(useRouter).mockReturnValue({ push: routerPush } as any);
 
-let environment;
-const TestRenderer = () => {
-  const data = useLazyLoadQuery<DashboardTestQuery>(
-    graphql`
-      query DashboardTestQuery @relay_test_operation {
-        ...Dashboard_query
-      }
-    `,
-    {}
-  );
-  return <Dashboard query={data} />;
+const testQuery = graphql`
+  query DashboardTestQuery @relay_test_operation {
+    ...Dashboard_query
+  }
+`;
+
+const mockQueryPayload = {
+  Query() {
+    return {
+      session: {
+        cifUserBySub: {
+          givenName: "Bob",
+        },
+        userGroups: ["cif_internal"],
+      },
+      pendingNewProjectRevision: null,
+    };
+  },
 };
 
-const resolveQuery = (mockResolvers) => {
-  environment.mock.queueOperationResolver((operation) =>
-    MockPayloadGenerator.generate(operation, mockResolvers)
-  );
-  environment.mock.queuePendingOperation(compiledDashboardTestQuery, {});
-};
-
-const renderDashboard = () => {
-  return render(
-    <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer />
-    </RelayEnvironmentProvider>
-  );
-};
+const componentTestingHelper = new ComponentTestingHelper<DashboardTestQuery>({
+  component: Dashboard,
+  testQuery: testQuery,
+  compiledQuery: compiledDashboardTestQuery,
+  getPropsFromTestQuery: (data) => ({
+    query: data,
+  }),
+  defaultQueryResolver: mockQueryPayload,
+  defaultQueryVariables: {},
+  defaultComponentProps: {},
+});
 
 describe("The Dashboard", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
+    componentTestingHelper.reinit();
   });
 
   it("Shows the user's first name in the welcome message", () => {
-    resolveQuery({
-      Query() {
-        return {
-          session: {
-            cifUserBySub: {
-              givenName: "Bob",
-            },
-            userGroups: ["cif_internal"],
-          },
-          pendingNewProjectRevision: null,
-        };
-      },
-    });
-    renderDashboard();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     expect(screen.getByText(/Welcome, Bob/i)).toBeVisible();
     expect(screen.getByText(/Create a new Project/i)).toBeVisible();
   });
 
   it("Triggers the createProjectMutation and redirects when the user clicks the create project button", () => {
-    resolveQuery({
-      Query() {
-        return {
-          session: {
-            cifUserBySub: {
-              firstName: "Bob",
-            },
-            userGroups: ["cif_internal"],
-          },
-          pendingNewProjectRevision: null,
-        };
-      },
-    });
-    renderDashboard();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     act(() => userEvent.click(screen.getByText(/Create a new Project/i)));
     expect(screen.getByText(/Create a new Project/i)).toBeDisabled();
 
-    const operation = environment.mock.getMostRecentOperation();
+    const operation =
+      componentTestingHelper.environment.mock.getMostRecentOperation();
     expect(operation.fragment.node.name).toBe("createProjectMutation");
     act(() => {
-      environment.mock.resolve(
+      componentTestingHelper.environment.mock.resolve(
         operation,
         MockPayloadGenerator.generate(operation)
       );
@@ -105,27 +83,17 @@ describe("The Dashboard", () => {
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the user clicks the create project button and there's a mutation error", () => {
-    resolveQuery({
-      Query() {
-        return {
-          session: {
-            cifUserBySub: {
-              firstName: "Bob",
-            },
-            userGroups: ["cif_internal"],
-          },
-          pendingNewProjectRevision: null,
-        };
-      },
-    });
-    renderDashboard();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     const spy = jest.spyOn(
       require("app/mutations/useMutationWithErrorMessage"),
       "default"
     );
     userEvent.click(screen.getByText(/Create a new Project/i));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
     });
     const getErrorMessage = spy.mock.calls[0][1] as Function;
 
@@ -135,7 +103,7 @@ describe("The Dashboard", () => {
   });
 
   it("The resume project link to be displayed when a pending new project exists", () => {
-    resolveQuery({
+    componentTestingHelper.loadQuery({
       Query() {
         return {
           session: {
@@ -148,7 +116,7 @@ describe("The Dashboard", () => {
         };
       },
     });
-    renderDashboard();
+    componentTestingHelper.renderComponent();
     expect(screen.getByText(/resume project/i).closest("a")).toHaveAttribute(
       "href",
       "/cif/project-revision/mock-id-1/form/overview"
