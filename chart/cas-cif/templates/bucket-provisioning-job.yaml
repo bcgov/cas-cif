@@ -1,14 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "cas-cif.fullname" . }}-document-upload-bucket-provisioner-{{ randAlphaNum 5 | lower }}
+  name: {{ template "cas-cif.fullname" . }}-backup-bucket-provisioner-{{ randAlphaNum 5 | lower }}
 spec:
   parallelism: 1
   completions: 1
   backoffLimit: 0
   template:
     metadata:
-      name: {{ template "cas-cif.fullname" . }}-document-upload-bucket-provisioner
+      name: {{ template "cas-cif.fullname" . }}-backup-bucket-provisioner
       labels: {{ include "cas-cif.labels" . | nindent 8 }}
     spec:
       activeDeadlineSeconds: 1200
@@ -35,5 +35,12 @@ spec:
                 secretKeyRef:
                   key: workspace_id
                   name: terraform-cloud-workspace
-          command: ["bash",  "/script.sh", {{ .Release.Namespace | quote }}, "cif-document-upload"]
+          command:
+            - /usr/bin/env
+            - bash
+            - -c
+            - |
+              set -xeuo pipefail;
+              /script.sh {{ .Release.Namespace | quote }} cif-backups;
+              /script.sh {{ .Release.Namespace | quote }} cif-documents;
       restartPolicy: Never
