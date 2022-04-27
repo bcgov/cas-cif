@@ -53,10 +53,12 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     projectFormChange,
     tasklistProjectContactFormChanges,
     projectManagerFormChanges,
+    changeStatus,
   } = useFragment(
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
+        changeStatus
         projectByProjectId {
           proposalReference
         }
@@ -93,7 +95,12 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   );
   const router = useRouter();
 
-  let mode = projectByProjectId ? "update" : "create";
+  let mode =
+    changeStatus === "committed"
+      ? "view"
+      : projectByProjectId
+      ? "update"
+      : "create";
 
   const projectOverviewStatus = useMemo(
     () => getStatus([projectFormChange]),
@@ -129,7 +136,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   return (
     <div className="container">
       <h2>
-        {projectByProjectId
+        {mode === "view"
+          ? projectByProjectId.proposalReference
+          : mode === "update"
           ? "Editing: " + projectByProjectId.proposalReference
           : "Add a Project"}
       </h2>
@@ -142,7 +151,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               className="bordered"
             >
               <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
+                {mode === "view" ? (
+                  <a>Project overview</a>
+                ) : (
+                  <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
+                )}
               </Link>
               <div className="status">{projectOverviewStatus}</div>
             </li>
@@ -156,7 +169,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               className="bordered"
             >
               <Link href={getProjectRevisionManagersFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
+                {mode === "view" ? (
+                  <a>Project managers</a>
+                ) : (
+                  <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
+                )}
               </Link>
               <div className="status">{projectManagerStatus}</div>
             </li>
@@ -165,27 +182,33 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               className="bordered"
             >
               <Link href={getProjectRevisionContactsFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
+                {mode === "view" ? (
+                  <a>Project contacts</a>
+                ) : (
+                  <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
+                )}
               </Link>
               <div className="status">{projectContactStatus}</div>
             </li>
           </ul>
         </li>
-        <li>
-          <h3>3. Submit changes</h3>
-          <ul>
-            <li
-              aria-current={currentStep === "summary" ? "step" : false}
-              className="bordered"
-            >
-              <div>
-                <Link href={getProjectRevisionPageRoute(id)}>
-                  Review and submit information
-                </Link>
-              </div>
-            </li>
-          </ul>
-        </li>
+        {mode != "view" && (
+          <li>
+            <h3>3. Submit changes</h3>
+            <ul>
+              <li
+                aria-current={currentStep === "summary" ? "step" : false}
+                className="bordered"
+              >
+                <div>
+                  <Link href={getProjectRevisionPageRoute(id)}>
+                    Review and submit information
+                  </Link>
+                </div>
+              </li>
+            </ul>
+          </li>
+        )}
       </ol>
       <style jsx>{`
         ol {
