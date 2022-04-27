@@ -73,6 +73,7 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit Project Overview").click();
     cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Project Overview Form",
       variant: "with errors",
@@ -92,6 +93,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 4);
     cy.injectAxe();
     cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Project Contacts Form",
       variant: "with errors",
