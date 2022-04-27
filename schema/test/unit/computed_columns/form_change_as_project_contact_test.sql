@@ -18,7 +18,7 @@ insert into cif.project_revision(id, change_status)
 insert into cif.form_change(id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, json_schema_name, new_form_data)
   overriding system value
   values
-    (1, 'create', 'cif', 'project', 1, 1, 'project', '{"operatorId": 1, "fundingStreamRfpId": 1, "projectStatusId": 1, "proposalReference": "001", "summary": "summary", "projectName": "project 1", "totalFundingRequest": 100}'),
+    (1, 'create', 'cif', 'project_contact', 1, 1, 'project_contact', '{"projectId": 1, "contactId": 1, "contactIndex": 1}'),
     (2, 'create', 'cif', 'operator', 1, 1, 'operator', '{"legalName": "I am an operator"}');
 /** SETUP END **/
 
@@ -27,12 +27,12 @@ select results_eq(
   with record as (
   select row(form_change.*)::cif.form_change
   from cif.form_change where id=1
-  ) select operator_id, funding_stream_rfp_id, project_status_id, total_funding_request, proposal_reference, summary, project_name from cif.form_change_as_project((select * from record))
+  ) select project_id, contact_id, contact_index from cif.form_change_as_project_contact((select * from record))
   $$,
   $$
-  values(1::int, 1::int, 1::int, 100::numeric, '001'::varchar, 'summary'::varchar, 'project 1'::varchar)
+  values(1::int, 1::int, 1::int)
   $$,
-  'Returns a record with the correct data when passed a form_change record with a form_data_table_name of project'
+  'Returns a record with the correct data when passed a form_change record with a form_data_table_name of project_contact'
 );
 
 select is(
@@ -43,7 +43,7 @@ select is(
     ) select id from cif.form_change_as_project((select * from record))
   ),
   null,
-  'Returns null when passed a form_change record with a form_data_table_name that is not project'
+  'Returns null when passed a form_change record with a form_data_table_name that is not project_contact'
 );
 
 select finish();

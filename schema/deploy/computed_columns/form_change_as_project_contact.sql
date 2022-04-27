@@ -19,7 +19,7 @@ as $$
       now()::timestamptz updated_at,
       null::int as archived_by,
       null::timestamptz as archived_at
-    from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'contact'
+    from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'project_contact'
 
 $$ language sql stable;
 
