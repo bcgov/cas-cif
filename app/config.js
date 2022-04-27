@@ -161,6 +161,11 @@ var config = convict({
     default: "_doNotUseThisApiKeyInProduction_",
     env: "STORAGE_API_KEY",
   },
+  attachmentsBucket: {
+    doc: "Bucket name for attachments.",
+    default: "attachments",
+    env: "ATTACHMENTS_BUCKET",
+  },
   enableMockAuth: {
     doc: "",
     default: null,

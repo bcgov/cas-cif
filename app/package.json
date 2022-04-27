@@ -74,6 +74,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@google-cloud/storage": "^5.19.3",
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
     "@graphile-contrib/pg-omit-archived": "^2.1.0",
     "@graphile-contrib/pg-order-by-related": "^1.0.0-beta.6",
