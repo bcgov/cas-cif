@@ -16,6 +16,9 @@ export const mutation = graphql`
         id
         newFormData
         isUniqueValue(columnName: "proposalReference")
+        projectRevisionByProjectRevisionId {
+          ...TaskList_projectRevision
+        }
       }
     }
   }

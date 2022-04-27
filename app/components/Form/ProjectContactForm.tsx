@@ -206,8 +206,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       []
     );
 
-    if (validationErrors.length > 0) return;
-
     const completedPromises: Promise<void>[] = [];
 
     projectContactFormChanges.edges.forEach(({ node }) => {
@@ -234,8 +232,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     });
     try {
       await Promise.all(completedPromises);
-
-      props.onSubmit();
+      if (validationErrors.length === 0) props.onSubmit();
     } catch (e) {
       // the failing mutation will display an error message and send the error to sentry
     }

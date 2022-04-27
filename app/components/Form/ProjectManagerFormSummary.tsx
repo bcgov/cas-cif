@@ -41,7 +41,6 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
           edges {
             node {
               rowId
-              id
               fullName
             }
           }
@@ -53,13 +52,13 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
   const areManagersEmpty = useMemo(() => {
     return !projectManagerFormChangesByLabel.edges.some(
-      ({ node }) => node.formChange?.newFormData.cifUserId
+      ({ node }) => node?.formChange?.newFormData.cifUserId
     );
   }, [projectManagerFormChangesByLabel.edges]);
 
   const managersJSX = useMemo(() => {
     return projectManagerFormChangesByLabel.edges.map(({ node }) => {
-      if (!node.formChange) return;
+      if (!node?.formChange) return;
       const nodeManager = allCifUsers.edges.find(
         (manager) =>
           manager.node.rowId === node.formChange?.newFormData.cifUserId

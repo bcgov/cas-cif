@@ -216,6 +216,10 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.onSubmit();
   };
 
+  const handleError = () => {
+    handleChange(revision.projectFormChange.newFormData, "staged");
+  };
+
   return (
     <>
       <header>
@@ -242,6 +246,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         }}
         onChange={(change) => handleChange(change.formData, "pending")}
         onSubmit={handleSubmit}
+        onError={handleError}
       >
         <Button type="submit" style={{ marginRight: "1rem" }}>
           Submit Project Overview

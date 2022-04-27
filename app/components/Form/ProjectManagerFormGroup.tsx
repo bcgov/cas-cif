@@ -81,7 +81,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         createFormChange: {
           query: {
             projectRevision: {
-              ...projectRevision,
+              projectFormChange: undefined,
               managerFormChanges: {
                 edges: edges.map(
                   ({ node: { projectManagerLabel, formChange } }) => {
@@ -148,8 +148,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
       return [...agg, ...validateFormWithErrors(formObject)];
     }, []);
 
-    if (errors.length > 0) return;
-
     const completedPromises: Promise<void>[] = [];
 
     edges.forEach(({ node }) => {
@@ -175,8 +173,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
     try {
       await Promise.all(completedPromises);
-
-      props.onSubmit();
+      if (errors.length === 0) props.onSubmit();
     } catch (e) {
       // the failing mutation will display an error message and send the error to sentry
     }

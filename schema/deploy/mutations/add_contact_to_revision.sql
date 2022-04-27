@@ -12,7 +12,8 @@ as $add_contact_form_change$
     form_data_table_name,
     project_revision_id,
     change_status,
-    json_schema_name
+    json_schema_name,
+    validation_errors
   ) values (
     format(
       '{ "projectId": %s, "contactIndex": %s }',
@@ -24,7 +25,8 @@ as $add_contact_form_change$
     'project_contact',
     $1,
     'pending',
-    'project_contact'
+    'project_contact',
+    '[{"message": "must have required property contactId"}]'
   ) returning *;
 $add_contact_form_change$ language sql volatile;
 
