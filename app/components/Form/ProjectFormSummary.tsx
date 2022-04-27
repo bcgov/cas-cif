@@ -24,8 +24,39 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
         projectFormChange {
           newFormData
           operation
+          isPristine
+          asProject {
+            operatorByOperatorId {
+              legalName
+              bcRegistryId
+            }
+            fundingStreamRfpByFundingStreamRfpId {
+              year
+              fundingStreamByFundingStreamId {
+                description
+              }
+            }
+            projectStatusByProjectStatusId {
+              name
+            }
+          }
           formChangeByPreviousFormChangeId {
             newFormData
+            asProject {
+              operatorByOperatorId {
+                legalName
+                bcRegistryId
+              }
+              fundingStreamRfpByFundingStreamRfpId {
+                year
+                fundingStreamByFundingStreamId {
+                  description
+                }
+              }
+              projectStatusByProjectStatusId {
+                name
+              }
+            }
           }
         }
       }
@@ -33,115 +64,18 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const { allFundingStreamRfps, allOperators, allProjectStatuses } =
-    useFragment(
-      graphql`
-        fragment ProjectFormSummary_query on Query {
-          allFundingStreamRfps {
-            edges {
-              node {
-                fundingStreamByFundingStreamId {
-                  name
-                  description
-                }
-                rowId
-                year
-              }
-            }
-          }
-          allOperators {
-            edges {
-              node {
-                rowId
-                legalName
-                bcRegistryId
-              }
-            }
-          }
-          allProjectStatuses {
-            edges {
-              node {
-                name
-                rowId
-              }
-            }
-          }
-        }
-      `,
-      props.query
-    );
+  const newDataAsProject = projectFormChange.asProject;
+  const previousDataAsProject =
+    projectFormChange.formChangeByPreviousFormChangeId?.asProject;
 
-  const isOverviewEmpty = useMemo(() => {
-    return Object.keys(projectFormChange.newFormData).length === 0;
-  }, [projectFormChange.newFormData]);
-
-  // Get display values for ID fields
-  const selectedOperator = useMemo(() => {
-    return allOperators.edges.find(
-      ({ node }) => node.rowId === projectFormChange.newFormData.operatorId
-    );
-  }, [allOperators, projectFormChange.newFormData.operatorId]);
-
-  const rfpStream = useMemo(() => {
-    return allFundingStreamRfps.edges.find(
-      ({ node }) =>
-        node.rowId === projectFormChange.newFormData.fundingStreamRfpId
-    );
-  }, [allFundingStreamRfps, projectFormChange.newFormData.fundingStreamRfpId]);
-
-  const projectStatus = useMemo(() => {
-    return allProjectStatuses.edges.find(
-      ({ node }) => node.rowId === projectFormChange.newFormData.projectStatusId
-    );
-  }, [allProjectStatuses, projectFormChange.newFormData.projectStatusId]);
-
-  // Get display values for ID fields (previous revision data)
-  const oldOperator = useMemo(() => {
-    return allOperators.edges.find(
-      ({ node }) =>
-        node.rowId ===
-        projectFormChange.formChangeByPreviousFormChangeId?.newFormData
-          ?.operatorId
-    );
-  }, [
-    allOperators.edges,
-    projectFormChange.formChangeByPreviousFormChangeId?.newFormData?.operatorId,
-  ]);
-
-  const oldRfpStream = useMemo(() => {
-    return allFundingStreamRfps.edges.find(
-      ({ node }) =>
-        node.rowId ===
-        projectFormChange.formChangeByPreviousFormChangeId?.newFormData
-          ?.fundingStreamRfpId
-    );
-  }, [
-    allFundingStreamRfps.edges,
-    projectFormChange.formChangeByPreviousFormChangeId?.newFormData
-      ?.fundingStreamRfpId,
-  ]);
-
-  const oldProjectStatus = useMemo(() => {
-    return allProjectStatuses.edges.find(
-      ({ node }) =>
-        node.rowId ===
-        projectFormChange.formChangeByPreviousFormChangeId?.newFormData
-          ?.projectStatusId
-    );
-  }, [
-    allProjectStatuses.edges,
-    projectFormChange.formChangeByPreviousFormChangeId?.newFormData
-      ?.projectStatusId,
-  ]);
-
-  const oldUiSchema = createProjectUiSchema(
-    oldOperator ? oldOperator.node.legalName : "",
-    oldOperator ? oldOperator.node.bcRegistryId : "",
-    oldRfpStream
-      ? `${oldRfpStream.node.fundingStreamByFundingStreamId.description} - ${oldRfpStream.node.year}`
-      : "",
-    oldProjectStatus ? oldProjectStatus.node.name : ""
-  );
+  const oldUiSchema = previousDataAsProject
+    ? createProjectUiSchema(
+        previousDataAsProject.operatorByOperatorId.legalName,
+        previousDataAsProject.operatorByOperatorId.bcRegistryId,
+        `${previousDataAsProject.fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.description} - ${previousDataAsProject.fundingStreamRfpByFundingStreamRfpId.year}`,
+        previousDataAsProject.projectStatusByProjectStatusId.name
+      )
+    : null;
 
   // Filter out fields that have not changed from the previous revision
   const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
@@ -164,24 +98,13 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
 
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_FIELDS };
-  // Has any data changed since the last revision
-  const isPristine = false;
-  if (isPristine)
-    return (
-      <>
-        <h3>Project Overview</h3>
-        <p>
-          <em>Project overview not updated</em>
-        </p>
-      </>
-    );
 
   return (
     <>
       <h3>Project Overview</h3>
-      {isOverviewEmpty ? (
+      {projectFormChange.isPristine ? (
         <p>
-          <em>Project overview not added</em>
+          <em>Project overview not updated</em>
         </p>
       ) : (
         <FormBase
@@ -190,12 +113,10 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           fields={customFields}
           schema={filteredSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
-            selectedOperator ? selectedOperator.node.legalName : "",
-            selectedOperator ? selectedOperator.node.bcRegistryId : "",
-            rfpStream
-              ? `${rfpStream.node.fundingStreamByFundingStreamId.description} - ${rfpStream.node.year}`
-              : "",
-            projectStatus ? projectStatus.node.name : ""
+            newDataAsProject.operatorByOperatorId.legalName,
+            newDataAsProject.operatorByOperatorId.bcRegistryId,
+            `${newDataAsProject.fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.description} - ${newDataAsProject.fundingStreamRfpByFundingStreamRfpId.year}`,
+            newDataAsProject.projectStatusByProjectStatusId.name
           )}
           formData={filteredFormData}
           formContext={{
