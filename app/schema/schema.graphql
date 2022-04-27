@@ -19037,7 +19037,7 @@ type Contact implements Node {
   id: ID!
 
   """
-  Computed column returns data from the new_form_data column as if it were a project to allow graph traversal via the foreign keys.
+  Computed column returns data from the new_form_data column as if it were a project_contact record to allow graph traversal via the foreign keys.
   """
   pendingFormChange: FormChange
 
@@ -21207,6 +21207,7 @@ type DeleteProjectStatusPayload {
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
   asProject: Project
+  asProjectContact: ProjectContact
 
   """
   The change status of this form change, foreign key to cif.change_status.
