@@ -115,7 +115,6 @@ export function ProjectContactsPage({
   const handleSubmit = () => {
     router.push(getProjectRevisionPageRoute(query.projectRevision.id));
   };
-  console.log(mode);
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       {mode === "view" ? (
