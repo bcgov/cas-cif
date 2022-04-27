@@ -127,7 +127,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   }, [id, router]);
 
   return (
-    <div>
+    <div className="container">
       <h2>
         {projectByProjectId
           ? "Editing: " + projectByProjectId.proposalReference
@@ -141,14 +141,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               aria-current={currentStep === "overview" ? "step" : false}
               className="bordered"
             >
-              <div className="row">
-                <div className="link">
-                  <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
-                    <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
-                  </Link>
-                </div>
-                <div className="status">{projectOverviewStatus}</div>
-              </div>
+              <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
+                <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
+              </Link>
+              <div className="status">{projectOverviewStatus}</div>
             </li>
           </ul>
         </li>
@@ -159,27 +155,19 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               aria-current={currentStep === "managers" ? "step" : false}
               className="bordered"
             >
-              <div className="row">
-                <div className="link">
-                  <Link href={getProjectRevisionManagersFormPageRoute(id)}>
-                    <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
-                  </Link>
-                </div>
-                <div className="status">{projectManagerStatus}</div>
-              </div>
+              <Link href={getProjectRevisionManagersFormPageRoute(id)}>
+                <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
+              </Link>
+              <div className="status">{projectManagerStatus}</div>
             </li>
             <li
               aria-current={currentStep === "contacts" ? "step" : false}
               className="bordered"
             >
-              <div className="row">
-                <div className="link">
-                  <Link href={getProjectRevisionContactsFormPageRoute(id)}>
-                    <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
-                  </Link>
-                </div>
-                <div className="status">{projectContactStatus}</div>
-              </div>
+              <Link href={getProjectRevisionContactsFormPageRoute(id)}>
+                <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
+              </Link>
+              <div className="status">{projectContactStatus}</div>
             </li>
           </ul>
         </li>
@@ -190,12 +178,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               aria-current={currentStep === "summary" ? "step" : false}
               className="bordered"
             >
-              <div className="row">
-                <div>
-                  <Link href={getProjectRevisionPageRoute(id)}>
-                    Review and submit information
-                  </Link>
-                </div>
+              <div>
+                <Link href={getProjectRevisionPageRoute(id)}>
+                  Review and submit information
+                </Link>
               </div>
             </li>
           </ul>
@@ -213,7 +199,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         }
 
         li {
-          text-indent: 20px;
+          text-indent: 15px;
           margin-bottom: 0;
         }
 
@@ -222,13 +208,13 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           margin: 0;
           padding: 20px 0 10px 0;
           border-bottom: 1px solid #d1d1d1;
-          text-indent: 20px;
+          text-indent: 15px;
         }
         h3 {
           font-size: 1rem;
           line-height: 1;
           border-bottom: 1px solid #d1d1d1;
-          text-indent: 20px;
+          text-indent: 15px;
           padding: 10px 0 10px 0;
           margin: 0;
         }
@@ -252,20 +238,19 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           padding: 10px 0 10px 0;
         }
 
-        div {
+        div.container {
           background-color: #e5e5e5;
           width: 400px;
         }
-        .row {
+
+        ul > li {
           display: flex;
+          justify-content: space-between;
         }
-        .link {
-          flex: 50%;
-        }
+
         .status {
-          padding-right: 10px;
           text-align: right;
-          flex: 40%;
+          padding-right: 5px;
         }
       `}</style>
     </div>
