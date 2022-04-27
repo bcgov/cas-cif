@@ -6,9 +6,14 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import TaskList from "components/TaskList";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import {
+  getProjectRevisionPageRoute,
+  getProjectRevisionManagersFormPageRoute,
+} from "pageRoutes";
+import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import { useRouter } from "next/router";
+import { Button } from "@button-inc/bcgov-theme";
 
 const pageQuery = graphql`
   query managersFormQuery($projectRevision: ID!) {
@@ -19,6 +24,19 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         changeStatus
+        projectId
+        projectByProjectId {
+          projectRevisionsByProjectId(
+            first: 1
+            filter: { changeStatus: { equalTo: "pending" } }
+            orderBy: UPDATED_AT_DESC
+          ) {
+            nodes {
+              id
+              changeStatus
+            }
+          }
+        }
         ...ProjectManagerFormGroup_revision
         ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
@@ -35,6 +53,55 @@ export function ProjectManagersForm({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
+  const [createProjectRevision, isCreatingProjectRevision] =
+    useCreateProjectRevision();
+
+  const handleCreateRevision = () => {
+    createProjectRevision({
+      variables: { projectId: query.projectRevision.projectId },
+      onCompleted: (response) => {
+        router.push(
+          getProjectRevisionManagersFormPageRoute(
+            response.createProjectRevision.projectRevision.id
+          )
+        );
+      },
+    });
+  };
+
+  const handleResumeRevision = () => {
+    router.push(
+      getProjectRevisionManagersFormPageRoute(
+        query.projectRevision.projectByProjectId.projectRevisionsByProjectId
+          .nodes[0].id
+      )
+    );
+  };
+
+  const createEditButton = () => {
+    const existingRevision =
+      query.projectRevision.projectByProjectId.projectRevisionsByProjectId
+        .nodes[0];
+    return (
+      <>
+        <Button
+          className="edit-button"
+          onClick={
+            existingRevision ? handleResumeRevision : handleCreateRevision
+          }
+          disabled={isCreatingProjectRevision}
+        >
+          {existingRevision ? "Resume Edition" : "Edit"}
+        </Button>
+        <style jsx>{`
+          :global(.edit-button) {
+            float: right;
+          }
+        `}</style>
+      </>
+    );
+  };
+
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
 
@@ -47,10 +114,13 @@ export function ProjectManagersForm({
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       {query.projectRevision.changeStatus === "committed" ? (
-        <ProjectManagerFormSummary
-          query={query}
-          projectRevision={query.projectRevision}
-        />
+        <>
+          {createEditButton()}
+          <ProjectManagerFormSummary
+            query={query}
+            projectRevision={query.projectRevision}
+          />
+        </>
       ) : (
         <ProjectManagerFormGroup
           query={query}
