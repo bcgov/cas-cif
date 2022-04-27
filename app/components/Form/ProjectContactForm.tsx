@@ -238,13 +238,13 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       if (node.formChangeByPreviousFormChangeId?.changeStatus === "committed") {
         commitedContactData.push(node);
       }
+      if (node.changeStatus === "pending") {
+        deleteContact(node.id, "ARCHIVE");
+      }
     });
 
     if (commitedContactData.length === 0) {
       clearPrimaryContact();
-      alternateContactForms.map((form) => {
-        deleteContact(form.id, form.operation);
-      });
     } else {
       const completedPromises: Promise<void>[] = [];
 
@@ -260,6 +260,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 formChangePatch: {
                   changeStatus: "pending",
                   newFormData: undoneFormData,
+                  operation: "UPDATE",
                 },
               },
             },
