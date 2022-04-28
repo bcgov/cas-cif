@@ -1,24 +1,14 @@
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { render, screen, act } from "@testing-library/react";
-import { loadQuery, RelayEnvironmentProvider } from "react-relay";
-import compiledOperatorViewQuery, {
-  OperatorViewQuery,
-  OperatorViewQuery$variables,
-} from "__generated__/OperatorViewQuery.graphql";
-import { OperatorViewPage } from "pages/cif/operator/[operator]";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { act, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
-import userEvent from "@testing-library/user-event";
-import { ErrorContext } from "contexts/ErrorContext";
+import { OperatorViewPage } from "pages/cif/operator/[operator]";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import compiledOperatorViewQuery, {
+  OperatorViewQuery,
+} from "__generated__/OperatorViewQuery.graphql";
 
 jest.mock("next/router");
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   Operator() {
@@ -36,51 +26,24 @@ const defaultMockResolver = {
   },
 };
 
-const loadOperatorQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-  const variables: OperatorViewQuery$variables = {
+const pageTestingHelper = new PageTestingHelper<OperatorViewQuery>({
+  pageComponent: OperatorViewPage,
+  compiledQuery: compiledOperatorViewQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
     operator: "mock-operator-id",
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(compiledOperatorViewQuery, variables);
-  initialQueryRef = loadQuery<OperatorViewQuery>(
-    environment,
-    compiledOperatorViewQuery,
-    variables
-  );
-};
-let errorContext;
-const renderOperatorPage = () =>
-  render(
-    <ErrorContext.Provider value={errorContext}>
-      <RelayEnvironmentProvider environment={environment}>
-        <OperatorViewPage CSN preloadedQuery={initialQueryRef} />
-      </RelayEnvironmentProvider>
-    </ErrorContext.Provider>
-  );
+  },
+});
 
 describe("OperatorViewPage", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
-    errorContext = {
-      error: null,
-      setError: jest.fn().mockImplementation((error) =>
-        act(() => {
-          errorContext.error = error;
-        })
-      ),
-    };
+    pageTestingHelper.reinit();
     jest.restoreAllMocks();
   });
 
   it("displays the operator data", () => {
-    loadOperatorQuery();
-    renderOperatorPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText("XXX-BC-Registery-ID-XXX")).toBeInTheDocument();
     expect(screen.getByText("Operator Legal Name")).toBeInTheDocument();
@@ -92,7 +55,7 @@ describe("OperatorViewPage", () => {
   });
 
   it("doesn't display swrs data if there is no swrs operator ID", () => {
-    loadOperatorQuery({
+    pageTestingHelper.loadQuery({
       Operator() {
         return {
           id: "mock-cif-operator-id",
@@ -106,7 +69,7 @@ describe("OperatorViewPage", () => {
         };
       },
     });
-    renderOperatorPage();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText("Operator Legal Name")).toBeInTheDocument();
     expect(screen.getByText("Operator Trade Name")).toBeInTheDocument();
@@ -117,14 +80,14 @@ describe("OperatorViewPage", () => {
   });
 
   it("renders a resume edit button when the operator already has a pending form change", () => {
-    loadOperatorQuery();
-    renderOperatorPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
 
     expect(screen.getByText("Resume Editing")).toBeInTheDocument();
   });
 
   it("displays an error when the Edit button is clicked & createEditOperator mutation fails", () => {
-    loadOperatorQuery({
+    pageTestingHelper.loadQuery({
       Operator() {
         return {
           id: "mock-cif-operator-id",
@@ -139,12 +102,12 @@ describe("OperatorViewPage", () => {
         };
       },
     });
-    renderOperatorPage();
+    pageTestingHelper.renderPage();
     userEvent.click(screen.getByText(/Edit/i));
     act(() => {
-      environment.mock.rejectMostRecentOperation(new Error());
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
-    expect(errorContext.setError).toHaveBeenCalledTimes(1);
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
         "An error occurred while attempting to edit the operator."
@@ -160,14 +123,14 @@ describe("OperatorViewPage", () => {
     mocked(useRouter).mockReturnValue({
       replace: jest.fn(),
     } as any);
-    loadOperatorQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           operator: null,
         };
       },
     });
-    const { container } = renderOperatorPage();
+    const { container } = pageTestingHelper.renderPage();
     expect(container.childElementCount).toEqual(0);
     expect(spy).toHaveBeenCalledWith(expect.objectContaining(null));
   });

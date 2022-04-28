@@ -44,11 +44,12 @@ describe("my suite of tests", () => {
   });
 
   it("renders the page", () => {
-    pageTestingHelper.loadQuery();
+    pageTestingHelper.loadQuery(); // or pageTestingHelper.loadQuery(differentResolver) if you need different resolvers for different tests
     pageTestingHelper.renderPage();
 
     expect(screen.getByText("Test Project")).toBeInTheDocument();
     expect(pageTestingHelper.environment.mock. ... ).toHaveBeenCalled();
+    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     ...more tests...
   });
 
@@ -66,7 +67,7 @@ import compiledProjectContactFormQuery, {
 
 // The query mimics a page that contains that component,
 // we craft a test query that uses the fragments of the component we're testing.
-const loadedQuery = graphql`
+const testQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
     query {
       # Spread the fragment you want to test here
@@ -94,10 +95,16 @@ const mockQueryPayload = {
   }
 }
 
+const defaultComponentProps = {
+  setValidatingForm: jest.fn(),
+  onSubmit: jest.fn(),
+  ... etc ...
+};
+
 const componentTestingHelper =
   new ComponentTestingHelper<ProjectContactFormQuery>({
     component: ProjectContactForm,
-    testQuery: loadedQuery,
+    testQuery: testQuery,
     compiledQuery: compiledProjectContactFormQuery,
     getPropsFromTestQuery: (data) => ({
       // This is how to build the props for the component we're testing, based on our test query
@@ -116,6 +123,9 @@ describe("the test suite", () => {
     componentTestingHelper.reinit();
   });
   it(...){
+    componentTestingHelper.loadQuery()
+    componentTestingHelper.renderComponent() // or if you need extra props for a particular test: componentTestingHelper.renderComponent(undefined, {...defaultComponentProps, extraProps })
+
     ... same testing as with the page helper ...
   }
 })

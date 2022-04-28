@@ -1,94 +1,79 @@
+import { screen } from "@testing-library/react";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import { render, screen } from "@testing-library/react";
+import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
 import { graphql } from "relay-runtime";
-import { RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledDefaultLayoutTestQuery, {
   DefaultLayoutTestQuery,
 } from "__generated__/DefaultLayoutTestQuery.graphql";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
-import { useRouter } from "next/router";
-import { mocked } from "jest-mock";
 jest.mock("next/router");
 mocked(useRouter).mockReturnValue({ query: {} } as any);
 
-let environment;
-const TestRenderer = (props) => {
-  const data = useLazyLoadQuery<DefaultLayoutTestQuery>(
-    graphql`
-      query DefaultLayoutTestQuery @relay_test_operation {
-        query {
-          session {
-            ...DefaultLayout_session
-          }
-        }
+const testQuery = graphql`
+  query DefaultLayoutTestQuery @relay_test_operation {
+    query {
+      session {
+        ...DefaultLayout_session
       }
-    `,
-    {}
-  );
-  return <DefaultLayout session={data.query.session} {...props} />;
+    }
+  }
+`;
+
+const mockQueryPayload = {
+  KeycloakJwt() {
+    return {
+      cifUserBySub: {
+        id: "1",
+      },
+      userGroups: ["cif_admin"],
+    };
+  },
 };
 
-const resolveQuery = (mockResolvers) => {
-  environment.mock.queueOperationResolver((operation) =>
-    MockPayloadGenerator.generate(operation, mockResolvers)
-  );
-  environment.mock.queuePendingOperation(compiledDefaultLayoutTestQuery, {});
-};
+const defaultComponentProps = {};
 
-const renderDefaultLayout = (props?) => {
-  return render(
-    <RelayEnvironmentProvider environment={environment}>
-      <TestRenderer {...props} />
-    </RelayEnvironmentProvider>
-  );
-};
+const componentTestingHelper =
+  new ComponentTestingHelper<DefaultLayoutTestQuery>({
+    component: DefaultLayout,
+    testQuery: testQuery,
+    compiledQuery: compiledDefaultLayoutTestQuery,
+    getPropsFromTestQuery: (data) => ({
+      session: data.query.session,
+    }),
+    defaultQueryResolver: mockQueryPayload,
+    defaultQueryVariables: {},
+    defaultComponentProps: defaultComponentProps,
+  });
 
 describe("The DefaultLayout component", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
+    componentTestingHelper.reinit();
   });
 
   it("should not render the subheader links if the user is logged out", () => {
-    resolveQuery({
+    componentTestingHelper.loadQuery({
       Query() {
         return { session: null };
       },
     });
-    renderDefaultLayout();
+    componentTestingHelper.renderComponent();
     expect(screen.getByText("CleanBC Industry Fund")).toBeVisible();
     expect(screen.queryByText("Dashboard")).toBeNull();
     expect(screen.queryByText("Projects")).toBeNull();
   });
 
   it("should render the subheader links if the user is logged in", () => {
-    resolveQuery({
-      KeycloakJwt() {
-        return {
-          cifUserBySub: {
-            id: "1",
-          },
-          userGroups: [],
-        };
-      },
-    });
-    renderDefaultLayout();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Dashboard")).toBeVisible();
     expect(screen.getByText("Projects")).toBeVisible();
   });
 
   it("should render the Dashboard link to /cif", () => {
-    resolveQuery({
-      KeycloakJwt() {
-        return {
-          cifUserBySub: {
-            id: "1",
-          },
-          userGroups: ["cif_admin"],
-        };
-      },
-    });
-    renderDefaultLayout();
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
       "href",
@@ -97,17 +82,22 @@ describe("The DefaultLayout component", () => {
   });
 
   it("should render the `leftSideNav` prop into a `nav` element", () => {
-    resolveQuery({
+    componentTestingHelper.loadQuery({
       Query() {
         return { session: null };
       },
     });
+
     const leftSideNav = (
       <div>
         <h2>left side nav</h2>
       </div>
     );
-    renderDefaultLayout({ leftSideNav });
+
+    componentTestingHelper.renderComponent(undefined, {
+      ...defaultComponentProps,
+      leftSideNav,
+    });
     expect(screen.getByText("left side nav")).toBeVisible();
     expect(
       screen.getByRole("navigation", { name: "side navigation" })

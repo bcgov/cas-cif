@@ -8,7 +8,7 @@ import compiledProjectContactFormQuery, {
 } from "__generated__/ProjectContactFormQuery.graphql";
 import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
 
-const loadedQuery = graphql`
+const testQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
     query {
       # Spread the fragment you want to test here
@@ -106,7 +106,7 @@ const defaultComponentProps = {
 const componentTestingHelper =
   new ComponentTestingHelper<ProjectContactFormQuery>({
     component: ProjectContactForm,
-    testQuery: loadedQuery,
+    testQuery: testQuery,
     compiledQuery: compiledProjectContactFormQuery,
     getPropsFromTestQuery: (data) => ({
       query: data.query,
