@@ -120,13 +120,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     });
   }, [secondaryContacts, customFields]);
 
-  console.log(allFormChangesPristine);
-
   return (
     <>
       <h3>Project Contacts</h3>
 
-      {allFormChangesPristine ? (
+      {allFormChangesPristine && false ? (
         <p>
           <em>Project contacts not updated</em>
         </p>
@@ -144,14 +142,19 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               fields={customFields}
               schema={projectContactSchema as JSONSchema7}
               uiSchema={createProjectContactUiSchema(
-                primaryContact.node.asProjectContact.contactByContactId.fullName
+                primaryContact?.node?.asProjectContact?.contactByContactId
+                  ?.fullName
               )}
-              formData={primaryContact.node}
+              formData={primaryContact.node.newFormData}
               formContext={{
                 operation: primaryContact.node.operation,
                 oldData:
                   primaryContact.node.formChangeByPreviousFormChangeId
                     ?.newFormData,
+                oldUiSchema: createProjectContactUiSchema(
+                  primaryContact?.node?.formChangeByPreviousFormChangeId
+                    ?.asProjectContact?.contactByContactId?.fullName
+                ),
               }}
             />
           )}

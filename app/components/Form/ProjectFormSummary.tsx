@@ -70,7 +70,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     ? createProjectUiSchema(
         previousDataAsProject.operatorByOperatorId.legalName,
         previousDataAsProject.operatorByOperatorId.bcRegistryId,
-        `${previousDataAsProject.fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.description} - ${previousDataAsProject.fundingStreamRfpByFundingStreamRfpId.year}`,
+        `${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
         previousDataAsProject.projectStatusByProjectStatusId.name
       )
     : null;

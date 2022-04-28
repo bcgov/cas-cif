@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 
 const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
-  // TitleField: (props) => <h3>{props.title}</h3>,
   StringField: (props) => {
     const { idSchema, formData, formContext } = props;
     const id = idSchema?.$id;
@@ -36,53 +35,14 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
       </>
     );
   },
-  // BooleanField: (props) => {
-  //   const {
-  //     idSchema,
-  //     formData,
-  //     formContext: { showDiff, idDiffMap },
-  //   } = props;
-  //   const id = idSchema?.$id;
-  //   const diff = idDiffMap?.[id];
-
-  //   if (showDiff && diff) {
-  //     return (
-  //       <>
-  //         <span id={`${id}-diffFrom`} className="diffFrom">
-  //           {diff.lhs ? "Yes" : "No"}
-  //         </span>
-  //         &nbsp;---&gt;&nbsp;
-  //         <span id={`${id}-diffTo`} className="diffTo">
-  //           {diff.rhs ? "Yes" : "No"}
-  //         </span>
-  //       </>
-  //     );
-  //   }
-
-  //   return (
-  //     <span id={id}>
-  //       {formData ? (
-  //         <>
-  //           Yes <ErrorIcon {...props} />
-  //         </>
-  //       ) : (
-  //         <>
-  //           No <ErrorIcon {...props} />
-  //         </>
-  //       )}{" "}
-  //     </span>
-  //   );
-  // },
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const hasPreviousValue = formContext?.oldData?.[props.name];
-    console.log(formContext);
-    console.log(props);
     if (uiSchema["ui:options"]) {
       return (
         <>
-          {hasPreviousValue && (
+          {hasPreviousValue && formData && (
             <>
               <span id={id && `${id}-diffTo`} className="diffTo">
                 {formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text}
@@ -94,11 +54,45 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
                 icon={faLongArrowAltRight}
               />
               &nbsp;
+              <span id={id && `${id}-diffFrom`} className="diffFrom">
+                {uiSchema["ui:options"].text}
+              </span>
             </>
           )}
-          <span id={id && `${id}-diffFrom`} className="diffFrom">
-            {uiSchema["ui:options"].text}
-          </span>
+          {hasPreviousValue && !formData && (
+            <>
+              <span id={id && `${id}-diffTo`} className="diffTo">
+                {formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text}
+              </span>
+              &nbsp;
+              <FontAwesomeIcon
+                size="lg"
+                color="black"
+                icon={faLongArrowAltRight}
+              />
+              &nbsp;
+              <span>
+                <strong>REMOVED</strong>
+              </span>
+            </>
+          )}
+          {!hasPreviousValue && formData && (
+            <>
+              <span id={id && `${id}-diffFrom`} className="diffFrom">
+                {uiSchema["ui:options"].text}
+              </span>
+              &nbsp;
+              <FontAwesomeIcon
+                size="lg"
+                color="black"
+                icon={faLongArrowAltRight}
+              />
+              &nbsp;
+              <span>
+                <strong>ADDED</strong>
+              </span>
+            </>
+          )}
         </>
       );
     }
