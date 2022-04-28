@@ -1,21 +1,15 @@
-import React from "react";
-import { ProjectManagersForm } from "pages/cif/project-revision/[projectRevision]/form/managers";
-import { render, within, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import compiledManagersFormQuery, {
-  managersFormQuery,
-  managersFormQuery$variables,
-} from "__generated__/managersFormQuery.graphql";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mocked } from "jest-mock";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
+import { ProjectManagersForm } from "pages/cif/project-revision/[projectRevision]/form/managers";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import compiledManagersFormQuery, {
+  managersFormQuery,
+} from "__generated__/managersFormQuery.graphql";
+import { ProjectManagerForm_query$data } from "__generated__/ProjectManagerForm_query.graphql";
 
 jest.mock("next/router");
 
@@ -25,9 +19,6 @@ jest.mock("next/router");
  * `console.log(JSON.stringify(operation, null, 2))`
  * just before returning the MockPayloadGenerator and looking for concreteType instances *
  */
-
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   ProjectRevision() {
@@ -46,33 +37,18 @@ const defaultMockResolver = {
   },
 };
 
-const loadPageQuery = (mockResolver: MockResolvers = defaultMockResolver) => {
-  const variables: managersFormQuery$variables = {
+const pageTestingHelper = new PageTestingHelper<managersFormQuery>({
+  pageComponent: ProjectManagersForm,
+  compiledQuery: compiledManagersFormQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
     projectRevision: "mock-id",
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(compiledManagersFormQuery, variables);
-  initialQueryRef = loadQuery<managersFormQuery>(
-    environment,
-    compiledManagersFormQuery,
-    variables
-  );
-};
-
-const renderPage = () =>
-  render(
-    <RelayEnvironmentProvider environment={environment}>
-      <ProjectManagersForm CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
-  );
+  },
+});
 
 describe("The Project Managers form page", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
+    pageTestingHelper.reinit();
   });
 
   it("renders the task list in the left navigation", () => {
@@ -82,8 +58,8 @@ describe("The Project Managers form page", () => {
     router.mockReturnValue({
       pathname: mockPathname,
     } as any);
-    loadPageQuery();
-    renderPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -92,6 +68,248 @@ describe("The Project Managers form page", () => {
     expect(
       screen.getByText(/Edit project managers/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
+  });
+
+  it("undoes all changes (resets the form to empty) when the user clicks the Undo Changes button while adding a new project", () => {
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-manager-id",
+          managerFormChanges: {
+            edges: [
+              {
+                node: {
+                  formChange: {
+                    id: "formChange-1",
+
+                    changeStatus: "pending",
+                    updatedAt: "2022-04-22T09:20:34.805189-07:00",
+                    newFormData: {
+                      cifUserId: 1,
+                      projectId: 2,
+                      projectManagerLabelId: 1,
+                    },
+                    formChangeByPreviousFormChangeId: null,
+                  },
+                  projectManagerLabel: {
+                    id: "pm-label-1",
+                    rowId: 1,
+                    label: "Tech Team Primary",
+                  },
+                  " $fragmentSpreads": null,
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    id: "pm-label-2",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    id: "pm-label-3",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    id: "pm-label-4",
+                  },
+                },
+              },
+            ],
+          },
+          projectFormChange: {
+            formDataRecordId: 2,
+          },
+        };
+      },
+      Query() {
+        const cifUsersQuery: Partial<ProjectManagerForm_query$data> = {
+          allCifUsers: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Knope, Leslie",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  fullName: "Swanson, Ron",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  fullName: "Ludgate, April",
+                },
+              },
+            ],
+          },
+        };
+        return cifUsersQuery;
+      },
+    });
+    pageTestingHelper.renderPage();
+    expect(screen.getByLabelText(/Tech Team Primary/i)).toHaveValue(
+      "Knope, Leslie"
+    );
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(pageTestingHelper.environment.mock.getAllOperations()).toHaveLength(
+      2
+    );
+
+    const mutationUnderTest =
+      pageTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "updateProjectManagerFormChangeMutation"
+    );
+
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangePatch: {
+          changeStatus: "pending",
+          newFormData: {},
+        },
+      },
+    });
+  });
+
+  it("undoes all changes (resets the form to the previous committed data) when the user clicks the Undo Changes button while editing an existing project", () => {
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-manager-id",
+          managerFormChanges: {
+            edges: [
+              {
+                node: {
+                  formChange: {
+                    id: "formChange-1",
+                    operation: "UPDATE",
+                    changeStatus: "pending",
+                    updatedAt: "2022-04-22T09:20:34.805189-07:00",
+                    newFormData: {
+                      cifUserId: 1,
+                      projectId: 2,
+                      projectManagerLabelId: 1,
+                    },
+                    formChangeByPreviousFormChangeId: {
+                      changeStatus: "committed",
+                      newFormData: {
+                        cifUserId: 2,
+                        projectId: 2,
+                        projectManagerLabelId: 1,
+                      },
+                    },
+                  },
+                  projectManagerLabel: {
+                    id: "pm-label-1",
+                    rowId: 1,
+                    label: "Tech Team Primary",
+                  },
+                  " $fragmentSpreads": null,
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    id: "pm-label-2",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    id: "pm-label-3",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    id: "pm-label-4",
+                  },
+                },
+              },
+            ],
+          },
+          projectFormChange: {
+            formDataRecordId: 2,
+          },
+        };
+      },
+      Query() {
+        const cifUsersQuery: Partial<ProjectManagerForm_query$data> = {
+          allCifUsers: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Knope, Leslie",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  fullName: "Swanson, Ron",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  fullName: "Ludgate, April",
+                },
+              },
+            ],
+          },
+        };
+        return cifUsersQuery;
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    expect(screen.getByLabelText(/Tech Team Primary/i)).toHaveValue(
+      "Knope, Leslie"
+    );
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+    expect(pageTestingHelper.environment.mock.getAllOperations()).toHaveLength(
+      2
+    );
+
+    const mutationUnderTest =
+      pageTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "updateProjectManagerFormChangeMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangePatch: {
+          changeStatus: "pending",
+          newFormData: {
+            cifUserId: 2,
+            projectId: 2,
+            projectManagerLabelId: 1,
+          },
+        },
+      },
+    });
   });
 
   it("redirects the user to the project revision page on submit", () => {
@@ -109,8 +327,8 @@ describe("The Project Managers form page", () => {
         return null;
       });
 
-    loadPageQuery();
-    renderPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-id")
@@ -123,7 +341,7 @@ describe("The Project Managers form page", () => {
       replace: mockReplace,
     } as any);
 
-    loadPageQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           projectRevision: null,
@@ -131,7 +349,7 @@ describe("The Project Managers form page", () => {
       },
     });
 
-    const { container } = renderPage();
+    const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
     expect(mockReplace).toHaveBeenCalledWith("/404");

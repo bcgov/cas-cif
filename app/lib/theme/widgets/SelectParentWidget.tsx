@@ -1,5 +1,5 @@
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WidgetProps } from "@rjsf/core";
 
 export interface EntitySchema {
@@ -27,10 +27,13 @@ const SelectParentWidget: React.FunctionComponent<
   child,
   foreignKey,
 }) => {
-  const parentValue = child.list.find((opt) => opt.rowId == parseInt(value))?.[
-    foreignKey
-  ];
+  const parentValue =
+    child.list.find((opt) => opt.rowId == parseInt(value))?.[foreignKey] || "";
   const [selectedParentId, setSelectedParentId] = useState(parentValue);
+
+  useEffect(() => {
+    setSelectedParentId(parentValue);
+  }, [parentValue]);
 
   const onParentChange = (val) => {
     setSelectedParentId(parseInt(val));

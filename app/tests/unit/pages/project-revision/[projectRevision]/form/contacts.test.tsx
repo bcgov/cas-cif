@@ -1,21 +1,16 @@
-import React from "react";
-import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/contacts";
-import { render, within, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
-import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import compiledContactsFormQuery, {
-  contactsFormQuery,
-  contactsFormQuery$variables,
-} from "__generated__/contactsFormQuery.graphql";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mocked } from "jest-mock";
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
+import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/contacts";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import compiledContactsFormQuery, {
+  contactsFormQuery,
+} from "__generated__/contactsFormQuery.graphql";
+import { ProjectContactForm_projectRevision$data } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import { ProjectContactForm_query$data } from "__generated__/ProjectContactForm_query.graphql";
 
 jest.mock("next/router");
 
@@ -25,9 +20,6 @@ jest.mock("next/router");
  * `console.log(JSON.stringify(operation, null, 2))`
  * just before returning the MockPayloadGenerator and looking for concreteType instances *
  */
-
-let environment: RelayMockEnvironment;
-let initialQueryRef;
 
 const defaultMockResolver = {
   ProjectRevision() {
@@ -46,33 +38,18 @@ const defaultMockResolver = {
   },
 };
 
-const loadPageQuery = (mockResolver: MockResolvers = defaultMockResolver) => {
-  const variables: contactsFormQuery$variables = {
+const pageTestingHelper = new PageTestingHelper<contactsFormQuery>({
+  pageComponent: ProjectContactsPage,
+  compiledQuery: compiledContactsFormQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
     projectRevision: "mock-id",
-  };
-
-  environment.mock.queueOperationResolver((operation) => {
-    return MockPayloadGenerator.generate(operation, mockResolver);
-  });
-
-  environment.mock.queuePendingOperation(compiledContactsFormQuery, variables);
-  initialQueryRef = loadQuery<contactsFormQuery>(
-    environment,
-    compiledContactsFormQuery,
-    variables
-  );
-};
-
-const renderPage = () =>
-  render(
-    <RelayEnvironmentProvider environment={environment}>
-      <ProjectContactsPage CSN preloadedQuery={initialQueryRef} />
-    </RelayEnvironmentProvider>
-  );
+  },
+});
 
 describe("The Project Contacts page", () => {
   beforeEach(() => {
-    environment = createMockEnvironment();
+    pageTestingHelper.reinit();
   });
 
   it("renders the task list in the left navigation with correct highlighting", () => {
@@ -83,8 +60,8 @@ describe("The Project Contacts page", () => {
       pathname: mockPathname,
     } as any);
 
-    loadPageQuery();
-    renderPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -94,6 +71,217 @@ describe("The Project Contacts page", () => {
     expect(
       screen.getByText(/Edit project contacts/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
+  });
+
+  it("sends a mutation that resets the form to empty when the user clicks the Undo Changes button while adding a new project", () => {
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        const revision: Partial<ProjectContactForm_projectRevision$data> = {
+          id: "mock-proj-rev-id",
+          rowId: 56,
+          projectContactFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "mock-proj-contact-form-id",
+                  newFormData: {
+                    contactId: 1,
+                    projectId: 53,
+                    contactIndex: 1,
+                  },
+                  operation: "CREATE",
+                  changeStatus: "pending",
+                  updatedAt: "2022-04-20T15:42:40.276907-07:00",
+                  formChangeByPreviousFormChangeId: null,
+                },
+              },
+            ],
+            __id: "client:WyJwcm9qZWN0X3JldmlzaW9ucyIsNTZd:__connection_projectContactFormChanges_connection",
+          },
+        };
+        return revision;
+      },
+      Query() {
+        const query: Partial<ProjectContactForm_query$data> = {
+          allContacts: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Loblaw001, Bob001",
+                },
+              },
+            ],
+          },
+        };
+        return query;
+      },
+    });
+    pageTestingHelper.renderPage();
+    expect(screen.getByLabelText(/primary contact/i)).toHaveValue(
+      "Loblaw001, Bob001"
+    );
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(pageTestingHelper.environment.mock.getAllOperations()).toHaveLength(
+      2
+    );
+
+    const mutationUnderTest =
+      pageTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "updateProjectContactFormChangeMutation"
+    );
+
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangePatch: {
+          changeStatus: "pending",
+          newFormData: { contactIndex: 1, projectId: 53 },
+        },
+      },
+    });
+  });
+
+  it("sends a mutation that resets the form to the previous committed data when the user clicks the Undo Changes button while editing an existing project", async () => {
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        const revision: Partial<ProjectContactForm_projectRevision$data> = {
+          id: "mock-proj-rev-id",
+          rowId: 1,
+          projectContactFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "test-primary-contact",
+                  newFormData: {
+                    contactId: 3,
+                    projectId: 54,
+                    contactIndex: 1,
+                  },
+                  operation: "UPDATE",
+                  changeStatus: "pending",
+                  updatedAt: "2022-04-21T09:04:06.586122-07:00",
+                  formChangeByPreviousFormChangeId: {
+                    changeStatus: "committed",
+                    newFormData: {
+                      contactId: 1,
+                      projectId: 54,
+                      contactIndex: 1,
+                    },
+                  },
+                },
+              },
+              {
+                node: {
+                  id: "test-secondary-contact",
+                  newFormData: {
+                    contactId: 4,
+                    projectId: 54,
+                    contactIndex: 2,
+                  },
+                  operation: "UPDATE",
+                  changeStatus: "pending",
+                  updatedAt: "2022-04-21T09:04:08.225455-07:00",
+                  formChangeByPreviousFormChangeId: {
+                    changeStatus: "committed",
+                    newFormData: {
+                      contactId: 2,
+                      projectId: 54,
+                      contactIndex: 2,
+                    },
+                  },
+                },
+              },
+            ],
+
+            __id: "client:WyJwcm9qZWN0X3JldmlzaW9ucyIsNjZd:__connection_projectContactFormChanges_connection",
+          },
+        };
+        return revision;
+      },
+      Query() {
+        const query: Partial<ProjectContactForm_query$data> = {
+          allContacts: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Loblaw001, Bob001",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  fullName: "Loblaw002, Bob002",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  fullName: "Loblaw003, Bob003",
+                },
+              },
+              {
+                node: {
+                  rowId: 4,
+                  fullName: "Loblaw004, Bob004",
+                },
+              },
+            ],
+          },
+        };
+        return query;
+      },
+    });
+    const { container } = pageTestingHelper.renderPage();
+    const secondaryContact = container.querySelector(
+      '[id="form-test-secondary-contact_contactId"]'
+    );
+
+    expect(screen.getByLabelText(/primary contact/i)).toHaveValue(
+      "Loblaw003, Bob003"
+    );
+    expect(secondaryContact).toHaveValue("Loblaw004, Bob004");
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(pageTestingHelper.environment.mock.getAllOperations()).toHaveLength(
+      3
+    );
+
+    const mutation1UnderTest =
+      pageTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutation1UnderTest.fragment.node.name).toBe(
+      "updateProjectContactFormChangeMutation"
+    );
+
+    expect(mutation1UnderTest.request.variables).toMatchObject({
+      input: {
+        formChangePatch: {
+          changeStatus: "pending",
+          newFormData: { contactId: 1, contactIndex: 1, projectId: 54 },
+        },
+      },
+    });
+
+    const mutation2UnderTest =
+      pageTestingHelper.environment.mock.getAllOperations()[2];
+
+    expect(mutation2UnderTest.fragment.node.name).toBe(
+      "updateProjectContactFormChangeMutation"
+    );
+
+    expect(mutation2UnderTest.request.variables).toMatchObject({
+      input: {
+        formChangePatch: {
+          changeStatus: "pending",
+          newFormData: { contactId: 2, contactIndex: 2, projectId: 54 },
+        },
+      },
+    });
   });
 
   it("redirects the user to the project revision page on submit", () => {
@@ -111,8 +299,8 @@ describe("The Project Contacts page", () => {
         return null;
       });
 
-    loadPageQuery();
-    renderPage();
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-id")
@@ -125,7 +313,7 @@ describe("The Project Contacts page", () => {
       replace: mockReplace,
     } as any);
 
-    loadPageQuery({
+    pageTestingHelper.loadQuery({
       Query() {
         return {
           projectRevision: null,
@@ -133,7 +321,7 @@ describe("The Project Contacts page", () => {
       },
     });
 
-    const { container } = renderPage();
+    const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
     expect(mockReplace).toHaveBeenCalledWith("/404");
