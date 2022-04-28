@@ -11,10 +11,11 @@ as $$
     select
       /**
         Given form_data_record_id can be null for some form_change records, it is not a reliable id value for the returned project_contact record.
-        The returned id must not be null, but we also don't want it to point to an actual project_contact record to avoid confusion for both relay and developers.
-        The solution is to add 100 to the max id value for the project_contact table and use that as a stand-in id for the returned project record.
+        The returned id must not be null, so we use the form_change id being passed in as a parameter (multiplied by -1 to ensure we are not touching any existing records).
+        This means the id value is not going to be the correct id for the returned project_contact record, which should be ok since we're only interested
+        in the data in new_form_data.
       **/
-      (select max(id) + 100 from cif.project_contact) as id,
+      ($1.id * -1) as id,
       (new_form_data->>'projectId')::integer as project_id,
       (new_form_data->>'contactId')::integer as contact_id,
       (new_form_data->>'contactIndex')::integer as contact_index,
