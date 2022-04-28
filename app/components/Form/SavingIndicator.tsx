@@ -20,7 +20,6 @@ const SavingIndicator: React.FC<Props> = ({ isSaved }) => {
             display: inline-flex;
             justify-content: flex-end;
             align-items: baseline;
-            border-radius: 4px;
             padding: 0.5rem;
           }
 
