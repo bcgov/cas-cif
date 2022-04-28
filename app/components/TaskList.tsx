@@ -157,7 +157,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                   <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
                 )}
               </Link>
-              <div className="status">{projectOverviewStatus}</div>
+              {mode != "view" && (
+                <div className="status">{projectOverviewStatus}</div>
+              )}
             </li>
           </ul>
         </li>
@@ -175,7 +177,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                   <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
                 )}
               </Link>
-              <div className="status">{projectManagerStatus}</div>
+              {mode != "view" && (
+                <div className="status">{projectManagerStatus}</div>
+              )}
             </li>
             <li
               aria-current={currentStep === "contacts" ? "step" : false}
@@ -188,7 +192,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                   <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
                 )}
               </Link>
-              <div className="status">{projectContactStatus}</div>
+              {mode != "view" && (
+                <div className="status">{projectContactStatus}</div>
+              )}
             </li>
           </ul>
         </li>
