@@ -94,7 +94,6 @@ const ProjectForm: React.FC<Props> = (props) => {
         projectFormChange {
           id
           newFormData
-          updatedAt
           isUniqueValue(columnName: "proposalReference")
           formChangeByPreviousFormChangeId {
             changeStatus
@@ -214,11 +213,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     return initialSchema as JSONSchema7;
   }, [query]);
 
-  const lastEditedDate = useMemo(
-    () => new Date(revision.projectFormChange.updatedAt),
-    [revision.projectFormChange.updatedAt]
-  );
-
   const handleSubmit = async (e: ISubmitEvent<any>) => {
     await handleChange(e.formData, "staged");
     props.onSubmit();
@@ -252,10 +246,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         >
           Undo Changes
         </Button>
-        <SavingIndicator
-          isSaved={!updatingProjectFormChange}
-          lastEdited={lastEditedDate}
-        />
+        <SavingIndicator isSaved={!updatingProjectFormChange} />
       </header>
 
       <FormBase

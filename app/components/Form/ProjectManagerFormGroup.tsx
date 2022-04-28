@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormGroup_query$key } from "__generated__/ProjectManagerFormGroup_query.graphql";
 import { ProjectManagerFormGroup_revision$key } from "__generated__/ProjectManagerFormGroup_revision.graphql";
@@ -39,7 +39,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
               formChange {
                 id
                 changeStatus
-                updatedAt
                 newFormData
                 formChangeByPreviousFormChangeId {
                   changeStatus
@@ -184,14 +183,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
     }
   };
 
-  const lastEditedDate = useMemo(() => {
-    const mostRecentUpdate = edges
-      .filter((e) => e.node.formChange)
-      .map((e) => e.node.formChange.updatedAt)
-      .sort((a, b) => Date.parse(b) - Date.parse(a))[0];
-    return new Date(mostRecentUpdate);
-  }, [edges]);
-
   const handleUndo = async () => {
     let undoneFormData;
     const completedPromises: Promise<void>[] = [];
@@ -256,10 +247,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         >
           Undo Changes
         </Button>
-        <SavingIndicator
-          isSaved={!isUpdating && !isAdding && !isDeleting}
-          lastEdited={lastEditedDate}
-        />
+        <SavingIndicator isSaved={!isUpdating && !isAdding && !isDeleting} />
       </header>
       <FormBorder>
         {edges.map(({ node }) => (
