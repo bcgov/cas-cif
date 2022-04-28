@@ -8,7 +8,6 @@ const mutation = graphql`
       projectRevision {
         id
         changeReason
-        updatedAt
       }
     }
   }

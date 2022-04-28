@@ -74,7 +74,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
-              updatedAt
               formChangeByPreviousFormChangeId {
                 changeStatus
                 newFormData
@@ -103,13 +102,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
-  const lastEditedDate = useMemo(() => {
-    const mostRecentUpdate = projectContactFormChanges.edges
-      .map((e) => e.node.updatedAt)
-      .sort((a, b) => Date.parse(b) - Date.parse(a))[0];
-    return new Date(mostRecentUpdate);
-  }, [projectContactFormChanges]);
 
   const contactSchema = useMemo(() => {
     return createProjectContactSchema(allContacts);
@@ -297,10 +289,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         >
           Undo Changes
         </Button>
-        <SavingIndicator
-          isSaved={!isUpdating && !isAdding}
-          lastEdited={lastEditedDate}
-        />
+        <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
       <Grid cols={10} align="center">

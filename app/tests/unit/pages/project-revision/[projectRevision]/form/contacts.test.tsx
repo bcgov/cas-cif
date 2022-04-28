@@ -91,7 +91,6 @@ describe("The Project Contacts page", () => {
                   },
                   operation: "CREATE",
                   changeStatus: "pending",
-                  updatedAt: "2022-04-20T15:42:40.276907-07:00",
                   formChangeByPreviousFormChangeId: null,
                 },
               },
@@ -162,7 +161,6 @@ describe("The Project Contacts page", () => {
                   },
                   operation: "UPDATE",
                   changeStatus: "pending",
-                  updatedAt: "2022-04-21T09:04:06.586122-07:00",
                   formChangeByPreviousFormChangeId: {
                     changeStatus: "committed",
                     newFormData: {
@@ -183,7 +181,6 @@ describe("The Project Contacts page", () => {
                   },
                   operation: "UPDATE",
                   changeStatus: "pending",
-                  updatedAt: "2022-04-21T09:04:08.225455-07:00",
                   formChangeByPreviousFormChangeId: {
                     changeStatus: "committed",
                     newFormData: {

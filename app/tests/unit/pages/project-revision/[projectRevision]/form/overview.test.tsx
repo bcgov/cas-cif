@@ -173,7 +173,6 @@ describe("The Project Overview page", () => {
               fundingStreamRfpId: 5,
               totalFundingRequest: 25,
             },
-            updatedAt: "2022-04-19T14:32:02.451603-07:00",
             isUniqueValue: true,
             formChangeByPreviousFormChangeId: {
               changeStatus: "committed",

@@ -11,7 +11,6 @@ import { Button, Textarea } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-import { useMemo } from "react";
 import SavingIndicator from "components/Form/SavingIndicator";
 
 import { getProjectsPageRoute } from "pageRoutes";
@@ -28,7 +27,6 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         changeReason
-        updatedAt
         projectId
         ...ProjectFormSummary_projectRevision
         ...ProjectContactFormSummary_projectRevision
@@ -58,11 +56,6 @@ export function ProjectRevision({
     );
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
-
-  const lastEditedDate = useMemo(
-    () => new Date(query.projectRevision?.updatedAt),
-    [query.projectRevision?.updatedAt]
-  );
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
@@ -106,7 +99,6 @@ export function ProjectRevision({
             projectRevision: {
               id: query.projectRevision.id,
               changeReason: e.target.value,
-              updatedAt: query.projectRevision.updatedAt,
             },
           },
         },
@@ -157,10 +149,7 @@ export function ProjectRevision({
         {query.projectRevision.projectId && (
           <div>
             <h4>Please describe the reason for these changes</h4>
-            <SavingIndicator
-              isSaved={!updatingChangeReason}
-              lastEdited={lastEditedDate}
-            />
+            <SavingIndicator isSaved={!updatingChangeReason} />
             <Textarea
               value={query.projectRevision.changeReason}
               onChange={handleChange}

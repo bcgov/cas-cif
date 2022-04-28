@@ -2,7 +2,6 @@ import { RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
-import { useMemo } from "react";
 import { useRouter } from "next/router";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import SavingIndicator from "components/Form/SavingIndicator";
@@ -24,7 +23,6 @@ const pageQuery = graphql`
       id
       newFormData
       formDataRecordId
-      updatedAt
     }
   }
 `;
@@ -57,11 +55,6 @@ const relayFormPageFactory = (
     const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
     const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
     const router = useRouter();
-
-    const lastEditedDate = useMemo(
-      () => new Date(formChange?.updatedAt),
-      [formChange?.updatedAt]
-    );
 
     const isRedirecting = useRedirectTo404IfFalsy(formChange);
     if (isRedirecting) return null;
@@ -134,10 +127,7 @@ const relayFormPageFactory = (
           <h2>
             {isEditing ? "Edit" : "New"} {resourceTitle}
           </h2>
-          <SavingIndicator
-            isSaved={!isUpdatingFormChange}
-            lastEdited={lastEditedDate}
-          />
+          <SavingIndicator isSaved={!isUpdatingFormChange} />
         </header>
         <FormComponent
           formData={formChange.newFormData}
