@@ -5,11 +5,13 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectContactFormSummary_projectRevision$key } from "__generated__/ProjectContactFormSummary_projectRevision.graphql";
-import { ProjectContactFormSummary_query$key } from "__generated__/ProjectContactFormSummary_query.graphql";
 import FormBase from "./FormBase";
+import CUSTOM_FIELDS from "lib/theme/CustomFields";
+import { utils } from "@rjsf/core";
+
+const { fields } = utils.getDefaultRegistry();
 
 interface Props {
-  query: ProjectContactFormSummary_query$key;
   projectRevision: ProjectContactFormSummary_projectRevision$key;
 }
 
@@ -22,7 +24,22 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         ) {
           edges {
             node {
+              isPristine
               newFormData
+              operation
+              asProjectContact {
+                contactByContactId {
+                  fullName
+                }
+              }
+              formChangeByPreviousFormChangeId {
+                newFormData
+                asProjectContact {
+                  contactByContactId {
+                    fullName
+                  }
+                }
+              }
             }
           }
         }
@@ -31,83 +48,87 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const { allContacts } = useFragment(
-    graphql`
-      fragment ProjectContactFormSummary_query on Query {
-        allContacts {
-          edges {
-            node {
-              rowId
-              id
-              fullName
-            }
-          }
-        }
-      }
-    `,
-    props.query
+  const allFormChangesPristine = useMemo(
+    () =>
+      projectContactFormChanges.edges.some(
+        ({ node }) => node.isPristine === false
+      ),
+    [projectContactFormChanges.edges]
   );
 
-  const primaryContact = useMemo(() => {
-    const primaryContactNode = projectContactFormChanges.edges.find(
-      ({ node }) => node.newFormData.contactIndex === 1
-    );
-    if (!primaryContactNode) return null;
-    return allContacts.edges.find(
-      ({ node }) => node.rowId === primaryContactNode.node.newFormData.contactId
-    );
-  }, [allContacts, projectContactFormChanges.edges]);
+  const primaryContact = useMemo(
+    () =>
+      projectContactFormChanges.edges.find(
+        ({ node }) => node.newFormData.contactIndex === 1
+      ),
+    [projectContactFormChanges.edges]
+  );
 
-  const secondaryContacts = useMemo(() => {
-    const secondaryContactNodes = projectContactFormChanges.edges.filter(
-      ({ node }) => node.newFormData.contactIndex !== 1
-    );
-
-    return secondaryContactNodes;
-  }, [projectContactFormChanges.edges]);
-
-  // need to check for the existence of contactId because users can add blank contacts
-  const areContactsEmpty = useMemo(() => {
-    return !projectContactFormChanges.edges.some(
-      ({ node }) => node.newFormData.contactId
-    );
-  }, [projectContactFormChanges.edges]);
+  const secondaryContacts = useMemo(
+    () =>
+      projectContactFormChanges.edges.filter(
+        ({ node }) => node.newFormData.contactIndex !== 1
+      ),
+    [projectContactFormChanges.edges]
+  );
 
   const areSecondaryContactsEmpty = useMemo(() => {
     return !secondaryContacts.some(({ node }) => node.newFormData.contactId);
   }, [secondaryContacts]);
 
+  // Filter out fields that have not changed from the previous revision
+  // const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
+  // const filteredFormData = useMemo(() => {
+  //   const newDataObject = {};
+  //   for (const [key, value] of Object.entries(projectFormChange.newFormData)) {
+  //     if (
+  //       value ===
+  //       projectFormChange.formChangeByPreviousFormChangeId?.newFormData?.[key]
+  //     )
+  //       delete filteredSchema.properties[key];
+  //     else newDataObject[key] = value;
+  //   }
+  //   return newDataObject;
+  // }, [
+  //   filteredSchema.properties,
+  //   projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
+  //   projectFormChange.newFormData,
+  // ]);
+
+  // Set custom rjsf fields to display diffs
+  const customFields = useMemo(() => ({ ...fields, ...CUSTOM_FIELDS }), []);
+
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
-      const nodeContact = allContacts.edges.find(
-        (contact) => contact.node.rowId === node.newFormData.contactId
-      );
       return (
         <FormBase
           key={node.newFormData.contactIndex}
           tagName={"dl"}
+          fields={customFields}
           theme={readOnlyTheme}
           schema={projectContactSchema as JSONSchema7}
           uiSchema={createProjectContactUiSchema(
-            nodeContact ? nodeContact.node.fullName : " "
+            node.asProjectContact.contactByContactId.fullName
           )}
           formData={node.newFormData}
           formContext={{
-            query: props.query,
-            form: node.newFormData,
+            operation: node.operation,
+            oldData: node.formChangeByPreviousFormChangeId?.newFormData,
           }}
         />
       );
     });
-  }, [allContacts.edges, props.query, , secondaryContacts]);
+  }, [secondaryContacts, customFields]);
+
+  console.log(allFormChangesPristine);
 
   return (
     <>
       <h3>Project Contacts</h3>
 
-      {areContactsEmpty ? (
+      {allFormChangesPristine ? (
         <p>
-          <em>Project contacts not added</em>
+          <em>Project contacts not updated</em>
         </p>
       ) : (
         <>
@@ -118,17 +139,19 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             </dd>
           ) : (
             <FormBase
-              key={primaryContact?.node.id}
               tagName={"dl"}
               theme={readOnlyTheme}
+              fields={customFields}
               schema={projectContactSchema as JSONSchema7}
               uiSchema={createProjectContactUiSchema(
-                primaryContact ? primaryContact.node.fullName : ""
+                primaryContact.node.asProjectContact.contactByContactId.fullName
               )}
               formData={primaryContact.node}
               formContext={{
-                query: props.query,
-                form: primaryContact.node,
+                operation: primaryContact.node.operation,
+                oldData:
+                  primaryContact.node.formChangeByPreviousFormChangeId
+                    ?.newFormData,
               }}
             />
           )}

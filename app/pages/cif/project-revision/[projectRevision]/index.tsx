@@ -33,8 +33,6 @@ const pageQuery = graphql`
         ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
       }
-
-      ...ProjectContactFormSummary_query
       ...ProjectManagerFormSummary_query
     }
   }
@@ -137,10 +135,7 @@ export function ProjectRevision({
           query={query}
           projectRevision={query.projectRevision}
         />
-        <ProjectContactFormSummary
-          query={query}
-          projectRevision={query.projectRevision}
-        />
+        <ProjectContactFormSummary projectRevision={query.projectRevision} />
 
         {query.projectRevision.projectId && (
           <div>

@@ -4,7 +4,6 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFormSummary_projectRevision$key } from "__generated__/ProjectFormSummary_projectRevision.graphql";
-import { ProjectFormSummary_query$key } from "__generated__/ProjectFormSummary_query.graphql";
 import FormBase from "./FormBase";
 import { createProjectUiSchema } from "./ProjectForm";
 import CUSTOM_FIELDS from "lib/theme/CustomFields";
@@ -13,7 +12,6 @@ import { utils } from "@rjsf/core";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props {
-  query: ProjectFormSummary_query$key;
   projectRevision: ProjectFormSummary_projectRevision$key;
 }
 

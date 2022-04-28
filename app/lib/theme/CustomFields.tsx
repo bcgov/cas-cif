@@ -10,6 +10,10 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
     const { idSchema, formData, formContext } = props;
     const id = idSchema?.$id;
     const hasPreviousValue = formContext?.oldData?.[props.name];
+    if (props.name === "contactId") {
+      console.log(formContext);
+      console.log(props);
+    }
     return (
       <>
         {hasPreviousValue && (
@@ -73,6 +77,8 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const hasPreviousValue = formContext?.oldData?.[props.name];
+    console.log(formContext);
+    console.log(props);
     if (uiSchema["ui:options"]) {
       return (
         <>
