@@ -26,15 +26,8 @@ const pageQuery = graphql`
         changeStatus
         projectId
         projectByProjectId {
-          projectRevisionsByProjectId(
-            first: 1
-            filter: { changeStatus: { equalTo: "pending" } }
-            orderBy: UPDATED_AT_DESC
-          ) {
-            nodes {
-              id
-              changeStatus
-            }
+          pendingProjectRevision {
+            id
           }
         }
         ...ProjectContactForm_projectRevision
@@ -80,16 +73,14 @@ export function ProjectContactsPage({
   const handleResumeRevision = () => {
     router.push(
       getProjectRevisionContactsFormPageRoute(
-        query.projectRevision.projectByProjectId.projectRevisionsByProjectId
-          .nodes[0].id
+        query.projectRevision.projectByProjectId.pendingProjectRevision.id
       )
     );
   };
 
   const createEditButton = () => {
     const existingRevision =
-      query.projectRevision.projectByProjectId.projectRevisionsByProjectId
-        .nodes[0];
+      query.projectRevision.projectByProjectId.pendingProjectRevision;
     return (
       <>
         <Button
