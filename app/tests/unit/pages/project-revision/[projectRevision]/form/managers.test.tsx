@@ -83,7 +83,6 @@ describe("The Project Managers form page", () => {
                     id: "formChange-1",
 
                     changeStatus: "pending",
-                    updatedAt: "2022-04-22T09:20:34.805189-07:00",
                     newFormData: {
                       cifUserId: 1,
                       projectId: 2,
@@ -199,7 +198,6 @@ describe("The Project Managers form page", () => {
                     id: "formChange-1",
                     operation: "UPDATE",
                     changeStatus: "pending",
-                    updatedAt: "2022-04-22T09:20:34.805189-07:00",
                     newFormData: {
                       cifUserId: 1,
                       projectId: 2,

@@ -27,7 +27,6 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         changeReason
-        updatedAt
         projectId
         ...ProjectFormSummary_projectRevision
         ...ProjectContactFormSummary_projectRevision
@@ -100,7 +99,6 @@ export function ProjectRevision({
             projectRevision: {
               id: query.projectRevision.id,
               changeReason: e.target.value,
-              updatedAt: query.projectRevision.updatedAt,
             },
           },
         },

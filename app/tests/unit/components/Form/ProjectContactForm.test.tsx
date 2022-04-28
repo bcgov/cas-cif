@@ -34,7 +34,6 @@ const mockQueryPayload = {
               id: "Form ID 1",
               operation: "CREATE",
               changeStatus: "pending",
-              updatedAt: "2020-01-01T00:00:00.000Z",
               newFormData: {
                 projectId: 10,
                 contactId: 2,
@@ -47,7 +46,6 @@ const mockQueryPayload = {
               id: "Form ID 2",
               operation: "CREATE",
               changeStatus: "pending",
-              updatedAt: "2020-01-01T00:00:00.000Z",
               newFormData: {
                 projectId: 10,
                 contactId: 3,
@@ -60,7 +58,6 @@ const mockQueryPayload = {
               id: "Form ID 3",
               operation: "CREATE",
               changeStatus: "pending",
-              updatedAt: "2020-01-01T00:00:00.000Z",
               newFormData: {
                 projectId: 10,
                 contactId: 1,
@@ -292,7 +289,6 @@ describe("The ProjectContactForm", () => {
                   id: "Form ID 1",
                   operation: "CREATE",
                   changeStatus: "staged",
-                  updatedAt: "2020-01-01T00:00:00.000Z",
                   newFormData: {
                     projectId: 10,
                     contactId: 2,
@@ -305,7 +301,6 @@ describe("The ProjectContactForm", () => {
                   id: "Form ID 2",
                   operation: "CREATE",
                   changeStatus: "staged",
-                  updatedAt: "2020-01-01T00:00:00.000Z",
                   newFormData: {
                     projectId: 10,
                     contactId: 3,
@@ -318,7 +313,6 @@ describe("The ProjectContactForm", () => {
                   id: "Form ID 3",
                   operation: "CREATE",
                   changeStatus: "staged",
-                  updatedAt: "2020-01-01T00:00:00.000Z",
                   newFormData: {
                     projectId: 10,
                     contactId: 1,

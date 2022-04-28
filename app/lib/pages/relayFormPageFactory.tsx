@@ -23,7 +23,6 @@ const pageQuery = graphql`
       id
       newFormData
       formDataRecordId
-      updatedAt
     }
   }
 `;
