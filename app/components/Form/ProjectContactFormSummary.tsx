@@ -47,16 +47,20 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     `,
     props.query
   );
+  const primaryContactNode = useMemo(
+    () =>
+      projectContactFormChanges.edges.find(
+        ({ node }) => node.newFormData.contactIndex === 1
+      ),
+    [projectContactFormChanges.edges]
+  );
 
   const primaryContact = useMemo(() => {
-    const primaryContactNode = projectContactFormChanges.edges.find(
-      ({ node }) => node.newFormData.contactIndex === 1
-    );
     if (!primaryContactNode) return null;
     return allContacts.edges.find(
       ({ node }) => node.rowId === primaryContactNode.node.newFormData.contactId
     );
-  }, [allContacts, projectContactFormChanges.edges]);
+  }, [allContacts, primaryContactNode]);
 
   const secondaryContacts = useMemo(() => {
     const secondaryContactNodes = projectContactFormChanges.edges.filter(
@@ -65,18 +69,6 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
 
     return secondaryContactNodes;
   }, [projectContactFormChanges.edges]);
-
-  // need to check for the existence of contactId because users can add blank contacts
-  const areContactsEmpty = useMemo(() => {
-    return !projectContactFormChanges.edges.some(
-      ({ node }) => node.newFormData.contactId
-    );
-  }, [projectContactFormChanges.edges]);
-
-  const areSecondaryContactsEmpty = useMemo(() => {
-    return !secondaryContacts.some(({ node }) => node.newFormData.contactId);
-  }, [secondaryContacts]);
-
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
       const nodeContact = allContacts.edges.find(
@@ -84,12 +76,17 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
       );
       return (
         <FormBase
+          liveValidate
           key={node.newFormData.contactIndex}
           tagName={"dl"}
           theme={readOnlyTheme}
           schema={projectContactSchema as JSONSchema7}
           uiSchema={createProjectContactUiSchema(
-            nodeContact ? nodeContact.node.fullName : " "
+            nodeContact ? (
+              nodeContact.node.fullName
+            ) : (
+              <em>No Contact Selected</em>
+            )
           )}
           formData={node.newFormData}
           formContext={{
@@ -104,44 +101,36 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   return (
     <>
       <h3>Project Contacts</h3>
-
-      {areContactsEmpty ? (
-        <p>
-          <em>Project contacts not added</em>
-        </p>
-      ) : (
-        <>
-          <label>Primary Contact</label>
-          {!primaryContact ? (
-            <dd>
-              <em>Not added</em>
-            </dd>
-          ) : (
-            <FormBase
-              key={primaryContact?.node.id}
-              tagName={"dl"}
-              theme={readOnlyTheme}
-              schema={projectContactSchema as JSONSchema7}
-              uiSchema={createProjectContactUiSchema(
-                primaryContact ? primaryContact.node.fullName : ""
-              )}
-              formData={primaryContact.node}
-              formContext={{
-                query: props.query,
-                form: primaryContact.node,
-              }}
-            />
+      <>
+        <label>Primary Contact</label>
+        <FormBase
+          liveValidate
+          key={primaryContact?.node.id}
+          tagName={"dl"}
+          theme={readOnlyTheme}
+          schema={projectContactSchema as JSONSchema7}
+          uiSchema={createProjectContactUiSchema(
+            primaryContact ? (
+              primaryContact?.node.fullName
+            ) : (
+              <em>No Contact Selected</em>
+            )
           )}
-          {<label>Secondary Contacts</label>}
-          {areSecondaryContactsEmpty ? (
-            <dd>
-              <em>Not added</em>
-            </dd>
-          ) : (
-            contactsJSX
-          )}
-        </>
-      )}
+          formData={primaryContactNode.node.newFormData}
+          formContext={{
+            query: props.query,
+            form: primaryContact?.node,
+          }}
+        />
+        {<label>Secondary Contacts</label>}
+        {secondaryContacts.length === 0 ? (
+          <dd>
+            <em>Not added</em>
+          </dd>
+        ) : (
+          contactsJSX
+        )}
+      </>
     </>
   );
 };

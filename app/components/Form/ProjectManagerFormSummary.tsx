@@ -66,6 +66,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
       return (
         <FormBase
+          liveValidate
           key={node.formChange.newFormData.projectManagerLabelId}
           tagName={"dl"}
           theme={readOnlyTheme}

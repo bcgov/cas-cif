@@ -96,6 +96,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
       ) : (
         <FormBase
           tagName={"dl"}
+          liveValidate
           theme={readOnlyTheme}
           schema={projectSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
