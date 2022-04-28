@@ -40,7 +40,7 @@ select is(
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=2
-    ) select id from cif.form_change_as_project((select * from record))
+    ) select id from cif.form_change_as_project_contact((select * from record))
   ),
   null,
   'Returns null when passed a form_change record with a form_data_table_name that is not project_contact'
