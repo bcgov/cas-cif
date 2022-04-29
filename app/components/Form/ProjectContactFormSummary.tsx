@@ -124,7 +124,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           {primaryContact?.node?.isPristine ||
           !primaryContact.node.newFormData.contactId ? (
             <dd>
-              <em>Primary Contact not updated</em>
+              <em>Primary contact not updated</em>
             </dd>
           ) : (
             <FormBase
@@ -153,7 +153,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           {secondaryContactFormChangesPristine ||
           secondaryContacts.length < 1 ? (
             <dd>
-              <em>Secondary Contacts not updated</em>
+              <em>Secondary contacts not updated</em>
             </dd>
           ) : (
             contactsJSX

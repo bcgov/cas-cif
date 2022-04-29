@@ -5,11 +5,13 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormSummary_projectRevision$key } from "__generated__/ProjectManagerFormSummary_projectRevision.graphql";
-import { ProjectManagerFormSummary_query$key } from "__generated__/ProjectManagerFormSummary_query.graphql";
 import FormBase from "./FormBase";
+import CUSTOM_FIELDS from "lib/theme/CustomFields";
+import { utils } from "@rjsf/core";
+
+const { fields } = utils.getDefaultRegistry();
 
 interface Props {
-  query: ProjectManagerFormSummary_query$key;
   projectRevision: ProjectManagerFormSummary_projectRevision$key;
 }
 
@@ -22,6 +24,20 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
             node {
               formChange {
                 newFormData
+                isPristine
+                asProjectManager {
+                  cifUserByCifUserId {
+                    fullName
+                  }
+                }
+                formChangeByPreviousFormChangeId {
+                  newFormData
+                  asProjectManager {
+                    cifUserByCifUserId {
+                      fullName
+                    }
+                  }
+                }
               }
               projectManagerLabel {
                 label
@@ -34,62 +50,62 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const { allCifUsers } = useFragment(
-    graphql`
-      fragment ProjectManagerFormSummary_query on Query {
-        allCifUsers {
-          edges {
-            node {
-              rowId
-              fullName
-            }
-          }
-        }
-      }
-    `,
-    props.query
+  console.log(projectManagerFormChangesByLabel);
+
+  const allFormChangesPristine = useMemo(
+    () =>
+      !projectManagerFormChangesByLabel.edges.some(
+        ({ node }) =>
+          node.formChange?.isPristine === false ||
+          node.formChange?.isPristine === null
+      ),
+    [projectManagerFormChangesByLabel.edges]
   );
 
-  const areManagersEmpty = useMemo(() => {
-    return !projectManagerFormChangesByLabel.edges.some(
-      ({ node }) => node?.formChange?.newFormData.cifUserId
-    );
-  }, [projectManagerFormChangesByLabel.edges]);
-
   const managersJSX = useMemo(() => {
-    return projectManagerFormChangesByLabel.edges.map(({ node }) => {
-      if (!node?.formChange) return;
-      const nodeManager = allCifUsers.edges.find(
-        (manager) =>
-          manager.node.rowId === node.formChange?.newFormData.cifUserId
-      );
+    return projectManagerFormChangesByLabel.edges
+      .filter(
+        ({ node }) =>
+          node.formChange?.isPristine === false ||
+          node.formChange?.isPristine === null
+      )
+      .map(({ node }) => {
+        if (!node?.formChange) return;
 
-      return (
-        <FormBase
-          key={node.formChange.newFormData.projectManagerLabelId}
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          schema={projectManagerSchema as JSONSchema7}
-          uiSchema={createProjectManagerUiSchema(
-            nodeManager ? nodeManager.node.fullName : "",
-            node.projectManagerLabel.label
-          )}
-          formData={node.formChange.newFormData}
-          formContext={{
-            query: props.query,
-            form: node.formChange.newFormData,
-          }}
-        />
-      );
-    });
-  }, [allCifUsers.edges, props.query, projectManagerFormChangesByLabel]);
+        // Set custom rjsf fields to display diffs
+        const customFields = { ...fields, ...CUSTOM_FIELDS };
+
+        return (
+          <FormBase
+            key={node.formChange.newFormData.projectManagerLabelId}
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            fields={customFields}
+            schema={projectManagerSchema as JSONSchema7}
+            uiSchema={createProjectManagerUiSchema(
+              node.formChange?.asProjectManager?.cifUserByCifUserId?.fullName,
+              node.projectManagerLabel.label
+            )}
+            formData={node.formChange.newFormData}
+            formContext={{
+              oldData:
+                node.formChange?.formChangeByPreviousFormChangeId?.newFormData,
+              oldUiSchema: createProjectManagerUiSchema(
+                node.formChange?.formChangeByPreviousFormChangeId
+                  ?.asProjectManager?.cifUserByCifUserId?.fullName
+              ),
+            }}
+          />
+        );
+      });
+  }, [projectManagerFormChangesByLabel]);
 
   return (
     <>
       <h3>Project Managers</h3>
-      {areManagersEmpty ? (
+      {allFormChangesPristine ? (
         <p>
-          <em>Project managers not added</em>
+          <em>Project managers not updated</em>
         </p>
       ) : (
         managersJSX
