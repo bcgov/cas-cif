@@ -15,7 +15,7 @@ do $$
           'proposalReference', lpad(index::text, 3, '0'),
           'summary', 'lorem ipsum dolor sit amet adipiscing eli',
           'projectName', 'Test Project ' || lpad(index::text, 3, '0'),
-          'totalFundingRequest', rpad(index::text, 3, '0')
+          'totalFundingRequest', cast(rpad(index::text, 3, '0') as bigint)
           )
       where project_revision_id=current_revision.id and form_data_table_name='project';
 
