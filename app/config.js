@@ -149,17 +149,10 @@ var config = convict({
     default: false,
     env: "ENABLE_DB_MOCKS_COOKIES_ONLY",
   },
-  storageApiHost: {
-    doc: "Host of storage API.",
-    format: "host",
-    default: "http://localhost:8000",
-    env: "STORAGE_API_HOST",
-  },
-  storageApiKey: {
-    // Not yet used in deployments, so no validation function yet.
-    doc: "Api key allowing access to storage api, needs to match what's in storage api env.",
-    default: "_doNotUseThisApiKeyInProduction_",
-    env: "STORAGE_API_KEY",
+  gcsCredentials: {
+    doc: "Google Cloud Storage credentials.",
+    default: "/credentials/credentials.json",
+    env: "GOOGLE_APPLICATION_CREDENTIALS",
   },
   attachmentsBucket: {
     doc: "Bucket name for attachments.",

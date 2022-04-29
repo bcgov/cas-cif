@@ -80,6 +80,13 @@ spec:
               fieldRef:
                 apiVersion: v1
                 fieldPath: metadata.namespace
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/attachments-credentials/attachments-credentials.json"
+          - name: ATTACHMENTS_BUCKET
+            valueFrom:
+              secretKeyRef:
+                name: gcp-{{ .Release.Namespace }}-cif-documents-service-account-key
+                key: bucket_name
         ports:
         - containerPort: {{ .Values.app.port }}
           protocol: TCP
@@ -108,7 +115,17 @@ spec:
           timeoutSeconds: 5
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        volumeMounts:
+          - mountPath: "/attachments-credentials"
+            name: gcs-documents-credentials
+            readOnly: true
 {{- include "nginx-sidecar.deployment-container.tpl" (index .Values "nginx-sidecar") | indent 6 }}
       volumes:
+        - name: gcs-documents-credentials
+          secret:
+            secretName: gcp-{{ .Release.Namespace }}-cif-documents-service-account-key
+            items:
+            - key: credentials.json
+              path: attachments-credentials.json
 {{- include "nginx-sidecar.deployment-volumes.tpl" (index .Values "nginx-sidecar") | nindent 8 }}
       restartPolicy: Always
