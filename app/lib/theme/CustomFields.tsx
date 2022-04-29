@@ -164,7 +164,10 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
         formContext.operation === "CREATE"
       ) {
         return showStringAdded(id, uiSchema["ui:options"].text as string);
-      } else if (formContext.operation === "ARCHIVE") {
+      } else if (
+        formContext.operation === "ARCHIVE" ||
+        (!formData && previousValue)
+      ) {
         return showStringRemoved(
           id,
           formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text
