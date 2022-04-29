@@ -67,3 +67,4 @@ computed_columns/cif_user_full_name 2022-03-21T20:23:37Z Gurjeet Matharu <gurjee
 computed_columns/form_change_is_pristine 2022-04-18T23:26:43Z Gurjeet Matharu <gurj@Ggurjeet@matharuco.com> # Add is_prestine computed col to form_change
 computed_columns/form_change_as_project [tables/project tables/form_change] 2022-04-26T21:56:35Z Dylan Leard <dylan@button.is> # Computed column returns data from the new_form_data column as if it were a project to allow graph traversal
 computed_columns/form_change_as_project_contact [tables/project tables/contact tables/form_change] 2022-04-27T00:04:24Z Dylan Leard <dylan@button.is> # Computed column returns a project_contact record type for a contact form_change
+computed_columns/form_change_as_project_manager [tables/form_change tables/project_manager] 2022-04-29T21:10:14Z Dylan Leard <dylan@button.is> # Computed column returns a project_manager record type for a project_manager form_change

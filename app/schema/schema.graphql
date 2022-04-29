@@ -21217,6 +21217,11 @@ type FormChange implements Node {
   asProjectContact: ProjectContact
 
   """
+  Computed column returns data from the new_form_data column as if it were a project_manager record to allow graph traversal via the foreign keys.
+  """
+  asProjectManager: ProjectManager
+
+  """
   The change status of this form change, foreign key to cif.change_status.
   """
   changeStatus: String!
