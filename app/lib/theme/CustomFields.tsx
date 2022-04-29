@@ -72,7 +72,9 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
               />
               &nbsp;
               <span>
-                <strong>REMOVED</strong>
+                <strong>
+                  <em>REMOVED</em>
+                </strong>
               </span>
             </>
           )}
@@ -89,7 +91,9 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
               />
               &nbsp;
               <span>
-                <strong>ADDED</strong>
+                <strong>
+                  <em>ADDED</em>
+                </strong>
               </span>
             </>
           )}

@@ -121,7 +121,8 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
       ) : (
         <>
           <label>Primary Contact</label>
-          {primaryContact.node.isPristine ? (
+          {primaryContact?.node?.isPristine ||
+          !primaryContact.node.newFormData.contactId ? (
             <dd>
               <em>Primary Contact not updated</em>
             </dd>
@@ -149,7 +150,8 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             />
           )}
           {<label>Secondary Contacts</label>}
-          {secondaryContactFormChangesPristine ? (
+          {secondaryContactFormChangesPristine ||
+          secondaryContacts.length < 1 ? (
             <dd>
               <em>Secondary Contacts not updated</em>
             </dd>

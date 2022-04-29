@@ -111,10 +111,10 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           fields={customFields}
           schema={filteredSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
-            newDataAsProject.operatorByOperatorId.legalName,
-            newDataAsProject.operatorByOperatorId.bcRegistryId,
-            `${newDataAsProject.fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.description} - ${newDataAsProject.fundingStreamRfpByFundingStreamRfpId.year}`,
-            newDataAsProject.projectStatusByProjectStatusId.name
+            newDataAsProject?.operatorByOperatorId?.legalName,
+            newDataAsProject?.operatorByOperatorId?.bcRegistryId,
+            `${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId?.description} - ${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+            newDataAsProject?.projectStatusByProjectStatusId?.name
           )}
           formData={filteredFormData}
           formContext={{
