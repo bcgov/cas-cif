@@ -105,24 +105,22 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const { query } = useFragment(
+  const query = useFragment(
     graphql`
       fragment ProjectForm_query on Query {
-        query {
-          allOperators {
-            edges {
-              node {
-                rowId
-                legalName
-                tradeName
-                bcRegistryId
-                operatorCode
-              }
+        allOperators {
+          edges {
+            node {
+              rowId
+              legalName
+              tradeName
+              bcRegistryId
+              operatorCode
             }
           }
-          ...SelectRfpWidget_query
-          ...SelectProjectStatusWidget_query
         }
+        ...SelectRfpWidget_query
+        ...SelectProjectStatusWidget_query
       }
     `,
     props.query
@@ -182,6 +180,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               id: revision.projectFormChange.id,
               newFormData: updatedFormData,
               isUniqueValue: revision.projectFormChange.isUniqueValue,
+              projectRevisionByProjectRevisionId: undefined,
             },
           },
         },
