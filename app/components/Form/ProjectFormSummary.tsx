@@ -87,7 +87,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   }, [allProjectStatuses, projectFormChange.newFormData.projectStatusId]);
 
   return (
-    <>
+    <div>
       <h3>Project Overview</h3>
       {isOverviewEmpty ? (
         <p>
@@ -114,7 +114,14 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           }}
         />
       )}
-    </>
+      <style jsx>
+        {`
+          div :global(dd) {
+            margin-bottom: 2px;
+          }
+        `}
+      </style>
+    </div>
   );
 };
 

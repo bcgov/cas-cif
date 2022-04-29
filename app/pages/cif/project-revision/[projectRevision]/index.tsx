@@ -77,7 +77,6 @@ export function ProjectRevision({
       ),
     [query.projectRevision?.formChangesByProjectRevisionId.edges]
   );
-  console.log(hasValidationErrors);
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
 
@@ -211,6 +210,9 @@ export function ProjectRevision({
         :global(textarea) {
           width: 100%;
           min-height: 10rem;
+        }
+        div :global(.pg-textarea) {
+          padding-top: 2px;
         }
       `}</style>
     </DefaultLayout>
