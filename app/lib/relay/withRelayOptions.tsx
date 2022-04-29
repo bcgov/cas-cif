@@ -8,9 +8,19 @@ import { NextRouter } from "next/router";
 import safeJsonParse from "lib/safeJsonParse";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 import LoadingFallback from "components/Layout/LoadingFallback";
+import * as Sentry from "@sentry/react";
+import Error from "components/Error";
 
 const withRelayOptions: WiredOptions<any> = {
   fallback: <LoadingFallback />,
+  ErrorComponent: () => (
+    <Sentry.ErrorBoundary
+      fallback={<Error />}
+      onError={() => {
+        console.log("is this onerror function called");
+      }}
+    />
+  ),
   createClientEnvironment: () => getClientEnvironment()!,
   createServerEnvironment: async (ctx: NextPageContext) => {
     const { createServerEnvironment } = await import("./server");
