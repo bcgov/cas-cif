@@ -6,13 +6,13 @@ import BCGovTypography from "components/BCGovTypography";
 import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
 import { Suspense, useEffect, useState } from "react";
 import * as Sentry from "@sentry/react";
-import ErrorFallback from "./500";
-import { ErrorContext } from "contexts/ErrorContext";
 
+import { ErrorContext } from "contexts/ErrorContext";
 import "normalize.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import LoadingFallback from "components/Layout/LoadingFallback";
+import Custom500 from "./500";
 config.autoAddCss = false;
 
 const clientEnv = getClientEnvironment();
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ErrorContext.Provider value={value}>
-      <Sentry.ErrorBoundary fallback={ErrorFallback}>
+      <Sentry.ErrorBoundary fallback={<Custom500 />}>
         <RelayEnvironmentProvider environment={env}>
           {typeof window !== "undefined" && <SessionExpiryHandler />}
           <BCGovTypography />
