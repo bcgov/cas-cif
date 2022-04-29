@@ -48,14 +48,6 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const allFormChangesPristine = useMemo(
-    () =>
-      projectContactFormChanges.edges.some(
-        ({ node }) => node.isPristine === false
-      ),
-    [projectContactFormChanges.edges]
-  );
-
   const primaryContact = useMemo(
     () =>
       projectContactFormChanges.edges.find(
@@ -67,33 +59,28 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const secondaryContacts = useMemo(
     () =>
       projectContactFormChanges.edges.filter(
-        ({ node }) => node.newFormData.contactIndex !== 1
+        ({ node }) =>
+          node.newFormData.contactIndex !== 1 &&
+          (node.isPristine === false || node.isPristine === null)
       ),
     [projectContactFormChanges.edges]
   );
 
-  const areSecondaryContactsEmpty = useMemo(() => {
-    return !secondaryContacts.some(({ node }) => node.newFormData.contactId);
-  }, [secondaryContacts]);
+  const allFormChangesPristine = useMemo(
+    () =>
+      !projectContactFormChanges.edges.some(
+        ({ node }) => node.isPristine === false || node.isPristine === null
+      ),
+    [projectContactFormChanges.edges]
+  );
 
-  // Filter out fields that have not changed from the previous revision
-  // const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
-  // const filteredFormData = useMemo(() => {
-  //   const newDataObject = {};
-  //   for (const [key, value] of Object.entries(projectFormChange.newFormData)) {
-  //     if (
-  //       value ===
-  //       projectFormChange.formChangeByPreviousFormChangeId?.newFormData?.[key]
-  //     )
-  //       delete filteredSchema.properties[key];
-  //     else newDataObject[key] = value;
-  //   }
-  //   return newDataObject;
-  // }, [
-  //   filteredSchema.properties,
-  //   projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
-  //   projectFormChange.newFormData,
-  // ]);
+  const secondaryContactFormChangesPristine = useMemo(
+    () =>
+      !projectContactFormChanges.edges.some(
+        ({ node }) => node.isPristine === false || node.isPristine === null
+      ),
+    [projectContactFormChanges.edges]
+  );
 
   // Set custom rjsf fields to display diffs
   const customFields = useMemo(() => ({ ...fields, ...CUSTOM_FIELDS }), []);
@@ -114,6 +101,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           formContext={{
             operation: node.operation,
             oldData: node.formChangeByPreviousFormChangeId?.newFormData,
+            oldUiSchema: createProjectContactUiSchema(
+              node.asProjectContact?.contactByContactId?.fullName
+            ),
           }}
         />
       );
@@ -124,16 +114,16 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     <>
       <h3>Project Contacts</h3>
 
-      {allFormChangesPristine && false ? (
+      {allFormChangesPristine ? (
         <p>
           <em>Project contacts not updated</em>
         </p>
       ) : (
         <>
           <label>Primary Contact</label>
-          {!primaryContact ? (
+          {primaryContact.node.isPristine ? (
             <dd>
-              <em>Not added</em>
+              <em>Primary Contact not updated</em>
             </dd>
           ) : (
             <FormBase
@@ -159,9 +149,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             />
           )}
           {<label>Secondary Contacts</label>}
-          {areSecondaryContactsEmpty ? (
+          {secondaryContactFormChangesPristine ? (
             <dd>
-              <em>Not added</em>
+              <em>Secondary Contacts not updated</em>
             </dd>
           ) : (
             contactsJSX
