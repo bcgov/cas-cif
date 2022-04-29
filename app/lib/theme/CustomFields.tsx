@@ -137,7 +137,10 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
       formContext.operation === "CREATE"
     ) {
       return showStringAdded(id, formData);
-    } else if (formContext.operation === "ARCHIVE") {
+    } else if (
+      formContext.operation === "ARCHIVE" ||
+      (!formData && previousValue)
+    ) {
       return showStringRemoved(id, previousValue);
     } else {
       return <>DISPLAY ERROR</>;
@@ -187,7 +190,10 @@ const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
           formData,
           uiSchema?.["ui:widget"] === "MoneyWidget"
         );
-      } else if (formContext.operation === "ARCHIVE") {
+      } else if (
+        formContext.operation === "ARCHIVE" ||
+        (!formData && previousValue)
+      ) {
         return showNumberRemoved(
           id,
           formContext?.oldData?.[props.name],
