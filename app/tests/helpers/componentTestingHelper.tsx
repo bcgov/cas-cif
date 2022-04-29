@@ -106,6 +106,25 @@ class ComponentTestingHelper<TQuery extends OperationType> {
       </ErrorContext.Provider>
     );
   }
+
+  public expectMutationToBeCalled(mutationName: string, variables?: any) {
+    // eslint-disable-next-line jest/no-standalone-expect
+    expect(this.environment.mock.getAllOperations()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          fragment: expect.objectContaining({
+            node: expect.objectContaining({
+              type: "Mutation",
+              name: mutationName,
+            }),
+          }),
+          request: expect.objectContaining({
+            variables,
+          }),
+        }),
+      ])
+    );
+  }
 }
 
 export default ComponentTestingHelper;
