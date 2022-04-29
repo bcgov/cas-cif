@@ -45,7 +45,7 @@ export function ProjectContactsPage({
 }: RelayProps<{}, contactsFormQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
-  const mode = !query.projectRevision.projectId
+  const mode = !query.projectRevision?.projectId
     ? "create"
     : query.projectRevision.changeStatus === "committed"
     ? "view"

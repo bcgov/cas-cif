@@ -219,10 +219,9 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).click();
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
-    cy.url().should("include", "/cif/project/");
+    cy.url().should("include", "/form/overview");
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
     cy.findByText("Edit").click();
-    cy.url().should("include", "/form/overview");
 
     // Edit the project
     // change the name, delete a manager and contact.
@@ -296,16 +295,18 @@ describe("the new project page", () => {
 
     cy.url().should("include", "/cif/projects");
     cy.findByRole("button", { name: /view/i }).click();
-    cy.url().should("include", "/cif/project/");
-    cy.findByRole("button", { name: /edit/i }).click();
     cy.url().should("include", "/form/overview");
 
     // Check the project was updated
-    cy.findByLabelText(/Project Name/i).should("have.value", "Bar");
-    cy.findByText(/Edit project managers/i).click();
-    cy.findByLabelText(/tech team secondary/i).should("not.have.value");
-    cy.findByText(/Edit project contacts/i).click();
-    cy.get("fieldset").find("input").should("have.length", 1);
+    cy.findByText(/Project Name/i)
+      .next()
+      .should("have.text", "Bar");
+    cy.findByText(/Project managers/i).click();
+    cy.findByText(/tech team secondary/i).should("not.exist");
+    cy.findByText(/Project contacts/i).click();
+    cy.findByText(/Secondary contacts/i)
+      .next()
+      .should("have.text", "Not added");
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
