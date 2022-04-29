@@ -25,6 +25,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
               formChange {
                 newFormData
                 isPristine
+                operation
                 asProjectManager {
                   cifUserByCifUserId {
                     fullName
@@ -49,8 +50,6 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
-  console.log(projectManagerFormChangesByLabel);
 
   const allFormChangesPristine = useMemo(
     () =>
@@ -88,6 +87,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
             )}
             formData={node.formChange.newFormData}
             formContext={{
+              operation: node.formChange.operation,
               oldData:
                 node.formChange?.formChangeByPreviousFormChangeId?.newFormData,
               oldUiSchema: createProjectManagerUiSchema(

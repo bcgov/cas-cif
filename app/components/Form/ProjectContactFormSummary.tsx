@@ -19,9 +19,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const { projectContactFormChanges } = useFragment(
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
-        projectContactFormChanges(
-          filter: { operation: { notEqualTo: ARCHIVE } }
-        ) {
+        projectContactFormChanges {
           edges {
             node {
               isPristine

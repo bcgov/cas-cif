@@ -4,133 +4,199 @@ import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 
+const showStringDiff = (id: string, oldData: string, newData: string) => (
+  <>
+    <span id={id && `${id}-diffOld`} className="diffOld">
+      {oldData}
+    </span>
+    &nbsp;
+    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
+    &nbsp;
+    <span id={id && `${id}-diffNew`} className="diffNew">
+      {newData}
+    </span>
+  </>
+);
+
+const showStringAdded = (id: string, newData: string) => (
+  <>
+    <span id={id && `${id}-diffNew`} className="diffNew">
+      {newData}
+    </span>
+    &nbsp;
+    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
+    &nbsp;
+    <span>
+      <strong>
+        <em>ADDED</em>
+      </strong>
+    </span>
+  </>
+);
+
+const showStringRemoved = (id: string, oldData: string) => (
+  <>
+    <span id={id && `${id}-diffOld`} className="diffOld">
+      {oldData}
+    </span>
+    &nbsp;
+    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
+    &nbsp;
+    <span>
+      <strong>
+        <em>REMOVED</em>
+      </strong>
+    </span>
+  </>
+);
+
+const showNumberDiff = (
+  id: string,
+  oldData: number,
+  newData: number,
+  isMoney: boolean
+) => (
+  <>
+    <span id={id && `${id}-diffOld`} className="diffOld">
+      <NumberFormat
+        thousandSeparator
+        prefix={isMoney ? "$" : ""}
+        id={id}
+        displayType="text"
+        value={oldData}
+      />
+    </span>
+    &nbsp;
+    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
+    &nbsp;
+    <span id={id && `${id}-diffNew`} className="diffNew">
+      <NumberFormat
+        thousandSeparator
+        prefix={isMoney ? "$" : ""}
+        id={id}
+        displayType="text"
+        value={newData}
+      />
+    </span>
+  </>
+);
+
+const showNumberAdded = (id: string, newData: number, isMoney: boolean) => (
+  <>
+    <span id={id && `${id}-diffNew`} className="diffNew">
+      <NumberFormat
+        thousandSeparator
+        prefix={isMoney ? "$" : ""}
+        id={id}
+        displayType="text"
+        value={newData}
+      />
+    </span>
+    &nbsp;
+    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
+    &nbsp;
+    <span>
+      <strong>
+        <em>ADDED</em>
+      </strong>
+    </span>
+  </>
+);
+
+const showNumberRemoved = (id: string, oldData: number, isMoney: boolean) => (
+  <>
+    <span id={id && `${id}-diffOld`} className="diffOld">
+      <NumberFormat
+        thousandSeparator
+        prefix={isMoney ? "$" : ""}
+        id={id}
+        displayType="text"
+        value={oldData}
+      />
+    </span>
+    &nbsp;
+    <span>
+      <strong>
+        <em>REMOVED</em>
+      </strong>
+    </span>
+  </>
+);
+
 const CUSTOM_FIELDS: Record<string, React.FunctionComponent<FieldProps>> = {
   StringField: (props) => {
     const { idSchema, formData, formContext } = props;
     const id = idSchema?.$id;
-    const hasPreviousValue = formContext?.oldData?.[props.name];
-    if (props.name === "contactId") {
-      console.log(formContext);
-      console.log(props);
+    const previousValue = formContext?.oldData?.[props.name];
+
+    if (previousValue && formData) {
+      return showStringDiff(id, previousValue, formData);
+    } else if (
+      !previousValue &&
+      formData &&
+      formContext.operation === "CREATE"
+    ) {
+      return showStringAdded(id, formData);
+    } else if (formContext.operation === "ARCHIVE") {
+      return showStringRemoved(id, previousValue);
+    } else {
+      return <>DISPLAY ERROR</>;
     }
-    return (
-      <>
-        {hasPreviousValue && (
-          <>
-            <span id={id && `${id}-diffTo`} className="diffTo">
-              {formContext?.oldData?.[props.name] ?? <i>[No Data Entered]</i>}
-            </span>
-            &nbsp;
-            <FontAwesomeIcon
-              size="lg"
-              color="black"
-              icon={faLongArrowAltRight}
-            />
-            &nbsp;
-          </>
-        )}
-        <span id={id && `${id}-diffFrom`} className="diffFrom">
-          {formData}
-        </span>
-      </>
-    );
   },
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
-    const hasPreviousValue = formContext?.oldData?.[props.name];
+    const previousValue = formContext?.oldData?.[props.name];
+
     if (uiSchema["ui:options"]) {
-      return (
-        <>
-          {hasPreviousValue && formData && (
-            <>
-              <span id={id && `${id}-diffTo`} className="diffTo">
-                {formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text}
-              </span>
-              &nbsp;
-              <FontAwesomeIcon
-                size="lg"
-                color="black"
-                icon={faLongArrowAltRight}
-              />
-              &nbsp;
-              <span id={id && `${id}-diffFrom`} className="diffFrom">
-                {uiSchema["ui:options"].text}
-              </span>
-            </>
-          )}
-          {hasPreviousValue && !formData && (
-            <>
-              <span id={id && `${id}-diffTo`} className="diffTo">
-                {formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text}
-              </span>
-              &nbsp;
-              <FontAwesomeIcon
-                size="lg"
-                color="black"
-                icon={faLongArrowAltRight}
-              />
-              &nbsp;
-              <span>
-                <strong>
-                  <em>REMOVED</em>
-                </strong>
-              </span>
-            </>
-          )}
-          {!hasPreviousValue && formData && (
-            <>
-              <span id={id && `${id}-diffFrom`} className="diffFrom">
-                {uiSchema["ui:options"].text}
-              </span>
-              &nbsp;
-              <FontAwesomeIcon
-                size="lg"
-                color="black"
-                icon={faLongArrowAltRight}
-              />
-              &nbsp;
-              <span>
-                <strong>
-                  <em>ADDED</em>
-                </strong>
-              </span>
-            </>
-          )}
-        </>
-      );
+      if (previousValue && formData && formContext.operation === "UPDATE") {
+        return showStringDiff(
+          id,
+          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text,
+          uiSchema["ui:options"].text as string
+        );
+      } else if (
+        !previousValue &&
+        formData &&
+        formContext.operation === "CREATE"
+      ) {
+        return showStringAdded(id, uiSchema["ui:options"].text as string);
+      } else if (formContext.operation === "ARCHIVE") {
+        return showStringRemoved(
+          id,
+          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text
+        );
+      } else {
+        return <>DISPLAY ERROR</>;
+      }
+    } else {
+      if (previousValue && formData && formContext.operation === "UPDATE") {
+        return showNumberDiff(
+          id,
+          formContext?.oldData?.[props.name],
+          formData,
+          uiSchema?.["ui:widget"] === "MoneyWidget"
+        );
+      } else if (
+        !previousValue &&
+        formData &&
+        formContext.operation === "CREATE"
+      ) {
+        return showNumberAdded(
+          id,
+          formData,
+          uiSchema?.["ui:widget"] === "MoneyWidget"
+        );
+      } else if (formContext.operation === "ARCHIVE") {
+        return showNumberRemoved(
+          id,
+          formContext?.oldData?.[props.name],
+          uiSchema?.["ui:widget"] === "MoneyWidget"
+        );
+      } else {
+        return <>DISPLAY ERROR</>;
+      }
     }
-    return (
-      <>
-        {hasPreviousValue && (
-          <>
-            <span id={id && `${id}-diffTo`} className="diffTo">
-              <NumberFormat
-                thousandSeparator
-                id={id}
-                displayType="text"
-                value={formContext?.oldData?.[props.name]}
-              />
-            </span>
-            &nbsp;
-            <FontAwesomeIcon
-              size="lg"
-              color="black"
-              icon={faLongArrowAltRight}
-            />
-            &nbsp;
-          </>
-        )}
-        <span id={id && `${id}-diffFrom`} className="diffFrom">
-          <NumberFormat
-            thousandSeparator
-            id={id}
-            displayType="text"
-            value={formData}
-          />
-        </span>
-      </>
-    );
   },
 };
 
