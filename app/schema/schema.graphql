@@ -21207,6 +21207,16 @@ type DeleteProjectStatusPayload {
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
   """
+  Computed column returns data from the new_form_data column as if it were a project to allow graph traversal via the foreign keys.
+  """
+  asProject: Project
+
+  """
+  Computed column returns data from the new_form_data column as if it were a project_contact record to allow graph traversal via the foreign keys.
+  """
+  asProjectContact: ProjectContact
+
+  """
   The change status of this form change, foreign key to cif.change_status.
   """
   changeStatus: String!
