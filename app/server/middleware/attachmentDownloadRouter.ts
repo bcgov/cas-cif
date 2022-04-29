@@ -13,7 +13,7 @@ const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!)
   }
 }`;
 
-attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
+export const handleDownload = async (req, res) => {
   const attachmentQueryVariables = {
     attachmentId: req.params.attachmentId,
   };
@@ -47,6 +47,8 @@ attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
     .file(file)
     .createReadStream()
     .pipe(res);
-});
+};
+
+attachmentDownloadRouter.get("/download/:attachmentId", handleDownload);
 
 export default attachmentDownloadRouter;
