@@ -32240,6 +32240,12 @@ type Mutation {
     """
     input: DeleteProjectStatusByRowIdInput!
   ): DeleteProjectStatusPayload
+  stageDirtyFormChanges(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: StageDirtyFormChangesInput!
+  ): StageDirtyFormChangesPayload
   undoFormChanges(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -44355,6 +44361,31 @@ enum ReportingRequirementsOrderBy {
   UPDATED_AT_DESC
   UPDATED_BY_ASC
   UPDATED_BY_DESC
+}
+
+"""All input for the `stageDirtyFormChanges` mutation."""
+input StageDirtyFormChangesInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  projectRevisionId: Int!
+}
+
+"""The output of our `stageDirtyFormChanges` mutation."""
+type StageDirtyFormChangesPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChanges: [FormChange]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """
