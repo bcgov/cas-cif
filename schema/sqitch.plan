@@ -72,3 +72,4 @@ tables/report_type 2022-05-02T17:29:36Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca
 types/reporting_requirement_status 2022-04-29T23:27:21Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add enum type for reporting_requirement.status column
 tables/reporting_requirement 2022-04-29T22:15:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.reporting_requirement table
 types/budget_item_category 2022-05-02T18:20:42Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add enum type for budget_item.category column
+tables/budget_item 2022-05-02T18:26:46Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item table
