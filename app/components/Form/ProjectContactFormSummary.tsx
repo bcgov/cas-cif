@@ -50,7 +50,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const primaryContact = useMemo(
     () =>
       projectContactFormChanges.edges.find(
-        ({ node }) => node.newFormData.contactIndex === 1
+        ({ node }) => node.newFormData?.contactIndex === 1
       ),
     [projectContactFormChanges.edges]
   );
@@ -59,7 +59,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     () =>
       projectContactFormChanges.edges.filter(
         ({ node }) =>
-          node.newFormData.contactIndex !== 1 &&
+          node.newFormData?.contactIndex !== 1 &&
           (node.isPristine === false || node.isPristine === null)
       ),
     [projectContactFormChanges.edges]
