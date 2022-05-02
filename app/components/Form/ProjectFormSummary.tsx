@@ -16,9 +16,10 @@ interface Props {
 }
 
 const ProjectFormSummary: React.FC<Props> = (props) => {
-  const { projectFormChange } = useFragment(
+  const { projectFormChange, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
+        isFirstRevision
         projectFormChange {
           newFormData
           operation
@@ -94,19 +95,6 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     projectFormChange.newFormData,
   ]);
 
-  // Filter out fields from the schema that have not been changed when creating a project so the summary ignores these fields
-  useMemo(() => {
-    if (projectFormChange.operation === "CREATE")
-      for (const [key] of Object.entries(filteredSchema.properties)) {
-        if (key in filteredFormData) continue;
-        else delete filteredSchema.properties[key];
-      }
-  }, [
-    filteredFormData,
-    filteredSchema.properties,
-    projectFormChange.operation,
-  ]);
-
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_FIELDS };
 
@@ -123,15 +111,21 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
         <FormBase
           tagName={"dl"}
           theme={readOnlyTheme}
-          fields={customFields}
-          schema={filteredSchema as JSONSchema7}
+          fields={isFirstRevision ? fields : customFields}
+          schema={
+            isFirstRevision
+              ? (projectSchema as JSONSchema7)
+              : (filteredSchema as JSONSchema7)
+          }
           uiSchema={createProjectUiSchema(
             newDataAsProject?.operatorByOperatorId?.legalName,
             newDataAsProject?.operatorByOperatorId?.bcRegistryId,
             `${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId?.description} - ${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
             newDataAsProject?.projectStatusByProjectStatusId?.name
           )}
-          formData={filteredFormData}
+          formData={
+            isFirstRevision ? projectFormChange.newFormData : filteredFormData
+          }
           formContext={{
             oldData:
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,

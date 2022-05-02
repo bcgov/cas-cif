@@ -16,9 +16,10 @@ interface Props {
 }
 
 const ProjectManagerFormSummary: React.FC<Props> = (props) => {
-  const { allProjectManagerFormChangesByLabel } = useFragment(
+  const { allProjectManagerFormChangesByLabel, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
+        isFirstRevision
         allProjectManagerFormChangesByLabel {
           edges {
             node {
@@ -79,7 +80,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
             key={node.formChange.newFormData.projectManagerLabelId}
             tagName={"dl"}
             theme={readOnlyTheme}
-            fields={customFields}
+            fields={isFirstRevision ? fields : customFields}
             schema={projectManagerSchema as JSONSchema7}
             uiSchema={createProjectManagerUiSchema(
               node.formChange?.asProjectManager?.cifUserByCifUserId?.fullName,
@@ -98,7 +99,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
           />
         );
       });
-  }, [allProjectManagerFormChangesByLabel]);
+  }, [isFirstRevision, allProjectManagerFormChangesByLabel]);
 
   return (
     <>

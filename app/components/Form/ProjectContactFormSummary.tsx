@@ -16,9 +16,10 @@ interface Props {
 }
 
 const ProjectContactFormSummary: React.FC<Props> = (props) => {
-  const { projectContactFormChanges } = useFragment(
+  const { projectContactFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
+        isFirstRevision
         projectContactFormChanges {
           edges {
             node {
@@ -91,7 +92,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         <FormBase
           key={node.newFormData.contactIndex}
           tagName={"dl"}
-          fields={customFields}
+          fields={isFirstRevision ? fields : customFields}
           theme={readOnlyTheme}
           schema={projectContactSchema as JSONSchema7}
           uiSchema={createProjectContactUiSchema(
@@ -108,7 +109,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         />
       );
     });
-  }, [secondaryContacts, customFields]);
+  }, [isFirstRevision, secondaryContacts, customFields]);
 
   return (
     <>
@@ -131,7 +132,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             <FormBase
               tagName={"dl"}
               theme={readOnlyTheme}
-              fields={customFields}
+              fields={isFirstRevision ? fields : customFields}
               schema={projectContactSchema as JSONSchema7}
               uiSchema={createProjectContactUiSchema(
                 primaryContact?.node?.asProjectContact?.contactByContactId
