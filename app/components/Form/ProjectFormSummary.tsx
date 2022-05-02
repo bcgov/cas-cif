@@ -75,7 +75,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
       )
     : null;
 
-  // Filter out fields that have not changed from the previous revision
+  // Filter out fields from the formData that have not changed from the previous revision so the summary ignores these fields
   const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
   const filteredFormData = useMemo(() => {
     const newDataObject = {};
@@ -94,13 +94,28 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     projectFormChange.newFormData,
   ]);
 
+  // Filter out fields from the schema that have not been changed when creating a project so the summary ignores these fields
+  useMemo(() => {
+    if (projectFormChange.operation === "CREATE")
+      for (const [key] of Object.entries(filteredSchema.properties)) {
+        if (key in filteredFormData) continue;
+        else delete filteredSchema.properties[key];
+      }
+  }, [
+    filteredFormData,
+    filteredSchema.properties,
+    projectFormChange.operation,
+  ]);
+
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_FIELDS };
 
   return (
     <>
       <h3>Project Overview</h3>
-      {projectFormChange.isPristine ? (
+      {projectFormChange.isPristine ||
+      (projectFormChange.isPristine === null &&
+        projectFormChange.newFormData === {}) ? (
         <p>
           <em>Project overview not updated</em>
         </p>
