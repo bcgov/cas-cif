@@ -86,7 +86,7 @@ select lives_ok(
 
 select throws_like(
   $$
-    delete from cif.operator where id=1
+    delete from cif.report_type where id=1
   $$,
   'permission denied%',
     'cif_internal cannot delete rows from report_type table'
