@@ -35725,6 +35725,11 @@ type Project implements Node {
   """
   id: ID!
 
+  """
+  Returns the latest project revision with a change_status of committed for the given project
+  """
+  latestCommittedProjectRevision: ProjectRevision
+
   """Reads a single `Operator` that is related to this `Project`."""
   operatorByOperatorId: Operator
 
