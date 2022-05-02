@@ -71,3 +71,4 @@ computed_columns/form_change_as_project_manager [tables/form_change tables/proje
 tables/report_type 2022-05-02T17:29:36Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.report_type table
 types/reporting_requirement_status 2022-04-29T23:27:21Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add enum type for reporting_requirement.status column
 tables/reporting_requirement 2022-04-29T22:15:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.reporting_requirement table
+types/budget_item_category 2022-05-02T18:20:42Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add enum type for budget_item.category column
