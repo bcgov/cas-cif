@@ -12,6 +12,7 @@ import {
 } from "pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
 
@@ -27,6 +28,9 @@ const pageQuery = graphql`
         projectId
         projectByProjectId {
           pendingProjectRevision {
+            id
+          }
+          latestCommittedProjectRevision {
             id
           }
         }
@@ -93,8 +97,13 @@ export function ProjectManagersForm({
     );
   };
 
+  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId.latestCommittedProjectRevision.id,
+    query.projectRevision?.changeStatus === "committed"
+  );
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  if (isRedirecting || isRedirectingToLatestRevision) return null;
 
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 

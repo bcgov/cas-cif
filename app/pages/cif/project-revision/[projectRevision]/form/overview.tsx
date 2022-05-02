@@ -13,6 +13,7 @@ import {
 } from "pageRoutes";
 import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
+import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import { Button } from "@button-inc/bcgov-theme";
 
 const pageQuery = graphql`
@@ -27,6 +28,9 @@ const pageQuery = graphql`
         projectId
         projectByProjectId {
           pendingProjectRevision {
+            id
+          }
+          latestCommittedProjectRevision {
             id
           }
         }
@@ -46,11 +50,19 @@ export function ProjectOverviewForm({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
+  const mode =
+    query.projectRevision?.changeStatus === "committed" ? "view" : "update";
+
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId.latestCommittedProjectRevision.id,
+    mode === "view"
+  );
+  if (isRedirecting || isRedirectingToLatestRevision) return null;
 
   const handleCreateRevision = () => {
     createProjectRevision({

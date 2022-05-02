@@ -12,6 +12,7 @@ import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjec
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import ProjectContactFormSummary from "components/Form/ProjectContactFormSummary";
 import { Button } from "@button-inc/bcgov-theme";
 
@@ -27,6 +28,9 @@ const pageQuery = graphql`
         projectId
         projectByProjectId {
           pendingProjectRevision {
+            id
+          }
+          latestCommittedProjectRevision {
             id
           }
         }
@@ -54,8 +58,13 @@ export function ProjectContactsPage({
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
 
+  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId.latestCommittedProjectRevision.id,
+    mode === "view"
+  );
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  if (isRedirecting || isRedirectingToLatestRevision) return null;
 
   const handleCreateRevision = () => {
     createProjectRevision({
