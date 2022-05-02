@@ -30235,6 +30235,29 @@ type ProjectProjectStatusesByAttachmentProjectIdAndProjectStatusIdManyToManyEdge
 
 """Table containing all the changes for a project revision"""
 type ProjectRevision implements Node {
+  """
+  Reads and enables pagination through a set of `ManagerFormChangesByLabelCompositeReturn`.
+  """
+  allProjectManagerFormChangesByLabel(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): ManagerFormChangesByLabelCompositeReturnsConnection!
+
   """Explanation of why the revision was made"""
   changeReason: String
 
@@ -30490,7 +30513,7 @@ type ProjectRevision implements Node {
   projectId: Int
 
   """
-  Computed column returns a composite value for each record in project_manager_label and the last related form_change if it exists
+  Computed column returns a composite value for each record in project_manager_label and the last related form_change (including archived records) if it exists
   """
   projectManagerFormChangesByLabel(
     """Read all values in the set after (below) this cursor."""
