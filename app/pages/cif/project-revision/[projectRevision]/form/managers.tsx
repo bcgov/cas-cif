@@ -98,8 +98,7 @@ export function ProjectManagersForm({
   };
 
   const isRedirectingToLatestRevision = useRedirectToLatestRevision(
-    query.projectRevision?.id,
-    query.projectRevision?.projectByProjectId.latestCommittedProjectRevision.id,
+    query.projectRevision,
     query.projectRevision?.changeStatus === "committed"
   );
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
