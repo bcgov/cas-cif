@@ -16,10 +16,10 @@ interface Props {
 }
 
 const ProjectManagerFormSummary: React.FC<Props> = (props) => {
-  const { projectManagerFormChangesByLabel } = useFragment(
+  const { allProjectManagerFormChangesByLabel } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
-        projectManagerFormChangesByLabel {
+        allProjectManagerFormChangesByLabel {
           edges {
             node {
               formChange {
@@ -53,16 +53,16 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
   const allFormChangesPristine = useMemo(
     () =>
-      !projectManagerFormChangesByLabel.edges.some(
+      !allProjectManagerFormChangesByLabel.edges.some(
         ({ node }) =>
           node.formChange?.isPristine === false ||
           node.formChange?.isPristine === null
       ),
-    [projectManagerFormChangesByLabel.edges]
+    [allProjectManagerFormChangesByLabel.edges]
   );
 
   const managersJSX = useMemo(() => {
-    return projectManagerFormChangesByLabel.edges
+    return allProjectManagerFormChangesByLabel.edges
       .filter(
         ({ node }) =>
           node.formChange?.isPristine === false ||
@@ -87,7 +87,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
             )}
             formData={node.formChange.newFormData}
             formContext={{
-              operation: node.formChange.operation,
+              operation: node.formChange?.operation,
               oldData:
                 node.formChange?.formChangeByPreviousFormChangeId?.newFormData,
               oldUiSchema: createProjectManagerUiSchema(
@@ -98,7 +98,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
           />
         );
       });
-  }, [projectManagerFormChangesByLabel]);
+  }, [allProjectManagerFormChangesByLabel]);
 
   return (
     <>
