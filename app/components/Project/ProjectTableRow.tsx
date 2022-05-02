@@ -17,7 +17,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
     totalFundingRequest,
     operatorByOperatorId: { tradeName },
     projectManagersByProjectId,
-    projectRevisionsByProjectId,
+    latestCommittedProjectRevision,
   } = useFragment(
     graphql`
       fragment ProjectTableRow_project on Project {
@@ -41,14 +41,8 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
             }
           }
         }
-        projectRevisionsByProjectId(
-          first: 1
-          orderBy: UPDATED_AT_DESC
-          filter: { changeStatus: { equalTo: "committed" } }
-        ) {
-          nodes {
-            id
-          }
+        latestCommittedProjectRevision {
+          id
         }
       }
     `,
@@ -59,9 +53,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
 
   const handleViewClick = () => {
     router.push(
-      getProjectRevisionOverviewFormPageRoute(
-        projectRevisionsByProjectId.nodes[0].id
-      )
+      getProjectRevisionOverviewFormPageRoute(latestCommittedProjectRevision.id)
     );
   };
 
