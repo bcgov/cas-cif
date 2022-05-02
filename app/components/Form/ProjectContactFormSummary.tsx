@@ -67,7 +67,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const allFormChangesPristine = useMemo(
     () =>
       !projectContactFormChanges.edges.some(
-        ({ node }) => node.isPristine === false || node.isPristine === null
+        ({ node }) =>
+          node.isPristine === false ||
+          (node.isPristine === null && node.newFormData?.contactId !== null)
       ),
     [projectContactFormChanges.edges]
   );
@@ -93,7 +95,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           theme={readOnlyTheme}
           schema={projectContactSchema as JSONSchema7}
           uiSchema={createProjectContactUiSchema(
-            node.asProjectContact.contactByContactId.fullName
+            node?.asProjectContact?.contactByContactId?.fullName
           )}
           formData={node.newFormData}
           formContext={{
@@ -120,7 +122,8 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         <>
           <label>Primary Contact</label>
           {primaryContact?.node?.isPristine ||
-          !primaryContact.node.newFormData.contactId ? (
+          (primaryContact?.node?.isPristine === null &&
+            !primaryContact.node.newFormData.contactId) ? (
             <dd>
               <em>Primary contact not updated</em>
             </dd>
@@ -134,7 +137,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                 primaryContact?.node?.asProjectContact?.contactByContactId
                   ?.fullName
               )}
-              formData={primaryContact.node.newFormData}
+              formData={
+                primaryContact.node.newFormData.contactId
+                  ? primaryContact.node.newFormData
+                  : null
+              }
               formContext={{
                 operation: primaryContact.node.operation,
                 oldData:
