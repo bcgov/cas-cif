@@ -6,7 +6,8 @@ create table cif.project_revision (
   id integer primary key generated always as identity,
   project_id integer references cif.project(id),
   change_status varchar(1000) default 'pending' references cif.change_status,
-  change_reason varchar(10000)
+  change_reason varchar(10000),
+  is_first_revision boolean default false
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project_revision', add_archive => false);
