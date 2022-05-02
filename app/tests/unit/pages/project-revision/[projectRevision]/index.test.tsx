@@ -72,11 +72,17 @@ describe("The Create Project page", () => {
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
       .mockImplementation(() => [jest.fn(), false]);
-
-    pageTestingHelper.loadQuery();
+    const mockresolver = {
+      ...defaultMockResolver,
+      FormChange() {
+        return {
+          validationErrors: [],
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
     pageTestingHelper.renderPage();
-
-    expect(screen.getByText("Submit")).toHaveProperty("disabled", false);
+    expect(screen.getByText("Submit")).not.toBeDisabled();
     expect(screen.getByText("Discard Changes")).toHaveProperty(
       "disabled",
       false
@@ -96,7 +102,7 @@ describe("The Create Project page", () => {
 
     expect(screen.getByText(/Project overview not added/)).toBeInTheDocument();
     expect(screen.getByText(/Project managers not added/)).toBeInTheDocument();
-    expect(screen.getByText(/Project contacts not added/)).toBeInTheDocument();
+    expect(screen.getByText(/Primary contact not added/)).toBeInTheDocument();
   });
 
   it("Renders the summary with the filled-out details", async () => {
@@ -294,6 +300,11 @@ describe("The Create Project page", () => {
     expect(screen.getByText(/Ludgate, April/i)).toBeInTheDocument();
     expect(screen.getByText(/Loblaw005, Bob005/i)).toBeInTheDocument();
     expect(screen.getByText(/Loblaw002, Bob002/i)).toBeInTheDocument();
+    expect(screen.getByText("Submit")).toBeEnabled();
+    expect(screen.getByText("Discard Changes")).toHaveProperty(
+      "disabled",
+      false
+    );
   });
 
   it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
@@ -339,7 +350,15 @@ describe("The Create Project page", () => {
   });
 
   it("displays an error when the Submit Button is clicked & updateProjectRevisionMutation fails", () => {
-    pageTestingHelper.loadQuery();
+    const mockresolver = {
+      ...defaultMockResolver,
+      FormChange() {
+        return {
+          validationErrors: [],
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
     pageTestingHelper.renderPage();
     userEvent.click(screen.queryByText("Submit"));
     act(() => {
@@ -389,5 +408,43 @@ describe("The Create Project page", () => {
 
     expect(container.childElementCount).toEqual(0);
     expect(spy).toHaveBeenCalledWith(null);
+  });
+
+  it("submit is disabled if primary contact is empty", () => {
+    const mockresolver = {
+      ...defaultMockResolver,
+      projectContactFormChanges() {
+        return {
+          edges: [
+            {
+              node: {
+                newFormData: {
+                  contactId: null,
+                  projectId: 1,
+                  contactIndex: 1,
+                },
+              },
+            },
+          ],
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.renderPage();
+    expect(screen.getByText("Submit")).toBeDisabled();
+  });
+
+  it("submit is disabled if there are any validation errors", () => {
+    const mockresolver = {
+      ...defaultMockResolver,
+      FormChange() {
+        return {
+          validationErrors: ["Validation error here"],
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.renderPage();
+    expect(screen.getByText("Submit")).toBeDisabled();
   });
 });

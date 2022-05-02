@@ -58,7 +58,8 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const primaryContact = useMemo(() => {
     if (!primaryContactNode) return null;
     return allContacts.edges.find(
-      ({ node }) => node.rowId === primaryContactNode.node.newFormData.contactId
+      ({ node }) =>
+        node.rowId === primaryContactNode?.node.newFormData.contactId
     );
   }, [allContacts, primaryContactNode]);
 
@@ -113,10 +114,10 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             primaryContact ? (
               primaryContact?.node.fullName
             ) : (
-              <em>No Contact Selected</em>
+              <em>Primary contact not added</em>
             )
           )}
-          formData={primaryContactNode.node.newFormData}
+          formData={primaryContactNode?.node.newFormData}
           formContext={{
             query: props.query,
             form: primaryContact?.node,
@@ -125,7 +126,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         {<label>Secondary Contacts</label>}
         {secondaryContacts.length === 0 ? (
           <dd>
-            <em>Not added</em>
+            <em>Secondary contact not added</em>
           </dd>
         ) : (
           contactsJSX
