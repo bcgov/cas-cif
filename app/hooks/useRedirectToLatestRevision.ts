@@ -11,7 +11,7 @@ export default function useRedirectToLatestRevision(
   const router = useRouter();
   useEffect(() => {
     if (
-      projectRevision.id !=
+      projectRevision?.id !=
         projectRevision?.projectByProjectId?.latestCommittedProjectRevision
           ?.id &&
       shouldRedirect
@@ -24,7 +24,7 @@ export default function useRedirectToLatestRevision(
       );
   }, [projectRevision, shouldRedirect, router]);
   if (
-    projectRevision.id !=
+    projectRevision?.id !=
       projectRevision?.projectByProjectId?.latestCommittedProjectRevision?.id &&
     shouldRedirect
   ) {
