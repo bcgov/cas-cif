@@ -14,7 +14,7 @@ create table cif.reporting_requirement
   report_type_id integer references cif.report_type not null
 );
 
-select cif_private.upsert_timestamp_columns('cif', 'contact');
+select cif_private.upsert_timestamp_columns('cif', 'reporting_requirement');
 
 do
 $grant$
