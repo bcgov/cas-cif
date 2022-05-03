@@ -95,8 +95,8 @@ select throws_like(
     insert into cif.budget_item (amount, category, description, is_confirmed, is_tentative, reporting_requirement_id)
     values (500, 'wrong_category', 'description_6', true, false, 1);
   $$,
-  'invalid input%',
-    'invalid input value for enum cif.budget_item.category'
+  'insert or update on table "budget_item" violates foreign key constraint%',
+    'cif_admin cannot insert data in beudget_item table with a category that is not one of the possible categories'
 );
 
 select throws_like(

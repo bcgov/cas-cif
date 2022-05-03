@@ -5,7 +5,7 @@ create table cif.budget_item
 (
   id integer primary key generated always as identity,
   amount numeric,
-  category cif.budget_item_category not null,
+  category varchar(100) references cif.budget_item_category not null,
   description varchar(1000),
   is_confirmed boolean not null,
   is_tentative boolean not null,
