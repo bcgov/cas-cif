@@ -300,11 +300,6 @@ describe("The Create Project page", () => {
     expect(screen.getByText(/Ludgate, April/i)).toBeInTheDocument();
     expect(screen.getByText(/Loblaw005, Bob005/i)).toBeInTheDocument();
     expect(screen.getByText(/Loblaw002, Bob002/i)).toBeInTheDocument();
-    expect(screen.getByText("Submit")).toBeEnabled();
-    expect(screen.getByText("Discard Changes")).toHaveProperty(
-      "disabled",
-      false
-    );
   });
 
   it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
@@ -446,5 +441,18 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery(mockresolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).toBeDisabled();
+  });
+  it("submit is enabled if there are no validation errors", () => {
+    const mockresolver = {
+      ...defaultMockResolver,
+      FormChange() {
+        return {
+          validationErrors: [],
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.renderPage();
+    expect(screen.getByText("Submit")).toBeEnabled();
   });
 });
