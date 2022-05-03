@@ -263,8 +263,7 @@ describe("The Create Project page", () => {
     expect(screen.getByText(/\$5.00/i)).toBeInTheDocument();
     expect(screen.getByText(/test-funding-stream - 2020/i)).toBeInTheDocument();
     expect(screen.getByText(/test-project-manager-name/i)).toBeInTheDocument();
-    // This test cannot get contacts. Currently unsure why
-    // screen.debug(screen.getByText(/test-contact-name/i));
+    expect(screen.getByText(/test-contact-name/i)).toBeInTheDocument();
   });
 
   it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
