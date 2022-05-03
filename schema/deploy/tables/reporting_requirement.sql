@@ -11,7 +11,7 @@ create table cif.reporting_requirement
   certified_by varchar(1000),
   certified_by_professional_designation varchar(1000),
   project_id integer references cif.project(id) not null,
-  report_type_id integer references cif.report_type not null
+  report_type varchar(1000) references cif.report_type(name) not null
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'reporting_requirement');
@@ -44,7 +44,7 @@ comment on column cif.reporting_requirement.status is 'The status of the reporti
 comment on column cif.reporting_requirement.comments is 'Comments about the reporting requirement';
 comment on column cif.reporting_requirement.certified_by is 'The CIF contact who certified the reporting requirement';
 comment on column cif.reporting_requirement.project_id is 'Foreign key references the cif.project table';
-comment on column cif.reporting_requirement.report_type_id is 'Foreign key references the cif.report_type table';
+comment on column cif.reporting_requirement.report_type is 'Foreign key references the cif.report_type table';
 
 
 commit;

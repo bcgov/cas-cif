@@ -5,11 +5,10 @@ begin;
 
 create table cif.report_type
 (
-  id integer primary key generated always as identity,
-  name varchar(1000) not null,
-  form_schema jsonb
+  name varchar(1000) primary key
 );
 
+select cif_private.upsert_timestamp_columns('cif', 'report_type');
 
 do
 $grant$
@@ -32,9 +31,15 @@ end
 $grant$;
 
 comment on table cif.report_type is 'Table containing information about report types';
-comment on column cif.report_type.id is 'Unique ID for the report type';
-comment on column cif.report_type.name is 'The name of the report type';
-comment on column cif.report_type.form_schema is 'The schema of the report type';
+comment on column cif.report_type.name is 'The name of the report type as the primary key';
 
+insert into cif.report_type (name)
+values
+  ('Quarterly'),
+  ('Annual'),
+  ('General Milestone'),
+  ('Advanced Milestone'),
+  ('Performance Milestone'),
+  ('Reporting Milestone');
 
 commit;

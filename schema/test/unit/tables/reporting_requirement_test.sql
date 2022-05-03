@@ -15,7 +15,7 @@ select columns_are(
     'certified_by',
     'certified_by_professional_designation',
     'project_id',
-    'report_type_id',
+    'report_type',
     'created_at',
     'created_by',
     'updated_at',
@@ -30,7 +30,6 @@ select columns_are(
 -- Test setup
 truncate cif.project restart identity cascade;
 truncate cif.operator restart identity cascade;
-truncate cif.report_type restart identity cascade;
 
 insert into cif.operator
   (legal_name, trade_name, bc_registry_id) values
@@ -46,12 +45,11 @@ values
   (3, 1, 1, '2000-RFP-1-789-ABCD', 'summary', 'project 3'),
   (4, 1, 1, '2000-RFP-1-1011-ABCD', 'summary', 'project 4');
 
-insert into cif.report_type (name, form_schema) values ('type1', '{}'), ('type2', '{}'), ('type3', '{}'), ('type4', '{}');
 insert into cif.reporting_requirement
-  (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type_id) values
-  ('2020-01-01', 'on_track', 'comment_1', 'certifier_1', 'certifier_1', 1, 1),
-  ('2020-01-02', 'late', 'comment_2', 'certifier_2', 'certifier_2', 2, 2),
-  ('2020-01-03', 'completed', 'comment_3', 'certifier_3', 'certifier_3', 3, 3);
+  (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type) values
+  ('2020-01-01', 'on_track', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual'),
+  ('2020-01-02', 'late', 'comment_2', 'certifier_2', 'certifier_2', 2, 'Annual'),
+  ('2020-01-03', 'completed', 'comment_3', 'certifier_3', 'certifier_3', 3, 'Annual');
 
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
@@ -69,7 +67,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.reporting_requirement (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type_id) values ('2020-01-04', 'on_track', 'comment_4', 'certifier_4', 'certifier_4', 4, 4);
+    insert into cif.reporting_requirement (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type) values ('2020-01-04', 'on_track', 'comment_4', 'certifier_4', 'certifier_4', 4, 'Annual');
   $$,
     'cif_admin can insert data in reporting_requirement table'
 );
@@ -91,7 +89,7 @@ select results_eq(
 
 select throws_like(
   $$
-    insert into cif.reporting_requirement (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type_id) values ('2020-01-04', 'wrong_status', 'comment_4', 'certifier_4', 'certifier_4', 4, 4);
+    insert into cif.reporting_requirement (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type) values ('2020-01-04', 'wrong_status', 'comment_4', 'certifier_4', 'certifier_4', 4, 'Annual');
   $$,
   'insert or update on table "reporting_requirement" violates foreign key constraint%',
     'cif_admin cannot insert data in reporting_requirement table with a status that is not one of the possible statuses'
