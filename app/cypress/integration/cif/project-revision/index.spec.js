@@ -220,11 +220,39 @@ describe("the new project page", () => {
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
     cy.url().should("include", "/form/overview");
-    cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
-    cy.findByText("Edit").click();
+
+    // Verify the forms render in view mode for committed project revisions
+    cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
+    cy.findByRole("link", { name: "Project overview" })
+      .next()
+      .should("not.exist");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText(/Funding Stream RFP ID/i)
+      .next()
+      .should("have.text", "Emissions Performance - 2020");
+    cy.findByRole("link", { name: "Project managers" })
+      .next()
+      .should("not.exist");
+    cy.findByRole("link", { name: "Project managers" }).click();
+    cy.url().should("include", "/form/managers");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText("Tech Team Primary (optional)")
+      .next()
+      .should("have.text", "Swanson, Ron");
+    cy.findByRole("link", { name: "Project contacts" })
+      .next()
+      .should("not.exist");
+    cy.findByRole("link", { name: "Project contacts" }).click();
+    cy.url().should("include", "/form/contacts");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText(/primary contact/i, "Loblaw003, Bob003");
 
     // Edit the project
     // change the name, delete a manager and contact.
+    cy.findByRole("link", { name: "Project overview" }).click();
+    cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
+    cy.findByText("Edit").click();
+
     cy.findByLabelText(/Project Name/i)
       .should("have.value", "Foo")
       .clear()
