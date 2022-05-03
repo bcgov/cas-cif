@@ -5,29 +5,18 @@ import { useRouter } from "next/router";
  * False otherwise.
  */
 export default function useRedirectToLatestRevision(
-  projectRevision,
+  currentRevisionId,
+  latestRevisionId,
   shouldRedirect
 ) {
   const router = useRouter();
   useEffect(() => {
-    if (
-      projectRevision?.id !=
-        projectRevision?.projectByProjectId?.latestCommittedProjectRevision
-          ?.id &&
-      shouldRedirect
-    )
+    if (currentRevisionId != latestRevisionId && shouldRedirect)
       router.replace(
-        `${router.pathname.replace(
-          "[projectRevision]",
-          projectRevision.projectByProjectId.latestCommittedProjectRevision.id
-        )}`
+        `${router.pathname.replace("[projectRevision]", latestRevisionId)}`
       );
-  }, [projectRevision, shouldRedirect, router]);
-  if (
-    projectRevision?.id !=
-      projectRevision?.projectByProjectId?.latestCommittedProjectRevision?.id &&
-    shouldRedirect
-  ) {
+  }, [currentRevisionId, latestRevisionId, shouldRedirect, router]);
+  if (currentRevisionId != latestRevisionId && shouldRedirect) {
     return true;
   }
   return false;

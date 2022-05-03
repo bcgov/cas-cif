@@ -59,7 +59,9 @@ export function ProjectContactsPage({
     useCreateProjectRevision();
 
   const isRedirectingToLatestRevision = useRedirectToLatestRevision(
-    query.projectRevision,
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
+      ?.id,
     mode === "view"
   );
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);

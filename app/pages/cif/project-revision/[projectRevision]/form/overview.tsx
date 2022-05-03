@@ -58,7 +58,9 @@ export function ProjectOverviewForm({
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   const isRedirectingToLatestRevision = useRedirectToLatestRevision(
-    query.projectRevision,
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
+      ?.id,
     mode === "view"
   );
   if (isRedirecting || isRedirectingToLatestRevision) return null;
