@@ -65,11 +65,6 @@ export function ProjectRevision({
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
 
-  const lastEditedDate = useMemo(
-    () => new Date(query.projectRevision?.updatedAt),
-    [query.projectRevision?.updatedAt]
-  );
-
   const hasValidationErrors = useMemo(
     () =>
       query.projectRevision?.formChangesByProjectRevisionId.edges.some(
