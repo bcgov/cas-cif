@@ -10,7 +10,7 @@ as
 $function$
   select *
   from cif.project_revision
-  where project_id =1
+  where project_id = $1.id
   and change_status = 'committed'
   order by updated_at desc
   fetch first row only;
