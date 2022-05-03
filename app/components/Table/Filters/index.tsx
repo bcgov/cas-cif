@@ -6,6 +6,7 @@ import NumberFilter from "./NumberFilter";
 import SortOnlyFilter from "./SortOnlyFilter";
 import TextFilter from "./TextFilter";
 import YesNoFilter from "./YesNoFilter";
+import SearchableDropdownFilter from "./SearchableDropdownFilter";
 
 export type { FilterArgs, PageArgs, FilterComponent } from "./types";
 export {
@@ -17,4 +18,5 @@ export {
   SortOnlyFilter,
   TextFilter,
   YesNoFilter,
+  SearchableDropdownFilter,
 };

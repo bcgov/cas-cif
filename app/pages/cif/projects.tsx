@@ -10,10 +10,10 @@ import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import {
-  DisplayOnlyFilter,
   NoHeaderFilter,
   SortOnlyFilter,
   TextFilter,
+  SearchableDropdownFilter,
 } from "components/Table/Filters";
 
 export const ProjectsQuery = graphql`
@@ -57,29 +57,38 @@ export const ProjectsQuery = graphql`
         }
       }
     }
+    allCifUsers {
+      edges {
+        node {
+          fullName
+        }
+      }
+    }
   }
 `;
 
-const tableFilters = [
-  new TextFilter("Project Name", "projectName"),
-  new TextFilter("Operator Trade Name", "operatorTradeName", {
-    orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
-  }),
-  new TextFilter("Proposal Reference", "proposalReference"),
-  new TextFilter("Status", "status", {
-    orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
-  }),
-  new DisplayOnlyFilter("Assigned To"),
-  new SortOnlyFilter("Funding Request", "totalFundingRequest"),
-  new NoHeaderFilter(),
-];
-
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
-  const { allProjects, pendingNewProjectRevision, session } = usePreloadedQuery(
-    ProjectsQuery,
-    preloadedQuery
-  );
+  const { allProjects, allCifUsers, pendingNewProjectRevision, session } =
+    usePreloadedQuery(ProjectsQuery, preloadedQuery);
   const router = useRouter();
+
+  const tableFilters = [
+    new TextFilter("Project Name", "projectName"),
+    new TextFilter("Operator Trade Name", "operatorTradeName", {
+      orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
+    }),
+    new TextFilter("Proposal Reference", "proposalReference"),
+    new TextFilter("Status", "status", {
+      orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
+    }),
+    new SearchableDropdownFilter(
+      "Assigned To",
+      "assignedTo",
+      allCifUsers.edges.map((e) => e.node.fullName)
+    ),
+    new SortOnlyFilter("Funding Request", "totalFundingRequest"),
+    new NoHeaderFilter(),
+  ];
 
   const [createProject, isCreatingProject] = useCreateProjectMutation();
 
