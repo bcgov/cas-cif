@@ -66,7 +66,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         id
         rowId
         projectContactFormChanges(first: 500)
-          @connection(key: "connection_projectContactFormChanges") {
+          @connection(key: "ProjectContactForm_projectContactFormChanges") {
           __id
           edges {
             node {

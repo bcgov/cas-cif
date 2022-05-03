@@ -65,7 +65,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           isPristine
           validationErrors
         }
-        tasklistProjectContactFormChanges: projectContactFormChanges {
+        tasklistProjectContactFormChanges: projectContactFormChanges(
+          first: 1000
+        ) @connection(key: "taskList_tasklistProjectContactFormChanges") {
           edges {
             node {
               changeStatus
@@ -74,9 +76,8 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             }
           }
         }
-        projectManagerFormChanges: projectManagerFormChangesByLabel(
-          first: 500
-        ) {
+        projectManagerFormChanges: projectManagerFormChangesByLabel(first: 500)
+          @connection(key: "taskList_projectManagerFormChanges") {
           edges {
             node {
               formChange {

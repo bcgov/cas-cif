@@ -20,7 +20,10 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
-        projectContactFormChanges {
+        projectContactFormChanges(first: 750)
+          @connection(
+            key: "ProjectContactFormSummary_projectContactFormChanges"
+          ) {
           edges {
             node {
               isPristine
