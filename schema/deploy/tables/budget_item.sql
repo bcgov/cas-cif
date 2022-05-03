@@ -10,7 +10,7 @@ create table cif.budget_item
   is_confirmed boolean not null,
   is_tentative boolean,
   reporting_requirement_id integer references cif.reporting_requirement(id) not null,
-  comment varchar(10000),
+  comment varchar(10000)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'budget_item');

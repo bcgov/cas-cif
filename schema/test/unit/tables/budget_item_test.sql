@@ -15,6 +15,7 @@ select columns_are(
     'is_confirmed',
     'is_tentative',
     'reporting_requirement_id',
+    'comment',
     'created_at',
     'created_by',
     'updated_at',
