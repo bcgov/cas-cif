@@ -29,9 +29,9 @@ perform cif_private.grant_permissions('update', 'reporting_requirement_status', 
 end
 $grant$;
 
-comment on table cif.change_status is 'Table containing the different status that a reporting requirement can have';
-comment on column cif.change_status.status is 'The name of the status, e.g. "pending", "committed", ...';
-comment on column cif.change_status.active is 'Whether that status is active';
+comment on table cif.reporting_requirement_status is 'Table containing the different status that a reporting requirement can have';
+comment on column cif.reporting_requirement_status.status is 'The name of the status, e.g. "pending", "committed", ...';
+comment on column cif.reporting_requirement_status.active is 'Whether that status is active';
 
 insert into cif.reporting_requirement_status (status)
 values
