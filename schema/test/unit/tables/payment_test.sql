@@ -40,7 +40,7 @@ values
   (1, 1, 1, '2000-RFP-1-123-ABCD', 'summary', 'project 1');
 
 insert into cif.reporting_requirement
-  (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type)
+  (report_due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type)
   values ('2020-01-01', 'on_track', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual');
 
 
