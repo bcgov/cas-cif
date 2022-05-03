@@ -34,7 +34,8 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         id
         rowId
         changeStatus
-        managerFormChanges: projectManagerFormChangesByLabel {
+        managerFormChanges: projectManagerFormChangesByLabel(first: 1000)
+          @connection(key: "ProjectManagerFormGroup_managerFormChanges") {
           edges {
             node {
               formChange {
