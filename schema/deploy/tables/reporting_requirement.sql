@@ -6,7 +6,7 @@ create table cif.reporting_requirement
 (
   id integer primary key generated always as identity,
   due_date timestamptz,
-  status cif.reporting_requirement_status not null,
+  status varchar(1000) references cif.reporting_requirement_status(status) not null,
   comments varchar(10000),
   certified_by varchar(1000),
   certified_by_professional_designation varchar(1000),

@@ -93,8 +93,8 @@ select throws_like(
   $$
     insert into cif.reporting_requirement (due_date, status, comments, certified_by, certified_by_professional_designation, project_id, report_type_id) values ('2020-01-04', 'wrong_status', 'comment_4', 'certifier_4', 'certifier_4', 4, 4);
   $$,
-  'invalid input%',
-    'invalid input value for enum cif.reporting_requirement_status'
+  'insert or update on table "reporting_requirement" violates foreign key constraint%',
+    'cif_admin cannot insert data in reporting_requirement table with a status that is not one of the possible statuses'
 );
 
 select throws_like(
