@@ -8,8 +8,9 @@ create table cif.budget_item
   category varchar(100) references cif.budget_item_category not null,
   description varchar(1000),
   is_confirmed boolean not null,
-  is_tentative boolean not null,
-  reporting_requirement_id integer references cif.reporting_requirement(id) not null
+  is_tentative boolean,
+  reporting_requirement_id integer references cif.reporting_requirement(id) not null,
+  comment varchar(10000),
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'budget_item');
@@ -36,7 +37,7 @@ $grant$;
 
 comment on table cif.budget_item is 'Table containing information about budget item related to a reporting requirement';
 comment on column cif.budget_item.id is 'Unique ID for the budget item';
-comment on column cif.budget_item.amount is 'The amount of the budget item';
+comment on column cif.budget_item.amount is 'The amount of the budget item in CAD';
 comment on column cif.budget_item.category is 'The category of the budget item: general and materials, supplies, equipment and other items';
 comment on column cif.budget_item.description is 'The description of the budget item';
 comment on column cif.budget_item.is_confirmed is 'Whether the budget item is confirmed or not';
