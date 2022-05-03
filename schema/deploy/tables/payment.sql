@@ -5,7 +5,7 @@ begin;
 create table cif.payment
 (
   id integer primary key generated always as identity,
-  amount numeric(20,2) not null,
+  amount numeric not null,
   date_issued timestamptz,
   date_paid timestamptz,
   comment varchar(10000),
