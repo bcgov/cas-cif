@@ -1,12 +1,9 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { contactsFormQuery } from "__generated__/contactsFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
-//brianna - to create
-// import ProjectQuarterlyReportsForm from "components/Form/ProjectQuarterlyReportsForm";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import { quarterlyReportsFormQuery } from "__generated__/quarterlyReportsFormQuery.graphql";
@@ -24,8 +21,10 @@ const pageQuery = graphql`
           reportingRequirementsByProjectId {
             edges {
               node {
-                comments
+                reportType
                 completionDate
+                comments
+                reportDueDate
               }
             }
           }
@@ -54,6 +53,11 @@ export function ProjectQuarterlyReportsPage({
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <p>This is the quarterly reports page!</p>
+      {/* <ProjectQuarterlyReportsPage
+        // @ts-ignore
+        query={query}
+        projectRevision={query.projectRevision}
+      /> */}
     </DefaultLayout>
   );
 }
