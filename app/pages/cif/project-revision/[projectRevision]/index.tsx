@@ -7,13 +7,17 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Button, Textarea } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import SavingIndicator from "components/Form/SavingIndicator";
 
-import { getProjectsPageRoute } from "pageRoutes";
+import {
+  getProjectsPageRoute,
+  getProjectRevisionOverviewFormPageRoute,
+} from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
@@ -73,8 +77,17 @@ export function ProjectRevision({
       ),
     [query.projectRevision?.formChangesByProjectRevisionId.edges]
   );
+  const isCommittedRevision =
+    query.projectRevision.changeStatus === "committed";
+  useEffect(() => {
+    if (isCommittedRevision)
+      router.push(
+        getProjectRevisionOverviewFormPageRoute(query.projectRevision.id)
+      );
+  }, [isCommittedRevision, query, router]);
+
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  if (isRedirecting || isCommittedRevision) return null;
 
   /**
    *  Function: approve staged change, trigger an insert on the project
