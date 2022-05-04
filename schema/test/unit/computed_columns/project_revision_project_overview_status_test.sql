@@ -119,7 +119,7 @@ select is(
     select cif.project_revision_project_overview_status((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3))
   ),
   'Attention Required',
-  'Returns Attention Required, when change_status is staged and validation_errors is empty'
+  'Returns Attention Required, when change_status is staged and validation_errors is not empty'
 );
 
 select finish();
