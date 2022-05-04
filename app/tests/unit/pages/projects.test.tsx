@@ -42,6 +42,7 @@ const pageTestingHelper = new PageTestingHelper<projectsQuery>({
     operatorTradeName: null,
     proposalReference: null,
     status: null,
+    assignedTo: null,
     offset: null,
     pageSize: DEFAULT_PAGE_SIZE,
     orderBy: null,
@@ -115,5 +116,24 @@ describe("The projects page", () => {
         "An error occurred while attempting to create the project."
       )
     ).toBeVisible();
+  });
+
+  it("renders the correct filters", async () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    expect(
+      screen.queryByLabelText("Filter by Project Name")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Filter by Operator Trade Name")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Filter by Proposal Reference")
+    ).toBeInTheDocument();
+    expect(screen.queryByLabelText("Filter by Status")).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Filter by Assigned To")
+    ).toBeInTheDocument();
   });
 });

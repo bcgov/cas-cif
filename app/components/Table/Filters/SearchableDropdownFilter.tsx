@@ -50,6 +50,7 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
                 onChange={(evt) => onChange(evt.target.value, this.argName)}
                 placeholder="Filter"
                 variant="standard"
+                aria-label={`Filter by ${this.title}`}
                 InputProps={{
                   ...params.InputProps,
                   disableUnderline: true,
