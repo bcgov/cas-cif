@@ -323,4 +323,119 @@ describe("The Project Contacts page", () => {
     expect(container.childElementCount).toEqual(0);
     expect(mockReplace).toHaveBeenCalledWith("/404");
   });
+
+  it("renders the form in view mode when the project revision is committed", async () => {
+    jest.mock("next/router");
+    const routerPush = jest.fn();
+    mocked(useRouter).mockReturnValue({ push: routerPush } as any);
+
+    pageTestingHelper.loadQuery({
+      ProjectRevision(context) {
+        const revision: Partial<ProjectContactForm_projectRevision$data> = {
+          id: context.path.includes("pendingProjectRevision")
+            ? "mock-project-rev-2"
+            : `mock-project-rev-1`,
+          rowId: 1,
+          changeStatus: "committed",
+          projectContactFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "test-primary-contact",
+                  newFormData: {
+                    contactId: 3,
+                    projectId: 54,
+                    contactIndex: 1,
+                  },
+                  operation: "UPDATE",
+                  changeStatus: "committed",
+                  formChangeByPreviousFormChangeId: {
+                    changeStatus: "committed",
+                    newFormData: {
+                      contactId: 1,
+                      projectId: 54,
+                      contactIndex: 1,
+                    },
+                  },
+                },
+              },
+              {
+                node: {
+                  id: "test-secondary-contact",
+                  newFormData: {
+                    contactId: 4,
+                    projectId: 54,
+                    contactIndex: 2,
+                  },
+                  operation: "UPDATE",
+                  changeStatus: "committed",
+                  formChangeByPreviousFormChangeId: {
+                    changeStatus: "committed",
+                    newFormData: {
+                      contactId: 2,
+                      projectId: 54,
+                      contactIndex: 2,
+                    },
+                  },
+                },
+              },
+            ],
+
+            __id: "client:WyJwcm9qZWN0X3JldmlzaW9ucyIsNjZd:__connection_projectContactFormChanges_connection",
+          },
+        };
+        return revision;
+      },
+      Query() {
+        const query: Partial<ProjectContactForm_query$data> = {
+          allContacts: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Loblaw001, Bob001",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  fullName: "Loblaw002, Bob002",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  fullName: "Loblaw003, Bob003",
+                },
+              },
+              {
+                node: {
+                  rowId: 4,
+                  fullName: "Loblaw004, Bob004",
+                },
+              },
+            ],
+          },
+        };
+        return query;
+      },
+    });
+    pageTestingHelper.renderPage();
+    expect(
+      screen.queryByRole("button", { name: "submit" })
+    ).not.toBeInTheDocument();
+    screen.logTestingPlaygroundURL();
+    expect(screen.getByText(/primary contact/i).nextSibling).toHaveTextContent(
+      "Loblaw003, Bob003"
+    );
+    expect(
+      screen.getByText(/secondary contact/i).nextSibling
+    ).toHaveTextContent("Loblaw004, Bob004");
+
+    userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
+    expect(routerPush).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/form/contacts/",
+      query: { projectRevision: "mock-project-rev-2" },
+    });
+  });
 });

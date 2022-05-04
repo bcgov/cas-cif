@@ -21,14 +21,14 @@ jest.mock("next/router");
  */
 
 const defaultMockResolver = {
-  ProjectRevision() {
+  ProjectRevision(_, generateId) {
     return {
-      id: "mock-proj-rev-id",
+      id: `mock-proj-rev-${generateId()}`,
       projectByProjectId: {
         proposalReference: "001",
       },
       projectFormChange: {
-        id: "mock-project-form-id",
+        id: `mock-project-form--${generateId()}`,
         newFormData: {
           someProjectData: "test2",
         },
@@ -48,6 +48,7 @@ const pageTestingHelper = new PageTestingHelper<managersFormQuery>({
 
 describe("The Project Managers form page", () => {
   beforeEach(() => {
+    jest.restoreAllMocks();
     pageTestingHelper.reinit();
   });
 
@@ -329,7 +330,7 @@ describe("The Project Managers form page", () => {
     pageTestingHelper.renderPage();
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-proj-rev-id")
+      getProjectRevisionPageRoute("mock-proj-rev-2")
     );
   });
 
@@ -351,5 +352,119 @@ describe("The Project Managers form page", () => {
 
     expect(container.childElementCount).toEqual(0);
     expect(mockReplace).toHaveBeenCalledWith("/404");
+  });
+
+  it("renders the form in view mode when the project revision is committed", async () => {
+    jest.mock("next/router");
+    const routerPush = jest.fn();
+    mocked(useRouter).mockReturnValue({ push: routerPush } as any);
+
+    pageTestingHelper.loadQuery({
+      ProjectRevision(context) {
+        return {
+          id: context.path.includes("pendingProjectRevision")
+            ? "mock-manager-2"
+            : `mock-manager-1`,
+          projectByProjectId: {
+            latestCommittedProjectRevision: {
+              id: "mock-manager-1",
+            },
+          },
+          changeStatus: "committed",
+          projectManagerFormChangesByLabel: {
+            edges: [
+              {
+                node: {
+                  formChange: {
+                    newFormData: {
+                      cifUserId: 1,
+                      projectId: 2,
+                      projectManagerLabelId: 1,
+                    },
+                  },
+                  projectManagerLabel: {
+                    label: "Tech Team Primary",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: {
+                    newFormData: {
+                      cifUserId: 2,
+                      projectId: 2,
+                      projectManagerLabelId: 2,
+                    },
+                  },
+                  projectManagerLabel: {
+                    label: "Tech Team Secondary",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: {
+                    newFormData: {
+                      cifUserId: 3,
+                      projectId: 2,
+                      projectManagerLabelId: 3,
+                    },
+                  },
+                  projectManagerLabel: {
+                    label: "Ops Team Primary",
+                  },
+                },
+              },
+            ],
+          },
+        };
+      },
+      Query() {
+        const cifUsersQuery: Partial<ProjectManagerForm_query$data> = {
+          allCifUsers: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Knope, Leslie",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  fullName: "Swanson, Ron",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  fullName: "Ludgate, April",
+                },
+              },
+            ],
+          },
+        };
+        return cifUsersQuery;
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    expect(
+      screen.queryByRole("button", { name: "submit" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/tech team primary \(optional\)/i).nextSibling
+    ).toHaveTextContent("Knope, Leslie");
+    expect(
+      screen.getByText(/tech team secondary \(optional\)/i).nextSibling
+    ).toHaveTextContent("Swanson, Ron");
+    expect(
+      screen.getByText(/ops team primary \(optional\)/i).nextSibling
+    ).toHaveTextContent("Ludgate, April");
+    userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
+    expect(routerPush).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/form/managers/",
+      query: { projectRevision: "mock-manager-2" },
+    });
   });
 });

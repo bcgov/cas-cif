@@ -319,4 +319,111 @@ describe("The Project Overview page", () => {
     expect(container.childElementCount).toEqual(0);
     expect(mockReplace).toHaveBeenCalledWith("/404");
   });
+
+  it("renders the form in view mode when the project revision is committed", () => {
+    jest.mock("next/router");
+    const routerPush = jest.fn();
+    mocked(useRouter).mockReturnValue({ push: routerPush } as any);
+
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-rev-id",
+          changeStatus: "committed",
+          projectFormChange: {
+            id: "mock-project-form-id",
+            newFormData: {
+              summary: "sum",
+              operatorId: 1,
+              projectName: "test project",
+              projectStatusId: 15,
+              proposalReference: "ref",
+              fundingStreamRfpId: 5,
+              totalFundingRequest: 25,
+            },
+            isUniqueValue: true,
+            formChangeByPreviousFormChangeId: {
+              changeStatus: "committed",
+              newFormData: {
+                summary: "sum",
+                operatorId: 1,
+                projectName: "test project 1",
+                projectStatusId: 15,
+                proposalReference: "ref",
+                fundingStreamRfpId: 1,
+                totalFundingRequest: 99,
+              },
+            },
+          },
+        };
+      },
+      Query() {
+        const query: Partial<SelectRfpWidget_query$data> = {
+          allFundingStreams: {
+            edges: [
+              {
+                node: {
+                  name: "EP",
+                  rowId: 1,
+                  description: "Emissions Performance",
+                },
+              },
+              {
+                node: {
+                  name: "IA",
+                  rowId: 2,
+                  description: "Innovation Accelerator",
+                },
+              },
+            ],
+          },
+          allFundingStreamRfps: {
+            edges: [
+              {
+                node: {
+                  fundingStreamId: 1,
+                  rowId: 1,
+                  year: 2019,
+                },
+              },
+              {
+                node: {
+                  fundingStreamId: 2,
+                  rowId: 5,
+                  year: 2021,
+                },
+              },
+            ],
+          },
+        };
+        return query;
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    expect(
+      screen.queryByRole("button", { name: "submit" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/funding stream rfp id/i).nextElementSibling
+    ).toHaveTextContent(`<mock-value-for-field-"description"> - 2021`);
+    expect(
+      screen.getByText(/proposal reference/i).nextElementSibling
+    ).toHaveTextContent("ref");
+    expect(
+      screen.getByText(/project name/i).nextElementSibling
+    ).toHaveTextContent("test project");
+    expect(screen.getByText(/summary/i).nextElementSibling).toHaveTextContent(
+      "sum"
+    );
+    expect(
+      screen.getByText(/Total Funding Request/).nextElementSibling
+    ).toHaveTextContent("$25.00");
+
+    userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
+    expect(routerPush).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/form/contacts/",
+      query: { projectRevision: "mock-project-rev-2" },
+    });
+  });
 });
