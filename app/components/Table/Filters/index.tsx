@@ -9,6 +9,7 @@ import YesNoFilter from "./YesNoFilter";
 import SearchableDropdownFilter from "./SearchableDropdownFilter";
 
 export type { FilterArgs, PageArgs, FilterComponent } from "./types";
+
 export {
   TableFilter,
   DisplayOnlyFilter,
