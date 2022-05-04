@@ -41,10 +41,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ErrorContext.Provider value={value}>
+      <BCGovTypography />
       <Sentry.ErrorBoundary fallback={<Custom500 />}>
         <RelayEnvironmentProvider environment={env}>
           {typeof window !== "undefined" && <SessionExpiryHandler />}
-          <BCGovTypography />
           {component}
         </RelayEnvironmentProvider>
       </Sentry.ErrorBoundary>
