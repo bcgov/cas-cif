@@ -326,10 +326,13 @@ describe("The Project Overview page", () => {
     mocked(useRouter).mockReturnValue({ push: routerPush } as any);
 
     pageTestingHelper.loadQuery({
-      ProjectRevision() {
+      ProjectRevision(context) {
         return {
-          id: "mock-rev-id",
+          id: context.path.includes("pendingProjectRevision")
+            ? "mock-project-rev-2"
+            : `mock-project-rev-1`,
           changeStatus: "committed",
+
           projectFormChange: {
             id: "mock-project-form-id",
             newFormData: {
@@ -422,7 +425,7 @@ describe("The Project Overview page", () => {
 
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(routerPush).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/contacts/",
+      pathname: "/cif/project-revision/[projectRevision]/form/overview/",
       query: { projectRevision: "mock-project-rev-2" },
     });
   });
