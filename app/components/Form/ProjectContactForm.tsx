@@ -387,18 +387,17 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   </Button>
                 </Grid.Col>
               </Grid.Row>
-
-              <Grid.Row>
-                <Button
-                  size="medium"
-                  variant="primary"
-                  onClick={stageContactFormChanges}
-                  disabled={isUpdating}
-                >
-                  Submit Contacts
-                </Button>
-              </Grid.Row>
             </FormBorder>
+            <Grid.Row>
+              <Button
+                size="medium"
+                variant="primary"
+                onClick={stageContactFormChanges}
+                disabled={isUpdating}
+              >
+                Submit Contacts
+              </Button>
+            </Grid.Row>
           </Grid.Col>
         </Grid.Row>
       </Grid>
