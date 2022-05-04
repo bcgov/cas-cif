@@ -78,7 +78,7 @@ export function ProjectRevision({
     [query.projectRevision?.formChangesByProjectRevisionId.edges]
   );
   const isCommittedRevision =
-    query.projectRevision.changeStatus === "committed";
+    query.projectRevision?.changeStatus === "committed";
   useEffect(() => {
     if (isCommittedRevision)
       router.push(
