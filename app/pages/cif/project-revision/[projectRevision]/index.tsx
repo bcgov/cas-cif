@@ -160,6 +160,7 @@ export function ProjectRevision({
           query={query}
           projectRevision={query.projectRevision}
         />
+        <br></br>
 
         {query.projectRevision.projectId && (
           <div>
