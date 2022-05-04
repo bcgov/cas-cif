@@ -196,7 +196,7 @@ export function ProjectRevision({
             )}
           </div>
         )}
-        {query.projectRevision.changeStatus != "committed" && (
+        {query.projectRevision.changeStatus !== "committed" && (
           <>
             <Button
               size="medium"

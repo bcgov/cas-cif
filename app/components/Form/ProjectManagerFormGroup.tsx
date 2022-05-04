@@ -268,7 +268,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           />
         ))}
       </FormBorder>
-      {projectRevision.changeStatus != "committed" && (
+      {projectRevision.changeStatus !== "committed" && (
         <Button
           size="medium"
           variant="primary"

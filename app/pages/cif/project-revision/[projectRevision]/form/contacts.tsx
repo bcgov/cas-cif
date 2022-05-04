@@ -92,7 +92,7 @@ export function ProjectContactsPage({
     const existingRevision =
       query.projectRevision.projectByProjectId.pendingProjectRevision;
     return (
-      <>
+      <div>
         <Button
           className="edit-button"
           onClick={
@@ -103,11 +103,11 @@ export function ProjectContactsPage({
           {existingRevision ? "Resume Edition" : "Edit"}
         </Button>
         <style jsx>{`
-          :global(.edit-button) {
+          div :global(.edit-button) {
             float: right;
           }
         `}</style>
-      </>
+      </div>
     );
   };
 

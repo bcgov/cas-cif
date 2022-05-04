@@ -329,8 +329,8 @@ describe("The Project Overview page", () => {
       ProjectRevision(context) {
         return {
           id: context.path.includes("pendingProjectRevision")
-            ? "mock-project-rev-2"
-            : `mock-project-rev-1`,
+            ? "mock-pending-revision-id"
+            : "mock-base-revision-id",
           changeStatus: "committed",
 
           projectFormChange: {
@@ -426,7 +426,7 @@ describe("The Project Overview page", () => {
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(routerPush).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/overview/",
-      query: { projectRevision: "mock-project-rev-2" },
+      query: { projectRevision: "mock-pending-revision-id" },
     });
   });
 });

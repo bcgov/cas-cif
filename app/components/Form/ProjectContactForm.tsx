@@ -327,7 +327,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   />
                 </Grid.Col>
-                {projectRevision.changeStatus != "committed" && (
+                {projectRevision.changeStatus !== "committed" && (
                   <Grid.Col span={4}>
                     <Button variant="secondary" size="small">
                       Show Details

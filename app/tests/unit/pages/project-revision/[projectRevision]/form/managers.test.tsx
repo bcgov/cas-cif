@@ -363,8 +363,8 @@ describe("The Project Managers form page", () => {
       ProjectRevision(context) {
         return {
           id: context.path.includes("pendingProjectRevision")
-            ? "mock-manager-2"
-            : `mock-manager-1`,
+            ? "mock-pending-revision-id"
+            : "mock-base-revision-id",
           projectByProjectId: {
             latestCommittedProjectRevision: {
               id: "mock-manager-1",
@@ -464,7 +464,7 @@ describe("The Project Managers form page", () => {
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(routerPush).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/managers/",
-      query: { projectRevision: "mock-manager-2" },
+      query: { projectRevision: "mock-pending-revision-id" },
     });
   });
 });

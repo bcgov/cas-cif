@@ -333,8 +333,8 @@ describe("The Project Contacts page", () => {
       ProjectRevision(context) {
         const revision: Partial<ProjectContactForm_projectRevision$data> = {
           id: context.path.includes("pendingProjectRevision")
-            ? "mock-project-rev-2"
-            : `mock-project-rev-1`,
+            ? "mock-pending-revision-id"
+            : "mock-base-revision-id",
           rowId: 1,
           changeStatus: "committed",
           projectContactFormChanges: {
@@ -424,7 +424,6 @@ describe("The Project Contacts page", () => {
     expect(
       screen.queryByRole("button", { name: "submit" })
     ).not.toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
     expect(screen.getByText(/primary contact/i).nextSibling).toHaveTextContent(
       "Loblaw003, Bob003"
     );
@@ -435,7 +434,7 @@ describe("The Project Contacts page", () => {
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(routerPush).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/contacts/",
-      query: { projectRevision: "mock-project-rev-2" },
+      query: { projectRevision: "mock-pending-revision-id" },
     });
   });
 });
