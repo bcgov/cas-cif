@@ -123,11 +123,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             form: primaryContact?.node,
           }}
         />
-        {<label>Secondary Contacts</label>}
+        <label>Secondary Contacts</label>
         {secondaryContacts.length === 0 ? (
-          <dd>
-            <em>Secondary contact not added</em>
-          </dd>
+          <em>No secondary contacts</em>
         ) : (
           contactsJSX
         )}
