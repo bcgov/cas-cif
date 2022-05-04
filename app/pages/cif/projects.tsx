@@ -22,6 +22,7 @@ export const ProjectsQuery = graphql`
     $operatorTradeName: String
     $proposalReference: String
     $status: String
+    $assignedTo: String
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
@@ -45,6 +46,13 @@ export const ProjectsQuery = graphql`
         proposalReference: { includesInsensitive: $proposalReference }
         projectStatusByProjectStatusId: {
           name: { includesInsensitive: $status }
+        }
+        projectManagersByProjectId: {
+          some: {
+            cifUserByCifUserId: {
+              fullName: { includesInsensitive: $assignedTo }
+            }
+          }
         }
       }
       orderBy: $orderBy

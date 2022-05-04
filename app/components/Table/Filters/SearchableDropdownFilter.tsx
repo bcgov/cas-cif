@@ -25,7 +25,7 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
       <td>
         <Autocomplete
           options={this.options}
-          onChange={(evt, option) => onChange(option, this.argName)}
+          onChange={(_, option) => onChange(option, this.argName)}
           freeSolo
           size="small"
           PopperComponent={FullWidthPopper}
