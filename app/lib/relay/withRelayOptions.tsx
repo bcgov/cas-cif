@@ -11,6 +11,10 @@ import LoadingFallback from "components/Layout/LoadingFallback";
 
 const withRelayOptions: WiredOptions<any> = {
   fallback: <LoadingFallback />,
+  ErrorComponent: (props) => {
+    // error will be handled by sentry error boundary in _app.tsx
+    throw props.error;
+  },
   createClientEnvironment: () => getClientEnvironment()!,
   createServerEnvironment: async (ctx: NextPageContext) => {
     const { createServerEnvironment } = await import("./server");

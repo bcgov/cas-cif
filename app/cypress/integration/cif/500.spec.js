@@ -8,7 +8,7 @@ describe("The 500 page", () => {
     cy.visit("/");
     cy.visit("/500", { failOnStatusCode: false });
     cy.get("body").happoScreenshot({
-      component: "500 page",
+      component: "500 page server-side",
     });
     cy.get("a[href='javascript:;']").click();
     cy.url().should("eq", Cypress.config().baseUrl + "/");

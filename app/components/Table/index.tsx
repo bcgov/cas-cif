@@ -7,7 +7,7 @@ import {
   GraphQLTaggedNode,
   useRelayEnvironment,
 } from "react-relay";
-import Sentry from "@sentry/react";
+import * as Sentry from "@sentry/react";
 import FilterRow from "./FilterRow";
 import { FilterArgs, PageArgs, TableFilter } from "./Filters";
 import Pagination from "./Pagination";
