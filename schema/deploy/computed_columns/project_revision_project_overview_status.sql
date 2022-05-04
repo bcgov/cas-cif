@@ -8,28 +8,22 @@ returns text
 as
 $computed_column$
 
-  select
+select
     case
-      when fc.change_status = 'pending'
-        and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
+      when (select exists (select get_form_status from cif.get_form_status($1.id, 'project') where get_form_status = 'Incomplete'))
         then 'Incomplete'
-      when fc.change_status= 'staged'
-        and json_array_length(fc.validation_errors::json) = 0
-        then 'Complete'
-      when fc.change_status= 'staged'
-        and json_array_length(fc.validation_errors::json) > 0
-        then 'Attention Required'
+      when (select exists (select get_form_status from cif.get_form_status($1.id, 'project') where get_form_status = 'Attention Required'))
+          then 'Attention Required'
+      when (select count(distinct get_form_status) from cif.get_form_status($1.id, 'project')) = 1
+        and (select (select distinct get_form_status from cif.get_form_status($1.id, 'project'))) = 'Complete'
+          then 'Complete'
       else 'Not Started'
-    end overview_status
-  from cif.form_change fc
-  where fc.project_revision_id = $1.id
-  and fc.form_data_schema_name = 'cif'
-  and fc.form_data_table_name = 'project';
+    end;
 
 $computed_column$ language sql stable;
 
 grant execute on function cif.project_revision_project_overview_status to cif_internal, cif_external, cif_admin;
 
-comment on function cif.project_revision_project_overview_status is 'Computed column for graphql to retrieve the change related to the project record, within a project revision';
+comment on function cif.project_revision_project_overview_status is 'Computed column to return a project overview status for a project revision';
 
 commit;
