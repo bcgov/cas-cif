@@ -272,7 +272,7 @@ describe("the new project page", () => {
 
     cy.findByText(/Secondary Contacts/i)
       .next()
-      .should("have.text", "Not added");
+      .should("have.text", "No secondary contacts");
 
     cy.findByRole("button", { name: /submit/i }).should("be.disabled");
     cy.get("body").happoScreenshot({
