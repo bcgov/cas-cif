@@ -11,7 +11,7 @@ $computed_column$
     from cif.form_change
     where project_revision_id = project_revision.id
       and form_data_schema_name='cif'
-      and form_data_table_name='reporting_requirements'
+      and form_data_table_name='reporting_requirement'
       and new_form_data->>'report_type'='Quarterly';
 
 $computed_column$ language sql stable;
