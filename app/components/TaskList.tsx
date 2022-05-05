@@ -1,3 +1,5 @@
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -6,7 +8,7 @@ import {
   getProjectRevisionOverviewFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
 import TaskListStatus from "./TaskListStatus";
@@ -97,6 +99,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
       </li>
     );
   };
+  // Project Detail Accordion state
+  const [isExpanded, setIsExpanded] = useState(
+    currentStep === "contacts" || currentStep === "managers"
+  );
+  const toggleCustomAccordion = () => setIsExpanded(!isExpanded);
 
   return (
     <div className="container">
@@ -120,21 +127,28 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           </ul>
         </li>
         <li>
-          <h3>2. Project Details {mode === "update" ? "" : "(optional)"}</h3>
-          <ul>
-            {getFormListItem(
-              "managers",
-              getProjectRevisionManagersFormPageRoute(id),
-              "Project managers",
-              projectManagersStatus
-            )}
-            {getFormListItem(
-              "contacts",
-              getProjectRevisionContactsFormPageRoute(id),
-              "Project contacts",
-              projectContactsStatus
-            )}
-          </ul>
+          <h3 className="customAccordion" onClick={toggleCustomAccordion}>
+            2. Project Details {mode === "update" ? "" : "(optional)"}{" "}
+            <span>
+              <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
+            </span>
+          </h3>
+          {isExpanded && (
+            <ul>
+              {getFormListItem(
+                "managers",
+                getProjectRevisionManagersFormPageRoute(id),
+                "Project managers",
+                projectManagerStatus
+              )}
+              {getFormListItem(
+                "contacts",
+                getProjectRevisionContactsFormPageRoute(id),
+                "Project contacts",
+                projectContactStatus
+              )}
+            </ul>
+          )}
         </li>
         {mode !== "view" && (
           <li>
@@ -199,6 +213,27 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         div.container {
           background-color: #e5e5e5;
           width: 400px;
+        }
+
+        ul > li {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .status {
+          text-align: right;
+          padding-right: 5px;
+        }
+
+        // Custom Accordion styles
+        .customAccordion {
+          //pointer cursor on project details header
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+        }
+        .customAccordion span {
+          padding-right: 5px;
         }
       `}</style>
     </div>
