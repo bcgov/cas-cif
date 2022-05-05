@@ -1,4 +1,4 @@
-## **Running the file upload API on OSX, without Docker Desktop**
+## **Running docker containers on OSX, without Docker Desktop**
 
 Instructions adapted from [this page](https://dhwaneetbhatt.com/blog/run-docker-without-docker-desktop-on-macos).
 

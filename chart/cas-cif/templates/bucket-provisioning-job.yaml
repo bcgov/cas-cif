@@ -35,5 +35,12 @@ spec:
                 secretKeyRef:
                   key: workspace_id
                   name: terraform-cloud-workspace
-          command: ["bash",  "/script.sh", {{ .Release.Namespace | quote }}, "cif-backups"]
+          command:
+            - /usr/bin/env
+            - bash
+            - -c
+            - |
+              set -xeuo pipefail;
+              /script.sh {{ .Release.Namespace | quote }} cif-backups;
+              /script.sh {{ .Release.Namespace | quote }} cif-documents;
       restartPolicy: Never

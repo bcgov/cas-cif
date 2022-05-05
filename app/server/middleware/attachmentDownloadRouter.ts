@@ -1,60 +1,58 @@
 import { Router } from "express";
+import { performQuery } from "./graphql";
+import { Storage } from "@google-cloud/storage";
+import config from "../../config";
 
 const attachmentDownloadRouter = Router();
-const { PORT } = process.env;
-const graphqlEndpoint = `http://localhost:${PORT || 3004}/graphql`;
 
-attachmentDownloadRouter.get("/download/:attachmentId", async (req, res) => {
-  const attachmentQueryBody = {
-    operationName: "AttachmentDetailsQuery",
-    query: `query AttachmentDetailsQuery($attachmentId: ID!){
-      attachment(id: $attachmentId) {
-        file
-        fileName
-        fileType
-      }
-    }`,
-    variables: {
-      attachmentId: req.params.attachmentId,
-    },
+const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!){
+  attachment(id: $attachmentId) {
+    file
+    fileName
+    fileType
+  }
+}`;
+
+export const handleDownload = async (req, res, next) => {
+  const attachmentQueryVariables = {
+    attachmentId: req.params.attachmentId,
   };
 
-  const graphqlResult = await fetch(graphqlEndpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: req.get("Cookie"),
-    },
-    body: JSON.stringify(attachmentQueryBody),
-  });
+  try {
+    const result = await performQuery(
+      attachmentDetailsQuery,
+      attachmentQueryVariables,
+      req
+    );
 
-  const jsonResult = await graphqlResult.json();
-
-  const {
-    data: {
-      attachment: { file, fileName, fileType },
-    },
-  } = jsonResult;
-
-  const apiResult = await fetch(
-    `${process.env.STORAGE_API_HOST}/api/v1/attachments/download/${file}`,
-    {
-      method: "GET",
-      headers: {
-        "api-key": process.env.STORAGE_API_KEY,
-        "Accept-Encoding": "gzip",
+    const {
+      data: {
+        attachment: { file, fileName, fileType },
       },
-    }
-  );
+    } = result;
 
-  res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-  res.setHeader("Content-Type", fileType);
-  res.setHeader(
-    "Content-Length",
-    apiResult.headers.get("fastapi-content-length")
-  );
+    const storageClient = new Storage();
+    const bucketName = config.get("attachmentsBucket");
 
-  (apiResult.body as any).pipe(res);
-});
+    const [metadata] = await storageClient
+      .bucket(bucketName)
+      .file(file)
+      .getMetadata();
+
+    res.setHeader("Content-Length", metadata.size);
+    res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+    res.setHeader("Content-Type", fileType);
+
+    await storageClient
+      .bucket(bucketName)
+      .file(file)
+      .createReadStream()
+      .pipe(res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+attachmentDownloadRouter.get("/download/:attachmentId", handleDownload);
 
 export default attachmentDownloadRouter;
