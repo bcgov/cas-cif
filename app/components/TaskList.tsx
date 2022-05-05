@@ -18,6 +18,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   const {
     id,
     projectByProjectId,
+    changeStatus,
     projectOverviewStatus,
     projectManagersStatus,
     projectContactsStatus,
@@ -129,14 +130,16 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               "managers",
               getProjectRevisionManagersFormPageRoute(id),
               "Project managers",
-              projectManagerStatus
+              projectManagersStatus
             )}
             {getFormListItem(
               "contacts",
               getProjectRevisionContactsFormPageRoute(id),
               "Project contacts",
-              projectContactStatus
+              projectContactsStatus
             )}
+          </ul>
+        </li>
         {mode !== "view" && (
           <li>
             <h3>3. Submit changes</h3>
