@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import { useUpdateProjectQuarterlyReport } from "mutations/ProjectReportingRequirement/updateProjectQuarterlyReport";
 
 interface Props {
   onSubmit: () => void;
@@ -130,8 +131,31 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     });
   };
 
-  //   const [applyUpdateFormChangeMutation, isUpdating] =
-  //     useUpdateQuarterlyReportFormChange();
+  const [applyUpdateFormChangeMutation, isUpdating] =
+    useUpdateProjectQuarterlyReport();
+
+  const updateFormChange = (
+    formChange: {
+      readonly id: string;
+      readonly newFormData: any;
+      readonly operation: FormChangeOperation;
+      readonly changeStatus: string;
+    },
+    newFormData: any
+  ) => {
+    applyUpdateFormChangeMutation({
+      variables: {
+        input: {
+          id: formChange.id,
+          formChangePatch: {
+            newFormData,
+            changeStatus: formChange.changeStatus,
+          },
+        },
+      },
+      debounceKey: formChange.id,
+    });
+  };
 
   const [discardFormChange] = useDiscardFormChange(
     projectRevision.projectQuarterlyReportFormChanges.__id
@@ -149,14 +173,12 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     });
   };
 
-  ////////onclick functions - add, delete, update, stage
-
   return (
     <div>
       <header>
         <h2>Quarterly Reports</h2>
 
-        {/* <SavingIndicator isSaved={!isUpdating && !isAdding} /> */}
+        <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
       <Grid cols={10} align="center">
@@ -184,10 +206,10 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                           formData={node.newFormData}
                           onChange={(change) => {
                             console.log("change is", change);
-                            //   updateFormChange(
-                            //     { ...form, changeStatus: "pending" },
-                            //     change.formData
-                            //   );
+                            updateFormChange(
+                              { ...node, changeStatus: "pending" },
+                              change.formData
+                            );
                           }}
                           schema={quarterlyReportSchema as JSONSchema7}
                           uiSchema={quarterlyReportUiSchema}
