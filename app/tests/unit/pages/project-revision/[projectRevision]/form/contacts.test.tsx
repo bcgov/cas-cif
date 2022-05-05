@@ -9,7 +9,6 @@ import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledContactsFormQuery, {
   contactsFormQuery,
 } from "__generated__/contactsFormQuery.graphql";
-import { ProjectContactForm_projectRevision$data } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectContactForm_query$data } from "__generated__/ProjectContactForm_query.graphql";
 
 jest.mock("next/router");
@@ -76,7 +75,7 @@ describe("The Project Contacts page", () => {
   it("sends a mutation that resets the form to empty when the user clicks the Undo Changes button while adding a new project", () => {
     pageTestingHelper.loadQuery({
       ProjectRevision() {
-        const revision: Partial<ProjectContactForm_projectRevision$data> = {
+        const revision = {
           id: "mock-proj-rev-id",
           rowId: 56,
           projectContactFormChanges: {
@@ -95,7 +94,6 @@ describe("The Project Contacts page", () => {
                 },
               },
             ],
-            __id: "client:WyJwcm9qZWN0X3JldmlzaW9ucyIsNTZd:__connection_projectContactFormChanges_connection",
           },
         };
         return revision;
@@ -146,7 +144,7 @@ describe("The Project Contacts page", () => {
   it("sends a mutation that resets the form to the previous committed data when the user clicks the Undo Changes button while editing an existing project", async () => {
     pageTestingHelper.loadQuery({
       ProjectRevision() {
-        const revision: Partial<ProjectContactForm_projectRevision$data> = {
+        const revision = {
           id: "mock-proj-rev-id",
           rowId: 1,
           projectContactFormChanges: {
@@ -192,8 +190,6 @@ describe("The Project Contacts page", () => {
                 },
               },
             ],
-
-            __id: "client:WyJwcm9qZWN0X3JldmlzaW9ucyIsNjZd:__connection_projectContactFormChanges_connection",
           },
         };
         return revision;
@@ -331,7 +327,7 @@ describe("The Project Contacts page", () => {
 
     pageTestingHelper.loadQuery({
       ProjectRevision(context) {
-        const revision: Partial<ProjectContactForm_projectRevision$data> = {
+        const revision = {
           id: context.path.includes("pendingProjectRevision")
             ? "mock-pending-revision-id"
             : "mock-base-revision-id",
@@ -380,8 +376,6 @@ describe("The Project Contacts page", () => {
                 },
               },
             ],
-
-            __id: "client:WyJwcm9qZWN0X3JldmlzaW9ucyIsNjZd:__connection_projectContactFormChanges_connection",
           },
         };
         return revision;
