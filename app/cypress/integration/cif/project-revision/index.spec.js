@@ -18,6 +18,12 @@ describe("the new project page", () => {
     cy.get("button").contains("Submit Project Overview");
     cy.injectAxe();
     // TODO: the entire body should be tested for accessibility
+    const tempRules = {
+      rules: {
+        dlitem: { enabled: false },
+        "definition-list": { enabled: false },
+      },
+    };
     cy.checkA11y("main", null, logAxeResults);
     cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
@@ -51,7 +57,7 @@ describe("the new project page", () => {
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
-    cy.checkA11y("main", null, logAxeResults);
+    cy.checkA11y("main", tempRules, logAxeResults);
     cy.get("body").happoScreenshot({
       component: "Project Summary Form",
       variant: "empty",
