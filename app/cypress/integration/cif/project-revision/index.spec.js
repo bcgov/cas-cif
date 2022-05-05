@@ -31,6 +31,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/managers");
     cy.injectAxe();
@@ -88,6 +89,7 @@ describe("the new project page", () => {
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/contacts");
 
@@ -133,6 +135,7 @@ describe("the new project page", () => {
       "Select a Project Status"
     );
 
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
     cy.findByRole("button", { name: /undo changes/i }).click();
@@ -162,12 +165,14 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
 
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
 
@@ -230,6 +235,7 @@ describe("the new project page", () => {
     cy.findByText(/Funding Stream RFP ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2020");
+    cy.findByText(/Project Details/i).click();
     cy.findByRole("link", { name: "Project managers" })
       .next()
       .should("not.exist");
@@ -265,6 +271,7 @@ describe("the new project page", () => {
     });
     cy.findByRole("button", { name: /submit/i }).click();
     cy.contains("Review and Submit Project");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/managers");
 
@@ -283,6 +290,7 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /submit/i }).click();
     cy.contains("Review and Submit Project");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project contacts/i).click();
     cy.url().should("include", "/form/contacts");
 
@@ -329,6 +337,7 @@ describe("the new project page", () => {
     cy.findByText(/Project Name/i)
       .next()
       .should("have.text", "Bar");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Project managers/i).click();
     cy.findByText(/tech team secondary/i).should("not.exist");
     cy.findByText(/Project contacts/i).click();
@@ -355,11 +364,13 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
     cy.findByRole("button", { name: /submit/i }).click();
 
     cy.contains("Review and Submit Project");
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /submit/i }).click();
@@ -402,6 +413,7 @@ describe("the new project page", () => {
     );
 
     //undo managers
+    cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
     cy.findByLabelText(/tech team primary/i).click();
     cy.contains("Ludgate").click();
