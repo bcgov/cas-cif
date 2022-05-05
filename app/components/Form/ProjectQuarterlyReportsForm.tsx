@@ -15,6 +15,7 @@ import FormBase from "./FormBase";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 
 interface Props {
   onSubmit: () => void;
@@ -39,14 +40,12 @@ const quarterlyReportUiSchema = {
 const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
 
-  //brianna --why can't I see quarterlyReportFormChanges in postgraphiql?
-  //brianna--change to projectQuarterlyReportFormChanges (project prefix) for consistency?
   const projectRevision = useFragment(
     graphql`
       fragment ProjectQuarterlyReportsForm_projectRevision on ProjectRevision {
         id
         rowId
-        projectQuarterlyReportFormChanges(first: 500)
+        projectQuarterlyReportFormChanges(first: 502)
           @connection(key: "connection_projectQuarterlyReportFormChanges") {
           __id
           edges {
@@ -62,16 +61,74 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
             }
           }
         }
+        projectFormChange {
+          formDataRecordId
+        }
       }
     `,
     props.projectRevision
   );
 
+  console.log(projectRevision);
+
   //brianna --do we need an all forms like ProjectContactForm? That one uses primary/secondary
 
   ///////////mutations to-do:
-  //   const [addQuarterlyReportMutation, isAdding] =
-  //     useAddQuarterlyReportToRevision();
+  const [addQuarterlyReportMutation, isAdding] =
+    useAddReportingRequirementToRevision();
+
+  const addQuarterlyReport = (newFormData: any) => {
+    const formData = {
+      ...newFormData,
+      status: "on_track",
+      projectId: projectRevision.projectFormChange.formDataRecordId,
+      reportType: "Quarterly",
+    };
+
+    addQuarterlyReportMutation({
+      variables: {
+        projectRevisionId: projectRevision.rowId,
+        newFormData: formData,
+        connections: [projectRevision.projectQuarterlyReportFormChanges.__id], //brianna what will this be
+      },
+      // optimisticResponse: {
+      //   createFormChange: {
+      //     query: {
+      //       projectRevision: {
+      //         projectFormChange: undefined,
+      //         projectQuarterlyReportFormChanges: {
+      //           edges:
+      //             projectRevision.projectQuarterlyReportFormChanges.edges.map(
+      //               ({ node: { projectManagerLabel, formChange } }) => {
+      //                 if (projectManagerLabel.id === labelId) {
+      //                   return {
+      //                     node: {
+      //                       projectManagerLabel: projectManagerLabel,
+      //                       formChange: {
+      //                         id: "new",
+      //                         newFormData,
+      //                       },
+      //                     },
+      //                   };
+      //                 }
+      //                 return {
+      //                   node: {
+      //                     projectManagerLabel,
+      //                     formChange,
+      //                   },
+      //                 };
+      //               }
+      //             ),
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  };
 
   //   const [applyUpdateFormChangeMutation, isUpdating] =
   //     useUpdateQuarterlyReportFormChange();
@@ -82,10 +139,13 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
 
   ////////onclick functions - add, delete, update, stage
 
+  const handleAddRequirement = () => {
+    addQuarterlyReport({});
+  };
   return (
     <div>
       <header>
-        <h2>Project Quarterly Reports</h2>
+        <h2>Quarterly Reports</h2>
 
         {/* <SavingIndicator isSaved={!isUpdating && !isAdding} /> */}
       </header>
@@ -95,19 +155,19 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
         <Grid.Row>
           <Grid.Col span={10}>
             <FormBorder>
-              <Grid.Row>
-                <Button variant="secondary">
+              <Grid.Row className="addButtonContainer">
+                <Button variant="secondary" onClick={handleAddRequirement}>
                   <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly
                   report
                 </Button>
               </Grid.Row>
-              <label>Quarterly Reports</label>
               {projectRevision.projectQuarterlyReportFormChanges.edges.map(
-                ({ node }) => {
+                ({ node }, index) => {
                   console.log("node is", node);
                   return (
-                    <Grid.Row key={node.id}>
+                    <Grid.Row key={node.id} className="reportContainer">
                       <Grid.Col span={6}>
+                        <h3>Quarterly Report {index + 1}</h3>
                         <FormBase
                           id={`form-${node.id}`}
                           idPrefix={`form-${node.id}`}
@@ -178,6 +238,13 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
           display: flex;
           justify-content: flex-end;
           align-items: flex-start;
+        }
+        div :global(.reportContainer) {
+          border-top: 1px solid black;
+          padding-top: 1em;
+        }
+        div :global(.addButtonContainer) {
+          margin-bottom: 1em;
         }
       `}</style>
     </div>

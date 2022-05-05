@@ -11,12 +11,12 @@ const schema = {
     },
     submittedDate: {
       type: "string",
-      title: "Submitted/Received Date",
+      title: "Received Date",
       default: undefined,
     },
     comments: {
       type: "string",
-      title: "Comments",
+      title: "General Comments",
     },
   },
 };
