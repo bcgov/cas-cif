@@ -11,18 +11,17 @@ import { ProjectQuarterlyReportsForm_query$key } from "__generated__/ProjectQuar
 import SavingIndicator from "./SavingIndicator";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
+import FormBase from "./FormBase";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 
 interface Props {
-  query: ProjectQuarterlyReportsForm_query$key;
+  //   query: ProjectQuarterlyReportsForm_query$key;
+  query: any;
   onSubmit: () => void;
   projectRevision: ProjectQuarterlyReportsForm_projectRevision$key;
 }
 
 const uiSchema = {
-  quarterlyReportId: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-  },
   dueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -37,37 +36,19 @@ const uiSchema = {
     "bcgov:size": "small",
   },
 };
-export const createProjectQuarterlyReportsSchema = (
-  allReportingRequirements
-) => {
-  const schema = quarterlyReportSchema;
-  //brianna --is id the correct thing to be checking here?
-  schema.properties.quarterlyReportId = {
-    ...schema.properties.quarterlyReportId,
-    anyOf: allReportingRequirements.edges.map(({ node }) => {
-      return {
-        type: "number",
-        title: node.reportTypeByReportType.name,
-        enum: [node.rowId],
-        value: node.rowId,
-      } as JSONSchema7Definition;
-    }),
-  };
-
-  return schema as JSONSchema7;
-};
 
 const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
 
-  //   brianna - currently the contactformchanges query, fix
+  //brianna --why can't I see quarterlyReportFormChanges in postgraphiql?
+  //brianna--change to projectQuarterlyReportFormChanges (project prefix) for consistency?
   const projectRevision = useFragment(
     graphql`
       fragment ProjectQuarterlyReportsForm_projectRevision on ProjectRevision {
         id
         rowId
-        projectContactFormChanges(first: 500)
-          @connection(key: "connection_projectContactFormChanges") {
+        quarterlyReportFormChanges(first: 500)
+          @connection(key: "connection_quarterlyReportFormChanges") {
           __id
           edges {
             node {
@@ -86,15 +67,16 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
-  const { allReportingRequirements } = useFragment(
+  //brianna -- may need more/less in this query, TBD. Or do I need it all since the schema is so simple?
+  const { allQuarterlyReports } = useFragment(
     graphql`
       fragment ProjectQuarterlyReportsForm_query on Query {
-        allReportingRequirements {
+        allReportingRequirements(
+          filter: { reportType: { equalTo: "Quarterly" } }
+        ) {
           edges {
             node {
               id
-              reportType
               submittedDate
               comments
               reportDueDate
@@ -109,11 +91,9 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     props.query
   );
 
-  const quarterlyReportsSchema = useMemo(() => {
-    return createProjectQuarterlyReportsSchema(allReportingRequirements);
-  }, [allReportingRequirements]);
+  console.log("projectRevision", projectRevision);
 
-  //brianna --do we need an all forms like ProjectContactForm? It needs primary/secondary
+  //brianna --do we need an all forms like ProjectContactForm? That one uses primary/secondary
 
   ///////////mutations to-do:
   //   const [addQuarterlyReportMutation, isAdding] =
@@ -141,22 +121,24 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
           <Grid.Col span={10}>
             <FormBorder>
               <label>Quarterly Reports</label>
-              {/* {alternateContactForms.map((form) => {
+              {projectRevision.quarterlyReportFormChanges.edges.map(
+                ({ node }) => {
+                  console.log("node is", node);
                   return (
-                    <Grid.Row key={form.id}>
+                    <Grid.Row key={node.id}>
                       <Grid.Col span={6}>
                         <FormBase
-                          id={`form-${form.id}`}
-                          idPrefix={`form-${form.id}`}
-                          ref={(el) => (formRefs.current[form.id] = el)}
-                          formData={form.newFormData}
+                          id={`form-${node.id}`}
+                          idPrefix={`form-${node.id}`}
+                          ref={(el) => (formRefs.current[node.id] = el)}
+                          formData={node.newFormData}
                           onChange={(change) => {
-                            updateFormChange(
-                              { ...form, changeStatus: "pending" },
-                              change.formData
-                            );
+                            //   updateFormChange(
+                            //     { ...form, changeStatus: "pending" },
+                            //     change.formData
+                            //   );
                           }}
-                          schema={contactSchema}
+                          schema={quarterlyReportSchema as JSONSchema7}
                           uiSchema={uiSchema}
                           ObjectFieldTemplate={EmptyObjectFieldTemplate}
                         />
@@ -165,14 +147,15 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                         <Button
                           variant="secondary"
                           size="small"
-                          onClick={() => deleteContact(form.id, form.operation)}
+                          // onClick={() => deleteContact(form.id, form.operation)}
                         >
                           Remove
                         </Button>
                       </Grid.Col>
                     </Grid.Row>
                   );
-                })} */}
+                }
+              )}
               {/* <Grid.Row>
                   <Grid.Col span={10}>
                     <Button
