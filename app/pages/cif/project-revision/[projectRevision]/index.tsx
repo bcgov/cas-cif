@@ -7,13 +7,17 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Button, Textarea } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import SavingIndicator from "components/Form/SavingIndicator";
 
-import { getProjectsPageRoute } from "pageRoutes";
+import {
+  getProjectsPageRoute,
+  getProjectRevisionOverviewFormPageRoute,
+} from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
@@ -28,6 +32,7 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         changeReason
+        changeStatus
         projectId
         ...ProjectFormSummary_projectRevision
         ...ProjectContactFormSummary_projectRevision
@@ -72,8 +77,17 @@ export function ProjectRevision({
       ),
     [query.projectRevision?.formChangesByProjectRevisionId.edges]
   );
+  const isCommittedRevision =
+    query.projectRevision?.changeStatus === "committed";
+  useEffect(() => {
+    if (isCommittedRevision)
+      router.push(
+        getProjectRevisionOverviewFormPageRoute(query.projectRevision.id)
+      );
+  }, [isCommittedRevision, query, router]);
+
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  if (isRedirecting || isCommittedRevision) return null;
 
   /**
    *  Function: approve staged change, trigger an insert on the project
@@ -163,40 +177,52 @@ export function ProjectRevision({
 
         {query.projectRevision.projectId && (
           <div>
-            <h4>Please describe the reason for these changes</h4>
-            <SavingIndicator isSaved={!updatingChangeReason} />
-            <Textarea
-              value={query.projectRevision.changeReason}
-              onChange={handleChange}
-              size={"medium"}
-              resize="vertical"
-            />
+            {query.projectRevision.changeStatus === "committed" ? (
+              <>
+                <h4>Reason for change</h4>
+                <p>{query.projectRevision.changeReason}</p>
+              </>
+            ) : (
+              <>
+                <h4>Please describe the reason for these changes</h4>
+                <SavingIndicator isSaved={!updatingChangeReason} />
+                <Textarea
+                  value={query.projectRevision.changeReason}
+                  onChange={handleChange}
+                  size={"medium"}
+                  resize="vertical"
+                />
+              </>
+            )}
           </div>
         )}
-
-        <Button
-          size="medium"
-          variant="primary"
-          onClick={commitProject}
-          disabled={
-            hasValidationErrors ||
-            updatingProjectRevision ||
-            discardingProjectRevision ||
-            updatingChangeReason ||
-            (query.projectRevision.projectId &&
-              !query.projectRevision.changeReason)
-          }
-        >
-          Submit
-        </Button>
-        <Button
-          size="medium"
-          variant="secondary"
-          onClick={discardRevision}
-          disabled={updatingProjectRevision || discardingProjectRevision}
-        >
-          Discard Changes
-        </Button>
+        {query.projectRevision.changeStatus !== "committed" && (
+          <>
+            <Button
+              size="medium"
+              variant="primary"
+              onClick={commitProject}
+              disabled={
+                hasValidationErrors ||
+                updatingProjectRevision ||
+                discardingProjectRevision ||
+                updatingChangeReason ||
+                (query.projectRevision.projectId &&
+                  !query.projectRevision.changeReason)
+              }
+            >
+              Submit
+            </Button>
+            <Button
+              size="medium"
+              variant="secondary"
+              onClick={discardRevision}
+              disabled={updatingProjectRevision || discardingProjectRevision}
+            >
+              Discard Changes
+            </Button>
+          </>
+        )}
       </div>
       <style jsx>{`
         div :global(.pg-button) {
@@ -208,6 +234,9 @@ export function ProjectRevision({
         }
         div :global(.pg-textarea) {
           padding-top: 2px;
+        }
+        h4 {
+          margin-bottom: 0;
         }
       `}</style>
     </DefaultLayout>

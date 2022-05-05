@@ -209,7 +209,7 @@ describe("the new project page", () => {
     cy.contains(/Primary contact/i)
       .next()
       .should("have.text", "Loblaw003, Bob003");
-    cy.findByText(/Secondary contacts/i)
+    cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "Loblaw004, Bob004");
     cy.get("body").happoScreenshot({
@@ -219,13 +219,40 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).click();
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
-    cy.url().should("include", "/cif/project/");
-    cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
-    cy.findByText("Edit").click();
     cy.url().should("include", "/form/overview");
+
+    // Verify the forms render in view mode for committed project revisions
+    cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
+    cy.findByRole("link", { name: "Project overview" })
+      .next()
+      .should("not.exist");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText(/Funding Stream RFP ID/i)
+      .next()
+      .should("have.text", "Emissions Performance - 2020");
+    cy.findByRole("link", { name: "Project managers" })
+      .next()
+      .should("not.exist");
+    cy.findByRole("link", { name: "Project managers" }).click();
+    cy.url().should("include", "/form/managers");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText("Tech Team Primary (optional)")
+      .next()
+      .should("have.text", "Swanson, Ron");
+    cy.findByRole("link", { name: "Project contacts" })
+      .next()
+      .should("not.exist");
+    cy.findByRole("link", { name: "Project contacts" }).click();
+    cy.url().should("include", "/form/contacts");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText(/primary contact/i, "Loblaw003, Bob003");
 
     // Edit the project
     // change the name, delete a manager and contact.
+    cy.findByRole("link", { name: "Project overview" }).click();
+    cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
+    cy.findByText("Edit").click();
+
     cy.findByLabelText(/Project Name/i)
       .should("have.value", "Foo")
       .clear()
@@ -276,7 +303,7 @@ describe("the new project page", () => {
       .should("have.text", "Bar");
     cy.findByText(/tech team secondary/i).should("not.exist");
 
-    cy.findByText(/Secondary Contacts/i)
+    cy.findByText(/^Secondary Contacts/i)
       .next()
       .should("have.text", "No secondary contacts");
 
@@ -296,16 +323,18 @@ describe("the new project page", () => {
 
     cy.url().should("include", "/cif/projects");
     cy.findByRole("button", { name: /view/i }).click();
-    cy.url().should("include", "/cif/project/");
-    cy.findByRole("button", { name: /edit/i }).click();
     cy.url().should("include", "/form/overview");
 
     // Check the project was updated
-    cy.findByLabelText(/Project Name/i).should("have.value", "Bar");
-    cy.findByText(/Edit project managers/i).click();
-    cy.findByLabelText(/tech team secondary/i).should("not.have.value");
-    cy.findByText(/Edit project contacts/i).click();
-    cy.get("fieldset").find("input").should("have.length", 1);
+    cy.findByText(/Project Name/i)
+      .next()
+      .should("have.text", "Bar");
+    cy.findByText(/Project managers/i).click();
+    cy.findByText(/tech team secondary/i).should("not.exist");
+    cy.findByText(/Project contacts/i).click();
+    cy.findByText(/^Secondary contacts/i)
+      .next()
+      .should("have.text", "No secondary contacts");
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {

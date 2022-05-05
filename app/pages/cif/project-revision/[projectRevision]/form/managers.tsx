@@ -4,10 +4,17 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { managersFormQuery } from "__generated__/managersFormQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
+import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import TaskList from "components/TaskList";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import {
+  getProjectRevisionPageRoute,
+  getProjectRevisionManagersFormPageRoute,
+} from "pageRoutes";
+import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import { useRouter } from "next/router";
+import { Button } from "@button-inc/bcgov-theme";
 
 const pageQuery = graphql`
   query managersFormQuery($projectRevision: ID!) {
@@ -17,10 +24,22 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        changeStatus
+        projectId
+        projectByProjectId {
+          pendingProjectRevision {
+            id
+          }
+          latestCommittedProjectRevision {
+            id
+          }
+        }
         ...ProjectManagerFormGroup_revision
+        ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
       }
       ...ProjectManagerFormGroup_query
+      ...ProjectManagerFormSummary_query
     }
   }
 `;
@@ -31,8 +50,61 @@ export function ProjectManagersForm({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
+  const [createProjectRevision, isCreatingProjectRevision] =
+    useCreateProjectRevision();
+
+  const handleCreateRevision = () => {
+    createProjectRevision({
+      variables: { projectId: query.projectRevision.projectId },
+      onCompleted: (response) => {
+        router.push(
+          getProjectRevisionManagersFormPageRoute(
+            response.createProjectRevision.projectRevision.id
+          )
+        );
+      },
+    });
+  };
+
+  const handleResumeRevision = () => {
+    router.push(
+      getProjectRevisionManagersFormPageRoute(
+        query.projectRevision.projectByProjectId.pendingProjectRevision.id
+      )
+    );
+  };
+
+  const createEditButton = () => {
+    const existingRevision =
+      query.projectRevision.projectByProjectId.pendingProjectRevision;
+    return (
+      <div>
+        <Button
+          className="edit-button"
+          onClick={
+            existingRevision ? handleResumeRevision : handleCreateRevision
+          }
+          disabled={isCreatingProjectRevision}
+        >
+          {existingRevision ? "Resume Edition" : "Edit"}
+        </Button>
+        <style jsx>{`
+          div :global(.edit-button) {
+            float: right;
+          }
+        `}</style>
+      </div>
+    );
+  };
+
+  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
+      ?.id,
+    query.projectRevision?.changeStatus === "committed"
+  );
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting) return null;
+  if (isRedirecting || isRedirectingToLatestRevision) return null;
 
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
@@ -42,11 +114,21 @@ export function ProjectManagersForm({
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      <ProjectManagerFormGroup
-        query={query}
-        revision={query.projectRevision}
-        onSubmit={handleSubmit}
-      />
+      {query.projectRevision.changeStatus === "committed" ? (
+        <>
+          {createEditButton()}
+          <ProjectManagerFormSummary
+            query={query}
+            projectRevision={query.projectRevision}
+          />
+        </>
+      ) : (
+        <ProjectManagerFormGroup
+          query={query}
+          revision={query.projectRevision}
+          onSubmit={handleSubmit}
+        />
+      )}
     </DefaultLayout>
   );
 }

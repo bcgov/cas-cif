@@ -18,6 +18,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
         projectContactFormChanges(
+          first: 500
           filter: { operation: { notEqualTo: ARCHIVE } }
         ) {
           edges {

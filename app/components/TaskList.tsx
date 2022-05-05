@@ -53,10 +53,12 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     projectFormChange,
     tasklistProjectContactFormChanges,
     projectManagerFormChanges,
+    changeStatus,
   } = useFragment(
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
+        changeStatus
         projectByProjectId {
           proposalReference
         }
@@ -93,7 +95,12 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   );
   const router = useRouter();
 
-  let mode = projectByProjectId ? "update" : "create";
+  let mode =
+    changeStatus === "committed"
+      ? "view"
+      : projectByProjectId
+      ? "update"
+      : "create";
 
   const projectOverviewStatus = useMemo(
     () => getStatus([projectFormChange]),
@@ -126,10 +133,60 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     return routeParts[routeParts.length - 1];
   }, [id, router]);
 
+  const getFormListItem = (stepName, linkUrl, formTitle, formStatus) => {
+    return (
+      <li
+        aria-current={currentStep === stepName ? "step" : false}
+        className="bordered"
+      >
+        <Link href={linkUrl}>
+          <a>
+            {mode === "view" || stepName === "summary"
+              ? formTitle
+              : `${
+                  mode === "update" ? "Edit" : "Add"
+                } ${formTitle.toLowerCase()}`}
+          </a>
+        </Link>
+        {mode !== "view" && <div className="status">{formStatus}</div>}
+
+        <style jsx>{`
+          li {
+            text-indent: 15px;
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+          }
+          li[aria-current="step"],
+          li[aria-current="step"] div {
+            background-color: #fafafc;
+          }
+
+          .bordered {
+            border-bottom: 1px solid #d1d1d1;
+            padding: 10px 0 10px 0;
+          }
+
+          ul > li {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .status {
+            text-align: right;
+            padding-right: 5px;
+          }
+        `}</style>
+      </li>
+    );
+  };
+
   return (
     <div className="container">
       <h2>
-        {projectByProjectId
+        {mode === "view"
+          ? projectByProjectId.proposalReference
+          : mode === "update"
           ? "Editing: " + projectByProjectId.proposalReference
           : "Add a Project"}
       </h2>
@@ -137,55 +194,44 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         <li>
           <h3>1. Project Overview</h3>
           <ul>
-            <li
-              aria-current={currentStep === "overview" ? "step" : false}
-              className="bordered"
-            >
-              <Link href={getProjectRevisionOverviewFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project overview</a>
-              </Link>
-              <div className="status">{projectOverviewStatus}</div>
-            </li>
+            {getFormListItem(
+              "overview",
+              getProjectRevisionOverviewFormPageRoute(id),
+              "Project overview",
+              projectOverviewStatus
+            )}
           </ul>
         </li>
         <li>
           <h3>2. Project Details {mode === "update" ? "" : "(optional)"}</h3>
           <ul>
-            <li
-              aria-current={currentStep === "managers" ? "step" : false}
-              className="bordered"
-            >
-              <Link href={getProjectRevisionManagersFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project managers</a>
-              </Link>
-              <div className="status">{projectManagerStatus}</div>
-            </li>
-            <li
-              aria-current={currentStep === "contacts" ? "step" : false}
-              className="bordered"
-            >
-              <Link href={getProjectRevisionContactsFormPageRoute(id)}>
-                <a>{mode === "update" ? "Edit" : "Add"} project contacts</a>
-              </Link>
-              <div className="status">{projectContactStatus}</div>
-            </li>
+            {getFormListItem(
+              "managers",
+              getProjectRevisionManagersFormPageRoute(id),
+              "Project managers",
+              projectManagerStatus
+            )}
+            {getFormListItem(
+              "contacts",
+              getProjectRevisionContactsFormPageRoute(id),
+              "Project contacts",
+              projectContactStatus
+            )}
           </ul>
         </li>
-        <li>
-          <h3>3. Submit changes</h3>
-          <ul>
-            <li
-              aria-current={currentStep === "summary" ? "step" : false}
-              className="bordered"
-            >
-              <div>
-                <Link href={getProjectRevisionPageRoute(id)}>
-                  Review and submit information
-                </Link>
-              </div>
-            </li>
-          </ul>
-        </li>
+        {mode !== "view" && (
+          <li>
+            <h3>3. Submit changes</h3>
+            <ul>
+              {getFormListItem(
+                "summary",
+                getProjectRevisionPageRoute(id),
+                "Review and submit information",
+                null
+              )}
+            </ul>
+          </li>
+        )}
       </ol>
       <style jsx>{`
         ol {
@@ -201,6 +247,11 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         li {
           text-indent: 15px;
           margin-bottom: 0;
+        }
+
+        ul > li {
+          display: flex;
+          justify-content: space-between;
         }
 
         h2 {
@@ -228,29 +279,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           color: blue;
         }
 
-        li[aria-current="step"],
-        li[aria-current="step"] div {
-          background-color: #fafafc;
-        }
-
-        .bordered {
-          border-bottom: 1px solid #d1d1d1;
-          padding: 10px 0 10px 0;
-        }
-
         div.container {
           background-color: #e5e5e5;
           width: 400px;
-        }
-
-        ul > li {
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .status {
-          text-align: right;
-          padding-right: 5px;
         }
       `}</style>
     </div>

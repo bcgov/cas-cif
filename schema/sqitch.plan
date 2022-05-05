@@ -74,3 +74,4 @@ tables/reporting_requirement 2022-04-29T22:15:51Z Sepehr Sobhani <sepehr.sobhani
 tables/budget_item_category 2022-05-03T19:37:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item_category table
 tables/budget_item 2022-05-02T18:26:46Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item table
 tables/payment 2022-05-02T19:01:17Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.payment table
+computed_columns/project_latest_committed_project_revision [tables/project tables/project_revision] 2022-05-02T18:21:58Z Mike Vesprini <mike@button.is> # A computed column returning the latest committed revision for a project

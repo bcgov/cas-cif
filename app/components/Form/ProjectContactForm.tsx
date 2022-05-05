@@ -65,8 +65,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       fragment ProjectContactForm_projectRevision on ProjectRevision {
         id
         rowId
-        projectContactFormChanges(first: 500)
-          @connection(key: "connection_projectContactFormChanges") {
+        changeStatus
+        projectContactFormChanges(
+          first: 500
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) @connection(key: "connection_projectContactFormChanges") {
           __id
           edges {
             node {
@@ -324,18 +327,20 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
-                  <Button variant="secondary" size="small">
-                    Show Details
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={clearPrimaryContact}
-                  >
-                    Clear
-                  </Button>
-                </Grid.Col>
+                {projectRevision.changeStatus !== "committed" && (
+                  <Grid.Col span={4}>
+                    <Button variant="secondary" size="small">
+                      Show Details
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={clearPrimaryContact}
+                    >
+                      Clear
+                    </Button>
+                  </Grid.Col>
+                )}
               </Grid.Row>
               <label>Secondary Contacts</label>
               {alternateContactForms.map((form) => {
