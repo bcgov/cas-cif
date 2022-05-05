@@ -42,7 +42,7 @@ describe("The attachment download router", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
   });
-  it("is configured properly", () => {
+  it("is configured with the right route and handler", () => {
     const routerUnderTest = attachmentDownloadRouter;
 
     expect(routerUnderTest.stack).toHaveLength(1);
@@ -66,7 +66,7 @@ describe("The attachment download router", () => {
     };
     const testExpressReq = { params: { attachmentId: "123" } };
 
-    await handlerUnderTest(testExpressReq, testExpressRes);
+    await handlerUnderTest(testExpressReq, testExpressRes, jest.fn());
 
     // 1. The response has the right headers set
 
@@ -89,5 +89,20 @@ describe("The attachment download router", () => {
 
     // 2. The storage client's file's pipe method has been called with the response object
     expect(mockReadStream.pipe).toHaveBeenCalledWith(testExpressRes);
+  });
+
+  it("calls next() with the error if an exception is thrown", async () => {
+    const error = new Error("test error!");
+
+    mocked(performQuery).mockImplementationOnce(() => {
+      throw error;
+    });
+
+    const next = jest.fn();
+    const handlerUnderTest = handleDownload;
+
+    handlerUnderTest({ params: { attachmentId: "123" } }, {}, next);
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
