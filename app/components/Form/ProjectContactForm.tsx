@@ -33,7 +33,7 @@ export const createProjectContactUiSchema = (contact?) => {
       "ui:widget": "SearchWidget",
       "ui:options": {
         label: false,
-        text: `${contact}`,
+        text: contact,
         title: "",
       },
     },

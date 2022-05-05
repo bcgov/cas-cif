@@ -17,6 +17,7 @@ import { getProjectsPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { useMemo } from "react";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -32,6 +33,13 @@ const pageQuery = graphql`
         ...ProjectContactFormSummary_projectRevision
         ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
+        formChangesByProjectRevisionId {
+          edges {
+            node {
+              validationErrors
+            }
+          }
+        }
       }
 
       ...ProjectFormSummary_query
@@ -57,6 +65,13 @@ export function ProjectRevision({
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
 
+  const hasValidationErrors = useMemo(
+    () =>
+      query.projectRevision?.formChangesByProjectRevisionId.edges.some(
+        (edge) => edge.node.validationErrors.length > 0
+      ),
+    [query.projectRevision?.formChangesByProjectRevisionId.edges]
+  );
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
 
@@ -164,6 +179,7 @@ export function ProjectRevision({
           variant="primary"
           onClick={commitProject}
           disabled={
+            hasValidationErrors ||
             updatingProjectRevision ||
             discardingProjectRevision ||
             updatingChangeReason ||
@@ -189,6 +205,9 @@ export function ProjectRevision({
         :global(textarea) {
           width: 100%;
           min-height: 10rem;
+        }
+        div :global(.pg-textarea) {
+          padding-top: 2px;
         }
       `}</style>
     </DefaultLayout>
