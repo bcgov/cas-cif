@@ -16,6 +16,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
+import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 
 interface Props {
   onSubmit: () => void;
@@ -133,9 +134,21 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
   //   const [applyUpdateFormChangeMutation, isUpdating] =
   //     useUpdateQuarterlyReportFormChange();
 
-  //   const [discardFormChange] = useDiscardFormChange(
-  //     projectQuarterlyReportsFormChanges.__id
-  //   );
+  const [discardFormChange] = useDiscardFormChange(
+    projectRevision.projectQuarterlyReportFormChanges.__id
+  );
+
+  const deleteQuarterlyReport = (
+    formChangeId: string,
+    formChangeOperation: FormChangeOperation
+  ) => {
+    discardFormChange({
+      formChange: { id: formChangeId, operation: formChangeOperation },
+      onCompleted: () => {
+        delete formRefs.current[formChangeId];
+      },
+    });
+  };
 
   ////////onclick functions - add, delete, update, stage
 
@@ -189,7 +202,9 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                         <Button
                           variant="secondary"
                           size="small"
-                          // onClick={() => deleteContact(form.id, form.operation)}
+                          onClick={() =>
+                            deleteQuarterlyReport(node.id, node.operation)
+                          }
                         >
                           Remove
                         </Button>
