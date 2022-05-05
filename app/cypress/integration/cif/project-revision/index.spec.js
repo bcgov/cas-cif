@@ -209,7 +209,7 @@ describe("the new project page", () => {
     cy.contains(/Primary contact/i)
       .next()
       .should("have.text", "Loblaw003, Bob003");
-    cy.findByText(/Secondary contacts/i)
+    cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "Loblaw004, Bob004");
     cy.get("body").happoScreenshot({
@@ -303,7 +303,7 @@ describe("the new project page", () => {
       .should("have.text", "Bar");
     cy.findByText(/tech team secondary/i).should("not.exist");
 
-    cy.findByText(/Secondary Contacts/i)
+    cy.findByText(/^Secondary Contacts/i)
       .next()
       .should("have.text", "No secondary contacts");
 
@@ -332,9 +332,9 @@ describe("the new project page", () => {
     cy.findByText(/Project managers/i).click();
     cy.findByText(/tech team secondary/i).should("not.exist");
     cy.findByText(/Project contacts/i).click();
-    cy.findByText(/Secondary contacts/i)
+    cy.findByText(/^Secondary contacts/i)
       .next()
-      .should("have.text", "Not added");
+      .should("have.text", "No secondary contacts");
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
