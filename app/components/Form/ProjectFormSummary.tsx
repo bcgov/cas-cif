@@ -108,7 +108,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
       (projectFormChange.isPristine === null &&
         Object.keys(projectFormChange.newFormData).length === 0) ? (
         <p>
-          <em>Project overview not updated</em>
+          <em>Project overview not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         <FormBase
