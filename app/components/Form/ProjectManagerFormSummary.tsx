@@ -5,23 +5,42 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormSummary_projectRevision$key } from "__generated__/ProjectManagerFormSummary_projectRevision.graphql";
-import { ProjectManagerFormSummary_query$key } from "__generated__/ProjectManagerFormSummary_query.graphql";
 import FormBase from "./FormBase";
 
+import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
+import { utils } from "@rjsf/core";
+
+const { fields } = utils.getDefaultRegistry();
+
 interface Props {
-  query: ProjectManagerFormSummary_query$key;
   projectRevision: ProjectManagerFormSummary_projectRevision$key;
 }
 
 const ProjectManagerFormSummary: React.FC<Props> = (props) => {
-  const { projectManagerFormChangesByLabel } = useFragment(
+  const { allProjectManagerFormChangesByLabel, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
-        projectManagerFormChangesByLabel {
+        isFirstRevision
+        allProjectManagerFormChangesByLabel {
           edges {
             node {
               formChange {
                 newFormData
+                isPristine
+                operation
+                asProjectManager {
+                  cifUserByCifUserId {
+                    fullName
+                  }
+                }
+                formChangeByPreviousFormChangeId {
+                  newFormData
+                  asProjectManager {
+                    cifUserByCifUserId {
+                      fullName
+                    }
+                  }
+                }
               }
               projectManagerLabel {
                 label
@@ -34,63 +53,62 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const { allCifUsers } = useFragment(
-    graphql`
-      fragment ProjectManagerFormSummary_query on Query {
-        allCifUsers {
-          edges {
-            node {
-              rowId
-              fullName
-            }
-          }
-        }
-      }
-    `,
-    props.query
+  const allFormChangesPristine = useMemo(
+    () =>
+      !allProjectManagerFormChangesByLabel.edges.some(
+        ({ node }) =>
+          node.formChange?.isPristine === false ||
+          node.formChange?.isPristine === null
+      ),
+    [allProjectManagerFormChangesByLabel.edges]
   );
 
-  const areManagersEmpty = useMemo(() => {
-    return !projectManagerFormChangesByLabel.edges.some(
-      ({ node }) => node?.formChange?.newFormData.cifUserId
-    );
-  }, [projectManagerFormChangesByLabel.edges]);
-
   const managersJSX = useMemo(() => {
-    return projectManagerFormChangesByLabel.edges.map(({ node }) => {
-      if (!node?.formChange) return;
-      const nodeManager = allCifUsers.edges.find(
-        (manager) =>
-          manager.node.rowId === node.formChange?.newFormData.cifUserId
-      );
+    return allProjectManagerFormChangesByLabel.edges
+      .filter(
+        ({ node }) =>
+          node.formChange?.isPristine === false ||
+          node.formChange?.isPristine === null
+      )
+      .map(({ node }) => {
+        if (!node?.formChange) return;
 
-      return (
-        <FormBase
-          liveValidate
-          key={node.formChange.newFormData.projectManagerLabelId}
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          schema={projectManagerSchema as JSONSchema7}
-          uiSchema={createProjectManagerUiSchema(
-            nodeManager ? nodeManager.node.fullName : "",
-            node.projectManagerLabel.label
-          )}
-          formData={node.formChange.newFormData}
-          formContext={{
-            query: props.query,
-            form: node.formChange.newFormData,
-          }}
-        />
-      );
-    });
-  }, [allCifUsers.edges, props.query, projectManagerFormChangesByLabel]);
+        // Set custom rjsf fields to display diffs
+        const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
+
+        return (
+          <FormBase
+            liveValidate
+            key={node.formChange.newFormData.projectManagerLabelId}
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            fields={isFirstRevision ? fields : customFields}
+            schema={projectManagerSchema as JSONSchema7}
+            uiSchema={createProjectManagerUiSchema(
+              node.formChange?.asProjectManager?.cifUserByCifUserId?.fullName,
+              node.projectManagerLabel.label
+            )}
+            formData={node.formChange.newFormData}
+            formContext={{
+              operation: node.formChange?.operation,
+              oldData:
+                node.formChange?.formChangeByPreviousFormChangeId?.newFormData,
+              oldUiSchema: createProjectManagerUiSchema(
+                node.formChange?.formChangeByPreviousFormChangeId
+                  ?.asProjectManager?.cifUserByCifUserId?.fullName
+              ),
+            }}
+          />
+        );
+      });
+  }, [allProjectManagerFormChangesByLabel.edges, isFirstRevision]);
 
   return (
     <>
       <h3>Project Managers</h3>
-      {areManagersEmpty ? (
+      {allFormChangesPristine ? (
         <p>
-          <em>Project managers not added</em>
+          <em>Project managers not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         managersJSX

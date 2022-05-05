@@ -46,7 +46,6 @@ const pageQuery = graphql`
           }
         }
       }
-      ...ProjectManagerFormSummary_query
     }
   }
 `;
@@ -160,10 +159,7 @@ export function ProjectRevision({
           <h2>Review and Submit Project</h2>
         </header>
         <ProjectFormSummary projectRevision={query.projectRevision} />
-        <ProjectManagerFormSummary
-          query={query}
-          projectRevision={query.projectRevision}
-        />
+        <ProjectManagerFormSummary projectRevision={query.projectRevision} />
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
 
         {query.projectRevision.projectId && (
