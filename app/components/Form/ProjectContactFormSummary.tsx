@@ -125,9 +125,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         />
         <label>Secondary Contacts</label>
         {secondaryContacts.length === 0 ? (
-          <div>
+          <dd>
             <em>No secondary contacts</em>
-          </div>
+          </dd>
         ) : (
           contactsJSX
         )}
