@@ -39713,6 +39713,7 @@ type ProjectRevision implements Node {
   ): ManagerFormChangesByLabelCompositeReturnsConnection!
 
   """
+<<<<<<< HEAD
   Computed column to return a project managers status for a project revision
   """
   projectManagersStatus: String
@@ -39721,6 +39722,34 @@ type ProjectRevision implements Node {
   Computed column to return a project overview status for a project revision
   """
   projectOverviewStatus: String
+=======
+  Computed column for graphql to retrieve the changes related to the quarterly reporting requirement records, within a project revision
+  """
+  projectQuarterlyReportFormChanges(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormChangeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): FormChangesConnection!
+>>>>>>> 8de1623 (refactor: button for adding reporting requirements)
 
   """Unique ID for the project revision"""
   rowId: Int!

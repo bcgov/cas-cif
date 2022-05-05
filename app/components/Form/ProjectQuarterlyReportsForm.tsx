@@ -13,20 +13,19 @@ import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/upda
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import FormBase from "./FormBase";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-  //   query: ProjectQuarterlyReportsForm_query$key;
-  query: any;
   onSubmit: () => void;
   projectRevision: ProjectQuarterlyReportsForm_projectRevision$key;
 }
 
-const uiSchema = {
+const quarterlyReportUiSchema = {
   dueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
   },
-
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -47,8 +46,8 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
       fragment ProjectQuarterlyReportsForm_projectRevision on ProjectRevision {
         id
         rowId
-        quarterlyReportFormChanges(first: 500)
-          @connection(key: "connection_quarterlyReportFormChanges") {
+        projectQuarterlyReportFormChanges(first: 500)
+          @connection(key: "connection_projectQuarterlyReportFormChanges") {
           __id
           edges {
             node {
@@ -67,31 +66,6 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-  //brianna -- may need more/less in this query, TBD. Or do I need it all since the schema is so simple?
-  const { allQuarterlyReports } = useFragment(
-    graphql`
-      fragment ProjectQuarterlyReportsForm_query on Query {
-        allReportingRequirements(
-          filter: { reportType: { equalTo: "Quarterly" } }
-        ) {
-          edges {
-            node {
-              id
-              submittedDate
-              comments
-              reportDueDate
-              reportTypeByReportType {
-                name
-              }
-            }
-          }
-        }
-      }
-    `,
-    props.query
-  );
-
-  console.log("projectRevision", projectRevision);
 
   //brianna --do we need an all forms like ProjectContactForm? That one uses primary/secondary
 
@@ -117,11 +91,18 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
       </header>
 
       <Grid cols={10} align="center">
+        <Grid.Row>Quarterly reports status here</Grid.Row>
         <Grid.Row>
           <Grid.Col span={10}>
             <FormBorder>
+              <Grid.Row>
+                <Button variant="secondary">
+                  <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly
+                  report
+                </Button>
+              </Grid.Row>
               <label>Quarterly Reports</label>
-              {projectRevision.quarterlyReportFormChanges.edges.map(
+              {projectRevision.projectQuarterlyReportFormChanges.edges.map(
                 ({ node }) => {
                   console.log("node is", node);
                   return (
@@ -133,13 +114,14 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                           ref={(el) => (formRefs.current[node.id] = el)}
                           formData={node.newFormData}
                           onChange={(change) => {
+                            console.log("change is", change);
                             //   updateFormChange(
                             //     { ...form, changeStatus: "pending" },
                             //     change.formData
                             //   );
                           }}
                           schema={quarterlyReportSchema as JSONSchema7}
-                          uiSchema={uiSchema}
+                          uiSchema={quarterlyReportUiSchema}
                           ObjectFieldTemplate={EmptyObjectFieldTemplate}
                         />
                       </Grid.Col>

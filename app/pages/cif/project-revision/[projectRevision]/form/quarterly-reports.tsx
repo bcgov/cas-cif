@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import { quarterlyReportsFormQuery } from "__generated__/quarterlyReportsFormQuery.graphql";
+
 import ProjectQuarterlyReportsForm from "components/Form/ProjectQuarterlyReportsForm";
 
 const pageQuery = graphql`
@@ -20,7 +20,6 @@ const pageQuery = graphql`
         ...ProjectQuarterlyReportsForm_projectRevision
         ...TaskList_projectRevision
       }
-      ...ProjectQuarterlyReportsForm_query
     }
   }
 `;
@@ -43,7 +42,6 @@ export function ProjectQuarterlyReportsPage({
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <ProjectQuarterlyReportsForm
-        query={query}
         projectRevision={query.projectRevision}
         onSubmit={handleSubmit}
       />
