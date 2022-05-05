@@ -10,11 +10,12 @@ import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import {
-  DisplayOnlyFilter,
   NoHeaderFilter,
   SortOnlyFilter,
   TextFilter,
+  SearchableDropdownFilter,
 } from "components/Table/Filters";
+import { useMemo } from "react";
 
 export const ProjectsQuery = graphql`
   query projectsQuery(
@@ -22,6 +23,7 @@ export const ProjectsQuery = graphql`
     $operatorTradeName: String
     $proposalReference: String
     $status: String
+    $projectManagers: String
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
@@ -46,6 +48,13 @@ export const ProjectsQuery = graphql`
         projectStatusByProjectStatusId: {
           name: { includesInsensitive: $status }
         }
+        projectManagersByProjectId: {
+          some: {
+            cifUserByCifUserId: {
+              fullName: { includesInsensitive: $projectManagers }
+            }
+          }
+        }
       }
       orderBy: $orderBy
     ) {
@@ -57,29 +66,41 @@ export const ProjectsQuery = graphql`
         }
       }
     }
+    allCifUsers {
+      edges {
+        node {
+          fullName
+        }
+      }
+    }
   }
 `;
 
-const tableFilters = [
-  new TextFilter("Project Name", "projectName"),
-  new TextFilter("Operator Trade Name", "operatorTradeName", {
-    orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
-  }),
-  new TextFilter("Proposal Reference", "proposalReference"),
-  new TextFilter("Status", "status", {
-    orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
-  }),
-  new DisplayOnlyFilter("Assigned To"),
-  new SortOnlyFilter("Funding Request", "totalFundingRequest"),
-  new NoHeaderFilter(),
-];
-
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
-  const { allProjects, pendingNewProjectRevision, session } = usePreloadedQuery(
-    ProjectsQuery,
-    preloadedQuery
-  );
+  const { allProjects, allCifUsers, pendingNewProjectRevision, session } =
+    usePreloadedQuery(ProjectsQuery, preloadedQuery);
   const router = useRouter();
+
+  const tableFilters = useMemo(
+    () => [
+      new TextFilter("Project Name", "projectName"),
+      new TextFilter("Operator Trade Name", "operatorTradeName", {
+        orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
+      }),
+      new TextFilter("Proposal Reference", "proposalReference"),
+      new TextFilter("Status", "status", {
+        orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
+      }),
+      new SearchableDropdownFilter(
+        "Project Managers",
+        "projectManagers",
+        allCifUsers.edges.map((e) => e.node.fullName)
+      ),
+      new SortOnlyFilter("Funding Request", "totalFundingRequest"),
+      new NoHeaderFilter(),
+    ],
+    [allCifUsers]
+  );
 
   const [createProject, isCreatingProject] = useCreateProjectMutation();
 
