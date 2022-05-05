@@ -150,7 +150,7 @@ var config = convict({
     env: "ENABLE_DB_MOCKS_COOKIES_ONLY",
   },
   gcsCredentials: {
-    doc: "Google Cloud Storage credentials.",
+    doc: "Google Cloud Storage credentials. This environment variable is automatically read by the @google-cloud/storage library and needs to be associated with a CGS service account with write permissions.",
     default: "/credentials/credentials.json",
     env: "GOOGLE_APPLICATION_CREDENTIALS",
   },
