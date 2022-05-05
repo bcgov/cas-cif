@@ -39,7 +39,6 @@ const pageQuery = graphql`
         ...ProjectFormSummary_projectRevision
       }
       ...ProjectForm_query
-      ...ProjectFormSummary_query
     }
   }
 `;

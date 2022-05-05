@@ -30279,6 +30279,8 @@ enum FormChangesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_BY_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__ID_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__ID_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_AT_ASC
@@ -39400,6 +39402,29 @@ type ProjectReportingRequirementStatusesByReportingRequirementProjectIdAndStatus
 
 """Table containing all the changes for a project revision"""
 type ProjectRevision implements Node {
+  """
+  Reads and enables pagination through a set of `ManagerFormChangesByLabelCompositeReturn`.
+  """
+  allProjectManagerFormChangesByLabel(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): ManagerFormChangesByLabelCompositeReturnsConnection!
+
   """Explanation of why the revision was made"""
   changeReason: String
 
@@ -39613,6 +39638,11 @@ type ProjectRevision implements Node {
   """
   id: ID!
 
+  """
+  Boolean value to indicate if the revision is the first revision for the project
+  """
+  isFirstRevision: Boolean
+
   """Reads a single `Project` that is related to this `ProjectRevision`."""
   projectByProjectId: Project
 
@@ -39660,7 +39690,7 @@ type ProjectRevision implements Node {
   projectId: Int
 
   """
-  Computed column returns a composite value for each record in project_manager_label and the last related form_change if it exists
+  Computed column returns a composite value for each record in project_manager_label and the last related form_change (including archived records) if it exists
   """
   projectManagerFormChangesByLabel(
     """Read all values in the set after (below) this cursor."""
@@ -39905,6 +39935,9 @@ input ProjectRevisionCondition {
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
 
+  """Checks for equality with the object’s `isFirstRevision` field."""
+  isFirstRevision: Boolean
+
   """Checks for equality with the object’s `projectId` field."""
   projectId: Int
 
@@ -39960,6 +39993,9 @@ input ProjectRevisionFilter {
 
   """Some related `formChangesByProjectRevisionId` exist."""
   formChangesByProjectRevisionIdExist: Boolean
+
+  """Filter by the object’s `isFirstRevision` field."""
+  isFirstRevision: BooleanFilter
 
   """Negates the expression."""
   not: ProjectRevisionFilter
@@ -40072,6 +40108,11 @@ input ProjectRevisionPatch {
 
   """created by user id"""
   createdBy: Int
+
+  """
+  Boolean value to indicate if the revision is the first revision for the project
+  """
+  isFirstRevision: Boolean
 
   """
   Foreign key to the associated project row. Will be null if the project hasn't been committed yet.
@@ -40209,6 +40250,8 @@ enum ProjectRevisionsOrderBy {
   FORM_CHANGES_BY_PROJECT_REVISION_ID__COUNT_DESC
   ID_ASC
   ID_DESC
+  IS_FIRST_REVISION_ASC
+  IS_FIRST_REVISION_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC

@@ -47,7 +47,6 @@ const pageQuery = graphql`
         }
       }
 
-      ...ProjectFormSummary_query
       ...ProjectContactFormSummary_query
       ...ProjectManagerFormSummary_query
     }
@@ -162,10 +161,7 @@ export function ProjectRevision({
         <header>
           <h2>Review and Submit Project</h2>
         </header>
-        <ProjectFormSummary
-          query={query}
-          projectRevision={query.projectRevision}
-        />
+        <ProjectFormSummary projectRevision={query.projectRevision} />
         <ProjectManagerFormSummary
           query={query}
           projectRevision={query.projectRevision}
