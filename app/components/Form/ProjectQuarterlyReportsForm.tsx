@@ -78,9 +78,8 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
-  const addQuarterlyReport = (newFormData: any) => {
+  const addQuarterlyReport = () => {
     const formData = {
-      ...newFormData,
       status: "on_track",
       projectId: projectRevision.projectFormChange.formDataRecordId,
       reportType: "Quarterly",
@@ -152,9 +151,6 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
 
   ////////onclick functions - add, delete, update, stage
 
-  const handleAddRequirement = () => {
-    addQuarterlyReport({});
-  };
   return (
     <div>
       <header>
@@ -169,7 +165,7 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
           <Grid.Col span={10}>
             <FormBorder>
               <Grid.Row className="addButtonContainer">
-                <Button variant="secondary" onClick={handleAddRequirement}>
+                <Button variant="secondary" onClick={addQuarterlyReport}>
                   <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly
                   report
                 </Button>
