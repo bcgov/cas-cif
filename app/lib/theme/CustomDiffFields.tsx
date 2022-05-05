@@ -9,9 +9,12 @@ const showStringDiff = (id: string, oldData: string, newData: string) => (
     <span id={id && `${id}-diffOld`} className="diffOld">
       {oldData}
     </span>
-    &nbsp;
-    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
-    &nbsp;
+    <FontAwesomeIcon
+      className={"diff-arrow"}
+      size="lg"
+      color="black"
+      icon={faLongArrowAltRight}
+    />
     <span id={id && `${id}-diffNew`} className="diffNew">
       {newData}
     </span>
@@ -23,9 +26,12 @@ const showStringAdded = (id: string, newData: string) => (
     <span id={id && `${id}-diffNew`} className="diffNew">
       {newData}
     </span>
-    &nbsp;
-    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
-    &nbsp;
+    <FontAwesomeIcon
+      className={"diff-arrow"}
+      size="lg"
+      color="black"
+      icon={faLongArrowAltRight}
+    />
     <span>
       <strong>
         <em>ADDED</em>
@@ -39,9 +45,12 @@ const showStringRemoved = (id: string, oldData: string) => (
     <span id={id && `${id}-diffOld`} className="diffOld">
       {oldData}
     </span>
-    &nbsp;
-    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
-    &nbsp;
+    <FontAwesomeIcon
+      className={"diff-arrow"}
+      size="lg"
+      color="black"
+      icon={faLongArrowAltRight}
+    />
     <span>
       <strong>
         <em>REMOVED</em>
@@ -66,9 +75,12 @@ const showNumberDiff = (
         value={oldData}
       />
     </span>
-    &nbsp;
-    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
-    &nbsp;
+    <FontAwesomeIcon
+      className={"diff-arrow"}
+      size="lg"
+      color="black"
+      icon={faLongArrowAltRight}
+    />
     <span id={id && `${id}-diffNew`} className="diffNew">
       <NumberFormat
         thousandSeparator
@@ -92,9 +104,12 @@ const showNumberAdded = (id: string, newData: number, isMoney: boolean) => (
         value={newData}
       />
     </span>
-    &nbsp;
-    <FontAwesomeIcon size="lg" color="black" icon={faLongArrowAltRight} />
-    &nbsp;
+    <FontAwesomeIcon
+      className={"diff-arrow"}
+      size="lg"
+      color="black"
+      icon={faLongArrowAltRight}
+    />
     <span>
       <strong>
         <em>ADDED</em>
@@ -114,7 +129,12 @@ const showNumberRemoved = (id: string, oldData: number, isMoney: boolean) => (
         value={oldData}
       />
     </span>
-    &nbsp;
+    <FontAwesomeIcon
+      className={"diff-arrow"}
+      size="lg"
+      color="black"
+      icon={faLongArrowAltRight}
+    />
     <span>
       <strong>
         <em>REMOVED</em>
