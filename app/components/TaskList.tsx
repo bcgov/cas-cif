@@ -14,46 +14,13 @@ interface Props {
   projectRevision: TaskList_projectRevision$key;
 }
 
-const getStatus = (
-  forms: Array<{
-    changeStatus: string;
-    isPristine: boolean;
-    validationErrors: any[];
-  }>
-) => {
-  if (
-    forms.some((form) => form?.changeStatus === "pending" && !form.isPristine)
-  )
-    return "Incomplete";
-
-  if (
-    forms.some(
-      (form) =>
-        form.changeStatus === "staged" && form.validationErrors.length > 0
-    )
-  )
-    return <strong>Attention Required</strong>;
-
-  if (
-    forms.every(
-      (form) =>
-        form.changeStatus === "staged" && form.validationErrors.length === 0
-    ) &&
-    forms.some((form) => !form.isPristine)
-  )
-    return "Complete";
-
-  return "Not Started";
-};
-
 const TaskList: React.FC<Props> = ({ projectRevision }) => {
   const {
     id,
     projectByProjectId,
-    projectFormChange,
-    tasklistProjectContactFormChanges,
-    projectManagerFormChanges,
-    changeStatus,
+    projectOverviewStatus,
+    projectManagersStatus,
+    projectContactsStatus,
   } = useFragment(
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
@@ -62,33 +29,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         projectByProjectId {
           proposalReference
         }
-        projectFormChange {
-          changeStatus
-          isPristine
-          validationErrors
-        }
-        tasklistProjectContactFormChanges: projectContactFormChanges {
-          edges {
-            node {
-              changeStatus
-              isPristine
-              validationErrors
-            }
-          }
-        }
-        projectManagerFormChanges: projectManagerFormChangesByLabel(
-          first: 500
-        ) {
-          edges {
-            node {
-              formChange {
-                changeStatus
-                isPristine
-                validationErrors
-              }
-            }
-          }
-        }
+        projectOverviewStatus
+        projectContactsStatus
+        projectManagersStatus
       }
     `,
     projectRevision
@@ -101,29 +44,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
       : projectByProjectId
       ? "update"
       : "create";
-
-  const projectOverviewStatus = useMemo(
-    () => getStatus([projectFormChange]),
-    [projectFormChange]
-  );
-
-  const projectManagerStatus = useMemo(
-    () =>
-      getStatus(
-        projectManagerFormChanges.edges
-          .filter(({ node }) => node && node.formChange)
-          .map(({ node }) => node.formChange)
-      ),
-    [projectManagerFormChanges]
-  );
-
-  const projectContactStatus = useMemo(
-    () =>
-      getStatus(
-        tasklistProjectContactFormChanges.edges.map(({ node }) => node)
-      ),
-    [tasklistProjectContactFormChanges]
-  );
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
@@ -217,8 +137,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               "Project contacts",
               projectContactStatus
             )}
-          </ul>
-        </li>
         {mode !== "view" && (
           <li>
             <h3>3. Submit changes</h3>
