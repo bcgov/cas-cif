@@ -36,5 +36,5 @@ export const mutation = graphql`
 export const useAddReportingRequirementToRevision = () =>
   useMutationWithErrorMessage<addReportingRequirementToRevisionMutation>(
     mutation,
-    () => "An error occurred while attempting to create the project revision."
+    () => "An error occurred while attempting to add the report."
   );
