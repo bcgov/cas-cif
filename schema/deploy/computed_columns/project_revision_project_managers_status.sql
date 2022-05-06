@@ -17,8 +17,8 @@ select
         then 'Incomplete'
       when (select exists (select * from form_status where get_form_status = 'Attention Required'))
           then 'Attention Required'
-      when (select count(distinct get_form_status) from form_status) = 1
-        and (select (select distinct get_form_status from form_status)) = 'Complete'
+      when (select count(distinct get_form_status) from form_status where get_form_status != 'Not Started') = 1
+        and (select (select distinct get_form_status from form_status where get_form_status != 'Not Started')) = 'Complete'
           then 'Complete'
       else 'Not Started'
     end;
