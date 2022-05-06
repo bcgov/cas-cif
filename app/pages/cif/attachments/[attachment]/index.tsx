@@ -23,7 +23,6 @@ const pageQuery = graphql`
 
 function Attachment({ preloadedQuery }: RelayProps<{}, AttachmentQuery>) {
   const { session, attachment } = usePreloadedQuery(pageQuery, preloadedQuery);
-  console.log(attachment);
   return (
     <DefaultLayout session={session}>
       <dl>
