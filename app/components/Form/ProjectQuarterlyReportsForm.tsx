@@ -26,10 +26,12 @@ const quarterlyReportUiSchema = {
   dueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
+    "ui:widget": "date",
   },
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
+    "ui:widget": "date",
   },
   comments: {
     "ui:col-md": 12,
@@ -136,7 +138,6 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     },
     newFormData: any
   ) => {
-    console.log("formchange arg", formChange, "newformdata arg", newFormData);
     applyUpdateFormChangeMutation({
       variables: {
         input: {

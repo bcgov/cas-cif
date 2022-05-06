@@ -6,13 +6,11 @@ const schema = {
   properties: {
     dueDate: {
       type: "string",
-      format: "date",
       title: "Report Due Date",
       default: undefined,
     },
     submittedDate: {
       type: "string",
-      format: "date",
       title: "Received Date",
       default: undefined,
     },
