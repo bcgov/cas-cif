@@ -22,7 +22,7 @@ spec:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
-    {{- if $route }}
+    {{- if $certificate }}
     certificate: {{ $certificate | quote }}
     key: {{ $key | quote }}
     caCertificate: {{ $caCertificate | quote }}
