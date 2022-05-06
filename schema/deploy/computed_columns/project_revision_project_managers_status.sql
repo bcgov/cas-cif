@@ -8,14 +8,17 @@ returns text
 as
 $computed_column$
 
+with form_status as (
+  select * from cif.get_form_status($1.id, 'project_manager')
+)
 select
     case
-      when (select exists (select get_form_status from cif.get_form_status($1.id, 'project_manager') where get_form_status = 'Incomplete'))
+      when (select exists (select * from form_status where get_form_status = 'Incomplete'))
         then 'Incomplete'
-      when (select exists (select get_form_status from cif.get_form_status($1.id, 'project_manager') where get_form_status = 'Attention Required'))
+      when (select exists (select * from form_status where get_form_status = 'Attention Required'))
           then 'Attention Required'
-      when (select count(distinct get_form_status) from cif.get_form_status($1.id, 'project_manager')) = 1
-        and (select (select distinct get_form_status from cif.get_form_status($1.id, 'project_manager'))) = 'Complete'
+      when (select count(distinct get_form_status) from form_status) = 1
+        and (select (select distinct get_form_status from form_status)) = 'Complete'
           then 'Complete'
       else 'Not Started'
     end;
