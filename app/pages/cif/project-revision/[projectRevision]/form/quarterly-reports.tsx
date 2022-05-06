@@ -8,6 +8,7 @@ import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
 import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportForm";
+import { quarterlyReportsFormQuery } from "__generated__/quarterlyReportsFormQuery.graphql";
 
 const pageQuery = graphql`
   query quarterlyReportsFormQuery($projectRevision: ID!) {
@@ -26,7 +27,7 @@ const pageQuery = graphql`
 
 export function ProjectQuarterlyReportsPage({
   preloadedQuery,
-}: RelayProps<{}, quarterlyReportFormQuery>) {
+}: RelayProps<{}, quarterlyReportsFormQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
