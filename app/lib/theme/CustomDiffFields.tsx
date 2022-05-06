@@ -152,7 +152,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
 
-    if (previousValue && formData) {
+    if (previousValue && formData && formContext.operation === "UPDATE") {
       return showStringDiff(id, previousValue, formData);
     } else if (
       !previousValue &&
