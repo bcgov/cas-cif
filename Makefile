@@ -209,12 +209,13 @@ lint_chart:
 .PHONY: install
 install: ## Installs the helm chart on the OpenShift cluster
 install: GIT_SHA1=$(shell git rev-parse HEAD)
+install: IMAGE_TAG=$(GIT_SHA1)
 install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 install: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 install: CHART_DIR=./chart/cas-cif
 install: CHART_INSTANCE=cas-cif
 install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
-										--set defaultImageTag=$(GIT_SHA1) \
+										--set defaultImageTag=$(IMAGE_TAG) \
 	  								--set download-dags.dagConfiguration="$$dagConfig" \
 										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
 										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
@@ -242,6 +243,6 @@ install:
 	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
 		echo 'Installing the application and issuing SSL certificate'; \
 		helm install --set certbot.manualRun=true $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
-	else; \
+	else \
 		helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
 	fi;
