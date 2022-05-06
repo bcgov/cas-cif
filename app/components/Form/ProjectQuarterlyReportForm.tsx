@@ -71,8 +71,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  console.log("projectrevision", projectRevision);
-
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -213,6 +211,18 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     }
   };
 
+  //// function to order reports chronologically
+  // const allQuarterlyReports = useMemo(() => {
+  //   const forms = [...projectRevision.projectQuarterlyReportFormChanges.edges];
+  //   const sorted = forms.sort((a, b) => {
+  //     return (
+  //       +new Date(a.node.newFormData.dueDate) -
+  //       +new Date(b.node.newFormData.dueDate)
+  //     );
+  //   });
+  //   return sorted;
+  // }, [projectRevision.projectQuarterlyReportFormChanges.edges]);
+
   return (
     <div>
       <header>
@@ -233,6 +243,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 </Button>
               </Grid.Row>
               {projectRevision.projectQuarterlyReportFormChanges.edges.map(
+                // {allQuarterlyReports.map
                 ({ node }, index) => {
                   return (
                     <Grid.Row key={node.id} className="reportContainer">
