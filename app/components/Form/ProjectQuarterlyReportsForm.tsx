@@ -5,7 +5,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import quarterlyReports from "pages/cif/project-revision/[projectRevision]/form/quarterly-reports";
 import { useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
-import quarterlyReportSchema from "data/jsonSchemaForm/quarterlyReportSchema";
+import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { ProjectQuarterlyReportsForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportsForm_projectRevision.graphql";
 import { ProjectQuarterlyReportsForm_query$key } from "__generated__/ProjectQuarterlyReportsForm_query.graphql";
 import SavingIndicator from "./SavingIndicator";
@@ -17,7 +17,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
-import { useUpdateProjectQuarterlyReport } from "mutations/ProjectReportingRequirement/updateProjectQuarterlyReport";
+import { useUpdateProjectQuarterlyReportFormChange } from "mutations/ProjectReportingRequirement/updateProjectQuarterlyReportFormChange";
+import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 
 interface Props {
   onSubmit: () => void;
@@ -71,11 +72,6 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  console.log(projectRevision);
-
-  //brianna --do we need an all forms like ProjectContactForm? That one uses primary/secondary
-
-  ///////////mutations to-do:
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -90,7 +86,7 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
       variables: {
         projectRevisionId: projectRevision.rowId,
         newFormData: formData,
-        connections: [projectRevision.projectQuarterlyReportFormChanges.__id], //brianna what will this be
+        connections: [projectRevision.projectQuarterlyReportFormChanges.__id],
       },
       // optimisticResponse: {
       //   createFormChange: {
@@ -132,7 +128,7 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
   };
 
   const [applyUpdateFormChangeMutation, isUpdating] =
-    useUpdateProjectQuarterlyReport();
+    useUpdateReportingRequirementFormChange();
 
   const updateFormChange = (
     formChange: {
@@ -143,6 +139,7 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     },
     newFormData: any
   ) => {
+    console.log("formchange arg", formChange, "newformdata arg", newFormData);
     applyUpdateFormChangeMutation({
       variables: {
         input: {
@@ -194,7 +191,6 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
               </Grid.Row>
               {projectRevision.projectQuarterlyReportFormChanges.edges.map(
                 ({ node }, index) => {
-                  console.log("node is", node);
                   return (
                     <Grid.Row key={node.id} className="reportContainer">
                       <Grid.Col span={6}>
@@ -205,13 +201,14 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                           ref={(el) => (formRefs.current[node.id] = el)}
                           formData={node.newFormData}
                           onChange={(change) => {
-                            console.log("change is", change);
                             updateFormChange(
                               { ...node, changeStatus: "pending" },
                               change.formData
                             );
                           }}
-                          schema={quarterlyReportSchema as JSONSchema7}
+                          schema={
+                            projectReportingRequirementSchema as JSONSchema7
+                          }
                           uiSchema={quarterlyReportUiSchema}
                           ObjectFieldTemplate={EmptyObjectFieldTemplate}
                         />
@@ -231,22 +228,6 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                   );
                 }
               )}
-              {/* <Grid.Row>
-                  <Grid.Col span={10}>
-                    <Button
-                      style={{ marginRight: "auto" }}
-                      onClick={() =>
-                        // allForms is already sorted by contactIndex
-                        addContact(
-                          allForms[allForms.length - 1].newFormData.contactIndex +
-                            1
-                        )
-                      }
-                    >
-                      Add
-                    </Button>
-                  </Grid.Col>
-                </Grid.Row> */}
 
               <Grid.Row>
                 <Button
