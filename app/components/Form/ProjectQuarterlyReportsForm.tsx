@@ -1,24 +1,21 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import Grid from "@button-inc/bcgov-theme/Grid";
-import FormBorder from "lib/theme/components/FormBorder";
-import quarterlyReports from "pages/cif/project-revision/[projectRevision]/form/quarterly-reports";
-import { useMemo, useRef } from "react";
-import { graphql, useFragment } from "react-relay";
-import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
-import { ProjectQuarterlyReportsForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportsForm_projectRevision.graphql";
-import { ProjectQuarterlyReportsForm_query$key } from "__generated__/ProjectQuarterlyReportsForm_query.graphql";
-import SavingIndicator from "./SavingIndicator";
-import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
-import FormBase from "./FormBase";
-import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import useDiscardFormChange from "hooks/useDiscardFormChange";
+import { JSONSchema7 } from "json-schema";
+import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
+import FormBorder from "lib/theme/components/FormBorder";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
-import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
-import { useUpdateProjectQuarterlyReportFormChange } from "mutations/ProjectReportingRequirement/updateProjectQuarterlyReportFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+import { useRef } from "react";
+import { graphql, useFragment } from "react-relay";
+import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import { ProjectQuarterlyReportsForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportsForm_projectRevision.graphql";
+import FormBase from "./FormBase";
+import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   onSubmit: () => void;
@@ -170,6 +167,49 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     });
   };
 
+  const stageQuarterlyReportFormChanges = async () => {
+    const validationErrors = Object.keys(formRefs.current).reduce(
+      (agg, formId) => {
+        const formObject = formRefs.current[formId];
+        return [...agg, ...validateFormWithErrors(formObject)];
+      },
+      []
+    );
+
+    const completedPromises: Promise<void>[] = [];
+
+    projectRevision.projectQuarterlyReportFormChanges.edges.forEach(
+      ({ node }) => {
+        if (node.changeStatus === "pending") {
+          const promise = new Promise<void>((resolve, reject) => {
+            applyUpdateFormChangeMutation({
+              variables: {
+                input: {
+                  id: node.id,
+                  formChangePatch: {
+                    changeStatus: "staged",
+                  },
+                },
+              },
+              debounceKey: node.id,
+              onCompleted: () => {
+                resolve();
+              },
+              onError: reject,
+            });
+          });
+          completedPromises.push(promise);
+        }
+      }
+    );
+    try {
+      await Promise.all(completedPromises);
+      if (validationErrors.length === 0) props.onSubmit();
+    } catch (e) {
+      // the failing mutation will display an error message and send the error to sentry
+    }
+  };
+
   return (
     <div>
       <header>
@@ -233,8 +273,8 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
                 <Button
                   size="medium"
                   variant="primary"
-                  // onClick={stageContactFormChanges}
-                  //   disabled={isUpdating}
+                  onClick={stageQuarterlyReportFormChanges}
+                  disabled={isUpdating}
                 >
                   Submit Quarterly Reports
                 </Button>
