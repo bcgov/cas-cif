@@ -60,6 +60,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         id
         changeStatus
         projectByProjectId {
+          id
           proposalReference
         }
         projectFormChange {
@@ -232,7 +233,25 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             </ul>
           </li>
         )}
+        {mode === "view" && (
+          <li>
+            <h3>3. Attachments</h3>
+            <ul>
+              <li className="bordered" style={{ padding: "10px 0 10px 0" }}>
+                <Link
+                  href={{
+                    pathname: "/cif/project/[project]/attachments",
+                    query: { project: projectByProjectId.id },
+                  }}
+                >
+                  <a>View/Add Attachments</a>
+                </Link>
+              </li>
+            </ul>
+          </li>
+        )}
       </ol>
+
       <style jsx>{`
         ol {
           list-style: none;
