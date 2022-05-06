@@ -9,6 +9,7 @@ import {
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
+import TaskListStatus from "./TaskListStatus";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -69,7 +70,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                 } ${formTitle.toLowerCase()}`}
           </a>
         </Link>
-        {mode !== "view" && <div className="status">{formStatus}</div>}
+        {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
 
         <style jsx>{`
           li {

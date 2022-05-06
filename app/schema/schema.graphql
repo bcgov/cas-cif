@@ -43362,8 +43362,6 @@ type Query implements Node {
   getFormStatus(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
-    arg0: Int!
-    arg1: String!
 
     """Read all values in the set before (above) this cursor."""
     before: Cursor
@@ -43375,6 +43373,7 @@ type Query implements Node {
 
     """Only read the first `n` values of the set."""
     first: Int
+    formDataTableName: String!
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -43384,6 +43383,7 @@ type Query implements Node {
     based pagination. May not be used with `last`.
     """
     offset: Int
+    projectRevisionId: Int!
   ): GetFormStatusConnection
 
   """
