@@ -24,6 +24,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         summaryContactFormChanges: projectContactFormChanges {
           edges {
             node {
+              id
               isPristine
               newFormData
               operation
