@@ -9,51 +9,20 @@ import {
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
+import TaskListStatus from "./TaskListStatus";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
 }
 
-const getStatus = (
-  forms: Array<{
-    changeStatus: string;
-    isPristine: boolean;
-    validationErrors: any[];
-  }>
-) => {
-  if (
-    forms.some((form) => form?.changeStatus === "pending" && !form.isPristine)
-  )
-    return "Incomplete";
-
-  if (
-    forms.some(
-      (form) =>
-        form.changeStatus === "staged" && form.validationErrors.length > 0
-    )
-  )
-    return <strong>Attention Required</strong>;
-
-  if (
-    forms.every(
-      (form) =>
-        form.changeStatus === "staged" && form.validationErrors.length === 0
-    ) &&
-    forms.some((form) => !form.isPristine)
-  )
-    return "Complete";
-
-  return "Not Started";
-};
-
 const TaskList: React.FC<Props> = ({ projectRevision }) => {
   const {
     id,
     projectByProjectId,
-    projectFormChange,
-    tasklistProjectContactFormChanges,
-    projectManagerFormChanges,
     changeStatus,
+    projectOverviewStatus,
+    projectManagersStatus,
+    projectContactsStatus,
   } = useFragment(
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
@@ -62,33 +31,9 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         projectByProjectId {
           proposalReference
         }
-        projectFormChange {
-          changeStatus
-          isPristine
-          validationErrors
-        }
-        tasklistProjectContactFormChanges: projectContactFormChanges {
-          edges {
-            node {
-              changeStatus
-              isPristine
-              validationErrors
-            }
-          }
-        }
-        projectManagerFormChanges: projectManagerFormChangesByLabel(
-          first: 500
-        ) {
-          edges {
-            node {
-              formChange {
-                changeStatus
-                isPristine
-                validationErrors
-              }
-            }
-          }
-        }
+        projectOverviewStatus
+        projectContactsStatus
+        projectManagersStatus
       }
     `,
     projectRevision
@@ -101,29 +46,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
       : projectByProjectId
       ? "update"
       : "create";
-
-  const projectOverviewStatus = useMemo(
-    () => getStatus([projectFormChange]),
-    [projectFormChange]
-  );
-
-  const projectManagerStatus = useMemo(
-    () =>
-      getStatus(
-        projectManagerFormChanges.edges
-          .filter(({ node }) => node && node.formChange)
-          .map(({ node }) => node.formChange)
-      ),
-    [projectManagerFormChanges]
-  );
-
-  const projectContactStatus = useMemo(
-    () =>
-      getStatus(
-        tasklistProjectContactFormChanges.edges.map(({ node }) => node)
-      ),
-    [tasklistProjectContactFormChanges]
-  );
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
@@ -148,7 +70,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
                 } ${formTitle.toLowerCase()}`}
           </a>
         </Link>
-        {mode !== "view" && <div className="status">{formStatus}</div>}
+        {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
 
         <style jsx>{`
           li {
@@ -170,11 +92,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           ul > li {
             display: flex;
             justify-content: space-between;
-          }
-
-          .status {
-            text-align: right;
-            padding-right: 5px;
           }
         `}</style>
       </li>
@@ -209,13 +126,13 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               "managers",
               getProjectRevisionManagersFormPageRoute(id),
               "Project managers",
-              projectManagerStatus
+              projectManagersStatus
             )}
             {getFormListItem(
               "contacts",
               getProjectRevisionContactsFormPageRoute(id),
               "Project contacts",
-              projectContactStatus
+              projectContactsStatus
             )}
           </ul>
         </li>
