@@ -17,14 +17,14 @@ const pageQuery = graphql`
     project(id: $project) {
       id
       projectName
-    }
-    allAttachments(first: 2147483647)
-      @connection(key: "connection_allAttachments") {
-      totalCount
-      edges {
-        node {
-          file
-          ...AttachmentTableRow_attachment
+      attachmentsByProjectId(first: 2147483647)
+        @connection(key: "connection_attachmentsByProjectId") {
+        totalCount
+        edges {
+          node {
+            file
+            ...AttachmentTableRow_attachment
+          }
         }
       }
     }
@@ -43,10 +43,7 @@ const tableFilters = [
 export function ProjectAttachments({
   preloadedQuery,
 }: RelayProps<{}, attachmentsQuery>) {
-  const { session, project, allAttachments } = usePreloadedQuery(
-    pageQuery,
-    preloadedQuery
-  );
+  const { session, project } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   const isRedirecting = useRedirectTo404IfFalsy(project);
   if (isRedirecting) return null;
@@ -65,11 +62,11 @@ export function ProjectAttachments({
       </Link>
       <Table
         paginated
-        totalRowCount={allAttachments.totalCount}
+        totalRowCount={project.attachmentsByProjectId.totalCount}
         filters={tableFilters}
         pageQuery={pageQuery}
       >
-        {allAttachments.edges.map(({ node }) => (
+        {project.attachmentsByProjectId.edges.map(({ node }) => (
           <AttachmentTableRow key={node.file} attachment={node} />
         ))}
       </Table>
