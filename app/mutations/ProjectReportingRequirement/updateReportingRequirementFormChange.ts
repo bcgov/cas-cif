@@ -13,7 +13,7 @@ const mutation = graphql`
         operation
         changeStatus
         projectRevisionByProjectRevisionId {
-          ...ProjectQuarterlyReportsForm_projectRevision
+          ...ProjectQuarterlyReportForm_projectRevision
           ...TaskList_projectRevision
         }
       }

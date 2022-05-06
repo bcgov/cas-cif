@@ -13,13 +13,13 @@ import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReport
 import { useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
-import { ProjectQuarterlyReportsForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportsForm_projectRevision.graphql";
+import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
 import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   onSubmit: () => void;
-  projectRevision: ProjectQuarterlyReportsForm_projectRevision$key;
+  projectRevision: ProjectQuarterlyReportForm_projectRevision$key;
 }
 
 const quarterlyReportUiSchema = {
@@ -44,7 +44,7 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
 
   const projectRevision = useFragment(
     graphql`
-      fragment ProjectQuarterlyReportsForm_projectRevision on ProjectRevision {
+      fragment ProjectQuarterlyReportForm_projectRevision on ProjectRevision {
         id
         rowId
         projectQuarterlyReportFormChanges(first: 502)

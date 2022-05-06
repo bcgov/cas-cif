@@ -24,7 +24,7 @@ export const mutation = graphql`
           id
           newFormData
           projectRevisionByProjectRevisionId {
-            ...ProjectQuarterlyReportsForm_projectRevision
+            ...ProjectQuarterlyReportForm_projectRevision
             ...TaskList_projectRevision
           }
         }

@@ -7,7 +7,7 @@ import { getProjectRevisionPageRoute } from "pageRoutes";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
-import ProjectQuarterlyReportsForm from "components/Form/ProjectQuarterlyReportsForm";
+import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportForm";
 
 const pageQuery = graphql`
   query quarterlyReportsFormQuery($projectRevision: ID!) {
@@ -17,7 +17,7 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
-        ...ProjectQuarterlyReportsForm_projectRevision
+        ...ProjectQuarterlyReportForm_projectRevision
         ...TaskList_projectRevision
       }
     }
@@ -26,7 +26,7 @@ const pageQuery = graphql`
 
 export function ProjectQuarterlyReportsPage({
   preloadedQuery,
-}: RelayProps<{}, quarterlyReportsFormQuery>) {
+}: RelayProps<{}, quarterlyReportFormQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
@@ -41,7 +41,7 @@ export function ProjectQuarterlyReportsPage({
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      <ProjectQuarterlyReportsForm
+      <ProjectQuarterlyReportForm
         projectRevision={query.projectRevision}
         onSubmit={handleSubmit}
       />
