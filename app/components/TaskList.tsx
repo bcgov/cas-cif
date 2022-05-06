@@ -93,11 +93,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             display: flex;
             justify-content: space-between;
           }
-
-          .status {
-            text-align: right;
-            padding-right: 5px;
-          }
         `}</style>
       </li>
     );
