@@ -13,3 +13,6 @@ dependencies:
     version: 1.0.7
     repository: https://bcgov.github.io/cas-airflow
     alias: deploy-db
+  - name: certbot
+    version: 0.1.0
+    repository: https://bcdevops.github.io/certbot

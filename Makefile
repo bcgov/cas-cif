@@ -241,6 +241,7 @@ install:
 	helm dep up $(CHART_DIR); \
 	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
 		echo 'Installing the application and issuing SSL certificate'; \
-		helm install $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
-	fi; \
-	helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR);
+		helm install --set certbot.manualRun=true $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
+	else; \
+		helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
+	fi;
