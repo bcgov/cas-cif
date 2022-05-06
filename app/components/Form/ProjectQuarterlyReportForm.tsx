@@ -39,7 +39,7 @@ const quarterlyReportUiSchema = {
   },
 };
 
-const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
+const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
 
   const projectRevision = useFragment(
@@ -70,6 +70,8 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
+  console.log("projectrevision", projectRevision);
 
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
@@ -306,4 +308,4 @@ const ProjectQuarterlyReportsForm: React.FC<Props> = (props) => {
   );
 };
 
-export default ProjectQuarterlyReportsForm;
+export default ProjectQuarterlyReportForm;
