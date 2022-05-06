@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif.get_form_status(int, text)
+create or replace function cif.get_form_status(project_revision_id int, form_data_table_name text)
 returns setof text
 as
 $function$
