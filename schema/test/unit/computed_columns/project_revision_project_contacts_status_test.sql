@@ -167,5 +167,15 @@ select is(
   'Returns Attention Required, when any form_change record in a revision has a change_status of staged and validation_errors is not empty'
 );
 
+update cif.form_change set new_form_data = '{"testField": "test value"}', validation_errors = '[]' where new_form_data = '{"testField": "not pristine"}';
+
+select is(
+  (
+    select cif.project_revision_project_contacts_status((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3))
+  ),
+  'Complete',
+  'Returns Complete, when all form_change statuses are either Complete or Not Started'
+);
+
 select finish();
 rollback;
