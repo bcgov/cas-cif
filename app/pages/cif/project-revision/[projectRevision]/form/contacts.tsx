@@ -120,10 +120,7 @@ export function ProjectContactsPage({
       {mode === "view" ? (
         <>
           {createEditButton()}
-          <ProjectContactFormSummary
-            query={query}
-            projectRevision={query.projectRevision}
-          />
+          <ProjectContactFormSummary projectRevision={query.projectRevision} />
         </>
       ) : (
         <ProjectContactForm

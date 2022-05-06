@@ -118,10 +118,7 @@ export function ProjectOverviewForm({
       {query.projectRevision.changeStatus === "committed" ? (
         <>
           {createEditButton()}
-          <ProjectFormSummary
-            query={query}
-            projectRevision={query.projectRevision}
-          />
+          <ProjectFormSummary projectRevision={query.projectRevision} />
         </>
       ) : (
         <ProjectForm
