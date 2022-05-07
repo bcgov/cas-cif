@@ -34,7 +34,7 @@ begin
     change_status,
     json_schema_name
   ) values (
-    '{}',
+    null,
     'create',
     'cif',
     'project',

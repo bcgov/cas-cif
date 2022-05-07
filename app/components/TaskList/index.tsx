@@ -1,11 +1,12 @@
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { useStageDirtyFormChanges } from "mutations/FormChange/stageDirtyFormChanges";
 import {
   getProjectRevisionPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectRevisionAttachmentsPageRoute,
 } from "pageRoutes";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
 import AttachmentsTaskListSection from "./AttachmentsTaskListSection";
@@ -21,6 +22,7 @@ interface Props {
 const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
     id,
+    rowId,
     projectByProjectId,
     projectOverviewStatus,
     projectManagersStatus,
@@ -33,6 +35,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
+        rowId
+        changeStatus
         projectByProjectId {
           proposalReference
         }
@@ -56,6 +60,19 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     projectRevision
   );
   const router = useRouter();
+
+  const [stageDirtyFormChanges] = useStageDirtyFormChanges();
+  useEffect(() => {
+    stageDirtyFormChanges({
+      variables: {
+        input: {
+          projectRevisionId: rowId,
+        },
+      },
+    });
+    // We only want to run this effect on mount, so we use an empty array as a dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;

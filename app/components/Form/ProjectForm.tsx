@@ -130,9 +130,9 @@ const ProjectForm: React.FC<Props> = (props) => {
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
       ({ node }) =>
-        node.rowId === revision.projectFormChange.newFormData.operatorId
+        node.rowId === revision.projectFormChange.newFormData?.operatorId
     );
-  }, [query, revision.projectFormChange.newFormData.operatorId]);
+  }, [query, revision.projectFormChange.newFormData?.operatorId]);
 
   const uiSchema = useMemo(() => {
     return createProjectUiSchema(
