@@ -1,6 +1,3 @@
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   getProjectRevisionContactsFormPageRoute,
@@ -8,10 +5,10 @@ import {
   getProjectRevisionOverviewFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
-import TaskListStatus from "./TaskListStatus";
+import TaskListItem from "./TaskListItem";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -57,54 +54,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     return routeParts[routeParts.length - 1];
   }, [id, router]);
 
-  const getFormListItem = (stepName, linkUrl, formTitle, formStatus) => {
-    return (
-      <li
-        aria-current={currentStep === stepName ? "step" : false}
-        className="bordered"
-      >
-        <Link href={linkUrl}>
-          <a>
-            {mode === "view" || stepName === "summary"
-              ? formTitle
-              : `${
-                  mode === "update" ? "Edit" : "Add"
-                } ${formTitle.toLowerCase()}`}
-          </a>
-        </Link>
-        {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
-
-        <style jsx>{`
-          li {
-            text-indent: 15px;
-            margin-bottom: 0;
-            display: flex;
-            justify-content: space-between;
-          }
-          li[aria-current="step"],
-          li[aria-current="step"] div {
-            background-color: #fafafc;
-          }
-
-          .bordered {
-            border-bottom: 1px solid #d1d1d1;
-            padding: 10px 0 10px 0;
-          }
-
-          ul > li {
-            display: flex;
-            justify-content: space-between;
-          }
-        `}</style>
-      </li>
-    );
-  };
-  // Project Detail Accordion state
-  const [isExpanded, setIsExpanded] = useState(
-    currentStep === "contacts" || currentStep === "managers"
-  );
-  const toggleCustomAccordion = () => setIsExpanded(!isExpanded);
-
   return (
     <div className="container">
       <h2>
@@ -115,53 +64,61 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           : "Add a Project"}
       </h2>
       <ol>
-        <li>
-          <h3>1. Project Overview</h3>
-          <ul>
-            {getFormListItem(
-              "overview",
-              getProjectRevisionOverviewFormPageRoute(id),
-              "Project overview",
-              projectOverviewStatus
-            )}
-          </ul>
-        </li>
-        <li>
-          <h3 className="customAccordion" onClick={toggleCustomAccordion}>
-            2. Project Details {mode === "update" ? "" : "(optional)"}{" "}
-            <span>
-              <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
-            </span>
-          </h3>
-          {isExpanded && (
-            <ul>
-              {getFormListItem(
-                "managers",
-                getProjectRevisionManagersFormPageRoute(id),
-                "Project managers",
-                projectManagerStatus
-              )}
-              {getFormListItem(
-                "contacts",
-                getProjectRevisionContactsFormPageRoute(id),
-                "Project contacts",
-                projectContactStatus
-              )}
-            </ul>
-          )}
-        </li>
+        <TaskListItem
+          defaultExpandedState={currentStep === "overview"}
+          listItemNumber="1"
+          listItemName="Project Overview"
+          formListItemArray={[
+            {
+              stepName: "overview",
+              linkUrl: getProjectRevisionOverviewFormPageRoute(id),
+              formTitle: "Project overview",
+              formStatus: projectOverviewStatus,
+            },
+          ]}
+          currentStep={currentStep}
+          mode={mode}
+        />
+        <TaskListItem
+          defaultExpandedState={
+            currentStep === "contacts" || currentStep === "managers"
+          }
+          listItemNumber="2"
+          listItemName="Project Details"
+          listItemMode={mode === "update" ? "" : "(optional)"}
+          formListItemArray={[
+            {
+              stepName: "managers",
+              linkUrl: getProjectRevisionManagersFormPageRoute(id),
+              formTitle: "Project managers",
+              formStatus: projectManagersStatus,
+            },
+            {
+              stepName: "contacts",
+              linkUrl: getProjectRevisionContactsFormPageRoute(id),
+              formTitle: "Project contacts",
+              formStatus: projectContactsStatus,
+            },
+          ]}
+          currentStep={currentStep}
+          mode={mode}
+        />
         {mode !== "view" && (
-          <li>
-            <h3>3. Submit changes</h3>
-            <ul>
-              {getFormListItem(
-                "summary",
-                getProjectRevisionPageRoute(id),
-                "Review and submit information",
-                null
-              )}
-            </ul>
-          </li>
+          <TaskListItem
+            defaultExpandedState={currentStep === "summary"}
+            listItemNumber="3"
+            listItemName="Submit changes"
+            formListItemArray={[
+              {
+                stepName: "summary",
+                linkUrl: getProjectRevisionPageRoute(id),
+                formTitle: "Review and submit information",
+                formStatus: null,
+              },
+            ]}
+            currentStep={currentStep}
+            mode={mode}
+          />
         )}
       </ol>
       <style jsx>{`
@@ -170,35 +127,12 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           margin: 0;
         }
 
-        ul {
-          list-style: none;
-          margin: 0;
-        }
-
-        li {
-          text-indent: 15px;
-          margin-bottom: 0;
-        }
-
-        ul > li {
-          display: flex;
-          justify-content: space-between;
-        }
-
         h2 {
           font-size: 1.25rem;
           margin: 0;
           padding: 20px 0 10px 0;
           border-bottom: 1px solid #d1d1d1;
           text-indent: 15px;
-        }
-        h3 {
-          font-size: 1rem;
-          line-height: 1;
-          border-bottom: 1px solid #d1d1d1;
-          text-indent: 15px;
-          padding: 10px 0 10px 0;
-          margin: 0;
         }
 
         div :global(a) {
@@ -213,27 +147,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         div.container {
           background-color: #e5e5e5;
           width: 400px;
-        }
-
-        ul > li {
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .status {
-          text-align: right;
-          padding-right: 5px;
-        }
-
-        // Custom Accordion styles
-        .customAccordion {
-          //pointer cursor on project details header
-          cursor: pointer;
-          display: flex;
-          justify-content: space-between;
-        }
-        .customAccordion span {
-          padding-right: 5px;
         }
       `}</style>
     </div>
