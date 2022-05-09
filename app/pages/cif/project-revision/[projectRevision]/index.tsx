@@ -7,12 +7,14 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { Button, Textarea } from "@button-inc/bcgov-theme";
+import { useEffect, useState } from "react";
+import { Button, Textarea, Alert } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import SavingIndicator from "components/Form/SavingIndicator";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   getProjectsPageRoute,
@@ -54,6 +56,7 @@ export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const router = useRouter();
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   const [updateChangeReason, updatingChangeReason] = useUpdateChangeReason();
@@ -157,6 +160,27 @@ export function ProjectRevision({
       <div>
         <header>
           <h2>Review and Submit Project</h2>
+          {showDiscardConfirmation && (
+            <Alert variant="danger" size="sm">
+              All changes made will be permanently deleted.
+              <a id="confirm-discard-revision" onClick={discardRevision}>
+                Proceed
+              </a>
+              <a onClick={() => setShowDiscardConfirmation(false)}>Cancel</a>
+            </Alert>
+          )}
+          {!showDiscardConfirmation && (
+            <Button
+              id="discard-project-button"
+              size="small"
+              variant="secondary"
+              onClick={() => setShowDiscardConfirmation(true)}
+              disabled={updatingProjectRevision || discardingProjectRevision}
+            >
+              <FontAwesomeIcon icon={faTrash} id="discard-project-icon" />
+              Discard Project Revision
+            </Button>
+          )}
         </header>
         <ProjectFormSummary projectRevision={query.projectRevision} />
         <ProjectManagerFormSummary projectRevision={query.projectRevision} />
@@ -200,14 +224,6 @@ export function ProjectRevision({
             >
               Submit
             </Button>
-            <Button
-              size="medium"
-              variant="secondary"
-              onClick={discardRevision}
-              disabled={updatingProjectRevision || discardingProjectRevision}
-            >
-              Discard Changes
-            </Button>
           </>
         )}
       </div>
@@ -224,6 +240,32 @@ export function ProjectRevision({
         }
         h4 {
           margin-bottom: 0;
+        }
+        div :global(#discard-project-icon) {
+          color: #323a45;
+          margin-right: 0.5em;
+        }
+        div :global(#discard-project-button) {
+          margin-bottom: 1em;
+          color: #cd2026;
+        }
+        div :global(#discard-project-button:hover) {
+          background-color: #aeb0b5;
+        }
+        div :global(.pg-notification) {
+          margin-bottom: 1em;
+        }
+        div :global(a) {
+          color: #1a5a96;
+        }
+        div :global(a:hover) {
+          text-decoration: none;
+          color: blue;
+          cursor: pointer;
+        }
+        div :global(#confirm-discard-revision) {
+          margin-left: 2em;
+          margin-right: 1em;
         }
       `}</style>
     </DefaultLayout>
