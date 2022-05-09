@@ -2,6 +2,7 @@ import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useState } from "react";
+import TaskListStatus from "./TaskListStatus";
 
 interface Props {
   defaultExpandedState: boolean;
@@ -52,7 +53,7 @@ const TaskListItem: React.FC<Props> = ({
                 } ${formTitle.toLowerCase()}`}
           </a>
         </Link>
-        {mode !== "view" && <div className="status">{formStatus}</div>}
+        {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
 
         <style jsx>{`
           li {
@@ -69,11 +70,6 @@ const TaskListItem: React.FC<Props> = ({
           .bordered {
             border-bottom: 1px solid #d1d1d1;
             padding: 10px 0 10px 0;
-          }
-
-          .status {
-            text-align: right;
-            padding-right: 5px;
           }
         `}</style>
       </li>
