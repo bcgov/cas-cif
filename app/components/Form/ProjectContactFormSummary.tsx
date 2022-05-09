@@ -53,40 +53,47 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the contacts page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
+  // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
+  let contactFormChanges = summaryContactFormChanges.edges;
+  if (!renderDiff)
+    contactFormChanges = summaryContactFormChanges.edges.filter(
+      ({ node }) => node.operation !== "ARCHIVE"
+    );
+
   const primaryContact = useMemo(
     () =>
-      summaryContactFormChanges.edges.find(
+      contactFormChanges.find(
         ({ node }) => node.newFormData?.contactIndex === 1
       ),
-    [summaryContactFormChanges.edges]
+    [contactFormChanges]
   );
 
   const secondaryContacts = useMemo(
     () =>
-      summaryContactFormChanges.edges.filter(
+      contactFormChanges.filter(
         ({ node }) =>
           node.newFormData?.contactIndex !== 1 &&
           (node.isPristine === false || node.isPristine === null)
       ),
-    [summaryContactFormChanges.edges]
+    [contactFormChanges]
   );
 
   const allFormChangesPristine = useMemo(
     () =>
-      !summaryContactFormChanges.edges.some(
+      !contactFormChanges.some(
         ({ node }) =>
           node.isPristine === false ||
           (node.isPristine === null && node.newFormData?.contactId !== null)
       ),
-    [summaryContactFormChanges.edges]
+    [contactFormChanges]
   );
 
   const secondaryContactFormChangesPristine = useMemo(
     () =>
-      !summaryContactFormChanges.edges.some(
+      !contactFormChanges.some(
         ({ node }) => node.isPristine === false || node.isPristine === null
       ),
-    [summaryContactFormChanges.edges]
+    [contactFormChanges]
   );
 
   const customFields = useMemo(
@@ -127,7 +134,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   return (
     <>
       <h3>Project Contacts</h3>
-      {allFormChangesPristine ? (
+      {allFormChangesPristine && !props.viewOnly ? (
         <p>
           <em>Project contacts not {isFirstRevision ? "added" : "updated"}</em>
         </p>
@@ -175,6 +182,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             />
           )}
           <label>Secondary Contacts</label>
+          {secondaryContacts.length < 1 && props.viewOnly && (
+            <dd>
+              <em>No Secondary contacts</em>
+            </dd>
+          )}
           {(secondaryContactFormChangesPristine ||
             secondaryContacts.length < 1) &&
           !props.viewOnly ? (

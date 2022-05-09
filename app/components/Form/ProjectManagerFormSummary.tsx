@@ -57,19 +57,26 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the managers page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
+  // If we are showing the diff then we want to see archived records, otherwise filter out the archived managers
+  let managerFormChanges = allProjectManagerFormChangesByLabel.edges;
+  if (!renderDiff)
+    managerFormChanges = allProjectManagerFormChangesByLabel.edges.filter(
+      ({ node }) => node?.formChange?.operation !== "ARCHIVE"
+    );
+
   const allFormChangesPristine = useMemo(
     () =>
-      !allProjectManagerFormChangesByLabel.edges.some(
+      !managerFormChanges.some(
         ({ node }) =>
           node.formChange?.isPristine === false ||
           node.formChange?.isPristine === null
       ),
-    [allProjectManagerFormChangesByLabel.edges]
+    [managerFormChanges]
   );
 
-  let formChangesByLabel = allProjectManagerFormChangesByLabel.edges;
+  let formChangesByLabel = managerFormChanges;
   if (!props.viewOnly)
-    formChangesByLabel = allProjectManagerFormChangesByLabel.edges.filter(
+    formChangesByLabel = managerFormChanges.filter(
       ({ node }) =>
         node.formChange?.isPristine === false ||
         node.formChange?.isPristine === null
