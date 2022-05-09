@@ -31,7 +31,7 @@ const defaultMockResolver = {
               id: `mock-project-quarterly-report-form-${generateID()}`,
               newFormData: {
                 status: "on_track",
-                dueDate: "2022-01-01",
+                reportDueDate: "2022-01-01",
                 projectId: 51,
                 reportType: "Quarterly",
               },
@@ -45,7 +45,7 @@ const defaultMockResolver = {
               id: `mock-project-quarterly-report-form-${generateID()}`,
               newFormData: {
                 status: "on_track",
-                dueDate: "2022-10-28",
+                reportDueDate: "2022-10-28",
                 comments: "some comments",
                 projectId: 51,
                 reportType: "Quarterly",
@@ -206,7 +206,7 @@ describe("The ProjectQuarterlyReportForm", () => {
                   id: `mock-project-quarterly-report-form-${generateID()}`,
                   newFormData: {
                     status: "on_track",
-                    dueDate: "2022-01-01",
+                    reportDueDate: "2022-01-01",
                     projectId: 51,
                     reportType: "Quarterly",
                   },

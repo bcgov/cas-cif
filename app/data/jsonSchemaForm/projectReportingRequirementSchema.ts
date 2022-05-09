@@ -2,9 +2,9 @@ const schema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Reporting Requirement",
-  required: ["dueDate"],
+  required: ["reportDueDate"],
   properties: {
-    dueDate: {
+    reportDueDate: {
       type: "string",
       title: "Report Due Date",
       default: undefined,
