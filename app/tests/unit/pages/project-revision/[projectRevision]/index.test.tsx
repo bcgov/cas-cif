@@ -102,7 +102,7 @@ describe("The Create Project page", () => {
 
     expect(screen.getByText(/Project overview not added/)).toBeInTheDocument();
     expect(screen.getByText(/Project managers not added/)).toBeInTheDocument();
-    expect(screen.getByText(/Primary contact not added/)).toBeInTheDocument();
+    expect(screen.getByText(/Project contacts not added/)).toBeInTheDocument();
   });
 
   it("Renders the summary with the filled-out details", async () => {
@@ -110,27 +110,50 @@ describe("The Create Project page", () => {
       ProjectRevision() {
         return {
           id: "Test Project Revision ID",
+          isFirstRevision: true,
           projectFormChange: {
             id: "mock-project-form-id",
+            isPristine: false,
             newFormData: {
               summary: "test-summary",
               operatorId: 3,
-              projectName: "test-proj",
+              projectName: "test-project-name",
               projectStatusId: 1,
               proposalReference: "test-prop-reference",
               fundingStreamRfpId: 1,
               totalFundingRequest: 5,
             },
+            asProject: {
+              operatorByOperatorId: {
+                legalName: "test-legal-name",
+                bcRegistryId: "test-bc-registry-id",
+              },
+              fundingStreamRfpByFundingStreamRfpId: {
+                year: 2020,
+                fundingStreamByFundingStreamId: {
+                  description: "test-funding-stream-description",
+                },
+              },
+              projectStatusByProjectStatusId: {
+                name: "test-project-status-name",
+              },
+            },
           },
-          projectManagerFormChangesByLabel: {
+          allProjectManagerFormChangesByLabel: {
             edges: [
               {
                 node: {
                   formChange: {
+                    isPristine: false,
                     newFormData: {
                       cifUserId: 4,
                       projectId: 2,
                       projectManagerLabelId: 1,
+                    },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager one",
+                      },
                     },
                   },
                   projectManagerLabel: {
@@ -141,10 +164,16 @@ describe("The Create Project page", () => {
               {
                 node: {
                   formChange: {
+                    isPristine: false,
                     newFormData: {
                       cifUserId: 5,
                       projectId: 2,
                       projectManagerLabelId: 2,
+                    },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager two",
+                      },
                     },
                   },
                   projectManagerLabel: {
@@ -155,10 +184,16 @@ describe("The Create Project page", () => {
               {
                 node: {
                   formChange: {
+                    isPristine: false,
                     newFormData: {
                       cifUserId: 6,
                       projectId: 2,
                       projectManagerLabelId: 3,
+                    },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager three",
+                      },
                     },
                   },
                   projectManagerLabel: {
@@ -176,107 +211,36 @@ describe("The Create Project page", () => {
               },
             ],
           },
-          projectContactFormChanges: {
+          summaryContactFormChanges: {
             edges: [
               {
                 node: {
+                  isPristine: false,
                   newFormData: {
                     contactId: 2,
                     projectId: 2,
                     contactIndex: 2,
                   },
+                  asProjectContact: {
+                    contactByContactId: {
+                      fullName: "test secondary contact",
+                    },
+                  },
                 },
               },
               {
                 node: {
+                  isPristine: false,
                   newFormData: {
                     contactId: 5,
                     projectId: 2,
                     contactIndex: 1,
                   },
-                },
-              },
-            ],
-          },
-        };
-      },
-      Query() {
-        return {
-          allCifUsers: {
-            edges: [
-              {
-                node: {
-                  rowId: 4,
-                  id: "WyJjaWZfdXNlcnMiLDRd",
-                  fullName: "Knope, Leslie",
-                },
-              },
-              {
-                node: {
-                  rowId: 5,
-                  id: "WyJjaWZfdXNlcnMiLDVd",
-                  fullName: "Swanson, Ron",
-                },
-              },
-              {
-                node: {
-                  rowId: 6,
-                  id: "WyJjaWZfdXNlcnMiLDZd",
-                  fullName: "Ludgate, April",
-                },
-              },
-            ],
-          },
-          allContacts: {
-            edges: [
-              {
-                node: {
-                  rowId: 2,
-                  id: "WyJjb250YWN0cyIsMl0=",
-                  fullName: "Loblaw002, Bob002",
-                },
-              },
-
-              {
-                node: {
-                  rowId: 5,
-                  id: "WyJjb250YWN0cyIsNV0=",
-                  fullName: "Loblaw005, Bob005",
-                },
-              },
-            ],
-          },
-          allFundingStreamRfps: {
-            edges: [
-              {
-                node: {
-                  fundingStreamByFundingStreamId: {
-                    name: "EP",
-                    description: "Emissions Performance",
+                  asProjectContact: {
+                    contactByContactId: {
+                      fullName: "test primary contact",
+                    },
                   },
-                  rowId: 1,
-                  year: 2019,
-                },
-              },
-            ],
-          },
-          allOperators: {
-            edges: [
-              {
-                node: {
-                  rowId: 3,
-                  legalName: "third operator legal name",
-                  bcRegistryId: "EF3456789",
-                },
-              },
-            ],
-          },
-          allProjectStatuses: {
-            edges: [
-              {
-                node: {
-                  name: "Proposal Submitted",
-                  rowId: 1,
                 },
               },
             ],
@@ -287,19 +251,19 @@ describe("The Create Project page", () => {
     pageTestingHelper.renderPage();
 
     expect(screen.getByText(/test-summary/)).toBeInTheDocument();
-    expect(screen.getByText(/third operator legal name/i)).toBeInTheDocument();
-    expect(screen.getByText(/test-proj/i)).toBeInTheDocument();
-    expect(screen.getByText(/proposal submitted/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-legal-name/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-project-name/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-project-status-name/i)).toBeInTheDocument();
     expect(screen.getByText(/test-prop-reference/i)).toBeInTheDocument();
     expect(screen.getByText(/\$5.00/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Emissions Performance - 2019/i)
+      screen.getByText(/test-funding-stream-description - 2020/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/Knope, Leslie/i)).toBeInTheDocument();
-    expect(screen.getByText(/Swanson, Ron/i)).toBeInTheDocument();
-    expect(screen.getByText(/Ludgate, April/i)).toBeInTheDocument();
-    expect(screen.getByText(/Loblaw005, Bob005/i)).toBeInTheDocument();
-    expect(screen.getByText(/Loblaw002, Bob002/i)).toBeInTheDocument();
+    expect(screen.getByText(/test manager one/i)).toBeInTheDocument();
+    expect(screen.getByText(/test manager two/i)).toBeInTheDocument();
+    expect(screen.getByText(/test manager three/i)).toBeInTheDocument();
+    expect(screen.getByText(/test primary contact/i)).toBeInTheDocument();
+    expect(screen.getByText(/test secondary contact/i)).toBeInTheDocument();
   });
 
   it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {

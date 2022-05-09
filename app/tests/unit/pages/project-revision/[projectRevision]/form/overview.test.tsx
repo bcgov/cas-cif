@@ -344,6 +344,21 @@ describe("The Project Overview page", () => {
               fundingStreamRfpId: 5,
               totalFundingRequest: 25,
             },
+            asProject: {
+              operatorByOperatorId: {
+                legalName: "test operator",
+                bcRegistryId: "12345",
+              },
+              fundingStreamRfpByFundingStreamRfpId: {
+                year: 2020,
+                fundingStreamByFundingStreamId: {
+                  description: "test funding stream",
+                },
+              },
+              projectStatusByProjectStatusId: {
+                name: "test status",
+              },
+            },
             isUniqueValue: true,
             formChangeByPreviousFormChangeId: {
               changeStatus: "committed",
@@ -409,7 +424,7 @@ describe("The Project Overview page", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.getByText(/funding stream rfp id/i).nextElementSibling
-    ).toHaveTextContent(`<mock-value-for-field-"description"> - 2021`);
+    ).toHaveTextContent(`test funding stream - 2020`);
     expect(
       screen.getByText(/proposal reference/i).nextElementSibling
     ).toHaveTextContent("ref");
