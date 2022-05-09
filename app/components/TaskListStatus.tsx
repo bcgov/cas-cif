@@ -1,15 +1,16 @@
+import { css } from "styled-components";
+
 interface Props {
   formStatus: string;
 }
 
-const statusStyle = (
-  <style jsx>{`
-    .status {
-      text-align: right;
-      padding-right: 5px;
-    }
-  `}</style>
-);
+// a workaround for the styled-jsx <style jsx> boolean property issue (see:https://github.com/vercel/next.js/issues/3432)
+const statusStyle = css`
+  .status {
+    text-align: right;
+    padding-right: 5px;
+  }
+`;
 
 const TaskListStatus: React.FC<Props> = ({ formStatus }) => {
   if (formStatus === "Attention Required")
@@ -18,13 +19,13 @@ const TaskListStatus: React.FC<Props> = ({ formStatus }) => {
         <div className="status">
           <strong>{formStatus}</strong>
         </div>
-        {statusStyle}
+        <style jsx>{statusStyle}</style>
       </>
     );
   return (
     <>
       <div className="status">{formStatus}</div>
-      {statusStyle}
+      <style jsx>{statusStyle}</style>
     </>
   );
 };
