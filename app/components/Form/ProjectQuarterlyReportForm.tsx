@@ -23,7 +23,7 @@ interface Props {
 }
 
 const quarterlyReportUiSchema = {
-  dueDate: {
+  reportDueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "date",
@@ -52,6 +52,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           __id
           edges {
             node {
+              rowId
               id
               newFormData
               operation
@@ -70,7 +71,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -80,46 +80,12 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       projectId: projectRevision.projectFormChange.formDataRecordId,
       reportType: "Quarterly",
     };
-
     addQuarterlyReportMutation({
       variables: {
         projectRevisionId: projectRevision.rowId,
         newFormData: formData,
         connections: [projectRevision.projectQuarterlyReportFormChanges.__id],
       },
-      // optimisticResponse: {
-      //   createFormChange: {
-      //     query: {
-      //       projectRevision: {
-      //         projectFormChange: undefined,
-      //         projectQuarterlyReportFormChanges: {
-      //           edges:
-      //             projectRevision.projectQuarterlyReportFormChanges.edges.map(
-      //               ({ node: { projectManagerLabel, formChange } }) => {
-      //                 if (projectManagerLabel.id === labelId) {
-      //                   return {
-      //                     node: {
-      //                       projectManagerLabel: projectManagerLabel,
-      //                       formChange: {
-      //                         id: "new",
-      //                         newFormData,
-      //                       },
-      //                     },
-      //                   };
-      //                 }
-      //                 return {
-      //                   node: {
-      //                     projectManagerLabel,
-      //                     formChange,
-      //                   },
-      //                 };
-      //               }
-      //             ),
-      //         },
-      //       },
-      //     },
-      //   },
-      // },
       onError: (error) => {
         console.log(error);
       },
@@ -149,6 +115,15 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         },
       },
       debounceKey: formChange.id,
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: formChange.id,
+            newFormData: newFormData,
+            changeStatus: formChange.changeStatus,
+          },
+        },
+      },
     });
   };
 
@@ -205,23 +180,16 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     );
     try {
       await Promise.all(completedPromises);
+
       if (validationErrors.length === 0) props.onSubmit();
     } catch (e) {
       // the failing mutation will display an error message and send the error to sentry
     }
   };
-
-  //// function to order reports chronologically
-  // const allQuarterlyReports = useMemo(() => {
-  //   const forms = [...projectRevision.projectQuarterlyReportFormChanges.edges];
-  //   const sorted = forms.sort((a, b) => {
-  //     return (
-  //       +new Date(a.node.newFormData.dueDate) -
-  //       +new Date(b.node.newFormData.dueDate)
-  //     );
-  //   });
-  //   return sorted;
-  // }, [projectRevision.projectQuarterlyReportFormChanges.edges]);
+  console.log(
+    "projectrevision",
+    projectRevision.projectQuarterlyReportFormChanges.edges
+  );
 
   return (
     <div>
@@ -243,7 +211,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 </Button>
               </Grid.Row>
               {projectRevision.projectQuarterlyReportFormChanges.edges.map(
-                // {allQuarterlyReports.map
                 ({ node }, index) => {
                   return (
                     <Grid.Row key={node.id} className="reportContainer">
