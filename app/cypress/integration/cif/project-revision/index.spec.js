@@ -54,7 +54,7 @@ describe("the new project page", () => {
       component: "Project Contacts Form",
       variant: "empty",
     });
-
+    cy.findByText(/Submit changes/i).click();
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
@@ -255,6 +255,7 @@ describe("the new project page", () => {
 
     // Edit the project
     // change the name, delete a manager and contact.
+    cy.findByText(/Project Overview/i).click();
     cy.findByRole("link", { name: "Project overview" }).click();
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
     cy.findByText("Edit").click();
