@@ -3,11 +3,11 @@ import { screen, within } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
-import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/contacts";
+import { ProjectQuarterlyReportsPage } from "pages/cif/project-revision/[projectRevision]/form/quarterly-reports";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
-import compiledContactsFormQuery, {
-  contactsFormQuery,
-} from "__generated__/contactsFormQuery.graphql";
+import compiledQuarterlyReportsFormQuery, {
+  quarterlyReportsFormQuery,
+} from "__generated__/quarterlyReportsFormQuery.graphql";
 
 jest.mock("next/dist/client/router");
 
@@ -35,9 +35,9 @@ const defaultMockResolver = {
   },
 };
 
-const pageTestingHelper = new PageTestingHelper<contactsFormQuery>({
-  pageComponent: ProjectContactsPage,
-  compiledQuery: compiledContactsFormQuery,
+const pageTestingHelper = new PageTestingHelper<quarterlyReportsFormQuery>({
+  pageComponent: ProjectQuarterlyReportsPage,
+  compiledQuery: compiledQuarterlyReportsFormQuery,
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: {
     projectRevision: "mock-id",
@@ -59,6 +59,7 @@ describe("The Project Quarterly Reports page", () => {
 
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
+
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -84,12 +85,11 @@ describe("The Project Quarterly Reports page", () => {
         handleSubmit = () => props.onSubmit();
         return null;
       });
-
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-proj-rev-1")
+      getProjectRevisionPageRoute("mock-proj-rev-2")
     );
   });
 
