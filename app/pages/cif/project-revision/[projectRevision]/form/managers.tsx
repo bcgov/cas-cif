@@ -116,7 +116,10 @@ export function ProjectManagersForm({
       {query.projectRevision.changeStatus === "committed" ? (
         <>
           {createEditButton()}
-          <ProjectManagerFormSummary projectRevision={query.projectRevision} />
+          <ProjectManagerFormSummary
+            projectRevision={query.projectRevision}
+            viewOnly={true}
+          />
         </>
       ) : (
         <ProjectManagerFormGroup

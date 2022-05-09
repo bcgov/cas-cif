@@ -14,6 +14,7 @@ const { fields } = utils.getDefaultRegistry();
 
 interface Props {
   projectRevision: ProjectContactFormSummary_projectRevision$key;
+  viewOnly?: boolean;
 }
 
 const ProjectContactFormSummary: React.FC<Props> = (props) => {
@@ -48,6 +49,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
+  // Show diff if it is not the first revision and not view only (rendered from the contacts page)
+  const renderDiff = !isFirstRevision && !props.viewOnly;
 
   const primaryContact = useMemo(
     () =>
@@ -97,7 +101,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           liveValidate
           key={node.newFormData.contactIndex}
           tagName={"dl"}
-          fields={isFirstRevision ? fields : customFields}
+          fields={renderDiff ? customFields : fields}
           theme={readOnlyTheme}
           schema={projectContactSchema as JSONSchema7}
           uiSchema={createProjectContactUiSchema(
@@ -118,7 +122,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         />
       );
     });
-  }, [customFields, isFirstRevision, secondaryContacts]);
+  }, [customFields, secondaryContacts, renderDiff]);
 
   return (
     <>
@@ -130,9 +134,10 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
       ) : (
         <>
           <label>Primary Contact</label>
-          {primaryContact?.node?.isPristine ||
-          (primaryContact?.node?.isPristine === null &&
-            !primaryContact.node.newFormData.contactId) ? (
+          {(primaryContact?.node?.isPristine ||
+            (primaryContact?.node?.isPristine === null &&
+              !primaryContact.node.newFormData.contactId)) &&
+          !props.viewOnly ? (
             <dd>
               <em>Primary contact not updated</em>
             </dd>
@@ -142,7 +147,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               key={primaryContact?.node.id}
               tagName={"dl"}
               theme={readOnlyTheme}
-              fields={isFirstRevision ? fields : customFields}
+              fields={renderDiff ? customFields : fields}
               schema={projectContactSchema as JSONSchema7}
               uiSchema={createProjectContactUiSchema(
                 primaryContact ? (
@@ -170,8 +175,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             />
           )}
           <label>Secondary Contacts</label>
-          {secondaryContactFormChangesPristine ||
-          secondaryContacts.length < 1 ? (
+          {(secondaryContactFormChangesPristine ||
+            secondaryContacts.length < 1) &&
+          !props.viewOnly ? (
             <dd>
               <em>
                 {isFirstRevision

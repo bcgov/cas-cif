@@ -14,6 +14,7 @@ const { fields } = utils.getDefaultRegistry();
 
 interface Props {
   projectRevision: ProjectFormSummary_projectRevision$key;
+  viewOnly?: boolean;
 }
 
 const ProjectFormSummary: React.FC<Props> = (props) => {
@@ -64,6 +65,9 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
+  // Show diff if it is not the first revision and not view only (rendered from the overview page)
+  const renderDiff = !isFirstRevision && !props.viewOnly;
+
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
     projectFormChange.formChangeByPreviousFormChangeId?.asProject;
@@ -78,7 +82,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     : null;
 
   const [formSchema, formData] = useMemo(() => {
-    if (isFirstRevision) return [projectSchema, projectFormChange.newFormData];
+    if (!renderDiff) return [projectSchema, projectFormChange.newFormData];
     // Filter out fields from the formData that have not changed from the previous revision so the summary ignores these fields
     const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
     const newDataObject = {};
@@ -93,9 +97,9 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
 
     return [filteredSchema, newDataObject];
   }, [
-    isFirstRevision,
+    renderDiff,
     projectFormChange.newFormData,
-    projectFormChange.formChangeByPreviousFormChangeId,
+    projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
   ]);
 
   // Set custom rjsf fields to display diffs
@@ -104,9 +108,10 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   return (
     <>
       <h3>Project Overview</h3>
-      {projectFormChange.isPristine ||
-      (projectFormChange.isPristine === null &&
-        Object.keys(projectFormChange.newFormData).length === 0) ? (
+      {(projectFormChange.isPristine ||
+        (projectFormChange.isPristine === null &&
+          Object.keys(projectFormChange.newFormData).length === 0)) &&
+      !props.viewOnly ? (
         <p>
           <em>Project overview not {isFirstRevision ? "added" : "updated"}</em>
         </p>
@@ -114,7 +119,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
         <FormBase
           tagName={"dl"}
           theme={readOnlyTheme}
-          fields={isFirstRevision ? fields : customFields}
+          fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
             newDataAsProject?.operatorByOperatorId?.legalName,
