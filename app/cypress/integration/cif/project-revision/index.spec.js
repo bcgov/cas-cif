@@ -147,7 +147,7 @@ describe("the new project page", () => {
     cy.checkContactsForm("", "");
   });
 
-  it("Allows to create and update a project", () => {
+  it.only("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -307,14 +307,23 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.contains("Review and Submit Project");
 
-    cy.findByText(/Project Name/i)
-      .next()
-      .should("have.text", "Bar");
-    cy.findByText(/tech team secondary/i).should("not.exist");
+    cy.get("#root_projectName-diffOld").should("have.text", "Foo");
+    cy.get("#root_projectName-diffNew").should("have.text", "Bar");
 
-    cy.findByText(/^Secondary Contacts/i)
+    // cy.findByText(/Project Name/i)
+    //   .next()
+    //   .should("have.text", "Bar");
+    // cy.findByText(/tech team secondary/i).should("not.exist");
+
+    cy.get("#root_cifUserId-diffOld").should("have.text", "Ludgate, April");
+    cy.get("#root_cifUserId-diffOld")
       .next()
-      .should("have.text", "No secondary contacts");
+      .next()
+      .should("have.text", "REMOVED");
+
+    // cy.findByText(/^Secondary Contacts/i)
+    //   .next()
+    //   .should("have.text", "No secondary contacts");
 
     cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
     cy.get("body").happoScreenshot({
@@ -344,7 +353,7 @@ describe("the new project page", () => {
     cy.findByText(/Project contacts/i).click();
     cy.findByText(/^Secondary contacts/i)
       .next()
-      .should("have.text", "No secondary contacts");
+      .should("have.text", "No Secondary contacts");
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
