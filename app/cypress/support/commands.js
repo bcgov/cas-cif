@@ -190,3 +190,49 @@ Cypress.Commands.add(
     cy.get(`input[value="${secondaryContact}"]`).should("be.visible");
   }
 );
+
+Cypress.Commands.add(
+  "fillReport",
+  (
+    reportNumber,
+    reportDueDate,
+    receivedDate = undefined,
+    generalComments = undefined
+  ) => {
+    cy.url().should("include", "/form/quarterly-reports");
+
+    cy.findByRole("button", { name: /add another quarterly report/i }).click();
+    cy.get('[label*="Due Date"]')
+      .eq(reportNumber - 1)
+      .type(reportDueDate);
+    cy.get('[label*="Due Date"]')
+      .eq(reportNumber - 1)
+      .should("have.value", reportDueDate);
+
+    if (receivedDate) {
+      cy.get('[label*="Received Date"]')
+        .eq(reportNumber - 1)
+        .type(receivedDate);
+      cy.get('[label*="Received Date"]')
+        .eq(reportNumber - 1)
+        .should("have.value", receivedDate);
+    }
+
+    if (generalComments) {
+      cy.get('[aria-label="General Comments"]')
+        .eq(reportNumber - 1)
+        .type(generalComments);
+      cy.get('[aria-label="General Comments"]')
+        .eq(reportNumber - 1)
+        .should("have.value", generalComments);
+    }
+  }
+);
+
+Cypress.Commands.add(
+  "checkContactsForm",
+  (primaryContact, secondaryContact) => {
+    cy.findByLabelText(/primary contact/i).should("have.value", primaryContact);
+    cy.get(`input[value="${secondaryContact}"]`).should("be.visible");
+  }
+);
