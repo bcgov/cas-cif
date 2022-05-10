@@ -39717,7 +39717,7 @@ type ProjectRevision implements Node {
   ): ManagerFormChangesByLabelCompositeReturnsConnection!
 
   """
-  Computed column to return a project managers status for a project revision
+  Computed column to return a tasklist status for any tasklist form with an optional json matcher on the form selection
   """
   projectManagersStatus: String
 
@@ -39756,6 +39756,7 @@ type ProjectRevision implements Node {
 
   """Unique ID for the project revision"""
   rowId: Int!
+  tasklistStatusFor(formDateTableName: String!, jsonMatcher: String): String
 
   """updated at timestamp"""
   updatedAt: Datetime!
@@ -43449,6 +43450,7 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
     formDataTableName: String!
+    jsonMatcher: JSON
 
     """Only read the last `n` values of the set."""
     last: Int
