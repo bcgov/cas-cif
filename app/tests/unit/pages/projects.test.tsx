@@ -136,4 +136,39 @@ describe("The projects page", () => {
       screen.queryByLabelText("Filter by Project Managers")
     ).toBeInTheDocument();
   });
+
+  it("displays correctly filtered projects after status filtering", () => {
+    pageTestingHelper.loadQuery({
+      Query() {
+        return {
+          session: { cifUserBySub: {} },
+
+          allProjects: {
+            totalCount: 2,
+            edges: [
+              {
+                node: {
+                  id: "1",
+                  projectName: "Project 1",
+                  status: "Waitlisted",
+                },
+              },
+              {
+                node: {
+                  id: "2",
+                  projectName: "Project 2",
+                  status: "Proposal Submitted",
+                },
+              },
+            ],
+          },
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+    userEvent.type(screen.getAllByRole("combobox")[0], "wait");
+    userEvent.click(screen.getByText(/Apply/i));
+    expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Project 2/i)).not.toBeInTheDocument();
+  });
 });
