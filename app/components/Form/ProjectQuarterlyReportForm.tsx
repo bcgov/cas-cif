@@ -210,8 +210,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                   report
                 </Button>
               </Grid.Row>
-              {projectRevision.projectQuarterlyReportFormChanges.edges.map(
-                ({ node }, index) => {
+              {projectRevision.projectQuarterlyReportFormChanges.edges
+                .filter((e) => e.node.operation !== "ARCHIVE")
+                .map(({ node }, index) => {
                   return (
                     <Grid.Row key={node.id} className="reportContainer">
                       <Grid.Col span={6}>
@@ -247,8 +248,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                       </Grid.Col>
                     </Grid.Row>
                   );
-                }
-              )}
+                })}
 
               <Grid.Row>
                 <Button
