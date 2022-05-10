@@ -1764,6 +1764,8 @@ enum BudgetItemsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_TYPE_ASC
@@ -34988,6 +34990,8 @@ enum PaymentsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_TYPE_ASC
@@ -44890,6 +44894,7 @@ type ReportingRequirement implements Node {
   Reads a single `ReportType` that is related to this `ReportingRequirement`.
   """
   reportTypeByReportType: ReportType
+  reportingRequirementIndex: Int!
 
   """
   Reads a single `ReportingRequirementStatus` that is related to this `ReportingRequirement`.
@@ -45421,6 +45426,11 @@ input ReportingRequirementCondition {
   """Checks for equality with the object’s `reportType` field."""
   reportType: String
 
+  """
+  Checks for equality with the object’s `reportingRequirementIndex` field.
+  """
+  reportingRequirementIndex: Int
+
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
 
@@ -45518,6 +45528,9 @@ input ReportingRequirementFilter {
 
   """Filter by the object’s `reportTypeByReportType` relation."""
   reportTypeByReportType: ReportTypeFilter
+
+  """Filter by the object’s `reportingRequirementIndex` field."""
+  reportingRequirementIndex: IntFilter
 
   """Filter by the object’s `reportingRequirementStatusByStatus` relation."""
   reportingRequirementStatusByStatus: ReportingRequirementStatusFilter
@@ -46644,6 +46657,8 @@ enum ReportingRequirementsOrderBy {
   PROJECT_BY_PROJECT_ID__UPDATED_BY_DESC
   PROJECT_ID_ASC
   PROJECT_ID_DESC
+  REPORTING_REQUIREMENT_INDEX_ASC
+  REPORTING_REQUIREMENT_INDEX_DESC
   REPORTING_REQUIREMENT_STATUS_BY_STATUS__ACTIVE_ASC
   REPORTING_REQUIREMENT_STATUS_BY_STATUS__ACTIVE_DESC
   REPORTING_REQUIREMENT_STATUS_BY_STATUS__ARCHIVED_AT_ASC

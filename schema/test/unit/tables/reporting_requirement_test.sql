@@ -18,6 +18,7 @@ select columns_are(
     'certified_by_professional_designation',
     'project_id',
     'report_type',
+    'reporting_requirement_index',
     'created_at',
     'created_by',
     'updated_at',

@@ -9,7 +9,7 @@ import compiledProjectQuarterlyReportFormQuery, {
 } from "__generated__/quarterlyReportsFormQuery.graphql";
 
 const testQuery = graphql`
-  query ProjectReportingRequirementsFormQuery @relay_test_operation {
+  query ProjectQuarterlyReportFormQuery @relay_test_operation {
     query {
       # Spread the fragment you want to test here
       projectRevision(id: "I can be anything") {
@@ -49,7 +49,7 @@ const defaultMockResolver = {
                 comments: "some comments",
                 projectId: 51,
                 reportType: "Quarterly",
-                submittedDate: "2022-05-02",
+                quasubmittedDate: "2022-05-02",
               },
               operation: "CREATE",
               changeStatus: "pending",

@@ -13,7 +13,8 @@ create table cif.reporting_requirement
   certified_by varchar(1000),
   certified_by_professional_designation varchar(1000),
   project_id integer references cif.project(id) not null,
-  report_type varchar(1000) references cif.report_type(name) not null
+  report_type varchar(1000) references cif.report_type(name) not null,
+  reporting_requirement_index integer not null
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'reporting_requirement');

@@ -10,7 +10,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
@@ -74,11 +74,12 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
-  const addQuarterlyReport = () => {
+  const addQuarterlyReport = (reportIndex: number) => {
     const formData = {
       status: "on_track",
       projectId: projectRevision.projectFormChange.formDataRecordId,
       reportType: "Quarterly",
+      reportingRequirementIndex: reportIndex,
     };
     addQuarterlyReportMutation({
       variables: {
@@ -186,10 +187,26 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       // the failing mutation will display an error message and send the error to sentry
     }
   };
-  console.log(
-    "projectrevision",
-    projectRevision.projectQuarterlyReportFormChanges.edges
-  );
+
+  const [sortedQuarterlyReports, nextQuarterlyReportIndex] = useMemo(() => {
+    const filteredReports =
+      projectRevision.projectQuarterlyReportFormChanges.edges
+        .map(({ node }) => node)
+        .filter((report) => report.operation !== "ARCHIVE");
+
+    filteredReports.sort(
+      (a, b) =>
+        a.newFormData.reportingRequirementIndex -
+        b.newFormData.reportingRequirementIndex
+    );
+    const nextIndex =
+      filteredReports.length > 0
+        ? filteredReports[filteredReports.length - 1].newFormData
+            .reportingRequirementIndex + 1
+        : 1;
+
+    return [filteredReports, nextIndex];
+  }, [projectRevision.projectQuarterlyReportFormChanges]);
 
   return (
     <div>
@@ -205,50 +222,59 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           <Grid.Col span={10}>
             <FormBorder>
               <Grid.Row className="addButtonContainer">
-                <Button variant="secondary" onClick={addQuarterlyReport}>
+                <Button
+                  variant="secondary"
+                  onClick={() => addQuarterlyReport(nextQuarterlyReportIndex)}
+                >
                   <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly
                   report
                 </Button>
               </Grid.Row>
-              {projectRevision.projectQuarterlyReportFormChanges.edges
-                .filter((e) => e.node.operation !== "ARCHIVE")
-                .map(({ node }, index) => {
-                  return (
-                    <Grid.Row key={node.id} className="reportContainer">
-                      <Grid.Col span={6}>
-                        <h3>Quarterly Report {index + 1}</h3>
-                        <FormBase
-                          id={`form-${node.id}`}
-                          idPrefix={`form-${node.id}`}
-                          ref={(el) => (formRefs.current[node.id] = el)}
-                          formData={node.newFormData}
-                          onChange={(change) => {
-                            updateFormChange(
-                              { ...node, changeStatus: "pending" },
-                              change.formData
-                            );
-                          }}
-                          schema={
-                            projectReportingRequirementSchema as JSONSchema7
-                          }
-                          uiSchema={quarterlyReportUiSchema}
-                          ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                        />
-                      </Grid.Col>
-                      <Grid.Col span={4}>
-                        <Button
-                          variant="secondary"
-                          size="small"
-                          onClick={() =>
-                            deleteQuarterlyReport(node.id, node.operation)
-                          }
-                        >
-                          Remove
-                        </Button>
-                      </Grid.Col>
-                    </Grid.Row>
-                  );
-                })}
+              {sortedQuarterlyReports.map((quarterlyReport, index) => {
+                return (
+                  <Grid.Row
+                    key={quarterlyReport.id}
+                    className="reportContainer"
+                  >
+                    <Grid.Col span={6}>
+                      <h3>Quarterly Report {index + 1}</h3>
+                      <FormBase
+                        id={`form-${quarterlyReport.id}`}
+                        idPrefix={`form-${quarterlyReport.id}`}
+                        ref={(el) =>
+                          (formRefs.current[quarterlyReport.id] = el)
+                        }
+                        formData={quarterlyReport.newFormData}
+                        onChange={(change) => {
+                          updateFormChange(
+                            { ...quarterlyReport, changeStatus: "pending" },
+                            change.formData
+                          );
+                        }}
+                        schema={
+                          projectReportingRequirementSchema as JSONSchema7
+                        }
+                        uiSchema={quarterlyReportUiSchema}
+                        ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() =>
+                          deleteQuarterlyReport(
+                            quarterlyReport.id,
+                            quarterlyReport.operation
+                          )
+                        }
+                      >
+                        Remove
+                      </Button>
+                    </Grid.Col>
+                  </Grid.Row>
+                );
+              })}
 
               <Grid.Row>
                 <Button
