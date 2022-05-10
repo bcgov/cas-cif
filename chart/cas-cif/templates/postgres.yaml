@@ -6,7 +6,6 @@ metadata:
 spec:
   metadata:
     labels: {{ include "cas-cif.labels" . | nindent 6 }}
-  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:centos8-14.2-0
   postgresVersion: 14
   instances:
     - name: pgha1
@@ -45,7 +44,6 @@ spec:
       config:
         global:
           client_tls_sslmode: disable
-      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbouncer:centos8-1.15-3
       replicas: 2
       affinity:
         podAntiAffinity:
@@ -92,4 +90,4 @@ spec:
   monitoring:
     pgmonitor:
       exporter:
-        image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:ubi8-5.0.4-0
+
