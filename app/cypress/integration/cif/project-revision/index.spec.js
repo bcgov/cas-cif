@@ -179,7 +179,7 @@ describe("the new project page", () => {
     cy.checkContactsForm("", "");
   });
 
-  it.only("Allows to create and update a project", () => {
+  it("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -357,7 +357,7 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
 
     cy.findByText(/Edit quarterly reports/i).click();
-    cy.get('[value="2022-01-01"]').clear().type("1995-01-01");
+    cy.get('[label*="Due Date"]').eq(0).clear().type("1995-01-01");
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
@@ -407,7 +407,7 @@ describe("the new project page", () => {
       .next()
       .should("have.text", "No secondary contacts");
     cy.findByText(/Edit quarterly reports/i).click();
-    cy.findByLabelText(/Report Due Date/i).should("have.value", "1995-01-01");
+    cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {

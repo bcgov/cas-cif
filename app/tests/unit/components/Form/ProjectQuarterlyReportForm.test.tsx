@@ -225,7 +225,10 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    userEvent.type(screen.getByLabelText(/General Comments \(optional\)/), "c");
+    userEvent.type(
+      screen.getByLabelText(/General Comments \(optional\)/),
+      "comments"
+    );
 
     expect(
       componentTestingHelper.environment.mock.getMostRecentOperation().request
@@ -234,7 +237,7 @@ describe("The ProjectQuarterlyReportForm", () => {
       formChangePatch: {
         changeStatus: "pending",
         newFormData: {
-          comments: "c",
+          comments: "comments",
           projectId: 51,
         },
       },
