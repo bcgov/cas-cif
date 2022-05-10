@@ -5,5 +5,8 @@ dependencies:
 - name: cas-airflow-dag-trigger
   repository: https://bcgov.github.io/cas-airflow
   version: 1.0.7
-digest: sha256:6be971357d4017886a4dbf7a9c46fb505df6ef4ffbe44d47ac5907c537f4887b
-generated: "2022-05-05T13:40:21.872342317-07:00"
+- name: certbot
+  repository: https://bcdevops.github.io/certbot
+  version: 0.1.0
+digest: sha256:39cf5f0492b8729096b8d42dfd5c23929ff4e5476ebd337c4637feb7bdf247e5
+generated: "2022-05-10T12:58:45.87284267-07:00"
