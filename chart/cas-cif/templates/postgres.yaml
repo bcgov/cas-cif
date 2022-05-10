@@ -22,6 +22,15 @@ spec:
             cpu: 1000m
             memory: 2Gi
         storageClassName: netapp-block-standard
+      sidecars:
+        replicaCertCopy:
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -90,4 +99,10 @@ spec:
   monitoring:
     pgmonitor:
       exporter:
-
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi
