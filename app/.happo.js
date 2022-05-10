@@ -20,5 +20,13 @@ module.exports = {
       viewport: laptopViewport,
       scrollStitch: true,
     }),
+    "ios-safari": new RemoteBrowserTarget("ios-safari", {
+      viewport: "375x667",
+      scrollStitch: true,
+    }),
+    "ipad-safari": new RemoteBrowserTarget("ipad-safari", {
+      viewport: "1080x810",
+      scrollStitch: true,
+    }),
   },
 };
