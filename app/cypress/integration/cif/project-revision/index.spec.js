@@ -97,7 +97,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /add/i }).click();
     cy.findByRole("button", { name: /add/i }).click();
     cy.contains("Changes saved").should("be.visible");
-    cy.get("button").contains("Submit").click();
+    cy.findByRole("button", { name: /Submit Contacts/i }).click();
     cy.get(".error-detail").should("have.length", 4);
     cy.injectAxe();
     cy.checkA11y(".error-detail", null, logAxeResults);
@@ -162,21 +162,21 @@ describe("the new project page", () => {
       "100",
       "Project Underway"
     );
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
 
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
 
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
 
@@ -221,7 +221,7 @@ describe("the new project page", () => {
       component: "Project Summary Form",
       variant: "filled",
     });
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
     cy.url().should("include", "/form/overview");
@@ -270,7 +270,7 @@ describe("the new project page", () => {
       component: "Project Overview Form",
       variant: "editing",
     });
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
@@ -289,7 +289,7 @@ describe("the new project page", () => {
     cy.findByLabelText(/tech team secondary/i).should("be.empty");
 
     cy.contains("Changes saved.");
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project contacts/i).click();
@@ -304,7 +304,7 @@ describe("the new project page", () => {
     cy.wait(1000);
 
     cy.contains("Changes saved.");
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
     cy.contains("Review and Submit Project");
 
     cy.findByText(/Project Name/i)
@@ -316,7 +316,7 @@ describe("the new project page", () => {
       .next()
       .should("have.text", "No secondary contacts");
 
-    cy.findByRole("button", { name: /submit/i }).should("be.disabled");
+    cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
     cy.get("body").happoScreenshot({
       component: "Project Revision Summary",
       variant: "no_change_reason",
@@ -328,7 +328,7 @@ describe("the new project page", () => {
       component: "Project Revision Summary",
       variant: "with_change_reason",
     });
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.url().should("include", "/cif/projects");
     cy.findByRole("button", { name: /view/i }).click();
@@ -362,25 +362,25 @@ describe("the new project page", () => {
       "100",
       "Project Underway"
     );
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
-    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     // undo overview
-    cy.findByRole("button", { name: /view/i }).click();
+    cy.findByRole("button", { name: /^view/i }).click();
     cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText(/Funding Stream$/i).select("Innovation Accelerator");
     cy.findByLabelText(/Funding Stream RFP/i).select("2021");
