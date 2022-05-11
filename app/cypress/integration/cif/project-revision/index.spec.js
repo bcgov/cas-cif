@@ -179,7 +179,7 @@ describe("the new project page", () => {
     cy.checkContactsForm("", "");
   });
 
-  it("Allows to create and update a project", () => {
+  it.only("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -406,7 +406,7 @@ describe("the new project page", () => {
     cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "No secondary contacts");
-    cy.findByText(/Edit quarterly reports/i).click();
+    cy.get('a').contains(/Quarterly reports/i).click();
     cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
