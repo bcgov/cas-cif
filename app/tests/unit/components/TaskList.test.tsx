@@ -5,12 +5,15 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
-import * as pageRoutes from "pageRoutes";
+import { mocked } from "jest-mock";
+import { useRouter } from "next/router";
 
-jest.mock("next/link", () => {
-  return ({ children }) => {
-    return children;
-  };
+jest.mock("next/dist/client/router");
+const mockPush = jest.fn();
+mocked(useRouter).mockImplementation(() => {
+  return {
+    push: mockPush,
+  } as any;
 });
 
 const testQuery = graphql`
@@ -35,6 +38,7 @@ const mockQueryPayload = {
         projectOverviewStatus: "test-project-overview-status",
         projectContactsStatus: "test-project-contacts-status",
         projectManagersStatus: "test-project-managers-status",
+        quarterlyReportsStatus: "test-project-quarterly-reports-status",
       },
     };
   },
@@ -70,11 +74,7 @@ describe("The ProjectManagerForm", () => {
       Query() {
         return {
           projectRevision: {
-            id: "test-project-revision-id",
             projectByProjectId: null,
-            projectOverviewStatus: "test-project-overview-status",
-            projectContactsStatus: "test-project-contacts-status",
-            projectManagersStatus: "test-project-managers-status",
           },
         };
       },
@@ -99,58 +99,62 @@ describe("The ProjectManagerForm", () => {
     expect(
       screen.getByText("test-project-managers-status")
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("test-project-quarterly-reports-status")
+    ).toBeInTheDocument();
   });
 
   it("Calls the proper getRoute function when clicking Project Overview", () => {
-    const mockGetData = jest
-      .spyOn(pageRoutes, "getProjectRevisionOverviewFormPageRoute")
-      .mockImplementation((id) => ({
-        pathname: `/cif/project-revision/[projectRevision]/form/overview/`,
-        query: {
-          projectRevision: id,
-        },
-      }));
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getByText(/Project Overview/i));
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
-    expect(mockGetData).toHaveBeenCalledWith("test-project-revision-id");
+    expect(mockPush).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/overview?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/overview",
+      expect.any(Object)
+    );
   });
 
   it("Calls the proper getRoute function when clicking Project Contacts", () => {
-    const mockGetData = jest
-      .spyOn(pageRoutes, "getProjectRevisionContactsFormPageRoute")
-      .mockImplementation((id) => ({
-        pathname: `/cif/project-revision/[projectRevision]/form/contacts/`,
-        query: {
-          projectRevision: id,
-        },
-      }));
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getByText(/Project Details/i));
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
-    expect(mockGetData).toHaveBeenCalledWith("test-project-revision-id");
+    expect(mockPush).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/contacts?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/contacts",
+      expect.any(Object)
+    );
   });
 
   it("Calls the proper getRoute function when clicking Project Managers", () => {
-    const mockGetData = jest
-      .spyOn(pageRoutes, "getProjectRevisionManagersFormPageRoute")
-      .mockImplementation((id) => ({
-        pathname: `/cif/project-revision/[projectRevision]/form/managers/`,
-        query: {
-          projectRevision: id,
-        },
-      }));
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     fireEvent.click(screen.getByText(/Project Details/i));
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
-    expect(mockGetData).toHaveBeenCalledWith("test-project-revision-id");
+    expect(mockPush).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/managers?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/managers",
+      expect.any(Object)
+    );
+  });
+
+  it("Calls the proper getRoute function when clicking Quarterly Reports", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByText(/Edit quarterly reports/i));
+
+    expect(mockPush).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/quarterly-reports?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/quarterly-reports",
+      expect.any(Object)
+    );
   });
 });

@@ -147,7 +147,8 @@ values (
 
 /* END SETUP */
 
-/* Without Json Matching */
+
+/* ---------------------- Without Json Matching ---------------------- */
 
 select is(
   (
@@ -213,8 +214,7 @@ select is(
   'Returns null when the table argument is null'
 );
 
-
-/* With Json Matching */
+/* ---------------------- With Json Matching ---------------------- */
 
 select is(
   (
