@@ -3,8 +3,7 @@ app:
   sitewide_notice:
     content: <div class="alert alert-warning">This is the DEV environment.</div>
 
-nginx-sidecar:
-  hostName: dev.cif.gov.bc.ca
+hostName: dev.cif.gov.bc.ca
 
 db:
   preUpgradeCommand: |
@@ -13,9 +12,6 @@ db:
       drop schema if exists cif cascade;
       drop schema if exists cif_private cascade;
     EOF
-
-cert-issue:
-  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
 
 deploy-db:
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca

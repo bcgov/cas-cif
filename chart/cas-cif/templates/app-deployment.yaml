@@ -68,7 +68,7 @@ spec:
           - name: SITEWIDE_NOTICE
             value: {{ .Values.app.sitewide_notice.content | quote }}
           - name: HOST
-            value: http{{ if index .Values "nginx-sidecar" "sslTermination" }}s{{ end }}://{{ index .Values "nginx-sidecar" "hostName" }}
+            value: https://{{ .Values.hostName }}
           - name: SENTRY_ENVIRONMENT
             value: {{ include "cas-cif.namespaceSuffix" . }}
           - name: SENTRY_RELEASE
@@ -119,7 +119,6 @@ spec:
           - mountPath: "/attachments-credentials"
             name: gcs-documents-credentials
             readOnly: true
-{{- include "nginx-sidecar.deployment-container.tpl" (index .Values "nginx-sidecar") | indent 6 }}
       volumes:
         - name: gcs-documents-credentials
           secret:
@@ -127,5 +126,4 @@ spec:
             items:
             - key: credentials.json
               path: attachments-credentials.json
-{{- include "nginx-sidecar.deployment-volumes.tpl" (index .Values "nginx-sidecar") | nindent 8 }}
       restartPolicy: Always

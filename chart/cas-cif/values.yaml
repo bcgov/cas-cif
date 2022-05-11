@@ -30,19 +30,13 @@ db:
   # A shell script that will be executed in a pre-upgrade job, on the psql image.
   preUpgradeCommand: ~
 
-nginx-sidecar:
-  hostName: ~
-  # set to false to deploy the application with an insecure route,
-  # and issue an SSL certificate using acme.sh
-  sslTermination: true
-  objectNamePrefix: cas-cif
-  port: 3001
-  internalPort: 3000
-  caServerSecret: ~ # pragma: allowlist secret
-  caServerKey: ~
-  caAccountEmail: ggircs@gov.bc.ca
-  storageClassName: netapp-file-standard
-  renewalDays: 60
+hostName: ~
+
+certbot:
+  image:
+    tag: "1.0"
+  certbot:
+    email: ggircs@gov.bc.ca
 
 resources:
   limits:
@@ -58,13 +52,6 @@ autoscaling:
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
-cert-issue:
-  enabled: false
-  airflowEndpoint: ~
-  dagId: cas_cif_acme_issue
-  helm:
-    hook: post-install
 
 deploy-db:
   airflowEndpoint: ~

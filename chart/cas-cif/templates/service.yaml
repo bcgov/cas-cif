@@ -9,11 +9,7 @@ spec:
   - name: {{ template "cas-cif.fullname" . }}
     port: {{ .Values.app.port }}
     protocol: TCP
-    {{- if (index .Values "nginx-sidecar") }}
-    targetPort: {{ index .Values "nginx-sidecar" "port" }}
-    {{- else }}
     targetPort: 3000
-    {{- end }}
   selector: {{ include "cas-cif.selectorLabels" . | nindent 4 }}
     component: app
   sessionAffinity: None

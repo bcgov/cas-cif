@@ -24,8 +24,9 @@ const handle = app.getRequestHandler();
 app.prepare().then(async () => {
   const server = express();
 
-  // nginx proxy is running in the same pod
-  server.set("trust proxy", "loopback");
+  // trust the first proxy, so that secure cookies are set,
+  // even though the request reaching the express container is not secure
+  server.set("trust proxy", 1);
 
   const lightship = createLightship();
 
