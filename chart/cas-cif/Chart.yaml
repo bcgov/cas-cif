@@ -14,5 +14,7 @@ dependencies:
     repository: https://bcgov.github.io/cas-airflow
     alias: deploy-db
   - name: certbot
-    version: 0.1.0
-    repository: https://bcdevops.github.io/certbot
+    version: 0.1.1
+    # temporarily using forked helm repo to test a fix.
+    # Sould be updated once the upstream repo is updated.
+    repository: https://matthieu-foucault.github.io/certbot
