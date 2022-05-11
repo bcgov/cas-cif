@@ -113,7 +113,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
     ],
-    [allCifUsers.edges, allProjects.edges]
+    [allCifUsers.edges, allProjectStatuses.edges]
   );
 
   const [createProject, isCreatingProject] = useCreateProjectMutation();
