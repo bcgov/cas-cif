@@ -6,7 +6,7 @@ dependencies:
   repository: https://bcgov.github.io/cas-airflow
   version: 1.0.7
 - name: certbot
-  repository: https://bcdevops.github.io/certbot
-  version: 0.1.0
-digest: sha256:39cf5f0492b8729096b8d42dfd5c23929ff4e5476ebd337c4637feb7bdf247e5
-generated: "2022-05-10T12:58:45.87284267-07:00"
+  repository: https://matthieu-foucault.github.io/certbot
+  version: 0.1.1
+digest: sha256:5327ed374c9bf5c097bfa7ad9b030b644437717b9c59488c6ea6c140e7496ded
+generated: "2022-05-11T10:23:06.013472607-07:00"
