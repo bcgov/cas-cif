@@ -11,6 +11,8 @@ const FullWidthPopper = (props) => (
 );
 
 export default class SearchableDropdownFilter extends TableFilter<string> {
+  // config: boolean;
+
   constructor(
     display: string,
     argName: string,
@@ -26,7 +28,8 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
         <Autocomplete
           options={this.options}
           onChange={(_, option) => onChange(option, this.argName)}
-          freeSolo
+          freeSolo={this.isFreeSoloEnabled}
+          disableClearable={this.isDisableClearable}
           size="small"
           PopperComponent={FullWidthPopper}
           value={filterArgs[this.argName] ?? ""}

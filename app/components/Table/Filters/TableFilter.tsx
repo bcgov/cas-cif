@@ -4,6 +4,8 @@ import React from "react";
 import type { FilterComponent } from "./types";
 
 export interface FilterSettings {
+  isDisableClearable?: boolean;
+  isFreeSoloEnabled?: boolean;
   filterable?: boolean;
   sortable?: boolean;
   orderByPrefix?: string;
@@ -15,6 +17,8 @@ export default abstract class TableFilter<T = string | number | boolean> {
     this.argName = argName;
     this.isSearchEnabled = settings?.filterable ?? true;
     this.isSortEnabled = settings?.sortable ?? true;
+    this.isFreeSoloEnabled = settings?.isFreeSoloEnabled ?? false;
+    this.isDisableClearable = settings?.isDisableClearable ?? false;
     this.orderByPrefix =
       settings?.orderByPrefix ??
       (argName ? camelToSnakeCase(argName).toUpperCase() : argName);
@@ -37,6 +41,10 @@ export default abstract class TableFilter<T = string | number | boolean> {
   isSearchEnabled: boolean;
 
   isSortEnabled: boolean;
+
+  isFreeSoloEnabled: boolean;
+
+  isDisableClearable: boolean;
 
   /**
    * The array of all relay arguments managed by this filter.
