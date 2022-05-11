@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif.project_revision_tasklist_status_for(cif.project_revision, form_date_table_name text, json_matcher text default '{}')
+create or replace function cif.project_revision_tasklist_status_for(cif.project_revision, form_data_table_name text, json_matcher text default '{}')
 returns text
 as
 $computed_column$
