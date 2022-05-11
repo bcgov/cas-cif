@@ -212,14 +212,14 @@ describe("the new project page", () => {
 
 
     cy.findByText(/Add quarterly reports/i).click();
-    cy.fillReport(
+    cy.addQuarterlyReport(
       1,
       "2020-01-01",
       "2020-02-02",
       "I am the first general comment"
     );
     cy.wait(1000);
-    cy.fillReport(
+    cy.addQuarterlyReport(
       2,
       "2022-01-01",
       "2022-02-02",
