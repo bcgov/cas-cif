@@ -8,7 +8,9 @@ import {
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
-import TaskListItem from "./TaskListItem";
+import FormListItem from "./TaskListItem";
+import TaskListSection from "./TaskListSection";
+import { TaskListMode } from "./types";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -64,61 +66,65 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           : "Add a Project"}
       </h2>
       <ol>
-        <TaskListItem
+        {/* Project Overview Section */}
+        <TaskListSection
           defaultExpandedState={currentStep === "overview"}
           listItemNumber="1"
           listItemName="Project Overview"
-          formListItemArray={[
-            {
-              stepName: "overview",
-              linkUrl: getProjectRevisionOverviewFormPageRoute(id),
-              formTitle: "Project overview",
-              formStatus: projectOverviewStatus,
-            },
-          ]}
-          currentStep={currentStep}
-          mode={mode}
-        />
-        <TaskListItem
+        >
+          <FormListItem
+            stepName="overview"
+            linkUrl={getProjectRevisionOverviewFormPageRoute(id)}
+            formTitle="Project overview"
+            formStatus={projectOverviewStatus}
+            currentStep={currentStep}
+            mode={mode as TaskListMode}
+          />
+        </TaskListSection>
+
+        {/* Project Details Section */}
+        <TaskListSection
           defaultExpandedState={
             currentStep === "contacts" || currentStep === "managers"
           }
           listItemNumber="2"
           listItemName="Project Details"
           listItemMode={mode === "update" ? "" : "(optional)"}
-          formListItemArray={[
-            {
-              stepName: "managers",
-              linkUrl: getProjectRevisionManagersFormPageRoute(id),
-              formTitle: "Project managers",
-              formStatus: projectManagersStatus,
-            },
-            {
-              stepName: "contacts",
-              linkUrl: getProjectRevisionContactsFormPageRoute(id),
-              formTitle: "Project contacts",
-              formStatus: projectContactsStatus,
-            },
-          ]}
-          currentStep={currentStep}
-          mode={mode}
-        />
+        >
+          <FormListItem
+            stepName="managers"
+            linkUrl={getProjectRevisionManagersFormPageRoute(id)}
+            formTitle="Project managers"
+            formStatus={projectManagersStatus}
+            currentStep={currentStep}
+            mode={mode as TaskListMode}
+          />
+          <FormListItem
+            stepName="contacts"
+            linkUrl={getProjectRevisionContactsFormPageRoute(id)}
+            formTitle="Project contacts"
+            formStatus={projectContactsStatus}
+            currentStep={currentStep}
+            mode={mode as TaskListMode}
+          />
+        </TaskListSection>
+
+        {/* Project Summary Section */}
         {mode !== "view" && (
-          <TaskListItem
+          <TaskListSection
             defaultExpandedState={currentStep === "summary"}
             listItemNumber="3"
             listItemName="Submit changes"
-            formListItemArray={[
-              {
-                stepName: "summary",
-                linkUrl: getProjectRevisionPageRoute(id),
-                formTitle: "Review and submit information",
-                formStatus: null,
-              },
-            ]}
-            currentStep={currentStep}
-            mode={mode}
-          />
+          >
+            <FormListItem
+              stepName="summary"
+              linkUrl={getProjectRevisionPageRoute(id)}
+              formTitle="Review and submit information"
+              formStatus={null}
+              currentStep={currentStep}
+              mode={mode as TaskListMode}
+            />
+          </TaskListSection>
         )}
       </ol>
       <style jsx>{`
