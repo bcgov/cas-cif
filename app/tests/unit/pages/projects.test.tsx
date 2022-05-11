@@ -137,7 +137,7 @@ describe("The projects page", () => {
     ).toBeInTheDocument();
   });
 
-  it("applys correct filter variables, to mutation", () => {
+  it("renders the page with the status query variable from the status filter", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     userEvent.type(screen.getAllByRole("combobox")[0], "Wait");
