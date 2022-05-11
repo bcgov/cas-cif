@@ -13,6 +13,8 @@ with form_status as (
 )
 select
     case
+      when ($2 is null)
+        then null
       when (select exists (select * from form_status where get_form_status = 'Incomplete'))
         then 'Incomplete'
       when (select exists (select * from form_status where get_form_status = 'Attention Required'))
@@ -27,6 +29,6 @@ $computed_column$ language sql stable;
 
 grant execute on function cif.project_revision_tasklist_status_for to cif_internal, cif_external, cif_admin;
 
-comment on function cif.project_revision_project_managers_status is 'Computed column to return a tasklist status for any tasklist form with an optional json matcher on the form selection';
+comment on function cif.project_revision_tasklist_status_for is 'Computed column to return a tasklist status for any tasklist form with an optional json matcher on the form selection';
 
 commit;
