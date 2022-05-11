@@ -74,7 +74,7 @@ var config = convict({
   pgUser: {
     doc: "Username for the PG database.",
     format: String,
-    default: "cif_app",
+    default: "cifapp",
     nullable: false,
     env: "PGUSER",
   },
