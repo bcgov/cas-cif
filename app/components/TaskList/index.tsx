@@ -4,6 +4,7 @@ import {
   getProjectRevisionManagersFormPageRoute,
   getProjectRevisionOverviewFormPageRoute,
   getProjectRevisionPageRoute,
+  getProjectRevisionQuarterlyReportsFormPageRoute,
 } from "pageRoutes";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -24,7 +25,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     projectOverviewStatus,
     projectManagersStatus,
     projectContactsStatus,
+    quarterlyReportsStatus,
   } = useFragment(
+    // The JSON string is tripping up eslint
+    // eslint-disable-next-line relay/graphql-syntax
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
@@ -32,9 +36,17 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         projectByProjectId {
           proposalReference
         }
-        projectOverviewStatus
-        projectContactsStatus
-        projectManagersStatus
+        projectOverviewStatus: tasklistStatusFor(formDataTableName: "project")
+        projectContactsStatus: tasklistStatusFor(
+          formDataTableName: "project_contact"
+        )
+        projectManagersStatus: tasklistStatusFor(
+          formDataTableName: "project_manager"
+        )
+        quarterlyReportsStatus: tasklistStatusFor(
+          formDataTableName: "reporting_requirement"
+          jsonMatcher: "{\"reportType\":\"Quarterly\"}"
+        )
       }
     `,
     projectRevision
@@ -104,6 +116,22 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             linkUrl={getProjectRevisionContactsFormPageRoute(id)}
             formTitle="Project contacts"
             formStatus={projectContactsStatus}
+            currentStep={currentStep}
+            mode={mode as TaskListMode}
+          />
+        </TaskListSection>
+
+        {/* Quarterly Reports Section */}
+        <TaskListSection
+          defaultExpandedState={currentStep === "quarterly-reports"}
+          listItemNumber="4"
+          listItemName="Quarterly Reports"
+        >
+          <FormListItem
+            stepName="quarterly-reports"
+            linkUrl={getProjectRevisionQuarterlyReportsFormPageRoute(id)}
+            formTitle="Quarterly reports"
+            formStatus={quarterlyReportsStatus}
             currentStep={currentStep}
             mode={mode as TaskListMode}
           />
