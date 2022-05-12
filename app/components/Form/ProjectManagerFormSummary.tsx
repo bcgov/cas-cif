@@ -5,23 +5,43 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormSummary_projectRevision$key } from "__generated__/ProjectManagerFormSummary_projectRevision.graphql";
-import { ProjectManagerFormSummary_query$key } from "__generated__/ProjectManagerFormSummary_query.graphql";
 import FormBase from "./FormBase";
 
+import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
+import { utils } from "@rjsf/core";
+
+const { fields } = utils.getDefaultRegistry();
+
 interface Props {
-  query: ProjectManagerFormSummary_query$key;
   projectRevision: ProjectManagerFormSummary_projectRevision$key;
+  viewOnly?: boolean;
 }
 
 const ProjectManagerFormSummary: React.FC<Props> = (props) => {
-  const { projectManagerFormChangesByLabel } = useFragment(
+  const { allProjectManagerFormChangesByLabel, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
-        projectManagerFormChangesByLabel {
+        isFirstRevision
+        allProjectManagerFormChangesByLabel {
           edges {
             node {
               formChange {
                 newFormData
+                isPristine
+                operation
+                asProjectManager {
+                  cifUserByCifUserId {
+                    fullName
+                  }
+                }
+                formChangeByPreviousFormChangeId {
+                  newFormData
+                  asProjectManager {
+                    cifUserByCifUserId {
+                      fullName
+                    }
+                  }
+                }
               }
               projectManagerLabel {
                 label
@@ -34,35 +54,40 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const { allCifUsers } = useFragment(
-    graphql`
-      fragment ProjectManagerFormSummary_query on Query {
-        allCifUsers {
-          edges {
-            node {
-              rowId
-              fullName
-            }
-          }
-        }
-      }
-    `,
-    props.query
+  // Show diff if it is not the first revision and not view only (rendered from the managers page)
+  const renderDiff = !isFirstRevision && !props.viewOnly;
+
+  // If we are showing the diff then we want to see archived records, otherwise filter out the archived managers
+  let managerFormChanges = allProjectManagerFormChangesByLabel.edges;
+  if (!renderDiff)
+    managerFormChanges = allProjectManagerFormChangesByLabel.edges.filter(
+      ({ node }) => node?.formChange?.operation !== "ARCHIVE"
+    );
+
+  const allFormChangesPristine = useMemo(
+    () =>
+      !managerFormChanges.some(
+        ({ node }) =>
+          node.formChange?.isPristine === false ||
+          node.formChange?.isPristine === null
+      ),
+    [managerFormChanges]
   );
 
-  const areManagersEmpty = useMemo(() => {
-    return !projectManagerFormChangesByLabel.edges.some(
-      ({ node }) => node?.formChange?.newFormData.cifUserId
+  let formChangesByLabel = managerFormChanges;
+  if (!props.viewOnly)
+    formChangesByLabel = managerFormChanges.filter(
+      ({ node }) =>
+        node.formChange?.isPristine === false ||
+        node.formChange?.isPristine === null
     );
-  }, [projectManagerFormChangesByLabel.edges]);
 
   const managersJSX = useMemo(() => {
-    return projectManagerFormChangesByLabel.edges.map(({ node }) => {
+    return formChangesByLabel.map(({ node }) => {
       if (!node?.formChange) return;
-      const nodeManager = allCifUsers.edges.find(
-        (manager) =>
-          manager.node.rowId === node.formChange?.newFormData.cifUserId
-      );
+
+      // Set custom rjsf fields to display diffs
+      const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
       return (
         <FormBase
@@ -70,27 +95,33 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
           key={node.formChange.newFormData.projectManagerLabelId}
           tagName={"dl"}
           theme={readOnlyTheme}
+          fields={renderDiff ? customFields : fields}
           schema={projectManagerSchema as JSONSchema7}
           uiSchema={createProjectManagerUiSchema(
-            nodeManager ? nodeManager.node.fullName : "",
+            node.formChange?.asProjectManager?.cifUserByCifUserId?.fullName,
             node.projectManagerLabel.label
           )}
           formData={node.formChange.newFormData}
           formContext={{
-            query: props.query,
-            form: node.formChange.newFormData,
+            operation: node.formChange?.operation,
+            oldData:
+              node.formChange?.formChangeByPreviousFormChangeId?.newFormData,
+            oldUiSchema: createProjectManagerUiSchema(
+              node.formChange?.formChangeByPreviousFormChangeId
+                ?.asProjectManager?.cifUserByCifUserId?.fullName
+            ),
           }}
         />
       );
     });
-  }, [allCifUsers.edges, props.query, projectManagerFormChangesByLabel]);
+  }, [formChangesByLabel, renderDiff]);
 
   return (
     <>
       <h3>Project Managers</h3>
-      {areManagersEmpty ? (
+      {allFormChangesPristine && !props.viewOnly ? (
         <p>
-          <em>Project managers not added</em>
+          <em>Project managers not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         managersJSX

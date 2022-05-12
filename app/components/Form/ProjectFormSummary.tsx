@@ -4,124 +4,139 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFormSummary_projectRevision$key } from "__generated__/ProjectFormSummary_projectRevision.graphql";
-import { ProjectFormSummary_query$key } from "__generated__/ProjectFormSummary_query.graphql";
 import FormBase from "./FormBase";
 import { createProjectUiSchema } from "./ProjectForm";
 
+import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
+import { utils } from "@rjsf/core";
+
+const { fields } = utils.getDefaultRegistry();
+
 interface Props {
-  query: ProjectFormSummary_query$key;
   projectRevision: ProjectFormSummary_projectRevision$key;
+  viewOnly?: boolean;
 }
 
 const ProjectFormSummary: React.FC<Props> = (props) => {
-  const { projectFormChange } = useFragment(
+  const { projectFormChange, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
+        isFirstRevision
         projectFormChange {
           newFormData
+          operation
+          isPristine
+          asProject {
+            operatorByOperatorId {
+              legalName
+              bcRegistryId
+            }
+            fundingStreamRfpByFundingStreamRfpId {
+              year
+              fundingStreamByFundingStreamId {
+                description
+              }
+            }
+            projectStatusByProjectStatusId {
+              name
+            }
+          }
+          formChangeByPreviousFormChangeId {
+            newFormData
+            asProject {
+              operatorByOperatorId {
+                legalName
+                bcRegistryId
+              }
+              fundingStreamRfpByFundingStreamRfpId {
+                year
+                fundingStreamByFundingStreamId {
+                  description
+                }
+              }
+              projectStatusByProjectStatusId {
+                name
+              }
+            }
+          }
         }
       }
     `,
     props.projectRevision
   );
 
-  const { allFundingStreamRfps, allOperators, allProjectStatuses } =
-    useFragment(
-      graphql`
-        fragment ProjectFormSummary_query on Query {
-          allFundingStreamRfps {
-            edges {
-              node {
-                fundingStreamByFundingStreamId {
-                  name
-                  description
-                }
-                rowId
-                year
-              }
-            }
-          }
-          allOperators {
-            edges {
-              node {
-                rowId
-                legalName
-                bcRegistryId
-              }
-            }
-          }
-          allProjectStatuses {
-            edges {
-              node {
-                name
-                rowId
-              }
-            }
-          }
-        }
-      `,
-      props.query
-    );
+  // Show diff if it is not the first revision and not view only (rendered from the overview page)
+  const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const isOverviewEmpty = useMemo(() => {
-    return Object.keys(projectFormChange.newFormData).length === 0;
-  }, [projectFormChange.newFormData]);
+  const newDataAsProject = projectFormChange.asProject;
+  const previousDataAsProject =
+    projectFormChange.formChangeByPreviousFormChangeId?.asProject;
 
-  const selectedOperator = useMemo(() => {
-    return allOperators.edges.find(
-      ({ node }) => node.rowId === projectFormChange.newFormData.operatorId
-    );
-  }, [allOperators, projectFormChange.newFormData.operatorId]);
+  const oldUiSchema = previousDataAsProject
+    ? createProjectUiSchema(
+        previousDataAsProject.operatorByOperatorId.legalName,
+        previousDataAsProject.operatorByOperatorId.bcRegistryId,
+        `${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+        previousDataAsProject.projectStatusByProjectStatusId.name
+      )
+    : null;
 
-  const rfpStream = useMemo(() => {
-    return allFundingStreamRfps.edges.find(
-      ({ node }) =>
-        node.rowId === projectFormChange.newFormData.fundingStreamRfpId
-    );
-  }, [allFundingStreamRfps, projectFormChange.newFormData.fundingStreamRfpId]);
+  const [formSchema, formData] = useMemo(() => {
+    if (!renderDiff) return [projectSchema, projectFormChange.newFormData];
+    // Filter out fields from the formData that have not changed from the previous revision so the summary ignores these fields
+    const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
+    const newDataObject = {};
+    for (const [key, value] of Object.entries(projectFormChange.newFormData)) {
+      if (
+        value ===
+        projectFormChange.formChangeByPreviousFormChangeId?.newFormData?.[key]
+      )
+        delete filteredSchema.properties[key];
+      else newDataObject[key] = value;
+    }
 
-  const projectStatus = useMemo(() => {
-    return allProjectStatuses.edges.find(
-      ({ node }) => node.rowId === projectFormChange.newFormData.projectStatusId
-    );
-  }, [allProjectStatuses, projectFormChange.newFormData.projectStatusId]);
+    return [filteredSchema, newDataObject];
+  }, [
+    renderDiff,
+    projectFormChange.newFormData,
+    projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
+  ]);
+
+  // Set custom rjsf fields to display diffs
+  const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
   return (
-    <div>
+    <>
       <h3>Project Overview</h3>
-      {isOverviewEmpty ? (
+      {(projectFormChange.isPristine ||
+        (projectFormChange.isPristine === null &&
+          Object.keys(projectFormChange.newFormData).length === 0)) &&
+      !props.viewOnly ? (
         <p>
-          <em>Project overview not added</em>
+          <em>Project overview not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         <FormBase
           tagName={"dl"}
-          liveValidate
           theme={readOnlyTheme}
-          schema={projectSchema as JSONSchema7}
+          fields={renderDiff ? customFields : fields}
+          schema={formSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
-            selectedOperator ? selectedOperator.node.legalName : "",
-            selectedOperator ? selectedOperator.node.bcRegistryId : "",
-            rfpStream
-              ? `${rfpStream.node.fundingStreamByFundingStreamId.description} - ${rfpStream.node.year}`
-              : "",
-            projectStatus ? projectStatus.node.name : ""
+            newDataAsProject?.operatorByOperatorId?.legalName,
+            newDataAsProject?.operatorByOperatorId?.bcRegistryId,
+            `${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId?.description} - ${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+            newDataAsProject?.projectStatusByProjectStatusId?.name
           )}
-          formData={projectFormChange.newFormData}
+          formData={formData}
           formContext={{
-            query: props.query,
-            form: projectFormChange.newFormData,
+            oldData:
+              projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
+            oldUiSchema,
+            operation: projectFormChange.operation,
           }}
         />
       )}
-      <style jsx>
-        {`
-          div :global(dd) {
-            margin-bottom: 2px;
-          }
-        `}
-      </style>
-    </div>
+    </>
   );
 };
 

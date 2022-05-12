@@ -365,13 +365,14 @@ describe("The Project Managers form page", () => {
           id: context.path.includes("pendingProjectRevision")
             ? "mock-pending-revision-id"
             : "mock-base-revision-id",
+          isFirstRevision: true,
           projectByProjectId: {
             latestCommittedProjectRevision: {
               id: "mock-manager-1",
             },
           },
           changeStatus: "committed",
-          projectManagerFormChangesByLabel: {
+          allProjectManagerFormChangesByLabel: {
             edges: [
               {
                 node: {
@@ -381,9 +382,14 @@ describe("The Project Managers form page", () => {
                       projectId: 2,
                       projectManagerLabelId: 1,
                     },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager 1",
+                      },
+                    },
                   },
                   projectManagerLabel: {
-                    label: "Tech Team Primary",
+                    label: "Test Label 1",
                   },
                 },
               },
@@ -395,9 +401,14 @@ describe("The Project Managers form page", () => {
                       projectId: 2,
                       projectManagerLabelId: 2,
                     },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager 2",
+                      },
+                    },
                   },
                   projectManagerLabel: {
-                    label: "Tech Team Secondary",
+                    label: "Test Label 2",
                   },
                 },
               },
@@ -409,42 +420,20 @@ describe("The Project Managers form page", () => {
                       projectId: 2,
                       projectManagerLabelId: 3,
                     },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager 3",
+                      },
+                    },
                   },
                   projectManagerLabel: {
-                    label: "Ops Team Primary",
+                    label: "Test Label 3",
                   },
                 },
               },
             ],
           },
         };
-      },
-      Query() {
-        const cifUsersQuery: Partial<ProjectManagerForm_query$data> = {
-          allCifUsers: {
-            edges: [
-              {
-                node: {
-                  rowId: 1,
-                  fullName: "Knope, Leslie",
-                },
-              },
-              {
-                node: {
-                  rowId: 2,
-                  fullName: "Swanson, Ron",
-                },
-              },
-              {
-                node: {
-                  rowId: 3,
-                  fullName: "Ludgate, April",
-                },
-              },
-            ],
-          },
-        };
-        return cifUsersQuery;
       },
     });
     pageTestingHelper.renderPage();
@@ -452,15 +441,15 @@ describe("The Project Managers form page", () => {
     expect(
       screen.queryByRole("button", { name: "submit" })
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByText(/tech team primary \(optional\)/i).nextSibling
-    ).toHaveTextContent("Knope, Leslie");
-    expect(
-      screen.getByText(/tech team secondary \(optional\)/i).nextSibling
-    ).toHaveTextContent("Swanson, Ron");
-    expect(
-      screen.getByText(/ops team primary \(optional\)/i).nextSibling
-    ).toHaveTextContent("Ludgate, April");
+    expect(screen.getByText(/Test Label 1/i).nextSibling).toHaveTextContent(
+      "test manager 1"
+    );
+    expect(screen.getByText(/Test Label 2/i).nextSibling).toHaveTextContent(
+      "test manager 2"
+    );
+    expect(screen.getByText(/Test Label 3/i).nextSibling).toHaveTextContent(
+      "test manager 3"
+    );
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(routerPush).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/managers/",

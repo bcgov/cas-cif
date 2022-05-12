@@ -39,6 +39,16 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
         :global(label) {
           font-weight: bold;
         }
+        :global(.diffOld) {
+          background-color: #fad980;
+        }
+        :global(.diffNew) {
+          background-color: #94bfa2;
+        }
+        :global(.diff-arrow) {
+          margin-left: 10px;
+          margin-right: 10px;
+        }
       `}</style>
     </>
   );

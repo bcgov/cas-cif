@@ -6,7 +6,8 @@ create table cif.project_revision (
   id integer primary key generated always as identity,
   project_id integer references cif.project(id),
   change_status varchar(1000) default 'pending' references cif.change_status,
-  change_reason varchar(10000)
+  change_reason varchar(10000),
+  is_first_revision boolean default false
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project_revision', add_archive => false);
@@ -47,5 +48,6 @@ comment on column cif.project_revision.id is 'Unique ID for the project revision
 comment on column cif.project_revision.project_id is 'Foreign key to the associated project row. Will be null if the project hasn''t been committed yet.';
 comment on column cif.project_revision.change_status is 'Foreign key to the status of the project revision';
 comment on column cif.project_revision.change_reason is 'Explanation of why the revision was made';
+comment on column cif.project_revision.is_first_revision is 'Boolean value to indicate if the revision is the first revision for the project';
 
 commit;

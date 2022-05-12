@@ -39,7 +39,6 @@ const pageQuery = graphql`
         ...TaskList_projectRevision
       }
       ...ProjectContactForm_query
-      ...ProjectContactFormSummary_query
     }
   }
 `;
@@ -122,8 +121,8 @@ export function ProjectContactsPage({
         <>
           {createEditButton()}
           <ProjectContactFormSummary
-            query={query}
             projectRevision={query.projectRevision}
+            viewOnly={true}
           />
         </>
       ) : (

@@ -39,7 +39,6 @@ const pageQuery = graphql`
         ...TaskList_projectRevision
       }
       ...ProjectManagerFormGroup_query
-      ...ProjectManagerFormSummary_query
     }
   }
 `;
@@ -118,8 +117,8 @@ export function ProjectManagersForm({
         <>
           {createEditButton()}
           <ProjectManagerFormSummary
-            query={query}
             projectRevision={query.projectRevision}
+            viewOnly={true}
           />
         </>
       ) : (

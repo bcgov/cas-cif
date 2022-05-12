@@ -78,6 +78,7 @@ describe("The Project Contacts page", () => {
         const revision = {
           id: "mock-proj-rev-id",
           rowId: 56,
+          isFirstRevision: false,
           projectContactFormChanges: {
             edges: [
               {
@@ -147,6 +148,7 @@ describe("The Project Contacts page", () => {
         const revision = {
           id: "mock-proj-rev-id",
           rowId: 1,
+          isFirstRevision: false,
           projectContactFormChanges: {
             edges: [
               {
@@ -333,15 +335,22 @@ describe("The Project Contacts page", () => {
             : "mock-base-revision-id",
           rowId: 1,
           changeStatus: "committed",
-          projectContactFormChanges: {
+          isFirstRevision: false,
+          summaryContactFormChanges: {
             edges: [
               {
                 node: {
+                  isPristine: true,
                   id: "test-primary-contact",
                   newFormData: {
                     contactId: 3,
                     projectId: 54,
                     contactIndex: 1,
+                  },
+                  asProjectContact: {
+                    contactByContactId: {
+                      fullName: "Test Primary",
+                    },
                   },
                   operation: "UPDATE",
                   changeStatus: "committed",
@@ -352,16 +361,27 @@ describe("The Project Contacts page", () => {
                       projectId: 54,
                       contactIndex: 1,
                     },
+                    asProjectContact: {
+                      contactByContactId: {
+                        fullName: "Test Primary OLD",
+                      },
+                    },
                   },
                 },
               },
               {
                 node: {
+                  isPristine: false,
                   id: "test-secondary-contact",
                   newFormData: {
                     contactId: 4,
                     projectId: 54,
                     contactIndex: 2,
+                  },
+                  asProjectContact: {
+                    contactByContactId: {
+                      fullName: "Test Secondary",
+                    },
                   },
                   operation: "UPDATE",
                   changeStatus: "committed",
@@ -371,6 +391,11 @@ describe("The Project Contacts page", () => {
                       contactId: 2,
                       projectId: 54,
                       contactIndex: 2,
+                    },
+                    asProjectContact: {
+                      contactByContactId: {
+                        fullName: "Test Secondary OLD",
+                      },
                     },
                   },
                 },
@@ -419,11 +444,11 @@ describe("The Project Contacts page", () => {
       screen.queryByRole("button", { name: "submit" })
     ).not.toBeInTheDocument();
     expect(screen.getByText(/primary contact/i).nextSibling).toHaveTextContent(
-      "Loblaw003, Bob003"
+      "Test Primary"
     );
     expect(
       screen.getByText(/secondary contact/i).nextSibling
-    ).toHaveTextContent("Loblaw004, Bob004");
+    ).toHaveTextContent("Test Secondary");
 
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(routerPush).toHaveBeenCalledWith({

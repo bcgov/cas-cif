@@ -39,7 +39,6 @@ const pageQuery = graphql`
         ...ProjectFormSummary_projectRevision
       }
       ...ProjectForm_query
-      ...ProjectFormSummary_query
     }
   }
 `;
@@ -120,8 +119,8 @@ export function ProjectOverviewForm({
         <>
           {createEditButton()}
           <ProjectFormSummary
-            query={query}
             projectRevision={query.projectRevision}
+            viewOnly={true}
           />
         </>
       ) : (
