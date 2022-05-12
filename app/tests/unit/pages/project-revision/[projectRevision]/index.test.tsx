@@ -72,7 +72,7 @@ describe("The Create Project page", () => {
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
       .mockImplementation(() => [jest.fn(), false]);
-    const mockresolver = {
+    const mockResolver = {
       ...defaultMockResolver,
       FormChange() {
         return {
@@ -80,7 +80,7 @@ describe("The Create Project page", () => {
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).not.toBeDisabled();
     expect(screen.getByText("Discard Project Revision")).toHaveProperty(
@@ -323,7 +323,7 @@ describe("The Create Project page", () => {
   });
 
   it("displays an error when the Submit Button is clicked & updateProjectRevisionMutation fails", () => {
-    const mockresolver = {
+    const mockResolver = {
       ...defaultMockResolver,
       FormChange() {
         return {
@@ -331,7 +331,7 @@ describe("The Create Project page", () => {
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
     userEvent.click(screen.queryByText("Submit"));
     act(() => {
@@ -385,7 +385,7 @@ describe("The Create Project page", () => {
   });
 
   it("submit is disabled if primary contact is empty", () => {
-    const mockresolver = {
+    const mockResolver = {
       ...defaultMockResolver,
       projectContactFormChanges() {
         return {
@@ -403,13 +403,13 @@ describe("The Create Project page", () => {
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).toBeDisabled();
   });
 
   it("submit is disabled if there are any validation errors", () => {
-    const mockresolver = {
+    const mockResolver = {
       ...defaultMockResolver,
       FormChange() {
         return {
@@ -417,12 +417,12 @@ describe("The Create Project page", () => {
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).toBeDisabled();
   });
   it("submit is enabled if there are no validation errors", () => {
-    const mockresolver = {
+    const mockResolver = {
       ...defaultMockResolver,
       FormChange() {
         return {
@@ -430,7 +430,7 @@ describe("The Create Project page", () => {
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).toBeEnabled();
   });
@@ -441,22 +441,14 @@ describe("The Create Project page", () => {
       push: jest.fn(),
     } as any);
 
-    const mockresolver = {
+    const mockResolver = {
       ProjectRevision() {
         return {
-          id: "mock-proj-rev-id",
           isFirstRevision: true,
-          projectByProjectId: null,
-          projectFormChange: {
-            id: "mock-project-form-id",
-            newFormData: {
-              someProjectData: "test2",
-            },
-          },
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
 
     userEvent.click(screen.queryByText("Discard Project Revision"));
@@ -479,7 +471,7 @@ describe("The Create Project page", () => {
       push: jest.fn(),
     } as any);
 
-    const mockresolver = {
+    const mockResolver = {
       ProjectRevision() {
         return {
           id: "mock-proj-rev-id",
@@ -489,16 +481,10 @@ describe("The Create Project page", () => {
               id: "last-revision-id",
             },
           },
-          projectFormChange: {
-            id: "mock-project-form-id",
-            newFormData: {
-              someProjectData: "test2",
-            },
-          },
         };
       },
     };
-    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
 
     userEvent.click(screen.queryByText("Discard Project Revision"));
