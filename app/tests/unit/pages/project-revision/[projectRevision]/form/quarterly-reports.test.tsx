@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, within, fireEvent } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
@@ -65,7 +65,6 @@ describe("The Project Quarterly Reports page", () => {
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/Editing: 001/i)
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText(/Quarterly Reports/i));
     expect(
       screen.getByText(/Edit quarterly reports/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
