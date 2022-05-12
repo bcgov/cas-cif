@@ -406,7 +406,9 @@ describe("the new project page", () => {
     cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "No secondary contacts");
-    cy.get('a').contains(/Quarterly reports/i).click();
+    cy.get("a")
+      .contains(/Quarterly reports/i)
+      .click();
     cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
