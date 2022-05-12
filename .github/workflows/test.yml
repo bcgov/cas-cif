@@ -82,7 +82,7 @@ jobs:
         run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
       - name: create commitlint COMMIT_EDITMSG if not exists
         run: |
-          if test -f ".git/COMMIT_EDITMSG" then
+          if test -f ".git/COMMIT_EDITMSG"; then
               echo "COMMIT_EDITMSG EXISTS, skipping"
           else
               touch .git/COMMIT_EDITMSG
