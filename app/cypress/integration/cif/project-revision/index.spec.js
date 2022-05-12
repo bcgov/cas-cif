@@ -310,22 +310,13 @@ describe("the new project page", () => {
     cy.get("#root_projectName-diffOld").should("have.text", "Foo");
     cy.get("#root_projectName-diffNew").should("have.text", "Bar");
 
-    // cy.findByText(/Project Name/i)
-    //   .next()
-    //   .should("have.text", "Bar");
-    // cy.findByText(/tech team secondary/i).should("not.exist");
-
     cy.get("#root_cifUserId-diffOld").should("have.text", "Ludgate, April");
     cy.get("#root_cifUserId-diffOld")
       .next()
       .next()
       .should("have.text", "REMOVED");
 
-    // cy.findByText(/^Secondary Contacts/i)
-    //   .next()
-    //   .should("have.text", "No secondary contacts");
-
-    cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
+    cy.findByRole("button", { name: /submit/i }).should("be.disabled");
     cy.get("body").happoScreenshot({
       component: "Project Revision Summary",
       variant: "no_change_reason",

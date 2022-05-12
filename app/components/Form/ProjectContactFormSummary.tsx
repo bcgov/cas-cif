@@ -12,6 +12,8 @@ import { utils } from "@rjsf/core";
 
 const { fields } = utils.getDefaultRegistry();
 
+const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
+
 interface Props {
   projectRevision: ProjectContactFormSummary_projectRevision$key;
   viewOnly?: boolean;
@@ -96,11 +98,6 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     [contactFormChanges]
   );
 
-  const customFields = useMemo(
-    () => ({ ...fields, ...CUSTOM_DIFF_FIELDS }),
-    []
-  );
-
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
       return (
@@ -129,7 +126,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         />
       );
     });
-  }, [customFields, secondaryContacts, renderDiff]);
+  }, [secondaryContacts, renderDiff]);
 
   return (
     <>

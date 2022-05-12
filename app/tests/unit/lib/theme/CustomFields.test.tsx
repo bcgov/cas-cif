@@ -188,24 +188,6 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.queryByText("1")).not.toBeInTheDocument();
   });
 
-  it("shows the number from formDatawhen 'ui:options' does not exist in a NumberField's uiSchema", () => {
-    const componentUnderTest = render(
-      <FormBase
-        tagName={"dl"}
-        fields={CUSTOM_DIFF_FIELDS}
-        schema={testSchema as JSONSchema7}
-        uiSchema={uiTestSchema}
-        formData={formData}
-        formContext={{
-          oldData: oldFormData,
-          oldUiSchema: oldUiTestSchema,
-          operation: "UPDATE",
-        }}
-      />
-    );
-    expect(componentUnderTest.getByText("$100")).toBeInTheDocument();
-  });
-
   it("shows the number with a preceding $ when 'ui:widget': MoneyWidget exists in a NumberField's uiSchema", () => {
     const componentUnderTest = render(
       <FormBase
