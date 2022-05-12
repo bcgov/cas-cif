@@ -1,0 +1,82 @@
+import { WidgetProps } from "@rjsf/core";
+import React, { forwardRef, useRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
+import { DateTime, Interval } from "luxon";
+
+const DueDateInput = forwardRef<HTMLInputElement, WidgetProps>(
+  ({ onClick, value }, ref) => {
+    const selectedDate = DateTime.fromISO(value);
+    const formattedValue = selectedDate.toLocaleString(DateTime.DATE_MED);
+    const currentDate = DateTime.now()
+      .setZone("America/Vancouver")
+      .startOf("day");
+    const diff = Interval.fromDateTimes(currentDate, selectedDate);
+    const daysFromToday = Math.floor(diff.length("days"));
+    debugger;
+    const displayString =
+      selectedDate < currentDate
+        ? `${formattedValue}`
+        : daysFromToday > 60
+        ? `Due in ${Math.floor(diff.length("weeks"))} weeks (${formattedValue})`
+        : `Due in ${daysFromToday} ${
+            daysFromToday === 1 ? "day" : "days"
+          } (${formattedValue})`;
+
+    return (
+      <div onClick={onClick} ref={ref}>
+        {value ? displayString : "Select a date"}
+        <CalendarTodayIcon style={{ color: "black" }} />
+        <style jsx>{`
+          div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px solid #606060;
+            border-radius: 0.25em;
+            padding: 9px 9px 9px 9px;
+            font-size: 14.4px;
+            width: 300px;
+          }
+          div:hover {
+            cursor: pointer;
+          }
+        `}</style>
+      </div>
+    );
+  }
+);
+DueDateInput.displayName = "DueDateInput";
+
+const DueDateWidget: React.FC<WidgetProps> = ({
+  id,
+  onChange,
+  label,
+  value,
+  required,
+}) => {
+  return (
+    <div>
+      <DatePicker
+        id={id}
+        dateFormat="tz"
+        onChange={(e) => onChange(getTimestamptzFromDate(e, true))}
+        value={value}
+        selected={value ? DateTime.fromISO(value).toJSDate() : undefined}
+        required={required}
+        aria-label={label}
+        customInput={<DueDateInput ref={useRef()} />}
+      />
+      <style jsx>{`
+        :global(.react-datepicker__day.react-datepicker__day--keyboard-selected) {
+          background: none;
+          color: black;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default DueDateWidget;
