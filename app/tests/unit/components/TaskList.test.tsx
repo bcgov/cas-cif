@@ -86,9 +86,13 @@ describe("The ProjectManagerForm", () => {
   it("Renders the proper form statuses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByText(/Project Overview/i));
     expect(
       screen.getByText("test-project-overview-status")
     ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText(/Project Details/i));
     expect(
       screen.getByText("test-project-contacts-status")
     ).toBeInTheDocument();
@@ -109,6 +113,7 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
+    fireEvent.click(screen.getByText(/Project Overview/i));
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
     expect(mockGetData).toHaveBeenCalledWith("test-project-revision-id");
@@ -126,6 +131,7 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
+    fireEvent.click(screen.getByText(/Project Details/i));
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
     expect(mockGetData).toHaveBeenCalledWith("test-project-revision-id");
@@ -142,7 +148,7 @@ describe("The ProjectManagerForm", () => {
       }));
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-
+    fireEvent.click(screen.getByText(/Project Details/i));
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
     expect(mockGetData).toHaveBeenCalledWith("test-project-revision-id");
