@@ -99,6 +99,7 @@ describe("The ProjectManagerForm", () => {
     expect(
       screen.getByText("test-project-managers-status")
     ).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/Quarterly Reports/i));
     expect(
       screen.getByText("test-project-quarterly-reports-status")
     ).toBeInTheDocument();
@@ -149,6 +150,7 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
+    fireEvent.click(screen.getByText(/Quarterly Reports/i));
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(mockPush).toHaveBeenCalledWith(
