@@ -36,6 +36,7 @@ const quarterlyReportUiSchema = {
   comments: {
     "ui:col-md": 12,
     "bcgov:size": "small",
+    "ui:widget": "TextAreaWidget",
   },
 };
 
@@ -86,9 +87,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         projectRevisionId: projectRevision.rowId,
         newFormData: formData,
         connections: [projectRevision.projectQuarterlyReportFormChanges.__id],
-      },
-      onError: (error) => {
-        console.log(error);
       },
     });
   };
@@ -275,18 +273,17 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                   </Grid.Row>
                 );
               })}
-
-              <Grid.Row>
-                <Button
-                  size="medium"
-                  variant="primary"
-                  onClick={stageQuarterlyReportFormChanges}
-                  disabled={isUpdating}
-                >
-                  Submit Quarterly Reports
-                </Button>
-              </Grid.Row>
             </FormBorder>
+            <Grid.Row>
+              <Button
+                size="medium"
+                variant="primary"
+                onClick={stageQuarterlyReportFormChanges}
+                disabled={isUpdating}
+              >
+                Submit Quarterly Reports
+              </Button>
+            </Grid.Row>
           </Grid.Col>
         </Grid.Row>
       </Grid>

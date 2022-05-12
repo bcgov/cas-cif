@@ -115,9 +115,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           },
         },
       },
-      onError: (error) => {
-        console.log(error);
-      },
     });
   };
 

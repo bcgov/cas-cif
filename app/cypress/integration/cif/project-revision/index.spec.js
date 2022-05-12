@@ -182,7 +182,7 @@ describe("the new project page", () => {
     cy.checkContactsForm("", "");
   });
 
-  it.only("Allows to create and update a project", () => {
+  it("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
