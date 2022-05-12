@@ -147,7 +147,7 @@ describe("the new project page", () => {
     cy.checkContactsForm("", "");
   });
 
-  it.only("Allows to create and update a project", () => {
+  it("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -316,7 +316,7 @@ describe("the new project page", () => {
       .next()
       .should("have.text", "REMOVED");
 
-    cy.findByRole("button", { name: /submit/i }).should("be.disabled");
+    cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
     cy.get("body").happoScreenshot({
       component: "Project Revision Summary",
       variant: "no_change_reason",
