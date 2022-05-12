@@ -68,7 +68,7 @@ describe("The Create Project page", () => {
     ).toHaveAttribute("aria-current", "step");
   });
 
-  it("Renders an enabled submit and discard changes button", async () => {
+  it("Renders an enabled submit and discard project revision button", async () => {
     jest
       .spyOn(require("mutations/useDebouncedMutation"), "default")
       .mockImplementation(() => [jest.fn(), false]);
@@ -83,7 +83,7 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery(mockresolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).not.toBeDisabled();
-    expect(screen.getByText("Discard Changes")).toHaveProperty(
+    expect(screen.getByText("Discard Project Revision")).toHaveProperty(
       "disabled",
       false
     );
@@ -266,7 +266,7 @@ describe("The Create Project page", () => {
     expect(screen.getByText(/test secondary contact/i)).toBeInTheDocument();
   });
 
-  it("Calls the delete mutation when the user clicks the Discard Changes button", async () => {
+  it("Shows a confirmation alert when clicking the Discard Project Revision button", async () => {
     const useMutationSpy = jest.fn();
     jest
       .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
@@ -279,16 +279,30 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
-    act(() => userEvent.click(screen.queryByText("Discard Changes")));
+    act(() => userEvent.click(screen.queryByText("Discard Project Revision")));
 
-    expect(useMutationSpy).toHaveBeenCalledTimes(1);
-    expect(useMutationSpy).toHaveBeenCalledWith({
-      onCompleted: expect.any(Function),
-      onError: expect.any(Function),
-      variables: {
-        input: {
-          id: "mock-proj-rev-id",
-        },
+    expect(
+      screen.getByText(/All changes made will be permanently deleted./)
+    ).toBeInTheDocument();
+  });
+
+  it("Calls the delete mutation when the user clicks 'Proceed' in the confirmation alert", async () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    userEvent.click(screen.getByText("Discard Project Revision"));
+    userEvent.click(screen.getByText("Proceed"));
+
+    const mutationUnderTest =
+      pageTestingHelper.environment.mock.getMostRecentOperation();
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "deleteProjectRevisionMutation"
+    );
+
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        id: "mock-proj-rev-id",
       },
     });
   });
@@ -302,7 +316,7 @@ describe("The Create Project page", () => {
     pageTestingHelper.renderPage();
 
     expect(screen.queryByText("Submit")).toHaveProperty("disabled", true);
-    expect(screen.queryByText("Discard Changes")).toHaveProperty(
+    expect(screen.queryByText("Discard Project Revision")).toHaveProperty(
       "disabled",
       true
     );
@@ -331,10 +345,11 @@ describe("The Create Project page", () => {
     ).toBeVisible();
   });
 
-  it("displays an error when the user clicks the Discard Changes button & deleteProjectRevision mutation fails", () => {
+  it("displays an error when the deleteProjectRevision mutation fails", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-    userEvent.click(screen.queryByText("Discard Changes"));
+    userEvent.click(screen.queryByText("Discard Project Revision"));
+    userEvent.click(screen.queryByText("Proceed"));
     act(() => {
       pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
     });
@@ -418,5 +433,88 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery(mockresolver);
     pageTestingHelper.renderPage();
     expect(screen.getByText("Submit")).toBeEnabled();
+  });
+
+  it("routes to the project list page when discarding a project revision and isFirstRevision is true", () => {
+    mocked(useRouter).mockReturnValue({
+      replace: jest.fn(),
+      push: jest.fn(),
+    } as any);
+
+    const mockresolver = {
+      ProjectRevision() {
+        return {
+          id: "mock-proj-rev-id",
+          isFirstRevision: true,
+          projectByProjectId: null,
+          projectFormChange: {
+            id: "mock-project-form-id",
+            newFormData: {
+              someProjectData: "test2",
+            },
+          },
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.renderPage();
+
+    userEvent.click(screen.queryByText("Discard Project Revision"));
+    userEvent.click(screen.queryByText("Proceed"));
+
+    act(() => {
+      pageTestingHelper.environment.mock.resolveMostRecentOperation({
+        data: { input: "asdf" },
+      });
+    });
+
+    expect(useRouter().push).toHaveBeenCalledWith({
+      pathname: "/cif/projects/",
+    });
+  });
+
+  it("routes to the project overview when discarding project revision and isFirstRevision is false", () => {
+    mocked(useRouter).mockReturnValue({
+      replace: jest.fn(),
+      push: jest.fn(),
+    } as any);
+
+    const mockresolver = {
+      ProjectRevision() {
+        return {
+          id: "mock-proj-rev-id",
+          isFirstRevision: false,
+          projectByProjectId: {
+            latestCommittedProjectRevision: {
+              id: "last-revision-id",
+            },
+          },
+          projectFormChange: {
+            id: "mock-project-form-id",
+            newFormData: {
+              someProjectData: "test2",
+            },
+          },
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockresolver);
+    pageTestingHelper.renderPage();
+
+    userEvent.click(screen.queryByText("Discard Project Revision"));
+    userEvent.click(screen.queryByText("Proceed"));
+
+    act(() => {
+      pageTestingHelper.environment.mock.resolveMostRecentOperation({
+        data: { input: "asdf" },
+      });
+    });
+
+    expect(useRouter().push).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/",
+      query: {
+        projectRevision: "mock-proj-rev-id",
+      },
+    });
   });
 });
