@@ -1,23 +1,37 @@
 const { RemoteBrowserTarget } = require("happo.io");
 const config = require("./config");
 const laptopViewport = "1366x768";
+const halfScreenViewport = "600x768";
 
 module.exports = {
   project: "cas-cif",
   apiKey: config.get("happoApiKey"),
   apiSecret: config.get("happoApiSecret"),
   targets: {
-    chrome: new RemoteBrowserTarget("chrome", {
+    "chrome-laptop": new RemoteBrowserTarget("chrome", {
       viewport: laptopViewport,
     }),
-    firefox: new RemoteBrowserTarget("firefox", {
+    "chrome-laptop-half-screen": new RemoteBrowserTarget("chrome", {
+      viewport: halfScreenViewport,
+    }),
+    "firefox-laptop": new RemoteBrowserTarget("firefox", {
       viewport: laptopViewport,
     }),
-    edge: new RemoteBrowserTarget("edge", {
+    "firefox-laptop-half-screen": new RemoteBrowserTarget("firefox", {
+      viewport: halfScreenViewport,
+    }),
+    "edge-laptop": new RemoteBrowserTarget("edge", {
       viewport: laptopViewport,
     }),
-    safari: new RemoteBrowserTarget("safari", {
+    "edge-laptop-half-screen": new RemoteBrowserTarget("edge", {
+      viewport: halfScreenViewport,
+    }),
+    "safari-laptop": new RemoteBrowserTarget("safari", {
       viewport: laptopViewport,
+      scrollStitch: true,
+    }),
+    "safari-laptop-half-screen": new RemoteBrowserTarget("safari", {
+      viewport: halfScreenViewport,
       scrollStitch: true,
     }),
   },
