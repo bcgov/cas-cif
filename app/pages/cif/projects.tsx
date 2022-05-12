@@ -104,7 +104,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         "Status",
         "status",
         allProjectStatuses.edges.map((e) => e.node.name),
-        { isDisableClearable: true, isFreeSoloEnabled: false }
+        { hideClearButton: true }
       ),
       new SearchableDropdownFilter(
         "Project Managers",

@@ -10,17 +10,26 @@ const FullWidthPopper = (props) => (
   />
 );
 
-export default class SearchableDropdownFilter extends TableFilter<string> {
-  // config: boolean;
+interface SearchableDropdownSettings extends FilterSettings {
+  hideClearButton?: boolean;
+  isFreeSoloEnabled?: boolean;
+}
 
+export default class SearchableDropdownFilter extends TableFilter<string> {
   constructor(
     display: string,
     argName: string,
     private options: string[],
-    settings?: FilterSettings
+    settings?: SearchableDropdownSettings
   ) {
     super(display, argName, settings);
+    this.isFreeSoloEnabled = settings?.isFreeSoloEnabled ?? false;
+    this.hideClearButton = settings?.hideClearButton ?? false;
   }
+
+  isFreeSoloEnabled: boolean;
+
+  hideClearButton: boolean;
 
   Component: FilterComponent = ({ onChange, filterArgs, disabled }) => {
     return (
@@ -29,7 +38,7 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
           options={this.options}
           onChange={(_, option) => onChange(option, this.argName)}
           freeSolo={this.isFreeSoloEnabled}
-          disableClearable={this.isDisableClearable}
+          disableClearable={this.hideClearButton}
           size="small"
           PopperComponent={FullWidthPopper}
           value={filterArgs[this.argName] ?? ""}
