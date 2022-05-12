@@ -6,7 +6,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime, Interval } from "luxon";
 
-const DueDateInput = forwardRef<HTMLInputElement, WidgetProps>(
+const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value }, ref) => {
     const selectedDate = DateTime.fromISO(value);
     const formattedValue = selectedDate.toLocaleString(DateTime.DATE_MED);

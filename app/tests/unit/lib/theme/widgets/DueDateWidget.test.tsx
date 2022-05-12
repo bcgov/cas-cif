@@ -59,7 +59,7 @@ describe("The DueDateWidget", () => {
       value: testDate,
       required: true,
     };
-    render(<DueDateWidget id="widget-id" {...props} />);
+    render(<DueDateWidget {...props} />);
     expect(screen.getByText(/due in 52 weeks/i)).toBeInTheDocument();
   });
 
@@ -75,7 +75,7 @@ describe("The DueDateWidget", () => {
       value: testDate,
       required: true,
     };
-    render(<DueDateWidget id="widget-id" {...props} />);
+    render(<DueDateWidget {...props} />);
     expect(screen.getByText(/Jan 1, 1999/i)).toHaveTextContent("Jan 1, 1999");
   });
 });
