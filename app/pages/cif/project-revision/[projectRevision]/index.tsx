@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   getProjectsPageRoute,
   getProjectRevisionOverviewFormPageRoute,
+  getProjectRevisionPageRoute,
 } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
@@ -33,6 +34,7 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        isFirstRevision
         changeReason
         changeStatus
         projectId
@@ -40,6 +42,11 @@ const pageQuery = graphql`
         ...ProjectContactFormSummary_projectRevision
         ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
+        projectByProjectId {
+          latestCommittedProjectRevision {
+            id
+          }
+        }
         formChangesByProjectRevisionId {
           edges {
             node {
@@ -145,7 +152,15 @@ export function ProjectRevision({
         },
       },
       onCompleted: async () => {
-        await router.push(getProjectsPageRoute());
+        if (query.projectRevision.isFirstRevision)
+          await router.push(getProjectsPageRoute());
+        else
+          await router.push(
+            getProjectRevisionPageRoute(
+              query.projectRevision.projectByProjectId
+                .latestCommittedProjectRevision.id
+            )
+          );
       },
       onError: async (e) => {
         console.error("Error discarding the project", e);
