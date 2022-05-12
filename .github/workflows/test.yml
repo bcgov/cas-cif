@@ -84,7 +84,7 @@ jobs:
         with:
           path: |
             ./.pre-commit-cache
-          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v2
+          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v3
       - run: pre-commit run --all-files
 
   commitlint:
