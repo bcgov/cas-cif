@@ -23,7 +23,7 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
     settings?: SearchableDropdownSettings
   ) {
     super(display, argName, settings);
-    this.allowFreeFormInput = settings?.allowFreeFormInput ?? true;
+    this.allowFreeFormInput = settings?.allowFreeFormInput ?? false;
     this.hideClearButton = settings?.hideClearButton ?? true;
   }
 

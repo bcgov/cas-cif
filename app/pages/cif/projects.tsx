@@ -109,8 +109,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       new SearchableDropdownFilter(
         "Project Managers",
         "projectManagers",
-        allCifUsers.edges.map((e) => e.node.fullName),
-        { isFreeSoloEnabled: true }
+        allCifUsers.edges.map((e) => e.node.fullName)
       ),
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
