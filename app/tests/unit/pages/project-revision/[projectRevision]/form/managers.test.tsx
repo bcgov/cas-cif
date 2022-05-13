@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import { ProjectManagersForm } from "pages/cif/project-revision/[projectRevision]/form/managers";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
@@ -53,14 +51,10 @@ describe("The Project Managers form page", () => {
   });
 
   it("renders the task list in the left navigation", () => {
-    const router = mocked(useRouter);
     const mockPathname =
       "/cif/project-revision/[projectRevision]/form/managers";
-    router.mockReturnValue({
-      pathname: mockPathname,
-    } as any);
     pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPage();
+    pageTestingHelper.renderPageWithMockRouter({ pathname: mockPathname });
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -312,12 +306,6 @@ describe("The Project Managers form page", () => {
   });
 
   it("redirects the user to the project revision page on submit", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
     let handleSubmit;
     jest
       .spyOn(require("components/Form/ProjectManagerFormGroup"), "default")
@@ -327,7 +315,8 @@ describe("The Project Managers form page", () => {
       });
 
     pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPage();
+    const mockPush = jest.fn();
+    pageTestingHelper.renderPageWithMockRouter({ push: mockPush });
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
@@ -335,11 +324,6 @@ describe("The Project Managers form page", () => {
   });
 
   it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
-    const mockReplace = jest.fn();
-    mocked(useRouter).mockReturnValue({
-      replace: mockReplace,
-    } as any);
-
     pageTestingHelper.loadQuery({
       Query() {
         return {
@@ -348,17 +332,16 @@ describe("The Project Managers form page", () => {
       },
     });
 
-    const { container } = pageTestingHelper.renderPage();
+    const mockReplace = jest.fn();
+    const { container } = pageTestingHelper.renderPageWithMockRouter({
+      replace: mockReplace,
+    });
 
     expect(container.childElementCount).toEqual(0);
     expect(mockReplace).toHaveBeenCalledWith("/404");
   });
 
   it("renders the form in view mode when the project revision is committed", async () => {
-    jest.mock("next/router");
-    const routerPush = jest.fn();
-    mocked(useRouter).mockReturnValue({ push: routerPush } as any);
-
     pageTestingHelper.loadQuery({
       ProjectRevision(context) {
         return {
@@ -436,7 +419,9 @@ describe("The Project Managers form page", () => {
         };
       },
     });
-    pageTestingHelper.renderPage();
+
+    const mockPush = jest.fn();
+    pageTestingHelper.renderPageWithMockRouter({ push: mockPush });
 
     expect(
       screen.queryByRole("button", { name: "submit" })
@@ -451,7 +436,7 @@ describe("The Project Managers form page", () => {
       "test manager 3"
     );
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
-    expect(routerPush).toHaveBeenCalledWith({
+    expect(mockPush).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/managers/",
       query: { projectRevision: "mock-pending-revision-id" },
     });
