@@ -217,7 +217,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       <Grid cols={10} align="center">
         <Grid.Row>Quarterly reports status here</Grid.Row>
         <Grid.Row>
-          <Grid.Col span={10}>
+          <div className="column">
             <FormBorder>
               <Grid.Row className="addButtonContainer">
                 <Button
@@ -234,7 +234,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     key={quarterlyReport.id}
                     className="reportContainer"
                   >
-                    <Grid.Col span={6}>
+                    <div className="column">
                       <h3>Quarterly Report {index + 1}</h3>
                       <FormBase
                         id={`form-${quarterlyReport.id}`}
@@ -255,8 +255,8 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                         uiSchema={quarterlyReportUiSchema}
                         ObjectFieldTemplate={EmptyObjectFieldTemplate}
                       />
-                    </Grid.Col>
-                    <Grid.Col span={4}>
+                    </div>
+                    <div className="column">
                       <Button
                         variant="secondary"
                         size="small"
@@ -269,7 +269,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                       >
                         Remove
                       </Button>
-                    </Grid.Col>
+                    </div>
                   </Grid.Row>
                 );
               })}
@@ -284,7 +284,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 Submit Quarterly Reports
               </Button>
             </Grid.Row>
-          </Grid.Col>
+          </div>
         </Grid.Row>
       </Grid>
       <style jsx>{`
@@ -303,6 +303,10 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         }
         div :global(.addButtonContainer) {
           margin-bottom: 1em;
+        }
+        div :global(.column) {
+          display: flex;
+          flex-direction: column;
         }
       `}</style>
     </div>
