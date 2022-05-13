@@ -209,43 +209,25 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Quarterly Reports</h2>
-
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
       <div>Quarterly reports status here</div>
 
       <FormBorder>
-        <div className="addButtonContainer">
-          <Button
-            variant="secondary"
-            onClick={() => addQuarterlyReport(nextQuarterlyReportIndex)}
-          >
-            <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly report
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          onClick={() => addQuarterlyReport(nextQuarterlyReportIndex)}
+          className="addButton"
+        >
+          <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly report
+        </Button>
+
         {sortedQuarterlyReports.map((quarterlyReport, index) => {
           return (
             <div key={quarterlyReport.id} className="reportContainer">
-              <div>
+              <header className="reportHeader">
                 <h3>Quarterly Report {index + 1}</h3>
-                <FormBase
-                  id={`form-${quarterlyReport.id}`}
-                  idPrefix={`form-${quarterlyReport.id}`}
-                  ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
-                  formData={quarterlyReport.newFormData}
-                  onChange={(change) => {
-                    updateFormChange(
-                      { ...quarterlyReport, changeStatus: "pending" },
-                      change.formData
-                    );
-                  }}
-                  schema={projectReportingRequirementSchema as JSONSchema7}
-                  uiSchema={quarterlyReportUiSchema}
-                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                />
-              </div>
-              <div className="removeContainer">
                 <Button
                   variant="secondary"
                   size="small"
@@ -258,21 +240,34 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 >
                   Remove
                 </Button>
-              </div>
+              </header>
+              <FormBase
+                id={`form-${quarterlyReport.id}`}
+                idPrefix={`form-${quarterlyReport.id}`}
+                ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
+                formData={quarterlyReport.newFormData}
+                onChange={(change) => {
+                  updateFormChange(
+                    { ...quarterlyReport, changeStatus: "pending" },
+                    change.formData
+                  );
+                }}
+                schema={projectReportingRequirementSchema as JSONSchema7}
+                uiSchema={quarterlyReportUiSchema}
+                ObjectFieldTemplate={EmptyObjectFieldTemplate}
+              />
             </div>
           );
         })}
       </FormBorder>
-      <div className="submitContainer">
-        <Button
-          size="medium"
-          variant="primary"
-          onClick={stageQuarterlyReportFormChanges}
-          disabled={isUpdating}
-        >
-          Submit Quarterly Reports
-        </Button>
-      </div>
+      <Button
+        size="medium"
+        variant="primary"
+        onClick={stageQuarterlyReportFormChanges}
+        disabled={isUpdating}
+      >
+        Submit Quarterly Reports
+      </Button>
 
       <style jsx>{`
         div :global(button.pg-button) {
@@ -287,15 +282,14 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         div :global(.reportContainer) {
           border-top: 1px solid black;
           padding-top: 1em;
-          display: flex;
-          flex-direction: row;
         }
-        div :global(.addButtonContainer) {
+        div :global(button.addButton) {
           margin-bottom: 1em;
         }
-        div :global(.removeContainer) {
+        header.reportHeader {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          justify-content: space-between;
         }
       `}</style>
     </div>
