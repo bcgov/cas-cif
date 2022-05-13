@@ -274,7 +274,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           margin-left: 0.4em;
           margin-right: 0em;
         }
-        div :global(.reportContainer) {
+        div.reportContainer {
           border-top: 1px solid black;
           padding-top: 1em;
         }
