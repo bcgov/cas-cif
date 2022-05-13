@@ -92,7 +92,7 @@ describe("The Object Field Template", () => {
       componentUnderTest.getByText("I replaced the OLD ID")
     ).toBeInTheDocument();
 
-    // expect(componentUnderTest.getAllByRole("textbox")).toHaveLength(3);
+    // expect(componentUnderTest.getAllByRole("combobox")).toHaveLength(3);
   });
 
   it("shows data has been added when there is newData, the operation is 'CREATE' & there is no old data", () => {

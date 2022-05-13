@@ -3,14 +3,14 @@
 exports[`The Object Field Template renders a default TitleField and DescriptionField 1`] = `
 <div>
   <div
-    class="sc-jRQBWg cDwDrH pg-grid-container"
+    class="sc-jSMfEi dITViw pg-grid-container"
     cols="10"
   >
     <div
-      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+      class="sc-gKXOVf sc-iBkjds kvZYtW cysSRj pg-grid-row"
     >
       <div
-        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+        class="sc-ftvSup sc-papXJ kITJHv eXKdMJ pg-grid-col"
         width="100"
       >
         <fieldset
@@ -36,14 +36,14 @@ exports[`The Object Field Template renders a default TitleField and DescriptionF
 exports[`The Object Field Template renders the provided TitleField and DescriptionField with the provided title and description 1`] = `
 <div>
   <div
-    class="sc-jRQBWg cDwDrH pg-grid-container"
+    class="sc-jSMfEi dITViw pg-grid-container"
     cols="10"
   >
     <div
-      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+      class="sc-gKXOVf sc-iBkjds kvZYtW cysSRj pg-grid-row"
     >
       <div
-        class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+        class="sc-ftvSup sc-papXJ kITJHv eXKdMJ pg-grid-col"
         width="100"
       >
         <fieldset

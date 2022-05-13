@@ -6,11 +6,11 @@ exports[`The Text Widget Matches the snapshot with the value set 1`] = `
     class="jsx-4128436805"
   >
     <div
-      class="sc-hKwDye jvzxmJ pg-input"
+      class="sc-hKMtZM iBcpBy pg-input"
     >
       <input
         aria-label=""
-        class="sc-jRQBWg AhBXp pg-input-input"
+        class="sc-jSMfEi bVtipK pg-input-input"
         id="1"
         name="1-input"
         placeholder="test placeholder"

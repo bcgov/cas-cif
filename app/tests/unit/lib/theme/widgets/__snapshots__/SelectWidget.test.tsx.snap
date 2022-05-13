@@ -6,14 +6,14 @@ exports[`The SelectWidget Widget Matches the snapshot with a default value set 1
     class="jsx-9409829"
   >
     <div
-      class="sc-eCImPb dfYLVh pg-select"
+      class="sc-eCYdqJ bJnssn pg-select"
     >
       <div
-        class="sc-gKclnd kMxstE pg-select-wrapper"
+        class="sc-gKXOVf kjA-DCE pg-select-wrapper"
       >
         <select
           aria-label="Search"
-          class="sc-iCfMLu gsBcnF pg-select-input"
+          class="sc-iBkjds fhVste pg-select-input"
           id="1"
           name="1-select"
           placeholder="test placeholder"
@@ -48,14 +48,14 @@ exports[`The SelectWidget Widget Matches the snapshot with no default value set 
     class="jsx-9409829"
   >
     <div
-      class="sc-eCImPb dfYLVh pg-select"
+      class="sc-eCYdqJ bJnssn pg-select"
     >
       <div
-        class="sc-gKclnd kMxstE pg-select-wrapper"
+        class="sc-gKXOVf kjA-DCE pg-select-wrapper"
       >
         <select
           aria-label="Search"
-          class="sc-iCfMLu gsBcnF pg-select-input"
+          class="sc-iBkjds fhVste pg-select-input"
           id="1"
           name="1-select"
           placeholder="test placeholder"

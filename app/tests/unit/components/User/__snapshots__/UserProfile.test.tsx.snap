@@ -3,15 +3,15 @@
 exports[`The UserProfile component matches the snapshot 1`] = `
 <div>
   <div
-    class="sc-jRQBWg cDwDrH pg-grid-container name-display"
+    class="sc-jSMfEi dITViw pg-grid-container name-display"
   >
     <div
-      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+      class="sc-gKXOVf sc-iBkjds kvZYtW cysSRj pg-grid-row"
     >
       Full Name
     </div>
     <div
-      class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+      class="sc-gKXOVf sc-iBkjds kvZYtW cysSRj pg-grid-row"
     >
       a@a.a
     </div>

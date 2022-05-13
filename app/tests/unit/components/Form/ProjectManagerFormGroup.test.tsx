@@ -137,7 +137,7 @@ describe("The ProjectManagerForm", () => {
   it("Renders a form for each Project Manager Label", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(screen.getAllByRole("textbox")).toHaveLength(3);
+    expect(screen.getAllByRole("combobox")).toHaveLength(3);
   });
 
   it("Renders any data contained in a formChange", () => {

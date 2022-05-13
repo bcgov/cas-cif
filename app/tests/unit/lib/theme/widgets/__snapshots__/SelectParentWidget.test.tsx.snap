@@ -12,14 +12,14 @@ exports[`The SelectParentWidget Widget Matches the snapshot with a default value
       Parent Label
     </label>
     <div
-      class="sc-eCImPb dfYLVh pg-select"
+      class="sc-eCYdqJ bJnssn pg-select"
     >
       <div
-        class="sc-gKclnd kMxstE pg-select-wrapper"
+        class="sc-gKXOVf kjA-DCE pg-select-wrapper"
       >
         <select
           aria-label="select-parent-dropdown-test-id-select"
-          class="sc-iCfMLu gsBcnF pg-select-input"
+          class="sc-iBkjds fhVste pg-select-input"
           id="select-parent-dropdown-test-id"
           name="select-parent-dropdown-test-id-select"
         >
@@ -50,14 +50,14 @@ exports[`The SelectParentWidget Widget Matches the snapshot with a default value
       Child Label
     </label>
     <div
-      class="sc-eCImPb dfYLVh pg-select"
+      class="sc-eCYdqJ bJnssn pg-select"
     >
       <div
-        class="sc-gKclnd kMxstE pg-select-wrapper"
+        class="sc-gKXOVf kjA-DCE pg-select-wrapper"
       >
         <select
           aria-label="select-child-dropdown-test-id-select"
-          class="sc-iCfMLu gsBcnF pg-select-input"
+          class="sc-iBkjds fhVste pg-select-input"
           id="select-child-dropdown-test-id"
           name="select-child-dropdown-test-id-select"
         >

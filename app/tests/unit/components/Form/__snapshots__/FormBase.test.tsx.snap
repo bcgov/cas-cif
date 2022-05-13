@@ -10,14 +10,14 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
       class="jsx-1751233656"
     >
       <div
-        class="sc-jRQBWg cDwDrH pg-grid-container"
+        class="sc-jSMfEi dITViw pg-grid-container"
         cols="10"
       >
         <div
-          class="sc-gKclnd sc-iCfMLu YZhSi fQKovI pg-grid-row"
+          class="sc-gKXOVf sc-iBkjds kvZYtW cysSRj pg-grid-row"
         >
           <div
-            class="sc-furwcr sc-pVTFL XpgcI eqAbko pg-grid-col"
+            class="sc-ftvSup sc-papXJ kITJHv eXKdMJ pg-grid-col"
             width="100"
           >
             <fieldset
@@ -35,11 +35,11 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
                   class="jsx-4128436805"
                 >
                   <div
-                    class="sc-crHmcD bKATQK pg-input"
+                    class="sc-crXcEl hvtgmA pg-input"
                   >
                     <input
                       aria-label="field"
-                      class="sc-bqiRlB hrAFNs pg-input-input"
+                      class="sc-breuTD eMrxRs pg-input-input"
                       id="root_field"
                       name="root_field-input"
                       placeholder=""
