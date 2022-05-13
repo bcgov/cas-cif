@@ -226,8 +226,6 @@ Cypress.Commands.add(
         .eq(reportNumber - 1)
         .should("have.value", generalComments);
     }
-    //TODO: figure out how to avoid this (currently needed when calling this function multiple times in a row)
-    cy.wait(1000);
   }
 );
 
