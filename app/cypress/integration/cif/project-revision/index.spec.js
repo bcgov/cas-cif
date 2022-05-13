@@ -61,14 +61,9 @@ describe("the new project page", () => {
 
     cy.url().should("include", "/form/quarterly-reports");
 
-    //need to use then otherwise Cypress adds the reports synchonously and fills/checks bits and pieces of each
-    cy.addQuarterlyReport(1, "1991-01-01")
-      .then(() => {
-        cy.addQuarterlyReport(2, "1992-01-01");
-      })
-      .then(() => {
-        cy.addQuarterlyReport(3, "1993-01-01");
-      });
+    cy.addQuarterlyReport(1, "1991-01-01");
+    cy.addQuarterlyReport(2, "1992-01-01");
+    cy.addQuarterlyReport(3, "1993-01-01");
 
     cy.get('label[for*="reportDueDate"]').should("have.length", 3);
     cy.checkA11y("main", null, logAxeResults);
@@ -222,20 +217,18 @@ describe("the new project page", () => {
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
     cy.url().should("include", "/form/quarterly-reports");
-    //need to use then otherwise Cypress adds the reports synchonously and fills/checks bits and pieces of each
     cy.addQuarterlyReport(
       1,
       "2020-01-01",
       "2020-02-02",
       "I am the first general comment"
-    ).then(() => {
-      cy.addQuarterlyReport(
-        2,
-        "2022-01-01",
-        "2022-02-02",
-        "I am the second general comment"
-      );
-    });
+    );
+    cy.addQuarterlyReport(
+      2,
+      "2022-01-01",
+      "2022-02-02",
+      "I am the second general comment"
+    );
 
     cy.findByRole("button", { name: /^submit/i }).click();
 

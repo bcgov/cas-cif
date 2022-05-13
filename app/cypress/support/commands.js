@@ -199,9 +199,10 @@ Cypress.Commands.add(
     receivedDate = undefined,
     generalComments = undefined
   ) => {
-    cy.url().should("include", "/form/quarterly-reports");
-
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.get('[label*="Due Date"]').should("have.length", reportNumber);
     cy.get('[label*="Due Date"]')
       .eq(reportNumber - 1)
       .type(reportDueDate);
@@ -226,6 +227,8 @@ Cypress.Commands.add(
         .eq(reportNumber - 1)
         .should("have.value", generalComments);
     }
+    // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
+    return cy.url().should("include", "/form/quarterly-reports");
   }
 );
 
