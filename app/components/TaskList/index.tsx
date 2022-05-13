@@ -124,7 +124,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         {/* Quarterly Reports Section */}
         <TaskListSection
           defaultExpandedState={currentStep === "quarterly-reports"}
-          listItemNumber="4"
+          listItemNumber="3"
           listItemName="Quarterly Reports"
         >
           <FormListItem
@@ -141,7 +141,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         {mode !== "view" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
-            listItemNumber="3"
+            listItemNumber="4"
             listItemName="Submit changes"
           >
             <FormListItem
