@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif.get_form_status(project_revision_id int, form_data_table_name text)
+create or replace function cif.get_form_status(project_revision_id int, form_data_table_name text, json_matcher jsonb default '{}')
 returns setof text
 as
 $function$
@@ -25,6 +25,7 @@ $function$
   from cif.form_change fc
   where fc.project_revision_id = $1
   and fc.form_data_table_name = $2
+  and fc.new_form_data @> json_matcher
 
 $function$ language sql stable;
 

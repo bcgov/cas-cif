@@ -1764,6 +1764,8 @@ enum BudgetItemsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_TYPE_ASC
@@ -34988,6 +34990,8 @@ enum PaymentsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_DUE_DATE_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORT_TYPE_ASC
@@ -39675,11 +39679,6 @@ type ProjectRevision implements Node {
   ): FormChangesConnection!
 
   """
-  Computed column to return a project contacts status for a project revision
-  """
-  projectContactsStatus: String
-
-  """
   Computed column for graphql to retrieve the change related to the project record, within a project revision
   """
   projectFormChange: FormChange
@@ -39713,17 +39712,40 @@ type ProjectRevision implements Node {
   ): ManagerFormChangesByLabelCompositeReturnsConnection!
 
   """
-  Computed column to return a project managers status for a project revision
+  Computed column for graphql to retrieve the changes related to the quarterly reporting requirement records, within a project revision
   """
-  projectManagersStatus: String
+  projectQuarterlyReportFormChanges(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
 
-  """
-  Computed column to return a project overview status for a project revision
-  """
-  projectOverviewStatus: String
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormChangeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): FormChangesConnection!
 
   """Unique ID for the project revision"""
   rowId: Int!
+
+  """
+  Computed column to return a tasklist status for any tasklist form with an optional json matcher on the form selection
+  """
+  tasklistStatusFor(formDataTableName: String!, jsonMatcher: String): String
 
   """updated at timestamp"""
   updatedAt: Datetime!
@@ -40009,17 +40031,8 @@ input ProjectRevisionFilter {
   """A related `projectByProjectId` exists."""
   projectByProjectIdExists: Boolean
 
-  """Filter by the object’s `projectContactsStatus` field."""
-  projectContactsStatus: StringFilter
-
   """Filter by the object’s `projectId` field."""
   projectId: IntFilter
-
-  """Filter by the object’s `projectManagersStatus` field."""
-  projectManagersStatus: StringFilter
-
-  """Filter by the object’s `projectOverviewStatus` field."""
-  projectOverviewStatus: StringFilter
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
@@ -43417,6 +43430,7 @@ type Query implements Node {
     """Only read the first `n` values of the set."""
     first: Int
     formDataTableName: String!
+    jsonMatcher: JSON
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -44861,6 +44875,7 @@ type ReportingRequirement implements Node {
   Reads a single `ReportType` that is related to this `ReportingRequirement`.
   """
   reportTypeByReportType: ReportType
+  reportingRequirementIndex: Int!
 
   """
   Reads a single `ReportingRequirementStatus` that is related to this `ReportingRequirement`.
@@ -45392,6 +45407,11 @@ input ReportingRequirementCondition {
   """Checks for equality with the object’s `reportType` field."""
   reportType: String
 
+  """
+  Checks for equality with the object’s `reportingRequirementIndex` field.
+  """
+  reportingRequirementIndex: Int
+
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
 
@@ -45489,6 +45509,9 @@ input ReportingRequirementFilter {
 
   """Filter by the object’s `reportTypeByReportType` relation."""
   reportTypeByReportType: ReportTypeFilter
+
+  """Filter by the object’s `reportingRequirementIndex` field."""
+  reportingRequirementIndex: IntFilter
 
   """Filter by the object’s `reportingRequirementStatusByStatus` relation."""
   reportingRequirementStatusByStatus: ReportingRequirementStatusFilter
@@ -46615,6 +46638,8 @@ enum ReportingRequirementsOrderBy {
   PROJECT_BY_PROJECT_ID__UPDATED_BY_DESC
   PROJECT_ID_ASC
   PROJECT_ID_DESC
+  REPORTING_REQUIREMENT_INDEX_ASC
+  REPORTING_REQUIREMENT_INDEX_DESC
   REPORTING_REQUIREMENT_STATUS_BY_STATUS__ACTIVE_ASC
   REPORTING_REQUIREMENT_STATUS_BY_STATUS__ACTIVE_DESC
   REPORTING_REQUIREMENT_STATUS_BY_STATUS__ARCHIVED_AT_ASC

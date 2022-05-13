@@ -115,9 +115,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           },
         },
       },
-      onError: (error) => {
-        console.log(error);
-      },
     });
   };
 
@@ -282,11 +279,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         div :global(button.pg-button) {
           margin-left: 0.4em;
           margin-right: 0em;
-        }
-        div :global(.right-aligned-column) {
-          display: flex;
-          justify-content: flex-end;
-          align-items: flex-start;
         }
       `}</style>
     </div>

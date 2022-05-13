@@ -2,7 +2,7 @@
 
 begin;
 
-create function cif.create_project_revision(project_id integer)
+create or replace function cif.create_project_revision(project_id integer)
 returns cif.project_revision
 as $function$
 declare
@@ -40,6 +40,15 @@ begin
       'project_contact' as json_schema_name
     from cif.project_contact
     where project_contact.project_id = $1
+    and archived_at is null
+  union
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'reporting_requirement' as form_data_table_name,
+      'reporting_requirement' as json_schema_name
+    from cif.reporting_requirement
+    where reporting_requirement.project_id = $1
     and archived_at is null
   )
   loop
