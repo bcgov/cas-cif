@@ -12,7 +12,7 @@ const FullWidthPopper = (props) => (
 
 interface SearchableDropdownSettings extends FilterSettings {
   hideClearButton?: boolean;
-  isFreeSoloEnabled?: boolean;
+  allowFreeFormInput?: boolean;
 }
 
 export default class SearchableDropdownFilter extends TableFilter<string> {
@@ -23,11 +23,11 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
     settings?: SearchableDropdownSettings
   ) {
     super(display, argName, settings);
-    this.isFreeSoloEnabled = settings?.isFreeSoloEnabled ?? false;
-    this.hideClearButton = settings?.hideClearButton ?? false;
+    this.allowFreeFormInput = settings?.allowFreeFormInput ?? true;
+    this.hideClearButton = settings?.hideClearButton ?? true;
   }
 
-  isFreeSoloEnabled: boolean;
+  allowFreeFormInput: boolean;
 
   hideClearButton: boolean;
 
@@ -37,7 +37,7 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
         <Autocomplete
           options={this.options}
           onChange={(_, option) => onChange(option, this.argName)}
-          freeSolo={this.isFreeSoloEnabled}
+          freeSolo={this.allowFreeFormInput}
           disableClearable={this.hideClearButton}
           size="small"
           PopperComponent={FullWidthPopper}
