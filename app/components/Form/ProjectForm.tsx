@@ -96,6 +96,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           id
           rowId
           newFormData
+          changeStatus
           isUniqueValue(columnName: "proposalReference")
           formChangeByPreviousFormChangeId {
             changeStatus
@@ -235,6 +236,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         {...props}
         schema={schema}
         uiSchema={uiSchema}
+        validateOnMount={revision.projectFormChange.changeStatus === "staged"}
         validate={uniqueProposalReferenceValidation}
         formData={revision.projectFormChange.newFormData}
         formContext={{

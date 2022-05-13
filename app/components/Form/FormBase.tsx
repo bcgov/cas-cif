@@ -1,6 +1,7 @@
 import formTheme from "lib/theme/FormWithTheme";
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useEffect, useMemo, useState } from "react";
 import { FormProps, AjvError, withTheme } from "@rjsf/core";
+import validateFormData from "@rjsf/core/dist/cjs/validate";
 import { customTransformErrors } from "lib/theme/customTransformErrors";
 import {
   customFormats,
@@ -9,6 +10,7 @@ import {
 
 interface FormPropsWithTheme<T> extends FormProps<T> {
   theme?: any;
+  validateOnMount?: boolean;
 }
 
 const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
@@ -19,15 +21,32 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
     () => withTheme(props.theme ?? formTheme),
     [props.theme]
   );
+
   const transformErrors = (errors: AjvError[]) => {
     return customTransformErrors(errors, customFormatsErrorMessages);
   };
+
+  const [extraErrors, setExtraErrors] = useState<any>();
+  useEffect(() => {
+    if (props.validateOnMount) {
+      setExtraErrors(
+        validateFormData(
+          props.formData,
+          props.schema,
+          props.validate,
+          transformErrors
+        ).errorSchema
+      );
+    }
+  }, []);
+
   return (
     <>
       <Form
         {...props}
         // @ts-ignore
         ref={ref}
+        extraErrors={extraErrors}
         customFormats={customFormats}
         transformErrors={transformErrors}
         noHtml5Validate
