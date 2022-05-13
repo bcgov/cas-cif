@@ -136,4 +136,16 @@ describe("The projects page", () => {
       screen.queryByLabelText("Filter by Project Managers")
     ).toBeInTheDocument();
   });
+
+  it("renders the page with the status query variable from the status filter", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+    userEvent.type(screen.getAllByRole("combobox")[0], "Wait");
+    userEvent.click(screen.getByText(/Apply/i));
+
+    const operation =
+      pageTestingHelper.environment.mock.getMostRecentOperation();
+    expect(operation.fragment.node.name).toBe("projectsQuery");
+    expect(operation.fragment.variables.status).toBe("Wait");
+  });
 });

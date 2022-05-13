@@ -73,12 +73,24 @@ export const ProjectsQuery = graphql`
         }
       }
     }
+    allProjectStatuses {
+      edges {
+        node {
+          name
+        }
+      }
+    }
   }
 `;
 
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
-  const { allProjects, allCifUsers, pendingNewProjectRevision, session } =
-    usePreloadedQuery(ProjectsQuery, preloadedQuery);
+  const {
+    allProjects,
+    allCifUsers,
+    allProjectStatuses,
+    pendingNewProjectRevision,
+    session,
+  } = usePreloadedQuery(ProjectsQuery, preloadedQuery);
   const router = useRouter();
 
   const tableFilters = useMemo(
@@ -88,18 +100,21 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
       }),
       new TextFilter("Proposal Reference", "proposalReference"),
-      new TextFilter("Status", "status", {
-        orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME",
-      }),
+      new SearchableDropdownFilter(
+        "Status",
+        "status",
+        allProjectStatuses.edges.map((e) => e.node.name)
+      ),
       new SearchableDropdownFilter(
         "Project Managers",
         "projectManagers",
-        allCifUsers.edges.map((e) => e.node.fullName)
+        allCifUsers.edges.map((e) => e.node.fullName),
+        { allowFreeFormInput: true }
       ),
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
     ],
-    [allCifUsers]
+    [allCifUsers.edges, allProjectStatuses.edges]
   );
 
   const [createProject, isCreatingProject] = useCreateProjectMutation();
