@@ -1,5 +1,4 @@
 import { Button } from "@button-inc/bcgov-theme";
-import Grid from "@button-inc/bcgov-theme/Grid";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
@@ -214,79 +213,67 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
-      <Grid cols={10} align="center">
-        <Grid.Row>Quarterly reports status here</Grid.Row>
-        <Grid.Row>
-          <div className="column">
-            <FormBorder>
-              <Grid.Row className="addButtonContainer">
+      <div>Quarterly reports status here</div>
+
+      <FormBorder>
+        <div className="addButtonContainer">
+          <Button
+            variant="secondary"
+            onClick={() => addQuarterlyReport(nextQuarterlyReportIndex)}
+          >
+            <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly report
+          </Button>
+        </div>
+        {sortedQuarterlyReports.map((quarterlyReport, index) => {
+          return (
+            <div key={quarterlyReport.id} className="reportContainer">
+              <div>
+                <h3>Quarterly Report {index + 1}</h3>
+                <FormBase
+                  id={`form-${quarterlyReport.id}`}
+                  idPrefix={`form-${quarterlyReport.id}`}
+                  ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
+                  formData={quarterlyReport.newFormData}
+                  onChange={(change) => {
+                    updateFormChange(
+                      { ...quarterlyReport, changeStatus: "pending" },
+                      change.formData
+                    );
+                  }}
+                  schema={projectReportingRequirementSchema as JSONSchema7}
+                  uiSchema={quarterlyReportUiSchema}
+                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                />
+              </div>
+              <div className="removeContainer">
                 <Button
                   variant="secondary"
-                  onClick={() => addQuarterlyReport(nextQuarterlyReportIndex)}
+                  size="small"
+                  onClick={() =>
+                    deleteQuarterlyReport(
+                      quarterlyReport.id,
+                      quarterlyReport.operation
+                    )
+                  }
                 >
-                  <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly
-                  report
+                  Remove
                 </Button>
-              </Grid.Row>
-              {sortedQuarterlyReports.map((quarterlyReport, index) => {
-                return (
-                  <Grid.Row
-                    key={quarterlyReport.id}
-                    className="reportContainer"
-                  >
-                    <div className="column">
-                      <h3>Quarterly Report {index + 1}</h3>
-                      <FormBase
-                        id={`form-${quarterlyReport.id}`}
-                        idPrefix={`form-${quarterlyReport.id}`}
-                        ref={(el) =>
-                          (formRefs.current[quarterlyReport.id] = el)
-                        }
-                        formData={quarterlyReport.newFormData}
-                        onChange={(change) => {
-                          updateFormChange(
-                            { ...quarterlyReport, changeStatus: "pending" },
-                            change.formData
-                          );
-                        }}
-                        schema={
-                          projectReportingRequirementSchema as JSONSchema7
-                        }
-                        uiSchema={quarterlyReportUiSchema}
-                        ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                      />
-                    </div>
-                    <div className="column">
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        onClick={() =>
-                          deleteQuarterlyReport(
-                            quarterlyReport.id,
-                            quarterlyReport.operation
-                          )
-                        }
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </Grid.Row>
-                );
-              })}
-            </FormBorder>
-            <Grid.Row>
-              <Button
-                size="medium"
-                variant="primary"
-                onClick={stageQuarterlyReportFormChanges}
-                disabled={isUpdating}
-              >
-                Submit Quarterly Reports
-              </Button>
-            </Grid.Row>
-          </div>
-        </Grid.Row>
-      </Grid>
+              </div>
+            </div>
+          );
+        })}
+      </FormBorder>
+      <div className="submitContainer">
+        <Button
+          size="medium"
+          variant="primary"
+          onClick={stageQuarterlyReportFormChanges}
+          disabled={isUpdating}
+        >
+          Submit Quarterly Reports
+        </Button>
+      </div>
+
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
@@ -300,11 +287,13 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         div :global(.reportContainer) {
           border-top: 1px solid black;
           padding-top: 1em;
+          display: flex;
+          flex-direction: row;
         }
         div :global(.addButtonContainer) {
           margin-bottom: 1em;
         }
-        div :global(.column) {
+        div :global(.removeContainer) {
           display: flex;
           flex-direction: column;
         }
