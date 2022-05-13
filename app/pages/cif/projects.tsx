@@ -103,13 +103,13 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       new SearchableDropdownFilter(
         "Status",
         "status",
-        allProjectStatuses.edges.map((e) => e.node.name),
-        { hideClearButton: true }
+        allProjectStatuses.edges.map((e) => e.node.name)
       ),
       new SearchableDropdownFilter(
         "Project Managers",
         "projectManagers",
-        allCifUsers.edges.map((e) => e.node.fullName)
+        allCifUsers.edges.map((e) => e.node.fullName),
+        { allowFreeFormInput: true }
       ),
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
