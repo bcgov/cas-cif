@@ -25,7 +25,7 @@ const quarterlyReportUiSchema = {
   reportDueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "date",
+    "ui:widget": "DueDateWidget",
   },
   submittedDate: {
     "ui:col-md": 12,
