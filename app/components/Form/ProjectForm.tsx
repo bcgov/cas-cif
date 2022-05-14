@@ -183,6 +183,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               id: revision.projectFormChange.id,
               newFormData: updatedFormData,
               isUniqueValue: revision.projectFormChange.isUniqueValue,
+              changeStatus,
               projectRevisionByProjectRevisionId: undefined,
             },
           },
