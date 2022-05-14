@@ -1,6 +1,6 @@
 import formTheme from "lib/theme/FormWithTheme";
-import { forwardRef, useEffect, useMemo, useState } from "react";
-import { FormProps, AjvError, withTheme } from "@rjsf/core";
+import { FormEvent, forwardRef, useEffect, useMemo, useState } from "react";
+import { FormProps, AjvError, withTheme, ISubmitEvent } from "@rjsf/core";
 import validateFormData from "@rjsf/core/dist/cjs/validate";
 import { customTransformErrors } from "lib/theme/customTransformErrors";
 import {
@@ -38,7 +38,20 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
         ).errorSchema
       );
     }
-  }, []);
+  }, [props.schema, props.validateOnMount]);
+
+  const handleSubmit = (
+    e: ISubmitEvent<any>,
+    nativeEvent: FormEvent<HTMLFormElement>
+  ) => {
+    setExtraErrors(undefined);
+    props.onSubmit?.(e, nativeEvent);
+  };
+
+  const handleError = (e: any) => {
+    setExtraErrors(undefined);
+    props.onError?.(e);
+  };
 
   return (
     <>
@@ -53,6 +66,8 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
         omitExtraData
         showErrorList={false}
         tagName={props.tagName}
+        onSubmit={handleSubmit}
+        onError={handleError}
       ></Form>
       <style jsx>{`
         :global(label) {
