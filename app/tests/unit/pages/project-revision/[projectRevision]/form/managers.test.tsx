@@ -53,8 +53,9 @@ describe("The Project Managers form page", () => {
   it("renders the task list in the left navigation", () => {
     const mockPathname =
       "/cif/project-revision/[projectRevision]/form/managers";
+    pageTestingHelper.setRouterOptions({ pathname: mockPathname });
     pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPageWithMockRouter({ pathname: mockPathname });
+    pageTestingHelper.renderPage();
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -315,10 +316,9 @@ describe("The Project Managers form page", () => {
       });
 
     pageTestingHelper.loadQuery();
-    const mockPush = jest.fn();
-    pageTestingHelper.renderPageWithMockRouter({ push: mockPush });
+    pageTestingHelper.renderPage();
     handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
     );
   });
@@ -332,13 +332,10 @@ describe("The Project Managers form page", () => {
       },
     });
 
-    const mockReplace = jest.fn();
-    const { container } = pageTestingHelper.renderPageWithMockRouter({
-      replace: mockReplace,
-    });
+    const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
-    expect(mockReplace).toHaveBeenCalledWith("/404");
+    expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
   });
 
   it("renders the form in view mode when the project revision is committed", async () => {
@@ -420,8 +417,7 @@ describe("The Project Managers form page", () => {
       },
     });
 
-    const mockPush = jest.fn();
-    pageTestingHelper.renderPageWithMockRouter({ push: mockPush });
+    pageTestingHelper.renderPage();
 
     expect(
       screen.queryByRole("button", { name: "submit" })
@@ -436,7 +432,7 @@ describe("The Project Managers form page", () => {
       "test manager 3"
     );
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
-    expect(mockPush).toHaveBeenCalledWith({
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/managers/",
       query: { projectRevision: "mock-pending-revision-id" },
     });
