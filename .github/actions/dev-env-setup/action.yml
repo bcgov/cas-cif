@@ -36,4 +36,4 @@ runs:
           ~/.cache/yarn
           ~/.cache/Cypress
           ./app/node_modules
-        key: ${{ runner.os }}-yarn-cache-${{ hashFiles('app/yarn.lock') }}
+        key: ${{ runner.os }}-yarn-cache-${{ hashFiles('app/yarn.lock') }}-v2

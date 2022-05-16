@@ -80,20 +80,19 @@ jobs:
           echo "PRE_COMMIT_HOME=$GITHUB_WORKSPACE/.pre-commit-cache" >> $GITHUB_ENV
       - name: set PY
         run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+      - name: create commitlint COMMIT_EDITMSG if not exists
+        run: |
+          if test -f ".git/COMMIT_EDITMSG"; then
+              echo "COMMIT_EDITMSG EXISTS, skipping"
+          else
+              touch .git/COMMIT_EDITMSG
+          fi
       - uses: actions/cache@v2
         with:
           path: |
             ./.pre-commit-cache
-          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v2
+          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v3
       - run: pre-commit run --all-files
-
-  commitlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v2
 
   docker-build:
     runs-on: ubuntu-latest
