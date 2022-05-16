@@ -18,7 +18,7 @@ $computed_column$
 
 $computed_column$ language sql stable;
 
-grant execute on function cif.project_revision_project_quarterly_report_form_changes to cif_internal, cif_external, cif_admin;
+grant execute on function cif.project_revision_form_changes_for to cif_internal, cif_external, cif_admin;
 
 comment on function cif.project_revision_project_quarterly_report_form_changes is 'Computed column to dynamically retrieve the form_change records relating to the project_revision from a given table';
 
