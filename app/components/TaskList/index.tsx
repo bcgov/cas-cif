@@ -137,6 +137,17 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
             linkUrl={getProjectRevisionFormPageRoute(id, 4)}
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
+        {/* Quarterly Reports Section */}
+        <TaskListSection
+          defaultExpandedState={currentStep === "milestone-reports"}
+          listItemNumber="4"
+          listItemName="Milestone Reports"
+        >
+          <FormListItem
+            stepName="milestone-reports"
+            linkUrl={getProjectRevisionMilestoneReportsFormPageRoute(id)}
+            formTitle="Milestone reports"
+            formStatus={"BROKEN"}
             currentStep={currentStep}
             mode={mode}
           />
