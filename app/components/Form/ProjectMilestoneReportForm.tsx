@@ -49,12 +49,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
         id
         rowId
-        milestoneReportFormChanges: formChangesFor(
-          first: 1000
-          formDataTableName: "reporting_requirement"
-          jsonMatcher: "{\"reportType\":\"Milestone\"}"
-        )
-          @connection(key: "connection_milestoneReportFormChanges") {
+        projectMilestoneReportFormChanges(first: 1000)
+          @connection(key: "connection_projectMilestoneReportFormChanges") {
           __id
           edges {
             node {
@@ -91,7 +87,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       variables: {
         projectRevisionId: projectRevision.rowId,
         newFormData: formData,
-        connections: [projectRevision.milestoneFormChanges.__id],
+        connections: [projectRevision.projectMilestoneReportFormChanges.__id],
       },
     });
   };
@@ -132,7 +128,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   };
 
   const [discardFormChange] = useDiscardFormChange(
-    projectRevision.milestoneFormChanges.__id
+    projectRevision.projectMilestoneReportFormChanges.__id
   );
 
   const deleteMilestoneReport = (
@@ -158,28 +154,30 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
     const completedPromises: Promise<void>[] = [];
 
-    projectRevision.milestoneFormChanges.edges.forEach(({ node }) => {
-      if (node.changeStatus === "pending") {
-        const promise = new Promise<void>((resolve, reject) => {
-          applyUpdateFormChangeMutation({
-            variables: {
-              input: {
-                id: node.id,
-                formChangePatch: {
-                  changeStatus: "staged",
+    projectRevision.projectMilestoneReportFormChanges.edges.forEach(
+      ({ node }) => {
+        if (node.changeStatus === "pending") {
+          const promise = new Promise<void>((resolve, reject) => {
+            applyUpdateFormChangeMutation({
+              variables: {
+                input: {
+                  id: node.id,
+                  formChangePatch: {
+                    changeStatus: "staged",
+                  },
                 },
               },
-            },
-            debounceKey: node.id,
-            onCompleted: () => {
-              resolve();
-            },
-            onError: reject,
+              debounceKey: node.id,
+              onCompleted: () => {
+                resolve();
+              },
+              onError: reject,
+            });
           });
-        });
-        completedPromises.push(promise);
+          completedPromises.push(promise);
+        }
       }
-    });
+    );
     try {
       await Promise.all(completedPromises);
 
@@ -190,9 +188,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   };
 
   const [sortedMilestoneReports, nextMilestoneReportIndex] = useMemo(() => {
-    const filteredReports = projectRevision.milestoneFormChanges.edges
-      .map(({ node }) => node)
-      .filter((report) => report.operation !== "ARCHIVE");
+    const filteredReports =
+      projectRevision.projectMilestoneReportFormChanges.edges
+        .map(({ node }) => node)
+        .filter((report) => report.operation !== "ARCHIVE");
 
     filteredReports.sort(
       (a, b) =>
@@ -206,7 +205,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         : 1;
 
     return [filteredReports, nextIndex];
-  }, [projectRevision.milestoneFormChanges]);
+  }, [projectRevision.projectMilestoneReportFormChanges]);
 
   return (
     <div>
