@@ -20,7 +20,7 @@ export function createServerNetwork({ cookieHeader }) {
     });
 
     try {
-      return await response.json();
+      return response.json();
     } catch (e) {
       console.error(e);
     }
