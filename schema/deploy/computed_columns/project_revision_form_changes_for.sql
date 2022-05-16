@@ -4,7 +4,7 @@
 
 begin;
 
-create or replace function cif.project_revision_form_changes_for(cif.project_revision, form_data_table_name text, json_matcher jsonb default '{}')
+create or replace function cif.project_revision_form_changes_for(cif.project_revision, form_data_table_name text, json_matcher text default '{}')
 returns setof cif.form_change
 as
 $computed_column$
