@@ -1,11 +1,31 @@
-import { mocked } from "jest-mock";
-import { NextRouter, useRouter } from "next/router";
+import { NextRouter } from "next/router";
 
-const createMockNextRouter = (routerOpts: Partial<NextRouter>) => {
-  const router = mocked(useRouter);
-  router.mockReturnValue({
-    ...routerOpts,
-  } as any);
-  return router;
-};
-export default createMockNextRouter;
+export function createMockRouter(
+  routerOptions?: Partial<NextRouter>
+): NextRouter {
+  return {
+    basePath: "",
+    pathname: "/",
+    route: "/",
+    query: {},
+    asPath: "/",
+    back: jest.fn(),
+    beforePopState: jest.fn(),
+    prefetch: jest.fn(),
+    push: jest.fn(),
+    reload: jest.fn(),
+    replace: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    defaultLocale: "en",
+    domainLocales: [],
+    isPreview: false,
+    ...routerOptions,
+  };
+}
