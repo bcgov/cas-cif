@@ -202,11 +202,11 @@ Cypress.Commands.add(
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
-    cy.get('[label*="Due Date"]').should("have.length", reportNumber);
-    cy.get('[label*="Due Date"]')
+    cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
+    cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
       .type(reportDueDate);
-    cy.get('[label*="Due Date"]')
+    cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
       .should("have.value", reportDueDate);
 

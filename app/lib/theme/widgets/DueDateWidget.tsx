@@ -7,7 +7,7 @@ import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime, Interval } from "luxon";
 
 const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
-  ({ onClick, value }, ref) => {
+  ({ onClick, value, label }, ref) => {
     const selectedDate = DateTime.fromISO(value);
     const formattedValue = selectedDate.toLocaleString(DateTime.DATE_MED);
     const currentDate = DateTime.now()
@@ -15,7 +15,6 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
       .startOf("day");
     const diff = Interval.fromDateTimes(currentDate, selectedDate);
     const daysFromToday = Math.floor(diff.length("days"));
-    debugger;
     const displayString =
       selectedDate < currentDate
         ? `${formattedValue}`
@@ -26,7 +25,7 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
           } (${formattedValue})`;
 
     return (
-      <div onClick={onClick} ref={ref}>
+      <div onClick={onClick} ref={ref} aria-label={label}>
         {value ? displayString : "Select a date"}
         <CalendarTodayIcon style={{ color: "black" }} />
         <style jsx>{`
@@ -62,12 +61,14 @@ const DueDateWidget: React.FC<WidgetProps> = ({
       <DatePicker
         id={id}
         dateFormat="tz"
-        onChange={(e) => onChange(getTimestamptzFromDate(e, true))}
+        onChange={(e) => {
+          onChange(getTimestamptzFromDate(e, true));
+        }}
         value={value}
         selected={value ? DateTime.fromISO(value).toJSDate() : undefined}
         required={required}
         aria-label={label}
-        customInput={<DueDateInput ref={useRef()} />}
+        customInput={<DueDateInput label={label} ref={useRef()} />}
       />
       <style jsx>{`
         :global(.react-datepicker__day.react-datepicker__day--keyboard-selected) {
