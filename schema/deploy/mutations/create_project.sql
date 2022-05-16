@@ -51,6 +51,15 @@ begin
     revision_row.id,
     'pending',
     'project_contact'
+  ), (
+    format('{ "projectId": %s, "status": "on_track", "reportType": "General Milestone", "reportingRequirementIndex": 1 }', next_project_id)::jsonb,
+    'create',
+    'cif',
+    'reporting_requirement',
+    null,
+    revision_row.id,
+    'pending',
+    'reporting_requirement'
   );
 
   return revision_row;
