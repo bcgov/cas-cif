@@ -67,9 +67,10 @@ describe("the new project page", () => {
 
     cy.get('label[for*="reportDueDate"]').should("have.length", 3);
     cy.checkA11y("main", null, logAxeResults);
+    cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
-      variant: "empty",
+      variant: "filled",
     });
     cy.findByRole("button", { name: /^submit/i }).click();
 
