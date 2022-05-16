@@ -39770,6 +39770,34 @@ type ProjectRevision implements Node {
   ): ManagerFormChangesByLabelCompositeReturnsConnection!
 
   """
+  Computed column for graphql to retrieve the changes related to the milestone reporting requirement records, within a project revision
+  """
+  projectMilestoneReportFormChanges(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormChangeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): FormChangesConnection!
+
+  """
   Computed column to dynamically retrieve the form_change records relating to the project_revision from a given table
   """
   projectQuarterlyReportFormChanges(
