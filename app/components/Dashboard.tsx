@@ -10,7 +10,7 @@ import {
   getProjectsPageRoute,
 } from "pageRoutes";
 import { mutation as createProjectMutation } from "mutations/Project/createProject";
-import { createProjectMutationResponse } from "__generated__/createProjectMutation.graphql";
+import { createProjectMutation$data } from "__generated__/createProjectMutation.graphql";
 import { useRouter } from "next/router";
 import useIsAdmin from "hooks/useIsAdmin";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
@@ -47,7 +47,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
     if (isProjectCreating) return;
     createProject({
       variables: { input: {} },
-      onCompleted: (response: createProjectMutationResponse) => {
+      onCompleted: (response: createProjectMutation$data) => {
         router.push(
           getProjectRevisionOverviewFormPageRoute(
             response.createProject.projectRevision.id

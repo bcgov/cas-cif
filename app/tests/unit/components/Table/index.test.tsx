@@ -18,7 +18,7 @@ mocked(useRouter).mockReturnValue({
 } as any);
 
 const pageQuery = graphql`
-  query indexTableQuery @relay_test_operation {
+  query TableQuery @relay_test_operation {
     query {
       __typename
     }
