@@ -7,6 +7,7 @@ import { JSONSchema7 } from "json-schema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import ReceivedDateWidget from "lib/theme/widgets/ReceivedDateWidget";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
@@ -32,7 +33,7 @@ const quarterlyReportUiSchema = {
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "date",
+    "ui:widget": "ReceivedDateWidget",
   },
   comments: {
     "ui:col-md": 12,
@@ -281,6 +282,10 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 schema={projectReportingRequirementSchema as JSONSchema7}
                 uiSchema={quarterlyReportUiSchema}
                 ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                formContext={{
+                  dueDate: quarterlyReport.newFormData?.reportDueDate,
+                }}
+                widgets={{ ReceivedDateWidget: ReceivedDateWidget }}
               />
             </div>
           );
