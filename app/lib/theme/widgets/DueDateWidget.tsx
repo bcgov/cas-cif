@@ -69,6 +69,9 @@ const DueDateWidget: React.FC<WidgetProps> = ({
         required={required}
         aria-label={label}
         customInput={<DueDateInput label={label} ref={useRef()} />}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
       />
       <style jsx>{`
         :global(.react-datepicker__day.react-datepicker__day--keyboard-selected) {
