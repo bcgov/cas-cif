@@ -2,6 +2,7 @@ import DueDateWidget from "lib/theme/widgets/DueDateWidget";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { DateTime } from "luxon";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
+import userEvent from "@testing-library/user-event";
 
 describe("The DueDateWidget", () => {
   it("does not display a date when none is selected", () => {
@@ -18,10 +19,7 @@ describe("The DueDateWidget", () => {
 
   it("calls onChange with the correct date", () => {
     const currentDate = DateTime.now().setZone("America/Vancouver");
-    const expectedDate = getTimestamptzFromDate(
-      currentDate.plus({ days: 1 }),
-      true
-    );
+    const expectedDate = "2050-12-15T23:59:59.999-08:00";
     const handleOnChange = jest.fn();
     const props: any = {
       id: "test-id",
@@ -37,10 +35,12 @@ describe("The DueDateWidget", () => {
       )
     ).toBeInTheDocument();
     fireEvent.click(screen.getByText(/due in 0 days/i));
-    fireEvent.click(
+    userEvent.selectOptions(screen.getAllByRole("combobox")[0], "11");
+    userEvent.selectOptions(screen.getAllByRole("combobox")[1], "2050");
+    userEvent.click(
       screen.getByRole("option", {
-        selected: true,
-      }).nextElementSibling
+        name: /choose thursday, december 15th, 2050/i,
+      })
     );
     expect(handleOnChange).toHaveBeenCalledWith(expectedDate);
   });
