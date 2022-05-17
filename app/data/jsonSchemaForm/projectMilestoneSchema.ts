@@ -6,7 +6,7 @@ const schema = {
     "description",
     "reportType",
     "reportDueDate",
-    "certifedByProfessionalDesignation",
+    "certifiedByProfessionalDesignation",
   ],
   properties: {
     description: {
