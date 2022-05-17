@@ -188,6 +188,7 @@ describe("the new project page", () => {
 
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
+    // add overview
     cy.fillOverviewForm(
       "Emissions Performance",
       "2020",
@@ -200,24 +201,20 @@ describe("the new project page", () => {
     );
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains("Review and Submit Project");
-    cy.findByText(/Project Details/i).click();
+    // add managers
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
-
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains("Review and Submit Project");
-    cy.findByText(/Project Details/i).click();
+    // add contacts
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
-
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.wait(1000);
 
-    cy.findByText(/Quarterly reports/i).click();
-    cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/quarterly-reports");
+    //add quarterly reports
+
+    // cy.url().should("include", "/form/quarterly-reports");
     cy.addQuarterlyReport(
       1,
       "2020-01-01",
@@ -230,12 +227,10 @@ describe("the new project page", () => {
       "2022-02-02",
       "I am the second general comment"
     );
-
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains("Review and Submit Project");
-
     // check summary page
+    cy.contains("Review and Submit Project");
     cy.findByText(/Funding Stream RFP ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2020");
@@ -308,8 +303,8 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/primary contact/i, "Loblaw003, Bob003");
 
-    // Edit the project
-    // change the name, delete a manager and contact, and change a quarterly report date.
+    // Edit the project: change the name, delete a manager and contact, and change a quarterly report date.
+    // edit overview
     cy.findByText(/Project Overview/i).click();
     cy.findByRole("link", { name: "Project overview" }).click();
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
@@ -326,6 +321,8 @@ describe("the new project page", () => {
       variant: "editing",
     });
     cy.findByRole("button", { name: /^submit/i }).click();
+
+    // edit managers
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
@@ -345,6 +342,8 @@ describe("the new project page", () => {
 
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
+
+    // edit contacts
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project contacts/i).click();
@@ -360,8 +359,9 @@ describe("the new project page", () => {
 
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.contains("Review and Submit Project");
 
+    // edit quarterly reports
+    cy.contains("Review and Submit Project");
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Edit quarterly reports/i).click();
     cy.get('[label*="Due Date"]').eq(0).clear().type("1995-01-01");
@@ -370,8 +370,9 @@ describe("the new project page", () => {
       component: "Project Quarterly Reports Form",
       variant: "editing",
     });
-
     cy.findByRole("button", { name: /^submit/i }).click();
+
+    // check diffs
     cy.contains("Review and Submit Project");
 
     cy.get("#root_projectName-diffOld").should("have.text", "Foo");
@@ -419,7 +420,7 @@ describe("the new project page", () => {
     cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
-  it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+  it.only("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     // create and save the project
@@ -435,17 +436,15 @@ describe("the new project page", () => {
       "Project Underway"
     );
     cy.findByRole("button", { name: /^submit/i }).click();
-
-    cy.contains("Review and Submit Project");
-    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains("Review and Submit Project");
-    cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.findByText(/Add another quarterly report/i);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
