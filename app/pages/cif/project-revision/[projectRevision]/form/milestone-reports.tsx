@@ -21,6 +21,7 @@ const pageQuery = graphql`
         ...ProjectMilestoneReportForm_projectRevision
         ...TaskList_projectRevision
       }
+      ...ProjectMilestoneReportForm_query
     }
   }
 `;
@@ -44,6 +45,7 @@ export function ProjectMilestoneReportsPage({
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <ProjectMilestoneReportForm
         projectRevision={query.projectRevision}
+        query={query}
         onSubmit={handleSubmit}
       />
     </DefaultLayout>

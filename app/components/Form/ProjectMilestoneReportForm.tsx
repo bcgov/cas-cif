@@ -1,9 +1,9 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import projectMilestoneSchema from "data/jsonSchemaForm/projectMilestoneSchema";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
-import { JSONSchema7 } from "json-schema";
+import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -13,30 +13,86 @@ import { useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
+import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
 import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   onSubmit: () => void;
   projectRevision: ProjectMilestoneReportForm_projectRevision$key;
+  query: ProjectMilestoneReportForm_query$key;
 }
 
 const milestoneReportUiSchema = {
+  description: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "TextAreaWidget",
+  },
+  reportType: {
+    "ui:placeholder": "Select a Milestone Type",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "SearchWidget",
+  },
+  maximumAmount: {
+    "ui:widget": "MoneyWidget",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+  },
   reportDueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "date",
+  },
+  completionDate: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "date",
+  },
+  certifiedByProfessionalDesignation: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "SearchWidget",
   },
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "date",
   },
-  comments: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "TextAreaWidget",
-  },
+};
+
+export const createProjectMilestoneSchema = (allReportTypes) => {
+  console.log("here");
+  const schema = projectMilestoneSchema;
+  schema.properties.reportType = {
+    ...schema.properties.reportType,
+    anyOf: allReportTypes.edges.map(({ node }) => {
+      const replaceRegex = /\sMilestone/i;
+      const displayValue = node.name.replace(replaceRegex, "");
+      return {
+        type: "string",
+        title: displayValue,
+        enum: [node.name],
+        value: node.name,
+      } as JSONSchema7Definition;
+    }),
+  };
+  schema.properties.certifiedByProfessionalDesignation = {
+    ...schema.properties.certifiedByProfessionalDesignation,
+    anyOf: ["Professional Engineer", "Certified Professional Accountant"].map(
+      (designation) => {
+        return {
+          type: "string",
+          title: designation,
+          enum: [designation],
+          value: designation,
+        } as JSONSchema7Definition;
+      }
+    ),
+  };
+
+  return schema as JSONSchema7;
 };
 
 const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
@@ -73,6 +129,26 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
+  const query = useFragment(
+    graphql`
+      fragment ProjectMilestoneReportForm_query on Query {
+        allReportTypes(filter: { name: { notIn: ["Quarterly", "Annual"] } }) {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+      }
+    `,
+    props.query
+  );
+
+  const milestoneSchema = useMemo(() => {
+    return createProjectMilestoneSchema(query.allReportTypes);
+  }, [query.allReportTypes]);
+
   const [addMilestoneReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -254,7 +330,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                     change.formData
                   );
                 }}
-                schema={projectReportingRequirementSchema as JSONSchema7}
+                schema={milestoneSchema as JSONSchema7}
                 uiSchema={milestoneReportUiSchema}
                 ObjectFieldTemplate={EmptyObjectFieldTemplate}
               />
