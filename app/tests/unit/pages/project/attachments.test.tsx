@@ -1,6 +1,4 @@
 import { screen } from "@testing-library/react";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { ProjectAttachments } from "pages/cif/project/[project]/attachments";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledAttachmentsQuery, {
@@ -48,10 +46,6 @@ describe("The project's attachment page", () => {
     pageTestingHelper.reinit();
   });
   it("renders a table with all the attachments", () => {
-    mocked(useRouter).mockReturnValue({
-      query: {},
-    } as any);
-
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
@@ -59,17 +53,11 @@ describe("The project's attachment page", () => {
     expect(screen.getAllByRole("row")).toHaveLength(5);
   });
   it("has a button to upload an attachment", () => {
-    const mockPush = jest.fn();
-    mocked(useRouter).mockReturnValue({
-      query: {},
-      push: mockPush,
-    } as any);
-
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     screen.getByText("Upload New Attachment").click();
 
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project/[project]/upload-attachment?project=test-cif-project",
       expect.anything(),
       expect.anything()

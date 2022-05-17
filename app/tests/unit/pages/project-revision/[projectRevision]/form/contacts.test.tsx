@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/contacts";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
@@ -52,12 +50,11 @@ describe("The Project Contacts page", () => {
   });
 
   it("renders the task list in the left navigation with correct highlighting", () => {
-    const router = mocked(useRouter);
     const mockPathname =
       "/cif/project-revision/[projectRevision]/form/contacts";
-    router.mockReturnValue({
+    pageTestingHelper.setRouterOptions({
       pathname: mockPathname,
-    } as any);
+    });
 
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
@@ -280,12 +277,6 @@ describe("The Project Contacts page", () => {
   });
 
   it("redirects the user to the project revision page on submit", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
     let handleSubmit;
     jest
       .spyOn(require("components/Form/ProjectContactForm"), "default")
@@ -297,17 +288,12 @@ describe("The Project Contacts page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-id")
     );
   });
 
   it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
-    const mockReplace = jest.fn();
-    mocked(useRouter).mockReturnValue({
-      replace: mockReplace,
-    } as any);
-
     pageTestingHelper.loadQuery({
       Query() {
         return {
@@ -319,14 +305,10 @@ describe("The Project Contacts page", () => {
     const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
-    expect(mockReplace).toHaveBeenCalledWith("/404");
+    expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
   });
 
   it("renders the form in view mode when the project revision is committed", async () => {
-    jest.mock("next/router");
-    const routerPush = jest.fn();
-    mocked(useRouter).mockReturnValue({ push: routerPush } as any);
-
     pageTestingHelper.loadQuery({
       ProjectRevision(context) {
         const revision = {
@@ -451,7 +433,7 @@ describe("The Project Contacts page", () => {
     ).toHaveTextContent("Test Secondary");
 
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
-    expect(routerPush).toHaveBeenCalledWith({
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/contacts/",
       query: { projectRevision: "mock-pending-revision-id" },
     });

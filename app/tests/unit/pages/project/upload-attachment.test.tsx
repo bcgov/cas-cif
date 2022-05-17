@@ -6,6 +6,8 @@ import compiledUploadAttachmentQuery, {
   uploadAttachmentQuery,
 } from "__generated__/uploadAttachmentQuery.graphql";
 
+jest.mock("next/router");
+
 const defaultQueryResolver = {
   Query() {
     return {
