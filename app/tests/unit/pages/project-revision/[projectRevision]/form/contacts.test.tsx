@@ -3,7 +3,10 @@ import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import {
+  getProjectRevisionPageRoute,
+  getProjectRevisionQuarterlyReportsFormPageRoute,
+} from "pageRoutes";
 import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/contacts";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledContactsFormQuery, {
@@ -279,7 +282,7 @@ describe("The Project Contacts page", () => {
     });
   });
 
-  it("redirects the user to the project revision page on submit", () => {
+  it("redirects the user to the project revision page on submit when the user is editing a project", () => {
     const router = mocked(useRouter);
     const mockPush = jest.fn();
     router.mockReturnValue({
@@ -299,6 +302,37 @@ describe("The Project Contacts page", () => {
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-id")
+    );
+  });
+
+  it("redirects the user to the quarterly reports page on submit when the user is creating a project", () => {
+    const router = mocked(useRouter);
+    const mockPush = jest.fn();
+    router.mockReturnValue({
+      push: mockPush,
+    } as any);
+
+    let handleSubmit;
+    jest
+      .spyOn(require("components/Form/ProjectContactForm"), "default")
+      .mockImplementation((props: any) => {
+        handleSubmit = () => props.onSubmit();
+        return null;
+      });
+
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-proj-rev-id",
+          projectByProjectId: null,
+          projectFormChange: null,
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+    handleSubmit();
+    expect(mockPush).toHaveBeenCalledWith(
+      getProjectRevisionQuarterlyReportsFormPageRoute("mock-proj-rev-id")
     );
   });
 
