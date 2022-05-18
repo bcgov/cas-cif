@@ -43,7 +43,12 @@ $grant$;
 comment on table cif.reporting_requirement is 'Table containing information about reporting requirements';
 comment on column cif.reporting_requirement.id is 'Unique ID for the reporting requirement';
 comment on column cif.reporting_requirement.report_due_date is 'The date the reporting requirement is due';
-comment on column cif.reporting_requirement.completion_date is 'The date the reporting requirement was completed';
+comment on column cif.reporting_requirement.completion_date is
+$$The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
+  Automatic calculations are as follows:
+  30 days before report due date for general milestones
+  60 days before report due date for project summary report
+  150 days before report due date for TEIMP report$$;
 comment on column cif.reporting_requirement.submitted_date is 'The date the reporting requirement was submitted';
 comment on column cif.reporting_requirement.status is 'The status of the reporting requirement: on_track, late, completed, in_review';
 comment on column cif.reporting_requirement.comments is 'Comments about the reporting requirement';
