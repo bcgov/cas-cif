@@ -7,11 +7,24 @@ import Grid from "@button-inc/bcgov-theme/Grid";
 export const ConditionalAmountWidget: React.FC<WidgetProps> = (props) => {
   const { schema, id, label, onChange, value } = props;
   const [requireAmount, setRequireAmount] = useState(false);
-  const [amount, setAmount] = useState(value || "");
+  const [amount, setAmount] = useState(value);
+
+  const handleRequireAmount = () => {
+    setRequireAmount(true);
+    setAmount(0);
+    onChange(0);
+  };
+
+  const handleAmountNotRequired = () => {
+    setRequireAmount(false);
+    setAmount("");
+    onChange("");
+  };
 
   useEffect(() => {
     setAmount(value);
   }, [value]);
+
   return (
     <div>
       <Grid cols={10}>
@@ -19,7 +32,7 @@ export const ConditionalAmountWidget: React.FC<WidgetProps> = (props) => {
           <Grid.Col span={4}>
             <RadioButton
               checked={requireAmount}
-              onChange={() => setRequireAmount(true)}
+              onChange={handleRequireAmount}
               label="Enter Amount:"
               className="radio-button"
             />
@@ -34,10 +47,11 @@ export const ConditionalAmountWidget: React.FC<WidgetProps> = (props) => {
               className="money"
               decimalScale={2}
               defaultValue={(schema as any).defaultValue}
-              value={amount || ""}
+              value={amount}
               onValueChange={({ floatValue }) => {
                 setAmount(floatValue);
-                onChange(((floatValue * 100) / 100).toFixed(2));
+                if (floatValue === undefined) onChange("INVALID VALUE");
+                else onChange(((floatValue * 100) / 100).toFixed(2));
               }}
               style={{
                 border: "2px solid #606060",
@@ -52,7 +66,7 @@ export const ConditionalAmountWidget: React.FC<WidgetProps> = (props) => {
           <Grid.Col span={4}>
             <RadioButton
               checked={!requireAmount}
-              onChange={() => setRequireAmount(false)}
+              onChange={handleAmountNotRequired}
               label="Not Applicable"
             />
           </Grid.Col>
