@@ -18,7 +18,7 @@ describe("The DueDateWidget", () => {
   });
 
   it("calls onChange with the correct date", () => {
-    const currentDate =
+    const startDate =
       DateTime.fromISO("2020-01-01").setZone("America/Vancouver");
     const expectedDate = "2050-12-15T23:59:59.999-08:00";
     const handleOnChange = jest.fn();
@@ -26,7 +26,7 @@ describe("The DueDateWidget", () => {
       id: "test-id",
       onChange: handleOnChange,
       label: "Due date",
-      value: currentDate.toISO(),
+      value: startDate.toISO(),
       required: true,
     };
     render(<DueDateWidget id="widget-id" {...props} />);
