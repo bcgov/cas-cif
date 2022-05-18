@@ -11,6 +11,7 @@ import SelectParentWidget from "lib/theme/widgets/SelectParentWidget";
 import MoneyWidget from "lib/theme/widgets/MoneyWidget";
 import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
 import DueDateWidget from "lib/theme/widgets/DueDateWidget";
+import ConditionalAmountWidget from "./widgets/ConditionalAmountWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -26,6 +27,7 @@ const formTheme: ThemeProps = {
     SelectWidget: SelectWidget,
     SelectParentWidget: SelectParentWidget,
     MoneyWidget: MoneyWidget,
+    ConditionalAmountWidget: ConditionalAmountWidget,
     PhoneNumberWidget,
     DueDateWidget: DueDateWidget,
   },

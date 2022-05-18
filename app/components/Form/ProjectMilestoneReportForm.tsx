@@ -36,7 +36,7 @@ const milestoneReportUiSchema = {
     "ui:widget": "SearchWidget",
   },
   maximumAmount: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "ConditionalAmountWidget",
     "ui:col-md": 12,
     "bcgov:size": "small",
   },
@@ -63,7 +63,6 @@ const milestoneReportUiSchema = {
 };
 
 export const createProjectMilestoneSchema = (allReportTypes) => {
-  console.log("here");
   const schema = projectMilestoneSchema;
   schema.properties.reportType = {
     ...schema.properties.reportType,
@@ -156,7 +155,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     const formData = {
       status: "on_track",
       projectId: projectRevision.projectFormChange.formDataRecordId,
-      reportType: "Milestone",
       reportingRequirementIndex: reportIndex,
     };
     addMilestoneReportMutation({
@@ -305,7 +303,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           return (
             <div key={milestoneReport.id} className="reportContainer">
               <header className="reportHeader">
-                <h3>Milestone Report {index + 1}</h3>
+                <h3>Milestone {index + 1}</h3>
                 <Button
                   variant="secondary"
                   size="small"

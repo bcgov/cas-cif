@@ -17,7 +17,6 @@ const schema = {
     reportType: {
       type: "string",
       title: "Milestone Type",
-      default: "undefined",
       anyOf: undefined,
     },
     maximumAmount: {
