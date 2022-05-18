@@ -19,7 +19,7 @@ export const ConditionalAmountWidget: React.FC<WidgetProps> = (props) => {
           <Grid.Col span={4}>
             <RadioButton
               checked={requireAmount}
-              onClick={() => setRequireAmount(true)}
+              onChange={() => setRequireAmount(true)}
               label="Enter Amount:"
               className="radio-button"
             />
@@ -52,7 +52,7 @@ export const ConditionalAmountWidget: React.FC<WidgetProps> = (props) => {
           <Grid.Col span={4}>
             <RadioButton
               checked={!requireAmount}
-              onClick={() => setRequireAmount(false)}
+              onChange={() => setRequireAmount(false)}
               label="Not Applicable"
             />
           </Grid.Col>
