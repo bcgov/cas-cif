@@ -18,7 +18,8 @@ describe("The DueDateWidget", () => {
   });
 
   it("calls onChange with the correct date", () => {
-    const currentDate = DateTime.now().setZone("America/Vancouver");
+    const currentDate =
+      DateTime.fromISO("2020-01-01").setZone("America/Vancouver");
     const expectedDate = "2050-12-15T23:59:59.999-08:00";
     const handleOnChange = jest.fn();
     const props: any = {
@@ -29,12 +30,8 @@ describe("The DueDateWidget", () => {
       required: true,
     };
     render(<DueDateWidget id="widget-id" {...props} />);
-    expect(
-      screen.getByText(
-        `Due in 0 days (${currentDate.toLocaleString(DateTime.DATE_MED)})`
-      )
-    ).toBeInTheDocument();
-    fireEvent.click(screen.getByText(/due in 0 days/i));
+    expect(screen.getByText(`Jan 1, 2020`)).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/Jan 1, 2020/i));
     userEvent.selectOptions(screen.getAllByRole("combobox")[0], "11");
     userEvent.selectOptions(screen.getAllByRole("combobox")[1], "2050");
     userEvent.click(
