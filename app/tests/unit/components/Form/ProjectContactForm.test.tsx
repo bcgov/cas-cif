@@ -126,7 +126,7 @@ describe("The ProjectContactForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getAllByRole("textbox")).toHaveLength(3);
+    expect(screen.getAllByRole("combobox")).toHaveLength(3);
 
     // Remove buttons only appear on alternate contacs
     expect(screen.getAllByText("Remove")).toHaveLength(2);
