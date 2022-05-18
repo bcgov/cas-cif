@@ -1,9 +1,15 @@
+import { MutableRefObject } from "react";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import { ProjectMilestoneReportForm_projectRevision$data } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
+import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
+import { updateFormChangeMutation$variables } from "__generated__/updateFormChangeMutation.graphql";
 
 export const addReportFormChange = (
-  mutationFn,
-  revision,
+  mutationFn: (args: {
+    variables: addReportingRequirementToRevisionMutation$variables;
+  }) => void,
+  revision: ProjectMilestoneReportForm_projectRevision$data,
   reportIndex: number
 ) => {
   const formData = {
@@ -20,7 +26,15 @@ export const addReportFormChange = (
   });
 };
 
-export const updateReportFormChange = (mutationFn, formChange, newFormData) => {
+export const updateReportFormChange = (
+  mutationFn: (args: {
+    variables: updateFormChangeMutation$variables;
+    debounceKey: string;
+    optimisticResponse: any;
+  }) => void,
+  formChange: any,
+  newFormData: JSON
+) => {
   mutationFn({
     variables: {
       input: {
@@ -45,10 +59,13 @@ export const updateReportFormChange = (mutationFn, formChange, newFormData) => {
 };
 
 export const deleteReportFormChange = (
-  mutationFn,
+  mutationFn: (args: {
+    formChange: { id: string; operation: "ARCHIVE" | "CREATE" | "UPDATE" };
+    onCompleted: () => void;
+  }) => void,
   formChangeId: string,
   formChangeOperation: FormChangeOperation,
-  formRefs
+  formRefs: MutableRefObject<{}>
 ) => {
   mutationFn({
     formChange: { id: formChangeId, operation: formChangeOperation },
@@ -59,10 +76,15 @@ export const deleteReportFormChange = (
 };
 
 export const stageReportFormChanges = async (
-  mutationFn,
-  submitFn,
-  formRefs,
-  formChangeEdges
+  mutationFn: (args: {
+    variables: updateFormChangeMutation$variables;
+    debounceKey: string;
+    onCompleted: () => void;
+    onError: (reason?: any) => void;
+  }) => void,
+  submitFn: () => void,
+  formRefs: MutableRefObject<{}>,
+  formChangeEdges: any
 ) => {
   const validationErrors = Object.keys(formRefs.current).reduce(
     (agg, formId) => {
