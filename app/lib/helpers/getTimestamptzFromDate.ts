@@ -22,6 +22,9 @@ const getTimestamptzFromDate = (
   if (setTimeEndOfDay) {
     tzDate = tzDate.set({ hour: 23, minute: 59, second: 59, millisecond: 999 });
   }
+  console.log(
+    `For CI log, delete me. :\n${date}\n${tzDate.toISO()}\n${tzDate}`
+  );
   return tzDate.toISO();
 };
 
