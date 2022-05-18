@@ -1,7 +1,10 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import projectMilestoneSchema from "data/jsonSchemaForm/projectMilestoneSchema";
+import {
+  projectMilestoneSchema,
+  milestoneReportUiSchema,
+} from "data/jsonSchemaForm/projectMilestoneSchema";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
@@ -27,45 +30,6 @@ interface Props {
   projectRevision: ProjectMilestoneReportForm_projectRevision$key;
   query: ProjectMilestoneReportForm_query$key;
 }
-
-const milestoneReportUiSchema = {
-  description: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "TextAreaWidget",
-  },
-  reportType: {
-    "ui:placeholder": "Select a Milestone Type",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-  },
-  maximumAmount: {
-    "ui:widget": "ConditionalAmountWidget",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-  },
-  reportDueDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "date",
-  },
-  completionDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "date",
-  },
-  certifiedByProfessionalDesignation: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-  },
-  submittedDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "date",
-  },
-};
 
 export const createProjectMilestoneSchema = (allReportTypes) => {
   const schema = projectMilestoneSchema;

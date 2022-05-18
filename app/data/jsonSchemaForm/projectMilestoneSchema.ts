@@ -1,4 +1,4 @@
-const schema = {
+export const projectMilestoneSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Reporting Requirement",
@@ -48,4 +48,41 @@ const schema = {
   },
 };
 
-export default schema;
+export const milestoneReportUiSchema = {
+  description: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "TextAreaWidget",
+  },
+  reportType: {
+    "ui:placeholder": "Select a Milestone Type",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "SearchWidget",
+  },
+  maximumAmount: {
+    "ui:widget": "ConditionalAmountWidget",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+  },
+  reportDueDate: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "date",
+  },
+  completionDate: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "date",
+  },
+  certifiedByProfessionalDesignation: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "SearchWidget",
+  },
+  submittedDate: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "date",
+  },
+};
