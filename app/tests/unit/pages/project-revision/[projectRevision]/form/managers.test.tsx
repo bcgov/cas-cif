@@ -355,7 +355,8 @@ describe("The Project Managers form page", () => {
     pageTestingHelper.loadQuery({
       ProjectRevision() {
         return {
-          id: `mock-proj-rev-id`,
+          id: "mock-proj-rev-id",
+          projectId: null,
           projectByProjectId: null,
           projectFormChange: null,
         };

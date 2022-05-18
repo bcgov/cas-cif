@@ -324,6 +324,7 @@ describe("The Project Contacts page", () => {
       ProjectRevision() {
         return {
           id: "mock-proj-rev-id",
+          projectId: null,
           projectByProjectId: null,
           projectFormChange: null,
         };
