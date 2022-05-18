@@ -1,6 +1,7 @@
 import "cypress-file-upload";
 import "happo-cypress";
 import "@testing-library/cypress/add-commands";
+import { DateTime } from "luxon";
 
 Cypress.Commands.add("login", (username, password) => {
   // Open the login page, fill in the form with username and password and submit.
@@ -199,16 +200,28 @@ Cypress.Commands.add(
     receivedDate = undefined,
     generalComments = undefined
   ) => {
+    const dueDate = DateTime.fromISO(reportDueDate);
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
+    cy.findByRole("heading", { name: `Quarterly Report ${reportNumber}` });
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
-      .type(reportDueDate);
+      .should("exist")
+      .click();
+    cy.get(".react-datepicker__month-select")
+      // datepicker indexes months from 0, luxon indexes from 1
+      .select(dueDate.get("month") - 1);
+    cy.get(".react-datepicker__year-select").select(
+      dueDate.get("year").toString()
+    );
+    cy.get(`.react-datepicker__day--0${dueDate.toFormat("dd")}`)
+      .not(`.react-datepicker__day--outside-month`)
+      .click();
     cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
-      .should("have.value", reportDueDate);
+      .should("have.text", dueDate.toLocaleString(DateTime.DATE_MED));
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
