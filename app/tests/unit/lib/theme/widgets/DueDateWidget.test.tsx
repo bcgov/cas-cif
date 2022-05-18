@@ -44,7 +44,7 @@ describe("The DueDateWidget", () => {
 
   it("displays time difference in weeks when greater than 60 days", () => {
     const testDate = getTimestamptzFromDate(
-      DateTime.now().plus({ years: 1 }),
+      DateTime.now().setZone("America/Vancouver").plus({ years: 1 }),
       true
     );
 
@@ -62,7 +62,7 @@ describe("The DueDateWidget", () => {
 
   it("displays only the date if date selected is in the past", () => {
     const testDate = getTimestamptzFromDate(
-      DateTime.fromISO("1999-01-01"),
+      DateTime.fromISO("1999-01-01").setZone("America/Vancouver"),
       true
     );
     const props: any = {
