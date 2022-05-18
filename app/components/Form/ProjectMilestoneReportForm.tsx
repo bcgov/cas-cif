@@ -4,18 +4,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import projectMilestoneSchema from "data/jsonSchemaForm/projectMilestoneSchema";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
-import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
 import SavingIndicator from "./SavingIndicator";
+import {
+  addReportFormChange,
+  updateReportFormChange,
+  deleteReportFormChange,
+  stageReportFormChanges,
+  getSortedReports,
+} from "lib/helpers/reportingRequirementFormChangeFunctions";
 
 interface Props {
   onSubmit: () => void;
@@ -151,134 +156,17 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const [addMilestoneReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
-  const addMilestoneReport = (reportIndex: number) => {
-    const formData = {
-      status: "on_track",
-      projectId: projectRevision.projectFormChange.formDataRecordId,
-      reportingRequirementIndex: reportIndex,
-    };
-    addMilestoneReportMutation({
-      variables: {
-        projectRevisionId: projectRevision.rowId,
-        newFormData: formData,
-        connections: [projectRevision.projectMilestoneReportFormChanges.__id],
-      },
-    });
-  };
-
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
-
-  const updateFormChange = (
-    formChange: {
-      readonly id: string;
-      readonly newFormData: any;
-      readonly operation: FormChangeOperation;
-      readonly changeStatus: string;
-    },
-    newFormData: any
-  ) => {
-    applyUpdateFormChangeMutation({
-      variables: {
-        input: {
-          id: formChange.id,
-          formChangePatch: {
-            newFormData,
-            changeStatus: formChange.changeStatus,
-          },
-        },
-      },
-      debounceKey: formChange.id,
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: formChange.id,
-            newFormData: newFormData,
-            changeStatus: formChange.changeStatus,
-          },
-        },
-      },
-    });
-  };
 
   const [discardFormChange] = useDiscardFormChange(
     projectRevision.projectMilestoneReportFormChanges.__id
   );
 
-  const deleteMilestoneReport = (
-    formChangeId: string,
-    formChangeOperation: FormChangeOperation
-  ) => {
-    discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-      },
-    });
-  };
-
-  const stageMilestoneReportFormChanges = async () => {
-    const validationErrors = Object.keys(formRefs.current).reduce(
-      (agg, formId) => {
-        const formObject = formRefs.current[formId];
-        return [...agg, ...validateFormWithErrors(formObject)];
-      },
-      []
-    );
-
-    const completedPromises: Promise<void>[] = [];
-
-    projectRevision.projectMilestoneReportFormChanges.edges.forEach(
-      ({ node }) => {
-        if (node.changeStatus === "pending") {
-          const promise = new Promise<void>((resolve, reject) => {
-            applyUpdateFormChangeMutation({
-              variables: {
-                input: {
-                  id: node.id,
-                  formChangePatch: {
-                    changeStatus: "staged",
-                  },
-                },
-              },
-              debounceKey: node.id,
-              onCompleted: () => {
-                resolve();
-              },
-              onError: reject,
-            });
-          });
-          completedPromises.push(promise);
-        }
-      }
-    );
-    try {
-      await Promise.all(completedPromises);
-
-      if (validationErrors.length === 0) props.onSubmit();
-    } catch (e) {
-      // the failing mutation will display an error message and send the error to sentry
-    }
-  };
-
   const [sortedMilestoneReports, nextMilestoneReportIndex] = useMemo(() => {
-    const filteredReports =
+    return getSortedReports(
       projectRevision.projectMilestoneReportFormChanges.edges
-        .map(({ node }) => node)
-        .filter((report) => report.operation !== "ARCHIVE");
-
-    filteredReports.sort(
-      (a, b) =>
-        a.newFormData.reportingRequirementIndex -
-        b.newFormData.reportingRequirementIndex
     );
-    const nextIndex =
-      filteredReports.length > 0
-        ? filteredReports[filteredReports.length - 1].newFormData
-            .reportingRequirementIndex + 1
-        : 1;
-
-    return [filteredReports, nextIndex];
   }, [projectRevision.projectMilestoneReportFormChanges]);
 
   return (
@@ -293,7 +181,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       <FormBorder>
         <Button
           variant="secondary"
-          onClick={() => addMilestoneReport(nextMilestoneReportIndex)}
+          onClick={() =>
+            addReportFormChange(
+              addMilestoneReportMutation,
+              projectRevision,
+              nextMilestoneReportIndex
+            )
+          }
           className="addButton"
         >
           <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
@@ -308,9 +202,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   variant="secondary"
                   size="small"
                   onClick={() =>
-                    deleteMilestoneReport(
+                    deleteReportFormChange(
+                      discardFormChange,
                       milestoneReport.id,
-                      milestoneReport.operation
+                      milestoneReport.operation,
+                      formRefs
                     )
                   }
                 >
@@ -323,7 +219,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 ref={(el) => (formRefs.current[milestoneReport.id] = el)}
                 formData={milestoneReport.newFormData}
                 onChange={(change) => {
-                  updateFormChange(
+                  updateReportFormChange(
+                    applyUpdateFormChangeMutation,
                     { ...milestoneReport, changeStatus: "pending" },
                     change.formData
                   );
@@ -339,7 +236,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       <Button
         size="medium"
         variant="primary"
-        onClick={stageMilestoneReportFormChanges}
+        onClick={() =>
+          stageReportFormChanges(
+            applyUpdateFormChangeMutation,
+            props.onSubmit,
+            formRefs,
+            projectRevision.projectMilestoneReportFormChanges.edges
+          )
+        }
         disabled={isUpdating}
       >
         Submit Milestone Reports
