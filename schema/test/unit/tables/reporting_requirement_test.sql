@@ -24,7 +24,9 @@ select columns_are(
     'updated_at',
     'updated_by',
     'archived_at',
-    'archived_by'
+    'archived_by',
+    'description',
+    'maximum_amount'
   ],
   'columns in cif.reporting_requirement match expected columns'
 );
