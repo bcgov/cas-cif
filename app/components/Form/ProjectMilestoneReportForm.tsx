@@ -23,7 +23,7 @@ import {
   deleteReportFormChange,
   stageReportFormChanges,
   getSortedReports,
-} from "lib/helpers/reportingRequirementFormChangeFunctions";
+} from "./reportingRequirementFormChangeFunctions";
 
 interface Props {
   onSubmit: () => void;
