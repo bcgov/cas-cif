@@ -54,8 +54,6 @@ export function ProjectContactsPage({
     : query.projectRevision.changeStatus === "committed"
     ? "view"
     : "edit";
-  const existingRevision =
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision ?? null;
 
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
@@ -91,6 +89,8 @@ export function ProjectContactsPage({
   };
 
   const createEditButton = () => {
+    const existingRevision =
+      query.projectRevision.projectByProjectId.pendingProjectRevision;
     return (
       <div>
         <Button
@@ -114,7 +114,7 @@ export function ProjectContactsPage({
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    if (existingRevision) {
+    if (mode === "edit") {
       router.push(getProjectRevisionPageRoute(query.projectRevision.id));
     } else {
       router.push(

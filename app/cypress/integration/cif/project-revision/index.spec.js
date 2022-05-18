@@ -213,8 +213,6 @@ describe("the new project page", () => {
     cy.wait(1000);
 
     //add quarterly reports
-
-    // cy.url().should("include", "/form/quarterly-reports");
     cy.addQuarterlyReport(
       1,
       "2020-01-01",
@@ -420,7 +418,7 @@ describe("the new project page", () => {
     cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
-  it.only("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+  it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     // create and save the project
