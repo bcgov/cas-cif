@@ -5,8 +5,6 @@ import compiledAttachmentsQuery, {
   attachmentsQuery,
 } from "__generated__/attachmentsQuery.graphql";
 
-jest.mock("next/dist/client/router");
-
 const defaultQueryResolver = {
   Query() {
     return {

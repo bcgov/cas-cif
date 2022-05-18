@@ -1,14 +1,10 @@
 import { screen } from "@testing-library/react";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { graphql } from "relay-runtime";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledDefaultLayoutTestQuery, {
   DefaultLayoutTestQuery,
 } from "__generated__/DefaultLayoutTestQuery.graphql";
-jest.mock("next/router");
-mocked(useRouter).mockReturnValue({ query: {} } as any);
 
 const testQuery = graphql`
   query DefaultLayoutTestQuery @relay_test_operation {

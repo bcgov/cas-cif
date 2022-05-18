@@ -1,15 +1,11 @@
 import { screen } from "@testing-library/react";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/dist/client/router";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledAttachmentTableRowTestQuery, {
   AttachmentTableRowTestQuery,
 } from "__generated__/AttachmentTableRowTestQuery.graphql";
 import { AttachmentTableRow_attachment } from "__generated__/AttachmentTableRow_attachment.graphql";
-
-jest.mock("next/dist/client/router");
 
 const testQuery = graphql`
   query AttachmentTableRowTestQuery @relay_test_operation {
@@ -59,15 +55,8 @@ const componentTestingHelper =
     getPropsFromTestQuery: (data) => ({ attachment: data.query.attachment }),
   });
 
-const routerPush = jest.fn();
-
 describe("The Attachment table row component", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
-    mocked(useRouter).mockReturnValue({
-      push: routerPush,
-    } as any);
-
     componentTestingHelper.reinit();
   });
 
@@ -88,7 +77,7 @@ describe("The Attachment table row component", () => {
     const viewButton = screen.getByText("View");
     viewButton.click();
 
-    expect(routerPush).toHaveBeenCalledWith(
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/attachments/[attachment]?attachment=Cif+Test+Attachment+ID",
       expect.anything(),
       expect.anything()
@@ -101,7 +90,7 @@ describe("The Attachment table row component", () => {
     const downloadButton = screen.getByText("Download");
     downloadButton.click();
 
-    expect(routerPush).toHaveBeenCalledWith(
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/download/Cif%20Test%20Attachment%20ID",
       expect.anything(),
       expect.anything()

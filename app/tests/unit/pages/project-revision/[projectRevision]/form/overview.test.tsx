@@ -10,8 +10,6 @@ import compiledOverviewFormQuery, {
 import { ProjectForm_projectRevision$data } from "__generated__/ProjectForm_projectRevision.graphql";
 import { SelectRfpWidget_query$data } from "__generated__/SelectRfpWidget_query.graphql";
 
-jest.mock("next/router");
-
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
  * To find the key of the generated operation, one can call

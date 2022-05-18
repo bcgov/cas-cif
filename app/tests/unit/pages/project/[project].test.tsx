@@ -3,12 +3,8 @@ import { screen, act } from "@testing-library/react";
 import compiledProjectOverviewQuery, {
   ProjectOverviewQuery,
 } from "__generated__/ProjectOverviewQuery.graphql";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import userEvent from "@testing-library/user-event";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
-
-jest.mock("next/router");
 
 const defaultMockResolver = {
   Project() {
@@ -218,9 +214,6 @@ describe("ProjectViewPage", () => {
       require("app/hooks/useRedirectTo404IfFalsy"),
       "default"
     );
-    mocked(useRouter).mockReturnValue({
-      replace: jest.fn(),
-    } as any);
     pageTestingHelper.loadQuery({
       Query() {
         return {

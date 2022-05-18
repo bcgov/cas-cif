@@ -1,15 +1,11 @@
 import "@testing-library/jest-dom";
 import { screen, within } from "@testing-library/react";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
 import { ProjectQuarterlyReportsPage } from "pages/cif/project-revision/[projectRevision]/form/quarterly-reports";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledQuarterlyReportsFormQuery, {
   quarterlyReportsFormQuery,
 } from "__generated__/quarterlyReportsFormQuery.graphql";
-
-jest.mock("next/dist/client/router");
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -50,12 +46,11 @@ describe("The Project Quarterly Reports page", () => {
   });
 
   it("renders the task list in the left navigation with correct highlighting", () => {
-    const router = mocked(useRouter);
     const mockPathname =
       "/cif/project-revision/[projectRevision]/form/quarterly-reports";
-    router.mockReturnValue({
+    pageTestingHelper.setRouterOptions({
       pathname: mockPathname,
-    } as any);
+    });
 
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
@@ -71,12 +66,6 @@ describe("The Project Quarterly Reports page", () => {
   });
 
   it("redirects the user to the project revision page on submit", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
     let handleSubmit;
     jest
       .spyOn(require("components/Form/ProjectQuarterlyReportForm"), "default")
@@ -87,17 +76,12 @@ describe("The Project Quarterly Reports page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
     );
   });
 
   it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
-    const mockReplace = jest.fn();
-    mocked(useRouter).mockReturnValue({
-      replace: mockReplace,
-    } as any);
-
     pageTestingHelper.loadQuery({
       Query() {
         return {
@@ -109,6 +93,6 @@ describe("The Project Quarterly Reports page", () => {
     const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
-    expect(mockReplace).toHaveBeenCalledWith("/404");
+    expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
   });
 });
