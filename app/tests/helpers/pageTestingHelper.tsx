@@ -14,8 +14,9 @@ import { RelayProps } from "relay-nextjs";
 import { ConcreteRequest, OperationType } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { createMockRouter } from "./mockNextRouter";
-import { mocked } from "jest-mock";
-import { NextRouter, useRouter } from "next/router";
+import { NextRouter } from "next/router";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+jest.spyOn(require("next/router"), "useRouter");
 
 interface PageTestingHelperOptions<TQuery extends OperationType> {
   pageComponent: (props: RelayProps<{}, TQuery>) => JSX.Element;
@@ -88,16 +89,16 @@ class PageTestingHelper<TQuery extends OperationType> {
   }
 
   public renderPage() {
-    mocked(useRouter).mockReturnValue(this.router);
-
     return render(
       <ErrorContext.Provider value={this.errorContext}>
-        <RelayEnvironmentProvider environment={this.environment}>
-          <this.options.pageComponent
-            CSN
-            preloadedQuery={this.initialQueryRef}
-          />
-        </RelayEnvironmentProvider>
+        <RouterContext.Provider value={this.router}>
+          <RelayEnvironmentProvider environment={this.environment}>
+            <this.options.pageComponent
+              CSN
+              preloadedQuery={this.initialQueryRef}
+            />
+          </RelayEnvironmentProvider>
+        </RouterContext.Provider>
       </ErrorContext.Provider>
     );
   }

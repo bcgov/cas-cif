@@ -12,6 +12,10 @@ import {
   OperationType,
 } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import { NextRouter } from "next/router";
+import { createMockRouter } from "./mockNextRouter";
+jest.spyOn(require("next/router"), "useRouter");
 
 interface ComponentTestingHelperOptions<TQuery extends OperationType> {
   component: (props: any) => JSX.Element;
@@ -21,10 +25,13 @@ interface ComponentTestingHelperOptions<TQuery extends OperationType> {
   defaultQueryResolver?: MockResolvers;
   defaultQueryVariables?: TQuery["variables"];
   defaultComponentProps?: any;
+  routerOptions?: Partial<NextRouter>;
 }
 
 class ComponentTestingHelper<TQuery extends OperationType> {
   public environment: RelayMockEnvironment;
+
+  public router: NextRouter;
 
   public errorContext: {
     error: any;
@@ -55,6 +62,7 @@ class ComponentTestingHelper<TQuery extends OperationType> {
         })
       ),
     };
+    this.router = createMockRouter();
   }
 
   public loadQuery(queryResolver?: MockResolvers) {
@@ -97,12 +105,14 @@ class ComponentTestingHelper<TQuery extends OperationType> {
   ) {
     return render(
       <ErrorContext.Provider value={this.errorContext}>
-        <RelayEnvironmentProvider environment={this.environment}>
-          <this.TestRenderer
-            getPropsFromTestQuery={getPropsFromTestQuery}
-            extraProps={extraProps}
-          />
-        </RelayEnvironmentProvider>
+        <RouterContext.Provider value={this.router}>
+          <RelayEnvironmentProvider environment={this.environment}>
+            <this.TestRenderer
+              getPropsFromTestQuery={getPropsFromTestQuery}
+              extraProps={extraProps}
+            />
+          </RelayEnvironmentProvider>
+        </RouterContext.Provider>
       </ErrorContext.Provider>
     );
   }
