@@ -200,11 +200,12 @@ Cypress.Commands.add(
     receivedDate = undefined,
     generalComments = undefined
   ) => {
-    const dueDate = DateTime.fromISO(reportDueDate);
+    const dueDate =
+      DateTime.fromISO(reportDueDate).setZone("America/Vancouver");
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
-    cy.findByRole("heading", { name: `Quarterly Report ${reportNumber}` });
+    cy.contains(`Quarterly Report ${reportNumber}`).should("be.visible");
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
