@@ -48,8 +48,10 @@ comment on column cif.reporting_requirement.submitted_date is 'The date the repo
 comment on column cif.reporting_requirement.status is 'The status of the reporting requirement: on_track, late, completed, in_review';
 comment on column cif.reporting_requirement.comments is 'Comments about the reporting requirement';
 comment on column cif.reporting_requirement.certified_by is 'The CIF contact who certified the reporting requirement';
+comment on column cif.reporting_requirement.certified_by_professional_designation is 'The professional designation of the CIF contact who certified the reporting requirement';
 comment on column cif.reporting_requirement.project_id is 'Foreign key references the cif.project table';
 comment on column cif.reporting_requirement.report_type is 'Foreign key references the cif.report_type table';
+comment on column cif.reporting_requirement.reporting_requirement_index is 'An index that identifies the order of the reporting requirement';
 
 
 commit;
