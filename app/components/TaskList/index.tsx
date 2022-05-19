@@ -144,7 +144,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           listItemNumber="4"
           listItemName="Milestone Reports"
         >
-          <FormListItem
+          <TaskListItem
             stepName="milestone-reports"
             linkUrl={getProjectRevisionMilestoneReportsFormPageRoute(id)}
             formTitle="Milestone reports"
