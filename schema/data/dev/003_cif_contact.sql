@@ -18,7 +18,7 @@ do $$
           'familyName', 'Loblaw' || lpad(index::text, 3, '0'),
           'email', 'bob.l' || lpad(index::text, 3, '0') || '@example.com',
           'phone', '+14155552671',
-          'position', 'Manager',
+          'contactPosition', 'Manager',
           'comments', 'lorem ipsum dolor sit amet consectetur adipiscing elit 🚀'
           ),
         'create', 'cif', 'contact', 'committed', 'project_contact');
