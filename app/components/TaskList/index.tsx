@@ -149,7 +149,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           listItemNumber="4"
           listItemName="Annual Reports"
         >
-          <FormListItem
+          <TaskListItem
             stepName="annual-reports"
             linkUrl={getProjectRevisionAnnualReportsFormPageRoute(id)}
             formTitle="Annual reports"
