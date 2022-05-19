@@ -47,6 +47,17 @@ export const getProjectRevisionPageRoute = (projectRevisionId: string) => ({
   },
 });
 
+export const getProjectRevisionFormPageRoute = (
+  projectRevisionId: string,
+  formIndex: string | number
+) => ({
+  pathname: `/cif/project-revision/[projectRevision]/form/[formIndex]/`,
+  query: {
+    projectRevision: projectRevisionId,
+    formIndex,
+  },
+});
+
 export const getProjectRevisionOverviewFormPageRoute = (
   projectRevisionId: string
 ) => ({

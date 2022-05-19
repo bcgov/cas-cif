@@ -13,7 +13,7 @@ import useAddManagerToRevisionMutation from "mutations/ProjectManager/addManager
 
 interface Props {
   query: ProjectManagerFormGroup_query$key;
-  revision: ProjectManagerFormGroup_revision$key;
+  projectRevision: ProjectManagerFormGroup_revision$key;
   onSubmit: () => void;
 }
 
@@ -59,7 +59,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.revision
+    props.projectRevision
   );
 
   const { edges } = projectRevision.managerFormChanges;
