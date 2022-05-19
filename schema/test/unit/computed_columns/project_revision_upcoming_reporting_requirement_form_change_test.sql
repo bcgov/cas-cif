@@ -50,7 +50,7 @@ select is(
 
 
 
--- returns the latest form_change of that type when all reports of that type are submitted and the report_type is specified
+-- returns null when all reports of that type are submitted and the report_type is specified
 update cif.form_change set new_form_data = new_form_data || '{"submittedDate":"2002-02-20T12:00:01-07"}' where id in (2,3);
 select is(
   (
@@ -60,13 +60,13 @@ select is(
     ) select id from cif.project_revision_upcoming_reporting_requirement_form_change((select * from record), 'Quarterly')
   ),
   (
-    3
+    null
   ),
-  'Returns the latest form_change of that type when all reports of that type are submitted and the report_type is specified'
+  'Returns null when all reports of that type are submitted and the report_type is specified'
 );
 
 
--- returns the latest form_change when all reports have been submitted and no report_type is specified
+-- returns null when all reports have been submitted and no report_type is specified
 update cif.form_change set new_form_data = new_form_data || '{"submittedDate":"2002-02-20T12:00:01-07"}' where id in (4,5);
 select is(
   (
@@ -76,9 +76,9 @@ select is(
     ) select id from cif.project_revision_upcoming_reporting_requirement_form_change((select * from record))
   ),
   (
-    5
+    null
   ),
-  'Returns the latest form_change when all reports have been submitted and no report_type is specified'
+  'Returns null when all reports have been submitted and no report_type is specified'
 );
 
 -- returns null when no form_changes are present
