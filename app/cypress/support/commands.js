@@ -200,14 +200,9 @@ Cypress.Commands.add(
     receivedDate = undefined,
     generalComments = undefined
   ) => {
-    const dueDate = DateTime.fromFormat(reportDueDate, "yyyy-MM-dd")
-      .setZone("America/Vancouver")
-      .set({
-        hour: 23,
-        minute: 59,
-        second: 59,
-        millisecond: 999,
-      });
+    const dueDate = DateTime.fromFormat(reportDueDate, "yyyy-MM-dd").setZone(
+      "America/Vancouver"
+    );
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
