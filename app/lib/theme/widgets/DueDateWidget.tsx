@@ -8,13 +8,16 @@ import { DateTime, Interval } from "luxon";
 
 const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value, label }, ref) => {
+    console.log("value", value);
+
     const selectedDate = DateTime.fromISO(value, {
       setZone: true,
       locale: "en-CA",
     });
 
     const formattedValue = selectedDate.toLocaleString(DateTime.DATE_MED);
-
+    // const formattedValue = selectedDate.toFormat("LLL dd, yyyy");
+    console.log("formattatedvalue", formattedValue);
     const currentDate = DateTime.now()
       .setZone("America/Vancouver")
       .startOf("day");
@@ -61,6 +64,7 @@ const DueDateWidget: React.FC<WidgetProps> = ({
   value,
   required,
 }) => {
+  console.log("label in widget is", label);
   return (
     <div>
       <DatePicker
