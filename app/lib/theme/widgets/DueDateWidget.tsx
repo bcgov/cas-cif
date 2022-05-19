@@ -8,8 +8,13 @@ import { DateTime, Interval } from "luxon";
 
 const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value, label }, ref) => {
-    const selectedDate = DateTime.fromISO(value);
+    const selectedDate = DateTime.fromISO(value, {
+      setZone: true,
+      locale: "en-CA",
+    });
+
     const formattedValue = selectedDate.toLocaleString(DateTime.DATE_MED);
+
     const currentDate = DateTime.now()
       .setZone("America/Vancouver")
       .startOf("day");
