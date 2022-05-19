@@ -1,20 +1,21 @@
-import DefaultLayout from "components/Layout/DefaultLayout";
-import { withRelay, RelayProps } from "relay-nextjs";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { overviewFormQuery } from "__generated__/overviewFormQuery.graphql";
-import withRelayOptions from "lib/relay/withRelayOptions";
+import { Button } from "@button-inc/bcgov-theme";
 import ProjectForm from "components/Form/ProjectForm";
+import ProjectFormSummary from "components/Form/ProjectFormSummary";
+import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
+import withRelayOptions from "lib/relay/withRelayOptions";
+import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
 import {
-  getProjectRevisionPageRoute,
+  getProjectRevisionManagersFormPageRoute,
   getProjectRevisionOverviewFormPageRoute,
+  getProjectRevisionPageRoute,
 } from "pageRoutes";
-import ProjectFormSummary from "components/Form/ProjectFormSummary";
-import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
-import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
-import { Button } from "@button-inc/bcgov-theme";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { RelayProps, withRelay } from "relay-nextjs";
+import { overviewFormQuery } from "__generated__/overviewFormQuery.graphql";
 
 const pageQuery = graphql`
   query overviewFormQuery($projectRevision: ID!) {
@@ -52,6 +53,9 @@ export function ProjectOverviewForm({
   const mode =
     query.projectRevision?.changeStatus === "committed" ? "view" : "update";
 
+  const existingRevision =
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
+
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
 
@@ -85,8 +89,6 @@ export function ProjectOverviewForm({
   };
 
   const createEditButton = () => {
-    const existingRevision =
-      query.projectRevision.projectByProjectId.pendingProjectRevision;
     return (
       <div>
         <Button
@@ -110,7 +112,13 @@ export function ProjectOverviewForm({
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    router.push(getProjectRevisionPageRoute(query.projectRevision.id));
+    if (existingRevision) {
+      router.push(getProjectRevisionPageRoute(query.projectRevision.id));
+    } else {
+      router.push(
+        getProjectRevisionManagersFormPageRoute(query.projectRevision.id)
+      );
+    }
   };
 
   return (

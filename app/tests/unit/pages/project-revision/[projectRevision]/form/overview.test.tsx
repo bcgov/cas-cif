@@ -3,7 +3,10 @@ import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import {
+  getProjectRevisionManagersFormPageRoute,
+  getProjectRevisionPageRoute,
+} from "pageRoutes";
 import { ProjectOverviewForm } from "pages/cif/project-revision/[projectRevision]/form/overview";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledOverviewFormQuery, {
@@ -277,7 +280,7 @@ describe("The Project Overview page", () => {
     });
   });
 
-  it("redirects the user to the project revision page on submit", () => {
+  it("redirects the user to the project revision page on submit when editing", () => {
     const router = mocked(useRouter);
     const mockPush = jest.fn();
     router.mockReturnValue({
@@ -297,6 +300,38 @@ describe("The Project Overview page", () => {
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-id")
+    );
+  });
+
+  it("redirects the user to the project managers page on submit when creating a project", () => {
+    const router = mocked(useRouter);
+    const mockPush = jest.fn();
+    router.mockReturnValue({
+      push: mockPush,
+    } as any);
+
+    let handleSubmit;
+    jest
+      .spyOn(require("components/Form/ProjectForm"), "default")
+      .mockImplementation((props: any) => {
+        handleSubmit = () => props.onSubmit();
+        return null;
+      });
+
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-proj-rev-id",
+          projectId: null,
+          projectByProjectId: null,
+          projectFormChange: null,
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+    handleSubmit();
+    expect(mockPush).toHaveBeenCalledWith(
+      getProjectRevisionManagersFormPageRoute("mock-proj-rev-id")
     );
   });
 

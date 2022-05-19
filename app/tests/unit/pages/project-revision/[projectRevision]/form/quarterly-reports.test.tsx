@@ -70,7 +70,7 @@ describe("The Project Quarterly Reports page", () => {
     ).toHaveAttribute("aria-current", "step");
   });
 
-  it("redirects the user to the project revision page on submit", () => {
+  it("redirects the user to the project revision page on submit when editing", () => {
     const router = mocked(useRouter);
     const mockPush = jest.fn();
     router.mockReturnValue({
@@ -89,6 +89,37 @@ describe("The Project Quarterly Reports page", () => {
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
+    );
+  });
+
+  it("redirects the user to the project revision page on submit when creating a project", () => {
+    const router = mocked(useRouter);
+    const mockPush = jest.fn();
+    router.mockReturnValue({
+      push: mockPush,
+    } as any);
+
+    let handleSubmit;
+    jest
+      .spyOn(require("components/Form/ProjectQuarterlyReportForm"), "default")
+      .mockImplementation((props: any) => {
+        handleSubmit = () => props.onSubmit();
+        return null;
+      });
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-proj-rev-id",
+          projectId: null,
+          projectByProjectId: null,
+          projectFormChange: null,
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+    handleSubmit();
+    expect(mockPush).toHaveBeenCalledWith(
+      getProjectRevisionPageRoute("mock-proj-rev-id")
     );
   });
 

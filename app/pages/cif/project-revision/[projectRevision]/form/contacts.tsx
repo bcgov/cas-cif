@@ -1,20 +1,21 @@
-import DefaultLayout from "components/Layout/DefaultLayout";
-import { withRelay, RelayProps } from "relay-nextjs";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { contactsFormQuery } from "__generated__/contactsFormQuery.graphql";
-import withRelayOptions from "lib/relay/withRelayOptions";
-import { useRouter } from "next/router";
-import {
-  getProjectRevisionPageRoute,
-  getProjectRevisionContactsFormPageRoute,
-} from "pageRoutes";
-import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
+import { Button } from "@button-inc/bcgov-theme";
 import ProjectContactForm from "components/Form/ProjectContactForm";
+import ProjectContactFormSummary from "components/Form/ProjectContactFormSummary";
+import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
-import ProjectContactFormSummary from "components/Form/ProjectContactFormSummary";
-import { Button } from "@button-inc/bcgov-theme";
+import withRelayOptions from "lib/relay/withRelayOptions";
+import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
+import { useRouter } from "next/router";
+import {
+  getProjectRevisionContactsFormPageRoute,
+  getProjectRevisionPageRoute,
+  getProjectRevisionQuarterlyReportsFormPageRoute,
+} from "pageRoutes";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { RelayProps, withRelay } from "relay-nextjs";
+import { contactsFormQuery } from "__generated__/contactsFormQuery.graphql";
 
 const pageQuery = graphql`
   query contactsFormQuery($projectRevision: ID!) {
@@ -113,7 +114,15 @@ export function ProjectContactsPage({
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    router.push(getProjectRevisionPageRoute(query.projectRevision.id));
+    if (mode === "edit") {
+      router.push(getProjectRevisionPageRoute(query.projectRevision.id));
+    } else {
+      router.push(
+        getProjectRevisionQuarterlyReportsFormPageRoute(
+          query.projectRevision.id
+        )
+      );
+    }
   };
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
