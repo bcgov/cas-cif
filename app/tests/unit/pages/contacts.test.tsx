@@ -39,7 +39,7 @@ const pageTestingHelper = new PageTestingHelper<contactsQuery>({
   defaultQueryVariables: {
     fullName: null,
     fullPhone: null,
-    position: null,
+    contactPosition: null,
     offset: null,
     pageSize: null,
     orderBy: null,

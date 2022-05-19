@@ -18,7 +18,7 @@ const defaultMockResolver = {
       fullName: "Contact, Test",
       fullPhone: "(123) 456-7890",
       email: "foo@bar.com",
-      position: "Test Position",
+      contactPosition: "Test Position",
       pendingFormChange: null,
     };
   },
@@ -79,7 +79,7 @@ describe("ContactViewPage", () => {
           fullName: "Contact, Test",
           fullPhone: "(123) 456-7890",
           email: "foo@bar.com",
-          position: "Test Position",
+          contactPosition: "Test Position",
           pendingFormChange: {
             id: "mock-form-change-id",
           },
@@ -100,7 +100,7 @@ describe("ContactViewPage", () => {
           fullName: "Contact, Test",
           fullPhone: "(123) 456-7890",
           email: "foo@bar.com",
-          position: "Test Position",
+          contactPosition: "Test Position",
           pendingFormChange: null,
         };
       },
