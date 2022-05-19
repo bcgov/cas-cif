@@ -1,6 +1,7 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7 } from "json-schema";
@@ -63,6 +64,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
               }
             }
           }
+        }
+        upcomingReportingRequirementFormChange(reportType: "Quarterly") {
+          ...ReportDueIndicator_formChange
         }
         projectFormChange {
           formDataRecordId
@@ -212,7 +216,12 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
-      <div>Quarterly reports status here</div>
+      <ReportDueIndicator
+        reportTitle="Quarterly Report"
+        reportDueFormChange={
+          projectRevision.upcomingReportingRequirementFormChange
+        }
+      />
 
       <FormBorder>
         <Button
