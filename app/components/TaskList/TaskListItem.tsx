@@ -12,7 +12,7 @@ interface Props {
   mode: TaskListMode;
 }
 
-const FormListItem: React.FC<Props> = ({
+const TaskListItem: React.FC<Props> = ({
   stepName,
   linkUrl,
   formTitle,
@@ -55,4 +55,4 @@ const FormListItem: React.FC<Props> = ({
   );
 };
 
-export default FormListItem;
+export default TaskListItem;

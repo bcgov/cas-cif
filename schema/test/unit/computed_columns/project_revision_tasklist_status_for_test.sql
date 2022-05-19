@@ -1,6 +1,6 @@
 begin;
 
-select plan(13);
+select plan(15);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -19,13 +19,13 @@ overriding system value
 values
   (1, 1, 1, 1, '000', 'summary', 'project 1');
 
-insert into cif.project_revision(id, change_status, change_reason, project_id)
+insert into cif.project_revision(id, change_status, change_reason, project_id, is_first_revision)
 overriding system value
 values
-  (1, 'committed', 'reason for change', 1),
-  (2, 'committed', 'reason for change', 1),
-  (3, 'committed', 'reason for change', 1),
-  (4, 'committed', 'reason for change', 1);
+  (1, 'committed', 'reason for change', 1, false),
+  (2, 'committed', 'reason for change', 1, false),
+  (3, 'committed', 'reason for change', 1, false),
+  (4, 'committed', 'reason for change', 1, true);
 
 alter table cif.form_change disable trigger _set_previous_form_change_id;
 alter table cif.form_change disable trigger commit_form_change;
@@ -154,16 +154,16 @@ select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'test_table_name')
   ),
-  'Incomplete',
-  'Returns Incomplete, when change_status is pending and is_pristine is null'
+  'In Progress',
+  'Returns In Progress, when change_status is pending and is_pristine is null'
 );
 
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'test_table_name')
   ),
-  'Not Started',
-  'Returns Not Started, when change_status is pending and is_pristine is true'
+  'No Changes',
+  'Returns No Changes, when change_status is pending and is_pristine is true'
 );
 
 -- Change new_form_data to make is_pristine = false
@@ -173,16 +173,16 @@ select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'test_table_name')
   ),
-  'Incomplete',
-  'Returns Incomplete, when change_status is pending and is_pristine is false'
+  'In Progress',
+  'Returns In Progress, when change_status is pending and is_pristine is false'
 );
 
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3), 'test_table_name')
   ),
-  'Complete',
-  'Returns Complete, when change_status is staged and validation_errors is empty'
+  'Filled',
+  'Returns Filled, when change_status is staged and validation_errors is empty'
 );
 
 -- Add validation_errors
@@ -196,13 +196,12 @@ select is(
   'Returns Attention Required, when change_status is staged and validation_errors is not empty'
 );
 
--- it returns Complete when there are no form_change records for that table
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3), 'table_that_does_not_have_form_changes')
   ),
-  'Not Started',
-  'Returns Not Started, when there are no form_change records for that table'
+  'No Changes',
+  'Returns No Changes, when there are no form_change records for that table'
 );
 
 -- it returns null when the table argument is null
@@ -214,22 +213,32 @@ select is(
   'Returns null when the table argument is null'
 );
 
+-- it returns Not Started when there are no form_change records and the is_first_revision is true
+
+select is(
+  (
+    select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=4), 'table_that_does_not_have_form_changes')
+  ),
+  'Not Started',
+  'Returns Not Started, when there are no form_change records for that table and is_first_revision field is true'
+);
+
 /* ---------------------- With Json Matching ---------------------- */
 
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'test_table_with_extra_data', '{"ExtraData":"TestOne"}')
   ),
-  'Incomplete',
-  'Returns Incomplete, when change_status is pending and is_pristine is null'
+  'In Progress',
+  'Returns In Progress, when change_status is pending and is_pristine is null'
 );
 
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'test_table_with_extra_data', '{"ExtraData":"TestOne"}')
   ),
-  'Not Started',
-  'Returns Not Started, when change_status is pending and is_pristine is true'
+  'No Changes',
+  'Returns No Changes, when change_status is pending and is_pristine is true'
 );
 
 -- Change new_form_data to make is_pristine = false
@@ -239,16 +248,16 @@ select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'test_table_with_extra_data', '{"ExtraData":"TestOne"}')
   ),
-  'Incomplete',
-  'Returns Incomplete, when change_status is pending and is_pristine is false'
+  'In Progress',
+  'Returns In Progress, when change_status is pending and is_pristine is false'
 );
 
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3), 'test_table_with_extra_data', '{"ExtraData":"TestOne"}')
   ),
-  'Complete',
-  'Returns Complete, when change_status is staged and validation_errors is empty'
+  'Filled',
+  'Returns Filled, when change_status is staged and validation_errors is empty'
 );
 
 -- Add validation_errors
@@ -263,15 +272,21 @@ select is(
 );
 
 
--- it returns Complete when there are no form_change records for that table and that matcher
 select is(
   (
     select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3), 'test_table_with_extra_data', '{"ExtraData":"TestThree"}')
   ),
-  'Not Started',
-  'Returns Not Started when there are no form_change records for that table and that matcher'
+  'No Changes',
+  'Returns No Changes when there are no form_change records for that table and that matcher'
 );
 
+select is(
+  (
+    select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=4), 'test_table_with_extra_data', '{"ExtraData":"TestThree"}')
+  ),
+  'Not Started',
+  'Returns Not Started when there are no form_change records for that table and that matcher and is_first_revision field is true'
+);
 
 
 select finish();

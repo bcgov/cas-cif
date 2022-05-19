@@ -9,7 +9,7 @@ import {
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
-import FormListItem from "./TaskListItem";
+import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
 
@@ -84,7 +84,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           listItemNumber="1"
           listItemName="Project Overview"
         >
-          <FormListItem
+          <TaskListItem
             stepName="overview"
             linkUrl={getProjectRevisionOverviewFormPageRoute(id)}
             formTitle="Project overview"
@@ -103,7 +103,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           listItemName="Project Details"
           listItemMode={mode === "update" ? "" : "(optional)"}
         >
-          <FormListItem
+          <TaskListItem
             stepName="managers"
             linkUrl={getProjectRevisionManagersFormPageRoute(id)}
             formTitle="Project managers"
@@ -111,7 +111,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             currentStep={currentStep}
             mode={mode as TaskListMode}
           />
-          <FormListItem
+          <TaskListItem
             stepName="contacts"
             linkUrl={getProjectRevisionContactsFormPageRoute(id)}
             formTitle="Project contacts"
@@ -127,7 +127,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           listItemNumber="3"
           listItemName="Quarterly Reports"
         >
-          <FormListItem
+          <TaskListItem
             stepName="quarterly-reports"
             linkUrl={getProjectRevisionQuarterlyReportsFormPageRoute(id)}
             formTitle="Quarterly reports"
@@ -144,7 +144,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             listItemNumber="4"
             listItemName="Submit changes"
           >
-            <FormListItem
+            <TaskListItem
               stepName="summary"
               linkUrl={getProjectRevisionPageRoute(id)}
               formTitle="Review and submit information"
