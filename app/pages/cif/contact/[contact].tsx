@@ -21,7 +21,7 @@ const pageQuery = graphql`
       fullName
       fullPhone
       email
-      position
+      contactPosition
       comments
       pendingFormChange {
         id
@@ -87,10 +87,10 @@ export function ContactViewPage({
         <dt>Email</dt>
         <dd>{contact.email}</dd>
 
-        {contact.position && (
+        {contact.contactPosition && (
           <>
             <dt>Position</dt>
-            <dd>{contact.position}</dd>
+            <dd>{contact.contactPosition}</dd>
           </>
         )}
 
