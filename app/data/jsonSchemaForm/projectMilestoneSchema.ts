@@ -18,6 +18,7 @@ export const projectMilestoneSchema = {
       type: "string",
       title: "Milestone Type",
       anyOf: undefined,
+      default: undefined,
     },
     maximumAmount: {
       type: "number",

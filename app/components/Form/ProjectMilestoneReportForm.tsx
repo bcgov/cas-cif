@@ -45,6 +45,7 @@ export const createProjectMilestoneSchema = (allReportTypes) => {
         value: node.name,
       } as JSONSchema7Definition;
     }),
+    default: "General Milestone",
   };
   schema.properties.certifiedByProfessionalDesignation = {
     ...schema.properties.certifiedByProfessionalDesignation,
