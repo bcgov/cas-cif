@@ -68,8 +68,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
 
   const projectRevision = useFragment(
-    // The JSON string is tripping up eslint
-    // eslint-disable-next-line relay/graphql-syntax
     graphql`
       fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
         id
