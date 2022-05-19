@@ -221,7 +221,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 1);
   });
 
-  it("undoes changes when the user clicks the Undo Changes button", () => {
+  it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
