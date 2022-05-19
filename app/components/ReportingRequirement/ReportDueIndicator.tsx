@@ -90,7 +90,7 @@ const ReportDueIndicator: React.FC<Props> = ({
                 {hasValidReportDueDate ? (
                   <>
                     {overdue ? "Overdue by " : "Due in "}
-                    <b>{Math.floor(reportDueIn.days)} day(s)</b>
+                    <b>{Math.floor(Math.abs(reportDueIn.days))} day(s)</b>
                   </>
                 ) : (
                   "-"
