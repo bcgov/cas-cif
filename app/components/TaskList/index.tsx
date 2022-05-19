@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import {
+  getProjectRevisionAnnualReportsFormPageRoute,
   getProjectRevisionContactsFormPageRoute,
   getProjectRevisionManagersFormPageRoute,
   getProjectRevisionOverviewFormPageRoute,
@@ -26,6 +27,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     projectManagersStatus,
     projectContactsStatus,
     quarterlyReportsStatus,
+    annualReportsStatus,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -46,6 +48,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
         quarterlyReportsStatus: tasklistStatusFor(
           formDataTableName: "reporting_requirement"
           jsonMatcher: "{\"reportType\":\"Quarterly\"}"
+        )
+        annualReportsStatus: tasklistStatusFor(
+          formDataTableName: "reporting_requirement"
+          jsonMatcher: "{\"reportType\":\"Annual\"}"
         )
       }
     `,
@@ -137,11 +143,27 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
           />
         </TaskListSection>
 
+        {/* Annual Reports Section */}
+        <TaskListSection
+          defaultExpandedState={currentStep === "annual-reports"}
+          listItemNumber="4"
+          listItemName="Annual Reports"
+        >
+          <FormListItem
+            stepName="annual-reports"
+            linkUrl={getProjectRevisionAnnualReportsFormPageRoute(id)}
+            formTitle="Annual reports"
+            formStatus={annualReportsStatus}
+            currentStep={currentStep}
+            mode={mode as TaskListMode}
+          />
+        </TaskListSection>
+
         {/* Project Summary Section */}
         {mode !== "view" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
-            listItemNumber="4"
+            listItemNumber="5"
             listItemName="Submit changes"
           >
             <TaskListItem

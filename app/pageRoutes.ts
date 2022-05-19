@@ -83,6 +83,15 @@ export const getProjectRevisionQuarterlyReportsFormPageRoute = (
   },
 });
 
+export const getProjectRevisionAnnualReportsFormPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif/project-revision/[projectRevision]/form/annual-reports/`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
+
 ///// Project
 
 export const getProjectsPageRoute = () => ({
