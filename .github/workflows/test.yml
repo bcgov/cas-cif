@@ -58,6 +58,7 @@ jobs:
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: make db_unit_tests
+      - run: git submodule update --init
       - run: make db_style_tests
 
   pre-commit:
