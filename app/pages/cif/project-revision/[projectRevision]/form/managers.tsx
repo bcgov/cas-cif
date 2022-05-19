@@ -50,7 +50,7 @@ export function ProjectManagersForm({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
   const existingRevision =
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision ?? null;
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
 

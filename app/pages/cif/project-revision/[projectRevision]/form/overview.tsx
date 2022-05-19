@@ -54,8 +54,7 @@ export function ProjectOverviewForm({
     query.projectRevision?.changeStatus === "committed" ? "view" : "update";
 
   const existingRevision =
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision ?? null;
-  // console.log("query", query);
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
 
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
