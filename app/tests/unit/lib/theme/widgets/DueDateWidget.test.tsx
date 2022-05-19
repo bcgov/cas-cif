@@ -18,15 +18,13 @@ describe("The DueDateWidget", () => {
   });
 
   it("calls onChange with the correct date", () => {
-    const startDate =
-      DateTime.fromISO("2020-01-01").setZone("America/Vancouver");
     const expectedDate = "2050-12-15T23:59:59.999-08:00";
     const handleOnChange = jest.fn();
     const props: any = {
       id: "test-id",
       onChange: handleOnChange,
       label: "Due date",
-      value: startDate.toISO(),
+      value: "2020-01-01T23:59:59.999-07:00",
       required: true,
     };
     render(<DueDateWidget id="widget-id" {...props} />);
@@ -61,15 +59,11 @@ describe("The DueDateWidget", () => {
   });
 
   it("displays only the date if date selected is in the past", () => {
-    const testDate = getTimestamptzFromDate(
-      DateTime.fromISO("1999-01-01").setZone("America/Vancouver"),
-      true
-    );
     const props: any = {
       id: "test-id",
       onChange: jest.fn(),
       label: "Due date",
-      value: testDate,
+      value: "1999-01-01T23:59:59.999-08:00",
       required: true,
     };
     render(<DueDateWidget {...props} />);
