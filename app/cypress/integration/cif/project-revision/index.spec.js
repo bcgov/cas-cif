@@ -462,7 +462,10 @@ describe("the new project page", () => {
     cy.get("a")
       .contains(/Quarterly reports/i)
       .click();
-    cy.get('[aria-label*="Due Date"]').eq(0).should("have.text", "Jan 1, 1995");
+    // the date is formatted using locale and it can show up slightly differently in different browsers (e.g., sometimes there's a period after the month abbreviation, sometimes there's not)
+    cy.get('[aria-label*="Due Date"]')
+      .eq(0)
+      .contains(/Jan 1[.]?, 1995/);
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
