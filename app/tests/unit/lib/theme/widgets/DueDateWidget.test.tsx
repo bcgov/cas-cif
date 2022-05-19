@@ -9,7 +9,7 @@ describe("The DueDateWidget", () => {
     const props: any = {
       id: "test-id",
       onChange: jest.fn(),
-      label: "Due date",
+      label: "Report Due Date",
       value: undefined,
       required: true,
     };
@@ -23,13 +23,13 @@ describe("The DueDateWidget", () => {
     const props: any = {
       id: "test-id",
       onChange: handleOnChange,
-      label: "Due date",
+      label: "Report Due Date",
       value: "2020-01-01T23:59:59.999-07:00",
       required: true,
     };
     render(<DueDateWidget id="widget-id" {...props} />);
-    expect(screen.getByText(`Jan 1, 2020`)).toBeInTheDocument();
-    fireEvent.click(screen.getByText(/Jan 1, 2020/i));
+    expect(screen.getByText(`Jan. 1, 2020`)).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText(/report due date/i));
     userEvent.selectOptions(screen.getAllByRole("combobox")[0], "11");
     userEvent.selectOptions(screen.getAllByRole("combobox")[1], "2050");
     userEvent.click(
@@ -50,7 +50,7 @@ describe("The DueDateWidget", () => {
     const props: any = {
       id: "test-id",
       onChange: handleOnChange,
-      label: "Due date",
+      label: "Report Due Date",
       value: testDate,
       required: true,
     };
@@ -62,11 +62,14 @@ describe("The DueDateWidget", () => {
     const props: any = {
       id: "test-id",
       onChange: jest.fn(),
-      label: "Due date",
+      label: "Report Due Date",
       value: "1999-01-01T23:59:59.999-08:00",
       required: true,
     };
     render(<DueDateWidget {...props} />);
-    expect(screen.getByText(/Jan 1, 1999/i)).toHaveTextContent("Jan 1, 1999");
+    // the date is formatted using locale and it can show up slightly differently in different browsers (e.g., sometimes there's a period after the month abbreviation, sometimes there's not)
+    expect(screen.getByLabelText(/report due date/i)).toHaveTextContent(
+      /Jan[.]? 1, 1999/
+    );
   });
 });
