@@ -194,6 +194,7 @@ db_unit_tests:
 
 .PHONY: db_style_tests
 db_style_tests: ## run the database style tests
+db_style_tests: | start_pg deploy_test_db_migrations
 db_style_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/style/*_test.sql --set schemas_to_test=cif,cif_private
 
