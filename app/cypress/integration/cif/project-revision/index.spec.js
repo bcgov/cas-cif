@@ -9,7 +9,7 @@ describe("the new project page", () => {
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
-  it("renders the project forms", () => {
+  it.only("renders the project forms", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -68,8 +68,11 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
 
     cy.addQuarterlyReport(1, "1991-01-01");
+    cy.contains("Changes saved").should("be.visible");
     cy.addQuarterlyReport(2, "1992-01-01");
+    cy.contains("Changes saved").should("be.visible");
     cy.addQuarterlyReport(3, "1993-01-01");
+    cy.contains("Changes saved").should("be.visible");
 
     cy.get('label[for*="reportDueDate"]').should("have.length", 3);
     cy.checkA11y("main", null, logAxeResults);
@@ -300,7 +303,9 @@ describe("the new project page", () => {
       "2022-02-02",
       "I am the second general comment"
     );
-    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.findByText(/Submit changes/i).click();
+    cy.findByText(/Review and submit information/i).click();
 
     cy.findByText(/Add annual report/i).click();
     cy.addAnnualReport(
@@ -458,6 +463,9 @@ describe("the new project page", () => {
     });
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    cy.findByText(/Submit changes/i).click();
+    cy.findByText(/Review and submit information/i).click();
+
     // check diffs
     cy.contains("Review and Submit Project");
 
@@ -538,6 +546,8 @@ describe("the new project page", () => {
 
     cy.findByText(/Add another annual report/i);
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.findByText(/Submit changes/i).click();
+    cy.findByText(/Review and submit information/i).click();
 
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /^submit/i }).click();
