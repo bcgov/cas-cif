@@ -228,7 +228,7 @@ Cypress.Commands.add(
   (
     reportNumber,
     reportDueDate,
-    receivedDate = undefined,
+    reportReceivedDate = undefined,
     generalComments = undefined
   ) => {
     cy.findByRole("button", {
@@ -240,13 +240,29 @@ Cypress.Commands.add(
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.addDueDate(reportNumber, reportDueDate);
 
-    if (receivedDate) {
-      cy.get('[label*="Received Date"]')
+    if (reportReceivedDate) {
+      const receivedDate = DateTime.fromFormat(reportDueDate, "yyyy-MM-dd")
+        .setZone("America/Vancouver")
+        .setLocale("en-CA");
+      cy.get('[aria-label*="Received Date"]')
         .eq(reportNumber - 1)
-        .type(receivedDate);
-      cy.get('[label*="Received Date"]')
+        .should("exist")
+        .click();
+      cy.get(".react-datepicker__month-select")
+        // datepicker indexes months from 0, luxon indexes from 1
+        .select(receivedDate.get("month") - 1);
+      cy.get(".react-datepicker__year-select").select(
+        receivedDate.get("year").toString()
+      );
+      cy.get(`.react-datepicker__day--0${receivedDate.toFormat("dd")}`)
+        .not(`.react-datepicker__day--outside-month`)
+        .click();
+      cy.get('[aria-label*="Received Date"]')
         .eq(reportNumber - 1)
-        .should("have.value", receivedDate);
+        .should(
+          "have.text",
+          `Received(${receivedDate.toFormat("MMM dd, yyyy")})`
+        );
     }
 
     if (generalComments) {
