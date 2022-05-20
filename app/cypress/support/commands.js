@@ -223,7 +223,7 @@ Cypress.Commands.add(
       .click();
     cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
-      .should("have.text", dueDate.toLocaleString(DateTime.DATE_MED));
+      .should("have.text", dueDate.toFormat("MMM dd, yyyy"));
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')

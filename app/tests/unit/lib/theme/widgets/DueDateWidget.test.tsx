@@ -28,7 +28,7 @@ describe("The DueDateWidget", () => {
       required: true,
     };
     render(<DueDateWidget id="widget-id" {...props} />);
-    expect(screen.getByText(`Jan. 1, 2020`)).toBeInTheDocument();
+    expect(screen.getByText(`Jan. 01, 2020`)).toBeInTheDocument();
     fireEvent.click(screen.getByLabelText(/report due date/i));
     userEvent.selectOptions(screen.getAllByRole("combobox")[0], "11");
     userEvent.selectOptions(screen.getAllByRole("combobox")[1], "2050");
@@ -69,7 +69,7 @@ describe("The DueDateWidget", () => {
     render(<DueDateWidget {...props} />);
     // the date is formatted using locale and it can show up slightly differently in different browsers (e.g., sometimes there's a period after the month abbreviation, sometimes there's not)
     expect(screen.getByLabelText(/report due date/i)).toHaveTextContent(
-      /Jan[.]? 1, 1999/
+      /Jan[.]? 01, 1999/
     );
   });
 });

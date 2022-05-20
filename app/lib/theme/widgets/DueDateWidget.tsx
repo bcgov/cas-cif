@@ -13,7 +13,7 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
       locale: "en-CA",
     });
 
-    const formattedValue = selectedDate.toLocaleString(DateTime.DATE_MED);
+    const formattedValue = selectedDate.toFormat("MMM dd, yyyy");
 
     const currentDate = DateTime.now()
       .setZone("America/Vancouver")
