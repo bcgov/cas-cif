@@ -9,7 +9,7 @@ describe("the new project page", () => {
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
-  it.only("renders the project forms", () => {
+  it("renders the project forms", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
