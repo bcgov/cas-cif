@@ -20,6 +20,11 @@ const pageQuery = graphql`
         id
         ...ProjectMilestoneReportForm_projectRevision
         ...TaskList_projectRevision
+        projectByProjectId {
+          pendingProjectRevision {
+            id
+          }
+        }
       }
       ...ProjectMilestoneReportForm_query
     }
@@ -34,6 +39,9 @@ export function ProjectMilestoneReportsPage({
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
+
+  const existingRevision =
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
 
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
