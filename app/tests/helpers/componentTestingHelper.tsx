@@ -1,9 +1,5 @@
-import { act, render } from "@testing-library/react";
-import {
-  createMockEnvironment,
-  MockPayloadGenerator,
-  RelayMockEnvironment,
-} from "relay-test-utils";
+import { render } from "@testing-library/react";
+import { MockPayloadGenerator } from "relay-test-utils";
 import { ErrorContext } from "contexts/ErrorContext";
 import { RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay";
 import {
@@ -12,6 +8,7 @@ import {
   OperationType,
 } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import TestingHelper from "./TestingHelper";
 
 interface ComponentTestingHelperOptions<TQuery extends OperationType> {
   component: (props: any) => JSX.Element;
@@ -23,17 +20,13 @@ interface ComponentTestingHelperOptions<TQuery extends OperationType> {
   defaultComponentProps?: any;
 }
 
-class ComponentTestingHelper<TQuery extends OperationType> {
-  public environment: RelayMockEnvironment;
-
-  public errorContext: {
-    error: any;
-    setError: any;
-  };
-
+class ComponentTestingHelper<
+  TQuery extends OperationType
+> extends TestingHelper {
   private options: ComponentTestingHelperOptions<TQuery>;
 
   constructor(options: ComponentTestingHelperOptions<TQuery>) {
+    super();
     this.options = {
       getPropsFromTestQuery: () => ({}),
       defaultQueryResolver: {},
@@ -43,18 +36,6 @@ class ComponentTestingHelper<TQuery extends OperationType> {
     };
 
     this.reinit();
-  }
-
-  public reinit() {
-    this.environment = createMockEnvironment();
-    this.errorContext = {
-      error: null,
-      setError: jest.fn().mockImplementation((error) =>
-        act(() => {
-          this.errorContext.error = error;
-        })
-      ),
-    };
   }
 
   public loadQuery(queryResolver?: MockResolvers) {

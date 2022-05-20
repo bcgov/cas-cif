@@ -10,12 +10,10 @@ import { ProjectForm_projectRevision } from "__generated__/ProjectForm_projectRe
 
 const testQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
-    query {
-      # Spread the fragment you want to test here
-      ...ProjectForm_query
-      projectRevision(id: "Test Project Revision ID") {
-        ...ProjectForm_projectRevision
-      }
+    # Spread the fragment you want to test here
+    ...ProjectForm_query
+    projectRevision(id: "Test Project Revision ID") {
+      ...ProjectForm_projectRevision
     }
   }
 `;
@@ -75,8 +73,8 @@ const componentTestingHelper = new ComponentTestingHelper<ProjectFormQuery>({
   testQuery: testQuery,
   compiledQuery: compiledProjectFormQuery,
   getPropsFromTestQuery: (data) => ({
-    query: data.query,
-    projectRevision: data.query.projectRevision,
+    query: data,
+    projectRevision: data.projectRevision,
   }),
   defaultQueryResolver: mockQueryPayload,
   defaultQueryVariables: {},
@@ -96,39 +94,42 @@ describe("The Project Form", () => {
       target: { value: "testidentifier" },
     });
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables
-    ).toMatchObject({
-      input: {
-        id: expect.any(String),
-        formChangePatch: {
-          newFormData: expect.objectContaining({
-            proposalReference: "testidentifier",
-          }),
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectFormChangeMutation",
+      {
+        input: {
+          id: expect.any(String),
+          formChangePatch: {
+            changeStatus: "pending",
+            newFormData: expect.objectContaining({
+              proposalReference: "testidentifier",
+            }),
+          },
         },
-      },
-    });
+      }
+    );
 
     fireEvent.change(screen.getByLabelText(/summary/i), {
       target: { value: "testsummary" },
     });
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables
-    ).toMatchObject({
-      input: {
-        id: expect.any(String),
-        formChangePatch: {
-          newFormData: expect.objectContaining({
-            proposalReference: "testidentifier",
-            summary: "testsummary",
-          }),
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectFormChangeMutation",
+      {
+        input: {
+          id: expect.any(String),
+          formChangePatch: {
+            changeStatus: "pending",
+            newFormData: expect.objectContaining({
+              proposalReference: "testidentifier",
+              summary: "testsummary",
+            }),
+          },
         },
-      },
-    });
+      }
+    );
   });
+
   it("loads with the correct initial form data", () => {
     componentTestingHelper.loadQuery();
 
