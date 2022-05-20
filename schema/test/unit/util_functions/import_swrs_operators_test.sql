@@ -136,7 +136,8 @@ select results_eq(
       new_form_data->>'legalName',
       operation::text,
       change_status::text
-    from cif.form_change where form_data_table_name='operator' order by id
+    from cif.form_change where form_data_table_name='operator'
+    order by id
   $$,
   $$
     values
