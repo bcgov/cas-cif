@@ -74,6 +74,25 @@ describe("the new project page", () => {
     });
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    // Annual reports
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Add annual reports/i).click();
+
+    cy.url().should("include", "/form/annual-reports");
+
+    cy.addAnnualReport(1, "2022-01-01");
+    cy.addAnnualReport(2, "2023-01-01");
+    cy.addAnnualReport(3, "2049-01-01");
+
+    cy.get('label[for*="reportDueDate"]').should("have.length", 3);
+    cy.checkA11y("main", null, logAxeResults);
+    cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Annual Reports Form",
+      variant: "filled",
+    });
+    cy.findByRole("button", { name: /^submit/i }).click();
+
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
@@ -125,16 +144,14 @@ describe("the new project page", () => {
       component: "Project Contacts Form",
       variant: "with errors",
     });
-    cy.findByText(/Quarterly reports/i).click();
-    cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/quarterly-reports");
 
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Add annual reports/i).click();
+    cy.url().should("include", "/form/annual-reports");
+    cy.findByRole("button", { name: /add another annual report/i }).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.get(".error-detail").should("have.length", 3);
+    cy.get(".error-detail").should("have.length", 1);
     cy.injectAxe();
     cy.checkA11y(".error-detail", null, logAxeResults);
     cy.contains("Changes saved").should("be.visible");
@@ -144,7 +161,7 @@ describe("the new project page", () => {
     });
   });
 
-  it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
+  it.only("undoes changes on a new project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
@@ -227,6 +244,9 @@ describe("the new project page", () => {
     );
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    cy.findByText(/Add annual report/i).click();
+    cy.addAnnualReport();
+    cy.findByRole("button", { name: /^submit/i }).click();
     // check summary page
     cy.contains("Review and Submit Project");
     cy.findByText(/Funding Stream RFP ID/i)
@@ -362,6 +382,18 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Edit quarterly reports/i).click();
+    cy.get('[label*="Due Date"]').eq(0).clear().type("1995-01-01");
+    cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Quarterly Reports Form",
+      variant: "editing",
+    });
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    // edit annual reports
+    cy.contains("Review and Submit Project");
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Edit annual reports/i).click();
     cy.get('[label*="Due Date"]').eq(0).clear().type("1995-01-01");
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
