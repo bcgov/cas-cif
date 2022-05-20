@@ -535,13 +535,16 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
+    cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
+    cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another quarterly report/i);
+    cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another annual report/i);
