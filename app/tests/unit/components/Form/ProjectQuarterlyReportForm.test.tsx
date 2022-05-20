@@ -152,7 +152,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     ).toMatchObject({
       variables: {
         input: {
-          id: "mock-project-quarterly-report-form-2",
+          id: "mock-project-quarterly-report-form-1",
         },
         connections: expect.any(Array),
       },
