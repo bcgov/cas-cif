@@ -6,7 +6,7 @@ module.exports = {
     "prettier",
   ],
   env: { es6: true, browser: true, node: true },
-  plugins: ["jest", "relay"],
+  plugins: ["jest", "relay", "no-only-tests"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: ["./tsconfig.json"],
@@ -51,6 +51,7 @@ module.exports = {
         project: "cypress/tsconfig.json",
       },
       rules: {
+        "no-only-tests/no-only-tests": 2,
         "jest/valid-expect-in-promise": 0,
         "promise/prefer-await-to-then": 0,
         "no-unused-expressions": 0,
