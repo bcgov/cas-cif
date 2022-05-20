@@ -15,6 +15,9 @@ describe("the new project page", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
     cy.url().should("include", "/form/0");
+
+    // OVERVIEW
+    cy.url().should("include", "/form/overview");
     cy.get("button").contains("Submit Project Overview");
     cy.injectAxe();
     // TODO: the entire body should be tested for accessibility
@@ -30,8 +33,9 @@ describe("the new project page", () => {
       component: "Project Overview Form",
       variant: "empty",
     });
-
     cy.findByText(/Project Details/i).click();
+
+    // MANAGERS
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/1");
     cy.injectAxe();
@@ -41,6 +45,7 @@ describe("the new project page", () => {
       variant: "empty",
     });
 
+    // CONTACTS
     cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/2");
 
@@ -56,6 +61,7 @@ describe("the new project page", () => {
     });
     cy.findByText(/Submit contacts/i).click();
 
+    // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
 
@@ -87,6 +93,27 @@ describe("the new project page", () => {
     });
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.wait(1000);
+
+    // MILESTONE REPORTS
+    cy.findByText(/Milestone reports/i).click();
+    cy.findByText(/Add milestone reports/i).click();
+
+    cy.url().should("include", "/form/milestone-reports");
+    cy.get('[aria-label="Milestone Description"]').clear().type("desc");
+    cy.get('[aria-label="Milestone Description"]').should("have.value", "desc");
+    cy.get('[label*="Due Date"]').type("2020-01-01");
+    cy.get('[label*="Due Date"]').should("have.value", "2020-01-01");
+
+    cy.get('label[for*="reportDueDate"]').should("have.length", 1);
+    cy.checkA11y("main", null, logAxeResults);
+    cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Milestone Reports Form",
+      variant: "filled",
+    });
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    // SUMMMARY
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
@@ -103,6 +130,8 @@ describe("the new project page", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
+
+    // OVERVIEW
     cy.get("button").contains("Add a Project").click();
     cy.url().should("include", "/form/0");
 
@@ -122,6 +151,8 @@ describe("the new project page", () => {
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 
     cy.findByText(/Project Details/i).click();
+
+    // CONTACTS
     cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/2");
 
@@ -138,7 +169,8 @@ describe("the new project page", () => {
       component: "Project Contacts Form",
       variant: "with errors",
     });
-    // Quarterly reports
+
+    // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
     cy.url().should("include", "/form/3");
@@ -170,11 +202,20 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 1);
+
+    // MILESTONE REPORTS
+    cy.findByText(/Milestone reports/i).click();
+    cy.findByText(/Add milestone reports/i).click();
+    cy.url().should("include", "/form/milestone-reports");
+
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 2);
     cy.injectAxe();
     cy.checkA11y(".error-detail", null, logAxeResults);
     cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
-      component: "Project Annual Reports Form",
+      component: "Project Milestone Reports Form",
       variant: "with errors",
     });
   });
