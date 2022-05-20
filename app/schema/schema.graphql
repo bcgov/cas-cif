@@ -26995,7 +26995,7 @@ type Contact implements Node {
   """Any comments about this contact"""
   comments: String
 
-  """The position of this contact"""
+  """The role of this contact within their company"""
   contactPosition: String
 
   """created at timestamp"""
@@ -44550,11 +44550,13 @@ type ReportingRequirement implements Node {
     orderBy: [BudgetItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): BudgetItemsConnection!
 
-  """The CIF contact who certified the reporting requirement"""
+  """
+  The name of the person who certified the completion reporting requirement
+  """
   certifiedBy: String
 
   """
-  The professional designation of the CIF contact who certified the reporting requirement
+  The professional designation of the person who certified the completion of the reporting requirement
   """
   certifiedByProfessionalDesignation: String
 

@@ -42,7 +42,7 @@ comment on column cif.contact.family_name is 'The family name of this contact';
 comment on column cif.contact.email is 'The email address of this contact';
 comment on column cif.contact.phone is 'The phone number of this contact, stored in E.164 format';
 comment on column cif.contact.phone_ext is 'The phone extension of this contact';
-comment on column cif.contact.contact_position is 'The position of this contact';
+comment on column cif.contact.contact_position is 'The role of this contact within their company';
 comment on column cif.contact.comments is 'Any comments about this contact';
 
 commit;
