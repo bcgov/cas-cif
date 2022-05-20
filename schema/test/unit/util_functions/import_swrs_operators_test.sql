@@ -137,6 +137,7 @@ select results_eq(
       operation::text,
       change_status::text
     from cif.form_change where form_data_table_name='operator'
+    order by id
   $$,
   $$
     values
