@@ -131,10 +131,10 @@ jobs:
           registry: gcr.io
           username: _json_key
           password: ${{ secrets.GCR_KEY }}
-      - name: Login to GHCR
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: Login to GitHub Container Registry
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Cache Docker layers
