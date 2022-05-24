@@ -305,6 +305,7 @@ describe("the new project page", () => {
     );
 
     cy.findByText(/Submit changes/i).click();
+    cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
     cy.findByText(/Add annual report/i).click();
@@ -464,6 +465,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Submit changes/i).click();
+    cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
     // check diffs
@@ -483,7 +485,8 @@ describe("the new project page", () => {
       component: "Project Revision Summary",
       variant: "no_change_reason",
     });
-    cy.get("textarea").click().type("foo");
+
+    cy.get("textarea").clear().type("foo");
     // Allow the component to finish saving before taking screenshot
     cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
@@ -551,6 +554,7 @@ describe("the new project page", () => {
     cy.findByText(/Add another annual report/i);
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.findByText(/Submit changes/i).click();
+    cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
     cy.contains("Review and Submit Project");
