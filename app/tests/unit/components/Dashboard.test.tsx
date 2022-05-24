@@ -1,20 +1,12 @@
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dashboard from "components/Dashboard";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { graphql } from "react-relay";
 import { MockPayloadGenerator } from "relay-test-utils";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledDashboardTestQuery, {
   DashboardTestQuery,
 } from "__generated__/DashboardTestQuery.graphql";
-
-jest.mock("next/router");
-
-const routerPush = jest.fn();
-
-mocked(useRouter).mockReturnValue({ push: routerPush } as any);
 
 const testQuery = graphql`
   query DashboardTestQuery @relay_test_operation {
@@ -76,7 +68,7 @@ describe("The Dashboard", () => {
         MockPayloadGenerator.generate(operation)
       );
     });
-    expect(routerPush).toHaveBeenCalledWith({
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/overview/",
       query: { projectRevision: "<ProjectRevision-mock-id-1>" },
     });
