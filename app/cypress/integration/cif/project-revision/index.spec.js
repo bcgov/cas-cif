@@ -476,7 +476,7 @@ describe("the new project page", () => {
     cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
-  it.only("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+  it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
