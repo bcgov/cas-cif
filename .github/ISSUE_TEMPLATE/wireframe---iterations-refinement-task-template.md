@@ -1,10 +1,9 @@
 ---
 name: Wireframe + iterations/refinement Task Template
 about: Wireframe + iterations/refinement Task Template
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 #### Describe the task
@@ -23,11 +22,13 @@ A clear and concise description of what the task is.
 
 Definition of Ready
 Note: If any of the points are not applicable: delete or mark N/A
+
 - [ ] Discovery work or findings are linked.
 - [ ] Design is Ready.
 
 Definition of Done
 Note: If any of the points are not applicable: delete or mark N/A
+
 - [ ] Proposed user stories validated by the users.
 - [ ] Proposed user stories validated by internal team.
 - [ ] Validated user stories addressed visually in the wireframe.

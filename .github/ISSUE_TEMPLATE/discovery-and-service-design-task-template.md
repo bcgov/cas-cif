@@ -1,10 +1,9 @@
 ---
 name: Discovery and Service Design Task Template
 about: Discovery and Service Design Task Template
-title: ''
+title: ""
 labels: Task
-assignees: ''
-
+assignees: ""
 ---
 
 #### Describe the task
@@ -20,9 +19,8 @@ A clear and concise description of what the task is.
 #### Additional context
 
 - Add any other context about the task here.
-- 
-Definition of Ready
-Note: If any of the points are not applicable: delete or mark N/A
+- Definition of Ready
+  Note: If any of the points are not applicable: delete or mark N/A
 - [ ] Topic is clearly Defined.
 - [ ] Task Description is Clear.
 - [ ] People to speak to are identified (if applicable).
@@ -35,6 +33,7 @@ Note: If any of the points are not applicable: delete or mark N/A
 
 Definition of Done.
 Note: If any of the points are not applicable: delete or mark N/A
+
 - [ ] Rough User Stories Proposed.
 - [ ] Follow-up Tickets created (if necessary).
 - [ ] Findings are documented (if necessary).
