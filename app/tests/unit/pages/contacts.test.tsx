@@ -1,20 +1,11 @@
 import "@testing-library/jest-dom";
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledContactsQuery, {
   contactsQuery,
 } from "__generated__/contactsQuery.graphql";
 import { Contacts } from "../../../pages/cif/contacts";
-jest.mock("next/router");
-
-mocked(useRouter).mockReturnValue({
-  route: "/",
-  query: {},
-  push: jest.fn(),
-} as any);
 
 const defaultMockResolver = {
   Query() {
