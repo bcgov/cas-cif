@@ -3,7 +3,7 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import { getProjectRevisionAnnualReportsFormPageRoute } from "pageRoutes";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
@@ -37,7 +37,9 @@ export function ProjectQuarterlyReportsPage({
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    router.push(getProjectRevisionPageRoute(query.projectRevision.id));
+    router.push(
+      getProjectRevisionAnnualReportsFormPageRoute(query.projectRevision.id)
+    );
   };
 
   return (
