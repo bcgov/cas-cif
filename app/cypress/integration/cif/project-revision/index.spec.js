@@ -520,7 +520,7 @@ describe("the new project page", () => {
       .contains(/Jan[.]? 01, 1995/);
   });
 
-  it.only("discards the revision when the user clicks the Discard Revision button", () => {
+  it("discards the revision when the user clicks the Discard Revision button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     // create and save the project
