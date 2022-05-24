@@ -17,6 +17,7 @@ import {
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import SavingIndicator from "./SavingIndicator";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -280,18 +281,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Project Contacts</h2>
-        <Button
-          type="button"
-          style={{
-            marginRight: "1rem",
-            marginBottom: "1rem",
-            marginLeft: "0rem",
-          }}
-          variant="secondary"
-          onClick={handleUndo}
-        >
-          Undo Changes
-        </Button>
+        <UndoChangesButton onClick={handleUndo} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 

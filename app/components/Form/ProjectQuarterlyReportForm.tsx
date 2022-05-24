@@ -15,6 +15,7 @@ import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRev
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
 import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   onSubmit: () => void;
@@ -254,18 +255,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Quarterly Reports</h2>
-        <Button
-          type="button"
-          style={{
-            marginRight: "1rem",
-            marginBottom: "1rem",
-            marginLeft: "0rem",
-          }}
-          variant="secondary"
-          onClick={handleUndo}
-        >
-          Undo Changes
-        </Button>
+        <UndoChangesButton onClick={handleUndo} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
