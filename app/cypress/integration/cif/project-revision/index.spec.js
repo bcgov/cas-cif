@@ -86,6 +86,7 @@ describe("the new project page", () => {
       variant: "filled",
     });
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.wait(1000);
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
@@ -244,7 +245,6 @@ describe("the new project page", () => {
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.wait(1000);
 
     //add quarterly reports
     cy.addQuarterlyReport(
@@ -269,6 +269,7 @@ describe("the new project page", () => {
       "Annual report description n stuff"
     );
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.wait(1000);
     cy.contains("Review and Submit Project");
     cy.findByText(/Funding Stream RFP ID/i)
       .next()
@@ -484,6 +485,9 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another quarterly report/i);
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.findByText(/Add another annual report/i);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
