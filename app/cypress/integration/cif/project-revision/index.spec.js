@@ -207,15 +207,31 @@ describe("the new project page", () => {
     );
 
     cy.findByText(/Project Details/i).click();
+
+    // undo managers
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkManagersForm("", "", "");
 
+    // undo contacts
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkContactsForm("", "");
+
+    // undo quarterly reports
+    cy.findByText(/Quarterly reports/i).click();
+    cy.findByText(/Add quarterly reports/i).click();
+    cy.addQuarterlyReport(
+      1,
+      "2020-01-01",
+      "2020-02-02",
+      "I am the first general comment"
+    );
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByText(/Quarterly Report 1/i).should("not.exist");
+    cy.get('[label*="Due Date"]').should("have.length", 0);
   });
 
   it("Allows to create and update a project", () => {
@@ -460,9 +476,10 @@ describe("the new project page", () => {
     cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
   });
 
-  it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+  it.only("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
+
     // create and save the project
     cy.get("button").contains("Add a Project").click();
     cy.fillOverviewForm(
@@ -485,6 +502,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another quarterly report/i);
+    cy.addQuarterlyReport(1, "2020-01-01", "2020-02-02", "Just a test comment");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another annual report/i);
@@ -545,5 +563,13 @@ describe("the new project page", () => {
 
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkContactsForm("Loblaw003, Bob003", "Loblaw004, Bob004");
+
+    //undo quarterly reports
+    cy.findByText(/Quarterly reports/i).click();
+    cy.findByText(/Edit quarterly reports/i).click();
+    cy.get('[label*="Due Date"]').eq(0).should("have.value", "2020-01-01");
+    cy.get('[label*="Due Date"]').eq(0).type("2020-01-10");
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.get('[label*="Due Date"]').eq(0).should("have.value", "2020-01-01");
   });
 });
