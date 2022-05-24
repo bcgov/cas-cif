@@ -26,6 +26,10 @@ class TestingHelper {
     this.router = createMockRouter();
   }
 
+  public setMockRouterValues(routerValues: Partial<NextRouter>) {
+    this.router = createMockRouter(routerValues);
+  }
+
   public expectMutationToBeCalled(mutationName: string, variables?: any) {
     // eslint-disable-next-line jest/no-standalone-expect
     expect(this.environment.mock.getAllOperations()).toEqual(
