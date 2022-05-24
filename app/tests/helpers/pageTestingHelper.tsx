@@ -9,6 +9,7 @@ import {
 import { RelayProps } from "relay-nextjs";
 import { ConcreteRequest, OperationType } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { RouterContext } from "next/dist/shared/lib/router-context";
 import TestingHelper from "./TestingHelper";
 
 interface PageTestingHelperOptions<TQuery extends OperationType> {
@@ -63,12 +64,14 @@ class PageTestingHelper<TQuery extends OperationType> extends TestingHelper {
   public renderPage() {
     return render(
       <ErrorContext.Provider value={this.errorContext}>
-        <RelayEnvironmentProvider environment={this.environment}>
-          <this.options.pageComponent
-            CSN
-            preloadedQuery={this.initialQueryRef}
-          />
-        </RelayEnvironmentProvider>
+        <RouterContext.Provider value={this.router}>
+          <RelayEnvironmentProvider environment={this.environment}>
+            <this.options.pageComponent
+              CSN
+              preloadedQuery={this.initialQueryRef}
+            />
+          </RelayEnvironmentProvider>
+        </RouterContext.Provider>
       </ErrorContext.Provider>
     );
   }
