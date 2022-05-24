@@ -8,6 +8,7 @@ import {
   OperationType,
 } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
+import { RouterContext } from "next/dist/shared/lib/router-context";
 import TestingHelper from "./TestingHelper";
 
 interface ComponentTestingHelperOptions<TQuery extends OperationType> {
@@ -78,12 +79,14 @@ class ComponentTestingHelper<
   ) {
     return render(
       <ErrorContext.Provider value={this.errorContext}>
-        <RelayEnvironmentProvider environment={this.environment}>
-          <this.TestRenderer
-            getPropsFromTestQuery={getPropsFromTestQuery}
-            extraProps={extraProps}
-          />
-        </RelayEnvironmentProvider>
+        <RouterContext.Provider value={this.router}>
+          <RelayEnvironmentProvider environment={this.environment}>
+            <this.TestRenderer
+              getPropsFromTestQuery={getPropsFromTestQuery}
+              extraProps={extraProps}
+            />
+          </RelayEnvironmentProvider>
+        </RouterContext.Provider>
       </ErrorContext.Provider>
     );
   }
