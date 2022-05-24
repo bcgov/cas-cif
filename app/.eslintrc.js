@@ -52,6 +52,7 @@ module.exports = {
       },
       rules: {
         "jest/valid-expect-in-promise": 0,
+        "jest/no-disabled-tests": 2,
         "promise/prefer-await-to-then": 0,
         "no-unused-expressions": 0,
         "cypress/no-unnecessary-waiting": 0,
