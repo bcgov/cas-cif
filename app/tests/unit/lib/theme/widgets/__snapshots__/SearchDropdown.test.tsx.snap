@@ -3,7 +3,9 @@
 exports[`The SearchDropdown Widget Matches the snapshot with a default value set 1`] = `
 <div>
   <div
+    aria-expanded="false"
     class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-1nmd8s9-MuiAutocomplete-root"
+    role="combobox"
   >
     <div
       class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-d5w1v2-MuiFormControl-root-MuiTextField-root"
@@ -13,14 +15,12 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
       >
         <input
           aria-autocomplete="list"
-          aria-expanded="false"
           aria-invalid="false"
           autocapitalize="none"
           autocomplete="off"
           class="MuiInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-1x51dt5-MuiInputBase-input-MuiInput-input"
           id="1"
           placeholder="test placeholder"
-          role="combobox"
           spellcheck="false"
           type="text"
           value="Option 1"
@@ -61,7 +61,9 @@ exports[`The SearchDropdown Widget Matches the snapshot with a default value set
 exports[`The SearchDropdown Widget Matches the snapshot with no default value set 1`] = `
 <div>
   <div
+    aria-expanded="false"
     class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-1nmd8s9-MuiAutocomplete-root"
+    role="combobox"
   >
     <div
       class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-d5w1v2-MuiFormControl-root-MuiTextField-root"
@@ -71,14 +73,12 @@ exports[`The SearchDropdown Widget Matches the snapshot with no default value se
       >
         <input
           aria-autocomplete="list"
-          aria-expanded="false"
           aria-invalid="false"
           autocapitalize="none"
           autocomplete="off"
           class="MuiInput-input MuiInputBase-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-1x51dt5-MuiInputBase-input-MuiInput-input"
           id="1"
           placeholder="test placeholder"
-          role="combobox"
           spellcheck="false"
           type="text"
           value=""
