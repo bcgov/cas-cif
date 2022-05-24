@@ -520,7 +520,7 @@ describe("the new project page", () => {
       .contains(/Jan[.]? 01, 1995/);
   });
 
-  it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+  it.only("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     // create and save the project
@@ -558,6 +558,7 @@ describe("the new project page", () => {
     cy.findByText(/Review and submit information/i).click();
 
     cy.contains("Review and Submit Project");
+    cy.wait(1000);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // undo overview
