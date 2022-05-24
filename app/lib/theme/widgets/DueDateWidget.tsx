@@ -41,6 +41,7 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
             border: 2px solid #606060;
             border-radius: 0.25em;
             padding: 9px 9px 9px 9px;
+            background-color: white;
             font-size: 14.4px;
             width: 300px;
           }
