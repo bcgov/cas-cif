@@ -223,7 +223,7 @@ describe("the new project page", () => {
     });
   });
 
-  it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
+  it("undoes changes when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
@@ -520,7 +520,7 @@ describe("the new project page", () => {
       .contains(/Jan[.]? 01, 1995/);
   });
 
-  it.only("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
+  it.only("discards the revision when the user clicks the Discard Revision button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     // create and save the project
@@ -559,59 +559,10 @@ describe("the new project page", () => {
 
     cy.contains("Review and Submit Project");
     cy.wait(1000);
-    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.findByRole("button", { name: /^discard/i }).click();
+    cy.findByText("Proceed").click();
 
-    // undo overview
-    cy.findByRole("button", { name: /^view/i }).click();
-    cy.findByRole("button", { name: /edit/i }).click();
-    cy.findByLabelText(/Funding Stream$/i).select("Innovation Accelerator");
-    cy.findByLabelText(/Funding Stream RFP/i).select("2021");
-    cy.findByLabelText(/Project Name/i)
-      .clear()
-      .type("New Foo");
-    cy.findByLabelText(/Total Funding Request/i)
-      .clear()
-      .type("5");
-    cy.checkOverviewForm(
-      "Innovation Accelerator",
-      "2021",
-      "first operator legal name (AB1234567)",
-      "TEST-123-12345",
-      "New Foo",
-      "Bar",
-      "$5.00",
-      "Project Underway"
-    );
-
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.checkOverviewForm(
-      "Emissions Performance",
-      "2020",
-      "first operator legal name (AB1234567)",
-      "TEST-123-12345",
-      "Foo",
-      "Bar",
-      "$100.00",
-      "Project Underway"
-    );
-
-    //undo managers
-    cy.findByText(/Project Details/i).click();
-    cy.findByText(/Edit project managers/i).click();
-    cy.findByLabelText(/tech team primary/i).click();
-    cy.contains("Ludgate").click();
-    cy.checkManagersForm("Ludgate, April", "Ludgate, April", "Knope, Leslie");
-
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.checkManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
-
-    //undo contacts
-    cy.findByText(/Edit project contacts/i).click();
-    cy.findByLabelText(/Primary contact/i).click();
-    cy.contains("Loblaw001").click();
-    cy.checkContactsForm("Loblaw001, Bob001", "Loblaw004, Bob004");
-
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.checkContactsForm("Loblaw003, Bob003", "Loblaw004, Bob004");
+    cy.contains("CIF Projects");
+    cy.contains("Add a Project");
   });
 });
