@@ -123,7 +123,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     projectRevision.projectAnnualReportFormChanges.__id
   );
 
-  const deleteReport = (
+  const deleteAnnualReport = (
     formChangeId: string,
     formChangeOperation: FormChangeOperation
   ) => {
@@ -177,23 +177,24 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     }
   };
 
-  const [sortedReports, nextReportIndex] = useMemo(() => {
-    const filteredReports = projectRevision.projectAnnualReportFormChanges.edges
-      .map(({ node }) => node)
-      .filter((report) => report.operation !== "ARCHIVE");
+  const [sortedAnnualReports, nextAnnualReportIndex] = useMemo(() => {
+    const filteredAnnualReports =
+      projectRevision.projectAnnualReportFormChanges.edges
+        .map(({ node }) => node)
+        .filter((annualReport) => annualReport.operation !== "ARCHIVE");
 
-    filteredReports.sort(
+    filteredAnnualReports.sort(
       (a, b) =>
         a.newFormData.reportingRequirementIndex -
         b.newFormData.reportingRequirementIndex
     );
     const nextIndex =
-      filteredReports.length > 0
-        ? filteredReports[filteredReports.length - 1].newFormData
+      filteredAnnualReports.length > 0
+        ? filteredAnnualReports[filteredAnnualReports.length - 1].newFormData
             .reportingRequirementIndex + 1
         : 1;
 
-    return [filteredReports, nextIndex];
+    return [filteredAnnualReports, nextIndex];
   }, [projectRevision.projectAnnualReportFormChanges]);
 
   return (
@@ -208,13 +209,13 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
       <FormBorder>
         <Button
           variant="secondary"
-          onClick={() => addAnnualReport(nextReportIndex)}
+          onClick={() => addAnnualReport(nextAnnualReportIndex)}
           className="addButton"
         >
           <FontAwesomeIcon icon={faPlusCircle} /> Add another annual report
         </Button>
 
-        {sortedReports.map((report, index) => {
+        {sortedAnnualReports.map((report, index) => {
           return (
             <div key={report.id} className="reportContainer">
               <header className="reportHeader">
@@ -222,7 +223,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                 <Button
                   variant="secondary"
                   size="small"
-                  onClick={() => deleteReport(report.id, report.operation)}
+                  onClick={() =>
+                    deleteAnnualReport(report.id, report.operation)
+                  }
                 >
                   Remove
                 </Button>
