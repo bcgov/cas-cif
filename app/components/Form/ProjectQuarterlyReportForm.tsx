@@ -205,10 +205,67 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     return [filteredReports, nextIndex];
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
+  const handleUndo = async () => {
+    let committedQuarterlyReports = [];
+
+    projectRevision.projectQuarterlyReportFormChanges.edges.forEach(
+      ({ node }) => {
+        if (
+          node.formChangeByPreviousFormChangeId?.changeStatus === "committed"
+        ) {
+          committedQuarterlyReports.push(node);
+        }
+        if (node.changeStatus === "pending" || node.changeStatus === "staged") {
+          deleteQuarterlyReport(node.id, "ARCHIVE");
+        }
+      }
+    );
+
+    const completedPromises: Promise<void>[] = [];
+    committedQuarterlyReports.forEach((node) => {
+      const undoneFormData = node.formChangeByPreviousFormChangeId.newFormData;
+      const promise = new Promise<void>((resolve, reject) => {
+        applyUpdateFormChangeMutation({
+          variables: {
+            input: {
+              id: node.id,
+              formChangePatch: {
+                changeStatus: "pending",
+                newFormData: undoneFormData,
+                operation: "UPDATE",
+              },
+            },
+          },
+          debounceKey: node.id,
+          onCompleted: () => resolve(),
+          onError: reject,
+        });
+      });
+      completedPromises.push(promise);
+    });
+    try {
+      await Promise.all(completedPromises);
+    } catch (e) {
+      // the failing mutation will display an error message and send the error to sentry
+    }
+  };
+
   return (
     <div>
       <header>
         <h2>Quarterly Reports</h2>
+        <Button
+          type="button"
+          style={{
+            marginRight: "1rem",
+            marginBottom: "1rem",
+            marginLeft: "0rem",
+          }}
+          variant="secondary"
+          onClick={handleUndo}
+        >
+          Undo Changes
+        </Button>
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
