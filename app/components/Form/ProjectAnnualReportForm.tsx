@@ -23,18 +23,12 @@ interface Props {
 
 const annualReportUiSchema = {
   reportDueDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "date",
   },
   submittedDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "date",
   },
   comments: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "TextAreaWidget",
   },
 };
