@@ -34,7 +34,7 @@ begin
     change_status,
     json_schema_name
   ) values (
-    '{}',
+    null,
     'create',
     'cif',
     'project',
@@ -42,15 +42,6 @@ begin
     revision_row.id,
     'pending',
     'project'
-  ), (
-    format('{ "projectId": %s, "contactIndex": 1 }', next_project_id)::jsonb,
-    'create',
-    'cif',
-    'project_contact',
-    null,
-    revision_row.id,
-    'pending',
-    'project_contact'
   );
   return revision_row;
 end;

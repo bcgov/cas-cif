@@ -18,6 +18,7 @@ import useDiscardFormChange from "hooks/useDiscardFormChange";
 import SavingIndicator from "./SavingIndicator";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
 import UndoChangesButton from "./UndoChangesButton";
+import { useCreatePrimaryContact } from "mutations/ProjectContact/createPrimaryContact";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -59,7 +60,7 @@ export const createProjectContactSchema = (allContacts) => {
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
-  const formRefs = useRef({});
+  const formRefs = useRef<Record<string, any>>({});
 
   const projectRevision = useFragment(
     graphql`
@@ -67,6 +68,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         id
         rowId
         changeStatus
+        projectFormChange {
+          formDataRecordId
+        }
         projectContactFormChanges(
           first: 500
           filter: { operation: { notEqualTo: ARCHIVE } }
@@ -187,6 +191,31 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     updateFormChange(primaryContactForm, newFormData);
   };
 
+  const [createPrimaryContact] = useCreatePrimaryContact();
+
+  const handlePrimaryContactChange = (change) => {
+    if (primaryContactForm) {
+      updateFormChange(
+        { ...primaryContactForm, changeStatus: "pending" },
+        change.formData
+      );
+    } else {
+      createPrimaryContact({
+        variables: {
+          connections: [projectRevision.projectContactFormChanges.__id],
+          input: {
+            projectRevisionId: projectRevision.rowId,
+            operation: "CREATE",
+            formDataSchemaName: "cif",
+            formDataTableName: "project_contact",
+            jsonSchemaName: "project_contact",
+            newFormData: change.formData,
+          },
+        },
+      });
+    }
+  };
+
   const stageContactFormChanges = async () => {
     const validationErrors = Object.keys(formRefs.current).reduce(
       (agg, formId) => {
@@ -262,14 +291,16 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   <FormBase
                     id="primaryContactForm"
                     idPrefix="primaryContactForm"
-                    ref={(el) => (formRefs.current[primaryContactForm.id] = el)}
-                    formData={primaryContactForm.newFormData}
-                    onChange={(change) => {
-                      updateFormChange(
-                        { ...primaryContactForm, changeStatus: "pending" },
-                        change.formData
-                      );
-                    }}
+                    ref={(el) => (formRefs.current.primaryContact = el)}
+                    formData={
+                      primaryContactForm?.newFormData || {
+                        contactId: null,
+                        contactIndex: 1,
+                        projectId:
+                          projectRevision.projectFormChange.formDataRecordId,
+                      }
+                    }
+                    onChange={handlePrimaryContactChange}
                     schema={contactSchema}
                     uiSchema={uiSchema}
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
