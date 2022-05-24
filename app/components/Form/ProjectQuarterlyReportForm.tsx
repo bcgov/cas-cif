@@ -121,6 +121,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
             changeStatus: formChange.changeStatus,
           },
         },
+        reportType: "Quarterly",
       },
       debounceKey: formChange.id,
       optimisticResponse: {
@@ -174,6 +175,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     changeStatus: "staged",
                   },
                 },
+                reportType: "Quarterly",
               },
               debounceKey: node.id,
               onCompleted: () => {
