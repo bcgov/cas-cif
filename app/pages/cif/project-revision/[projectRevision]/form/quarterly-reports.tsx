@@ -3,7 +3,10 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { getProjectRevisionAnnualReportsFormPageRoute } from "pageRoutes";
+import {
+  getProjectRevisionPageRoute,
+  getProjectRevisionAnnualReportsFormPageRoute,
+} from "pageRoutes";
 import TaskList from "components/TaskList";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 
@@ -18,6 +21,11 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        projectByProjectId {
+          pendingProjectRevision {
+            id
+          }
+        }
         ...ProjectQuarterlyReportForm_projectRevision
         ...TaskList_projectRevision
       }
@@ -30,6 +38,8 @@ export function ProjectQuarterlyReportsPage({
 }: RelayProps<{}, quarterlyReportsFormQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
+  const existingRevision =
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting) return null;
@@ -37,9 +47,13 @@ export function ProjectQuarterlyReportsPage({
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    router.push(
-      getProjectRevisionAnnualReportsFormPageRoute(query.projectRevision.id)
-    );
+    if (existingRevision) {
+      router.push(getProjectRevisionPageRoute(query.projectRevision.id));
+    } else {
+      router.push(
+        getProjectRevisionAnnualReportsFormPageRoute(query.projectRevision.id)
+      );
+    }
   };
 
   return (

@@ -2,7 +2,10 @@ import "@testing-library/jest-dom";
 import { screen, within } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
+import {
+  getProjectRevisionPageRoute,
+  getProjectRevisionAnnualReportsFormPageRoute,
+} from "pageRoutes";
 import { ProjectQuarterlyReportsPage } from "pages/cif/project-revision/[projectRevision]/form/quarterly-reports";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledQuarterlyReportsFormQuery, {
@@ -92,7 +95,7 @@ describe("The Project Quarterly Reports page", () => {
     );
   });
 
-  it("redirects the user to the project revision page on submit when creating a project", () => {
+  it("redirects the user to the annual reports page on submit when creating a project", () => {
     const router = mocked(useRouter);
     const mockPush = jest.fn();
     router.mockReturnValue({
@@ -119,7 +122,7 @@ describe("The Project Quarterly Reports page", () => {
     pageTestingHelper.renderPage();
     handleSubmit();
     expect(mockPush).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-proj-rev-id")
+      getProjectRevisionAnnualReportsFormPageRoute("mock-proj-rev-id")
     );
   });
 
