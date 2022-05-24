@@ -200,9 +200,15 @@ Cypress.Commands.add(
     receivedDate = undefined,
     generalComments = undefined
   ) => {
-    const dueDate = DateTime.fromFormat(reportDueDate, "yyyy-MM-dd")
+    const dueDate = DateTime.fromFormat(reportDueDate, "yyyy-MM-dd");
+    const dueDateTZ = dueDate
+      .setLocale("en-CA")
       .setZone("America/Vancouver")
-      .setLocale("en-CA");
+      .set({
+        day: dueDate.get("day"),
+        month: dueDate.get("month"),
+        year: dueDate.get("year"),
+      });
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
@@ -214,16 +220,16 @@ Cypress.Commands.add(
       .click();
     cy.get(".react-datepicker__month-select")
       // datepicker indexes months from 0, luxon indexes from 1
-      .select(dueDate.get("month") - 1);
+      .select(dueDateTZ.get("month") - 1);
     cy.get(".react-datepicker__year-select").select(
-      dueDate.get("year").toString()
+      dueDateTZ.get("year").toString()
     );
-    cy.get(`.react-datepicker__day--0${dueDate.toFormat("dd")}`)
+    cy.get(`.react-datepicker__day--0${dueDateTZ.toFormat("dd")}`)
       .not(`.react-datepicker__day--outside-month`)
       .click();
     cy.get('[aria-label*="Due Date"]')
       .eq(reportNumber - 1)
-      .should("have.text", dueDate.toFormat("MMM dd, yyyy"));
+      .should("have.text", dueDateTZ.toFormat("MMM dd, yyyy"));
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
