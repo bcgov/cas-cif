@@ -144,7 +144,31 @@ describe("the new project page", () => {
       component: "Project Contacts Form",
       variant: "with errors",
     });
+    // Quarterly reports
+    cy.findByText(/Quarterly reports/i).click();
+    cy.findByText(/Add quarterly reports/i).click();
+    cy.url().should("include", "/form/quarterly-reports");
 
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 3);
+    cy.injectAxe();
+    cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
+    cy.get("body").happoScreenshot({
+      component: "Project Quarterly Reports Form",
+      variant: "with errors",
+    });
+    // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/annual-reports");
@@ -156,12 +180,12 @@ describe("the new project page", () => {
     cy.checkA11y(".error-detail", null, logAxeResults);
     cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
-      component: "Project Quarterly Reports Form",
+      component: "Project Annual Reports Form",
       variant: "with errors",
     });
   });
 
-  it.only("undoes changes on a new project when the user clicks the Undo Changes button", () => {
+  it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
