@@ -1,6 +1,6 @@
 -- Deploy cif:computed_column/project_revision_annual_report_form_changes.sql to pg
 
-BEGIN;
+begin;
 
 
 create or replace function cif.project_revision_project_annual_report_form_changes(project_revision cif.project_revision)
@@ -21,4 +21,4 @@ grant execute on function cif.project_revision_project_annual_report_form_change
 
 comment on function cif.project_revision_project_annual_report_form_changes is 'Computed column for graphql to retrieve the changes related to the Annual reporting requirement records, within a project revision';
 
-COMMIT;
+commit;
