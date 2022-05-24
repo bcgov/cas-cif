@@ -75,6 +75,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -115,6 +116,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
             changeStatus: formChange.changeStatus,
           },
         },
+        reportType: "Quarterly",
       },
       debounceKey: formChange.id,
       optimisticResponse: {
@@ -168,6 +170,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     changeStatus: "staged",
                   },
                 },
+                reportType: "Quarterly",
               },
               debounceKey: node.id,
               onCompleted: () => {
