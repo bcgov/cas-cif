@@ -10,100 +10,100 @@ env:
   PGUSER: postgres
 
 jobs:
-  install-dev-tools:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - run: make install_dev_tools
-      - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
-      - run: yarn install --frozen-lockfile
-        working-directory: ./app
+  # install-dev-tools:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - run: make install_dev_tools
+  #     - run: make stop_pg # cleanly stop the database, otherwise it will complain in the subsequent jobs
+  #     - run: yarn install --frozen-lockfile
+  #       working-directory: ./app
 
-  yarn-test:
-    needs: install-dev-tools
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - run: yarn test
-        working-directory: ./app
-  yarn-audit:
-    needs: install-dev-tools
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - run: yarn audit-deps
-        working-directory: ./app
-  db-schema-is-up-to-date:
-    needs: install-dev-tools
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - run: make deploy_db_migrations
-      - run: yarn build:schema
-        working-directory: ./app
-      - run: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:schema\"?' && false)
-  db-unit-tests:
-    needs: install-dev-tools
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - run: make db_unit_tests
-  db-style-tests:
-    needs: install-dev-tools
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - run: git submodule update --init
-      - run: make db_style_tests
+  # yarn-test:
+  #   needs: install-dev-tools
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - run: yarn test
+  #       working-directory: ./app
+  # yarn-audit:
+  #   needs: install-dev-tools
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - run: yarn audit-deps
+  #       working-directory: ./app
+  # db-schema-is-up-to-date:
+  #   needs: install-dev-tools
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - run: make deploy_db_migrations
+  #     - run: yarn build:schema
+  #       working-directory: ./app
+  #     - run: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:schema\"?' && false)
+  # db-unit-tests:
+  #   needs: install-dev-tools
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - run: make db_unit_tests
+  # db-style-tests:
+  #   needs: install-dev-tools
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - run: git submodule update --init
+  #     - run: make db_style_tests
 
-  pre-commit:
-    needs: install-dev-tools
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - name: set pre-commit cache directory
-        run: |
-          echo "PRE_COMMIT_HOME=$GITHUB_WORKSPACE/.pre-commit-cache" >> $GITHUB_ENV
-      - name: set PY
-        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
-      - name: create commitlint COMMIT_EDITMSG if not exists
-        run: |
-          if test -f ".git/COMMIT_EDITMSG"; then
-              echo "COMMIT_EDITMSG EXISTS, skipping"
-          else
-              touch .git/COMMIT_EDITMSG
-          fi
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ./.pre-commit-cache
-          key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v3
-      - run: pre-commit run --all-files
+  # pre-commit:
+  #   needs: install-dev-tools
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - name: set pre-commit cache directory
+  #       run: |
+  #         echo "PRE_COMMIT_HOME=$GITHUB_WORKSPACE/.pre-commit-cache" >> $GITHUB_ENV
+  #     - name: set PY
+  #       run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+  #     - name: create commitlint COMMIT_EDITMSG if not exists
+  #       run: |
+  #         if test -f ".git/COMMIT_EDITMSG"; then
+  #             echo "COMMIT_EDITMSG EXISTS, skipping"
+  #         else
+  #             touch .git/COMMIT_EDITMSG
+  #         fi
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: |
+  #           ./.pre-commit-cache
+  #         key: pre-commit-${{ env.PY }}-${{ hashFiles('.pre-commit-config.yaml') }}-v3
+  #     - run: pre-commit run --all-files
 
   docker-build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - image: gcr.io/ggl-cas-storage/cas-cif-app
+          - image: ghcr.io/bcgov/cas_cif/cas-cif-app
             context: .
             dockerfile: app/Dockerfile
             name: app
-          - image: gcr.io/ggl-cas-storage/cas-cif-schema
+          - image: ghcr.io/bcgov/cas_cif/cas-cif-schema
             context: .
             dockerfile: schema/Dockerfile
             name: schema
@@ -124,15 +124,8 @@ jobs:
             type=sha,format=long,prefix=
             latest
             type=ref,event=pr
-      - name: Login to GCR
+      - name: Login to Github Container Registry
         uses: docker/login-action@v1
-        if: github.event.pull_request.merged == 'true'
-        with:
-          registry: gcr.io
-          username: _json_key
-          password: ${{ secrets.GCR_KEY }}
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -163,44 +156,44 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  e2e:
-    needs: ["docker-build", "install-dev-tools"]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - name: run app locally
-        uses: ./.github/actions/local-app-run
-      - name: run e2e tests
-        env:
-          CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
-          CYPRESS_TEST_INTERNAL_PASSWORD: ${{ secrets.TEST_INTERNAL_PASSWORD }}
-          CYPRESS_TEST_ADMIN_USERNAME: ${{ secrets.TEST_ADMIN_USERNAME }}
-          CYPRESS_TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
-          CYPRESS_TEST_UNAUTHORIZED_USERNAME: ${{ secrets.TEST_UNAUTHORIZED_USERNAME }}
-          CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
-          HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
-          HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
-        run: yarn test:e2e
-        working-directory: ./app
+  # e2e:
+  #   needs: ["docker-build", "install-dev-tools"]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - name: run app locally
+  #       uses: ./.github/actions/local-app-run
+  #     - name: run e2e tests
+  #       env:
+  #         CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
+  #         CYPRESS_TEST_INTERNAL_PASSWORD: ${{ secrets.TEST_INTERNAL_PASSWORD }}
+  #         CYPRESS_TEST_ADMIN_USERNAME: ${{ secrets.TEST_ADMIN_USERNAME }}
+  #         CYPRESS_TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+  #         CYPRESS_TEST_UNAUTHORIZED_USERNAME: ${{ secrets.TEST_UNAUTHORIZED_USERNAME }}
+  #         CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
+  #         HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
+  #         HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
+  #       run: yarn test:e2e
+  #       working-directory: ./app
 
-  zap-owasp:
-    needs: ["docker-build", "install-dev-tools"]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: dev env setup
-        uses: ./.github/actions/dev-env-setup
-      - name: run app locally
-        uses: ./.github/actions/local-app-run
-      - name: ZAP Base Scan
-        uses: zaproxy/action-baseline@v0.6.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          docker_name: "owasp/zap2docker-stable"
-          target: "http://localhost:3004/"
-          rules_file_name: ".zap/rules.tsv"
-          cmd_options: "-a -d -T 5 -m 2"
-          issue_title: OWASP Baseline
-          fail_action: false
+  # zap-owasp:
+  #   needs: ["docker-build", "install-dev-tools"]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: dev env setup
+  #       uses: ./.github/actions/dev-env-setup
+  #     - name: run app locally
+  #       uses: ./.github/actions/local-app-run
+  #     - name: ZAP Base Scan
+  #       uses: zaproxy/action-baseline@v0.6.1
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         docker_name: "owasp/zap2docker-stable"
+  #         target: "http://localhost:3004/"
+  #         rules_file_name: ".zap/rules.tsv"
+  #         cmd_options: "-a -d -T 5 -m 2"
+  #         issue_title: OWASP Baseline
+  #         fail_action: false
