@@ -1,5 +1,5 @@
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
-import { graphql } from "react-relay";
+import { Disposable, graphql, UseMutationConfig } from "react-relay";
 import { deleteFormChangeMutation } from "__generated__/deleteFormChangeMutation.graphql";
 import { deleteFormChangeWithConnectionMutation } from "__generated__/deleteFormChangeWithConnectionMutation.graphql";
 
@@ -22,14 +22,22 @@ export const mutation = graphql`
   }
 `;
 
-export const useDeleteFormChange = () => {
+export const useDeleteFormChange: () => [
+  (config: UseMutationConfig<deleteFormChangeMutation>) => Disposable,
+  boolean
+] = () => {
   return useMutationWithErrorMessage<deleteFormChangeMutation>(
     mutation,
     () => "An error occurred when deleting."
   );
 };
 
-export const useDeleteFormChangeWithConnection = () => {
+export const useDeleteFormChangeWithConnection: () => [
+  (
+    config: UseMutationConfig<deleteFormChangeWithConnectionMutation>
+  ) => Disposable,
+  boolean
+] = () => {
   return useMutationWithErrorMessage<deleteFormChangeWithConnectionMutation>(
     mutationWithConnection,
     () => "An error occurred when deleting."
