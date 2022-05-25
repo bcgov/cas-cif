@@ -1,6 +1,13 @@
 begin;
 select plan(5);
 
+-- restart the id sequences
+truncate table
+cif.project, cif.project_contact,
+cif.project_manager, cif.project_revision,
+cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.budget_item, cif.payment
+restart identity;
+
 insert into cif.cif_user (uuid, given_name, family_name, email_address)
 values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somemail.com'),
        ('11111111-1111-1111-1111-111111111111', 'test1', 'Testuser', 'test1@somemail.com');
@@ -11,6 +18,7 @@ select is(
   (select id from cif.pending_new_project_revision()), null,
   'Project revision should be null if there is no pending project revision'
 );
+
 
 select cif.create_project();
 
@@ -45,31 +53,6 @@ update cif.form_change set new_form_data=format('{
   )::jsonb
   where project_revision_id=(select id from cif.project_revision order by id desc limit 1)
     and form_data_table_name='project';
-
-update cif.form_change set new_form_data=format('{
-      "projectId": %s,
-      "cifUserId": %s,
-      "projectManagerLabelId": 1
-    }',
-    (select form_data_record_id from cif.form_change
-        where form_data_table_name='project'
-        and project_revision_id=(select id from cif.project_revision order by id desc limit 1)),
-    (select id from cif.cif_user order by id desc limit 1)
-  )::jsonb
-  where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_manager';
-
-update cif.form_change set new_form_data=format('{
-      "projectId": %s,
-      "contactIndex": %s,
-      "contactId": %s
-    }',
-    (select form_data_record_id from cif.form_change
-        where form_data_table_name='project'
-        and project_revision_id=(select id from cif.project_revision order by id desc limit 1)),
-    1,
-    (select id from cif.contact order by id desc limit 1)
-  )::jsonb
-  where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_contact';
 
 
 update cif.project_revision set change_status='committed' where id=(select id from cif.project_revision order by id desc limit 1);

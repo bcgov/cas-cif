@@ -34,10 +34,9 @@ select results_eq(
   $$,
   $$
     values
-      ('project'::varchar, 'cif'::varchar, 1::integer),
-      ('project_contact'::varchar, 'cif'::varchar, 1::integer);
+      ('project'::varchar, 'cif'::varchar, 1::integer)
   $$,
-  'Creates 3 form_change records for the project and project_contact tables'
+  'Creates 1 form_change records for the project table'
 );
 
 -- creating a second project to test the sequences
