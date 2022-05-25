@@ -14,7 +14,9 @@ create table cif.reporting_requirement
   certified_by_professional_designation varchar(1000),
   project_id integer references cif.project(id) not null,
   report_type varchar(1000) references cif.report_type(name) not null,
-  reporting_requirement_index integer not null
+  reporting_requirement_index integer not null,
+  maximum_amount numeric,
+  description varchar(10000)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'reporting_requirement');
@@ -57,6 +59,7 @@ comment on column cif.reporting_requirement.certified_by_professional_designatio
 comment on column cif.reporting_requirement.project_id is 'Foreign key references the cif.project table';
 comment on column cif.reporting_requirement.report_type is 'Foreign key references the cif.report_type table';
 comment on column cif.reporting_requirement.reporting_requirement_index is 'An index that identifies the order of the reporting requirement';
-
+comment on column cif.reporting_requirement.maximum_amount is 'The maximum amount of money assigned to a milestone';
+comment on column cif.reporting_requirement.description is 'A user defined description of a milestone';
 
 commit;
