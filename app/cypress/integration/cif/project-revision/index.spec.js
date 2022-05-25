@@ -304,11 +304,9 @@ describe("the new project page", () => {
       "I am the second general comment"
     );
 
-    cy.findByText(/Submit changes/i).click();
+    cy.findByText(/^submit/i).click();
     cy.contains("Changes saved.");
-    cy.findByText(/Review and submit information/i).click();
 
-    cy.findByText(/Add annual report/i).click();
     cy.addAnnualReport(
       1,
       "2022-01-01",
@@ -316,7 +314,16 @@ describe("the new project page", () => {
       "Annual report description n stuff"
     );
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.wait(1000);
+
+    cy.findByText(/Milestone reports/i).click();
+    cy.findByText(/Add milestone reports/i).click();
+
+    cy.url().should("include", "/form/milestone-reports");
+    cy.get('[aria-label="Milestone Description"]').clear().type("desc");
+    cy.get('[label*="Due Date"]').type("2020-01-01");
+    cy.contains("Changes saved.");
+    cy.findByRole("button", { name: /^submit/i }).click();
+
     cy.contains("Review and Submit Project");
     cy.findByText(/Funding Stream RFP ID/i)
       .next()
