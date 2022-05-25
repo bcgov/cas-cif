@@ -23,7 +23,7 @@ const contactSchema = {
       type: "string",
       title: "Phone Extension",
     },
-    position: {
+    contactPosition: {
       type: "string",
       title: "Position",
     },

@@ -8,7 +8,7 @@ select has_column('cif', 'contact', 'family_name', 'table cif.contact has family
 select has_column('cif', 'contact', 'email', 'table cif.contact has email column');
 select has_column('cif', 'contact', 'phone', 'table cif.contact has phone column');
 select has_column('cif', 'contact', 'phone_ext', 'table cif.contact has phone_ext column');
-select has_column('cif', 'contact', 'position', 'table cif.contact has position column');
+select has_column('cif', 'contact', 'contact_position', 'table cif.contact has contact_position column');
 select has_column('cif', 'contact', 'comments', 'table cif.contact has comments column');
 select has_column('cif', 'contact', 'created_at', 'table cif.contact has created_at column');
 select has_column('cif', 'contact', 'updated_at', 'table cif.contact has updated_at column');
@@ -19,7 +19,7 @@ select has_column('cif', 'contact', 'archived_by', 'table cif.contact has archiv
 
 
 insert into cif.contact
-  (given_name, family_name, email, phone, phone_ext, position, comments) values
+  (given_name, family_name, email, phone, phone_ext, contact_position, comments) values
   ('bob', 'loblaw', 'bob@loblaw', '+11234567890', '123', 'lawyer', 'bob loblaw no habla espanol');
 
 -- Row level security tests --

@@ -638,6 +638,8 @@ type BudgetItem implements Node {
 
   """Reads a single `CifUser` that is related to this `BudgetItem`."""
   cifUserByUpdatedBy: CifUser
+
+  """Comments created by users about this budget item"""
   comment: String
 
   """created at timestamp"""
@@ -26993,6 +26995,9 @@ type Contact implements Node {
   """Any comments about this contact"""
   comments: String
 
+  """The role of this contact within their company"""
+  contactPosition: String
+
   """created at timestamp"""
   createdAt: Datetime!
 
@@ -27029,9 +27034,6 @@ type Contact implements Node {
 
   """The phone extension of this contact"""
   phoneExt: String
-
-  """The position of this contact"""
-  position: String
 
   """Reads and enables pagination through a set of `ProjectContact`."""
   projectContactsByContactId(
@@ -27335,6 +27337,9 @@ input ContactCondition {
   """Checks for equality with the object’s `comments` field."""
   comments: String
 
+  """Checks for equality with the object’s `contactPosition` field."""
+  contactPosition: String
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -27355,9 +27360,6 @@ input ContactCondition {
 
   """Checks for equality with the object’s `phoneExt` field."""
   phoneExt: String
-
-  """Checks for equality with the object’s `position` field."""
-  position: String
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
@@ -27403,6 +27405,9 @@ input ContactFilter {
   """Filter by the object’s `comments` field."""
   comments: StringFilter
 
+  """Filter by the object’s `contactPosition` field."""
+  contactPosition: StringFilter
+
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
 
@@ -27435,9 +27440,6 @@ input ContactFilter {
 
   """Filter by the object’s `phoneExt` field."""
   phoneExt: StringFilter
-
-  """Filter by the object’s `position` field."""
-  position: StringFilter
 
   """Filter by the object’s `projectContactsByContactId` relation."""
   projectContactsByContactId: ContactToManyProjectContactFilter
@@ -27642,6 +27644,8 @@ enum ContactsOrderBy {
   CIF_USER_BY_UPDATED_BY__UUID_DESC
   COMMENTS_ASC
   COMMENTS_DESC
+  CONTACT_POSITION_ASC
+  CONTACT_POSITION_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -27663,8 +27667,6 @@ enum ContactsOrderBy {
   PHONE_DESC
   PHONE_EXT_ASC
   PHONE_EXT_DESC
-  POSITION_ASC
-  POSITION_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   PROJECT_CONTACTS_BY_CONTACT_ID__COUNT_ASC
@@ -37613,6 +37615,8 @@ enum ProjectContactsOrderBy {
   CONTACT_BY_CONTACT_ID__ARCHIVED_BY_DESC
   CONTACT_BY_CONTACT_ID__COMMENTS_ASC
   CONTACT_BY_CONTACT_ID__COMMENTS_DESC
+  CONTACT_BY_CONTACT_ID__CONTACT_POSITION_ASC
+  CONTACT_BY_CONTACT_ID__CONTACT_POSITION_DESC
   CONTACT_BY_CONTACT_ID__CREATED_AT_ASC
   CONTACT_BY_CONTACT_ID__CREATED_AT_DESC
   CONTACT_BY_CONTACT_ID__CREATED_BY_ASC
@@ -37633,8 +37637,6 @@ enum ProjectContactsOrderBy {
   CONTACT_BY_CONTACT_ID__PHONE_DESC
   CONTACT_BY_CONTACT_ID__PHONE_EXT_ASC
   CONTACT_BY_CONTACT_ID__PHONE_EXT_DESC
-  CONTACT_BY_CONTACT_ID__POSITION_ASC
-  CONTACT_BY_CONTACT_ID__POSITION_DESC
   CONTACT_BY_CONTACT_ID__UPDATED_AT_ASC
   CONTACT_BY_CONTACT_ID__UPDATED_AT_DESC
   CONTACT_BY_CONTACT_ID__UPDATED_BY_ASC
@@ -44548,8 +44550,14 @@ type ReportingRequirement implements Node {
     orderBy: [BudgetItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): BudgetItemsConnection!
 
-  """The CIF contact who certified the reporting requirement"""
+  """
+  The name of the person who certified the completion reporting requirement
+  """
   certifiedBy: String
+
+  """
+  The professional designation of the person who certified the completion of the reporting requirement
+  """
   certifiedByProfessionalDesignation: String
 
   """
@@ -44875,6 +44883,8 @@ type ReportingRequirement implements Node {
   Reads a single `ReportType` that is related to this `ReportingRequirement`.
   """
   reportTypeByReportType: ReportType
+
+  """An index that identifies the order of the reporting requirement"""
   reportingRequirementIndex: Int!
 
   """

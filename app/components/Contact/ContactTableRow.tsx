@@ -9,13 +9,13 @@ interface Props {
 }
 
 const ContactTableRow: React.FC<Props> = ({ contact }) => {
-  const { id, fullName, fullPhone, position } = useFragment(
+  const { id, fullName, fullPhone, contactPosition } = useFragment(
     graphql`
       fragment ContactTableRow_contact on Contact {
         id
         fullName
         fullPhone
-        position
+        contactPosition
       }
     `,
     contact
@@ -31,7 +31,7 @@ const ContactTableRow: React.FC<Props> = ({ contact }) => {
     <tr>
       <td>{fullName}</td>
       <td>{fullPhone}</td>
-      <td>{position}</td>
+      <td>{contactPosition}</td>
       <td>
         <div className="actions">
           <Button size="small" onClick={handleViewContact}>

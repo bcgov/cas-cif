@@ -16,7 +16,7 @@ export const ContactsQuery = graphql`
   query contactsQuery(
     $fullName: String
     $fullPhone: String
-    $position: String
+    $contactPosition: String
     $offset: Int
     $pageSize: Int
     $orderBy: [ContactsOrderBy!]
@@ -31,7 +31,7 @@ export const ContactsQuery = graphql`
       filter: {
         fullName: { includesInsensitive: $fullName }
         fullPhone: { includesInsensitive: $fullPhone }
-        position: { includesInsensitive: $position }
+        contactPosition: { includesInsensitive: $contactPosition }
       }
       orderBy: $orderBy
     ) {
@@ -54,7 +54,7 @@ export const ContactsQuery = graphql`
 const tableFilters = [
   new TextFilter("Full Name", "fullName"),
   new TextFilter("Phone", "fullPhone"),
-  new TextFilter("Position", "position"),
+  new TextFilter("Position", "contactPosition"),
   new NoHeaderFilter(),
 ];
 
