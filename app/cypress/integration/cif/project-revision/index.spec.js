@@ -73,7 +73,20 @@ describe("the new project page", () => {
       variant: "filled",
     });
     cy.findByRole("button", { name: /^submit/i }).click();
-
+    // Annual reports
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Add annual reports/i).click();
+    cy.url().should("include", "/form/annual-reports");
+    cy.addAnnualReport(1, "1991-01-01");
+    cy.addAnnualReport(2, "1992-01-01");
+    cy.addAnnualReport(3, "1993-01-01");
+    cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Annual Reports Form",
+      variant: "filled",
+    });
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.wait(1000);
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
@@ -125,13 +138,20 @@ describe("the new project page", () => {
       component: "Project Contacts Form",
       variant: "with errors",
     });
+    // Quarterly reports
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
     cy.url().should("include", "/form/quarterly-reports");
 
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
-    cy.findByRole("button", { name: /add another quarterly report/i }).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 3);
@@ -140,6 +160,21 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
+      variant: "with errors",
+    });
+    // Annual reports
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Add annual reports/i).click();
+    cy.url().should("include", "/form/annual-reports");
+    cy.findByRole("button", { name: /add another annual report/i }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 1);
+    cy.injectAxe();
+    cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
+    cy.get("body").happoScreenshot({
+      component: "Project Annual Reports Form",
       variant: "with errors",
     });
   });
@@ -210,7 +245,6 @@ describe("the new project page", () => {
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.wait(1000);
 
     //add quarterly reports
     cy.addQuarterlyReport(
@@ -227,7 +261,15 @@ describe("the new project page", () => {
     );
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    // check summary page
+    cy.findByText(/Add annual report/i).click();
+    cy.addAnnualReport(
+      1,
+      "2022-01-01",
+      "2022-02-02",
+      "Annual report description n stuff"
+    );
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.wait(1000);
     cy.contains("Review and Submit Project");
     cy.findByText(/Funding Stream RFP ID/i)
       .next()
@@ -443,6 +485,9 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another quarterly report/i);
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.findByText(/Add another annual report/i);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");

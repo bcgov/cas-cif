@@ -239,3 +239,43 @@ Cypress.Commands.add(
     cy.get(`input[value="${secondaryContact}"]`).should("be.visible");
   }
 );
+Cypress.Commands.add(
+  "addAnnualReport",
+  (
+    reportNumber,
+    reportDueDate,
+    receivedDate = undefined,
+    generalComments = undefined
+  ) => {
+    cy.findByRole("button", {
+      name: /Add another annual report/i,
+    }).click();
+    cy.get('[label*="Due Date"]').should("have.length", reportNumber);
+    cy.get('[label*="Due Date"]')
+      .eq(reportNumber - 1)
+      .type(reportDueDate);
+    cy.get('[label*="Due Date"]')
+      .eq(reportNumber - 1)
+      .should("have.value", reportDueDate);
+
+    if (receivedDate) {
+      cy.get('[label*="Received Date"]')
+        .eq(reportNumber - 1)
+        .type(receivedDate);
+      cy.get('[label*="Received Date"]')
+        .eq(reportNumber - 1)
+        .should("have.value", receivedDate);
+    }
+
+    if (generalComments) {
+      cy.get('[aria-label="General Comments"]')
+        .eq(reportNumber - 1)
+        .type(generalComments);
+      cy.get('[aria-label="General Comments"]')
+        .eq(reportNumber - 1)
+        .should("have.value", generalComments);
+    }
+    // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
+    return cy.url().should("include", "/form/annual-reports");
+  }
+);
