@@ -153,7 +153,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
     const completedPromises: Promise<void>[] = [];
 
-    console.log("staging!!!!!!");
     edges.forEach(({ node }) => {
       if (node.formChange?.changeStatus === "pending") {
         const promise = new Promise<void>((resolve, reject) => {
@@ -177,7 +176,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
     try {
       await Promise.all(completedPromises);
-      console.log("done staging!!!!!!", errors);
 
       if (errors.length === 0) props.onSubmit();
     } catch (e) {

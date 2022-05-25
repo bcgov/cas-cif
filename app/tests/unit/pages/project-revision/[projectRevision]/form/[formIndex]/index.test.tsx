@@ -5,7 +5,7 @@ import {
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
-import { ProjectFormPage } from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
+import ProjectFormPage from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
@@ -33,7 +33,9 @@ const defaultMockResolver = {
           someProjectData: "test2",
         },
       },
-      // TODO: add empty manager form changes here (empty edges array)
+      managerFormChanges: {
+        edges: [],
+      },
     };
   },
 };
@@ -93,7 +95,7 @@ describe("The Project Annual Reports page", () => {
     );
   });
 
-  it("redirects the user to the next page on submit when creating a project", () => {
+  it("redirects the user to the next page on submit when creating a project", async () => {
     pageTestingHelper.loadQuery({
       ProjectRevision(context, generateId) {
         return {
@@ -106,13 +108,16 @@ describe("The Project Annual Reports page", () => {
               someProjectData: "test2",
             },
           },
+          managerFormChanges: {
+            edges: [],
+          },
         };
       },
     });
     pageTestingHelper.renderPage();
-    screen.getByText(/submit managers/i).click();
+    await userEvent.click(screen.getByText(/submit managers/i));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      getProjectRevisionFormPageRoute("mock-proj-rev-id", "2")
+      getProjectRevisionFormPageRoute("mock-proj-rev-id", 2)
     );
   });
 
