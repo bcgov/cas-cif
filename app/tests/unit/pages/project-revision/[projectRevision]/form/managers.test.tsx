@@ -5,7 +5,7 @@ import {
   getProjectRevisionContactsFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
-import { ProjectManagersForm } from "pages/cif/project-revision/[projectRevision]/form/managers";
+import { ProjectManagersForm } from "pages/cif/project-revision/[projectRevision]/form/1";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledManagersFormQuery, {
   managersFormQuery,
@@ -52,8 +52,7 @@ describe("The Project Managers form page", () => {
   });
 
   it("renders the task list in the left navigation", () => {
-    const mockPathname =
-      "/cif/project-revision/[projectRevision]/form/managers";
+    const mockPathname = "/cif/project-revision/[projectRevision]/form/1";
     pageTestingHelper.setMockRouterValues({ pathname: mockPathname });
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
@@ -459,7 +458,7 @@ describe("The Project Managers form page", () => {
     );
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/managers/",
+      pathname: "/cif/project-revision/[projectRevision]/form/1/",
       query: { projectRevision: "mock-pending-revision-id" },
     });
   });

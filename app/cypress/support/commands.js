@@ -79,7 +79,7 @@ Cypress.Commands.add(
     totalFundingRequest,
     projectStatus
   ) => {
-    cy.url().should("include", "/form/overview");
+    cy.url().should("include", "/form/0");
     cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
     cy.findByLabelText(/Funding Stream RFP/i).select(fundingStreamYear);
     cy.findByLabelText(/Operator Name/i).click();
@@ -128,7 +128,7 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "fillManagersForm",
   (techTeamPrimary, techTeamSecondary, opsTeamPrimary) => {
-    cy.url().should("include", "/form/managers");
+    cy.url().should("include", "/form/1");
 
     cy.findByLabelText(/tech team primary/i).click();
     cy.contains(techTeamPrimary).click();
@@ -162,7 +162,7 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
-  cy.url().should("include", "/form/contacts");
+  cy.url().should("include", "/form/2");
 
   cy.findByLabelText(/Primary contact/i).click();
   cy.contains(primaryContact).click();
@@ -228,7 +228,7 @@ Cypress.Commands.add(
         .should("have.value", generalComments);
     }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/quarterly-reports");
+    return cy.url().should("include", "/form/3");
   }
 );
 
@@ -276,6 +276,6 @@ Cypress.Commands.add(
         .should("have.value", generalComments);
     }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/annual-reports");
+    return cy.url().should("include", "/form/4");
   }
 );

@@ -69,7 +69,7 @@ describe("The Dashboard", () => {
       );
     });
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/overview/",
+      pathname: "/cif/project-revision/[projectRevision]/form/0/",
       query: { projectRevision: "<ProjectRevision-mock-id-1>" },
     });
   });
@@ -111,7 +111,7 @@ describe("The Dashboard", () => {
     componentTestingHelper.renderComponent();
     expect(screen.getByText(/resume project/i).closest("a")).toHaveAttribute(
       "href",
-      "/cif/project-revision/mock-id-1/form/overview"
+      "/cif/project-revision/mock-id-1/form/0"
     );
   });
 });

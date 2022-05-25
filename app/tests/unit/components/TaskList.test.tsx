@@ -103,8 +103,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/overview?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/overview",
+      "/cif/project-revision/[projectRevision]/form/0?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/0",
       expect.any(Object)
     );
   });
@@ -117,8 +117,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/contacts?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/contacts",
+      "/cif/project-revision/[projectRevision]/form/2?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/2",
       expect.any(Object)
     );
   });
@@ -130,8 +130,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/managers?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/managers",
+      "/cif/project-revision/[projectRevision]/form/1?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/1",
       expect.any(Object)
     );
   });
@@ -144,8 +144,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/quarterly-reports?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/quarterly-reports",
+      "/cif/project-revision/[projectRevision]/form/3?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/form/3",
       expect.any(Object)
     );
   });

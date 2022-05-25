@@ -20,26 +20,26 @@ const formPages: FormPageDefinition[] = [
     viewComponent: ProjectFormSummary,
   },
   {
-    title: "project contacts",
-    editComponent: ProjectContactForm,
-    viewComponent: ProjectContactFormSummary,
-  },
-  {
     title: "project managers",
     editComponent: ProjectManagerFormGroup,
     viewComponent: ProjectManagerFormSummary,
   },
   {
+    title: "project contacts",
+    editComponent: ProjectContactForm,
+    viewComponent: ProjectContactFormSummary,
+  },
+  {
     title: "quarterly reports",
     editComponent: ProjectQuarterlyReportForm,
     // TODO: switch to ProjectQuarterlyReportFormSummary when it's been merged
-    viewComponent: ProjectQuarterlyReportForm,
+    viewComponent: null,
   },
   {
     title: "annual reports",
     editComponent: ProjectAnnualReportForm,
     // TODO: switch to ProjectAnnualReportFormSummary when it's been merged
-    viewComponent: ProjectAnnualReportForm,
+    viewComponent: null,
   },
 ];
 

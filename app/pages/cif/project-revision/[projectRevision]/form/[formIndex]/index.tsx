@@ -38,7 +38,7 @@ const pageQuery = graphql`
         ...ProjectFormSummary_projectRevision
         ...ProjectContactForm_projectRevision
         ...ProjectContactFormSummary_projectRevision
-        ...ProjectManagerFormGroup_revision
+        ...ProjectManagerFormGroup_projectRevision
         ...ProjectManagerFormSummary_projectRevision
         ...ProjectQuarterlyReportForm_projectRevision
         ...ProjectAnnualReportForm_projectRevision
@@ -56,8 +56,11 @@ export function ProjectOverviewForm({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
-  const mode =
-    query.projectRevision?.changeStatus === "committed" ? "view" : "update";
+  const mode = !query.projectRevision?.projectId
+    ? "create"
+    : query.projectRevision.changeStatus === "committed"
+    ? "view"
+    : "edit";
 
   const existingRevision =
     query.projectRevision?.projectByProjectId?.pendingProjectRevision;
@@ -72,6 +75,9 @@ export function ProjectOverviewForm({
       ?.id,
     mode === "view"
   );
+
+  const formIndex = Number(router.query.formIndex);
+
   // TODO: check that router.query.formIndex is within bounds
   if (isRedirecting || isRedirectingToLatestRevision) return null;
 
@@ -121,24 +127,20 @@ export function ProjectOverviewForm({
   const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    if (mode === "update") {
-      // TODO: or if this is the last form
+    if (mode === "edit" || formIndex === formPages.length - 1) {
       router.push(getProjectRevisionPageRoute(query.projectRevision.id));
     } else {
       router.push(
-        getProjectRevisionFormPageRoute(
-          query.projectRevision.id,
-          Number(router.query.formIndex) + 1
-        )
+        getProjectRevisionFormPageRoute(query.projectRevision.id, formIndex + 1)
       );
     }
   };
 
-  const EditComponent = formPages[Number(router.query.formIndex)].editComponent;
-  const ViewComponent = formPages[Number(router.query.formIndex)].viewComponent;
+  const EditComponent = formPages[formIndex].editComponent;
+  const ViewComponent = formPages[formIndex].viewComponent;
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      {query.projectRevision.changeStatus === "committed" ? (
+      {query.projectRevision.changeStatus === "committed" && ViewComponent ? (
         <>
           {createEditButton()}
           <ViewComponent

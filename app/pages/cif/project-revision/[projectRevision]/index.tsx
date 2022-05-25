@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   getProjectsPageRoute,
-  getProjectRevisionOverviewFormPageRoute,
+  getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
@@ -87,9 +87,7 @@ export function ProjectRevision({
     query.projectRevision?.changeStatus === "committed";
   useEffect(() => {
     if (isCommittedRevision)
-      router.push(
-        getProjectRevisionOverviewFormPageRoute(query.projectRevision.id)
-      );
+      router.push(getProjectRevisionFormPageRoute(query.projectRevision.id, 0));
   }, [isCommittedRevision, query, router]);
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);

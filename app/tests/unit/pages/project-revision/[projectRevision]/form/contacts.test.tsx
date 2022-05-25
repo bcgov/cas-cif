@@ -5,7 +5,7 @@ import {
   getProjectRevisionPageRoute,
   getProjectRevisionQuarterlyReportsFormPageRoute,
 } from "pageRoutes";
-import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/contacts";
+import { ProjectContactsPage } from "pages/cif/project-revision/[projectRevision]/form/2";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledContactsFormQuery, {
   contactsFormQuery,
@@ -50,8 +50,7 @@ describe("The Project Contacts page", () => {
   });
 
   it("renders the task list in the left navigation with correct highlighting", () => {
-    const mockPathname =
-      "/cif/project-revision/[projectRevision]/form/contacts";
+    const mockPathname = "/cif/project-revision/[projectRevision]/form/2";
 
     pageTestingHelper.setMockRouterValues({ pathname: mockPathname });
 
@@ -459,7 +458,7 @@ describe("The Project Contacts page", () => {
 
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/contacts/",
+      pathname: "/cif/project-revision/[projectRevision]/form/2/",
       query: { projectRevision: "mock-pending-revision-id" },
     });
   });

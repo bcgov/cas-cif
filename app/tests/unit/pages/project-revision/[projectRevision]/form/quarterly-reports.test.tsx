@@ -6,7 +6,7 @@ import {
   getProjectRevisionPageRoute,
   getProjectRevisionAnnualReportsFormPageRoute,
 } from "pageRoutes";
-import { ProjectQuarterlyReportsPage } from "pages/cif/project-revision/[projectRevision]/form/quarterly-reports";
+import { ProjectQuarterlyReportsPage } from "pages/cif/project-revision/[projectRevision]/form/3";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledQuarterlyReportsFormQuery, {
   quarterlyReportsFormQuery,
@@ -54,8 +54,7 @@ describe("The Project Quarterly Reports page", () => {
 
   it("renders the task list in the left navigation with correct highlighting", () => {
     const router = mocked(useRouter);
-    const mockPathname =
-      "/cif/project-revision/[projectRevision]/form/quarterly-reports";
+    const mockPathname = "/cif/project-revision/[projectRevision]/form/3";
     router.mockReturnValue({
       pathname: mockPathname,
     } as any);

@@ -3,7 +3,7 @@ import { screen, within } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
 import { getProjectRevisionPageRoute } from "pageRoutes";
-import { ProjectAnnualReportsPage } from "pages/cif/project-revision/[projectRevision]/form/annual-reports";
+import { ProjectAnnualReportsPage } from "pages/cif/project-revision/[projectRevision]/form/4";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledAnnualReportsFormQuery, {
   annualReportsFormQuery,
@@ -51,8 +51,7 @@ describe("The Project Annual Reports page", () => {
 
   it("renders the task list in the left navigation with correct highlighting", () => {
     const router = mocked(useRouter);
-    const mockPathname =
-      "/cif/project-revision/[projectRevision]/form/annual-reports";
+    const mockPathname = "/cif/project-revision/[projectRevision]/form/4";
     router.mockReturnValue({
       pathname: mockPathname,
     } as any);

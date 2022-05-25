@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
+import { getProjectRevisionFormPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ProjectTableRow_project$key } from "__generated__/ProjectTableRow_project.graphql";
 import Money from "lib/helpers/Money";
@@ -53,7 +53,7 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
 
   const handleViewClick = () => {
     router.push(
-      getProjectRevisionOverviewFormPageRoute(latestCommittedProjectRevision.id)
+      getProjectRevisionFormPageRoute(latestCommittedProjectRevision.id, 0)
     );
   };
 

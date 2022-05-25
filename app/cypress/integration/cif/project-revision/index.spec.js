@@ -14,7 +14,7 @@ describe("the new project page", () => {
 
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
-    cy.url().should("include", "/form/overview");
+    cy.url().should("include", "/form/0");
     cy.get("button").contains("Submit Project Overview");
     cy.injectAxe();
     // TODO: the entire body should be tested for accessibility
@@ -33,7 +33,7 @@ describe("the new project page", () => {
 
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project managers/i).click();
-    cy.url().should("include", "/form/managers");
+    cy.url().should("include", "/form/1");
     cy.injectAxe();
     cy.checkA11y("main", null, logAxeResults);
     cy.get("body").happoScreenshot({
@@ -42,7 +42,7 @@ describe("the new project page", () => {
     });
 
     cy.findByText(/Add project contacts/i).click();
-    cy.url().should("include", "/form/contacts");
+    cy.url().should("include", "/form/2");
 
     cy.findByRole("button", { name: /add/i }).click();
     cy.findByRole("button", { name: /add/i }).click();
@@ -59,7 +59,7 @@ describe("the new project page", () => {
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
 
-    cy.url().should("include", "/form/quarterly-reports");
+    cy.url().should("include", "/form/3");
 
     cy.addQuarterlyReport(1, "1991-01-01");
     cy.addQuarterlyReport(2, "1992-01-01");
@@ -76,7 +76,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/annual-reports");
+    cy.url().should("include", "/form/4");
     cy.addAnnualReport(1, "1991-01-01");
     cy.addAnnualReport(2, "1992-01-01");
     cy.addAnnualReport(3, "1993-01-01");
@@ -104,7 +104,7 @@ describe("the new project page", () => {
 
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
-    cy.url().should("include", "/form/overview");
+    cy.url().should("include", "/form/0");
 
     cy.findByLabelText(/Proposal Reference/i).type("001");
     cy.injectAxe();
@@ -123,7 +123,7 @@ describe("the new project page", () => {
 
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
-    cy.url().should("include", "/form/contacts");
+    cy.url().should("include", "/form/2");
 
     cy.findByRole("button", { name: /add/i }).click();
     cy.findByRole("button", { name: /add/i }).click();
@@ -141,7 +141,7 @@ describe("the new project page", () => {
     // Quarterly reports
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/quarterly-reports");
+    cy.url().should("include", "/form/3");
 
     cy.findByRole("button", {
       name: /add another quarterly report/i,
@@ -165,7 +165,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/annual-reports");
+    cy.url().should("include", "/form/4");
     cy.findByRole("button", { name: /add another annual report/i }).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
@@ -314,7 +314,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");
     cy.findByText("View").click();
-    cy.url().should("include", "/form/overview");
+    cy.url().should("include", "/form/0");
 
     // Verify the forms render in view mode for committed project revisions
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
@@ -330,7 +330,7 @@ describe("the new project page", () => {
       .next()
       .should("not.exist");
     cy.findByRole("link", { name: "Project managers" }).click();
-    cy.url().should("include", "/form/managers");
+    cy.url().should("include", "/form/1");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText("Tech Team Primary (optional)")
       .next()
@@ -339,7 +339,7 @@ describe("the new project page", () => {
       .next()
       .should("not.exist");
     cy.findByRole("link", { name: "Project contacts" }).click();
-    cy.url().should("include", "/form/contacts");
+    cy.url().should("include", "/form/2");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/primary contact/i, "Loblaw003, Bob003");
 
@@ -366,7 +366,7 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
-    cy.url().should("include", "/form/managers");
+    cy.url().should("include", "/form/1");
 
     cy.findByLabelText(/tech team secondary/i).should(
       "have.value",
@@ -387,7 +387,7 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project contacts/i).click();
-    cy.url().should("include", "/form/contacts");
+    cy.url().should("include", "/form/2");
 
     cy.get("label")
       .contains("Secondary Contacts")
@@ -440,7 +440,7 @@ describe("the new project page", () => {
 
     cy.url().should("include", "/cif/projects");
     cy.findByRole("button", { name: /view/i }).click();
-    cy.url().should("include", "/form/overview");
+    cy.url().should("include", "/form/0");
 
     // Check the project was updated
     cy.findByText(/Project Name/i)

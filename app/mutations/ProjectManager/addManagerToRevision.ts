@@ -21,7 +21,7 @@ export const mutation = graphql`
     ) {
       query {
         projectRevision(id: $projectRevision) {
-          ...ProjectManagerFormGroup_revision
+          ...ProjectManagerFormGroup_projectRevision
           ...TaskList_projectRevision
         }
       }
