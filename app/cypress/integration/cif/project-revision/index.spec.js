@@ -81,7 +81,7 @@ describe("the new project page", () => {
       component: "Project Quarterly Reports Form",
       variant: "filled",
     });
-    cy.findByRole("button", { name: /^submit/i }).click();
+
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
@@ -94,8 +94,6 @@ describe("the new project page", () => {
       component: "Project Annual Reports Form",
       variant: "filled",
     });
-    cy.findByRole("button", { name: /^submit/i }).click();
-    cy.wait(1000);
 
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
@@ -114,9 +112,9 @@ describe("the new project page", () => {
       component: "Project Milestone Reports Form",
       variant: "filled",
     });
-    cy.findByRole("button", { name: /^submit/i }).click();
 
     // SUMMMARY
+    cy.findByText(/Submit Changes/i).click();
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
