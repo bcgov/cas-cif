@@ -105,6 +105,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
             changeStatus: formChange.changeStatus,
           },
         },
+        reportType: "Annual",
       },
       debounceKey: formChange.id,
       optimisticResponse: {
@@ -157,6 +158,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                   changeStatus: "staged",
                 },
               },
+              reportType: "Annual",
             },
             debounceKey: node.id,
             onCompleted: () => {
