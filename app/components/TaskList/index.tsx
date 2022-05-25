@@ -12,13 +12,13 @@ import { TaskListMode } from "./types";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
+  mode: TaskListMode;
 }
 
-const TaskList: React.FC<Props> = ({ projectRevision }) => {
+const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
     id,
     projectByProjectId,
-    changeStatus,
     projectOverviewStatus,
     projectManagersStatus,
     projectContactsStatus,
@@ -30,7 +30,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
-        changeStatus
         projectByProjectId {
           proposalReference
         }
@@ -54,13 +53,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     projectRevision
   );
   const router = useRouter();
-
-  let mode =
-    changeStatus === "committed"
-      ? "view"
-      : projectByProjectId
-      ? "update"
-      : "create";
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
@@ -89,7 +81,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             formTitle="Project overview"
             formStatus={projectOverviewStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
@@ -106,7 +98,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             formTitle="Project managers"
             formStatus={projectManagersStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
           <TaskListItem
             stepName="2"
@@ -114,7 +106,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             formTitle="Project contacts"
             formStatus={projectContactsStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
@@ -130,7 +122,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             formTitle="Quarterly reports"
             formStatus={quarterlyReportsStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
@@ -146,7 +138,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
@@ -163,7 +155,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               formTitle="Review and submit information"
               formStatus={null}
               currentStep={currentStep}
-              mode={mode as TaskListMode}
+              mode={mode}
             />
           </TaskListSection>
         )}

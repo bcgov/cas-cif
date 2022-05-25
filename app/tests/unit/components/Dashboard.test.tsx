@@ -69,8 +69,8 @@ describe("The Dashboard", () => {
       );
     });
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/0/",
-      query: { projectRevision: "<ProjectRevision-mock-id-1>" },
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]/",
+      query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
     });
   });
 

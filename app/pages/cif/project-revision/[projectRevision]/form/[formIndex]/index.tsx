@@ -50,7 +50,7 @@ const pageQuery = graphql`
   }
 `;
 
-export function ProjectOverviewForm({
+export function ProjectFormPage({
   preloadedQuery,
 }: RelayProps<{}, FormIndexPageQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
@@ -60,7 +60,7 @@ export function ProjectOverviewForm({
     ? "create"
     : query.projectRevision.changeStatus === "committed"
     ? "view"
-    : "edit";
+    : "update";
 
   const existingRevision =
     query.projectRevision?.projectByProjectId?.pendingProjectRevision;
@@ -124,10 +124,12 @@ export function ProjectOverviewForm({
     );
   };
 
-  const taskList = <TaskList projectRevision={query.projectRevision} />;
+  const taskList = (
+    <TaskList projectRevision={query.projectRevision} mode={mode} />
+  );
 
   const handleSubmit = () => {
-    if (mode === "edit" || formIndex === formPages.length - 1) {
+    if (mode === "update" || formIndex === formPages.length - 1) {
       router.push(getProjectRevisionPageRoute(query.projectRevision.id));
     } else {
       router.push(
@@ -159,4 +161,4 @@ export function ProjectOverviewForm({
   );
 }
 
-export default withRelay(ProjectOverviewForm, pageQuery, withRelayOptions);
+export default withRelay(ProjectFormPage, pageQuery, withRelayOptions);
