@@ -1,14 +1,10 @@
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { ContactViewPage } from "pages/cif/contact/[contact]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledContactViewQuery, {
   ContactViewQuery,
 } from "__generated__/ContactViewQuery.graphql";
-
-jest.mock("next/router");
 
 const defaultMockResolver = {
   Contact() {
@@ -44,9 +40,7 @@ describe("ContactViewPage", () => {
       require("app/hooks/useRedirectTo404IfFalsy"),
       "default"
     );
-    mocked(useRouter).mockReturnValue({
-      replace: jest.fn(),
-    } as any);
+
     pageTestingHelper.loadQuery({
       Query() {
         return {

@@ -2,20 +2,11 @@ import "@testing-library/jest-dom";
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledOperatorsQuery, {
   operatorsQuery,
 } from "__generated__/operatorsQuery.graphql";
 import { Operators } from "../../../pages/cif/operators";
-jest.mock("next/router");
-
-mocked(useRouter).mockReturnValue({
-  route: "/",
-  query: {},
-  push: jest.fn(),
-} as any);
 
 const defaultMockResolver = {
   Query() {

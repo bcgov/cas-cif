@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import {
   getProjectRevisionContactsFormPageRoute,
   getProjectRevisionPageRoute,
@@ -13,8 +11,6 @@ import compiledManagersFormQuery, {
   managersFormQuery,
 } from "__generated__/managersFormQuery.graphql";
 import { ProjectManagerForm_query$data } from "__generated__/ProjectManagerForm_query.graphql";
-
-jest.mock("next/router");
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -56,12 +52,9 @@ describe("The Project Managers form page", () => {
   });
 
   it("renders the task list in the left navigation", () => {
-    const router = mocked(useRouter);
     const mockPathname =
       "/cif/project-revision/[projectRevision]/form/managers";
-    router.mockReturnValue({
-      pathname: mockPathname,
-    } as any);
+    pageTestingHelper.setMockRouterValues({ pathname: mockPathname });
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     expect(
@@ -315,12 +308,6 @@ describe("The Project Managers form page", () => {
   });
 
   it("redirects the user to the project revision page on submit when editing", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
     let handleSubmit;
     jest
       .spyOn(require("components/Form/ProjectManagerFormGroup"), "default")
@@ -332,18 +319,12 @@ describe("The Project Managers form page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
     handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
     );
   });
 
   it("redirects the user to the project revision page on submit when creating a project", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
     let handleSubmit;
     jest
       .spyOn(require("components/Form/ProjectManagerFormGroup"), "default")
@@ -364,17 +345,12 @@ describe("The Project Managers form page", () => {
     });
     pageTestingHelper.renderPage();
     handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionContactsFormPageRoute("mock-proj-rev-id")
     );
   });
 
   it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
-    const mockReplace = jest.fn();
-    mocked(useRouter).mockReturnValue({
-      replace: mockReplace,
-    } as any);
-
     pageTestingHelper.loadQuery({
       Query() {
         return {
@@ -386,14 +362,10 @@ describe("The Project Managers form page", () => {
     const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
-    expect(mockReplace).toHaveBeenCalledWith("/404");
+    expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
   });
 
   it("renders the form in view mode when the project revision is committed", async () => {
-    jest.mock("next/router");
-    const routerPush = jest.fn();
-    mocked(useRouter).mockReturnValue({ push: routerPush } as any);
-
     pageTestingHelper.loadQuery({
       ProjectRevision(context) {
         return {
@@ -486,7 +458,7 @@ describe("The Project Managers form page", () => {
       "test manager 3"
     );
     userEvent.click(screen.getByRole("button", { name: /resume edition/i }));
-    expect(routerPush).toHaveBeenCalledWith({
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/managers/",
       query: { projectRevision: "mock-pending-revision-id" },
     });

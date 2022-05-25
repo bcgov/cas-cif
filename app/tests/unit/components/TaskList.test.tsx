@@ -5,16 +5,6 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
-
-jest.mock("next/dist/client/router");
-const mockPush = jest.fn();
-mocked(useRouter).mockImplementation(() => {
-  return {
-    push: mockPush,
-  } as any;
-});
 
 const testQuery = graphql`
   query TaskListQuery($projectRevision: ID!) @relay_test_operation {
@@ -112,7 +102,7 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Project Overview/i));
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/form/overview?projectRevision=test-project-revision-id",
       "/cif/project-revision/test-project-revision-id/form/overview",
       expect.any(Object)
@@ -126,7 +116,7 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Project Details/i));
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/form/contacts?projectRevision=test-project-revision-id",
       "/cif/project-revision/test-project-revision-id/form/contacts",
       expect.any(Object)
@@ -139,7 +129,7 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Project Details/i));
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/form/managers?projectRevision=test-project-revision-id",
       "/cif/project-revision/test-project-revision-id/form/managers",
       expect.any(Object)
@@ -153,7 +143,7 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Quarterly Reports/i));
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
-    expect(mockPush).toHaveBeenCalledWith(
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/form/quarterly-reports?projectRevision=test-project-revision-id",
       "/cif/project-revision/test-project-revision-id/form/quarterly-reports",
       expect.any(Object)

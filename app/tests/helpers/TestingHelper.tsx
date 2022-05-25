@@ -1,5 +1,7 @@
 import { act } from "@testing-library/react";
+import { NextRouter } from "next/router";
 import { createMockEnvironment, RelayMockEnvironment } from "relay-test-utils";
+import { createMockRouter } from "./mockNextRouter";
 
 class TestingHelper {
   public errorContext: {
@@ -8,6 +10,8 @@ class TestingHelper {
   };
 
   public environment: RelayMockEnvironment;
+
+  public router: NextRouter;
 
   public reinit() {
     this.environment = createMockEnvironment();
@@ -19,6 +23,11 @@ class TestingHelper {
         })
       ),
     };
+    this.router = createMockRouter();
+  }
+
+  public setMockRouterValues(routerValues: Partial<NextRouter>) {
+    this.router = createMockRouter(routerValues);
   }
 
   public expectMutationToBeCalled(mutationName: string, variables?: any) {

@@ -1,14 +1,10 @@
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { OperatorViewPage } from "pages/cif/operator/[operator]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledOperatorViewQuery, {
   OperatorViewQuery,
 } from "__generated__/OperatorViewQuery.graphql";
-
-jest.mock("next/router");
 
 const defaultMockResolver = {
   Operator() {
@@ -120,9 +116,7 @@ describe("OperatorViewPage", () => {
       require("app/hooks/useRedirectTo404IfFalsy"),
       "default"
     );
-    mocked(useRouter).mockReturnValue({
-      replace: jest.fn(),
-    } as any);
+
     pageTestingHelper.loadQuery({
       Query() {
         return {
