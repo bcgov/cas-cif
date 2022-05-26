@@ -6,17 +6,29 @@ import { useRouter } from "next/router";
  *  False otherwise.
  */
 export default function useRedirectToValidFormIndex(
-  formIndex,
-  formPagesLength
+  formIndex: number,
+  formPagesLength: number
 ) {
   const router = useRouter();
   useEffect(() => {
-    if (formIndex < 0 || formIndex >= formPagesLength)
-      router.replace(
-        `${router.asPath.replace(`/form/${formIndex}`, "/form/0")}`
-      );
+    if (
+      formIndex < 0 ||
+      formIndex >= formPagesLength ||
+      Number.isNaN(formIndex)
+    )
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          fornIndex: 0,
+        },
+      });
   }, [formIndex, formPagesLength, router]);
-  if (formIndex < 0 || formIndex >= formPagesLength) {
+  if (
+    formIndex < 0 ||
+    formIndex >= formPagesLength ||
+    Number.isNaN(formIndex)
+  ) {
     return true;
   }
   return false;

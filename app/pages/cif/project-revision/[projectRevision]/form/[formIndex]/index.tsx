@@ -1,6 +1,7 @@
 import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
+import { TaskListMode } from "components/TaskList/types";
 import formPages from "data/formPages";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
@@ -57,7 +58,7 @@ export function ProjectFormPage({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
-  let mode;
+  let mode: TaskListMode;
   if (!query.projectRevision?.projectId) mode = "create";
   else if (query.projectRevision.changeStatus === "committed") mode = "view";
   else mode = "update";

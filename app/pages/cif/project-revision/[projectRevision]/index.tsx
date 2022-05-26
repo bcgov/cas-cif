@@ -25,6 +25,7 @@ import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { useMemo } from "react";
+import { TaskListMode } from "components/TaskList/types";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -166,7 +167,7 @@ export function ProjectRevision({
     });
   };
 
-  let mode;
+  let mode: TaskListMode;
   if (!query.projectRevision?.projectId) mode = "create";
   else if (query.projectRevision.changeStatus === "committed") mode = "view";
   else mode = "update";
