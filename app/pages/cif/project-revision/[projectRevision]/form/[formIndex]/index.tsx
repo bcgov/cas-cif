@@ -153,7 +153,7 @@ export function ProjectFormPage({
   const ViewComponent = formPages[formIndex].viewComponent;
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      {query.projectRevision.changeStatus === "committed" && ViewComponent ? (
+      {query.projectRevision.changeStatus === "committed" ? (
         <>
           {createEditButton()}
           <ViewComponent
