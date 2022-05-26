@@ -130,6 +130,20 @@ describe("The ProjectManagerForm", () => {
     );
   });
 
+  it("Calls the proper getRoute function when clicking Milestone Reports", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    fireEvent.click(screen.getByText(/Edit milestone reports/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3",
+      "/cif/project-revision/test-project-revision-id/form/3",
+      expect.any(Object)
+    );
+  });
+
   it("Calls the proper getRoute function when clicking Quarterly Reports", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -138,8 +152,22 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3",
-      "/cif/project-revision/test-project-revision-id/form/3",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4",
+      "/cif/project-revision/test-project-revision-id/form/4",
+      expect.any(Object)
+    );
+  });
+
+  it("Calls the proper getRoute function when clicking Annual Reports", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByText(/Annual Reports/i));
+    fireEvent.click(screen.getByText(/Edit annual reports/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5",
+      "/cif/project-revision/test-project-revision-id/form/5",
       expect.any(Object)
     );
   });

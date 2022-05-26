@@ -3,11 +3,9 @@ import userEvent from "@testing-library/user-event";
 import ProjectMilestoneReportForm from "components/Form/ProjectMilestoneReportForm";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
-import { ProjectMilestoneReportForm_projectRevision } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
-import { ProjectMilestoneReportForm_query } from "__generated__/ProjectMilestoneReportForm_query.graphql";
-import compiledProjectMilestoneReportFormQuery, {
-  milestoneReportsFormQuery,
-} from "__generated__/milestoneReportsFormQuery.graphql";
+import compiledFormIndexPageQuery, {
+  FormIndexPageQuery,
+} from "__generated__/FormIndexPageQuery.graphql";
 
 const testQuery = graphql`
   query ProjectMilestoneReportFormQuery @relay_test_operation {
@@ -23,7 +21,7 @@ const testQuery = graphql`
 
 const defaultMockResolver = {
   ProjectRevision(context, generateID) {
-    const result: Partial<ProjectMilestoneReportForm_projectRevision> = {
+    return {
       id: `mock-proj-rev-${generateID()}`,
       rowId: 1234,
       projectMilestoneReportFormChanges: {
@@ -62,10 +60,9 @@ const defaultMockResolver = {
         __id: "client:mock:__connection_projectMilestoneReportFormChanges_connection",
       },
     };
-    return result;
   },
   Query() {
-    const result: Partial<ProjectMilestoneReportForm_query> = {
+    return {
       allReportTypes: {
         edges: [
           {
@@ -76,7 +73,6 @@ const defaultMockResolver = {
         ],
       },
     };
-    return result;
   },
 };
 
@@ -85,19 +81,18 @@ const defaultComponentProps = {
   onSubmit: jest.fn(),
 };
 
-const componentTestingHelper =
-  new ComponentTestingHelper<milestoneReportsFormQuery>({
-    component: ProjectMilestoneReportForm,
-    testQuery: testQuery,
-    compiledQuery: compiledProjectMilestoneReportFormQuery,
-    getPropsFromTestQuery: (data) => ({
-      query: data.query,
-      projectRevision: data.query.projectRevision,
-    }),
-    defaultQueryResolver: defaultMockResolver,
-    defaultQueryVariables: { projectRevision: "mock-id" },
-    defaultComponentProps: defaultComponentProps,
-  });
+const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
+  component: ProjectMilestoneReportForm,
+  testQuery: testQuery,
+  compiledQuery: compiledFormIndexPageQuery,
+  getPropsFromTestQuery: (data) => ({
+    query: data.query,
+    projectRevision: data.query.projectRevision,
+  }),
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: { projectRevision: "mock-id" },
+  defaultComponentProps: defaultComponentProps,
+});
 
 describe("The ProjectMilestoneReportForm", () => {
   beforeEach(() => {
@@ -230,7 +225,7 @@ describe("The ProjectMilestoneReportForm", () => {
     const mockResolver = {
       ...defaultMockResolver,
       ProjectRevision(context, generateID) {
-        const result: Partial<ProjectMilestoneReportForm_projectRevision> = {
+        return {
           projectMilestoneReportFormChanges: {
             edges: [
               {
@@ -251,7 +246,6 @@ describe("The ProjectMilestoneReportForm", () => {
             __id: "client:mock:__connection_projectMilestoneReportFormChanges_connection",
           },
         };
-        return result;
       },
     };
     componentTestingHelper.loadQuery(mockResolver);
