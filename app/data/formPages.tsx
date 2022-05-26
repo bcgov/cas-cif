@@ -4,6 +4,7 @@ import ProjectForm from "components/Form/ProjectForm";
 import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
+import ProjectMilestoneReportForm from "components/Form/ProjectMilestoneReportForm";
 import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportForm";
 import ProjectAnnualReportForm from "components/Form/ProjectAnnualReportForm";
 
@@ -28,6 +29,12 @@ const formPages: FormPageDefinition[] = [
     title: "project contacts",
     editComponent: ProjectContactForm,
     viewComponent: ProjectContactFormSummary,
+  },
+  {
+    title: "milestone reports",
+    editComponent: ProjectMilestoneReportForm,
+    // TODO: switch to ProjectMilestoneReportFormSummary when it's been merged
+    viewComponent: null,
   },
   {
     title: "quarterly reports",

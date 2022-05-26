@@ -110,15 +110,31 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           />
         </TaskListSection>
 
-        {/* Quarterly Reports Section */}
+        {/* Milestone Reports Section */}
         <TaskListSection
           defaultExpandedState={currentStep === "3"}
           listItemNumber="3"
-          listItemName="Quarterly Reports"
+          listItemName="Milestone Reports"
         >
           <TaskListItem
             stepName="3"
             linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+            formTitle="Milestone reports"
+            formStatus={null} // Leaving this status as null for now while we decide how to display milestone statuses
+            currentStep={currentStep}
+            mode={mode}
+          />
+        </TaskListSection>
+
+        {/* Quarterly Reports Section */}
+        <TaskListSection
+          defaultExpandedState={currentStep === "4"}
+          listItemNumber="4"
+          listItemName="Quarterly Reports"
+        >
+          <TaskListItem
+            stepName="3"
+            linkUrl={getProjectRevisionFormPageRoute(id, 4)}
             formTitle="Quarterly reports"
             formStatus={quarterlyReportsStatus}
             currentStep={currentStep}
@@ -128,27 +144,15 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Annual Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "4"}
-          listItemNumber="4"
+          defaultExpandedState={currentStep === "5"}
+          listItemNumber="5"
           listItemName="Annual Reports"
         >
           <TaskListItem
             stepName="4"
-            linkUrl={getProjectRevisionFormPageRoute(id, 4)}
+            linkUrl={getProjectRevisionFormPageRoute(id, 5)}
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
-        {/* Quarterly Reports Section */}
-        {/* Milestone Reports Section */}
-        <TaskListSection
-          defaultExpandedState={currentStep === "milestone-reports"}
-          listItemNumber="4"
-          listItemName="Milestone Reports"
-        >
-          <TaskListItem
-            stepName="milestone-reports"
-            linkUrl={getProjectRevisionMilestoneReportsFormPageRoute(id)}
-            formTitle="Milestone reports"
-            formStatus={null} // Leaving this status as null for now while we decide how to display milestone statuses
             currentStep={currentStep}
             mode={mode}
           />
@@ -158,7 +162,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {mode !== "view" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
-            listItemNumber="5"
+            listItemNumber="6"
             listItemName="Submit changes"
           >
             <TaskListItem

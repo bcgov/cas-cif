@@ -44,10 +44,12 @@ const pageQuery = graphql`
         ...ProjectManagerFormSummary_projectRevision
         ...ProjectQuarterlyReportForm_projectRevision
         ...ProjectAnnualReportForm_projectRevision
+        ...ProjectMilestoneReportForm_projectRevision
       }
       ...ProjectForm_query
       ...ProjectContactForm_query
       ...ProjectManagerFormGroup_query
+      ...ProjectMilestoneReportForm_query
     }
   }
 `;

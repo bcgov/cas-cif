@@ -44904,9 +44904,6 @@ type ReportingRequirement implements Node {
   """Comments about the reporting requirement"""
   comments: String
 
-<<<<<<< HEAD
-  """The date the reporting requirement was completed"""
-=======
   """
   The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
     Automatic calculations are as follows:
@@ -44914,7 +44911,6 @@ type ReportingRequirement implements Node {
     60 days before report due date for project summary report
     150 days before report due date for TEIMP report
   """
->>>>>>> chore: update graphql schema after rebase
   completionDate: Datetime
 
   """created at timestamp"""
