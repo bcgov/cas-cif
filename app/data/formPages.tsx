@@ -40,13 +40,13 @@ const formPages: FormPageDefinition[] = [
     title: "quarterly reports",
     editComponent: ProjectQuarterlyReportForm,
     // TODO: switch to ProjectQuarterlyReportFormSummary when it's been merged
-    viewComponent: null,
+    viewComponent: () => null,
   },
   {
     title: "annual reports",
     editComponent: ProjectAnnualReportForm,
     // TODO: switch to ProjectAnnualReportFormSummary when it's been merged
-    viewComponent: null,
+    viewComponent: () => null,
   },
 ];
 
