@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 import { act, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledProjectRevisionQuery, {
