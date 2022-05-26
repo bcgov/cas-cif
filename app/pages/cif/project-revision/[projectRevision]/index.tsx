@@ -18,13 +18,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   getProjectsPageRoute,
-  getProjectRevisionOverviewFormPageRoute,
+  getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { useMemo } from "react";
+import { TaskListMode } from "components/TaskList/types";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -87,9 +88,7 @@ export function ProjectRevision({
     query.projectRevision?.changeStatus === "committed";
   useEffect(() => {
     if (isCommittedRevision)
-      router.push(
-        getProjectRevisionOverviewFormPageRoute(query.projectRevision.id)
-      );
+      router.push(getProjectRevisionFormPageRoute(query.projectRevision.id, 0));
   }, [isCommittedRevision, query, router]);
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
@@ -168,7 +167,14 @@ export function ProjectRevision({
     });
   };
 
-  const taskList = <TaskList projectRevision={query.projectRevision} />;
+  let mode: TaskListMode;
+  if (!query.projectRevision?.projectId) mode = "create";
+  else if (query.projectRevision.changeStatus === "committed") mode = "view";
+  else mode = "update";
+
+  const taskList = (
+    <TaskList projectRevision={query.projectRevision} mode={mode} />
+  );
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>

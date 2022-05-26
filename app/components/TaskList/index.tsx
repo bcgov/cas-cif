@@ -1,11 +1,7 @@
 import { useRouter } from "next/router";
 import {
-  getProjectRevisionAnnualReportsFormPageRoute,
-  getProjectRevisionContactsFormPageRoute,
-  getProjectRevisionManagersFormPageRoute,
-  getProjectRevisionOverviewFormPageRoute,
   getProjectRevisionPageRoute,
-  getProjectRevisionQuarterlyReportsFormPageRoute,
+  getProjectRevisionFormPageRoute,
 } from "pageRoutes";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -16,13 +12,13 @@ import { TaskListMode } from "./types";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
+  mode: TaskListMode;
 }
 
-const TaskList: React.FC<Props> = ({ projectRevision }) => {
+const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
     id,
     projectByProjectId,
-    changeStatus,
     projectOverviewStatus,
     projectManagersStatus,
     projectContactsStatus,
@@ -34,7 +30,6 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
-        changeStatus
         projectByProjectId {
           proposalReference
         }
@@ -59,20 +54,10 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
   );
   const router = useRouter();
 
-  let mode =
-    changeStatus === "committed"
-      ? "view"
-      : projectByProjectId
-      ? "update"
-      : "create";
-
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
-    if (`${router.pathname}/` === getProjectRevisionPageRoute(id).pathname)
-      return "summary";
-    const routeParts = router.pathname.split("/");
-    return routeParts[routeParts.length - 1];
-  }, [id, router]);
+    return (router.query.formIndex as string) ?? "summary";
+  }, [router]);
 
   return (
     <div className="container">
@@ -86,76 +71,74 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
       <ol>
         {/* Project Overview Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "overview"}
+          defaultExpandedState={currentStep === "0"}
           listItemNumber="1"
           listItemName="Project Overview"
         >
           <TaskListItem
-            stepName="overview"
-            linkUrl={getProjectRevisionOverviewFormPageRoute(id)}
+            stepName="0"
+            linkUrl={getProjectRevisionFormPageRoute(id, 0)}
             formTitle="Project overview"
             formStatus={projectOverviewStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
         {/* Project Details Section */}
         <TaskListSection
-          defaultExpandedState={
-            currentStep === "contacts" || currentStep === "managers"
-          }
+          defaultExpandedState={currentStep === "1" || currentStep === "2"}
           listItemNumber="2"
           listItemName="Project Details"
           listItemMode={mode === "update" ? "" : "(optional)"}
         >
           <TaskListItem
-            stepName="managers"
-            linkUrl={getProjectRevisionManagersFormPageRoute(id)}
+            stepName="1"
+            linkUrl={getProjectRevisionFormPageRoute(id, 1)}
             formTitle="Project managers"
             formStatus={projectManagersStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
           <TaskListItem
-            stepName="contacts"
-            linkUrl={getProjectRevisionContactsFormPageRoute(id)}
+            stepName="2"
+            linkUrl={getProjectRevisionFormPageRoute(id, 2)}
             formTitle="Project contacts"
             formStatus={projectContactsStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
         {/* Quarterly Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "quarterly-reports"}
+          defaultExpandedState={currentStep === "3"}
           listItemNumber="3"
           listItemName="Quarterly Reports"
         >
           <TaskListItem
-            stepName="quarterly-reports"
-            linkUrl={getProjectRevisionQuarterlyReportsFormPageRoute(id)}
+            stepName="3"
+            linkUrl={getProjectRevisionFormPageRoute(id, 3)}
             formTitle="Quarterly reports"
             formStatus={quarterlyReportsStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
         {/* Annual Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "annual-reports"}
+          defaultExpandedState={currentStep === "4"}
           listItemNumber="4"
           listItemName="Annual Reports"
         >
           <TaskListItem
-            stepName="annual-reports"
-            linkUrl={getProjectRevisionAnnualReportsFormPageRoute(id)}
+            stepName="4"
+            linkUrl={getProjectRevisionFormPageRoute(id, 4)}
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
             currentStep={currentStep}
-            mode={mode as TaskListMode}
+            mode={mode}
           />
         </TaskListSection>
 
@@ -172,7 +155,7 @@ const TaskList: React.FC<Props> = ({ projectRevision }) => {
               formTitle="Review and submit information"
               formStatus={null}
               currentStep={currentStep}
-              mode={mode as TaskListMode}
+              mode={mode}
             />
           </TaskListSection>
         )}

@@ -1,15 +1,15 @@
 import "@testing-library/jest-dom";
-import { screen, within } from "@testing-library/react";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "pageRoutes";
-import { ProjectAnnualReportsPage } from "pages/cif/project-revision/[projectRevision]/form/annual-reports";
+import { cleanup, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import {
+  getProjectRevisionFormPageRoute,
+  getProjectRevisionPageRoute,
+} from "pageRoutes";
+import ProjectFormPage from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
-import compiledAnnualReportsFormQuery, {
-  annualReportsFormQuery,
-} from "__generated__/annualReportsFormQuery.graphql";
-
-jest.mock("next/dist/client/router");
+import compiledFormIndexPageQuery, {
+  FormIndexPageQuery,
+} from "__generated__/FormIndexPageQuery.graphql";
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -22,6 +22,8 @@ const defaultMockResolver = {
   ProjectRevision(context, generateId) {
     return {
       id: `mock-proj-rev-${generateId()}`,
+      projectId: 123,
+      changeStatus: "pending",
       projectByProjectId: {
         proposalReference: "001",
       },
@@ -31,13 +33,16 @@ const defaultMockResolver = {
           someProjectData: "test2",
         },
       },
+      managerFormChanges: {
+        edges: [],
+      },
     };
   },
 };
 
-const pageTestingHelper = new PageTestingHelper<annualReportsFormQuery>({
-  pageComponent: ProjectAnnualReportsPage,
-  compiledQuery: compiledAnnualReportsFormQuery,
+const pageTestingHelper = new PageTestingHelper<FormIndexPageQuery>({
+  pageComponent: ProjectFormPage,
+  compiledQuery: compiledFormIndexPageQuery,
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: {
     projectRevision: "mock-id",
@@ -47,16 +52,13 @@ const pageTestingHelper = new PageTestingHelper<annualReportsFormQuery>({
 describe("The Project Annual Reports page", () => {
   beforeEach(() => {
     pageTestingHelper.reinit();
+    pageTestingHelper.setMockRouterValues({
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
+      query: { projectRevision: "mock-id", formIndex: "1" },
+    });
   });
 
   it("renders the task list in the left navigation with correct highlighting", () => {
-    const router = mocked(useRouter);
-    const mockPathname =
-      "/cif/project-revision/[projectRevision]/form/annual-reports";
-    router.mockReturnValue({
-      pathname: mockPathname,
-    } as any);
-
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
@@ -65,70 +67,61 @@ describe("The Project Annual Reports page", () => {
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/Editing: 001/i)
     ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Edit project managers/i).closest("li")
+    ).toHaveAttribute("aria-current", "step");
+
+    cleanup();
+
+    pageTestingHelper.setMockRouterValues({
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
+      query: { projectRevision: "mock-id", formIndex: "4" },
+    });
+
+    pageTestingHelper.renderPage();
+
     expect(
       screen.getByText(/Edit annual reports/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
 
-  it("redirects the user to the project revision page on submit when editing", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
-    let handleSubmit;
-    jest
-      .spyOn(require("components/Form/ProjectAnnualReportForm"), "default")
-      .mockImplementation((props: any) => {
-        handleSubmit = () => props.onSubmit();
-        return null;
-      });
+  it("redirects the user to the project revision page on submit when editing", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-    handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
+    await userEvent.click(screen.getByText(/submit managers/i));
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
     );
   });
 
-  it("redirects the user to the project revision page on submit when creating a project", () => {
-    const router = mocked(useRouter);
-    const mockPush = jest.fn();
-    router.mockReturnValue({
-      push: mockPush,
-    } as any);
-
-    let handleSubmit;
-    jest
-      .spyOn(require("components/Form/ProjectAnnualReportForm"), "default")
-      .mockImplementation((props: any) => {
-        handleSubmit = () => props.onSubmit();
-        return null;
-      });
+  it("redirects the user to the next page on submit when creating a project", async () => {
     pageTestingHelper.loadQuery({
-      ProjectRevision() {
+      ProjectRevision(context, generateId) {
         return {
           id: "mock-proj-rev-id",
           projectId: null,
           projectByProjectId: null,
-          projectFormChange: null,
+          projectFormChange: {
+            id: `mock-project-form-${generateId()}`,
+            newFormData: {
+              someProjectData: "test2",
+            },
+          },
+          managerFormChanges: {
+            edges: [],
+          },
         };
       },
     });
     pageTestingHelper.renderPage();
-    handleSubmit();
-    expect(mockPush).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-proj-rev-id")
+    await userEvent.click(screen.getByText(/submit managers/i));
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
+      getProjectRevisionFormPageRoute("mock-proj-rev-id", 2)
     );
   });
 
   it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
-    const mockReplace = jest.fn();
-    mocked(useRouter).mockReturnValue({
-      replace: mockReplace,
-    } as any);
-
     pageTestingHelper.loadQuery({
       Query() {
         return {
@@ -140,6 +133,6 @@ describe("The Project Annual Reports page", () => {
     const { container } = pageTestingHelper.renderPage();
 
     expect(container.childElementCount).toEqual(0);
-    expect(mockReplace).toHaveBeenCalledWith("/404");
+    expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
   });
 });

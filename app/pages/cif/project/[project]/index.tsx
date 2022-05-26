@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
-import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
+import { getProjectRevisionFormPageRoute } from "pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import Link from "next/link";
 
@@ -78,8 +78,9 @@ export function ProjectViewPage({
       variables: { projectId: project.rowId },
       onCompleted: (response) => {
         router.push(
-          getProjectRevisionOverviewFormPageRoute(
-            response.createProjectRevision.projectRevision.id
+          getProjectRevisionFormPageRoute(
+            response.createProjectRevision.projectRevision.id,
+            0
           )
         );
       },
@@ -91,9 +92,7 @@ export function ProjectViewPage({
       size="small"
       onClick={() =>
         router.push(
-          getProjectRevisionOverviewFormPageRoute(
-            project.pendingProjectRevision.id
-          )
+          getProjectRevisionFormPageRoute(project.pendingProjectRevision.id, 0)
         )
       }
     >

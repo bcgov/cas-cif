@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
 import { useCreateProjectMutation } from "mutations/Project/createProject";
 import { useRouter } from "next/router";
-import { getProjectRevisionOverviewFormPageRoute } from "pageRoutes";
+import { getProjectRevisionFormPageRoute } from "pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import {
@@ -124,8 +124,9 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       variables: { input: {} },
       onCompleted: (response) => {
         router.push(
-          getProjectRevisionOverviewFormPageRoute(
-            response.createProject.projectRevision.id
+          getProjectRevisionFormPageRoute(
+            response.createProject.projectRevision.id,
+            0
           )
         );
       },
@@ -134,7 +135,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
 
   const handleResumeCreateProject = () => {
     router.push(
-      getProjectRevisionOverviewFormPageRoute(pendingNewProjectRevision.id)
+      getProjectRevisionFormPageRoute(pendingNewProjectRevision.id, 0)
     );
   };
 

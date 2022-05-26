@@ -43,6 +43,7 @@ const componentTestingHelper = new ComponentTestingHelper<TaskListQuery>({
   }),
   defaultQueryResolver: mockQueryPayload,
   defaultQueryVariables: { projectRevision: "Test Revision ID" },
+  defaultComponentProps: { mode: "update" },
 });
 
 describe("The ProjectManagerForm", () => {
@@ -51,25 +52,18 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Renders the TaskList In edit mode when projectByProjectId is not null", () => {
+  it("Renders the TaskList In edit", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
+
     expect(
       screen.getByText("Editing: test-project-proposal-reference")
     ).toBeInTheDocument();
   });
 
-  it("Renders the TaskList In create mode when projectByProjectId is null", () => {
-    componentTestingHelper.loadQuery({
-      Query() {
-        return {
-          projectRevision: {
-            projectByProjectId: null,
-          },
-        };
-      },
-    });
-    componentTestingHelper.renderComponent();
+  it("Renders the TaskList In create", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, { mode: "create" });
     expect(screen.getByText("Add a Project")).toBeInTheDocument();
   });
 
@@ -103,8 +97,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/overview?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/overview",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=0",
+      "/cif/project-revision/test-project-revision-id/form/0",
       expect.any(Object)
     );
   });
@@ -117,8 +111,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/contacts?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/contacts",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=2",
+      "/cif/project-revision/test-project-revision-id/form/2",
       expect.any(Object)
     );
   });
@@ -130,8 +124,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/managers?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/managers",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=1",
+      "/cif/project-revision/test-project-revision-id/form/1",
       expect.any(Object)
     );
   });
@@ -144,8 +138,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/quarterly-reports?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/form/quarterly-reports",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3",
+      "/cif/project-revision/test-project-revision-id/form/3",
       expect.any(Object)
     );
   });

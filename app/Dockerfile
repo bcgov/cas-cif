@@ -35,8 +35,8 @@ ENV SUPPORT_EMAIL=ggircs@gov.bc.ca
 
 RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 CYPRESS_INSTALL_BINARY=0 \
     yarn install --frozen-lockfile --production=false && \
-    yarn build:server && \
     yarn build:relay && \
+    yarn build:server && \
     yarn build:next && \
     yarn install --frozen-lockfile --production=true && \
     yarn cache clean && \

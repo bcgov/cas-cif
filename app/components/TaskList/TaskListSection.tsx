@@ -1,6 +1,6 @@
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   defaultExpandedState: boolean;
@@ -19,6 +19,9 @@ const TaskListSection: React.FC<Props> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpandedState);
   const toggleCustomAccordion = () => setIsExpanded(!isExpanded);
+  useEffect(() => {
+    setIsExpanded(defaultExpandedState);
+  }, [defaultExpandedState]);
 
   return (
     <li>

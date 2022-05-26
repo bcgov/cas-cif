@@ -3,10 +3,9 @@ import userEvent from "@testing-library/user-event";
 import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportForm";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
-import { ProjectQuarterlyReportForm_projectRevision } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
-import compiledProjectQuarterlyReportFormQuery, {
-  quarterlyReportsFormQuery,
-} from "__generated__/quarterlyReportsFormQuery.graphql";
+import compiledFormIndexPageQuery, {
+  FormIndexPageQuery,
+} from "__generated__/FormIndexPageQuery.graphql";
 
 const testQuery = graphql`
   query ProjectQuarterlyReportFormQuery @relay_test_operation {
@@ -21,7 +20,7 @@ const testQuery = graphql`
 
 const defaultMockResolver = {
   ProjectRevision(context, generateID) {
-    const result: Partial<ProjectQuarterlyReportForm_projectRevision> = {
+    return {
       id: `mock-proj-rev-${generateID()}`,
       rowId: 1234,
       projectQuarterlyReportFormChanges: {
@@ -60,7 +59,6 @@ const defaultMockResolver = {
         __id: "client:mock:__connection_projectQuarterlyReportFormChanges_connection",
       },
     };
-    return result;
   },
 };
 
@@ -69,19 +67,18 @@ const defaultComponentProps = {
   onSubmit: jest.fn(),
 };
 
-const componentTestingHelper =
-  new ComponentTestingHelper<quarterlyReportsFormQuery>({
-    component: ProjectQuarterlyReportForm,
-    testQuery: testQuery,
-    compiledQuery: compiledProjectQuarterlyReportFormQuery,
-    getPropsFromTestQuery: (data) => ({
-      query: data.query,
-      projectRevision: data.query.projectRevision,
-    }),
-    defaultQueryResolver: defaultMockResolver,
-    defaultQueryVariables: { projectRevision: "mock-id" },
-    defaultComponentProps: defaultComponentProps,
-  });
+const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
+  component: ProjectQuarterlyReportForm,
+  testQuery: testQuery,
+  compiledQuery: compiledFormIndexPageQuery,
+  getPropsFromTestQuery: (data) => ({
+    query: data.query,
+    projectRevision: data.query.projectRevision,
+  }),
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: { projectRevision: "mock-id" },
+  defaultComponentProps: defaultComponentProps,
+});
 
 describe("The ProjectQuarterlyReportForm", () => {
   beforeEach(() => {
@@ -198,7 +195,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     const mockResolver = {
       ...defaultMockResolver,
       ProjectRevision(context, generateID) {
-        const result: Partial<ProjectQuarterlyReportForm_projectRevision> = {
+        return {
           projectQuarterlyReportFormChanges: {
             edges: [
               {
@@ -219,7 +216,6 @@ describe("The ProjectQuarterlyReportForm", () => {
             __id: "client:mock:__connection_projectQuarterlyReportFormChanges_connection",
           },
         };
-        return result;
       },
     };
     componentTestingHelper.loadQuery(mockResolver);

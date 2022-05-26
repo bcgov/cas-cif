@@ -1,24 +1,24 @@
 import { Button } from "@button-inc/bcgov-theme";
-import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
-import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
+import { TaskListMode } from "components/TaskList/types";
+import formPages from "data/formPages";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
+import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
 import {
-  getProjectRevisionContactsFormPageRoute,
-  getProjectRevisionManagersFormPageRoute,
+  getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
 } from "pageRoutes";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { managersFormQuery } from "__generated__/managersFormQuery.graphql";
+import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
 
 const pageQuery = graphql`
-  query managersFormQuery($projectRevision: ID!) {
+  query FormIndexPageQuery($projectRevision: ID!) {
     query {
       session {
         ...DefaultLayout_session
@@ -35,42 +35,79 @@ const pageQuery = graphql`
             id
           }
         }
-        ...ProjectManagerFormGroup_revision
-        ...ProjectManagerFormSummary_projectRevision
         ...TaskList_projectRevision
+        ...ProjectForm_projectRevision
+        ...ProjectFormSummary_projectRevision
+        ...ProjectContactForm_projectRevision
+        ...ProjectContactFormSummary_projectRevision
+        ...ProjectManagerFormGroup_projectRevision
+        ...ProjectManagerFormSummary_projectRevision
+        ...ProjectQuarterlyReportForm_projectRevision
+        ...ProjectAnnualReportForm_projectRevision
       }
+      ...ProjectForm_query
+      ...ProjectContactForm_query
       ...ProjectManagerFormGroup_query
     }
   }
 `;
 
-export function ProjectManagersForm({
+export function ProjectFormPage({
   preloadedQuery,
-}: RelayProps<{}, managersFormQuery>) {
+}: RelayProps<{}, FormIndexPageQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
+
+  let mode: TaskListMode;
+  if (!query.projectRevision?.projectId) mode = "create";
+  else if (query.projectRevision.changeStatus === "committed") mode = "view";
+  else mode = "update";
+
+  const formIndex = Number(router.query.formIndex);
+
   const existingRevision =
     query.projectRevision?.projectByProjectId?.pendingProjectRevision;
+
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
+
+  const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
+  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
+      ?.id,
+    mode === "view"
+  );
+  const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(
+    formIndex,
+    formPages.length
+  );
+
+  if (
+    isRedirecting ||
+    isRedirectingToLatestRevision ||
+    isRedirectingToValidFormIndex
+  )
+    return null;
 
   const handleCreateRevision = () => {
     createProjectRevision({
       variables: { projectId: query.projectRevision.projectId },
       onCompleted: (response) => {
         router.push(
-          getProjectRevisionManagersFormPageRoute(
-            response.createProjectRevision.projectRevision.id
+          getProjectRevisionFormPageRoute(
+            response.createProjectRevision.projectRevision.id,
+            router.query.formIndex as string
           )
         );
       },
     });
   };
-
   const handleResumeRevision = () => {
     router.push(
-      getProjectRevisionManagersFormPageRoute(
-        query.projectRevision.projectByProjectId.pendingProjectRevision.id
+      getProjectRevisionFormPageRoute(
+        query.projectRevision.projectByProjectId.pendingProjectRevision.id,
+        router.query.formIndex as string
       )
     );
   };
@@ -96,41 +133,36 @@ export function ProjectManagersForm({
     );
   };
 
-  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
-    query.projectRevision?.id,
-    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
-      ?.id,
-    query.projectRevision?.changeStatus === "committed"
+  const taskList = (
+    <TaskList projectRevision={query.projectRevision} mode={mode} />
   );
-  const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  if (isRedirecting || isRedirectingToLatestRevision) return null;
-
-  const taskList = <TaskList projectRevision={query.projectRevision} />;
 
   const handleSubmit = () => {
-    if (existingRevision) {
+    if (mode === "update" || formIndex === formPages.length - 1) {
       router.push(getProjectRevisionPageRoute(query.projectRevision.id));
     } else {
       router.push(
-        getProjectRevisionContactsFormPageRoute(query.projectRevision.id)
+        getProjectRevisionFormPageRoute(query.projectRevision.id, formIndex + 1)
       );
     }
   };
 
+  const EditComponent = formPages[formIndex].editComponent;
+  const ViewComponent = formPages[formIndex].viewComponent;
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      {query.projectRevision.changeStatus === "committed" ? (
+      {query.projectRevision.changeStatus === "committed" && ViewComponent ? (
         <>
           {createEditButton()}
-          <ProjectManagerFormSummary
+          <ViewComponent
             projectRevision={query.projectRevision}
             viewOnly={true}
           />
         </>
       ) : (
-        <ProjectManagerFormGroup
+        <EditComponent
           query={query}
-          revision={query.projectRevision}
+          projectRevision={query.projectRevision}
           onSubmit={handleSubmit}
         />
       )}
@@ -138,4 +170,4 @@ export function ProjectManagersForm({
   );
 }
 
-export default withRelay(ProjectManagersForm, pageQuery, withRelayOptions);
+export default withRelay(ProjectFormPage, pageQuery, withRelayOptions);

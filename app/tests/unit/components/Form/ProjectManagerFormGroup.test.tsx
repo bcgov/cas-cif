@@ -21,7 +21,7 @@ const testQuery = graphql`
       # Spread the fragment you want to test here
       ...ProjectManagerFormGroup_query
       projectRevision(id: $projectRevision) {
-        ...ProjectManagerFormGroup_revision
+        ...ProjectManagerFormGroup_projectRevision
       }
     }
   }

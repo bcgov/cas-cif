@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormGroup_query$key } from "__generated__/ProjectManagerFormGroup_query.graphql";
-import { ProjectManagerFormGroup_revision$key } from "__generated__/ProjectManagerFormGroup_revision.graphql";
+import { ProjectManagerFormGroup_projectRevision$key } from "__generated__/ProjectManagerFormGroup_projectRevision.graphql";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import ProjectManagerForm from "./ProjectManagerForm";
@@ -13,7 +13,7 @@ import useAddManagerToRevisionMutation from "mutations/ProjectManager/addManager
 
 interface Props {
   query: ProjectManagerFormGroup_query$key;
-  revision: ProjectManagerFormGroup_revision$key;
+  projectRevision: ProjectManagerFormGroup_projectRevision$key;
   onSubmit: () => void;
 }
 
@@ -30,7 +30,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
   const projectRevision = useFragment(
     graphql`
-      fragment ProjectManagerFormGroup_revision on ProjectRevision {
+      fragment ProjectManagerFormGroup_projectRevision on ProjectRevision {
         id
         rowId
         changeStatus
@@ -59,7 +59,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.revision
+    props.projectRevision
   );
 
   const { edges } = projectRevision.managerFormChanges;
@@ -176,6 +176,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
     try {
       await Promise.all(completedPromises);
+
       if (errors.length === 0) props.onSubmit();
     } catch (e) {
       // the failing mutation will display an error message and send the error to sentry

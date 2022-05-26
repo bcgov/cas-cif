@@ -11,7 +11,7 @@ export function createMockRouter(
     asPath: "/",
     back: jest.fn(),
     beforePopState: jest.fn(),
-    prefetch: jest.fn(),
+    prefetch: jest.fn().mockImplementation(() => new Promise(() => {})),
     push: jest.fn(),
     reload: jest.fn(),
     replace: jest.fn(),

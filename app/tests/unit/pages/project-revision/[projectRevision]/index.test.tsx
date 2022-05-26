@@ -1,15 +1,11 @@
 import "@testing-library/jest-dom";
 import { act, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mocked } from "jest-mock";
-import { useRouter } from "next/router";
 import { ProjectRevision } from "pages/cif/project-revision/[projectRevision]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
 } from "__generated__/ProjectRevisionQuery.graphql";
-
-jest.mock("next/router");
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -22,7 +18,9 @@ const defaultMockResolver = {
   ProjectRevision() {
     return {
       id: "mock-proj-rev-id",
-      projectByProjectId: null,
+      projectByProjectId: {
+        proposalReference: null,
+      },
       projectFormChange: {
         id: "mock-project-form-id",
         newFormData: {
@@ -49,14 +47,21 @@ describe("The Create Project page", () => {
   });
 
   it("renders the task list in the left navigation with correct highlighting", () => {
-    const router = mocked(useRouter);
     const mockPathname = "/cif/project-revision/[projectRevision]";
-    router.mockReturnValue({
+    pageTestingHelper.setMockRouterValues({
       pathname: mockPathname,
-    } as any);
+    });
 
-    pageTestingHelper.loadQuery();
+    pageTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "mock-id",
+          projectId: null,
+        };
+      },
+    });
     pageTestingHelper.renderPage();
+
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
@@ -272,10 +277,6 @@ describe("The Create Project page", () => {
       .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
       .mockImplementation(() => [useMutationSpy, false]);
 
-    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
-      return { push: jest.fn() };
-    });
-
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
@@ -367,9 +368,6 @@ describe("The Create Project page", () => {
       "default"
     );
 
-    mocked(useRouter).mockReturnValue({
-      replace: jest.fn(),
-    } as any);
     pageTestingHelper.loadQuery({
       Query() {
         return {
@@ -436,11 +434,6 @@ describe("The Create Project page", () => {
   });
 
   it("routes to the project list page when discarding a project revision and isFirstRevision is true", () => {
-    mocked(useRouter).mockReturnValue({
-      replace: jest.fn(),
-      push: jest.fn(),
-    } as any);
-
     const mockResolver = {
       ProjectRevision() {
         return {
@@ -460,17 +453,12 @@ describe("The Create Project page", () => {
       });
     });
 
-    expect(useRouter().push).toHaveBeenCalledWith({
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/projects/",
     });
   });
 
   it("routes to the project overview when discarding project revision and isFirstRevision is false", () => {
-    mocked(useRouter).mockReturnValue({
-      replace: jest.fn(),
-      push: jest.fn(),
-    } as any);
-
     const mockResolver = {
       ProjectRevision() {
         return {
@@ -496,7 +484,7 @@ describe("The Create Project page", () => {
       });
     });
 
-    expect(useRouter().push).toHaveBeenCalledWith({
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/",
       query: {
         projectRevision: "mock-proj-rev-id",
