@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(6);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -50,7 +50,7 @@ values (
   '[]'
 ),(
   '{"testField": "change me"}',
-  'update',
+  'create',
   'pending',
   'cif',
   'test_table_name',
@@ -62,6 +62,16 @@ values (
   '{"testField": "test value"}',
   'update',
   'staged',
+  'cif',
+  'project',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+('{"testField": "do not change me"}',
+  'create',
+  'pending',
   'cif',
   'test_table_name',
   'schema',
@@ -84,8 +94,7 @@ values (
 /* END SETUP */
 
 -- we are calling the function once with an array of form_change_ids
-select cif.undo_form_changes(ARRAY[2, 3]);
-
+select cif.undo_form_changes(ARRAY[2, 3, 5]);
 
 select is(
   (
@@ -102,12 +111,22 @@ select is(
 
 select is(
   (
+    select operation from cif.form_change
+    where id =2
+  ),
+  'update'
+  ,
+  'form change with previous form change id have operation reverted to update'
+);
+
+select is(
+  (
     select new_form_data from cif.form_change
     where id = 3
   ),
   '{}'::jsonb
   ,
-  'form changes with no previous form change id are set to empty json'
+  'form changes with no previous form change id are set to empty json when form_data_table name is project'
 );
 
 select is(
@@ -119,6 +138,28 @@ select is(
   ,
   'form changes did not pass to function are not changed'
 );
+
+select is(
+  (
+    select new_form_data from cif.form_change
+    where id = 5
+  ),
+  null
+  ,
+  'form changes with no previous form change id are set to null when form_data_table name is not project'
+);
+
+select results_eq(
+  $$
+    select (ufc).id from cif.undo_form_changes(ARRAY[2]) ufc
+  $$,
+  $$
+    select id from cif.project_revision where id = 1
+  $$,
+  'Returns project revision on calling undo_form_changes'
+);
+
+
 
 select finish();
 
