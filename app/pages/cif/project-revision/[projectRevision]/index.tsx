@@ -166,7 +166,14 @@ export function ProjectRevision({
     });
   };
 
-  const taskList = <TaskList projectRevision={query.projectRevision} />;
+  let mode;
+  if (!query.projectRevision?.projectId) mode = "create";
+  else if (query.projectRevision.changeStatus === "committed") mode = "view";
+  else mode = "update";
+
+  const taskList = (
+    <TaskList projectRevision={query.projectRevision} mode={mode} />
+  );
 
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>

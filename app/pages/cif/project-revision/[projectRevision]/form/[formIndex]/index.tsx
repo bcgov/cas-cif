@@ -56,11 +56,10 @@ export function ProjectFormPage({
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
 
-  const mode = !query.projectRevision?.projectId
-    ? "create"
-    : query.projectRevision.changeStatus === "committed"
-    ? "view"
-    : "update";
+  let mode;
+  if (!query.projectRevision?.projectId) mode = "create";
+  else if (query.projectRevision.changeStatus === "committed") mode = "view";
+  else mode = "update";
 
   const existingRevision =
     query.projectRevision?.projectByProjectId?.pendingProjectRevision;
