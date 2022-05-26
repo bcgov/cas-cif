@@ -98,6 +98,7 @@ describe("the new project page", () => {
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
+    cy.findByText(/Add another milestone report/i).click();
 
     cy.url().should("include", "/form/milestone-reports");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
@@ -208,6 +209,7 @@ describe("the new project page", () => {
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
     cy.url().should("include", "/form/milestone-reports");
+    cy.findByText(/Add another milestone report/i).click();
 
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
@@ -315,6 +317,7 @@ describe("the new project page", () => {
 
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
+    cy.findByText(/Add another milestone report/i).click();
 
     cy.url().should("include", "/form/milestone-reports");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
