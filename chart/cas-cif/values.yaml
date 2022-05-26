@@ -6,9 +6,9 @@ replicaCount: 2
 
 image:
   app:
-    repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-cif-app
+    repository: ghcr.io/bcgov/cas-cif-schema/cas-cif-app
   schema:
-    repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-cif-schema
+    repository: ghcr.io/bcgov/cas-cif-schema
   psql:
     repository: artifacts.developer.gov.bc.ca/google-docker-remote/ggl-cas-storage/cas-postgres
     tag: "0.3.0"
