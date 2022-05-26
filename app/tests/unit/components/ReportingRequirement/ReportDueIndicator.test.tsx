@@ -46,7 +46,7 @@ describe("The report due indicator", () => {
     // Reset the mocked system date
     Settings.now = () => Date.now();
   });
-  it("Displays the remaining days to the next report due date if the report is upcoming", () => {
+  it("Displays the number of days overdue if the report is overdue", () => {
     Settings.now = () => new Date("January 20, 2020").getTime();
 
     componentTestingHelper.loadQuery();
@@ -58,7 +58,7 @@ describe("The report due indicator", () => {
     );
   });
 
-  it("Displays the number of days overdue if the report is overdue", () => {
+  it("Displays the remaining days to the next report due date if the report is upcoming", () => {
     Settings.now = () => new Date("January 08, 2020").getTime();
 
     componentTestingHelper.loadQuery();
@@ -71,7 +71,7 @@ describe("The report due indicator", () => {
   it("Displays a 'no report due' message if the form_change is null", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent(() => ({
-      reportDueFormChange: undefined,
+      reportDueFormChange: null,
     }));
 
     // Group role grabs the fieldset
