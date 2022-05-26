@@ -55,7 +55,7 @@ describe("The ProjectManagerForm", () => {
   it("Renders the TaskList In edit", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    // screen.logTestingPlaygroundURL();
+
     expect(
       screen.getByText("Editing: test-project-proposal-reference")
     ).toBeInTheDocument();

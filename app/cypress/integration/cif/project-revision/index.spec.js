@@ -54,7 +54,7 @@ describe("the new project page", () => {
       component: "Project Contacts Form",
       variant: "empty",
     });
-    cy.findByText(/Submit changes/i).click();
+    cy.findByText(/Submit contacts/i).click();
 
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();

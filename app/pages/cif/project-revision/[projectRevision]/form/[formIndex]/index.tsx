@@ -4,6 +4,7 @@ import TaskList from "components/TaskList";
 import formPages from "data/formPages";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
+import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
@@ -61,6 +62,8 @@ export function ProjectFormPage({
   else if (query.projectRevision.changeStatus === "committed") mode = "view";
   else mode = "update";
 
+  const formIndex = Number(router.query.formIndex);
+
   const existingRevision =
     query.projectRevision?.projectByProjectId?.pendingProjectRevision;
 
@@ -74,11 +77,17 @@ export function ProjectFormPage({
       ?.id,
     mode === "view"
   );
+  const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(
+    formIndex,
+    formPages.length
+  );
 
-  const formIndex = Number(router.query.formIndex);
-
-  // TODO: check that router.query.formIndex is within bounds
-  if (isRedirecting || isRedirectingToLatestRevision) return null;
+  if (
+    isRedirecting ||
+    isRedirectingToLatestRevision ||
+    isRedirectingToValidFormIndex
+  )
+    return null;
 
   const handleCreateRevision = () => {
     createProjectRevision({
