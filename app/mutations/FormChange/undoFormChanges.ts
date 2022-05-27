@@ -7,7 +7,7 @@ const mutation = graphql`
     undoFormChanges(input: $input) {
       projectRevision {
         ...ProjectForm_projectRevision
-        ...ProjectManagerFormGroup_revision
+        ...ProjectManagerFormGroup_projectRevision
         ...ProjectContactForm_projectRevision
         ...ProjectQuarterlyReportForm_projectRevision
       }
