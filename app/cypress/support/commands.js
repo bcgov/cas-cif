@@ -202,6 +202,8 @@ Cypress.Commands.add(
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
+    cy.wait(1000);
+
     cy.get('[label*="Due Date"]').should("have.length", reportNumber);
     cy.get('[label*="Due Date"]')
       .eq(reportNumber - 1)
