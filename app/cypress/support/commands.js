@@ -212,6 +212,8 @@ Cypress.Commands.add(
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
+    cy.wait(1000);
+
     cy.contains(`Quarterly Report ${reportNumber}`).should("be.visible");
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.get('[aria-label*="Due Date"]')
