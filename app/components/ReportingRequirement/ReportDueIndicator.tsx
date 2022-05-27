@@ -47,7 +47,7 @@ const ReportDueIndicator: React.FC<Props> = ({
         // Current date without time information
         DateTime.fromISO(
           DateTime.now().setZone("America/Vancouver").toISODate()
-        ),
+        ).setZone("America/Vancouver"),
         "days"
       );
 

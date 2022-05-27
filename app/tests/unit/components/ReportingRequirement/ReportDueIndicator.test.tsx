@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
-import { Settings } from "luxon";
+import { DateTime, Settings } from "luxon";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledTestQuery, {
@@ -22,7 +22,7 @@ const mockResolver = {
     return {
       id: "the-id-of-the-form-change",
       reportingRequirement: {
-        reportDueDate: "2020-01-10",
+        reportDueDate: "2020-01-10T00:00:00-08",
         reportingRequirementIndex: 3,
       },
     };
@@ -47,7 +47,10 @@ describe("The report due indicator", () => {
     Settings.now = () => Date.now();
   });
   it("Displays the number of days overdue if the report is overdue", () => {
-    Settings.now = () => new Date("January 20, 2020").getTime();
+    const jan20th2020 = DateTime.local(2020, 1, 20, {
+      zone: "America/Vancouver",
+    }).toMillis();
+    Settings.now = () => jan20th2020;
 
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -59,7 +62,10 @@ describe("The report due indicator", () => {
   });
 
   it("Displays the remaining days to the next report due date if the report is upcoming", () => {
-    Settings.now = () => new Date("January 08, 2020").getTime();
+    const jan8th2020 = DateTime.local(2020, 1, 8, {
+      zone: "America/Vancouver",
+    }).toMillis();
+    Settings.now = () => jan8th2020;
 
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
