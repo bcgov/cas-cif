@@ -1,6 +1,6 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectContactForm_query$key } from "__generated__/ProjectContactForm_query.graphql";
 import FormBase from "./FormBase";
@@ -83,10 +83,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
-              formChangeByPreviousFormChangeId {
-                changeStatus
-                newFormData
-              }
             }
           }
         }
@@ -112,6 +108,13 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     props.query
   );
 
+  // this aims to delete the form reference from the formRefs object when hitting the undo changes button
+  useEffect(() => {
+    Object.keys(formRefs.current).forEach((key) => {
+      if (!formRefs.current[key]) delete formRefs.current[key];
+    });
+  }, [projectRevision.projectContactFormChanges]);
+
   const contactSchema = useMemo(() => {
     return createProjectContactSchema(allContacts);
   }, [allContacts]);
@@ -119,18 +122,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   const uiSchema = createProjectContactUiSchema();
 
   const [addContactMutation, isAdding] = useAddContactToRevision();
-
-  const addContact = (contactIndex: number) => {
-    addContactMutation({
-      variables: {
-        input: {
-          revisionId: projectRevision.rowId,
-          contactIndex: contactIndex,
-        },
-        connections: [projectRevision.projectContactFormChanges.__id],
-      },
-    });
-  };
 
   const allForms = useMemo(() => {
     const contactForms = [
@@ -214,6 +205,34 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         },
       });
     }
+  };
+
+  const addContact = (contactIndex: number) => {
+    // Create primary contact when adding new secondary contact to the project if there is no primary contact
+    if (!primaryContactForm) {
+      createPrimaryContact({
+        variables: {
+          connections: [projectRevision.projectContactFormChanges.__id],
+          input: {
+            projectRevisionId: projectRevision.rowId,
+            operation: "CREATE",
+            formDataSchemaName: "cif",
+            formDataTableName: "project_contact",
+            jsonSchemaName: "project_contact",
+            newFormData: { projectId: projectRevision.rowId, contactIndex: 1 },
+          },
+        },
+      });
+    }
+    addContactMutation({
+      variables: {
+        input: {
+          revisionId: projectRevision.rowId,
+          contactIndex: contactIndex,
+        },
+        connections: [projectRevision.projectContactFormChanges.__id],
+      },
+    });
   };
 
   const stageContactFormChanges = async () => {
@@ -362,8 +381,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     onClick={() =>
                       // allForms is already sorted by contactIndex
                       addContact(
-                        allForms[allForms.length - 1].newFormData.contactIndex +
-                          1
+                        // if the primary contact not yet added, we pass 2 as the contactIndex and create the primary contact in the addContact function
+                        primaryContactForm
+                          ? allForms[allForms.length - 1].newFormData
+                              .contactIndex + 1
+                          : 2
                       )
                     }
                   >

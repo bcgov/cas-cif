@@ -161,15 +161,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                   <em>Primary contact not added</em>
                 )
               )}
-              formData={
-                primaryContact.node.newFormData.contactId
-                  ? primaryContact.node.newFormData
-                  : null
-              }
+              formData={primaryContact ? primaryContact.node.newFormData : null}
               formContext={{
-                operation: primaryContact.node.operation,
+                operation: primaryContact?.node.operation,
                 oldData:
-                  primaryContact.node.formChangeByPreviousFormChangeId
+                  primaryContact?.node.formChangeByPreviousFormChangeId
                     ?.newFormData,
                 oldUiSchema: createProjectContactUiSchema(
                   primaryContact?.node?.formChangeByPreviousFormChangeId
