@@ -533,6 +533,7 @@ describe("the new project page", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
 
+    cy.findByText(/Submit Changes/i).click();
     cy.findByText(/Review and submit information/i).click();
     cy.contains("Review and Submit Project");
     cy.wait(1000);
