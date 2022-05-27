@@ -1,10 +1,22 @@
 import { Button } from "@button-inc/bcgov-theme";
-
+import { useUndoFormChanges } from "mutations/FormChange/undoFormChanges";
 interface Props {
-  onClick: () => void;
+  formChangeIds: number[];
 }
 
-const UndoChangesButton: React.FC<Props> = ({ onClick }) => {
+const UndoChangesButton: React.FC<Props> = ({ formChangeIds }) => {
+  const [undoFormChanges] = useUndoFormChanges();
+
+  const handleClick = () => {
+    undoFormChanges({
+      variables: {
+        input: {
+          formChangesIds: formChangeIds,
+        },
+      },
+    });
+  };
+
   return (
     <Button
       type="button"
@@ -14,7 +26,7 @@ const UndoChangesButton: React.FC<Props> = ({ onClick }) => {
         marginLeft: "0rem",
       }}
       variant="secondary"
-      onClick={onClick}
+      onClick={handleClick}
       className="undo-changes-button"
     >
       Undo Changes

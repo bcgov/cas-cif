@@ -75,6 +75,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           edges {
             node {
               id
+              rowId
               newFormData
               operation
               changeStatus
@@ -227,61 +228,18 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     }
   };
 
-  const handleUndo = async () => {
-    let commitedContactData = [];
-
-    projectContactFormChanges.edges.forEach(({ node }) => {
-      if (node.formChangeByPreviousFormChangeId?.changeStatus === "committed") {
-        commitedContactData.push(node);
-      }
-      if (node.changeStatus === "pending") {
-        deleteContact(node.id, "ARCHIVE");
-      }
-    });
-
-    if (commitedContactData.length === 0) {
-      clearPrimaryContact();
-    } else {
-      const completedPromises: Promise<void>[] = [];
-
-      commitedContactData.forEach((node) => {
-        const undoneFormData =
-          node.formChangeByPreviousFormChangeId.newFormData;
-
-        const promise = new Promise<void>((resolve, reject) => {
-          applyUpdateFormChangeMutation({
-            variables: {
-              input: {
-                id: node.id,
-                formChangePatch: {
-                  changeStatus: "pending",
-                  newFormData: undoneFormData,
-                  operation: "UPDATE",
-                },
-              },
-            },
-            debounceKey: node.id,
-            onCompleted: () => {
-              resolve();
-            },
-            onError: reject,
-          });
-        });
-        completedPromises.push(promise);
-      });
-      try {
-        await Promise.all(completedPromises);
-      } catch (e) {
-        // the failing mutation will display an error message and send the error to sentry
-      }
-    }
-  };
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    return projectRevision.projectContactFormChanges.edges.map(
+      ({ node }) => node?.rowId
+    );
+  }, [projectRevision.projectContactFormChanges]);
 
   return (
     <div>
       <header>
         <h2>Project Contacts</h2>
-        <UndoChangesButton onClick={handleUndo} />
+        <UndoChangesButton formChangeIds={formChangeIds} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 

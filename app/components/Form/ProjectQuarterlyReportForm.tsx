@@ -9,7 +9,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
@@ -72,6 +72,15 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
+  // TODO: make it a reusable hook
+  // this aims to delete the form reference from the formRefs object when hitting the undo changes button
+  useEffect(() => {
+    Object.keys(formRefs.current).forEach((key) => {
+      if (!formRefs.current[key]) delete formRefs.current[key];
+    });
+  }, [projectRevision.projectQuarterlyReportFormChanges]);
+
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -206,56 +215,18 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     return [filteredReports, nextIndex];
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
-  const handleUndo = async () => {
-    let committedQuarterlyReports = [];
-
-    projectRevision.projectQuarterlyReportFormChanges.edges.forEach(
-      ({ node }) => {
-        if (
-          node.formChangeByPreviousFormChangeId?.changeStatus === "committed"
-        ) {
-          committedQuarterlyReports.push(node);
-        }
-        if (node.changeStatus === "pending" || node.changeStatus === "staged") {
-          deleteQuarterlyReport(node.id, "ARCHIVE");
-        }
-      }
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    return projectRevision.projectQuarterlyReportFormChanges.edges.map(
+      ({ node }) => node?.rowId
     );
-
-    const completedPromises: Promise<void>[] = [];
-    committedQuarterlyReports.forEach((node) => {
-      const undoneFormData = node.formChangeByPreviousFormChangeId.newFormData;
-      const promise = new Promise<void>((resolve, reject) => {
-        applyUpdateFormChangeMutation({
-          variables: {
-            input: {
-              id: node.id,
-              formChangePatch: {
-                changeStatus: "pending",
-                newFormData: undoneFormData,
-                operation: "UPDATE",
-              },
-            },
-          },
-          debounceKey: node.id,
-          onCompleted: () => resolve(),
-          onError: reject,
-        });
-      });
-      completedPromises.push(promise);
-    });
-    try {
-      await Promise.all(completedPromises);
-    } catch (e) {
-      // the failing mutation will display an error message and send the error to sentry
-    }
-  };
+  }, [projectRevision.projectQuarterlyReportFormChanges]);
 
   return (
     <div>
       <header>
         <h2>Quarterly Reports</h2>
-        <UndoChangesButton onClick={handleUndo} />
+        <UndoChangesButton formChangeIds={formChangeIds} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
