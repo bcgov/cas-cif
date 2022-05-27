@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   app:
-    repository: ghcr.io/bcgov/cas-cif-schema/cas-cif-app
+    repository: ghcr.io/bcgov/cas-cif-app
   schema:
     repository: ghcr.io/bcgov/cas-cif-schema
   psql:
