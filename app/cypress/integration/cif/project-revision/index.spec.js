@@ -259,6 +259,7 @@ describe("the new project page", () => {
       "2022-02-02",
       "I am the second general comment"
     );
+    cy.get(".MuiChip-label").contains(/On track/);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add annual report/i).click();
@@ -405,6 +406,8 @@ describe("the new project page", () => {
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Edit quarterly reports/i).click();
     cy.get('[label*="Due Date"]').eq(0).clear().type("1995-01-01");
+    cy.get('[label*="Received Date"]').eq(0).clear();
+    cy.get(".MuiChip-label").contains(/Late/);
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
