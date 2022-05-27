@@ -58,10 +58,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
-              formChangeByPreviousFormChangeId {
-                changeStatus
-                newFormData
-              }
             }
           }
         }
