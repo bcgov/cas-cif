@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormGroup_query$key } from "__generated__/ProjectManagerFormGroup_query.graphql";
 import { ProjectManagerFormGroup_projectRevision$key } from "__generated__/ProjectManagerFormGroup_projectRevision.graphql";
@@ -40,6 +40,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           edges {
             node {
               formChange {
+                rowId
                 id
                 changeStatus
                 newFormData
@@ -184,59 +185,18 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
     }
   };
 
-  const handleUndo = async () => {
-    let undoneFormData;
-    const completedPromises: Promise<void>[] = [];
-
-    edges.forEach(({ node }) => {
-      undoneFormData =
-        node.formChange?.formChangeByPreviousFormChangeId?.changeStatus ===
-        "committed"
-          ? node.formChange.formChangeByPreviousFormChangeId.newFormData
-          : {};
-
-      const promise = new Promise<void>((resolve, reject) => {
-        updateFormChange({
-          variables: {
-            input: {
-              id: node.formChange.id,
-              formChangePatch: {
-                changeStatus: "pending",
-                newFormData: undoneFormData,
-              },
-            },
-          },
-          optimisticResponse: {
-            updateFormChange: {
-              formChange: {
-                id: node.formChange.id,
-                changeStatus: "pending",
-                newFormData: undoneFormData,
-                operation: undefined,
-                projectRevisionByProjectRevisionId: undefined,
-              },
-            },
-          },
-          debounceKey: node.formChange.id,
-          onCompleted: () => resolve(),
-          onError: reject,
-        });
-      });
-      completedPromises.push(promise);
-    });
-
-    try {
-      await Promise.all(completedPromises);
-    } catch (e) {
-      // the failing mutation will display an error message and send the error to sentry
-    }
-  };
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    return projectRevision.managerFormChanges.edges.map(
+      ({ node }) => node.formChange?.rowId
+    );
+  }, [projectRevision.managerFormChanges]);
 
   return (
     <div>
       <header>
         <h2>Project Managers</h2>
-        <UndoChangesButton onClick={handleUndo} />
+        <UndoChangesButton formChangeIds={formChangeIds} />
         <SavingIndicator isSaved={!isUpdating && !isAdding && !isDeleting} />
       </header>
       <FormBorder>

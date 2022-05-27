@@ -94,6 +94,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       fragment ProjectForm_projectRevision on ProjectRevision {
         projectFormChange {
           id
+          rowId
           newFormData
           isUniqueValue(columnName: "proposalReference")
           formChangeByPreviousFormChangeId {
@@ -221,24 +222,12 @@ const ProjectForm: React.FC<Props> = (props) => {
   const handleError = () => {
     handleChange(revision.projectFormChange.newFormData, "staged");
   };
-  const handleUndo = async () => {
-    const undoneFormData =
-      revision.projectFormChange.formChangeByPreviousFormChangeId
-        ?.changeStatus === "committed"
-        ? {
-            ...revision.projectFormChange.formChangeByPreviousFormChangeId
-              .newFormData,
-          }
-        : {};
-
-    await handleChange(undoneFormData, "pending");
-  };
 
   return (
     <>
       <header>
         <h2>Project Overview</h2>
-        <UndoChangesButton onClick={handleUndo} />
+        <UndoChangesButton formChangeIds={[revision.projectFormChange.rowId]} />
         <SavingIndicator isSaved={!updatingProjectFormChange} />
       </header>
 
