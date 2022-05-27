@@ -531,44 +531,9 @@ describe("the new project page", () => {
   it("discards the revision when the user clicks the Discard Revision button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    // create and save the project
     cy.get("button").contains("Add a Project").click();
-    cy.fillOverviewForm(
-      "Emissions Performance",
-      "2020",
-      "first operator legal name (AB1234567)",
-      "TEST-123-12345",
-      "Foo",
-      "Bar",
-      "100",
-      "Project Underway"
-    );
-
-    cy.findByRole("button", { name: /^submit/i }).click();
-    cy.findByText(/Add project managers/i).click();
-    cy.fillManagersForm("Swanson", "Ludgate", "Knope");
-
-    cy.findByRole("button", { name: /^submit/i }).click();
-
-    cy.findByText(/Add project contacts/i).click();
-    cy.fillContactsForm("Loblaw003", "Loblaw004");
-
-    cy.findByRole("button", { name: /^submit/i }).click();
-
-    cy.findByText(/Add another milestone report/i);
-
-    cy.findByRole("button", { name: /^submit/i }).click();
-
-    cy.findByText(/Add another quarterly report/i);
-
-    cy.findByRole("button", { name: /^submit/i }).click();
-
-    cy.findByText(/Add another annual report/i);
-    cy.findByRole("button", { name: /^submit/i }).click();
-    cy.findByText(/Submit changes/i).click();
 
     cy.findByText(/Review and submit information/i).click();
-
     cy.contains("Review and Submit Project");
     cy.wait(1000);
     cy.findByRole("button", { name: /^discard/i }).click();
