@@ -254,13 +254,6 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "checkContactsForm",
-  (primaryContact, secondaryContact) => {
-    cy.findByLabelText(/primary contact/i).should("have.value", primaryContact);
-    cy.get(`input[value="${secondaryContact}"]`).should("be.visible");
-  }
-);
-Cypress.Commands.add(
   "addAnnualReport",
   (
     reportNumber,
