@@ -41,9 +41,11 @@ const ReportDueIndicator: React.FC<Props> = ({
   // We return a negative value if report is overdue
   const reportDueIn =
     hasValidReportDueDate &&
-    DateTime.fromISO(reportingRequirement.reportDueDate).diff(
+    DateTime.fromISO(reportingRequirement.reportDueDate, {
+      setZone: true,
+    }).diff(
       // Current date without time information
-      DateTime.fromISO(DateTime.now().toISODate()),
+      DateTime.fromISO(DateTime.now().setZone("America/Vancouver").toISODate()),
       "days"
     );
   const overdue = reportDueIn?.days < 0;
