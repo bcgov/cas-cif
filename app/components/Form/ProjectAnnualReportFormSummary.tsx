@@ -7,7 +7,23 @@ import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportFormSummary_projectRevision$key } from "__generated__/ProjectAnnualReportFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
-import { annualReportUiSchema } from "./ProjectAnnualReportForm";
+
+// Remove this and import the one from app/lib/theme/getFilteredSchema.ts once it's merged in
+const getFilteredSchema = (formSchema: JSONSchema7, formData) => {
+  const filteredSchema = JSON.parse(JSON.stringify(formSchema));
+  const newDataObject = {};
+
+  for (const key of Object.keys(filteredSchema.properties)) {
+    if (
+      formData.newFormData?.[key] ===
+      formData.formChangeByPreviousFormChangeId?.newFormData?.[key]
+    )
+      delete filteredSchema.properties[key];
+    else newDataObject[key] = formData.newFormData?.[key];
+  }
+
+  return { formSchema: filteredSchema, formData: newDataObject };
+};
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -41,69 +57,103 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
             }
           }
         }
-        projectFormChange {
-          formDataRecordId
-        }
       }
     `,
     props.projectRevision
   );
 
-  // Show diff if it is not the first revision and not view only (rendered from the contacts page)
+  // Show diff if it is not the first revision and not view only (rendered from the annual reports page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
+  // If we are showing the diff then we want to see archived records, otherwise filter out the archived reports
   let annualReportFormChanges = summaryAnnualReportFormChanges.edges;
   if (!renderDiff)
     annualReportFormChanges = summaryAnnualReportFormChanges.edges.filter(
       ({ node }) => node.operation !== "ARCHIVE"
     );
 
-  const annualReports = useMemo(
+  // Sorting the annual report form changes by the reporting requirement index
+  const [sortedAnnualReports] = useMemo(() => {
+    const filteredReports = annualReportFormChanges.map(({ node }) => node);
+
+    filteredReports.sort(
+      (a, b) =>
+        a.newFormData.reportingRequirementIndex -
+        b.newFormData.reportingRequirementIndex
+    );
+
+    return [filteredReports];
+  }, [annualReportFormChanges]);
+
+  const allFormChangesPristine = useMemo(
     () =>
-      annualReportFormChanges.filter(
+      !annualReportFormChanges.some(
         ({ node }) => node.isPristine === false || node.isPristine === null
       ),
     [annualReportFormChanges]
   );
 
-  const allFormChangesPristine = useMemo(
-    () =>
-      !annualReportFormChanges.some(
-        ({ node }) =>
-          node.isPristine === false ||
-          (node.isPristine === null && node.newFormData?.reportId !== null)
-      ),
-    [annualReportFormChanges]
-  );
-
   const annualReportsJSX = useMemo(() => {
-    return annualReports.map(({ node }) => {
+    return sortedAnnualReports.map((annualReport, index) => {
+      if (!annualReport) return;
+
+      // Set the formSchema and formData based on showing the diff or not
+      const { formSchema, formData } = !renderDiff
+        ? {
+            formSchema: projectReportingRequirementSchema,
+            formData: annualReport.newFormData,
+          }
+        : getFilteredSchema(
+            projectReportingRequirementSchema as JSONSchema7,
+            annualReport
+          );
+
       return (
-        <FormBase
-          liveValidate
-          key={node.newFormData.reportIndex}
-          tagName={"dl"}
-          fields={renderDiff ? customFields : fields}
-          theme={readOnlyTheme}
-          schema={projectReportingRequirementSchema as JSONSchema7}
-          uiSchema={annualReportUiSchema}
-          formData={node.newFormData}
-          formContext={{
-            operation: node.operation,
-            oldData: node.formChangeByPreviousFormChangeId?.newFormData,
-            // will need to use new/old schemas
-            oldUiSchema: annualReportUiSchema,
-          }}
-        />
+        <div key={index} className="reportContainer">
+          <header>
+            <h4>Annual Report {index + 1}</h4>
+          </header>
+          {/* Show this part if none of Annual report form properties have been updated */}
+          {Object.keys(formSchema.properties).length === 0 &&
+            annualReport.operation !== "ARCHIVE" && (
+              <em>Annual report not updated</em>
+            )}
+          {/* Show this part if the whole Annual report has been removed */}
+          {renderDiff && annualReport.operation === "ARCHIVE" ? (
+            <em className="diffOld">Annual report removed</em>
+          ) : (
+            <FormBase
+              liveValidate
+              key={`form-${annualReport.id}`}
+              tagName={"dl"}
+              theme={readOnlyTheme}
+              fields={renderDiff ? customFields : fields}
+              schema={formSchema as JSONSchema7}
+              formData={formData}
+              formContext={{
+                operation: annualReport.operation,
+                oldData:
+                  annualReport.formChangeByPreviousFormChangeId?.newFormData,
+              }}
+            />
+          )}
+          <style jsx>{`
+            .reportContainer {
+              margin-bottom: 1em;
+            }
+            diffOld {
+              color: #fad980;
+            }
+          `}</style>
+        </div>
       );
     });
-  }, [annualReports, renderDiff]);
+  }, [sortedAnnualReports, renderDiff]);
 
   return (
     <>
       <h3>Project Annual Reports</h3>
-      {allFormChangesPristine && !props.viewOnly ? (
+      {allFormChangesPristine && props.viewOnly ? (
         <p>
           <em>
             Project annual reports not {isFirstRevision ? "added" : "updated"}
