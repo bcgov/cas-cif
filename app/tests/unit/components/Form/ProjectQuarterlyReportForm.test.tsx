@@ -27,7 +27,7 @@ const defaultMockResolver = {
       upcomingReportingRequirementFormChange: {
         id: firstFormId,
         reportingRequirement: {
-          reportDueDate: "2022-01-01 12:01:00-07",
+          reportDueDate: "2022-01-01T00:00:00-07",
           reportingRequirementIndex: 1,
         },
       },
@@ -38,7 +38,7 @@ const defaultMockResolver = {
               id: firstFormId,
               newFormData: {
                 status: "on_track",
-                reportDueDate: "2022-01-01 12:01:00-07",
+                reportDueDate: "2022-01-01T00:00:00-07",
                 projectId: 51,
                 reportType: "Quarterly",
               },
@@ -52,11 +52,11 @@ const defaultMockResolver = {
               id: `mock-project-quarterly-report-form-${generateID()}`,
               newFormData: {
                 status: "on_track",
-                reportDueDate: "2022-10-28 12:01:00-07",
+                reportDueDate: "2022-10-28T00:00:00-07",
                 comments: "some comments",
                 projectId: 51,
                 reportType: "Quarterly",
-                submittedDate: "2022-05-02 12:01:00-07",
+                submittedDate: "2022-05-02T00:00:00-07",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -214,7 +214,7 @@ describe("The ProjectQuarterlyReportForm", () => {
                   id: `mock-project-quarterly-report-form-${generateID()}`,
                   newFormData: {
                     status: "on_track",
-                    reportDueDate: "2022-01-01 12:00:00-07",
+                    reportDueDate: "2022-01-01T00:00:00-07",
                     projectId: 51,
                     reportType: "Quarterly",
                   },
