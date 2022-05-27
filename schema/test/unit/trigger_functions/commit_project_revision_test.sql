@@ -56,9 +56,9 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('pending'::varchar), ('pending'::varchar), ('pending'::varchar);
+    values ('pending'::varchar), ('pending'::varchar);
   $$,
-  'Three form changes should be initialized with the pending status'
+  'Two form changes should be initialized with the pending status'
 );
 
 -- make sure project_revision has a null project id
@@ -81,7 +81,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id = (select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('test_pending'::varchar), ('test_pending'::varchar), ('test_pending'::varchar);
+    values ('test_pending'::varchar), ('test_pending'::varchar);
   $$,
   'the form_change rows should be have the test_pending status'
 );
@@ -101,7 +101,7 @@ select results_eq(
     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
   $$,
   $$
-    values ('committed'::varchar), ('committed'::varchar), ('committed'::varchar);
+    values ('committed'::varchar), ('committed'::varchar);
   $$,
   'the form_change rows should have the committed status'
 );
