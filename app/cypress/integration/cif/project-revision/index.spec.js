@@ -543,30 +543,30 @@ describe("the new project page", () => {
       "100",
       "Project Underway"
     );
-    cy.contains("Changes saved.");
+
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
-    cy.contains("Changes saved.");
+
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
-    cy.contains("Changes saved.");
+
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another milestone report/i);
-    cy.contains("Changes saved.");
+
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another quarterly report/i);
-    cy.contains("Changes saved.");
+
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Add another annual report/i);
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.findByText(/Submit changes/i).click();
-    cy.contains("Changes saved.");
+
     cy.findByText(/Review and submit information/i).click();
 
     cy.contains("Review and Submit Project");
