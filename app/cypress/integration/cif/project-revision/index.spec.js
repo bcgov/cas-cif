@@ -404,7 +404,12 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Edit quarterly reports/i).click();
-    cy.get('[label*="Due Date"]').eq(0).clear().type("1995-01-01");
+    cy.get('[aria-label*="Due Date"]').eq(0).click();
+    cy.get(".react-datepicker__month-select").select(0);
+    cy.get(".react-datepicker__year-select").select("1995");
+    cy.get(`.react-datepicker__day--001`)
+      .not(`.react-datepicker__day--outside-month`)
+      .click();
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
@@ -457,7 +462,10 @@ describe("the new project page", () => {
     cy.get("a")
       .contains(/Quarterly reports/i)
       .click();
-    cy.get('[label*="Due Date"]').eq(0).should("have.value", "1995-01-01");
+    // test headless browsers add a period to the month abbreviation
+    cy.get('[aria-label*="Due Date"]')
+      .eq(0)
+      .contains(/Jan[.]? 01, 1995/);
   });
 
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
