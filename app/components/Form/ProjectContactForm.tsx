@@ -208,6 +208,19 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   };
 
   const addContact = (contactIndex: number) => {
+    // This function aims to prevent race condition for the if-else statement below
+    const createContactFn = () => {
+      addContactMutation({
+        variables: {
+          input: {
+            revisionId: projectRevision.rowId,
+            contactIndex: contactIndex,
+          },
+          connections: [projectRevision.projectContactFormChanges.__id],
+        },
+      });
+    };
+
     // Create primary contact when adding new secondary contact to the project if there is no primary contact
     if (!primaryContactForm) {
       createPrimaryContact({
@@ -222,17 +235,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             newFormData: { projectId: projectRevision.rowId, contactIndex: 1 },
           },
         },
+        onCompleted: () => createContactFn(),
       });
+    } else {
+      createContactFn();
     }
-    addContactMutation({
-      variables: {
-        input: {
-          revisionId: projectRevision.rowId,
-          contactIndex: contactIndex,
-        },
-        connections: [projectRevision.projectContactFormChanges.__id],
-      },
-    });
   };
 
   const stageContactFormChanges = async () => {
