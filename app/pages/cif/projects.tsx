@@ -103,7 +103,8 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       new SearchableDropdownFilter(
         "Status",
         "status",
-        allProjectStatuses.edges.map((e) => e.node.name)
+        allProjectStatuses.edges.map((e) => e.node.name),
+        { orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME" }
       ),
       new SearchableDropdownFilter(
         "Project Managers",
