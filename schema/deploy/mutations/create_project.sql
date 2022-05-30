@@ -52,7 +52,6 @@ begin
     'pending',
     'project_contact'
   );
-
   return revision_row;
 end;
 $function$ language plpgsql strict volatile;

@@ -58,7 +58,7 @@ select results_eq(
   $$
     values ('pending'::varchar), ('pending'::varchar);
   $$,
-  'Three form changes should be initialized with the pending status'
+  'Two form changes should be initialized with the pending status'
 );
 
 -- make sure project_revision has a null project id

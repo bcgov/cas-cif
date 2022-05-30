@@ -249,7 +249,7 @@ Cypress.Commands.add(
         .should("have.value", generalComments);
     }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/3");
+    return cy.url().should("include", "/form/4");
   }
 );
 
@@ -297,6 +297,6 @@ Cypress.Commands.add(
         .should("have.value", generalComments);
     }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/4");
+    return cy.url().should("include", "/form/5");
   }
 );

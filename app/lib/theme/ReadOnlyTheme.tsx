@@ -21,6 +21,7 @@ const readOnlyTheme: ThemeProps = {
     PhoneNumberWidget: ReadOnlyWidget,
     SelectRfpWidget: ReadOnlyWidget,
     SelectProjectStatusWidget: ReadOnlyWidget,
+    ConditionalAmountWidget: ReadOnlyWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

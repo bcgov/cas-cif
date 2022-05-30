@@ -28,9 +28,24 @@ insert into cif.form_change(new_form_data,
     project_revision_id,
     change_status,
     json_schema_name)
-    values ('{"status":"on_track","projectId":1, "reportType": "Quarterly", "reportingRequirementIndex": 1}','create','cif','reporting_requirement',null,1,'pending','reporting_requirement'),
+    values
     ('{"projectId":1,"cifUserId":1,"projectManagerLabelId":1}','create','cif','project_manager',null,1,'pending','project_manager');
 
+insert into cif.form_change(new_form_data,
+    operation,
+    form_data_schema_name,
+    form_data_table_name,
+    form_data_record_id,
+    project_revision_id,
+    change_status,
+    json_schema_name)
+    values
+    ('{
+    "status":"on_track",
+    "projectId":1,
+    "reportType": "General Milestone",
+    "reportingRequirementIndex": 1
+    }','create','cif','reporting_requirement',null,1,'pending','reporting_requirement');
 
 update cif.form_change
 set new_form_data =
@@ -121,13 +136,12 @@ select results_eq(
   select '{
     "status":"on_track",
     "projectId":1,
-    "reportType": "Quarterly",
+    "reportType": "General Milestone",
     "reportingRequirementIndex": 1
     }'::jsonb
   $$,
   'creating a new project revision should create a form_change record for the reporting_requirement'
 );
-
 
 select results_eq(
 $$

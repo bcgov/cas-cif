@@ -1762,8 +1762,12 @@ enum BudgetItemsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
@@ -34988,8 +34992,12 @@ enum PaymentsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
@@ -39639,6 +39647,34 @@ type ProjectRevision implements Node {
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
 
+  """Reads and enables pagination through a set of `FormChange`."""
+  formChangesFor(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormChangeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    formDataTableName: String!
+    jsonMatcher: String
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): FormChangesConnection!
+
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
@@ -39742,7 +39778,35 @@ type ProjectRevision implements Node {
   ): ManagerFormChangesByLabelCompositeReturnsConnection!
 
   """
-  Computed column for graphql to retrieve the changes related to the quarterly reporting requirement records, within a project revision
+  Computed column for graphql to retrieve the changes related to the milestone reporting requirement records, within a project revision
+  """
+  projectMilestoneReportFormChanges(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormChangeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): FormChangesConnection!
+
+  """
+  Computed column to dynamically retrieve the form_change records relating to the project_revision from a given table
   """
   projectQuarterlyReportFormChanges(
     """Read all values in the set after (below) this cursor."""
@@ -44840,7 +44904,13 @@ type ReportingRequirement implements Node {
   """Comments about the reporting requirement"""
   comments: String
 
-  """The date the reporting requirement was completed"""
+  """
+  The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
+    Automatic calculations are as follows:
+    30 days before report due date for general milestones
+    60 days before report due date for project summary report
+    150 days before report due date for TEIMP report
+  """
   completionDate: Datetime
 
   """created at timestamp"""
@@ -44849,10 +44919,16 @@ type ReportingRequirement implements Node {
   """created by user id"""
   createdBy: Int
 
+  """A user defined description of a milestone"""
+  description: String
+
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
+
+  """The maximum amount of money assigned to a milestone"""
+  maximumAmount: BigFloat
 
   """Reads and enables pagination through a set of `Payment`."""
   paymentsByReportingRequirementId(
@@ -45436,6 +45512,12 @@ input ReportingRequirementCondition {
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
 
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
+  """Checks for equality with the object’s `maximumAmount` field."""
+  maximumAmount: BigFloat
+
   """Checks for equality with the object’s `projectId` field."""
   projectId: Int
 
@@ -45520,6 +45602,12 @@ input ReportingRequirementFilter {
 
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `maximumAmount` field."""
+  maximumAmount: BigFloatFilter
 
   """Negates the expression."""
   not: ReportingRequirementFilter
@@ -46639,8 +46727,12 @@ enum ReportingRequirementsOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
   ID_ASC
   ID_DESC
+  MAXIMUM_AMOUNT_ASC
+  MAXIMUM_AMOUNT_DESC
   NATURAL
   PAYMENTS_BY_REPORTING_REQUIREMENT_ID__COUNT_ASC
   PAYMENTS_BY_REPORTING_REQUIREMENT_ID__COUNT_DESC
