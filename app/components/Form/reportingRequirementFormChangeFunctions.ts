@@ -2,6 +2,8 @@ import { MutableRefObject } from "react";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_projectRevision$data } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
+import { ProjectQuarterlyReportForm_projectRevision$data } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
+import { ProjectAnnualReportForm_projectRevision$data } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
 import { updateReportingRequirementFormChangeMutation$variables } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
 
@@ -15,11 +17,17 @@ export const addReportFormChange = (
   mutationFn: (args: {
     variables: addReportingRequirementToRevisionMutation$variables;
   }) => void,
-  revision: ProjectMilestoneReportForm_projectRevision$data,
-  reportIndex: number
+  revision:
+    | ProjectMilestoneReportForm_projectRevision$data
+    | ProjectQuarterlyReportForm_projectRevision$data
+    | ProjectAnnualReportForm_projectRevision$data,
+  reportIndex: number,
+  reportType: string,
+  connectionString?: string
 ) => {
   const formData = {
     status: "on_track",
+    reportType: reportType,
     projectId: revision.projectFormChange.formDataRecordId,
     reportingRequirementIndex: reportIndex,
   };
@@ -27,7 +35,7 @@ export const addReportFormChange = (
     variables: {
       projectRevisionId: revision.rowId,
       newFormData: formData,
-      connections: [revision.projectMilestoneReportFormChanges.__id],
+      connections: [connectionString],
     },
   });
 };
