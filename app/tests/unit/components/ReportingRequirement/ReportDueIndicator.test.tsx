@@ -61,6 +61,22 @@ describe("The report due indicator", () => {
     );
   });
 
+  it("Displays the number of days overdue on Vancouver time if the report is overdue", () => {
+    // Effectively Jan 20th on Vancouver time (Jan 21st 1:10am EST)
+    const jan21th2020 = DateTime.local(2020, 1, 21, 1, 10, {
+      zone: "America/Montreal",
+    }).toMillis();
+    Settings.now = () => jan21th2020;
+
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    // Group role grabs the fieldset
+    expect(screen.getByRole("group")).toHaveTextContent(
+      /Overdue by 10 day\(s\)/
+    );
+  });
+
   it("Displays the remaining days to the next report due date if the report is upcoming", () => {
     const jan8th2020 = DateTime.local(2020, 1, 8, {
       zone: "America/Vancouver",
