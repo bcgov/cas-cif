@@ -4,17 +4,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7 } from "json-schema";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
-import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectAnnualReportForm_projectRevision$key } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
 import SavingIndicator from "./SavingIndicator";
+import {
+  addReportFormChange,
+  updateReportFormChange,
+  deleteReportFormChange,
+  stageReportFormChanges,
+  getSortedReports,
+} from "./reportingRequirementFormChangeFunctions";
 
 interface Props {
   onSubmit: () => void;
@@ -68,135 +73,17 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
   const [addAnnualReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
-  const addAnnualReport = (reportIndex: number) => {
-    const formData = {
-      status: "on_track",
-      projectId: projectRevision.projectFormChange.formDataRecordId,
-      reportType: "Annual",
-      reportingRequirementIndex: reportIndex,
-    };
-    addAnnualReportMutation({
-      variables: {
-        projectRevisionId: projectRevision.rowId,
-        newFormData: formData,
-        connections: [projectRevision.projectAnnualReportFormChanges.__id],
-      },
-    });
-  };
-
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
-
-  const updateFormChange = (
-    formChange: {
-      readonly id: string;
-      readonly newFormData: any;
-      readonly operation: FormChangeOperation;
-      readonly changeStatus: string;
-    },
-    newFormData: any
-  ) => {
-    applyUpdateFormChangeMutation({
-      variables: {
-        input: {
-          id: formChange.id,
-          formChangePatch: {
-            newFormData,
-            changeStatus: formChange.changeStatus,
-          },
-        },
-        reportType: "Annual",
-      },
-      debounceKey: formChange.id,
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: formChange.id,
-            newFormData: newFormData,
-            changeStatus: formChange.changeStatus,
-          },
-        },
-      },
-    });
-  };
 
   const [discardFormChange] = useDiscardFormChange(
     projectRevision.projectAnnualReportFormChanges.__id
   );
 
-  const deleteAnnualReport = (
-    formChangeId: string,
-    formChangeOperation: FormChangeOperation
-  ) => {
-    discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-      },
-    });
-  };
-
-  const stageAnnualReportFormChanges = async () => {
-    const validationErrors = Object.keys(formRefs.current).reduce(
-      (agg, formId) => {
-        const formObject = formRefs.current[formId];
-        return [...agg, ...validateFormWithErrors(formObject)];
-      },
-      []
-    );
-
-    const completedPromises: Promise<void>[] = [];
-
-    projectRevision.projectAnnualReportFormChanges.edges.forEach(({ node }) => {
-      if (node.changeStatus === "pending") {
-        const promise = new Promise<void>((resolve, reject) => {
-          applyUpdateFormChangeMutation({
-            variables: {
-              input: {
-                id: node.id,
-                formChangePatch: {
-                  changeStatus: "staged",
-                },
-              },
-              reportType: "Annual",
-            },
-            debounceKey: node.id,
-            onCompleted: () => {
-              resolve();
-            },
-            onError: reject,
-          });
-        });
-        completedPromises.push(promise);
-      }
-    });
-    try {
-      await Promise.all(completedPromises);
-
-      if (validationErrors.length === 0) props.onSubmit();
-    } catch (e) {
-      // the failing mutation will display an error message and send the error to sentry
-    }
-  };
-
   const [sortedAnnualReports, nextAnnualReportIndex] = useMemo(() => {
-    const filteredAnnualReports =
+    return getSortedReports(
       projectRevision.projectAnnualReportFormChanges.edges
-        .map(({ node }) => node)
-        .filter((annualReport) => annualReport.operation !== "ARCHIVE");
-
-    filteredAnnualReports.sort(
-      (a, b) =>
-        a.newFormData.reportingRequirementIndex -
-        b.newFormData.reportingRequirementIndex
     );
-    const nextIndex =
-      filteredAnnualReports.length > 0
-        ? filteredAnnualReports[filteredAnnualReports.length - 1].newFormData
-            .reportingRequirementIndex + 1
-        : 1;
-
-    return [filteredAnnualReports, nextIndex];
   }, [projectRevision.projectAnnualReportFormChanges]);
 
   return (
@@ -211,7 +98,15 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
       <FormBorder>
         <Button
           variant="secondary"
-          onClick={() => addAnnualReport(nextAnnualReportIndex)}
+          onClick={() =>
+            addReportFormChange(
+              addAnnualReportMutation,
+              projectRevision,
+              nextAnnualReportIndex,
+              "Annual",
+              projectRevision.projectAnnualReportFormChanges.__id
+            )
+          }
           className="addButton"
         >
           <FontAwesomeIcon icon={faPlusCircle} /> Add another annual report
@@ -226,7 +121,12 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                   variant="secondary"
                   size="small"
                   onClick={() =>
-                    deleteAnnualReport(report.id, report.operation)
+                    deleteReportFormChange(
+                      discardFormChange,
+                      report.id,
+                      report.operation,
+                      formRefs
+                    )
                   }
                 >
                   Remove
@@ -238,7 +138,8 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                 ref={(el) => (formRefs.current[report.id] = el)}
                 formData={report.newFormData}
                 onChange={(change) => {
-                  updateFormChange(
+                  updateReportFormChange(
+                    applyUpdateFormChangeMutation,
                     { ...report, changeStatus: "pending" },
                     change.formData
                   );
@@ -257,7 +158,14 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
       <Button
         size="medium"
         variant="primary"
-        onClick={stageAnnualReportFormChanges}
+        onClick={() =>
+          stageReportFormChanges(
+            applyUpdateFormChangeMutation,
+            props.onSubmit,
+            formRefs,
+            projectRevision.projectAnnualReportFormChanges.edges
+          )
+        }
         disabled={isUpdating}
       >
         Submit Annual Reports
