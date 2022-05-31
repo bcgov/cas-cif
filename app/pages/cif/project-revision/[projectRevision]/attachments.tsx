@@ -96,7 +96,7 @@ export function ProjectAttachments({
         </div>
       ) : (
         <FilePicker onChange={saveAttachment} name={"upload-attachment"}>
-          Upload Attachment
+          Upload New Attachment
         </FilePicker>
       )}
       <Table

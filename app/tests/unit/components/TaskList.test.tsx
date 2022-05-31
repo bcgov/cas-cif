@@ -59,12 +59,21 @@ describe("The ProjectManagerForm", () => {
     expect(
       screen.getByText("Editing: test-project-proposal-reference")
     ).toBeInTheDocument();
+    expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
   });
 
   it("Renders the TaskList In create", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent(undefined, { mode: "create" });
     expect(screen.getByText("Add a Project")).toBeInTheDocument();
+    expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
+  });
+
+  it("Renders the TaskList in view", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+
+    expect(screen.queryByText("Attachments")).toBeInTheDocument();
   });
 
   it("Renders the proper form statuses", () => {
@@ -168,6 +177,18 @@ describe("The ProjectManagerForm", () => {
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5",
       "/cif/project-revision/test-project-revision-id/form/5",
+      expect.any(Object)
+    );
+  });
+
+  it("Calls the proper getRoute function when clicking Attachments", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+
+    fireEvent.click(screen.getByText(/Attachments/i));
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/attachments?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/attachments",
       expect.any(Object)
     );
   });

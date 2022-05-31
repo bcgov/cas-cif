@@ -72,19 +72,6 @@ describe("The Attachment table row component", () => {
     expect(screen.getByText("Cif User")).toBeInTheDocument();
     expect(screen.getByText("2019-01-01")).toBeInTheDocument();
   });
-  it("has a working view button", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    const viewButton = screen.getByText("View");
-    viewButton.click();
-
-    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/attachments/[attachment]?attachment=Cif+Test+Attachment+ID",
-      expect.anything(),
-      expect.anything()
-    );
-  });
   it("has a working download button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
