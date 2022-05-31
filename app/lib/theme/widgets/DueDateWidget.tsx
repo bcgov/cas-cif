@@ -2,9 +2,11 @@ import { WidgetProps } from "@rjsf/core";
 import React, { forwardRef, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime, Interval } from "luxon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value, label }, ref) => {
@@ -32,7 +34,7 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
     return (
       <div onClick={onClick} ref={ref} aria-label={label}>
         {value ? displayString : "Select a date"}
-        <CalendarTodayIcon style={{ color: "black" }} />
+        <FontAwesomeIcon icon={faCalendarAlt} size="lg" />
         <style jsx>{`
           div {
             display: flex;
