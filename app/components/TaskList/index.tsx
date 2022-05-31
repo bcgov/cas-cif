@@ -1,13 +1,16 @@
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import {
   getProjectRevisionPageRoute,
   getProjectRevisionFormPageRoute,
+  getProjectRevisionAttachmentsPageRoute,
 } from "pageRoutes";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
 import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
+import TaskListSectionLink from "./TaskListSectionLink";
 import { TaskListMode } from "./types";
 
 interface Props {
@@ -174,6 +177,17 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
               mode={mode}
             />
           </TaskListSection>
+        )}
+
+        {/* Attachments Section */}
+        {mode === "view" && (
+          <TaskListSectionLink
+            icon={faPaperclip}
+            title="Attachments"
+            currentStep={currentStep}
+            stepName="attachments"
+            linkUrl={getProjectRevisionAttachmentsPageRoute(id)}
+          />
         )}
       </ol>
       <style jsx>{`
