@@ -26,7 +26,7 @@ const annualReportUiSchema = {
     "ui:widget": "DueDateWidget",
   },
   submittedDate: {
-    "ui:widget": "date",
+    "ui:widget": "ReceivedDateWidget",
   },
   comments: {
     "ui:widget": "TextAreaWidget",
