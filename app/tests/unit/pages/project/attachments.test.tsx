@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { ProjectAttachments } from "pages/cif/project/[project]/attachments";
+import { ProjectAttachments } from "pages/cif/project-revision/[projectRevision]/attachments";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledAttachmentsQuery, {
   attachmentsQuery,

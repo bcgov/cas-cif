@@ -7,19 +7,28 @@ import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import Table from "components/Table";
 import { NoHeaderFilter, TextFilter } from "components/Table/Filters";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
-import Link from "next/link";
+import TaskList from "components/TaskList";
+import { FilePicker } from "@button-inc/bcgov-theme";
+import { useCreateAttachment } from "mutations/attachment/createAttachment";
+import bytesToSize from "lib/helpers/bytesToText";
 
 const pageQuery = graphql`
-  query attachmentsQuery($project: ID!) {
+  query attachmentsQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
-    project(id: $project) {
+    projectRevision(id: $projectRevision) {
       id
-      projectName
+      project: projectByProjectId {
+        projectName
+        rowId
+        id
+      }
+      ...TaskList_projectRevision
     }
     allAttachments(first: 2147483647)
       @connection(key: "connection_allAttachments") {
+      __id
       totalCount
       edges {
         node {
@@ -43,26 +52,52 @@ const tableFilters = [
 export function ProjectAttachments({
   preloadedQuery,
 }: RelayProps<{}, attachmentsQuery>) {
-  const { session, project, allAttachments } = usePreloadedQuery(
+  const { session, projectRevision, allAttachments } = usePreloadedQuery(
     pageQuery,
     preloadedQuery
   );
 
-  const isRedirecting = useRedirectTo404IfFalsy(project);
+  const [createAttachment, isCreatingAttachment] = useCreateAttachment();
+
+  const isRedirecting = useRedirectTo404IfFalsy(projectRevision);
   if (isRedirecting) return null;
 
+  const saveAttachment = async (e) => {
+    var file = e.target.files[0];
+    const variables = {
+      input: {
+        attachment: {
+          file: file,
+          fileName: file.name,
+          fileSize: bytesToSize(file.size),
+          fileType: file.type,
+          projectId: projectRevision.project.rowId,
+        },
+      },
+      connections: [allAttachments.__id],
+    };
+    console.log(variables);
+    createAttachment({
+      variables,
+      onError: (err) => console.error(err),
+    });
+  };
+
+  const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
+
   return (
-    <DefaultLayout session={session}>
-      <h2>{project.projectName}</h2>
+    <DefaultLayout session={session} leftSideNav={taskList}>
+      <h2>{projectRevision.project.projectName}</h2>
       <h3>Attachments List</h3>
-      <Link
-        href={{
-          pathname: "/cif/project/[project]/upload-attachment",
-          query: { project: project.id },
-        }}
-      >
-        Upload New Attachment
-      </Link>
+      {isCreatingAttachment ? (
+        <>
+          <span>Uploading file...</span>
+        </>
+      ) : (
+        <FilePicker onChange={saveAttachment} name={"upload-attachment"}>
+          Upload Attachment
+        </FilePicker>
+      )}
       <Table
         paginated
         totalRowCount={allAttachments.totalCount}
