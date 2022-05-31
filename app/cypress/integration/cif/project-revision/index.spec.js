@@ -66,11 +66,12 @@ describe("the new project page", () => {
     cy.findByText(/Add another milestone report/i).click();
 
     cy.url().should("include", "/form/3");
+
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.get('[aria-label="Milestone Description"]').should("have.value", "desc");
     cy.addDueDate(0, "2020-01-01");
-
     cy.get('label[for*="reportDueDate"]').should("have.length", 1);
+
     cy.checkA11y("main", null, logAxeResults);
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
