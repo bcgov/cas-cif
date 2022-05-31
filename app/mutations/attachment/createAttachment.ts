@@ -17,6 +17,7 @@ const mutation = graphql`
           fileType
           createdBy
           projectId
+          ...AttachmentTableRow_attachment
         }
       }
     }

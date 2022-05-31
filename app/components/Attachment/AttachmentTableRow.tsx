@@ -1,9 +1,6 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
-import {
-  getAttachmentDownloadRoute,
-  getAttachmentViewPageRoute,
-} from "pageRoutes";
+import { getAttachmentDownloadRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
 
@@ -44,10 +41,6 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
         <td>{fullName}</td>
         <td>{createdAt}</td>
         <td className="links">
-          <Link href={getAttachmentViewPageRoute(id)} passHref>
-            <Button size="small">View</Button>
-          </Link>
-          &nbsp;
           <Link href={getAttachmentDownloadRoute(id)} passHref>
             <Button size="small">Download</Button>
           </Link>

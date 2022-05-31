@@ -8,9 +8,9 @@ import {
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
+import AttachmentsTaskListSection from "./AttachmentsTaskListSection";
 import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
-import TaskListSectionLink from "./TaskListSectionLink";
 import { TaskListMode } from "./types";
 
 interface Props {
@@ -181,11 +181,9 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Attachments Section */}
         {mode === "view" && (
-          <TaskListSectionLink
+          <AttachmentsTaskListSection
             icon={faPaperclip}
             title="Attachments"
-            currentStep={currentStep}
-            stepName="attachments"
             linkUrl={getProjectRevisionAttachmentsPageRoute(id)}
           />
         )}

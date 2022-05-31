@@ -11,6 +11,7 @@ import TaskList from "components/TaskList";
 import { FilePicker } from "@button-inc/bcgov-theme";
 import { useCreateAttachment } from "mutations/attachment/createAttachment";
 import bytesToSize from "lib/helpers/bytesToText";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const pageQuery = graphql`
   query attachmentsQuery($projectRevision: ID!) {
@@ -18,24 +19,22 @@ const pageQuery = graphql`
       ...DefaultLayout_session
     }
     projectRevision(id: $projectRevision) {
-      id
       project: projectByProjectId {
         projectName
         rowId
-        id
-      }
-      ...TaskList_projectRevision
-    }
-    allAttachments(first: 2147483647)
-      @connection(key: "connection_allAttachments") {
-      __id
-      totalCount
-      edges {
-        node {
-          file
-          ...AttachmentTableRow_attachment
+        attachments: attachmentsByProjectId(first: 2147483647)
+          @connection(key: "connection_attachments") {
+          __id
+          totalCount
+          edges {
+            node {
+              file
+              ...AttachmentTableRow_attachment
+            }
+          }
         }
       }
+      ...TaskList_projectRevision
     }
   }
 `;
@@ -52,7 +51,7 @@ const tableFilters = [
 export function ProjectAttachments({
   preloadedQuery,
 }: RelayProps<{}, attachmentsQuery>) {
-  const { session, projectRevision, allAttachments } = usePreloadedQuery(
+  const { session, projectRevision } = usePreloadedQuery(
     pageQuery,
     preloadedQuery
   );
@@ -74,9 +73,8 @@ export function ProjectAttachments({
           projectId: projectRevision.project.rowId,
         },
       },
-      connections: [allAttachments.__id],
+      connections: [projectRevision.project.attachments.__id],
     };
-    console.log(variables);
     createAttachment({
       variables,
       onError: (err) => console.error(err),
@@ -90,9 +88,12 @@ export function ProjectAttachments({
       <h2>{projectRevision.project.projectName}</h2>
       <h3>Attachments List</h3>
       {isCreatingAttachment ? (
-        <>
-          <span>Uploading file...</span>
-        </>
+        <div>
+          <div className="loadingSpinnerContainer">
+            <LoadingSpinner></LoadingSpinner>
+            <span>Uploading file...</span>
+          </div>
+        </div>
       ) : (
         <FilePicker onChange={saveAttachment} name={"upload-attachment"}>
           Upload Attachment
@@ -100,11 +101,11 @@ export function ProjectAttachments({
       )}
       <Table
         paginated
-        totalRowCount={allAttachments.totalCount}
+        totalRowCount={projectRevision.project.attachments.totalCount}
         filters={tableFilters}
         pageQuery={pageQuery}
       >
-        {allAttachments.edges.map(({ node }) => (
+        {projectRevision.project.attachments.edges.map(({ node }) => (
           <AttachmentTableRow key={node.file} attachment={node} />
         ))}
       </Table>
@@ -112,6 +113,15 @@ export function ProjectAttachments({
         header > section {
           display: flex;
           justify-content: space-between;
+        }
+        .loadingSpinnerContainer {
+          display: flex;
+        }
+        .loadingSpinnerContainer > span {
+          margin: auto 0.5em;
+        }
+        div :global(div.spinner) {
+          margin: 0;
         }
       `}</style>
     </DefaultLayout>

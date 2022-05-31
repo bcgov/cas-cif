@@ -1,24 +1,29 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface Props {
   icon: IconDefinition;
   title: string;
   linkUrl: { pathname: string; query: { projectRevision: string } };
-  currentStep: string;
-  stepName: string;
 }
 
-const TaskListSectionLink: React.FC<Props> = ({
+const AttachmentsTaskListSection: React.FC<Props> = ({
   icon,
   title,
   linkUrl,
-  currentStep,
-  stepName,
 }) => {
+  const router = useRouter();
   return (
-    <li aria-current={currentStep === stepName ? "step" : false}>
+    <li
+      aria-current={
+        router.pathname ===
+        "/cif/project-revision/[projectRevision]/attachments"
+          ? "step"
+          : false
+      }
+    >
       <Link href={linkUrl} passHref>
         <h3>
           <span className="link">
@@ -54,4 +59,4 @@ const TaskListSectionLink: React.FC<Props> = ({
   );
 };
 
-export default TaskListSectionLink;
+export default AttachmentsTaskListSection;
