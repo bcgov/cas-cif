@@ -84,6 +84,6 @@ export const milestoneReportUiSchema = {
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "date",
+    "ui:widget": "ReceivedDateWidget",
   },
 };
