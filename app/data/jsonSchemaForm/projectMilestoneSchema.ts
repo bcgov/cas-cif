@@ -69,7 +69,7 @@ export const milestoneReportUiSchema = {
   reportDueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "date",
+    "ui:widget": "DueDateWidget",
   },
   completionDate: {
     "ui:col-md": 12,
