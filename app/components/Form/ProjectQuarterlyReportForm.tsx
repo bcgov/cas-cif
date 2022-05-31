@@ -26,18 +26,12 @@ interface Props {
 
 const quarterlyReportUiSchema = {
   reportDueDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "DueDateWidget",
   },
   submittedDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "ReceivedDateWidget",
   },
   comments: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "TextAreaWidget",
   },
 };
