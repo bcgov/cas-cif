@@ -25,6 +25,8 @@ as $$
       (new_form_data->>'projectId')::integer as project_id,
       new_form_data->>'reportType' as report_type,
       (new_form_data->>'reportingRequirementIndex')::integer as reporting_requirement_index,
+      (new_form_data->>'maximumAmount')::numeric as maximum_amount,
+      new_form_data->>'description' as description,
       null::int as created_by,
       now()::timestamptz created_at,
       null::int as updated_by,
