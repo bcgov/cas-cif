@@ -31903,6 +31903,63 @@ type ManagerFormChangesByLabelCompositeReturnsEdge {
   node: ManagerFormChangesByLabelCompositeReturn
 }
 
+type MilestoneReportStatusReturn {
+  formCompletionStatus: String
+  milestoneIndex: Int
+  reportingRequirementStatus: String
+}
+
+"""
+A filter to be used against `MilestoneReportStatusReturn` object types. All fields are combined with a logical ‘and.’
+"""
+input MilestoneReportStatusReturnFilter {
+  """Checks for all expressions in this list."""
+  and: [MilestoneReportStatusReturnFilter!]
+
+  """Filter by the object’s `formCompletionStatus` field."""
+  formCompletionStatus: StringFilter
+
+  """Filter by the object’s `milestoneIndex` field."""
+  milestoneIndex: IntFilter
+
+  """Negates the expression."""
+  not: MilestoneReportStatusReturnFilter
+
+  """Checks for any expressions in this list."""
+  or: [MilestoneReportStatusReturnFilter!]
+
+  """Filter by the object’s `reportingRequirementStatus` field."""
+  reportingRequirementStatus: StringFilter
+}
+
+"""A connection to a list of `MilestoneReportStatusReturn` values."""
+type MilestoneReportStatusReturnsConnection {
+  """
+  A list of edges which contains the `MilestoneReportStatusReturn` and cursor to aid in pagination.
+  """
+  edges: [MilestoneReportStatusReturnsEdge!]!
+
+  """A list of `MilestoneReportStatusReturn` objects."""
+  nodes: [MilestoneReportStatusReturn]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `MilestoneReportStatusReturn` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `MilestoneReportStatusReturn` edge in the connection."""
+type MilestoneReportStatusReturnsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `MilestoneReportStatusReturn` at the end of the edge."""
+  node: MilestoneReportStatusReturn
+}
+
 """
 The root mutation type which contains root level fields which mutate data.
 """
@@ -38344,6 +38401,34 @@ type ProjectRevision implements Node {
   Boolean value to indicate if the revision is the first revision for the project
   """
   isFirstRevision: Boolean
+
+  """
+  Computed column to return both form completion statuses and reporting requirement statuses for individual milestones as well as an overall reporting requirement status
+  """
+  milestoneReportStatuses(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MilestoneReportStatusReturnFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): MilestoneReportStatusReturnsConnection!
 
   """
   Computed column for graphql to retrieve the changes related to the Annual reporting requirement records, within a project revision
