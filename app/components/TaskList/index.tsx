@@ -72,7 +72,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     });
     // We only want to run this effect on mount, so we use an empty array as a dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router]);
 
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;

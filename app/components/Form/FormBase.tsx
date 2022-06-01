@@ -26,7 +26,7 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
     return customTransformErrors(errors, customFormatsErrorMessages);
   };
 
-  const [extraErrors, setExtraErrors] = useState<any>();
+  const [extraErrors, setExtraErrors] = useState<any>(null);
   useEffect(() => {
     if (props.validateOnMount) {
       setExtraErrors(
@@ -38,18 +38,20 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
         ).errorSchema
       );
     }
-  }, [props.schema, props.validateOnMount]);
+    // only run the effect on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (
     e: ISubmitEvent<any>,
     nativeEvent: FormEvent<HTMLFormElement>
   ) => {
-    setExtraErrors(undefined);
+    setExtraErrors(() => null);
     props.onSubmit?.(e, nativeEvent);
   };
 
   const handleError = (e: any) => {
-    setExtraErrors(undefined);
+    setExtraErrors(() => null);
     props.onError?.(e);
   };
 
