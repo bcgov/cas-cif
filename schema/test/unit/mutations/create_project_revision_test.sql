@@ -59,15 +59,6 @@ set new_form_data =
 }'::jsonb
 where form_data_table_name = 'project';
 
-update cif.form_change
-set new_form_data =
-'{
-  "contactId": 1,
-  "contactIndex": 0,
-  "projectId": 1
-}'::jsonb
-where form_data_table_name = 'project_contact';
-
 update cif.project_revision set change_status = 'committed';
 
 select results_eq(
@@ -112,19 +103,12 @@ select results_eq(
   'creating a new project revision should create a form_change record for the project_manager'
 );
 
-select results_eq(
+select is_empty(
   $$
   select new_form_data from cif.form_change
   where form_data_table_name = 'project_contact' and project_revision_id = 2
   $$,
-  $$
-  select '{
-    "contactId": 1,
-    "contactIndex": 0,
-    "projectId": 1
-  }'::jsonb
-  $$,
-  'creating a new project revision should create a form_change record for the project_contact'
+  'creating a new project revision should not create a form_change record for the project_contact'
 );
 
 select results_eq(

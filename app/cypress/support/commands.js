@@ -212,6 +212,8 @@ Cypress.Commands.add(
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
+    cy.wait(1000);
+
     cy.contains(`Quarterly Report ${reportNumber}`).should("be.visible");
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.get('[aria-label*="Due Date"]')
@@ -253,13 +255,6 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add(
-  "checkContactsForm",
-  (primaryContact, secondaryContact) => {
-    cy.findByLabelText(/primary contact/i).should("have.value", primaryContact);
-    cy.get(`input[value="${secondaryContact}"]`).should("be.visible");
-  }
-);
 Cypress.Commands.add(
   "addAnnualReport",
   (

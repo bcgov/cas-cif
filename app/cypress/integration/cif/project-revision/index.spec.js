@@ -250,15 +250,31 @@ describe("the new project page", () => {
     );
 
     cy.findByText(/Project Details/i).click();
+
+    // undo managers
     cy.findByText(/Add project managers/i).click();
     cy.fillManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkManagersForm("", "", "");
 
+    // undo contacts
     cy.findByText(/Add project contacts/i).click();
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkContactsForm("", "");
+
+    // undo quarterly reports
+    cy.findByText(/Quarterly reports/i).click();
+    cy.findByText(/Add quarterly reports/i).click();
+    cy.addQuarterlyReport(
+      1,
+      "2020-01-01",
+      "2020-02-02",
+      "I am the first general comment"
+    );
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByText(/Quarterly Report 1/i).should("not.exist");
+    cy.get('[label*="Due Date"]').should("have.length", 0);
   });
 
   it("Allows to create and update a project", () => {

@@ -11,6 +11,7 @@ import { FormValidation, ISubmitEvent } from "@rjsf/core";
 import { useUpdateProjectFormChange } from "mutations/FormChange/updateProjectFormChange";
 import { Button } from "@button-inc/bcgov-theme";
 import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   query: ProjectForm_query$key;
@@ -93,6 +94,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       fragment ProjectForm_projectRevision on ProjectRevision {
         projectFormChange {
           id
+          rowId
           newFormData
           isUniqueValue(columnName: "proposalReference")
           formChangeByPreviousFormChangeId {
@@ -220,31 +222,12 @@ const ProjectForm: React.FC<Props> = (props) => {
   const handleError = () => {
     handleChange(revision.projectFormChange.newFormData, "staged");
   };
-  const handleUndo = async () => {
-    const undoneFormData =
-      revision.projectFormChange.formChangeByPreviousFormChangeId
-        ?.changeStatus === "committed"
-        ? {
-            ...revision.projectFormChange.formChangeByPreviousFormChangeId
-              .newFormData,
-          }
-        : {};
-
-    await handleChange(undoneFormData, "pending");
-  };
 
   return (
     <>
       <header>
         <h2>Project Overview</h2>
-        <Button
-          type="button"
-          style={{ marginRight: "1rem", marginBottom: "1rem" }}
-          variant="secondary"
-          onClick={handleUndo}
-        >
-          Undo Changes
-        </Button>
+        <UndoChangesButton formChangeIds={[revision.projectFormChange.rowId]} />
         <SavingIndicator isSaved={!updatingProjectFormChange} />
       </header>
 

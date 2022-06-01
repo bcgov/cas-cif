@@ -6,11 +6,11 @@ select plan(2);
 select cif.create_project();
 
 -- it inserts a new record
-select cif.add_contact_to_revision((select id from cif.project_revision order by id desc limit 1), 2);
+select cif.add_contact_to_revision((select id from cif.project_revision order by id desc limit 1), 1);
 select is(
   (select count(*) from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project_contact'),
-  2::bigint,
-  'There should be 2 project_contact records'
+  1::bigint,
+  'There should be 1 project_contact record'
 );
 
 -- it returns the newly inserted record with the
