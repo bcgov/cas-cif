@@ -3,7 +3,7 @@ import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_projectRevision$data } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
-import { updateFormChangeMutation$variables } from "__generated__/updateFormChangeMutation.graphql";
+import { updateReportingRequirementFormChangeMutation$variables } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
 
 /**
  * These generic functions are for use in the ProjectMilestoneReportForm, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
@@ -34,15 +34,17 @@ export const addReportFormChange = (
 
 export const updateReportFormChange = (
   mutationFn: (args: {
-    variables: updateFormChangeMutation$variables;
+    variables: updateReportingRequirementFormChangeMutation$variables;
     debounceKey: string;
     optimisticResponse: any;
   }) => void,
+  reportType: string,
   formChange: any,
   newFormData: JSON
 ) => {
   mutationFn({
     variables: {
+      reportType: reportType,
       input: {
         id: formChange.id,
         formChangePatch: {
@@ -83,11 +85,12 @@ export const deleteReportFormChange = (
 
 export const stageReportFormChanges = async (
   mutationFn: (args: {
-    variables: updateFormChangeMutation$variables;
+    variables: updateReportingRequirementFormChangeMutation$variables;
     debounceKey: string;
     onCompleted: () => void;
     onError: (reason?: any) => void;
   }) => void,
+  reportType: string,
   submitFn: () => void,
   formRefs: MutableRefObject<{}>,
   formChangeEdges: any
@@ -107,6 +110,7 @@ export const stageReportFormChanges = async (
       const promise = new Promise<void>((resolve, reject) => {
         mutationFn({
           variables: {
+            reportType: reportType,
             input: {
               id: node.id,
               formChangePatch: {
