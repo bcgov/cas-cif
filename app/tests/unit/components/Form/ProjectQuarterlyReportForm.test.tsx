@@ -20,17 +20,25 @@ const testQuery = graphql`
 
 const defaultMockResolver = {
   ProjectRevision(context, generateID) {
+    const firstFormId = `mock-project-quarterly-report-form-${generateID()}`;
     return {
       id: `mock-proj-rev-${generateID()}`,
       rowId: 1234,
+      upcomingReportingRequirementFormChange: {
+        id: firstFormId,
+        reportingRequirement: {
+          reportDueDate: "2022-01-01T00:00:00-07",
+          reportingRequirementIndex: 1,
+        },
+      },
       projectQuarterlyReportFormChanges: {
         edges: [
           {
             node: {
-              id: `mock-project-quarterly-report-form-${generateID()}`,
+              id: firstFormId,
               newFormData: {
                 status: "on_track",
-                reportDueDate: "2022-01-01",
+                reportDueDate: "2022-01-01T00:00:00-07",
                 projectId: 51,
                 reportType: "Quarterly",
               },
@@ -44,11 +52,11 @@ const defaultMockResolver = {
               id: `mock-project-quarterly-report-form-${generateID()}`,
               newFormData: {
                 status: "on_track",
-                reportDueDate: "2022-10-28",
+                reportDueDate: "2022-10-28T00:00:00-07",
                 comments: "some comments",
                 projectId: 51,
                 reportType: "Quarterly",
-                quasubmittedDate: "2022-05-02",
+                submittedDate: "2022-05-02T00:00:00-07",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -86,13 +94,16 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Renders two quarterly reports with remove buttons", () => {
+  it("Renders two quarterly reports with remove buttons, and the report due indicator", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
 
     expect(screen.getAllByText("Remove")).toHaveLength(2);
+    expect(screen.getAllByRole("group")[0]).toHaveTextContent(
+      /Overdue by \d+ day\(s\)/
+    );
   });
 
   it("Calls the addQuarterlyReportToRevision mutation when the Add button is clicked", () => {
@@ -141,7 +152,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     ).toMatchObject({
       variables: {
         input: {
-          id: "mock-project-quarterly-report-form-2",
+          id: "mock-project-quarterly-report-form-1",
         },
         connections: expect.any(Array),
       },
@@ -203,7 +214,7 @@ describe("The ProjectQuarterlyReportForm", () => {
                   id: `mock-project-quarterly-report-form-${generateID()}`,
                   newFormData: {
                     status: "on_track",
-                    reportDueDate: "2022-01-01",
+                    reportDueDate: "2022-01-01T00:00:00-07",
                     projectId: 51,
                     reportType: "Quarterly",
                   },

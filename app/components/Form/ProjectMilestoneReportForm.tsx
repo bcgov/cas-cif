@@ -184,6 +184,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 onChange={(change) => {
                   updateReportFormChange(
                     applyUpdateFormChangeMutation,
+                    "General Milestone",
                     { ...milestoneReport, changeStatus: "pending" },
                     change.formData
                   );
@@ -202,6 +203,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         onClick={() =>
           stageReportFormChanges(
             applyUpdateFormChangeMutation,
+            "General Milestone",
             props.onSubmit,
             formRefs,
             projectRevision.projectMilestoneReportFormChanges.edges

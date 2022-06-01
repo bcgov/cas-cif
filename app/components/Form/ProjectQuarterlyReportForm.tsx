@@ -1,13 +1,14 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7 } from "json-schema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -60,6 +61,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
               changeStatus
             }
           }
+        }
+        upcomingReportingRequirementFormChange(reportType: "Quarterly") {
+          ...ReportDueIndicator_formChange
         }
         projectFormChange {
           formDataRecordId
@@ -117,6 +121,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
             changeStatus: formChange.changeStatus,
           },
         },
+        reportType: "Quarterly",
       },
       debounceKey: formChange.id,
       optimisticResponse: {
@@ -131,7 +136,8 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     });
   };
 
-  const [discardFormChange] = useDiscardFormChange(
+  const [discardFormChange] = useDiscardReportingRequirementFormChange(
+    "Quarterly",
     projectRevision.projectQuarterlyReportFormChanges.__id
   );
 
@@ -170,6 +176,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     changeStatus: "staged",
                   },
                 },
+                reportType: "Quarterly",
               },
               debounceKey: node.id,
               onCompleted: () => {
@@ -226,7 +233,12 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
-      <div>Quarterly reports status here</div>
+      <ReportDueIndicator
+        reportTitle="Quarterly Report"
+        reportDueFormChange={
+          projectRevision.upcomingReportingRequirementFormChange
+        }
+      />
 
       <FormBorder>
         <Button

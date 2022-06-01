@@ -5,6 +5,7 @@ import { updateReportingRequirementFormChangeMutation } from "__generated__/upda
 const mutation = graphql`
   mutation updateReportingRequirementFormChangeMutation(
     $input: UpdateFormChangeInput!
+    $reportType: String!
   ) {
     updateFormChange(input: $input) {
       formChange {
@@ -13,8 +14,10 @@ const mutation = graphql`
         operation
         changeStatus
         projectRevisionByProjectRevisionId {
-          ...ProjectQuarterlyReportForm_projectRevision
           ...TaskList_projectRevision
+          upcomingReportingRequirementFormChange(reportType: $reportType) {
+            ...ReportDueIndicator_formChange
+          }
         }
       }
     }
