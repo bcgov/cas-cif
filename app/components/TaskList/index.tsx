@@ -30,6 +30,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     projectContactsStatus,
     quarterlyReportsStatus,
     annualReportsStatus,
+    milestoneReportStatuses,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -56,6 +57,15 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           formDataTableName: "reporting_requirement"
           jsonMatcher: "{\"reportType\":\"Annual\"}"
         )
+        milestoneReportStatuses {
+          edges {
+            node {
+              milestoneIndex
+              reportingRequirementStatus
+              formCompletionStatus
+            }
+          }
+        }
       }
     `,
     projectRevision
@@ -146,14 +156,33 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           listItemNumber="3"
           listItemName="Milestone Reports"
         >
-          <TaskListItem
-            stepName="3"
-            linkUrl={getProjectRevisionFormPageRoute(id, 3)}
-            formTitle="Milestone reports"
-            formStatus={null} // Leaving this status as null for now while we decide how to display milestone statuses
-            currentStep={currentStep}
-            mode={mode}
-          />
+          {milestoneReportStatuses.edges.length === 1 ? (
+            <TaskListItem
+              stepName="3"
+              linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+              formTitle="Milestone reports"
+              formStatus={null} // Leaving this status as null for now while we decide how to display milestone statuses
+              currentStep={currentStep}
+              mode={mode}
+            />
+          ) : (
+            milestoneReportStatuses.edges.map(({ node }) => (
+              <TaskListItem
+                key={node.milestoneIndex}
+                stepName="3"
+                linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+                formTitle={
+                  node.milestoneIndex === -1
+                    ? "Status of milestone reporting"
+                    : `Milestone ${node.milestoneIndex}`
+                }
+                reportingRequirementStatus={node.reportingRequirementStatus}
+                formStatus={node.formCompletionStatus} // Leaving this status as null for now while we decide how to display milestone statuses
+                currentStep={currentStep}
+                mode={mode}
+              />
+            ))
+          )}
         </TaskListSection>
 
         {/* Quarterly Reports Section */}

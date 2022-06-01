@@ -7,6 +7,7 @@ interface Props {
   stepName: string;
   linkUrl: { pathname: string; query: { projectRevision: string } };
   formTitle: string;
+  reportingRequirementStatus?: string;
   formStatus: string;
   currentStep: string;
   mode: TaskListMode;
@@ -16,6 +17,7 @@ const TaskListItem: React.FC<Props> = ({
   stepName,
   linkUrl,
   formTitle,
+  reportingRequirementStatus,
   formStatus,
   currentStep,
   mode,
@@ -27,13 +29,16 @@ const TaskListItem: React.FC<Props> = ({
     >
       <Link passHref href={linkUrl}>
         <BCGovLink>
-          {mode === "view" || stepName === "summary"
+          {mode === "view" ||
+          stepName === "summary" ||
+          formTitle === "Status of milestone reporting"
             ? formTitle
             : `${
                 mode === "update" ? "Edit" : "Add"
               } ${formTitle.toLowerCase()}`}
         </BCGovLink>
       </Link>
+      {reportingRequirementStatus}
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
 
       <style jsx>{`
