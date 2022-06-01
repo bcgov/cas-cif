@@ -71,26 +71,17 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
         id
-        rowId
         projectMilestoneReportFormChanges(first: 1000)
           @connection(key: "connection_projectMilestoneReportFormChanges") {
           __id
           edges {
             node {
-              rowId
               id
               newFormData
               operation
               changeStatus
-              formChangeByPreviousFormChangeId {
-                changeStatus
-                newFormData
-              }
             }
           }
-        }
-        projectFormChange {
-          formDataRecordId
         }
       }
     `,
@@ -180,6 +171,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               </header>
               <FormBase
                 id={`form-${milestoneReport.id}`}
+                validateOnMount={milestoneReport.changeStatus === "staged"}
                 idPrefix={`form-${milestoneReport.id}`}
                 ref={(el) => (formRefs.current[milestoneReport.id] = el)}
                 formData={milestoneReport.newFormData}

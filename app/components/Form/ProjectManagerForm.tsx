@@ -90,6 +90,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           id
           operation
           newFormData
+          changeStatus
         }
       }
     `,
@@ -136,6 +137,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
       <div>
         <FormBase
           id={`form-manager-${change.projectManagerLabel.label}`}
+          validateOnMount={change.formChange.changeStatus === "staged"}
           idPrefix={formIdPrefix}
           ref={(el) => (formRefs.current[change.projectManagerLabel.id] = el)}
           formData={change.formChange?.newFormData}
