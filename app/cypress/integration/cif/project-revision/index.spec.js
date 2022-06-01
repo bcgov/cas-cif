@@ -68,8 +68,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.get('[aria-label="Milestone Description"]').should("have.value", "desc");
-    cy.get('[label*="Due Date"]').type("2020-01-01");
-    cy.get('[label*="Due Date"]').should("have.value", "2020-01-01");
+    cy.addDueDate(0, "2020-01-01");
 
     cy.get('label[for*="reportDueDate"]').should("have.length", 1);
     cy.checkA11y("main", null, logAxeResults);
@@ -312,7 +311,7 @@ describe("the new project page", () => {
 
     cy.url().should("include", "/form/3");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
-    cy.get('[label*="Due Date"]').type("2020-01-01");
+    cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
 

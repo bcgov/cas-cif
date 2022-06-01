@@ -23,7 +23,7 @@ interface Props {
 
 const annualReportUiSchema = {
   reportDueDate: {
-    "ui:widget": "date",
+    "ui:widget": "DueDateWidget",
   },
   submittedDate: {
     "ui:widget": "date",
