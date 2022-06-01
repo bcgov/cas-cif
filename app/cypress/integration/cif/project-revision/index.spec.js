@@ -511,6 +511,23 @@ describe("the new project page", () => {
       variant: "no_change_reason",
     });
 
+    // Verify that the revision can be accessed by other users
+    cy.mockLogin("cif_internal");
+    cy.visit("/cif/projects");
+    cy.findByRole("button", { name: /view/i }).click();
+    cy.findByText(/resume edition/i).click();
+    cy.get('[aria-label*="Project Name"]').eq(0).should("have.value", "Bar");
+    cy.get('[aria-label*="Project Name"]').eq(0).clear().type("Baz");
+    cy.findByRole("button", { name: /submit project overview/i }).click();
+
+    // Navigate back to the review and submit information page
+    cy.mockLogin("cif_admin");
+    cy.visit("/cif/projects");
+    cy.findByRole("button", { name: /view/i }).click();
+    cy.findByText(/resume edition/i).click();
+    cy.findByText(/submit change/i).click();
+    cy.findByText(/review and submit information/i).click();
+    cy.findByText(/review and submit project/i).should("exist");
     cy.get("textarea").clear().type("foo");
     // Allow the component to finish saving before taking screenshot
     cy.contains("Changes saved").should("be.visible");
@@ -527,7 +544,7 @@ describe("the new project page", () => {
     // Check the project was updated
     cy.findByText(/Project Name/i)
       .next()
-      .should("have.text", "Bar");
+      .should("have.text", "Baz");
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Project managers/i).click();
     cy.findByText(/tech team secondary/i).should("not.exist");
