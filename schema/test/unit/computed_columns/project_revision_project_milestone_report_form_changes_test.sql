@@ -20,11 +20,6 @@ insert into cif.form_change(id, new_form_data, operation, form_data_schema_name,
 
 /** END SETUP */
 
-with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=1
-    ) select new_form_data->>'reportType' from cif.project_revision_project_milestone_report_form_changes((select * from record)) order by id;
-
 select results_eq(
   $$
     with record as (
