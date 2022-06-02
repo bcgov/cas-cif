@@ -148,7 +148,9 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
             addReportFormChange(
               addMilestoneReportMutation,
               projectRevision,
-              nextMilestoneReportIndex
+              nextMilestoneReportIndex,
+              "General Milestone",
+              projectRevision.projectMilestoneReportFormChanges.__id
             )
           }
           className="addButton"

@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
-import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
@@ -12,11 +11,17 @@ import useDiscardReportingRequirementFormChange from "mutations/ProjectReporting
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
-import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import {
+  addReportFormChange,
+  updateReportFormChange,
+  deleteReportFormChange,
+  stageReportFormChanges,
+  getSortedReports,
+} from "./reportingRequirementFormChangeFunctions";
 
 interface Props {
   onSubmit: () => void;
@@ -78,138 +83,18 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
-  const addQuarterlyReport = (reportIndex: number) => {
-    const formData = {
-      status: "on_track",
-      projectId: projectRevision.projectFormChange.formDataRecordId,
-      reportType: "Quarterly",
-      reportingRequirementIndex: reportIndex,
-    };
-    addQuarterlyReportMutation({
-      variables: {
-        projectRevisionId: projectRevision.rowId,
-        newFormData: formData,
-        connections: [projectRevision.projectQuarterlyReportFormChanges.__id],
-      },
-    });
-  };
-
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
-
-  const updateFormChange = (
-    formChange: {
-      readonly id: string;
-      readonly newFormData: any;
-      readonly operation: FormChangeOperation;
-      readonly changeStatus: string;
-    },
-    newFormData: any
-  ) => {
-    applyUpdateFormChangeMutation({
-      variables: {
-        input: {
-          id: formChange.id,
-          formChangePatch: {
-            newFormData,
-            changeStatus: formChange.changeStatus,
-          },
-        },
-        reportType: "Quarterly",
-      },
-      debounceKey: formChange.id,
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: formChange.id,
-            newFormData: newFormData,
-            changeStatus: formChange.changeStatus,
-          },
-        },
-      },
-    });
-  };
 
   const [discardFormChange] = useDiscardReportingRequirementFormChange(
     "Quarterly",
     projectRevision.projectQuarterlyReportFormChanges.__id
   );
 
-  const deleteQuarterlyReport = (
-    formChangeId: string,
-    formChangeOperation: FormChangeOperation
-  ) => {
-    discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-      },
-    });
-  };
-
-  const stageQuarterlyReportFormChanges = async () => {
-    const validationErrors = Object.keys(formRefs.current).reduce(
-      (agg, formId) => {
-        const formObject = formRefs.current[formId];
-        return [...agg, ...validateFormWithErrors(formObject)];
-      },
-      []
-    );
-
-    const completedPromises: Promise<void>[] = [];
-
-    projectRevision.projectQuarterlyReportFormChanges.edges.forEach(
-      ({ node }) => {
-        if (node.changeStatus === "pending") {
-          const promise = new Promise<void>((resolve, reject) => {
-            applyUpdateFormChangeMutation({
-              variables: {
-                input: {
-                  id: node.id,
-                  formChangePatch: {
-                    changeStatus: "staged",
-                  },
-                },
-                reportType: "Quarterly",
-              },
-              debounceKey: node.id,
-              onCompleted: () => {
-                resolve();
-              },
-              onError: reject,
-            });
-          });
-          completedPromises.push(promise);
-        }
-      }
-    );
-    try {
-      await Promise.all(completedPromises);
-
-      if (validationErrors.length === 0) props.onSubmit();
-    } catch (e) {
-      // the failing mutation will display an error message and send the error to sentry
-    }
-  };
-
   const [sortedQuarterlyReports, nextQuarterlyReportIndex] = useMemo(() => {
-    const filteredReports =
+    return getSortedReports(
       projectRevision.projectQuarterlyReportFormChanges.edges
-        .map(({ node }) => node)
-        .filter((report) => report.operation !== "ARCHIVE");
-
-    filteredReports.sort(
-      (a, b) =>
-        a.newFormData.reportingRequirementIndex -
-        b.newFormData.reportingRequirementIndex
     );
-    const nextIndex =
-      filteredReports.length > 0
-        ? filteredReports[filteredReports.length - 1].newFormData
-            .reportingRequirementIndex + 1
-        : 1;
-
-    return [filteredReports, nextIndex];
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
   // Get all form changes ids to get used in the undo changes button
@@ -237,7 +122,15 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       <FormBorder>
         <Button
           variant="secondary"
-          onClick={() => addQuarterlyReport(nextQuarterlyReportIndex)}
+          onClick={() =>
+            addReportFormChange(
+              addQuarterlyReportMutation,
+              projectRevision,
+              nextQuarterlyReportIndex,
+              "Quarterly",
+              projectRevision.projectQuarterlyReportFormChanges.__id
+            )
+          }
           className="addButton"
         >
           <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly report
@@ -252,9 +145,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                   variant="secondary"
                   size="small"
                   onClick={() =>
-                    deleteQuarterlyReport(
+                    deleteReportFormChange(
+                      discardFormChange,
                       quarterlyReport.id,
-                      quarterlyReport.operation
+                      quarterlyReport.operation,
+                      formRefs
                     )
                   }
                 >
@@ -267,7 +162,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
                 formData={quarterlyReport.newFormData}
                 onChange={(change) => {
-                  updateFormChange(
+                  updateReportFormChange(
+                    applyUpdateFormChangeMutation,
+                    "Quarterly",
                     { ...quarterlyReport, changeStatus: "pending" },
                     change.formData
                   );
@@ -286,7 +183,15 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       <Button
         size="medium"
         variant="primary"
-        onClick={stageQuarterlyReportFormChanges}
+        onClick={() =>
+          stageReportFormChanges(
+            applyUpdateFormChangeMutation,
+            "Quarterly",
+            props.onSubmit,
+            formRefs,
+            projectRevision.projectQuarterlyReportFormChanges.edges
+          )
+        }
         disabled={isUpdating}
       >
         Submit Quarterly Reports
