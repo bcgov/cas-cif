@@ -157,7 +157,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     } else if (
       !previousValue &&
       formData &&
-      formContext.operation === "CREATE"
+      formContext.operation !== "ARCHIVE"
     ) {
       return showStringAdded(id, formData);
     } else if (
@@ -184,7 +184,7 @@ const CUSTOM_DIFF_FIELDS: Record<
       } else if (
         !previousValue &&
         formData &&
-        formContext.operation === "CREATE"
+        formContext.operation !== "ARCHIVE"
       ) {
         return showStringAdded(id, uiSchema["ui:options"].text as string);
       } else if (
@@ -209,7 +209,7 @@ const CUSTOM_DIFF_FIELDS: Record<
       } else if (
         !previousValue &&
         formData &&
-        formContext.operation === "CREATE"
+        formContext.operation !== "ARCHIVE"
       ) {
         return showNumberAdded(
           id,
