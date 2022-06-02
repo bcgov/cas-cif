@@ -31,7 +31,7 @@ $function$
   -- Get an overall status ('late' if any individual milestones are late, otherwise 'on_track')
   -- Indexed as -1 to always be the first record returned by the function
   union
-    select -1,
+    select 0,
     (select coalesce((
       select distinct fc.new_form_data ->> 'status'
       from cif.form_change fc
