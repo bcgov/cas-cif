@@ -103,28 +103,28 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
             quarterlyReport.operation !== "ARCHIVE" && (
               <em>Quarterly report not updated</em>
             )}
-
           {/* Show this part if the whole quarterly report has been removed */}
-          {renderDiff && quarterlyReport.operation === "ARCHIVE" && (
+          {renderDiff && quarterlyReport.operation === "ARCHIVE" ? (
             <em className="diffOld">Quarterly Report Removed</em>
+          ) : (
+            <FormBase
+              liveValidate
+              key={`form-${quarterlyReport.id}`}
+              tagName={"dl"}
+              theme={readOnlyTheme}
+              fields={renderDiff ? customFields : fields}
+              schema={formSchema as JSONSchema7}
+              formData={formData}
+              formContext={{
+                operation: quarterlyReport.operation,
+                oldData:
+                  quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
+              }}
+            />
           )}
-          <FormBase
-            liveValidate
-            key={`form-${quarterlyReport.id}`}
-            tagName={"dl"}
-            theme={readOnlyTheme}
-            fields={renderDiff ? customFields : fields}
-            schema={formSchema as JSONSchema7}
-            formData={formData}
-            formContext={{
-              operation: quarterlyReport.operation,
-              oldData:
-                quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
-            }}
-          />
           <style jsx>{`
-            div.reportContainer {
-              padding-top: 1em;
+            .reportContainer {
+              margin-bottom: 1em;
             }
             diffOld {
               color: #fad980;
