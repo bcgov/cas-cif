@@ -58,6 +58,15 @@ export const getProjectRevisionFormPageRoute = (
   },
 });
 
+export const getProjectRevisionAttachmentsPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif/project-revision/[projectRevision]/attachments/`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
+
 ///// Project
 
 export const getProjectsPageRoute = () => ({
@@ -68,27 +77,6 @@ export const getProjectViewPageRoute = (projectId: string) => ({
   pathname: `/cif/project/[project]/`,
   query: {
     project: projectId,
-  },
-});
-
-export const getAttachmentsPageRoute = (projectId: string) => ({
-  pathname: "/cif/project/[project]/attachments",
-  query: {
-    project: projectId,
-  },
-});
-
-export const getAttachmentUploadPageRoute = (projectId: string) => ({
-  pathname: `/cif/project/[project]/upload-attachment`,
-  query: {
-    project: projectId,
-  },
-});
-
-export const getAttachmentViewPageRoute = (attachmentId: string) => ({
-  pathname: `/cif/attachments/[attachment]`,
-  query: {
-    attachment: attachmentId,
   },
 });
 
