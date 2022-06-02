@@ -203,7 +203,6 @@ Cypress.Commands.add("addDueDate", (reportNumber, reportDueDate) => {
       year: dueDate.get("year"),
     });
 
-  cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
   cy.get('[aria-label*="Due Date"]')
     .eq(reportNumber - 1)
     .should("exist")
@@ -220,7 +219,6 @@ Cypress.Commands.add("addDueDate", (reportNumber, reportDueDate) => {
   cy.get('[aria-label*="Due Date"]')
     .eq(reportNumber - 1)
     .should("have.text", dueDateTZ.toFormat("MMM dd, yyyy"));
-
 
   // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
   return cy.url().should("include", "/form");
