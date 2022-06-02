@@ -100,7 +100,7 @@ const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
               cursor: pointer;
             }
             :global(.overdue) {
-              color: #cc0003;
+              color: #cd2026;
             }
           `}</style>
         </div>
@@ -108,7 +108,7 @@ const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
           <div>
             <FontAwesomeIcon
               icon={faExclamationCircle}
-              color={"#CC0003"}
+              color={"#cd2026"}
               className={"overdueIcon"}
             />
           </div>

@@ -246,6 +246,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                 schema={projectReportingRequirementSchema as JSONSchema7}
                 uiSchema={annualReportUiSchema}
                 ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                formContext={{
+                  dueDate: report.newFormData?.reportDueDate,
+                }}
               />
             </div>
           );
