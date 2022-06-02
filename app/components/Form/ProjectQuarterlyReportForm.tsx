@@ -86,7 +86,8 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
-  const [discardFormChange] = useDiscardFormChange(
+  const [discardFormChange] = useDiscardReportingRequirementFormChange(
+    "Quarterly",
     projectRevision.projectQuarterlyReportFormChanges.__id
   );
 
@@ -163,6 +164,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 onChange={(change) => {
                   updateReportFormChange(
                     applyUpdateFormChangeMutation,
+                    "Quarterly",
                     { ...quarterlyReport, changeStatus: "pending" },
                     change.formData
                   );
@@ -184,6 +186,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         onClick={() =>
           stageReportFormChanges(
             applyUpdateFormChangeMutation,
+            "Quarterly",
             props.onSubmit,
             formRefs,
             projectRevision.projectQuarterlyReportFormChanges.edges

@@ -140,6 +140,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                 onChange={(change) => {
                   updateReportFormChange(
                     applyUpdateFormChangeMutation,
+                    "Annual",
                     { ...report, changeStatus: "pending" },
                     change.formData
                   );
@@ -161,6 +162,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         onClick={() =>
           stageReportFormChanges(
             applyUpdateFormChangeMutation,
+            "Annual",
             props.onSubmit,
             formRefs,
             projectRevision.projectAnnualReportFormChanges.edges
