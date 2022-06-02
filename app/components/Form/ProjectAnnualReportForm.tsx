@@ -26,7 +26,7 @@ const annualReportUiSchema = {
     "ui:widget": "DueDateWidget",
   },
   submittedDate: {
-    "ui:widget": "date",
+    "ui:widget": "ReceivedDateWidget",
   },
   comments: {
     "ui:widget": "TextAreaWidget",
@@ -246,6 +246,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                 schema={projectReportingRequirementSchema as JSONSchema7}
                 uiSchema={annualReportUiSchema}
                 ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                formContext={{
+                  dueDate: report.newFormData?.reportDueDate,
+                }}
               />
             </div>
           );

@@ -220,15 +220,46 @@ Cypress.Commands.add("addDueDate", (reportNumber, reportDueDate) => {
     .eq(reportNumber - 1)
     .should("have.text", dueDateTZ.toFormat("MMM dd, yyyy"));
 
-  return cy.url().should("include", "/form/");
+  // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
+  return cy.url().should("include", "/form");
 });
+
+Cypress.Commands.add(
+  "setReportReceivedDate",
+  (reportNumber, reportReceivedDate) => {
+    const receivedDate = DateTime.fromFormat(reportReceivedDate, "yyyy-MM-dd")
+      .setZone("America/Vancouver")
+      .setLocale("en-CA");
+    cy.get('[aria-label*="Received Date"]')
+      .eq(reportNumber - 1)
+      .should("exist")
+      .click();
+    cy.get(".react-datepicker__month-select")
+      // datepicker indexes months from 0, luxon indexes from 1
+      .select(receivedDate.get("month") - 1);
+    cy.get(".react-datepicker__year-select").select(
+      receivedDate.get("year").toString()
+    );
+    cy.get(`.react-datepicker__day--0${receivedDate.toFormat("dd")}`)
+      .not(`.react-datepicker__day--outside-month`)
+      .click();
+    cy.get('[aria-label*="Received Date"]')
+      .eq(reportNumber - 1)
+      .should(
+        "have.text",
+        `Received(${receivedDate.toFormat("MMM dd, yyyy")})`
+      );
+    // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
+    return cy.url().should("include", "/form");
+  }
+);
 
 Cypress.Commands.add(
   "addQuarterlyReport",
   (
     reportNumber,
     reportDueDate,
-    receivedDate = undefined,
+    reportReceivedDate = undefined,
     generalComments = undefined
   ) => {
     cy.findByRole("button", {
@@ -240,13 +271,8 @@ Cypress.Commands.add(
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.addDueDate(reportNumber, reportDueDate);
 
-    if (receivedDate) {
-      cy.get('[label*="Received Date"]')
-        .eq(reportNumber - 1)
-        .type(receivedDate);
-      cy.get('[label*="Received Date"]')
-        .eq(reportNumber - 1)
-        .should("have.value", receivedDate);
+    if (reportReceivedDate) {
+      cy.setReportReceivedDate(reportNumber, reportReceivedDate);
     }
 
     if (generalComments) {
@@ -267,7 +293,7 @@ Cypress.Commands.add(
   (
     reportNumber,
     reportDueDate,
-    receivedDate = undefined,
+    reportReceivedDate = undefined,
     generalComments = undefined
   ) => {
     cy.findByRole("button", {
@@ -275,6 +301,51 @@ Cypress.Commands.add(
     }).click();
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.addDueDate(reportNumber, reportDueDate);
+
+    if (reportReceivedDate) {
+      cy.setReportReceivedDate(reportNumber, reportReceivedDate);
+    }
+
+    if (generalComments) {
+      cy.get('[aria-label="General Comments"]')
+        .eq(reportNumber - 1)
+        .type(generalComments);
+      cy.get('[aria-label="General Comments"]')
+        .eq(reportNumber - 1)
+        .should("have.value", generalComments);
+    }
+    // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
+    return cy.url().should("include", "/form/5");
+  }
+);
+
+Cypress.Commands.add(
+  "addMilestoneReport",
+  (
+    reportNumber,
+    reportDescription,
+    reportDueDate,
+    receivedDate = undefined
+  ) => {
+    cy.findByRole("button", {
+      name: /Add another milestone report/i,
+    }).click();
+
+    cy.get('[aria-label="Milestone Description"]')
+      .clear()
+      .type(reportDescription);
+    cy.get('[aria-label="Milestone Description"]').should(
+      "have.value",
+      reportDescription
+    );
+
+    cy.get('[label*="Due Date"]').should("have.length", reportNumber);
+    cy.get('[label*="Due Date"]')
+      .eq(reportNumber - 1)
+      .type(reportDueDate);
+    cy.get('[label*="Due Date"]')
+      .eq(reportNumber - 1)
+      .should("have.value", reportDueDate);
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')

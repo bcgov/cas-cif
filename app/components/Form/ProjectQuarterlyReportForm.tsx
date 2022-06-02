@@ -25,18 +25,12 @@ interface Props {
 
 const quarterlyReportUiSchema = {
   reportDueDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "DueDateWidget",
   },
   submittedDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "date",
+    "ui:widget": "ReceivedDateWidget",
   },
   comments: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
     "ui:widget": "TextAreaWidget",
   },
 };
@@ -281,6 +275,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                 schema={projectReportingRequirementSchema as JSONSchema7}
                 uiSchema={quarterlyReportUiSchema}
                 ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                formContext={{
+                  dueDate: quarterlyReport.newFormData?.reportDueDate,
+                }}
               />
             </div>
           );

@@ -66,11 +66,13 @@ describe("the new project page", () => {
     cy.findByText(/Add another milestone report/i).click();
 
     cy.url().should("include", "/form/3");
+
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.get('[aria-label="Milestone Description"]').should("have.value", "desc");
     cy.addDueDate(0, "2020-01-01");
-
     cy.get('label[for*="reportDueDate"]').should("have.length", 1);
+    cy.setReportReceivedDate(0, "2019-12-31");
+
     cy.checkA11y("main", null, logAxeResults);
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
@@ -84,11 +86,11 @@ describe("the new project page", () => {
 
     cy.url().should("include", "/form/4");
 
-    cy.addQuarterlyReport(1, "1991-01-01");
+    cy.addQuarterlyReport(1, "1991-01-01", "1990-12-31");
     cy.contains("Changes saved").should("be.visible");
-    cy.addQuarterlyReport(2, "1992-01-01");
+    cy.addQuarterlyReport(2, "1992-01-01", "1991-12-31");
     cy.contains("Changes saved").should("be.visible");
-    cy.addQuarterlyReport(3, "1993-01-01");
+    cy.addQuarterlyReport(3, "1993-01-01", "1992-12-31");
     cy.contains("Changes saved").should("be.visible");
 
     cy.get('label[for*="reportDueDate"]').should("have.length", 3);
@@ -103,9 +105,9 @@ describe("the new project page", () => {
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/5");
-    cy.addAnnualReport(1, "1991-01-01");
-    cy.addAnnualReport(2, "1992-01-01");
-    cy.addAnnualReport(3, "1993-01-01");
+    cy.addAnnualReport(1, "1991-01-01", "1990-12-31");
+    cy.addAnnualReport(2, "1992-01-01", "1991-12-31");
+    cy.addAnnualReport(3, "1993-01-01", "1992-12-31");
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Annual Reports Form",
@@ -221,7 +223,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 1);
   });
 
-  it("undoes changes when the user clicks the Undo Changes button", () => {
+  it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 

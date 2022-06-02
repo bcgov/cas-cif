@@ -2,7 +2,6 @@ import { WidgetProps } from "@rjsf/core";
 import React, { forwardRef, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime, Interval } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

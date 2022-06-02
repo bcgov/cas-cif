@@ -192,6 +192,9 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 schema={milestoneSchema as JSONSchema7}
                 uiSchema={milestoneReportUiSchema}
                 ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                formContext={{
+                  dueDate: milestoneReport.newFormData?.reportDueDate,
+                }}
               />
             </div>
           );
