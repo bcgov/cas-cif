@@ -2,13 +2,13 @@ import { WidgetProps } from "@rjsf/core";
 import React, { forwardRef, useMemo, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime, Interval } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faExclamationCircle,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
@@ -70,7 +70,7 @@ const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
       <div className="receivedDateWrapper">
         <div onClick={onClick} ref={ref} aria-label={label}>
           {displayString}
-          <CalendarTodayIcon style={{ color: "black" }} />
+          <FontAwesomeIcon icon={faCalendarAlt} size="lg" />
 
           <style jsx>{`
             div {
