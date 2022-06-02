@@ -382,10 +382,10 @@
   resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-express/-/sso-express-3.1.0.tgz#ea0d56316d2d665bc63a89c06518e4c0468b4c1d"
   integrity sha512-R/vVaBvz7d5iujAfTJhnQrXxAauMfpHnT7GHVdU3DUztRw1RYYIFG4rWeMosnS/zOwtuigsJeVaCQPpyBKL+pw==
 
-"@bcgov-cas/sso-react@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-react/-/sso-react-1.0.2.tgz#29f6cbc5678be0fcd9ff239b9e8d2d9694c77428"
-  integrity sha512-sHXzD2o/h7B7sPZ2lF8CZzeZtzkWBShrO9wuij75WHmkk2/A9NGCwFrRgKfjzpjG4+drfrRCN9ou/O+lGHB9rg==
+"@bcgov-cas/sso-react@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-react/-/sso-react-2.0.0.tgz#057c626da53f432b9898a5c2550c36333555b9d9"
+  integrity sha512-4YXk+GcuYnI4tpU2aAo9l9YDSU/onlaRNMRvG7VWfG8x+4vJZSWMEQdDvVN2rSntp14Hyo83ewxT1BFppYchLg==
   dependencies:
     "@button-inc/bcgov-theme" "^1.0.1"
     lodash.throttle "^4.1.1"
@@ -1243,7 +1243,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popperjs/core@^2.11.5":
+"@popperjs/core@^2.11.5", "@popperjs/core@^2.9.2":
   version "2.11.5"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
@@ -1252,11 +1252,6 @@
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.0.tgz#6734f8ebc106a0860dff7f92bf90df193f0935d7"
   integrity sha512-zrsUxjLOKAzdewIDRWy9nsV1GQsKBCWaGwsZQlCgr6/q+vjyZhFgqedLfFBuI9anTPEUT4APq9Mu0SZBTzIcGQ==
-
-"@popperjs/core@^2.9.2":
-  version "2.11.5"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
-  integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
 "@rjsf/core@^3.2.0":
   version "3.2.1"
