@@ -159,9 +159,9 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           {milestoneReportStatuses.edges.length === 1 ? (
             <TaskListItem
               stepName="3"
-              linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+              linkUrl={getProjectRevisionFormPageRoute(id, 3, null)}
               formTitle="Milestone reports"
-              formStatus={null} // Leaving this status as null for now while we decide how to display milestone statuses
+              formStatus={null} // The formStatus is null here as there are no milestones
               currentStep={currentStep}
               mode={mode}
             />
@@ -170,16 +170,21 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
               <TaskListItem
                 key={node.milestoneIndex}
                 stepName="3"
-                linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+                linkUrl={getProjectRevisionFormPageRoute(
+                  id,
+                  3,
+                  `Milestone${node.milestoneIndex}`
+                )}
                 formTitle={
-                  node.milestoneIndex === -1
+                  node.milestoneIndex === 0
                     ? "Status of milestone reporting"
                     : `Milestone ${node.milestoneIndex}`
                 }
                 reportingRequirementStatus={node.reportingRequirementStatus}
-                formStatus={node.formCompletionStatus} // Leaving this status as null for now while we decide how to display milestone statuses
+                formStatus={node.formCompletionStatus}
                 currentStep={currentStep}
                 mode={mode}
+                hasAnchor={node.milestoneIndex === 0 ? false : true}
               />
             ))
           )}

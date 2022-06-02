@@ -11,6 +11,7 @@ interface Props {
   formStatus: string;
   currentStep: string;
   mode: TaskListMode;
+  hasAnchor?: boolean;
 }
 
 const TaskListItem: React.FC<Props> = ({
@@ -21,17 +22,19 @@ const TaskListItem: React.FC<Props> = ({
   formStatus,
   currentStep,
   mode,
+  hasAnchor,
 }) => {
   return (
     <li
       aria-current={currentStep === stepName ? "step" : false}
       className="bordered"
     >
-      <Link passHref href={linkUrl}>
+      <Link passHref href={linkUrl} scroll={!hasAnchor}>
         <BCGovLink>
           {mode === "view" ||
           stepName === "summary" ||
-          formTitle === "Status of milestone reporting"
+          formTitle === "Status of milestone reporting" ||
+          hasAnchor
             ? formTitle
             : `${
                 mode === "update" ? "Edit" : "Add"
