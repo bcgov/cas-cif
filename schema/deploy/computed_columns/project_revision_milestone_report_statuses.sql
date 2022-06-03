@@ -29,7 +29,7 @@ $function$
   and fc.form_data_table_name = 'reporting_requirement'
   and fc.new_form_data ->> 'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone')
   -- Get an overall status ('late' if any individual milestones are late, otherwise 'on_track')
-  -- Indexed as -1 to always be the first record returned by the function
+  -- Indexed at 0 to always be the first record returned by the function
   union
     select 0,
     (select coalesce((

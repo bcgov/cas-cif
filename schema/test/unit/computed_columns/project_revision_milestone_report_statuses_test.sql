@@ -29,7 +29,7 @@ select results_eq(
   $$,
   $$
     values
-      ((-1::int, 'on_track'::text, null)::cif.milestone_report_status_return),
+      ((0::int, 'on_track'::text, null)::cif.milestone_report_status_return),
       ((1::int, 'on_track'::text ,'In Progress'::text)::cif.milestone_report_status_return),
       ((2::int, 'on_track'::text, 'Filled'::text)::cif.milestone_report_status_return),
       ((3::int, 'on_track'::text, 'Attention Required':: text)::cif.milestone_report_status_return)
@@ -49,7 +49,7 @@ select results_eq(
   $$,
   $$
     values
-      ((-1::int, 'late'::text, null)::cif.milestone_report_status_return),
+      ((0::int, 'late'::text, null)::cif.milestone_report_status_return),
       ((1::int, 'late'::text ,'In Progress'::text)::cif.milestone_report_status_return),
       ((2::int, 'on_track'::text, 'Filled'::text)::cif.milestone_report_status_return),
       ((3::int, 'on_track'::text, 'Attention Required':: text)::cif.milestone_report_status_return)
@@ -66,7 +66,7 @@ select results_eq(
   $$,
   $$
     values
-      ((-1::int, 'on_track'::text, null)::cif.milestone_report_status_return)
+      ((0::int, 'on_track'::text, null)::cif.milestone_report_status_return)
   $$,
   'Returns a single overall status record when there are no milestones in the revision'
 );
