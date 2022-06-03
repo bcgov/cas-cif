@@ -13,6 +13,7 @@ import AttachmentsTaskListSection from "./AttachmentsTaskListSection";
 import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
+import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -91,7 +92,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
       <ol>
         {/* Project Overview Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "0"}
+          defaultExpandedState={
+            currentStep === "0" ||
+            projectOverviewStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="1"
           listItemName="Project Overview"
         >
@@ -107,7 +111,12 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Project Details Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "1" || currentStep === "2"}
+          defaultExpandedState={
+            currentStep === "1" ||
+            currentStep === "2" ||
+            projectManagersStatus === ATTENTION_REQUIRED_STATUS ||
+            projectContactsStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="2"
           listItemName="Project Details"
           listItemMode={mode === "update" ? "" : "(optional)"}
@@ -148,7 +157,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Quarterly Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "4"}
+          defaultExpandedState={
+            currentStep === "4" ||
+            quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="4"
           listItemName="Quarterly Reports"
         >
@@ -164,7 +176,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Annual Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "5"}
+          defaultExpandedState={
+            currentStep === "5" ||
+            annualReportsStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="5"
           listItemName="Annual Reports"
         >
