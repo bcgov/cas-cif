@@ -124,7 +124,7 @@ select is(
     select new_form_data from cif.form_change
     where id = 3
   ),
-  '{}'::jsonb
+  null::jsonb
   ,
   'form changes with no previous form change id are set to empty json when form_data_table name is project'
 );
