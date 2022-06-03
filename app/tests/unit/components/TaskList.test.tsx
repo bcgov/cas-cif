@@ -236,6 +236,60 @@ describe("The ProjectManagerForm", () => {
 
   it("renders sections expended when they have a form with 'attention required'", () => {
     componentTestingHelper.loadQuery({
+  it("Renders multiple Milestone items in the taskList and an overall milestone status item when milestones exist", () => {
+    const payload = {
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "test-project-managers-status",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            milestoneReportStatuses: {
+              edges: [
+                {
+                  node: {
+                    milestoneIndex: 0,
+                    reportingRequirementStatus: "on_track",
+                    formCompletionStatus: null,
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 1,
+                    reportingRequirementStatus: "on_track",
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 2,
+                    reportingRequirementStatus: "on_track",
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+              ],
+            },
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(payload);
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    expect(
+      screen.getByText("Status of milestone reporting")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Milestone 1")).toBeInTheDocument();
+    expect(screen.getByText("Milestone 2")).toBeInTheDocument();
+  });
+
+  it("Calls the route function with the proper anchor when an individual milstone item is clicked", () => {
+    const payload = {
       Query() {
         return {
           projectRevision: {
@@ -260,5 +314,46 @@ describe("The ProjectManagerForm", () => {
     expect(screen.getByText(/add project managers/i)).toBeVisible();
     expect(screen.queryByText(/add quarterly reports/i)).toBeNull();
     expect(screen.getByText(/add annual reports/i)).toBeVisible();
+            projectManagersStatus: "test-project-managers-status",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            milestoneReportStatuses: {
+              edges: [
+                {
+                  node: {
+                    milestoneIndex: 0,
+                    reportingRequirementStatus: "on_track",
+                    formCompletionStatus: null,
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 1,
+                    reportingRequirementStatus: "on_track",
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 2,
+                    reportingRequirementStatus: "on_track",
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+              ],
+            },
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(payload);
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    fireEvent.click(screen.getByText(/Milestone 1/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3&anchor=Milestone1",
+      "/cif/project-revision/test-project-revision-id/form/3?anchor=Milestone1",
+      expect.any(Object)
+    );
   });
 });
