@@ -30,11 +30,11 @@ select results_eq(
 
 select results_eq(
   $$
-    select form_data_table_name, form_data_schema_name, project_revision_id from cif.form_change;
+    select form_data_table_name, form_data_schema_name, project_revision_id, new_form_data from cif.form_change;
   $$,
   $$
     values
-      ('project'::varchar, 'cif'::varchar, 1::integer)
+      ('project'::varchar, 'cif'::varchar, 1::integer, null::jsonb)
   $$,
   'Creates 1 form_change records for the project table'
 );
