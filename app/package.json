@@ -9,7 +9,7 @@
     "build:next": "next build",
     "dev": "nodemon",
     "predev": "yarn run build:schema && yarn run build:relay",
-    "build": "yarn run build:server && yarn run build:schema && yarn run build:relay && yarn run build:next",
+    "build": "yarn run build:schema && yarn run build:relay && yarn run build:server && yarn run build:next",
     "build:server": "tsc --project tsconfig.server.json",
     "build:schema": "postgraphile -X -c postgres://localhost/cif -s cif --export-schema-graphql schema/schema.graphql --export-schema-json schema/schema.json --classic-ids --sort-export && echo >> schema/schema.json",
     "build:relay": "mkdir -p __generated__ && relay-compiler",

@@ -71,6 +71,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
         id
+        rowId
         projectMilestoneReportFormChanges(first: 1000)
           @connection(key: "connection_projectMilestoneReportFormChanges") {
           __id
@@ -82,6 +83,9 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               changeStatus
             }
           }
+        }
+        projectFormChange {
+          formDataRecordId
         }
       }
     `,
