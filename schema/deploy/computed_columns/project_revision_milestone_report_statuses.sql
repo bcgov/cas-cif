@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif.project_revision_milestone_report_statuses(cif.project_revision)
+create or replace function cif.project_revision_milestone_report_statuses(project_revision cif.project_revision)
 returns setof cif.milestone_report_status_return
 as
 $function$
