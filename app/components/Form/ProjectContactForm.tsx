@@ -169,7 +169,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           id: formChange.id,
           formChangePatch: {
             newFormData,
-            changeStatus: formChange.changeStatus,
+            changeStatus: formChange?.changeStatus,
           },
         },
       },
@@ -317,7 +317,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                   <FormBase
                     id="primaryContactForm"
                     validateOnMount={
-                      primaryContactForm.changeStatus === "staged"
+                      primaryContactForm?.changeStatus === "staged"
                     }
                     idPrefix="primaryContactForm"
                     ref={(el) => (formRefs.current.primaryContact = el)}

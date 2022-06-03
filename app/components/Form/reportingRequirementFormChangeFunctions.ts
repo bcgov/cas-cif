@@ -56,7 +56,7 @@ export const updateReportFormChange = (
         id: formChange.id,
         formChangePatch: {
           newFormData,
-          changeStatus: formChange.changeStatus,
+          changeStatus: formChange?.changeStatus,
         },
       },
     },
@@ -66,7 +66,7 @@ export const updateReportFormChange = (
         formChange: {
           id: formChange.id,
           newFormData: newFormData,
-          changeStatus: formChange.changeStatus,
+          changeStatus: formChange?.changeStatus,
         },
       },
     },
