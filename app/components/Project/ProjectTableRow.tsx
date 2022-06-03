@@ -4,21 +4,14 @@ import { getProjectRevisionFormPageRoute } from "pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ProjectTableRow_project$key } from "__generated__/ProjectTableRow_project.graphql";
 import Money from "lib/helpers/Money";
+import ProjectMilestoneDue from "./ProjectMilestoneDue";
 
 interface Props {
   project: ProjectTableRow_project$key;
 }
 
 const ProjectTableRow: React.FC<Props> = ({ project }) => {
-  const {
-    projectName,
-    proposalReference,
-    projectStatusByProjectStatusId: { name },
-    totalFundingRequest,
-    operatorByOperatorId: { tradeName },
-    projectManagersByProjectId,
-    latestCommittedProjectRevision,
-  } = useFragment(
+  const projectData = useFragment(
     graphql`
       fragment ProjectTableRow_project on Project {
         id
@@ -44,10 +37,21 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         latestCommittedProjectRevision {
           id
         }
+        ...ProjectMilestoneDue_project
       }
     `,
     project
   );
+
+  const {
+    projectName,
+    proposalReference,
+    projectStatusByProjectStatusId: { name },
+    totalFundingRequest,
+    operatorByOperatorId: { tradeName },
+    projectManagersByProjectId,
+    latestCommittedProjectRevision,
+  } = projectData;
 
   const router = useRouter();
 
@@ -64,6 +68,9 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
       <td className="proposal-reference">{proposalReference}</td>
       <td className="status-container">
         <span className="status-badge">{name}</span>
+      </td>
+      <td className="milestone-due">
+        <ProjectMilestoneDue project={projectData} />
       </td>
       <td>
         {projectManagersByProjectId.edges.map((manager, index) => {
@@ -111,7 +118,6 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
           display: inline-block;
           white-space: nowrap;
         }
-
         .actions {
           display: flex;
           justify-content: space-around;

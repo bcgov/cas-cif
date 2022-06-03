@@ -14,6 +14,7 @@ import {
   SortOnlyFilter,
   TextFilter,
   SearchableDropdownFilter,
+  DisplayOnlyFilter,
 } from "components/Table/Filters";
 import { useMemo } from "react";
 
@@ -106,6 +107,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         allProjectStatuses.edges.map((e) => e.node.name),
         { orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME" }
       ),
+      new DisplayOnlyFilter("Milestone Due"),
       new SearchableDropdownFilter(
         "Project Managers",
         "projectManagers",
