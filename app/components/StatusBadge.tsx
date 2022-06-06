@@ -7,13 +7,13 @@ interface Props {
 
 const colours = {
   complete: {
-    labelColour: "#2E8540",
-    badgeColour: "rgba(47, 132, 64, 0.1)",
+    labelColour: "#236631",
+    badgeColour: "#EAF3EC",
     label: "Complete",
   },
   late: {
-    labelColour: "#D9292F",
-    badgeColour: "rgba(217, 41, 47, 0.1)",
+    labelColour: "#CC242A",
+    badgeColour: "#FBEAEA",
     label: "Late",
   },
   onTrack: {
@@ -22,18 +22,18 @@ const colours = {
     label: "On track",
   },
   none: {
-    labelColour: "#767676",
-    badgeColour: "rgba(156, 156, 156, 0.1)",
+    labelColour: "#666666",
+    badgeColour: "#E8E8E8",
     label: "None",
   },
   inReview: {
     labelColour: "#003366",
-    badgeColour: "rgba(0, 51, 102, 0.1)",
+    badgeColour: "#E6EBF0",
     label: "In review",
   },
   customText: {
-    labelColour: "#003366",
-    badgeColour: "rgba(0, 51, 102, 0.1)",
+    labelColour: "#666666",
+    badgeColour: "#E8E8E8",
   },
 };
 
