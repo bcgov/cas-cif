@@ -22,6 +22,7 @@ import {
   stageReportFormChanges,
   getSortedReports,
 } from "./reportingRequirementFormChangeFunctions";
+import ReportStatusBadge from "components/ReportingRequirement/ReportStatusBadge";
 
 interface Props {
   onSubmit: () => void;
@@ -61,8 +62,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
             }
           }
         }
-        upcomingReportingRequirementFormChange(reportType: "Quarterly") {
+        upcomingQuarterlyReportFormChange: upcomingReportingRequirementFormChange(
+          reportType: "Quarterly"
+        ) {
           ...ReportDueIndicator_formChange
+          ...ReportStatusBadge_formChange
         }
         projectFormChange {
           formDataRecordId
@@ -111,12 +115,18 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <UndoChangesButton formChangeIds={formChangeIds} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
-
+      <h3>Status</h3>
+      <div>
+        Status of Quarterly Reporting{" "}
+        <ReportStatusBadge
+          reportDueFormChange={
+            projectRevision.upcomingQuarterlyReportFormChange
+          }
+        />
+      </div>
       <ReportDueIndicator
         reportTitle="Quarterly Report"
-        reportDueFormChange={
-          projectRevision.upcomingReportingRequirementFormChange
-        }
+        reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
       />
 
       <FormBorder>
