@@ -46,17 +46,21 @@ insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_i
   overriding system value
   values
     (1, 1, 1, 1, '001', 'summary', 'project 1'),
-    (2, 1, 1, 1, '002', 'summary', 'project 2');
+    (2, 1, 1, 1, '002', 'summary', 'project 2'),
+    (3, 1, 1, 1, '003', 'summary', 'project 1'),
+    (4, 1, 1, 1, '004', 'summary', 'project 1'),
+    (5, 1, 1, 1, '005', 'summary', 'project 1'),
+    (6, 1, 1, 1, '006', 'summary', 'project 1');
 
 insert into cif.project_revision(id, change_status, change_reason, project_id)
   overriding system value
   values
     (1, 'pending', 'reason for change', 1),
-    (2, 'pending', 'reason for change', 1),
-    (3, 'pending', 'reason for change', 1),
-    (4, 'pending', 'reason for change', 2),
-    (5, 'pending', 'reason for change', 2),
-    (6, 'pending', 'reason for change', 1);
+    (2, 'pending', 'reason for change', 2),
+    (3, 'pending', 'reason for change', 3),
+    (4, 'pending', 'reason for change', 4),
+    (5, 'pending', 'reason for change', 5),
+    (6, 'pending', 'reason for change', 6);
 
 /** Basic Setup End **/
 
@@ -147,8 +151,8 @@ select is(
       on fc.project_revision_id = pr.id
       and pr.project_id = 1
   ),
-  9::bigint,
-  'There are 9 total form_change records for the project with id = 1'
+  3::bigint,
+  'There are 3 total form_change records for the project with id = 1'
 );
 
 select is(
