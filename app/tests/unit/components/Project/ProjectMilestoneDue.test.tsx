@@ -16,35 +16,12 @@ const testQuery = graphql`
   }
 `;
 
-const mockQueryPayload = {
-  Project() {
-    return {
-      latestCommittedProjectRevision: {
-        upcomingReportingRequirementFormChange: {
-          asReportingRequirement: {
-            reportDueDate: "2020-01-01",
-          },
-        },
-      },
-      latestCompletedReportingRequirements: {
-        edges: [
-          {
-            node: {
-              reportDueDate: "2020-01-02",
-            },
-          },
-        ],
-      },
-    };
-  },
-};
-
 const componentTestingHelper =
   new ComponentTestingHelper<ProjectMilestoneDueQuery>({
     component: ProjectMilestoneDue,
     compiledQuery: compliledProjectMilestoneDueQuery,
     testQuery: testQuery,
-    defaultQueryResolver: mockQueryPayload,
+    defaultQueryResolver: {},
     getPropsFromTestQuery: (data) => ({ project: data.query.project }),
   });
 

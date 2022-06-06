@@ -54,13 +54,6 @@ const StatusBadge: React.FC<Props> = ({ label = "custom text", variant }) => {
           },
         }}
       />
-      <style jsx>
-        {`
-          .MuiChip-label {
-            color: pink;
-          }
-        `}
-      </style>
     </>
   );
 };
