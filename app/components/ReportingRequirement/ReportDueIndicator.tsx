@@ -1,5 +1,6 @@
 import { faCalendarAlt, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { calculateReportDeadlines } from "lib/helpers/calculateReportDeadlines";
 import FormBorder from "lib/theme/components/FormBorder";
 import { DateTime } from "luxon";
 import Link from "next/link";
@@ -35,24 +36,8 @@ const ReportDueIndicator: React.FC<Props> = ({
     reportDueFormChange
   );
 
-  const reportingRequirement = formChange?.reportingRequirement;
-  const hasValidReportDueDate = reportingRequirement?.reportDueDate;
-
-  // We return a negative value if report is overdue
-  const reportDueIn =
-    hasValidReportDueDate &&
-    DateTime.fromISO(reportingRequirement.reportDueDate, {
-      setZone: true,
-      locale: "en-CA",
-    })
-      .startOf("day")
-      .diff(
-        // Current date without time information
-        DateTime.now().setZone("America/Vancouver").startOf("day"),
-        "days"
-      );
-
-  const overdue = reportDueIn?.days < 0;
+  const { reportDueIn, overdue, reportingRequirement, hasValidReportDueDate } =
+    calculateReportDeadlines(formChange);
 
   return (
     <>
