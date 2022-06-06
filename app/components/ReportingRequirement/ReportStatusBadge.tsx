@@ -22,35 +22,7 @@ const ReportStatusBadge: React.FC<Props> = ({ reportDueFormChange }) => {
   const { overdue, badgeColour, labelColour } =
     calculateReportDeadlines(formChange);
 
-  return (
-    <>
-      <h3>Status</h3>
-      <div>
-        Status of Quarterly Reporting{" "}
-        <Chip
-          label={overdue ? "Late" : "On track"}
-          sx={{
-            backgroundColor: badgeColour,
-            ".MuiChip-label": {
-              color: labelColour,
-              marginLeft: "6px",
-              marginRight: "6px",
-              marginTop: "12px",
-              marginBottom: "12px",
-              fontWeight: "bold",
-            },
-          }}
-        />
-      </div>
-      <style jsx>
-        {`
-          .MuiChip-label {
-            color: pink;
-          }
-        `}
-      </style>
-    </>
-  );
+  return <p>i am a placeholder for pierre's component</p>;
 };
 
 export default ReportStatusBadge;
