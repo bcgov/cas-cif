@@ -138,5 +138,13 @@ $$,
 'the new form_change records created for the project revision should have an update operation'
 );
 
+select throws_like(
+  $$
+    select cif.create_project_revision(1)
+  $$,
+    'duplicate key value violates unique constraint%',
+    'cannot create a pending project revision on a project_id that already has a pending revision'
+);
+
 select finish();
 rollback;

@@ -12,6 +12,9 @@ create table cif.project_revision (
 
 select cif_private.upsert_timestamp_columns('cif', 'project_revision', add_archive => false);
 
+create unique index project_revision_unique_pending_per_project_id on cif.project_revision (project_id, change_status)
+  where change_status = 'pending';
+
 -- We want the immutable trigger to run first to avoid doing unnecessary work
 create trigger _100_committed_changes_are_immutable
     before update or delete on cif.project_revision

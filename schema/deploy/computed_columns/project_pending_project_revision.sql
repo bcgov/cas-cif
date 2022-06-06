@@ -9,10 +9,9 @@ $function$
   select *
   from cif.project_revision
   where project_id = $1.id
-  and change_status = 'pending'
-  and created_by = (select id from cif.cif_user where uuid = (select sub from cif.session()));
+  and change_status = 'pending';
 $function$ language sql stable;
 
-comment on function cif.project_pending_project_revision(cif.project) is 'Returns the pending project revision for the project, created by the current user';
+comment on function cif.project_pending_project_revision(cif.project) is 'Returns the pending project revision for the project';
 
 commit;
