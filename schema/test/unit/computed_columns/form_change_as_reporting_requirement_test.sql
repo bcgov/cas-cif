@@ -81,7 +81,6 @@ select results_eq(
       '2002-02-20T12:00:01-07'::timestamptz,
       '2003-02-21T12:00:01-07'::timestamptz,
       '2004-02-22T12:00:01-07'::timestamptz,
-      'completed'::varchar,
       'I am a comment'::varchar,
       'Superman'::varchar,
       'Super Hero'::varchar,
