@@ -10,21 +10,17 @@ $function$
 
   select
     case
-      when (fc.new_form_data ->> 'reportDueDate')::timestamptz < now()
-        and fc.new_form_data ->> 'submittedDate' is null
+      when ($1.new_form_data ->> 'reportDueDate')::timestamptz < now()
+        and $1.new_form_data ->> 'submittedDate' is null
         then 'on_track'
-      when (fc.new_form_data ->> 'reportDueDate')::timestamptz >= now()
-        and fc.new_form_data ->> 'submittedDate' is null
+      when ($1.new_form_data ->> 'reportDueDate')::timestamptz >= now()
+        and $1.new_form_data ->> 'submittedDate' is null
         then 'late'
-      when fc.new_form_data ->> 'reportDueDate' is not null
-        and fc.new_form_data ->> 'submittedDate' is not null
+      when $1.new_form_data ->> 'reportDueDate' is not null
+        and $1.new_form_data ->> 'submittedDate' is not null
         then 'completed'
       else null
     end
-  from cif.form_change fc
-  where fc.id = $1.id
-  and fc.form_data_table_name = $1.form_data_table_name
-  and fc.new_form_data ->> 'reportType' = $1.new_form_data ->> 'reportType';
 
 $function$ language sql stable;
 
