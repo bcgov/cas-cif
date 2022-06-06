@@ -26,7 +26,6 @@ export const addReportFormChange = (
   connectionString?: string
 ) => {
   const formData = {
-    status: "on_track",
     reportType: reportType,
     projectId: revision.projectFormChange.formDataRecordId,
     reportingRequirementIndex: reportIndex,
