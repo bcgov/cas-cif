@@ -4,21 +4,21 @@
 begin;
 
 create or replace function cif.form_change_reporting_requirement_status(form_change cif.form_change)
-returns setof text
+returns text
 as
 $function$
 
   select
     case
-      when ($1.new_form_data ->> 'reportDueDate')::timestamptz < now()
+      when ($1.new_form_data ->> 'reportDueDate')::timestamptz > now()
         and $1.new_form_data ->> 'submittedDate' is null
-        then 'on_track'
-      when ($1.new_form_data ->> 'reportDueDate')::timestamptz >= now()
+        then 'On track'
+      when ($1.new_form_data ->> 'reportDueDate')::timestamptz <= now()
         and $1.new_form_data ->> 'submittedDate' is null
-        then 'late'
+        then 'Late'
       when $1.new_form_data ->> 'reportDueDate' is not null
         and $1.new_form_data ->> 'submittedDate' is not null
-        then 'completed'
+        then 'Completed'
       else null
     end
 

@@ -28382,30 +28382,7 @@ type FormChange implements Node {
   """
   A computed column to return the status for a reporting requirement form_change record based on the report_due_date and submitted_date
   """
-  reportingRequirementStatus(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: StringFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-  ): FormChangeReportingRequirementStatusConnection!
+  reportingRequirementStatus: String
 
   """Unique ID for the form_change"""
   rowId: Int!
@@ -28741,6 +28718,9 @@ input FormChangeFilter {
   """Filter by the object’s `projectRevisionId` field."""
   projectRevisionId: IntFilter
 
+  """Filter by the object’s `reportingRequirementStatus` field."""
+  reportingRequirementStatus: StringFilter
+
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
 
@@ -28920,29 +28900,6 @@ type FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisio
 
   """The `ProjectRevision` at the end of the edge."""
   node: ProjectRevision
-}
-
-"""A connection to a list of `String` values."""
-type FormChangeReportingRequirementStatusConnection {
-  """
-  A list of edges which contains the `String` and cursor to aid in pagination.
-  """
-  edges: [FormChangeReportingRequirementStatusEdge!]!
-
-  """A list of `String` objects."""
-  nodes: [String]!
-
-  """The count of *all* `String` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `String` edge in the connection."""
-type FormChangeReportingRequirementStatusEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `String` at the end of the edge."""
-  node: String
 }
 
 """
