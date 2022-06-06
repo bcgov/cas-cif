@@ -516,8 +516,8 @@ describe("the new project page", () => {
     cy.visit("/cif/projects");
     cy.findByRole("button", { name: /view/i }).click();
     cy.findByText(/resume edition/i).click();
-    cy.get('[aria-label*="Project Name"]').eq(0).should("have.value", "Bar");
-    cy.get('[aria-label*="Project Name"]').eq(0).clear().type("Baz");
+    cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
+    cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
 
     // Navigate back to the review and submit information page
