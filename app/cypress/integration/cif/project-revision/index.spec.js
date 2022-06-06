@@ -330,6 +330,7 @@ describe("the new project page", () => {
       "2022-02-02",
       "I am the second general comment"
     );
+    cy.get(".MuiChip-label").contains(/On track/);
 
     cy.findByText(/^submit/i).click();
     cy.contains("Changes saved.");
@@ -340,6 +341,8 @@ describe("the new project page", () => {
       "2022-02-02",
       "Annual report description n stuff"
     );
+
+    cy.get(".MuiChip-label").contains(/On track/);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project");
@@ -482,6 +485,7 @@ describe("the new project page", () => {
     cy.get(`.react-datepicker__day--001`)
       .not(`.react-datepicker__day--outside-month`)
       .click();
+    cy.get(".MuiChip-label").contains(/Late/);
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
