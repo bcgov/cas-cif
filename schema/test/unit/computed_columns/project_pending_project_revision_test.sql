@@ -61,8 +61,8 @@ select is (
   (select id from cif.project_pending_project_revision(
     (select row(project.*)::cif.project from cif.project where id=1)
   )),
-  null,
-  'returns null when the pending revision was created by another user'
+  4,
+  'returns correct id when the pending revision was created by another user'
 );
 
 select finish();
