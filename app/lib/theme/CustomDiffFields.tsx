@@ -183,7 +183,6 @@ const CUSTOM_DIFF_FIELDS: Record<
     ) {
       return showStringRemoved(id, previousValue, isDate);
     } else {
-      //brianna this is coming up when editing annual report and received isn't filled out
       return <>DISPLAY ERROR</>;
     }
   },
