@@ -8,7 +8,6 @@ create table cif.reporting_requirement
   report_due_date timestamptz,
   completion_date timestamptz,
   submitted_date timestamptz,
-  status varchar(1000) references cif.reporting_requirement_status(status) not null,
   comments varchar(10000),
   certified_by varchar(1000),
   certified_by_professional_designation varchar(1000),
@@ -52,7 +51,6 @@ $$The date where the work should be finished by. It can be automatically calcula
   60 days before report due date for project summary report
   150 days before report due date for TEIMP report$$;
 comment on column cif.reporting_requirement.submitted_date is 'The date the reporting requirement was submitted';
-comment on column cif.reporting_requirement.status is 'The status of the reporting requirement: on_track, late, completed, in_review';
 comment on column cif.reporting_requirement.comments is 'Comments about the reporting requirement';
 comment on column cif.reporting_requirement.certified_by is 'The name of the person who certified the completion reporting requirement';
 comment on column cif.reporting_requirement.certified_by_professional_designation is 'The professional designation of the person who certified the completion of the reporting requirement';

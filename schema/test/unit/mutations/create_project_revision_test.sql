@@ -41,7 +41,6 @@ insert into cif.form_change(new_form_data,
     json_schema_name)
     values
     ('{
-    "status":"on_track",
     "projectId":1,
     "reportType": "General Milestone",
     "reportingRequirementIndex": 1
@@ -118,7 +117,6 @@ select results_eq(
   $$,
   $$
   select '{
-    "status":"on_track",
     "projectId":1,
     "reportType": "General Milestone",
     "reportingRequirementIndex": 1

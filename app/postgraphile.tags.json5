@@ -61,11 +61,6 @@
           omit: ["delete"],
         },
       },
-      "cif.reporting_requirement_status": {
-        tags: {
-          omit: ["delete"],
-        },
-      },
       "cif.report_type": {
         tags: {
           omit: ["delete"],

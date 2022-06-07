@@ -18,7 +18,6 @@ as $$
       (new_form_data->>'reportDueDate')::timestamptz as report_due_date,
       (new_form_data->>'completionDate')::timestamptz as completion_date,
       (new_form_data->>'submittedDate')::timestamptz as submitted_date,
-      new_form_data->>'status' as status,
       new_form_data->>'comments' as comments,
       new_form_data->>'certifiedBy' as certified_by,
       new_form_data->>'certifiedByProfessionalDesignation' as certified_by_professional_designation,

@@ -30,7 +30,6 @@ const defaultMockResolver = {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
               newFormData: {
-                status: "on_track",
                 reportDueDate: "2022-01-01",
                 projectId: 51,
                 reportType: "General Milestone",
@@ -44,7 +43,6 @@ const defaultMockResolver = {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
               newFormData: {
-                status: "on_track",
                 reportDueDate: "2022-10-28",
                 comments: "some comments",
                 projectId: 51,
@@ -123,7 +121,6 @@ describe("The ProjectMilestoneReportForm", () => {
         projectRevisionId: 1234,
         newFormData: {
           projectId: 42,
-          status: "on_track",
         },
       },
     });
@@ -232,7 +229,6 @@ describe("The ProjectMilestoneReportForm", () => {
                 node: {
                   id: `mock-project-milestone-report-form-${generateID()}`,
                   newFormData: {
-                    status: "on_track",
                     reportDueDate: "2022-01-01",
                     projectId: 51,
                     reportType: "Milestone",

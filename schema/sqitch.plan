@@ -69,7 +69,6 @@ computed_columns/form_change_as_project [tables/project tables/form_change] 2022
 computed_columns/form_change_as_project_contact [tables/project tables/contact tables/form_change] 2022-04-27T00:04:24Z Dylan Leard <dylan@button.is> # Computed column returns a project_contact record type for a contact form_change
 computed_columns/form_change_as_project_manager [tables/form_change tables/project_manager] 2022-04-29T21:10:14Z Dylan Leard <dylan@button.is> # Computed column returns a project_manager record type for a project_manager form_change
 tables/report_type 2022-05-02T17:29:36Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.report_type table
-tables/reporting_requirement_status 2022-05-03T17:49:50Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.reporting_requirement_status table
 tables/reporting_requirement 2022-04-29T22:15:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.reporting_requirement table
 tables/budget_item_category 2022-05-03T19:37:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item_category table
 tables/budget_item 2022-05-02T18:26:46Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item table
@@ -85,3 +84,4 @@ computed_columns/project_revision_project_milestone_report_form_changes [tables/
 mutations/undo_form_changes 2022-05-24T21:49:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add custom mutation to undo form changes in a project revision
 computed_columns/form_change_as_reporting_requirement 2022-05-14T00:24:44Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Casts a form_change record as a cif.reporting_requirement type, so we can traverse it with graphql queries
 computed_columns/project_revision_upcoming_reporting_requirement_form_change 2022-05-16T21:56:32Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # computed column returning the form_change for the next due reporting requirement, optionally filtered by report type
+computed_columns/form_change_reporting_requirement_status [tables/form_change] 2022-06-06T20:20:47Z Dylan Leard <dylan@button.is> # Computed column returns a status for a reporting requirement form_change record based on due_date and received_date
