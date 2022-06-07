@@ -31,7 +31,7 @@ const mockQueryPayload = {
                 newFormData: {
                   comments: "Updated Test comment",
                   projectId: 1,
-                  reportDueDate: "Updated report due date",
+                  reportDueDate: "2020-01-02T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
                 },
                 operation: "UPDATE",
@@ -39,7 +39,7 @@ const mockQueryPayload = {
                   newFormData: {
                     comments: "Test comment",
                     projectId: 1,
-                    reportDueDate: "Report due date",
+                    reportDueDate: "2020-01-01T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
                   },
                 },
@@ -52,7 +52,7 @@ const mockQueryPayload = {
                 newFormData: {
                   comments: "Not updated comment",
                   projectId: 1,
-                  reportDueDate: "Not updated report due date",
+                  reportDueDate: "2020-01-03T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
                 },
                 operation: "UPDATE",
@@ -60,7 +60,7 @@ const mockQueryPayload = {
                   newFormData: {
                     comments: "Not updated comment",
                     projectId: 1,
-                    reportDueDate: "Not updated report due date",
+                    reportDueDate: "2020-01-03T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
                   },
                 },
@@ -73,7 +73,7 @@ const mockQueryPayload = {
                 newFormData: {
                   comments: "Added comment",
                   projectId: 1,
-                  reportDueDate: "Added report due date",
+                  reportDueDate: "2020-01-04T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
                 },
                 operation: "CREATE",
@@ -87,7 +87,7 @@ const mockQueryPayload = {
                 newFormData: {
                   comments: "Removed comment",
                   projectId: 1,
-                  reportDueDate: "Removed report due date",
+                  reportDueDate: "2020-01-05T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
                 },
                 operation: "ARCHIVE",
@@ -95,7 +95,7 @@ const mockQueryPayload = {
                   newFormData: {
                     comments: "Removed comment",
                     projectId: 1,
-                    reportDueDate: "Removed report due date",
+                    reportDueDate: "2020-01-05T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
                   },
                 },
@@ -139,17 +139,15 @@ describe("The Project Quarterly Report Form Summary", () => {
 
     // First Node
     expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
-    expect(screen.getByText("Updated report due date")).toBeInTheDocument();
+    expect(screen.getByText("Jan. 2, 2020")).toBeInTheDocument();
 
     // Second Node
     expect(screen.queryByText("Not updated comment")).not.toBeInTheDocument();
-    expect(
-      screen.queryByText("Not updated report due date")
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Jan. 3, 2020")).not.toBeInTheDocument();
 
     // Third Node
     expect(screen.getByText("Added comment")).toBeInTheDocument();
-    expect(screen.getByText("Added report due date")).toBeInTheDocument();
+    expect(screen.getByText("Jan. 4, 2020")).toBeInTheDocument();
 
     // Fourth Node
     expect(screen.getByText("Quarterly Report Removed")).toBeInTheDocument();
@@ -162,7 +160,7 @@ describe("The Project Quarterly Report Form Summary", () => {
     expect(screen.getByText("Test comment")).toBeInTheDocument();
     expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
 
-    expect(screen.getByText("Report due date")).toBeInTheDocument();
-    expect(screen.getByText("Updated report due date")).toBeInTheDocument();
+    expect(screen.getByText("Jan. 1, 2020")).toBeInTheDocument();
+    expect(screen.getByText("Jan. 2, 2020")).toBeInTheDocument();
   });
 });

@@ -3,11 +3,17 @@ import { FieldProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
+import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
 
-const showStringDiff = (id: string, oldData: string, newData: string) => (
+const showStringDiff = (
+  id: string,
+  oldData: string,
+  newData: string,
+  isDate: boolean = false
+) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
-      {oldData}
+      {isDate ? getLocaleFormattedDate(oldData) : oldData}
     </span>
     <FontAwesomeIcon
       className={"diff-arrow"}
@@ -16,15 +22,19 @@ const showStringDiff = (id: string, oldData: string, newData: string) => (
       icon={faLongArrowAltRight}
     />
     <span id={id && `${id}-diffNew`} className="diffNew">
-      {newData}
+      {isDate ? getLocaleFormattedDate(newData) : newData}
     </span>
   </>
 );
 
-const showStringAdded = (id: string, newData: string) => (
+const showStringAdded = (
+  id: string,
+  newData: string,
+  isDate: boolean = false
+) => (
   <>
     <span id={id && `${id}-diffNew`} className="diffNew">
-      {newData}
+      {isDate ? getLocaleFormattedDate(newData) : newData}
     </span>
     <FontAwesomeIcon
       className={"diff-arrow"}
@@ -40,10 +50,14 @@ const showStringAdded = (id: string, newData: string) => (
   </>
 );
 
-const showStringRemoved = (id: string, oldData: string) => (
+const showStringRemoved = (
+  id: string,
+  oldData: string,
+  isDate: boolean = false
+) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
-      {oldData}
+      {isDate ? getLocaleFormattedDate(oldData) : oldData}
     </span>
     <FontAwesomeIcon
       className={"diff-arrow"}
@@ -148,23 +162,26 @@ const CUSTOM_DIFF_FIELDS: Record<
   React.FunctionComponent<FieldProps>
 > = {
   StringField: (props) => {
-    const { idSchema, formData, formContext } = props;
+    const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
+    const isDate = ["DueDateWidget", "ReceivedDateWidget"].includes(
+      uiSchema["ui:widget"] as string
+    );
 
     if (previousValue && formData && formContext.operation === "UPDATE") {
-      return showStringDiff(id, previousValue, formData);
+      return showStringDiff(id, previousValue, formData, isDate);
     } else if (
       !previousValue &&
       formData &&
       formContext.operation !== "ARCHIVE"
     ) {
-      return showStringAdded(id, formData);
+      return showStringAdded(id, formData, isDate);
     } else if (
       formContext.operation === "ARCHIVE" ||
       (!formData && previousValue)
     ) {
-      return showStringRemoved(id, previousValue);
+      return showStringRemoved(id, previousValue, isDate);
     } else {
       return <>DISPLAY ERROR</>;
     }

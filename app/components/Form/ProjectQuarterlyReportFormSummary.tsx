@@ -9,6 +9,7 @@ import { utils } from "@rjsf/core";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { ProjectQuarterlyReportFormSummary_projectRevision$key } from "__generated__/ProjectQuarterlyReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { quarterlyReportUiSchema } from "./ProjectQuarterlyReportForm";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -114,6 +115,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
               theme={readOnlyTheme}
               fields={renderDiff ? customFields : fields}
               schema={formSchema as JSONSchema7}
+              uiSchema={quarterlyReportUiSchema}
               formData={formData}
               formContext={{
                 operation: quarterlyReport.operation,

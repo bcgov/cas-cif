@@ -278,7 +278,7 @@ describe("the new project page", () => {
     cy.get('[label*="Due Date"]').should("have.length", 0);
   });
 
-  it("Allows to create and update a project", () => {
+  it.only("Allows to create and update a project", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -474,7 +474,7 @@ describe("the new project page", () => {
 
     // edit quarterly reports
     cy.contains("Review and Submit Project");
-    cy.findByText(/Quarterly reports/i).click();
+    cy.findByRole("button", { name: /Quarterly reports/i }).click();
     cy.findByText(/Edit quarterly reports/i).click();
     cy.get('[aria-label*="Due Date"]').eq(0).click();
     cy.get(".react-datepicker__month-select").select(0);
@@ -528,7 +528,19 @@ describe("the new project page", () => {
     cy.findByText(/submit change/i).click();
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/review and submit project/i).should("exist");
-    cy.get("textarea").clear().type("foo");
+    cy.get("textarea").click().type("foo");
+
+    cy.injectAxe();
+    // Temporarily disable axe for dl accessibility checks
+    const tempRules = {
+      rules: {
+        dlitem: { enabled: false },
+        "definition-list": { enabled: false },
+      },
+    };
+    //Checking for diffing color accessibility
+    cy.checkA11y("main", tempRules, logAxeResults);
+
     // Allow the component to finish saving before taking screenshot
     cy.contains("Changes saved").should("be.visible");
     cy.get("body").happoScreenshot({
@@ -556,10 +568,11 @@ describe("the new project page", () => {
     cy.get("a")
       .contains(/Quarterly reports/i)
       .click();
-    // test headless browsers add a period to the month abbreviation
-    cy.get('[aria-label*="Due Date"]')
+
+    cy.findAllByText(/Report Due Date/i)
       .eq(0)
-      .contains(/Jan[.]? 01, 1995/);
+      .next()
+      .should("have.text", "Jan 1, 1995");
   });
 
   it("discards the revision when the user clicks the Discard Revision button", () => {
