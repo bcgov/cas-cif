@@ -2,8 +2,10 @@ import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
+import StatusBadge from "components/StatusBadge";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
+import { calculateReportDeadlines } from "lib/helpers/calculateReportDeadlines";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
@@ -13,16 +15,15 @@ import { useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
-import SavingIndicator from "./SavingIndicator";
-import UndoChangesButton from "./UndoChangesButton";
 import {
   addReportFormChange,
-  updateReportFormChange,
   deleteReportFormChange,
-  stageReportFormChanges,
   getSortedReports,
+  stageReportFormChanges,
+  updateReportFormChange,
 } from "./reportingRequirementFormChangeFunctions";
-import ReportStatusBadge from "components/ReportingRequirement/ReportStatusBadge";
+import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   onSubmit: () => void;
@@ -66,7 +67,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           reportType: "Quarterly"
         ) {
           ...ReportDueIndicator_formChange
-          ...ReportStatusBadge_formChange
         }
         projectFormChange {
           formDataRecordId
@@ -74,6 +74,19 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       }
     `,
     props.projectRevision
+  );
+
+  const formChange = useFragment(
+    graphql`
+      fragment ReportDueIndicator_formChange on FormChange {
+        id
+        reportingRequirement: asReportingRequirement {
+          reportDueDate
+          reportingRequirementIndex
+        }
+      }
+    `,
+    projectRevision.upcomingQuarterlyReportFormChange
   );
 
   // TODO: make it a reusable hook
@@ -108,6 +121,29 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
+  const areAllReportsComplete =
+    !projectRevision.projectQuarterlyReportFormChanges.edges.some(
+      ({ node }) => node && !node.newFormData.submittedDate
+    );
+
+  const { overdue } = calculateReportDeadlines(formChange);
+
+  let variant;
+  if (
+    areAllReportsComplete &&
+    projectRevision.projectQuarterlyReportFormChanges.edges.length !== 0
+  ) {
+    variant = "complete";
+  } else if (
+    projectRevision.projectQuarterlyReportFormChanges.edges.length === 0
+  ) {
+    variant = "none";
+  } else if (overdue) {
+    variant = "late";
+  } else {
+    variant = "onTrack";
+  }
+
   return (
     <div>
       <header>
@@ -116,19 +152,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
       <h3>Status</h3>
-      <div>
-        Status of Quarterly Reporting{" "}
-        <ReportStatusBadge
-          reportDueFormChange={
-            projectRevision.upcomingQuarterlyReportFormChange
-          }
-        />
-      </div>
+      Status of Quarterly Reports <StatusBadge variant={variant} />
       <ReportDueIndicator
         reportTitle="Quarterly Report"
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
       />
-
       <FormBorder>
         <Button
           variant="secondary"
@@ -206,7 +234,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       >
         Submit Quarterly Reports
       </Button>
-
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
