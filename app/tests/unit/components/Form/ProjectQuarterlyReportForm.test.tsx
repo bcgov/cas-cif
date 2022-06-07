@@ -92,7 +92,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Renders two quarterly reports with remove buttons, and the report due indicator", () => {
+  it("Renders two quarterly reports with remove buttons, the report due indicator, and the overall quarterly report status badge", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -102,6 +102,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
       /Overdue by \d+ day\(s\)/
     );
+    expect(screen.getByText("Latez")).toBeInTheDocument();
   });
 
   it("Calls the addQuarterlyReportToRevision mutation when the Add button is clicked", () => {
