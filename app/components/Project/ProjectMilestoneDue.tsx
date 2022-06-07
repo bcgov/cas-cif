@@ -59,7 +59,7 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
     DateTime.fromISO(nextReportDueDate, {
       setZone: true,
       locale: "en-CA",
-    });
+    }).startOf("day");
 
   const reportDueIn =
     parsedNextReportDueDate &&
