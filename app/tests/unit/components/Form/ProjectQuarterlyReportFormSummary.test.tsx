@@ -139,15 +139,15 @@ describe("The Project Quarterly Report Form Summary", () => {
 
     // First Node
     expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
-    expect(screen.getByText("Jan. 2, 2020")).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 2, 2020/)).toBeInTheDocument();
 
     // Second Node
     expect(screen.queryByText("Not updated comment")).not.toBeInTheDocument();
-    expect(screen.queryByText("Jan. 3, 2020")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Jan[.]? 3, 2020/)).not.toBeInTheDocument();
 
     // Third Node
     expect(screen.getByText("Added comment")).toBeInTheDocument();
-    expect(screen.getByText("Jan. 4, 2020")).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 4, 2020/)).toBeInTheDocument();
 
     // Fourth Node
     expect(screen.getByText("Quarterly Report Removed")).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe("The Project Quarterly Report Form Summary", () => {
     expect(screen.getByText("Test comment")).toBeInTheDocument();
     expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
 
-    expect(screen.getByText("Jan. 1, 2020")).toBeInTheDocument();
-    expect(screen.getByText("Jan. 2, 2020")).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 1, 2020/)).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 2, 2020/)).toBeInTheDocument();
   });
 });
