@@ -2,6 +2,6 @@
 
 begin;
 
-drop function project_revision_upcoming_reporting_requirement_form_change;
+drop function cif.project_revision_upcoming_reporting_requirement_form_change;
 
 commit;
