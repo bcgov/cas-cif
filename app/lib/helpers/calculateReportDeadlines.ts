@@ -18,15 +18,10 @@ export const calculateReportDeadlines = (formChange) => {
 
   const overdue = reportDueIn?.days < 0;
 
-  const badgeColour = overdue ? "rgba(217, 41, 47, 0.1)" : "#003366";
-  const labelColour = overdue ? "#D9292F" : "#FFFFFF";
-
   return {
     reportDueIn,
     overdue,
     reportingRequirement,
     hasValidReportDueDate,
-    badgeColour,
-    labelColour,
   };
 };
