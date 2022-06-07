@@ -81,6 +81,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
+              formChangeByPreviousFormChangeId {
+                changeStatus
+                newFormData
+              }
             }
           }
         }
