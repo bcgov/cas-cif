@@ -24,9 +24,9 @@ const defaultMockResolver = {
     return {
       id: `mock-proj-rev-${generateID()}`,
       rowId: 1234,
-      upcomingReportingRequirementFormChange: {
+      upcomingQuarterlyReportFormChange: {
         id: firstFormId,
-        reportingRequirement: {
+        asReportingRequirement: {
           reportDueDate: "2022-01-01T00:00:00-07",
           reportingRequirementIndex: 1,
         },
@@ -92,7 +92,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Renders two quarterly reports with remove buttons, and the report due indicator", () => {
+  it("Renders two quarterly reports with remove buttons, the report due indicator, and the overall status badge", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -102,6 +102,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
       /Overdue by \d+ day\(s\)/
     );
+    expect(screen.getByText("Late")).toBeInTheDocument();
   });
 
   it("Calls the addQuarterlyReportToRevision mutation when the Add button is clicked", () => {
