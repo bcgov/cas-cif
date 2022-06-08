@@ -20,6 +20,8 @@ import {
   stageReportFormChanges,
   getSortedReports,
 } from "./reportingRequirementFormChangeFunctions";
+import { determineVariant, isOverdue } from "lib/helpers/reportStatusHelpers";
+import StatusBadge from "components/StatusBadge";
 
 interface Props {
   onSubmit: () => void;
@@ -65,6 +67,16 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
             }
           }
         }
+
+        upcomingAnnualReportFormChange: upcomingReportingRequirementFormChange(
+          reportType: "Annual"
+        ) {
+          # eslint-disable-next-line relay/must-colocate-fragment-spreads
+          ...ReportDueIndicator_formChange
+          asReportingRequirement {
+            reportDueDate
+          }
+        }
         # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
@@ -89,15 +101,24 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectAnnualReportFormChanges]);
 
+  const overdue = isOverdue(
+    projectRevision.upcomingAnnualReportFormChange?.asReportingRequirement
+      .reportDueDate
+  );
+
+  const variant = determineVariant(
+    projectRevision.projectAnnualReportFormChanges,
+    overdue
+  );
+
   return (
     <div>
       <header>
         <h2>Annual Reports</h2>
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
-
-      <div>Annual reports status here</div>
-
+      <h3>Status</h3>
+      Status of Annual Reports <StatusBadge variant={variant} />
       <FormBorder>
         <Button
           variant="secondary"
@@ -176,7 +197,6 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
       >
         Submit Annual Reports
       </Button>
-
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
