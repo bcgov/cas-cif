@@ -13,6 +13,9 @@ import { quarterlyReportUiSchema } from "./ProjectQuarterlyReportForm";
 
 const { fields } = utils.getDefaultRegistry();
 
+// Set custom rjsf fields to display diffs
+const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
+
 interface Props {
   projectRevision: ProjectQuarterlyReportFormSummary_projectRevision$key;
   viewOnly?: boolean;
@@ -80,9 +83,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
     return sortedQuarterlyReports.map((quarterlyReport, index) => {
       if (!quarterlyReport) return;
 
-      // Set custom rjsf fields to display diffs
-      const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
-
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
         ? {
@@ -99,7 +99,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           <header>
             <h4>Quarterly Report {index + 1}</h4>
           </header>
-          {/* Show this part if non of quarterly report form properties have been updated */}
+          {/* Show this part if none of the quarterly reports' form properties have been updated */}
           {Object.keys(formSchema.properties).length === 0 &&
             quarterlyReport.operation !== "ARCHIVE" && (
               <em>Quarterly report not updated</em>
@@ -127,9 +127,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           <style jsx>{`
             .reportContainer {
               margin-bottom: 1em;
-            }
-            diffOld {
-              color: #fad980;
             }
           `}</style>
         </div>
