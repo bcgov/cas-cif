@@ -5,7 +5,7 @@ import {
   projectMilestoneSchema,
   milestoneReportUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -128,7 +128,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
-  const [discardFormChange] = useDiscardFormChange(
+  const [discardFormChange] = useDiscardReportingRequirementFormChange(
+    "milestone",
     projectRevision.projectMilestoneReportFormChanges.__id
   );
 
