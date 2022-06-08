@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 export const getLocaleFormattedDate = (date: string) => {
   const formattedValue = DateTime.fromISO(date)
     .setLocale("en-CA")
+    .setZone("America/Vancouver")
     .toLocaleString(DateTime.DATE_MED);
 
   return formattedValue;

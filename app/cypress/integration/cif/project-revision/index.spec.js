@@ -572,7 +572,7 @@ describe("the new project page", () => {
     cy.findAllByText(/Report Due Date/i)
       .eq(0)
       .next()
-      .should("have.text", "Jan 1, 1995");
+      .contains(/Jan[.]? 1, 1995/i);
   });
 
   it("discards the revision when the user clicks the Discard Revision button", () => {
