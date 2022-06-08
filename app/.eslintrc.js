@@ -43,7 +43,18 @@ module.exports = {
     "relay/generated-flow-types": 0, // we are not using flow
   },
   overrides: [
-    { files: ["tests/**/*"], extends: "plugin:jest/recommended" },
+    {
+      files: ["tests/**/*"],
+      extends: "plugin:jest/recommended",
+      rules: {
+        "jest/expect-expect": [
+          "warn",
+          {
+            assertFunctionNames: ["expect", "*.expectMutationToBeCalled"],
+          },
+        ],
+      },
+    },
     {
       files: ["cypress/**/*.js"],
       extends: ["plugin:cypress/recommended"],
