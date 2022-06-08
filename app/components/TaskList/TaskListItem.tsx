@@ -2,6 +2,7 @@ import TaskListStatus from "./TaskListStatus";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import Link from "next/link";
 import { TaskListMode } from "./types";
+import StatusBadge from "components/StatusBadge";
 
 interface Props {
   stepName: string;
@@ -38,7 +39,19 @@ const TaskListItem: React.FC<Props> = ({
               } ${formTitle.toLowerCase()}`}
         </BCGovLink>
       </Link>
-      {reportingRequirementStatus}
+      {reportingRequirementStatus && (
+        <StatusBadge
+          variant={
+            reportingRequirementStatus as
+              | "complete"
+              | "late"
+              | "onTrack"
+              | "inReview"
+              | "customText"
+              | "none"
+          }
+        />
+      )}
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
 
       <style jsx>{`

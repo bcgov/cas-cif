@@ -176,7 +176,9 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
                   `Milestone${node.milestoneIndex}`
                 )}
                 formTitle={`Milestone ${node.milestoneIndex}`}
-                reportingRequirementStatus={node.reportingRequirementStatus}
+                reportingRequirementStatus={
+                  node.reportingRequirementStatus || "none"
+                }
                 formStatus={node.formCompletionStatus}
                 currentStep={currentStep}
                 mode={mode}
