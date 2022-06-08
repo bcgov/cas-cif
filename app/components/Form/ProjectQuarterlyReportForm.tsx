@@ -5,7 +5,10 @@ import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicat
 import StatusBadge from "components/StatusBadge";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
-import { isOverdue } from "lib/helpers/calculateReportDeadlines";
+import {
+  determineVariant,
+  isOverdue,
+} from "lib/helpers/calculateReportDeadlines";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
@@ -111,31 +114,15 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
-  const areAllReportsComplete =
-    !projectRevision.projectQuarterlyReportFormChanges.edges.some(
-      ({ node }) => node && !node.newFormData.submittedDate
-    );
-
   const overdue = isOverdue(
     projectRevision.upcomingQuarterlyReportFormChange?.asReportingRequirement
       .reportDueDate
   );
 
-  let variant;
-  if (
-    areAllReportsComplete &&
-    projectRevision.projectQuarterlyReportFormChanges.edges.length !== 0
-  ) {
-    variant = "complete";
-  } else if (
-    projectRevision.projectQuarterlyReportFormChanges.edges.length === 0
-  ) {
-    variant = "none";
-  } else if (overdue) {
-    variant = "late";
-  } else {
-    variant = "onTrack";
-  }
+  const variant = determineVariant(
+    projectRevision.projectQuarterlyReportFormChanges,
+    overdue
+  );
 
   return (
     <div>
