@@ -68,7 +68,6 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  //brianna--probably have to do something like this for reports
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
     projectFormChange.formChangeByPreviousFormChangeId?.asProject;
@@ -109,7 +108,6 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
-          // brianna--check the schema creation for reports
           uiSchema={createProjectUiSchema(
             newDataAsProject?.operatorByOperatorId?.legalName,
             newDataAsProject?.operatorByOperatorId?.bcRegistryId,

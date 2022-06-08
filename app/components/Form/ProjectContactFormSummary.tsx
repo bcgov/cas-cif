@@ -127,11 +127,10 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
       );
     });
   }, [secondaryContacts, renderDiff]);
-  console.log("props", props.viewOnly);
+
   return (
     <>
       <h3>Project Contacts</h3>
-      {/* brianna--check, props.viewonly should be true? */}
       {allFormChangesPristine && !props.viewOnly ? (
         <p>
           <em>Project contacts not {isFirstRevision ? "added" : "updated"}</em>
