@@ -2,7 +2,7 @@ import { Chip } from "@mui/material";
 
 interface Props {
   label?: string;
-  variant: "complete" | "late" | "onTrack" | "inReview" | "customText" | "none";
+  variant: "complete" | "late" | "onTrack" | "inReview" | "none";
 }
 
 const colours = {
@@ -31,18 +31,13 @@ const colours = {
     badgeColour: "#E6EBF0",
     label: "In review",
   },
-  customText: {
-    labelColour: "#666666",
-    badgeColour: "#E8E8E8",
-  },
 };
 
-const StatusBadge: React.FC<Props> = ({ label = "custom text", variant }) => {
+const StatusBadge: React.FC<Props> = ({ label, variant }) => {
   return (
     <>
       <Chip
-        role="status"
-        label={variant === "customText" ? label : colours[variant].label}
+        label={label || colours[variant].label}
         sx={{
           backgroundColor: colours[variant].badgeColour,
           ".MuiChip-label": {

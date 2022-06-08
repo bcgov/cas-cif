@@ -64,6 +64,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
+              asReportingRequirement {
+                ...CollapsibleReport_reportingRequirement
+              }
             }
           }
         }
@@ -156,7 +159,10 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         {sortedQuarterlyReports.map((quarterlyReport, index) => {
           return (
             <div key={quarterlyReport.id}>
-              <CollapsibleReport title={`Quarterly Report ${index + 1}`}>
+              <CollapsibleReport
+                title={`Quarterly Report ${index + 1}`}
+                reportingRequirement={quarterlyReport.asReportingRequirement}
+              >
                 <Button
                   variant="secondary"
                   size="small"

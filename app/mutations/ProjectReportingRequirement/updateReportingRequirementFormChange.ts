@@ -19,6 +19,9 @@ const mutation = graphql`
             ...ReportDueIndicator_formChange
           }
         }
+        asReportingRequirement {
+          ...CollapsibleReport_reportingRequirement
+        }
       }
     }
   }
