@@ -86,13 +86,10 @@ const CollapsibleReport: React.FC<Props> = ({
             <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
           </div>
         </header>
-        <div className={!isOpen && "closed"}>{children}</div>
+        {isOpen && <>{children}</>}
       </div>
       <style jsx>
         {`
-          .closed {
-            display: none;
-          }
           .reportContainer {
             border-top: 1px solid black;
           }
