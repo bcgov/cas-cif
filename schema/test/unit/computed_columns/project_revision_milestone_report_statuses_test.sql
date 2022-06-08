@@ -27,9 +27,9 @@ select results_eq(
   $$,
   $$
     values
-      ((1::int, 'On track'::text ,'In Progress'::text)::cif.milestone_report_status_return),
-      ((2::int, 'Late'::text, 'Filled'::text)::cif.milestone_report_status_return),
-      ((3::int, 'Completed'::text, 'Attention Required'::text)::cif.milestone_report_status_return)
+      ((1::int, 'onTrack'::text ,'In Progress'::text)::cif.milestone_report_status_return),
+      ((2::int, 'late'::text, 'Filled'::text)::cif.milestone_report_status_return),
+      ((3::int, 'completed'::text, 'Attention Required'::text)::cif.milestone_report_status_return)
   $$,
   'Returns the correct data'
 );
