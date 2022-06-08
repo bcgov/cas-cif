@@ -5,7 +5,7 @@ import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicat
 import StatusBadge from "components/StatusBadge";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
-import { calculateReportDeadlines } from "lib/helpers/calculateReportDeadlines";
+import { isOverdue } from "lib/helpers/calculateReportDeadlines";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
@@ -67,6 +67,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           reportType: "Quarterly"
         ) {
           ...ReportDueIndicator_formChange
+          asReportingRequirement {
+            reportDueDate
+          }
         }
         projectFormChange {
           formDataRecordId
@@ -74,19 +77,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       }
     `,
     props.projectRevision
-  );
-
-  const formChange = useFragment(
-    graphql`
-      fragment ReportDueIndicator_formChange on FormChange {
-        id
-        reportingRequirement: asReportingRequirement {
-          reportDueDate
-          reportingRequirementIndex
-        }
-      }
-    `,
-    projectRevision.upcomingQuarterlyReportFormChange
   );
 
   // TODO: make it a reusable hook
@@ -126,7 +116,10 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       ({ node }) => node && !node.newFormData.submittedDate
     );
 
-  const { overdue } = calculateReportDeadlines(formChange);
+  const overdue = isOverdue(
+    projectRevision.upcomingQuarterlyReportFormChange?.asReportingRequirement
+      .reportDueDate
+  );
 
   let variant;
   if (
