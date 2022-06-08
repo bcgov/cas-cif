@@ -12,13 +12,13 @@ $function$
     case
       when ($1.new_form_data ->> 'reportDueDate')::timestamptz > now()
         and $1.new_form_data ->> 'submittedDate' is null
-        then 'On track'
+        then 'onTrack'
       when ($1.new_form_data ->> 'reportDueDate')::timestamptz <= now()
         and $1.new_form_data ->> 'submittedDate' is null
-        then 'Late'
+        then 'late'
       when $1.new_form_data ->> 'reportDueDate' is not null
         and $1.new_form_data ->> 'submittedDate' is not null
-        then 'Completed'
+        then 'completed'
       else null
     end
 
