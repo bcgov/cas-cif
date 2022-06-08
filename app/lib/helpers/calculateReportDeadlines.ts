@@ -41,3 +41,21 @@ export const reportDueIn = (reportDueDate) => {
 export const isOverdue = (reportDueDate) => {
   return reportDueDate ? reportDueIn(reportDueDate) < 0 : false;
 };
+
+export const determineVariant = (reportFormChanges, isReportOverdue) => {
+  const areAllReportsComplete = !reportFormChanges.edges.some(
+    ({ node }) => node && !node.newFormData.submittedDate
+  );
+
+  let variant;
+  if (areAllReportsComplete && reportFormChanges.edges.length !== 0) {
+    variant = "complete";
+  } else if (reportFormChanges.edges.length === 0) {
+    variant = "none";
+  } else if (isReportOverdue) {
+    variant = "late";
+  } else {
+    variant = "onTrack";
+  }
+  return variant;
+};
