@@ -233,4 +233,32 @@ describe("The ProjectManagerForm", () => {
     });
     expect(getMutations()).toHaveLength(2);
   });
+
+  it("renders sections expended when they have a form with 'attention required'", () => {
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "Attention Required",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            annualReportsStatus: "Attention Required",
+          },
+        };
+      },
+    });
+
+    componentTestingHelper.renderComponent(undefined, { mode: "create" });
+
+    expect(screen.queryByText(/add project overview/i)).toBeNull();
+    expect(screen.getByText(/add project managers/i)).toBeVisible();
+    expect(screen.queryByText(/add quarterly reports/i)).toBeNull();
+    expect(screen.getByText(/add annual reports/i)).toBeVisible();
+  });
 });
