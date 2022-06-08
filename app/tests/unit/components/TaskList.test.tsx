@@ -30,6 +30,9 @@ const mockQueryPayload = {
         projectContactsStatus: "test-project-contacts-status",
         projectManagersStatus: "test-project-managers-status",
         quarterlyReportsStatus: "test-project-quarterly-reports-status",
+        milestoneReportStatuses: {
+          edges: [],
+        },
       },
     };
   },
@@ -253,13 +256,6 @@ describe("The ProjectManagerForm", () => {
               edges: [
                 {
                   node: {
-                    milestoneIndex: 0,
-                    reportingRequirementStatus: "on_track",
-                    formCompletionStatus: null,
-                  },
-                },
-                {
-                  node: {
                     milestoneIndex: 1,
                     reportingRequirementStatus: "on_track",
                     formCompletionStatus: "In Progress",
@@ -281,9 +277,6 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.loadQuery(payload);
     componentTestingHelper.renderComponent(undefined, { mode: "view" });
     fireEvent.click(screen.getByText(/Milestone Reports/i));
-    expect(
-      screen.getByText("Status of milestone reporting")
-    ).toBeInTheDocument();
     expect(screen.getByText("Milestone 1")).toBeInTheDocument();
     expect(screen.getByText("Milestone 2")).toBeInTheDocument();
   });
@@ -320,16 +313,9 @@ describe("The ProjectManagerForm", () => {
               edges: [
                 {
                   node: {
-                    milestoneIndex: 0,
-                    reportingRequirementStatus: "on_track",
-                    formCompletionStatus: null,
-                  },
-                },
-                {
-                  node: {
                     milestoneIndex: 1,
                     reportingRequirementStatus: "on_track",
-                    formCompletionStatus: "In Progress",
+                    formCompletionStatus: null,
                   },
                 },
                 {
