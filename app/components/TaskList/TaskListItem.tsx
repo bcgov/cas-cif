@@ -31,13 +31,10 @@ const TaskListItem: React.FC<Props> = ({
     >
       <Link passHref href={linkUrl} scroll={!hasAnchor}>
         <BCGovLink>
-          {mode === "view" ||
-          stepName === "summary" ||
-          formTitle === "Status of milestone reporting" ||
-          hasAnchor
+          {mode === "view" || stepName === "summary"
             ? formTitle
             : `${
-                mode === "update" ? "Edit" : "Add"
+                mode === "update" || hasAnchor ? "Edit" : "Add"
               } ${formTitle.toLowerCase()}`}
         </BCGovLink>
       </Link>
