@@ -13,21 +13,7 @@ assignees: ''
 
 
 ###Tech Debt Triage#
-The purpose of our technical debt triage process is to analyze technical debt to determine type, cause, solutions, benefits, and risk level. A score is assigned to technical debt to determine the risk level which will assist the PO in prioritizing technical debt in the backlog.
-
-Causes:                                                               
-- [ ] Poor Conception                                       
-- [ ] Poor Scheduling                                        
-- [ ] Bad Development Practice                       
-- [ ] Outdated Technology                                
-- [ ] Quick vs Quality Imbalance  
-                   
-Types:
-- [ ] Source Code Formatting
-- [ ] Low Test Coverage
-- [ ] Lack of Modularity
-- [ ] Code Complexity
-- [ ] Lack of Documentation
+The purpose of our technical debt triage process is to analyze technical debt to determine risk level of the technical debt and the value in tackling that technical debt. 
 
 Risk Value Scoring:     
 
@@ -36,7 +22,6 @@ Risk Value Scoring:
  |High|3|
  |Medium|2|
  |Low|1|
-
 
  | Technical Debt - Risk Types |  Level  | Value |
  | ----------------------------|---------|-------|
