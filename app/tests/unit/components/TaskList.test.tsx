@@ -5,6 +5,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
+import { DateTime, Settings } from "luxon";
 
 const testQuery = graphql`
   query TaskListQuery($projectRevision: ID!) @relay_test_operation {
@@ -203,13 +204,6 @@ describe("The ProjectManagerForm", () => {
         return {
           projectRevision: {
             id: "test-project-revision-id",
-            projectByProjectId: {
-              proposalReference: "test-project-proposal-reference",
-            },
-            projectOverviewStatus: "test-project-overview-status",
-            projectContactsStatus: "test-project-contacts-status",
-            projectManagersStatus: "test-project-managers-status",
-            quarterlyReportsStatus: "test-project-quarterly-reports-status",
             milestoneReportStatuses: {
               edges: [
                 {
@@ -237,19 +231,69 @@ describe("The ProjectManagerForm", () => {
     expect(screen.getByText("Milestone 2")).toBeInTheDocument();
   });
 
+  it("Renders Milestone due date statuses when viewing the taskList", () => {
+    const expectedNow = DateTime.local(2022, 1, 1, 23, 0, 0);
+    Settings.now = () => expectedNow.toMillis();
+    const payload = {
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            milestoneReportStatuses: {
+              edges: [
+                {
+                  node: {
+                    milestoneIndex: 1,
+                    reportDueDate: "2022-01-15",
+                    submittedDate: null,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 2,
+                    reportDueDate: "2022-04-01",
+                    submittedDate: null,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 3,
+                    reportDueDate: "2022-04-01",
+                    submittedDate: "2022-03-01",
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 3,
+                    reportDueDate: "2021-12-12",
+                    submittedDate: null,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+              ],
+            },
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(payload);
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    expect(screen.getByText("Due in 14 days")).toBeInTheDocument();
+    expect(screen.getByText("Due in 13 weeks")).toBeInTheDocument();
+    expect(screen.getByText("Completed")).toBeInTheDocument();
+    expect(screen.getByText("Late")).toBeInTheDocument();
+  });
+
   it("Calls the route function with the proper anchor when an individual milstone item is clicked", () => {
     const payload = {
       Query() {
         return {
           projectRevision: {
             id: "test-project-revision-id",
-            projectByProjectId: {
-              proposalReference: "test-project-proposal-reference",
-            },
-            projectOverviewStatus: "test-project-overview-status",
-            projectContactsStatus: "test-project-contacts-status",
-            projectManagersStatus: "test-project-managers-status",
-            quarterlyReportsStatus: "test-project-quarterly-reports-status",
             milestoneReportStatuses: {
               edges: [
                 {
