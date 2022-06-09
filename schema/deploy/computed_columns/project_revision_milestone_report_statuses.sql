@@ -23,7 +23,12 @@ $function$
       when fc.change_status= 'staged'
         and json_array_length(fc.validation_errors::json) > 0
         then 'Attention Required'
-      else 'Not Started'
+      else
+        case
+          when ($1.is_first_revision)
+            then 'Not Started'
+          else 'No Changes'
+        end
     end
   from cif.form_change fc
   where fc.project_revision_id = $1.id
