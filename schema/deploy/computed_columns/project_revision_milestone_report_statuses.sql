@@ -11,7 +11,7 @@ $function$
   -- Get individual milestone statuses
   select
     (fc.new_form_data ->> 'reportingRequirementIndex')::int as milestone_index,
-    (select cif.form_change_reporting_requirement_status((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id))) as reporting_requirement_status,
+    (fc.new_form_data ->> 'reportDueDate')::timestamptz as report_due_date,
     case
       when fc.change_status = 'pending'
         and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)

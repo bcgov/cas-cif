@@ -4,7 +4,7 @@ begin;
 
 create type cif.milestone_report_status_return as (
   milestone_index int,
-  reporting_requirement_status text,
+  report_due_date timestamptz,
   form_completion_status text
 );
 
