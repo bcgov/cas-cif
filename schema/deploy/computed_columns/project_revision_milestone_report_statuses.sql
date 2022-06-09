@@ -12,6 +12,7 @@ $function$
   select
     (fc.new_form_data ->> 'reportingRequirementIndex')::int as milestone_index,
     (fc.new_form_data ->> 'reportDueDate')::timestamptz as report_due_date,
+    (fc.new_form_data ->> 'submittedDate')::timestamptz as report_due_date,
     case
       when fc.change_status = 'pending'
         and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
