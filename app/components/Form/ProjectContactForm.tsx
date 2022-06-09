@@ -1,6 +1,6 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { MutableRefObject, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectContactForm_query$key } from "__generated__/ProjectContactForm_query.graphql";
 import FormBase from "./FormBase";
@@ -60,7 +60,7 @@ export const createProjectContactSchema = (allContacts) => {
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
-  const formRefs: MutableRefObject<{}> = useRef({});
+  const formRefs = useRef<Record<string, any>>({});
 
   const projectRevision = useFragment(
     graphql`
