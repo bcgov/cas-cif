@@ -14,11 +14,26 @@ import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
+import { DateTime } from "luxon";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
   mode: TaskListMode;
 }
+
+const daysUntilReportDue = (reportDueDate: string | undefined) => {
+  const diff = DateTime.fromISO(reportDueDate, {
+    setZone: true,
+    locale: "en-CA",
+  }).diff(
+    // Current date without time information
+    DateTime.now().setZone("America/Vancouver").startOf("day"),
+    "days"
+  );
+  if (diff.days > 60)
+    return `Due in ${Math.ceil(Math.ceil(diff.days) / 7)} weeks`;
+  return `Due in ${Math.ceil(diff.days)} days`;
+};
 
 const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
@@ -61,7 +76,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           edges {
             node {
               milestoneIndex
-              reportingRequirementStatus
+              reportDueDate
               formCompletionStatus
             }
           }
@@ -176,10 +191,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
                   `Milestone${node.milestoneIndex}`
                 )}
                 formTitle={`Milestone ${node.milestoneIndex}`}
-                reportingRequirementStatus={
-                  node.reportingRequirementStatus || "none"
-                }
                 formStatus={node.formCompletionStatus}
+                milestoneDueDate={daysUntilReportDue(node.reportDueDate)}
                 currentStep={currentStep}
                 mode={mode}
                 hasAnchor={true}

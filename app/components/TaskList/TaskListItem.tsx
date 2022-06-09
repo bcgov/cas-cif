@@ -2,28 +2,27 @@ import TaskListStatus from "./TaskListStatus";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import Link from "next/link";
 import { TaskListMode } from "./types";
-import StatusBadge from "components/StatusBadge";
 
 interface Props {
   stepName: string;
   linkUrl: { pathname: string; query: { projectRevision: string } };
   formTitle: string;
-  reportingRequirementStatus?: string;
   formStatus: string;
   currentStep: string;
   mode: TaskListMode;
   hasAnchor?: boolean;
+  milestoneDueDate?: string;
 }
 
 const TaskListItem: React.FC<Props> = ({
   stepName,
   linkUrl,
   formTitle,
-  reportingRequirementStatus,
   formStatus,
   currentStep,
   mode,
   hasAnchor,
+  milestoneDueDate,
 }) => {
   return (
     <li
@@ -39,20 +38,10 @@ const TaskListItem: React.FC<Props> = ({
               } ${formTitle.toLowerCase()}`}
         </BCGovLink>
       </Link>
-      {reportingRequirementStatus && (
-        <StatusBadge
-          variant={
-            reportingRequirementStatus as
-              | "complete"
-              | "late"
-              | "onTrack"
-              | "inReview"
-              | "customText"
-              | "none"
-          }
-        />
-      )}
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
+      {mode !== "update" && milestoneDueDate && (
+        <TaskListStatus formStatus={milestoneDueDate} />
+      )}
 
       <style jsx>{`
         li {

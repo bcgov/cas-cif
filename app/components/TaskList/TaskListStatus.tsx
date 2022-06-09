@@ -14,7 +14,7 @@ const statusStyle = css`
 `;
 
 const TaskListStatus: React.FC<Props> = ({ formStatus }) => {
-  if (formStatus === ATTENTION_REQUIRED_STATUS)
+  if (formStatus === ATTENTION_REQUIRED_STATUS || formStatus?.includes("days"))
     return (
       <>
         <div className="status">
