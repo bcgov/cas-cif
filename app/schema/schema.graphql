@@ -31907,6 +31907,7 @@ type MilestoneReportStatusReturn {
   formCompletionStatus: String
   milestoneIndex: Int
   reportDueDate: Datetime
+  submittedDate: Datetime
 }
 
 """
@@ -31930,6 +31931,9 @@ input MilestoneReportStatusReturnFilter {
 
   """Filter by the object’s `reportDueDate` field."""
   reportDueDate: DatetimeFilter
+
+  """Filter by the object’s `submittedDate` field."""
+  submittedDate: DatetimeFilter
 }
 
 """A connection to a list of `MilestoneReportStatusReturn` values."""
