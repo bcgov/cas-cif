@@ -239,7 +239,7 @@ describe("The ProjectManagerForm", () => {
 
   it("renders sections expended when they have a form with 'attention required'", () => {
     componentTestingHelper.loadQuery({
-  it("Renders multiple Milestone items in the taskList and an overall milestone status item when milestones exist", () => {
+  it("Renders multiple Milestone items in the taskList", () => {
     const payload = {
       Query() {
         return {
@@ -257,14 +257,14 @@ describe("The ProjectManagerForm", () => {
                 {
                   node: {
                     milestoneIndex: 1,
-                    reportingRequirementStatus: "on_track",
+                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: "In Progress",
                   },
                 },
                 {
                   node: {
                     milestoneIndex: 2,
-                    reportingRequirementStatus: "on_track",
+                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: "In Progress",
                   },
                 },
@@ -314,14 +314,14 @@ describe("The ProjectManagerForm", () => {
                 {
                   node: {
                     milestoneIndex: 1,
-                    reportingRequirementStatus: "on_track",
+                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: null,
                   },
                 },
                 {
                   node: {
                     milestoneIndex: 2,
-                    reportingRequirementStatus: "on_track",
+                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: "In Progress",
                   },
                 },
