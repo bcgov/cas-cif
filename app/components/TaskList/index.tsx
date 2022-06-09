@@ -34,6 +34,7 @@ const displayMilestoneDueDateStatus = (
     DateTime.now().setZone("America/Vancouver").startOf("day"),
     "days"
   );
+  if (diff.days < 0) return "Late";
   if (diff.days > 60)
     return `Due in ${Math.ceil(Math.ceil(diff.days) / 7)} weeks`;
   return `Due in ${Math.ceil(diff.days)} days`;
