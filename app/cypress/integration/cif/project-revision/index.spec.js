@@ -539,6 +539,7 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Quarterly reports/i }).click();
     cy.findByText(/Edit quarterly reports/i).click();
+    cy.findByText("Quarterly Report 1").click();
     cy.get('[aria-label*="Due Date"]').eq(0).click();
     cy.get(".react-datepicker__month-select").select(0);
     cy.get(".react-datepicker__year-select").select("1995");
