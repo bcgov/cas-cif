@@ -90,10 +90,14 @@ const CollapsibleReport: React.FC<Props> = ({
             <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
           </div>
         </header>
-        {isOpen && <>{children}</>}
+        {/* Rendering hidden children is necessary in case they contain form elements with validation */}
+        <div className={!isOpen && "closed"}>{children}</div>
       </div>
       <style jsx>
         {`
+          .closed {
+            display: none;
+          }
           .reportContainer {
             border-top: 1px solid black;
           }

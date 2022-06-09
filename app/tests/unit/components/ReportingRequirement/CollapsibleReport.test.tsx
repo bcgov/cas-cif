@@ -49,7 +49,7 @@ describe("The Collapsible Report component", () => {
     });
 
     expect(screen.getByText(/Test Reporting Requirement/)).toBeInTheDocument();
-    expect(screen.queryByText(/some report content/)).toBeInTheDocument();
+    expect(screen.queryByText(/some report content/)).toBeVisible();
   });
 
   it("Doesn't display the children when closed", () => {
@@ -61,7 +61,7 @@ describe("The Collapsible Report component", () => {
     });
 
     expect(screen.getByText(/Test Reporting Requirement/)).toBeInTheDocument();
-    expect(screen.queryByText(/some report content/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/some report content/)).not.toBeVisible();
   });
 
   it("Starts closed when the submitted date is set", () => {
@@ -79,7 +79,7 @@ describe("The Collapsible Report component", () => {
     });
 
     expect(screen.getByText(/Test Reporting Requirement/)).toBeInTheDocument();
-    expect(screen.queryByText(/some report content/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/some report content/)).not.toBeVisible();
   });
 
   it("Toggles the children when the header is clicked", () => {
@@ -91,9 +91,9 @@ describe("The Collapsible Report component", () => {
     });
 
     screen.getByText(/Test Reporting Requirement/).click();
-    expect(screen.queryByText(/some report content/)).toBeInTheDocument();
+    expect(screen.queryByText(/some report content/)).toBeVisible();
     screen.getByText(/Test Reporting Requirement/).click();
-    expect(screen.queryByText(/some report content/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/some report content/)).not.toBeVisible();
   });
 
   it("Shows 'Completed' when the report has a report due and a submitted date", () => {

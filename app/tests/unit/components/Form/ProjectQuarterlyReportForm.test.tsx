@@ -96,9 +96,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
-
-    expect(screen.getAllByText("Remove")).toHaveLength(2);
+    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2);
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
       /Overdue by \d+ day\(s\)/
     );
