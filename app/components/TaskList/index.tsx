@@ -21,7 +21,11 @@ interface Props {
   mode: TaskListMode;
 }
 
-const daysUntilReportDue = (reportDueDate: string | undefined) => {
+const displayMilestoneDueDateStatus = (
+  reportDueDate: string | undefined,
+  submittedDate: string | undefined
+) => {
+  if (submittedDate) return "Completed";
   const diff = DateTime.fromISO(reportDueDate, {
     setZone: true,
     locale: "en-CA",
@@ -77,6 +81,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
             node {
               milestoneIndex
               reportDueDate
+              submittedDate
               formCompletionStatus
             }
           }
@@ -192,7 +197,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
                 )}
                 formTitle={`Milestone ${node.milestoneIndex}`}
                 formStatus={node.formCompletionStatus}
-                milestoneDueDate={daysUntilReportDue(node.reportDueDate)}
+                milestoneDueDate={displayMilestoneDueDateStatus(
+                  node.reportDueDate,
+                  node.submittedDate
+                )}
                 currentStep={currentStep}
                 mode={mode}
                 hasAnchor={true}

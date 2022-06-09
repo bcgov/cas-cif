@@ -39,7 +39,7 @@ const TaskListItem: React.FC<Props> = ({
         </BCGovLink>
       </Link>
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
-      {mode !== "update" && milestoneDueDate && (
+      {mode === "view" && milestoneDueDate && (
         <TaskListStatus formStatus={milestoneDueDate} />
       )}
 
