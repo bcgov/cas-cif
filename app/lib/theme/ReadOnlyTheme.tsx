@@ -4,6 +4,7 @@ import ReadOnlyObjectFieldTemplate from "./ReadOnlyObjectFieldTemplate";
 import { utils } from "@rjsf/core";
 import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
 import ReadOnlyMoneyWidget from "./widgets/ReadOnlyMoneyWidget";
+import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 const { fields, widgets } = utils.getDefaultRegistry();
 
 const readOnlyTheme: ThemeProps = {
@@ -22,7 +23,8 @@ const readOnlyTheme: ThemeProps = {
     SelectRfpWidget: ReadOnlyWidget,
     SelectProjectStatusWidget: ReadOnlyWidget,
     ConditionalAmountWidget: ReadOnlyWidget,
-    DueDateWidget: ReadOnlyWidget,
+    DueDateWidget: ReadOnlyDateWidget,
+    ReceivedDateWidget: ReadOnlyDateWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

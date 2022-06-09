@@ -1,7 +1,6 @@
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
-import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFormSummary_projectRevision$key } from "__generated__/ProjectFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
@@ -9,6 +8,7 @@ import { createProjectUiSchema } from "./ProjectForm";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
+import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -81,26 +81,13 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
       )
     : null;
 
-  const [formSchema, formData] = useMemo(() => {
-    if (!renderDiff) return [projectSchema, projectFormChange.newFormData];
-    // Filter out fields from the formData that have not changed from the previous revision so the summary ignores these fields
-    const filteredSchema = JSON.parse(JSON.stringify(projectSchema));
-    const newDataObject = {};
-    for (const [key, value] of Object.entries(projectFormChange.newFormData)) {
-      if (
-        value ===
-        projectFormChange.formChangeByPreviousFormChangeId?.newFormData?.[key]
-      )
-        delete filteredSchema.properties[key];
-      else newDataObject[key] = value;
-    }
-
-    return [filteredSchema, newDataObject];
-  }, [
-    renderDiff,
-    projectFormChange.newFormData,
-    projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
-  ]);
+  // Set the formSchema and formData based on showing the diff or not
+  const { formSchema, formData } = !renderDiff
+    ? {
+        formSchema: projectSchema,
+        formData: projectFormChange.newFormData,
+      }
+    : getFilteredSchema(projectSchema as JSONSchema7, projectFormChange);
 
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
