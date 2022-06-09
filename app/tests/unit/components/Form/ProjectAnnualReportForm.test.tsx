@@ -1,0 +1,251 @@
+import { act, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import ProjectAnnualReportForm from "components/Form/ProjectAnnualReportForm";
+import { graphql } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
+import compiledFormIndexPageQuery, {
+  FormIndexPageQuery,
+} from "__generated__/FormIndexPageQuery.graphql";
+
+const testQuery = graphql`
+  query ProjectAnnualReportFormQuery @relay_test_operation {
+    query {
+      # Spread the fragment you want to test here
+      projectRevision(id: "I can be anything") {
+        ...ProjectAnnualReportForm_projectRevision
+      }
+    }
+  }
+`;
+
+const defaultMockResolver = {
+  ProjectRevision(context, generateID) {
+    const firstFormId = `mock-project-Annual-report-form-${generateID()}`;
+    return {
+      id: `mock-proj-rev-${generateID()}`,
+      rowId: 1234,
+      upcomingAnnualReportFormChange: {
+        id: firstFormId,
+        asReportingRequirement: {
+          reportDueDate: "2022-01-01T00:00:00-07",
+          reportingRequirementIndex: 1,
+        },
+      },
+      projectAnnualReportFormChanges: {
+        edges: [
+          {
+            node: {
+              id: firstFormId,
+              newFormData: {
+                reportDueDate: "2022-01-01T00:00:00-07",
+                projectId: 51,
+                reportType: "Annual",
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+            },
+          },
+          {
+            node: {
+              id: `mock-project-Annual-report-form-${generateID()}`,
+              newFormData: {
+                reportDueDate: "2022-10-28T00:00:00-07",
+                comments: "some comments",
+                projectId: 51,
+                reportType: "Annual",
+                submittedDate: "2022-05-02T00:00:00-07",
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+            },
+          },
+        ],
+        __id: "client:mock:__connection_projectAnnualReportFormChanges_connection",
+      },
+    };
+  },
+};
+
+const defaultComponentProps = {
+  setValidatingForm: jest.fn(),
+  onSubmit: jest.fn(),
+};
+
+const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
+  component: ProjectAnnualReportForm,
+  testQuery: testQuery,
+  compiledQuery: compiledFormIndexPageQuery,
+  getPropsFromTestQuery: (data) => ({
+    query: data.query,
+    projectRevision: data.query.projectRevision,
+  }),
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: { projectRevision: "mock-id" },
+  defaultComponentProps: defaultComponentProps,
+});
+
+describe("The ProjectAnnualReportForm", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    componentTestingHelper.reinit();
+  });
+
+  it("Renders two Annual reports with remove buttons, the report due indicator, and the overall status badge", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    screen.logTestingPlaygroundURL();
+    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+
+    // TODO: add these back in once the indicator PR is finished
+    // expect(screen.getAllByText("Remove")).toHaveLength(2);
+    // expect(screen.getAllByRole("group")[0]).toHaveTextContent(
+    //   /Overdue by \d+ day\(s\)/
+    // );
+    expect(screen.getByText("Late")).toBeInTheDocument();
+  });
+
+  it("Calls the addAnnualReportToRevision mutation when the Add button is clicked", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    const addButton = screen.getByText("Add another annual report");
+    addButton.click();
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+    ).toMatchObject({
+      variables: {
+        connections: expect.any(Array),
+        projectRevisionId: 1234,
+        newFormData: {
+          projectId: 42,
+          reportType: "Annual",
+        },
+      },
+    });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByText(/Add another Annual report/i));
+    act(() => {
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
+    });
+
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
+      "An error occurred while attempting to add the report."
+    );
+  });
+
+  it("Calls the updateFormChange mutation when the remove button is clicked", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    const removeButton = screen.getAllByText("Remove")[0];
+    removeButton.click();
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+    ).toMatchObject({
+      variables: {
+        input: {
+          id: "mock-project-Annual-report-form-1",
+        },
+        connections: expect.any(Array),
+      },
+    });
+  });
+
+  it("calls useMutationWithErrorMessage and returns expected message when the remove button is clicked", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const removeButton = screen.getAllByText("Remove")[0];
+    removeButton.click();
+    act(() => {
+      componentTestingHelper.environment.mock.rejectMostRecentOperation(
+        new Error()
+      );
+    });
+
+    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
+      "An error occurred when deleting."
+    );
+  });
+
+  it("Validates all contact forms when the submit button is clicked", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const validateFormWithErrors = jest.spyOn(
+      require("lib/helpers/validateFormWithErrors"),
+      "default"
+    );
+
+    screen.getByText(/Submit/i).click();
+    // Once per form
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(2);
+  });
+
+  it("stages the form changes when the `submit` button is clicked", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    screen.getByText(/submit/i).click();
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: { changeStatus: "staged" },
+    });
+  });
+
+  it("reverts the form_change status to 'pending' when editing", async () => {
+    const mockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          projectAnnualReportFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: `mock-project-Annual-report-form-${generateID()}`,
+                  newFormData: {
+                    reportDueDate: "2022-01-01T00:00:00-07",
+                    projectId: 51,
+                    reportType: "Annual",
+                  },
+                  operation: "CREATE",
+                  changeStatus: "staged",
+                  formChangeByPreviousFormChangeId: null,
+                },
+              },
+            ],
+            __id: "client:mock:__connection_projectAnnualReportFormChanges_connection",
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    userEvent.type(
+      screen.getByLabelText(/General Comments \(optional\)/),
+      "comments"
+    );
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: {
+          comments: "comments",
+          projectId: 51,
+        },
+      },
+    });
+  });
+});
