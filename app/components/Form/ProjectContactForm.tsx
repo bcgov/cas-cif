@@ -1,6 +1,6 @@
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useEffect, useMemo, useRef } from "react";
+import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectContactForm_query$key } from "__generated__/ProjectContactForm_query.graphql";
 import FormBase from "./FormBase";
@@ -60,7 +60,7 @@ export const createProjectContactSchema = (allContacts) => {
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
-  const formRefs = useRef<Record<string, any>>({});
+  const formRefs: MutableRefObject<{}> = useRef({});
 
   const projectRevision = useFragment(
     graphql`
@@ -107,13 +107,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
-  // this aims to delete the form reference from the formRefs object when hitting the undo changes button
-  useEffect(() => {
-    Object.keys(formRefs.current).forEach((key) => {
-      if (!formRefs.current[key]) delete formRefs.current[key];
-    });
-  }, [projectRevision.projectContactFormChanges]);
 
   const contactSchema = useMemo(() => {
     return createProjectContactSchema(allContacts);
@@ -294,7 +287,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Project Contacts</h2>
-        <UndoChangesButton formChangeIds={formChangeIds} />
+        <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 

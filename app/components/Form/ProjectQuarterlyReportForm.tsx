@@ -9,7 +9,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
-import { useEffect, useMemo, useRef } from "react";
+import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
@@ -41,7 +41,7 @@ export const quarterlyReportUiSchema = {
 };
 
 const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
-  const formRefs = useRef({});
+  const formRefs: MutableRefObject<{}> = useRef({});
 
   const projectRevision = useFragment(
     graphql`
@@ -72,14 +72,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  // TODO: make it a reusable hook
-  // this aims to delete the form reference from the formRefs object when hitting the undo changes button
-  useEffect(() => {
-    Object.keys(formRefs.current).forEach((key) => {
-      if (!formRefs.current[key]) delete formRefs.current[key];
-    });
-  }, [projectRevision.projectQuarterlyReportFormChanges]);
-
   const [addQuarterlyReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
@@ -108,7 +100,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Quarterly Reports</h2>
-        <UndoChangesButton formChangeIds={formChangeIds} />
+        <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 
