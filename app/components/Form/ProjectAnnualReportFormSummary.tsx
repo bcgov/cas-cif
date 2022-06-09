@@ -2,28 +2,12 @@ import { utils } from "@rjsf/core";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
+import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportFormSummary_projectRevision$key } from "__generated__/ProjectAnnualReportFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
-
-// Remove this and import the one from app/lib/theme/getFilteredSchema.ts once it's merged in
-const getFilteredSchema = (formSchema: JSONSchema7, formData) => {
-  const filteredSchema = JSON.parse(JSON.stringify(formSchema));
-  const newDataObject = {};
-
-  for (const key of Object.keys(filteredSchema.properties)) {
-    if (
-      formData.newFormData?.[key] ===
-      formData.formChangeByPreviousFormChangeId?.newFormData?.[key]
-    )
-      delete filteredSchema.properties[key];
-    else newDataObject[key] = formData.newFormData?.[key];
-  }
-
-  return { formSchema: filteredSchema, formData: newDataObject };
-};
 
 const { fields } = utils.getDefaultRegistry();
 
