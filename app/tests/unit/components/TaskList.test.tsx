@@ -215,14 +215,12 @@ describe("The ProjectManagerForm", () => {
                 {
                   node: {
                     milestoneIndex: 1,
-                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: "In Progress",
                   },
                 },
                 {
                   node: {
                     milestoneIndex: 2,
-                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: "In Progress",
                   },
                 },
@@ -257,14 +255,12 @@ describe("The ProjectManagerForm", () => {
                 {
                   node: {
                     milestoneIndex: 1,
-                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: null,
                   },
                 },
                 {
                   node: {
                     milestoneIndex: 2,
-                    reportingRequirementStatus: "onTrack",
                     formCompletionStatus: "In Progress",
                   },
                 },
