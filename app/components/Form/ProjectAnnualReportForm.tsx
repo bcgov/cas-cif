@@ -158,7 +158,6 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         </Button>
 
         {sortedAnnualReports.map((report, index) => {
-          console.log(report);
           return (
             <div key={report.id}>
               <CollapsibleReport

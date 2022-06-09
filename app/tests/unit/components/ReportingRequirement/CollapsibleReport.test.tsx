@@ -64,6 +64,24 @@ describe("The Collapsible Report component", () => {
     expect(screen.queryByText(/some report content/)).not.toBeInTheDocument();
   });
 
+  it("Starts closed when the submitted date is set", () => {
+    componentTestingHelper.loadQuery({
+      ReportingRequirement() {
+        return {
+          reportDueDate: "2020-01-01T00:00:00-07",
+          submittedDate: "1234-05-04T15:31:00-07",
+        };
+      },
+    });
+    componentTestingHelper.renderComponent(getPropsFromTestQuery, {
+      ...defaultComponentProps,
+      children: <div>some report content</div>,
+    });
+
+    expect(screen.getByText(/Test Reporting Requirement/)).toBeInTheDocument();
+    expect(screen.queryByText(/some report content/)).not.toBeInTheDocument();
+  });
+
   it("Toggles the children when the header is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent(getPropsFromTestQuery, {

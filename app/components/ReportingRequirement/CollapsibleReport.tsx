@@ -59,7 +59,7 @@ const getBadgeForDates = (
 
 const CollapsibleReport: React.FC<Props> = ({
   title,
-  startOpen = false,
+  startOpen,
   reportingRequirement,
   children,
 }) => {
@@ -72,7 +72,11 @@ const CollapsibleReport: React.FC<Props> = ({
     `,
     reportingRequirement
   );
-  const [isOpen, setIsOpen] = useState(startOpen);
+
+  // By default, start with the component open if the submittedDate is empty
+  const [isOpen, setIsOpen] = useState(
+    startOpen !== undefined ? startOpen : !data.submittedDate
+  );
 
   return (
     <>
