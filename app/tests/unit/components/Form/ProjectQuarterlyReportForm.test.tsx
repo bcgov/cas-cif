@@ -102,7 +102,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
       /Overdue by \d+ day\(s\)/
     );
-    expect(screen.getByText("Late")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Late");
   });
 
   it("Calls the addQuarterlyReportToRevision mutation when the Add button is clicked", () => {

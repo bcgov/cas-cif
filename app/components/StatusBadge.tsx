@@ -41,6 +41,7 @@ const StatusBadge: React.FC<Props> = ({ label = "custom text", variant }) => {
   return (
     <>
       <Chip
+        role="status"
         label={variant === "customText" ? label : colours[variant].label}
         sx={{
           backgroundColor: colours[variant].badgeColour,

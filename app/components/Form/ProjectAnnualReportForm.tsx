@@ -20,7 +20,7 @@ import {
   stageReportFormChanges,
   getSortedReports,
 } from "./reportingRequirementFormChangeFunctions";
-import { determineVariant, isOverdue } from "lib/helpers/reportStatusHelpers";
+import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import StatusBadge from "components/StatusBadge";
 
 interface Props {
@@ -101,15 +101,20 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectAnnualReportFormChanges]);
 
-  const overdue = isOverdue(
+  const reportDueDate =
     projectRevision.upcomingAnnualReportFormChange?.asReportingRequirement
-      .reportDueDate
-  );
+      .reportDueDate;
+  const overdue = useMemo(() => {
+    return isOverdue(reportDueDate);
+  }, [reportDueDate]);
 
-  const variant = determineVariant(
-    projectRevision.projectAnnualReportFormChanges,
-    overdue
-  );
+  const reportSubmittedDates = useMemo(() => {
+    return projectRevision.projectAnnualReportFormChanges.edges.map(
+      ({ node }) => node.newFormData.submittedDate
+    );
+  }, [projectRevision.projectAnnualReportFormChanges.edges]);
+
+  const variant = getReportingStatus(reportSubmittedDates, overdue);
 
   return (
     <div>

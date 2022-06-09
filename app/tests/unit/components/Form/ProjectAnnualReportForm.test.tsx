@@ -103,7 +103,7 @@ describe("The ProjectAnnualReportForm", () => {
     // expect(screen.getAllByRole("group")[0]).toHaveTextContent(
     //   /Overdue by \d+ day\(s\)/
     // );
-    expect(screen.getByText("Late")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Late");
   });
 
   it("Calls the addAnnualReportToRevision mutation when the Add button is clicked", () => {

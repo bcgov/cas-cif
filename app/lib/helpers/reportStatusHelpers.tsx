@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-export const daysUntilReportDue = (reportDueDate) => {
+export const daysUntilReportDue = (reportDueDate: string) => {
   const diff = DateTime.fromISO(reportDueDate, {
     setZone: true,
     locale: "en-CA",
@@ -13,24 +13,23 @@ export const daysUntilReportDue = (reportDueDate) => {
   return Math.ceil(diff.days);
 };
 
-export const isOverdue = (reportDueDate) => {
+export const isOverdue = (reportDueDate: string | undefined) => {
   return reportDueDate ? daysUntilReportDue(reportDueDate) < 0 : false;
 };
 
-export const determineVariant = (reportFormChanges, isReportOverdue) => {
-  const areAllReportsComplete = !reportFormChanges.edges.some(
-    ({ node }) => node && !node.newFormData.submittedDate
-  );
+export const getReportingStatus = (
+  reportSubmittedDates: string[],
+  isReportOverdue: boolean
+) => {
+  const reportsExist = reportSubmittedDates?.length !== 0;
 
-  let variant;
-  if (areAllReportsComplete && reportFormChanges.edges.length !== 0) {
-    variant = "complete";
-  } else if (reportFormChanges.edges.length === 0) {
-    variant = "none";
+  if (!reportsExist) {
+    return "none";
+  } else if (reportsExist && !reportSubmittedDates.includes(undefined)) {
+    return "complete";
   } else if (isReportOverdue) {
-    variant = "late";
+    return "late";
   } else {
-    variant = "onTrack";
+    return "onTrack";
   }
-  return variant;
 };
