@@ -23,6 +23,7 @@ import {
 import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import StatusBadge from "components/StatusBadge";
 import UndoChangesButton from "./UndoChangesButton";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 
 interface Props {
   onSubmit: () => void;
@@ -67,6 +68,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
               formChangeByPreviousFormChangeId {
                 changeStatus
                 newFormData
+              }
+              asReportingRequirement {
+                ...CollapsibleReport_reportingRequirement
               }
             }
           }
@@ -154,10 +158,13 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         </Button>
 
         {sortedAnnualReports.map((report, index) => {
+          console.log(report);
           return (
-            <div key={report.id} className="reportContainer">
-              <header className="reportHeader">
-                <h3>Annual Report {index + 1}</h3>
+            <div key={report.id}>
+              <CollapsibleReport
+                title={`Annual Report ${index + 1}`}
+                reportingRequirement={report.asReportingRequirement}
+              >
                 <Button
                   variant="secondary"
                   size="small"
@@ -169,31 +176,33 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                       formRefs
                     )
                   }
+                  className="removeButton"
                 >
                   Remove
                 </Button>
-              </header>
-              <FormBase
-                id={`form-${report.id}`}
-                validateOnMount={report.changeStatus === "staged"}
-                idPrefix={`form-${report.id}`}
-                ref={(el) => (formRefs.current[report.id] = el)}
-                formData={report.newFormData}
-                onChange={(change) => {
-                  updateReportFormChange(
-                    applyUpdateFormChangeMutation,
-                    "Annual",
-                    { ...report, changeStatus: "pending" },
-                    change.formData
-                  );
-                }}
-                schema={projectReportingRequirementSchema as JSONSchema7}
-                uiSchema={annualReportUiSchema}
-                ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                formContext={{
-                  dueDate: report.newFormData?.reportDueDate,
-                }}
-              />
+                <FormBase
+                  id={`form-${report.id}`}
+                  validateOnMount={report.changeStatus === "staged"}
+                  idPrefix={`form-${report.id}`}
+                  ref={(el) => (formRefs.current[report.id] = el)}
+                  formData={report.newFormData}
+                  onChange={(change) => {
+                    updateReportFormChange(
+                      applyUpdateFormChangeMutation,
+                      "Annual",
+                      { ...report, changeStatus: "pending" },
+                      change.formData
+                    );
+                  }}
+                  schema={projectReportingRequirementSchema as JSONSchema7}
+                  uiSchema={annualReportUiSchema}
+                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                  formContext={{
+                    dueDate: report.newFormData?.reportDueDate,
+                  }}
+                />
+              </CollapsibleReport>
+              are collapsible)
             </div>
           );
         })}
@@ -219,17 +228,11 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
           margin-left: 0.4em;
           margin-right: 0em;
         }
-        div.reportContainer {
-          border-top: 1px solid black;
-          padding-top: 1em;
-        }
         div :global(button.addButton) {
           margin-bottom: 1em;
         }
-        header.reportHeader {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
+        div :global(button.removeButton) {
+          float: right;
         }
       `}</style>
     </div>
