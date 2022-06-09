@@ -31906,7 +31906,7 @@ type ManagerFormChangesByLabelCompositeReturnsEdge {
 type MilestoneReportStatusReturn {
   formCompletionStatus: String
   milestoneIndex: Int
-  reportingRequirementStatus: String
+  reportDueDate: Datetime
 }
 
 """
@@ -31928,8 +31928,8 @@ input MilestoneReportStatusReturnFilter {
   """Checks for any expressions in this list."""
   or: [MilestoneReportStatusReturnFilter!]
 
-  """Filter by the object’s `reportingRequirementStatus` field."""
-  reportingRequirementStatus: StringFilter
+  """Filter by the object’s `reportDueDate` field."""
+  reportDueDate: DatetimeFilter
 }
 
 """A connection to a list of `MilestoneReportStatusReturn` values."""
