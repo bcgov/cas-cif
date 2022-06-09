@@ -1,5 +1,4 @@
 import { WidgetProps } from "@rjsf/core";
-import { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 
 export const MoneyWidget: React.FC<WidgetProps> = ({
@@ -10,12 +9,6 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
   onChange,
   value,
 }) => {
-  const [totalFunding, setTotalFunding] = useState(value || "");
-
-  useEffect(() => {
-    setTotalFunding(value);
-  }, [value]);
-
   return (
     <div>
       <NumberFormat
@@ -27,10 +20,17 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
         className="money"
         decimalScale={2}
         defaultValue={(schema as any).defaultValue}
-        value={totalFunding || ""}
+        value={value ?? ""}
         onValueChange={({ floatValue }) => {
-          setTotalFunding(floatValue);
-          onChange(((floatValue * 100) / 100).toFixed(2));
+          if (
+            Number.isNaN(floatValue) ||
+            floatValue === undefined ||
+            floatValue === null
+          ) {
+            onChange("");
+          } else {
+            onChange(((floatValue * 100) / 100).toFixed(2));
+          }
         }}
         style={{
           border: "2px solid #606060",

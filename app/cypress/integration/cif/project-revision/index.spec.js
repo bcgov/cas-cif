@@ -49,7 +49,9 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/2");
 
     cy.findByRole("button", { name: /add/i }).click();
+    cy.get("fieldset input").should("have.length", 2);
     cy.findByRole("button", { name: /add/i }).click();
+    cy.get("fieldset input").should("have.length", 3);
     cy.findByRole("button", { name: /add/i }).click();
 
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
@@ -159,8 +161,11 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/2");
 
     cy.findByRole("button", { name: /add/i }).click();
+    cy.get("fieldset input").should("have.length", 2);
     cy.findByRole("button", { name: /add/i }).click();
+    cy.get("fieldset input").should("have.length", 3);
     cy.findByRole("button", { name: /add/i }).click();
+    cy.get("fieldset input").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /Submit Contacts/i }).click();
     cy.get(".error-detail").should("have.length", 4);

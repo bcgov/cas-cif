@@ -26,7 +26,7 @@ const SelectProjectStatus: React.FunctionComponent<WidgetProps> = (props) => {
     `,
     formContext.query
   );
-  const { fundingStreamRfpId } = formContext.form;
+  const { fundingStreamRfpId } = formContext.form || {};
 
   const projectStatusList = useMemo(() => {
     return allFundingStreamRfpProjectStatuses.edges

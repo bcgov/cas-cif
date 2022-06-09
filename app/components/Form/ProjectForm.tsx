@@ -96,6 +96,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           id
           rowId
           newFormData
+          changeStatus
           isUniqueValue(columnName: "proposalReference")
           formChangeByPreviousFormChangeId {
             changeStatus
@@ -130,9 +131,9 @@ const ProjectForm: React.FC<Props> = (props) => {
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
       ({ node }) =>
-        node.rowId === revision.projectFormChange.newFormData.operatorId
+        node.rowId === revision.projectFormChange.newFormData?.operatorId
     );
-  }, [query, revision.projectFormChange.newFormData.operatorId]);
+  }, [query, revision.projectFormChange.newFormData?.operatorId]);
 
   const uiSchema = useMemo(() => {
     return createProjectUiSchema(
@@ -157,13 +158,12 @@ const ProjectForm: React.FC<Props> = (props) => {
     changeData: any,
     changeStatus: "pending" | "staged"
   ) => {
-    const updatedFormData =
-      Object.keys(changeData).length === 0
-        ? {}
-        : {
-            ...revision.projectFormChange.newFormData,
-            ...changeData,
-          };
+    // don't trigger a change if the form data is an empty object
+    if (Object.keys(changeData).length === 0) return;
+    const updatedFormData = {
+      ...revision.projectFormChange.newFormData,
+      ...changeData,
+    };
 
     return new Promise((resolve, reject) =>
       updateProjectFormChange({
@@ -182,6 +182,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               id: revision.projectFormChange.id,
               newFormData: updatedFormData,
               isUniqueValue: revision.projectFormChange.isUniqueValue,
+              changeStatus,
               projectRevisionByProjectRevisionId: undefined,
             },
           },
@@ -235,6 +236,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         {...props}
         schema={schema}
         uiSchema={uiSchema}
+        validateOnMount={revision.projectFormChange.changeStatus === "staged"}
         validate={uniqueProposalReferenceValidation}
         formData={revision.projectFormChange.newFormData}
         formContext={{

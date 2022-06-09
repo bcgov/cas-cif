@@ -26,6 +26,8 @@ class ComponentTestingHelper<
 > extends TestingHelper {
   private options: ComponentTestingHelperOptions<TQuery>;
 
+  public renderResult;
+
   constructor(options: ComponentTestingHelperOptions<TQuery>) {
     super();
     this.options = {
@@ -77,7 +79,7 @@ class ComponentTestingHelper<
       .getPropsFromTestQuery,
     extraProps: any = this.options.defaultComponentProps
   ) {
-    return render(
+    this.renderResult = render(
       <ErrorContext.Provider value={this.errorContext}>
         <RouterContext.Provider value={this.router}>
           <RelayEnvironmentProvider environment={this.environment}>
@@ -89,6 +91,27 @@ class ComponentTestingHelper<
         </RouterContext.Provider>
       </ErrorContext.Provider>
     );
+    return this.renderResult;
+  }
+
+  public rerenderComponent(
+    getPropsFromTestQuery: (data: TQuery["response"]) => any = this.options
+      .getPropsFromTestQuery,
+    extraProps: any = this.options.defaultComponentProps
+  ) {
+    this.renderResult.rerender(
+      <ErrorContext.Provider value={this.errorContext}>
+        <RouterContext.Provider value={this.router}>
+          <RelayEnvironmentProvider environment={this.environment}>
+            <this.TestRenderer
+              getPropsFromTestQuery={getPropsFromTestQuery}
+              extraProps={extraProps}
+            />
+          </RelayEnvironmentProvider>
+        </RouterContext.Provider>
+      </ErrorContext.Provider>
+    );
+    return this.renderResult;
   }
 }
 

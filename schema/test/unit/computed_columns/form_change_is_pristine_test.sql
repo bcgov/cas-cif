@@ -1,6 +1,6 @@
 begin;
 
-select plan(4);
+select plan(5);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -61,7 +61,16 @@ values (
   'schema',
   2,
   2
-);
+), (
+  null,
+  'create',
+  'cif',
+  'other_test_table',
+  'schema',
+  null,
+  1
+)
+;
 
 select is(
   (
@@ -93,6 +102,14 @@ select is(
   ),
   false,
   'Returns false, as the form has been archived'
+);
+
+select is(
+  (
+    select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=5))
+  ),
+  true,
+  'Returns true, as the form has a null new_form_data'
 );
 
 select finish();

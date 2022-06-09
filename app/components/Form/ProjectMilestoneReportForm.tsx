@@ -77,7 +77,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           __id
           edges {
             node {
-              rowId
               id
               newFormData
               operation
@@ -180,6 +179,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               </header>
               <FormBase
                 id={`form-${milestoneReport.id}`}
+                validateOnMount={milestoneReport.changeStatus === "staged"}
                 idPrefix={`form-${milestoneReport.id}`}
                 ref={(el) => (formRefs.current[milestoneReport.id] = el)}
                 formData={milestoneReport.newFormData}

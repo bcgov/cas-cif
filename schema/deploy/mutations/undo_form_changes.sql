@@ -21,9 +21,9 @@ begin
       update cif.form_change set operation = 'update', new_form_data = (select new_form_data from cif.form_change where id = fc.previous_form_change_id)
         where id = fc.id;
     else
-    -- we need to treat project overview table differently as it needs an empty object as form data
+    -- we need to treat project overview table differently as it needs a null object as form data
       if fc.form_data_table_name = 'project' then
-        update cif.form_change set new_form_data = '{}' where id = fc.id;
+        update cif.form_change set new_form_data = null where id = fc.id;
       else
         delete from cif.form_change where id = fc.id;
       end if;

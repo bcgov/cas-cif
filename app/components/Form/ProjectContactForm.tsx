@@ -169,7 +169,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           id: formChange.id,
           formChangePatch: {
             newFormData,
-            changeStatus: formChange.changeStatus,
+            changeStatus: formChange?.changeStatus,
           },
         },
       },
@@ -316,6 +316,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 <Grid.Col span={6}>
                   <FormBase
                     id="primaryContactForm"
+                    validateOnMount={
+                      primaryContactForm?.changeStatus === "staged"
+                    }
                     idPrefix="primaryContactForm"
                     ref={(el) => (formRefs.current.primaryContact = el)}
                     formData={
@@ -354,6 +357,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     <Grid.Col span={6}>
                       <FormBase
                         id={`form-${form.id}`}
+                        validateOnMount={form.changeStatus === "staged"}
                         idPrefix={`form-${form.id}`}
                         ref={(el) => (formRefs.current[form.id] = el)}
                         formData={form.newFormData}

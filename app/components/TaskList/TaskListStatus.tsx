@@ -3,6 +3,7 @@ import { css } from "styled-components";
 interface Props {
   formStatus: string;
 }
+export const ATTENTION_REQUIRED_STATUS = "Attention Required";
 
 // a workaround for the styled-jsx <style jsx> boolean property issue (see:https://github.com/vercel/next.js/issues/3432)
 const statusStyle = css`
@@ -13,7 +14,7 @@ const statusStyle = css`
 `;
 
 const TaskListStatus: React.FC<Props> = ({ formStatus }) => {
-  if (formStatus === "Attention Required")
+  if (formStatus === ATTENTION_REQUIRED_STATUS)
     return (
       <>
         <div className="status">

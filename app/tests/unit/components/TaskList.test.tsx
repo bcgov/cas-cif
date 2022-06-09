@@ -22,6 +22,7 @@ const mockQueryPayload = {
     return {
       projectRevision: {
         id: "test-project-revision-id",
+        rowId: 42,
         projectByProjectId: {
           proposalReference: "test-project-proposal-reference",
         },
@@ -191,5 +192,73 @@ describe("The ProjectManagerForm", () => {
       "/cif/project-revision/test-project-revision-id/attachments",
       expect.any(Object)
     );
+  });
+
+  it("Calls the stageDirtyFormChanges mutation on mount and when the route changes", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, {
+      mode: "create",
+    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageDirtyFormChangesMutation",
+      {
+        input: {
+          projectRevisionId: 42,
+        },
+      }
+    );
+
+    const getMutations = () =>
+      componentTestingHelper.environment.mock
+        .getAllOperations()
+        .filter(
+          (op) => op?.fragment?.node?.name === "stageDirtyFormChangesMutation"
+        );
+
+    expect(getMutations()).toHaveLength(1);
+
+    // change the route and re-render, the mutation should be called again
+    componentTestingHelper.router = {
+      ...componentTestingHelper.router,
+      pathname: "some-other-path",
+    };
+    componentTestingHelper.rerenderComponent(undefined, {
+      mode: "create",
+    });
+    expect(getMutations()).toHaveLength(2);
+
+    // rerender without changing the route, should not call the mutation again
+    componentTestingHelper.rerenderComponent(undefined, {
+      mode: "create",
+    });
+    expect(getMutations()).toHaveLength(2);
+  });
+
+  it("renders sections expended when they have a form with 'attention required'", () => {
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "Attention Required",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            annualReportsStatus: "Attention Required",
+          },
+        };
+      },
+    });
+
+    componentTestingHelper.renderComponent(undefined, { mode: "create" });
+
+    expect(screen.queryByText(/add project overview/i)).toBeNull();
+    expect(screen.getByText(/add project managers/i)).toBeVisible();
+    expect(screen.queryByText(/add quarterly reports/i)).toBeNull();
+    expect(screen.getByText(/add annual reports/i)).toBeVisible();
   });
 });

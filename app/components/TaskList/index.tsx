@@ -1,17 +1,19 @@
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { useStageDirtyFormChanges } from "mutations/FormChange/stageDirtyFormChanges";
 import {
   getProjectRevisionPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectRevisionAttachmentsPageRoute,
 } from "pageRoutes";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
 import AttachmentsTaskListSection from "./AttachmentsTaskListSection";
 import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
+import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -21,6 +23,7 @@ interface Props {
 const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
     id,
+    rowId,
     projectByProjectId,
     projectOverviewStatus,
     projectManagersStatus,
@@ -33,6 +36,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     graphql`
       fragment TaskList_projectRevision on ProjectRevision {
         id
+        rowId
+        changeStatus
         projectByProjectId {
           proposalReference
         }
@@ -57,6 +62,20 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   );
   const router = useRouter();
 
+  const [stageDirtyFormChanges] = useStageDirtyFormChanges();
+  useEffect(() => {
+    if (mode !== "view")
+      stageDirtyFormChanges({
+        variables: {
+          input: {
+            projectRevisionId: rowId,
+          },
+        },
+      });
+    // We only want to run this effect on mount, so we use an empty array as a dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, mode]);
+
   const currentStep = useMemo(() => {
     if (!router || !router.pathname) return null;
     return (router.query.formIndex as string) ?? "summary";
@@ -74,7 +93,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
       <ol>
         {/* Project Overview Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "0"}
+          defaultExpandedState={
+            currentStep === "0" ||
+            projectOverviewStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="1"
           listItemName="Project Overview"
         >
@@ -90,7 +112,12 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Project Details Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "1" || currentStep === "2"}
+          defaultExpandedState={
+            currentStep === "1" ||
+            currentStep === "2" ||
+            projectManagersStatus === ATTENTION_REQUIRED_STATUS ||
+            projectContactsStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="2"
           listItemName="Project Details"
           listItemMode={mode === "update" ? "" : "(optional)"}
@@ -131,7 +158,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Quarterly Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "4"}
+          defaultExpandedState={
+            currentStep === "4" ||
+            quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="4"
           listItemName="Quarterly Reports"
         >
@@ -147,7 +177,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Annual Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "5"}
+          defaultExpandedState={
+            currentStep === "5" ||
+            annualReportsStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="5"
           listItemName="Annual Reports"
         >

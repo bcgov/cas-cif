@@ -6,7 +6,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectFormQuery, {
   ProjectFormQuery,
 } from "__generated__/ProjectFormQuery.graphql";
-import { ProjectForm_projectRevision } from "__generated__/ProjectForm_projectRevision.graphql";
+import { ProjectForm_projectRevision$data } from "__generated__/ProjectForm_projectRevision.graphql";
 
 const testQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
@@ -20,8 +20,10 @@ const testQuery = graphql`
 
 const mockQueryPayload = {
   ProjectRevision() {
-    const result: Partial<ProjectForm_projectRevision> = {
+    const result: Partial<ProjectForm_projectRevision$data> = {
       projectFormChange: {
+        changeStatus: "pending",
+        rowId: 1,
         id: "Test Project Form Change ID",
         formChangeByPreviousFormChangeId: null,
         isUniqueValue: true,
@@ -147,8 +149,10 @@ describe("The Project Form", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
-        const result: Partial<ProjectForm_projectRevision> = {
+        const result: Partial<ProjectForm_projectRevision$data> = {
           projectFormChange: {
+            changeStatus: "pending",
+            rowId: 1,
             id: "Test Project Form Change ID",
             formChangeByPreviousFormChangeId: null,
             isUniqueValue: false,
@@ -181,7 +185,7 @@ describe("The Project Form", () => {
   it("stages the form_change when clicking on the submit button", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
-        const result: Partial<ProjectForm_projectRevision> = {
+        const result: Partial<ProjectForm_projectRevision$data> = {
           projectFormChange: {
             id: "Test Project Form Change ID",
             isUniqueValue: true,
@@ -277,7 +281,7 @@ describe("The Project Form", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
-        const result: Partial<ProjectForm_projectRevision> = {
+        const result: Partial<ProjectForm_projectRevision$data> = {
           projectFormChange: {
             id: "Test Project Form Change ID",
             isUniqueValue: true,

@@ -14,6 +14,7 @@ export const mutation = graphql`
     updateFormChange(input: $input) {
       formChange {
         id
+        changeStatus
         newFormData
         isUniqueValue(columnName: "proposalReference")
         projectRevisionByProjectRevisionId {
