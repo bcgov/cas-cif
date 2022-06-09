@@ -38403,7 +38403,7 @@ type ProjectRevision implements Node {
   isFirstRevision: Boolean
 
   """
-  Computed column to return both form completion statuses and reporting requirement statuses for individual milestones as well as an overall reporting requirement status
+  Computed column to return both form completion statuses and reporting requirement statuses for individual milestones
   """
   milestoneReportStatuses(
     """Read all values in the set after (below) this cursor."""
