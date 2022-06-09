@@ -27,9 +27,9 @@ select results_eq(
   $$,
   $$
     values
-      ((1::int, now() + interval '2 days', 'In Progress'::text)::cif.milestone_report_status_return),
-      ((2::int, now() - interval '2 days', 'Filled'::text)::cif.milestone_report_status_return),
-      ((3::int, now() + interval '2 days', 'Attention Required'::text)::cif.milestone_report_status_return)
+      ((1::int, now() + interval '2 days', null, 'In Progress'::text)::cif.milestone_report_status_return),
+      ((2::int, now() - interval '2 days', null, 'Filled'::text)::cif.milestone_report_status_return),
+      ((3::int, now() + interval '2 days', now(), 'Attention Required'::text)::cif.milestone_report_status_return)
   $$,
   'Returns the correct data'
 );
