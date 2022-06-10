@@ -121,6 +121,7 @@ describe("the new project page", () => {
     cy.findByText(/review and submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
+    cy.findByText(/Annual Report 3/i).should("be.visible");
     cy.checkA11y("main", tempRules, logAxeResults);
     cy.get("body").happoScreenshot({
       component: "Project Summary Form",
@@ -420,7 +421,13 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/primary contact/i, "Loblaw003, Bob003");
 
-    // Edit the project: change the name, delete a manager and contact, and change a quarterly report date.
+    cy.findByText(/Annual reports/i).click();
+    cy.findByRole("link", { name: "Annual reports" }).click();
+    cy.url().should("include", "/form/5");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.findByText(/Annual Report 1/);
+
+    // Edit the project: change the name, delete a manager and contact, change a quarterly report date, change an annual report comment.
     // edit overview
     cy.findByText(/Project Overview/i).click();
     cy.findByRole("link", { name: "Project overview" }).click();
@@ -498,6 +505,21 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
+    // edit annual reports
+    cy.contains("Review and Submit Project");
+    cy.findByText(/5. Annual reports/i).click();
+    cy.findByText(/Edit annual reports/i).click();
+    cy.get('[aria-label*="General Comments"]')
+      .eq(0)
+      .clear()
+      .type("new comment");
+    cy.contains("Changes saved.");
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.findByText(/Submit changes/i).click();
+    cy.contains("Changes saved.");
+    cy.findByText(/Review and submit information/i).click();
+
     // check diffs
     cy.contains("Review and Submit Project");
 
@@ -509,6 +531,12 @@ describe("the new project page", () => {
       .next()
       .next()
       .should("have.text", "REMOVED");
+
+    cy.get("#root_comments-diffOld").should(
+      "have.text",
+      "Annual report description n stuff"
+    );
+    cy.get("#root_comments-diffNew").should("have.text", "new comment");
 
     cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
     cy.get("body").happoScreenshot({
@@ -578,6 +606,12 @@ describe("the new project page", () => {
       .eq(0)
       .next()
       .contains(/Jan[.]? 1, 1995/i);
+
+    cy.findByText(/Annual reports/i).click();
+    cy.get("a")
+      .contains(/Annual reports/i)
+      .click();
+    cy.findByText(/new comment/i);
   });
 
   it("discards the revision when the user clicks the Discard Revision button", () => {

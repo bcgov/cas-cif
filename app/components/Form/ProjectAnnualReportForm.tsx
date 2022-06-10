@@ -26,7 +26,7 @@ interface Props {
   projectRevision: ProjectAnnualReportForm_projectRevision$key;
 }
 
-const annualReportUiSchema = {
+export const annualReportUiSchema = {
   reportDueDate: {
     "ui:widget": "DueDateWidget",
   },

@@ -27,6 +27,7 @@ import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { useMemo } from "react";
 import { TaskListMode } from "components/TaskList/types";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
+import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -44,6 +45,7 @@ const pageQuery = graphql`
         ...ProjectContactFormSummary_projectRevision
         ...ProjectManagerFormSummary_projectRevision
         ...ProjectQuarterlyReportFormSummary_projectRevision
+        ...ProjectAnnualReportFormSummary_projectRevision
         ...TaskList_projectRevision
         projectByProjectId {
           latestCommittedProjectRevision {
@@ -209,6 +211,9 @@ export function ProjectRevision({
         <ProjectManagerFormSummary projectRevision={query.projectRevision} />
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
         <ProjectQuarterlyReportFormSummary
+          projectRevision={query.projectRevision}
+        />
+        <ProjectAnnualReportFormSummary
           projectRevision={query.projectRevision}
         />
 
