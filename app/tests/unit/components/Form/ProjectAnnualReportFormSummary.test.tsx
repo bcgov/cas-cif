@@ -179,20 +179,11 @@ describe("The Project Annual Report Form Summary", () => {
       screen.getByText("I am the updated comment on Annual Report #1")
     ).toBeInTheDocument();
     // updated due date
-    // TODO: update with the return of the ReadOnlyDateWidget
-    expect(
-      screen.getByText("2022-06-18T23:59:59.999-07:00")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("2025-06-18T23:59:59.999-07:00")
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Jun[.]? 18, 2022/)).toBeInTheDocument();
+    expect(screen.getByText(/Jun[.]? 18, 2025/)).toBeInTheDocument();
     //updated received date
-    expect(
-      screen.getByText("2022-07-01T23:59:59.999-07:00")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("2025-07-01T23:59:59.999-07:00")
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Jul[.]? 1, 2022/)).toBeInTheDocument();
+    expect(screen.getByText(/Jul[.]? 1, 2025/)).toBeInTheDocument();
 
     // Second Node
     expect(
@@ -207,12 +198,8 @@ describe("The Project Annual Report Form Summary", () => {
 
     // Third Node
     expect(screen.getByText("I am a new comment")).toBeInTheDocument();
-    expect(
-      screen.getByText("2021-01-01T23:59:59.999-07:00")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("2022-01-01T23:59:59.999-07:00")
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 1, 2022/)).toBeInTheDocument();
 
     // Fourth Node
     expect(screen.getByText("Annual report removed")).toBeInTheDocument();

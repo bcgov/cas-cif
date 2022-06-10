@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportFormSummary_projectRevision$key } from "__generated__/ProjectAnnualReportFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
+import { annualReportUiSchema } from "./ProjectAnnualReportForm";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -114,6 +115,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
               fields={renderDiff ? customFields : fields}
               schema={formSchema as JSONSchema7}
               formData={formData}
+              uiSchema={annualReportUiSchema}
               formContext={{
                 operation: annualReport.operation,
                 oldData:
