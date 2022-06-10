@@ -1,3 +1,4 @@
+/* eslint-disable relay/must-colocate-fragment-spreads*/
 import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
