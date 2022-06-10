@@ -127,9 +127,6 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
             .reportContainer {
               margin-bottom: 1em;
             }
-            diffOld {
-              color: #fad980;
-            }
           `}</style>
         </div>
       );
