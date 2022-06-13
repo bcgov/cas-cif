@@ -47,6 +47,7 @@ const pageQuery = graphql`
         ...ProjectQuarterlyReportFormSummary_projectRevision
         ...ProjectAnnualReportFormSummary_projectRevision
         ...TaskList_projectRevision
+        ...ProjectMilestoneReportFormSummary_projectRevision
         projectByProjectId {
           latestCommittedProjectRevision {
             id
@@ -210,6 +211,7 @@ export function ProjectRevision({
         <ProjectFormSummary projectRevision={query.projectRevision} />
         <ProjectManagerFormSummary projectRevision={query.projectRevision} />
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
+        {/* <ProjectMilestoneReportFormSummary */}
         <ProjectQuarterlyReportFormSummary
           projectRevision={query.projectRevision}
         />

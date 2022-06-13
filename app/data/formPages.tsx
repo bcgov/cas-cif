@@ -42,6 +42,7 @@ const formPages: FormPageDefinition[] = [
     title: "quarterly reports",
     editComponent: ProjectQuarterlyReportForm,
     viewComponent: ProjectQuarterlyReportFormSummary,
+    // viewComponent: ProjectMilestoneReportFormSummary,
   },
   {
     title: "annual reports",
