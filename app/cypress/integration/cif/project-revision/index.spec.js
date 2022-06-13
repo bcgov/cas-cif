@@ -124,6 +124,7 @@ describe("the new project page", () => {
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
     cy.findByText(/Annual Report 3/i).should("be.visible");
+    cy.findByText(/Milestone Report 1/i).should("be.visible");
     cy.checkA11y("main", tempRules, logAxeResults);
     cy.get("body").happoScreenshot({
       component: "Project Summary Form",
@@ -509,6 +510,27 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    // edit milestone reports
+    cy.contains("Review and Submit Project");
+    cy.findByRole("button", { name: /Milestone reports/i }).click();
+    cy.findByText(/Edit milestone reports/i).click();
+    cy.get('[aria-label*="Due Date"]').eq(0).click();
+    cy.get(".react-datepicker__month-select").select(0);
+    cy.get(".react-datepicker__year-select").select("1999");
+    cy.get(`.react-datepicker__day--001`)
+      .not(`.react-datepicker__day--outside-month`)
+      .click();
+    cy.contains("Changes saved.");
+    cy.get("body").happoScreenshot({
+      component: "Project Milestone Reports Form",
+      variant: "editing",
+    });
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.findByText(/Submit changes/i).click();
+    cy.contains("Changes saved.");
+    cy.findByText(/Review and submit information/i).click();
+
     // edit quarterly reports
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Quarterly reports/i }).click();
@@ -623,6 +645,14 @@ describe("the new project page", () => {
     cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "No Secondary contacts");
+    cy.findByText(/Milestone reports/i).click();
+    cy.get("a")
+      .contains(/Milestone reports/i)
+      .click();
+    cy.findAllByText(/Report Due Date/i)
+      .eq(0)
+      .next()
+      .contains(/Jan[.]? 1, 1999/i);
     cy.findByText(/Quarterly reports/i).click();
     cy.get("a")
       .contains(/Quarterly reports/i)
