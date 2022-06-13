@@ -13,7 +13,7 @@ $computed_column$
   where project_revision_id = $1.id
     and form_data_schema_name='cif'
     and form_data_table_name='reporting_requirement'
-    and ($2 is null or new_form_data->>'reportType'=$2)
+    and ($2 is null or new_form_data->>'reportType' ilike ('%' || $2))
     and new_form_data->>'submittedDate' is null
   order by (new_form_data->>'reportDueDate')::timestamptz asc
   fetch first row only

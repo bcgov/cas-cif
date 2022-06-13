@@ -79,24 +79,24 @@ select is(
   (
     select cif.form_change_reporting_requirement_status((select row(form_change.*)::cif.form_change from cif.form_change where id=1))
   ),
-  'Late',
-  'Returns "Late" when due date has passed and there is no submitted date'
+  'late',
+  'Returns "late" when due date has passed and there is no submitted date'
 );
 
 select is(
   (
     select cif.form_change_reporting_requirement_status((select row(form_change.*)::cif.form_change from cif.form_change where id=2))
   ),
-  'On track',
-  'Returns "On track" when due date has not yet passed and there is no submitted date'
+  'onTrack',
+  'Returns "onTrack" when due date has not yet passed and there is no submitted date'
 );
 
 select is(
   (
     select cif.form_change_reporting_requirement_status((select row(form_change.*)::cif.form_change from cif.form_change where id=3))
   ),
-  'Completed',
-  'Returns "Completed" when a due date and a submitted date exist'
+  'completed',
+  'Returns "completed" when a due date and a submitted date exist'
 );
 
 select is(

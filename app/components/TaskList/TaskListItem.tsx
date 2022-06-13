@@ -10,6 +10,8 @@ interface Props {
   formStatus: string;
   currentStep: string;
   mode: TaskListMode;
+  hasAnchor?: boolean;
+  milestoneDueDate?: string;
 }
 
 const TaskListItem: React.FC<Props> = ({
@@ -19,22 +21,27 @@ const TaskListItem: React.FC<Props> = ({
   formStatus,
   currentStep,
   mode,
+  hasAnchor,
+  milestoneDueDate,
 }) => {
   return (
     <li
       aria-current={currentStep === stepName ? "step" : false}
       className="bordered"
     >
-      <Link passHref href={linkUrl}>
+      <Link passHref href={linkUrl} scroll={!hasAnchor}>
         <BCGovLink>
           {mode === "view" || stepName === "summary"
             ? formTitle
             : `${
-                mode === "update" ? "Edit" : "Add"
+                mode === "update" || hasAnchor ? "Edit" : "Add"
               } ${formTitle.toLowerCase()}`}
         </BCGovLink>
       </Link>
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
+      {mode === "view" && milestoneDueDate && (
+        <TaskListStatus formStatus={milestoneDueDate} />
+      )}
 
       <style jsx>{`
         li {

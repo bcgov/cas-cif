@@ -5,6 +5,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
+import { DateTime, Settings } from "luxon";
 
 const testQuery = graphql`
   query TaskListQuery($projectRevision: ID!) @relay_test_operation {
@@ -30,6 +31,9 @@ const mockQueryPayload = {
         projectContactsStatus: "test-project-contacts-status",
         projectManagersStatus: "test-project-managers-status",
         quarterlyReportsStatus: "test-project-quarterly-reports-status",
+        milestoneReportStatuses: {
+          edges: [],
+        },
       },
     };
   },
@@ -107,8 +111,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=0",
-      "/cif/project-revision/test-project-revision-id/form/0",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=0&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/0?anchor=",
       expect.any(Object)
     );
   });
@@ -121,8 +125,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=2",
-      "/cif/project-revision/test-project-revision-id/form/2",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=2&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/2?anchor=",
       expect.any(Object)
     );
   });
@@ -134,8 +138,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=1",
-      "/cif/project-revision/test-project-revision-id/form/1",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=1&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/1?anchor=",
       expect.any(Object)
     );
   });
@@ -148,8 +152,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit milestone reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3",
-      "/cif/project-revision/test-project-revision-id/form/3",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/3?anchor=",
       expect.any(Object)
     );
   });
@@ -162,8 +166,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4",
-      "/cif/project-revision/test-project-revision-id/form/4",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/4?anchor=",
       expect.any(Object)
     );
   });
@@ -176,8 +180,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit annual reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5",
-      "/cif/project-revision/test-project-revision-id/form/5",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/5?anchor=",
       expect.any(Object)
     );
   });
@@ -190,6 +194,134 @@ describe("The ProjectManagerForm", () => {
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/attachments?projectRevision=test-project-revision-id",
       "/cif/project-revision/test-project-revision-id/attachments",
+      expect.any(Object)
+    );
+  });
+
+  it("Renders multiple Milestone items in the taskList", () => {
+    const payload = {
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            milestoneReportStatuses: {
+              edges: [
+                {
+                  node: {
+                    milestoneIndex: 1,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 2,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+              ],
+            },
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(payload);
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    expect(screen.getByText("Milestone 1")).toBeInTheDocument();
+    expect(screen.getByText("Milestone 2")).toBeInTheDocument();
+  });
+
+  it("Renders Milestone due date statuses when viewing the taskList", () => {
+    const expectedNow = DateTime.local(2022, 1, 1, 23, 0, 0);
+    Settings.now = () => expectedNow.toMillis();
+    const payload = {
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            milestoneReportStatuses: {
+              edges: [
+                {
+                  node: {
+                    milestoneIndex: 1,
+                    reportDueDate: "2022-01-15",
+                    submittedDate: null,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 2,
+                    reportDueDate: "2022-04-01",
+                    submittedDate: null,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 3,
+                    reportDueDate: "2022-04-01",
+                    submittedDate: "2022-03-01",
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 3,
+                    reportDueDate: "2021-12-12",
+                    submittedDate: null,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+              ],
+            },
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(payload);
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    expect(screen.getByText("Due in 14 days")).toBeInTheDocument();
+    expect(screen.getByText("Due in 13 weeks")).toBeInTheDocument();
+    expect(screen.getByText("Completed")).toBeInTheDocument();
+    expect(screen.getByText("Late")).toBeInTheDocument();
+  });
+
+  it("Calls the route function with the proper anchor when an individual milstone item is clicked", () => {
+    const payload = {
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            milestoneReportStatuses: {
+              edges: [
+                {
+                  node: {
+                    milestoneIndex: 1,
+                    formCompletionStatus: null,
+                  },
+                },
+                {
+                  node: {
+                    milestoneIndex: 2,
+                    formCompletionStatus: "In Progress",
+                  },
+                },
+              ],
+            },
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(payload);
+    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    fireEvent.click(screen.getByText(/Milestone Reports/i));
+    fireEvent.click(screen.getByText(/Milestone 1/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3&anchor=Milestone1",
+      "/cif/project-revision/test-project-revision-id/form/3?anchor=Milestone1",
       expect.any(Object)
     );
   });

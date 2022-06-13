@@ -14,11 +14,31 @@ import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
+import { DateTime } from "luxon";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
   mode: TaskListMode;
 }
+
+const displayMilestoneDueDateStatus = (
+  reportDueDate: string | undefined,
+  submittedDate: string | undefined
+) => {
+  if (submittedDate) return "Completed";
+  const diff = DateTime.fromISO(reportDueDate, {
+    setZone: true,
+    locale: "en-CA",
+  }).diff(
+    // Current date without time information
+    DateTime.now().setZone("America/Vancouver").startOf("day"),
+    "days"
+  );
+  if (diff.days < 0) return "Late";
+  if (diff.days > 60)
+    return `Due in ${Math.ceil(Math.ceil(diff.days) / 7)} weeks`;
+  return `Due in ${Math.ceil(diff.days)} days`;
+};
 
 const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
@@ -30,6 +50,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     projectContactsStatus,
     quarterlyReportsStatus,
     annualReportsStatus,
+    milestoneReportStatuses,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -56,6 +77,16 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           formDataTableName: "reporting_requirement"
           jsonMatcher: "{\"reportType\":\"Annual\"}"
         )
+        milestoneReportStatuses {
+          edges {
+            node {
+              milestoneIndex
+              reportDueDate
+              submittedDate
+              formCompletionStatus
+            }
+          }
+        }
       }
     `,
     projectRevision
@@ -146,14 +177,37 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           listItemNumber="3"
           listItemName="Milestone Reports"
         >
-          <TaskListItem
-            stepName="3"
-            linkUrl={getProjectRevisionFormPageRoute(id, 3)}
-            formTitle="Milestone reports"
-            formStatus={null} // Leaving this status as null for now while we decide how to display milestone statuses
-            currentStep={currentStep}
-            mode={mode}
-          />
+          {milestoneReportStatuses.edges.length === 0 ? (
+            <TaskListItem
+              stepName="3"
+              linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+              formTitle="Milestone reports"
+              formStatus={null} // No status as there are no milestones
+              currentStep={currentStep}
+              mode={mode}
+            />
+          ) : (
+            milestoneReportStatuses.edges.map(({ node }, index) => (
+              <TaskListItem
+                key={node.milestoneIndex}
+                stepName="3"
+                linkUrl={getProjectRevisionFormPageRoute(
+                  id,
+                  3,
+                  `Milestone${index + 1}`
+                )}
+                formTitle={`Milestone ${index + 1}`}
+                formStatus={node.formCompletionStatus}
+                milestoneDueDate={displayMilestoneDueDateStatus(
+                  node.reportDueDate,
+                  node.submittedDate
+                )}
+                currentStep={currentStep}
+                mode={mode}
+                hasAnchor={true}
+              />
+            ))
+          )}
         </TaskListSection>
 
         {/* Quarterly Reports Section */}

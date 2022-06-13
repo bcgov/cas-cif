@@ -36,6 +36,9 @@ const defaultMockResolver = {
       managerFormChanges: {
         edges: [],
       },
+      milestoneReportStatuses: {
+        edges: [],
+      },
     };
   },
 };

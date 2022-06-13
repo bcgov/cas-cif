@@ -5,13 +5,13 @@ import {
   projectMilestoneSchema,
   milestoneReportUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
@@ -24,6 +24,7 @@ import {
   stageReportFormChanges,
   getSortedReports,
 } from "./reportingRequirementFormChangeFunctions";
+import { useRouter } from "next/router";
 
 interface Props {
   onSubmit: () => void;
@@ -66,6 +67,7 @@ export const createProjectMilestoneSchema = (allReportTypes) => {
 
 const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const formRefs = useRef({});
+  const router = useRouter();
 
   const projectRevision = useFragment(
     graphql`
@@ -111,6 +113,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     props.query
   );
 
+  useEffect(() => {
+    if (router.query.anchor !== "Milestone0")
+      router.push(`#${router.query.anchor}`);
+  }, [router.query.anchor]);
+
   const milestoneSchema = useMemo(() => {
     return createProjectMilestoneSchema(query.allReportTypes);
   }, [query.allReportTypes]);
@@ -121,7 +128,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
-  const [discardFormChange] = useDiscardFormChange(
+  const [discardFormChange] = useDiscardReportingRequirementFormChange(
+    "milestone",
     projectRevision.projectMilestoneReportFormChanges.__id
   );
 
@@ -133,7 +141,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
   return (
     <div>
-      <header>
+      <header id={`Milestone0`}>
         <h2>Milestone Reports</h2>
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
@@ -159,7 +167,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
         {sortedMilestoneReports.map((milestoneReport, index) => {
           return (
-            <div key={milestoneReport.id} className="reportContainer">
+            <div
+              id={`Milestone${index + 1}`}
+              key={milestoneReport.id}
+              className="reportContainer"
+            >
               <header className="reportHeader">
                 <h3>Milestone {index + 1}</h3>
                 <Button

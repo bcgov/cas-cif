@@ -18,6 +18,7 @@ const discardMutation = graphql`
           upcomingReportingRequirementFormChange(reportType: $reportType) {
             ...ReportDueIndicator_formChange
           }
+          ...TaskList_projectRevision
         }
       }
     }

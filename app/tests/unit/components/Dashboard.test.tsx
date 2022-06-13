@@ -69,8 +69,9 @@ describe("The Dashboard", () => {
       );
     });
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]/",
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
       query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
+      anchor: undefined,
     });
   });
 
@@ -111,7 +112,7 @@ describe("The Dashboard", () => {
     componentTestingHelper.renderComponent();
     expect(screen.getByText(/resume project/i).closest("a")).toHaveAttribute(
       "href",
-      "/cif/project-revision/mock-id-1/form/0"
+      "/cif/project-revision/mock-id-1/form/0?anchor="
     );
   });
 });
