@@ -1,10 +1,9 @@
 ---
 name: Discovery and Service Design Task Template
 about: Discovery and Service Design Task Template
-title: ''
+title: ""
 labels: Task
-assignees: ''
-
+assignees: ""
 ---
 
 #### Describe the task

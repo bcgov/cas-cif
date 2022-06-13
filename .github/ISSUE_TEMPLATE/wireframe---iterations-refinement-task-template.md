@@ -1,10 +1,9 @@
 ---
 name: Wireframe + iterations/refinement Task Template
 about: Wireframe + iterations/refinement Task Template
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 #### Describe the task

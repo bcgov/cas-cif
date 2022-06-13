@@ -3,8 +3,7 @@ name: Bug template
 about: For documenting bugs as per our bug process
 title: "[bug title]"
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 Describe the Bug:
