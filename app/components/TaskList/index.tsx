@@ -187,16 +187,16 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
               mode={mode}
             />
           ) : (
-            milestoneReportStatuses.edges.map(({ node }) => (
+            milestoneReportStatuses.edges.map(({ node }, index) => (
               <TaskListItem
                 key={node.milestoneIndex}
                 stepName="3"
                 linkUrl={getProjectRevisionFormPageRoute(
                   id,
                   3,
-                  `Milestone${node.milestoneIndex}`
+                  `Milestone${index + 1}`
                 )}
-                formTitle={`Milestone ${node.milestoneIndex}`}
+                formTitle={`Milestone ${index + 1}`}
                 formStatus={node.formCompletionStatus}
                 milestoneDueDate={displayMilestoneDueDateStatus(
                   node.reportDueDate,
