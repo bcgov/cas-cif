@@ -60,7 +60,6 @@ computed_columns/project_pending_project_revision 2022-02-16T17:14:03Z Matthieu 
 computed_columns/operator_pending_form_change 2022-02-16T21:48:38Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A computed column returning a potential existing form change for an operator, scoped by the current user
 functions/pending_new_form_change_for_table 2022-03-05T00:09:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # a custom query that returns a pending form change for the current user for a given table name. Allows to resume an object creation
 mutations/create_project_revision 2022-02-24T19:17:45Z Matthieu Foucault <matthieu@button.is> # add function to create a project revision for a given project
-computed_columns/project_revision_project_contact_form_changes 2022-03-03T17:16:01Z Matthieu Foucault <matthieu@button.is> # add a computed column to return a project_revision's contact form_change
 computed_columns/form_change_is_unique_value 2022-03-11T22:54:06Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A computed column that returns whether a column name already has a value in the database
 computed_columns/form_change_parent_form_change_from_revision [tables/form_change] 2022-03-23T18:42:00Z Dylan Leard <dylan@button.is> # Function returns a parent form_change record
 computed_columns/cif_user_full_name 2022-03-21T20:23:37Z Gurjeet Matharu <gurjeet@matharuco.com> # A computed function for contact and cif_user providing full name
