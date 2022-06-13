@@ -8,14 +8,27 @@ import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
-// import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 
 const { fields } = utils.getDefaultRegistry();
+
+const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
 interface Props {
   projectRevision: ProjectMilestoneReportFormSummary_projectRevision$key;
   viewOnly?: boolean;
 }
+const milestoneReportUiSchema = {
+  reportDueDate: {
+    "ui:widget": "DueDateWidget",
+  },
+  submittedDate: {
+    "ui:widget": "ReceivedDateWidget",
+  },
+  comments: {
+    "ui:widget": "TextAreaWidget",
+  },
+};
 
 const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
   const { summaryProjectMilestoneReportFormChanges, isFirstRevision } =
@@ -41,21 +54,20 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       props.projectRevision
     );
 
-  // Show diff if it is not the first revision and not view only (rendered from the quarterly report page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  // If we are showing the diff then we want to see archived records, otherwise filter out the archived quarterly reports
-  let quarterlyReportFormChanges =
+  // If we are showing the diff then we want to see archived records, otherwise filter out the archived milestone reports
+  let milestoneReportFormChanges =
     summaryProjectMilestoneReportFormChanges.edges;
   if (!renderDiff)
-    quarterlyReportFormChanges =
+    milestoneReportFormChanges =
       summaryProjectMilestoneReportFormChanges.edges.filter(
         ({ node }) => node.operation !== "ARCHIVE"
       );
 
-  // Sorting the quarterly report form changes by the reporting requirement index
-  const [sortedQuarterlyReports] = useMemo(() => {
-    const filteredReports = quarterlyReportFormChanges.map(({ node }) => node);
+  // Sorting the milestone reports form changes by the reporting requirement index
+  const [sortedMilestoneReports] = useMemo(() => {
+    const filteredReports = milestoneReportFormChanges.map(({ node }) => node);
 
     filteredReports.sort(
       (a, b) =>
@@ -64,63 +76,59 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     );
 
     return [filteredReports];
-  }, [quarterlyReportFormChanges]);
+  }, [milestoneReportFormChanges]);
 
-  // Defines if all quarterly reports are pristine
   const allFormChangesPristine = useMemo(
     () =>
-      !quarterlyReportFormChanges.some(
+      !milestoneReportFormChanges.some(
         ({ node }) => node?.isPristine === false || node?.isPristine === null
       ),
-    [quarterlyReportFormChanges]
+    [milestoneReportFormChanges]
   );
 
-  const quarterlyReportsJSX = useMemo(() => {
-    return sortedQuarterlyReports.map((quarterlyReport, index) => {
-      if (!quarterlyReport) return;
-
-      // Set custom rjsf fields to display diffs
-      const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
+  const milestoneReportsJSX = useMemo(() => {
+    return sortedMilestoneReports.map((milestoneReport, index) => {
+      if (!milestoneReport) return;
 
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
         ? {
             formSchema: projectReportingRequirementSchema,
-            formData: quarterlyReport.newFormData,
+            formData: milestoneReport.newFormData,
           }
-        : null;
-      // getFilteredSchema(
-      //     projectReportingRequirementSchema as JSONSchema7,
-      //     quarterlyReport
-      //   );
+        : getFilteredSchema(
+            projectReportingRequirementSchema as JSONSchema7,
+            milestoneReport
+          );
 
       return (
         <div key={index} className="reportContainer">
           <header>
             <h4>Milestone Report {index + 1}</h4>
           </header>
-          {/* Show this part if non of quarterly report form properties have been updated */}
+          {/* Show this part if non of milestone report form properties have been updated */}
           {Object.keys(formSchema.properties).length === 0 &&
-            quarterlyReport.operation !== "ARCHIVE" && (
-              <em>Quarterly report not updated</em>
+            milestoneReport.operation !== "ARCHIVE" && (
+              <em>Milestone report not updated</em>
             )}
 
-          {/* Show this part if the whole quarterly report has been removed */}
-          {renderDiff && quarterlyReport.operation === "ARCHIVE" && (
-            <em className="diffOld">Quarterly Report Removed</em>
+          {/* Show this part if the whole milestone report has been removed */}
+          {renderDiff && milestoneReport.operation === "ARCHIVE" && (
+            <em className="diffOld">Milestone Report Removed</em>
           )}
           <FormBase
             liveValidate
-            key={`form-${quarterlyReport.id}`}
+            key={`form-${milestoneReport.id}`}
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
             schema={formSchema as JSONSchema7}
+            uiSchema={milestoneReportUiSchema}
             formData={formData}
             formContext={{
-              operation: quarterlyReport.operation,
+              operation: milestoneReport.operation,
               oldData:
-                quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
+                milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
             }}
           />
           <style jsx>{`
@@ -134,23 +142,23 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedQuarterlyReports, renderDiff]);
+  }, [sortedMilestoneReports, renderDiff]);
 
   return (
     <>
       <h3>Project Milestone Reports</h3>
-      {quarterlyReportFormChanges.length < 1 && props.viewOnly && (
+      {milestoneReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
-          <em>No Quarterly Reports</em>
+          <em>No Milestone Reports</em>
         </dd>
       )}
-      {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
+      {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
       !props.viewOnly ? (
         <dd>
           <em>Milestone reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>
       ) : (
-        quarterlyReportsJSX
+        milestoneReportsJSX
       )}
     </>
   );

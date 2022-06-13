@@ -28,6 +28,7 @@ import { useMemo } from "react";
 import { TaskListMode } from "components/TaskList/types";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
 import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
+import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -211,7 +212,9 @@ export function ProjectRevision({
         <ProjectFormSummary projectRevision={query.projectRevision} />
         <ProjectManagerFormSummary projectRevision={query.projectRevision} />
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
-        {/* <ProjectMilestoneReportFormSummary */}
+        <ProjectMilestoneReportFormSummary
+          projectRevision={query.projectRevision}
+        />
         <ProjectQuarterlyReportFormSummary
           projectRevision={query.projectRevision}
         />
