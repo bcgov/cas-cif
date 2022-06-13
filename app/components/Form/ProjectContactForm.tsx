@@ -71,8 +71,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         projectFormChange {
           formDataRecordId
         }
-        projectContactFormChanges(
+        projectContactFormChanges: formChangesFor(
           first: 500
+          formDataTableName: "project_contact"
           filter: { operation: { notEqualTo: ARCHIVE } }
         ) @connection(key: "connection_projectContactFormChanges") {
           __id

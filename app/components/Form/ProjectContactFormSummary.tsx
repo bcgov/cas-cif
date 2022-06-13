@@ -24,7 +24,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
-        summaryContactFormChanges: projectContactFormChanges {
+        summaryContactFormChanges: formChangesFor(
+          formDataTableName: "project_contact"
+        ) {
           edges {
             node {
               id
