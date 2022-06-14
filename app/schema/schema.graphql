@@ -38394,6 +38394,7 @@ type ProjectRevision implements Node {
     based pagination. May not be used with `last`.
     """
     offset: Int
+    reportType: String
   ): FormChangesConnection!
 
   """
@@ -38464,34 +38465,6 @@ type ProjectRevision implements Node {
 
   """Reads a single `Project` that is related to this `ProjectRevision`."""
   projectByProjectId: Project
-
-  """
-  Computed column for graphql to retrieve the change related to the project_contact records, within a project revision
-  """
-  projectContactFormChanges(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: FormChangeFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-  ): FormChangesConnection!
 
   """
   Computed column for graphql to retrieve the change related to the project record, within a project revision

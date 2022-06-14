@@ -4,7 +4,12 @@
 
 begin;
 
-create or replace function cif.project_revision_form_changes_for(cif.project_revision, form_data_table_name text, json_matcher text default '{}')
+create or replace function cif.project_revision_form_changes_for(
+  cif.project_revision,
+  form_data_table_name text,
+  json_matcher text default '{}',
+  report_type text default null
+)
 returns setof cif.form_change
 as
 $computed_column$
@@ -14,7 +19,8 @@ $computed_column$
     where project_revision_id = $1.id
       and form_data_schema_name='cif'
       and form_data_table_name=$2
-      and new_form_data::jsonb @> $3::jsonb;
+      and new_form_data::jsonb @> $3::jsonb
+      and case when $4 is not null then new_form_data->>'reportType' = $4 else new_form_data->>'reportType' is null end
 
 $computed_column$ language sql stable;
 
