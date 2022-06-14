@@ -14,6 +14,8 @@ select columns_are(
     'funding_stream_rfp_id',
     'proposal_reference',
     'project_status_id',
+    'sector_name',
+    'additional_sector_information',
     'created_at',
     'created_by',
     'updated_at',
