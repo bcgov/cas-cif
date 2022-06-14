@@ -20,12 +20,14 @@ $computed_column$
       and form_data_schema_name='cif'
       and form_data_table_name=$2
       and new_form_data::jsonb @> $3::jsonb
-      and case when $4 is not null then new_form_data->>'reportType' = $4 else new_form_data->>'reportType' is null end
+      and case
+        when $4 is not null then new_form_data->>'reportType' = $4
+        else new_form_data->>'reportType' is null end
 
 $computed_column$ language sql stable;
 
 grant execute on function cif.project_revision_form_changes_for to cif_internal, cif_external, cif_admin;
 
-comment on function cif.project_revision_project_quarterly_report_form_changes is 'Computed column to dynamically retrieve the form_change records relating to the project_revision from a given table';
+comment on function cif.project_revision_form_changes_for is 'Computed column to dynamically retrieve the form_change records relating to the project_revision from a given table';
 
 commit;
