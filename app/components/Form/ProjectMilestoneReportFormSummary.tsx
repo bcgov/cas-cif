@@ -6,9 +6,9 @@ import type { JSONSchema7 } from "json-schema";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
-import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { projectMilestoneSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -93,11 +93,11 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
         ? {
-            formSchema: projectReportingRequirementSchema,
+            formSchema: projectMilestoneSchema,
             formData: milestoneReport.newFormData,
           }
         : getFilteredSchema(
-            projectReportingRequirementSchema as JSONSchema7,
+            projectMilestoneSchema as JSONSchema7,
             milestoneReport
           );
 
@@ -106,7 +106,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           <header>
             <h4>Milestone Report {index + 1}</h4>
           </header>
-          {/* Show this part if non of milestone report form properties have been updated */}
+          {/* Show this part if none of milestone report form properties have been updated */}
           {Object.keys(formSchema.properties).length === 0 &&
             milestoneReport.operation !== "ARCHIVE" && (
               <em>Milestone report not updated</em>

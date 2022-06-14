@@ -29,18 +29,23 @@ const mockQueryPayload = {
                 id: "Test ID - 1",
                 isPristine: false,
                 newFormData: {
+                  description: "charmander",
                   projectId: 1,
                   reportingRequirementIndex: 1,
-                  profesionalDesignation: "Professional Engineer",
-                  comments: "Changing milestone type.",
-                  milestoneType: "General",
+                  reportType: "General",
+                  certifiedByProfessionalDesignation:
+                    "Certified Professional Accountant",
+                  reportDueDate: "2020-01-10T23:59:59.999-07:00",
                 },
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
                   newFormData: {
+                    description: "bulbasaur",
                     projectId: 1,
                     reportingRequirementIndex: 1,
+                    certifiedByProfessionalDesignation: "Professional Engineer",
                     reportDueDate: "2020-01-02T23:59:59.999-07:00",
+                    reportType: "Advanced",
                   },
                 },
               },
@@ -50,15 +55,15 @@ const mockQueryPayload = {
                 id: "Test ID - 2",
                 isPristine: false,
                 newFormData: {
-                  comments: "Removed comment",
+                  description: "Removed comment",
                   projectId: 1,
-                  reportDueDate: "2020-01-05T23:59:59.999-07:00",
+                  reportDueDate: "2020-01-07T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
                 },
                 operation: "ARCHIVE",
                 formChangeByPreviousFormChangeId: {
                   newFormData: {
-                    comments: "Removed comment",
+                    description: "Removed comment",
                     projectId: 1,
                     reportDueDate: "2020-01-05T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
@@ -103,11 +108,9 @@ describe("The Project Milestone Report Form Summary", () => {
     componentTestingHelper.renderComponent();
 
     // changed fields
-    expect(screen.getByText("Changing milestone type.")).toBeInTheDocument();
-    expect(screen.getByText(/General/)).toBeInTheDocument();
-
-    // unchanged fields
-    expect(screen.queryByText(/Jan[.]? 3, 2020/)).not.toBeInTheDocument();
+    expect(screen.getByText("Milestone Description")).toBeInTheDocument();
+    expect(screen.getByText("Milestone Type")).toBeInTheDocument();
+    expect(screen.getByText("Professional Designation")).toBeInTheDocument();
 
     // Archive milestone report
     expect(screen.getByText("Milestone Report Removed")).toBeInTheDocument();
@@ -117,7 +120,22 @@ describe("The Project Milestone Report Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("Professional Engineer")).toBeInTheDocument();
+    // description diff
+    expect(screen.getByText("bulbasaur")).toBeInTheDocument();
+    expect(screen.getByText("charmander")).toBeInTheDocument();
+
+    // milestone type diff
     expect(screen.getByText("General")).toBeInTheDocument();
+    expect(screen.getByText("Advanced")).toBeInTheDocument();
+
+    // professional designation diff
+    expect(
+      screen.getByText("Certified Professional Accountant")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Professional Engineer")).toBeInTheDocument();
+
+    // report due date diff
+    expect(screen.getByText("Jan 2, 2020")).toBeInTheDocument();
+    expect(screen.getByText("Jan 10, 2020")).toBeInTheDocument();
   });
 });
