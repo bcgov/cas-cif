@@ -27,7 +27,10 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
       graphql`
         fragment ProjectQuarterlyReportFormSummary_projectRevision on ProjectRevision {
           isFirstRevision
-          summaryProjectQuarterlyReportFormChanges: projectQuarterlyReportFormChanges {
+          summaryProjectQuarterlyReportFormChanges: formChangesFor(
+            formDataTableName: "reporting_requirement"
+            reportType: "Quarterly"
+          ) {
             edges {
               node {
                 id

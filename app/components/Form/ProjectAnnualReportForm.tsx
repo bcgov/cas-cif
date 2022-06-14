@@ -49,8 +49,11 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         id
         # eslint-disable-next-line relay/unused-fields
         rowId
-        projectAnnualReportFormChanges(first: 502)
-          @connection(key: "connection_projectAnnualReportFormChanges") {
+        projectAnnualReportFormChanges: formChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Annual"
+          first: 502
+        ) @connection(key: "connection_projectAnnualReportFormChanges") {
           __id
           edges {
             # eslint-disable-next-line relay/unused-fields
