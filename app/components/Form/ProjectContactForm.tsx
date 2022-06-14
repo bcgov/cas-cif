@@ -346,7 +346,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       style={{ marginTop: "0.55rem" }}
                       variant="secondary"
                       size="small"
-                      onClick={clearPrimaryContact}
+                      onClick={primaryContactForm && clearPrimaryContact}
                     >
                       Clear
                     </Button>
