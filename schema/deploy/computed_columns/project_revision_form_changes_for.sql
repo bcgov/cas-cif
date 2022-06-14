@@ -21,8 +21,11 @@ $computed_column$
       and form_data_table_name=$2
       and new_form_data::jsonb @> $3::jsonb
       and case
-        when $4 is not null then new_form_data->>'reportType' = $4
-        else new_form_data->>'reportType' is null end
+        when $4 is null
+        then new_form_data->>'reportType' is null
+        when $4 = 'Milestone'
+        then new_form_data->>'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone')
+        else new_form_data->>'reportType' = $4 end
 
 $computed_column$ language sql stable;
 
