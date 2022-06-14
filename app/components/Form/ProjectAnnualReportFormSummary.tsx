@@ -25,7 +25,6 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
       fragment ProjectAnnualReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
         id
-        rowId
         summaryAnnualReportFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Annual"
@@ -85,13 +84,13 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
         ? {
-          formSchema: projectReportingRequirementSchema,
-          formData: annualReport.newFormData,
-        }
+            formSchema: projectReportingRequirementSchema,
+            formData: annualReport.newFormData,
+          }
         : getFilteredSchema(
-          projectReportingRequirementSchema as JSONSchema7,
-          annualReport
-        );
+            projectReportingRequirementSchema as JSONSchema7,
+            annualReport
+          );
 
       return (
         <div key={index} className="reportContainer">
