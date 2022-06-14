@@ -45,11 +45,13 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectAnnualReportForm_projectRevision on ProjectRevision {
         id
+        # eslint-disable-next-line relay/unused-fields
         rowId
         projectAnnualReportFormChanges(first: 502)
           @connection(key: "connection_projectAnnualReportFormChanges") {
           __id
           edges {
+            # eslint-disable-next-line relay/unused-fields
             node {
               rowId
               id
@@ -63,6 +65,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
             }
           }
         }
+        # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
         }

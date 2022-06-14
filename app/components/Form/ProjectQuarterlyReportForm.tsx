@@ -64,6 +64,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         upcomingReportingRequirementFormChange(reportType: "Quarterly") {
           ...ReportDueIndicator_formChange
         }
+        # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
         }

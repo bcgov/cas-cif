@@ -43,11 +43,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
                 rowId
                 id
                 changeStatus
-                newFormData
-                formChangeByPreviousFormChangeId {
-                  changeStatus
-                  newFormData
-                }
               }
               projectManagerLabel {
                 id

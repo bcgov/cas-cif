@@ -25,18 +25,14 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
       fragment ProjectAnnualReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
         id
-        rowId
         summaryAnnualReportFormChanges: projectAnnualReportFormChanges {
           edges {
             node {
-              rowId
               id
               isPristine
               newFormData
               operation
-              changeStatus
               formChangeByPreviousFormChangeId {
-                changeStatus
                 newFormData
               }
             }

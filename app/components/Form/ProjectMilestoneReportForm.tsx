@@ -73,6 +73,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
         id
+        # eslint-disable-next-line relay/unused-fields
         rowId
         projectMilestoneReportFormChanges(first: 1000)
           @connection(key: "connection_projectMilestoneReportFormChanges") {
@@ -83,13 +84,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
-              formChangeByPreviousFormChangeId {
-                changeStatus
-                newFormData
-              }
             }
           }
         }
+        # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
         }
