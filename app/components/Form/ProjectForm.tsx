@@ -98,10 +98,6 @@ const ProjectForm: React.FC<Props> = (props) => {
           newFormData
           changeStatus
           isUniqueValue(columnName: "proposalReference")
-          formChangeByPreviousFormChangeId {
-            changeStatus
-            newFormData
-          }
         }
       }
     `,
