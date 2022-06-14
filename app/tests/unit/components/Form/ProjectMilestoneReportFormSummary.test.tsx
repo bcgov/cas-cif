@@ -44,7 +44,7 @@ const mockQueryPayload = {
                     projectId: 1,
                     reportingRequirementIndex: 1,
                     certifiedByProfessionalDesignation: "Professional Engineer",
-                    reportDueDate: "2020-01-02T23:59:59.999-07:00",
+                    reportDueDate: "2020-01-01T13:59:59.999-07:00",
                     reportType: "Advanced",
                   },
                 },
@@ -135,7 +135,7 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText("Professional Engineer")).toBeInTheDocument();
 
     // report due date diff
-    expect(screen.getByText("Jan 2, 2020")).toBeInTheDocument();
+    expect(screen.getByText("Jan 1, 2020")).toBeInTheDocument();
     expect(screen.getByText("Jan 10, 2020")).toBeInTheDocument();
   });
 });
