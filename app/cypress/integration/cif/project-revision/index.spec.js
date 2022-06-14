@@ -621,6 +621,7 @@ describe("the new project page", () => {
       rules: {
         dlitem: { enabled: false },
         "definition-list": { enabled: false },
+        "duplicate-id": { enabled: false },
       },
     };
     //Checking for diffing color accessibility
