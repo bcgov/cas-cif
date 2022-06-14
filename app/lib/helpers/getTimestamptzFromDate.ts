@@ -4,6 +4,9 @@ const getTimestamptzFromDate = (
   date: Date | DateTime,
   setTimeEndOfDay?: boolean
 ) => {
+  if (date === null) {
+    return null;
+  }
   let tzDate =
     date instanceof DateTime
       ? date.setZone("America/Vancouver").set({

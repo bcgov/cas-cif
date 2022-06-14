@@ -41,10 +41,9 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
             justify-content: space-between;
             border: 2px solid #606060;
             border-radius: 0.25em;
-            padding: 9px 9px 9px 9px;
+            padding: 9px 35px 9px 9px;
             background-color: white;
             font-size: 14.4px;
-            width: 300px;
           }
           div:hover {
             cursor: pointer;
@@ -79,11 +78,15 @@ const DueDateWidget: React.FC<WidgetProps> = ({
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"
+        isClearable
       />
       <style jsx>{`
         :global(.react-datepicker__day.react-datepicker__day--keyboard-selected) {
           background: none;
           color: black;
+        }
+        div {
+          width: 300px;
         }
       `}</style>
     </div>
