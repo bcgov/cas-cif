@@ -8375,6 +8375,240 @@ type CifUser implements Node {
   ): CifUserCifUsersByReportingRequirementUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersBySectorArchivedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersBySectorArchivedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersBySectorArchivedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersBySectorArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersBySectorCreatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersBySectorCreatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersBySectorCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersBySectorCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersBySectorUpdatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersBySectorUpdatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersBySectorUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersBySectorUpdatedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByUpdatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -12304,6 +12538,123 @@ type CifUser implements Node {
 
   """Unique ID for the user"""
   rowId: Int!
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
 
   """updated at timestamp"""
   updatedAt: Datetime!
@@ -20668,6 +21019,396 @@ type CifUserCifUsersByReportingRequirementUpdatedByAndCreatedByManyToManyEdge {
   ): ReportingRequirementsConnection!
 }
 
+"""A connection to a list of `CifUser` values, with data from `Sector`."""
+type CifUserCifUsersBySectorArchivedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Sector`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersBySectorArchivedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Sector`."""
+type CifUserCifUsersBySectorArchivedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+}
+
+"""A connection to a list of `CifUser` values, with data from `Sector`."""
+type CifUserCifUsersBySectorArchivedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Sector`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersBySectorArchivedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Sector`."""
+type CifUserCifUsersBySectorArchivedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+}
+
+"""A connection to a list of `CifUser` values, with data from `Sector`."""
+type CifUserCifUsersBySectorCreatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Sector`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersBySectorCreatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Sector`."""
+type CifUserCifUsersBySectorCreatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+}
+
+"""A connection to a list of `CifUser` values, with data from `Sector`."""
+type CifUserCifUsersBySectorCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Sector`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersBySectorCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Sector`."""
+type CifUserCifUsersBySectorCreatedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+}
+
+"""A connection to a list of `CifUser` values, with data from `Sector`."""
+type CifUserCifUsersBySectorUpdatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Sector`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersBySectorUpdatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Sector`."""
+type CifUserCifUsersBySectorUpdatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+}
+
+"""A connection to a list of `CifUser` values, with data from `Sector`."""
+type CifUserCifUsersBySectorUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Sector`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersBySectorUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Sector`."""
+type CifUserCifUsersBySectorUpdatedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `Sector`."""
+  sectorsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection!
+}
+
 """
 A condition to be used against `CifUser` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
@@ -21330,6 +22071,24 @@ input CifUserFilter {
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
+
+  """Filter by the object’s `sectorsByArchivedBy` relation."""
+  sectorsByArchivedBy: CifUserToManySectorFilter
+
+  """Some related `sectorsByArchivedBy` exist."""
+  sectorsByArchivedByExist: Boolean
+
+  """Filter by the object’s `sectorsByCreatedBy` relation."""
+  sectorsByCreatedBy: CifUserToManySectorFilter
+
+  """Some related `sectorsByCreatedBy` exist."""
+  sectorsByCreatedByExist: Boolean
+
+  """Filter by the object’s `sectorsByUpdatedBy` relation."""
+  sectorsByUpdatedBy: CifUserToManySectorFilter
+
+  """Some related `sectorsByUpdatedBy` exist."""
+  sectorsByUpdatedByExist: Boolean
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
@@ -25450,6 +26209,26 @@ input CifUserToManyReportingRequirementFilter {
   some: ReportingRequirementFilter
 }
 
+"""
+A filter to be used against many `Sector` object types. All fields are combined with a logical ‘and.’
+"""
+input CifUserToManySectorFilter {
+  """
+  Every related `Sector` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SectorFilter
+
+  """
+  No related `Sector` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SectorFilter
+
+  """
+  Some related `Sector` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SectorFilter
+}
+
 """A connection to a list of `CifUser` values."""
 type CifUsersConnection {
   """
@@ -25683,6 +26462,12 @@ enum CifUsersOrderBy {
   REPORT_TYPES_BY_CREATED_BY__COUNT_DESC
   REPORT_TYPES_BY_UPDATED_BY__COUNT_ASC
   REPORT_TYPES_BY_UPDATED_BY__COUNT_DESC
+  SECTORS_BY_ARCHIVED_BY__COUNT_ASC
+  SECTORS_BY_ARCHIVED_BY__COUNT_DESC
+  SECTORS_BY_CREATED_BY__COUNT_ASC
+  SECTORS_BY_CREATED_BY__COUNT_DESC
+  SECTORS_BY_UPDATED_BY__COUNT_ASC
+  SECTORS_BY_UPDATED_BY__COUNT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC
@@ -27245,6 +28030,50 @@ type CreateReportTypePayload {
   ): ReportTypesEdge
 }
 
+"""All input for the create `Sector` mutation."""
+input CreateSectorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Sector` to be created by this mutation."""
+  sector: SectorInput!
+}
+
+"""The output of our create `Sector` mutation."""
+type CreateSectorPayload {
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Sector` that was created by this mutation."""
+  sector: Sector
+
+  """An edge for our `Sector`. May be used by Relay 1."""
+  sectorEdge(
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsEdge
+}
+
 """All input for the `createUserFromSession` mutation."""
 input CreateUserFromSessionInput {
   """
@@ -28119,6 +28948,65 @@ type DeleteProjectStatusPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+"""All input for the `deleteSectorBySectorName` mutation."""
+input DeleteSectorBySectorNameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The name of the sector as the primary key"""
+  sectorName: String!
+}
+
+"""All input for the `deleteSector` mutation."""
+input DeleteSectorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Sector` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `Sector` mutation."""
+type DeleteSectorPayload {
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedSectorId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Sector` that was deleted by this mutation."""
+  sector: Sector
+
+  """An edge for our `Sector`. May be used by Relay 1."""
+  sectorEdge(
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsEdge
 }
 
 """Table tracking individual changes to database records"""
@@ -32104,6 +32992,14 @@ type Mutation {
     """
     input: CreateReportTypeInput!
   ): CreateReportTypePayload
+
+  """Creates a single `Sector`."""
+  createSector(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateSectorInput!
+  ): CreateSectorPayload
   createUserFromSession(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -32312,6 +33208,22 @@ type Mutation {
     """
     input: DeleteProjectStatusByRowIdInput!
   ): DeleteProjectStatusPayload
+
+  """Deletes a single `Sector` using its globally unique id."""
+  deleteSector(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteSectorInput!
+  ): DeleteSectorPayload
+
+  """Deletes a single `Sector` using a unique key."""
+  deleteSectorBySectorName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteSectorBySectorNameInput!
+  ): DeleteSectorPayload
   stageDirtyFormChanges(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -32584,6 +33496,22 @@ type Mutation {
     """
     input: UpdateReportTypeByNameInput!
   ): UpdateReportTypePayload
+
+  """Updates a single `Sector` using its globally unique id and a patch."""
+  updateSector(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateSectorInput!
+  ): UpdateSectorPayload
+
+  """Updates a single `Sector` using a unique key and a patch."""
+  updateSectorBySectorName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateSectorBySectorNameInput!
+  ): UpdateSectorPayload
 }
 
 """An object with a globally unique `ID`."""
@@ -42035,6 +42963,45 @@ type Query implements Node {
     orderBy: [ReportingRequirementsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportingRequirementsConnection
 
+  """Reads and enables pagination through a set of `Sector`."""
+  allSectors(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SectorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SectorFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsConnection
+
   """Reads a single `Attachment` using its globally unique `ID`."""
   attachment(
     """
@@ -42267,6 +43234,13 @@ type Query implements Node {
     id: ID!
   ): ReportingRequirement
   reportingRequirementByRowId(rowId: Int!): ReportingRequirement
+
+  """Reads a single `Sector` using its globally unique `ID`."""
+  sector(
+    """The globally unique `ID` to be used in selecting a single `Sector`."""
+    id: ID!
+  ): Sector
+  sectorBySectorName(sectorName: String!): Sector
   session: KeycloakJwt
 }
 
@@ -44356,6 +45330,286 @@ enum ReportingRequirementsOrderBy {
   UPDATED_BY_DESC
 }
 
+"""Lookup table for industry sectors used by the CleanBC Industry Fund"""
+type Sector implements Node {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByUpdatedBy: CifUser
+
+  """created at timestamp"""
+  createdAt: Datetime!
+
+  """created by user id"""
+  createdBy: Int
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """The name of the sector as the primary key"""
+  sectorName: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime!
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A condition to be used against `Sector` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input SectorCondition {
+  """Checks for equality with the object’s `archivedAt` field."""
+  archivedAt: Datetime
+
+  """Checks for equality with the object’s `archivedBy` field."""
+  archivedBy: Int
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `createdBy` field."""
+  createdBy: Int
+
+  """Checks for equality with the object’s `sectorName` field."""
+  sectorName: String
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+
+  """Checks for equality with the object’s `updatedBy` field."""
+  updatedBy: Int
+}
+
+"""
+A filter to be used against `Sector` object types. All fields are combined with a logical ‘and.’
+"""
+input SectorFilter {
+  """Checks for all expressions in this list."""
+  and: [SectorFilter!]
+
+  """Filter by the object’s `archivedAt` field."""
+  archivedAt: DatetimeFilter
+
+  """Filter by the object’s `archivedBy` field."""
+  archivedBy: IntFilter
+
+  """Filter by the object’s `cifUserByArchivedBy` relation."""
+  cifUserByArchivedBy: CifUserFilter
+
+  """A related `cifUserByArchivedBy` exists."""
+  cifUserByArchivedByExists: Boolean
+
+  """Filter by the object’s `cifUserByCreatedBy` relation."""
+  cifUserByCreatedBy: CifUserFilter
+
+  """A related `cifUserByCreatedBy` exists."""
+  cifUserByCreatedByExists: Boolean
+
+  """Filter by the object’s `cifUserByUpdatedBy` relation."""
+  cifUserByUpdatedBy: CifUserFilter
+
+  """A related `cifUserByUpdatedBy` exists."""
+  cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `createdBy` field."""
+  createdBy: IntFilter
+
+  """Negates the expression."""
+  not: SectorFilter
+
+  """Checks for any expressions in this list."""
+  or: [SectorFilter!]
+
+  """Filter by the object’s `sectorName` field."""
+  sectorName: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `updatedBy` field."""
+  updatedBy: IntFilter
+}
+
+"""An input for mutations affecting `Sector`"""
+input SectorInput {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The name of the sector as the primary key"""
+  sectorName: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+Represents an update to a `Sector`. Fields that are set will be updated.
+"""
+input SectorPatch {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The name of the sector as the primary key"""
+  sectorName: String
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""A connection to a list of `Sector` values."""
+type SectorsConnection {
+  """
+  A list of edges which contains the `Sector` and cursor to aid in pagination.
+  """
+  edges: [SectorsEdge!]!
+
+  """A list of `Sector` objects."""
+  nodes: [Sector]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Sector` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Sector` edge in the connection."""
+type SectorsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Sector` at the end of the edge."""
+  node: Sector
+}
+
+"""Methods to use when ordering `Sector`."""
+enum SectorsOrderBy {
+  ARCHIVED_AT_ASC
+  ARCHIVED_AT_DESC
+  ARCHIVED_BY_ASC
+  ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__ID_ASC
+  CIF_USER_BY_ARCHIVED_BY__ID_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__UUID_ASC
+  CIF_USER_BY_ARCHIVED_BY__UUID_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_CREATED_BY__ID_ASC
+  CIF_USER_BY_CREATED_BY__ID_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__UUID_ASC
+  CIF_USER_BY_CREATED_BY__UUID_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__ID_ASC
+  CIF_USER_BY_UPDATED_BY__ID_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__UUID_ASC
+  CIF_USER_BY_UPDATED_BY__UUID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  CREATED_BY_ASC
+  CREATED_BY_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SECTOR_NAME_ASC
+  SECTOR_NAME_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  UPDATED_BY_ASC
+  UPDATED_BY_DESC
+}
+
 """All input for the `stageDirtyFormChanges` mutation."""
 input StageDirtyFormChangesInput {
   """
@@ -45702,6 +46956,74 @@ type UpdateReportTypePayload {
     """The method to use when ordering `ReportType`."""
     orderBy: [ReportTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportTypesEdge
+}
+
+"""All input for the `updateSectorBySectorName` mutation."""
+input UpdateSectorBySectorNameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The name of the sector as the primary key"""
+  sectorName: String!
+
+  """
+  An object where the defined keys will be set on the `Sector` being updated.
+  """
+  sectorPatch: SectorPatch!
+}
+
+"""All input for the `updateSector` mutation."""
+input UpdateSectorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Sector` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `Sector` being updated.
+  """
+  sectorPatch: SectorPatch!
+}
+
+"""The output of our update `Sector` mutation."""
+type UpdateSectorPayload {
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Sector`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Sector` that was updated by this mutation."""
+  sector: Sector
+
+  """An edge for our `Sector`. May be used by Relay 1."""
+  sectorEdge(
+    """The method to use when ordering `Sector`."""
+    orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SectorsEdge
 }
 
 """The `Upload` scalar type represents a file upload."""
