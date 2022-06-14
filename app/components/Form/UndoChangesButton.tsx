@@ -1,10 +1,12 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { useUndoFormChanges } from "mutations/FormChange/undoFormChanges";
+import { MutableRefObject } from "react";
 interface Props {
   formChangeIds: number[];
+  formRefs?: MutableRefObject<{}>;
 }
 
-const UndoChangesButton: React.FC<Props> = ({ formChangeIds }) => {
+const UndoChangesButton: React.FC<Props> = ({ formChangeIds, formRefs }) => {
   const [undoFormChanges] = useUndoFormChanges();
 
   const handleClick = () => {
@@ -13,6 +15,13 @@ const UndoChangesButton: React.FC<Props> = ({ formChangeIds }) => {
         input: {
           formChangesIds: formChangeIds,
         },
+      },
+      onCompleted: () => {
+        if (formRefs) {
+          Object.keys(formRefs.current).forEach((key) => {
+            if (!formRefs.current[key]) delete formRefs.current[key];
+          });
+        }
       },
     });
   };
