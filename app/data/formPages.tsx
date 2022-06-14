@@ -9,6 +9,7 @@ import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportFo
 import ProjectAnnualReportForm from "components/Form/ProjectAnnualReportForm";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
 import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
+import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 
 interface FormPageDefinition {
   title: string;
@@ -35,14 +36,12 @@ const formPages: FormPageDefinition[] = [
   {
     title: "milestone reports",
     editComponent: ProjectMilestoneReportForm,
-    // TODO: switch to ProjectMilestoneReportFormSummary when it's been merged
-    viewComponent: null,
+    viewComponent: ProjectMilestoneReportFormSummary,
   },
   {
     title: "quarterly reports",
     editComponent: ProjectQuarterlyReportForm,
     viewComponent: ProjectQuarterlyReportFormSummary,
-    // viewComponent: ProjectMilestoneReportFormSummary,
   },
   {
     title: "annual reports",

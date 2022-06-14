@@ -135,9 +135,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             div.reportContainer {
               padding-top: 1em;
             }
-            diffOld {
-              color: #fad980;
-            }
           `}</style>
         </div>
       );

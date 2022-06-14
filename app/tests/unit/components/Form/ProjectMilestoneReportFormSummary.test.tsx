@@ -29,18 +29,18 @@ const mockQueryPayload = {
                 id: "Test ID - 1",
                 isPristine: false,
                 newFormData: {
-                  comments: "Updated Test comment",
                   projectId: 1,
-                  reportDueDate: "2020-01-02T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
+                  profesionalDesignation: "Professional Engineer",
+                  comments: "Changing milestone type.",
+                  milestoneType: "General",
                 },
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
                   newFormData: {
-                    comments: "Test comment",
                     projectId: 1,
-                    reportDueDate: "2020-01-01T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
+                    reportDueDate: "2020-01-02T23:59:59.999-07:00",
                   },
                 },
               },
@@ -48,41 +48,6 @@ const mockQueryPayload = {
             {
               node: {
                 id: "Test ID - 2",
-                isPristine: true,
-                newFormData: {
-                  comments: "Not updated comment",
-                  projectId: 1,
-                  reportDueDate: "2020-01-03T23:59:59.999-07:00",
-                  reportingRequirementIndex: 1,
-                },
-                operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    comments: "Not updated comment",
-                    projectId: 1,
-                    reportDueDate: "2020-01-03T23:59:59.999-07:00",
-                    reportingRequirementIndex: 1,
-                  },
-                },
-              },
-            },
-            {
-              node: {
-                id: "Test ID - 3",
-                isPristine: false,
-                newFormData: {
-                  comments: "Added comment",
-                  projectId: 1,
-                  reportDueDate: "2020-01-04T23:59:59.999-07:00",
-                  reportingRequirementIndex: 1,
-                },
-                operation: "CREATE",
-                formChangeByPreviousFormChangeId: null,
-              },
-            },
-            {
-              node: {
-                id: "Test ID - 4",
                 isPristine: false,
                 newFormData: {
                   comments: "Removed comment",
@@ -137,19 +102,14 @@ describe("The Project Milestone Report Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    // First Node
-    expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
-    expect(screen.getByText(/Jan[.]? 2, 2020/)).toBeInTheDocument();
+    // changed fields
+    expect(screen.getByText("Changing milestone type.")).toBeInTheDocument();
+    expect(screen.getByText(/General/)).toBeInTheDocument();
 
-    // Second Node
-    expect(screen.queryByText("Not updated comment")).not.toBeInTheDocument();
+    // unchanged fields
     expect(screen.queryByText(/Jan[.]? 3, 2020/)).not.toBeInTheDocument();
 
-    // Third Node
-    expect(screen.getByText("Added comment")).toBeInTheDocument();
-    expect(screen.getByText(/Jan[.]? 4, 2020/)).toBeInTheDocument();
-
-    // Fourth Node
+    // Archive milestone report
     expect(screen.getByText("Milestone Report Removed")).toBeInTheDocument();
   });
 
@@ -157,10 +117,7 @@ describe("The Project Milestone Report Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("Test comment")).toBeInTheDocument();
-    expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
-
-    expect(screen.getByText(/Jan[.]? 1, 2020/)).toBeInTheDocument();
-    expect(screen.getByText(/Jan[.]? 2, 2020/)).toBeInTheDocument();
+    expect(screen.getByText("Professional Engineer")).toBeInTheDocument();
+    expect(screen.getByText("General")).toBeInTheDocument();
   });
 });

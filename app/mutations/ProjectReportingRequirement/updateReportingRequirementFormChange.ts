@@ -27,7 +27,7 @@ const mutation = graphql`
 const useUpdateReportingRequirementFormChange = () => {
   return useDebouncedMutation<updateReportingRequirementFormChangeMutation>(
     mutation,
-    () => "An error occurred when updating the project quarterly reports form."
+    () => "An error occurred when updating the project reports form."
   );
 };
 

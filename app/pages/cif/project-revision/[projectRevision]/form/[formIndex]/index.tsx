@@ -47,6 +47,7 @@ const pageQuery = graphql`
         ...ProjectQuarterlyReportFormSummary_projectRevision
         ...ProjectAnnualReportForm_projectRevision
         ...ProjectMilestoneReportForm_projectRevision
+        ...ProjectMilestoneReportFormSummary_projectRevision
         ...ProjectAnnualReportFormSummary_projectRevision
       }
       ...ProjectForm_query
