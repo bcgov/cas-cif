@@ -50,8 +50,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       fragment ProjectQuarterlyReportForm_projectRevision on ProjectRevision {
         id
         rowId
-        projectQuarterlyReportFormChanges(first: 502)
-          @connection(key: "connection_projectQuarterlyReportFormChanges") {
+        projectQuarterlyReportFormChanges: formChangesFor(
+          first: 502
+          formDataTableName: "reporting_requirement"
+          reportType: "Quarterly"
+        ) @connection(key: "connection_projectQuarterlyReportFormChanges") {
           __id
           edges {
             node {

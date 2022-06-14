@@ -556,6 +556,7 @@ describe("the new project page", () => {
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
     cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
+    cy.findByText(/review and submit project/i).should("exist");
 
     // Navigate back to the review and submit information page
     cy.mockLogin("cif_admin");

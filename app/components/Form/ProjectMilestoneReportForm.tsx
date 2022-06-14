@@ -75,8 +75,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         id
         # eslint-disable-next-line relay/unused-fields
         rowId
-        projectMilestoneReportFormChanges(first: 1000)
-          @connection(key: "connection_projectMilestoneReportFormChanges") {
+        projectMilestoneReportFormChanges: formChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Milestone"
+          first: 1000
+        ) @connection(key: "connection_projectMilestoneReportFormChanges") {
           __id
           edges {
             node {
