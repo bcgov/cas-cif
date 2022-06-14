@@ -8,7 +8,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
-import { useMemo, useRef } from "react";
+import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportForm_projectRevision$key } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
@@ -22,6 +22,7 @@ import {
 } from "./reportingRequirementFormChangeFunctions";
 import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import StatusBadge from "components/StatusBadge";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   onSubmit: () => void;
@@ -41,7 +42,7 @@ export const annualReportUiSchema = {
 };
 
 const ProjectAnnualReportForm: React.FC<Props> = (props) => {
-  const formRefs = useRef({});
+  const formRefs: MutableRefObject<{}> = useRef({});
 
   const projectRevision = useFragment(
     graphql`
@@ -104,6 +105,13 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectAnnualReportFormChanges]);
 
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    return projectRevision.projectAnnualReportFormChanges.edges.map(
+      ({ node }) => node?.rowId
+    );
+  }, [projectRevision.projectAnnualReportFormChanges]);
+
   const reportDueDate =
     projectRevision.upcomingAnnualReportFormChange?.asReportingRequirement
       .reportDueDate;
@@ -123,6 +131,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>Annual Reports</h2>
+        <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
       <h3>Status</h3>
