@@ -1,6 +1,6 @@
 begin;
 
-select plan(2);
+select plan(6);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -88,6 +88,72 @@ values (
   null,
   1,
   '[]'
+),
+(
+  '{"testField": "test value", "reportType":"Annual"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+(
+  '{"testField": "test value", "reportType":"Quarterly"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+(
+  '{"testField": "test value", "reportType":"General Milestone"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+(
+  '{"testField": "test value", "reportType":"Advanced Milestone"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+(
+  '{"testField": "test value", "reportType":"Performance Milestone"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+(
+  '{"testField": "test value", "reportType":"Reporting Milestone"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
 );
 
 /* END SETUP */
@@ -110,6 +176,42 @@ select results_eq(
     values (3), (4)
   $$,
   'Returns the correct form_change records when queried with a json matcher'
+);
+
+select results_eq(
+  $$
+    select (fc).id from cif.project_revision_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Annual') fc
+  $$,
+  $$
+    values (6)
+  $$,
+  'Returns the correct form_change records when queried with report_type Annual'
+);
+
+select results_eq(
+  $$
+    select (fc).id from cif.project_revision_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Quarterly') fc
+  $$,
+  $$
+    values (7)
+  $$,
+  'Returns the correct form_change records when queried with report_type Quarterly'
+);
+
+select results_eq(
+  $$
+    select (fc).id from cif.project_revision_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Milestone') fc
+  $$,
+  $$
+    values (8), (9), (10), (11)
+  $$,
+  'Returns the correct form_change records when queried with report_type Milestone'
+);
+
+select is(
+  (select (fc).id from cif.project_revision_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=12), 'reporting_requirement', report_type => 'Milestone') fc),
+  null,
+  'Returns null when queried for milestone reports and none exist for given project_revision'
 );
 
 select finish();
