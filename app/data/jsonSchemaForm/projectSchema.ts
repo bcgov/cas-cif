@@ -9,6 +9,7 @@ const projectSchema = {
     "fundingStreamRfpId",
     "totalFundingRequest",
     "projectStatusId",
+    "sectorName",
   ],
   properties: {
     proposalReference: {
@@ -37,6 +38,16 @@ const projectSchema = {
       type: "number",
       title: "Project Status",
       default: undefined,
+    },
+    sectorName: {
+      type: "string",
+      title: "Sector",
+      default: undefined,
+      anyOf: undefined,
+    },
+    additionalSectorInformation: {
+      type: "string",
+      title: "Additional Sector Information",
     },
   },
 };

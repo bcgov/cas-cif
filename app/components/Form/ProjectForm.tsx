@@ -36,6 +36,8 @@ export const createProjectUiSchema = (
       "totalFundingRequest",
       "projectStatus",
       "projectStatusId",
+      "sectorName",
+      "additionalSectorInformation",
     ],
     proposalReference: {
       "bcgov:size": "small",
@@ -82,6 +84,17 @@ export const createProjectUiSchema = (
         text: `${projectStatus}`,
       },
     },
+    sectorName: {
+      "ui:placeholder": "Select a Sector",
+      "ui:col-md": 12,
+      "bcgov:size": "small",
+      "ui:widget": "SearchWidget",
+    },
+    additionalSectorInformation: {
+      "ui:col-md": 12,
+      "ui:widget": "TextAreaWidget",
+      "bcgov:size": "small",
+    },
   };
 };
 
@@ -115,6 +128,13 @@ const ProjectForm: React.FC<Props> = (props) => {
               tradeName
               bcRegistryId
               operatorCode
+            }
+          }
+        }
+        allSectors {
+          edges {
+            node {
+              sectorName
             }
           }
         }
@@ -203,6 +223,17 @@ const ProjectForm: React.FC<Props> = (props) => {
               title: `${node.legalName} (${node.bcRegistryId})`,
               enum: [node.rowId],
               value: node.rowId,
+            };
+          }),
+        },
+        sectorName: {
+          ...projectSchema.properties.sectorName,
+          anyOf: query.allSectors.edges.map(({ node }) => {
+            return {
+              type: "string",
+              title: node.sectorName,
+              enum: [node.sectorName],
+              value: node.sectorName,
             };
           }),
         },
