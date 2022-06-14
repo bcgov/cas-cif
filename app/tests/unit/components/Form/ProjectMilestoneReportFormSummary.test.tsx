@@ -135,7 +135,7 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText("Professional Engineer")).toBeInTheDocument();
 
     // report due date diff
-    expect(screen.getByText("Jan 1, 2020")).toBeInTheDocument();
-    expect(screen.getByText("Jan 10, 2020")).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 10, 2020/i)).toBeInTheDocument();
   });
 });
