@@ -2,8 +2,10 @@ import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
+import StatusBadge from "components/StatusBadge";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
+import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
@@ -13,15 +15,15 @@ import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectQuarterlyReportForm_projectRevision$key } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
-import SavingIndicator from "./SavingIndicator";
-import UndoChangesButton from "./UndoChangesButton";
 import {
   addReportFormChange,
-  updateReportFormChange,
   deleteReportFormChange,
-  stageReportFormChanges,
   getSortedReports,
+  stageReportFormChanges,
+  updateReportFormChange,
 } from "./reportingRequirementFormChangeFunctions";
+import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   onSubmit: () => void;
@@ -61,8 +63,13 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
             }
           }
         }
-        upcomingReportingRequirementFormChange(reportType: "Quarterly") {
+        upcomingQuarterlyReportFormChange: upcomingReportingRequirementFormChange(
+          reportType: "Quarterly"
+        ) {
           ...ReportDueIndicator_formChange
+          asReportingRequirement {
+            reportDueDate
+          }
         }
         # eslint-disable-next-line relay/unused-fields
         projectFormChange {
@@ -97,6 +104,21 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
+  const reportDueDate =
+    projectRevision.upcomingQuarterlyReportFormChange?.asReportingRequirement
+      .reportDueDate;
+  const overdue = useMemo(() => {
+    return isOverdue(reportDueDate);
+  }, [reportDueDate]);
+
+  const reportSubmittedDates = useMemo(() => {
+    return projectRevision.projectQuarterlyReportFormChanges.edges.map(
+      ({ node }) => node.newFormData.submittedDate
+    );
+  }, [projectRevision.projectQuarterlyReportFormChanges.edges]);
+
+  const variant = getReportingStatus(reportSubmittedDates, overdue);
+
   return (
     <div>
       <header>
@@ -104,14 +126,12 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
-
+      <h3>Status</h3>
+      Status of Quarterly Reports <StatusBadge variant={variant} />
       <ReportDueIndicator
         reportTitle="Quarterly Report"
-        reportDueFormChange={
-          projectRevision.upcomingReportingRequirementFormChange
-        }
+        reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
       />
-
       <FormBorder>
         <Button
           variant="secondary"
@@ -190,7 +210,6 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       >
         Submit Quarterly Reports
       </Button>
-
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
