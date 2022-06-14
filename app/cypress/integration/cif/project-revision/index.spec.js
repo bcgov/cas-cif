@@ -513,7 +513,11 @@ describe("the new project page", () => {
     // edit milestone reports
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Milestone reports/i }).click();
-    cy.findByText(/Edit milestone reports/i).click();
+    cy.findByText(/Edit milestone 1/i).click();
+    cy.get('[aria-label*="Milestone Description"]')
+      .eq(0)
+      .clear()
+      .type("new description");
     cy.get('[aria-label*="Due Date"]').eq(0).click();
     cy.get(".react-datepicker__month-select").select(0);
     cy.get(".react-datepicker__year-select").select("1999");
@@ -647,7 +651,7 @@ describe("the new project page", () => {
       .should("have.text", "No Secondary contacts");
     cy.findByText(/Milestone reports/i).click();
     cy.get("a")
-      .contains(/Milestone reports/i)
+      .contains(/Milestone 1/i)
       .click();
     cy.findAllByText(/Report Due Date/i)
       .eq(0)
