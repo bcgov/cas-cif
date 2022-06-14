@@ -14,7 +14,9 @@ create table cif.project(
   proposal_reference varchar(1000) not null unique,
   summary varchar(10000) not null,
   project_name varchar(1000) not null,
-  total_funding_request numeric(20,2)
+  total_funding_request numeric(20,2),
+  sector_name varchar(1000) references cif.sector(sector_name),
+  additional_sector_information varchar(1000)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project');
@@ -50,5 +52,7 @@ comment on column cif.project.summary is 'Summary of the project';
 comment on column cif.project.funding_stream_rfp_id is 'The id of the funding_stream_rfp (cif.funding_stream_rfp.id) that was selected when creating the project';
 comment on column cif.project.project_status_id is 'The id of the project_status (cif.project_status.id) that the project is currently in';
 comment on column cif.project.total_funding_request is 'The total amount of funding requested for the project';
+comment on column cif.project.sector_name is 'The industry sector this project relates to';
+comment on column cif.project.additional_sector_information is 'Any additional information about this project in reference to the industry sector such as a sub-sector';
 
 commit;

@@ -24,6 +24,7 @@ util_functions/upsert_timestamp_columns [schemas/private trigger_functions/updat
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
 mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function
+tables/sector [schemas/main] 2022-06-14T21:28:12Z Dylan Leard <dylan@button.is> # Table for industry sectors used by the CleanBC Industry Fund
 tables/funding_stream 2021-12-01T05:19:11Z Alex Zorkin <alex@bigthink.io> # adding funding_stream table to plan
 tables/funding_stream_rfp 2021-12-15T00:47:25Z Alex Zorkin <alex@bigthink.io> # add funding stream rfp table
 tables/project_status 2021-12-21T21:19:31Z Alex Zorkin <alex@bigthink.io> # creating project_status table
@@ -84,4 +85,3 @@ computed_columns/form_change_reporting_requirement_status [tables/form_change] 2
 mutations/stage_dirty_form_changes 2022-04-29T22:59:08Z Matthieu Foucault <matthieu@button.is> # add a mutation to automatically stage all the dirty form changes of a project_revision
 types/milestone_report_status_return 2022-06-01T16:57:00Z Dylan Leard <dylan@button.is> # Return type for project_revision_milestone_report_statuses
 computed_columns/project_revision_milestone_report_statuses [tables/form_change] 2022-05-31T23:23:44Z Dylan Leard <dylan@button.is> # Computed column to return both form completion statuses and reporting requirement statuses for individual milestones and an overall completion status
-tables/sector [schemas/main] 2022-06-14T21:28:12Z Dylan Leard <dylan@button.is> # Table for industry sectors used by the CleanBC Industry Fund
