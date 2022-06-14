@@ -343,6 +343,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 {projectRevision.changeStatus !== "committed" && (
                   <Grid.Col span={4}>
                     <Button
+                      style={{ marginTop: "0.55rem" }}
                       variant="secondary"
                       size="small"
                       onClick={clearPrimaryContact}
@@ -396,8 +397,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               <Grid.Row>
                 <Grid.Col span={10}>
                   <Button
-                    style={{ marginRight: "auto" }}
                     variant="secondary"
+                    style={{ marginRight: "auto", marginLeft: "unset" }}
                     onClick={() =>
                       // allForms is already sorted by contactIndex
                       addContact(
@@ -409,7 +410,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       )
                     }
                   >
-                    <FontAwesomeIcon icon={faPlusCircle} /> Add secondary
+                    <FontAwesomeIcon icon={faPlusCircle} /> Add a secondary
                     contact
                   </Button>
                 </Grid.Col>
