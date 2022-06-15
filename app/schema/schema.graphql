@@ -25828,6 +25828,9 @@ type Contact implements Node {
   """Any comments about this contact"""
   comments: String
 
+  """The company this contact works for"""
+  companyName: String
+
   """The role of this contact within their company"""
   contactPosition: String
 
@@ -26170,6 +26173,9 @@ input ContactCondition {
   """Checks for equality with the object’s `comments` field."""
   comments: String
 
+  """Checks for equality with the object’s `companyName` field."""
+  companyName: String
+
   """Checks for equality with the object’s `contactPosition` field."""
   contactPosition: String
 
@@ -26237,6 +26243,9 @@ input ContactFilter {
 
   """Filter by the object’s `comments` field."""
   comments: StringFilter
+
+  """Filter by the object’s `companyName` field."""
+  companyName: StringFilter
 
   """Filter by the object’s `contactPosition` field."""
   contactPosition: StringFilter
@@ -26477,6 +26486,8 @@ enum ContactsOrderBy {
   CIF_USER_BY_UPDATED_BY__UUID_DESC
   COMMENTS_ASC
   COMMENTS_DESC
+  COMPANY_NAME_ASC
+  COMPANY_NAME_DESC
   CONTACT_POSITION_ASC
   CONTACT_POSITION_DESC
   CREATED_AT_ASC
@@ -36415,6 +36426,8 @@ enum ProjectContactsOrderBy {
   CONTACT_BY_CONTACT_ID__ARCHIVED_BY_DESC
   CONTACT_BY_CONTACT_ID__COMMENTS_ASC
   CONTACT_BY_CONTACT_ID__COMMENTS_DESC
+  CONTACT_BY_CONTACT_ID__COMPANY_NAME_ASC
+  CONTACT_BY_CONTACT_ID__COMPANY_NAME_DESC
   CONTACT_BY_CONTACT_ID__CONTACT_POSITION_ASC
   CONTACT_BY_CONTACT_ID__CONTACT_POSITION_DESC
   CONTACT_BY_CONTACT_ID__CREATED_AT_ASC
