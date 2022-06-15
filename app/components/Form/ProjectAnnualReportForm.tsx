@@ -6,7 +6,7 @@ import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7 } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
+import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -201,7 +201,6 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                   }}
                 />
               </CollapsibleReport>
-              are collapsible)
             </div>
           );
         })}

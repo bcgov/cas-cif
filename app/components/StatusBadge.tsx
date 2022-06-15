@@ -37,7 +37,7 @@ const StatusBadge: React.FC<Props> = ({ label, variant }) => {
   return (
     <>
       <Chip
-        label={label || colours[variant].label}
+        label={label ?? colours[variant].label}
         sx={{
           backgroundColor: colours[variant].badgeColour,
           ".MuiChip-label": {

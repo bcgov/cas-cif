@@ -1,7 +1,6 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import StatusBadge from "components/StatusBadge";
-import { DateTime } from "luxon";
+import { getBadgeForDates } from "lib/helpers/reportStatusHelpers";
 import { useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { CollapsibleReport_reportingRequirement$key } from "__generated__/CollapsibleReport_reportingRequirement.graphql";
@@ -11,51 +10,6 @@ interface Props {
   startOpen?: boolean;
   reportingRequirement: CollapsibleReport_reportingRequirement$key;
 }
-
-const getBadgeForDates = (
-  reportDueDateString: string,
-  submittedDateString: string
-) => {
-  const parsedDueDate =
-    reportDueDateString &&
-    DateTime.fromISO(reportDueDateString, {
-      setZone: true,
-      locale: "en-CA",
-    }).startOf("day");
-  const parsedSubmittedDate =
-    submittedDateString &&
-    DateTime.fromISO(submittedDateString, {
-      setZone: true,
-      locale: "en-CA",
-    }).startOf("day");
-
-  if (parsedDueDate && parsedSubmittedDate) {
-    {
-      return (
-        <StatusBadge
-          variant="complete"
-          label={`Complete (${parsedSubmittedDate.toLocaleString(
-            DateTime.DATE_MED
-          )})`}
-        />
-      );
-    }
-  } else if (parsedDueDate && !parsedSubmittedDate) {
-    const dueIn = parsedDueDate.diff(
-      // Current date without time information
-      DateTime.now().setZone("America/Vancouver").startOf("day"),
-      "days"
-    ).days;
-
-    return dueIn < 0 ? (
-      <StatusBadge variant="late" />
-    ) : (
-      <StatusBadge variant="onTrack" />
-    );
-  } else {
-    return null;
-  }
-};
 
 const CollapsibleReport: React.FC<Props> = ({
   title,
