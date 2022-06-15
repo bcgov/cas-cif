@@ -36,6 +36,7 @@ const defaultMockResolver = {
           {
             node: {
               id: firstFormId,
+              rowId: 57,
               newFormData: {
                 reportDueDate: "2022-01-01T00:00:00-07",
                 projectId: 51,
@@ -49,6 +50,7 @@ const defaultMockResolver = {
           {
             node: {
               id: `mock-project-Annual-report-form-${generateID()}`,
+              rowId: 58,
               newFormData: {
                 reportDueDate: "2022-10-28T00:00:00-07",
                 comments: "some comments",
@@ -64,6 +66,7 @@ const defaultMockResolver = {
         ],
         __id: "client:mock:__connection_projectAnnualReportFormChanges_connection",
       },
+      projectFormChange: { formDataRecordId: 63 },
     };
   },
 };
@@ -118,7 +121,7 @@ describe("The ProjectAnnualReportForm", () => {
         connections: expect.any(Array),
         projectRevisionId: 1234,
         newFormData: {
-          projectId: 42,
+          projectId: 63,
           reportType: "Annual",
         },
       },
@@ -245,6 +248,103 @@ describe("The ProjectAnnualReportForm", () => {
           comments: "comments",
           projectId: 51,
         },
+      },
+    });
+  });
+
+  it("undoes all annual report changes (resets the form to empty) when the user clicks the Undo Changes button while creating a project", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/some comments/)).toBeInTheDocument();
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [57, 58],
+      },
+    });
+  });
+
+  it("undoes all annual report changes (resets the form to the previous committed data) when the user clicks the Undo Changes button while editing an existing project", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision(context, generateID) {
+        const firstFormId = `mock-project-Annual-report-form-${generateID()}`;
+        return {
+          id: `mock-proj-rev-${generateID()}`,
+          rowId: 1234,
+          upcomingAnnualReportFormChange: {
+            id: firstFormId,
+            asReportingRequirement: {
+              reportDueDate: "2022-01-01T00:00:00-07",
+              reportingRequirementIndex: 1,
+            },
+          },
+          projectAnnualReportFormChanges: {
+            edges: [
+              {
+                node: {
+                  rowId: 159,
+                  id: `mock-project-Annual-report-form-${generateID()}`,
+                  newFormData: {
+                    projectId: 1,
+                    reportType: "Annual",
+                    reportDueDate: "2022-06-24T23:59:59.999-07:00",
+                    submittedDate: "2022-06-23T23:59:59.999-07:00",
+                    reportingRequirementIndex: 1,
+                    comments: "new comments new comments",
+                  },
+                  operation: "UPDATE",
+                  changeStatus: "pending",
+                  formChangeByPreviousFormChangeId: {
+                    changeStatus: "committed",
+                    newFormData: {
+                      comments: "comments comments",
+                      projectId: 1,
+                      reportType: "Annual",
+                      reportDueDate: "2022-06-17T23:59:59.999-07:00",
+                      submittedDate: "2022-06-23T23:59:59.999-07:00",
+                      reportingRequirementIndex: 1,
+                    },
+                  },
+                  __typename: "FormChange",
+                },
+              },
+            ],
+            __id: "client:mock:__connection_projectAnnualReportFormChanges_connection",
+          },
+          projectFormChange: { formDataRecordId: 50 },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/new comments new comments/)).toBeInTheDocument();
+    userEvent.click(screen.getByText(/Undo Changes/i));
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [159],
       },
     });
   });

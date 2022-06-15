@@ -286,6 +286,14 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByText(/Quarterly Report 1/i).should("not.exist");
     cy.get('[label*="Due Date"]').should("have.length", 0);
+
+    // undo annual reports
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Add annual reports/i).click();
+    cy.addAnnualReport(1, "2000-05-05", "2000-07-23");
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByText(/Annual Report 1/i).should("not.exist");
+    cy.get('[label*="Due Date"]').should("have.length", 0);
   });
 
   it("Allows to create and update a project", () => {
