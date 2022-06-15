@@ -293,6 +293,19 @@ describe("the new project page", () => {
     cy.addAnnualReport(1, "2000-05-05", "2000-07-23");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByText(/Annual Report 1/i).should("not.exist");
+    // undo milestone reports
+    cy.findByText(/Milestone reports/i).click();
+    cy.findByText(/Add milestone reports/i).click();
+    cy.addMilestoneReport(
+      1,
+      "I am a description",
+      "General",
+      "1990-08-12",
+      "1991-04-17",
+      "Professional Engineer"
+    );
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByText(/Milestone Report 1/i).should("not.exist");
     cy.get('[label*="Due Date"]').should("have.length", 0);
   });
 
