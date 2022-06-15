@@ -9,7 +9,7 @@ import useDiscardReportingRequirementFormChange from "mutations/ProjectReporting
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
+import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -90,6 +90,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
+              # eslint-disable-next-line relay/unused-fields
               formChangeByPreviousFormChangeId {
                 changeStatus
                 newFormData
@@ -127,7 +128,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   useEffect(() => {
     if (router.query.anchor !== "Milestone0")
       router.push(`#${router.query.anchor}`);
-  }, [router.query.anchor]);
+  }, [router.query.anchor, router]);
 
   const milestoneSchema = useMemo(() => {
     return createProjectMilestoneSchema(query.allReportTypes);
