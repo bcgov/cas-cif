@@ -36,7 +36,9 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       graphql`
         fragment ProjectMilestoneReportFormSummary_projectRevision on ProjectRevision {
           isFirstRevision
-          summaryProjectMilestoneReportFormChanges: projectMilestoneReportFormChanges {
+          summaryProjectMilestoneReportFormChanges: formChangesFor(
+            formDataTableName: "Milestone"
+          ) {
             edges {
               node {
                 id
