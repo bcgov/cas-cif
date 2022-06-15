@@ -1,5 +1,5 @@
 begin;
-select plan(24);
+select plan(25);
 
 select has_table('cif', 'contact', 'table cif.contact exists');
 select has_column('cif', 'contact', 'id', 'table cif.contact has id column');
@@ -8,6 +8,7 @@ select has_column('cif', 'contact', 'family_name', 'table cif.contact has family
 select has_column('cif', 'contact', 'email', 'table cif.contact has email column');
 select has_column('cif', 'contact', 'phone', 'table cif.contact has phone column');
 select has_column('cif', 'contact', 'phone_ext', 'table cif.contact has phone_ext column');
+select has_column('cif', 'contact', 'company_name', 'table cif.contact has company_name column');
 select has_column('cif', 'contact', 'contact_position', 'table cif.contact has contact_position column');
 select has_column('cif', 'contact', 'comments', 'table cif.contact has comments column');
 select has_column('cif', 'contact', 'created_at', 'table cif.contact has created_at column');

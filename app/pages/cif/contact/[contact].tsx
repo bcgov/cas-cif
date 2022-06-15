@@ -20,6 +20,7 @@ const pageQuery = graphql`
       rowId
       fullName
       fullPhone
+      companyName
       email
       contactPosition
       comments
@@ -86,6 +87,13 @@ export function ContactViewPage({
 
         <dt>Email</dt>
         <dd>{contact.email}</dd>
+
+        {contact.companyName && (
+          <>
+            <dt>Company Name</dt>
+            <dd>{contact.companyName}</dd>
+          </>
+        )}
 
         {contact.contactPosition && (
           <>

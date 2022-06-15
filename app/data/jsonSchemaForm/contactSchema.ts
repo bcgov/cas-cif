@@ -23,6 +23,10 @@ const contactSchema = {
       type: "string",
       title: "Phone Extension",
     },
+    companyName: {
+      type: "string",
+      title: "Company Name",
+    },
     contactPosition: {
       type: "string",
       title: "Position",

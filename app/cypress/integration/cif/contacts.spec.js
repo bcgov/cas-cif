@@ -13,6 +13,7 @@ describe("The contacts page", () => {
     cy.get("input[aria-label='Given Name']").should("be.visible").type("Bob");
     cy.get("input[aria-label='Family Name']").type("Loblaw");
     cy.get("input[aria-label=Email]").type("bob@loblaw.ca");
+    cy.get("input[aria-label='Company Name']").type("ABC");
 
     cy.contains("Changes saved").should("be.visible");
     cy.get("input[aria-label=Phone]").type("1234567890");
