@@ -11,7 +11,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
-import { useEffect, useMemo, useRef } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
@@ -25,6 +25,7 @@ import {
   getSortedReports,
 } from "./reportingRequirementFormChangeFunctions";
 import { useRouter } from "next/router";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   onSubmit: () => void;
@@ -66,7 +67,7 @@ export const createProjectMilestoneSchema = (allReportTypes) => {
 };
 
 const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
-  const formRefs = useRef({});
+  const formRefs: MutableRefObject<{}> = useRef({});
   const router = useRouter();
 
   const projectRevision = useFragment(
@@ -84,6 +85,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           edges {
             node {
               id
+              rowId
               newFormData
               operation
               changeStatus
@@ -140,10 +142,18 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectMilestoneReportFormChanges]);
 
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    return projectRevision.projectMilestoneReportFormChanges.edges.map(
+      ({ node }) => node?.rowId
+    );
+  }, [projectRevision.projectMilestoneReportFormChanges]);
+
   return (
     <div>
       <header id={`Milestone0`}>
         <h2>Milestone Reports</h2>
+        <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
 

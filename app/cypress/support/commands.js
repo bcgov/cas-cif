@@ -324,7 +324,11 @@ Cypress.Commands.add(
   (
     reportNumber,
     reportDescription,
+    reportType,
     reportDueDate,
+    reportSubstantialCompletionDate,
+    professionalDesignation,
+    reportMaxAmount = undefined,
     receivedDate = undefined
   ) => {
     cy.findByRole("button", {
@@ -339,13 +343,26 @@ Cypress.Commands.add(
       reportDescription
     );
 
-    cy.get('[label*="Due Date"]').should("have.length", reportNumber);
-    cy.get('[label*="Due Date"]')
-      .eq(reportNumber - 1)
-      .type(reportDueDate);
-    cy.get('[label*="Due Date"]')
-      .eq(reportNumber - 1)
-      .should("have.value", reportDueDate);
+    cy.get('[placeholder="Select a Milestone Type"]').type(reportType);
+    cy.get('[placeholder="Select a Milestone Type"]').should(
+      "have.value",
+      reportType
+    );
+
+    if (reportMaxAmount) {
+      cy.get('[aria-label*="Enter Amount"]').click();
+      cy.get('[aria-label="Maximum Milestone Amount"]').type(100);
+    }
+
+    cy.addDueDate(reportNumber, reportDueDate);
+
+    cy.get('[label="Substantial Completion Date"').type(
+      reportSubstantialCompletionDate
+    );
+
+    cy.get('[id*="certifiedByProfessionalDesignation"]').type(
+      professionalDesignation
+    );
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
@@ -356,15 +373,7 @@ Cypress.Commands.add(
         .should("have.value", receivedDate);
     }
 
-    if (generalComments) {
-      cy.get('[aria-label="General Comments"]')
-        .eq(reportNumber - 1)
-        .type(generalComments);
-      cy.get('[aria-label="General Comments"]')
-        .eq(reportNumber - 1)
-        .should("have.value", generalComments);
-    }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/5");
+    return cy.url().should("include", "/form/3");
   }
 );
