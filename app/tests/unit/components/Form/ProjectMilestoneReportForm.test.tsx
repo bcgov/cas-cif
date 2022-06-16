@@ -29,10 +29,14 @@ const defaultMockResolver = {
           {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 1,
               newFormData: {
                 reportDueDate: "2022-01-01",
                 projectId: 51,
                 reportType: "General Milestone",
+                description: "i am the first description",
+                reportingRequirementIndex: 1,
+                certifiedByProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -42,12 +46,15 @@ const defaultMockResolver = {
           {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 2,
               newFormData: {
                 reportDueDate: "2022-10-28",
-                comments: "some comments",
                 projectId: 51,
                 reportType: "Advanced Milestone",
                 submittedDate: "2022-05-02",
+                description: "i am the second description",
+                reportingRequirementIndex: 2,
+                certifiedByProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -184,13 +191,7 @@ describe("The ProjectMilestoneReportForm", () => {
       require("lib/helpers/validateFormWithErrors"),
       "default"
     );
-    // resolve the update operations, else 'isUpdating' will disable the submit button
-    componentTestingHelper.environment.mock.resolveMostRecentOperation({
-      data: { variables: { input: "asdf" } },
-    });
-    componentTestingHelper.environment.mock.resolveMostRecentOperation({
-      data: { variables: { input: "asdf" } },
-    });
+
     userEvent.click(screen.getByText(/submit.*/i));
 
     // Once per form
@@ -201,13 +202,6 @@ describe("The ProjectMilestoneReportForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    // resolve the update operations, else 'isUpdating' will disable the submit button
-    componentTestingHelper.environment.mock.resolveMostRecentOperation({
-      data: { variables: { input: "asdf" } },
-    });
-    componentTestingHelper.environment.mock.resolveMostRecentOperation({
-      data: { variables: { input: "asdf" } },
-    });
     userEvent.click(screen.getByText(/submit milestone reports/i));
 
     expect(
@@ -259,6 +253,31 @@ describe("The ProjectMilestoneReportForm", () => {
           description: "desc",
           projectId: 51,
         },
+      },
+    });
+  });
+
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/i am the first description/)).toBeInTheDocument();
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [1, 2],
       },
     });
   });
