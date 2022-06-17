@@ -96,7 +96,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
             projectReportingRequirementSchema as JSONSchema7,
             quarterlyReport
           );
-
       return (
         <div key={index} className="reportContainer">
           <header>
