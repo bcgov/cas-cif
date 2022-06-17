@@ -128,7 +128,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   useEffect(() => {
     if (router.query.anchor !== "Milestone0")
       router.push(`#${router.query.anchor}`);
-  }, [router.query.anchor, router]);
+    // TODO: refactor useEffect. In the meantime, ignore the eslint warning--fixing it causes infinite rerender.
+  }, [router.query.anchor]);
 
   const milestoneSchema = useMemo(() => {
     return createProjectMilestoneSchema(query.allReportTypes);
