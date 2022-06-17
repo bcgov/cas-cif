@@ -37,7 +37,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         fragment ProjectMilestoneReportFormSummary_projectRevision on ProjectRevision {
           isFirstRevision
           summaryProjectMilestoneReportFormChanges: formChangesFor(
-            formDataTableName: "Milestone"
+            formDataTableName: "reporting_requirement"
+            reportType: "Milestone"
           ) {
             edges {
               node {
