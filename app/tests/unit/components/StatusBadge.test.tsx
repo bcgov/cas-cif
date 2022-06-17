@@ -24,13 +24,8 @@ describe("The Status Badge", () => {
     cleanup();
   });
 
-  it("displays the custom text when the variant is set to customText", () => {
-    render(<StatusBadge variant="customText" label="Some Test Label" />);
+  it("displays the custom text when set", () => {
+    render(<StatusBadge variant="onTrack" label="Some Test Label" />);
     expect(screen.getByText("Some Test Label")).toBeInTheDocument();
-  });
-
-  it("doesnt display the optional label when the variant is not customText", () => {
-    render(<StatusBadge variant="none" label="Some Test Label" />);
-    expect(screen.queryByText("Some Test Label")).not.toBeInTheDocument();
   });
 });

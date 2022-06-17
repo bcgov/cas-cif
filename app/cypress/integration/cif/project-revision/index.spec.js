@@ -94,7 +94,7 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.addQuarterlyReport(3, "1993-01-01", "1992-12-31");
     cy.contains("Changes saved").should("be.visible");
-    cy.findByRole("status").should("have.text", "Complete");
+    cy.findAllByRole("status").first().should("have.text", "Complete");
 
     cy.get('label[for*="reportDueDate"]').should("have.length", 3);
     cy.checkA11y("main", null, logAxeResults);
@@ -111,7 +111,7 @@ describe("the new project page", () => {
     cy.addAnnualReport(1, "1991-01-01", "1990-12-31");
     cy.addAnnualReport(2, "1992-01-01", "1991-12-31");
     cy.addAnnualReport(3, "1993-01-01", "1992-12-31");
-    cy.findByRole("status").should("have.text", "Complete");
+    cy.findAllByRole("status").first().should("have.text", "Complete");
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Annual Reports Form",
@@ -212,7 +212,7 @@ describe("the new project page", () => {
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
-    cy.findByRole("status").should("have.text", "On track");
+    cy.findAllByRole("status").first().should("have.text", "On track");
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 3);
@@ -228,7 +228,7 @@ describe("the new project page", () => {
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/5");
     cy.findByRole("button", { name: /add another annual report/i }).click();
-    cy.findByRole("status").should("have.text", "On track");
+    cy.findByRole("status").first().should("have.text", "On track");
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 1);
@@ -539,6 +539,7 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Quarterly reports/i }).click();
     cy.findByText(/Edit quarterly reports/i).click();
+    cy.findByText("Quarterly Report 1").click();
     cy.get('[aria-label*="Due Date"]').eq(0).click();
     cy.get(".react-datepicker__month-select").select(0);
     cy.get(".react-datepicker__year-select").select("1995");
@@ -560,6 +561,7 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByText(/5. Annual reports/i).click();
     cy.findByText(/Edit annual reports/i).click();
+    cy.findByText("Annual Report 1").click();
     cy.get('[aria-label*="General Comments"]')
       .eq(0)
       .clear()

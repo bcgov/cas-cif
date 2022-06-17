@@ -9,7 +9,7 @@ import useDiscardReportingRequirementFormChange from "mutations/ProjectReporting
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
+import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -26,6 +26,7 @@ import {
 } from "./reportingRequirementFormChangeFunctions";
 import { useRouter } from "next/router";
 import UndoChangesButton from "./UndoChangesButton";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 
 interface Props {
   onSubmit: () => void;
@@ -89,6 +90,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
+              # eslint-disable-next-line relay/unused-fields
+              formChangeByPreviousFormChangeId {
+                changeStatus
+                newFormData
+              }
+              asReportingRequirement {
+                ...CollapsibleReport_reportingRequirement
+              }
             }
           }
         }
@@ -119,6 +128,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   useEffect(() => {
     if (router.query.anchor !== "Milestone0")
       router.push(`#${router.query.anchor}`);
+    // TODO: refactor useEffect. In the meantime, ignore the eslint warning--fixing it causes infinite rerender.
   }, [router.query.anchor]);
 
   const milestoneSchema = useMemo(() => {
@@ -178,13 +188,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
         {sortedMilestoneReports.map((milestoneReport, index) => {
           return (
-            <div
-              id={`Milestone${index + 1}`}
-              key={milestoneReport.id}
-              className="reportContainer"
-            >
-              <header className="reportHeader">
-                <h3>Milestone {index + 1}</h3>
+            <div key={milestoneReport.id}>
+              <CollapsibleReport
+                title={`Milestone ${index + 1}`}
+                reportingRequirement={milestoneReport.asReportingRequirement}
+              >
                 <Button
                   variant="secondary"
                   size="small"
@@ -196,31 +204,32 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                       formRefs
                     )
                   }
+                  className="removeButton"
                 >
                   Remove
                 </Button>
-              </header>
-              <FormBase
-                id={`form-${milestoneReport.id}`}
-                validateOnMount={milestoneReport.changeStatus === "staged"}
-                idPrefix={`form-${milestoneReport.id}`}
-                ref={(el) => (formRefs.current[milestoneReport.id] = el)}
-                formData={milestoneReport.newFormData}
-                onChange={(change) => {
-                  updateReportFormChange(
-                    applyUpdateFormChangeMutation,
-                    "General Milestone",
-                    { ...milestoneReport, changeStatus: "pending" },
-                    change.formData
-                  );
-                }}
-                schema={milestoneSchema as JSONSchema7}
-                uiSchema={milestoneReportUiSchema}
-                ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                formContext={{
-                  dueDate: milestoneReport.newFormData?.reportDueDate,
-                }}
-              />
+                <FormBase
+                  id={`form-${milestoneReport.id}`}
+                  validateOnMount={milestoneReport.changeStatus === "staged"}
+                  idPrefix={`form-${milestoneReport.id}`}
+                  ref={(el) => (formRefs.current[milestoneReport.id] = el)}
+                  formData={milestoneReport.newFormData}
+                  onChange={(change) => {
+                    updateReportFormChange(
+                      applyUpdateFormChangeMutation,
+                      "General Milestone",
+                      { ...milestoneReport, changeStatus: "pending" },
+                      change.formData
+                    );
+                  }}
+                  schema={milestoneSchema as JSONSchema7}
+                  uiSchema={milestoneReportUiSchema}
+                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                  formContext={{
+                    dueDate: milestoneReport.newFormData?.reportDueDate,
+                  }}
+                />
+              </CollapsibleReport>
             </div>
           );
         })}
@@ -247,17 +256,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           margin-left: 0.4em;
           margin-right: 0em;
         }
-        div.reportContainer {
-          border-top: 1px solid black;
-          padding-top: 1em;
-        }
         div :global(button.addButton) {
           margin-bottom: 1em;
         }
-        header.reportHeader {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
+        div :global(button.removeButton) {
+          float: right;
         }
       `}</style>
     </div>

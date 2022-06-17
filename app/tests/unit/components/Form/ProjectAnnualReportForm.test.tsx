@@ -98,15 +98,15 @@ describe("The ProjectAnnualReportForm", () => {
   it("Renders two Annual reports with remove buttons, the report due indicator, and the overall status badge", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+    expect(screen.getByText("Annual Report 1")).toBeInTheDocument();
+    expect(screen.getByText("Annual Report 2")).toBeInTheDocument();
 
     // TODO: add these back in once the indicator PR is finished
     // expect(screen.getAllByText("Remove")).toHaveLength(2);
     // expect(screen.getAllByRole("group")[0]).toHaveTextContent(
     //   /Overdue by \d+ day\(s\)/
     // );
-    expect(screen.getByRole("status")).toHaveTextContent("Late");
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Late");
   });
 
   it("Calls the addAnnualReportToRevision mutation when the Add button is clicked", () => {

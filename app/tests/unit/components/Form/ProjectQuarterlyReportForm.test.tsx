@@ -96,13 +96,13 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
-
-    expect(screen.getAllByText("Remove")).toHaveLength(2);
+    expect(screen.getByText("Quarterly Report 1")).toBeInTheDocument();
+    expect(screen.getByText("Quarterly Report 2")).toBeInTheDocument();
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
       /Overdue by \d+ day\(s\)/
     );
-    expect(screen.getByRole("status")).toHaveTextContent("Late");
+    // select the overall status badge
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Late");
   });
 
   it("Calls the addQuarterlyReportToRevision mutation when the Add button is clicked", () => {

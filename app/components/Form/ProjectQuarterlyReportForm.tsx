@@ -8,7 +8,7 @@ import { JSONSchema7 } from "json-schema";
 import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision.ts";
+import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
 import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useMemo, useRef } from "react";
@@ -24,6 +24,7 @@ import {
 } from "./reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 
 interface Props {
   onSubmit: () => void;
@@ -63,6 +64,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
+              asReportingRequirement {
+                ...CollapsibleReport_reportingRequirement
+              }
             }
           }
         }
@@ -154,9 +158,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
 
         {sortedQuarterlyReports.map((quarterlyReport, index) => {
           return (
-            <div key={quarterlyReport.id} className="reportContainer">
-              <header className="reportHeader">
-                <h3>Quarterly Report {index + 1}</h3>
+            <div key={quarterlyReport.id}>
+              <CollapsibleReport
+                title={`Quarterly Report ${index + 1}`}
+                reportingRequirement={quarterlyReport.asReportingRequirement}
+              >
                 <Button
                   variant="secondary"
                   size="small"
@@ -168,31 +174,32 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                       formRefs
                     )
                   }
+                  className="removeButton"
                 >
                   Remove
                 </Button>
-              </header>
-              <FormBase
-                id={`form-${quarterlyReport.id}`}
-                validateOnMount={quarterlyReport.changeStatus === "staged"}
-                idPrefix={`form-${quarterlyReport.id}`}
-                ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
-                formData={quarterlyReport.newFormData}
-                onChange={(change) => {
-                  updateReportFormChange(
-                    applyUpdateFormChangeMutation,
-                    "Quarterly",
-                    { ...quarterlyReport, changeStatus: "pending" },
-                    change.formData
-                  );
-                }}
-                schema={projectReportingRequirementSchema as JSONSchema7}
-                uiSchema={quarterlyReportUiSchema}
-                ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                formContext={{
-                  dueDate: quarterlyReport.newFormData?.reportDueDate,
-                }}
-              />
+                <FormBase
+                  id={`form-${quarterlyReport.id}`}
+                  validateOnMount={quarterlyReport.changeStatus === "staged"}
+                  idPrefix={`form-${quarterlyReport.id}`}
+                  ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
+                  formData={quarterlyReport.newFormData}
+                  onChange={(change) => {
+                    updateReportFormChange(
+                      applyUpdateFormChangeMutation,
+                      "Quarterly",
+                      { ...quarterlyReport, changeStatus: "pending" },
+                      change.formData
+                    );
+                  }}
+                  schema={projectReportingRequirementSchema as JSONSchema7}
+                  uiSchema={quarterlyReportUiSchema}
+                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                  formContext={{
+                    dueDate: quarterlyReport.newFormData?.reportDueDate,
+                  }}
+                />
+              </CollapsibleReport>
             </div>
           );
         })}
@@ -218,17 +225,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           margin-left: 0.4em;
           margin-right: 0em;
         }
-        div.reportContainer {
-          border-top: 1px solid black;
-          padding-top: 1em;
-        }
         div :global(button.addButton) {
           margin-bottom: 1em;
         }
-        header.reportHeader {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
+        div :global(button.removeButton) {
+          float: right;
         }
       `}</style>
     </div>
