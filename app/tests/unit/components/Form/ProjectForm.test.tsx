@@ -331,6 +331,7 @@ describe("The Project Form", () => {
       },
     });
   });
+  
   it("displays a sector dropdown with selectable choices", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -358,6 +359,30 @@ describe("The Project Form", () => {
       formChangePatch: {
         changeStatus: "pending",
         newFormData: { sectorName: "test sector 1" },
+      }
+    });
+  });
+});
+
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [1],
       },
     });
   });

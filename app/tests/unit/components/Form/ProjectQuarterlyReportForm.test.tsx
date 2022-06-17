@@ -36,6 +36,7 @@ const defaultMockResolver = {
           {
             node: {
               id: firstFormId,
+              rowId: 1,
               newFormData: {
                 reportDueDate: "2022-01-01T00:00:00-07",
                 projectId: 51,
@@ -49,6 +50,7 @@ const defaultMockResolver = {
           {
             node: {
               id: `mock-project-quarterly-report-form-${generateID()}`,
+              rowId: 2,
               newFormData: {
                 reportDueDate: "2022-10-28T00:00:00-07",
                 comments: "some comments",
@@ -251,6 +253,29 @@ describe("The ProjectQuarterlyReportForm", () => {
           comments: "comments",
           projectId: 51,
         },
+      },
+    });
+  });
+
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [1, 2],
       },
     });
   });
