@@ -61,6 +61,20 @@ const mockQueryPayload = {
           },
         ],
       },
+      allSectors: {
+        edges: [
+          {
+            node: {
+              sectorName: "test sector 1",
+            },
+          },
+          {
+            node: {
+              sectorName: "test sector 2",
+            },
+          },
+        ],
+      },
     };
   },
 };
@@ -314,6 +328,36 @@ describe("The Project Form", () => {
       formChangePatch: {
         changeStatus: "pending",
         newFormData: { projectName: "test project name2" },
+      },
+    });
+  });
+  it("displays a sector dropdown with selectable choices", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByLabelText<HTMLInputElement>("Sector")
+    ).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(screen.getAllByLabelText(/Sector/i)[0]);
+    });
+
+    expect(screen.getByText(/test sector 1/i)).toBeInTheDocument();
+
+    expect(screen.getByText(/test sector 2/i)).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(screen.getByText(/test sector 1/i));
+    });
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: { sectorName: "test sector 1" },
       },
     });
   });
