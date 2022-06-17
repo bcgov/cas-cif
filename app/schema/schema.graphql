@@ -41225,12 +41225,12 @@ type ProjectStatus implements Node {
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: AttachmentCondition
+    condition: SectorCondition
 
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: AttachmentFilter
+    filter: SectorFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -41359,12 +41359,12 @@ type ProjectStatusCifUsersByAttachmentProjectStatusIdAndCreatedByManyToManyEdge 
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: SectorCondition
+    condition: AttachmentCondition
 
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: SectorFilter
+    filter: AttachmentFilter
 
     """Only read the first `n` values of the set."""
     first: Int
