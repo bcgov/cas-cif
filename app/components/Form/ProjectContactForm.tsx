@@ -22,6 +22,7 @@ import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/upda
 import UndoChangesButton from "./UndoChangesButton";
 import { useCreatePrimaryContact } from "mutations/ProjectContact/createPrimaryContact";
 import ContactDetails from "components/Contact/ContactDetails";
+import NewContactButton from "./NewContactButton";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -234,7 +235,13 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             formDataSchemaName: "cif",
             formDataTableName: "project_contact",
             jsonSchemaName: "project_contact",
-            newFormData: { projectId: projectRevision.rowId, contactIndex: 1 },
+            newFormData: {
+              projectId: projectRevision.projectFormChange.formDataRecordId,
+              contactIndex: 1,
+            },
+            validationErrors: [
+              { message: "must have required property contactId" },
+            ],
           },
         },
         onCompleted: () => createContactFn(),
@@ -331,7 +338,24 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     uiSchema={uiSchema}
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                     className="contact-form"
-                  />
+                  >
+                    {/* Using short circuit doesn't work here, It renders a useless submit button */}
+                    {!primaryContactForm?.newFormData?.contactId ? (
+                      <NewContactButton
+                        projectRevisionRowId={projectRevision.rowId}
+                        connectionString={
+                          projectRevision.projectContactFormChanges.__id
+                        }
+                        projectContactFormId={primaryContactForm?.id}
+                        projectId={
+                          projectRevision.projectFormChange.formDataRecordId
+                        }
+                        contactIndex={1}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </FormBase>
                   {primaryContactForm?.asProjectContact?.contactByContactId && (
                     <ContactDetails
                       contact={
@@ -374,7 +398,24 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         uiSchema={uiSchema}
                         ObjectFieldTemplate={EmptyObjectFieldTemplate}
                         className="contact-form"
-                      />
+                      >
+                        {/* Using short circuit doesn't work here, It renders a useless submit button */}
+                        {!form?.newFormData?.contactId ? (
+                          <NewContactButton
+                            projectRevisionRowId={projectRevision.rowId}
+                            connectionString={
+                              projectRevision.projectContactFormChanges.__id
+                            }
+                            projectContactFormId={form.id}
+                            projectId={
+                              projectRevision.projectFormChange.formDataRecordId
+                            }
+                            contactIndex={form.newFormData.contactIndex}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </FormBase>
                     </Grid.Col>
                     <Grid.Col span={4}>
                       <Button

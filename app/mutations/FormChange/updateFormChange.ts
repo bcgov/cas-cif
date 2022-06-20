@@ -7,6 +7,7 @@ const mutation = graphql`
     updateFormChange(input: $input) {
       formChange {
         id
+        formDataRecordId
         newFormData
         operation
         changeStatus
