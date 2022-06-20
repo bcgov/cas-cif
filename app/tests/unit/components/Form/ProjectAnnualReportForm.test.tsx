@@ -101,11 +101,10 @@ describe("The ProjectAnnualReportForm", () => {
     expect(screen.getByText("Annual Report 1")).toBeInTheDocument();
     expect(screen.getByText("Annual Report 2")).toBeInTheDocument();
 
-    // TODO: add these back in once the indicator PR is finished
-    // expect(screen.getAllByText("Remove")).toHaveLength(2);
-    // expect(screen.getAllByRole("group")[0]).toHaveTextContent(
-    //   /Overdue by \d+ day\(s\)/
-    // );
+    expect(screen.getAllByText("Remove")).toHaveLength(2);
+    expect(screen.getAllByRole("group")[0]).toHaveTextContent(
+      /Overdue by \d+ day\(s\)/
+    );
     expect(screen.getAllByRole("status")[0]).toHaveTextContent("Late");
   });
 
@@ -144,20 +143,27 @@ describe("The ProjectAnnualReportForm", () => {
     );
   });
 
-  it("Calls the updateFormChange mutation when the remove button is clicked", () => {
+  it("Calls discardReportingRequirementFormChangeMutation when the remove button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
     expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-    ).toMatchObject({
-      variables: {
-        input: {
-          id: "mock-project-Annual-report-form-1",
-        },
-        connections: expect.any(Array),
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "discardReportingRequirementFormChangeMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        id: "mock-project-Annual-report-form-1",
       },
+      connections: expect.any(Array),
+      reportType: "Annual",
     });
   });
 

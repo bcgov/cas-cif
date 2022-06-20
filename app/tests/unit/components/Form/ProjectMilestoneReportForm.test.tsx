@@ -24,6 +24,13 @@ const defaultMockResolver = {
     return {
       id: `mock-proj-rev-${generateID()}`,
       rowId: 1234,
+      upcomingMilestoneReportFormChange: {
+        id: "mock-id",
+        asReportingRequirement: {
+          reportDueDate: "2022-01-01T00:00:00-07",
+          reportingRequirementIndex: 1,
+        },
+      },
       projectMilestoneReportFormChanges: {
         edges: [
           {
@@ -105,12 +112,18 @@ describe("The ProjectMilestoneReportForm", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Renders two milestone reports with remove buttons", () => {
+  it("Renders two milestone reports with remove buttons, the report due indicator, and the overall status badge", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Milestone 1")).toBeInTheDocument();
     expect(screen.getByText("Milestone 2")).toBeInTheDocument();
+
+    expect(screen.getAllByRole("group")[0]).toHaveTextContent(
+      /Overdue by \d+ day\(s\)/
+    );
+    // select the overall status badge
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Late");
 
     expect(screen.getAllByText("Remove")).toHaveLength(2);
   });
@@ -149,20 +162,28 @@ describe("The ProjectMilestoneReportForm", () => {
     );
   });
 
-  it("Calls the updateFormChange mutation when the remove button is clicked", () => {
+  it("Calls discardReportingRequirementFormChangeMutation when the remove button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
+
     expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-    ).toMatchObject({
-      variables: {
-        input: {
-          id: "mock-project-milestone-report-form-2",
-        },
-        connections: expect.any(Array),
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "discardReportingRequirementFormChangeMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      connections: expect.any(Array),
+      input: {
+        id: "mock-project-milestone-report-form-2",
       },
+      reportType: "Milestone",
     });
   });
 

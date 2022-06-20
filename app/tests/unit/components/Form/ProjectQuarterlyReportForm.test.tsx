@@ -140,20 +140,27 @@ describe("The ProjectQuarterlyReportForm", () => {
     );
   });
 
-  it("Calls the updateFormChange mutation when the remove button is clicked", () => {
+  it("Calls discardReportingRequirementFormChangeMutation  when the remove button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     const removeButton = screen.getAllByText("Remove")[0];
     removeButton.click();
     expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-    ).toMatchObject({
-      variables: {
-        input: {
-          id: "mock-project-quarterly-report-form-1",
-        },
-        connections: expect.any(Array),
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "discardReportingRequirementFormChangeMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        id: "mock-project-quarterly-report-form-1",
       },
+      connections: expect.any(Array),
+      reportType: "Quarterly",
     });
   });
 
