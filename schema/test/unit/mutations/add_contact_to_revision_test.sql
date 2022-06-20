@@ -17,7 +17,7 @@ select is(
 select results_eq(
   $$
     select
-      new_form_data->>'contactIndex',
+      new_form_data,
       operation,
       form_data_schema_name,
       form_data_table_name,
@@ -25,11 +25,11 @@ select results_eq(
       project_revision_id,
       change_status,
       json_schema_name
-    from cif.add_contact_to_revision((select id from cif.project_revision order by id desc limit 1), 2)
+    from cif.add_contact_to_revision((select id from cif.project_revision order by id desc limit 1), 2, 1)
   $$,
   $$
     values(
-      '2',
+      '{"contactId": 1, "projectId": 1, "contactIndex": 2}'::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
       'project_contact'::varchar,
