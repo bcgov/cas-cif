@@ -1,29 +1,30 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
+import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
+import Status from "components/ReportingRequirement/Status";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { JSONSchema7 } from "json-schema";
+import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportForm_projectRevision$key } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import FormBase from "./FormBase";
-import SavingIndicator from "./SavingIndicator";
 import {
   addReportFormChange,
-  updateReportFormChange,
   deleteReportFormChange,
-  stageReportFormChanges,
   getSortedReports,
+  stageReportFormChanges,
+  updateReportFormChange,
 } from "./reportingRequirementFormChangeFunctions";
-import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
-import StatusBadge from "components/StatusBadge";
+import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
-import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 
 interface Props {
   onSubmit: () => void;
@@ -93,13 +94,15 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
   const [addAnnualReportMutation, isAdding] =
     useAddReportingRequirementToRevision();
 
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
-  const [discardFormChange] = useDiscardFormChange(
+  const [discardFormChange] = useDiscardReportingRequirementFormChange(
+    "Annual",
     projectRevision.projectAnnualReportFormChanges.__id
   );
 
@@ -139,7 +142,12 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
       <h3>Status</h3>
-      Status of Annual Reports <StatusBadge variant={variant} />
+      <Status variant={variant} reportType={"Annual"} />
+
+      <ReportDueIndicator
+        reportTitle="Annual Report"
+        reportDueFormChange={projectRevision.upcomingAnnualReportFormChange}
+      />
       <FormBorder>
         <Button
           variant="secondary"

@@ -2,7 +2,6 @@ import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
-import StatusBadge from "components/StatusBadge";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
 import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
@@ -25,6 +24,7 @@ import {
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
+import Status from "components/ReportingRequirement/Status";
 
 interface Props {
   onSubmit: () => void;
@@ -134,7 +134,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
       <h3>Status</h3>
-      Status of Quarterly Reports <StatusBadge variant={variant} />
+      <Status variant={variant} reportType={"Quarterly"} />
       <ReportDueIndicator
         reportTitle="Quarterly Report"
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
