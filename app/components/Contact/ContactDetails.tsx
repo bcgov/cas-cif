@@ -1,0 +1,49 @@
+import { graphql, useFragment } from "react-relay";
+import { ContactDetails_contact$key } from "__generated__/ContactDetails_contact.graphql";
+
+interface Props {
+  contact: ContactDetails_contact$key;
+}
+
+const ContactDetails: React.FC<Props> = ({ contact }) => {
+  const contactDetails = useFragment(
+    graphql`
+      fragment ContactDetails_contact on Contact {
+        email
+        companyName
+        contactPosition
+      }
+    `,
+    contact
+  );
+
+  const { email, companyName, contactPosition } = contactDetails;
+
+  return (
+    <div>
+      <p>
+        <span>Email</span> {email}
+      </p>
+      {companyName && (
+        <p>
+          <span>Company</span> {companyName}
+        </p>
+      )}
+      {contactPosition && (
+        <p>
+          <span>Position</span> {contactPosition}
+        </p>
+      )}
+      <style jsx>{`
+        div p {
+          margin-bottom: 0;
+        }
+        div span {
+          font-weight: bold;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ContactDetails;
