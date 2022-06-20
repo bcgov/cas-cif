@@ -136,6 +136,7 @@ describe("the new project page", () => {
   it("properly displays validation errors", () => {
     // load more projects to trigger unique proposal reference error
     cy.sqlFixture("dev/004_cif_project");
+    cy.sqlFixture("dev/006_commit_project_revision");
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");
@@ -236,6 +237,9 @@ describe("the new project page", () => {
   });
 
   it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
+    cy.sqlFixture("dev/004_cif_project");
+    cy.sqlFixture("dev/005_cif_reporting_requirement");
+    cy.sqlFixture("dev/006_commit_project_revision");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
@@ -280,6 +284,9 @@ describe("the new project page", () => {
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
     cy.get('[aria-label="General Comments"]').clear().type("I ");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByText(/Quarterly Report 1/i).should("not.exist");
@@ -365,6 +372,7 @@ describe("the new project page", () => {
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Edit quarterly reports/i).click();
+    cy.findByText(/Quarterly report 1/i).click();
     cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
 
     cy.findByRole("button", { name: /undo changes/i }).click();
@@ -376,6 +384,7 @@ describe("the new project page", () => {
     // undo annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Edit annual reports/i).click();
+    cy.findByText(/annual report 1/i).click();
     cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
 
     cy.findByRole("button", { name: /undo changes/i }).click();
@@ -387,6 +396,9 @@ describe("the new project page", () => {
     // undo milestone reports
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Edit milestone 1/i).click();
+    cy.get("h3")
+      .contains(/Milestone 1/i)
+      .click();
     cy.get('[aria-label*="Description"]').clear().type("I will be undone");
 
     cy.findByRole("button", { name: /undo changes/i }).click();
@@ -599,6 +611,7 @@ describe("the new project page", () => {
 
     // edit milestone reports
     cy.contains("Review and Submit Project");
+    cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
     cy.findByRole("button", { name: /Milestone reports/i }).click();
     cy.findByText(/Edit milestone 1/i).click();
     cy.get('[aria-label*="Milestone Description"]')
