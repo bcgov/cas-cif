@@ -39,7 +39,7 @@ values
   ('Cement'),
   ('Lime'),
   ('Refining Oil & Gas'),
-  ('Midstream; Oil & Gas'),
+  ('Midstream Oil & Gas'),
   ('Upstream Oil & Gas'),
   ('Mining'),
   ('Pulp & Paper'),
