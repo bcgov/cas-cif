@@ -154,7 +154,7 @@ describe("the new project page", () => {
       component: "Project Overview Form",
       variant: "with errors",
     });
-    cy.get(".error-detail").should("have.length", 7);
+    cy.get(".error-detail").should("have.length", 8);
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 
@@ -243,6 +243,7 @@ describe("the new project page", () => {
       "Emissions Performance",
       "2020",
       "first operator legal name (AB1234567)",
+      "Cement",
       "TEST-123-12345",
       "Foo",
       "Bar",
@@ -320,6 +321,7 @@ describe("the new project page", () => {
       "Emissions Performance",
       "2020",
       "first operator legal name (AB1234567)",
+      "Cement",
       "TEST-123-12345",
       "Foo",
       "Bar",

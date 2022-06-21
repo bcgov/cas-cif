@@ -74,6 +74,7 @@ Cypress.Commands.add(
     fundingStream,
     fundingStreamYear,
     operatorName,
+    sectorName,
     proposalReference,
     projectName,
     summary,
@@ -85,6 +86,8 @@ Cypress.Commands.add(
     cy.findByLabelText(/Funding Stream RFP/i).select(fundingStreamYear);
     cy.findByLabelText(/Operator Name/i).click();
     cy.contains(operatorName).click();
+    cy.findByLabelText("Sector").click();
+    cy.contains(sectorName).click();
     cy.findByLabelText(/Proposal Reference/i).type(proposalReference);
     cy.findByLabelText(/Project Name/i).type(projectName);
     cy.findByLabelText(/Summary/i).type(summary);

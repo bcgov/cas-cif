@@ -36,29 +36,20 @@ export const createProjectUiSchema = (
       "totalFundingRequest",
       "projectStatus",
       "projectStatusId",
+      "sectorName",
+      "additionalSectorInformation",
     ],
     proposalReference: {
-      "bcgov:size": "small",
       "ui:help": <small>(e.g. 2020-RFP-1-ABCD-123)</small>,
-    },
-    projectName: {
-      "ui:col-md": 12,
-      "bcgov:size": "small",
     },
     totalFundingRequest: {
       "ui:widget": "MoneyWidget",
-      "ui:col-md": 12,
-      "bcgov:size": "small",
     },
     summary: {
-      "ui:col-md": 12,
       "ui:widget": "TextAreaWidget",
-      "bcgov:size": "small",
     },
     operatorId: {
       "ui:placeholder": "Select an Operator",
-      "ui:col-md": 12,
-      "bcgov:size": "small",
       "ui:widget": "SearchWidget",
       "ui:options": {
         text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
@@ -66,8 +57,6 @@ export const createProjectUiSchema = (
     },
     fundingStreamRfpId: {
       "ui:widget": "SelectRfpWidget",
-      "ui:col-md": 12,
-      "bcgov:size": "small",
       "ui:options": {
         text: `${rfpStream}`,
         label: rfpStream ? true : false,
@@ -76,11 +65,16 @@ export const createProjectUiSchema = (
     projectStatusId: {
       "ui:placeholder": "Select a Project Status",
       "ui:widget": "SelectProjectStatusWidget",
-      "ui:col-md": 12,
-      "bcgov:size": "small",
       "ui:options": {
         text: `${projectStatus}`,
       },
+    },
+    sectorName: {
+      "ui:placeholder": "Select a Sector",
+      "ui:widget": "SearchWidget",
+    },
+    additionalSectorInformation: {
+      "ui:widget": "TextAreaWidget",
     },
   };
 };
@@ -115,6 +109,13 @@ const ProjectForm: React.FC<Props> = (props) => {
               tradeName
               bcRegistryId
               operatorCode
+            }
+          }
+        }
+        allSectors {
+          edges {
+            node {
+              sectorName
             }
           }
         }
@@ -203,6 +204,17 @@ const ProjectForm: React.FC<Props> = (props) => {
               title: `${node.legalName} (${node.bcRegistryId})`,
               enum: [node.rowId],
               value: node.rowId,
+            };
+          }),
+        },
+        sectorName: {
+          ...projectSchema.properties.sectorName,
+          anyOf: query.allSectors.edges.map(({ node }) => {
+            return {
+              type: "string",
+              title: node.sectorName,
+              enum: [node.sectorName],
+              value: node.sectorName,
             };
           }),
         },

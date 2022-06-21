@@ -24,6 +24,7 @@ util_functions/upsert_timestamp_columns [schemas/private trigger_functions/updat
 tables/cif_user 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.cif_user table
 trigger_functions/set_user_id 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif_private.set_user_id trigger function
 mutations/create_user_from_session 2021-10-21T16:10:32Z Matthieu Foucault <matthieu@button.is> # Create the cif.create_user_from_session mutation function
+tables/sector [schemas/main] 2022-06-14T21:28:12Z Dylan Leard <dylan@button.is> # Table for industry sectors used by the CleanBC Industry Fund
 tables/funding_stream 2021-12-01T05:19:11Z Alex Zorkin <alex@bigthink.io> # adding funding_stream table to plan
 tables/funding_stream_rfp 2021-12-15T00:47:25Z Alex Zorkin <alex@bigthink.io> # add funding stream rfp table
 tables/project_status 2021-12-21T21:19:31Z Alex Zorkin <alex@bigthink.io> # creating project_status table
