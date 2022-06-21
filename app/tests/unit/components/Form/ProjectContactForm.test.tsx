@@ -139,7 +139,7 @@ describe("The ProjectContactForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    const addButton = screen.getByText("Add");
+    const addButton = screen.getByText(/add secondary contact/i);
     addButton.click();
 
     expect(
