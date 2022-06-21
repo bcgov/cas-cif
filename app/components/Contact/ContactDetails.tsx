@@ -3,9 +3,10 @@ import { ContactDetails_contact$key } from "__generated__/ContactDetails_contact
 
 interface Props {
   contact: ContactDetails_contact$key;
+  className?: string;
 }
 
-const ContactDetails: React.FC<Props> = ({ contact }) => {
+const ContactDetails: React.FC<Props> = ({ contact, className }) => {
   const contactDetails = useFragment(
     graphql`
       fragment ContactDetails_contact on Contact {
@@ -20,7 +21,7 @@ const ContactDetails: React.FC<Props> = ({ contact }) => {
   const { email, companyName, contactPosition } = contactDetails;
 
   return (
-    <div>
+    <div className={className}>
       <p>
         <span>Email</span> {email}
       </p>
@@ -40,6 +41,9 @@ const ContactDetails: React.FC<Props> = ({ contact }) => {
         }
         div span {
           font-weight: bold;
+        }
+        div {
+          margin-bottom: 1.25em;
         }
       `}</style>
     </div>
