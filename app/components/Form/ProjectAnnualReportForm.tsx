@@ -6,7 +6,6 @@ import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicat
 import Status from "components/ReportingRequirement/Status";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
-import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
@@ -119,20 +118,15 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectAnnualReportFormChanges]);
 
-  const reportDueDate =
+  const upcomingReportDueDate =
     projectRevision.upcomingAnnualReportFormChange?.asReportingRequirement
       .reportDueDate;
-  const overdue = useMemo(() => {
-    return isOverdue(reportDueDate);
-  }, [reportDueDate]);
 
   const reportSubmittedDates = useMemo(() => {
     return projectRevision.projectAnnualReportFormChanges.edges.map(
       ({ node }) => node.newFormData.submittedDate
     );
   }, [projectRevision.projectAnnualReportFormChanges.edges]);
-
-  const variant = getReportingStatus(reportSubmittedDates, overdue);
 
   return (
     <div>
@@ -142,7 +136,11 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
       <h3>Status</h3>
-      <Status variant={variant} reportType={"Annual"} />
+      <Status
+        upcomingReportDueDate={upcomingReportDueDate}
+        reportSubmittedDates={reportSubmittedDates}
+        reportType={"Annual"}
+      />
 
       <ReportDueIndicator
         reportTitle="Annual Report"

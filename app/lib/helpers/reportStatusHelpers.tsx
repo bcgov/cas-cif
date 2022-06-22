@@ -1,56 +1,63 @@
 import StatusBadge from "components/StatusBadge";
 import { DateTime } from "luxon";
 
-export const daysUntilReportDue = (reportDueDate: string) => {
-  const diff = DateTime.fromISO(reportDueDate, {
-    setZone: true,
-    locale: "en-CA",
-  }).diff(
-    // Current date without time information
-    DateTime.now().setZone("America/Vancouver").startOf("day"),
-    "days"
-  );
-
-  return Math.ceil(diff.days);
-};
-
-export const isOverdue = (reportDueDate: string | undefined) => {
-  return reportDueDate ? daysUntilReportDue(reportDueDate) < 0 : false;
-};
-
-export const getReportingStatus = (
-  reportSubmittedDates: string[],
-  isReportOverdue: boolean
-) => {
-  const reportsExist = reportSubmittedDates?.length !== 0;
-
-  if (!reportsExist) {
-    return "none";
-  } else if (reportsExist && !reportSubmittedDates.includes(undefined)) {
-    return "complete";
-  } else if (isReportOverdue) {
-    return "late";
-  } else {
-    return "onTrack";
-  }
-};
-
-export const getBadgeForDates = (
-  reportDueDateString: string,
-  submittedDateString: string
-) => {
-  const parsedDueDate =
+export const parseDueDate = (reportDueDateString: string) => {
+  return (
     reportDueDateString &&
     DateTime.fromISO(reportDueDateString, {
       setZone: true,
       locale: "en-CA",
-    }).startOf("day");
-  const parsedSubmittedDate =
+    }).startOf("day")
+  );
+};
+
+export const parseSubmittedDate = (submittedDateString: string) => {
+  return (
     submittedDateString &&
     DateTime.fromISO(submittedDateString, {
       setZone: true,
       locale: "en-CA",
-    }).startOf("day");
+    }).startOf("day")
+  );
+};
+
+export const getDaysUntilDue = (reportDueDate: DateTime) => {
+  if (!reportDueDate) {
+    return null;
+  }
+  return reportDueDate.diff(
+    // Current date without time information
+    DateTime.now().setZone("America/Vancouver").startOf("day"),
+    "days"
+  ).days;
+};
+
+export const getBadgeForOverallReportStatus = (
+  upcomingReportDueDateString: string,
+  reportSubmittedDates: string[]
+) => {
+  const parsedDueDate = parseDueDate(upcomingReportDueDateString);
+  const reportsExist = reportSubmittedDates?.length !== 0;
+  if (!reportsExist) {
+    return <StatusBadge variant="none" />;
+  } else if (reportsExist && !reportSubmittedDates.includes(undefined)) {
+    return <StatusBadge variant="complete" />;
+  } else {
+    const dueIn = getDaysUntilDue(parsedDueDate);
+    return dueIn < 0 ? (
+      <StatusBadge variant="late" />
+    ) : (
+      <StatusBadge variant="onTrack" />
+    );
+  }
+};
+
+export const getBadgeForIndividualReportStatus = (
+  reportDueDateString: string,
+  submittedDateString: string
+) => {
+  const parsedDueDate = parseDueDate(reportDueDateString);
+  const parsedSubmittedDate = parseSubmittedDate(submittedDateString);
 
   if (parsedDueDate && parsedSubmittedDate) {
     {
@@ -64,11 +71,7 @@ export const getBadgeForDates = (
       );
     }
   } else if (parsedDueDate && !parsedSubmittedDate) {
-    const dueIn = parsedDueDate.diff(
-      // Current date without time information
-      DateTime.now().setZone("America/Vancouver").startOf("day"),
-      "days"
-    ).days;
+    const dueIn = getDaysUntilDue(parsedDueDate);
 
     return dueIn < 0 ? (
       <StatusBadge variant="late" />

@@ -1,14 +1,23 @@
-import StatusBadge from "components/StatusBadge";
+import { getBadgeForOverallReportStatus } from "lib/helpers/reportStatusHelpers";
 
 interface Props {
   reportType: "Quarterly" | "Annual" | "Milestone";
-  variant: "complete" | "late" | "onTrack" | "inReview" | "none";
+  upcomingReportDueDate: string;
+  reportSubmittedDates: string[];
 }
 
-const Status: React.FC<Props> = ({ reportType, variant }) => {
+const Status: React.FC<Props> = ({
+  reportType,
+  upcomingReportDueDate,
+  reportSubmittedDates,
+}) => {
   return (
     <div>
-      Status of {reportType} Reports <StatusBadge variant={variant} />
+      Status of {reportType} Reports{" "}
+      {getBadgeForOverallReportStatus(
+        upcomingReportDueDate,
+        reportSubmittedDates
+      )}
       <style jsx>{`
         div {
           margin-bottom: 1em;

@@ -1,10 +1,11 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
+import Status from "components/ReportingRequirement/Status";
 import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
-import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
@@ -23,8 +24,6 @@ import {
 } from "./reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
-import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
-import Status from "components/ReportingRequirement/Status";
 
 interface Props {
   onSubmit: () => void;
@@ -111,20 +110,15 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectQuarterlyReportFormChanges]);
 
-  const reportDueDate =
+  const upcomingReportDueDate =
     projectRevision.upcomingQuarterlyReportFormChange?.asReportingRequirement
       .reportDueDate;
-  const overdue = useMemo(() => {
-    return isOverdue(reportDueDate);
-  }, [reportDueDate]);
 
   const reportSubmittedDates = useMemo(() => {
     return projectRevision.projectQuarterlyReportFormChanges.edges.map(
       ({ node }) => node.newFormData.submittedDate
     );
   }, [projectRevision.projectQuarterlyReportFormChanges.edges]);
-
-  const variant = getReportingStatus(reportSubmittedDates, overdue);
 
   return (
     <div>
@@ -134,7 +128,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
       <h3>Status</h3>
-      <Status variant={variant} reportType={"Quarterly"} />
+      <Status
+        upcomingReportDueDate={upcomingReportDueDate}
+        reportSubmittedDates={reportSubmittedDates}
+        reportType={"Quarterly"}
+      />
       <ReportDueIndicator
         reportTitle="Quarterly Report"
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
