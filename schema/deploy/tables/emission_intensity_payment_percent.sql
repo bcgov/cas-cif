@@ -5,7 +5,7 @@ begin;
 
 create table cif.emission_intensity_payment_percent(
   id integer primary key generated always as identity,
-  max_emission_intensity_performance numeric not null,
+  max_emission_intensity_performance numeric unique not null,
   payment_percentage numeric not null
 );
 
@@ -62,7 +62,6 @@ values
   (38, 12),
   (39, 14),
   (40, 15),
-  (41, 17),
   (41, 17),
   (42, 18),
   (43, 20),
