@@ -9,6 +9,8 @@ select columns_are(
   'report_type',
   ARRAY[
     'name',
+    'form_schema',
+    'is_milestone',
     'created_at',
     'created_by',
     'updated_at',
