@@ -1,20 +1,10 @@
 import StatusBadge from "components/StatusBadge";
 import { DateTime } from "luxon";
 
-export const parseDueDate = (reportDueDateString: string) => {
+export const parseStringDate = (stringDate: string) => {
   return (
-    reportDueDateString &&
-    DateTime.fromISO(reportDueDateString, {
-      setZone: true,
-      locale: "en-CA",
-    }).startOf("day")
-  );
-};
-
-export const parseSubmittedDate = (submittedDateString: string) => {
-  return (
-    submittedDateString &&
-    DateTime.fromISO(submittedDateString, {
+    stringDate &&
+    DateTime.fromISO(stringDate, {
       setZone: true,
       locale: "en-CA",
     }).startOf("day")
@@ -25,18 +15,20 @@ export const getDaysUntilDue = (reportDueDate: DateTime) => {
   if (!reportDueDate) {
     return null;
   }
-  return reportDueDate.diff(
-    // Current date without time information
-    DateTime.now().setZone("America/Vancouver").startOf("day"),
-    "days"
-  ).days;
+  return Math.floor(
+    reportDueDate.diff(
+      // Current date without time information
+      DateTime.now().setZone("America/Vancouver").startOf("day"),
+      "days"
+    ).days
+  );
 };
 
 export const getBadgeForOverallReportStatus = (
   upcomingReportDueDateString: string,
   reportSubmittedDates: string[]
 ) => {
-  const parsedDueDate = parseDueDate(upcomingReportDueDateString);
+  const parsedDueDate = parseStringDate(upcomingReportDueDateString);
   const reportsExist = reportSubmittedDates?.length !== 0;
   if (!reportsExist) {
     return <StatusBadge variant="none" />;
@@ -56,8 +48,8 @@ export const getBadgeForIndividualReportStatus = (
   reportDueDateString: string,
   submittedDateString: string
 ) => {
-  const parsedDueDate = parseDueDate(reportDueDateString);
-  const parsedSubmittedDate = parseSubmittedDate(submittedDateString);
+  const parsedDueDate = parseStringDate(reportDueDateString);
+  const parsedSubmittedDate = parseStringDate(submittedDateString);
 
   if (parsedDueDate && parsedSubmittedDate) {
     {
