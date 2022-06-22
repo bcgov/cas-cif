@@ -54,6 +54,7 @@ const mockQueryPayload = {
                 },
                 formChange: {
                   id: "Change 2 ID",
+                  rowId: 9,
                   operation: "CREATE",
                   changeStatus: "pending",
                   newFormData: {
@@ -73,6 +74,7 @@ const mockQueryPayload = {
                 },
                 formChange: {
                   id: "Change 3 ID",
+                  rowId: 10,
                   operation: "UPDATE",
                   changeStatus: "pending",
                   newFormData: {
@@ -433,5 +435,29 @@ describe("The ProjectManagerForm", () => {
     expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
       "An error occurred while removing the manager from the project."
     );
+  });
+
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        // The whole `formChange` object is null before a manager is selected, so there's no form change id (comes from `rowId`). TODO: update this test and mock data when/if that changes.
+        formChangesIds: [undefined, 9, 10],
+      },
+    });
   });
 });

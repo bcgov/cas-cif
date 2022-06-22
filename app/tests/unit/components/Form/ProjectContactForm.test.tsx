@@ -32,6 +32,7 @@ const mockQueryPayload = {
           {
             node: {
               id: "Form ID 1",
+              rowId: 4,
               operation: "CREATE",
               changeStatus: "pending",
               newFormData: {
@@ -44,6 +45,7 @@ const mockQueryPayload = {
           {
             node: {
               id: "Form ID 2",
+              rowId: 5,
               operation: "CREATE",
               changeStatus: "pending",
               newFormData: {
@@ -56,6 +58,7 @@ const mockQueryPayload = {
           {
             node: {
               id: "Form ID 3",
+              rowId: 6,
               operation: "CREATE",
               changeStatus: "pending",
               newFormData: {
@@ -345,6 +348,29 @@ describe("The ProjectContactForm", () => {
       formChangePatch: {
         changeStatus: "pending",
         newFormData: { contactIndex: 1, projectId: 10, contactId: 1 },
+      },
+    });
+  });
+
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [4, 5, 6],
       },
     });
   });
