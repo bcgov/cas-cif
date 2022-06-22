@@ -9,12 +9,10 @@ select columns_are(
   'payment',
   ARRAY[
     'id',
-    'amount',
-    'date_issued',
-    'date_paid',
+    'gross_amount',
+    'net_amount',
+    'date_sent_to_csnr',
     'comment',
-    'transaction_id',
-    'status',
     'reporting_requirement_id',
     'created_at',
     'created_by',
@@ -44,11 +42,11 @@ insert into cif.reporting_requirement
   values ('2020-01-01', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual', 1);
 
 
-insert into cif.payment (amount, date_issued, date_paid, comment, transaction_id, status, reporting_requirement_id)
+insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, comment, reporting_requirement_id)
 values
-  (100, '2020-01-01', '2020-01-01', 'comment_1', 'transaction_1', 'pending', 1),
-  (200, '2021-01-01', '2020-01-02', 'comment_2', 'transaction_2', 'successful', 1),
-  (300, '2022-01-01', '2020-01-03', 'comment_3', 'transaction_3', 'cancelled', 1);
+  (100, 50, '2020-01-01', 'comment_1', 1),
+  (200, 100, '2021-01-01', 'comment_2', 1),
+  (300, 150, '2022-01-01', 'comment_3', 1);
 
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
@@ -67,8 +65,8 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.payment (amount, date_issued, date_paid, comment, transaction_id, status, reporting_requirement_id)
-    values (400, '2023-01-01', '2020-01-04', 'comment_4', 'transaction_4', 'pending', 1);
+    insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, comment, reporting_requirement_id)
+    values (400, 200, '2023-01-01', 'comment_4', 1);
   $$,
     'cif_admin can insert data in payment table'
 );
