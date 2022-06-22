@@ -19,8 +19,7 @@ const testQuery = graphql`
 
 const mockPayload = {
   Contact() {
-    const result: ContactDetails_contact = {
-      " $fragmentType": "ContactDetails_contact",
+    const result: Partial<ContactDetails_contact> = {
       email: "foo@bar.com",
       companyName: "bar",
       contactPosition: "mngr",
