@@ -75,7 +75,6 @@ tables/budget_item 2022-05-02T18:26:46Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca
 tables/payment 2022-05-02T19:01:17Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.payment table
 computed_columns/project_latest_committed_project_revision [tables/project tables/project_revision] 2022-05-02T18:21:58Z Mike Vesprini <mike@button.is> # A computed column returning the latest committed revision for a project
 util_functions/get_form_status [tables/form_change] 2022-05-04T21:17:49Z Dylan Leard <dylan@button.is> # Helper function returns the status for a form_change
-computed_columns/project_revision_all_project_manager_form_changes_by_label [tables/form_change tables/project_manager] 2022-05-05T20:33:54Z Dylan Leard <dylan@button.is> # Computed column to retrieve the set of form changes (including archived form_changes) related to the project manager association by project_manager_label, within a project revision
 computed_columns/project_revision_tasklist_status_for 2022-05-10T21:56:17Z Brianna Cerkiewicz <brianna@button.is> # Computed column to return a tasklist status for any tasklist form
 computed_columns/project_revision_form_changes_for [tables/form_change tables/project_revision] 2022-05-16T21:52:59Z Dylan Leard <dylan@button.is> # Computed column dynamically retrieves a set of form_change records relating to a project revision
 mutations/undo_form_changes 2022-05-24T21:49:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add custom mutation to undo form changes in a project revision
