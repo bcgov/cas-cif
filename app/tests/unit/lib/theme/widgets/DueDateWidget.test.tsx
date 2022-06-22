@@ -97,4 +97,18 @@ describe("The DueDateWidget", () => {
     expect(handleOnChange).toHaveBeenCalledWith(expectedDate);
     Settings.defaultZone = "America/Vancouver";
   });
+
+  it("succesfully clears the date", () => {
+    const handleOnChange = jest.fn();
+    const props: any = {
+      id: "test-id",
+      onChange: handleOnChange,
+      label: "Report Due Date",
+      value: "2020-01-01T23:59:59.999-07:00",
+      required: true,
+    };
+    render(<DueDateWidget id="widget-id" {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: /close/i }));
+    expect(handleOnChange).toHaveBeenCalledWith(null);
+  });
 });
