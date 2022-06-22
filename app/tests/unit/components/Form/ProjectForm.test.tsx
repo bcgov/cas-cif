@@ -331,7 +331,7 @@ describe("The Project Form", () => {
       },
     });
   });
-  
+
   it("displays a sector dropdown with selectable choices", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -359,11 +359,9 @@ describe("The Project Form", () => {
       formChangePatch: {
         changeStatus: "pending",
         newFormData: { sectorName: "test sector 1" },
-      }
+      },
     });
   });
-});
-
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
