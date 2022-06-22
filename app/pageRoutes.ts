@@ -26,9 +26,12 @@ export const getContactsPageRoute = () => ({
 
 export const getContactFormPageRoute = (
   contactFormId: string,
+  // Optional queries are used to create new contact and redirect the user to back to the project contact form
   projectContactFormId?: string,
   projectId?: number,
-  contactIndex?: number
+  contactIndex?: number,
+  projectRevisionRowId?: number,
+  connectionString?: string
 ) => ({
   pathname: `/cif/contact/form/[contactForm]/`,
   query: {
@@ -36,6 +39,8 @@ export const getContactFormPageRoute = (
     projectContactFormId: projectContactFormId,
     projectId: projectId,
     contactIndex: contactIndex,
+    projectRevisionRowId: projectRevisionRowId,
+    connectionString: connectionString,
   },
 });
 

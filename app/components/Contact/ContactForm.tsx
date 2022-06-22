@@ -6,6 +6,7 @@ import { FormPageFactoryComponentProps } from "lib/pages/relayFormPageFactory";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useRouter } from "next/router";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
+import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 
 const uiSchema = {
   comments: { "ui:widget": "TextAreaWidget" },
@@ -17,6 +18,59 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
 
   const [updateFormChange] = useUpdateFormChange();
   const [applyUpdateFormChangeMutation] = useUpdateProjectContactFormChange();
+  const [addContactMutation] = useAddContactToRevision();
+
+  // Based on router queries we can determine if the user is coming from project contact form
+  const comingFromProjectContactForm = [
+    router?.query?.projectRevisionRowId,
+    router?.query?.contactIndex,
+    router?.query?.projectId,
+    router?.query?.connectionString,
+  ].every(Boolean);
+
+  // If we don't have the projectContactFormId(means we don't have the primary contact form either) we need to create one
+  const existingProjectContactFormId = router?.query?.projectContactFormId;
+
+  const handleAfterFormSubmitting = (response: any) => {
+    const updateProjectContactFormChange = (res?: any) => {
+      applyUpdateFormChangeMutation({
+        variables: {
+          input: {
+            id: router?.query?.projectContactFormId as string,
+            formChangePatch: {
+              newFormData: {
+                contactId:
+                  response.updateFormChange.formChange.formDataRecordId,
+                projectId: router?.query?.projectId as string,
+                contactIndex: Number(router?.query?.contactIndex),
+              },
+              changeStatus: "pending",
+            },
+          },
+        },
+        debounceKey:
+          existingProjectContactFormId ||
+          res.addContactToRevision.formChangeEdge.node.id,
+        onCompleted: () => router.back(),
+      });
+    };
+
+    if (existingProjectContactFormId) {
+      updateProjectContactFormChange();
+    } else {
+      // If we don't have the projectContactFormId(means we don't have the primary contact form either) we need to create one
+      addContactMutation({
+        variables: {
+          input: {
+            revisionId: Number(router?.query?.projectRevisionRowId),
+            contactIndex: Number(router?.query?.contactIndex),
+          },
+          connections: [router?.query?.connectionString as string],
+        },
+        onCompleted: (res) => updateProjectContactFormChange(res),
+      });
+    }
+  };
 
   // By adding this submit, we are overriding the default submit that is provided by relayFormPageFactory
   const handleSubmit = ({ formData }) => {
@@ -32,26 +86,7 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
         },
       },
       debounceKey: contactFormId,
-      onCompleted: (response) =>
-        // Passing the newly created contact id to this mutation
-        applyUpdateFormChangeMutation({
-          variables: {
-            input: {
-              id: router?.query?.projectContactFormId as string,
-              formChangePatch: {
-                newFormData: {
-                  contactId:
-                    response.updateFormChange.formChange.formDataRecordId,
-                  projectId: router?.query?.projectId as string,
-                  contactIndex: Number(router?.query?.contactIndex),
-                },
-                changeStatus: "pending",
-              },
-            },
-          },
-          debounceKey: router?.query?.projectContactFormId as string,
-          onCompleted: () => router.back(),
-        }),
+      onCompleted: (response) => handleAfterFormSubmitting(response),
       onError: (e) => console.log(e),
       updater: (store) => {
         // Invalidate the entire store, to make sure that we don't display any stale data after redirecting to the next page.
@@ -61,19 +96,23 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
     });
   };
 
+  // By adding this handler, we are overriding the default onDiscard that is provided by relayFormPageFactory
+  const handleDiscard = () =>
+    comingFromProjectContactForm ? router.back() : props.onDiscard();
+
   return (
     <FormBase
       {...props}
       schema={contactSchema as JSONSchema7}
       uiSchema={uiSchema}
-      // If we have contactIndex(this can be revisionId or connectionString as well) in the route query, we need to override the default onSubmit handler
+      // If the use is coming from project contact form we need to override the default onSubmit handler
       // This is intended to be used for adding new contact and linking it to the project contact form
-      onSubmit={router?.query?.contactIndex ? handleSubmit : props.onSubmit}
+      onSubmit={comingFromProjectContactForm ? handleSubmit : props.onSubmit}
     >
       <Button type="submit" style={{ marginRight: "1rem" }}>
         Submit
       </Button>
-      <Button type="button" variant="secondary" onClick={props.onDiscard}>
+      <Button type="button" variant="secondary" onClick={handleDiscard}>
         Discard Changes
       </Button>
     </FormBase>
