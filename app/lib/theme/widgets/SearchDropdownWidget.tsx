@@ -4,6 +4,8 @@ import Widgets from "@rjsf/core/dist/cjs/components/widgets";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { InputAdornment } from "@mui/material";
+import Search from "@mui/icons-material/Search";
 
 const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   const { id, onChange, schema, placeholder, readonly } = props;
@@ -52,7 +54,15 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
             {...params}
             placeholder={placeholder}
             variant="standard"
-            InputProps={{ ...params.InputProps, disableUnderline: true }}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
             sx={{
               padding: "5px",
               background: "white",
