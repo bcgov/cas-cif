@@ -1,29 +1,29 @@
--- Deploy cif:tables/emission_intensity_payment_percentage to pg
+-- Deploy cif:tables/emission_intensity_payment_percent to pg
 -- requires: schemas/main
 
 begin;
 
-create table cif.emission_intensity_payment_percentage(
+create table cif.emission_intensity_payment_percent(
   id integer primary key generated always as identity,
   max_emission_intensity_performance numeric not null,
   payment_percentage numeric not null
 );
 
-select cif_private.upsert_timestamp_columns('cif', 'emission_intensity_payment_percentage');
+select cif_private.upsert_timestamp_columns('cif', 'emission_intensity_payment_percent');
 
 do
 $grant$
 begin
 
 -- Grant cif_internal permissions
-perform cif_private.grant_permissions('select', 'emission_intensity_payment_percentage', 'cif_internal');
-perform cif_private.grant_permissions('insert', 'emission_intensity_payment_percentage', 'cif_internal');
-perform cif_private.grant_permissions('update', 'emission_intensity_payment_percentage', 'cif_internal');
+perform cif_private.grant_permissions('select', 'emission_intensity_payment_percent', 'cif_internal');
+perform cif_private.grant_permissions('insert', 'emission_intensity_payment_percent', 'cif_internal');
+perform cif_private.grant_permissions('update', 'emission_intensity_payment_percent', 'cif_internal');
 
 -- Grant cif_admin permissions
-perform cif_private.grant_permissions('select', 'emission_intensity_payment_percentage', 'cif_admin');
-perform cif_private.grant_permissions('insert', 'emission_intensity_payment_percentage', 'cif_admin');
-perform cif_private.grant_permissions('update', 'emission_intensity_payment_percentage', 'cif_admin');
+perform cif_private.grant_permissions('select', 'emission_intensity_payment_percent', 'cif_admin');
+perform cif_private.grant_permissions('insert', 'emission_intensity_payment_percent', 'cif_admin');
+perform cif_private.grant_permissions('update', 'emission_intensity_payment_percent', 'cif_admin');
 
 -- Grant cif_external no permissions
 -- Grant cif_guest no permissions
@@ -31,7 +31,7 @@ perform cif_private.grant_permissions('update', 'emission_intensity_payment_perc
 end
 $grant$;
 
-comment on table cif.emission_intensity_payment_percentage is $$
+comment on table cif.emission_intensity_payment_percent is $$
   Table containing information about how CIF emission_intensity values map to a payment_percentage.
   This table is a lookup table that maps the emission intensity performance of a project to a payment percentage used to determine payments.
   The calculation for determininng emission intensity performance uses three metrics and a calculation.
@@ -42,14 +42,14 @@ comment on table cif.emission_intensity_payment_percentage is $$
   Calculation:
   - Emission Intensity Performance = (BEI - PEI) / (BEI - TEI) * 100
 $$;
-comment on column cif.emission_intensity_payment_percentage.id is 'Unique ID for the emission_intensity_payment_percentage';
-comment on column cif.emission_intensity_payment_percentage.max_emission_intensity_performance is $$
+comment on column cif.emission_intensity_payment_percent.id is 'Unique ID for the emission_intensity_payment_percent';
+comment on column cif.emission_intensity_payment_percent.max_emission_intensity_performance is $$
   The calculated emission intensity performance.
   This is stored as a maxiumum as any value 30 and below maps to 0% and any value 100 and above (stored as Infinity) maps to 100%
 $$;
-comment on column cif.emission_intensity_payment_percentage.payment_percentage is 'The payment percentage linked to the value of max_emission_intensity_performance';
+comment on column cif.emission_intensity_payment_percent.payment_percentage is 'The payment percentage linked to the value of max_emission_intensity_performance';
 
-insert into cif.emission_intensity_payment_percentage(max_emission_intensity_performance, payment_percentage)
+insert into cif.emission_intensity_payment_percent(max_emission_intensity_performance, payment_percentage)
 values
   (30, 0),
   (31, 2),
