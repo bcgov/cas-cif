@@ -31960,7 +31960,7 @@ input DeleteEmissionIntensityPaymentPercentByMaxEmissionIntensityPerformanceInpu
   """
     The calculated emission intensity performance.
     This is stored as a maxiumum as any value 30 and below maps to 0% and any value 100 and above (stored as Infinity) maps to 100%
-
+  
   """
   maxEmissionIntensityPerformance: BigFloat!
 }
@@ -32879,7 +32879,7 @@ type EmissionIntensityPaymentPercent implements Node {
   """
     The calculated emission intensity performance.
     This is stored as a maxiumum as any value 30 and below maps to 0% and any value 100 and above (stored as Infinity) maps to 100%
-
+  
   """
   maxEmissionIntensityPerformance: BigFloat!
 
@@ -33009,7 +33009,7 @@ input EmissionIntensityPaymentPercentInput {
   """
     The calculated emission intensity performance.
     This is stored as a maxiumum as any value 30 and below maps to 0% and any value 100 and above (stored as Infinity) maps to 100%
-
+  
   """
   maxEmissionIntensityPerformance: BigFloat!
 
@@ -33044,7 +33044,7 @@ input EmissionIntensityPaymentPercentPatch {
   """
     The calculated emission intensity performance.
     This is stored as a maxiumum as any value 30 and below maps to 0% and any value 100 and above (stored as Infinity) maps to 100%
-
+  
   """
   maxEmissionIntensityPerformance: BigFloat
 
@@ -37679,7 +37679,7 @@ type MilestoneReport implements Node {
     The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
     Automatic calculations are as follows:
       - 30 days before report due date for general milestones
-
+  
   """
   substantialCompletionDate: Datetime!
 
@@ -37844,7 +37844,7 @@ input MilestoneReportInput {
     The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
     Automatic calculations are as follows:
       - 30 days before report due date for general milestones
-
+  
   """
   substantialCompletionDate: Datetime!
 
@@ -37889,7 +37889,7 @@ input MilestoneReportPatch {
     The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
     Automatic calculations are as follows:
       - 30 days before report due date for general milestones
-
+  
   """
   substantialCompletionDate: Datetime
 
@@ -53554,7 +53554,7 @@ input UpdateEmissionIntensityPaymentPercentByMaxEmissionIntensityPerformanceInpu
   """
     The calculated emission intensity performance.
     This is stored as a maxiumum as any value 30 and below maps to 0% and any value 100 and above (stored as Infinity) maps to 100%
-
+  
   """
   maxEmissionIntensityPerformance: BigFloat!
 }
