@@ -86,3 +86,4 @@ types/milestone_report_status_return 2022-06-01T16:57:00Z Dylan Leard <dylan@but
 computed_columns/project_revision_milestone_report_statuses [tables/form_change] 2022-05-31T23:23:44Z Dylan Leard <dylan@button.is> # Computed column to return both form completion statuses and reporting requirement statuses for individual milestones and an overall completion status
 tables/emission_intensity_payment_percent [schemas/main] 2022-06-22T18:02:47Z Dylan Leard <dylan@button.is> # Lookup table to map emission intensity performance to payment percentage
 tables/emission_intensity_report [tables/reporting_requirement] 2022-06-22T20:29:25Z Dylan Leard <dylan@button.is> # Table for emission intensity report data
+tables/milestone_report [tables/reporting_requirement] 2022-06-22T21:01:22Z Dylan Leard <dylan@button.is> # Table containing data for milestone reports
