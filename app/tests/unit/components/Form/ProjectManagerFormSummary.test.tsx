@@ -23,7 +23,7 @@ const mockQueryPayload = {
       projectRevision: {
         id: "Test Revision ID",
         isFirstRevision: false,
-        allProjectManagerFormChangesByLabel: {
+        projectManagerFormChangesByLabel: {
           edges: [
             {
               node: {

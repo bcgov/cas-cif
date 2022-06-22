@@ -144,7 +144,7 @@ describe("The Create Project page", () => {
               },
             },
           },
-          allProjectManagerFormChangesByLabel: {
+          projectManagerFormChangesByLabel: {
             edges: [
               {
                 node: {
@@ -160,6 +160,7 @@ describe("The Create Project page", () => {
                         fullName: "test manager one",
                       },
                     },
+                    operation: "CREATE",
                   },
                   projectManagerLabel: {
                     label: "Tech Team Primary",
@@ -180,6 +181,7 @@ describe("The Create Project page", () => {
                         fullName: "test manager two",
                       },
                     },
+                    operation: "CREATE",
                   },
                   projectManagerLabel: {
                     label: "Tech Team Secondary",
@@ -200,6 +202,7 @@ describe("The Create Project page", () => {
                         fullName: "test manager three",
                       },
                     },
+                    operation: "CREATE",
                   },
                   projectManagerLabel: {
                     label: "Ops Team Primary",
@@ -254,7 +257,6 @@ describe("The Create Project page", () => {
       },
     });
     pageTestingHelper.renderPage();
-
     expect(screen.getByText(/test-summary/)).toBeInTheDocument();
     expect(screen.getByText(/test-legal-name/i)).toBeInTheDocument();
     expect(screen.getByText(/test-project-name/i)).toBeInTheDocument();
