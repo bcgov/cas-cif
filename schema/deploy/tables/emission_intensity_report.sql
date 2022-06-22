@@ -47,11 +47,11 @@ comment on column cif.emission_intensity_report.reporting_requirement_id is 'For
 comment on column cif.emission_intensity_report.measurement_period_start_date is 'The date when the measurement period starts for a project';
 comment on column cif.emission_intensity_report.measurement_period_end_date is 'The date when the measurement period ends for a project';
 comment on column cif.emission_intensity_report.emission_functional_unit is 'The units in which the emissions are measured';
-comment on column cif.emission_intensity_report.emission_functional_unit is 'The units in which the production item that generates emissions are measured';
+comment on column cif.emission_intensity_report.production_functional_unit is 'The units in which the production item that generates emissions are measured';
 comment on column cif.emission_intensity_report.baseline_emission_intensity is 'The baseline emission intensity used as a benchmark for calculating emission intensity performance';
 comment on column cif.emission_intensity_report.target_emission_intensity is 'The emission intensity defined as a target after a project has completed, used in calculating emission intensity performance';
 comment on column cif.emission_intensity_report.post_project_emission_intensity is 'The actual emission intensity achieved after a project has completed, used in calculating emission intensity performance';
 comment on column cif.emission_intensity_report.total_lifetime_emission_reduction is 'The total amount of emission reduction expected from the outcome of this project';
-comment on column cif.emission_intensity_report.target_emission_intensity is 'User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded';
+comment on column cif.emission_intensity_report.adjusted_emissions_intensity_performance is 'User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded';
 
 commit;
