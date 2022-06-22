@@ -18,6 +18,10 @@ const ContactDetails: React.FC<Props> = ({ contact, className }) => {
     contact
   );
 
+  if (!contact) {
+    return null;
+  }
+
   const { email, companyName, contactPosition } = contactDetails;
 
   return (
