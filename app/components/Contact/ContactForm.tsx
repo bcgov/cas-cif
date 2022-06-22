@@ -36,12 +36,14 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
       applyUpdateFormChangeMutation({
         variables: {
           input: {
-            id: router?.query?.projectContactFormId as string,
+            id:
+              existingProjectContactFormId ||
+              res.addContactToRevision.formChangeEdge.node.id,
             formChangePatch: {
               newFormData: {
                 contactId:
                   response.updateFormChange.formChange.formDataRecordId,
-                projectId: router?.query?.projectId as string,
+                projectId: Number(router?.query?.projectId),
                 contactIndex: Number(router?.query?.contactIndex),
               },
               changeStatus: "pending",
