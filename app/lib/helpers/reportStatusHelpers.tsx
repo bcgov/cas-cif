@@ -2,6 +2,7 @@ import StatusBadge from "components/StatusBadge";
 import { DateTime } from "luxon";
 
 export const parseStringDate = (stringDate: string) => {
+  if (!stringDate) return null;
   return (
     stringDate &&
     DateTime.fromISO(stringDate, {
