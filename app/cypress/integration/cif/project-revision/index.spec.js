@@ -74,6 +74,7 @@ describe("the new project page", () => {
     cy.addDueDate(0, "2020-01-01");
     cy.get('label[for*="reportDueDate"]').should("have.length", 1);
     cy.setReportReceivedDate(0, "2019-12-31");
+    cy.findAllByRole("status").first().should("have.text", "Complete");
 
     cy.checkA11y("main", null, logAxeResults);
     cy.contains("Changes saved.");
@@ -455,7 +456,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/Annual Report 1/);
 
-    // Edit the project: change the name, delete a manager and contact, change a quarterly report date, change an annual report comment.
+    // Edit the project: change the name, delete a manager and contact, change a milestone report date, change an annual report comment, delete a quarterly report.
     // edit overview
     cy.findByText(/Project Overview/i).click();
     cy.findByRole("link", { name: "Project overview" }).click();
@@ -541,18 +542,19 @@ describe("the new project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Quarterly reports/i }).click();
     cy.findByText(/Edit quarterly reports/i).click();
-    cy.findByText("Quarterly Report 1").click();
-    cy.get('[aria-label*="Due Date"]').eq(0).click();
-    cy.get(".react-datepicker__month-select").select(0);
-    cy.get(".react-datepicker__year-select").select("1995");
-    cy.get(`.react-datepicker__day--001`)
-      .not(`.react-datepicker__day--outside-month`)
+    cy.findByText(/Quarterly Report 1/i).click();
+    cy.findAllByText(/Remove/i)
+      .first()
       .click();
+    cy.contains("Changes saved.");
+    cy.findByText(/Quarterly Report 2/i).should("not.exist");
+    cy.findByText(/No reports due/).should("be.visible");
     cy.contains("Changes saved.");
     cy.get("body").happoScreenshot({
       component: "Project Quarterly Reports Form",
       variant: "editing",
     });
+    cy.wait(1000);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Submit changes/i).click();
@@ -666,11 +668,6 @@ describe("the new project page", () => {
     cy.get("a")
       .contains(/Quarterly reports/i)
       .click();
-
-    cy.findAllByText(/Report Due Date/i)
-      .eq(0)
-      .next()
-      .contains(/Jan[.]? 1, 1995/i);
 
     cy.findByText(/Annual reports/i).click();
     cy.get("a")

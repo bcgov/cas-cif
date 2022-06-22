@@ -1,32 +1,35 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
+import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
+import Status from "components/ReportingRequirement/Status";
 import {
-  projectMilestoneSchema,
   milestoneReportUiSchema,
+  projectMilestoneSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
-import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
-import SavingIndicator from "./SavingIndicator";
 import {
   addReportFormChange,
-  updateReportFormChange,
   deleteReportFormChange,
-  stageReportFormChanges,
   getSortedReports,
+  stageReportFormChanges,
+  updateReportFormChange,
 } from "./reportingRequirementFormChangeFunctions";
-import { useRouter } from "next/router";
+import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
-import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 
 interface Props {
   onSubmit: () => void;
@@ -101,6 +104,15 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
             }
           }
         }
+        upcomingMilestoneReportFormChange: upcomingReportingRequirementFormChange(
+          reportType: "Milestone"
+        ) {
+          # eslint-disable-next-line relay/must-colocate-fragment-spreads
+          ...ReportDueIndicator_formChange
+          asReportingRequirement {
+            reportDueDate
+          }
+        }
         # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
@@ -142,7 +154,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     useUpdateReportingRequirementFormChange();
 
   const [discardFormChange] = useDiscardReportingRequirementFormChange(
-    "milestone",
+    "Milestone",
     projectRevision.projectMilestoneReportFormChanges.__id
   );
 
@@ -159,6 +171,21 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectMilestoneReportFormChanges]);
 
+  const reportDueDate =
+    projectRevision.upcomingMilestoneReportFormChange?.asReportingRequirement
+      .reportDueDate;
+  const overdue = useMemo(() => {
+    return isOverdue(reportDueDate);
+  }, [reportDueDate]);
+
+  const reportSubmittedDates = useMemo(() => {
+    return projectRevision.projectMilestoneReportFormChanges.edges.map(
+      ({ node }) => node.newFormData.submittedDate
+    );
+  }, [projectRevision.projectMilestoneReportFormChanges.edges]);
+
+  const variant = getReportingStatus(reportSubmittedDates, overdue);
+
   return (
     <div>
       <header id={`Milestone0`}>
@@ -166,9 +193,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
-
-      <div>Milestone reports status here</div>
-
+      <Status variant={variant} reportType={"Milestone"} />
+      <ReportDueIndicator
+        reportTitle="Milestone Report"
+        reportDueFormChange={projectRevision.upcomingMilestoneReportFormChange}
+      />
       <FormBorder>
         <Button
           variant="secondary"
@@ -217,7 +246,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   onChange={(change) => {
                     updateReportFormChange(
                       applyUpdateFormChangeMutation,
-                      "General Milestone",
+                      "Milestone",
                       { ...milestoneReport, changeStatus: "pending" },
                       change.formData
                     );
@@ -250,7 +279,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       >
         Submit Milestone Reports
       </Button>
-
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
