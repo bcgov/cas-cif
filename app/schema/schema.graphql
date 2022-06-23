@@ -33195,7 +33195,7 @@ type EmissionIntensityReport implements Node {
   """
   The baseline emission intensity used as a benchmark for calculating emission intensity performance
   """
-  baselineEmissionIntensity: BigFloat!
+  baselineEmissionIntensity: BigFloat
 
   """
   Reads a single `CifUser` that is related to this `EmissionIntensityReport`.
@@ -33219,7 +33219,7 @@ type EmissionIntensityReport implements Node {
   createdBy: Int
 
   """The units in which the emissions are measured"""
-  emissionFunctionalUnit: String!
+  emissionFunctionalUnit: String
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -33227,10 +33227,10 @@ type EmissionIntensityReport implements Node {
   id: ID!
 
   """The date when the measurement period ends for a project"""
-  measurementPeriodEndDate: Datetime!
+  measurementPeriodEndDate: Datetime
 
   """The date when the measurement period starts for a project"""
-  measurementPeriodStartDate: Datetime!
+  measurementPeriodStartDate: Datetime
 
   """
   The actual emission intensity achieved after a project has completed, used in calculating emission intensity performance
@@ -33240,7 +33240,7 @@ type EmissionIntensityReport implements Node {
   """
   The units in which the production item that generates emissions are measured
   """
-  productionFunctionalUnit: String!
+  productionFunctionalUnit: String
 
   """
   Reads a single `ReportingRequirement` that is related to this `EmissionIntensityReport`.
@@ -33248,7 +33248,7 @@ type EmissionIntensityReport implements Node {
   reportingRequirementByReportingRequirementId: ReportingRequirement
 
   """Foreign key to for the reporting_requirement table"""
-  reportingRequirementId: Int
+  reportingRequirementId: Int!
 
   """Unique ID for the emission_intensity_report"""
   rowId: Int!
@@ -33256,7 +33256,7 @@ type EmissionIntensityReport implements Node {
   """
   The emission intensity defined as a target after a project has completed, used in calculating emission intensity performance
   """
-  targetEmissionIntensity: BigFloat!
+  targetEmissionIntensity: BigFloat
 
   """
   The total amount of emission reduction expected from the outcome of this project
@@ -33410,9 +33410,6 @@ input EmissionIntensityReportFilter {
   """
   reportingRequirementByReportingRequirementId: ReportingRequirementFilter
 
-  """A related `reportingRequirementByReportingRequirementId` exists."""
-  reportingRequirementByReportingRequirementIdExists: Boolean
-
   """Filter by the object’s `reportingRequirementId` field."""
   reportingRequirementId: IntFilter
 
@@ -33448,7 +33445,7 @@ input EmissionIntensityReportInput {
   """
   The baseline emission intensity used as a benchmark for calculating emission intensity performance
   """
-  baselineEmissionIntensity: BigFloat!
+  baselineEmissionIntensity: BigFloat
 
   """created at timestamp"""
   createdAt: Datetime
@@ -33460,10 +33457,10 @@ input EmissionIntensityReportInput {
   emissionFunctionalUnit: String
 
   """The date when the measurement period ends for a project"""
-  measurementPeriodEndDate: Datetime!
+  measurementPeriodEndDate: Datetime
 
   """The date when the measurement period starts for a project"""
-  measurementPeriodStartDate: Datetime!
+  measurementPeriodStartDate: Datetime
 
   """
   The actual emission intensity achieved after a project has completed, used in calculating emission intensity performance
@@ -33473,15 +33470,15 @@ input EmissionIntensityReportInput {
   """
   The units in which the production item that generates emissions are measured
   """
-  productionFunctionalUnit: String!
+  productionFunctionalUnit: String
 
   """Foreign key to for the reporting_requirement table"""
-  reportingRequirementId: Int
+  reportingRequirementId: Int!
 
   """
   The emission intensity defined as a target after a project has completed, used in calculating emission intensity performance
   """
-  targetEmissionIntensity: BigFloat!
+  targetEmissionIntensity: BigFloat
 
   """
   The total amount of emission reduction expected from the outcome of this project
@@ -37670,7 +37667,7 @@ type MilestoneReport implements Node {
   reportingRequirementByReportingRequirementId: ReportingRequirement
 
   """Foreign key to the reporting_requirement_table"""
-  reportingRequirementId: Int
+  reportingRequirementId: Int!
 
   """Unique ID for the milestone_report"""
   rowId: Int!
@@ -37681,7 +37678,7 @@ type MilestoneReport implements Node {
       - 30 days before report due date for general milestones
   
   """
-  substantialCompletionDate: Datetime!
+  substantialCompletionDate: Datetime
 
   """The total amount in dollars that can be applied to this milestone"""
   totalEligibleExpenses: BigFloat
@@ -37793,9 +37790,6 @@ input MilestoneReportFilter {
   """
   reportingRequirementByReportingRequirementId: ReportingRequirementFilter
 
-  """A related `reportingRequirementByReportingRequirementId` exists."""
-  reportingRequirementByReportingRequirementIdExists: Boolean
-
   """Filter by the object’s `reportingRequirementId` field."""
   reportingRequirementId: IntFilter
 
@@ -37838,7 +37832,7 @@ input MilestoneReportInput {
   createdBy: Int
 
   """Foreign key to the reporting_requirement_table"""
-  reportingRequirementId: Int
+  reportingRequirementId: Int!
 
   """
     The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
@@ -37846,7 +37840,7 @@ input MilestoneReportInput {
       - 30 days before report due date for general milestones
   
   """
-  substantialCompletionDate: Datetime!
+  substantialCompletionDate: Datetime
 
   """The total amount in dollars that can be applied to this milestone"""
   totalEligibleExpenses: BigFloat
@@ -39982,9 +39976,6 @@ type Payment implements Node {
   """Reads a single `CifUser` that is related to this `Payment`."""
   cifUserByUpdatedBy: CifUser
 
-  """Comments about the payment"""
-  comment: String
-
   """created at timestamp"""
   createdAt: Datetime!
 
@@ -39997,7 +39988,7 @@ type Payment implements Node {
   """
   The gross amount of the payment. This is the amount before deducting any holdback amount
   """
-  grossAmount: BigFloat!
+  grossAmount: BigFloat
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -40007,7 +39998,7 @@ type Payment implements Node {
   """
   The net amount of the payment. This is the amount actually paid out, after deducting any holdback amount
   """
-  netAmount: BigFloat!
+  netAmount: BigFloat
 
   """
   Reads a single `ReportingRequirement` that is related to this `Payment`.
@@ -40036,9 +40027,6 @@ input PaymentCondition {
 
   """Checks for equality with the object’s `archivedBy` field."""
   archivedBy: Int
-
-  """Checks for equality with the object’s `comment` field."""
-  comment: String
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -40098,9 +40086,6 @@ input PaymentFilter {
 
   """A related `cifUserByUpdatedBy` exists."""
   cifUserByUpdatedByExists: Boolean
-
-  """Filter by the object’s `comment` field."""
-  comment: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -40239,8 +40224,6 @@ enum PaymentsOrderBy {
   CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
   CIF_USER_BY_UPDATED_BY__UUID_ASC
   CIF_USER_BY_UPDATED_BY__UUID_DESC
-  COMMENT_ASC
-  COMMENT_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -49180,11 +49163,6 @@ type ReportType implements Node {
   createdBy: Int
 
   """
-  The json form schema related to this report type. Each report type has a specific set of fields defined by this schema.
-  """
-  formSchema: JSON
-
-  """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
@@ -49506,9 +49484,6 @@ input ReportTypeCondition {
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
 
-  """Checks for equality with the object’s `formSchema` field."""
-  formSchema: JSON
-
   """Checks for equality with the object’s `isMilestone` field."""
   isMilestone: Boolean
 
@@ -49559,9 +49534,6 @@ input ReportTypeFilter {
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
 
-  """Filter by the object’s `formSchema` field."""
-  formSchema: JSONFilter
-
   """Filter by the object’s `isMilestone` field."""
   isMilestone: BooleanFilter
 
@@ -49602,11 +49574,6 @@ input ReportTypeInput {
   createdBy: Int
 
   """
-  The json form schema related to this report type. Each report type has a specific set of fields defined by this schema.
-  """
-  formSchema: JSON
-
-  """
   Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.
   """
   isMilestone: Boolean
@@ -49636,11 +49603,6 @@ input ReportTypePatch {
 
   """created by user id"""
   createdBy: Int
-
-  """
-  The json form schema related to this report type. Each report type has a specific set of fields defined by this schema.
-  """
-  formSchema: JSON
 
   """
   Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.
@@ -49848,8 +49810,6 @@ enum ReportTypesOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
-  FORM_SCHEMA_ASC
-  FORM_SCHEMA_DESC
   IS_MILESTONE_ASC
   IS_MILESTONE_DESC
   NAME_ASC
@@ -51948,8 +51908,6 @@ enum ReportingRequirementsOrderBy {
   REPORT_TYPE_BY_REPORT_TYPE__CREATED_AT_DESC
   REPORT_TYPE_BY_REPORT_TYPE__CREATED_BY_ASC
   REPORT_TYPE_BY_REPORT_TYPE__CREATED_BY_DESC
-  REPORT_TYPE_BY_REPORT_TYPE__FORM_SCHEMA_ASC
-  REPORT_TYPE_BY_REPORT_TYPE__FORM_SCHEMA_DESC
   REPORT_TYPE_BY_REPORT_TYPE__IS_MILESTONE_ASC
   REPORT_TYPE_BY_REPORT_TYPE__IS_MILESTONE_DESC
   REPORT_TYPE_BY_REPORT_TYPE__NAME_ASC
