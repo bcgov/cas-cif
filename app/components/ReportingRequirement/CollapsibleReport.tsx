@@ -1,6 +1,6 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getBadgeForDates } from "lib/helpers/reportStatusHelpers";
+import { getBadgeForIndividualReportStatus } from "lib/helpers/reportStatusHelpers";
 import { useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { CollapsibleReport_reportingRequirement$key } from "__generated__/CollapsibleReport_reportingRequirement.graphql";
@@ -38,7 +38,10 @@ const CollapsibleReport: React.FC<Props> = ({
         <header className="reportHeader" onClick={() => setIsOpen(!isOpen)}>
           <h3>{title}</h3>
           <div className="reportStatus">
-            {getBadgeForDates(data.reportDueDate, data.submittedDate)}
+            {getBadgeForIndividualReportStatus(
+              data.reportDueDate,
+              data.submittedDate
+            )}
           </div>
           <div className="toggleIcon">
             <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />

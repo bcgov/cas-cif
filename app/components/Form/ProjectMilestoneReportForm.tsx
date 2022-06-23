@@ -9,7 +9,6 @@ import {
   projectMilestoneSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import { getReportingStatus, isOverdue } from "lib/helpers/reportStatusHelpers";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
@@ -171,20 +170,15 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectMilestoneReportFormChanges]);
 
-  const reportDueDate =
+  const upcomingReportDueDate =
     projectRevision.upcomingMilestoneReportFormChange?.asReportingRequirement
       .reportDueDate;
-  const overdue = useMemo(() => {
-    return isOverdue(reportDueDate);
-  }, [reportDueDate]);
 
   const reportSubmittedDates = useMemo(() => {
     return projectRevision.projectMilestoneReportFormChanges.edges.map(
       ({ node }) => node.newFormData.submittedDate
     );
   }, [projectRevision.projectMilestoneReportFormChanges.edges]);
-
-  const variant = getReportingStatus(reportSubmittedDates, overdue);
 
   return (
     <div>
@@ -193,7 +187,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
         <SavingIndicator isSaved={!isUpdating && !isAdding} />
       </header>
-      <Status variant={variant} reportType={"Milestone"} />
+      <Status
+        upcomingReportDueDate={upcomingReportDueDate}
+        reportSubmittedDates={reportSubmittedDates}
+        reportType={"Milestone"}
+      />
       <ReportDueIndicator
         reportTitle="Milestone Report"
         reportDueFormChange={projectRevision.upcomingMilestoneReportFormChange}
