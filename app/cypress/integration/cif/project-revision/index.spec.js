@@ -49,11 +49,11 @@ describe("the new project page", () => {
     cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/2");
 
-    cy.findByRole("button", { name: /add/i }).click();
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
     cy.get("fieldset input").should("have.length", 2);
-    cy.findByRole("button", { name: /add/i }).click();
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
     cy.get("fieldset input").should("have.length", 3);
-    cy.findByRole("button", { name: /add/i }).click();
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
 
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
     cy.checkA11y("main", null, logAxeResults);
@@ -167,11 +167,11 @@ describe("the new project page", () => {
     cy.findByText(/Add project contacts/i).click();
     cy.url().should("include", "/form/2");
 
-    cy.findByRole("button", { name: /add/i }).click();
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
     cy.get("fieldset input").should("have.length", 2);
-    cy.findByRole("button", { name: /add/i }).click();
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
     cy.get("fieldset input").should("have.length", 3);
-    cy.findByRole("button", { name: /add/i }).click();
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
     cy.get("fieldset input").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /Submit Contacts/i }).click();
@@ -795,5 +795,43 @@ describe("the new project page", () => {
 
     cy.contains("CIF Projects");
     cy.contains("Add a Project");
+  });
+  it("creates new contact and redirect user back to project contact form and populate project contact form with newly created contact", () => {
+    cy.mockLogin("cif_admin");
+
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+    cy.findByText(/Project Details/i).click();
+    cy.findByText(/Add project contacts/i).click();
+
+    cy.url().should("include", "/form/2");
+
+    cy.findAllByRole("button", { name: /Create new contact/i }).click();
+
+    // Checking multiple query parameters in the url
+    cy.url()
+      .should("include", "/cif/contact/form")
+      .should("include", "projectContactFormId")
+      .should("include", "projectId")
+      .should("include", "contactIndex")
+      .should("include", "projectRevisionRowId")
+      .should("include", "connectionString");
+
+    //Add new contact
+    cy.get("input[aria-label='Given Name']").should("be.visible").type("Bob");
+    cy.get("input[aria-label='Family Name']").type("Loblaw");
+    cy.get("input[aria-label=Email]").type("bob@loblaw.ca");
+    cy.get("input[aria-label=Phone]").type("1234567890");
+    cy.get("input[aria-label='Company Name']").type("ABC");
+    cy.contains("Changes saved").should("be.visible");
+    cy.get("button").contains("Submit").click();
+
+    //Back to project contact form
+    cy.url().should("include", "/form/2");
+    cy.findByLabelText(/primary contact/i).should("have.value", "Loblaw, Bob");
+
+    cy.findAllByRole("button", { name: /Create new contact/i }).should(
+      "not.exist"
+    );
   });
 });
