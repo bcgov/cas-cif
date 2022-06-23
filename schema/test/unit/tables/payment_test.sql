@@ -12,7 +12,6 @@ select columns_are(
     'gross_amount',
     'net_amount',
     'date_sent_to_csnr',
-    'comment',
     'reporting_requirement_id',
     'created_at',
     'created_by',
@@ -42,15 +41,16 @@ insert into cif.reporting_requirement
   values ('2020-01-01', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual', 1);
 
 
-insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, comment, reporting_requirement_id)
+insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, reporting_requirement_id)
 values
-  (100, 50, '2020-01-01', 'comment_1', 1),
-  (200, 100, '2021-01-01', 'comment_2', 1),
-  (300, 150, '2022-01-01', 'comment_3', 1);
+  (100, 50, '2020-01-01', 1),
+  (200, 100, '2021-01-01', 1),
+  (300, 150, '2022-01-01', 1);
 
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
 
+select * from cif.payment;
 
 -- cif_admin
 set role cif_admin;
@@ -65,22 +65,22 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, comment, reporting_requirement_id)
-    values (400, 200, '2023-01-01', 'comment_4', 1);
+    insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, reporting_requirement_id)
+    values (400, 200, '2023-01-01', 1);
   $$,
     'cif_admin can insert data in payment table'
 );
 
 select lives_ok(
   $$
-    update cif.payment set comment='comment_5' where comment='comment_4';
+    update cif.payment set gross_amount = 500 where gross_amount = 400;
   $$,
     'cif_admin can change data in payment table'
 );
 
 select results_eq(
   $$
-    select count(id) from cif.payment where comment= 'comment_5'
+    select count(id) from cif.payment where gross_amount = 500
   $$,
     ARRAY[1::bigint],
     'Data was changed by cif_admin in payment table'
@@ -109,7 +109,7 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.payment set comment= 'changed_by_internal' where comment='comment_1';
+    update cif.payment set gross_amount = 600 where gross_amount = 500;
   $$,
     'cif_internal can update data in the payment table'
 );
