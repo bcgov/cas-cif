@@ -18,11 +18,11 @@ interface Props {
 }
 
 const ProjectManagerFormSummary: React.FC<Props> = (props) => {
-  const { allProjectManagerFormChangesByLabel, isFirstRevision } = useFragment(
+  const { projectManagerFormChangesByLabel, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
-        allProjectManagerFormChangesByLabel {
+        projectManagerFormChangesByLabel {
           edges {
             node {
               formChange {
@@ -58,9 +58,9 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived managers
-  let managerFormChanges = allProjectManagerFormChangesByLabel.edges;
+  let managerFormChanges = projectManagerFormChangesByLabel.edges;
   if (!renderDiff)
-    managerFormChanges = allProjectManagerFormChangesByLabel.edges.filter(
+    managerFormChanges = projectManagerFormChangesByLabel.edges.filter(
       ({ node }) => node?.formChange?.operation !== "ARCHIVE"
     );
 

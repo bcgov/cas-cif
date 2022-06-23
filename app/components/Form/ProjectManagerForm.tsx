@@ -78,7 +78,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
     query
   );
 
-  const change = useFragment(
+  const { formChange, projectManagerLabel } = useFragment(
     graphql`
       fragment ProjectManagerForm_managerFormChange on ManagerFormChangesByLabelCompositeReturn {
         projectManagerLabel {
@@ -106,10 +106,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Update an existing project_manager form change if it exists, otherwise create one
   const createOrUpdateFormChange = (formData: { cifUserId: number }) => {
-    const {
-      formChange,
-      projectManagerLabel: { rowId: labelRowId },
-    } = change;
+    const { rowId: labelRowId } = projectManagerLabel;
     const data = {
       ...formData,
       projectManagerLabelId: labelRowId,
@@ -125,22 +122,27 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
       onAdd(data);
     }
   };
-  const formIdPrefix = `form-${change.projectManagerLabel.id}`;
+  const formIdPrefix = `form-${projectManagerLabel.id}`;
+
+  const formData =
+    formChange && formChange.operation !== "ARCHIVE"
+      ? formChange.newFormData
+      : undefined;
 
   return (
     <>
       <FieldLabel
-        label={change.projectManagerLabel.label}
+        label={projectManagerLabel.label}
         required={false}
         htmlFor={`${formIdPrefix}_cifUserId`}
       />
       <div>
         <FormBase
-          id={`form-manager-${change.projectManagerLabel.label}`}
-          validateOnMount={change.formChange?.changeStatus === "staged"}
+          id={`form-manager-${projectManagerLabel.label}`}
+          validateOnMount={formChange?.changeStatus === "staged"}
           idPrefix={formIdPrefix}
-          ref={(el) => (formRefs.current[change.projectManagerLabel.id] = el)}
-          formData={change.formChange?.newFormData}
+          ref={(el) => (formRefs.current[projectManagerLabel.id] = el)}
+          formData={formData}
           onChange={(data) => {
             createOrUpdateFormChange(data.formData);
           }}
@@ -149,12 +151,10 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           ObjectFieldTemplate={EmptyObjectFieldTemplate}
         />
         <Button
-          disabled={disabled || !change.formChange?.id}
+          disabled={disabled || !formChange?.id}
           variant="secondary"
           size="small"
-          onClick={() =>
-            onDelete(change.formChange.id, change.formChange.operation)
-          }
+          onClick={() => onDelete(formChange.id, formChange.operation)}
         >
           Clear
         </Button>

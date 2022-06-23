@@ -12,7 +12,6 @@ $computed_column$
   with latest_changes as (
     select * from cif.form_change
     where project_revision_id = $1.id
-    and form_change.operation != 'archive'
     order by new_form_data->'projectManagerLabelId', updated_at desc, id desc
   ) select row(pml.*), row(latest_changes.*) as form_change
     from latest_changes
@@ -23,6 +22,6 @@ $computed_column$ language sql stable;
 
 grant execute on function cif.project_revision_project_manager_form_changes_by_label to cif_internal, cif_external, cif_admin;
 
-comment on function cif.project_revision_project_manager_form_changes_by_label is 'Computed column returns a composite value for each record in project_manager_label and the last related form_change if it exists';
+comment on function cif.project_revision_project_manager_form_changes_by_label is 'Computed column returns a composite value for each record in project_manager_label and the last related form_change (including archived records) if it exists';
 
 commit;
