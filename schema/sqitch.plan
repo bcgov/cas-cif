@@ -87,3 +87,4 @@ tables/emission_intensity_report [tables/reporting_requirement] 2022-06-22T20:29
 tables/milestone_report [tables/reporting_requirement] 2022-06-22T21:01:22Z Dylan Leard <dylan@button.is> # Table containing data for milestone reports
 mutations/add_milestone_to_revision [tables/reporting_requirement tables/form_change] 2022-06-23T23:26:45Z Dylan Leard <dylan@button.is> # A custom mutation chain to create form_change records for multiple tables when creating a milestone
 mutations/discard_milestone_form_change [tables/form_change tables/project_revision] 2022-06-24T16:25:29Z Dylan Leard <dylan@button.is> # Custom mutation to discard a set of form_change records relating to a milestone_report
+tables/funding_parameters 2022-06-23T17:34:25Z Gurjeet Matharu <gurjeet@matharuco.com> # funding paramater table
