@@ -7,13 +7,13 @@ begin;
 
 create table cif.emission_intensity_report(
   id integer primary key generated always as identity,
-  reporting_requirement_id integer references cif.reporting_requirement(id),
-  measurement_period_start_date timestamptz not null,
-  measurement_period_end_date timestamptz not null,
-  emission_functional_unit varchar(100) not null default 'tCO2e',
-  production_functional_unit varchar(100) not null,
-  baseline_emission_intensity numeric not null,
-  target_emission_intensity numeric not null,
+  reporting_requirement_id integer not null references cif.reporting_requirement(id),
+  measurement_period_start_date timestamptz,
+  measurement_period_end_date timestamptz,
+  emission_functional_unit varchar(100) default 'tCO2e',
+  production_functional_unit varchar(100),
+  baseline_emission_intensity numeric,
+  target_emission_intensity numeric,
   post_project_emission_intensity numeric,
   total_lifetime_emission_reduction numeric,
   adjusted_emissions_intensity_performance numeric

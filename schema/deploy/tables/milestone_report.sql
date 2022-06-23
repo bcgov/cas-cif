@@ -5,8 +5,8 @@ begin;
 
 create table cif.milestone_report(
   id integer primary key generated always as identity,
-  reporting_requirement_id integer references cif.reporting_requirement(id),
-  substantial_completion_date timestamptz not null,
+  reporting_requirement_id integer not null references cif.reporting_requirement(id),
+  substantial_completion_date timestamptz,
   certified_by varchar(1000),
   certifier_professional_designation varchar(1000),
   total_eligible_expenses numeric

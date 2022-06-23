@@ -6,10 +6,9 @@ create table cif.payment
 (
   id integer primary key generated always as identity,
   reporting_requirement_id integer references cif.reporting_requirement(id) not null,
-  gross_amount numeric not null,
-  net_amount numeric not null,
-  date_sent_to_csnr timestamptz,
-  comment varchar(10000)
+  gross_amount numeric,
+  net_amount numeric,
+  date_sent_to_csnr timestamptz
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'payment');
@@ -40,6 +39,5 @@ comment on column cif.payment.reporting_requirement_id is 'Foreign key reference
 comment on column cif.payment.gross_amount is 'The gross amount of the payment. This is the amount before deducting any holdback amount';
 comment on column cif.payment.net_amount is 'The net amount of the payment. This is the amount actually paid out, after deducting any holdback amount';
 comment on column cif.payment.date_sent_to_csnr is 'The date the payment was issued';
-comment on column cif.payment.comment is 'Comments about the payment';
 
 commit;

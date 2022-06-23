@@ -6,7 +6,6 @@ begin;
 create table cif.report_type
 (
   name varchar(1000) primary key,
-  form_schema jsonb,
   is_milestone boolean default false
 );
 
@@ -34,7 +33,6 @@ $grant$;
 
 comment on table cif.report_type is 'Table containing information about report types';
 comment on column cif.report_type.name is 'The name of the report type as the primary key';
-comment on column cif.report_type.form_schema is 'The json form schema related to this report type. Each report type has a specific set of fields defined by this schema.';
 comment on column cif.report_type.is_milestone is 'Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.';
 
 insert into cif.report_type (name)
