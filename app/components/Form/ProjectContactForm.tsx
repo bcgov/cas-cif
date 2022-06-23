@@ -440,7 +440,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           align-items: flex-start;
         }
         div :global(.contact-form) {
-          height: 3em;
+          height: 4.25em;
         }
       `}</style>
     </div>
