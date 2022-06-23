@@ -9,6 +9,7 @@ select columns_are(
   'payment',
   ARRAY[
     'id',
+    'reporting_requirement_id',
     'gross_amount',
     'net_amount',
     'date_sent_to_csnr',
@@ -37,8 +38,8 @@ values
   (1, 1, 1, '2000-RFP-1-123-ABCD', 'summary', 'project 1');
 
 insert into cif.reporting_requirement
-  (report_due_date, comments, certified_by, certified_by_professional_designation, project_id, report_type, reporting_requirement_index)
-  values ('2020-01-01', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual', 1);
+  (report_due_date, comment, project_id, report_type, reporting_requirement_index)
+  values ('2020-01-01', 'comment_1', 1, 'Annual', 1);
 
 
 insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, reporting_requirement_id)

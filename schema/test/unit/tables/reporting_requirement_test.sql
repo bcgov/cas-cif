@@ -10,11 +10,8 @@ select columns_are(
   ARRAY[
     'id',
     'report_due_date',
-    'completion_date',
     'submitted_date',
-    'comments',
-    'certified_by',
-    'certified_by_professional_designation',
+    'comment',
     'project_id',
     'report_type',
     'reporting_requirement_index',
@@ -24,8 +21,7 @@ select columns_are(
     'updated_by',
     'archived_at',
     'archived_by',
-    'description',
-    'maximum_amount'
+    'description'
   ],
   'columns in cif.reporting_requirement match expected columns'
 );
@@ -50,10 +46,10 @@ values
   (4, 1, 1, '2000-RFP-1-1011-ABCD', 'summary', 'project 4');
 
 insert into cif.reporting_requirement
-  (report_due_date, comments, certified_by, certified_by_professional_designation, project_id, report_type, reporting_requirement_index) values
-  ('2020-01-01', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual',1),
-  ('2020-01-02', 'comment_2', 'certifier_2', 'certifier_2', 2, 'Annual', 2),
-  ('2020-01-03', 'comment_3', 'certifier_3', 'certifier_3', 3, 'Annual', 3);
+  (report_due_date, comment, project_id, report_type, reporting_requirement_index) values
+  ('2020-01-01', 'comment_1', 1, 'Annual',1),
+  ('2020-01-02', 'comment_2', 2, 'Annual', 2),
+  ('2020-01-03', 'comment_3', 3, 'Annual', 3);
 
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
@@ -71,21 +67,22 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.reporting_requirement (report_due_date, comments, certified_by, certified_by_professional_designation, project_id, report_type, reporting_requirement_index) values ('2020-01-04', 'comment_4', 'certifier_4', 'certifier_4', 4, 'Annual', 4);
+    insert into cif.reporting_requirement (report_due_date, comment, project_id, report_type, reporting_requirement_index)
+    values ('2020-01-04', 'comment_4', 4, 'Annual', 4);
   $$,
     'cif_admin can insert data in reporting_requirement table'
 );
 
 select lives_ok(
   $$
-    update cif.reporting_requirement set comments='changed by admin' where comments='comment_4';
+    update cif.reporting_requirement set comment='changed by admin' where comment='comment_4';
   $$,
     'cif_admin can change data in reporting_requirement table'
 );
 
 select results_eq(
   $$
-    select count(id) from cif.reporting_requirement where comments= 'changed by admin'
+    select count(id) from cif.reporting_requirement where comment= 'changed by admin'
   $$,
     ARRAY[1::bigint],
     'Data was changed by cif_admin in reporting_requirement table'
@@ -114,7 +111,7 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.reporting_requirement set comments= 'changed_by_internal' where comments='comment_3';
+    update cif.reporting_requirement set comment= 'changed_by_internal' where comment='comment_3';
   $$,
     'cif_internal can update data in the reporting_requirement table'
 );

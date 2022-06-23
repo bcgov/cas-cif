@@ -40,8 +40,8 @@ values
   (1, 1, 1, '2000-RFP-1-123-ABCD', 'summary', 'project 1');
 
 insert into cif.reporting_requirement
-  (report_due_date, comments, certified_by, certified_by_professional_designation, project_id, report_type, reporting_requirement_index) values
-  ('2020-01-01', 'comment_1', 'certifier_1', 'certifier_1', 1, 'Annual', 1);
+  (report_due_date, comment, project_id, report_type, reporting_requirement_index) values
+  ('2020-01-01', 'comment_1', 1, 'Annual', 1);
 
 
 insert into cif.budget_item (amount, category, description, is_confirmed, is_tentative, reporting_requirement_id)
