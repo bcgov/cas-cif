@@ -29,7 +29,7 @@ as $add_milestone_form_change$
         format(
           '{"project_id": %s, "reportType": "%s", "reportingRequirementIndex": %s }',
           (select form_data_record_id from cif.form_change where form_data_schema_name='cif' and form_data_table_name='project' and project_revision_id=$1),
-          (select name from cif.report_type where is_milestone = true order by name limit 1),
+          'asdf',
           $2
         )::jsonb,
         'create',
@@ -39,7 +39,7 @@ as $add_milestone_form_change$
         $1,
         'pending',
         'reporting_requirement'
-      ) returning form_data_record_id
+      ) returning *
   ), milestone as (
       insert into cif.form_change(
         new_form_data,
@@ -60,7 +60,7 @@ as $add_milestone_form_change$
           $1,
           'pending',
           'milestone_report'
-        ) returning new_form_data->>'reportingRequirementId' as rep_req_id
+        ) returning *
     ), payment as (
         insert into cif.form_change(
             new_form_data,
@@ -73,7 +73,7 @@ as $add_milestone_form_change$
           ) values (
               format(
                 '{"reportingRequirementId": %s }',
-                (select rep_req_id from milestone)
+                (select form_data_record_id from rep_req)
               )::jsonb,
               'create',
               'cif',
@@ -81,10 +81,8 @@ as $add_milestone_form_change$
               $1,
               'pending',
               'payment'
-            ) returning new_form_data->>'reportingRequirementId' as rep_req_id
-        ) select * from cif.form_change where project_revision_id = $1
-          and ((form_data_table_name = 'reporting_requirement' and (new_form_data->>'reportingRequirementIndex')::int = reporting_requirement_index)
-          or (form_data_table_name in ('milestone_report', 'payment') and new_form_data->>'reportingRequirementId' = (select rep_req_id from payment)));
+            ) returning *
+        ) select * from rep_req union select *from milestone union select * from payment;
 
 $add_milestone_form_change$ language sql volatile;
 
