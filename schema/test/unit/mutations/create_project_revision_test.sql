@@ -4,7 +4,7 @@ select no_plan();
 -- restart the id sequences
 truncate table
 cif.project, cif.project_contact,
-cif.project_manager, cif.project_revision,
+cif.project_manager, cif.project_revision, cif.emission_intensity_report, cif.milestone_report,
 cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.budget_item, cif.payment
 restart identity;
 

@@ -5,7 +5,8 @@ begin;
 
 create table cif.report_type
 (
-  name varchar(1000) primary key
+  name varchar(1000) primary key,
+  is_milestone boolean default false
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'report_type');
@@ -32,6 +33,7 @@ $grant$;
 
 comment on table cif.report_type is 'Table containing information about report types';
 comment on column cif.report_type.name is 'The name of the report type as the primary key';
+comment on column cif.report_type.is_milestone is 'Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.';
 
 insert into cif.report_type (name)
 values
