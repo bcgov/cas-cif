@@ -13,7 +13,7 @@ begin;
 **/
 
 create or replace function cif.discard_milestone_form_change(revision_id int, reporting_requirement_index int)
-returns void
+returns setof cif.form_change
 as $discard_milestone$
 
   delete from cif.form_change
@@ -29,7 +29,7 @@ as $discard_milestone$
       and project_revision_id = $1
       and (new_form_data->>'reportingRequirementIndex')::int = $2
     ))
-  );
+  ) returning *;
 
 $discard_milestone$ language sql volatile;
 
