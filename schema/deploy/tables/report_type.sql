@@ -35,13 +35,13 @@ comment on table cif.report_type is 'Table containing information about report t
 comment on column cif.report_type.name is 'The name of the report type as the primary key';
 comment on column cif.report_type.is_milestone is 'Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.';
 
-insert into cif.report_type (name)
+insert into cif.report_type (name, is_milestone)
 values
-  ('Quarterly'),
-  ('Annual'),
-  ('General Milestone'),
-  ('Advanced Milestone'),
-  ('Performance Milestone'),
-  ('Reporting Milestone');
+  ('Quarterly', false),
+  ('Annual', false),
+  ('General Milestone', true),
+  ('Advanced Milestone', true),
+  ('Performance Milestone', true),
+  ('Reporting Milestone', true);
 
 commit;
