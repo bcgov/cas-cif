@@ -311,12 +311,10 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         <Grid.Row>
           <Grid.Col span={10}>
             <FormBorder>
-              <Grid.Row>
-                <label htmlFor="primaryContactForm_contactId">
-                  Primary Contact
-                </label>
-              </Grid.Row>
-              <Grid.Row>
+              <label htmlFor="primaryContactForm_contactId">
+                Primary Contact
+              </label>
+              <Grid.Row style={{ marginBottom: "1em" }}>
                 <Grid.Col span={6}>
                   <FormBase
                     id="primaryContactForm"
@@ -338,24 +336,23 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     uiSchema={uiSchema}
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
                     className="contact-form"
-                  >
-                    {/* Using short circuit doesn't work here, It renders a useless submit button */}
-                    {!primaryContactForm?.newFormData?.contactId ? (
-                      <NewContactButton
-                        projectRevisionRowId={projectRevision.rowId}
-                        connectionString={
-                          projectRevision.projectContactFormChanges.__id
-                        }
-                        projectContactFormId={primaryContactForm?.id}
-                        projectId={
-                          projectRevision.projectFormChange.formDataRecordId
-                        }
-                        contactIndex={1}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </FormBase>
+                  />
+                  {/* Using short circuit doesn't work here, It renders a useless submit button */}
+                  {!primaryContactForm?.newFormData?.contactId ? (
+                    <NewContactButton
+                      projectRevisionRowId={projectRevision.rowId}
+                      connectionString={
+                        projectRevision.projectContactFormChanges.__id
+                      }
+                      projectContactFormId={primaryContactForm?.id}
+                      projectId={
+                        projectRevision.projectFormChange.formDataRecordId
+                      }
+                      contactIndex={1}
+                    />
+                  ) : (
+                    <></>
+                  )}
                   {primaryContactForm?.asProjectContact?.contactByContactId && (
                     <ContactDetails
                       contact={
@@ -398,24 +395,28 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         uiSchema={uiSchema}
                         ObjectFieldTemplate={EmptyObjectFieldTemplate}
                         className="contact-form"
-                      >
-                        {/* Using short circuit doesn't work here, It renders a useless submit button */}
-                        {!form?.newFormData?.contactId ? (
-                          <NewContactButton
-                            projectRevisionRowId={projectRevision.rowId}
-                            connectionString={
-                              projectRevision.projectContactFormChanges.__id
-                            }
-                            projectContactFormId={form.id}
-                            projectId={
-                              projectRevision.projectFormChange.formDataRecordId
-                            }
-                            contactIndex={form.newFormData.contactIndex}
-                          />
-                        ) : (
-                          <></>
-                        )}
-                      </FormBase>
+                      />
+                      {/* Using short circuit doesn't work here, It renders a useless submit button */}
+                      {!form?.newFormData?.contactId ? (
+                        <NewContactButton
+                          projectRevisionRowId={projectRevision.rowId}
+                          connectionString={
+                            projectRevision.projectContactFormChanges.__id
+                          }
+                          projectContactFormId={form.id}
+                          projectId={
+                            projectRevision.projectFormChange.formDataRecordId
+                          }
+                          contactIndex={form.newFormData.contactIndex}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                      {form?.newFormData?.contactId && (
+                        <ContactDetails
+                          contact={form.asProjectContact.contactByContactId}
+                        />
+                      )}
                     </Grid.Col>
                     <Grid.Col span={4}>
                       <Button
@@ -426,11 +427,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         Remove
                       </Button>
                     </Grid.Col>
-                    {form?.newFormData?.contactId && (
-                      <ContactDetails
-                        contact={form.asProjectContact.contactByContactId}
-                      />
-                    )}
                   </Grid.Row>
                 );
               })}
