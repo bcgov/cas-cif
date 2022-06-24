@@ -105,7 +105,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
       return (
-        <>
+        <div key={node.id}>
           <FormBase
             liveValidate
             key={node.newFormData.contactIndex}
@@ -131,7 +131,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             }}
           />
           <ContactDetails contact={node.asProjectContact.contactByContactId} />
-        </>
+        </div>
       );
     });
   }, [secondaryContacts, renderDiff]);
