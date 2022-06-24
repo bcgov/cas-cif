@@ -7,6 +7,8 @@ import FormBase from "./FormBase";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import FormBorder from "lib/theme/components/FormBorder";
 import { Button } from "@button-inc/bcgov-theme";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
@@ -19,6 +21,7 @@ import SavingIndicator from "./SavingIndicator";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
 import UndoChangesButton from "./UndoChangesButton";
 import { useCreatePrimaryContact } from "mutations/ProjectContact/createPrimaryContact";
+import ContactDetails from "components/Contact/ContactDetails";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -84,6 +87,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
               newFormData
               operation
               changeStatus
+              asProjectContact {
+                contactByContactId {
+                  ...ContactDetails_contact
+                }
+              }
             }
           }
         }
@@ -297,11 +305,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
           <Grid.Col span={10}>
             <FormBorder>
               <Grid.Row>
-                <Grid.Col span={10} className="right-aligned-column">
-                  <Button>View Contact List</Button>
-                </Grid.Col>
-              </Grid.Row>
-              <Grid.Row>
                 <label htmlFor="primaryContactForm_contactId">
                   Primary Contact
                 </label>
@@ -327,13 +330,18 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     schema={contactSchema}
                     uiSchema={uiSchema}
                     ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                    className="contact-form"
                   />
+                  {primaryContactForm?.asProjectContact?.contactByContactId && (
+                    <ContactDetails
+                      contact={
+                        primaryContactForm.asProjectContact.contactByContactId
+                      }
+                    />
+                  )}
                 </Grid.Col>
                 {projectRevision.changeStatus !== "committed" && (
                   <Grid.Col span={4}>
-                    <Button variant="secondary" size="small">
-                      Show Details
-                    </Button>
                     <Button
                       variant="secondary"
                       size="small"
@@ -364,6 +372,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         schema={contactSchema}
                         uiSchema={uiSchema}
                         ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                        className="contact-form"
                       />
                     </Grid.Col>
                     <Grid.Col span={4}>
@@ -375,6 +384,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         Remove
                       </Button>
                     </Grid.Col>
+                    {form?.newFormData?.contactId && (
+                      <ContactDetails
+                        contact={form.asProjectContact.contactByContactId}
+                      />
+                    )}
                   </Grid.Row>
                 );
               })}
@@ -383,6 +397,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 <Grid.Col span={10}>
                   <Button
                     style={{ marginRight: "auto" }}
+                    variant="secondary"
                     onClick={() =>
                       // allForms is already sorted by contactIndex
                       addContact(
@@ -394,7 +409,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       )
                     }
                   >
-                    Add
+                    <FontAwesomeIcon icon={faPlusCircle} /> Add secondary
+                    contact
                   </Button>
                 </Grid.Col>
               </Grid.Row>
@@ -416,11 +432,15 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         div :global(button.pg-button) {
           margin-left: 0.4em;
           margin-right: 0em;
+          margin-top: 0.6em;
         }
         div :global(.right-aligned-column) {
           display: flex;
           justify-content: flex-end;
           align-items: flex-start;
+        }
+        div :global(.contact-form) {
+          height: 4.25em;
         }
       `}</style>
     </div>

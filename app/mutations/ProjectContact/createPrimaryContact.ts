@@ -15,6 +15,11 @@ const mutation = graphql`
           newFormData
           operation
           changeStatus
+          asProjectContact {
+            contactByContactId {
+              ...ContactDetails_contact
+            }
+          }
         }
       }
     }

@@ -9,6 +9,7 @@ import FormBase from "./FormBase";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
+import ContactDetails from "components/Contact/ContactDetails";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -36,6 +37,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               asProjectContact {
                 contactByContactId {
                   fullName
+                  ...ContactDetails_contact
                 }
               }
               formChangeByPreviousFormChangeId {
@@ -103,35 +105,39 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
       return (
-        <FormBase
-          liveValidate
-          key={node.newFormData.contactIndex}
-          tagName={"dl"}
-          fields={renderDiff ? customFields : fields}
-          theme={readOnlyTheme}
-          schema={projectContactSchema as JSONSchema7}
-          uiSchema={createProjectContactUiSchema(
-            node?.asProjectContact?.contactByContactId ? (
-              node.asProjectContact.contactByContactId.fullName
-            ) : (
-              <em>No Contact Selected</em>
-            )
-          )}
-          formData={node.newFormData}
-          formContext={{
-            operation: node.operation,
-            oldData: node.formChangeByPreviousFormChangeId?.newFormData,
-            oldUiSchema: createProjectContactUiSchema(
-              node.asProjectContact?.contactByContactId?.fullName
-            ),
-          }}
-        />
+        <>
+          <FormBase
+            liveValidate
+            key={node.newFormData.contactIndex}
+            tagName={"dl"}
+            fields={renderDiff ? customFields : fields}
+            theme={readOnlyTheme}
+            schema={projectContactSchema as JSONSchema7}
+            uiSchema={createProjectContactUiSchema(
+              node?.asProjectContact?.contactByContactId ? (
+                node.asProjectContact.contactByContactId.fullName
+              ) : (
+                <em>No Contact Selected</em>
+              )
+            )}
+            formData={node.newFormData}
+            formContext={{
+              operation: node.operation,
+              oldData: node.formChangeByPreviousFormChangeId?.newFormData,
+              oldUiSchema: createProjectContactUiSchema(
+                node?.formChangeByPreviousFormChangeId?.asProjectContact
+                  ?.contactByContactId?.fullName
+              ),
+            }}
+          />
+          <ContactDetails contact={node.asProjectContact.contactByContactId} />
+        </>
       );
     });
   }, [secondaryContacts, renderDiff]);
 
   return (
-    <>
+    <div>
       <h3>Project Contacts</h3>
       {allFormChangesPristine && !props.viewOnly ? (
         <p>
@@ -148,33 +154,45 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               <em>Primary contact not updated</em>
             </dd>
           ) : (
-            <FormBase
-              liveValidate
-              key={primaryContact?.node.id}
-              tagName={"dl"}
-              theme={readOnlyTheme}
-              fields={renderDiff ? customFields : fields}
-              schema={projectContactSchema as JSONSchema7}
-              uiSchema={createProjectContactUiSchema(
-                primaryContact ? (
-                  primaryContact?.node?.asProjectContact?.contactByContactId
-                    ?.fullName
-                ) : (
-                  <em>Primary contact not added</em>
-                )
+            <>
+              <FormBase
+                liveValidate
+                key={primaryContact?.node.id}
+                tagName={"dl"}
+                theme={readOnlyTheme}
+                fields={renderDiff ? customFields : fields}
+                schema={projectContactSchema as JSONSchema7}
+                uiSchema={createProjectContactUiSchema(
+                  primaryContact ? (
+                    primaryContact?.node?.asProjectContact?.contactByContactId
+                      ?.fullName
+                  ) : (
+                    <em>Primary contact not added</em>
+                  )
+                )}
+                formData={
+                  primaryContact ? primaryContact.node.newFormData : null
+                }
+                formContext={{
+                  operation: primaryContact?.node.operation,
+                  oldData:
+                    primaryContact?.node.formChangeByPreviousFormChangeId
+                      ?.newFormData,
+                  oldUiSchema: createProjectContactUiSchema(
+                    primaryContact?.node?.formChangeByPreviousFormChangeId
+                      ?.asProjectContact?.contactByContactId?.fullName
+                  ),
+                }}
+              />
+              {primaryContact?.node?.asProjectContact?.contactByContactId && (
+                <ContactDetails
+                  className="contactDetails"
+                  contact={
+                    primaryContact.node.asProjectContact.contactByContactId
+                  }
+                />
               )}
-              formData={primaryContact ? primaryContact.node.newFormData : null}
-              formContext={{
-                operation: primaryContact?.node.operation,
-                oldData:
-                  primaryContact?.node.formChangeByPreviousFormChangeId
-                    ?.newFormData,
-                oldUiSchema: createProjectContactUiSchema(
-                  primaryContact?.node?.formChangeByPreviousFormChangeId
-                    ?.asProjectContact?.contactByContactId?.fullName
-                ),
-              }}
-            />
+            </>
           )}
           <label>Secondary Contacts</label>
           {secondaryContacts.length < 1 && props.viewOnly && (
@@ -197,7 +215,12 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           )}
         </>
       )}
-    </>
+      <style jsx>{`
+        div :global(dl) {
+          margin-bottom: 0;
+        }
+      `}</style>
+    </div>
   );
 };
 
