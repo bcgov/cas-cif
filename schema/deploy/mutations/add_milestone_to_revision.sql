@@ -29,7 +29,7 @@ as $add_milestone_form_change$
         format(
           '{"project_id": %s, "reportType": "%s", "reportingRequirementIndex": %s }',
           (select form_data_record_id from cif.form_change where form_data_schema_name='cif' and form_data_table_name='project' and project_revision_id=$1),
-          'asdf',
+          (select name from cif.report_type where is_milestone = true limit 1),
           $2
         )::jsonb,
         'create',
