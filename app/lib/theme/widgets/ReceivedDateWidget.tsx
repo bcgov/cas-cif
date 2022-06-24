@@ -3,75 +3,34 @@ import React, { forwardRef, useMemo, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
-import { DateTime, Interval } from "luxon";
+import { DateTime } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faExclamationCircle,
-  faCalendarAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
-  ({ onClick, value, label, formContext }, ref) => {
-    let overdue;
+  ({ onClick, value, label }, ref) => {
     const displayString = useMemo(() => {
-      const dueDate = DateTime.fromISO(formContext?.dueDate, {
-        setZone: true,
-        locale: "en-CA",
-      });
-      const formattedDueDate = dueDate.toFormat("MMM dd, yyyy");
-
       const receivedDate = DateTime.fromISO(value, {
         setZone: true,
         locale: "en-CA",
       });
       const formattedReceivedDate = receivedDate.toFormat("MMM dd, yyyy");
-
-      if (!dueDate.day && !receivedDate.day) {
-        return "Select a date";
-      }
-
-      const currentDate = DateTime.now()
-        .setZone("America/Vancouver")
-        .endOf("day");
-
-      const dueDiff = Interval.fromDateTimes(currentDate, dueDate);
-      const daysFromToday = Math.floor(dueDiff.length("days"));
-
-      const lateDiff = Interval.fromDateTimes(dueDate, currentDate);
-      const lateDays = Math.floor(lateDiff.length("days"));
-
-      if (receivedDate.day) {
-        return (
-          <>
-            <div className="receivedStringWrapper">
-              <span style={{ marginRight: "1em" }}>Received</span>
-              <FontAwesomeIcon icon={faCheck} color={"green"} />
-            </div>
-            ({formattedReceivedDate})
-          </>
-        );
-      }
-      if (!receivedDate.day && currentDate > dueDate) {
-        overdue = true;
-        return <span className="overdue">Overdue by {lateDays} days</span>;
-      }
-
-      return daysFromToday > 60
-        ? `Due in ${Math.floor(
-            dueDiff.length("weeks")
-          )} weeks (${formattedDueDate})`
-        : `Due in ${daysFromToday} ${
-            daysFromToday === 1 ? "day" : "days"
-          } (${formattedDueDate})`;
-    }, [formContext?.dueDate, value]);
+      return (
+        <>
+          <div className="receivedStringWrapper">
+            <span style={{ marginRight: "1em" }}>Received</span>
+            <FontAwesomeIcon icon={faCheck} color={"green"} />
+          </div>
+          ({formattedReceivedDate})
+        </>
+      );
+    }, [value]);
 
     return (
       <div className="receivedDateWrapper">
         <div onClick={onClick} ref={ref} aria-label={label}>
-          {displayString}
+          {value ? displayString : "Select a date"}
           <FontAwesomeIcon icon={faCalendarAlt} size="lg" />
-
           <style jsx>{`
             div {
               display: flex;
@@ -101,15 +60,6 @@ const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
             }
           `}</style>
         </div>
-        {overdue && (
-          <div>
-            <FontAwesomeIcon
-              icon={faExclamationCircle}
-              color={"#cd2026"}
-              className={"overdueIcon"}
-            />
-          </div>
-        )}
       </div>
     );
   }

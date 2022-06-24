@@ -59,7 +59,7 @@ describe("The ReceivedDateWidget", () => {
       required: true,
     };
     render(<ReceivedDateWidget {...props} />);
-    expect(screen.getByText(/due in 52 weeks/i)).toBeInTheDocument();
+    expect(screen.getByText(/Select a date/i)).toBeInTheDocument();
   });
 
   it("displays overdue text and icon if report is late", () => {
@@ -82,11 +82,11 @@ describe("The ReceivedDateWidget", () => {
       <ReceivedDateWidget id="widget-id" {...props} />
     );
     expect(screen.getByLabelText(/received date/i)).toHaveTextContent(
-      /Overdue by 5 days/
+      /Select a date/
     );
     expect(
       container.getElementsByClassName("fa-exclamation-circle")[0]
-    ).toBeInTheDocument();
+    ).toBeUndefined();
   });
 
   it("displays received text and icon if report is received", () => {
