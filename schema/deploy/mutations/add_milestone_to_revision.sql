@@ -4,6 +4,14 @@
 
 begin;
 
+/**
+  Adding a milestone to a project_revision is a chained operation. The data for milestones is spread across three tables:
+    - reporting_requirement (base table, common to all reports)
+    - milestone_report (data specific to milestone reports)
+    - payment (payment data, common to some reports)
+  Because this data is spread across three tables we have to create three form_change records within one transaction, one for each table.
+**/
+
 create or replace function cif.add_milestone_to_revision(revision_id int, reporting_requirement_index int)
 returns setof cif.form_change
 as $add_milestone_form_change$
@@ -77,6 +85,7 @@ as $add_milestone_form_change$
         ) select * from cif.form_change where project_revision_id = $1
           and ((form_data_table_name = 'reporting_requirement' and (new_form_data->>'reportingRequirementIndex')::int = reporting_requirement_index)
           or (form_data_table_name in ('milestone_report', 'payment') and new_form_data->>'reportingRequirementId' = (select rep_req_id from payment)));
+
 $add_milestone_form_change$ language sql volatile;
 
 commit;
