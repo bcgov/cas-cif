@@ -86,4 +86,7 @@ as $add_milestone_form_change$
 
 $add_milestone_form_change$ language sql volatile;
 
+grant execute on function cif.add_milestone_to_revision to cif_internal, cif_external, cif_admin;
+grant usage, select on sequence cif.reporting_requirement_id_seq to cif_internal, cif_external, cif_admin;
+
 commit;
