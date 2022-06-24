@@ -1,7 +1,7 @@
 
 begin;
 
-select plan(3);
+select plan(4);
 
 -- Test Setup
 truncate cif.project restart identity cascade;
@@ -11,8 +11,16 @@ select cif.add_milestone_to_revision(1, 1);
 select cif.add_milestone_to_revision(1, 2);
 select cif.add_milestone_to_revision(2, 1);
 
--- Call discard mutation on revision_id=1 and reporting_requirement_index=1
-select cif.discard_milestone_form_change(1,1);
+
+select set_eq(
+  $$
+    select project_revision_id from cif.discard_milestone_form_change(1,1)
+  $$,
+  $$
+    values (1::int), (1::int), (1::int)
+  $$,
+  'discard_milestone_form_change returns the deleted rows'
+);
 
 select is(
   (select count(*) from cif.form_change
