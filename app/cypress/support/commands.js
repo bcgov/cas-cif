@@ -79,7 +79,8 @@ Cypress.Commands.add(
     projectName,
     summary,
     totalFundingRequest,
-    projectStatus
+    projectStatus,
+    comment
   ) => {
     cy.url().should("include", "/form/0");
     cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
@@ -93,6 +94,7 @@ Cypress.Commands.add(
     cy.findByLabelText(/Summary/i).type(summary);
     cy.findByLabelText(/Total Funding Request/i).type(totalFundingRequest);
     cy.findByLabelText(/Project Status/i).select(projectStatus);
+    cy.findByLabelText(/Comment/i).type(comment);
     // There is a bug where if cypress starts changing another form on the page too quickly,
     // the last change is discarded and rjsf throws an error.
     cy.contains("Changes saved");
@@ -109,7 +111,8 @@ Cypress.Commands.add(
     projectName,
     summary,
     totalFundingRequest,
-    projectStatus
+    projectStatus,
+    comment
   ) => {
     cy.get("option").contains(fundingStream).should("be.selected");
     cy.get("option").contains(fundingStreamYear).should("be.selected");
@@ -126,6 +129,7 @@ Cypress.Commands.add(
       totalFundingRequest
     );
     cy.get("option").contains(projectStatus).should("be.selected");
+    cy.findByLabelText(/Comment/i).should("have.value", comment);
   }
 );
 

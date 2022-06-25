@@ -254,7 +254,8 @@ describe("the new project page", () => {
       "Foo",
       "Bar",
       "100",
-      "Project Underway"
+      "Project Underway",
+      "Some comments"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkOverviewForm(
@@ -265,7 +266,8 @@ describe("the new project page", () => {
       "",
       "",
       "",
-      "Select a Project Status"
+      "Select a Project Status",
+      ""
     );
 
     cy.findByText(/Project Details/i).click();
@@ -424,7 +426,8 @@ describe("the new project page", () => {
       "Foo",
       "Bar",
       "100",
-      "Project Underway"
+      "Project Underway",
+      "Some comments"
     );
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -496,6 +499,10 @@ describe("the new project page", () => {
     cy.findByText(/Project Status/i)
       .next()
       .should("have.text", "Project Underway");
+    cy.findAllByText(/Comment/i)
+      .eq(0)
+      .next()
+      .should("have.text", "Some comments");
     cy.findByText(/tech team primary/i)
       .next()
       .should("have.text", "Swanson, Ron");
