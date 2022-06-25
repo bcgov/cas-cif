@@ -16,7 +16,8 @@ create table cif.project(
   project_name varchar(1000) not null,
   total_funding_request numeric(20,2),
   sector_name varchar(1000) references cif.sector(sector_name),
-  additional_sector_information varchar(1000)
+  additional_sector_information varchar(1000),
+  comment varchar(10000)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project');
@@ -54,5 +55,6 @@ comment on column cif.project.project_status_id is 'The id of the project_status
 comment on column cif.project.total_funding_request is 'The total amount of funding requested for the project';
 comment on column cif.project.sector_name is 'The industry sector this project relates to';
 comment on column cif.project.additional_sector_information is 'Any additional information about this project in reference to the industry sector such as a sub-sector';
+comment on column cif.project.comment is 'Historical amendment data for existing projects to track why and when decisions were made';
 
 commit;
