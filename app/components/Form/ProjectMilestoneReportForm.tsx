@@ -5,24 +5,25 @@ import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
 import {
-  milestoneReportUiSchema,
-  projectMilestoneSchema,
+  milestoneReportingRequirementUiSchema,
+  milestoneReportingRequirementSchema,
+  milestoneSchema,
+  milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+// import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
-import {
-  getSortedReports,
-  stageReportFormChanges,
-  updateReportFormChange,
-} from "./reportingRequirementFormChangeFunctions";
+// import {
+//   stageReportFormChanges,
+//   updateReportFormChange,
+// } from "./reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import { useAddMilestoneToRevision } from "mutations/MilestoneReport/addMilestoneToRevision";
@@ -34,21 +35,8 @@ interface Props {
   query: ProjectMilestoneReportForm_query$key;
 }
 
-export const customMilestoneReportUiSchema = {
-  ...milestoneReportUiSchema,
-  submittedDate: {
-    ...milestoneReportUiSchema.submittedDate,
-    contentPrefix: (
-      <div>
-        <span style={{ marginRight: "1em" }}>Received</span>
-        <FontAwesomeIcon icon={faCheck} color={"green"} />
-      </div>
-    ),
-  },
-};
-
-export const createProjectMilestoneSchema = (allReportTypes) => {
-  const schema = projectMilestoneSchema;
+export const createMilestoneReportingRequirementSchema = (allReportTypes) => {
+  const schema = milestoneReportingRequirementSchema;
   schema.properties.reportType = {
     ...schema.properties.reportType,
     anyOf: allReportTypes.edges.map(({ node }) => {
@@ -63,8 +51,13 @@ export const createProjectMilestoneSchema = (allReportTypes) => {
     }),
     default: "General Milestone",
   };
-  schema.properties.certifiedByProfessionalDesignation = {
-    ...schema.properties.certifiedByProfessionalDesignation,
+  return schema as JSONSchema7;
+};
+
+export const createMilestoneSchema = () => {
+  const schema = milestoneSchema;
+  schema.properties.certifierProfessionalDesignation = {
+    ...schema.properties.certifierProfessionalDesignation,
     anyOf: ["Professional Engineer", "Certified Professional Accountant"].map(
       (designation) => {
         return {
@@ -90,11 +83,37 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         id
         # eslint-disable-next-line relay/unused-fields
         rowId
-        projectMilestoneReportFormChanges: formChangesFor(
+        milestoneReportingRequirementFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Milestone"
           first: 1000
-        ) @connection(key: "connection_projectMilestoneReportFormChanges") {
+        )
+          @connection(
+            key: "connection_milestoneReportingRequirementFormChanges"
+          ) {
+          edges {
+            node {
+              id
+              rowId
+              formDataRecordId
+              operation
+              newFormData
+              changeStatus
+              # eslint-disable-next-line relay/unused-fields
+              formChangeByPreviousFormChangeId {
+                changeStatus
+                newFormData
+              }
+              asReportingRequirement {
+                ...CollapsibleReport_reportingRequirement
+              }
+            }
+          }
+        }
+        milestoneFormChanges: formChangesFor(
+          formDataTableName: "milestone_report"
+          first: 1000
+        ) @connection(key: "connection_milestoneFormChanges") {
           edges {
             node {
               id
@@ -106,8 +125,23 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 changeStatus
                 newFormData
               }
-              asReportingRequirement {
-                ...CollapsibleReport_reportingRequirement
+            }
+          }
+        }
+        milestonePaymentFormChanges: formChangesFor(
+          formDataTableName: "payment"
+          first: 1000
+        ) @connection(key: "connection_milestonePaymentFormChanges") {
+          edges {
+            node {
+              id
+              rowId
+              newFormData
+              changeStatus
+              # eslint-disable-next-line relay/unused-fields
+              formChangeByPreviousFormChangeId {
+                changeStatus
+                newFormData
               }
             }
           }
@@ -151,41 +185,87 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     // TODO: refactor useEffect. In the meantime, ignore the eslint warning--fixing it causes infinite rerender.
   }, [router.query.anchor]);
 
-  console.log(projectRevision);
+  // Match the reportingRequirement form change records with the dependent milestoneReport and payment form change records
+  const consolidatedFormData = useMemo(() => {
+    const consolidatedFormDataArray = [];
+    let consolidatedFormDataObject = {} as any;
 
-  const milestoneSchema = useMemo(() => {
-    return createProjectMilestoneSchema(query.allReportTypes);
+    projectRevision.milestoneReportingRequirementFormChanges.edges.forEach(
+      (reportingRequirement) => {
+        consolidatedFormDataObject.reportingRequirementFormChange =
+          reportingRequirement.node;
+        // We simulate a node object here for each array item to allow the getSortedReports() function to sort this consolidated data
+        consolidatedFormDataObject.operation =
+          reportingRequirement.node.operation;
+        consolidatedFormDataObject.reportingRequirementIndex =
+          reportingRequirement.node.newFormData.reportingRequirementIndex;
+        consolidatedFormDataObject.milestoneFormChange =
+          projectRevision.milestoneFormChanges.edges.find(
+            ({ node }) =>
+              reportingRequirement.node.formDataRecordId ===
+              node.newFormData?.reportingRequirementId
+          );
+        consolidatedFormDataObject.paymentFormChange =
+          projectRevision.milestonePaymentFormChanges.edges.find(
+            ({ node }) =>
+              reportingRequirement.node.formDataRecordId ===
+              node.newFormData?.reportingRequirementId
+          );
+        consolidatedFormDataArray.push(consolidatedFormDataObject);
+      }
+    );
+    return consolidatedFormDataArray;
+  }, [projectRevision]);
+
+  const generatedReportingRequirementSchema = useMemo(() => {
+    return createMilestoneReportingRequirementSchema(query.allReportTypes);
   }, [query.allReportTypes]);
+
+  const generatedMilestoneSchema = useMemo(() => {
+    return createMilestoneSchema();
+  }, []);
 
   const [addMilestoneReportMutation, isAdding] = useAddMilestoneToRevision();
 
-  const [applyUpdateFormChangeMutation, isUpdating] =
-    useUpdateReportingRequirementFormChange();
+  // const [applyUpdateFormChangeMutation, isUpdating] =
+  //   useUpdateReportingRequirementFormChange();
 
   const [discardMilestoneReportMutation] = useDiscardMilestoneFormChange();
 
+  // Sort consolidated milestone form change records
   const [sortedMilestoneReports, nextMilestoneReportIndex] = useMemo(() => {
-    return getSortedReports(
-      projectRevision.projectMilestoneReportFormChanges.edges
+    const filteredReports = consolidatedFormData
+      .map((formData) => formData)
+      .filter((report) => report.operation !== "ARCHIVE");
+
+    filteredReports.sort(
+      (a, b) => a.reportingRequirementIndex - b.reportingRequirementIndex
     );
-  }, [projectRevision.projectMilestoneReportFormChanges]);
+    const nextIndex =
+      filteredReports.length > 0
+        ? filteredReports[filteredReports.length - 1]
+            .reportingRequirementIndex + 1
+        : 1;
+
+    return [filteredReports, nextIndex];
+  }, [consolidatedFormData]);
 
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
-    return projectRevision.projectMilestoneReportFormChanges.edges.map(
+    return projectRevision.milestoneReportingRequirementFormChanges.edges.map(
       ({ node }) => node?.rowId
     );
-  }, [projectRevision.projectMilestoneReportFormChanges]);
+  }, [projectRevision.milestoneReportingRequirementFormChanges]);
 
   const upcomingReportDueDate =
     projectRevision.upcomingMilestoneReportFormChange?.asReportingRequirement
       .reportDueDate;
 
   const reportSubmittedDates = useMemo(() => {
-    return projectRevision.projectMilestoneReportFormChanges.edges.map(
+    return projectRevision.milestoneReportingRequirementFormChanges.edges.map(
       ({ node }) => node.newFormData.submittedDate
     );
-  }, [projectRevision.projectMilestoneReportFormChanges.edges]);
+  }, [projectRevision.milestoneReportingRequirementFormChanges.edges]);
 
   return (
     <div>
@@ -223,10 +303,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
         {sortedMilestoneReports.map((milestoneReport, index) => {
           return (
-            <div key={milestoneReport.id}>
+            <div key={milestoneReport.reportingRequirementFormChange.id}>
               <CollapsibleReport
                 title={`Milestone ${index + 1}`}
-                reportingRequirement={milestoneReport.asReportingRequirement}
+                reportingRequirement={
+                  milestoneReport.reportingRequirementFormChange
+                    .asReportingRequirement
+                }
               >
                 <Button
                   variant="secondary"
@@ -247,25 +330,58 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   Remove
                 </Button>
                 <FormBase
-                  id={`form-${milestoneReport.id}`}
-                  validateOnMount={milestoneReport.changeStatus === "staged"}
-                  idPrefix={`form-${milestoneReport.id}`}
-                  ref={(el) => (formRefs.current[milestoneReport.id] = el)}
-                  formData={milestoneReport.newFormData}
+                  id={`form-${milestoneReport.reportingRequirementFormChange.id}`}
+                  validateOnMount={
+                    milestoneReport.reportingRequirementFormChange
+                      .changeStatus === "staged"
+                  }
+                  idPrefix={`form-${milestoneReport.reportingRequirementFormChange.id}`}
+                  ref={(el) =>
+                    (formRefs.current[
+                      milestoneReport.reportingRequirementFormChange.id
+                    ] = el)
+                  }
+                  formData={
+                    milestoneReport.reportingRequirementFormChange.newFormData
+                  }
                   onChange={(change) => {
-                    updateReportFormChange(
-                      applyUpdateFormChangeMutation,
-                      "Milestone",
-                      { ...milestoneReport, changeStatus: "pending" },
-                      change.formData
-                    );
+                    console.log(change);
+                    // updateReportFormChange(
+                    //   applyUpdateFormChangeMutation,
+                    //   "Milestone",
+                    //   { ...milestoneReport, changeStatus: "pending" },
+                    //   change.formData
+                    // );
                   }}
-                  schema={milestoneSchema as JSONSchema7}
-                  uiSchema={customMilestoneReportUiSchema}
+                  schema={generatedReportingRequirementSchema as JSONSchema7}
+                  uiSchema={milestoneReportingRequirementUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
-                    dueDate: milestoneReport.newFormData?.reportDueDate,
+                    dueDate:
+                      milestoneReport.reportingRequirementFormChange.newFormData
+                        ?.reportDueDate,
                   }}
+                />
+                <FormBase
+                  id={`form-${milestoneReport.milestoneFormChange.id}`}
+                  // validateOnMount={milestoneReport.milestoneFormChange.changeStatus === "staged"}
+                  // idPrefix={`form-${milestoneReport.milestoneFormChange.id}`}
+                  // ref={(el) => (formRefs.current[milestoneReport.milestoneFormChange.id] = el)}
+                  formData={milestoneReport.milestoneFormChange.newFormData}
+                  onChange={(change) => {
+                    console.log(change);
+                    // updateReportFormChange(
+                    //   applyUpdateFormChangeMutation,
+                    //   "Milestone",
+                    //   { ...milestoneReport, changeStatus: "pending" },
+                    //   change.formData
+                    // );
+                  }}
+                  // schema={generatedReportingRequirementSchema as JSONSchema7}
+                  // uiSchema={milestoneReportingRequirementUiSchema}
+                  schema={generatedMilestoneSchema as JSONSchema7}
+                  uiSchema={milestoneUiSchema}
+                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
                 />
               </CollapsibleReport>
             </div>
@@ -275,14 +391,15 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       <Button
         size="medium"
         variant="primary"
-        onClick={() =>
-          stageReportFormChanges(
-            applyUpdateFormChangeMutation,
-            "General Milestone",
-            props.onSubmit,
-            formRefs,
-            projectRevision.projectMilestoneReportFormChanges.edges
-          )
+        onClick={
+          () => console.log("I am staging")
+          // stageReportFormChanges(
+          //   applyUpdateFormChangeMutation,
+          //   "General Milestone",
+          //   props.onSubmit,
+          //   formRefs,
+          //   projectRevision.milestoneReportingRequirementFormChanges.edges
+          // )
         }
         disabled={isUpdating}
       >
