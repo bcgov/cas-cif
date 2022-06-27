@@ -11,8 +11,6 @@ import {
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
-import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
@@ -21,14 +19,14 @@ import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/Pr
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
 import {
-  addReportFormChange,
-  deleteReportFormChange,
   getSortedReports,
   stageReportFormChanges,
   updateReportFormChange,
 } from "./reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import { useAddMilestoneToRevision } from "mutations/MilestoneReport/addMilestoneToRevision";
+import useDiscardMilestoneFormChange from "mutations/MilestoneReport/discardMilestoneFormChange";
 
 interface Props {
   onSubmit: () => void;
@@ -97,13 +95,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           reportType: "Milestone"
           first: 1000
         ) @connection(key: "connection_projectMilestoneReportFormChanges") {
-          __id
           edges {
             node {
               id
               rowId
               newFormData
-              operation
               changeStatus
               # eslint-disable-next-line relay/unused-fields
               formChangeByPreviousFormChangeId {
@@ -155,20 +151,18 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     // TODO: refactor useEffect. In the meantime, ignore the eslint warning--fixing it causes infinite rerender.
   }, [router.query.anchor]);
 
+  console.log(projectRevision);
+
   const milestoneSchema = useMemo(() => {
     return createProjectMilestoneSchema(query.allReportTypes);
   }, [query.allReportTypes]);
 
-  const [addMilestoneReportMutation, isAdding] =
-    useAddReportingRequirementToRevision();
+  const [addMilestoneReportMutation, isAdding] = useAddMilestoneToRevision();
 
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
-  const [discardFormChange] = useDiscardReportingRequirementFormChange(
-    "Milestone",
-    projectRevision.projectMilestoneReportFormChanges.__id
-  );
+  const [discardMilestoneReportMutation] = useDiscardMilestoneFormChange();
 
   const [sortedMilestoneReports, nextMilestoneReportIndex] = useMemo(() => {
     return getSortedReports(
@@ -213,13 +207,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         <Button
           variant="secondary"
           onClick={() =>
-            addReportFormChange(
-              addMilestoneReportMutation,
-              projectRevision,
-              nextMilestoneReportIndex,
-              "General Milestone",
-              projectRevision.projectMilestoneReportFormChanges.__id
-            )
+            addMilestoneReportMutation({
+              variables: {
+                input: {
+                  revisionId: projectRevision.rowId,
+                  reportingRequirementIndex: nextMilestoneReportIndex,
+                },
+              },
+            })
           }
           className="addButton"
         >
@@ -237,12 +232,15 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   variant="secondary"
                   size="small"
                   onClick={() =>
-                    deleteReportFormChange(
-                      discardFormChange,
-                      milestoneReport.id,
-                      milestoneReport.operation,
-                      formRefs
-                    )
+                    discardMilestoneReportMutation({
+                      variables: {
+                        input: {
+                          revisionId: projectRevision.rowId,
+                          reportingRequirementIndex: index + 1,
+                        },
+                        reportType: "Milestone",
+                      },
+                    })
                   }
                   className="removeButton"
                 >
