@@ -468,6 +468,8 @@ enum AttachmentsOrderBy {
   PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
+  PROJECT_BY_PROJECT_ID__COMMENT_ASC
+  PROJECT_BY_PROJECT_ID__COMMENT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
   PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
@@ -40968,6 +40970,11 @@ type Project implements Node {
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectCifUsersByReportingRequirementProjectIdAndUpdatedByManyToManyConnection!
 
+  """
+  Historical amendment data for existing projects to track why and when decisions were made
+  """
+  comment: String
+
   """Reads and enables pagination through a set of `Contact`."""
   contactsByProjectContactProjectIdAndContactId(
     """Read all values in the set after (below) this cursor."""
@@ -42426,6 +42433,9 @@ input ProjectCondition {
   """Checks for equality with the object’s `archivedBy` field."""
   archivedBy: Int
 
+  """Checks for equality with the object’s `comment` field."""
+  comment: String
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -42903,6 +42913,8 @@ enum ProjectContactsOrderBy {
   PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
+  PROJECT_BY_PROJECT_ID__COMMENT_ASC
+  PROJECT_BY_PROJECT_ID__COMMENT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
   PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
@@ -42976,6 +42988,9 @@ input ProjectFilter {
 
   """A related `cifUserByUpdatedBy` exists."""
   cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `comment` field."""
+  comment: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -44339,6 +44354,8 @@ enum ProjectManagersOrderBy {
   PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
+  PROJECT_BY_PROJECT_ID__COMMENT_ASC
+  PROJECT_BY_PROJECT_ID__COMMENT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
   PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
@@ -45453,6 +45470,8 @@ enum ProjectRevisionsOrderBy {
   PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
+  PROJECT_BY_PROJECT_ID__COMMENT_ASC
+  PROJECT_BY_PROJECT_ID__COMMENT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
   PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
@@ -47697,6 +47716,8 @@ enum ProjectsOrderBy {
   CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
   CIF_USER_BY_UPDATED_BY__UUID_ASC
   CIF_USER_BY_UPDATED_BY__UUID_DESC
+  COMMENT_ASC
+  COMMENT_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -51867,6 +51888,8 @@ enum ReportingRequirementsOrderBy {
   PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
   PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
+  PROJECT_BY_PROJECT_ID__COMMENT_ASC
+  PROJECT_BY_PROJECT_ID__COMMENT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
   PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
   PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
