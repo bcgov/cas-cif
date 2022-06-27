@@ -40970,9 +40970,7 @@ type Project implements Node {
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectCifUsersByReportingRequirementProjectIdAndUpdatedByManyToManyConnection!
 
-  """
-  Historical amendment data for existing projects to track why and when decisions were made
-  """
+  """General comments pertaining to the project"""
   comments: String
 
   """Reads and enables pagination through a set of `Contact`."""
