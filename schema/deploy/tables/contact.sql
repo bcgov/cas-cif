@@ -6,7 +6,7 @@ create table cif.contact(
   id integer primary key generated always as identity,
   given_name varchar(1000),
   family_name varchar(1000),
-  email varchar(1000),
+  email varchar(1000) not null unique,
   phone varchar(100) constraint e164_format check (phone ~ '^\+\d{1,15}$'),
   phone_ext varchar(100),
   company_name varchar(1000),
@@ -40,7 +40,7 @@ comment on table cif.contact is 'Table containing information about a CIF contac
 comment on column cif.contact.id is 'Unique ID for the contact';
 comment on column cif.contact.given_name is 'The given name of this contact';
 comment on column cif.contact.family_name is 'The family name of this contact';
-comment on column cif.contact.email is 'The email address of this contact';
+comment on column cif.contact.email is 'The email address, and a unique identifier, of this contact';
 comment on column cif.contact.phone is 'The phone number of this contact, stored in E.164 format';
 comment on column cif.contact.phone_ext is 'The phone extension of this contact';
 comment on column cif.contact.company_name is 'The company this contact works for';

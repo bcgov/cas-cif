@@ -1,5 +1,5 @@
 begin;
-select plan(25);
+select plan(26);
 
 select has_table('cif', 'contact', 'table cif.contact exists');
 select has_column('cif', 'contact', 'id', 'table cif.contact has id column');
@@ -59,6 +59,15 @@ select results_eq(
   $$,
     ARRAY[1::bigint],
     'Data was changed by cif_admin'
+);
+
+select throws_like(
+  $$
+    insert into cif.contact(given_name, family_name, email, phone, phone_ext, contact_position, comments) values
+  ('should', 'error', 'bob@loblaw', '+11234567890', '123', 'lawyer', 'dup email should throw');
+  $$,
+  'duplicate key value violates unique constraint "contact_email_key"',
+    'Contact email must be unique'
 );
 
 select throws_like(
