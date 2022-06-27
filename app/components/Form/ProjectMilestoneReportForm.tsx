@@ -13,21 +13,22 @@ import {
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-// import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
-// import {
-//   stageReportFormChanges,
-//   updateReportFormChange,
-// } from "./reportingRequirementFormChangeFunctions";
+import {
+  // stageReportFormChanges,
+  updateReportFormChange,
+} from "./reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import { useAddMilestoneToRevision } from "mutations/MilestoneReport/addMilestoneToRevision";
 import useDiscardMilestoneFormChange from "mutations/MilestoneReport/discardMilestoneFormChange";
+import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 
 interface Props {
   onSubmit: () => void;
@@ -91,6 +92,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           @connection(
             key: "connection_milestoneReportingRequirementFormChanges"
           ) {
+          __id
           edges {
             node {
               id
@@ -114,6 +116,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           formDataTableName: "milestone_report"
           first: 1000
         ) @connection(key: "connection_milestoneFormChanges") {
+          __id
           edges {
             node {
               id
@@ -132,6 +135,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           formDataTableName: "payment"
           first: 1000
         ) @connection(key: "connection_milestonePaymentFormChanges") {
+          __id
           edges {
             node {
               id
@@ -199,19 +203,21 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           reportingRequirement.node.operation;
         consolidatedFormDataObject.reportingRequirementIndex =
           reportingRequirement.node.newFormData.reportingRequirementIndex;
+
         consolidatedFormDataObject.milestoneFormChange =
           projectRevision.milestoneFormChanges.edges.find(
             ({ node }) =>
               reportingRequirement.node.formDataRecordId ===
               node.newFormData?.reportingRequirementId
-          );
+          ).node;
         consolidatedFormDataObject.paymentFormChange =
           projectRevision.milestonePaymentFormChanges.edges.find(
             ({ node }) =>
               reportingRequirement.node.formDataRecordId ===
               node.newFormData?.reportingRequirementId
-          );
+          ).node;
         consolidatedFormDataArray.push(consolidatedFormDataObject);
+        consolidatedFormDataObject = {};
       }
     );
     return consolidatedFormDataArray;
@@ -227,8 +233,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
   const [addMilestoneReportMutation, isAdding] = useAddMilestoneToRevision();
 
-  // const [applyUpdateFormChangeMutation, isUpdating] =
-  //   useUpdateReportingRequirementFormChange();
+  const [applyUpdateFormChangeMutation, isUpdating] =
+    useUpdateReportingRequirementFormChange();
+
+  const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
   const [discardMilestoneReportMutation] = useDiscardMilestoneFormChange();
 
@@ -319,9 +327,17 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                       variables: {
                         input: {
                           revisionId: projectRevision.rowId,
-                          reportingRequirementIndex: index + 1,
+                          reportingRequirementIndex:
+                            milestoneReport.reportingRequirementFormChange
+                              .newFormData.reportingRequirementIndex,
                         },
                         reportType: "Milestone",
+                        connections: [
+                          projectRevision
+                            .milestoneReportingRequirementFormChanges.__id,
+                          projectRevision.milestoneFormChanges.__id,
+                          projectRevision.milestonePaymentFormChanges.__id,
+                        ],
                       },
                     })
                   }
@@ -345,13 +361,15 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                     milestoneReport.reportingRequirementFormChange.newFormData
                   }
                   onChange={(change) => {
-                    console.log(change);
-                    // updateReportFormChange(
-                    //   applyUpdateFormChangeMutation,
-                    //   "Milestone",
-                    //   { ...milestoneReport, changeStatus: "pending" },
-                    //   change.formData
-                    // );
+                    updateReportFormChange(
+                      applyUpdateFormChangeMutation,
+                      "Milestone",
+                      {
+                        ...milestoneReport.reportingRequirementFormChange,
+                        changeStatus: "pending",
+                      },
+                      change.formData
+                    );
                   }}
                   schema={generatedReportingRequirementSchema as JSONSchema7}
                   uiSchema={milestoneReportingRequirementUiSchema}
@@ -364,21 +382,30 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 />
                 <FormBase
                   id={`form-${milestoneReport.milestoneFormChange.id}`}
-                  // validateOnMount={milestoneReport.milestoneFormChange.changeStatus === "staged"}
-                  // idPrefix={`form-${milestoneReport.milestoneFormChange.id}`}
-                  // ref={(el) => (formRefs.current[milestoneReport.milestoneFormChange.id] = el)}
+                  validateOnMount={
+                    milestoneReport.milestoneFormChange.changeStatus ===
+                    "staged"
+                  }
+                  idPrefix={`form-${milestoneReport.milestoneFormChange.id}`}
+                  ref={(el) =>
+                    (formRefs.current[milestoneReport.milestoneFormChange.id] =
+                      el)
+                  }
                   formData={milestoneReport.milestoneFormChange.newFormData}
                   onChange={(change) => {
-                    console.log(change);
-                    // updateReportFormChange(
-                    //   applyUpdateFormChangeMutation,
-                    //   "Milestone",
-                    //   { ...milestoneReport, changeStatus: "pending" },
-                    //   change.formData
-                    // );
+                    updateFormChange({
+                      variables: {
+                        input: {
+                          id: milestoneReport.milestoneFormChange.id,
+                          formChangePatch: {
+                            changeStatus: "pending",
+                            newFormData: change.formData,
+                          },
+                        },
+                      },
+                      debounceKey: milestoneReport.milestoneFormChange.id,
+                    });
                   }}
-                  // schema={generatedReportingRequirementSchema as JSONSchema7}
-                  // uiSchema={milestoneReportingRequirementUiSchema}
                   schema={generatedMilestoneSchema as JSONSchema7}
                   uiSchema={milestoneUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
@@ -392,7 +419,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         size="medium"
         variant="primary"
         onClick={
-          () => console.log("I am staging")
           // stageReportFormChanges(
           //   applyUpdateFormChangeMutation,
           //   "General Milestone",
@@ -401,7 +427,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           //   projectRevision.milestoneReportingRequirementFormChanges.edges
           // )
         }
-        disabled={isUpdating}
+        disabled={isUpdating || isUpdatingFormChange}
       >
         Submit Milestone Reports
       </Button>

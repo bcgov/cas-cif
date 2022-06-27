@@ -6,11 +6,12 @@ const discardMutation = graphql`
   mutation discardMilestoneFormChangeMutation(
     $input: DiscardMilestoneFormChangeInput!
     $reportType: String!
+    $connections: [ID!]!
   ) {
     discardMilestoneFormChange(input: $input) {
       formChanges {
+        id @deleteEdge(connections: $connections)
         projectRevisionByProjectRevisionId {
-          ...ProjectMilestoneReportForm_projectRevision
           upcomingReportingRequirementFormChange(reportType: $reportType) {
             ...ReportDueIndicator_formChange
           }
