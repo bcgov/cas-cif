@@ -46,6 +46,32 @@ type AddContactToRevisionPayload {
   query: Query
 }
 
+"""All input for the `addMilestoneToRevision` mutation."""
+input AddMilestoneToRevisionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  reportingRequirementIndex: Int!
+  revisionId: Int!
+}
+
+"""The output of our `addMilestoneToRevision` mutation."""
+type AddMilestoneToRevisionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChanges: [FormChange]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """Table containing information about uploaded attachments"""
 type Attachment implements Node {
   """archived at timestamp"""
@@ -1757,14 +1783,8 @@ enum BudgetItemsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_ASC
@@ -1773,8 +1793,6 @@ enum BudgetItemsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
@@ -32834,6 +32852,32 @@ type DeleteSectorPayload {
   ): SectorsEdge
 }
 
+"""All input for the `discardMilestoneFormChange` mutation."""
+input DiscardMilestoneFormChangeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  reportingRequirementIndex: Int!
+  revisionId: Int!
+}
+
+"""The output of our `discardMilestoneFormChange` mutation."""
+type DiscardMilestoneFormChangePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChanges: [FormChange]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """
   Table containing information about how CIF emission_intensity values map to a payment_percentage.
   This table is a lookup table that maps the emission intensity performance of a project to a payment percentage used to determine payments.
@@ -33687,14 +33731,8 @@ enum EmissionIntensityReportsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_ASC
@@ -33703,8 +33741,6 @@ enum EmissionIntensityReportsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
@@ -38078,14 +38114,8 @@ enum MilestoneReportsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_ASC
@@ -38094,8 +38124,6 @@ enum MilestoneReportsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
@@ -38132,6 +38160,12 @@ type Mutation {
     """
     input: AddContactToRevisionInput!
   ): AddContactToRevisionPayload
+  addMilestoneToRevision(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: AddMilestoneToRevisionInput!
+  ): AddMilestoneToRevisionPayload
 
   """Creates a single `Attachment`."""
   createAttachment(
@@ -38567,6 +38601,12 @@ type Mutation {
     """
     input: DeleteSectorBySectorNameInput!
   ): DeleteSectorPayload
+  discardMilestoneFormChange(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DiscardMilestoneFormChangeInput!
+  ): DiscardMilestoneFormChangePayload
   stageDirtyFormChanges(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -40246,14 +40286,8 @@ enum PaymentsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CERTIFIED_BY_PROFESSIONAL_DESIGNATION_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENTS_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMPLETION_DATE_DESC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_ASC
+  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__COMMENT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_AT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__CREATED_BY_ASC
@@ -40262,8 +40296,6 @@ enum PaymentsOrderBy {
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__DESCRIPTION_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ID_DESC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_ASC
-  REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__MAXIMUM_AMOUNT_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_ASC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__PROJECT_ID_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__REPORTING_REQUIREMENT_INDEX_ASC
@@ -49933,16 +49965,6 @@ type ReportingRequirement implements Node {
   ): BudgetItemsConnection!
 
   """
-  The name of the person who certified the completion reporting requirement
-  """
-  certifiedBy: String
-
-  """
-  The professional designation of the person who certified the completion of the reporting requirement
-  """
-  certifiedByProfessionalDesignation: String
-
-  """
   Reads a single `CifUser` that is related to this `ReportingRequirement`.
   """
   cifUserByArchivedBy: CifUser
@@ -50426,16 +50448,7 @@ type ReportingRequirement implements Node {
   ): ReportingRequirementCifUsersByPaymentReportingRequirementIdAndUpdatedByManyToManyConnection!
 
   """Comments about the reporting requirement"""
-  comments: String
-
-  """
-  The date where the work should be finished by. It can be automatically calculated based upon the type of milestone or manually overridden.
-    Automatic calculations are as follows:
-    30 days before report due date for general milestones
-    60 days before report due date for project summary report
-    150 days before report due date for TEIMP report
-  """
-  completionDate: Datetime
+  comment: String
 
   """created at timestamp"""
   createdAt: Datetime!
@@ -50491,9 +50504,6 @@ type ReportingRequirement implements Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
-
-  """The maximum amount of money assigned to a milestone"""
-  maximumAmount: BigFloat
 
   """Reads and enables pagination through a set of `MilestoneReport`."""
   milestoneReportsByReportingRequirementId(
@@ -51500,19 +51510,8 @@ input ReportingRequirementCondition {
   """Checks for equality with the object’s `archivedBy` field."""
   archivedBy: Int
 
-  """Checks for equality with the object’s `certifiedBy` field."""
-  certifiedBy: String
-
-  """
-  Checks for equality with the object’s `certifiedByProfessionalDesignation` field.
-  """
-  certifiedByProfessionalDesignation: String
-
-  """Checks for equality with the object’s `comments` field."""
-  comments: String
-
-  """Checks for equality with the object’s `completionDate` field."""
-  completionDate: Datetime
+  """Checks for equality with the object’s `comment` field."""
+  comment: String
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -51522,9 +51521,6 @@ input ReportingRequirementCondition {
 
   """Checks for equality with the object’s `description` field."""
   description: String
-
-  """Checks for equality with the object’s `maximumAmount` field."""
-  maximumAmount: BigFloat
 
   """Checks for equality with the object’s `projectId` field."""
   projectId: Int
@@ -51572,12 +51568,6 @@ input ReportingRequirementFilter {
   """Some related `budgetItemsByReportingRequirementId` exist."""
   budgetItemsByReportingRequirementIdExist: Boolean
 
-  """Filter by the object’s `certifiedBy` field."""
-  certifiedBy: StringFilter
-
-  """Filter by the object’s `certifiedByProfessionalDesignation` field."""
-  certifiedByProfessionalDesignation: StringFilter
-
   """Filter by the object’s `cifUserByArchivedBy` relation."""
   cifUserByArchivedBy: CifUserFilter
 
@@ -51596,11 +51586,8 @@ input ReportingRequirementFilter {
   """A related `cifUserByUpdatedBy` exists."""
   cifUserByUpdatedByExists: Boolean
 
-  """Filter by the object’s `comments` field."""
-  comments: StringFilter
-
-  """Filter by the object’s `completionDate` field."""
-  completionDate: DatetimeFilter
+  """Filter by the object’s `comment` field."""
+  comment: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -51618,9 +51605,6 @@ input ReportingRequirementFilter {
 
   """Some related `emissionIntensityReportsByReportingRequirementId` exist."""
   emissionIntensityReportsByReportingRequirementIdExist: Boolean
-
-  """Filter by the object’s `maximumAmount` field."""
-  maximumAmount: BigFloatFilter
 
   """
   Filter by the object’s `milestoneReportsByReportingRequirementId` relation.
@@ -51789,10 +51773,6 @@ enum ReportingRequirementsOrderBy {
   ARCHIVED_BY_DESC
   BUDGET_ITEMS_BY_REPORTING_REQUIREMENT_ID__COUNT_ASC
   BUDGET_ITEMS_BY_REPORTING_REQUIREMENT_ID__COUNT_DESC
-  CERTIFIED_BY_ASC
-  CERTIFIED_BY_DESC
-  CERTIFIED_BY_PROFESSIONAL_DESIGNATION_ASC
-  CERTIFIED_BY_PROFESSIONAL_DESIGNATION_DESC
   CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
   CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_DESC
   CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_ASC
@@ -51859,10 +51839,8 @@ enum ReportingRequirementsOrderBy {
   CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
   CIF_USER_BY_UPDATED_BY__UUID_ASC
   CIF_USER_BY_UPDATED_BY__UUID_DESC
-  COMMENTS_ASC
-  COMMENTS_DESC
-  COMPLETION_DATE_ASC
-  COMPLETION_DATE_DESC
+  COMMENT_ASC
+  COMMENT_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -51873,8 +51851,6 @@ enum ReportingRequirementsOrderBy {
   EMISSION_INTENSITY_REPORTS_BY_REPORTING_REQUIREMENT_ID__COUNT_DESC
   ID_ASC
   ID_DESC
-  MAXIMUM_AMOUNT_ASC
-  MAXIMUM_AMOUNT_DESC
   MILESTONE_REPORTS_BY_REPORTING_REQUIREMENT_ID__COUNT_ASC
   MILESTONE_REPORTS_BY_REPORTING_REQUIREMENT_ID__COUNT_DESC
   NATURAL
