@@ -50,7 +50,7 @@ const NewContactButton: React.FC<Props> = ({
       onClick={clickHandler}
       style={{ margin: 0 }}
       size="medium"
-      variant="primary"
+      variant="secondary"
       disabled={isAddingContact}
     >
       <FontAwesomeIcon icon={faUserPlus} /> Create new contact

@@ -517,7 +517,6 @@ describe("the new project page", () => {
       .should("have.text", "Loblaw003, Bob003");
     cy.findByText(/^Secondary contacts/i)
       .next()
-      .find("dl")
       .should("have.text", "Loblaw004, Bob004");
     cy.get("body").happoScreenshot({
       component: "Project Summary Form",

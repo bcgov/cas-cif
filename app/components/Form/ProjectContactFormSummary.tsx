@@ -10,6 +10,7 @@ import FormBase from "./FormBase";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import ContactDetails from "components/Contact/ContactDetails";
+import React from "react";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -105,10 +106,9 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
       return (
-        <div key={node.id}>
+        <React.Fragment key={node.id}>
           <FormBase
             liveValidate
-            key={node.newFormData.contactIndex}
             tagName={"dl"}
             fields={renderDiff ? customFields : fields}
             theme={readOnlyTheme}
@@ -131,7 +131,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             }}
           />
           <ContactDetails contact={node.asProjectContact.contactByContactId} />
-        </div>
+        </React.Fragment>
       );
     });
   }, [secondaryContacts, renderDiff]);

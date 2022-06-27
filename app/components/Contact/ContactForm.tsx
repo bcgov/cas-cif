@@ -7,6 +7,7 @@ import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useRouter } from "next/router";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
 import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
+import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
 
 const uiSchema = {
   comments: { "ui:widget": "TextAreaWidget" },
@@ -17,8 +18,10 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
   const router = useRouter();
 
   const [updateFormChange] = useUpdateFormChange();
-  const [applyUpdateFormChangeMutation] = useUpdateProjectContactFormChange();
+  const [updateProjectContactFormChangeMutation] =
+    useUpdateProjectContactFormChange();
   const [addContactMutation] = useAddContactToRevision();
+  const [deleteFormChange] = useDeleteFormChange();
 
   // Based on router queries we can determine if the user is coming from project contact form
   const comingFromProjectContactForm = [
@@ -33,7 +36,7 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
 
   const handleAfterFormSubmitting = (response: any) => {
     const updateProjectContactFormChange = (res?: any) => {
-      applyUpdateFormChangeMutation({
+      updateProjectContactFormChangeMutation({
         variables: {
           input: {
             id:
@@ -89,7 +92,6 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
       },
       debounceKey: contactFormId,
       onCompleted: (response) => handleAfterFormSubmitting(response),
-      onError: (e) => console.log(e),
       updater: (store) => {
         // Invalidate the entire store, to make sure that we don't display any stale data after redirecting to the next page.
         // This could be optimized to only invalidate the affected records.
@@ -99,8 +101,17 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
   };
 
   // By adding this handler, we are overriding the default onDiscard that is provided by relayFormPageFactory
-  const handleDiscard = () =>
-    comingFromProjectContactForm ? router.back() : props.onDiscard();
+  const handleDiscard = () => {
+    deleteFormChange({
+      variables: {
+        input: {
+          id: router.query.form as string,
+        },
+      },
+      onCompleted: () =>
+        comingFromProjectContactForm ? router.back() : props.onDiscard(),
+    });
+  };
 
   return (
     <FormBase
