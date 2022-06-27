@@ -82,7 +82,7 @@ as $add_milestone_form_change$
               'pending',
               'payment'
             ) returning *
-        ) select * from rep_req union select *from milestone union select * from payment;
+        ) select * from rep_req union select * from milestone union select * from payment;
 
 $add_milestone_form_change$ language sql volatile;
 
