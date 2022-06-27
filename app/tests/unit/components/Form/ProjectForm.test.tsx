@@ -32,7 +32,7 @@ const mockQueryPayload = {
           summary: "d",
           operatorId: 1,
           fundingStreamRfpId: 1,
-          comment: "some amendment comment",
+          comments: "some amendment comment",
         },
       },
     };
@@ -146,7 +146,7 @@ describe("The Project Form", () => {
       }
     );
 
-    fireEvent.change(screen.getByLabelText(/comment/i), {
+    fireEvent.change(screen.getByLabelText(/General Comments/i), {
       target: { value: "new comment" },
     });
 
@@ -160,7 +160,7 @@ describe("The Project Form", () => {
             newFormData: expect.objectContaining({
               proposalReference: "testidentifier",
               summary: "testsummary",
-              comment: "new comment",
+              comments: "new comment",
             }),
           },
         },
@@ -180,9 +180,9 @@ describe("The Project Form", () => {
     expect(
       screen.getByPlaceholderText<HTMLSelectElement>("Select an Operator").value
     ).toBe("test operator (1234abcd)");
-    expect(screen.getByLabelText<HTMLSelectElement>("Comment").value).toBe(
-      "some amendment comment"
-    );
+    expect(
+      screen.getByLabelText<HTMLSelectElement>("General Comments").value
+    ).toBe("some amendment comment");
   });
   it("Displays an error message upon validation when the proposal reference is not unique", () => {
     const mockResolver = {

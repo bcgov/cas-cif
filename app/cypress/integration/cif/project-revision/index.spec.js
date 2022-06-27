@@ -499,7 +499,7 @@ describe("the new project page", () => {
     cy.findByText(/Project Status/i)
       .next()
       .should("have.text", "Project Underway");
-    cy.findAllByText(/Comment/i)
+    cy.findAllByText(/General Comments/i)
       .eq(0)
       .next()
       .should("have.text", "Some comments");

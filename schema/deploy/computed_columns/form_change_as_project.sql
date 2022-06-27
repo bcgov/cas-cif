@@ -24,7 +24,7 @@ as $$
       (new_form_data->>'totalFundingRequest')::numeric as total_funding_request,
       new_form_data->>'sectorName' as sector_name,
       new_form_data->>'additionalSectorInformation' as additional_sector_information,
-      new_form_data->>'comment' as comment,
+      new_form_data->>'comments' as comments,
       null::int as created_by,
       now()::timestamptz created_at,
       null::int as updated_by,
