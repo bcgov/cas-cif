@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: ./.bin/sqitch-check-immutable-files.sh schema main
+      - run: ./.bin/sqitch-check-immutable-files.sh schema origin/main
