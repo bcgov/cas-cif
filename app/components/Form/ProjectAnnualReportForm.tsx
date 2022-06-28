@@ -1,10 +1,13 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
-import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import {
+  projectReportingRequirementSchema,
+  reportingRequirementUiSchema,
+} from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -31,14 +34,15 @@ interface Props {
 }
 
 export const annualReportUiSchema = {
-  reportDueDate: {
-    "ui:widget": "DueDateWidget",
-  },
+  ...reportingRequirementUiSchema,
   submittedDate: {
-    "ui:widget": "ReceivedDateWidget",
-  },
-  comments: {
-    "ui:widget": "TextAreaWidget",
+    ...reportingRequirementUiSchema.submittedDate,
+    contentPrefix: (
+      <div>
+        <span style={{ marginRight: "1em" }}>Received</span>
+        <FontAwesomeIcon icon={faCheck} color={"green"} />
+      </div>
+    ),
   },
 };
 
