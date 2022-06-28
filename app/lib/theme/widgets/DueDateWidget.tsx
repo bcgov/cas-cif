@@ -32,7 +32,11 @@ const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
 
     return (
       <div onClick={onClick} ref={ref} aria-label={label}>
-        {value ? displayString : "Select a date"}
+        {value ? (
+          displayString
+        ) : (
+          <span style={{ color: "#666666" }}>Select a date</span> //This color is somehow grey-ish to bypass accessibility issues
+        )}
         <FontAwesomeIcon icon={faCalendarAlt} size="lg" />
         <style jsx>{`
           div {
