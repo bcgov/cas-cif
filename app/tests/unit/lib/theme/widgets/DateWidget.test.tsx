@@ -1,10 +1,12 @@
-import ReceivedDateWidget from "lib/theme/widgets/ReceivedDateWidget";
+import DateWidget from "lib/theme/widgets/DateWidget";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { DateTime } from "luxon";
-import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
+// import { DateTime } from "luxon";
+// import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import userEvent from "@testing-library/user-event";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-describe("The ReceivedDateWidget", () => {
+describe("The DateWidget", () => {
   it("does not display a date when none is selected and there is no due date", () => {
     const props: any = {
       id: "test-id",
@@ -14,7 +16,7 @@ describe("The ReceivedDateWidget", () => {
       required: true,
       formContext: null,
     };
-    render(<ReceivedDateWidget {...props} />);
+    render(<DateWidget {...props} />);
     expect(screen.getByText(/select a date/i)).toBeInTheDocument();
   });
 
@@ -28,7 +30,7 @@ describe("The ReceivedDateWidget", () => {
       value: "2020-01-01T23:59:59.999-07:00",
       required: true,
     };
-    render(<ReceivedDateWidget id="widget-id" {...props} />);
+    render(<DateWidget id="widget-id" {...props} />);
     expect(screen.getByText(/Jan[.]? 01, 2020/)).toBeInTheDocument();
     fireEvent.click(screen.getByLabelText(/received date/i));
     userEvent.selectOptions(screen.getAllByRole("combobox")[0], "11");
@@ -41,53 +43,26 @@ describe("The ReceivedDateWidget", () => {
     expect(handleOnChange).toHaveBeenCalledWith(expectedDate);
   });
 
-  it("if report is upcoming, displays weeks until due", () => {
-    const dueDate = getTimestamptzFromDate(
-      DateTime.now().setZone("America/Vancouver").plus({ years: 1 }),
-      true
-    );
+  // it("if report is upcoming, displays weeks until due", () => {
+  //   const dueDate = getTimestamptzFromDate(
+  //     DateTime.now().setZone("America/Vancouver").plus({ years: 1 }),
+  //     true
+  //   );
 
-    const handleOnChange = jest.fn();
-    const props: any = {
-      id: "test-id",
-      onChange: handleOnChange,
-      label: "Received Date",
-      formContext: {
-        dueDate,
-      },
-      value: undefined,
-      required: true,
-    };
-    render(<ReceivedDateWidget {...props} />);
-    expect(screen.getByText(/Select a date/i)).toBeInTheDocument();
-  });
-
-  it("displays overdue text and icon if report is late", () => {
-    const dueDate = getTimestamptzFromDate(
-      DateTime.now().setZone("America/Vancouver").minus({ days: 5 }),
-      true
-    );
-    const handleOnChange = jest.fn();
-    const props: any = {
-      id: "test-id",
-      onChange: handleOnChange,
-      label: "Received Date",
-      value: undefined,
-      formContext: {
-        dueDate,
-      },
-      required: true,
-    };
-    const { container } = render(
-      <ReceivedDateWidget id="widget-id" {...props} />
-    );
-    expect(screen.getByLabelText(/received date/i)).toHaveTextContent(
-      /Select a date/
-    );
-    expect(
-      container.getElementsByClassName("fa-exclamation-circle")[0]
-    ).toBeUndefined();
-  });
+  //   const handleOnChange = jest.fn();
+  //   const props: any = {
+  //     id: "test-id",
+  //     onChange: handleOnChange,
+  //     label: "Received Date",
+  //     formContext: {
+  //       dueDate,
+  //     },
+  //     value: undefined,
+  //     required: true,
+  //   };
+  //   render(<DateWidget {...props} />);
+  //   expect(screen.getByText(/Select a date/i)).toBeInTheDocument();
+  // });
 
   it("displays received text and icon if report is received", () => {
     const props: any = {
@@ -99,8 +74,17 @@ describe("The ReceivedDateWidget", () => {
       formContext: {
         dueDate: "2010-12-15T23:59:59.999-08:00",
       },
+      uiSchema: {
+        contentPrefix: (
+          <div>
+            <span style={{ marginRight: "1em" }}>Received</span>
+            <FontAwesomeIcon icon={faCheck} color={"green"} />
+          </div>
+        ),
+      },
     };
-    const { container } = render(<ReceivedDateWidget {...props} />);
+    const { container } = render(<DateWidget {...props} />);
+    screen.logTestingPlaygroundURL();
 
     expect(screen.getByLabelText(/received date/i)).toHaveTextContent(
       /Jan[.]? 01, 2009/

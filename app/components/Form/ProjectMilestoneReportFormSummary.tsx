@@ -23,7 +23,7 @@ const milestoneReportUiSchema = {
     "ui:widget": "DueDateWidget",
   },
   submittedDate: {
-    "ui:widget": "ReceivedDateWidget",
+    "ui:widget": "DateWidget",
   },
   comments: {
     "ui:widget": "TextAreaWidget",

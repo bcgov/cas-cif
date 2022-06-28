@@ -5,31 +5,31 @@ import "react-datepicker/dist/react-datepicker.css";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
-const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
-  ({ onClick, value, label }, ref) => {
+const DateInput = forwardRef<HTMLDivElement, WidgetProps>(
+  ({ onClick, value, label, uiSchema }, ref) => {
     const displayString = useMemo(() => {
-      const receivedDate = DateTime.fromISO(value, {
+      const formattedDate = DateTime.fromISO(value, {
         setZone: true,
         locale: "en-CA",
-      });
-      const formattedReceivedDate = receivedDate.toFormat("MMM dd, yyyy");
+      }).toFormat("MMM dd, yyyy");
+
       return (
         <>
-          <div className="receivedStringWrapper">
-            <span style={{ marginRight: "1em" }}>Received</span>
-            <FontAwesomeIcon icon={faCheck} color={"green"} />
-          </div>
-          ({formattedReceivedDate})
+          {uiSchema?.contentPrefix}({formattedDate})
         </>
       );
-    }, [value]);
+    }, [uiSchema, value]);
 
     return (
-      <div className="receivedDateWrapper">
+      <div>
         <div onClick={onClick} ref={ref} aria-label={label}>
-          {value ? displayString : "Select a date"}
+          {value ? (
+            displayString
+          ) : (
+            <span style={{ color: "#666666" }}>Select a date</span> //This color is somehow grey-ish to bypass accessibility issues
+          )}
           <FontAwesomeIcon icon={faCalendarAlt} size="lg" />
           <style jsx>{`
             div {
@@ -41,22 +41,8 @@ const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
               padding: 9px 35px 9px 9px;
               font-size: 14.4px;
             }
-            :global(.receivedDateWrapper) {
-              align-items: center;
-            }
-            :global(.receivedStringWrapper) {
-              display: flex;
-              align-items: center;
-            }
-
-            :global(.overdueIcon) {
-              margin-left: 1em;
-            }
             div:hover {
               cursor: pointer;
-            }
-            :global(.overdue) {
-              color: #cd2026;
             }
           `}</style>
         </div>
@@ -64,15 +50,16 @@ const ReceivedDateInput = forwardRef<HTMLDivElement, WidgetProps>(
     );
   }
 );
-ReceivedDateInput.displayName = "ReceivedDateInput";
+DateInput.displayName = "DateInput";
 
-const ReceivedDateWidget: React.FC<WidgetProps> = ({
+const DateWidget: React.FC<WidgetProps> = ({
   id,
   onChange,
   label,
   value,
   required,
   formContext,
+  uiSchema,
 }) => {
   return (
     <div>
@@ -87,8 +74,9 @@ const ReceivedDateWidget: React.FC<WidgetProps> = ({
         required={required}
         aria-label={label}
         customInput={
-          <ReceivedDateInput
+          <DateInput
             formContext={formContext}
+            uiSchema={uiSchema}
             label={label}
             ref={useRef()}
           />
@@ -111,4 +99,4 @@ const ReceivedDateWidget: React.FC<WidgetProps> = ({
   );
 };
 
-export default ReceivedDateWidget;
+export default DateWidget;

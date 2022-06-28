@@ -24,7 +24,7 @@ const readOnlyTheme: ThemeProps = {
     SelectProjectStatusWidget: ReadOnlyWidget,
     ConditionalAmountWidget: ReadOnlyWidget,
     DueDateWidget: ReadOnlyDateWidget,
-    ReceivedDateWidget: ReadOnlyDateWidget,
+    DateWidget: ReadOnlyDateWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,
