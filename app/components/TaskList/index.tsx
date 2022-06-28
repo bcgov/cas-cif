@@ -171,6 +171,22 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           />
         </TaskListSection>
 
+        {/* Budget Details Section */}
+        <TaskListSection
+          defaultExpandedState={currentStep === "0"}
+          listItemNumber="3"
+          listItemName="Budgets, Expenses & Payments"
+        >
+          <TaskListItem
+            stepName="1"
+            linkUrl={getProjectRevisionFormPageRoute(id, 6)}
+            formTitle="Funding Agreement Overview"
+            formStatus={projectManagersStatus}
+            currentStep={currentStep}
+            mode={mode}
+          />
+        </TaskListSection>
+
         {/* Milestone Reports Section */}
         <TaskListSection
           defaultExpandedState={

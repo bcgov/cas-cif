@@ -10,6 +10,7 @@ import ProjectAnnualReportForm from "components/Form/ProjectAnnualReportForm";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
 import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
+import ProjectFundingAgreementForm from "components/Form/ProjectFundingAgreementForm";
 
 interface FormPageDefinition {
   title: string;
@@ -47,6 +48,11 @@ const formPages: FormPageDefinition[] = [
     title: "annual reports",
     editComponent: ProjectAnnualReportForm,
     viewComponent: ProjectAnnualReportFormSummary,
+  },
+  {
+    title: "Funding Agreement Overview",
+    editComponent: ProjectFundingAgreementForm,
+    viewComponent: ProjectFundingAgreementForm,
   },
 ];
 
