@@ -38,6 +38,7 @@ export const createProjectUiSchema = (
       "projectStatusId",
       "sectorName",
       "additionalSectorInformation",
+      "comments",
     ],
     proposalReference: {
       "ui:help": <small>(e.g. 2020-RFP-1-ABCD-123)</small>,
@@ -74,6 +75,9 @@ export const createProjectUiSchema = (
       "ui:widget": "SearchWidget",
     },
     additionalSectorInformation: {
+      "ui:widget": "TextAreaWidget",
+    },
+    comments: {
       "ui:widget": "TextAreaWidget",
     },
   };

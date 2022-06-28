@@ -49,6 +49,7 @@ const projectSchema = {
       type: "string",
       title: "Additional Sector Information",
     },
+    comments: { type: "string", title: "General Comments" },
   },
 };
 
