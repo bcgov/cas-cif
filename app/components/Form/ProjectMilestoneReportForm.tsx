@@ -6,11 +6,9 @@ import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicat
 import Status from "components/ReportingRequirement/Status";
 import {
   milestoneReportingRequirementUiSchema,
-  milestoneReportingRequirementSchema,
-  milestoneSchema,
   milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import { JSONSchema7 } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
@@ -29,50 +27,17 @@ import UndoChangesButton from "./UndoChangesButton";
 import { useAddMilestoneToRevision } from "mutations/MilestoneReport/addMilestoneToRevision";
 import useDiscardMilestoneFormChange from "mutations/MilestoneReport/discardMilestoneFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import {
+  getConsolidatedMilestoneFormData,
+  createMilestoneReportingRequirementSchema,
+  createMilestoneSchema,
+} from "./Functions/projectMilestoneFormFunctions";
 
 interface Props {
   onSubmit: () => void;
   projectRevision: ProjectMilestoneReportForm_projectRevision$key;
   query: ProjectMilestoneReportForm_query$key;
 }
-
-export const createMilestoneReportingRequirementSchema = (allReportTypes) => {
-  const schema = milestoneReportingRequirementSchema;
-  schema.properties.reportType = {
-    ...schema.properties.reportType,
-    anyOf: allReportTypes.edges.map(({ node }) => {
-      const replaceRegex = /\sMilestone/i;
-      const displayValue = node.name.replace(replaceRegex, "");
-      return {
-        type: "string",
-        title: displayValue,
-        enum: [node.name],
-        value: node.name,
-      } as JSONSchema7Definition;
-    }),
-    default: "General Milestone",
-  };
-  return schema as JSONSchema7;
-};
-
-export const createMilestoneSchema = () => {
-  const schema = milestoneSchema;
-  schema.properties.certifierProfessionalDesignation = {
-    ...schema.properties.certifierProfessionalDesignation,
-    anyOf: ["Professional Engineer", "Certified Professional Accountant"].map(
-      (designation) => {
-        return {
-          type: "string",
-          title: designation,
-          enum: [designation],
-          value: designation,
-        } as JSONSchema7Definition;
-      }
-    ),
-  };
-
-  return schema as JSONSchema7;
-};
 
 const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
@@ -97,6 +62,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
             node {
               id
               rowId
+              # eslint-disable-next-line relay/unused-fields
               formDataRecordId
               operation
               newFormData
@@ -174,6 +140,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         allReportTypes(filter: { name: { notIn: ["Quarterly", "Annual"] } }) {
           edges {
             node {
+              # eslint-disable-next-line relay/unused-fields
               name
             }
           }
@@ -191,36 +158,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
   // Match the reportingRequirement form change records with the dependent milestoneReport and payment form change records
   const consolidatedFormData = useMemo(() => {
-    const consolidatedFormDataArray = [];
-    let consolidatedFormDataObject = {} as any;
-
-    projectRevision.milestoneReportingRequirementFormChanges.edges.forEach(
-      (reportingRequirement) => {
-        consolidatedFormDataObject.reportingRequirementFormChange =
-          reportingRequirement.node;
-        // We simulate a node object here for each array item to allow the getSortedReports() function to sort this consolidated data
-        consolidatedFormDataObject.operation =
-          reportingRequirement.node.operation;
-        consolidatedFormDataObject.reportingRequirementIndex =
-          reportingRequirement.node.newFormData.reportingRequirementIndex;
-
-        consolidatedFormDataObject.milestoneFormChange =
-          projectRevision.milestoneFormChanges.edges.find(
-            ({ node }) =>
-              reportingRequirement.node.formDataRecordId ===
-              node.newFormData?.reportingRequirementId
-          ).node;
-        consolidatedFormDataObject.paymentFormChange =
-          projectRevision.milestonePaymentFormChanges.edges.find(
-            ({ node }) =>
-              reportingRequirement.node.formDataRecordId ===
-              node.newFormData?.reportingRequirementId
-          ).node;
-        consolidatedFormDataArray.push(consolidatedFormDataObject);
-        consolidatedFormDataObject = {};
-      }
+    return getConsolidatedMilestoneFormData(
+      projectRevision.milestoneReportingRequirementFormChanges.edges,
+      projectRevision.milestoneFormChanges.edges,
+      projectRevision.milestonePaymentFormChanges.edges
     );
-    return consolidatedFormDataArray;
   }, [projectRevision]);
 
   const generatedReportingRequirementSchema = useMemo(() => {
