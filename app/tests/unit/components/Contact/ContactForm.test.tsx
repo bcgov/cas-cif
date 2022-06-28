@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react";
 import ContactForm from "components/Contact/ContactForm";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
@@ -33,13 +34,17 @@ const mockPayload = {
     return result;
   },
 };
-
+const mockOnSubmit = jest.fn();
+const defaultProps = {
+  onSubmit: mockOnSubmit,
+};
 const componentTestingHelper = new ComponentTestingHelper<ContactFormTestQuery>(
   {
     component: ContactForm,
     compiledQuery: compiledContactFormTestQuery,
     testQuery: testQuery,
     defaultQueryResolver: mockPayload,
+    defaultComponentProps: defaultProps,
     getPropsFromTestQuery: (data) => ({ formChange: data.formChange }),
   }
 );
@@ -74,31 +79,44 @@ describe("The Contact Form component", () => {
       "lorem ipsum"
     );
 
-    // fireEvent();
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+    expect(mockOnSubmit.mock.calls[0][0].formData).toMatchObject({
+      email: "foo@example.com",
+      phone: "+14155552671",
+      comments: "lorem ipsum",
+      givenName: "Scooby",
+      familyName: "Doo",
+      contactPosition: "Detective",
+    });
   });
 
-  // it("displays the correct validation erros when submit is clicked with invalid data", () => {
-  //   const mockResolver = {
-  //     FormChange() {
-  //       const result: Partial<ContactForm_formChange> = {
-  //         newFormData: {
-  //           email: "foo@example.com",
-  //           phone: "+14155552671",
-  //           comments: "lorem ipsum",
-  //           givenName: null,
-  //           familyName: "Doo",
-  //           contactPosition: "Detective",
-  //         },
-  //         isUniqueValue: false,
-  //         id: "fcid",
-  //         changeStatus: "pending",
-  //         formDataRecordId: 1,
-  //       };
-  //       return result;
-  //     },
-  //   };
-  //   componentTestingHelper.loadQuery(mockResolver);
-  //   componentTestingHelper.renderComponent();
-  //   expect();
-  // });
+  it("displays the correct validation erros when submit is clicked with invalid data", () => {
+    const mockResolver = {
+      FormChange() {
+        const result: Partial<ContactForm_formChange> = {
+          newFormData: {
+            email: "foo@example.com",
+            phone: "+14155552671",
+            comments: "lorem ipsum",
+            familyName: "Doo",
+            contactPosition: "Detective",
+          },
+          isUniqueValue: false,
+          id: "fcid",
+          changeStatus: "pending",
+          formDataRecordId: 1,
+        };
+        return result;
+      },
+    };
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(
+      screen.getByText("This email already exists in the system")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Please enter a value")).toBeInTheDocument();
+  });
 });

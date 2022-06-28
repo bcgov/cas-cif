@@ -5,10 +5,11 @@ import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
 import contactSchema from "data/jsonSchemaForm/contactSchema";
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
+import { ContactForm_formChange$key } from "__generated__/ContactForm_formChange.graphql";
 
 interface Props extends FormComponentProps {
   onDiscard: () => void;
-  formChange: any;
+  formChange: ContactForm_formChange$key;
   disabled: boolean;
 }
 
