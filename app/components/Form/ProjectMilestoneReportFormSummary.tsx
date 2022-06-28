@@ -110,15 +110,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
 
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  console.log(
-    "reporting requirement: ",
-    summaryMilestoneReportingRequirementFormChanges,
-    "milestone: ",
-    summaryMilestoneFormChanges,
-    "payment: ",
-    summaryMilestonePaymentFormChanges
-  );
-
   const consolidatedFormData = useMemo(() => {
     return getConsolidatedMilestoneFormData(
       summaryMilestoneReportingRequirementFormChanges.edges,
