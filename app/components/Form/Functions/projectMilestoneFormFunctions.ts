@@ -24,12 +24,12 @@ export const getConsolidatedMilestoneFormData = (
       ({ node }) =>
         reportingRequirement.node.formDataRecordId ===
         node.newFormData?.reportingRequirementId
-    ).node;
+    )?.node;
     consolidatedFormDataObject.paymentFormChange = paymentEdges.find(
       ({ node }) =>
         reportingRequirement.node.formDataRecordId ===
         node.newFormData?.reportingRequirementId
-    ).node;
+    )?.node;
     consolidatedFormDataArray.push(consolidatedFormDataObject);
     consolidatedFormDataObject = {};
   });
