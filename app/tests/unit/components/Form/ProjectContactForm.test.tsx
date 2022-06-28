@@ -6,7 +6,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectContactFormQuery, {
   ProjectContactFormQuery,
 } from "__generated__/ProjectContactFormQuery.graphql";
-import { ProjectContactForm_projectRevision } from "__generated__/ProjectContactForm_projectRevision.graphql";
+import { ProjectContactForm_projectRevision$data } from "__generated__/ProjectContactForm_projectRevision.graphql";
 
 const testQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
@@ -22,7 +22,7 @@ const testQuery = graphql`
 
 const mockQueryPayload = {
   ProjectRevision() {
-    const result: ProjectContactForm_projectRevision = {
+    const result: Partial<ProjectContactForm_projectRevision$data> = {
       " $fragmentType": "ProjectContactForm_projectRevision",
       id: "Test Project Revision ID",
       rowId: 1234,
@@ -131,15 +131,18 @@ describe("The ProjectContactForm", () => {
 
     expect(screen.getAllByRole("combobox")).toHaveLength(3);
 
-    // Remove buttons only appear on alternate contacs
+    // Clear button only appear one time
+    expect(screen.getAllByText("Clear")).toHaveLength(1);
+
+    // Remove buttons only appear on alternate contacts
     expect(screen.getAllByText("Remove")).toHaveLength(2);
   });
 
-  it("Calls the addContactToRevision mutation when the Add button is clicked", () => {
+  it("Calls the addContactToRevision mutation when the Add a secondary contact button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    const addButton = screen.getByText(/add secondary contact/i);
+    const addButton = screen.getByText("Add a secondary contact");
     addButton.click();
 
     expect(
@@ -155,11 +158,11 @@ describe("The ProjectContactForm", () => {
     });
   });
 
-  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
+  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the Add a secondary contact button and there's a mutation error", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    userEvent.click(screen.getByText(/Add/i));
+    userEvent.click(screen.getByText(/Add a secondary contact/i));
     act(() => {
       componentTestingHelper.environment.mock.rejectMostRecentOperation(
         new Error()
@@ -280,7 +283,7 @@ describe("The ProjectContactForm", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
-        const result: ProjectContactForm_projectRevision = {
+        const result: Partial<ProjectContactForm_projectRevision$data> = {
           " $fragmentType": "ProjectContactForm_projectRevision",
           id: "Test Project Revision ID",
           rowId: 1234,
@@ -290,6 +293,7 @@ describe("The ProjectContactForm", () => {
               {
                 node: {
                   id: "Form ID 1",
+                  rowId: 1,
                   operation: "CREATE",
                   changeStatus: "staged",
                   newFormData: {
@@ -302,6 +306,7 @@ describe("The ProjectContactForm", () => {
               {
                 node: {
                   id: "Form ID 2",
+                  rowId: 2,
                   operation: "CREATE",
                   changeStatus: "staged",
                   newFormData: {
@@ -314,6 +319,7 @@ describe("The ProjectContactForm", () => {
               {
                 node: {
                   id: "Form ID 3",
+                  rowId: 3,
                   operation: "CREATE",
                   changeStatus: "staged",
                   newFormData: {
@@ -373,5 +379,30 @@ describe("The ProjectContactForm", () => {
         formChangesIds: [4, 5, 6],
       },
     });
+  });
+
+  it("Shows Create new contact button display when no contact selected and will call createNewContactFormChangeMutation on click", () => {
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          allContacts: {
+            edges: [],
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    const createNewContactButton = screen.getByRole("button", {
+      name: /create new contact/i,
+    });
+
+    expect(createNewContactButton).toBeInTheDocument();
+    createNewContactButton.click();
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "createNewContactFormChangeMutation",
+      {}
+    );
   });
 });

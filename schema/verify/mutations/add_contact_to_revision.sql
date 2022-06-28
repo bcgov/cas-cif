@@ -2,7 +2,7 @@
 
 begin;
 
-select pg_get_functiondef('cif.add_contact_to_revision(int, int)'::regprocedure);
+select pg_get_functiondef('cif.add_contact_to_revision(int, int, int)'::regprocedure);
 
 
 rollback;

@@ -5,6 +5,7 @@ input AddContactToRevisionInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
+  contactId: Int
   contactIndex: Int!
   revisionId: Int!
 }
