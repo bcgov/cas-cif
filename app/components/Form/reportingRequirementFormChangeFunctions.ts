@@ -6,6 +6,7 @@ import { ProjectQuarterlyReportForm_projectRevision$data } from "__generated__/P
 import { ProjectAnnualReportForm_projectRevision$data } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
 import { updateReportingRequirementFormChangeMutation$variables } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
+import { updateFormChangeMutation$variables } from "__generated__/updateFormChangeMutation.graphql";
 
 /**
  * These generic functions are for use in the ProjectMilestoneReportForm, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
@@ -97,10 +98,16 @@ export const stageReportFormChanges = async (
     onCompleted: () => void;
     onError: (reason?: any) => void;
   }) => void,
-  reportType: string,
   submitFn: () => void,
   formRefs: MutableRefObject<{}>,
-  formChangeEdges: any
+  formChangeEdges: any,
+  updateFormChangeMutationFn: (args: {
+    variables: updateFormChangeMutation$variables;
+    debounceKey: string;
+    onCompleted: () => void;
+    onError: (reason?: any) => void;
+  }) => void,
+  reportType: string
 ) => {
   const validationErrors = Object.keys(formRefs.current).reduce(
     (agg, formId) => {
@@ -113,24 +120,37 @@ export const stageReportFormChanges = async (
   const completedPromises: Promise<void>[] = [];
 
   formChangeEdges.forEach(({ node }) => {
+    const defaultVariables = {
+      input: {
+        id: node.id,
+        formChangePatch: {
+          changeStatus: "staged",
+        },
+      },
+    };
     if (node.changeStatus === "pending") {
       const promise = new Promise<void>((resolve, reject) => {
-        mutationFn({
-          variables: {
-            reportType: reportType,
-            input: {
-              id: node.id,
-              formChangePatch: {
-                changeStatus: "staged",
-              },
+        if (reportType)
+          mutationFn({
+            variables: {
+              reportType: reportType,
+              ...defaultVariables,
             },
-          },
-          debounceKey: node.id,
-          onCompleted: () => {
-            resolve();
-          },
-          onError: reject,
-        });
+            debounceKey: node.id,
+            onCompleted: () => {
+              resolve();
+            },
+            onError: reject,
+          });
+        else
+          updateFormChangeMutationFn({
+            variables: defaultVariables,
+            debounceKey: node.id,
+            onCompleted: () => {
+              resolve();
+            },
+            onError: reject,
+          });
       });
       completedPromises.push(promise);
     }

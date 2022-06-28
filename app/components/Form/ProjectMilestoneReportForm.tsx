@@ -21,7 +21,7 @@ import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/Pr
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import FormBase from "./FormBase";
 import {
-  // stageReportFormChanges,
+  stageReportFormChanges,
   updateReportFormChange,
 } from "./reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
@@ -339,6 +339,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                           projectRevision.milestonePaymentFormChanges.__id,
                         ],
                       },
+                      onCompleted: () => {
+                        if (formRefs) {
+                          Object.keys(formRefs.current).forEach((key) => {
+                            if (!formRefs.current[key])
+                              delete formRefs.current[key];
+                          });
+                        }
+                      },
                     })
                   }
                   className="removeButton"
@@ -418,14 +426,19 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       <Button
         size="medium"
         variant="primary"
-        onClick={
-          // stageReportFormChanges(
-          //   applyUpdateFormChangeMutation,
-          //   "General Milestone",
-          //   props.onSubmit,
-          //   formRefs,
-          //   projectRevision.milestoneReportingRequirementFormChanges.edges
-          // )
+        onClick={() =>
+          stageReportFormChanges(
+            applyUpdateFormChangeMutation,
+            props.onSubmit,
+            formRefs,
+            [
+              ...projectRevision.milestoneReportingRequirementFormChanges.edges,
+              ...projectRevision.milestoneFormChanges.edges,
+              ...projectRevision.milestonePaymentFormChanges.edges,
+            ],
+            updateFormChange,
+            "General Milestone"
+          )
         }
         disabled={isUpdating || isUpdatingFormChange}
       >
