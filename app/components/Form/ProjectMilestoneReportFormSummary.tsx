@@ -9,10 +9,10 @@ import { utils } from "@rjsf/core";
 import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import {
-  // milestoneReportingRequirementUiSchema,
+  milestoneReportingRequirementUiSchema,
   milestoneReportingRequirementSchema,
   milestoneSchema,
-  // milestoneUiSchema,
+  milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { getConsolidatedMilestoneFormData } from "./Functions/projectMilestoneFormFunctions";
 
@@ -24,17 +24,6 @@ interface Props {
   projectRevision: ProjectMilestoneReportFormSummary_projectRevision$key;
   viewOnly?: boolean;
 }
-// const milestoneReportUiSchema = {
-//   reportDueDate: {
-//     "ui:widget": "DueDateWidget",
-//   },
-//   submittedDate: {
-//     "ui:widget": "ReceivedDateWidget",
-//   },
-//   comments: {
-//     "ui:widget": "TextAreaWidget",
-//   },
-// };
 
 const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
   const {
@@ -152,12 +141,12 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     () =>
       !milestoneReportFormChanges.some(
         (report) =>
-          (report?.reportingRequirementFormChange.isPristine === false &&
-            report?.milestoneFormChange.isPristine === false &&
-            report?.paymentFormChange.isPristine === false) ||
-          (report?.reportingRequirementFormChange.isPristine === null &&
-            report?.milestoneFormChange.isPristine === null &&
-            report?.paymentFormChange.isPristine === null)
+          report?.reportingRequirementFormChange.isPristine === false ||
+          report?.milestoneFormChange.isPristine === false ||
+          report?.paymentFormChange.isPristine === false ||
+          report?.reportingRequirementFormChange.isPristine === null ||
+          report?.milestoneFormChange.isPristine === null ||
+          report?.paymentFormChange.isPristine === null
       ),
     [milestoneReportFormChanges]
   );
@@ -167,27 +156,25 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       if (!milestoneReport) return;
 
       // Set the formSchema and formData based on showing the diff or not
-      const { reportingRequirementFormSchema, reportingRequirementFormData } =
-        !renderDiff
-          ? {
-              reportingRequirementFormSchema:
-                milestoneReportingRequirementSchema,
-              reportingRequirementFormData:
-                milestoneReport.reportingRequirementFormChange.newFormData,
-            }
-          : (getFilteredSchema(
-              milestoneReportingRequirementSchema as JSONSchema7,
-              milestoneReport.reportingRequirement
-            ) as any);
-
-      const { milestoneFormSchema, milestoneFormData } = !renderDiff
+      const reportingRequirementFormDiffObject = !renderDiff
         ? {
-            milestoneFormSchema: milestoneSchema,
-            milestoneFormData: milestoneReport.milestoneFormChange.newFormData,
+            formSchema: milestoneReportingRequirementSchema,
+            formData:
+              milestoneReport.reportingRequirementFormChange.newFormData,
+          }
+        : (getFilteredSchema(
+            milestoneReportingRequirementSchema as JSONSchema7,
+            milestoneReport.reportingRequirementFormChange
+          ) as any);
+
+      const milestoneFormDiffObject = !renderDiff
+        ? {
+            formSchema: milestoneSchema,
+            formData: milestoneReport.milestoneFormChange.newFormData,
           }
         : (getFilteredSchema(
             milestoneSchema as JSONSchema7,
-            milestoneReport.milestone
+            milestoneReport.milestoneFormChange
           ) as any);
 
       return (
@@ -196,9 +183,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             <h4>Milestone Report {index + 1}</h4>
           </header>
           {/* Show this part if none of milestone report form properties have been updated */}
-          {Object.keys(reportingRequirementFormSchema.properties).length ===
-            0 &&
-            Object.keys(milestoneFormSchema.properties).length === 0 &&
+          {Object.keys(reportingRequirementFormDiffObject.formSchema.properties)
+            .length === 0 &&
+            Object.keys(milestoneFormDiffObject.formSchema.properties)
+              .length === 0 &&
             milestoneReport.operation !== "ARCHIVE" && (
               <em>Milestone report not updated</em>
             )}
@@ -213,9 +201,11 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={reportingRequirementFormSchema as JSONSchema7}
-            // uiSchema={milestoneReportUiSchema}
-            formData={reportingRequirementFormData}
+            schema={
+              reportingRequirementFormDiffObject.formSchema as JSONSchema7
+            }
+            uiSchema={milestoneReportingRequirementUiSchema}
+            formData={reportingRequirementFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
               oldData:
@@ -229,9 +219,9 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={milestoneFormSchema as JSONSchema7}
-            // uiSchema={milestoneReportUiSchema}
-            formData={milestoneFormData}
+            schema={milestoneFormDiffObject.formSchema as JSONSchema7}
+            uiSchema={milestoneUiSchema}
+            formData={milestoneFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
               oldData:
