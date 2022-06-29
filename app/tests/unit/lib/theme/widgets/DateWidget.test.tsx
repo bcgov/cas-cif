@@ -43,27 +43,6 @@ describe("The DateWidget", () => {
     expect(handleOnChange).toHaveBeenCalledWith(expectedDate);
   });
 
-  // it("if report is upcoming, displays weeks until due", () => {
-  //   const dueDate = getTimestamptzFromDate(
-  //     DateTime.now().setZone("America/Vancouver").plus({ years: 1 }),
-  //     true
-  //   );
-
-  //   const handleOnChange = jest.fn();
-  //   const props: any = {
-  //     id: "test-id",
-  //     onChange: handleOnChange,
-  //     label: "Received Date",
-  //     formContext: {
-  //       dueDate,
-  //     },
-  //     value: undefined,
-  //     required: true,
-  //   };
-  //   render(<DateWidget {...props} />);
-  //   expect(screen.getByText(/Select a date/i)).toBeInTheDocument();
-  // });
-
   it("displays received text and icon if report is received", () => {
     const props: any = {
       id: "test-id",
@@ -84,7 +63,6 @@ describe("The DateWidget", () => {
       },
     };
     const { container } = render(<DateWidget {...props} />);
-    screen.logTestingPlaygroundURL();
 
     expect(screen.getByLabelText(/received date/i)).toHaveTextContent(
       /Jan[.]? 01, 2009/
