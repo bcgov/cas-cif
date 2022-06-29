@@ -21,7 +21,12 @@ begin
   update cif.form_change
     set change_status = new.change_status
     where project_revision_id=new.id
-    and form_data_table_name!='project';
+    and form_data_table_name='reporting_requirement';
+
+  update cif.form_change
+    set change_status = new.change_status
+    where project_revision_id=new.id
+    and form_data_table_name not in ('project', 'reporting_requirement');
 
   -- If a project_id wasn't created, save it after the form_change row was committed
   if (select triggers_commit from cif.change_status where status=new.change_status) and (new.project_id is null) then

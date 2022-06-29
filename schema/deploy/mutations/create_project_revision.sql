@@ -50,6 +50,24 @@ begin
     from cif.reporting_requirement
     where reporting_requirement.project_id = $1
     and archived_at is null
+  union
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'milestone_report' as form_data_table_name,
+      'milestone_report' as json_schema_name
+    from cif.reporting_requirement
+    where reporting_requirement.project_id = $1
+    and archived_at is null
+  union
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'payment' as form_data_table_name,
+      'payment' as json_schema_name
+    from cif.reporting_requirement
+    where reporting_requirement.project_id = $1
+    and archived_at is null
   )
   loop
     perform cif.create_form_change(
