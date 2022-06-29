@@ -209,7 +209,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           )}
           <FormBase
             liveValidate
-            key={`form-${milestoneReport.id}`}
+            key={`form-${milestoneReport.reportingRequirementFormChange.id}`}
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
@@ -225,7 +225,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           />
           <FormBase
             liveValidate
-            key={`form-${milestoneReport.id}`}
+            key={`form-${milestoneReport.milestoneFormChange.id}`}
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
