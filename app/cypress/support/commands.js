@@ -226,7 +226,7 @@ Cypress.Commands.add("addDueDate", (reportNumber, reportDueDate) => {
   cy.get('[aria-label*="Due Date"]')
     .eq(reportNumber - 1)
     .contains(`${dueDateTZ.toFormat("MMM dd, yyyy")}`);
-
+  cy.contains("Changes saved").should("be.visible");
   // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
   return cy.url().should("include", "/form");
 });
@@ -256,6 +256,7 @@ Cypress.Commands.add(
         "have.text",
         `Received(${receivedDate.toFormat("MMM dd, yyyy")})`
       );
+    cy.contains("Changes saved").should("be.visible");
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
     return cy.url().should("include", "/form");
   }
