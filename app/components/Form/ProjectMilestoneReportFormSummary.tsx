@@ -9,6 +9,7 @@ import { utils } from "@rjsf/core";
 import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { projectMilestoneSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
+import { customMilestoneReportUiSchema } from "./ProjectMilestoneReportForm";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -18,17 +19,6 @@ interface Props {
   projectRevision: ProjectMilestoneReportFormSummary_projectRevision$key;
   viewOnly?: boolean;
 }
-const milestoneReportUiSchema = {
-  reportDueDate: {
-    "ui:widget": "DueDateWidget",
-  },
-  submittedDate: {
-    "ui:widget": "DateWidget",
-  },
-  comments: {
-    "ui:widget": "TextAreaWidget",
-  },
-};
 
 const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
   const { summaryProjectMilestoneReportFormChanges, isFirstRevision } =
@@ -126,7 +116,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
             schema={formSchema as JSONSchema7}
-            uiSchema={milestoneReportUiSchema}
+            uiSchema={customMilestoneReportUiSchema}
             formData={formData}
             formContext={{
               operation: milestoneReport.operation,

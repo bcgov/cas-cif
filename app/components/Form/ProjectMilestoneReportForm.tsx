@@ -36,7 +36,7 @@ interface Props {
   query: ProjectMilestoneReportForm_query$key;
 }
 
-const customMilestoneReportUiSchema = {
+export const customMilestoneReportUiSchema = {
   ...milestoneReportUiSchema,
   submittedDate: {
     ...milestoneReportUiSchema.submittedDate,
