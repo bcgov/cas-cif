@@ -39,7 +39,7 @@ set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
 -- fill the forms and commit the current project revision
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.funding_stream(name, description) values ('stream', 'stream description');
-insert into cif.contact(given_name, family_name) values ('John', 'Test');
+insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
 
 update cif.form_change set new_form_data=format('{
       "projectName": "name",

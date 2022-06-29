@@ -2,9 +2,9 @@ begin;
 
 select plan(3);
 
-insert into cif.contact(id, given_name, family_name)
+insert into cif.contact(id, given_name, family_name, email)
   overriding system value
-  values (1, 'John', 'Doe'), (2, 'Nofamilyname', null), (3, null, 'Nogivenname');
+  values (1, 'John', 'Doe', 'a1@abc.com'), (2, 'Nofamilyname', null, 'a2@abc.com'), (3, null, 'Nogivenname', 'a3@abc.com');
 
 
 select is(

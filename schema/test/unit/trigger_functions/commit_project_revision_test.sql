@@ -16,7 +16,7 @@ values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somema
 
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.funding_stream(name, description) values ('stream', 'stream description');
-insert into cif.contact(given_name, family_name) values ('John', 'Test');
+insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
 
 select cif.create_project();
 
