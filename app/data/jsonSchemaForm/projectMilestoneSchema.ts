@@ -74,7 +74,7 @@ export const milestoneReportUiSchema = {
   completionDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "date",
+    "ui:widget": "DateWidget",
   },
   certifiedByProfessionalDesignation: {
     "ui:col-md": 12,
