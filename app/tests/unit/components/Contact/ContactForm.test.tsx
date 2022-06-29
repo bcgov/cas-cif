@@ -34,17 +34,13 @@ const mockPayload = {
     return result;
   },
 };
-const mockOnSubmit = jest.fn();
-const defaultProps = {
-  onSubmit: mockOnSubmit,
-};
+
 const componentTestingHelper = new ComponentTestingHelper<ContactFormTestQuery>(
   {
     component: ContactForm,
     compiledQuery: compiledContactFormTestQuery,
     testQuery: testQuery,
     defaultQueryResolver: mockPayload,
-    defaultComponentProps: defaultProps,
     getPropsFromTestQuery: (data) => ({ formChange: data.formChange }),
   }
 );
@@ -80,13 +76,22 @@ describe("The Contact Form component", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
-    expect(mockOnSubmit.mock.calls[0][0].formData).toMatchObject({
-      email: "foo@example.com",
-      phone: "+14155552671",
-      comments: "lorem ipsum",
-      givenName: "Scooby",
-      familyName: "Doo",
-      contactPosition: "Detective",
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "committed",
+        newFormData: {
+          comments: "lorem ipsum",
+          contactPosition: "Detective",
+          email: "foo@example.com",
+          familyName: "Doo",
+          givenName: "Scooby",
+          phone: "+14155552671",
+        },
+      },
+      id: "fcid",
     });
   });
 

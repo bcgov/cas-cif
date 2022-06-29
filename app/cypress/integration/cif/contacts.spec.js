@@ -37,7 +37,7 @@ describe("The contacts page", () => {
     cy.get("table").contains("Loblaw, Rob");
   });
 
-  it("Shows corect validation errors", () => {
+  it("Shows correct validation errors", () => {
     cy.visit("/cif/contacts");
     cy.get("h2").contains("Contacts");
     cy.get("button").contains("Add").click();
