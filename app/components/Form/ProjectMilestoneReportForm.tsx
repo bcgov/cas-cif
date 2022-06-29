@@ -1,5 +1,5 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
@@ -35,6 +35,19 @@ interface Props {
   projectRevision: ProjectMilestoneReportForm_projectRevision$key;
   query: ProjectMilestoneReportForm_query$key;
 }
+
+export const customMilestoneReportUiSchema = {
+  ...milestoneReportUiSchema,
+  submittedDate: {
+    ...milestoneReportUiSchema.submittedDate,
+    contentPrefix: (
+      <div>
+        <span style={{ marginRight: "1em" }}>Received</span>
+        <FontAwesomeIcon icon={faCheck} color={"green"} />
+      </div>
+    ),
+  },
+};
 
 export const createProjectMilestoneSchema = (allReportTypes) => {
   const schema = projectMilestoneSchema;
@@ -250,7 +263,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                     );
                   }}
                   schema={milestoneSchema as JSONSchema7}
-                  uiSchema={milestoneReportUiSchema}
+                  uiSchema={customMilestoneReportUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
                     dueDate: milestoneReport.newFormData?.reportDueDate,

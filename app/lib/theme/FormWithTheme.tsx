@@ -12,7 +12,7 @@ import MoneyWidget from "lib/theme/widgets/MoneyWidget";
 import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
 import DueDateWidget from "lib/theme/widgets/DueDateWidget";
 import ConditionalAmountWidget from "./widgets/ConditionalAmountWidget";
-import ReceivedDateWidget from "./widgets/ReceivedDateWidget";
+import DateWidget from "./widgets/DateWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -31,7 +31,7 @@ const formTheme: ThemeProps = {
     ConditionalAmountWidget: ConditionalAmountWidget,
     PhoneNumberWidget,
     DueDateWidget: DueDateWidget,
-    ReceivedDateWidget: ReceivedDateWidget,
+    DateWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,

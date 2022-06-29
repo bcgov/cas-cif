@@ -363,7 +363,7 @@ Cypress.Commands.add(
 
     cy.addDueDate(reportNumber, reportDueDate);
 
-    cy.get('[label="Substantial Completion Date"').type(
+    cy.get('[aria-label*="Substantial Completion Date"').type(
       reportSubstantialCompletionDate
     );
 

@@ -1,5 +1,5 @@
 import { utils } from "@rjsf/core";
-import projectReportingRequirementSchema from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import { projectReportingRequirementSchema } from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";

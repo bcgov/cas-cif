@@ -1,4 +1,4 @@
-const schema = {
+export const projectReportingRequirementSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Reporting Requirement",
@@ -21,4 +21,14 @@ const schema = {
   },
 };
 
-export default schema;
+export const reportingRequirementUiSchema = {
+  reportDueDate: {
+    "ui:widget": "DueDateWidget",
+  },
+  submittedDate: {
+    "ui:widget": "DateWidget",
+  },
+  comments: {
+    "ui:widget": "TextAreaWidget",
+  },
+};

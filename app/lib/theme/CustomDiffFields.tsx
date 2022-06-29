@@ -165,7 +165,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
-    const isDate = ["DueDateWidget", "ReceivedDateWidget"].includes(
+    const isDate = ["DueDateWidget", "DateWidget"].includes(
       uiSchema["ui:widget"] as string
     );
 

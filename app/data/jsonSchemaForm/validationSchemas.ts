@@ -1,5 +1,5 @@
 import projectContactSchema from "./projectContactSchema";
-import projectReportingRequirementSchema from "./projectReportingRequirementSchema";
+import { projectReportingRequirementSchema } from "./projectReportingRequirementSchema";
 import projectManagerSchema from "./projectManagerSchema";
 import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
