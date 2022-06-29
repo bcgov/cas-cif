@@ -52,22 +52,26 @@ begin
     and archived_at is null
   union
     select
-      id,
+      mr.id,
       'update'::cif.form_change_operation as operation,
       'milestone_report' as form_data_table_name,
       'milestone_report' as json_schema_name
-    from cif.reporting_requirement
-    where reporting_requirement.project_id = $1
-    and archived_at is null
+    from cif.milestone_report mr
+    join cif.reporting_requirement rr
+    on mr.reporting_requirement_id = rr.id
+    and rr.project_id = $1
+    and mr.archived_at is null
   union
     select
-      id,
+      p.id,
       'update'::cif.form_change_operation as operation,
       'payment' as form_data_table_name,
       'payment' as json_schema_name
-    from cif.reporting_requirement
-    where reporting_requirement.project_id = $1
-    and archived_at is null
+    from cif.payment p
+    join cif.reporting_requirement rr
+    on p.reporting_requirement_id = rr.id
+    and rr.project_id = $1
+    and p.archived_at is null
   )
   loop
     perform cif.create_form_change(
