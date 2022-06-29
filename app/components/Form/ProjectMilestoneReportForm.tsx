@@ -253,7 +253,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
         {sortedMilestoneReports.map((milestoneReport, index) => {
           return (
-            <div key={milestoneReport.reportingRequirementFormChange.id}>
+            <div
+              key={milestoneReport.reportingRequirementFormChange.id}
+              id={`Milestone${index + 1}`}
+            >
               <CollapsibleReport
                 title={`Milestone ${index + 1}`}
                 reportingRequirement={
