@@ -1,8 +1,8 @@
--- Revert cif:tables/funding_parameters from pg
+-- Revert cif:tables/funding_parameter from pg
 
 
 begin;
 
-drop table cif.funding_parameters;
+drop table cif.funding_parameter;
 
 commit;

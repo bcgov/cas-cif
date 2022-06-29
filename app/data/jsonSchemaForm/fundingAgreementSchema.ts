@@ -13,7 +13,6 @@ const schema = {
     totalProjectValue: {
       title: "Total Project Value",
       type: "number",
-      default: 1,
     },
     maxFundingAmount: {
       title: "Max Funding Amount",
