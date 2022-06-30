@@ -12,9 +12,9 @@ const testQuery = graphql`
     query {
       # Spread the fragment you want to test here
       projectRevision(id: "I can be anything") {
-        ...ProjectMilestoneReportForm_projectRevision
+        ...ProjectMilestoneReportFormGroup_projectRevision
       }
-      ...ProjectMilestoneReportForm_query
+      ...ProjectMilestoneReportFormGroup_query
     }
   }
 `;

@@ -1,7 +1,7 @@
 import { MutableRefObject } from "react";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
-import { ProjectMilestoneReportForm_projectRevision$data } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
+import { ProjectMilestoneReportFormGroup_projectRevision$data } from "__generated__/ProjectMilestoneReportFormGroup_projectRevision.graphql";
 import { ProjectQuarterlyReportForm_projectRevision$data } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import { ProjectAnnualReportForm_projectRevision$data } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
@@ -9,7 +9,7 @@ import { updateReportingRequirementFormChangeMutation$variables } from "__genera
 import { updateFormChangeMutation$variables } from "__generated__/updateFormChangeMutation.graphql";
 
 /**
- * These generic functions are for use in the ProjectMilestoneReportForm, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
+ * These generic functions are for use in the ProjectMilestoneReportFormGroup, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
  * The report forms all need to handle CRUD operations for reporting_requirement form_change records in an identical way.
  * Staging the forms before submit and sorting the forms by index are also shared functionality of these components.
  */
@@ -19,7 +19,7 @@ export const addReportFormChange = (
     variables: addReportingRequirementToRevisionMutation$variables;
   }) => void,
   revision:
-    | ProjectMilestoneReportForm_projectRevision$data
+    | ProjectMilestoneReportFormGroup_projectRevision$data
     | ProjectQuarterlyReportForm_projectRevision$data
     | ProjectAnnualReportForm_projectRevision$data,
   reportIndex: number,
