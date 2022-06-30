@@ -101,13 +101,13 @@ export const stageReportFormChanges = async (
   submitFn: () => void,
   formRefs: MutableRefObject<{}>,
   formChangeEdges: any,
-  updateFormChangeMutationFn: (args: {
+  reportType?: string,
+  updateFormChangeMutationFn?: (args: {
     variables: updateFormChangeMutation$variables;
     debounceKey: string;
     onCompleted: () => void;
     onError: (reason?: any) => void;
-  }) => void,
-  reportType: string
+  }) => void
 ) => {
   const validationErrors = Object.keys(formRefs.current).reduce(
     (agg, formId) => {

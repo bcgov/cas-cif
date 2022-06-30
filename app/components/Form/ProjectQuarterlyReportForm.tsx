@@ -212,10 +212,10 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         onClick={() =>
           stageReportFormChanges(
             applyUpdateFormChangeMutation,
-            "Quarterly",
             props.onSubmit,
             formRefs,
-            projectRevision.projectQuarterlyReportFormChanges.edges
+            projectRevision.projectQuarterlyReportFormChanges.edges,
+            "Quarterly"
           )
         }
         disabled={isUpdating}

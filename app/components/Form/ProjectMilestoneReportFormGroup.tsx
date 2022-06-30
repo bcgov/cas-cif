@@ -300,8 +300,8 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               ...projectRevision.milestoneFormChanges.edges,
               ...projectRevision.milestonePaymentFormChanges.edges,
             ],
-            updateFormChange,
-            "General Milestone"
+            "General Milestone",
+            updateFormChange
           )
         }
         disabled={isUpdating || isUpdatingFormChange}

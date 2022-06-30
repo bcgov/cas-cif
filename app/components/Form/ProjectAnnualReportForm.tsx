@@ -221,10 +221,10 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         onClick={() =>
           stageReportFormChanges(
             applyUpdateFormChangeMutation,
-            "Annual",
             props.onSubmit,
             formRefs,
-            projectRevision.projectAnnualReportFormChanges.edges
+            projectRevision.projectAnnualReportFormChanges.edges,
+            "Annual"
           )
         }
         disabled={isUpdating}
