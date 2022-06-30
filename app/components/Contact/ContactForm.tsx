@@ -108,7 +108,8 @@ const ContactForm: React.FC<Props> = (props) => {
 
   const isRedirecting = useRedirectTo404IfFalsy(formChange);
   const isRedirectingToContacts = useRedirectToContacts(
-    formChange.changeStatus
+    formChange.changeStatus,
+    comingFromProjectContactForm
   );
   if (isRedirecting || isRedirectingToContacts) return null;
 
@@ -126,6 +127,7 @@ const ContactForm: React.FC<Props> = (props) => {
         updateFormChange: {
           formChange: {
             id: formChange.id,
+            formDataRecordId: formChange.formDataRecordId,
             newFormData: formData,
             isUniqueValue: true,
             changeStatus: "pending",

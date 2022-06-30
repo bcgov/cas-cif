@@ -1,5 +1,4 @@
 import logAxeResults from "../../../plugins/logAxeResults";
-import { aliasQuery } from "../../../support/graphql-test-utils";
 
 describe("the new project page", () => {
   beforeEach(() => {
@@ -9,9 +8,6 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/003_cif_contact");
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
-    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
-      aliasQuery(req, "updateProjectContactFormChangeMutation");
-    });
   });
 
   it("renders the project forms", () => {

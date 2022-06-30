@@ -6,14 +6,17 @@ import { getContactsPageRoute } from "pageRoutes";
  *  the latest project revision id is not null, and shouldRedirect is true.
  *  False otherwise.
  */
-export default function useRedirectToContacts(changeStatus) {
+export default function useRedirectToContacts(
+  changeStatus: string,
+  preventRedirect: boolean = false
+) {
   const router = useRouter();
   useEffect(() => {
-    if (changeStatus === "committed") {
+    if (changeStatus === "committed" && !preventRedirect) {
       router.push(getContactsPageRoute());
     }
-  }, [changeStatus, router]);
-  if (changeStatus === "committed") {
+  }, [changeStatus, preventRedirect, router]);
+  if (changeStatus === "committed" && !preventRedirect) {
     return true;
   }
   return false;
