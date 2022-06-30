@@ -62,8 +62,6 @@ const ContactForm: React.FC<Props> = (props) => {
   const existingProjectContactFormId = router?.query?.projectContactFormId;
 
   const handleAfterFormSubmitting = (response: any) => {
-    console.log(response);
-    debugger;
     const updateProjectContactFormChange = (res?: any) => {
       updateProjectContactFormChangeMutation({
         variables: {
