@@ -1,16 +1,22 @@
 import { graphql, Disposable, Environment } from "react-relay";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { MutationConfig } from "relay-runtime";
-import { createParameterFundingFormChangeMutation } from "__generated__/createParameterFundingFormChangeMutation.graphql";
+import { createFundingParameterFormChangeMutation } from "__generated__/createFundingParameterFormChangeMutation.graphql";
 
 export const mutation = graphql`
-  mutation createParameterFundingFormChangeMutation(
+  mutation createFundingParameterFormChangeMutation(
+    $connections: [ID!]!
     $input: CreateFormChangeInput!
   ) {
     createFormChange(input: $input) {
-      formChange {
-        id
-        projectRevisionId
+      formChangeEdge @appendEdge(connections: $connections) {
+        cursor
+        node {
+          id
+          newFormData
+          operation
+          changeStatus
+        }
       }
     }
   }
@@ -19,10 +25,10 @@ export const mutation = graphql`
 export const useCreateFundingParameterFormChange = (
   commitMutationFn?: (
     environment: Environment,
-    config: MutationConfig<createParameterFundingFormChangeMutation>
+    config: MutationConfig<createFundingParameterFormChangeMutation>
   ) => Disposable
 ) => {
-  return useMutationWithErrorMessage<createParameterFundingFormChangeMutation>(
+  return useMutationWithErrorMessage<createFundingParameterFormChangeMutation>(
     mutation,
     () => "An error occurred while attempting to create the contact.",
     commitMutationFn

@@ -4,8 +4,8 @@ import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Button } from "@button-inc/bcgov-theme";
-import { useCreateFundingParameterFormChange } from "mutations/ParameterFunding/createParameterFundingFormChange";
-import { useUpdateFundingParameterFormChange } from "mutations/ParameterFunding/updateParameterFundingFormChange";
+import { useCreateFundingParameterFormChange } from "mutations/ParameterFunding/createFundingParameterFormChange";
+import { useUpdateFundingParameterFormChange } from "mutations/ParameterFunding/updateFundingParameterFormChange";
 interface Props {
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
   viewOnly?: boolean;
@@ -22,6 +22,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           first: 500
           formDataTableName: "funding_parameter"
         ) @connection(key: "connection_projectFundingAgreementFormChanges") {
+          __id
           edges {
             node {
               rowId
@@ -69,7 +70,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           formDataTableName: "funding_parameter",
           jsonSchemaName: "funding_parameter",
           operation: "CREATE",
+          newFormData: {},
         },
+        connections: [projectRevision.projectFundingAgreementFormChanges.__id],
       },
       onCompleted: (response) => {
         console.log(response);
@@ -80,14 +83,39 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     });
   }
 
-  function handleSubmit() {
-    console.log("GURJ", "handleSubmit");
-    // updateFundingParameterFormChange();
-  }
+  const handleSubmit = ({ formData }) => {
+    console.log("GURJ", "handleSubmit, formdata: ", formData);
+
+    // TODO: get project id properly
+    formData.project_id = 1;
+    updateFundingParameterFormChange({
+      variables: {
+        input: {
+          id: projectRevision.projectFundingAgreementFormChanges.edges[0]?.node
+            ?.id,
+          formChangePatch: {
+            newFormData: formData,
+            changeStatus: "committed",
+          },
+        },
+      },
+
+      onCompleted: () => {
+        console.log("GURJ", "handleSubmit: onCompleted");
+      },
+      onError: (e) => console.log("GURJ", "handleSubmit: error", e),
+      debounceKey:
+        projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.id,
+    });
+  };
 
   const handleChange = (formChangeData) => {
-    console.log("GURJ", "formChangeData", formChangeData);
-    console.log("GURJ", "projectRevision: ", projectRevision);
+    console.log("GURJ", "handleChange, formdata: ", formChangeData);
+    console.log(
+      "GURJ",
+      "formchange_id",
+      projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.id
+    );
     if (projectRevision.projectFundingAgreementFormChanges.edges.length > 0)
       updateFundingParameterFormChange({
         variables: {
@@ -100,12 +128,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             },
           },
         },
+        onError: (e) => console.log("GURJ", "handleChange error", e),
         debounceKey:
           projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.id,
       });
   };
-
-  console.log("GURJ", "projectRevision", projectRevision);
 
   return (
     <>

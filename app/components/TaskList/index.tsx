@@ -51,6 +51,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     quarterlyReportsStatus,
     annualReportsStatus,
     milestoneReportStatuses,
+    fundingAgreementStatus,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -77,6 +78,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           formDataTableName: "reporting_requirement"
           jsonMatcher: "{\"reportType\":\"Annual\"}"
         )
+        fundingAgreementStatus: tasklistStatusFor(formDataTableName: "funding_parameter")
         milestoneReportStatuses {
           edges {
             node {
@@ -173,15 +175,15 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Budget Details Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "0"}
+          defaultExpandedState={currentStep === "3"}
           listItemNumber="3"
           listItemName="Budgets, Expenses & Payments"
         >
           <TaskListItem
-            stepName="1"
+            stepName="6"
             linkUrl={getProjectRevisionFormPageRoute(id, 6)}
             formTitle="Funding Agreement Overview"
-            formStatus={projectManagersStatus}
+            formStatus={fundingAgreementStatus}
             currentStep={currentStep}
             mode={mode}
           />
@@ -190,18 +192,18 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {/* Milestone Reports Section */}
         <TaskListSection
           defaultExpandedState={
-            currentStep === "3" ||
+            currentStep === "4" ||
             milestoneReportStatuses.edges.some(
               ({ node }) =>
                 node.formCompletionStatus === ATTENTION_REQUIRED_STATUS
             )
           }
-          listItemNumber="3"
+          listItemNumber="4"
           listItemName="Milestone Reports"
         >
           {milestoneReportStatuses.edges.length === 0 ? (
             <TaskListItem
-              stepName="3"
+              stepName="4"
               linkUrl={getProjectRevisionFormPageRoute(id, 3)}
               formTitle="Milestone reports"
               formStatus={null} // No status as there are no milestones
@@ -212,7 +214,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
             milestoneReportStatuses.edges.map(({ node }, index) => (
               <TaskListItem
                 key={node.milestoneIndex}
-                stepName="3"
+                stepName="4"
                 linkUrl={getProjectRevisionFormPageRoute(
                   id,
                   3,
@@ -235,10 +237,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {/* Quarterly Reports Section */}
         <TaskListSection
           defaultExpandedState={
-            currentStep === "4" ||
+            currentStep === "5" ||
             quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
           }
-          listItemNumber="4"
+          listItemNumber="5"
           listItemName="Quarterly Reports"
         >
           <TaskListItem
@@ -254,10 +256,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {/* Annual Reports Section */}
         <TaskListSection
           defaultExpandedState={
-            currentStep === "5" ||
+            currentStep === "6" ||
             annualReportsStatus === ATTENTION_REQUIRED_STATUS
           }
-          listItemNumber="5"
+          listItemNumber="6"
           listItemName="Annual Reports"
         >
           <TaskListItem
@@ -274,7 +276,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {mode !== "view" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
-            listItemNumber="6"
+            listItemNumber="7"
             listItemName="Submit changes"
           >
             <TaskListItem

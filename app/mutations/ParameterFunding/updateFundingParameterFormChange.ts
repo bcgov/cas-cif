@@ -1,5 +1,5 @@
 import { graphql } from "react-relay";
-import { updateParameterFundingFormChangeMutation } from "__generated__/updateParameterFundingFormChangeMutation.graphql";
+import { updateFundingParameterFormChangeMutation } from "__generated__/updateFundingParameterFormChangeMutation.graphql";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
 
 /**
@@ -9,8 +9,8 @@ import useDebouncedMutation from "mutations/useDebouncedMutation";
  *
  */
 
-export const mutation = graphql`
-  mutation updateParameterFundingFormChangeMutation(
+const mutation = graphql`
+  mutation updateFundingParameterFormChangeMutation(
     $input: UpdateFormChangeInput!
   ) {
     updateFormChange(input: $input) {
@@ -18,17 +18,16 @@ export const mutation = graphql`
         id
         changeStatus
         newFormData
-        projectRevisionByProjectRevisionId {
-          ...TaskList_projectRevision
-        }
       }
     }
   }
 `;
 
-export const useUpdateFundingParameterFormChange = () => {
-  return useDebouncedMutation<updateParameterFundingFormChangeMutation>(
+const useUpdateFundingParameterFormChange = () => {
+  return useDebouncedMutation<updateFundingParameterFormChangeMutation>(
     mutation,
     () => "An error occurred when updating the project overview."
   );
 };
+
+export { mutation, useUpdateFundingParameterFormChange };
