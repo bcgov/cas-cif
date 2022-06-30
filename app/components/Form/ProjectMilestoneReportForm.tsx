@@ -145,6 +145,16 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
                 },
               },
             },
+            optimisticResponse: {
+              updateFormChange: {
+                formChange: {
+                  id: milestoneReport.milestoneFormChange.id,
+                  newFormData: change.formData,
+                  changeStatus: "pending",
+                  projectRevisionByProjectRevisionId: undefined,
+                },
+              },
+            },
             debounceKey: milestoneReport.milestoneFormChange.id,
           });
         }}
