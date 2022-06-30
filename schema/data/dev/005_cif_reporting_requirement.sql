@@ -30,7 +30,7 @@ do $$
                           and form_data_table_name = 'project'
                         ),
           'reportType', 'General Milestone',
-          'reportingRequirement_index',1,
+          'reportingRequirementIndex',1,
           'maximumAmount', cast(rpad(temp_row.id::text, 3, '0') as bigint),
           'description', 'general milestone report description ' || temp_row.id
           ),
