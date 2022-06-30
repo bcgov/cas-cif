@@ -3,6 +3,9 @@ import {
   milestoneSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import { milestoneReportingRequirementUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const getConsolidatedMilestoneFormData = (
   reportingRequirementEdges,
@@ -72,4 +75,19 @@ export const createMilestoneSchema = () => {
   };
 
   return schema as JSONSchema7;
+};
+
+export const createCustomMilestoneReportingRequirementUiSchema = () => {
+  return {
+    ...milestoneReportingRequirementUiSchema,
+    submittedDate: {
+      ...milestoneReportingRequirementUiSchema.submittedDate,
+      contentPrefix: (
+        <div>
+          <span style={{ marginRight: "1em" }}>Received</span>
+          <FontAwesomeIcon icon={faCheck} color={"green"} />
+        </div>
+      ),
+    },
+  };
 };

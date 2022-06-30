@@ -76,7 +76,7 @@ export const milestoneReportingRequirementUiSchema = {
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "ReceivedDateWidget",
+    "ui:widget": "DateWidget",
   },
 };
 

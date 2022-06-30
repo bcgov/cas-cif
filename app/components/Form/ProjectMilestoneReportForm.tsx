@@ -1,13 +1,10 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { faCheck, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
-import {
-  milestoneReportingRequirementUiSchema,
-  milestoneUiSchema,
-} from "data/jsonSchemaForm/projectMilestoneSchema";
+import { milestoneUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7 } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -30,6 +27,7 @@ import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import {
   getConsolidatedMilestoneFormData,
   createMilestoneReportingRequirementSchema,
+  createCustomMilestoneReportingRequirementUiSchema,
   createMilestoneSchema,
 } from "./Functions/projectMilestoneFormFunctions";
 
@@ -168,6 +166,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const generatedReportingRequirementSchema = useMemo(() => {
     return createMilestoneReportingRequirementSchema(query.allReportTypes);
   }, [query.allReportTypes]);
+
+  const generatedReportingRequirementUiSchema = useMemo(() => {
+    return createCustomMilestoneReportingRequirementUiSchema();
+  }, []);
 
   const generatedMilestoneSchema = useMemo(() => {
     return createMilestoneSchema();
@@ -325,7 +327,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                     );
                   }}
                   schema={generatedReportingRequirementSchema as JSONSchema7}
-                  uiSchema={milestoneReportingRequirementUiSchema}
+                  uiSchema={generatedReportingRequirementUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
                     dueDate:
