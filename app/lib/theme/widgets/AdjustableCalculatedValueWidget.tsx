@@ -48,14 +48,14 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
         className="adjustable"
         decimalScale={isMoney ? 2 : 10} //Hardcoded for now, we can change it if we need to
         defaultValue={(schema as any).defaultValue}
-        value={value ?? ""}
+        value={value ?? calculatedValue}
         onValueChange={({ floatValue }) => {
           if (
             Number.isNaN(floatValue) ||
             floatValue === undefined ||
             floatValue === null
           ) {
-            onChange("");
+            onChange(calculatedValue);
           } else {
             onChange(((floatValue * 100) / 100).toFixed(isMoney ? 2 : 10)); //Hardcoded for now, we can change it if we need to
           }
