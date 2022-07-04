@@ -1,27 +1,54 @@
 import { Button } from "@button-inc/bcgov-theme";
+import { FormValidation } from "@rjsf/core";
 import FormBase from "components/Form/FormBase";
+import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
+import SavingIndicator from "components/Form/SavingIndicator";
 import contactSchema from "data/jsonSchemaForm/contactSchema";
+import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
+import useRedirectToContacts from "hooks/useRedirectToContacts";
 import { JSONSchema7 } from "json-schema";
-import { FormPageFactoryComponentProps } from "lib/pages/relayFormPageFactory";
-import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
-import { useRouter } from "next/router";
-import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
-import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
+import { useUpdateContactFormChange } from "mutations/FormChange/updateContactFormChange";
+import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
+import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
+import { useRouter } from "next/router";
+import { getContactsPageRoute } from "pageRoutes";
+import { graphql, useFragment } from "react-relay";
+import { ContactForm_formChange$key } from "__generated__/ContactForm_formChange.graphql";
+
+interface Props extends FormComponentProps {
+  formChange: ContactForm_formChange$key;
+}
 
 const uiSchema = {
   comments: { "ui:widget": "TextAreaWidget" },
   phone: { "ui:widget": "PhoneNumberWidget" },
 };
 
-const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
+const ContactForm: React.FC<Props> = (props) => {
+  const formChange = useFragment(
+    graphql`
+      fragment ContactForm_formChange on FormChange {
+        id
+        isUniqueValue(columnName: "email")
+        newFormData
+        changeStatus
+        formDataRecordId
+      }
+    `,
+    props.formChange
+  );
+  const { isUniqueValue, newFormData } = formChange;
+
   const router = useRouter();
 
-  const [updateFormChange] = useUpdateFormChange();
+  const [updateContactFormChange, isUpdatingContactFormChange] =
+    useUpdateContactFormChange();
+  const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
+  // For when redirected from project revision
   const [updateProjectContactFormChangeMutation] =
     useUpdateProjectContactFormChange();
   const [addContactMutation] = useAddContactToRevision();
-  const [deleteFormChange] = useDeleteFormChange();
 
   // Based on router queries we can determine if the user is coming from project contact form
   const comingFromProjectContactForm = [
@@ -77,21 +104,57 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
     }
   };
 
-  // By adding this submit, we are overriding the default submit that is provided by relayFormPageFactory
-  const handleSubmit = ({ formData }) => {
-    const contactFormId = router.query.form as string;
-    updateFormChange({
+  const isEditing = formChange.formDataRecordId !== null;
+
+  const isRedirecting = useRedirectTo404IfFalsy(formChange);
+  const isRedirectingToContacts = useRedirectToContacts(
+    formChange.changeStatus,
+    comingFromProjectContactForm
+  );
+  if (isRedirecting || isRedirectingToContacts) return null;
+
+  const handleChange = ({ formData }) => {
+    updateContactFormChange({
       variables: {
         input: {
-          id: contactFormId,
+          id: formChange.id,
+          formChangePatch: {
+            newFormData: formData,
+          },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: formChange.id,
+            formDataRecordId: formChange.formDataRecordId,
+            newFormData: formData,
+            isUniqueValue: true,
+            changeStatus: "pending",
+          },
+        },
+      },
+      debounceKey: formChange.id,
+    });
+  };
+
+  const handleSubmit = ({ formData }) => {
+    updateContactFormChange({
+      variables: {
+        input: {
+          id: formChange.id,
           formChangePatch: {
             newFormData: formData,
             changeStatus: "committed",
           },
         },
       },
-      debounceKey: contactFormId,
-      onCompleted: (response) => handleAfterFormSubmitting(response),
+      debounceKey: formChange.id,
+      onCompleted: (response) => {
+        return comingFromProjectContactForm
+          ? handleAfterFormSubmitting(response)
+          : router.push(getContactsPageRoute());
+      },
       updater: (store) => {
         // Invalidate the entire store, to make sure that we don't display any stale data after redirecting to the next page.
         // This could be optimized to only invalidate the affected records.
@@ -100,35 +163,64 @@ const ContactForm: React.FC<FormPageFactoryComponentProps> = (props) => {
     });
   };
 
-  // By adding this handler, we are overriding the default onDiscard that is provided by relayFormPageFactory
   const handleDiscard = () => {
     deleteFormChange({
       variables: {
         input: {
-          id: router.query.form as string,
+          id: formChange.id,
         },
       },
-      onCompleted: () =>
-        comingFromProjectContactForm ? router.back() : props.onDiscard(),
+      onCompleted: () => {
+        return comingFromProjectContactForm
+          ? router.back()
+          : router.push(getContactsPageRoute());
+      },
     });
   };
 
+  const uniqueEmailValidation = (formData: any, errors: FormValidation) => {
+    if (isUniqueValue === false) {
+      errors.email.addError("This email already exists in the system");
+    }
+
+    return errors;
+  };
+
   return (
-    <FormBase
-      {...props}
-      schema={contactSchema as JSONSchema7}
-      uiSchema={uiSchema}
-      // If the use is coming from project contact form we need to override the default onSubmit handler
-      // This is intended to be used for adding new contact and linking it to the project contact form
-      onSubmit={comingFromProjectContactForm ? handleSubmit : props.onSubmit}
-    >
-      <Button type="submit" style={{ marginRight: "1rem" }}>
-        Submit
-      </Button>
-      <Button type="button" variant="secondary" onClick={handleDiscard}>
-        Discard Changes
-      </Button>
-    </FormBase>
+    <div>
+      <header>
+        <h2>{isEditing ? "Edit" : "New"} Contact</h2>
+        <SavingIndicator isSaved={!isUpdatingContactFormChange} />
+      </header>
+      <FormBase
+        {...props}
+        id="contactForm"
+        schema={contactSchema as JSONSchema7}
+        uiSchema={uiSchema}
+        validate={uniqueEmailValidation}
+        formData={newFormData}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        disabled={isDeletingFormChange}
+      >
+        <Button type="submit" style={{ marginRight: "1rem" }}>
+          Submit
+        </Button>
+        <Button type="button" variant="secondary" onClick={handleDiscard}>
+          Discard Changes
+        </Button>
+      </FormBase>
+      <style jsx>{`
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: start;
+        }
+        header h2 {
+          padding-right: 10px;
+        }
+      `}</style>
+    </div>
   );
 };
 

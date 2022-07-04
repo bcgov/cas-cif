@@ -825,7 +825,6 @@ describe("the new project page", () => {
     cy.get("input[aria-label='Company Name']").type("ABC");
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit").click();
-
     //Back to project contact form
     cy.url().should("include", "/form/2");
     cy.findByLabelText(/primary contact/i).should("have.value", "Loblaw, Bob");
