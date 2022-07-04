@@ -22,19 +22,17 @@ const mockQueryPayload = {
     const result: Partial<ProjectMilestoneReportFormSummary_projectRevision$data> =
       {
         isFirstRevision: false,
-        summaryProjectMilestoneReportFormChanges: {
+        summaryMilestoneReportingRequirementFormChanges: {
           edges: [
             {
               node: {
-                id: "Test ID - 1",
+                id: "Test Reporting Requirement ID - 1",
                 isPristine: false,
                 newFormData: {
                   description: "charmander",
                   projectId: 1,
                   reportingRequirementIndex: 1,
                   reportType: "General",
-                  certifiedByProfessionalDesignation:
-                    "Certified Professional Accountant",
                   reportDueDate: "2020-01-10T23:59:59.999-07:00",
                 },
                 operation: "UPDATE",
@@ -43,16 +41,16 @@ const mockQueryPayload = {
                     description: "bulbasaur",
                     projectId: 1,
                     reportingRequirementIndex: 1,
-                    certifiedByProfessionalDesignation: "Professional Engineer",
                     reportDueDate: "2020-01-01T13:59:59.999-07:00",
                     reportType: "Advanced",
                   },
                 },
+                formDataRecordId: 1,
               },
             },
             {
               node: {
-                id: "Test ID - 2",
+                id: "Test Reporting Requirement ID - 2",
                 isPristine: false,
                 newFormData: {
                   description: "Removed comment",
@@ -67,6 +65,75 @@ const mockQueryPayload = {
                     projectId: 1,
                     reportDueDate: "2020-01-05T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
+                  },
+                },
+                formDataRecordId: 2,
+              },
+            },
+          ],
+        },
+        summaryMilestoneFormChanges: {
+          edges: [
+            {
+              node: {
+                id: "Test Milestone ID - 1",
+                isPristine: false,
+                newFormData: {
+                  reportingRequirementId: 1,
+                },
+                operation: "UPDATE",
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    reportingRequirementId: 1,
+                  },
+                },
+              },
+            },
+            {
+              node: {
+                id: "Test Milestone ID - 2",
+                isPristine: false,
+                newFormData: {
+                  reportingRequirementId: 2,
+                },
+                operation: "ARCHIVE",
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    reportingRequirementId: 2,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        summaryMilestonePaymentFormChanges: {
+          edges: [
+            {
+              node: {
+                id: "Test Payment ID - 1",
+                isPristine: false,
+                operation: "UPDATE",
+                newFormData: {
+                  reportingRequirementId: 1,
+                },
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    reportingRequirementId: 1,
+                  },
+                },
+              },
+            },
+            {
+              node: {
+                id: "Test Payment ID - 2",
+                isPristine: false,
+                newFormData: {
+                  reportingRequirementId: 2,
+                },
+                operation: "ARCHIVE",
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    reportingRequirementId: 2,
                   },
                 },
               },
@@ -110,7 +177,6 @@ describe("The Project Milestone Report Form Summary", () => {
     // changed fields
     expect(screen.getByText("Milestone Description")).toBeInTheDocument();
     expect(screen.getByText("Milestone Type")).toBeInTheDocument();
-    expect(screen.getByText("Professional Designation")).toBeInTheDocument();
 
     // Archive milestone report
     expect(screen.getByText("Milestone Report Removed")).toBeInTheDocument();
@@ -127,12 +193,6 @@ describe("The Project Milestone Report Form Summary", () => {
     // milestone type diff
     expect(screen.getByText("General")).toBeInTheDocument();
     expect(screen.getByText("Advanced")).toBeInTheDocument();
-
-    // professional designation diff
-    expect(
-      screen.getByText("Certified Professional Accountant")
-    ).toBeInTheDocument();
-    expect(screen.getByText("Professional Engineer")).toBeInTheDocument();
 
     // report due date diff
     expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();
