@@ -37700,6 +37700,9 @@ type MilestoneReport implements Node {
   """
   id: ID!
 
+  """The maximum amount in dollars that can be applied to this milestone"""
+  maximumAmount: BigFloat
+
   """
   Reads a single `ReportingRequirement` that is related to this `MilestoneReport`.
   """
@@ -37719,7 +37722,7 @@ type MilestoneReport implements Node {
   """
   substantialCompletionDate: Datetime
 
-  """The total amount in dollars that can be applied to this milestone"""
+  """The total amount of expenses in dollars applied to this milestone"""
   totalEligibleExpenses: BigFloat
 
   """updated at timestamp"""
@@ -37753,6 +37756,9 @@ input MilestoneReportCondition {
 
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
+
+  """Checks for equality with the object’s `maximumAmount` field."""
+  maximumAmount: BigFloat
 
   """Checks for equality with the object’s `reportingRequirementId` field."""
   reportingRequirementId: Int
@@ -37818,6 +37824,9 @@ input MilestoneReportFilter {
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
 
+  """Filter by the object’s `maximumAmount` field."""
+  maximumAmount: BigFloatFilter
+
   """Negates the expression."""
   not: MilestoneReportFilter
 
@@ -37870,6 +37879,9 @@ input MilestoneReportInput {
   """created by user id"""
   createdBy: Int
 
+  """The maximum amount in dollars that can be applied to this milestone"""
+  maximumAmount: BigFloat
+
   """Foreign key to the reporting_requirement_table"""
   reportingRequirementId: Int!
 
@@ -37881,7 +37893,7 @@ input MilestoneReportInput {
   """
   substantialCompletionDate: Datetime
 
-  """The total amount in dollars that can be applied to this milestone"""
+  """The total amount of expenses in dollars applied to this milestone"""
   totalEligibleExpenses: BigFloat
 
   """updated at timestamp"""
@@ -37915,6 +37927,9 @@ input MilestoneReportPatch {
   """created by user id"""
   createdBy: Int
 
+  """The maximum amount in dollars that can be applied to this milestone"""
+  maximumAmount: BigFloat
+
   """Foreign key to the reporting_requirement_table"""
   reportingRequirementId: Int
 
@@ -37926,7 +37941,7 @@ input MilestoneReportPatch {
   """
   substantialCompletionDate: Datetime
 
-  """The total amount in dollars that can be applied to this milestone"""
+  """The total amount of expenses in dollars applied to this milestone"""
   totalEligibleExpenses: BigFloat
 
   """updated at timestamp"""
@@ -38107,6 +38122,8 @@ enum MilestoneReportsOrderBy {
   CREATED_BY_DESC
   ID_ASC
   ID_DESC
+  MAXIMUM_AMOUNT_ASC
+  MAXIMUM_AMOUNT_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
