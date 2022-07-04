@@ -21,9 +21,9 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           {calculatedValue}
         </>
       )}
-      {value && (
-        <div className="adjustedValue">
-          <dt>{label} (Adjusted)</dt>
+      {value !== calculatedValue && (
+        <div className={calculatedValue && "adjustedValue"}>
+          {calculatedValue && <dt>{label} (Adjusted)</dt>}
           <dd>
             <NumberFormat
               thousandSeparator
