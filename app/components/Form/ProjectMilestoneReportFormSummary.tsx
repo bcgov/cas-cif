@@ -135,7 +135,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         : 1;
 
     return [filteredReports, nextIndex];
-  }, [milestoneReportFormChanges]);
+  }, [milestoneReportFormChanges, renderDiff]);
 
   const allFormChangesPristine = useMemo(
     () =>
