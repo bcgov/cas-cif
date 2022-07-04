@@ -123,7 +123,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
   const [sortedMilestoneReports] = useMemo(() => {
     const filteredReports = milestoneReportFormChanges
       .map((formData) => formData)
-      .filter((report) => report.operation !== "ARCHIVE");
+      .filter((report) => report.operation !== "ARCHIVE" || renderDiff);
 
     filteredReports.sort(
       (a, b) => a.reportingRequirementIndex - b.reportingRequirementIndex
