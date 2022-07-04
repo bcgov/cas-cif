@@ -2,9 +2,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { getContactsPageRoute } from "pageRoutes";
 /**
- *  Hook that returns true if the project revision being viewed is not the latest project revision,
- *  the latest project revision id is not null, and shouldRedirect is true.
- *  False otherwise.
+ *  Hook that redirects to the contacts list page, if the contact being viewed is committed and the `preventRedirect` flag is false.
+ *  If the redirect is happening, then the hook returns true, and false otherwise.
  */
 export default function useRedirectToContacts(
   changeStatus: string,

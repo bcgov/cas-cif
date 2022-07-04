@@ -135,7 +135,6 @@ const ContactForm: React.FC<Props> = (props) => {
         },
       },
       debounceKey: formChange.id,
-      onError: (e) => console.log(e),
     });
   };
 
@@ -156,7 +155,6 @@ const ContactForm: React.FC<Props> = (props) => {
           ? handleAfterFormSubmitting(response)
           : router.push(getContactsPageRoute());
       },
-      onError: (e) => console.log(e),
       updater: (store) => {
         // Invalidate the entire store, to make sure that we don't display any stale data after redirecting to the next page.
         // This could be optimized to only invalidate the affected records.
