@@ -38,6 +38,11 @@ export const milestoneSchema = {
       title: "Substantial Completion Date",
       default: undefined,
     },
+    maximumAmount: {
+      type: "number",
+      title: "Maximum Amount",
+      default: undefined,
+    },
     totalEligibleExpenses: {
       type: "number",
       title: "Total Eligible Expenses",
@@ -85,6 +90,11 @@ export const milestoneUiSchema = {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "DateWidget",
+  },
+  maxiumAmount: {
+    "ui:widget": "ConditionalAmountWidget",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
   },
   totalEligibleExpenses: {
     "ui:widget": "ConditionalAmountWidget",
