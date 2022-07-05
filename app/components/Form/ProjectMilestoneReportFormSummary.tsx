@@ -15,6 +15,10 @@ import {
   milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { getConsolidatedMilestoneFormData } from "./Functions/projectMilestoneFormFunctions";
+import {
+  paymentSchema,
+  paymentUiSchema,
+} from "data/jsonSchemaForm/paymentSchema";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -177,6 +181,16 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             milestoneReport.milestoneFormChange
           ) as any);
 
+      const paymentFormDiffObject = !renderDiff
+        ? {
+            formSchema: paymentSchema,
+            formData: milestoneReport.paymentFormChange.newFormData,
+          }
+        : (getFilteredSchema(
+            paymentSchema as JSONSchema7,
+            milestoneReport.paymentFormChange
+          ) as any);
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -187,6 +201,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             .length === 0 &&
             Object.keys(milestoneFormDiffObject.formSchema.properties)
               .length === 0 &&
+            Object.keys(paymentFormDiffObject.formSchema.properties).length ===
+              0 &&
             milestoneReport.operation !== "ARCHIVE" && (
               <em>Milestone report not updated</em>
             )}
@@ -226,6 +242,22 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.milestoneFormChange
+                  .formChangeByPreviousFormChangeId?.newFormData,
+            }}
+          />
+          <FormBase
+            liveValidate
+            key={`form-${milestoneReport.paymentFormChange.id}`}
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            fields={renderDiff ? customFields : fields}
+            schema={paymentSchema as JSONSchema7}
+            uiSchema={paymentUiSchema}
+            formData={paymentFormDiffObject.formData}
+            formContext={{
+              operation: milestoneReport.operation,
+              oldData:
+                milestoneReport.paymentFormChange
                   .formChangeByPreviousFormChangeId?.newFormData,
             }}
           />
