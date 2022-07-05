@@ -338,7 +338,7 @@ describe("The ProjectMilestoneReportForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1, 2],
+        formChangesIds: [1, 2, 1, 2, 1, 2],
       },
     });
   });
