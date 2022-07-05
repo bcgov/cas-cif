@@ -5,12 +5,14 @@ begin;
 create table cif.funding_parameter(
   id integer primary key generated always as identity,
   project_id integer references cif.project(id) not null,
-  total_project_value numeric(10,2),
-  max_funding_amount numeric(10,2),
-  province_share_percentage decimal(2,2),
-  holdback_percentage decimal(2,2),
-  anticipated_funding_amount numeric(10,2)
+  total_project_value numeric(20,2),
+  max_funding_amount numeric(20,2),
+  province_share_percentage numeric,
+  holdback_percentage numeric,
+  anticipated_funding_amount numeric(20,2)
 );
+
+select cif_private.upsert_timestamp_columns('cif', 'funding_parameter');
 
 do
 $grant$
