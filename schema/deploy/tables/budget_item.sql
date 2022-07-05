@@ -10,7 +10,7 @@ create table cif.budget_item
   is_confirmed boolean not null,
   is_tentative boolean,
   reporting_requirement_id integer references cif.reporting_requirement(id) not null,
-  comment varchar(10000)
+  comments varchar(10000)
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'budget_item');
@@ -43,6 +43,6 @@ comment on column cif.budget_item.description is 'The description of the budget 
 comment on column cif.budget_item.is_confirmed is 'Whether the budget item is confirmed or not';
 comment on column cif.budget_item.is_tentative is 'Whether the budget item is tentative or not';
 comment on column cif.budget_item.reporting_requirement_id is 'Foreign key references the cif.reporting_requirement table';
-comment on column cif.budget_item.comment is 'Comments created by users about this budget item';
+comment on column cif.budget_item.comments is 'Comments created by users about this budget item';
 
 commit;

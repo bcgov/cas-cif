@@ -30,7 +30,7 @@ insert into cif.form_change(id, operation, form_data_schema_name, form_data_tabl
       '{
         "reportDueDate":"2002-02-20T12:00:01-07",
         "submittedDate":"2004-02-22T12:00:01-07",
-        "comment": "I am a comment",
+        "comments": "I am a comment",
         "projectId": 1,
         "reportType": "General Milestone",
         "reportingRequirementIndex": 123
@@ -63,7 +63,7 @@ select results_eq(
       id,
       report_due_date,
       submitted_date,
-      comment,
+      comments,
       project_id,
       report_type,
       reporting_requirement_index

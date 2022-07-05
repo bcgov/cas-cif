@@ -11,7 +11,7 @@ select columns_are(
     'id',
     'report_due_date',
     'submitted_date',
-    'comment',
+    'comments',
     'project_id',
     'report_type',
     'reporting_requirement_index',

@@ -18,7 +18,7 @@ values
   (1, 1, 1, '2000-RFP-1-123-ABCD', 'summary', 'project 1');
 
 insert into cif.reporting_requirement
-  (report_due_date, comment, project_id, report_type, reporting_requirement_index) values
+  (report_due_date, comments, project_id, report_type, reporting_requirement_index) values
   ('2020-01-01', 'comment_1', 1, 'Annual',1);
 
 insert into cif.milestone_report(

@@ -15,7 +15,7 @@ do $$
           'submittedDate', now(),
           'reportType', 'General Milestone',
           'reportingRequirementIndex', 1,
-          'description', 'general milestone report description ' || temp_row.id
+          'description', 'general milestone report description ' || temp_row.form_data_record_id
           )
       where form_data_table_name = 'reporting_requirement' and project_revision_id = temp_row.project_revision_id;
     end loop;
@@ -36,7 +36,7 @@ do $$
 
           'reportDueDate', now(),
           'submittedDate', now(),
-          'comment','annual report comment ' || temp_row.id,
+          'comments','annual report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
                           where project_revision_id = temp_row.id
@@ -64,7 +64,7 @@ for temp_row in select id, project_id from cif.project_revision loop
 
           'reportDueDate', now(),
           'submittedDate', now(),
-          'comment','quarterly report comment ' || temp_row.id,
+          'comments','quarterly report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
                           where project_revision_id = temp_row.id
