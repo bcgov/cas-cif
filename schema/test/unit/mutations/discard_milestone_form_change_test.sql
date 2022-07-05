@@ -125,9 +125,6 @@ select is(
   'Only the record with the correct project_revision and its dependents are archived'
 );
 
-select * from cif.form_change;
-
-
 select finish();
 
 rollback;

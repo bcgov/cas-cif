@@ -197,10 +197,22 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
 
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
-    return projectRevision.milestoneReportingRequirementFormChanges.edges.map(
-      ({ node }) => node?.rowId
-    );
-  }, [projectRevision.milestoneReportingRequirementFormChanges]);
+    return [
+      ...projectRevision.milestoneReportingRequirementFormChanges.edges.map(
+        ({ node }) => node?.rowId
+      ),
+      ...projectRevision.milestoneFormChanges.edges.map(
+        ({ node }) => node?.rowId
+      ),
+      ...projectRevision.milestonePaymentFormChanges.edges.map(
+        ({ node }) => node?.rowId
+      ),
+    ];
+  }, [
+    projectRevision.milestoneFormChanges.edges,
+    projectRevision.milestonePaymentFormChanges.edges,
+    projectRevision.milestoneReportingRequirementFormChanges.edges,
+  ]);
 
   const upcomingReportDueDate =
     projectRevision.upcomingMilestoneReportFormChange?.asReportingRequirement
