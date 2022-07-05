@@ -20,7 +20,7 @@ interface Props {
 const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   const { projectFormChange, isFirstRevision } = useFragment(
     graphql`
-      fragment ProjectFormSummary_projectRevision on ProjectRevision {
+      fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
         projectFormChange {
           newFormData
