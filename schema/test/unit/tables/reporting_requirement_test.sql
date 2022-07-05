@@ -46,7 +46,7 @@ values
   (4, 1, 1, '2000-RFP-1-1011-ABCD', 'summary', 'project 4');
 
 insert into cif.reporting_requirement
-  (report_due_date, comment, project_id, report_type, reporting_requirement_index) values
+  (report_due_date, comments, project_id, report_type, reporting_requirement_index) values
   ('2020-01-01', 'comment_1', 1, 'Annual',1),
   ('2020-01-02', 'comment_2', 2, 'Annual', 2),
   ('2020-01-03', 'comment_3', 3, 'Annual', 3);

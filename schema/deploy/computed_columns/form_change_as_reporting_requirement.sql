@@ -19,7 +19,7 @@ as $$
       new_form_data->>'reportType' as report_type,
       (new_form_data->>'reportDueDate')::timestamptz as report_due_date,
       (new_form_data->>'submittedDate')::timestamptz as submitted_date,
-      new_form_data->>'comment' as comment,
+      new_form_data->>'comment' as comments,
       (new_form_data->>'reportingRequirementIndex')::integer as reporting_requirement_index,
       new_form_data->>'description' as description,
       null::int as created_by,
