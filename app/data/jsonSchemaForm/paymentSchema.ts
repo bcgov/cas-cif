@@ -5,12 +5,12 @@ export const paymentSchema = {
   properties: {
     grossAmount: {
       type: "number",
-      title: "Gross Amount",
+      title: "Milestone Gross Payment Amount",
       default: undefined,
     },
     netAmount: {
       type: "number",
-      title: "Net Amount",
+      title: "Milestone Net Payment Amount",
       default: undefined,
     },
     dateSentToCsnr: {
@@ -29,6 +29,6 @@ export const paymentUiSchema = {
     "ui:widget": "MoneyWidget",
   },
   dateSentToCsnr: {
-    "ui:widget": "date",
+    "ui:widget": "DateWidget",
   },
 };

@@ -12,6 +12,10 @@ import { Disposable } from "relay-runtime";
 import { discardMilestoneFormChangeMutation } from "__generated__/discardMilestoneFormChangeMutation.graphql";
 import { updateFormChangeMutation } from "__generated__/updateFormChangeMutation.graphql";
 import { UseMutationConfig } from "react-relay";
+import {
+  paymentSchema,
+  paymentUiSchema,
+} from "data/jsonSchemaForm/paymentSchema";
 
 interface Props {
   formRefs: MutableRefObject<{}>;
@@ -160,6 +164,44 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
         }}
         schema={generatedMilestoneSchema as JSONSchema7}
         uiSchema={milestoneUiSchema}
+        ObjectFieldTemplate={EmptyObjectFieldTemplate}
+      />
+      <FormBase
+        id={`form-${milestoneReport.paymentFormChange.id}`}
+        validateOnMount={
+          milestoneReport.paymentFormChange.changeStatus === "staged"
+        }
+        idPrefix={`form-${milestoneReport.paymentFormChange.id}`}
+        ref={(el) =>
+          (formRefs.current[milestoneReport.paymentFormChange.id] = el)
+        }
+        formData={milestoneReport.paymentFormChange.newFormData}
+        onChange={(change) => {
+          updateFormChange({
+            variables: {
+              input: {
+                id: milestoneReport.paymentFormChange.id,
+                formChangePatch: {
+                  changeStatus: "pending",
+                  newFormData: change.formData,
+                },
+              },
+            },
+            optimisticResponse: {
+              updateFormChange: {
+                formChange: {
+                  id: milestoneReport.paymentFormChange.id,
+                  newFormData: change.formData,
+                  changeStatus: "pending",
+                  projectRevisionByProjectRevisionId: undefined,
+                },
+              },
+            },
+            debounceKey: milestoneReport.paymentFormChange.id,
+          });
+        }}
+        schema={paymentSchema as JSONSchema7}
+        uiSchema={paymentUiSchema}
         ObjectFieldTemplate={EmptyObjectFieldTemplate}
       />
     </>
