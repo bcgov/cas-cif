@@ -67,7 +67,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.reporting_requirement (report_due_date, comment, project_id, report_type, reporting_requirement_index)
+    insert into cif.reporting_requirement (report_due_date, comments, project_id, report_type, reporting_requirement_index)
     values ('2020-01-04', 'comment_4', 4, 'Annual', 4);
   $$,
     'cif_admin can insert data in reporting_requirement table'
@@ -75,14 +75,14 @@ select lives_ok(
 
 select lives_ok(
   $$
-    update cif.reporting_requirement set comment='changed by admin' where comment='comment_4';
+    update cif.reporting_requirement set comments ='changed by admin' where comments='comment_4';
   $$,
     'cif_admin can change data in reporting_requirement table'
 );
 
 select results_eq(
   $$
-    select count(id) from cif.reporting_requirement where comment= 'changed by admin'
+    select count(id) from cif.reporting_requirement where comments = 'changed by admin'
   $$,
     ARRAY[1::bigint],
     'Data was changed by cif_admin in reporting_requirement table'
@@ -111,7 +111,7 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.reporting_requirement set comment= 'changed_by_internal' where comment='comment_3';
+    update cif.reporting_requirement set comments= 'changed_by_internal' where comments='comment_3';
   $$,
     'cif_internal can update data in the reporting_requirement table'
 );
