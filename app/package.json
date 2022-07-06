@@ -63,7 +63,7 @@
     "jest-extended": "^1.2.0",
     "jest-mock": "^27.4.2",
     "jest-mock-random": "^1.1.1",
-    "nodemon": "^2.0.13",
+    "nodemon": "^2.0.19",
     "prettier": "^2.4.1",
     "react-test-renderer": "^17.0.2",
     "relay-compiler": "13.2.0",
