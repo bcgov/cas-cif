@@ -51,11 +51,6 @@
           omit: ["create", "update", "delete"],
         },
       },
-      "cif.budget_item_category": {
-        tags: {
-          omit: ["delete"],
-        },
-      },
       "cif.report_type": {
         tags: {
           omit: ["delete"],
