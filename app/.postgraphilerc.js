@@ -3,9 +3,9 @@ module.exports = {
     appendPlugins: [
       "postgraphile-plugin-connection-filter",
       "@graphile-contrib/pg-many-to-many",
-      "postgraphile-plugin-upload-field",
       "@graphile-contrib/pg-omit-archived",
       "@graphile-contrib/pg-order-by-related",
+      `${process.cwd()}/server/middleware/graphql/uploadFieldPlugin.js`,
     ],
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,

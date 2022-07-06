@@ -11,7 +11,7 @@ import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PostgraphileLogConsola from "postgraphile-log-consola";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import { TagsFilePlugin } from "postgraphile/plugins";
-import PostGraphileUploadFieldPlugin from "postgraphile-plugin-upload-field";
+import PostGraphileUploadFieldPlugin from "./uploadFieldPlugin";
 import PgOmitArchived from "@graphile-contrib/pg-omit-archived";
 import PgOrderByRelatedPlugin from "@graphile-contrib/pg-order-by-related";
 import authenticationPgSettings from "./authenticationPgSettings";
