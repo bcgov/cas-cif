@@ -163,27 +163,6 @@ describe("the new project page", () => {
 
     cy.findByText(/Project Details/i).click();
 
-    // CONTACTS
-    cy.findByText(/Add project contacts/i).click();
-    cy.url().should("include", "/form/2");
-
-    cy.findByRole("button", { name: /add a secondary contact/i }).click();
-    cy.get("fieldset input").should("have.length", 2);
-    cy.findByRole("button", { name: /add a secondary contact/i }).click();
-    cy.get("fieldset input").should("have.length", 3);
-    cy.findByRole("button", { name: /add a secondary contact/i }).click();
-    cy.get("fieldset input").should("have.length", 4);
-    cy.contains("Changes saved").should("be.visible");
-    cy.findByRole("button", { name: /Submit Contacts/i }).click();
-    cy.get(".error-detail").should("have.length", 4);
-    cy.injectAxe();
-    cy.checkA11y(".error-detail", null, logAxeResults);
-    cy.contains("Changes saved").should("be.visible");
-    cy.get("body").happoScreenshot({
-      component: "Project Contacts Form",
-      variant: "with errors",
-    });
-
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
