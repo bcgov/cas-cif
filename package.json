@@ -1,0 +1,30 @@
+{
+  "name": "cas-cif",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/bcgov/cas-cif.git",
+  "author": "ggircs@gov.bc.ca",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^5.0.0",
+    "release-it": "^15.1.1"
+  },
+  "release-it": {
+    "npm": {
+      "publish": false
+    },
+    "git": {
+      "commitMessage": "chore: release v${version}"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    },
+    "hooks": {
+      "before:bump": "sqitch --chdir schema tag ${version} -m 'release v${version}'",
+      "before:git:beforeRelease": "./.bin/pre-commit-format.sh CHANGELOG.md"
+    }
+  }
+}

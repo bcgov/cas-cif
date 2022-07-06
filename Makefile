@@ -246,3 +246,9 @@ install:
 	else \
 		helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
 	fi;
+
+.PHONY: release
+release: ## Tag a release using release-it
+release:
+	@yarn
+	@yarn release-it
