@@ -45,6 +45,6 @@ comment on column cif.reporting_requirement.report_due_date is 'The date the rep
 comment on column cif.reporting_requirement.submitted_date is 'The date the reporting requirement was submitted';
 comment on column cif.reporting_requirement.comments is 'Comments about the reporting requirement';
 comment on column cif.reporting_requirement.reporting_requirement_index is 'An index that identifies the order of the reporting requirement';
-comment on column cif.reporting_requirement.description is 'A user defined description of a milestone';
+comment on column cif.reporting_requirement.description is 'A user defined description of a reporting requirement';
 
 commit;
