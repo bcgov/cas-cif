@@ -176,7 +176,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           defaultExpandedState={
             currentStep === "3" ||
             milestoneReportStatuses.edges.some(
-              ({ node }) => node.formCompletionStatus === "Attention Required"
+              ({ node }) =>
+                node.formCompletionStatus === ATTENTION_REQUIRED_STATUS
             )
           }
           listItemNumber="3"

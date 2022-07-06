@@ -5,7 +5,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { MutableRefObject } from "react";
 import { ProjectMilestoneReportFormGroup_projectRevision$data } from "__generated__/ProjectMilestoneReportFormGroup_projectRevision.graphql";
 import FormBase from "./FormBase";
-import { updateReportFormChange } from "./reportingRequirementFormChangeFunctions";
+import { updateReportFormChange } from "./Functions/reportingRequirementFormChangeFunctions";
 import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
 import { updateReportingRequirementFormChangeMutation } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
 import { Disposable } from "relay-runtime";

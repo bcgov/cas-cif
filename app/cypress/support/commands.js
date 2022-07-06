@@ -368,7 +368,7 @@ Cypress.Commands.add(
       reportSubstantialCompletionDate
     );
 
-    cy.get('[id*="certifierProfessionalDesignation"]').type(
+    cy.getbyLabel("certifierProfessionalDesignation").type(
       professionalDesignation
     );
 

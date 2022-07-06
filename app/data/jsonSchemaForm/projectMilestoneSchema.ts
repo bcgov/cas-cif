@@ -91,7 +91,7 @@ export const milestoneUiSchema = {
     "bcgov:size": "small",
     "ui:widget": "DateWidget",
   },
-  maxiumAmount: {
+  maximumAmount: {
     "ui:widget": "ConditionalAmountWidget",
     "ui:col-md": 12,
     "bcgov:size": "small",

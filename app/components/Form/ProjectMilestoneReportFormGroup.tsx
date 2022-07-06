@@ -11,7 +11,7 @@ import { graphql, useFragment } from "react-relay";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import { ProjectMilestoneReportFormGroup_projectRevision$key } from "__generated__/ProjectMilestoneReportFormGroup_projectRevision.graphql";
 import { ProjectMilestoneReportFormGroup_query$key } from "__generated__/ProjectMilestoneReportFormGroup_query.graphql";
-import { stageReportFormChanges } from "./reportingRequirementFormChangeFunctions";
+import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import { useAddMilestoneToRevision } from "mutations/MilestoneReport/addMilestoneToRevision";

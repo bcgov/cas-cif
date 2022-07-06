@@ -130,6 +130,11 @@ export const stageReportFormChanges = async (
     };
     if (node.changeStatus === "pending") {
       const promise = new Promise<void>((resolve, reject) => {
+        /* The mutation used here is dependent on whether a reportType is passed in.
+           If a reportType is passed, we use the default mutationFn parameter. If not, we use the optional parameter updateFormChangeMutationFn
+           to handle staging. Doing this allows us to stage all dependent form_change records for a report together & define
+           how to update each those form_change records.
+        */
         if (reportType)
           mutationFn({
             variables: {

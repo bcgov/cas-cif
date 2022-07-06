@@ -10,7 +10,7 @@ export const paymentSchema = {
     },
     netAmount: {
       type: "number",
-      title: "Gross Amount",
+      title: "Net Amount",
       default: undefined,
     },
     dateSentToCsnr: {
