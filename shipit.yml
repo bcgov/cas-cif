@@ -1,3 +1,6 @@
+dependencies:
+  override: []
+
 deploy:
   override:
     - make install:
