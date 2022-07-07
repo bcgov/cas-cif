@@ -29,6 +29,7 @@ import { TaskListMode } from "components/TaskList/types";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
 import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
+import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -49,6 +50,7 @@ const pageQuery = graphql`
         ...ProjectAnnualReportFormSummary_projectRevision
         ...TaskList_projectRevision
         ...ProjectMilestoneReportFormSummary_projectRevision
+        ...ProjectFundingAgreementFormSummary_projectRevision
         projectByProjectId {
           latestCommittedProjectRevision {
             id
@@ -212,6 +214,9 @@ export function ProjectRevision({
         <ProjectFormSummary projectRevision={query.projectRevision} />
         <ProjectManagerFormSummary projectRevision={query.projectRevision} />
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
+        <ProjectFundingAgreementFormSummary
+          projectRevision={query.projectRevision}
+        />
         <ProjectMilestoneReportFormSummary
           projectRevision={query.projectRevision}
         />
