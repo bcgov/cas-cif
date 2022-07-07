@@ -160,7 +160,7 @@ const ProjectForm: React.FC<Props> = (props) => {
     changeStatus: "pending" | "staged"
   ) => {
     // don't trigger a change if the form data is an empty object
-    if (Object.keys(changeData).length === 0) return;
+    if (changeData && Object.keys(changeData).length === 0) return;
     const updatedFormData = {
       ...revision.projectFormChange.newFormData,
       ...changeData,

@@ -316,6 +316,35 @@ describe("The Project Form", () => {
       formChangePatch: { changeStatus: "staged" },
     });
   });
+
+  it("stages a formChange with null newFormData", () => {
+    const mockResolver = {
+      ...mockQueryPayload,
+      ProjectRevision() {
+        return {
+          id: "Test Project Revision ID",
+          projectFormChange: {
+            id: "Test Project Form Change ID",
+            isUniqueValue: true,
+            changeStatus: "pending",
+            newFormData: null,
+          },
+        };
+      },
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    screen.getByText(/submit/i).click();
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: { changeStatus: "staged" },
+    });
+  });
+
   it("reverts the form_change status to 'pending' when editing", () => {
     const mockResolver = {
       ...mockQueryPayload,
