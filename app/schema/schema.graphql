@@ -47756,6 +47756,7 @@ type ReportType implements Node {
 
   """created by user id"""
   createdBy: Int
+  hasExpenses: Boolean
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -48079,6 +48080,9 @@ input ReportTypeCondition {
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
 
+  """Checks for equality with the object’s `hasExpenses` field."""
+  hasExpenses: Boolean
+
   """Checks for equality with the object’s `isMilestone` field."""
   isMilestone: Boolean
 
@@ -48129,6 +48133,9 @@ input ReportTypeFilter {
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
 
+  """Filter by the object’s `hasExpenses` field."""
+  hasExpenses: BooleanFilter
+
   """Filter by the object’s `isMilestone` field."""
   isMilestone: BooleanFilter
 
@@ -48167,6 +48174,7 @@ input ReportTypeInput {
 
   """created by user id"""
   createdBy: Int
+  hasExpenses: Boolean
 
   """
   Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.
@@ -48198,6 +48206,7 @@ input ReportTypePatch {
 
   """created by user id"""
   createdBy: Int
+  hasExpenses: Boolean
 
   """
   Boolean value indicates if this report type record is a Milestone. There are several different milestones and this value allows for easier filtering.
@@ -48405,6 +48414,8 @@ enum ReportTypesOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
+  HAS_EXPENSES_ASC
+  HAS_EXPENSES_DESC
   IS_MILESTONE_ASC
   IS_MILESTONE_DESC
   NAME_ASC
@@ -48846,6 +48857,11 @@ type ReportingRequirement implements Node {
     """The method to use when ordering `EmissionIntensityReport`."""
     orderBy: [EmissionIntensityReportsOrderBy!] = [PRIMARY_KEY_ASC]
   ): EmissionIntensityReportsConnection!
+
+  """
+  Returns the value of the has_expenses column for the report_type of the given reporting_requirement
+  """
+  hasExpenses: Boolean
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -49675,6 +49691,9 @@ input ReportingRequirementFilter {
   """Some related `emissionIntensityReportsByReportingRequirementId` exist."""
   emissionIntensityReportsByReportingRequirementIdExist: Boolean
 
+  """Filter by the object’s `hasExpenses` field."""
+  hasExpenses: BooleanFilter
+
   """
   Filter by the object’s `milestoneReportsByReportingRequirementId` relation.
   """
@@ -49954,6 +49973,8 @@ enum ReportingRequirementsOrderBy {
   REPORT_TYPE_BY_REPORT_TYPE__CREATED_AT_DESC
   REPORT_TYPE_BY_REPORT_TYPE__CREATED_BY_ASC
   REPORT_TYPE_BY_REPORT_TYPE__CREATED_BY_DESC
+  REPORT_TYPE_BY_REPORT_TYPE__HAS_EXPENSES_ASC
+  REPORT_TYPE_BY_REPORT_TYPE__HAS_EXPENSES_DESC
   REPORT_TYPE_BY_REPORT_TYPE__IS_MILESTONE_ASC
   REPORT_TYPE_BY_REPORT_TYPE__IS_MILESTONE_DESC
   REPORT_TYPE_BY_REPORT_TYPE__NAME_ASC
