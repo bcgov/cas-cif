@@ -4,30 +4,78 @@ import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Button } from "@button-inc/bcgov-theme";
-import { useCreateFundingParameterFormChange } from "mutations/ParameterFunding/createFundingParameterFormChange";
-import { useUpdateFundingParameterFormChange } from "mutations/ParameterFunding/updateFundingParameterFormChange";
+import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
+import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
+import UndoChangesButton from "./UndoChangesButton";
+import SavingIndicator from "./SavingIndicator";
 interface Props {
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
   viewOnly?: boolean;
   onSubmit: () => void;
 }
 
+const uiSchema = {
+  totalProjectValue: {
+    "ui:widget": "MoneyWidget",
+  },
+  maxFundingAmount: {
+    "ui:widget": "MoneyWidget",
+  },
+  provinceSharePercentage: {
+    "ui:widget": "TextWidget",
+  },
+  holdbackPercentage: {
+    "ui:widget": "TextWidget",
+  },
+  anticipatedFundingAmount: {
+    "ui:widget": "MoneyWidget",
+  },
+};
+
+// Setting default values for some fields
+const createFundingAgreementSchema = () => {
+  const schema = fundingAgreementSchema;
+  schema.properties.provinceSharePercentage = {
+    ...schema.properties.provinceSharePercentage,
+    default: 50,
+  };
+  schema.properties.holdbackPercentage = {
+    ...schema.properties.holdbackPercentage,
+    default: 10,
+  };
+
+  return schema as JSONSchema7;
+};
+
 const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
+  // Mutations
+  const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
+    useCreateFundingParameterFormChange();
+  const [
+    updateFundingParameterFormChange,
+    isUpdatingFundingParameterFormChange,
+  ] = useUpdateFundingParameterFormChange();
+
   const projectRevision = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_projectRevision on ProjectRevision {
         id
         rowId
+        projectFormChange {
+          formDataRecordId
+        }
         projectFundingAgreementFormChanges: formChangesFor(
           first: 500
           formDataTableName: "funding_parameter"
+          filter: { operation: { notEqualTo: ARCHIVE } }
         ) @connection(key: "connection_projectFundingAgreementFormChanges") {
           __id
           edges {
             node {
-              rowId
               id
+              rowId
               newFormData
+              changeStatus
             }
           }
         }
@@ -36,33 +84,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const [createFundingParamterFormChange] =
-    useCreateFundingParameterFormChange();
+  const fundingAgreement =
+    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
 
-  const [updateFundingParameterFormChange] =
-    useUpdateFundingParameterFormChange();
-
-  const uiSchema = {
-    totalProjectValue: {
-      "ui:widget": "MoneyWidget",
-    },
-    maxFundingAmount: {
-      "ui:widget": "MoneyWidget",
-    },
-    provinceSharePercentage: {
-      "ui:widget": "TextWidget",
-    },
-    holdbackPercentage: {
-      "ui:widget": "TextWidget",
-    },
-    anticipatedFundingAmount: {
-      "ui:widget": "MoneyWidget",
-    },
-  };
-
-  function addFundingAgreement() {
-    console.log("addFundingAgreement");
-    createFundingParamterFormChange({
+  const addFundingAgreement = () => {
+    createFundingParameterFormChange({
       variables: {
         input: {
           projectRevisionId: projectRevision.rowId,
@@ -70,106 +96,95 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           formDataTableName: "funding_parameter",
           jsonSchemaName: "funding_parameter",
           operation: "CREATE",
-          newFormData: {},
+          newFormData: {
+            projectId: projectRevision.projectFormChange.formDataRecordId,
+          },
         },
         connections: [projectRevision.projectFundingAgreementFormChanges.__id],
       },
-      onCompleted: (response) => {
-        console.log(response);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
-  }
-
-  const handleSubmit = ({ formData }) => {
-    console.log("GURJ", "handleSubmit, formdata: ", formData);
-
-    // TODO: get project id properly
-    formData.project_id = 1;
-    updateFundingParameterFormChange({
-      variables: {
-        input: {
-          id: projectRevision.projectFundingAgreementFormChanges.edges[0]?.node
-            ?.id,
-          formChangePatch: {
-            newFormData: formData,
-            changeStatus: "committed",
-          },
-        },
-      },
-
-      onCompleted: () => {
-        console.log("GURJ", "handleSubmit: onCompleted");
-      },
-      onError: (e) => console.log("GURJ", "handleSubmit: error", e),
-      debounceKey:
-        projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.id,
     });
   };
 
-  const handleChange = (formChangeData) => {
-    console.log("GURJ", "handleChange, formdata: ", formChangeData);
-    console.log(
-      "GURJ",
-      "formchange_id",
-      projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.id
-    );
-    if (projectRevision.projectFundingAgreementFormChanges.edges.length > 0)
+  const handleChange = ({ formData }) => {
+    // don't trigger a change if the form data is an empty object
+    if (Object.keys(formData).length === 0) return;
+
+    if (fundingAgreement) {
+      const updatedFormData = {
+        ...fundingAgreement.newFormData,
+        ...formData,
+      };
       updateFundingParameterFormChange({
         variables: {
           input: {
-            id: projectRevision.projectFundingAgreementFormChanges.edges[0]
-              ?.node?.id,
+            id: fundingAgreement.id,
             formChangePatch: {
-              newFormData: formChangeData,
+              newFormData: updatedFormData,
               changeStatus: "pending",
             },
           },
         },
-        onError: (e) => console.log("GURJ", "handleChange error", e),
-        debounceKey:
-          projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.id,
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: fundingAgreement.id,
+              newFormData: updatedFormData,
+              changeStatus: "pending",
+            },
+          },
+        },
+        debounceKey: fundingAgreement.id,
       });
+    }
   };
 
   return (
     <>
-      <h3>Project Funding Agreement</h3>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
         0 && (
         <Button onClick={addFundingAgreement} style={{ marginRight: "1rem" }}>
           Add Funding Agreement
         </Button>
       )}
+      {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
+        <>
+          <header>
+            <h3>Project Funding Agreement</h3>
+            <UndoChangesButton formChangeIds={[fundingAgreement?.rowId]} />
+            <SavingIndicator
+              isSaved={
+                !isUpdatingFundingParameterFormChange &&
+                !isAddingFundingParameterFormChange
+              }
+            />
+          </header>
 
-      <div key={1} className="reportContainer">
-        {projectRevision.projectFundingAgreementFormChanges.edges.length >
-          0 && (
           <FormBase
             id="ProjectFundingAgreementForm"
-            schema={fundingAgreementSchema as JSONSchema7}
-            formData={
-              projectRevision.projectFundingAgreementFormChanges.edges[0]?.node
-                ?.newFormData
-            }
+            validateOnMount={fundingAgreement?.changeStatus === "staged"}
+            idPrefix="ProjectFundingAgreementForm"
+            schema={createFundingAgreementSchema() as JSONSchema7}
+            formData={fundingAgreement?.newFormData}
+            formContext={{
+              form: fundingAgreement?.newFormData,
+            }}
             uiSchema={uiSchema}
-            onSubmit={handleSubmit}
-            onChange={(change) => handleChange(change.formData)}
+            onChange={handleChange}
+            onSubmit={props.onSubmit}
           >
-            <Button type="submit" style={{ marginRight: "1rem" }}>
+            <Button
+              type="submit"
+              style={{ marginRight: "1rem" }}
+              disabled={
+                isUpdatingFundingParameterFormChange ||
+                isAddingFundingParameterFormChange
+              }
+            >
               Submit Project Funding Agreement
             </Button>
           </FormBase>
-        )}
-
-        <style jsx>{`
-          .reportContainer {
-            margin-bottom: 1em;
-          }
-        `}</style>
-      </div>
+        </>
+      )}
     </>
   );
 };
