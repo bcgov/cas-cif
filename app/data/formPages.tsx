@@ -36,6 +36,11 @@ const formPages: FormPageDefinition[] = [
     viewComponent: ProjectContactFormSummary,
   },
   {
+    title: "Funding Agreement Overview",
+    editComponent: ProjectFundingAgreementForm,
+    viewComponent: ProjectFundingAgreementFormSummary,
+  },
+  {
     title: "milestone reports",
     editComponent: ProjectMilestoneReportFormGroup,
     viewComponent: ProjectMilestoneReportFormSummary,
@@ -49,11 +54,6 @@ const formPages: FormPageDefinition[] = [
     title: "annual reports",
     editComponent: ProjectAnnualReportForm,
     viewComponent: ProjectAnnualReportFormSummary,
-  },
-  {
-    title: "Funding Agreement Overview",
-    editComponent: ProjectFundingAgreementForm,
-    viewComponent: ProjectFundingAgreementFormSummary,
   },
 ];
 
