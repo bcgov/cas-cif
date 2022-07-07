@@ -72,6 +72,15 @@ begin
     on p.reporting_requirement_id = rr.id
     and rr.project_id = $1
     and p.archived_at is null
+  union
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'funding_parameter' as form_data_table_name,
+      'funding_parameter' as json_schema_name
+    from cif.funding_parameter
+    where funding_parameter.project_id = $1
+    and archived_at is null
   )
   loop
     perform cif.create_form_change(
