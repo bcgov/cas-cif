@@ -180,8 +180,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           listItemName="Budgets, Expenses & Payments"
         >
           <TaskListItem
-            stepName="6"
-            linkUrl={getProjectRevisionFormPageRoute(id, 6)}
+            stepName="3"
+            linkUrl={getProjectRevisionFormPageRoute(id, 3)}
             formTitle="Funding Agreement Overview"
             formStatus={fundingAgreementStatus}
             currentStep={currentStep}
@@ -204,7 +204,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           {milestoneReportStatuses.edges.length === 0 ? (
             <TaskListItem
               stepName="4"
-              linkUrl={getProjectRevisionFormPageRoute(id, 3)}
+              linkUrl={getProjectRevisionFormPageRoute(id, 4)}
               formTitle="Milestone reports"
               formStatus={null} // No status as there are no milestones
               currentStep={currentStep}
@@ -217,7 +217,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
                 stepName="4"
                 linkUrl={getProjectRevisionFormPageRoute(
                   id,
-                  3,
+                  4,
                   `Milestone${index + 1}`
                 )}
                 formTitle={`Milestone ${index + 1}`}
@@ -244,8 +244,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           listItemName="Quarterly Reports"
         >
           <TaskListItem
-            stepName="4"
-            linkUrl={getProjectRevisionFormPageRoute(id, 4)}
+            stepName="5"
+            linkUrl={getProjectRevisionFormPageRoute(id, 5)}
             formTitle="Quarterly reports"
             formStatus={quarterlyReportsStatus}
             currentStep={currentStep}
@@ -263,8 +263,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           listItemName="Annual Reports"
         >
           <TaskListItem
-            stepName="5"
-            linkUrl={getProjectRevisionFormPageRoute(id, 5)}
+            stepName="6"
+            linkUrl={getProjectRevisionFormPageRoute(id, 6)}
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
             currentStep={currentStep}
