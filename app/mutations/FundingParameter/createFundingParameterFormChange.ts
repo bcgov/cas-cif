@@ -16,6 +16,9 @@ export const mutation = graphql`
           newFormData
           operation
           changeStatus
+          projectRevisionByProjectRevisionId {
+            ...TaskList_projectRevision
+          }
         }
       }
     }
