@@ -67,6 +67,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               }
               asReportingRequirement {
                 ...CollapsibleReport_reportingRequirement
+                ...ProjectMilestoneReportForm_reportingReqiurement
               }
             }
           }

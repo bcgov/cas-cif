@@ -11,11 +11,12 @@ import { updateReportingRequirementFormChangeMutation } from "__generated__/upda
 import { Disposable } from "relay-runtime";
 import { discardMilestoneFormChangeMutation } from "__generated__/discardMilestoneFormChangeMutation.graphql";
 import { updateFormChangeMutation } from "__generated__/updateFormChangeMutation.graphql";
-import { UseMutationConfig } from "react-relay";
+import { useFragment, UseMutationConfig, graphql } from "react-relay";
 import {
   paymentSchema,
   paymentUiSchema,
 } from "data/jsonSchemaForm/paymentSchema";
+import { ProjectMilestoneReportForm_reportingReqiurement$key } from "__generated__/ProjectMilestoneReportForm_reportingReqiurement.graphql";
 
 interface Props {
   formRefs: MutableRefObject<{}>;
@@ -67,6 +68,16 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
   generatedMilestoneSchema,
   connections,
 }) => {
+  const { hasExpenses } = useFragment(
+    graphql`
+      fragment ProjectMilestoneReportForm_reportingReqiurement on ReportingRequirement {
+        hasExpenses
+      }
+    `,
+    milestoneReport.reportingRequirementFormChange
+      .asReportingRequirement as ProjectMilestoneReportForm_reportingReqiurement$key
+  );
+
   return (
     <>
       <Button
@@ -166,44 +177,46 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
         uiSchema={milestoneUiSchema}
         ObjectFieldTemplate={EmptyObjectFieldTemplate}
       />
-      <FormBase
-        id={`form-${milestoneReport.paymentFormChange.id}`}
-        validateOnMount={
-          milestoneReport.paymentFormChange.changeStatus === "staged"
-        }
-        idPrefix={`form-${milestoneReport.paymentFormChange.id}`}
-        ref={(el) =>
-          (formRefs.current[milestoneReport.paymentFormChange.id] = el)
-        }
-        formData={milestoneReport.paymentFormChange.newFormData}
-        onChange={(change) => {
-          updateFormChange({
-            variables: {
-              input: {
-                id: milestoneReport.paymentFormChange.id,
-                formChangePatch: {
-                  changeStatus: "pending",
-                  newFormData: change.formData,
-                },
-              },
-            },
-            optimisticResponse: {
-              updateFormChange: {
-                formChange: {
+      {hasExpenses && (
+        <FormBase
+          id={`form-${milestoneReport.paymentFormChange.id}`}
+          validateOnMount={
+            milestoneReport.paymentFormChange.changeStatus === "staged"
+          }
+          idPrefix={`form-${milestoneReport.paymentFormChange.id}`}
+          ref={(el) =>
+            (formRefs.current[milestoneReport.paymentFormChange.id] = el)
+          }
+          formData={milestoneReport.paymentFormChange.newFormData}
+          onChange={(change) => {
+            updateFormChange({
+              variables: {
+                input: {
                   id: milestoneReport.paymentFormChange.id,
-                  newFormData: change.formData,
-                  changeStatus: "pending",
-                  projectRevisionByProjectRevisionId: undefined,
+                  formChangePatch: {
+                    changeStatus: "pending",
+                    newFormData: change.formData,
+                  },
                 },
               },
-            },
-            debounceKey: milestoneReport.paymentFormChange.id,
-          });
-        }}
-        schema={paymentSchema as JSONSchema7}
-        uiSchema={paymentUiSchema}
-        ObjectFieldTemplate={EmptyObjectFieldTemplate}
-      />
+              optimisticResponse: {
+                updateFormChange: {
+                  formChange: {
+                    id: milestoneReport.paymentFormChange.id,
+                    newFormData: change.formData,
+                    changeStatus: "pending",
+                    projectRevisionByProjectRevisionId: undefined,
+                  },
+                },
+              },
+              debounceKey: milestoneReport.paymentFormChange.id,
+            });
+          }}
+          schema={paymentSchema as JSONSchema7}
+          uiSchema={paymentUiSchema}
+          ObjectFieldTemplate={EmptyObjectFieldTemplate}
+        />
+      )}
     </>
   );
 };
