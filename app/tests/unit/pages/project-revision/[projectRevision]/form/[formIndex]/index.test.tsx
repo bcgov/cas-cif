@@ -79,7 +79,7 @@ describe("The Project Annual Reports page", () => {
 
     pageTestingHelper.setMockRouterValues({
       pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
-      query: { projectRevision: "mock-id", formIndex: "3" },
+      query: { projectRevision: "mock-id", formIndex: "4" },
     });
 
     pageTestingHelper.renderPage();

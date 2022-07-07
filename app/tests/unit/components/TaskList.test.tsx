@@ -152,8 +152,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit milestone reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/3?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/4?anchor=",
       expect.any(Object)
     );
   });
@@ -166,8 +166,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/4?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/5?anchor=",
       expect.any(Object)
     );
   });
@@ -180,8 +180,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit annual reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/5?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/6?anchor=",
       expect.any(Object)
     );
   });
@@ -288,7 +288,7 @@ describe("The ProjectManagerForm", () => {
     expect(screen.getByText("Late")).toBeInTheDocument();
   });
 
-  it("Calls the route function with the proper anchor when an individual milstone item is clicked", () => {
+  it("Calls the route function with the proper anchor when an individual milestone item is clicked", () => {
     const payload = {
       Query() {
         return {
@@ -320,8 +320,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Milestone 1/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=3&anchor=Milestone1",
-      "/cif/project-revision/test-project-revision-id/form/3?anchor=Milestone1",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=Milestone1",
+      "/cif/project-revision/test-project-revision-id/form/4?anchor=Milestone1",
       expect.any(Object)
     );
   });
