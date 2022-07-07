@@ -112,7 +112,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         "Project Managers",
         "projectManagers",
         allCifUsers.edges.map((e) => e.node.fullName),
-        { allowFreeFormInput: true }
+        { allowFreeFormInput: true, sortable: false }
       ),
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
