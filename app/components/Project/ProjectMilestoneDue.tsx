@@ -25,7 +25,7 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
           orderBy: REPORT_DUE_DATE_ASC
           filter: {
             submittedDate: { isNull: false }
-            reportType: { includes: "Milestone" }
+            reportTypeByReportType: { isMilestone: { equalTo: true } }
           }
           first: 1
         ) {
