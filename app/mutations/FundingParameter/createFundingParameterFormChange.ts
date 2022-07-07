@@ -30,7 +30,7 @@ export const useCreateFundingParameterFormChange = (
 ) => {
   return useMutationWithErrorMessage<createFundingParameterFormChangeMutation>(
     mutation,
-    () => "An error occurred while attempting to create the contact.",
+    () => "An error occurred while attempting to create the funding agreement.",
     commitMutationFn
   );
 };
