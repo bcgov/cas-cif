@@ -4,6 +4,7 @@ import projectManagerSchema from "./projectManagerSchema";
 import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
 import operatorSchema from "./operatorSchema";
+import { milestoneSchema } from "./projectMilestoneSchema";
 
 const validationSchemas = {
   project_contact: projectContactSchema,
@@ -12,6 +13,7 @@ const validationSchemas = {
   project: projectSchema,
   contact: contactSchema,
   operator: operatorSchema,
+  milestone_report: milestoneSchema,
 };
 
 export default validationSchemas;

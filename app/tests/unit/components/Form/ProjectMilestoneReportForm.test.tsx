@@ -1,6 +1,6 @@
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProjectMilestoneReportForm from "components/Form/ProjectMilestoneReportForm";
+import ProjectMilestoneReportFormGroup from "components/Form/ProjectMilestoneReportFormGroup";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledFormIndexPageQuery, {
@@ -12,9 +12,9 @@ const testQuery = graphql`
     query {
       # Spread the fragment you want to test here
       projectRevision(id: "I can be anything") {
-        ...ProjectMilestoneReportForm_projectRevision
+        ...ProjectMilestoneReportFormGroup_projectRevision
       }
-      ...ProjectMilestoneReportForm_query
+      ...ProjectMilestoneReportFormGroup_query
     }
   }
 `;
@@ -31,7 +31,7 @@ const defaultMockResolver = {
           reportingRequirementIndex: 1,
         },
       },
-      projectMilestoneReportFormChanges: {
+      milestoneReportingRequirementFormChanges: {
         edges: [
           {
             node: {
@@ -43,11 +43,11 @@ const defaultMockResolver = {
                 reportType: "General Milestone",
                 description: "i am the first description",
                 reportingRequirementIndex: 1,
-                certifiedByProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
+              formDataRecordId: 1,
             },
           },
           {
@@ -61,7 +61,38 @@ const defaultMockResolver = {
                 submittedDate: "2022-05-02",
                 description: "i am the second description",
                 reportingRequirementIndex: 2,
-                certifiedByProfessionalDesignation: "Professional Engineer",
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+              formDataRecordId: 2,
+            },
+          },
+        ],
+        __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
+      },
+      milestoneFormChanges: {
+        edges: [
+          {
+            node: {
+              id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 1,
+              newFormData: {
+                reportingRequirementId: 1,
+                certifierProfessionalDesignation: "Professional Engineer",
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+            },
+          },
+          {
+            node: {
+              id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 2,
+              newFormData: {
+                reportingRequirementId: 2,
+                certifierProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -69,7 +100,36 @@ const defaultMockResolver = {
             },
           },
         ],
-        __id: "client:mock:__connection_projectMilestoneReportFormChanges_connection",
+        __id: "client:mock:__connection_milestoneFormChanges_connection",
+      },
+      milestonePaymentFormChanges: {
+        edges: [
+          {
+            node: {
+              id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 1,
+              newFormData: {
+                reportingRequirementId: 1,
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+            },
+          },
+          {
+            node: {
+              id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 2,
+              newFormData: {
+                reportingRequirementId: 2,
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+            },
+          },
+        ],
+        __id: "client:mock:__connection_milestonePaymentFormChanges_connection",
       },
     };
   },
@@ -80,6 +140,11 @@ const defaultMockResolver = {
           {
             node: {
               name: "General Milestone",
+            },
+          },
+          {
+            node: {
+              name: "Advanced Milestone",
             },
           },
         ],
@@ -94,7 +159,7 @@ const defaultComponentProps = {
 };
 
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
-  component: ProjectMilestoneReportForm,
+  component: ProjectMilestoneReportFormGroup,
   testQuery: testQuery,
   compiledQuery: compiledFormIndexPageQuery,
   getPropsFromTestQuery: (data) => ({
@@ -137,10 +202,9 @@ describe("The ProjectMilestoneReportForm", () => {
       componentTestingHelper.environment.mock.getMostRecentOperation().request
     ).toMatchObject({
       variables: {
-        connections: expect.any(Array),
-        projectRevisionId: 1234,
-        newFormData: {
-          projectId: 42,
+        input: {
+          reportingRequirementIndex: 3,
+          revisionId: 1234,
         },
       },
     });
@@ -158,11 +222,11 @@ describe("The ProjectMilestoneReportForm", () => {
     });
 
     expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
-      "An error occurred while attempting to add the report."
+      "An error occurred while adding the Milestone to the revision."
     );
   });
 
-  it("Calls discardReportingRequirementFormChangeMutation when the remove button is clicked", () => {
+  it("Calls discardMilestoneFormChangeMutation when the remove button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     const removeButton = screen.getAllByText("Remove")[0];
@@ -176,12 +240,13 @@ describe("The ProjectMilestoneReportForm", () => {
       componentTestingHelper.environment.mock.getAllOperations()[1];
 
     expect(mutationUnderTest.fragment.node.name).toBe(
-      "discardReportingRequirementFormChangeMutation"
+      "discardMilestoneFormChangeMutation"
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       connections: expect.any(Array),
       input: {
-        id: "mock-project-milestone-report-form-2",
+        reportingRequirementIndex: 1,
+        revisionId: 1234,
       },
       reportType: "Milestone",
     });
@@ -216,7 +281,7 @@ describe("The ProjectMilestoneReportForm", () => {
     userEvent.click(screen.getByText(/submit.*/i));
 
     // Once per form
-    expect(validateFormWithErrors).toHaveBeenCalledTimes(2);
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(4);
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {
@@ -234,35 +299,10 @@ describe("The ProjectMilestoneReportForm", () => {
   });
 
   it("reverts the form_change status to 'pending' when editing", async () => {
-    const mockResolver = {
-      ...defaultMockResolver,
-      ProjectRevision(context, generateID) {
-        return {
-          projectMilestoneReportFormChanges: {
-            edges: [
-              {
-                node: {
-                  id: `mock-project-milestone-report-form-${generateID()}`,
-                  newFormData: {
-                    reportDueDate: "2022-01-01",
-                    projectId: 51,
-                    reportType: "Milestone",
-                  },
-                  operation: "CREATE",
-                  changeStatus: "staged",
-                  formChangeByPreviousFormChangeId: null,
-                },
-              },
-            ],
-            __id: "client:mock:__connection_projectMilestoneReportFormChanges_connection",
-          },
-        };
-      },
-    };
-    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    userEvent.type(screen.getByLabelText(/description/i), "desc");
+    userEvent.type(screen.getAllByLabelText(/description/i)[0], " edited");
 
     expect(
       componentTestingHelper.environment.mock.getMostRecentOperation().request
@@ -271,7 +311,7 @@ describe("The ProjectMilestoneReportForm", () => {
       formChangePatch: {
         changeStatus: "pending",
         newFormData: {
-          description: "desc",
+          description: "i am the first description edited",
           projectId: 51,
         },
       },
@@ -298,7 +338,7 @@ describe("The ProjectMilestoneReportForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1, 2],
+        formChangesIds: [1, 2, 1, 2, 1, 2],
       },
     });
   });

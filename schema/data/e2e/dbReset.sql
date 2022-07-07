@@ -13,7 +13,6 @@ truncate table
   cif.emission_intensity_report,
   cif.milestone_report,
   cif.reporting_requirement,
-  cif.budget_item,
   cif.payment
 restart identity;
 

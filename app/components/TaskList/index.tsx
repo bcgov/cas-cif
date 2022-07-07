@@ -173,7 +173,13 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Milestone Reports Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "3"}
+          defaultExpandedState={
+            currentStep === "3" ||
+            milestoneReportStatuses.edges.some(
+              ({ node }) =>
+                node.formCompletionStatus === ATTENTION_REQUIRED_STATUS
+            )
+          }
           listItemNumber="3"
           listItemName="Milestone Reports"
         >

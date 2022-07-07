@@ -27,6 +27,15 @@ const defaultMockResolver = {
           someProjectData: "test2",
         },
       },
+      summaryMilestoneReportingRequirementFormChanges: {
+        edges: [],
+      },
+      summaryMilestoneFormChanges: {
+        edges: [],
+      },
+      summaryMilestonePaymentFormChanges: {
+        edges: [],
+      },
     };
   },
 };
@@ -57,6 +66,15 @@ describe("The Create Project page", () => {
         return {
           id: "mock-id",
           projectId: null,
+          summaryMilestoneReportingRequirementFormChanges: {
+            edges: [],
+          },
+          summaryMilestoneFormChanges: {
+            edges: [],
+          },
+          summaryMilestonePaymentFormChanges: {
+            edges: [],
+          },
         };
       },
     });
@@ -100,6 +118,15 @@ describe("The Create Project page", () => {
         return {
           id: "mock-proj-rev-id",
           projectFormChange: { newFormData: {} },
+          summaryMilestoneReportingRequirementFormChanges: {
+            edges: [],
+          },
+          summaryMilestoneFormChanges: {
+            edges: [],
+          },
+          summaryMilestonePaymentFormChanges: {
+            edges: [],
+          },
         };
       },
     });
@@ -143,6 +170,15 @@ describe("The Create Project page", () => {
                 name: "test-project-status-name",
               },
             },
+          },
+          summaryMilestoneReportingRequirementFormChanges: {
+            edges: [],
+          },
+          summaryMilestoneFormChanges: {
+            edges: [],
+          },
+          summaryMilestonePaymentFormChanges: {
+            edges: [],
           },
           projectManagerFormChangesByLabel: {
             edges: [
@@ -440,6 +476,15 @@ describe("The Create Project page", () => {
       ProjectRevision() {
         return {
           isFirstRevision: true,
+          summaryMilestoneReportingRequirementFormChanges: {
+            edges: [],
+          },
+          summaryMilestoneFormChanges: {
+            edges: [],
+          },
+          summaryMilestonePaymentFormChanges: {
+            edges: [],
+          },
         };
       },
     };
@@ -470,6 +515,15 @@ describe("The Create Project page", () => {
             latestCommittedProjectRevision: {
               id: "last-revision-id",
             },
+          },
+          summaryMilestoneReportingRequirementFormChanges: {
+            edges: [],
+          },
+          summaryMilestoneFormChanges: {
+            edges: [],
+          },
+          summaryMilestonePaymentFormChanges: {
+            edges: [],
           },
         };
       },

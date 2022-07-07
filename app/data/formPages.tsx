@@ -4,7 +4,7 @@ import ProjectForm from "components/Form/ProjectForm";
 import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
-import ProjectMilestoneReportForm from "components/Form/ProjectMilestoneReportForm";
+import ProjectMilestoneReportFormGroup from "components/Form/ProjectMilestoneReportFormGroup";
 import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportForm";
 import ProjectAnnualReportForm from "components/Form/ProjectAnnualReportForm";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
@@ -35,7 +35,7 @@ const formPages: FormPageDefinition[] = [
   },
   {
     title: "milestone reports",
-    editComponent: ProjectMilestoneReportForm,
+    editComponent: ProjectMilestoneReportFormGroup,
     viewComponent: ProjectMilestoneReportFormSummary,
   },
   {

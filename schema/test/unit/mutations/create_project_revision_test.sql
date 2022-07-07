@@ -5,7 +5,7 @@ select no_plan();
 truncate table
 cif.project, cif.project_contact,
 cif.project_manager, cif.project_revision, cif.emission_intensity_report, cif.milestone_report,
-cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.budget_item, cif.payment
+cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.payment
 restart identity;
 
 insert into cif.cif_user(id, uuid, given_name, family_name)

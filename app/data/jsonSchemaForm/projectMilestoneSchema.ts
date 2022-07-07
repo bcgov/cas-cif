@@ -1,13 +1,8 @@
-export const projectMilestoneSchema = {
+export const milestoneReportingRequirementSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Reporting Requirement",
-  required: [
-    "description",
-    "reportType",
-    "reportDueDate",
-    "certifiedByProfessionalDesignation",
-  ],
+  required: ["description", "reportType", "reportDueDate"],
   properties: {
     description: {
       type: "string",
@@ -20,26 +15,10 @@ export const projectMilestoneSchema = {
       anyOf: undefined,
       default: undefined,
     },
-    maximumAmount: {
-      type: "number",
-      title: "Maximum Milestone Amount",
-      default: undefined,
-    },
     reportDueDate: {
       type: "string",
       title: "Report Due Date",
       default: undefined,
-    },
-    completionDate: {
-      type: "string",
-      title: "Substantial Completion Date",
-      default: undefined,
-    },
-    certifiedByProfessionalDesignation: {
-      type: "string",
-      title: "Professional Designation",
-      default: "Professional Engineer",
-      anyOf: undefined,
     },
     submittedDate: {
       type: "string",
@@ -49,7 +28,40 @@ export const projectMilestoneSchema = {
   },
 };
 
-export const milestoneReportUiSchema = {
+export const milestoneSchema = {
+  $schema: "http://json-schema.org/draft-07/schema",
+  type: "object",
+  title: "Milestone",
+  properties: {
+    substantialCompletionDate: {
+      type: "string",
+      title: "Substantial Completion Date",
+      default: undefined,
+    },
+    maximumAmount: {
+      type: "number",
+      title: "Maximum Amount",
+      default: undefined,
+    },
+    totalEligibleExpenses: {
+      type: "number",
+      title: "Total Eligible Expenses",
+      default: undefined,
+    },
+    certifiedBy: {
+      type: "string",
+      title: "Certifier",
+    },
+    certifierProfessionalDesignation: {
+      type: "string",
+      title: "Professional Designation",
+      default: "Professional Engineer",
+      anyOf: undefined,
+    },
+  },
+};
+
+export const milestoneReportingRequirementUiSchema = {
   description: {
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -61,29 +73,41 @@ export const milestoneReportUiSchema = {
     "bcgov:size": "small",
     "ui:widget": "SearchWidget",
   },
-  maximumAmount: {
-    "ui:widget": "ConditionalAmountWidget",
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-  },
   reportDueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "DueDateWidget",
   },
-  completionDate: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "DateWidget",
-  },
-  certifiedByProfessionalDesignation: {
-    "ui:col-md": 12,
-    "bcgov:size": "small",
-    "ui:widget": "SearchWidget",
-  },
   submittedDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "DateWidget",
+  },
+};
+
+export const milestoneUiSchema = {
+  substantialCompletionDate: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "DateWidget",
+  },
+  maximumAmount: {
+    "ui:widget": "ConditionalAmountWidget",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+  },
+  totalEligibleExpenses: {
+    "ui:widget": "ConditionalAmountWidget",
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+  },
+  certifiedBy: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+  },
+  certifierProfessionalDesignation: {
+    "ui:col-md": 12,
+    "bcgov:size": "small",
+    "ui:widget": "SearchWidget",
   },
 };

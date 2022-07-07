@@ -24,7 +24,7 @@ import {
   getSortedReports,
   stageReportFormChanges,
   updateReportFormChange,
-} from "./reportingRequirementFormChangeFunctions";
+} from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 
@@ -221,10 +221,10 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         onClick={() =>
           stageReportFormChanges(
             applyUpdateFormChangeMutation,
-            "Annual",
             props.onSubmit,
             formRefs,
-            projectRevision.projectAnnualReportFormChanges.edges
+            projectRevision.projectAnnualReportFormChanges.edges,
+            "Annual"
           )
         }
         disabled={isUpdating}

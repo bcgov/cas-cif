@@ -29,11 +29,8 @@ insert into cif.form_change(id, operation, form_data_schema_name, form_data_tabl
       'reporting_requirement',
       '{
         "reportDueDate":"2002-02-20T12:00:01-07",
-        "completionDate":"2003-02-21T12:00:01-07",
         "submittedDate":"2004-02-22T12:00:01-07",
         "comments": "I am a comment",
-        "certifiedBy": "Superman",
-        "certifiedByProfessionalDesignation":"Super Hero",
         "projectId": 1,
         "reportType": "General Milestone",
         "reportingRequirementIndex": 123
@@ -65,11 +62,8 @@ select results_eq(
     select
       id,
       report_due_date,
-      completion_date,
       submitted_date,
       comments,
-      certified_by,
-      certified_by_professional_designation,
       project_id,
       report_type,
       reporting_requirement_index
@@ -79,11 +73,8 @@ select results_eq(
     values (
       -1,
       '2002-02-20T12:00:01-07'::timestamptz,
-      '2003-02-21T12:00:01-07'::timestamptz,
       '2004-02-22T12:00:01-07'::timestamptz,
       'I am a comment'::varchar,
-      'Superman'::varchar,
-      'Super Hero'::varchar,
       1::int,
       'General Milestone'::varchar,
       123::int

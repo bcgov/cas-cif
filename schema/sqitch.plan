@@ -70,8 +70,6 @@ computed_columns/form_change_as_project_contact [tables/project tables/contact t
 computed_columns/form_change_as_project_manager [tables/form_change tables/project_manager] 2022-04-29T21:10:14Z Dylan Leard <dylan@button.is> # Computed column returns a project_manager record type for a project_manager form_change
 tables/report_type 2022-05-02T17:29:36Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.report_type table
 tables/reporting_requirement 2022-04-29T22:15:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.reporting_requirement table
-tables/budget_item_category 2022-05-03T19:37:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item_category table
-tables/budget_item 2022-05-02T18:26:46Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.budget_item table
 tables/payment 2022-05-02T19:01:17Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Create the cif.payment table
 computed_columns/project_latest_committed_project_revision [tables/project tables/project_revision] 2022-05-02T18:21:58Z Mike Vesprini <mike@button.is> # A computed column returning the latest committed revision for a project
 util_functions/get_form_status [tables/form_change] 2022-05-04T21:17:49Z Dylan Leard <dylan@button.is> # Helper function returns the status for a form_change
@@ -87,3 +85,5 @@ computed_columns/project_revision_milestone_report_statuses [tables/form_change]
 tables/emission_intensity_payment_percent [schemas/main] 2022-06-22T18:02:47Z Dylan Leard <dylan@button.is> # Lookup table to map emission intensity performance to payment percentage
 tables/emission_intensity_report [tables/reporting_requirement] 2022-06-22T20:29:25Z Dylan Leard <dylan@button.is> # Table for emission intensity report data
 tables/milestone_report [tables/reporting_requirement] 2022-06-22T21:01:22Z Dylan Leard <dylan@button.is> # Table containing data for milestone reports
+mutations/add_milestone_to_revision [tables/reporting_requirement tables/form_change] 2022-06-23T23:26:45Z Dylan Leard <dylan@button.is> # A custom mutation chain to create form_change records for multiple tables when creating a milestone
+mutations/discard_milestone_form_change [tables/form_change tables/project_revision] 2022-06-24T16:25:29Z Dylan Leard <dylan@button.is> # Custom mutation to discard a set of form_change records relating to a milestone_report

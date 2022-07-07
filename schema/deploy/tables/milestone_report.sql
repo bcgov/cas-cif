@@ -9,6 +9,7 @@ create table cif.milestone_report(
   substantial_completion_date timestamptz,
   certified_by varchar(1000),
   certifier_professional_designation varchar(1000),
+  maximum_amount numeric,
   total_eligible_expenses numeric
 );
 
@@ -44,6 +45,7 @@ comment on column cif.milestone_report.substantial_completion_date is $$
 $$;
 comment on column cif.milestone_report.certified_by is 'The name of the person who certified the completion of the milestone';
 comment on column cif.milestone_report.certifier_professional_designation is 'The professional designation of the person who certified the completion of the milestone';
-comment on column cif.milestone_report.total_eligible_expenses is 'The total amount in dollars that can be applied to this milestone';
+comment on column cif.milestone_report.maximum_amount is 'The maximum amount in dollars that can be applied to this milestone';
+comment on column cif.milestone_report.total_eligible_expenses is 'The total amount of expenses in dollars applied to this milestone';
 
 commit;
