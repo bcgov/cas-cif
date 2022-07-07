@@ -68,7 +68,7 @@ describe("the new project page", () => {
     cy.findByText(/Add milestone reports/i).click();
     cy.findByText(/Add another milestone report/i).click();
 
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
 
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.get('[aria-label="Milestone Description"]').should("have.value", "desc");
@@ -88,7 +88,7 @@ describe("the new project page", () => {
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
 
-    cy.url().should("include", "/form/4");
+    cy.url().should("include", "/form/5");
 
     cy.addQuarterlyReport(1, "1991-01-01", "1990-12-31");
     cy.contains("Changes saved").should("be.visible");
@@ -109,7 +109,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
     cy.addAnnualReport(1, "1991-01-01", "1990-12-31");
     cy.addAnnualReport(2, "1992-01-01", "1991-12-31");
     cy.addAnnualReport(3, "1993-01-01", "1992-12-31");
@@ -166,7 +166,7 @@ describe("the new project page", () => {
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
     cy.findByText(/Add another milestone report/i).click();
 
     cy.contains("Changes saved").should("be.visible");
@@ -183,7 +183,7 @@ describe("the new project page", () => {
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/4");
+    cy.url().should("include", "/form/5");
 
     cy.findByRole("button", {
       name: /add another quarterly report/i,
@@ -208,7 +208,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
     cy.findByRole("button", { name: /add another annual report/i }).click();
     cy.findByRole("status").first().should("have.text", "On track");
     cy.contains("Changes saved").should("be.visible");
@@ -425,7 +425,7 @@ describe("the new project page", () => {
     cy.findByText(/Add milestone reports/i).click();
     cy.findByText(/Add another milestone report/i).click();
 
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved.");
@@ -537,7 +537,7 @@ describe("the new project page", () => {
 
     cy.findByText(/Annual reports/i).click();
     cy.findByRole("link", { name: "Annual reports" }).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/Annual Report 1/);
 
