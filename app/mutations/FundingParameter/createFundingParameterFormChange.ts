@@ -13,6 +13,7 @@ export const mutation = graphql`
         cursor
         node {
           id
+          rowId
           newFormData
           operation
           changeStatus
