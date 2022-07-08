@@ -267,6 +267,58 @@ describe("The ProjectContactForm", () => {
     expect(validateFormWithErrors).toHaveBeenCalledTimes(3);
   });
 
+  it("does not throw validation errors when primary contact is blank", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectContactForm_projectRevision$data> = {
+          " $fragmentType": "ProjectContactForm_projectRevision",
+          id: "Test Project Revision ID",
+          rowId: 1234,
+          projectContactFormChanges: {
+            __id: "connection Id",
+            edges: [],
+          },
+        };
+        return result;
+      },
+      Query() {
+        return {
+          allContacts: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  fullName: "Mister Test",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  fullName: "Mister Test 2",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  fullName: "Mister Test 3",
+                },
+              },
+            ],
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    const validateFormWithErrors = jest.spyOn(
+      require("lib/helpers/validateFormWithErrors"),
+      "default"
+    );
+
+    screen.getByText(/submit/i).click();
+    expect(validateFormWithErrors).toHaveReturnedWith([]);
+  });
+
   it("stages the form changes when the `submit` button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
