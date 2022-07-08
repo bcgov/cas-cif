@@ -503,6 +503,8 @@ describe("the new project page", () => {
     });
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");
+    // this checks that the project view list shows the milestone report status vs. the other report statuses
+    cy.findAllByRole("status").should("have.text", "Late");
     cy.findByText("View").click();
     cy.url().should("include", "/form/0");
 

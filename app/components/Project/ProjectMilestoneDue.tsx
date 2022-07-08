@@ -15,7 +15,7 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
     graphql`
       fragment ProjectMilestoneDue_project on Project {
         latestCommittedProjectRevision {
-          upcomingReportingRequirementFormChange {
+          upcomingReportingRequirementFormChange(reportType: "Milestone") {
             asReportingRequirement {
               reportDueDate
             }
@@ -23,7 +23,10 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
         }
         latestCompletedReportingRequirements: reportingRequirementsByProjectId(
           orderBy: REPORT_DUE_DATE_ASC
-          filter: { submittedDate: { isNull: false } }
+          filter: {
+            submittedDate: { isNull: false }
+            reportTypeByReportType: { isMilestone: { equalTo: true } }
+          }
           first: 1
         ) {
           edges {
