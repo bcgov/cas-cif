@@ -212,6 +212,12 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text
         );
+      } else if (
+        !previousValue &&
+        !formData &&
+        formContext.operation === "CREATE"
+      ) {
+        return showStringAdded(id, uiSchema["ui:options"].text as string);
       } else {
         return <>DISPLAY ERROR</>;
       }
