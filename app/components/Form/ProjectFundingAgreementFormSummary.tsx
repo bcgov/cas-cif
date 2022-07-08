@@ -65,6 +65,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
     <>
       <h3>Project Funding Agreement</h3>
       {(!fundingAgreementSummary ||
+        fundingAgreementSummary?.isPristine ||
         (fundingAgreementSummary?.isPristine === null &&
           Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
       !props.viewOnly ? (
