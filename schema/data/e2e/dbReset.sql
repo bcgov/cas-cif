@@ -13,7 +13,7 @@ truncate table
   cif.emission_intensity_report,
   cif.milestone_report,
   cif.reporting_requirement,
-  cif.payment, 
+  cif.payment,
   cif.funding_parameter
 restart identity;
 
