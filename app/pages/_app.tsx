@@ -13,18 +13,34 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import LoadingFallback from "components/Layout/LoadingFallback";
 import Custom500 from "./500";
+import { GrowthBook, GrowthBookProvider } from "@growthbook/growthbook-react";
+import getConfig from "next/config";
 config.autoAddCss = false;
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
   createClientEnvironment: () => getClientEnvironment()!,
 });
+const { publicRuntimeConfig } = getConfig();
+
+const growthbook = new GrowthBook();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [error, setError] = useState(null);
   const value = { error, setError };
   useEffect(() => {
     setError(null);
+    const fetchGrowthbook = async () => {
+      const data = await fetch(
+        `https://cdn.growthbook.io/api/features/${publicRuntimeConfig.GROWTHBOOK_API_KEY}`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          growthbook.setFeatures(res.features);
+        });
+      return data;
+    };
+    fetchGrowthbook();
   }, [Component]);
 
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
@@ -40,15 +56,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
 
   return (
-    <ErrorContext.Provider value={value}>
-      <BCGovTypography />
-      <Sentry.ErrorBoundary fallback={<Custom500 />}>
-        <RelayEnvironmentProvider environment={env}>
-          {typeof window !== "undefined" && <SessionExpiryHandler />}
-          {component}
-        </RelayEnvironmentProvider>
-      </Sentry.ErrorBoundary>
-    </ErrorContext.Provider>
+    <GrowthBookProvider growthbook={growthbook}>
+      <ErrorContext.Provider value={value}>
+        <BCGovTypography />
+        <Sentry.ErrorBoundary fallback={<Custom500 />}>
+          <RelayEnvironmentProvider environment={env}>
+            {typeof window !== "undefined" && <SessionExpiryHandler />}
+            {component}
+          </RelayEnvironmentProvider>
+        </Sentry.ErrorBoundary>
+      </ErrorContext.Provider>
+    </GrowthBookProvider>
   );
 }
 
