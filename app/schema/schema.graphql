@@ -29877,7 +29877,7 @@ input DeleteFundingParameterByRowIdInput {
   """
   clientMutationId: String
 
-  """Unique ID for the budget data"""
+  """Unique ID for the funding agreement data"""
   rowId: Int!
 }
 
@@ -32493,9 +32493,9 @@ enum FormChangesOrderBy {
   VALIDATION_ERRORS_DESC
 }
 
-"""Table containing budget related data"""
+"""Table containing funding agreement data"""
 type FundingParameter implements Node {
-  """The anticipated funding amount"""
+  """Total anticipated funding amount inserted by CIF users"""
   anticipatedFundingAmount: BigFloat
 
   """archived at timestamp"""
@@ -32519,7 +32519,7 @@ type FundingParameter implements Node {
   """created by user id"""
   createdBy: Int
 
-  """Province holds back this percentage of funding"""
+  """The designated holdback percentage for each payment"""
   holdbackPercentage: BigFloat
 
   """
@@ -32536,10 +32536,12 @@ type FundingParameter implements Node {
   """The related project for this data"""
   projectId: Int!
 
-  """Province share percentage"""
+  """
+  The percent of the total funding for a project that the Province is providing
+  """
   provinceSharePercentage: BigFloat
 
-  """Unique ID for the budget data"""
+  """Unique ID for the funding agreement data"""
   rowId: Int!
 
   """Total project value"""
@@ -32675,7 +32677,7 @@ input FundingParameterFilter {
 
 """An input for mutations affecting `FundingParameter`"""
 input FundingParameterInput {
-  """The anticipated funding amount"""
+  """Total anticipated funding amount inserted by CIF users"""
   anticipatedFundingAmount: BigFloat
 
   """archived at timestamp"""
@@ -32690,7 +32692,7 @@ input FundingParameterInput {
   """created by user id"""
   createdBy: Int
 
-  """Province holds back this percentage of funding"""
+  """The designated holdback percentage for each payment"""
   holdbackPercentage: BigFloat
 
   """Maximum funding amount for this project"""
@@ -32699,7 +32701,9 @@ input FundingParameterInput {
   """The related project for this data"""
   projectId: Int!
 
-  """Province share percentage"""
+  """
+  The percent of the total funding for a project that the Province is providing
+  """
   provinceSharePercentage: BigFloat
 
   """Total project value"""
@@ -32716,7 +32720,7 @@ input FundingParameterInput {
 Represents an update to a `FundingParameter`. Fields that are set will be updated.
 """
 input FundingParameterPatch {
-  """The anticipated funding amount"""
+  """Total anticipated funding amount inserted by CIF users"""
   anticipatedFundingAmount: BigFloat
 
   """archived at timestamp"""
@@ -32731,7 +32735,7 @@ input FundingParameterPatch {
   """created by user id"""
   createdBy: Int
 
-  """Province holds back this percentage of funding"""
+  """The designated holdback percentage for each payment"""
   holdbackPercentage: BigFloat
 
   """Maximum funding amount for this project"""
@@ -32740,7 +32744,9 @@ input FundingParameterPatch {
   """The related project for this data"""
   projectId: Int
 
-  """Province share percentage"""
+  """
+  The percent of the total funding for a project that the Province is providing
+  """
   provinceSharePercentage: BigFloat
 
   """Total project value"""
@@ -51727,7 +51733,7 @@ input UpdateFundingParameterByRowIdInput {
   """
   fundingParameterPatch: FundingParameterPatch!
 
-  """Unique ID for the budget data"""
+  """Unique ID for the funding agreement data"""
   rowId: Int!
 }
 

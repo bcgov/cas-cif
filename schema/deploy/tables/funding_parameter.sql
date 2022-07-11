@@ -34,13 +34,13 @@ perform cif_private.grant_permissions('update', 'funding_parameter', 'cif_admin'
 end
 $grant$;
 
-comment on table cif.funding_parameter is 'Table containing budget related data';
-comment on column cif.funding_parameter.id is 'Unique ID for the budget data';
+comment on table cif.funding_parameter is 'Table containing funding agreement data';
+comment on column cif.funding_parameter.id is 'Unique ID for the funding agreement data';
 comment on column cif.funding_parameter.project_id is 'The related project for this data';
 comment on column cif.funding_parameter.total_project_value is 'Total project value';
 comment on column cif.funding_parameter.max_funding_amount is 'Maximum funding amount for this project';
-comment on column cif.funding_parameter.province_share_percentage is 'Province share percentage';
-comment on column cif.funding_parameter.holdback_percentage is 'Province holds back this percentage of funding';
-comment on column cif.funding_parameter.anticipated_funding_amount is 'The anticipated funding amount';
+comment on column cif.funding_parameter.province_share_percentage is 'The percent of the total funding for a project that the Province is providing';
+comment on column cif.funding_parameter.holdback_percentage is 'The designated holdback percentage for each payment';
+comment on column cif.funding_parameter.anticipated_funding_amount is 'Total anticipated funding amount inserted by CIF users';
 
 commit;
