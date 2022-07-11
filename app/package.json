@@ -86,6 +86,7 @@
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
     "@graphile-contrib/pg-omit-archived": "^2.1.0",
     "@graphile-contrib/pg-order-by-related": "^1.0.0-beta.6",
+    "@growthbook/growthbook-react": "^0.9.0",
     "@mui/base": "^5.0.0-alpha.80",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.7.0",

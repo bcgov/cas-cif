@@ -839,6 +839,18 @@
   dependencies:
     tslib "~2.3.0"
 
+"@growthbook/growthbook-react@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@growthbook/growthbook-react/-/growthbook-react-0.9.0.tgz#c0f3b71349addb04225fa5524a8a2fce3059bfb1"
+  integrity sha512-8WJ6ckj5Wzg+pDos3/DNF2BJNL7S8NeFu+LLTtv/p+hGW1Epkl2et0N1goMQRfnyIhtLerOgTBR9eZoy9AxK2Q==
+  dependencies:
+    "@growthbook/growthbook" "^0.18.0"
+
+"@growthbook/growthbook@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@growthbook/growthbook/-/growthbook-0.18.0.tgz#7ce599a6d9eaacaef1fdc5340aeeb8730345b25c"
+  integrity sha512-Z7ydUgVdYN9Qcu3KIfmkcL2CnnIMyscd4EuFaDJ7oi/TJ+v3VrJer0pZzZ9MZlUaQU+j4Z7MDOCB2NBKENXLkQ==
+
 "@hapi/hoek@^9.0.0":
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.2.1.tgz#9551142a1980503752536b5050fd99f4a7f13b17"
