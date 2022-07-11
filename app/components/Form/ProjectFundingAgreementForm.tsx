@@ -107,7 +107,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const handleChange = (formData, changeStatus: "staged" | "pending") => {
     // don't trigger a change if the form data is an empty object
-    if (!formData || Object.keys(formData).length === 0) return;
+    if (formData && Object.keys(formData).length === 0) return;
 
     if (fundingAgreement) {
       const updatedFormData = {

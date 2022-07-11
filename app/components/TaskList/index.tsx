@@ -175,7 +175,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Budget Details Section */}
         <TaskListSection
-          defaultExpandedState={currentStep === "3"}
+          defaultExpandedState={
+            currentStep === "3" ||
+            fundingAgreementStatus === ATTENTION_REQUIRED_STATUS
+          }
           listItemNumber="3"
           listItemName="Budgets, Expenses & Payments"
         >

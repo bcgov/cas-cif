@@ -55,7 +55,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       }
     : getFilteredSchema(
         fundingAgreementSchema as JSONSchema7,
-        fundingAgreementSummary
+        fundingAgreementSummary || {}
       );
 
   // Set custom rjsf fields to display diffs
