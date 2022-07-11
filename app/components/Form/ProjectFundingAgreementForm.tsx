@@ -105,9 +105,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     });
   };
 
-  const handleChange = ({ formData }) => {
+  const handleChange = (formData, changeStatus: "staged" | "pending") => {
     // don't trigger a change if the form data is an empty object
-    if (Object.keys(formData).length === 0) return;
+    if (!formData || Object.keys(formData).length === 0) return;
 
     if (fundingAgreement) {
       const updatedFormData = {
@@ -120,7 +120,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             id: fundingAgreement.id,
             formChangePatch: {
               newFormData: updatedFormData,
-              changeStatus: "pending",
+              changeStatus: changeStatus,
             },
           },
         },
@@ -129,13 +129,22 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             formChange: {
               id: fundingAgreement.id,
               newFormData: updatedFormData,
-              changeStatus: "pending",
+              changeStatus: changeStatus,
             },
           },
         },
         debounceKey: fundingAgreement.id,
       });
     }
+  };
+
+  const handleSubmit = async ({ formData }) => {
+    await handleChange(formData, "staged");
+    props.onSubmit();
+  };
+
+  const handleError = () => {
+    handleChange(fundingAgreement.newFormData, "staged");
   };
 
   return (
@@ -169,8 +178,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               form: fundingAgreement?.newFormData,
             }}
             uiSchema={uiSchema}
-            onChange={handleChange}
-            onSubmit={props.onSubmit}
+            onChange={(change) => handleChange(change.formData, "pending")}
+            onSubmit={handleSubmit}
+            onError={handleError}
           >
             <Button
               type="submit"
