@@ -2,6 +2,7 @@ import "cypress-file-upload";
 import "happo-cypress";
 import "@testing-library/cypress/add-commands";
 import { DateTime } from "luxon";
+import logAxeResults from "../plugins/logAxeResults";
 
 Cypress.Commands.add("login", (username, password) => {
   // Open the login page, fill in the form with username and password and submit.
@@ -438,5 +439,24 @@ Cypress.Commands.add(
     cy.findByText(/Anticipated Funding Amount$/i)
       .next()
       .should("have.text", anticipatedFundingAmount);
+  }
+);
+
+Cypress.Commands.add(
+  "happoAndAxe",
+  (componentName, variant, axeContext, enableTempRules = false) => {
+    const tempRules = {
+      rules: {
+        dlitem: { enabled: false },
+        "definition-list": { enabled: false },
+      },
+    };
+
+    cy.get("body").happoScreenshot({
+      component: componentName,
+      variant: variant,
+    });
+    cy.injectAxe();
+    cy.checkA11y(axeContext, enableTempRules ? tempRules : null, logAxeResults);
   }
 );
