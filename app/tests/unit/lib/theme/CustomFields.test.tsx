@@ -226,4 +226,26 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.getByText("100")).toBeInTheDocument();
     expect(componentUnderTest.queryByText("$100")).not.toBeInTheDocument();
   });
+
+  it("shows form has been added when there is no formData, the operation is 'CREATE' & there is no old data", () => {
+    delete uiTestSchema.numberTest["ui:widget"];
+
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={null}
+        formContext={{
+          oldData: null,
+          oldUiSchema: null,
+          operation: "CREATE",
+        }}
+      />
+    );
+    expect(
+      componentUnderTest.getByText("I replaced the ID")
+    ).toBeInTheDocument();
+  });
 });
