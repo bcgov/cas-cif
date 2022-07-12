@@ -1,6 +1,5 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
-import { getFormattedLabel } from "./AdjustableCalculatedValueWidget";
 
 const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   props
@@ -11,14 +10,25 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   const isMoney = uiSchema?.isMoney;
 
   const calculatedValue =
-    formContext[`${getFormattedLabel(label)}CalculatedValue`];
+    formContext[uiSchema.calculatedValueFormContextProperty];
+
+  const adjustedInputId = `${id}_adjusted`;
 
   return (
     <div>
       {calculatedValue && (
         <>
-          {isMoney ? "$" : ""}
-          {calculatedValue}
+          {
+            <NumberFormat
+              thousandSeparator
+              fixedDecimalScale={isMoney}
+              id={id}
+              prefix={isMoney ? "$" : ""}
+              decimalScale={isMoney ? 2 : 10}
+              value={value}
+              displayType="text"
+            />
+          }
         </>
       )}
       {value !== calculatedValue && (
@@ -28,7 +38,7 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
             <NumberFormat
               thousandSeparator
               fixedDecimalScale={isMoney}
-              id={id}
+              id={adjustedInputId}
               prefix={isMoney ? "$" : ""}
               decimalScale={isMoney ? 2 : 10}
               value={value}

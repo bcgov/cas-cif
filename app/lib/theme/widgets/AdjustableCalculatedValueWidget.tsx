@@ -1,13 +1,6 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
 
-/*
-  to get the calculated value from formContext, we need to tweak the label of the field to match the calculated value in the formContext.
-  for example, if the label is "Total Funding Request", we need to change it to "totalFundingRequest" and then add `CalculatedValue` to the end of the label.
-*/
-export const getFormattedLabel = (fieldLabel: string) =>
-  fieldLabel.charAt(0).toLowerCase() + fieldLabel.slice(1).replace(/\s/g, "");
-
 export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   props
 ) => {
@@ -26,36 +19,46 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   const isMoney = uiSchema?.isMoney;
 
   const calculatedValue =
-    formContext[`${getFormattedLabel(label)}CalculatedValue`];
+    formContext[uiSchema.calculatedValueFormContextProperty];
+
+  const adjustedInputId = `${id}_adjusted`;
 
   return (
     <div>
       {calculatedValue && (
         <>
-          <div style={{ marginBottom: "1em" }}>
-            {isMoney ? "$" : ""}
-            {calculatedValue}
-          </div>
-          <label htmlFor={id}>{label} (Adjusted)</label>
+          <NumberFormat
+            thousandSeparator
+            fixedDecimalScale={isMoney}
+            id={id}
+            prefix={isMoney ? "$" : ""}
+            disabled={disabled}
+            className="adjustable"
+            decimalScale={isMoney ? 2 : 10} //Hardcoded for now, we can change it if we need to
+            defaultValue={(schema as any).defaultValue}
+            value={calculatedValue}
+            displayType="text"
+          />
+          <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
         </>
       )}
       <NumberFormat
         thousandSeparator
         fixedDecimalScale={isMoney}
-        id={id}
+        id={adjustedInputId}
         prefix={isMoney ? "$" : ""}
         disabled={disabled}
         className="adjustable"
         decimalScale={isMoney ? 2 : 10} //Hardcoded for now, we can change it if we need to
         defaultValue={(schema as any).defaultValue}
-        value={value ?? calculatedValue}
+        value={value}
         onValueChange={({ floatValue }) => {
           if (
             Number.isNaN(floatValue) ||
             floatValue === undefined ||
             floatValue === null
           ) {
-            onChange(calculatedValue);
+            onChange(null);
           } else {
             onChange(((floatValue * 100) / 100).toFixed(isMoney ? 2 : 10)); //Hardcoded for now, we can change it if we need to
           }

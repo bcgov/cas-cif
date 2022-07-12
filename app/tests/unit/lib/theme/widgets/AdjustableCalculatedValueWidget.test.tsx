@@ -4,43 +4,51 @@ import { AdjustableCalculatedValueWidget } from "lib/theme/widgets/AdjustableCal
 describe("The AdjustableCalculatedValueWidget", () => {
   it("renders the calculated and adjusted value", () => {
     const props: any = {
-      uiSchema: { isMoney: true },
+      uiSchema: { calculatedValueFormContextProperty: "myProp" },
       schema: { type: "number", title: "Test Label", default: undefined },
       id: "test-id",
       label: "Test Label",
       onChange: jest.fn(),
-      value: "200",
-      formContext: { testLabelCalculatedValue: "100" },
+      value: 200,
+      formContext: { myProp: 1000 },
     };
     render(<AdjustableCalculatedValueWidget {...props} />);
-    expect(screen.getByText("$100")).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", {
-        name: /test label \(adjusted\)/i,
-      })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", {
-        name: /test label \(adjusted\)/i,
-      })
-    ).toHaveValue("$200.00");
+    expect(screen.getByText("1,000")).toBeInTheDocument();
+
+    expect(screen.getByLabelText(/test label \(adjusted\)/i)).toHaveValue(
+      "200"
+    );
   });
 
-  it("shows the calculated value as the default value for adjusted value, if no adjusted value provided", () => {
+  it("renders the calculated and adjusted value with a $ sign if isMoney is true", () => {
     const props: any = {
-      uiSchema: { isMoney: true },
+      uiSchema: { isMoney: true, calculatedValueFormContextProperty: "myProp" },
+      schema: { type: "number", title: "Test Label", default: undefined },
+      id: "test-id",
+      label: "Test Label",
+      onChange: jest.fn(),
+      value: 200,
+      formContext: { myProp: 1000 },
+    };
+    render(<AdjustableCalculatedValueWidget {...props} />);
+    expect(screen.getByText("$1,000.00")).toBeInTheDocument();
+
+    expect(screen.getByLabelText(/test label \(adjusted\)/i)).toHaveValue(
+      "$200.00"
+    );
+  });
+
+  it("shows an empty input for adjusted value if no adjusted value provided", () => {
+    const props: any = {
+      uiSchema: { isMoney: true, calculatedValueFormContextProperty: "myProp" },
       schema: { type: "number", title: "Test Label", default: undefined },
       id: "test-id",
       label: "Test Label",
       onChange: jest.fn(),
       value: undefined,
-      formContext: { testLabelCalculatedValue: "100" },
+      formContext: { myProp: "100" },
     };
     render(<AdjustableCalculatedValueWidget {...props} />);
-    expect(
-      screen.getByRole("textbox", {
-        name: /test label \(adjusted\)/i,
-      })
-    ).toHaveValue("$100.00");
+    expect(screen.getByLabelText(/test label \(adjusted\)/i)).toHaveValue("");
   });
 });
