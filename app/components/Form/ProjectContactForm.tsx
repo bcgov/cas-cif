@@ -325,7 +325,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                     ref={(el) => (formRefs.current.primaryContact = el)}
                     formData={
                       primaryContactForm?.newFormData || {
-                        contactId: null,
                         contactIndex: 1,
                         projectId:
                           projectRevision.projectFormChange.formDataRecordId,
