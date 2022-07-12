@@ -15,7 +15,8 @@ select columns_are(
     'updated_at',
     'updated_by',
     'archived_at',
-    'archived_by'
+    'archived_by',
+    'has_expenses'
   ],
   'columns in cif.report_type match expected columns'
 );
