@@ -40,7 +40,7 @@ comment on column cif.funding_parameter.project_id is 'The related project for t
 comment on column cif.funding_parameter.total_project_value is 'Total project value';
 comment on column cif.funding_parameter.max_funding_amount is 'Maximum funding amount for this project';
 comment on column cif.funding_parameter.province_share_percentage is 'The percent of the total funding for a project that the Province is providing';
-comment on column cif.funding_parameter.holdback_percentage is 'The designated holdback percentage for each payment';
+comment on column cif.funding_parameter.holdback_percentage is 'The designated holdback percentage for each payment. CIF holds back this designated holdback percentage from each payment, and the cumulated holdback amount is the total possible value of the final (performance) milestone payment. The proponent is paid a portion of this possible total based on their project emission intensity performance relative to the target emission intensity';
 comment on column cif.funding_parameter.anticipated_funding_amount is 'Total anticipated funding amount inserted by CIF users';
 
 commit;

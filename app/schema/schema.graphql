@@ -32519,7 +32519,9 @@ type FundingParameter implements Node {
   """created by user id"""
   createdBy: Int
 
-  """The designated holdback percentage for each payment"""
+  """
+  The designated holdback percentage for each payment. CIF holds back this designated holdback percentage from each payment, and the cumulated holdback amount is the total possible value of the final (performance) milestone payment. The proponent is paid a portion of this possible total based on their project emission intensity performance relative to the target emission intensity
+  """
   holdbackPercentage: BigFloat
 
   """
@@ -32692,7 +32694,9 @@ input FundingParameterInput {
   """created by user id"""
   createdBy: Int
 
-  """The designated holdback percentage for each payment"""
+  """
+  The designated holdback percentage for each payment. CIF holds back this designated holdback percentage from each payment, and the cumulated holdback amount is the total possible value of the final (performance) milestone payment. The proponent is paid a portion of this possible total based on their project emission intensity performance relative to the target emission intensity
+  """
   holdbackPercentage: BigFloat
 
   """Maximum funding amount for this project"""
@@ -32735,7 +32739,9 @@ input FundingParameterPatch {
   """created by user id"""
   createdBy: Int
 
-  """The designated holdback percentage for each payment"""
+  """
+  The designated holdback percentage for each payment. CIF holds back this designated holdback percentage from each payment, and the cumulated holdback amount is the total possible value of the final (performance) milestone payment. The proponent is paid a portion of this possible total based on their project emission intensity performance relative to the target emission intensity
+  """
   holdbackPercentage: BigFloat
 
   """Maximum funding amount for this project"""
