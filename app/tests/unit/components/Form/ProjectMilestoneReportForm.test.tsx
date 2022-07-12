@@ -48,6 +48,9 @@ const defaultMockResolver = {
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
+              asReportingRequirement: {
+                hasExpenses: true,
+              },
             },
           },
           {
@@ -57,7 +60,7 @@ const defaultMockResolver = {
               newFormData: {
                 reportDueDate: "2022-10-28",
                 projectId: 51,
-                reportType: "Advanced Milestone",
+                reportType: "Reporting Milestone",
                 submittedDate: "2022-05-02",
                 description: "i am the second description",
                 reportingRequirementIndex: 2,
@@ -66,6 +69,9 @@ const defaultMockResolver = {
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 2,
+              asReportingRequirement: {
+                hasExpenses: false,
+              },
             },
           },
         ],
@@ -110,18 +116,6 @@ const defaultMockResolver = {
               rowId: 1,
               newFormData: {
                 reportingRequirementId: 1,
-              },
-              operation: "CREATE",
-              changeStatus: "pending",
-              formChangeByPreviousFormChangeId: null,
-            },
-          },
-          {
-            node: {
-              id: `mock-project-milestone-report-form-${generateID()}`,
-              rowId: 2,
-              newFormData: {
-                reportingRequirementId: 2,
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -281,7 +275,7 @@ describe("The ProjectMilestoneReportForm", () => {
     userEvent.click(screen.getByText(/submit.*/i));
 
     // Once per form
-    expect(validateFormWithErrors).toHaveBeenCalledTimes(4);
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(5);
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {
@@ -338,8 +332,19 @@ describe("The ProjectMilestoneReportForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1, 2, 1, 2, 1, 2],
+        formChangesIds: [1, 2, 1, 2, 1],
       },
     });
+  });
+
+  it("Only renders the payment form for milestones types with associated expenses", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getAllByText(/milestone description/i)).toHaveLength(2);
+    expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
+    expect(screen.getAllByText(/milestone gross payment amount/i)).toHaveLength(
+      1
+    );
   });
 });
