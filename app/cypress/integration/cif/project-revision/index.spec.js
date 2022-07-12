@@ -63,12 +63,25 @@ describe("the new project page", () => {
     });
     cy.findByText(/Submit contacts/i).click();
 
+    // BUDGETS, EXPENSES AND PAYMENTS
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Add funding agreement/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /add funding agreement/i }).click();
+    cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
+    cy.injectAxe();
+    cy.checkA11y("main", null, logAxeResults);
+    cy.get("body").happoScreenshot({
+      component: "Project Funding Agreement Form",
+      variant: "empty",
+    });
+
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
     cy.findByText(/Add another milestone report/i).click();
 
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
 
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.get('[aria-label="Milestone Description"]').should("have.value", "desc");
@@ -88,7 +101,7 @@ describe("the new project page", () => {
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
 
-    cy.url().should("include", "/form/4");
+    cy.url().should("include", "/form/5");
 
     cy.addQuarterlyReport(1, "1991-01-01", "1990-12-31");
     cy.contains("Changes saved").should("be.visible");
@@ -109,7 +122,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
     cy.addAnnualReport(1, "1991-01-01", "1990-12-31");
     cy.addAnnualReport(2, "1992-01-01", "1991-12-31");
     cy.addAnnualReport(3, "1993-01-01", "1992-12-31");
@@ -163,10 +176,26 @@ describe("the new project page", () => {
 
     cy.findByText(/Project Details/i).click();
 
+    // BUDGETS, EXPENSES AND PAYMENTS
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Add funding agreement/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /add funding agreement/i }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 3);
+    cy.injectAxe();
+    cy.checkA11y(".error-detail", null, logAxeResults);
+    cy.contains("Changes saved").should("be.visible");
+    cy.get("body").happoScreenshot({
+      component: "Project Funding Agreement Form",
+      variant: "with errors",
+    });
+
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
     cy.findByText(/Add another milestone report/i).click();
 
     cy.contains("Changes saved").should("be.visible");
@@ -183,7 +212,7 @@ describe("the new project page", () => {
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/4");
+    cy.url().should("include", "/form/5");
 
     cy.findByRole("button", {
       name: /add another quarterly report/i,
@@ -208,7 +237,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
     cy.findByRole("button", { name: /add another annual report/i }).click();
     cy.findByRole("status").first().should("have.text", "On track");
     cy.contains("Changes saved").should("be.visible");
@@ -262,6 +291,20 @@ describe("the new project page", () => {
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkContactsForm("", "");
+
+    // undo budgets, expenses and payments
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Add funding agreement/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /add funding agreement/i }).click();
+    cy.fillFundingAgreementForm(222, 333, 70, 20, 444);
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByRole("button", { name: /add funding agreement/i }).should(
+      "be.visible"
+    );
+    cy.findAllByRole("link", { name: /^Add funding agreement/i })
+      .next()
+      .should("have.text", "Not Started");
 
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();
@@ -420,12 +463,20 @@ describe("the new project page", () => {
     cy.fillContactsForm("Loblaw003", "Loblaw004");
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    // add budgets, expenses, and payments
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Add funding agreement/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /add funding agreement/i }).click();
+    cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
+    cy.findByRole("button", { name: /^submit/i }).click();
+
     // add milestone reports
-    cy.findByText(/Milestone reports/i).click();
+    cy.findByRole("link", { name: /Milestone reports/i }).click();
     cy.findByText(/Add milestone reports/i).click();
     cy.findByText(/Add another milestone report/i).click();
 
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved.");
@@ -509,7 +560,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/0");
 
     // Verify the forms render in view mode for committed project revisions
-    cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
+    cy.findByRole("heading", { name: "6. Submit changes" }).should("not.exist");
     cy.findByRole("link", { name: "Project overview" })
       .next()
       .should("not.exist");
@@ -535,13 +586,20 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/primary contact/i, "Loblaw003, Bob003");
 
-    cy.findByText(/Annual reports/i).click();
-    cy.findByRole("link", { name: "Annual reports" }).click();
-    cy.url().should("include", "/form/5");
+    // budgets, expenses, and payments
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/funding agreement/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.checkFundingAgreementForm(111, 222, 60, 20, 333);
+
+    cy.findByRole("heading", { name: /Annual reports/i }).click();
+    cy.findByRole("link", { name: /Annual reports/i }).click();
+    cy.url().should("include", "/form/6");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/Annual Report 1/);
 
-    // Edit the project: change the name, delete a manager and contact, change a milestone report date, change an annual report comment, delete a quarterly report.
+    // Edit the project: change the name, delete a manager and contact, change a milestone report date, change an annual report comment, delete a quarterly report, change funding agreement.
     // edit overview
     cy.findByText(/Project Overview/i).click();
     cy.findByRole("link", { name: "Project overview" }).click();
@@ -597,6 +655,16 @@ describe("the new project page", () => {
 
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.contains("Review and Submit Project");
+
+    // edit budgets, expenses, and payments
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Edit funding agreement/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.fillFundingAgreementForm(222, 333, 70, 30, 444);
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit milestone reports
     cy.contains("Review and Submit Project");
@@ -649,7 +717,7 @@ describe("the new project page", () => {
 
     // edit annual reports
     cy.contains("Review and Submit Project");
-    cy.findByText(/5. Annual reports/i).click();
+    cy.findByRole("heading", { name: /6. Annual reports/i }).click();
     cy.findByText(/Edit annual reports/i).click();
     cy.findByText("Annual Report 1").click();
     cy.get('[aria-label*="General Comments"]')
@@ -742,6 +810,11 @@ describe("the new project page", () => {
     cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "No Secondary contacts");
+
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/funding agreement/i).click();
+    cy.checkFundingAgreementForm(222, 333, 70, 30, 444);
+
     cy.findByText(/Milestone reports/i).click();
     cy.get("a")
       .contains(/Milestone 1/i)

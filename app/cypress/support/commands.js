@@ -292,7 +292,7 @@ Cypress.Commands.add(
         .should("have.value", generalComments);
     }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/4");
+    return cy.url().should("include", "/form/5");
   }
 );
 
@@ -323,7 +323,7 @@ Cypress.Commands.add(
         .should("have.value", generalComments);
     }
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/5");
+    return cy.url().should("include", "/form/6");
   }
 );
 
@@ -382,6 +382,61 @@ Cypress.Commands.add(
     }
 
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form/3");
+    return cy.url().should("include", "/form/4");
+  }
+);
+
+Cypress.Commands.add(
+  "fillFundingAgreementForm",
+  (
+    totalProjectValue,
+    maxFundingAmount,
+    provinceSharePercentage,
+    holdbackPercentage,
+    anticipatedFundingAmount
+  ) => {
+    cy.findByLabelText(/Total Project Value$/i)
+      .clear()
+      .type(totalProjectValue);
+    cy.findByLabelText(/Max Funding Amount$/i)
+      .clear()
+      .type(maxFundingAmount);
+    cy.findByLabelText(/Province Share Percentage$/i)
+      .clear()
+      .type(provinceSharePercentage);
+    cy.findByLabelText(/Holdback Percentage$/i)
+      .clear()
+      .type(holdbackPercentage);
+    cy.findByLabelText(/Anticipated Funding Amount$/i)
+      .clear()
+      .type(anticipatedFundingAmount);
+    cy.contains("Changes saved");
+  }
+);
+
+Cypress.Commands.add(
+  "checkFundingAgreementForm",
+  (
+    totalProjectValue,
+    maxFundingAmount,
+    provinceSharePercentage,
+    holdbackPercentage,
+    anticipatedFundingAmount
+  ) => {
+    cy.findByText(/Total Project Value$/i)
+      .next()
+      .should("have.text", totalProjectValue);
+    cy.findByText(/Max Funding Amount$/i)
+      .next()
+      .should("have.text", maxFundingAmount);
+    cy.findByText(/Province Share Percentage$/i)
+      .next()
+      .should("have.text", provinceSharePercentage);
+    cy.findByText(/Holdback Percentage$/i)
+      .next()
+      .should("have.text", holdbackPercentage);
+    cy.findByText(/Anticipated Funding Amount$/i)
+      .next()
+      .should("have.text", anticipatedFundingAmount);
   }
 );
