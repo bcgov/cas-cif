@@ -338,7 +338,7 @@ describe("The ProjectContactForm", () => {
     screen.getByText(/submit/i).click();
     const allOperations =
       componentTestingHelper.environment.mock.getAllOperations();
-    expect(allOperations.length).toEqual(5); // first operation is special; next four are form_change
+    expect(allOperations.length).toEqual(5); // first operation is the initial query; next four are form_change mutations
     for (let i = 1; i < allOperations.length; i++) {
       expect(allOperations[i].request.variables.input).toMatchObject({
         formChangePatch: { changeStatus: "staged" },

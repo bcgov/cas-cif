@@ -274,7 +274,7 @@ describe("The ProjectManagerForm", () => {
     screen.getByText(/submit/i).click();
     const allOperations =
       componentTestingHelper.environment.mock.getAllOperations();
-    expect(allOperations.length).toEqual(4); // first operation is special; next three are form_change (there are 4 managers but only 3 have form_change)
+    expect(allOperations.length).toEqual(4); // first operation is the initial query; next three are form_change  mutations (there are 4 managers but only 3 have form_change)
     for (let i = 1; i < allOperations.length; i++) {
       expect(allOperations[i].request.variables.input).toMatchObject({
         formChangePatch: { changeStatus: "staged" },
@@ -477,7 +477,7 @@ describe("The ProjectManagerForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        // The whole `formChange` object is null before a manager is selected, so there's no form change id (comes from `rowId`). TODO: update this test and mock data when/if that changes.
+        // The whole `formChange` object is null before a manager is selected, so the form change id (comes from `rowId`) is undefined. This test should be updated to mock data if the underlying architecture changes to return a non-null form_change object.
         formChangesIds: [undefined, 9, 10, 11],
       },
     });
