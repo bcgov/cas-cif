@@ -85,6 +85,26 @@ const mockQueryPayload = {
                 },
               },
             },
+            {
+              node: {
+                projectManagerLabel: {
+                  id: "Test Label 4 ID",
+                  rowId: 4,
+                  label: "Test Label 4",
+                },
+                formChange: {
+                  id: "Change 4 ID",
+                  rowId: 11,
+                  operation: "ARCHIVE",
+                  changeStatus: "pending",
+                  newFormData: {
+                    cifUserId: 2,
+                    projectId: 1,
+                    projectManagerLabelId: 4,
+                  },
+                },
+              },
+            },
           ],
         },
         projectFormChange: {
@@ -139,7 +159,7 @@ describe("The ProjectManagerForm", () => {
   it("Renders a form for each Project Manager Label", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(screen.getAllByRole("combobox")).toHaveLength(3);
+    expect(screen.getAllByRole("combobox")).toHaveLength(4);
   });
 
   it("Renders any data contained in a formChange", () => {
@@ -252,12 +272,14 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     screen.getByText(/submit/i).click();
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
-    });
+    const allOperations =
+      componentTestingHelper.environment.mock.getAllOperations();
+    expect(allOperations.length).toEqual(4); // first operation is the initial query; next three are form_change  mutations (there are 4 managers but only 3 have form_change)
+    for (let i = 1; i < allOperations.length; i++) {
+      expect(allOperations[i].request.variables.input).toMatchObject({
+        formChangePatch: { changeStatus: "staged" },
+      });
+    }
   });
 
   it("reverts the form_change status to 'pending' when editing", async () => {
@@ -455,8 +477,8 @@ describe("The ProjectManagerForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        // The whole `formChange` object is null before a manager is selected, so there's no form change id (comes from `rowId`). TODO: update this test and mock data when/if that changes.
-        formChangesIds: [undefined, 9, 10],
+        // The whole `formChange` object is null before a manager is selected, so the form change id (comes from `rowId`) is undefined. This test should be updated to mock data if the underlying architecture changes to return a non-null form_change object.
+        formChangesIds: [undefined, 9, 10, 11],
       },
     });
   });

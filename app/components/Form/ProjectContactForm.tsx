@@ -78,7 +78,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
         projectContactFormChanges: formChangesFor(
           first: 500
           formDataTableName: "project_contact"
-          filter: { operation: { notEqualTo: ARCHIVE } }
         ) @connection(key: "connection_projectContactFormChanges") {
           __id
           edges {
@@ -101,6 +100,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
   const { projectContactFormChanges } = projectRevision;
+
+  const filteredProjectContactFormChanges =
+    projectContactFormChanges.edges.filter(
+      ({ node }) => node.operation !== "ARCHIVE"
+    );
 
   const { allContacts } = useFragment(
     graphql`
@@ -128,15 +132,13 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const allForms = useMemo(() => {
     const contactForms = [
-      ...projectContactFormChanges.edges
-        .filter(({ node }) => node.operation !== "ARCHIVE")
-        .map(({ node }) => node),
+      ...filteredProjectContactFormChanges.map(({ node }) => node),
     ];
     contactForms.sort(
       (a, b) => a.newFormData.contactIndex - b.newFormData.contactIndex
     );
     return contactForms;
-  }, [projectContactFormChanges]);
+  }, [filteredProjectContactFormChanges]);
 
   const [primaryContactForm, ...alternateContactForms] = allForms;
   const [applyUpdateFormChangeMutation, isUpdating] =
