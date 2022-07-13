@@ -160,36 +160,36 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       if (!milestoneReport) return;
 
       // Set the formSchema and formData based on showing the diff or not
-      const reportingRequirementFormDiffObject = !renderDiff
-        ? {
+      const reportingRequirementFormDiffObject = renderDiff
+        ? (getFilteredSchema(
+            milestoneReportingRequirementSchema as JSONSchema7,
+            milestoneReport.reportingRequirementFormChange
+          ) as any)
+        : {
             formSchema: milestoneReportingRequirementSchema,
             formData:
               milestoneReport.reportingRequirementFormChange.newFormData,
-          }
-        : (getFilteredSchema(
-            milestoneReportingRequirementSchema as JSONSchema7,
-            milestoneReport.reportingRequirementFormChange
-          ) as any);
+          };
 
-      const milestoneFormDiffObject = !renderDiff
-        ? {
-            formSchema: milestoneSchema,
-            formData: milestoneReport.milestoneFormChange.newFormData,
-          }
-        : (getFilteredSchema(
+      const milestoneFormDiffObject = renderDiff
+        ? (getFilteredSchema(
             milestoneSchema as JSONSchema7,
             milestoneReport.milestoneFormChange
-          ) as any);
+          ) as any)
+        : {
+            formSchema: milestoneSchema,
+            formData: milestoneReport.milestoneFormChange.newFormData,
+          };
 
-      const paymentFormDiffObject = !renderDiff
-        ? {
-            formSchema: paymentSchema,
-            formData: milestoneReport.paymentFormChange?.newFormData,
-          }
-        : (getFilteredSchema(
+      const paymentFormDiffObject = renderDiff
+        ? (getFilteredSchema(
             paymentSchema as JSONSchema7,
             milestoneReport.paymentFormChange
-          ) as any);
+          ) as any)
+        : {
+            formSchema: paymentSchema,
+            formData: milestoneReport.paymentFormChange?.newFormData,
+          };
 
       return (
         <div key={index} className="reportContainer">

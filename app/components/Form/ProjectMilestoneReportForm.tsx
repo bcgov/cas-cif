@@ -39,7 +39,7 @@ interface Props {
       id: string;
       newFormData: { reportDueDate: string };
       changeStatus: string;
-      asReportingRequirement: object;
+      asReportingRequirement: ProjectMilestoneReportForm_reportingReqiurement$key;
       formDataRecordId: number;
     };
     reportingRequirementIndex: number;
@@ -78,8 +78,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
         hasExpenses
       }
     `,
-    milestoneReport.reportingRequirementFormChange
-      .asReportingRequirement as ProjectMilestoneReportForm_reportingReqiurement$key
+    milestoneReport.reportingRequirementFormChange.asReportingRequirement
   );
 
   const [discardFormChange] = useDiscardFormChange(
