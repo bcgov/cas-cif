@@ -68,6 +68,19 @@ const mockQueryPayload = {
               },
             },
           },
+          {
+            node: {
+              id: "Form ID 4",
+              rowId: 7,
+              operation: "ARCHIVE",
+              changeStatus: "pending",
+              newFormData: {
+                projectId: 10,
+                contactId: 2,
+                contactIndex: 6,
+              },
+            },
+          },
         ],
       },
     };
@@ -323,12 +336,14 @@ describe("The ProjectContactForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     screen.getByText(/submit/i).click();
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
-    });
+    const allOperations =
+      componentTestingHelper.environment.mock.getAllOperations();
+    expect(allOperations.length).toEqual(5); // first operation is special; next four are form_change
+    for (let i = 1; i < allOperations.length; i++) {
+      expect(allOperations[i].request.variables.input).toMatchObject({
+        formChangePatch: { changeStatus: "staged" },
+      });
+    }
   });
 
   it("reverts the form_change status to 'pending' when editing", async () => {
@@ -428,7 +443,7 @@ describe("The ProjectContactForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [4, 5, 6],
+        formChangesIds: [4, 5, 6, 7],
       },
     });
   });
