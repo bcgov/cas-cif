@@ -47756,6 +47756,10 @@ type ReportType implements Node {
 
   """created by user id"""
   createdBy: Int
+
+  """
+  Boolean value indicates if this report type has payments associated with it.
+  """
   hasExpenses: Boolean
 
   """
@@ -48174,6 +48178,10 @@ input ReportTypeInput {
 
   """created by user id"""
   createdBy: Int
+
+  """
+  Boolean value indicates if this report type has payments associated with it.
+  """
   hasExpenses: Boolean
 
   """
@@ -48206,6 +48214,10 @@ input ReportTypePatch {
 
   """created by user id"""
   createdBy: Int
+
+  """
+  Boolean value indicates if this report type has payments associated with it.
+  """
   hasExpenses: Boolean
 
   """
