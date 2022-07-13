@@ -1,4 +1,4 @@
-import { act, screen } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ProjectMilestoneReportFormGroup from "components/Form/ProjectMilestoneReportFormGroup";
 import { graphql } from "react-relay";
@@ -71,6 +71,7 @@ const defaultMockResolver = {
               formDataRecordId: 2,
               asReportingRequirement: {
                 hasExpenses: false,
+                id: "mock-reporting-requirement-id",
               },
             },
           },
@@ -112,7 +113,7 @@ const defaultMockResolver = {
         edges: [
           {
             node: {
-              id: `mock-project-milestone-report-form-${generateID()}`,
+              id: `mock-payment-id`,
               rowId: 1,
               newFormData: {
                 reportingRequirementId: 1,
@@ -139,6 +140,11 @@ const defaultMockResolver = {
           {
             node: {
               name: "Advanced Milestone",
+            },
+          },
+          {
+            node: {
+              name: "Reporting Milestone",
             },
           },
         ],
@@ -345,6 +351,191 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
     expect(screen.getAllByText(/milestone gross payment amount/i)).toHaveLength(
       1
+    );
+  });
+
+  it("Creates a form change when changing the milestone type from one with no payments, to one with payments", async () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    await act(async () => {
+      userEvent.click(screen.getAllByLabelText(/milestone type/i)[1]);
+      await waitFor(() => screen.getByRole("presentation"));
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText("General")
+      );
+    });
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateReportingRequirementFormChangeMutation",
+      {
+        reportType: "Milestone",
+        input: {
+          id: expect.any(String),
+          formChangePatch: {
+            newFormData: {
+              reportType: "General Milestone",
+              reportDueDate: "2022-10-28",
+              projectId: 51,
+              submittedDate: "2022-05-02",
+              description: "i am the second description",
+              reportingRequirementIndex: 2,
+            },
+            changeStatus: "pending",
+          },
+        },
+      }
+    );
+
+    act(() => {
+      componentTestingHelper.environment.mock.resolveMostRecentOperation({
+        data: {
+          updateFormChange: {
+            formChange: {
+              id: "mock-project-milestone-report-form-3",
+              asReportingRequirement: {
+                reportDueDate: "2022-07-13T11:52:45.092269-07:00",
+                submittedDate: "2022-07-13T11:52:45.092269-07:00",
+                hasExpenses: true,
+                id: "mock-reporting-requirement-id",
+              },
+            },
+          },
+        },
+      });
+    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "createFormChangeMutation",
+      {
+        input: {
+          projectRevisionId: 1234,
+          formDataSchemaName: "cif",
+          formDataTableName: "payment",
+          jsonSchemaName: "payment",
+          operation: "CREATE",
+          newFormData: {
+            reportingRequirementId: 2,
+          },
+        },
+      }
+    );
+  });
+
+  it("Discards a form change when changing the milestone type from one with payments, to one without payments", async () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    await act(async () => {
+      userEvent.click(screen.getAllByLabelText(/milestone type/i)[0]);
+      await waitFor(() => screen.getByRole("presentation"));
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText("Reporting")
+      );
+    });
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateReportingRequirementFormChangeMutation",
+      {
+        reportType: "Milestone",
+        input: {
+          id: "mock-project-milestone-report-form-2",
+          formChangePatch: {
+            newFormData: {
+              reportType: "Reporting Milestone",
+              reportDueDate: "2022-01-01",
+              projectId: 51,
+              description: "i am the first description",
+              reportingRequirementIndex: 1,
+            },
+            changeStatus: "pending",
+          },
+        },
+      }
+    );
+
+    act(() => {
+      componentTestingHelper.environment.mock.resolveMostRecentOperation({
+        data: {
+          updateFormChange: {
+            formChange: {
+              id: "mock-project-milestone-report-form-2",
+              asReportingRequirement: {
+                reportDueDate: "2022-07-13T11:52:45.092269-07:00",
+                submittedDate: "2022-07-13T11:52:45.092269-07:00",
+                hasExpenses: false,
+                id: "mock-reporting-requirement-id",
+              },
+              paymentFormChange: {
+                id: "mock-payment-id",
+                rowId: 1,
+                newFormData: { reportingRequirementId: 1 },
+                operation: "CREATE",
+                formChangeByPreviousFormChangeId: null,
+                __typename: "FormChange",
+              },
+            },
+          },
+        },
+      });
+    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "deleteFormChangeWithConnectionMutation",
+      {
+        input: {
+          id: "mock-payment-id",
+        },
+        connections: expect.any(Array),
+      }
+    );
+  });
+
+  it("Sets operation to UPDATE when changing a milstone type from one without payments, to one with payments, when a payment form_change already exists with operation ARCHIVE", async () => {
+    const mockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          ...defaultMockResolver.ProjectRevision(context, generateID),
+          milestonePaymentFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: `mock-payment-id`,
+                  rowId: 1,
+                  newFormData: {
+                    reportingRequirementId: 1,
+                  },
+                  operation: "ARCHIVE",
+                  changeStatus: "pending",
+                  formChangeByPreviousFormChangeId: null,
+                },
+              },
+            ],
+            __id: "client:mock:__connection_milestonePaymentFormChanges_connection",
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    await act(async () => {
+      userEvent.click(screen.getAllByLabelText(/milestone type/i)[1]);
+      await waitFor(() => screen.getByRole("presentation"));
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText("General")
+      );
+    });
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateFormChangeMutation",
+      {
+        input: {
+          id: "mock-payment-id",
+          formChangePatch: {
+            operation: "UPDATE",
+          },
+        },
+      }
     );
   });
 });

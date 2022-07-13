@@ -124,7 +124,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
           input: {
             id: milestoneReport.paymentFormChange.id,
             formChangePatch: {
-              operation: milestoneReport.operation,
+              operation: "UPDATE",
             },
           },
         },
@@ -135,7 +135,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
               newFormData: milestoneReport.paymentFormChange.newFormData,
               changeStatus: "pending",
               projectRevisionByProjectRevisionId: undefined,
-              operation: milestoneReport.operation,
+              operation: "UPDATE",
             },
           },
         },

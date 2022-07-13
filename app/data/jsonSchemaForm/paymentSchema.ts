@@ -3,12 +3,12 @@ export const paymentSchema = {
   type: "object",
   title: "Payment",
   properties: {
-    grossAmount: {
+    adjustedGrossAmount: {
       type: "number",
       title: "Milestone Gross Payment Amount",
       default: undefined,
     },
-    netAmount: {
+    adjustedNetAmount: {
       type: "number",
       title: "Milestone Net Payment Amount",
       default: undefined,
@@ -22,10 +22,10 @@ export const paymentSchema = {
 };
 
 export const paymentUiSchema = {
-  grossAmount: {
+  adjustedGrossAmount: {
     "ui:widget": "MoneyWidget",
   },
-  netAmount: {
+  adjustedNetAmount: {
     "ui:widget": "MoneyWidget",
   },
   dateSentToCsnr: {
