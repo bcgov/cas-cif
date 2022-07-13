@@ -38209,6 +38209,16 @@ type PageInfo {
 
 """Table containing information about reporting requirements payments"""
 type Payment implements Node {
+  """
+  The adjusted value of the gross amount of the payment which is the amount before deducting any holdback amount
+  """
+  adjustedGrossAmount: BigFloat
+
+  """
+  The adjusted value of the net amount of the payment which is the amount actually paid out, after deducting any holdback amount
+  """
+  adjustedNetAmount: BigFloat
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -38234,19 +38244,9 @@ type Payment implements Node {
   dateSentToCsnr: Datetime
 
   """
-  The gross amount of the payment. This is the amount before deducting any holdback amount
-  """
-  grossAmount: BigFloat
-
-  """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
-
-  """
-  The net amount of the payment. This is the amount actually paid out, after deducting any holdback amount
-  """
-  netAmount: BigFloat
 
   """
   Reads a single `ReportingRequirement` that is related to this `Payment`.
@@ -38270,6 +38270,12 @@ type Payment implements Node {
 A condition to be used against `Payment` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input PaymentCondition {
+  """Checks for equality with the object’s `adjustedGrossAmount` field."""
+  adjustedGrossAmount: BigFloat
+
+  """Checks for equality with the object’s `adjustedNetAmount` field."""
+  adjustedNetAmount: BigFloat
+
   """Checks for equality with the object’s `archivedAt` field."""
   archivedAt: Datetime
 
@@ -38284,12 +38290,6 @@ input PaymentCondition {
 
   """Checks for equality with the object’s `dateSentToCsnr` field."""
   dateSentToCsnr: Datetime
-
-  """Checks for equality with the object’s `grossAmount` field."""
-  grossAmount: BigFloat
-
-  """Checks for equality with the object’s `netAmount` field."""
-  netAmount: BigFloat
 
   """Checks for equality with the object’s `reportingRequirementId` field."""
   reportingRequirementId: Int
@@ -38308,6 +38308,12 @@ input PaymentCondition {
 A filter to be used against `Payment` object types. All fields are combined with a logical ‘and.’
 """
 input PaymentFilter {
+  """Filter by the object’s `adjustedGrossAmount` field."""
+  adjustedGrossAmount: BigFloatFilter
+
+  """Filter by the object’s `adjustedNetAmount` field."""
+  adjustedNetAmount: BigFloatFilter
+
   """Checks for all expressions in this list."""
   and: [PaymentFilter!]
 
@@ -38343,12 +38349,6 @@ input PaymentFilter {
 
   """Filter by the object’s `dateSentToCsnr` field."""
   dateSentToCsnr: DatetimeFilter
-
-  """Filter by the object’s `grossAmount` field."""
-  grossAmount: BigFloatFilter
-
-  """Filter by the object’s `netAmount` field."""
-  netAmount: BigFloatFilter
 
   """Negates the expression."""
   not: PaymentFilter
@@ -38402,6 +38402,10 @@ type PaymentsEdge {
 
 """Methods to use when ordering `Payment`."""
 enum PaymentsOrderBy {
+  ADJUSTED_GROSS_AMOUNT_ASC
+  ADJUSTED_GROSS_AMOUNT_DESC
+  ADJUSTED_NET_AMOUNT_ASC
+  ADJUSTED_NET_AMOUNT_DESC
   ARCHIVED_AT_ASC
   ARCHIVED_AT_DESC
   ARCHIVED_BY_ASC
@@ -38478,13 +38482,9 @@ enum PaymentsOrderBy {
   CREATED_BY_DESC
   DATE_SENT_TO_CSNR_ASC
   DATE_SENT_TO_CSNR_DESC
-  GROSS_AMOUNT_ASC
-  GROSS_AMOUNT_DESC
   ID_ASC
   ID_DESC
   NATURAL
-  NET_AMOUNT_ASC
-  NET_AMOUNT_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   REPORTING_REQUIREMENT_BY_REPORTING_REQUIREMENT_ID__ARCHIVED_AT_ASC
