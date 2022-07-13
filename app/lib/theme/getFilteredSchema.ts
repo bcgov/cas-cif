@@ -8,8 +8,8 @@ export const getFilteredSchema = (formSchema: JSONSchema7, formData) => {
 
   for (const key of Object.keys(filteredSchema.properties)) {
     if (
-      formData.newFormData?.[key] ===
-      formData.formChangeByPreviousFormChangeId?.newFormData?.[key]
+      formData?.newFormData?.[key] ===
+      formData?.formChangeByPreviousFormChangeId?.newFormData?.[key]
     )
       delete filteredSchema.properties[key];
     else newDataObject[key] = formData.newFormData?.[key];
