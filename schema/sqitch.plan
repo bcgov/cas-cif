@@ -89,3 +89,4 @@ mutations/add_milestone_to_revision [tables/reporting_requirement tables/form_ch
 mutations/discard_milestone_form_change [tables/form_change tables/project_revision] 2022-06-24T16:25:29Z Dylan Leard <dylan@button.is> # Custom mutation to discard a set of form_change records relating to a milestone_report
 tables/funding_parameter 2022-06-23T17:34:25Z Gurjeet Matharu <gurjeet@matharuco.com> # funding parameter table
 computed_columns/reporting_requirement_has_expenses [tables/report_type tables/reporting_requirement] 2022-07-06T22:31:55Z Mike Vesprini <mike@button.is> # Computed column returns true if the report type of the reporting requirement has payments associated with it
+@1.0.0-rc.1 2022-07-14T17:26:21Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.1
