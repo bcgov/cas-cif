@@ -67,6 +67,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               }
               asReportingRequirement {
                 ...CollapsibleReport_reportingRequirement
+                ...ProjectMilestoneReportForm_reportingReqiurement
               }
             }
           }
@@ -99,6 +100,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               id
               rowId
               newFormData
+              operation
               # eslint-disable-next-line relay/unused-fields
               formChangeByPreviousFormChangeId {
                 changeStatus

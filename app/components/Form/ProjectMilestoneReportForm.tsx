@@ -2,7 +2,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import { milestoneUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7 } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useEffect } from "react";
 import { ProjectMilestoneReportFormGroup_projectRevision$data } from "__generated__/ProjectMilestoneReportFormGroup_projectRevision.graphql";
 import FormBase from "./FormBase";
 import { updateReportFormChange } from "./Functions/reportingRequirementFormChangeFunctions";
@@ -11,7 +11,14 @@ import { updateReportingRequirementFormChangeMutation } from "__generated__/upda
 import { Disposable } from "relay-runtime";
 import { discardMilestoneFormChangeMutation } from "__generated__/discardMilestoneFormChangeMutation.graphql";
 import { updateFormChangeMutation } from "__generated__/updateFormChangeMutation.graphql";
-import { UseMutationConfig } from "react-relay";
+import { useFragment, UseMutationConfig, graphql } from "react-relay";
+import {
+  paymentSchema,
+  paymentUiSchema,
+} from "data/jsonSchemaForm/paymentSchema";
+import { ProjectMilestoneReportForm_reportingReqiurement$key } from "__generated__/ProjectMilestoneReportForm_reportingReqiurement.graphql";
+import useDiscardFormChange from "hooks/useDiscardFormChange";
+import { useCreateFormChange } from "mutations/FormChange/createFormChange";
 
 interface Props {
   formRefs: MutableRefObject<{}>;
@@ -21,17 +28,19 @@ interface Props {
       newFormData: object;
       changeStatus: string;
     };
-    operation: "CREATE" | "UPDATE | ARCHIVE";
+    operation: "CREATE" | "UPDATE" | "ARCHIVE";
     paymentFormChange: {
       id: string;
       newFormData: object;
       changeStatus: string;
+      operation: "CREATE" | "UPDATE" | "ARCHIVE";
     };
     reportingRequirementFormChange: {
       id: string;
       newFormData: { reportDueDate: string };
       changeStatus: string;
-      asReportingRequirement: object;
+      asReportingRequirement: ProjectMilestoneReportForm_reportingReqiurement$key;
+      formDataRecordId: number;
     };
     reportingRequirementIndex: number;
   };
@@ -63,6 +72,77 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
   generatedMilestoneSchema,
   connections,
 }) => {
+  const { hasExpenses } = useFragment(
+    graphql`
+      fragment ProjectMilestoneReportForm_reportingReqiurement on ReportingRequirement {
+        hasExpenses
+      }
+    `,
+    milestoneReport.reportingRequirementFormChange.asReportingRequirement
+  );
+
+  const [discardFormChange] = useDiscardFormChange(
+    projectRevision.milestonePaymentFormChanges.__id
+  );
+
+  const [createFormChange] = useCreateFormChange();
+
+  useEffect(() => {
+    if (hasExpenses === false && milestoneReport.paymentFormChange) {
+      discardFormChange({
+        formChange: {
+          id: milestoneReport.paymentFormChange.id,
+          operation: milestoneReport.paymentFormChange.operation,
+        },
+        onCompleted: () => {
+          delete formRefs.current[milestoneReport.paymentFormChange.id];
+        },
+      });
+    } else if (hasExpenses === true && !milestoneReport.paymentFormChange) {
+      createFormChange({
+        variables: {
+          input: {
+            projectRevisionId: projectRevision.rowId,
+            formDataSchemaName: "cif",
+            formDataTableName: "payment",
+            jsonSchemaName: "payment",
+            operation: "CREATE",
+            newFormData: {
+              reportingRequirementId:
+                milestoneReport.reportingRequirementFormChange.formDataRecordId,
+            },
+          },
+        },
+      });
+    } else if (
+      hasExpenses === true &&
+      milestoneReport.paymentFormChange.operation === "ARCHIVE"
+    ) {
+      updateFormChange({
+        variables: {
+          input: {
+            id: milestoneReport.paymentFormChange.id,
+            formChangePatch: {
+              operation: "UPDATE",
+            },
+          },
+        },
+        optimisticResponse: {
+          updateFormChange: {
+            formChange: {
+              id: milestoneReport.paymentFormChange.id,
+              newFormData: milestoneReport.paymentFormChange.newFormData,
+              changeStatus: "pending",
+              projectRevisionByProjectRevisionId: undefined,
+              operation: "UPDATE",
+            },
+          },
+        },
+        debounceKey: milestoneReport.paymentFormChange.id,
+      });
+    }
+  }, [hasExpenses]);
+
   return (
     <>
       <Button
@@ -162,6 +242,46 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
         uiSchema={milestoneUiSchema}
         ObjectFieldTemplate={EmptyObjectFieldTemplate}
       />
+      {hasExpenses && milestoneReport.paymentFormChange && (
+        <FormBase
+          id={`form-${milestoneReport.paymentFormChange.id}`}
+          validateOnMount={
+            milestoneReport.paymentFormChange.changeStatus === "staged"
+          }
+          idPrefix={`form-${milestoneReport.paymentFormChange.id}`}
+          ref={(el) =>
+            (formRefs.current[milestoneReport.paymentFormChange.id] = el)
+          }
+          formData={milestoneReport.paymentFormChange.newFormData}
+          onChange={(change) => {
+            updateFormChange({
+              variables: {
+                input: {
+                  id: milestoneReport.paymentFormChange.id,
+                  formChangePatch: {
+                    changeStatus: "pending",
+                    newFormData: change.formData,
+                  },
+                },
+              },
+              optimisticResponse: {
+                updateFormChange: {
+                  formChange: {
+                    id: milestoneReport.paymentFormChange.id,
+                    newFormData: change.formData,
+                    changeStatus: "pending",
+                    projectRevisionByProjectRevisionId: undefined,
+                  },
+                },
+              },
+              debounceKey: milestoneReport.paymentFormChange.id,
+            });
+          }}
+          schema={paymentSchema as JSONSchema7}
+          uiSchema={paymentUiSchema}
+          ObjectFieldTemplate={EmptyObjectFieldTemplate}
+        />
+      )}
     </>
   );
 };

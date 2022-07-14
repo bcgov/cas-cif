@@ -15,6 +15,10 @@ import {
   milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { getConsolidatedMilestoneFormData } from "./Functions/projectMilestoneFormFunctions";
+import {
+  paymentSchema,
+  paymentUiSchema,
+} from "data/jsonSchemaForm/paymentSchema";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -143,10 +147,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         (report) =>
           report?.reportingRequirementFormChange.isPristine === false ||
           report?.milestoneFormChange.isPristine === false ||
-          report?.paymentFormChange.isPristine === false ||
+          report?.paymentFormChange?.isPristine === false ||
           report?.reportingRequirementFormChange.isPristine === null ||
           report?.milestoneFormChange.isPristine === null ||
-          report?.paymentFormChange.isPristine === null
+          report?.paymentFormChange?.isPristine === null
       ),
     [milestoneReportFormChanges]
   );
@@ -156,26 +160,36 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       if (!milestoneReport) return;
 
       // Set the formSchema and formData based on showing the diff or not
-      const reportingRequirementFormDiffObject = !renderDiff
-        ? {
+      const reportingRequirementFormDiffObject = renderDiff
+        ? (getFilteredSchema(
+            milestoneReportingRequirementSchema as JSONSchema7,
+            milestoneReport.reportingRequirementFormChange
+          ) as any)
+        : {
             formSchema: milestoneReportingRequirementSchema,
             formData:
               milestoneReport.reportingRequirementFormChange.newFormData,
-          }
-        : (getFilteredSchema(
-            milestoneReportingRequirementSchema as JSONSchema7,
-            milestoneReport.reportingRequirementFormChange
-          ) as any);
+          };
 
-      const milestoneFormDiffObject = !renderDiff
-        ? {
-            formSchema: milestoneSchema,
-            formData: milestoneReport.milestoneFormChange.newFormData,
-          }
-        : (getFilteredSchema(
+      const milestoneFormDiffObject = renderDiff
+        ? (getFilteredSchema(
             milestoneSchema as JSONSchema7,
             milestoneReport.milestoneFormChange
-          ) as any);
+          ) as any)
+        : {
+            formSchema: milestoneSchema,
+            formData: milestoneReport.milestoneFormChange.newFormData,
+          };
+
+      const paymentFormDiffObject = renderDiff
+        ? (getFilteredSchema(
+            paymentSchema as JSONSchema7,
+            milestoneReport.paymentFormChange
+          ) as any)
+        : {
+            formSchema: paymentSchema,
+            formData: milestoneReport.paymentFormChange?.newFormData,
+          };
 
       return (
         <div key={index} className="reportContainer">
@@ -187,6 +201,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             .length === 0 &&
             Object.keys(milestoneFormDiffObject.formSchema.properties)
               .length === 0 &&
+            Object.keys(paymentFormDiffObject.formSchema.properties).length ===
+              0 &&
             milestoneReport.operation !== "ARCHIVE" && (
               <em>Milestone report not updated</em>
             )}
@@ -229,6 +245,24 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
                   .formChangeByPreviousFormChangeId?.newFormData,
             }}
           />
+          {milestoneReport.paymentFormChange && (
+            <FormBase
+              liveValidate
+              key={`form-${milestoneReport.paymentFormChange.id}`}
+              tagName={"dl"}
+              theme={readOnlyTheme}
+              fields={renderDiff ? customFields : fields}
+              schema={paymentFormDiffObject.formSchema as JSONSchema7}
+              uiSchema={paymentUiSchema}
+              formData={paymentFormDiffObject.formData}
+              formContext={{
+                operation: milestoneReport.operation,
+                oldData:
+                  milestoneReport.paymentFormChange
+                    .formChangeByPreviousFormChangeId?.newFormData,
+              }}
+            />
+          )}
           <style jsx>{`
             div.reportContainer {
               padding-top: 1em;

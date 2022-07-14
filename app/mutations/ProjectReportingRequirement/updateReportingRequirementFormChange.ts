@@ -21,6 +21,7 @@ const mutation = graphql`
         }
         asReportingRequirement {
           ...CollapsibleReport_reportingRequirement
+          ...ProjectMilestoneReportForm_reportingReqiurement
         }
       }
     }
