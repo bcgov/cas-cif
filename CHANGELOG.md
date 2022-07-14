@@ -1,3 +1,9 @@
+# [1.0.0-rc.2](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.1...1.0.0-rc.2) (2022-07-14)
+
+### Bug Fixes
+
+- pre-release check was missing path to schema ([416a37b](https://github.com/bcgov/cas-cif/commit/416a37ba71fa174a491b776aa10806baa9cc26c0))
+
 # 1.0.0-rc.1 (2022-07-14)
 
 ### Bug Fixes

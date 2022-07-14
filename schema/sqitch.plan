@@ -90,3 +90,4 @@ mutations/discard_milestone_form_change [tables/form_change tables/project_revis
 tables/funding_parameter 2022-06-23T17:34:25Z Gurjeet Matharu <gurjeet@matharuco.com> # funding parameter table
 computed_columns/reporting_requirement_has_expenses [tables/report_type tables/reporting_requirement] 2022-07-06T22:31:55Z Mike Vesprini <mike@button.is> # Computed column returns true if the report type of the reporting requirement has payments associated with it
 @1.0.0-rc.1 2022-07-14T17:26:21Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.1
+@1.0.0-rc.2 2022-07-14T18:23:38Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.2
