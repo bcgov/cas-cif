@@ -20,6 +20,10 @@ const mutation = graphql`
               ...ContactDetails_contact
             }
           }
+          projectRevisionByProjectRevisionId {
+            ...ProjectContactForm_projectRevision
+            ...TaskList_projectRevision
+          }
         }
       }
     }
