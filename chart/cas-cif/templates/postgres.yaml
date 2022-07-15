@@ -3,6 +3,10 @@ kind: PostgresCluster
 metadata:
   name: {{ template "cas-cif.fullname" . }}-postgres
   labels: {{ include "cas-cif.labels" . | nindent 4 }}
+  {{- if .Values.db.restore.enabled }}
+  annotations:
+    postgres-operator.crunchydata.com/pgbackrest-restore: {{ now | date "2006-01-02 15:04:05.000000" }}
+  {{- end }}
 spec:
   metadata:
     labels: {{ include "cas-cif.labels" . | nindent 6 }}
@@ -77,6 +81,14 @@ spec:
         - cif
   backups:
     pgbackrest:
+    {{- if .Values.db.restore.enabled }}
+      restore:
+        enabled: true
+        repoName: repo1
+        options:
+        - --type=time
+        - --target={{ .Values.db.restore.targetTimestamp }}
+    {{- end }}
       global:
         repo1-retention-full: "90"
         repo1-retention-full-type: time
