@@ -2,10 +2,12 @@ begin;
 
 do $$
   declare current_revision cif.project_revision;
+  declare random_sector_name text;
   begin
     for index in 1..50 loop
 
       current_revision := cif.create_project();
+      select sector_name from cif.sector order by random() limit 1 into random_sector_name;
 
       update cif.form_change
       set new_form_data= jsonb_build_object(
@@ -15,7 +17,8 @@ do $$
           'proposalReference', lpad(index::text, 3, '0'),
           'summary', 'lorem ipsum dolor sit amet adipiscing eli',
           'projectName', 'Test Project ' || lpad(index::text, 3, '0'),
-          'totalFundingRequest', cast(rpad(index::text, 3, '0') as bigint)
+          'totalFundingRequest', cast(rpad(index::text, 3, '0') as bigint),
+          'sectorName', random_sector_name
           )
       where project_revision_id=current_revision.id and form_data_table_name='project';
 
