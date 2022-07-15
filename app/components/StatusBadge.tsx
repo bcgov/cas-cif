@@ -12,7 +12,7 @@ const colours = {
     label: "Complete",
   },
   late: {
-    labelColour: "#CC242A",
+    labelColour: "#981B1F",
     badgeColour: "#FBEAEA",
     label: "Late",
   },
