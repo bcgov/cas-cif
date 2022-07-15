@@ -63,7 +63,7 @@ describe("when creating a project, the project page", () => {
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
-    // cy.happoAndAxe("Project milestone reports Form", "filled", "main");
+    cy.happoAndAxe("Project milestone reports Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.findAllByRole("status").first().should("have.text", "Late");
 
