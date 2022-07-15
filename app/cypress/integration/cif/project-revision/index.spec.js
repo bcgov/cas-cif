@@ -47,12 +47,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /add funding agreement/i }).click();
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
-    cy.injectAxe();
-    cy.checkA11y("main", null, logAxeResults);
-    cy.get("body").happoScreenshot({
-      component: "Project Funding Agreement Form",
-      variant: "empty",
-    });
+    cy.happoAndAxe("Project budgets Form", "empty", "main");
 
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
@@ -121,12 +116,6 @@ describe("the new project page", () => {
     //TODO: if contacts are added to the dev data projects, change below assertion
     cy.findByText(/Primary contact not added/).should("be.visible");
 
-    cy.findByText(/Annual reports/i).click();
-    cy.findByRole("link", { name: "Annual reports" }).click();
-    cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.findByText(/Annual Report 1/);
-
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/funding agreement/i).click();
@@ -171,13 +160,11 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 3);
-    cy.injectAxe();
-    cy.checkA11y(".error-detail", null, logAxeResults);
-    cy.contains("Changes saved").should("be.visible");
-    cy.get("body").happoScreenshot({
-      component: "Project Funding Agreement Form",
-      variant: "with errors",
-    });
+    cy.happoAndAxe(
+      "Project funding agreement Form",
+      "with errors",
+      ".error-detail"
+    );
 
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
@@ -189,7 +176,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 2);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
-      "Project milsetone reports Form",
+      "Project milestone reports Form",
       "with errors",
       ".error-detail"
     );

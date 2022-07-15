@@ -1,4 +1,4 @@
-describe("the project page", () => {
+describe("when editing a project, the project page", () => {
   beforeEach(() => {
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
@@ -73,6 +73,7 @@ describe("the project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.fillFundingAgreementForm(222, 333, 70, 30, 444);
     cy.contains("Changes saved.").should("be.visible");
+    cy.happoAndAxe("Project budgets Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit milestone reports -- change date

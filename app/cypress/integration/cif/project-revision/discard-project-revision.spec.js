@@ -1,4 +1,4 @@
-describe("the new project page", () => {
+describe("when discarding a project revision, the project page", () => {
   beforeEach(() => {
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");

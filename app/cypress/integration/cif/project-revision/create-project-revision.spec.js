@@ -1,4 +1,4 @@
-describe("the new project page", () => {
+describe("when creating a project, the project page", () => {
   beforeEach(() => {
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
@@ -50,14 +50,16 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /add funding agreement/i }).click();
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("Project budgets Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add milestone reports
-    cy.findByText(/Milestone reports/i).click();
+
     cy.findByRole("link", { name: /Milestone reports/i }).click();
     cy.findByText(/Add another milestone report/i).click();
 
-    cy.url().should("include", "/form/3");
+    cy.url().should("include", "/form/4");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
