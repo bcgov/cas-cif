@@ -9,10 +9,12 @@ dependencies:
     version: 1.0.7
     repository: https://bcgov.github.io/cas-airflow
     alias: download-dags
+    condition: download-dags.enabled
   - name: cas-airflow-dag-trigger
     version: 1.0.7
     repository: https://bcgov.github.io/cas-airflow
     alias: deploy-db
+    condition: deploy-db.enabled
   - name: certbot
     version: 0.1.1
     # temporarily using forked helm repo to test a fix.

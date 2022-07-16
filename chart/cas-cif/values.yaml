@@ -57,12 +57,14 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 deploy-db:
+  enabled: true
   airflowEndpoint: ~
   dagId: cas_cif_deploy_db
   helm:
     hook: false
 
 download-dags:
+  enabled: true
   airflowEndpoint: ~
   dagId: fetch_and_save_dag_from_github
   helm:
