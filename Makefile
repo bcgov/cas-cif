@@ -206,21 +206,8 @@ lint_chart:
 	helm template --set ggircs.namespace=dummy-namespace --set ciip.prefix=ciip-prefix -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
 
 
-.PHONY: install
-install: ## Installs the helm chart on the OpenShift cluster
-install: GIT_SHA1=$(shell git rev-parse HEAD)
-install: IMAGE_TAG=$(GIT_SHA1)
-install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
-install: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
-install: CHART_DIR=./chart/cas-cif
-install: CHART_INSTANCE=cas-cif
-install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
-										--set defaultImageTag=$(IMAGE_TAG) \
-	  								--set download-dags.dagConfiguration="$$dagConfig" \
-										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
-										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
-										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
-install:
+check_environment: ## Making sure the environment is properly configured for a deploy
+check_environment:
 	@set -euo pipefail; \
 	if [ -z '$(CIF_NAMESPACE_PREFIX)' ]; then \
 		echo "CIF_NAMESPACE_PREFIX is not set"; \
@@ -238,6 +225,26 @@ install:
 		echo "ENVIRONMENT is not set"; \
 		exit 1; \
 	fi; \
+
+
+.PHONY: install
+install: ## Installs the helm chart on the OpenShift cluster
+install: check_environment
+install:
+install: GIT_SHA1=$(shell git rev-parse HEAD)
+install: IMAGE_TAG=$(GIT_SHA1)
+install: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+install: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+install: CHART_DIR=./chart/cas-cif
+install: CHART_INSTANCE=cas-cif
+install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
+										--set defaultImageTag=$(IMAGE_TAG) \
+	  								--set download-dags.dagConfiguration="$$dagConfig" \
+										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
+										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
+										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
+install:
+	@set -euo pipefail; \
 	dagConfig=$$(echo '{"org": "bcgov", "repo": "cas-cif", "ref": "$(GIT_SHA1)", "path": "dags/cas_cif_dags.py"}' | base64 -w0); \
 	helm dep up $(CHART_DIR); \
 	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
@@ -246,6 +253,47 @@ install:
 	else \
 		helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
 	fi;
+
+
+restore_prereq: ## Prerequisites for the restore target
+restore_prereq:
+	@set -euo pipefail; \
+	if [ -z '$(TARGET_TIMESTAMP)' ]; then \
+		echo "TARGET_TIMESTAMP for the database restore is not set"; \
+		exit 1; \
+	fi; \
+
+
+.PHONY: restore
+restore: # Restores the database to the latest backed-up state available at or before the TARGET_TIMESTAMP
+restore: check_environment
+restore: restore_prereq
+restore:
+restore: GIT_SHA1=$(shell git rev-parse HEAD)
+restore: IMAGE_TAG=$(GIT_SHA1)
+restore: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+restore: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
+restore: CHART_DIR=./chart/cas-cif
+restore: CHART_INSTANCE=cas-cif
+restore: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
+										--set defaultImageTag=$(IMAGE_TAG) \
+										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
+										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
+										--set deploy-db.enabled=false \
+										--set download-dags.enabled=false \
+										--set db.restore.enabled=true \
+										--set db.restore.targetTimestamp=$(TARGET_TIMESTAMP) \
+										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
+restore:
+	@set -euo pipefail; \
+	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
+		echo 'Could not find an installed helm release of $(CHART_INSTANCE) in $(NAMESPACE)'; \
+		exit 1; \
+	fi; \
+	helm dep up $(CHART_DIR); \
+	helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
+	echo "Restore completed!";
+
 
 .PHONY: release
 release: ## Tag a release using release-it
