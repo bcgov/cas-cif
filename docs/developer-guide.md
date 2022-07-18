@@ -8,7 +8,7 @@ Run `pre-commit install --hook-type commit-msg` to install the commit-msg hook.
 
 Growthbook is a feature-flagging service that allows us to easily turn features on and off in our different environments.
 This allows us to hide features from our users that are incomplete when releasing to the production environment, unblocking
-the release of critical bug fixes. Features can be turned on an off via the (Growthbook dashboard)[https://app.growthbook.io].
+the release of critical bug fixes. Features can be turned on and off via the (Growthbook dashboard)[https://app.growthbook.io].
 The login credentials are stored in our 1Password vault.
 
 ### Creating a Feature Flag
@@ -42,3 +42,7 @@ const showFlaggedFeature = useFeature('flagged-item').on; // Set the value of us
 ...
 { showFlaggedFeature && <FlaggedFeature />} // Conditionally render the feature. You may also want to just return null for an entire component    depending on what is being turned off / on
 ```
+
+### Cleanup
+
+Once a feature flag is no longer necessary, any code that was added (ex: `useFeature`) should be removed and the flag in Growthbook can be deleted.
