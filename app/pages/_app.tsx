@@ -31,14 +31,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     setError(null);
     const fetchGrowthbook = async () => {
-      const data = await fetch(
-        `https://cdn.growthbook.io/api/features/${publicRuntimeConfig.GROWTHBOOK_API_KEY}`
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          growthbook.setFeatures(res.features);
-        });
-      return data;
+      try {
+        const data = await fetch(
+          `https://cdn.growthbook.io/api/features/${publicRuntimeConfig.GROWTHBOOK_API_KEY}`
+        )
+          .then((res) => res.json())
+          .then((res) => {
+            growthbook.setFeatures(res.features);
+          });
+        return data;
+      } catch (e) {
+        console.error(e);
+      }
     };
     fetchGrowthbook();
   }, [Component]);
