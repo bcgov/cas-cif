@@ -206,7 +206,7 @@ lint_chart:
 	helm template --set ggircs.namespace=dummy-namespace --set ciip.prefix=ciip-prefix -f ./chart/cas-cif/values-dev.yaml cas-cif ./chart/cas-cif --validate;
 
 
-check_environment: ## Making sure the environment is properly configured for a deploy
+check_environment: ## Making sure the environment is properly configured for helm
 check_environment:
 	@set -euo pipefail; \
 	if [ -z '$(CIF_NAMESPACE_PREFIX)' ]; then \
@@ -259,13 +259,16 @@ restore_prereq: ## Prerequisites for the restore target
 restore_prereq:
 	@set -euo pipefail; \
 	if [ -z '$(TARGET_TIMESTAMP)' ]; then \
-		echo "TARGET_TIMESTAMP for the database restore is not set"; \
+		echo "TARGET_TIMESTAMP value for the database restore is not set"; \
+		echo "usage:"; \
+		echo "  make restore TARGET_TIMESTAMP=\"YYYY-MM-DD HH:MM:SS-ZZ\""; \
 		exit 1; \
 	fi; \
 
 
 .PHONY: restore
 restore: # Restores the database to the latest backed-up state available at or before the TARGET_TIMESTAMP
+restore: # TARGET_TIMESTAMP must be in the format "2020-08-22 19:31:00-07"
 restore: check_environment
 restore: restore_prereq
 restore:
@@ -282,10 +285,10 @@ restore: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESP
 										--set deploy-db.enabled=false \
 										--set download-dags.enabled=false \
 										--set db.restore.enabled=true \
-										--set db.restore.targetTimestamp=$(TARGET_TIMESTAMP) \
+										--set db.restore.targetTimestamp="$(TARGET_TIMESTAMP)" \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 restore:
-	@set -euo pipefail; \
+	@set -euxo pipefail; \
 	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
 		echo 'Could not find an installed helm release of $(CHART_INSTANCE) in $(NAMESPACE)'; \
 		exit 1; \
