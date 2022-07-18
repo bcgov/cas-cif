@@ -4,7 +4,7 @@ import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/relay/client";
 import BCGovTypography from "components/BCGovTypography";
 import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import * as Sentry from "@sentry/react";
 
 import { ErrorContext } from "contexts/ErrorContext";
@@ -30,6 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   const value = { error, setError };
   useEffect(() => {
     setError(null);
+  }, [Component]);
+
+  useMemo(() => {
     const fetchGrowthbook = async () => {
       try {
         const data = await fetch(
@@ -45,7 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     };
     fetchGrowthbook();
-  }, [Component]);
+  }, []);
 
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
