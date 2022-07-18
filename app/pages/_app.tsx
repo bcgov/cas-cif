@@ -32,6 +32,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     setError(null);
   }, [Component]);
 
+  /* Running the fetch to the growthbook API inside a useMemo cuts down on the amount of fetches done,
+     however it does mean that any on/off toggling done in the Growthbook dashboard while a user is using the app
+     will not take effect the page is refreshed. We decided this fit our use case, since we're unlikely to be
+     toggling things on/off outside of releases to production.
+  */
   useMemo(() => {
     const fetchGrowthbook = async () => {
       try {

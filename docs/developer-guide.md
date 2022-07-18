@@ -18,7 +18,7 @@ Growthbook documentation on features: https://docs.growthbook.io/app/features
 To create a feature flag, navigate to 'Features' on the (Growthbook dashboard)[https://app.growthbook.io].
 
 - Click `Add Feature`. This will pull up a modal for feature creation.
-- `Feature Key`. This is the name of the feature that will be displayed in Growthbook and the key that will be used in the code to allow toggling it on/off. Using a good naming convention here is important. It should clearly and uniquely describe what can be toggled on/off, "flagged-item" like in the example below is not a good name!
+- `Feature Key`. This is the name of the feature that will be displayed in Growthbook and the key that will be used in the code to allow toggling it on/off. Using a good naming convention here is important. It should clearly and uniquely describe what can be toggled on/off, "flagged-feature" like in the example below is not a good name!
 - Ignore `tags`, we are currently using a boolean on/off and they are not useful in this context. Attributes can be set on flags and used here.
 - `Enabled Environments` This is going to be the default config when the feature flag is created. There is a toggle for each of our openshift environments (dev,test,prod). When creating a new feature in Growthbook we should set production to "off" and dev/test to "on" to start.
 - `Value Type` This is what type we will be returning from our flag. We can leave it as boolean (on/off).
@@ -37,7 +37,7 @@ Example:
 import { useFeature } from "@growthbook/growthbook-react"; // Import the useFeature() function
 ...
 ...
-const showFlaggedFeature = useFeature('flagged-item').on; // Set the value of useFeature.on to a boolean variable
+const showFlaggedFeature = useFeature('flagged-feature').on; // Set the value of useFeature.on to a boolean variable
 ...
 ...
 { showFlaggedFeature && <FlaggedFeature />} // Conditionally render the feature. You may also want to just return null for an entire component    depending on what is being turned off / on
