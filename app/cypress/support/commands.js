@@ -412,6 +412,8 @@ Cypress.Commands.add(
       .clear()
       .type(anticipatedFundingAmount);
     cy.contains("Changes saved");
+
+    return cy.url().should("include", "/form/3");
   }
 );
 
@@ -439,6 +441,8 @@ Cypress.Commands.add(
     cy.findByText(/Anticipated Funding Amount$/i)
       .next()
       .should("have.text", anticipatedFundingAmount);
+
+    return cy.url().should("include", "/form/3");
   }
 );
 

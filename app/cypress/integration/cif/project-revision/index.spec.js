@@ -122,7 +122,7 @@ describe("the new project page", () => {
     cy.findByText(/funding agreement/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.checkFundingAgreementForm(111, 222, 60, 20, 333);
+    cy.checkFundingAgreementForm(1, 1, 50, 10, 1);
 
     cy.findByRole("heading", { name: /Annual reports/i }).click();
     cy.findByRole("link", { name: /Annual reports/i }).click();
