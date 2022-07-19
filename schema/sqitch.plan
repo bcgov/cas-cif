@@ -95,3 +95,4 @@ mutations/undo_form_changes [mutations/undo_form_changes@1.0.0-rc.1] 2022-07-19T
 util_functions/get_form_status [util_functions/get_form_status@1.0.0-rc.1] 2022-07-19T23:33:37Z Mike Vesprini <mike@button.is> # Empty project forms return not started
 mutations/add_emission_intensity_report_to_revision 2022-07-19T20:38:25Z System Administrator <root@Gurjeets-MacBook-Pro.local> # Custom mutation to add an emission intensity report form change and reporting requirement formchange.
 tables/report_type [tables/report_type@1.0.0-rc.1] 2022-07-19T20:48:05Z System Administrator <root@Gurjeets-MacBook-Pro.local> # Adding an TEIMP report type.
+mutations/discard_emission_intensity_report 2022-07-19T21:06:39Z System Administrator <root@Gurjeets-MacBook-Pro.local> # Discarding emission intensitry report and coresponding reporting requirement
