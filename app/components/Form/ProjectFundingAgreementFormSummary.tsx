@@ -1,4 +1,7 @@
-import fundingAgreementSchema from "data/jsonSchemaForm/fundingAgreementSchema";
+import {
+  fundingAgreementSchema,
+  fundingAgreementUiSchema,
+} from "data/jsonSchemaForm/fundingAgreementSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { graphql, useFragment } from "react-relay";
@@ -78,7 +81,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
-          uiSchema={fundingAgreementSchema}
+          uiSchema={fundingAgreementUiSchema}
           formData={formData}
           formContext={{
             operation: fundingAgreementSummary?.operation,
