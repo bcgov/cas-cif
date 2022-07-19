@@ -1,7 +1,7 @@
 -- Verify cif:mutations/discard_emission_intensity_report on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select pg_get_functiondef('cif.discard_emission_intensity_report(int, int)'::regprocedure);
 
-ROLLBACK;
+begin;
