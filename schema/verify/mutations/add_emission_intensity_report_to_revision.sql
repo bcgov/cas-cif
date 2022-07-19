@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.add_emission_intensity_report_to_revision(int, int)'::regprocedure);
+select pg_get_functiondef('cif.add_emission_intensity_report_to_revision(int)'::regprocedure);
 
 rollback;

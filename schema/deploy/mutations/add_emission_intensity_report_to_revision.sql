@@ -11,7 +11,7 @@ begin;
   Because this data is spread across two tables we have to create two form_change records within one transaction, one for each table.
 **/
 
-create or replace function cif.add_emission_intensity_report_to_revision(revision_id int, reporting_requirement_index int)
+create or replace function cif.add_emission_intensity_report_to_revision(revision_id int)
 returns setof cif.form_change
 as $add_emission_intensity_form_change$
   with rep_req as (
@@ -29,7 +29,7 @@ as $add_emission_intensity_form_change$
           '{"project_id": %s, "reportType": "%s", "reportingRequirementIndex": %s }',
           (select form_data_record_id from cif.form_change where form_data_schema_name='cif' and form_data_table_name='project' and project_revision_id=$1),
           'TEIMP',
-          $2
+          1
         )::jsonb,
         'create',
         'cif',
