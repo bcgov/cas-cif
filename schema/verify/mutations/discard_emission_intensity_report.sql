@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.discard_emission_intensity_report(int, int)'::regprocedure);
+select pg_get_functiondef('cif.discard_emission_intensity_report(int)'::regprocedure);
 
 begin;
