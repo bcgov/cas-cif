@@ -62,18 +62,18 @@ describe("when editing a project, the project page", () => {
     cy.findByLabelText(/Primary contact/i).click();
     cy.contains("Loblaw003").click();
 
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
 
     cy.happoAndAxe("Project contacts Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.contains("Review and Submit Project").should("be.visible");
 
     // edit budgets, expenses, and payments -- change funding agreement
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Edit funding agreement/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    // brianna -- TODO - something is redirecting to the review and submit page here
-    // cy.pause();
     cy.fillFundingAgreementForm(222, 333, 70, 30, 444);
     cy.contains("Changes saved.").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "editing", "main");
@@ -113,8 +113,9 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Quarterly Report 2/i).should("not.exist");
     cy.findByText(/No reports due/).should("be.visible");
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
+
     cy.wait(1000);
+    cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Submit changes/i).click();
@@ -130,7 +131,7 @@ describe("when editing a project, the project page", () => {
       .eq(0)
       .clear()
       .type("new comment");
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
 
     cy.happoAndAxe("Project annual reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
