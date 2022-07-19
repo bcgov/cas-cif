@@ -98,8 +98,8 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("400")).toBeInTheDocument();
-    expect(screen.getByText("500")).toBeInTheDocument();
+    expect(screen.getByText("$400")).toBeInTheDocument();
+    expect(screen.getByText("$500")).toBeInTheDocument();
     expect(screen.getByText("50")).toBeInTheDocument();
     expect(screen.getByText("60")).toBeInTheDocument();
     expect(screen.getByText("10")).toBeInTheDocument();
