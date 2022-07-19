@@ -7,6 +7,7 @@ import operatorSchema from "./operatorSchema";
 import { milestoneSchema } from "./projectMilestoneSchema";
 import { fundingAgreementSchema } from "./fundingAgreementSchema";
 import { paymentSchema } from "./paymentSchema";
+import projectEmissionsIntensitySchema from "./projectEmissionsIntensitySchema";
 
 const validationSchemas = {
   project_contact: projectContactSchema,
@@ -18,6 +19,7 @@ const validationSchemas = {
   milestone_report: milestoneSchema,
   funding_parameter: fundingAgreementSchema,
   payment: paymentSchema,
+  emissions_intensity: projectEmissionsIntensitySchema,
 };
 
 export default validationSchemas;
