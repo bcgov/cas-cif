@@ -22,6 +22,7 @@ const nextConfig = {
     SUPPORT_EMAIL: config.get("supportEmail"),
     SENTRY_ENVIRONMENT: config.get("sentryEnvironment"),
     SENTRY_RELEASE: config.get("sentryRelease"),
+    GROWTHBOOK_API_KEY: config.get("growthbookApiKey"),
   },
 };
 

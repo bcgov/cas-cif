@@ -194,6 +194,12 @@ var config = convict({
     format: "*",
     env: "HAPPO_API_SECRET",
   },
+  growthbookApiKey: {
+    doc: "Growthbook API key",
+    format: String,
+    default: "",
+    env: "GROWTHBOOK_API_KEY",
+  },
 });
 
 // In case default host is used with non-default port

@@ -87,6 +87,11 @@ spec:
               secretKeyRef:
                 name: gcp-{{ .Release.Namespace }}-cif-documents-service-account-key
                 key: bucket_name
+          - name: GROWTHBOOK_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: growthbook
+                key: api-key
         ports:
         - containerPort: {{ .Values.app.port }}
           protocol: TCP
