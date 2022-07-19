@@ -10,6 +10,14 @@ $function$
 
   select
     case
+        -- return not started for empty project form
+      when $2 = 'project'
+        and (fc.change_status = 'pending')
+        and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
+        and (
+          ((select new_form_data from cif.form_change where id=fc.id) is null)
+          or ((select new_form_data from cif.form_change where id=fc.id) = jsonb_build_object()))
+        then 'Not Started'
       when fc.change_status = 'pending'
         and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
         then 'In Progress'
