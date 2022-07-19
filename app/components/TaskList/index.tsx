@@ -256,18 +256,37 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           />
         </TaskListSection>
 
-        {/* Annual Reports Section */}
+        {/* Emissions Intensity Report */}
         <TaskListSection
           defaultExpandedState={
             currentStep === "6" ||
-            annualReportsStatus === ATTENTION_REQUIRED_STATUS
+            quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
           }
           listItemNumber="6"
-          listItemName="Annual Reports"
+          listItemName="Emissions Intensity Report"
         >
           <TaskListItem
             stepName="6"
             linkUrl={getProjectRevisionFormPageRoute(id, 6)}
+            formTitle="Emissions Intensity Report"
+            formStatus={quarterlyReportsStatus}
+            currentStep={currentStep}
+            mode={mode}
+          />
+        </TaskListSection>
+
+        {/* Annual Reports Section */}
+        <TaskListSection
+          defaultExpandedState={
+            currentStep === "7" ||
+            annualReportsStatus === ATTENTION_REQUIRED_STATUS
+          }
+          listItemNumber="7"
+          listItemName="Annual Reports"
+        >
+          <TaskListItem
+            stepName="7"
+            linkUrl={getProjectRevisionFormPageRoute(id, 7)}
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
             currentStep={currentStep}
@@ -279,7 +298,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {mode !== "view" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
-            listItemNumber="7"
+            listItemNumber="8"
             listItemName="Submit changes"
           >
             <TaskListItem
