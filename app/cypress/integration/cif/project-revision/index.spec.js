@@ -83,7 +83,8 @@ describe("the new project page", () => {
   it("renders filled project forms in view mode for committed project revisions", () => {
     cy.sqlFixture("dev/004_cif_project");
     cy.sqlFixture("dev/005_cif_reporting_requirement");
-    cy.sqlFixture("dev/006_commit_project_revision");
+    cy.sqlFixture("dev/006_cif_funding_parameter");
+    cy.sqlFixture("dev/007_commit_project_revision");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /view/i }).first().click();
@@ -133,7 +134,7 @@ describe("the new project page", () => {
   it("properly displays validation errors", () => {
     // load more projects to trigger unique proposal reference error
     cy.sqlFixture("dev/004_cif_project");
-    cy.sqlFixture("dev/006_commit_project_revision");
+    cy.sqlFixture("dev/007_commit_project_revision");
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");

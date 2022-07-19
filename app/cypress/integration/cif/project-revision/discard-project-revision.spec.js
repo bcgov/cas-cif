@@ -5,7 +5,7 @@ describe("when discarding a project revision, the project page", () => {
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/003_cif_contact");
     cy.sqlFixture("dev/004_cif_project");
-    cy.sqlFixture("dev/006_commit_project_revision");
+    cy.sqlFixture("dev/007_commit_project_revision");
   });
 
   it("discards a revision when the user clicks the Discard Revision button", () => {
