@@ -71,9 +71,9 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Edit funding agreement/i).click();
     cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
     // brianna -- TODO - something is redirecting to the review and submit page here
     cy.pause();
-    cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.fillFundingAgreementForm(222, 333, 70, 30, 444);
     cy.contains("Changes saved.").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "editing", "main");
