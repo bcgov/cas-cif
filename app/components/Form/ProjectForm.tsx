@@ -163,6 +163,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       ...revision.projectFormChange.newFormData,
       ...changeData,
     };
+
     return new Promise((resolve, reject) =>
       updateProjectFormChange({
         variables: {
