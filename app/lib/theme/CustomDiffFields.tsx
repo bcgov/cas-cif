@@ -84,7 +84,6 @@ const showNumberDiff = (
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
-        id={id}
         displayType="text"
         value={oldData}
       />
@@ -99,7 +98,6 @@ const showNumberDiff = (
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
-        id={id}
         displayType="text"
         value={newData}
       />
@@ -113,7 +111,6 @@ const showNumberAdded = (id: string, newData: number, isMoney: boolean) => (
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
-        id={id}
         displayType="text"
         value={newData}
       />
@@ -138,7 +135,6 @@ const showNumberRemoved = (id: string, oldData: number, isMoney: boolean) => (
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
-        id={id}
         displayType="text"
         value={oldData}
       />
