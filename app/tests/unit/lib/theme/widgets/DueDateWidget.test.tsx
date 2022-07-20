@@ -109,6 +109,6 @@ describe("The DueDateWidget", () => {
     };
     render(<DueDateWidget id="widget-id" {...props} />);
     fireEvent.click(screen.getByRole("button", { name: /close/i }));
-    expect(handleOnChange).toHaveBeenCalledWith(null);
+    expect(handleOnChange).toHaveBeenCalledWith(undefined);
   });
 });

@@ -5,7 +5,7 @@ const getTimestamptzFromDate = (
   setTimeEndOfDay?: boolean
 ) => {
   if (date === null) {
-    return null;
+    return undefined;
   }
   let tzDate =
     date instanceof DateTime
