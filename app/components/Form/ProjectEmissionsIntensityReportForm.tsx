@@ -12,6 +12,10 @@ import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEm
 import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
+import { MutableRefObject, useRef } from "react";
+import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
+import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 interface Props {
   projectRevision: ProjectEmissionsIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -33,14 +37,9 @@ const uiSchema = {
   },
 };
 
-// Setting default values for some fields
-const createProjectEmissionsIntensityFormSchema = () => {
-  const schema = projectEmissionIntensitySchema;
-
-  return schema as JSONSchema7;
-};
-
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
+  const formRefs: MutableRefObject<{}> = useRef({});
+
   const projectRevision = useFragment(
     graphql`
       fragment ProjectEmissionsIntensityReportForm_projectRevision on ProjectRevision {
@@ -61,13 +60,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }
           }
         }
-        projectEmissionsIntensityReportFormChange: formChangesFor(
+        projectEmissionIntensityReportFormChange: formChangesFor(
           first: 1
           formDataTableName: "emission_intensity_report"
           filter: { operation: { notEqualTo: ARCHIVE } }
         )
           @connection(
-            key: "connection_projectEmissionsIntensityReportFormChange"
+            key: "connection_projectEmissionIntensityReportFormChange"
           ) {
           __id
           edges {
@@ -84,8 +83,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  const emissionsIntensityReport =
-    projectRevision.projectEmissionsIntensityReportFormChange.edges[0]?.node;
+  const emissionIntensityReportFormChange =
+    projectRevision.projectEmissionIntensityReportFormChange.edges[0]?.node;
 
   const reportingRequirementFormChange =
     projectRevision.reportingRequirementFormChange.edges[0]?.node;
@@ -98,21 +97,22 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     updateEmissionsIntensityReportFormChange,
     isUpdatingEmissionsIntensityReportFormChange,
   ] = useUpdateEmissionIntensityReportFormChange();
+  const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
   //const [discardProjectEmissionsIntensityReport, isDiscarding] = useDiscardProjectEmissionIntensityFormChange();
 
   const handleChange = (formData, changeStatus: "staged" | "pending") => {
     // don't trigger a change if the form data is an empty object
     if (formData && Object.keys(formData).length === 0) return;
-    if (emissionsIntensityReport) {
+    if (emissionIntensityReportFormChange) {
       const updatedFormData = {
-        ...emissionsIntensityReport.newFormData,
+        ...emissionIntensityReportFormChange.newFormData,
         ...formData,
       };
       updateEmissionsIntensityReportFormChange({
         variables: {
           input: {
-            id: emissionsIntensityReport.id,
+            id: emissionIntensityReportFormChange.id,
             formChangePatch: {
               newFormData: updatedFormData,
               changeStatus: changeStatus,
@@ -122,13 +122,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
         optimisticResponse: {
           updateFormChange: {
             formChange: {
-              id: emissionsIntensityReport.id,
+              id: emissionIntensityReportFormChange.id,
               newFormData: updatedFormData,
               changeStatus: changeStatus,
             },
           },
         },
-        debounceKey: emissionsIntensityReport.id,
+        debounceKey: emissionIntensityReportFormChange.id,
       });
     }
   };
@@ -139,13 +139,16 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   };
 
   const handleError = () => {
-    handleChange(emissionsIntensityReport.newFormData, "staged");
+    handleChange(emissionIntensityReportFormChange.newFormData, "staged");
   };
+
+  console.warn(projectRevision.projectEmissionIntensityReportFormChange);
+  return null;
 
   return (
     <>
-      {projectRevision.projectEmissionsIntensityReportFormChange.edges
-        .length === 0 && (
+      {projectRevision.projectEmissionIntensityReportFormChange.edges.length ===
+        0 && (
         <Button
           onClick={addProjectEmissionsIntensityReport({
             variables: {
@@ -159,13 +162,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           Add TEIMP Agreement
         </Button>
       )}
-      {projectRevision.projectEmissionsIntensityReportFormChange.edges.length >
+      {projectRevision.projectEmissionIntensityReportFormChange.edges.length >
         0 && (
         <>
           <header>
             <h3>Emission Intensity Report</h3>
             <UndoChangesButton
-              formChangeIds={[emissionsIntensityReport?.rowId]}
+              formChangeIds={[emissionIntensityReportFormChange?.rowId]}
             />
             <SavingIndicator
               isSaved={
@@ -175,11 +178,14 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             />
           </header>
           <FormBase
-            id="ProjectEmissionsIntensityReportForm"
-            validateOnMount={
-              emissionsIntensityReport?.changeStatus === "staged"
+            id="TEIMP_ReportingRequirementForm"
+            ref={(el) =>
+              (formRefs.current[reportingRequirementFormChange.id] = el)
             }
-            idPrefix="ProjectEmissionsIntensityReportForm"
+            validateOnMount={
+              reportingRequirementFormChange?.changeStatus === "staged"
+            }
+            idPrefix="TEIMP_ReportingRequirementForm"
             schema={emissionIntensityReportingRequirements as JSONSchema7}
             formData={reportingRequirementFormChange?.newFormData}
             formContext={{
@@ -188,35 +194,48 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             uiSchema={uiSchema}
             onChange={(change) => handleChange(change.formData, "pending")}
             onError={handleError}
-          ></FormBase>
-
+          />
           <FormBase
-            id="ProjectEmissionsIntensityReportForm"
+            id="TEIMP_EmissionIntensityReportForm"
             validateOnMount={
-              emissionsIntensityReport?.changeStatus === "staged"
+              emissionIntensityReportFormChange?.changeStatus === "staged"
             }
-            idPrefix="ProjectEmissionsIntensityReportForm"
-            schema={createProjectEmissionsIntensityFormSchema() as JSONSchema7}
-            formData={emissionsIntensityReport?.newFormData}
+            idPrefix="TEIMP_EmissionIntensityReportForm"
+            schema={projectEmissionIntensitySchema as JSONSchema7}
+            formData={emissionIntensityReportFormChange?.newFormData}
             formContext={{
-              form: emissionsIntensityReport?.newFormData,
+              form: emissionIntensityReportFormChange?.newFormData,
             }}
             uiSchema={uiSchema}
             onChange={(change) => handleChange(change.formData, "pending")}
             onSubmit={handleSubmit}
             onError={handleError}
+          />
+          <Button
+            size="medium"
+            variant="primary"
+            onClick={() =>
+              stageReportFormChanges(
+                updateEmissionsIntensityReportFormChange,
+                props.onSubmit,
+                formRefs,
+                [
+                  ...projectRevision.reportingRequirementFormChange.edges,
+                  ...projectRevision.projectEmissionIntensityReportFormChange
+                    .edges,
+                ],
+                "TEIMP",
+                updateFormChange
+              )
+            }
+            disabled={
+              isAddingEmissionsIntensityReportFormChange ||
+              isUpdatingEmissionsIntensityReportFormChange ||
+              isUpdatingFormChange
+            }
           >
-            <Button
-              type="submit"
-              style={{ marginRight: "1rem" }}
-              disabled={
-                isUpdatingEmissionsIntensityReportFormChange ||
-                isAddingEmissionsIntensityReportFormChange
-              }
-            >
-              Submit Project Emissions Intensity Report
-            </Button>
-          </FormBase>
+            Submit Milestone Reports
+          </Button>
         </>
       )}
     </>

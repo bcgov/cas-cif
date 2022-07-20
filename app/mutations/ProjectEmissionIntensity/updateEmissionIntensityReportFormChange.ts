@@ -13,8 +13,10 @@ const mutation = graphql`
         operation
         changeStatus
         projectRevisionByProjectRevisionId {
-          ...ProjectManagerFormGroup_projectRevision
           ...TaskList_projectRevision
+          upcomingReportingRequirementFormChange(reportType: "TEIMP") {
+            ...ReportDueIndicator_formChange
+          }
         }
       }
     }
@@ -24,7 +26,8 @@ const mutation = graphql`
 const useUpdateEmissionIntensityReportFormChange = () => {
   return useDebouncedMutation<updateEmissionIntensityReportFormChangeMutation>(
     mutation,
-    () => "An error occurred when updating the project manager form."
+    () =>
+      "An error occurred when updating one of the forms associated to a emissions intensity reporting requirement."
   );
 };
 
