@@ -7,7 +7,7 @@ import operatorSchema from "./operatorSchema";
 import { milestoneSchema } from "./projectMilestoneSchema";
 import { fundingAgreementSchema } from "./fundingAgreementSchema";
 import { paymentSchema } from "./paymentSchema";
-import projectEmissionIntensitySchema from "./projectEmissionIntensitySchema";
+import { projectEmissionIntensitySchema } from "./projectEmissionIntensitySchema";
 
 const validationSchemas = {
   project_contact: projectContactSchema,

@@ -1,13 +1,14 @@
-import projectEmissionsIntensitySchema from "data/jsonSchemaForm/projectEmissionIntensitySchema";
+import {
+  projectEmissionIntensitySchema,
+  emissionIntensityReportingRequirements,
+} from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { ProjectEmissionsIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportForm_projectRevision.graphql";
-import { ProjectMilestoneReportForm_reportingReqiurement$key } from "__generated__/ProjectMilestoneReportForm_reportingReqiurement.graphql";
 
 import { Button } from "@button-inc/bcgov-theme";
 import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/addEmissionIntensityReportToRevision";
-import { useDiscardProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/discardEmissionIntenstiryReportFormChange";
 import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
@@ -34,7 +35,7 @@ const uiSchema = {
 
 // Setting default values for some fields
 const createProjectEmissionsIntensityFormSchema = () => {
-  const schema = projectEmissionsIntensitySchema;
+  const schema = projectEmissionIntensitySchema;
 
   return schema as JSONSchema7;
 };
@@ -45,13 +46,28 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
       fragment ProjectEmissionsIntensityReportForm_projectRevision on ProjectRevision {
         id
         rowId
-        projectEmissionsIntensityReportFormChanges: formChangesFor(
-          first: 500
+        reportingRequirementFormChange: formChangesFor(
+          first: 1
+          formDataTableName: "reporting_requirement"
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) @connection(key: "connection_reportingRequirementFormChange") {
+          __id
+          edges {
+            node {
+              id
+              rowId
+              newFormData
+              changeStatus
+            }
+          }
+        }
+        projectEmissionsIntensityReportFormChange: formChangesFor(
+          first: 1
           formDataTableName: "emission_intensity_report"
           filter: { operation: { notEqualTo: ARCHIVE } }
         )
           @connection(
-            key: "connection_projectEmissionsIntensityReportFormChanges"
+            key: "connection_projectEmissionsIntensityReportFormChange"
           ) {
           __id
           edges {
@@ -69,7 +85,10 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   );
 
   const emissionsIntensityReport =
-    projectRevision.projectEmissionsIntensityReportFormChanges.edges[0]?.node;
+    projectRevision.projectEmissionsIntensityReportFormChange.edges[0]?.node;
+
+  const reportingRequirementFormChange =
+    projectRevision.reportingRequirementFormChange.edges[0]?.node;
 
   const [
     addProjectEmissionsIntensityReport,
@@ -100,7 +119,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             },
           },
         },
-        onError: (error) => console.log(error),
         optimisticResponse: {
           updateFormChange: {
             formChange: {
@@ -126,7 +144,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   return (
     <>
-      {projectRevision.projectEmissionsIntensityReportFormChanges.edges
+      {projectRevision.projectEmissionsIntensityReportFormChange.edges
         .length === 0 && (
         <Button
           onClick={addProjectEmissionsIntensityReport({
@@ -141,7 +159,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           Add TEIMP Agreement
         </Button>
       )}
-      {projectRevision.projectEmissionsIntensityReportFormChanges.edges.length >
+      {projectRevision.projectEmissionsIntensityReportFormChange.edges.length >
         0 && (
         <>
           <header>
@@ -156,6 +174,21 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               }
             />
           </header>
+          <FormBase
+            id="ProjectEmissionsIntensityReportForm"
+            validateOnMount={
+              emissionsIntensityReport?.changeStatus === "staged"
+            }
+            idPrefix="ProjectEmissionsIntensityReportForm"
+            schema={emissionIntensityReportingRequirements as JSONSchema7}
+            formData={reportingRequirementFormChange?.newFormData}
+            formContext={{
+              form: reportingRequirementFormChange?.newFormData,
+            }}
+            uiSchema={uiSchema}
+            onChange={(change) => handleChange(change.formData, "pending")}
+            onError={handleError}
+          ></FormBase>
 
           <FormBase
             id="ProjectEmissionsIntensityReportForm"
