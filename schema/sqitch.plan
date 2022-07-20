@@ -91,3 +91,5 @@ tables/funding_parameter 2022-06-23T17:34:25Z Gurjeet Matharu <gurjeet@matharuco
 computed_columns/reporting_requirement_has_expenses [tables/report_type tables/reporting_requirement] 2022-07-06T22:31:55Z Mike Vesprini <mike@button.is> # Computed column returns true if the report type of the reporting requirement has payments associated with it
 @1.0.0-rc.1 2022-07-14T17:26:21Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.1
 @1.0.0-rc.2 2022-07-14T18:23:38Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.2
+mutations/undo_form_changes [mutations/undo_form_changes@1.0.0-rc.1] 2022-07-19T23:31:18Z Mike Vesprini <mike@button.is> # Handle empty project form
+util_functions/get_form_status [util_functions/get_form_status@1.0.0-rc.1] 2022-07-19T23:33:37Z Mike Vesprini <mike@button.is> # Empty project forms return not started
