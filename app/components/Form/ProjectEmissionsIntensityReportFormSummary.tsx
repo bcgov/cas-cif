@@ -10,7 +10,7 @@ import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { ProjectEmissionsIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportForm_projectRevision.graphql";
 import {
   projectEmissionIntensitySchema,
-  emissionIntensityReportingRequirements,
+  emissionIntensityReportingRequirementSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 const { fields } = utils.getDefaultRegistry();
 
@@ -25,7 +25,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
       graphql`
         fragment ProjectEmissionsIntensityReportFormSummary_projectRevision on ProjectRevision {
           isFirstRevision
-          summaryProjectEmissionsIntensityReportFormChanges: formChangesFor(
+          summaryProjectEmissionIntensityReportFormChanges: formChangesFor(
             formDataTableName: "emission_intensity_report"
           ) {
             edges {
@@ -53,11 +53,11 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
     ? {
-        formSchema: emissionIntensityReportingRequirements,
+        formSchema: emissionIntensityReportingRequirementSchema,
         formData: summaryEmissionIntensityReport?.newFormData,
       }
     : getFilteredSchema(
-        emissionIntensityReportingRequirements as JSONSchema7,
+        emissionIntensityReportingRequirementSchema as JSONSchema7,
         projectEmissionIntensitySchema || {}
       );
 

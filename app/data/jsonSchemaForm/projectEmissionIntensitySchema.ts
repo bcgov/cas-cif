@@ -42,7 +42,7 @@ export const projectEmissionIntensitySchema = {
   },
 };
 
-export const emissionIntensityReportingRequirements = {
+export const emissionIntensityReportingRequirementSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Reporting Requirement",
@@ -62,5 +62,26 @@ export const emissionIntensityReportingRequirements = {
       type: "string",
       title: "General Comments",
     },
+  },
+};
+
+export const projectEmissionIntensityUiSchema = {
+  measurementPeriodStartDate: {
+    "ui:widget": "DateWidget",
+  },
+  measurmentPeriodEndDate: {
+    "ui:widget": "DateWidget",
+  },
+};
+
+export const emissionIntensityReportingRequirementUiSchema = {
+  reportDueDate: {
+    "ui:widget": "DateWidget",
+  },
+  submittedDate: {
+    "ui:widget": "DateWidget",
+  },
+  comments: {
+    "ui:widget": "TextAreaWidget",
   },
 };
