@@ -87,49 +87,40 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   //const [discardProjectEmissionsIntensityReport, isDiscarding] = useDiscardProjectEmissionIntensityFormChange();
 
-  const handleChange = (formData, changeStatus: "staged" | "pending") => {
+  const handleChange = (
+    formChangeObject,
+    changeData,
+    changeStatus: "staged" | "pending"
+  ) => {
     // don't trigger a change if the form data is an empty object
-    if (formData && Object.keys(formData).length === 0) return;
-    if (emissionIntensityReportFormChange) {
-      const updatedFormData = {
-        ...emissionIntensityReportFormChange.newFormData,
-        ...formData,
-      };
-      updateEmissionsIntensityReportFormChange({
-        variables: {
-          input: {
-            id: emissionIntensityReportFormChange.id,
-            formChangePatch: {
-              newFormData: updatedFormData,
-              changeStatus: changeStatus,
-            },
+    if (changeData && Object.keys(changeData).length === 0) return;
+
+    const updatedFormData = {
+      ...formChangeObject.newFormData,
+      ...changeData,
+    };
+    updateEmissionsIntensityReportFormChange({
+      variables: {
+        input: {
+          id: formChangeObject.id,
+          formChangePatch: {
+            newFormData: updatedFormData,
+            changeStatus: changeStatus,
           },
         },
-        optimisticResponse: {
-          updateFormChange: {
-            formChange: {
-              id: emissionIntensityReportFormChange.id,
-              newFormData: updatedFormData,
-              changeStatus: changeStatus,
-            },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: formChangeObject.id,
+            newFormData: updatedFormData,
+            changeStatus: changeStatus,
           },
         },
-        debounceKey: emissionIntensityReportFormChange.id,
-      });
-    }
+      },
+      debounceKey: formChangeObject.id,
+    });
   };
-
-  const handleSubmit = async ({ formData }) => {
-    handleChange(formData, "staged");
-    props.onSubmit();
-  };
-
-  const handleError = () => {
-    handleChange(emissionIntensityReportFormChange.newFormData, "staged");
-  };
-
-  console.warn(projectRevision.emissionIntensityReportFormChange);
-  console.warn(projectRevision.emissionIntensityReportingRequirementFormChange);
 
   return (
     <>
@@ -182,8 +173,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               form: reportingRequirementFormChange?.newFormData,
             }}
             uiSchema={emissionIntensityReportingRequirementUiSchema}
-            onChange={(change) => handleChange(change.formData, "pending")}
-            onError={handleError}
+            onChange={(change) =>
+              handleChange(
+                reportingRequirementFormChange,
+                change.formData,
+                "pending"
+              )
+            }
           />
           <FormBase
             id="TEIMP_EmissionIntensityReportForm"
@@ -200,9 +196,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               form: emissionIntensityReportFormChange?.newFormData,
             }}
             uiSchema={projectEmissionIntensityUiSchema}
-            onChange={(change) => handleChange(change.formData, "pending")}
-            onSubmit={handleSubmit}
-            onError={handleError}
+            onChange={(change) =>
+              handleChange(
+                emissionIntensityReportFormChange,
+                change.formData,
+                "pending"
+              )
+            }
           />
           <Button
             size="medium"
