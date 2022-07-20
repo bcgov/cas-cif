@@ -23,7 +23,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
       graphql`
         fragment ProjectEmissionsIntensityReportFormSummary_projectRevision on ProjectRevision {
           isFirstRevision
-          summaryProjectFundingAgreementFormChanges: formChangesFor(
+          summaryProjectEmissionsIntensityReportFormChanges: formChangesFor(
             formDataTableName: "emission_intensity_report"
           ) {
             edges {
@@ -46,7 +46,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
   const fundingAgreementSummary =
-    summaryProjectFundingAgreementFormChanges.edges[0]?.node;
+    summaryProjectFundingAgreementFormChanges?.edges[0]?.node;
 
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
@@ -64,7 +64,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
 
   return (
     <>
-      <h3>Project Funding Agreement</h3>
+      <h3>WIP: Fixing.</h3>
       {(!fundingAgreementSummary ||
         fundingAgreementSummary?.isPristine ||
         (fundingAgreementSummary?.isPristine === null &&

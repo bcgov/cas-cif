@@ -1,52 +1,60 @@
-const schema = {
+export const projectEmissionIntensitySchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Project TEIMP reporting",
   required: [],
   properties: {
-    startDate: {
-      title: "TIEMP Start Date",
+    measurementPeriodStartDate: {
+      title: "Measurement period start date",
       type: "string",
-      default: undefined,
     },
-    endDate: {
-      title: "TEIMP End Date",
+    measurmentPeriodEndDate: {
+      title: "Measurement period end date",
       type: "string",
-      default: undefined,
     },
-    reportDueDate: {
-      title: "Report Due Date",
-      type: "string",
-      default: undefined,
-    },
-    reportReceivedDate: {
-      title: "Report Received Date",
-      type: "string",
-      default: undefined,
-    },
-    generalComments: {
-      title: "General Comments",
-      type: "string",
-      default: undefined,
-    },
-    functionalUnit: {
+    emissionFunctionalUnit: {
       title: "Functional Unit",
       type: "string",
       default: undefined,
     },
-    baseLineEmissionIntensity: {
+    baselineEmissionIntensity: {
       title: "Base Line Emission Intensity (BEI)",
       type: "string",
     },
-    projectEmissionIntensity: {
-      title: "Project Emission Intensity (PEI)",
+    targetEmissionIntensity: {
+      title: "Target Emission Intensity (TEI)",
       type: "string",
     },
-    totalLifetimeEmissionsReductions: {
-      title: "Total Lifetime Emissions Reductions",
+    postProjectEmissionIntensity: {
+      title: "Post Project Emission Intensity",
+      type: "string",
+    },
+    totalLifeTimeEmissionIntensity: {
+      title: "Total lifetime emissions reductions",
       type: "string",
     },
   },
 };
 
-export default schema;
+export const emissionIntensityReportingRequirements = {
+  $schema: "http://json-schema.org/draft-07/schema",
+  type: "object",
+  title: "Reporting Requirement",
+  required: [],
+  properties: {
+    reportDueDate: {
+      type: "string",
+      title: "Report Due Date",
+      default: undefined,
+    },
+    submittedDate: {
+      type: "string",
+      title: "Received Date",
+      default: undefined,
+    },
+    comments: {
+      type: "string",
+      title: "General Comments",
+    },
+  },
+};
