@@ -1,11 +1,14 @@
-import projectEmissionsIntensitySchema from "data/jsonSchemaForm/projectEmissionsIntensitySchema";
+import projectEmissionsIntensitySchema from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { ProjectEmissionsIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportForm_projectRevision.graphql";
+import { ProjectMilestoneReportForm_reportingReqiurement$key } from "__generated__/ProjectMilestoneReportForm_reportingReqiurement.graphql";
+
 import { Button } from "@button-inc/bcgov-theme";
-import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/createProjectEmissionIntensityFormChange";
-import { useUpdateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/updateProjectEmissionIntensityFormChange";
+import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/addEmissionIntensityReportToRevision";
+import { useDiscardProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/discardEmissionIntenstiryReportFormChange";
+import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
 interface Props {
@@ -37,24 +40,11 @@ const createProjectEmissionsIntensityFormSchema = () => {
 };
 
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
-  // Mutations
-  const [
-    createEmissionsIntensityReportFormChange,
-    isAddingEmissionsIntensityReportFormChange,
-  ] = useCreateProjectEmissionIntensityFormChange();
-  const [
-    updateEmissionsIntensityReportFormChange,
-    isUpdatingEmissionsIntensityReportFormChange,
-  ] = useUpdateProjectEmissionIntensityFormChange();
-
   const projectRevision = useFragment(
     graphql`
       fragment ProjectEmissionsIntensityReportForm_projectRevision on ProjectRevision {
         id
         rowId
-        projectFormChange {
-          formDataRecordId
-        }
         projectEmissionsIntensityReportFormChanges: formChangesFor(
           first: 500
           formDataTableName: "emission_intensity_report"
@@ -81,30 +71,20 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const emissionsIntensityReport =
     projectRevision.projectEmissionsIntensityReportFormChanges.edges[0]?.node;
 
-  const addProjectEmissionsIntensityReport = () => {
-    createEmissionsIntensityReportFormChange({
-      variables: {
-        input: {
-          projectRevisionId: projectRevision.rowId,
-          formDataSchemaName: "cif",
-          formDataTableName: "emission_intensity_report",
-          jsonSchemaName: "emission_intensity_report", 
-          operation: "CREATE",
-          newFormData: {
-            projectId: projectRevision.projectFormChange.formDataRecordId,
-          },
-        },
-        connections: [
-          projectRevision.projectEmissionsIntensityReportFormChanges.__id,
-        ],
-      },
-    });
-  };
+  const [
+    addProjectEmissionsIntensityReport,
+    isAddingEmissionsIntensityReportFormChange,
+  ] = useCreateProjectEmissionIntensityFormChange();
+  const [
+    updateEmissionsIntensityReportFormChange,
+    isUpdatingEmissionsIntensityReportFormChange,
+  ] = useUpdateEmissionIntensityReportFormChange();
+
+  //const [discardProjectEmissionsIntensityReport, isDiscarding] = useDiscardProjectEmissionIntensityFormChange();
 
   const handleChange = (formData, changeStatus: "staged" | "pending") => {
     // don't trigger a change if the form data is an empty object
     if (formData && Object.keys(formData).length === 0) return;
-
     if (emissionsIntensityReport) {
       const updatedFormData = {
         ...emissionsIntensityReport.newFormData,
@@ -120,6 +100,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             },
           },
         },
+        onError: (error) => console.log(error),
         optimisticResponse: {
           updateFormChange: {
             formChange: {
@@ -136,7 +117,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   const handleSubmit = async ({ formData }) => {
     handleChange(formData, "staged");
-    console.log("GURJ: handling subm");
     props.onSubmit();
   };
 
@@ -144,13 +124,18 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     handleChange(emissionsIntensityReport.newFormData, "staged");
   };
 
-  console.log("GURJ: ", projectRevision);
   return (
     <>
       {projectRevision.projectEmissionsIntensityReportFormChanges.edges
         .length === 0 && (
         <Button
-          onClick={addProjectEmissionsIntensityReport}
+          onClick={addProjectEmissionsIntensityReport({
+            variables: {
+              input: {
+                revisionId: projectRevision.rowId,
+              },
+            },
+          })}
           style={{ marginRight: "1rem" }}
         >
           Add TEIMP Agreement
