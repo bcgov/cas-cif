@@ -1,6 +1,8 @@
 import {
   projectEmissionIntensitySchema,
-  emissionIntensityReportingRequirements,
+  emissionIntensityReportingRequirementSchema,
+  projectEmissionIntensityUiSchema,
+  emissionIntensityReportingRequirementUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
@@ -20,21 +22,6 @@ interface Props {
   viewOnly?: boolean;
   onSubmit: () => void;
 }
-
-const uiSchema = {
-  startDate: {
-    "ui:widget": "DateWidget",
-  },
-  endDate: {
-    "ui:widget": "DateWidget",
-  },
-  reportDueDate: {
-    "ui:widget": "DateWidget",
-  },
-  reportReceivedDate: {
-    "ui:widget": "DateWidget",
-  },
-};
 
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
@@ -167,7 +154,11 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           <header>
             <h3>Emission Intensity Report</h3>
             <UndoChangesButton
-              formChangeIds={[emissionIntensityReportFormChange?.rowId]}
+              formChangeIds={[
+                emissionIntensityReportFormChange.rowId,
+                reportingRequirementFormChange.rowId,
+              ]}
+              formRefs={formRefs}
             />
             <SavingIndicator
               isSaved={
@@ -185,17 +176,20 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               reportingRequirementFormChange?.changeStatus === "staged"
             }
             idPrefix="TEIMP_ReportingRequirementForm"
-            schema={emissionIntensityReportingRequirements as JSONSchema7}
+            schema={emissionIntensityReportingRequirementSchema as JSONSchema7}
             formData={reportingRequirementFormChange?.newFormData}
             formContext={{
               form: reportingRequirementFormChange?.newFormData,
             }}
-            uiSchema={uiSchema}
+            uiSchema={emissionIntensityReportingRequirementUiSchema}
             onChange={(change) => handleChange(change.formData, "pending")}
             onError={handleError}
           />
           <FormBase
             id="TEIMP_EmissionIntensityReportForm"
+            ref={(el) =>
+              (formRefs.current[emissionIntensityReportFormChange.id] = el)
+            }
             validateOnMount={
               emissionIntensityReportFormChange?.changeStatus === "staged"
             }
@@ -205,7 +199,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
             }}
-            uiSchema={uiSchema}
+            uiSchema={projectEmissionIntensityUiSchema}
             onChange={(change) => handleChange(change.formData, "pending")}
             onSubmit={handleSubmit}
             onError={handleError}
