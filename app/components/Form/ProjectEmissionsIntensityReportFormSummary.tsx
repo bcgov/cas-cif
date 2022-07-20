@@ -8,8 +8,10 @@ import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { ProjectEmissionsIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportForm_projectRevision.graphql";
-import ProjectEmissionsIntensityReportForm from "./ProjectEmissionsIntensityReportForm";
-
+import {
+  projectEmissionIntensitySchema,
+  emissionIntensityReportingRequirements,
+} from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props {
@@ -18,7 +20,7 @@ interface Props {
 }
 
 const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
-  const { summaryProjectFundingAgreementFormChanges, isFirstRevision } =
+  const { summaryProjectEmissionIntensityReportFormChanges, isFirstRevision } =
     useFragment(
       graphql`
         fragment ProjectEmissionsIntensityReportFormSummary_projectRevision on ProjectRevision {
@@ -45,18 +47,18 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const fundingAgreementSummary =
-    summaryProjectFundingAgreementFormChanges?.edges[0]?.node;
+  const summaryEmissionIntensityReport =
+    summaryProjectEmissionIntensityReportFormChanges?.edges[0]?.node;
 
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
     ? {
-        formSchema: fundingAgreementSchema,
-        formData: fundingAgreementSummary?.newFormData,
+        formSchema: emissionIntensityReportingRequirements,
+        formData: summaryEmissionIntensityReport?.newFormData,
       }
     : getFilteredSchema(
-        fundingAgreementSchema as JSONSchema7,
-        fundingAgreementSummary || {}
+        emissionIntensityReportingRequirements as JSONSchema7,
+        projectEmissionIntensitySchema || {}
       );
 
   // Set custom rjsf fields to display diffs
@@ -65,10 +67,11 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   return (
     <>
       <h3>WIP: Fixing.</h3>
-      {(!fundingAgreementSummary ||
-        fundingAgreementSummary?.isPristine ||
-        (fundingAgreementSummary?.isPristine === null &&
-          Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
+      {(!summaryEmissionIntensityReport ||
+        summaryEmissionIntensityReport?.isPristine ||
+        (summaryEmissionIntensityReport?.isPristine === null &&
+          Object.keys(summaryEmissionIntensityReport?.newFormData).length ===
+            0)) &&
       !props.viewOnly ? (
         <p>
           <em>Funding agreement not {isFirstRevision ? "added" : "updated"}</em>
@@ -82,9 +85,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           uiSchema={fundingAgreementSchema}
           formData={formData}
           formContext={{
-            operation: fundingAgreementSummary?.operation,
+            operation: summaryEmissionIntensityReport?.operation,
             oldData:
-              fundingAgreementSummary?.formChangeByPreviousFormChangeId
+              summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
                 ?.newFormData,
           }}
         />
