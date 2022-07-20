@@ -14,7 +14,6 @@ import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
 import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
-import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 interface Props {
   projectRevision: ProjectEmissionsIntensityReportForm_projectRevision$key;
@@ -45,12 +44,15 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
       fragment ProjectEmissionsIntensityReportForm_projectRevision on ProjectRevision {
         id
         rowId
-        reportingRequirementFormChange: formChangesFor(
+        emissionIntensityReportingRequirementFormChange: formChangesFor(
           first: 1
           formDataTableName: "reporting_requirement"
+          reportType: "TEIMP"
           filter: { operation: { notEqualTo: ARCHIVE } }
-        ) @connection(key: "connection_reportingRequirementFormChange") {
-          __id
+        )
+          @connection(
+            key: "connection_emissionIntensityReportingRequirementFormChange"
+          ) {
           edges {
             node {
               id
@@ -60,15 +62,11 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }
           }
         }
-        projectEmissionIntensityReportFormChange: formChangesFor(
+        emissionIntensityReportFormChange: formChangesFor(
           first: 1
           formDataTableName: "emission_intensity_report"
           filter: { operation: { notEqualTo: ARCHIVE } }
-        )
-          @connection(
-            key: "connection_projectEmissionIntensityReportFormChange"
-          ) {
-          __id
+        ) @connection(key: "connection_emissionIntensityReportFormChange") {
           edges {
             node {
               id
@@ -84,10 +82,11 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   );
 
   const emissionIntensityReportFormChange =
-    projectRevision.projectEmissionIntensityReportFormChange.edges[0]?.node;
+    projectRevision.emissionIntensityReportFormChange.edges[0]?.node;
 
   const reportingRequirementFormChange =
-    projectRevision.reportingRequirementFormChange.edges[0]?.node;
+    projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
+      ?.node;
 
   const [
     addProjectEmissionsIntensityReport,
@@ -142,28 +141,28 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     handleChange(emissionIntensityReportFormChange.newFormData, "staged");
   };
 
-  console.warn(projectRevision.projectEmissionIntensityReportFormChange);
-  return null;
+  console.warn(projectRevision.emissionIntensityReportFormChange);
+  console.warn(projectRevision.emissionIntensityReportingRequirementFormChange);
 
   return (
     <>
-      {projectRevision.projectEmissionIntensityReportFormChange.edges.length ===
-        0 && (
+      {projectRevision.emissionIntensityReportFormChange.edges.length === 0 && (
         <Button
-          onClick={addProjectEmissionsIntensityReport({
-            variables: {
-              input: {
-                revisionId: projectRevision.rowId,
+          onClick={() =>
+            addProjectEmissionsIntensityReport({
+              variables: {
+                input: {
+                  revisionId: projectRevision.rowId,
+                },
               },
-            },
-          })}
+            })
+          }
           style={{ marginRight: "1rem" }}
         >
           Add TEIMP Agreement
         </Button>
       )}
-      {projectRevision.projectEmissionIntensityReportFormChange.edges.length >
-        0 && (
+      {projectRevision.emissionIntensityReportFormChange.edges.length > 0 && (
         <>
           <header>
             <h3>Emission Intensity Report</h3>
@@ -220,9 +219,9 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
                 props.onSubmit,
                 formRefs,
                 [
-                  ...projectRevision.reportingRequirementFormChange.edges,
-                  ...projectRevision.projectEmissionIntensityReportFormChange
-                    .edges,
+                  ...projectRevision
+                    .emissionIntensityReportingRequirementFormChange.edges,
+                  ...projectRevision.emissionIntensityReportFormChange.edges,
                 ],
                 "TEIMP",
                 updateFormChange

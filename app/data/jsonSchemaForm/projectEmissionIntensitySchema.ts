@@ -2,7 +2,13 @@ export const projectEmissionIntensitySchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Project TEIMP reporting",
-  required: [],
+  required: [
+    "measurementPeriodStartDate",
+    "measurmentPeriodEndDate",
+    "emissionFunctionalUnit",
+    "baselineEmissionIntensity",
+    "targetEmissionIntensity",
+  ],
   properties: {
     measurementPeriodStartDate: {
       title: "Measurement period start date",
