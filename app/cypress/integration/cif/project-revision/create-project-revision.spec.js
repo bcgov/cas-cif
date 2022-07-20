@@ -46,7 +46,7 @@ describe("when creating a project, the project page", () => {
 
     // add budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByText(/Add funding agreement/i).click();
+    cy.findByRole("link", { name: /add funding agreement/i }).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /add funding agreement/i }).click();
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333);

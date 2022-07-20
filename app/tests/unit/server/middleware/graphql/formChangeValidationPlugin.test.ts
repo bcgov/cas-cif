@@ -2,6 +2,11 @@ import {
   filter,
   resolverWrapperGenerator,
 } from "server/middleware/graphql/formChangeValidationPlugin";
+import validateRecord from "server/middleware/graphql/validateRecord";
+import { mocked } from "jest-mock";
+
+jest.mock("server/middleware/graphql/validateRecord");
+const mockResolver = jest.fn();
 
 const getMockContext = (mockedSchemaName?: string) => {
   return {
@@ -62,8 +67,6 @@ describe("The postgraphile form validation plugin", () => {
   });
 
   it("Calls the postgraphile resolver with no arguments if there is no change to the form data", async () => {
-    const mockResolver = jest.fn();
-
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
     await wrappedResolverUnderTest(mockResolver, {}, {}, {}, {} as any);
@@ -73,11 +76,8 @@ describe("The postgraphile form validation plugin", () => {
   });
 
   it("Validates the form data with the schema which name is on the record", async () => {
-    const mockResolver = jest.fn();
     const mockValidationFunction = jest.fn();
-    jest
-      .spyOn(require("server/middleware/graphql/validateRecord"), "default")
-      .mockImplementation(mockValidationFunction);
+    mocked(validateRecord).mockImplementation(mockValidationFunction);
 
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
@@ -113,13 +113,10 @@ describe("The postgraphile form validation plugin", () => {
     );
   });
   it("Adds the validation errors to the mutation arguments when calling the postgraphile resolver", async () => {
-    const mockResolver = jest.fn();
     const mockValidationFunction = jest
       .fn()
       .mockReturnValue([{ error: "mock error" }]);
-    jest
-      .spyOn(require("server/middleware/graphql/validateRecord"), "default")
-      .mockImplementation(mockValidationFunction);
+    mocked(validateRecord).mockImplementation(mockValidationFunction);
 
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
