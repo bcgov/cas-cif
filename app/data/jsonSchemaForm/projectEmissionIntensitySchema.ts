@@ -1,10 +1,10 @@
-export const projectEmissionIntensitySchema = {
+export const emissionIntensityReportSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Project TEIMP reporting",
   required: [
     "measurementPeriodStartDate",
-    "measurmentPeriodEndDate",
+    "measurementPeriodEndDate",
     "emissionFunctionalUnit",
     "baselineEmissionIntensity",
     "targetEmissionIntensity",
@@ -14,7 +14,7 @@ export const projectEmissionIntensitySchema = {
       title: "Measurement period start date",
       type: "string",
     },
-    measurmentPeriodEndDate: {
+    measurementPeriodEndDate: {
       title: "Measurement period end date",
       type: "string",
     },
@@ -25,19 +25,19 @@ export const projectEmissionIntensitySchema = {
     },
     baselineEmissionIntensity: {
       title: "Base Line Emission Intensity (BEI)",
-      type: "string",
+      type: "number",
     },
     targetEmissionIntensity: {
       title: "Target Emission Intensity (TEI)",
-      type: "string",
+      type: "number",
     },
     postProjectEmissionIntensity: {
       title: "Post Project Emission Intensity",
-      type: "string",
+      type: "number",
     },
-    totalLifeTimeEmissionIntensity: {
+    totalLifetimeEmissionReduction: {
       title: "Total lifetime emissions reductions",
-      type: "string",
+      type: "number",
     },
   },
 };
@@ -65,12 +65,24 @@ export const emissionIntensityReportingRequirementSchema = {
   },
 };
 
-export const projectEmissionIntensityUiSchema = {
+export const emissionIntensityReportUiSchema = {
   measurementPeriodStartDate: {
     "ui:widget": "DateWidget",
   },
-  measurmentPeriodEndDate: {
+  measurementPeriodEndDate: {
     "ui:widget": "DateWidget",
+  },
+  baselineEmissionIntensity: {
+    "ui:widget": "TextWidget",
+  },
+  targetEmissionIntensity: {
+    "ui:widget": "TextWidget",
+  },
+  postProjectEmissionIntensity: {
+    "ui:widget": "TextWidget",
+  },
+  totalLifetimeEmissionReduction: {
+    "ui:widget": "TextWidget",
   },
 };
 

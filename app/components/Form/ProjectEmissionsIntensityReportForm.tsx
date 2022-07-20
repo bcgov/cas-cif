@@ -1,7 +1,7 @@
 import {
-  projectEmissionIntensitySchema,
+  emissionIntensityReportSchema,
   emissionIntensityReportingRequirementSchema,
-  projectEmissionIntensityUiSchema,
+  emissionIntensityReportUiSchema,
   emissionIntensityReportingRequirementUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { JSONSchema7 } from "json-schema";
@@ -190,12 +190,12 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               emissionIntensityReportFormChange?.changeStatus === "staged"
             }
             idPrefix="TEIMP_EmissionIntensityReportForm"
-            schema={projectEmissionIntensitySchema as JSONSchema7}
+            schema={emissionIntensityReportSchema as JSONSchema7}
             formData={emissionIntensityReportFormChange?.newFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
             }}
-            uiSchema={projectEmissionIntensityUiSchema}
+            uiSchema={emissionIntensityReportUiSchema}
             onChange={(change) =>
               handleChange(
                 emissionIntensityReportFormChange,

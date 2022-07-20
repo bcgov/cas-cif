@@ -1,4 +1,3 @@
-import fundingAgreementSchema from "data/jsonSchemaForm/fundingAgreementSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { graphql, useFragment } from "react-relay";
@@ -7,58 +6,89 @@ import FormBase from "./FormBase";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
-import { ProjectEmissionsIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportForm_projectRevision.graphql";
 import {
-  projectEmissionIntensitySchema,
+  emissionIntensityReportSchema,
   emissionIntensityReportingRequirementSchema,
+  emissionIntensityReportingRequirementUiSchema,
+  emissionIntensityReportUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
+import { ProjectEmissionsIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportFormSummary_projectRevision.graphql";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props {
-  projectRevision: ProjectEmissionsIntensityReportForm_projectRevision$key;
+  projectRevision: ProjectEmissionsIntensityReportFormSummary_projectRevision$key;
   viewOnly?: boolean;
 }
 
 const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
-  const { summaryProjectEmissionIntensityReportFormChanges, isFirstRevision } =
-    useFragment(
-      graphql`
-        fragment ProjectEmissionsIntensityReportFormSummary_projectRevision on ProjectRevision {
-          isFirstRevision
-          summaryProjectEmissionIntensityReportFormChanges: formChangesFor(
-            formDataTableName: "emission_intensity_report"
-          ) {
-            edges {
-              node {
+  const {
+    summaryEmissionIntensityReportFormChange,
+    summaryEmissionIntensityReportingRequirementFormChange,
+    isFirstRevision,
+  } = useFragment(
+    graphql`
+      fragment ProjectEmissionsIntensityReportFormSummary_projectRevision on ProjectRevision {
+        isFirstRevision
+        summaryEmissionIntensityReportingRequirementFormChange: formChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "TEIMP"
+        ) {
+          edges {
+            node {
+              newFormData
+              operation
+              formChangeByPreviousFormChangeId {
                 newFormData
-                isPristine
-                operation
-                formChangeByPreviousFormChangeId {
-                  newFormData
-                }
               }
             }
           }
         }
-      `,
-      props.projectRevision
-    );
+        summaryEmissionIntensityReportFormChange: formChangesFor(
+          formDataTableName: "emission_intensity_report"
+        ) {
+          edges {
+            node {
+              newFormData
+              operation
+              formChangeByPreviousFormChangeId {
+                newFormData
+              }
+            }
+          }
+        }
+      }
+    `,
+    props.projectRevision
+  );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
+  const summaryReportingRequirement =
+    summaryEmissionIntensityReportingRequirementFormChange?.edges[0]?.node;
+
   const summaryEmissionIntensityReport =
-    summaryProjectEmissionIntensityReportFormChanges?.edges[0]?.node;
+    summaryEmissionIntensityReportFormChange?.edges[0]?.node;
 
   // Set the formSchema and formData based on showing the diff or not
-  const { formSchema, formData } = !renderDiff
+  const reportingRequirementDiffObject = !renderDiff
     ? {
         formSchema: emissionIntensityReportingRequirementSchema,
-        formData: summaryEmissionIntensityReport?.newFormData,
+        formData: summaryReportingRequirement?.newFormData,
       }
     : getFilteredSchema(
         emissionIntensityReportingRequirementSchema as JSONSchema7,
-        projectEmissionIntensitySchema || {}
+        summaryReportingRequirement?.newFormData || {}
+      );
+
+  const emissionIntensityReportDiffObject = !renderDiff
+    ? {
+        formSchema: emissionIntensityReportSchema,
+        formData: summaryEmissionIntensityReport?.newFormData,
+      }
+    : getFilteredSchema(
+        emissionIntensityReportSchema as JSONSchema7,
+        summaryEmissionIntensityReport?.newFormData || {}
       );
 
   // Set custom rjsf fields to display diffs
@@ -66,32 +96,53 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
 
   return (
     <>
-      <h3>WIP: Fixing.</h3>
-      {(!summaryEmissionIntensityReport ||
-        summaryEmissionIntensityReport?.isPristine ||
-        (summaryEmissionIntensityReport?.isPristine === null &&
-          Object.keys(summaryEmissionIntensityReport?.newFormData).length ===
-            0)) &&
-      !props.viewOnly ? (
-        <p>
-          <em>Funding agreement not {isFirstRevision ? "added" : "updated"}</em>
-        </p>
-      ) : (
-        <FormBase
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          fields={renderDiff ? customFields : fields}
-          schema={formSchema as JSONSchema7}
-          uiSchema={fundingAgreementSchema}
-          formData={formData}
-          formContext={{
-            operation: summaryEmissionIntensityReport?.operation,
-            oldData:
-              summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
-                ?.newFormData,
-          }}
-        />
+      <h3>Emission Intensity Report</h3>
+      {/* Show this part if none of milestone report form properties have been updated */}
+      {Object.keys(reportingRequirementDiffObject.formSchema.properties)
+        .length === 0 &&
+        Object.keys(emissionIntensityReportDiffObject.formSchema.properties)
+          .length === 0 &&
+        summaryEmissionIntensityReport.operation !== "ARCHIVE" && (
+          <p>
+            <em>
+              Emission Intensity Report not{" "}
+              {isFirstRevision ? "added" : "updated"}
+            </em>
+          </p>
+        )}
+      {/* Show this part if the whole milestone report has been removed */}
+      {renderDiff && summaryEmissionIntensityReport.operation === "ARCHIVE" && (
+        <em className="diffOld">Emission Intensity Report Removed</em>
       )}
+
+      <FormBase
+        tagName={"dl"}
+        theme={readOnlyTheme}
+        fields={renderDiff ? customFields : fields}
+        schema={reportingRequirementDiffObject.formSchema as JSONSchema7}
+        uiSchema={emissionIntensityReportingRequirementUiSchema}
+        formData={reportingRequirementDiffObject.formData}
+        formContext={{
+          operation: summaryReportingRequirement?.operation,
+          oldData:
+            summaryReportingRequirement?.formChangeByPreviousFormChangeId
+              ?.newFormData,
+        }}
+      />
+      <FormBase
+        tagName={"dl"}
+        theme={readOnlyTheme}
+        fields={renderDiff ? customFields : fields}
+        schema={emissionIntensityReportDiffObject.formSchema as JSONSchema7}
+        uiSchema={emissionIntensityReportUiSchema}
+        formData={emissionIntensityReportDiffObject.formData}
+        formContext={{
+          operation: summaryEmissionIntensityReport?.operation,
+          oldData:
+            summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+              ?.newFormData,
+        }}
+      />
     </>
   );
 };
