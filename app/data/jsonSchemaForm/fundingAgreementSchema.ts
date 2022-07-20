@@ -1,4 +1,4 @@
-const schema = {
+export const fundingAgreementSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Project Funding Agreement Form",
@@ -38,4 +38,20 @@ const schema = {
   },
 };
 
-export default schema;
+export const fundingAgreementUiSchema = {
+  totalProjectValue: {
+    "ui:widget": "MoneyWidget",
+  },
+  maxFundingAmount: {
+    "ui:widget": "MoneyWidget",
+  },
+  provinceSharePercentage: {
+    "ui:widget": "TextWidget",
+  },
+  holdbackPercentage: {
+    "ui:widget": "TextWidget",
+  },
+  anticipatedFundingAmount: {
+    "ui:widget": "MoneyWidget",
+  },
+};

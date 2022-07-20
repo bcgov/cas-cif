@@ -1,4 +1,7 @@
-import fundingAgreementSchema from "data/jsonSchemaForm/fundingAgreementSchema";
+import {
+  fundingAgreementSchema,
+  fundingAgreementUiSchema,
+} from "data/jsonSchemaForm/fundingAgreementSchema";
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
@@ -13,24 +16,6 @@ interface Props {
   viewOnly?: boolean;
   onSubmit: () => void;
 }
-
-const uiSchema = {
-  totalProjectValue: {
-    "ui:widget": "MoneyWidget",
-  },
-  maxFundingAmount: {
-    "ui:widget": "MoneyWidget",
-  },
-  provinceSharePercentage: {
-    "ui:widget": "TextWidget",
-  },
-  holdbackPercentage: {
-    "ui:widget": "TextWidget",
-  },
-  anticipatedFundingAmount: {
-    "ui:widget": "MoneyWidget",
-  },
-};
 
 // Setting default values for some fields
 const createFundingAgreementSchema = () => {
@@ -177,7 +162,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             formContext={{
               form: fundingAgreement?.newFormData,
             }}
-            uiSchema={uiSchema}
+            uiSchema={fundingAgreementUiSchema}
             onChange={(change) => handleChange(change.formData, "pending")}
             onSubmit={handleSubmit}
             onError={handleError}

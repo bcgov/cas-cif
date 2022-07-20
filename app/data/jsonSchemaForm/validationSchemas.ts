@@ -5,7 +5,7 @@ import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
 import operatorSchema from "./operatorSchema";
 import { milestoneSchema } from "./projectMilestoneSchema";
-import fundingAgreementSchema from "./fundingAgreementSchema";
+import { fundingAgreementSchema } from "./fundingAgreementSchema";
 import { paymentSchema } from "./paymentSchema";
 
 const validationSchemas = {
