@@ -4,11 +4,11 @@ import { discardEmissionIntenstiryReportFormChangeMutation } from "__generated__
 
 const discardMutation = graphql`
   mutation discardEmissionIntenstiryReportFormChangeMutation(
-    $input: DiscardMilestoneFormChangeInput!
+    $input: DiscardEmissionIntensityReportInput!
     $reportType: String!
     $connections: [ID!]!
   ) {
-    discardEmissionIntensityReportFormChange(input: $input) {
+    discardEmissionIntensityReport(input: $input) {
       formChanges {
         id @deleteEdge(connections: $connections)
         projectRevisionByProjectRevisionId {
