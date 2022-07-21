@@ -14,7 +14,7 @@ const mutation = graphql`
         newFormData
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
-          ...ProjectEmissionsIntensityReportForm_projectRevision
+          ...ProjectEmissionIntensityReportForm_projectRevision
         }
       }
     }

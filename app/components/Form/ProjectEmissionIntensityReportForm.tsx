@@ -28,7 +28,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   const projectRevision = useFragment(
     graphql`
-      fragment ProjectEmissionsIntensityReportForm_projectRevision on ProjectRevision {
+      fragment ProjectEmissionIntensityReportForm_projectRevision on ProjectRevision {
         id
         rowId
         emissionIntensityReportingRequirementFormChange: formChangesFor(

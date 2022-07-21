@@ -12,8 +12,8 @@ import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportF
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 import ProjectFundingAgreementForm from "components/Form/ProjectFundingAgreementForm";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
-import ProjectEmissionsIntensityReport from "components/Form/ProjectEmissionsIntensityReportForm";
-import ProjectEmissionsIntensityReportSummary from "components/Form/ProjectEmissionsIntensityReportFormSummary";
+import ProjectEmissionIntensityReport from "components/Form/ProjectEmissionIntensityReportForm";
+import ProjectEmissionIntensityReportSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
 
 interface FormPageDefinition {
   title: string;
@@ -54,8 +54,8 @@ const formPages: FormPageDefinition[] = [
   },
   {
     title: "emission reports",
-    editComponent: ProjectEmissionsIntensityReport,
-    viewComponent: ProjectEmissionsIntensityReportSummary,
+    editComponent: ProjectEmissionIntensityReport,
+    viewComponent: ProjectEmissionIntensityReportSummary,
   },
   {
     title: "annual reports",
