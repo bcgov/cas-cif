@@ -7,7 +7,7 @@ import {
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
-import { ProjectEmissionsIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportForm_projectRevision.graphql";
+import { ProjectEmissionIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportForm_projectRevision.graphql";
 
 import { Button } from "@button-inc/bcgov-theme";
 import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/addEmissionIntensityReportToRevision";
@@ -18,7 +18,7 @@ import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 interface Props {
-  projectRevision: ProjectEmissionsIntensityReportForm_projectRevision$key;
+  projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
   onSubmit: () => void;
 }
