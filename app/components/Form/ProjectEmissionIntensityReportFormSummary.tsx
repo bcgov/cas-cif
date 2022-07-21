@@ -2,7 +2,7 @@ import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
-
+import { useMemo } from "react";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
@@ -37,6 +37,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
             node {
               newFormData
               operation
+              isPristine
               formChangeByPreviousFormChangeId {
                 newFormData
               }
@@ -50,6 +51,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
             node {
               newFormData
               operation
+              isPristine
               formChangeByPreviousFormChangeId {
                 newFormData
               }
@@ -78,7 +80,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
       }
     : getFilteredSchema(
         emissionIntensityReportingRequirementSchema as JSONSchema7,
-        summaryReportingRequirement?.newFormData || {}
+        summaryReportingRequirement || {}
       );
 
   const emissionIntensityReportDiffObject = !renderDiff
@@ -88,20 +90,46 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
       }
     : getFilteredSchema(
         emissionIntensityReportSchema as JSONSchema7,
-        summaryEmissionIntensityReport?.newFormData || {}
+        summaryEmissionIntensityReport || {}
       );
 
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
+  const allFormChangesPristine = useMemo(() => {
+    if (
+      summaryEmissionIntensityReport?.isPristine === false ||
+      summaryReportingRequirement?.isPristine === false ||
+      summaryEmissionIntensityReport?.isPristine === null ||
+      summaryReportingRequirement?.isPristine === null
+    )
+      return false;
+    return true;
+  }, [
+    summaryEmissionIntensityReport?.isPristine,
+    summaryReportingRequirement?.isPristine,
+  ]);
+
+  if (
+    allFormChangesPristine ||
+    (!summaryReportingRequirement && !summaryEmissionIntensityReport)
+  )
+    return (
+      <>
+        <h3>Emission Intensity Report</h3>
+        <dd>
+          <em>
+            Emission Intensity Report {isFirstRevision ? "added" : "updated"}
+          </em>
+        </dd>
+      </>
+    );
+
   return (
     <>
       <h3>Emission Intensity Report</h3>
       {/* Show this part if none of the emission intensity report form properties have been updated */}
-      {Object.keys(reportingRequirementDiffObject.formSchema.properties)
-        .length === 0 &&
-        Object.keys(emissionIntensityReportDiffObject.formSchema.properties)
-          .length === 0 &&
+      {allFormChangesPristine &&
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
           <p>
             <em>
