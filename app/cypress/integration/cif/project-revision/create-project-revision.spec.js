@@ -93,17 +93,12 @@ describe("when creating a project, the project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.findByText(/^submit/i).click();
 
-    //add annual reports
-    cy.addAnnualReport(
-      1,
-      "2022-01-01",
-      "2022-02-02",
-      "Annual report description n stuff"
-    );
+    // add teimp reports
+    cy.findByRole("link", { name: /Add TEIMP Agreement/i }).click();
+    cy.addEmissionIntensityReport("2022-01-01", "2022-02-02", "1", "2", "3");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project annual reports Form", "filled", "main");
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.findAllByRole("status").first().should("have.text", "Complete");
 
     //review and submit
     cy.contains("Review and Submit Project");
@@ -147,6 +142,12 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "Loblaw004, Bob004");
+    cy.findByText(/^Measurement period start date/i)
+      .next()
+      .should("have.text", "2022-01-01");
+    cy.findByText(/^Functional Unit/i)
+      .next()
+      .should("have.text", "1");
     cy.happoAndAxe("Project summary Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");
