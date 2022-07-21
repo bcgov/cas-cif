@@ -31,6 +31,7 @@ const CollapsibleReport: React.FC<Props> = ({
   const [isOpen, setIsOpen] = useState(
     startOpen !== undefined ? startOpen : !data.submittedDate
   );
+  console.log("data has the wrong date:", data);
 
   return (
     <>

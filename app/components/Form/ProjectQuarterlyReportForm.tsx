@@ -159,6 +159,11 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         </Button>
 
         {sortedQuarterlyReports.map((quarterlyReport, index) => {
+          console.log(
+            "quarterlyReport.newFormData has the correct date:",
+            quarterlyReport.newFormData
+          );
+
           return (
             <div key={quarterlyReport.id}>
               <CollapsibleReport
