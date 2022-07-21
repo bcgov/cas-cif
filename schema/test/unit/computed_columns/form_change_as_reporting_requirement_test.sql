@@ -48,7 +48,7 @@ select is(
     ) select pg_typeof(cif.form_change_as_reporting_requirement((select * from record)))::text
   ),
   (
-    'reporting_requirement'::text
+    'cif.reporting_requirement'::text
   ),
   'Returns a record of type reporting_requirement'
 );
