@@ -101,48 +101,6 @@ describe("The ProjectFundingAgreementForm", () => {
     ).toBe("$300.00");
   });
 
-  it("loads with default value", () => {
-    const mockResolver = {
-      ProjectRevision() {
-        const result: Partial<ProjectFundingAgreementForm_projectRevision$data> =
-          {
-            " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
-            id: "Test Project Revision ID",
-            rowId: 1234,
-            projectFormChange: {
-              formDataRecordId: 51,
-            },
-            projectFundingAgreementFormChanges: {
-              __id: "connection Id",
-              edges: [
-                {
-                  node: {
-                    id: "Test Form Change ID 1",
-                    rowId: 1,
-                    changeStatus: "pending",
-                    newFormData: {
-                      projectId: 51,
-                    },
-                  },
-                },
-              ],
-            },
-          };
-        return result;
-      },
-    };
-    componentTestingHelper.loadQuery(mockResolver);
-
-    componentTestingHelper.renderComponent();
-    expect(
-      screen.getByLabelText<HTMLSelectElement>(/Province Share Percentage/i)
-        .value
-    ).toBe("50");
-    expect(
-      screen.getByLabelText<HTMLSelectElement>(/Holdback Percentage/i).value
-    ).toBe("10");
-  });
-
   it("calls the mutation passed in with the props with the proper data on form change", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
