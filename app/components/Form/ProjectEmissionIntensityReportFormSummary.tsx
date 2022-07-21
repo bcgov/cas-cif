@@ -119,7 +119,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         <h3>Emission Intensity Report</h3>
         <dd>
           <em>
-            Emission Intensity Report {isFirstRevision ? "added" : "updated"}
+            Emission Intensity Report not{" "}
+            {isFirstRevision ? "added" : "updated"}
           </em>
         </dd>
       </>
@@ -133,7 +134,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
           <p>
             <em>
-              Emission Intensity Report not{" "}
+              Emission Intensity Report
               {isFirstRevision ? "added" : "updated"}
             </em>
           </p>
