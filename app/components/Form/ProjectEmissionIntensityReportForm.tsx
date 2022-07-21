@@ -85,8 +85,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   ] = useUpdateEmissionIntensityReportFormChange();
   const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
-  //const [discardProjectEmissionsIntensityReport, isDiscarding] = useDiscardProjectEmissionIntensityFormChange();
-
   const handleChange = (
     formChangeObject,
     changeData,

@@ -8,7 +8,7 @@ const discardMutation = graphql`
     $reportType: String!
     $connections: [ID!]!
   ) {
-    discardMilestoneFormChange(input: $input) {
+    discardEmissionIntensityReportFormChange(input: $input) {
       formChanges {
         id @deleteEdge(connections: $connections)
         projectRevisionByProjectRevisionId {
