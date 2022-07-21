@@ -20,6 +20,7 @@ const testQuery = graphql`
 const defaultMockResolver = {
   ProjectRevision() {
     return {
+      isFirstRevision: false,
       summaryEmissionIntensityReportingRequirementFormChange: {
         edges: [
           {
@@ -28,18 +29,17 @@ const defaultMockResolver = {
               isPristine: false,
               newFormData: {
                 comments: "bulbasaur",
+                reportType: "TEIMP",
                 projectId: 1,
                 reportingRequirementIndex: 1,
-                reportType: "TEIMP",
-                reportDueDate: "2020-01-10T23:59:59.999-07:00",
               },
               operation: "UPDATE",
               formChangeByPreviousFormChangeId: {
                 newFormData: {
                   comments: "squirtle",
+                  reportType: "TEIMP",
                   projectId: 1,
                   reportingRequirementIndex: 1,
-                  reportDueDate: "2020-01-01T13:59:59.999-07:00",
                 },
               },
               formDataRecordId: 1,
@@ -51,7 +51,7 @@ const defaultMockResolver = {
         edges: [
           {
             node: {
-              id: "1",
+              id: "2",
               isPristine: false,
               newFormData: {
                 reportingRequirementId: 1,
@@ -97,8 +97,8 @@ describe("the emission intensity report form component", () => {
   it("only displays the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-
-    expect(screen.getByText("Comments")).toBeInTheDocument();
+    screen.logTestingPlaygroundURL();
+    expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
   });
 
   it("displays a 'not updated' when there were no updates to the form", () => {
@@ -128,7 +128,6 @@ describe("the emission intensity report form component", () => {
   it("only displays the fields that were updated on the summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-
     expect(screen.getByText("squirtle")).toBeInTheDocument();
   });
 });
