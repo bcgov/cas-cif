@@ -5,7 +5,7 @@
 begin;
 
 /**
-  Removing or archiving a emission intensitry report is a chained operation. The data for milestones is spread across two tables:
+  Removing or archiving a emission intensity report is a chained operation. The data for emissions intensity is spread across two tables:
     - reporting_requirement (base table, common to all reports)
     - discard_emission_intensity_report (data specific to milestone reports)
   Because this data is spread across two tables we have to remove or archive two form_change records within one transaction, one for each table.

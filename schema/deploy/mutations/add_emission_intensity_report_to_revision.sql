@@ -5,7 +5,7 @@
 begin;
 
 /**
-  Adding a emission intensity report to a project_revision is a chained operation. The data for milestones is spread across two tables:
+  Adding a emission intensity report to a project_revision is a chained operation. The data for emission is spread across two tables:
     - reporting_requirement (base table, common to all reports)
     - emission_intensity_report (data specific to emission intensity reports)
   Because this data is spread across two tables we have to create two form_change records within one transaction, one for each table.
