@@ -102,7 +102,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         .length === 0 &&
         Object.keys(emissionIntensityReportDiffObject.formSchema.properties)
           .length === 0 &&
-        summaryEmissionIntensityReport.operation !== "ARCHIVE" && (
+        summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
           <p>
             <em>
               Emission Intensity Report not{" "}
@@ -111,9 +111,10 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           </p>
         )}
       {/* Show this part if the whole milestone report has been removed */}
-      {renderDiff && summaryEmissionIntensityReport.operation === "ARCHIVE" && (
-        <em className="diffOld">Emission Intensity Report Removed</em>
-      )}
+      {renderDiff &&
+        summaryEmissionIntensityReport?.operation === "ARCHIVE" && (
+          <em className="diffOld">Emission Intensity Report Removed</em>
+        )}
 
       <FormBase
         tagName={"dl"}
