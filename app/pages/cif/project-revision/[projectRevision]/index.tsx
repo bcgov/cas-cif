@@ -30,7 +30,7 @@ import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyR
 import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
-import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectEmissionsIntensityReportFormSummary";
+import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -52,7 +52,7 @@ const pageQuery = graphql`
         ...TaskList_projectRevision
         ...ProjectMilestoneReportFormSummary_projectRevision
         ...ProjectFundingAgreementFormSummary_projectRevision
-        ...ProjectEmissionsIntensityReportFormSummary_projectRevision
+        ...ProjectEmissionIntensityReportFormSummary_projectRevision
         projectByProjectId {
           latestCommittedProjectRevision {
             id

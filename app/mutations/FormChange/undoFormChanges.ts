@@ -14,7 +14,7 @@ const mutation = graphql`
         ...ProjectAnnualReportForm_projectRevision
         ...ProjectMilestoneReportFormGroup_projectRevision
         ...ProjectFundingAgreementForm_projectRevision
-        ...ProjectEmissionsIntensityReportForm_projectRevision
+        ...ProjectEmissionIntensityReportForm_projectRevision
       }
     }
   }

@@ -14,7 +14,7 @@ const mutation = graphql`
         changeStatus
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
-          ...ProjectEmissionsIntensityReportForm_projectRevision
+          ...ProjectEmissionIntensityReportForm_projectRevision
           upcomingReportingRequirementFormChange(reportType: "TEIMP") {
             ...ReportDueIndicator_formChange
           }

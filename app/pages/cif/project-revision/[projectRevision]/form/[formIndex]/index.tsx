@@ -51,8 +51,8 @@ const pageQuery = graphql`
         ...ProjectAnnualReportFormSummary_projectRevision
         ...ProjectFundingAgreementForm_projectRevision
         ...ProjectFundingAgreementFormSummary_projectRevision
-        ...ProjectEmissionsIntensityReportForm_projectRevision
-        ...ProjectEmissionsIntensityReportFormSummary_projectRevision
+        ...ProjectEmissionIntensityReportForm_projectRevision
+        ...ProjectEmissionIntensityReportFormSummary_projectRevision
       }
       ...ProjectForm_query
       ...ProjectContactForm_query

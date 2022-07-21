@@ -12,11 +12,11 @@ import {
   emissionIntensityReportingRequirementUiSchema,
   emissionIntensityReportUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
-import { ProjectEmissionsIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionsIntensityReportFormSummary_projectRevision.graphql";
+import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props {
-  projectRevision: ProjectEmissionsIntensityReportFormSummary_projectRevision$key;
+  projectRevision: ProjectEmissionIntensityReportFormSummary_projectRevision$key;
   viewOnly?: boolean;
 }
 
@@ -27,7 +27,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
     isFirstRevision,
   } = useFragment(
     graphql`
-      fragment ProjectEmissionsIntensityReportFormSummary_projectRevision on ProjectRevision {
+      fragment ProjectEmissionIntensityReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
         summaryEmissionIntensityReportingRequirementFormChange: formChangesFor(
           formDataTableName: "reporting_requirement"
