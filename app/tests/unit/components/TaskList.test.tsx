@@ -172,6 +172,20 @@ describe("The ProjectManagerForm", () => {
     );
   });
 
+  it("Calls the proper getRoute function when clicking Emissions Intensity Report", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByText(/Emissions Intensity Report/i));
+    fireEvent.click(screen.getByText(/Edit emissions intensity report/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/6?anchor=",
+      expect.any(Object)
+    );
+  });
+
   it("Calls the proper getRoute function when clicking Annual Reports", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -180,8 +194,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit annual reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/6?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=7&anchor=",
+      "/cif/project-revision/test-project-revision-id/form/7?anchor=",
       expect.any(Object)
     );
   });
