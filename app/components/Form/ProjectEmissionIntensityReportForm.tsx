@@ -227,7 +227,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               isUpdatingFormChange
             }
           >
-            Submit Milestone Reports
+            Submit TEIMP Report
           </Button>
         </>
       )}
