@@ -80,11 +80,13 @@ const mockQueryPayload = {
                 isPristine: false,
                 newFormData: {
                   reportingRequirementId: 1,
+                  totalEligibleExpenses: 100,
                 },
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
                   newFormData: {
                     reportingRequirementId: 1,
+                    totalEligibleExpenses: 200,
                   },
                 },
               },
@@ -190,9 +192,11 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText("bulbasaur")).toBeInTheDocument();
     expect(screen.getByText("charmander")).toBeInTheDocument();
 
-    // milestone type diff
+    // milestone diff
     expect(screen.getByText("General")).toBeInTheDocument();
     expect(screen.getByText("Advanced")).toBeInTheDocument();
+    expect(screen.getByText("$100")).toBeInTheDocument();
+    expect(screen.getByText("$200")).toBeInTheDocument();
 
     // report due date diff
     expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();
