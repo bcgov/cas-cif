@@ -13,27 +13,22 @@ export const fundingAgreementSchema = {
     totalProjectValue: {
       title: "Total Project Value",
       type: "number",
-      default: undefined,
     },
     maxFundingAmount: {
       title: "Max Funding Amount",
       type: "number",
-      default: undefined,
     },
     provinceSharePercentage: {
       title: "Province Share Percentage",
       type: "number",
-      default: undefined,
     },
     holdbackPercentage: {
       title: "Holdback Percentage",
       type: "number",
-      default: undefined,
     },
     anticipatedFundingAmount: {
       title: "Anticipated Funding Amount",
       type: "number",
-      default: undefined,
     },
   },
 };
