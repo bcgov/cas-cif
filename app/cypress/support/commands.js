@@ -249,7 +249,6 @@ Cypress.Commands.add(
       });
 
     cy.get('[aria-label*="Measurement period start date"]')
-      .eq(reportNumber - 1)
       .should("exist")
       .click();
     cy.get(".react-datepicker__month-select")
@@ -261,9 +260,9 @@ Cypress.Commands.add(
     cy.get(`.react-datepicker__day--0${dueDateTZ.toFormat("dd")}`)
       .not(`.react-datepicker__day--outside-month`)
       .click();
-    cy.get('[aria-label*="Due Date"]')
-      .eq(reportNumber - 1)
-      .contains(`${dueDateTZ.toFormat("MMM dd, yyyy")}`);
+    cy.get('[aria-label*="Measurement period start date"]').contains(
+      `${dueDateTZ.toFormat("MMM dd, yyyy")}`
+    );
     cy.contains("Changes saved").should("be.visible");
     return cy.url().should("include", "/form");
   }
@@ -283,7 +282,6 @@ Cypress.Commands.add(
       });
 
     cy.get('[aria-label*="Measurement period end date"]')
-      .eq(reportNumber - 1)
       .should("exist")
       .click();
     cy.get(".react-datepicker__month-select")
@@ -295,9 +293,9 @@ Cypress.Commands.add(
     cy.get(`.react-datepicker__day--0${dueDateTZ.toFormat("dd")}`)
       .not(`.react-datepicker__day--outside-month`)
       .click();
-    cy.get('[aria-label*="Due Date"]')
-      .eq(reportNumber - 1)
-      .contains(`${dueDateTZ.toFormat("MMM dd, yyyy")}`);
+    cy.get('[aria-label*="Measurement period end date"]').contains(
+      `${dueDateTZ.toFormat("MMM dd, yyyy")}`
+    );
     cy.contains("Changes saved").should("be.visible");
     return cy.url().should("include", "/form");
   }
