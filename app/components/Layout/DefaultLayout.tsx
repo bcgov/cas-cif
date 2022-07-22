@@ -80,7 +80,7 @@ const DefaultLayout: React.FC<Props> = ({
           }
 
           main {
-            width: 100%;
+            width: 100vw;
           }
 
           @media (min-width: 1024px) {
@@ -96,6 +96,7 @@ const DefaultLayout: React.FC<Props> = ({
 
             main {
               min-width: 700px;
+              width: 100%;
             }
           }
         `}
