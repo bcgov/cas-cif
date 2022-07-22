@@ -191,10 +191,28 @@ describe("the new project page", () => {
       ".error-detail"
     );
 
+    // Emissions intensity report
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add Emissions Intensity Report/i).click();
+    cy.url().should("include", "/form/5");
+
+    cy.findByRole("button", {
+      name: /Add TEIMP /i,
+    }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 3);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe(
+      "Emissions intensity report Form",
+      "with errors",
+      ".error-detail"
+    );
+
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
 
     cy.findByRole("button", {
       name: /add another quarterly report/i,
@@ -219,7 +237,7 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /add another annual report/i }).click();
     cy.findByRole("status").first().should("have.text", "On track");
     cy.contains("Changes saved").should("be.visible");

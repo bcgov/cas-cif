@@ -126,6 +126,20 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
+    // edit emissions intensity report
+    cy.contains("Review and Submit Project");
+    cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
+    cy.findByText(/Edit emissions intensity report/i).click();
+    cy.get('[aria-label*="Measurement period start date"]').eq(0).click();
+    cy.get(".react-datepicker__month-select").select(0);
+    cy.get(".react-datepicker__year-select").select("1999");
+    cy.get(`.react-datepicker__day--001`)
+      .not(`.react-datepicker__day--outside-month`)
+      .click();
+    cy.contains("Changes saved.");
+    cy.happoAndAxe("Project milestone reports Form", "editing", "main");
+    cy.findByText(/Review and submit information/i).click();
+
     // edit annual reports -- change comments
     cy.contains("Review and Submit Project");
     cy.findByRole("heading", { name: /6. Annual reports/i }).click();
@@ -166,6 +180,11 @@ describe("when editing a project, the project page", () => {
       .should("have.text", "ADDED");
 
     cy.findByText("Quarterly Report Removed").should("be.visible");
+
+    cy.get("#root_measurementPeriodStartDate-diffNew")
+      .next()
+      .next()
+      .should("have.text", "ADDED");
 
     cy.get("#root_comments-diffOld").should(
       "have.text",
