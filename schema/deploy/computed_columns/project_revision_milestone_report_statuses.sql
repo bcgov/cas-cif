@@ -49,6 +49,7 @@ $function$
   where fc.project_revision_id = $1.id
   and fc.form_data_table_name = 'reporting_requirement'
   and fc.new_form_data ->> 'reportType' in ((select name from cif.report_type where is_milestone = true))
+  and fc.operation != 'archive'
   order by milestone_index;
 
 $function$ language sql stable;
