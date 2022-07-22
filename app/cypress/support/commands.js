@@ -380,13 +380,11 @@ Cypress.Commands.add(
     }).click();
     cy.addMeasurementPeriodStartDate(measurementPeriodStartDate);
     cy.addMeasurementPeriodEndDate(measurmentPeriodEndDate);
-    cy.findByLabelText(/Functional Unit$/i)
-      .clear()
-      .type(functionalUnit);
-    cy.findByLabelText(/Base Line Emission Intensity (BEI)$/i)
+    cy.get('[aria-label="Functional Unit"]').clear().type(functionalUnit);
+    cy.get('[aria-label="Base Line Emission Intensity (BEI)"]')
       .clear()
       .type(baselineEmissionIntensity);
-    cy.findByLabelText(/Target Emission Intensity (TEI)$/i)
+    cy.get('[aria-label="Target Emission Intensity (TEI)"]')
       .clear()
       .type(targetEmissionIntensity);
 
