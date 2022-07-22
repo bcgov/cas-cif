@@ -66,7 +66,7 @@ describe("the new project page", () => {
     cy.happoAndAxe("Project quarterly reports Form", "empty", "main");
 
     // Emissions Intensity Report
-    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText("Emissions Intensity Report").click();
     cy.findByText(/Add emissions intensity report/i).click();
     cy.findByText(/Add TEIMP Agreement/i).click();
     cy.contains("Changes saved.");
@@ -136,7 +136,7 @@ describe("the new project page", () => {
 
     cy.findByRole("heading", { name: /Annual reports/i }).click();
     cy.findByRole("link", { name: /Annual reports/i }).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/Annual Report 1/);
   });

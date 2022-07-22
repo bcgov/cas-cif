@@ -270,7 +270,7 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "addMeasurmentPeriodEndDate",
+  "addMeasurementPeriodEndDate",
   (measurementPeriodEndDate) => {
     const dueDate = DateTime.fromFormat(measurementPeriodEndDate, "yyyy-MM-dd");
     const dueDateTZ = dueDate
