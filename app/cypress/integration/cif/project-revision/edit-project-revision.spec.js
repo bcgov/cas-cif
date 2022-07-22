@@ -130,6 +130,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
     cy.findByText(/Edit emissions intensity report/i).click();
+    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
     cy.get('[aria-label*="Measurement period start date"]').eq(0).click();
     cy.get(".react-datepicker__month-select").select(0);
     cy.get(".react-datepicker__year-select").select("1999");
