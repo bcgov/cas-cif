@@ -53,7 +53,10 @@ export const createProjectUiSchema = (
       "ui:placeholder": "Select an Operator",
       "ui:widget": "SearchWidget",
       "ui:options": {
-        text: `${legalName ? `${legalName} (${bcRegistryId})` : ""}`,
+        text: `${
+          (legalName ? `${legalName}` : "") +
+          (bcRegistryId ? ` (${bcRegistryId})` : "")
+        }`,
       },
     },
     fundingStreamRfpId: {
@@ -203,7 +206,9 @@ const ProjectForm: React.FC<Props> = (props) => {
           anyOf: query.allOperators.edges.map(({ node }) => {
             return {
               type: "number",
-              title: `${node.legalName} (${node.bcRegistryId})`,
+              title: `${node.legalName} ${
+                node.bcRegistryId ? `(${node.bcRegistryId})` : ""
+              }`,
               enum: [node.rowId],
               value: node.rowId,
             };
