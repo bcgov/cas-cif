@@ -94,7 +94,8 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/^submit/i).click();
 
     // add teimp reports
-    cy.findByRole("link", { name: /Add TEIMP Agreement/i }).click();
+    cy.findByRole("link", { name: /Emissions Intensity Report/i }).click();
+    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
     cy.addEmissionIntensityReport("2022-01-01", "2022-02-02", "1", "2", "3");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");

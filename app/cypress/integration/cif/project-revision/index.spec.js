@@ -65,6 +65,12 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project quarterly reports Form", "empty", "main");
 
+    // Emissions Intensity Report
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add TEIMP Agreement/i).click();
+    cy.contains("Changes saved.");
+    cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
+
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
