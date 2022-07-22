@@ -8,5 +8,7 @@ chart/**/charts/
 cypress.env.json
 .env
 
+.vscode/*.log
+
 app/cypress.env.json
 dev/db/data

@@ -8,5 +8,5 @@ dependencies:
 - name: certbot
   repository: https://matthieu-foucault.github.io/certbot
   version: 0.1.1
-digest: sha256:5327ed374c9bf5c097bfa7ad9b030b644437717b9c59488c6ea6c140e7496ded
-generated: "2022-05-11T10:23:06.013472607-07:00"
+digest: sha256:9373869f8602c832aa870080be47b3a14e47d1fa6f0cd9efffb1b586b63f0114
+generated: "2022-07-15T16:29:59.00594-07:00"
