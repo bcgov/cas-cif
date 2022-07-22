@@ -233,7 +233,7 @@ Cypress.Commands.add("addDueDate", (reportNumber, reportDueDate) => {
 });
 
 Cypress.Commands.add(
-  "addMeasurmentPeriodStartDate",
+  "addMeasurementPeriodStartDate",
   (measurementPeriodStartDate) => {
     const dueDate = DateTime.fromFormat(
       measurementPeriodStartDate,
