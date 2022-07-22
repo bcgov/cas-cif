@@ -61,6 +61,12 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project quarterly reports Form", "empty", "main");
 
+    // Emissions Intensity Report
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add TEIMP Agreement/i).click();
+    cy.contains("Changes saved.");
+    cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
+
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
@@ -74,6 +80,7 @@ describe("the new project page", () => {
     cy.findByText(/project managers not added/i).should("be.visible");
     cy.findByText(/milestone reports not added/i).should("be.visible");
     cy.findByText(/quarterly reports not added/i).should("be.visible");
+    // TODO: Note emissions intensity report not added
     // TODO: add below assertion back in when bug is fixed
     // cy.findByText(/annual reports not added/i).should("be.visible");
 
