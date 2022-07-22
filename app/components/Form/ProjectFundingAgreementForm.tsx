@@ -17,21 +17,6 @@ interface Props {
   onSubmit: () => void;
 }
 
-// Setting default values for some fields
-const createFundingAgreementSchema = () => {
-  const schema = fundingAgreementSchema;
-  schema.properties.provinceSharePercentage = {
-    ...schema.properties.provinceSharePercentage,
-    default: 50,
-  };
-  schema.properties.holdbackPercentage = {
-    ...schema.properties.holdbackPercentage,
-    default: 10,
-  };
-
-  return schema as JSONSchema7;
-};
-
 const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   // Mutations
   const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
@@ -83,6 +68,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           operation: "CREATE",
           newFormData: {
             projectId: projectRevision.projectFormChange.formDataRecordId,
+            provinceSharePercentage: 50, // Default to 50%
+            holdbackPercentage: 10, // Default to 10%
           },
         },
         connections: [projectRevision.projectFundingAgreementFormChanges.__id],
@@ -157,7 +144,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             id="ProjectFundingAgreementForm"
             validateOnMount={fundingAgreement?.changeStatus === "staged"}
             idPrefix="ProjectFundingAgreementForm"
-            schema={createFundingAgreementSchema() as JSONSchema7}
+            schema={fundingAgreementSchema as JSONSchema7}
             formData={fundingAgreement?.newFormData}
             formContext={{
               form: fundingAgreement?.newFormData,

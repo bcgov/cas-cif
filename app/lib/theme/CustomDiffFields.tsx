@@ -218,7 +218,11 @@ const CUSTOM_DIFF_FIELDS: Record<
         return <>DISPLAY ERROR</>;
       }
     } else {
-      if (previousValue && formData && formContext.operation === "UPDATE") {
+      if (
+        previousValue !== undefined &&
+        formData !== undefined &&
+        formContext.operation === "UPDATE"
+      ) {
         return showNumberDiff(
           id,
           formContext?.oldData?.[props.name],
@@ -228,7 +232,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         );
       } else if (
         !previousValue &&
-        formData &&
+        formData !== undefined &&
         formContext.operation !== "ARCHIVE"
       ) {
         return showNumberAdded(
@@ -239,7 +243,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
-        (!formData && previousValue)
+        (!formData && previousValue !== undefined)
       ) {
         return showNumberRemoved(
           id,
