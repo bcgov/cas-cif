@@ -135,7 +135,12 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
   return (
     <>
       <h3>Project Annual Reports</h3>
-      {allFormChangesPristine && props.viewOnly ? (
+      {annualReportFormChanges.length < 1 && props.viewOnly && (
+        <dd>
+          <em>No Annual Reports</em>
+        </dd>
+      )}
+      {allFormChangesPristine && !props.viewOnly ? (
         <p>
           <em>
             Project annual reports not {isFirstRevision ? "added" : "updated"}
