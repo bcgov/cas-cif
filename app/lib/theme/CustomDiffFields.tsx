@@ -223,7 +223,8 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formContext?.oldData?.[props.name],
           formData,
-          uiSchema?.["ui:widget"] === "MoneyWidget"
+          uiSchema?.["ui:widget"] === "MoneyWidget" ||
+            uiSchema?.["ui:widget"] === "ConditionalAmountWidget"
         );
       } else if (
         !previousValue &&
@@ -233,7 +234,8 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberAdded(
           id,
           formData,
-          uiSchema?.["ui:widget"] === "MoneyWidget"
+          uiSchema?.["ui:widget"] === "MoneyWidget" ||
+            uiSchema?.["ui:widget"] === "ConditionalAmountWidget"
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
@@ -242,7 +244,8 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberRemoved(
           id,
           formContext?.oldData?.[props.name],
-          uiSchema?.["ui:widget"] === "MoneyWidget"
+          uiSchema?.["ui:widget"] === "MoneyWidget" ||
+            uiSchema?.["ui:widget"] === "ConditionalAmountWidget"
         );
       } else {
         return <>DISPLAY ERROR</>;

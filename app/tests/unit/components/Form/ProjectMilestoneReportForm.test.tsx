@@ -86,6 +86,8 @@ const defaultMockResolver = {
               rowId: 1,
               newFormData: {
                 reportingRequirementId: 1,
+                totalEligibleExpenses: 100,
+                maximumAmount: 200,
                 certifierProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
@@ -175,6 +177,18 @@ describe("The ProjectMilestoneReportForm", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     componentTestingHelper.reinit();
+  });
+
+  it("Renders a milestone with the correct budget data", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getAllByLabelText("Total Eligible Expenses")[0]).toHaveValue(
+      "$100.00"
+    );
+    expect(screen.getAllByLabelText("Maximum Amount")[0]).toHaveValue(
+      "$200.00"
+    );
   });
 
   it("Renders two milestone reports with remove buttons, the report due indicator, and the overall status badge", () => {
