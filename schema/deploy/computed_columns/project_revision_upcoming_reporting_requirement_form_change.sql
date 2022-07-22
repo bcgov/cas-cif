@@ -15,6 +15,7 @@ $computed_column$
     and form_data_table_name='reporting_requirement'
     and ($2 is null or new_form_data->>'reportType' ilike ('%' || $2))
     and new_form_data->>'submittedDate' is null
+    and operation != 'archive'
   order by (new_form_data->>'reportDueDate')::timestamptz asc
   fetch first row only
 
