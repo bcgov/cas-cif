@@ -67,6 +67,7 @@ describe("the new project page", () => {
 
     // Emissions Intensity Report
     cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add emissions intensity report/i).click();
     cy.findByText(/Add TEIMP Agreement/i).click();
     cy.contains("Changes saved.");
     cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
@@ -191,28 +192,10 @@ describe("the new project page", () => {
       ".error-detail"
     );
 
-    // Emissions intensity report
-    cy.findByText(/Emissions Intensity Report/i).click();
-    cy.findByText(/Add Emissions Intensity Report/i).click();
-    cy.url().should("include", "/form/5");
-
-    cy.findByRole("button", {
-      name: /Add TEIMP /i,
-    }).click();
-    cy.contains("Changes saved").should("be.visible");
-    cy.findByRole("button", { name: /^submit/i }).click();
-    cy.get(".error-detail").should("have.length", 3);
-    cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe(
-      "Emissions intensity report Form",
-      "with errors",
-      ".error-detail"
-    );
-
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/5");
 
     cy.findByRole("button", {
       name: /add another quarterly report/i,
@@ -230,6 +213,24 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project quarterly reports Form",
+      "with errors",
+      ".error-detail"
+    );
+
+    // Emissions intensity report
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add Emissions Intensity Report/i).click();
+    cy.url().should("include", "/form/6");
+
+    cy.findByRole("button", {
+      name: /Add TEIMP /i,
+    }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 3);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe(
+      "Emissions intensity report Form",
       "with errors",
       ".error-detail"
     );
