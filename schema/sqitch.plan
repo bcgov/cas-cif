@@ -97,3 +97,5 @@ computed_columns/project_revision_project_manager_form_changes_by_label [compute
 mutations/add_emission_intensity_report_to_revision 2022-07-19T20:38:25Z Gurjeet Matharu <gurjeet@matharuco.com> # Custom mutation to add an emission intensity report form change and reporting requirement formchange.
 tables/report_type_001 [tables/report_type] 2022-07-19T20:48:05Z Gurjeet Matharu <gurjeet@matharuco.com> # Adding an TEIMP report type.
 mutations/discard_emission_intensity_report 2022-07-19T21:06:39Z Gurjeet Matharu <gurjeet@matharuco.com> # Discarding emission intensitry report and coresponding reporting requirement
+computed_columns/project_revision_milestone_report_statuses [computed_columns/project_revision_milestone_report_statuses@1.0.0-rc.1] 2022-07-22T22:10:58Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Excluding archived form changes
+computed_columns/project_revision_upcoming_reporting_requirement_form_change [computed_columns/project_revision_upcoming_reporting_requirement_form_change@1.0.0-rc.1] 2022-07-22T22:12:33Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Excluding archived form changes
