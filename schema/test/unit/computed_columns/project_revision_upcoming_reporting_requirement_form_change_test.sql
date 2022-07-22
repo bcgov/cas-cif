@@ -17,7 +17,8 @@ insert into cif.form_change(id, new_form_data, operation, form_data_schema_name,
     (4, '{"reportType":"Annual","comments":"due annual record", "reportDueDate":"2000-02-20T12:00:01-07"}','create', 'cif', 'reporting_requirement', 1, 'reporting_requirement'),
     (5, '{"reportType":"Annual","comments":"next due annual record", "reportDueDate":"2006-02-20T12:00:01-07"}','create', 'cif', 'reporting_requirement', 1, 'reporting_requirement'),
     (6, '{"reportType":"General Milestone","comments":"I am a milestone", "reportDueDate":"2006-02-20T12:00:01-07"}','create', 'cif', 'reporting_requirement', 1, 'reporting_requirement'),
-    (7, '{"reportType":"Performance Milestone","comments":"I am the next due milestone", "reportDueDate":"2005-02-20T12:00:01-07"}','create', 'cif', 'reporting_requirement', 1, 'reporting_requirement');
+    (7, '{"reportType":"Performance Milestone","comments":"I am the next due milestone", "reportDueDate":"2005-02-20T12:00:01-07"}','create', 'cif', 'reporting_requirement', 1, 'reporting_requirement'),
+    (8, '{"reportType":"Performance Milestone","comments":"I am an archived performance milestone", "reportDueDate":"1999-02-20T12:00:01-07"}','archive', 'cif', 'reporting_requirement', 1, 'reporting_requirement');
 
 
 /***** END SETUP *****/
@@ -33,7 +34,7 @@ select is(
   (
     4
   ),
-  'Returns returns the earliest form_change without a submitted_date when no report_type is specified'
+  'Returns the earliest form_change without a submitted_date when no report_type is specified and not returning the archived record'
 );
 
 
