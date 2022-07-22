@@ -16,7 +16,7 @@ import {
   paymentSchema,
   paymentUiSchema,
 } from "data/jsonSchemaForm/paymentSchema";
-import { ProjectMilestoneReportForm_reportingReqiurement$key } from "__generated__/ProjectMilestoneReportForm_reportingReqiurement.graphql";
+import { ProjectMilestoneReportForm_reportingRequirement$key } from "__generated__/ProjectMilestoneReportForm_reportingRequirement.graphql";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { useCreateFormChange } from "mutations/FormChange/createFormChange";
 
@@ -39,7 +39,7 @@ interface Props {
       id: string;
       newFormData: { reportDueDate: string };
       changeStatus: string;
-      asReportingRequirement: ProjectMilestoneReportForm_reportingReqiurement$key;
+      asReportingRequirement: ProjectMilestoneReportForm_reportingRequirement$key;
       formDataRecordId: number;
     };
     reportingRequirementIndex: number;
@@ -74,7 +74,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
 }) => {
   const { hasExpenses } = useFragment(
     graphql`
-      fragment ProjectMilestoneReportForm_reportingReqiurement on ReportingRequirement {
+      fragment ProjectMilestoneReportForm_reportingRequirement on ReportingRequirement {
         hasExpenses
       }
     `,
