@@ -100,6 +100,8 @@ describe("when creating a project, the project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.findByRole("link", { name: /Submit changes/i }).click();
+    cy.findByRole("button", { name: /Review and submit information/i }).click();
 
     //review and submit
     cy.contains("Review and Submit Project");
