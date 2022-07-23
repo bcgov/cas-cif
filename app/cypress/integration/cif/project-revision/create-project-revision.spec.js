@@ -99,9 +99,10 @@ describe("when creating a project, the project page", () => {
     cy.addEmissionIntensityReport("2022-01-01", "2022-02-02", "1", "2", "3");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");
-    cy.findByRole("button", { name: /^submit/i }).click();
-    cy.findByRole("link", { name: /Submit changes/i }).click();
-    cy.findByRole("button", { name: /Review and submit information/i }).click();
+    cy.findByText(/Submit TEIMP Report/).click();
+
+    // No annual reports
+    cy.findByText(/Submit Annual Reports/i).click();
 
     //review and submit
     cy.contains("Review and Submit Project");
@@ -147,7 +148,7 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Loblaw004, Bob004");
     cy.findByText(/^Measurement period start date/i)
       .next()
-      .should("have.text", "2022-01-01");
+      .should("have.text", "Jan 1, 2022");
     cy.findByText(/^Functional Unit/i)
       .next()
       .should("have.text", "1");

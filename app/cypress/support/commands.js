@@ -375,9 +375,6 @@ Cypress.Commands.add(
     baselineEmissionIntensity,
     targetEmissionIntensity
   ) => {
-    cy.findByRole("button", {
-      name: /Add TEIMP Agreement/i,
-    }).click();
     cy.addMeasurementPeriodStartDate(measurementPeriodStartDate);
     cy.addMeasurementPeriodEndDate(measurmentPeriodEndDate);
     cy.get('[aria-label="Functional Unit"]').clear().type(functionalUnit);
