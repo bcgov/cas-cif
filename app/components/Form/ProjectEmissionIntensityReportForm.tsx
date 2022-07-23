@@ -124,6 +124,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     <>
       {projectRevision.emissionIntensityReportFormChange.edges.length === 0 && (
         <Button
+          disabled={isAddingEmissionsIntensityReportFormChange}
           onClick={() =>
             addProjectEmissionsIntensityReport({
               variables: {
@@ -205,7 +206,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           <Button
             size="medium"
             variant="primary"
-            onClick={() =>
+            onClick={() => {
               stageReportFormChanges(
                 updateEmissionsIntensityReportFormChange,
                 props.onSubmit,
@@ -217,8 +218,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
                 ],
                 "TEIMP",
                 updateFormChange
-              )
-            }
+              );
+            }}
             disabled={
               isAddingEmissionsIntensityReportFormChange ||
               isUpdatingEmissionsIntensityReportFormChange ||
