@@ -61,6 +61,13 @@ describe("the new project page", () => {
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project quarterly reports Form", "empty", "main");
 
+    // Emissions Intensity Report
+    cy.findByText("Emissions Intensity Report").click();
+    cy.findByText(/Add emissions intensity report/i).click();
+    cy.findByText(/Add TEIMP Agreement/i).click();
+    cy.contains("Changes saved.");
+    cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
+
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
@@ -126,7 +133,7 @@ describe("the new project page", () => {
 
     cy.findByRole("heading", { name: /Annual reports/i }).click();
     cy.findByRole("link", { name: /Annual reports/i }).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/Annual Report 1/);
   });
@@ -207,10 +214,28 @@ describe("the new project page", () => {
       ".error-detail"
     );
 
+    // Emissions intensity report
+    cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
+    cy.findByText(/Edit emissions intensity report/i).click();
+    cy.url().should("include", "/form/6");
+
+    cy.findByRole("button", {
+      name: /Add TEIMP /i,
+    }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 3);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe(
+      "Emissions intensity report Form",
+      "with errors",
+      ".error-detail"
+    );
+
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /add another annual report/i }).click();
     cy.findByRole("status").first().should("have.text", "On track");
     cy.contains("Changes saved").should("be.visible");
