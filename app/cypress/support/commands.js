@@ -147,7 +147,7 @@ Cypress.Commands.add(
     cy.contains(opsTeamPrimary).click();
 
     // FIXME: adding project managers does not trigger the saving indicator
-    cy.wait(1000);
+    cy.findByText(/Changes saved/i).should("be.visible");
     cy.contains("Changes saved");
   }
 );
@@ -174,13 +174,9 @@ Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
   cy.url().should("include", "/form/2");
 
   cy.findByLabelText(/Primary contact/i).click();
-  cy.contains(primaryContact).click();
+  cy.findAllByRole("option").contains(primaryContact).click();
 
-  // TODO: figure out why we need to wait when setting the primary contact
-  cy.wait(1000);
-  cy.get("button").contains("Add").click();
-  // TODO: figure out why we need to wait when setting the primary contact
-  cy.wait(1000);
+  cy.findByRole("button", { name: /add/i }).click();
   cy.get("label")
     .contains("Secondary Contacts")
     .parent()
@@ -188,8 +184,6 @@ Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
     .last()
     .click();
   cy.contains(secondaryContact).click();
-  // TODO: figure out why we need to wait when setting the primary contact
-  cy.wait(1000);
 });
 
 Cypress.Commands.add(
@@ -343,9 +337,8 @@ Cypress.Commands.add(
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
-    cy.wait(1000);
+    cy.findByText(`Quarterly Report ${reportNumber}`).should("be.visible");
 
-    cy.contains(`Quarterly Report ${reportNumber}`).should("be.visible");
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.addDueDate(reportNumber, reportDueDate);
 

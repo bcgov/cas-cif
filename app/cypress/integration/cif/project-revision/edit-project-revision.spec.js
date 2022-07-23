@@ -118,7 +118,7 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/No reports due/).should("be.visible");
     cy.contains("Changes saved.");
 
-    cy.wait(1000);
+    cy.findByText(/Complete/i).should("be.visible");
     cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
