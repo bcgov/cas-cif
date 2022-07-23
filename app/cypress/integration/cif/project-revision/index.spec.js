@@ -218,8 +218,8 @@ describe("the new project page", () => {
     );
 
     // Emissions intensity report
-    cy.findByText(/Emissions Intensity Report/i).click();
-    cy.findByText(/Add Emissions Intensity Report/i).click();
+    cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
+    cy.findByText(/Edit emissions intensity report/i).click();
     cy.url().should("include", "/form/6");
 
     cy.findByRole("button", {
