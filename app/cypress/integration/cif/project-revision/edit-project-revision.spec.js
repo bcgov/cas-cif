@@ -126,9 +126,19 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
+    // edit teimp
+    cy.contains("Review and Submit Project");
+    cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
+    cy.findByText(/Edit emissions intensity report/i).click();
+    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.addEmissionIntensityReport("2022-01-01", "2022-02-02", "1", "2", "3");
+    cy.contains("Changes saved.");
+    cy.happoAndAxe("Project teimp agreement form", "editing", "main");
+    cy.findByText(/Submit TEIMP report/i).click();
+
     // edit annual reports -- change comments
     cy.contains("Review and Submit Project");
-    cy.findByRole("heading", { name: /6. Annual reports/i }).click();
+    cy.findByRole("heading", { name: /7. Annual reports/i }).click();
     cy.findByText(/Edit annual reports/i).click();
     cy.findByText("Annual Report 1").click();
     cy.get('[aria-label*="General Comments"]')
@@ -166,6 +176,11 @@ describe("when editing a project, the project page", () => {
       .should("have.text", "ADDED");
 
     cy.findByText("Quarterly Report Removed").should("be.visible");
+
+    cy.get("#root_measurementPeriodStartDate-diffNew")
+      .next()
+      .next()
+      .should("have.text", "ADDED");
 
     cy.get("#root_comments-diffOld").should(
       "have.text",
