@@ -271,8 +271,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formContext?.oldData?.[props.name],
           formData,
-          uiSchema?.["ui:widget"] === "MoneyWidget" ||
-            uiSchema?.["ui:widget"] === "ConditionalAmountWidget",
+          uiSchema?.["ui:widget"] === "MoneyWidget",
           uiSchema?.["ui:widget"] === "PercentageWidget"
         );
       } else if (
@@ -283,8 +282,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberAdded(
           id,
           formData,
-          uiSchema?.["ui:widget"] === "MoneyWidget" ||
-            uiSchema?.["ui:widget"] === "ConditionalAmountWidget",
+          uiSchema?.["ui:widget"] === "MoneyWidget",
           uiSchema?.["ui:widget"] === "PercentageWidget"
         );
       } else if (
@@ -294,8 +292,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberRemoved(
           id,
           formContext?.oldData?.[props.name],
-          uiSchema?.["ui:widget"] === "MoneyWidget" ||
-            uiSchema?.["ui:widget"] === "ConditionalAmountWidget",
+          uiSchema?.["ui:widget"] === "MoneyWidget",
           uiSchema?.["ui:widget"] === "PercentageWidget"
         );
       } else {
