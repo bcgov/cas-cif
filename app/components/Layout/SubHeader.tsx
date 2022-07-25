@@ -17,7 +17,7 @@ export default function SubHeader() {
       )
     );
     if (highlightedLink) return highlightedLink.name;
-    return "Dashboard";
+    return "Home";
   }, [router]);
 
   return (
@@ -25,10 +25,8 @@ export default function SubHeader() {
       <ul>
         <li>
           <Link href="/cif">
-            <a
-              className={highlightedLinkName === "Dashboard" ? "highlight" : ""}
-            >
-              Dashboard
+            <a className={highlightedLinkName === "Home" ? "highlight" : ""}>
+              Home
             </a>
           </Link>
         </li>

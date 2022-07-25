@@ -5,10 +5,10 @@ import { mocked } from "jest-mock";
 jest.mock("next/router");
 
 describe("The SubHeader Component", () => {
-  it("Renders the dashboard link", () => {
+  it("Renders the home link", () => {
     mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
     render(<SubHeader />);
-    expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
+    expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
       "/cif"
     );
@@ -18,7 +18,7 @@ describe("The SubHeader Component", () => {
     mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
     render(<SubHeader />);
 
-    expect(screen.getByText("Dashboard").closest("a")).toHaveStyle(
+    expect(screen.getByText("Home").closest("a")).toHaveStyle(
       "text-decoration: underline;"
     );
     expect(screen.getByText("Projects").closest("a")).not.toHaveStyle(
@@ -31,7 +31,7 @@ describe("The SubHeader Component", () => {
     } as any);
     render(<SubHeader />);
 
-    expect(screen.getByText("Dashboard").closest("a")).not.toHaveStyle(
+    expect(screen.getByText("Home").closest("a")).not.toHaveStyle(
       "text-decoration: underline;"
     );
     expect(screen.getByText("Projects").closest("a")).toHaveStyle(
