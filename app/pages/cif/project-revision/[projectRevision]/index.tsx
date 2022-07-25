@@ -20,7 +20,7 @@ import {
   getProjectsPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
-} from "pageRoutes";
+} from "routes/pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";

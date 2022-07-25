@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
-import { getProjectRevisionFormPageRoute } from "pageRoutes";
+import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import Link from "next/link";
 

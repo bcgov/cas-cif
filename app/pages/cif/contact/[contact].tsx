@@ -3,7 +3,7 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { getContactFormPageRoute } from "pageRoutes";
+import { getContactFormPageRoute } from "routes/pageRoutes";
 import { ContactViewQuery } from "__generated__/ContactViewQuery.graphql";
 import { Button } from "@button-inc/bcgov-theme";
 import useCreateEditContactFormChange from "mutations/Contact/createEditContactFormChange";

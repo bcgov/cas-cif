@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getContactViewPageRoute } from "pageRoutes";
+import { getContactViewPageRoute } from "routes/pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ContactTableRow_contact$key } from "__generated__/ContactTableRow_contact.graphql";
 

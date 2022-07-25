@@ -12,7 +12,7 @@ import { useUpdateContactFormChange } from "mutations/FormChange/updateContactFo
 import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
 import { useRouter } from "next/router";
-import { getContactsPageRoute } from "pageRoutes";
+import { getContactsPageRoute } from "routes/pageRoutes";
 import { graphql, useFragment } from "react-relay";
 import { ContactForm_formChange$key } from "__generated__/ContactForm_formChange.graphql";
 

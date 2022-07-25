@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getProjectRevisionFormPageRoute } from "pageRoutes";
+import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ProjectTableRow_project$key } from "__generated__/ProjectTableRow_project.graphql";
 import Money from "lib/helpers/Money";

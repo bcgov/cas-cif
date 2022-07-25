@@ -9,7 +9,7 @@ import OperatorTableRow from "components/Operator/OperatorTableRow";
 import { NoHeaderFilter, TextFilter } from "components/Table/Filters";
 import { useCreateNewOperatorFormChange } from "mutations/Operator/createNewOperatorFormChange";
 import { useRouter } from "next/router";
-import { getOperatorFormPageRoute } from "pageRoutes";
+import { getOperatorFormPageRoute } from "routes/pageRoutes";
 import { createNewOperatorFormChangeMutation$data } from "__generated__/createNewOperatorFormChangeMutation.graphql";
 
 export const OperatorsQuery = graphql`

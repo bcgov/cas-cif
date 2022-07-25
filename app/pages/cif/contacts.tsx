@@ -10,7 +10,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import { useCreateNewContactFormChange } from "mutations/Contact/createNewContactFormChange";
 import { useRouter } from "next/router";
 import { createNewContactFormChangeMutation$data } from "__generated__/createNewContactFormChangeMutation.graphql";
-import { getContactFormPageRoute } from "pageRoutes";
+import { getContactFormPageRoute } from "routes/pageRoutes";
 
 export const ContactsQuery = graphql`
   query contactsQuery(

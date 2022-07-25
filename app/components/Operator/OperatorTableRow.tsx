@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getOperatorViewPageRoute } from "pageRoutes";
+import { getOperatorViewPageRoute } from "routes/pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { OperatorTableRow_operator$key } from "__generated__/OperatorTableRow_operator.graphql";
 
