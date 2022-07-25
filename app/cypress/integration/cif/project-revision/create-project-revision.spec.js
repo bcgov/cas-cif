@@ -85,7 +85,9 @@ describe("when creating a project, the project page", () => {
       "I am the second general comment"
     );
     cy.findAllByRole("status").first().should("have.text", "Complete");
-    cy.contains("Changes saved").should("be.visible");
+    cy.get('[aria-label="General Comments"]')
+      .eq(0)
+      .should("have.value", "I am the first general comment");
     cy.happoAndAxe("Project quarterly reports Form", "filled", "main");
     cy.contains("Changes saved").should("be.visible");
     cy.findByText(/^submit/i).click();
