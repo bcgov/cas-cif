@@ -94,3 +94,6 @@ computed_columns/reporting_requirement_has_expenses [tables/report_type tables/r
 mutations/undo_form_changes [mutations/undo_form_changes@1.0.0-rc.1] 2022-07-19T23:31:18Z Mike Vesprini <mike@button.is> # Handle empty project form
 util_functions/get_form_status [util_functions/get_form_status@1.0.0-rc.1] 2022-07-19T23:33:37Z Mike Vesprini <mike@button.is> # Empty project forms return not started
 computed_columns/project_revision_project_manager_form_changes_by_label [computed_columns/project_revision_project_manager_form_changes_by_label@1.0.0-rc.1] 2022-07-25T20:35:46Z Dylan Leard <dylan@button.is> # Migration: explicitly order return object
+mutations/add_emission_intensity_report_to_revision 2022-07-19T20:38:25Z Gurjeet Matharu <gurjeet@matharuco.com> # Custom mutation to add an emission intensity report form change and reporting requirement formchange.
+tables/report_type_001 [tables/report_type] 2022-07-19T20:48:05Z Gurjeet Matharu <gurjeet@matharuco.com> # Adding an TEIMP report type.
+mutations/discard_emission_intensity_report 2022-07-19T21:06:39Z Gurjeet Matharu <gurjeet@matharuco.com> # Discarding emission intensitry report and coresponding reporting requirement

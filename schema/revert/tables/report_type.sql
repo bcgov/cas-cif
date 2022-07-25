@@ -1,8 +1,7 @@
--- Deploy cif:tables/report_type to pg
-
+-- Revert cif:tables/report_type from pg
 
 begin;
 
-delete from cif.report_type where name = 'TEIMP';
+drop table cif.report_type;
 
 commit;
