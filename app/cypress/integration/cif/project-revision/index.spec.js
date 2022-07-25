@@ -78,8 +78,7 @@ describe("the new project page", () => {
     cy.findByText(/project managers not added/i).should("be.visible");
     cy.findByText(/milestone reports not added/i).should("be.visible");
     cy.findByText(/quarterly reports not added/i).should("be.visible");
-    // TODO: add below assertion back in when bug is fixed
-    // cy.findByText(/annual reports not added/i).should("be.visible");
+    cy.findByText(/annual reports not added/i).should("be.visible");
 
     cy.happoAndAxe("Project summary Form", "empty", "main", true);
   });
@@ -118,7 +117,7 @@ describe("the new project page", () => {
     cy.findByRole("link", { name: "Project contacts" }).click();
     cy.url().should("include", "/form/2");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    //TODO: if contacts are added to the dev data projects, change below assertion
+    // If contacts are added to the dev data projects, change below assertion
     cy.findByText(/Primary contact not added/).should("be.visible");
 
     // budgets, expenses, and payments
