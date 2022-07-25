@@ -148,7 +148,7 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Loblaw004, Bob004");
     cy.findByText(/^Measurement period start date/i)
       .next()
-      .should("have.text", "Jan 1, 2022");
+      .should("have.text", "Jan. 1, 2022");
     cy.findByText(/^Functional Unit/i)
       .next()
       .should("have.text", "1");
