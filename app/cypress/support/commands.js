@@ -173,17 +173,18 @@ Cypress.Commands.add(
 Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
   cy.url().should("include", "/form/2");
 
-  cy.findByLabelText(/Primary contact/i).click();
+  cy.findByLabelText(/^Primary contact/i).click();
   cy.findAllByRole("option").contains(primaryContact).click();
+  cy.findByText("bob.l003@example.com").should("be.visible");
 
-  cy.findByRole("button", { name: /add/i }).click();
-  cy.get("label")
-    .contains("Secondary Contacts")
-    .parent()
-    .find("input")
-    .last()
+  cy.findByRole("button", { name: /add a secondary contact/i }).click();
+  cy.findAllByRole("combobox").should("have.length", 2);
+  cy.findByText(/^Secondary contact/i)
+    .next()
+    .findAllByRole("combobox")
     .click();
   cy.contains(secondaryContact).click();
+  cy.findByText("bob.l003@example.com").should("be.visible");
 });
 
 Cypress.Commands.add(
