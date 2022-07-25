@@ -1,7 +1,7 @@
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import subHeaderLinks from "data/subHeaderLinks";
+import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
 import { useMemo } from "react";
 import { match } from "path-to-regexp";
 
