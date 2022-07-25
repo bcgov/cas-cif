@@ -78,8 +78,7 @@ describe("the new project page", () => {
     cy.findByText(/project managers not added/i).should("be.visible");
     cy.findByText(/milestone reports not added/i).should("be.visible");
     cy.findByText(/quarterly reports not added/i).should("be.visible");
-    // TODO: add below assertion back in when bug is fixed
-    // cy.findByText(/annual reports not added/i).should("be.visible");
+    cy.findByText(/annual reports not added/i).should("be.visible");
 
     cy.happoAndAxe("Project summary Form", "empty", "main", true);
   });
