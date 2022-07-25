@@ -16,7 +16,8 @@ $computed_column$
   ) select row(pml.*), row(latest_changes.*) as form_change
     from latest_changes
     right join cif.project_manager_label pml
-      on (new_form_data->'projectManagerLabelId')::int = pml.id;
+      on (new_form_data->'projectManagerLabelId')::int = pml.id
+    order by pml.id asc;
 
 $computed_column$ language sql stable;
 
