@@ -70,8 +70,8 @@ export const createMilestoneReportingRequirementSchema = (allReportTypes) => {
   return schema as JSONSchema7;
 };
 
-export const createMilestoneSchema = () => {
-  const schema = milestoneSchema;
+export const createMilestoneSchema = (reportType?: String) => {
+  const schema = JSON.parse(JSON.stringify(milestoneSchema));
   schema.properties.certifierProfessionalDesignation = {
     ...schema.properties.certifierProfessionalDesignation,
     anyOf: ["Professional Engineer", "Certified Professional Accountant"].map(
@@ -85,6 +85,24 @@ export const createMilestoneSchema = () => {
       }
     ),
   };
+
+  if (reportType === "Reporting Milestone")
+    delete schema.properties.totalEligibleExpenses;
+  delete schema.properties.maximumAmount;
+  schema.required = [];
+  if (reportType !== "Reporting Milestone") {
+    schema.required = ["totalEligibleExpenses", "maximumAmount"];
+    schema.properties.totalEligibleExpenses = {
+      type: "number",
+      title: "Total Eligible Expenses",
+      default: undefined,
+    };
+    schema.properties.maximumAmount = {
+      type: "number",
+      title: "Maximum Amount",
+      default: undefined,
+    };
+  }
 
   return schema as JSONSchema7;
 };
