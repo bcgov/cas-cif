@@ -48,10 +48,10 @@ describe("when editing a project, the project page", () => {
       .click();
     cy.findByLabelText(/tech team primary/i).should("be.empty");
 
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
+    cy.happoAndAxe("Project manager Form", "editing", "main");
+    cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-
-    // cy.happoAndAxe("Project manager Form", "editing", "main");
 
     // edit contacts -- add a secondary contact
     cy.contains("Review and Submit Project");
@@ -63,8 +63,8 @@ describe("when editing a project, the project page", () => {
     cy.contains("Loblaw003").click();
 
     cy.contains("Changes saved.").should("be.visible");
-
-    // cy.happoAndAxe("Project contacts Form", "editing", "main");
+    cy.happoAndAxe("Project contacts Form", "editing", "main");
+    cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project").should("be.visible");
