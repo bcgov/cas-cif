@@ -87,6 +87,7 @@ describe("when creating a project, the project page", () => {
     cy.findAllByRole("status").first().should("have.text", "Complete");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project quarterly reports Form", "filled", "main");
+    cy.contains("Changes saved").should("be.visible");
     cy.findByText(/^submit/i).click();
 
     //add annual reports

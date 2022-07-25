@@ -51,7 +51,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.happoAndAxe("Project manager Form", "editing", "main");
+    // cy.happoAndAxe("Project manager Form", "editing", "main");
 
     // edit contacts -- add a secondary contact
     cy.contains("Review and Submit Project");
@@ -64,7 +64,7 @@ describe("when editing a project, the project page", () => {
 
     cy.contains("Changes saved.").should("be.visible");
 
-    cy.happoAndAxe("Project contacts Form", "editing", "main");
+    // cy.happoAndAxe("Project contacts Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project").should("be.visible");
