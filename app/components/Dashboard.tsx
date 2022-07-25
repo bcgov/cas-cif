@@ -8,7 +8,8 @@ import {
   getOperatorsPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectsPageRoute,
-} from "pageRoutes";
+} from "routes/pageRoutes";
+import { getMetabaseRoute, getSupportEmailMailTo } from "routes/externalRoutes";
 import { mutation as createProjectMutation } from "mutations/Project/createProject";
 import { createProjectMutation$data } from "__generated__/createProjectMutation.graphql";
 import { useRouter } from "next/router";
@@ -87,7 +88,10 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
       </header>
       <div>
         <section>
-          <h3 id="projects-heading">Projects</h3>
+          <div id="projects-heading">
+            <h3>Projects</h3>
+            <small>Create, view and manage projects</small>
+          </div>
           <nav aria-labelledby="projects-heading">
             <Link passHref href={getProjectsPageRoute()}>
               <BCGovLink>Projects List</BCGovLink>
@@ -96,7 +100,10 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           </nav>
         </section>
         <section>
-          <h3 id="reporting-op-heading">Reporting Operations</h3>
+          <div id="reporting-op-heading">
+            <h3>Reporting Operations</h3>
+            <small>Create, manage and search</small>
+          </div>
           <nav aria-labelledby="reporting-op-heading">
             <Link passHref href={getOperatorsPageRoute()}>
               <BCGovLink>Operators</BCGovLink>
@@ -108,8 +115,22 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
         </section>
         {isAdmin && (
           <section>
-            <h3 id="admin-heading">Administration</h3>
-            <nav aria-labelledby="admin-heading"></nav>
+            <div id="admin-heading">
+              <h3>Administration</h3>
+            </div>
+            <nav aria-labelledby="admin-heading">
+              <Link passHref href={getMetabaseRoute()}>
+                <a target="_blank">Data Insights (Metabase)</a>
+              </Link>
+              <Link
+                passHref
+                href={decodeURI(
+                  getSupportEmailMailTo("CIF App: Report a problem!").pathname
+                )}
+              >
+                <a target="_blank">Report a Problem</a>
+              </Link>
+            </nav>
           </section>
         )}
       </div>
@@ -127,13 +148,12 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           border-radius: 4px;
         }
 
-        section > h3 {
-          min-height: 5rem;
-          margin-bottom: 0;
+        section > div {
+          min-height: 5.2rem;
         }
 
         :global(section > nav > *),
-        section > h3 {
+        section > div {
           padding: 0.75rem 1.25rem;
         }
 
@@ -142,7 +162,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
         }
 
         :global(section > nav > *:not(:last-child)),
-        section > h3 {
+        section > div {
           border-bottom: 1px solid #939393;
         }
 

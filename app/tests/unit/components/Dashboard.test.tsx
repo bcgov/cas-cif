@@ -7,6 +7,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledDashboardTestQuery, {
   DashboardTestQuery,
 } from "__generated__/DashboardTestQuery.graphql";
+import getConfig from "next/config";
 
 const testQuery = graphql`
   query DashboardTestQuery @relay_test_operation {
@@ -39,6 +40,8 @@ const componentTestingHelper = new ComponentTestingHelper<DashboardTestQuery>({
   defaultQueryVariables: {},
   defaultComponentProps: {},
 });
+
+const supportEmail = getConfig()?.publicRuntimeConfig?.SUPPORT_EMAIL;
 
 describe("The Dashboard", () => {
   beforeEach(() => {
@@ -113,6 +116,60 @@ describe("The Dashboard", () => {
     expect(screen.getByText(/resume project/i).closest("a")).toHaveAttribute(
       "href",
       "/cif/project-revision/mock-id-1/form/0?anchor="
+    );
+  });
+  it("Shows dashboard links with admin privileges", () => {
+    const customQueryPayload = {
+      Query() {
+        return {
+          session: {
+            cifUserBySub: {
+              givenName: "Bob the Admin",
+            },
+            userGroups: ["cif_admin"],
+          },
+          pendingNewProjectRevision: null,
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(customQueryPayload);
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/Welcome, Bob the Admin/i)).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: /projects/i,
+      })
+    ).toBeVisible();
+    expect(screen.getByText("Create, view and manage projects")).toBeVisible();
+    expect(screen.getByText(/Projects List/i)).toHaveAttribute(
+      "href",
+      "/cif/projects"
+    );
+    expect(screen.getByText(/Create a new Project/i)).toBeVisible();
+    expect(screen.getByText(/Reporting Operations/i)).toBeVisible();
+    expect(screen.getByText("Create, manage and search")).toBeVisible();
+    expect(screen.getByText(/Operators/i)).toHaveAttribute(
+      "href",
+      "/cif/operators"
+    );
+    expect(screen.getByText(/Contacts/i)).toHaveAttribute(
+      "href",
+      "/cif/contacts"
+    );
+    expect(screen.getByText(/Administration/i)).toBeVisible();
+    expect(
+      screen.getByRole("link", {
+        name: /data insights \(metabase\)/i,
+      })
+    ).toHaveAttribute("href", "https://cas-metabase.nrs.gov.bc.ca/");
+    expect(
+      screen.getByRole("link", {
+        name: /report a problem/i,
+      })
+    ).toHaveAttribute(
+      "href",
+      `mailto:${supportEmail}?subject=CIF App: Report a problem!`
     );
   });
 });
