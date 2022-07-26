@@ -3,7 +3,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
-import formPages from "data/formPages";
+import defaultFormPages from "data/formPages";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
@@ -17,6 +17,7 @@ import {
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
+import { useFeature } from "@growthbook/growthbook-react";
 
 const pageQuery = graphql`
   query FormIndexPageQuery($projectRevision: ID!) {
@@ -67,6 +68,12 @@ export function ProjectFormPage({
 }: RelayProps<{}, FormIndexPageQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
   const router = useRouter();
+
+  // Growthbook - teimp
+  const showTeimpForm = useFeature("teimp").on;
+  const formPages = defaultFormPages.filter(
+    (obj) => obj.title !== "emission reports" || showTeimpForm
+  );
 
   let mode: TaskListMode;
   if (!query.projectRevision?.projectId) mode = "create";

@@ -15,6 +15,7 @@ import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import { DateTime } from "luxon";
+import { useFeature } from "@growthbook/growthbook-react";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -113,6 +114,12 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     if (!router || !router.pathname) return null;
     return (router.query.formIndex as string) ?? "summary";
   }, [router]);
+
+  // Growthbook - teimp
+  const sectionIndex = {
+    annual: useFeature("teimp").on ? 7 : 6,
+    summary: useFeature("teimp").on ? 8 : 7,
+  };
 
   return (
     <div className="container">
@@ -257,36 +264,39 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         </TaskListSection>
 
         {/* Emissions Intensity Report */}
-        <TaskListSection
-          defaultExpandedState={
-            currentStep === "6" ||
-            quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
-          }
-          listItemNumber="6"
-          listItemName="Emissions Intensity Report"
-        >
-          <TaskListItem
-            stepName="6"
-            linkUrl={getProjectRevisionFormPageRoute(id, 6)}
-            formTitle="Emissions Intensity Report"
-            formStatus={quarterlyReportsStatus}
-            currentStep={currentStep}
-            mode={mode}
-          />
-        </TaskListSection>
+        {/* Growthbook - teimp */}
+        {useFeature("teimp").on && (
+          <TaskListSection
+            defaultExpandedState={
+              currentStep === "6" ||
+              quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
+            }
+            listItemNumber="6"
+            listItemName="Emissions Intensity Report"
+          >
+            <TaskListItem
+              stepName="6"
+              linkUrl={getProjectRevisionFormPageRoute(id, 6)}
+              formTitle="Emissions Intensity Report"
+              formStatus={quarterlyReportsStatus}
+              currentStep={currentStep}
+              mode={mode}
+            />
+          </TaskListSection>
+        )}
 
         {/* Annual Reports Section */}
         <TaskListSection
           defaultExpandedState={
-            currentStep === "7" ||
+            currentStep === String(sectionIndex.annual) ||
             annualReportsStatus === ATTENTION_REQUIRED_STATUS
           }
-          listItemNumber="7"
+          listItemNumber={String(sectionIndex.annual)}
           listItemName="Annual Reports"
         >
           <TaskListItem
-            stepName="7"
-            linkUrl={getProjectRevisionFormPageRoute(id, 7)}
+            stepName={String(sectionIndex.annual)}
+            linkUrl={getProjectRevisionFormPageRoute(id, sectionIndex.annual)}
             formTitle="Annual reports"
             formStatus={annualReportsStatus}
             currentStep={currentStep}
@@ -298,7 +308,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {mode !== "view" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
-            listItemNumber="8"
+            listItemNumber={String(sectionIndex.summary)}
             listItemName="Submit changes"
           >
             <TaskListItem

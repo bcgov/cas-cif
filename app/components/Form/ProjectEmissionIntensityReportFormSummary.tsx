@@ -13,6 +13,7 @@ import {
   emissionIntensityReportUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
+import { useFeature } from "@growthbook/growthbook-react";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props {
@@ -109,6 +110,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
     summaryEmissionIntensityReport?.isPristine,
     summaryReportingRequirement?.isPristine,
   ]);
+
+  // Growthbook - teimp
+  if (!useFeature("teimp").on) return null;
 
   if (
     allFormChangesPristine ||
