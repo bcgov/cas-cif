@@ -14,4 +14,4 @@ runs:
       run: docker run --network=host -e "PGUSER=postgres" --workdir="/root/mocks_schema" ghcr.io/bcgov/cas-cif-schema:${{ github.sha }} sqitch deploy
     - name: start app
       shell: bash
-      run: docker run -d --network=host -e "PGUSER=postgres" -e "GROWTHBOOK_API_KEY={{ secrets.GROWTHBOOK_API_KEY }}" -e "BYPASS_GROWTHBOOK=true" -p 3004:3004 ghcr.io/bcgov/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "ENABLE_MOCK_TIME='true' SHOW_KC_LOGIN='true' ENABLE_MOCK_AUTH='true' BYPASS_GROWTHBOOK=true yarn start"
+      run: docker run -d --network=host -e "PGUSER=postgres" -e "GROWTHBOOK_API_KEY=${{ secrets.GROWTHBOOK_API_KEY }}" -e "BYPASS_GROWTHBOOK=true" -p 3004:3004 ghcr.io/bcgov/cas-cif-app:${{ github.sha }} "/usr/bin/env" "bash" "-c" "ENABLE_MOCK_TIME='true' SHOW_KC_LOGIN='true' ENABLE_MOCK_AUTH='true' yarn start"
