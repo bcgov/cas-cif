@@ -483,7 +483,7 @@ Cypress.Commands.add(
 
     if (reportMaxAmount) {
       cy.get('[aria-label="Maximum Amount"]').type(100);
-      cy.get('[aria-label="Total EligibleExpenses"]').type(100);
+      cy.get('[aria-label="Total Eligible Expenses"]').type(100);
     }
 
     cy.addDueDate(reportNumber, reportDueDate);
