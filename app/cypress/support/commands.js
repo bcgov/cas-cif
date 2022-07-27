@@ -146,7 +146,6 @@ Cypress.Commands.add(
     cy.findByLabelText(/ops team primary/i).click();
     cy.contains(opsTeamPrimary).click();
 
-    // FIXME: adding project managers does not trigger the saving indicator
     cy.findByText(/Changes saved/i).should("be.visible");
     cy.contains("Changes saved");
   }
@@ -170,22 +169,30 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
-  cy.url().should("include", "/form/2");
+Cypress.Commands.add(
+  "fillContactsForm",
+  (
+    primaryContact,
+    primaryContactEmail,
+    secondaryContact,
+    secondaryContactEmail
+  ) => {
+    cy.url().should("include", "/form/2");
 
-  cy.findByLabelText(/^Primary contact/i).click();
-  cy.findAllByRole("option").contains(primaryContact).click();
-  cy.findByText("bob.l003@example.com").should("be.visible");
+    cy.findByLabelText(/^Primary contact/i).click();
+    cy.findAllByRole("option").contains(primaryContact).click();
+    cy.findByText(primaryContactEmail).should("be.visible");
 
-  cy.findByRole("button", { name: /add a secondary contact/i }).click();
-  cy.findAllByRole("combobox").should("have.length", 2);
-  cy.findByText(/^Secondary contact/i)
-    .next()
-    .findAllByRole("combobox")
-    .click();
-  cy.contains(secondaryContact).click();
-  cy.findByText("bob.l003@example.com").should("be.visible");
-});
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
+    cy.findAllByRole("combobox").should("have.length", 2);
+    cy.findByText(/^Secondary contact/i)
+      .next()
+      .findAllByRole("combobox")
+      .click();
+    cy.contains(secondaryContact).click();
+    cy.findByText(secondaryContactEmail).should("be.visible");
+  }
+);
 
 Cypress.Commands.add(
   "checkContactsForm",

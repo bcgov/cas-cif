@@ -46,7 +46,12 @@ describe("when undoing, the project revision page", () => {
 
     // undo contacts
     cy.findByText(/Add project contacts/i).click();
-    cy.fillContactsForm("Loblaw003", "Loblaw004");
+    cy.fillContactsForm(
+      "Loblaw003",
+      "bob.l003@example.com",
+      "Loblaw004",
+      "bob.l004@example.com"
+    );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkContactsForm("", "");
 
