@@ -6,16 +6,29 @@ In case of a database corruption, crash or any other issue requiring us to resto
 
 ## Makefile target
 
+**Prerequisites:**
+
+- The ENVIRONMENT (dev,test,prod) and CIF_NAMESPACE_PREFIX, GGIRCS_NAMESPACE_PREFIX, CIIP_NAMESPACE_PREFIX environment variables are set
+- The machine is logged in onto the cluster where the CIF app is deployed (`oc login ...`)
+
+**Restoring the DB:**
+
 To restore the database to any point in time, simply run:
 
 ```
 make restore TARGET_TIMESTAMP="2022-05-24 14:20:00-07"
 ```
 
-where:
+where TARGET_TIMESTAMP follows the format 'YYYY-MM-DD HH:MM:SS-ZZ'
 
-- TARGET_TIMESTAMP should follow the format 'YYYY-MM-DD HH:MM:SS-ZZ'
-- The ENVIRONMENT (dev,test,prod) and CIF_NAMESPACE_PREFIX, GGIRCS_NAMESPACE_PREFIX, CIIP_NAMESPACE_PREFIX environment variables are set
+This will create a restore job with the `postgres-operator.crunchydata.com/pgbackrest-restore` label.
+Once this job is completed, the restore operation is completed, and the application can be redeployed to its original state.
+
+:warning: Some target environments (-dev and -test) have a `db-pre-upgrade` job that might erase the database and revert the effects of the restore operation.
+
+```
+make install
+```
 
 ---
 
