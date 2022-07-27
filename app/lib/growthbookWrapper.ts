@@ -4,5 +4,5 @@ import getConfig from "next/config";
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
 export default function useShowGrowthbookFeature(feature: string) {
-  return useFeature(feature).on || !runtimeConfig.BYPASS_GROWTHBOOK;
+  return useFeature(feature).on || runtimeConfig.BYPASS_GROWTHBOOK;
 }
