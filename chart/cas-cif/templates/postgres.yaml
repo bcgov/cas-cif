@@ -5,7 +5,7 @@ metadata:
   labels: {{ include "cas-cif.labels" . | nindent 4 }}
   {{- if .Values.db.restore.enabled }}
   annotations:
-    postgres-operator.crunchydata.com/pgbackrest-restore: {{ now | date "2006-01-02 15:04:05.000000" }}
+    postgres-operator.crunchydata.com/pgbackrest-restore: {{ now | date "2006-01-02 15:04:05.000000" | quote }}
   {{- end }}
 spec:
   metadata:
@@ -87,7 +87,7 @@ spec:
         repoName: repo1
         options:
         - --type=time
-        - --target={{ .Values.db.restore.targetTimestamp }}
+        - --target={{ .Values.db.restore.targetTimestamp | quote }}
     {{- end }}
       global:
         repo1-retention-full: "90"
