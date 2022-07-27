@@ -17,7 +17,7 @@ import {
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
-import { useFeature } from "@growthbook/growthbook-react";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 const pageQuery = graphql`
   query FormIndexPageQuery($projectRevision: ID!) {
@@ -70,7 +70,7 @@ export function ProjectFormPage({
   const router = useRouter();
 
   // Growthbook - teimp
-  const showTeimpForm = useFeature("teimp").on;
+  const showTeimpForm = useShowGrowthbookFeature("teimp");
   const formPages = defaultFormPages.filter(
     (obj) => obj.title !== "emission reports" || showTeimpForm
   );

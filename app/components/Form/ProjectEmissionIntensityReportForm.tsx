@@ -17,7 +17,7 @@ import SavingIndicator from "./SavingIndicator";
 import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
-import { useFeature } from "@growthbook/growthbook-react";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -122,7 +122,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   };
 
   // Growthbook - teimp
-  if (!useFeature("teimp").on) return null;
+  if (!useShowGrowthbookFeature("teimp")) return null;
   return (
     <>
       {projectRevision.emissionIntensityReportFormChange.edges.length === 0 && (

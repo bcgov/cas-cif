@@ -15,7 +15,7 @@ import TaskListSection from "./TaskListSection";
 import { TaskListMode } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import { DateTime } from "luxon";
-import { useFeature } from "@growthbook/growthbook-react";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -117,8 +117,8 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
   // Growthbook - teimp
   const sectionIndex = {
-    annual: useFeature("teimp").on ? 7 : 6,
-    summary: useFeature("teimp").on ? 8 : 7,
+    annual: useShowGrowthbookFeature("teimp") ? 7 : 6,
+    summary: useShowGrowthbookFeature("teimp") ? 8 : 7,
   };
 
   return (
@@ -265,7 +265,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
 
         {/* Emissions Intensity Report */}
         {/* Growthbook - teimp */}
-        {useFeature("teimp").on && (
+        {useShowGrowthbookFeature("teimp") && (
           <TaskListSection
             defaultExpandedState={
               currentStep === "6" ||
