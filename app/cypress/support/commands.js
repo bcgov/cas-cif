@@ -482,8 +482,8 @@ Cypress.Commands.add(
     );
 
     if (reportMaxAmount) {
-      cy.get('[aria-label*="Enter Amount"]').click();
       cy.get('[aria-label="Maximum Milestone Amount"]').type(100);
+      cy.get('[aria-label="Total EligibleExpenses"]').type(100);
     }
 
     cy.addDueDate(reportNumber, reportDueDate);

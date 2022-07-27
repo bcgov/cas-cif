@@ -191,7 +191,7 @@ describe("the new project page", () => {
     cy.findByText(/Add another milestone report/i).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.get(".error-detail").should("have.length", 2);
+    cy.get(".error-detail").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project milestone reports Form",

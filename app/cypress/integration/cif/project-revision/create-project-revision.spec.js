@@ -73,6 +73,8 @@ describe("when creating a project, the project page", () => {
 
     cy.url().should("include", "/form/4");
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
+    cy.get('[aria-label="Maximum Amount"]').clear().type(100);
+    cy.get('[aria-label="Total Eligible Expenses"]').clear().type(100);
     cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
