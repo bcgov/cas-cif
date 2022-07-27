@@ -278,8 +278,9 @@ restore: NAMESPACE=$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 restore: GGIRCS_NAMESPACE=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT)
 restore: CHART_DIR=./chart/cas-cif
 restore: CHART_INSTANCE=cas-cif
+restore: # We make sure to use the same image tag as the current release
 restore: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
-										--set defaultImageTag=$(IMAGE_TAG) \
+										--set defaultImageTag=$$(helm get values cas-cif | grep defaultImageTag | cut -d' ' -f 2-) \
 										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
 										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
 										--set deploy-db.enabled=false \
@@ -295,7 +296,7 @@ restore:
 	fi; \
 	helm dep up $(CHART_DIR); \
 	helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
-	echo "Restore completed!";
+	echo "Restore initiated - wait until restore pod is completed to redeploy with 'make install'.";
 
 
 .PHONY: release
