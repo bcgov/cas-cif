@@ -31,6 +31,8 @@ Click `Create` and the new feature will show up in the Growthbook dashboard.
 
 In order for the feature toggling in the Growthbook dashboard to actually do anything, we need to add some code to declare anything we want to be able to show/hide. We have a custom wrapper (lib/growthbookWrapper) that allows us to bypass growthbook & show features even if growthbook is down (or in our cypress test github action, where features should always be enabled).
 
+To bypass growthbook locally, add `BYPASS_GROWTHBOOK=true` to your .env
+
 Example:
 
 ```typescript
@@ -45,4 +47,4 @@ const showFlaggedFeature = useShowGrowthbookFeature('flagged-feature'); // Set t
 
 ### Cleanup
 
-Once a feature flag is no longer necessary, any code that was added (ex: `useFeature`) should be removed and the flag in Growthbook can be deleted.
+Once a feature flag is no longer necessary, any code that was added (ex: `useShowGrowthbookFeature`) should be removed and the flag in Growthbook can be deleted.
