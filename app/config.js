@@ -200,6 +200,12 @@ var config = convict({
     default: "",
     env: "GROWTHBOOK_API_KEY",
   },
+  bypassGrowthbook: {
+    doc: "Bypass growthbook feature flags",
+    format: Boolean,
+    default: false,
+    env: "BYPASS_GROWTHBOOK",
+  },
 });
 
 // In case default host is used with non-default port

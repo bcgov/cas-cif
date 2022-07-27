@@ -29,15 +29,17 @@ Click `Create` and the new feature will show up in the Growthbook dashboard.
 
 ### Using Growthbook in the code
 
-In order for the feature toggling in the Growthbook dashboard to actually do anything, we need to add some code to wrap anything we want to be able to show/hide.
+In order for the feature toggling in the Growthbook dashboard to actually do anything, we need to add some code to declare anything we want to be able to show/hide. We have a custom wrapper (lib/growthbookWrapper) that allows us to bypass growthbook & show features even if growthbook is down (or in our cypress test github action, where features should always be enabled).
+
+To bypass growthbook locally, add `BYPASS_GROWTHBOOK=true` to your .env
 
 Example:
 
 ```typescript
-import { useFeature } from "@growthbook/growthbook-react"; // Import the useFeature() function
+import useShowGrowthbookFeature from "lib/growthbookWrapper"; // Import the growthbook wrapper function
 ...
 ...
-const showFlaggedFeature = useFeature('flagged-feature').on; // Set the value of useFeature.on to a boolean variable
+const showFlaggedFeature = useShowGrowthbookFeature('flagged-feature'); // Set the boolean return value of our wrapper to a variable
 ...
 ...
 { showFlaggedFeature && <FlaggedFeature />} // Conditionally render the feature. You may also want to just return null for an entire component    depending on what is being turned off / on
@@ -45,4 +47,4 @@ const showFlaggedFeature = useFeature('flagged-feature').on; // Set the value of
 
 ### Cleanup
 
-Once a feature flag is no longer necessary, any code that was added (ex: `useFeature`) should be removed and the flag in Growthbook can be deleted.
+Once a feature flag is no longer necessary, any code that was added (ex: `useShowGrowthbookFeature`) should be removed and the flag in Growthbook can be deleted.
