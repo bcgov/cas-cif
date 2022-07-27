@@ -172,4 +172,11 @@ describe("The Dashboard", () => {
       `mailto:${supportEmail}?subject=CIF App: Report a problem!`
     );
   });
+  it("Doesn't show admin links for non-admin users", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    expect(screen.queryByText(/Administration/i)).toBeNull();
+    expect(screen.queryByText(/data insights \(metabase\)/i)).toBeNull();
+    expect(screen.queryByText(/report a problem/i)).toBeNull();
+  });
 });

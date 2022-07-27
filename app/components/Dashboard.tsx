@@ -120,7 +120,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
             </div>
             <nav aria-labelledby="admin-heading">
               <Link passHref href={getMetabaseRoute()}>
-                <a target="_blank">Data Insights (Metabase)</a>
+                <BCGovLink target="_blank">Data Insights (Metabase)</BCGovLink>
               </Link>
               <Link
                 passHref
@@ -128,7 +128,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
                   getSupportEmailMailTo("CIF App: Report a problem!").pathname
                 )}
               >
-                <a target="_blank">Report a Problem</a>
+                <BCGovLink target="_blank">Report a Problem</BCGovLink>
               </Link>
             </nav>
           </section>
