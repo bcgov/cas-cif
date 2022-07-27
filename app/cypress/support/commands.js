@@ -146,8 +146,7 @@ Cypress.Commands.add(
     cy.findByLabelText(/ops team primary/i).click();
     cy.contains(opsTeamPrimary).click();
 
-    // FIXME: adding project managers does not trigger the saving indicator
-    cy.wait(1000);
+    cy.findByText(/Changes saved/i).should("be.visible");
     cy.contains("Changes saved");
   }
 );
@@ -170,27 +169,30 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add("fillContactsForm", (primaryContact, secondaryContact) => {
-  cy.url().should("include", "/form/2");
+Cypress.Commands.add(
+  "fillContactsForm",
+  (
+    primaryContact,
+    primaryContactEmail,
+    secondaryContact,
+    secondaryContactEmail
+  ) => {
+    cy.url().should("include", "/form/2");
 
-  cy.findByLabelText(/Primary contact/i).click();
-  cy.contains(primaryContact).click();
+    cy.findByLabelText(/^Primary contact/i).click();
+    cy.findAllByRole("option").contains(primaryContact).click();
+    cy.findByText(primaryContactEmail).should("be.visible");
 
-  // TODO: figure out why we need to wait when setting the primary contact
-  cy.wait(1000);
-  cy.get("button").contains("Add").click();
-  // TODO: figure out why we need to wait when setting the primary contact
-  cy.wait(1000);
-  cy.get("label")
-    .contains("Secondary Contacts")
-    .parent()
-    .find("input")
-    .last()
-    .click();
-  cy.contains(secondaryContact).click();
-  // TODO: figure out why we need to wait when setting the primary contact
-  cy.wait(1000);
-});
+    cy.findByRole("button", { name: /add a secondary contact/i }).click();
+    cy.findAllByRole("combobox").should("have.length", 2);
+    cy.findByText(/^Secondary contact/i)
+      .next()
+      .findAllByRole("combobox")
+      .click();
+    cy.contains(secondaryContact).click();
+    cy.findByText(secondaryContactEmail).should("be.visible");
+  }
+);
 
 Cypress.Commands.add(
   "checkContactsForm",
@@ -343,9 +345,8 @@ Cypress.Commands.add(
     cy.findByRole("button", {
       name: /add another quarterly report/i,
     }).click();
-    cy.wait(1000);
+    cy.findByText(`Quarterly Report ${reportNumber}`).should("be.visible");
 
-    cy.contains(`Quarterly Report ${reportNumber}`).should("be.visible");
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
     cy.addDueDate(reportNumber, reportDueDate);
 

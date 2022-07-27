@@ -39,7 +39,12 @@ describe("when creating a project, the project page", () => {
 
     // add contacts
     cy.findByText(/Add project contacts/i).click();
-    cy.fillContactsForm("Loblaw003", "Loblaw004");
+    cy.fillContactsForm(
+      "Loblaw003",
+      "bob.l003@example.com",
+      "Loblaw004",
+      "bob.l004@example.com"
+    );
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project contacts Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
