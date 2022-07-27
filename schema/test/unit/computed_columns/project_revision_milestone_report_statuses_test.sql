@@ -8,7 +8,7 @@ truncate cif.project restart identity cascade;
 
 insert into cif.project_revision(id, change_status)
   overriding system value
-  values (1, 'pending'), (2, 'pending');
+  values (1, 'pending'), (2, 'pending'), (3, 'committed');
 
 insert into cif.form_change(id, new_form_data, operation, change_status, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, json_schema_name, validation_errors)
   overriding system value
@@ -42,6 +42,37 @@ insert into cif.form_change(id, new_form_data, operation, change_status, form_da
      'payment',
      1,
      1,
+     'payment',
+     '[]'),
+    (5,
+     format('{"reportDueDate": "%s", "projectId": 1, "reportType": "General Milestone", "reportingRequirementIndex": 1}',
+     now() + interval '2 days')::jsonb,
+     'archive',
+     'committed',
+     'cif',
+     'reporting_requirement',
+     1,
+     3,
+     'reporting_requirement',
+     '[]'),
+    (6,
+     format('{"reportingRequirementId": 1}')::jsonb,
+     'archive',
+     'committed',
+     'cif',
+     'milestone_report',
+     1,
+     3,
+     'milestone_report',
+     '[]'),
+    (7,
+     format('{"reportingRequirementId": 1}')::jsonb,
+     'archive',
+     'committed',
+     'cif',
+     'payment',
+     1,
+     3,
      'payment',
      '[]');
 
@@ -147,6 +178,16 @@ select results_eq(
       ((1::int, now() + interval '2 days', null, 'No Changes'::text)::cif.milestone_report_status_return)
   $$,
   'Returns the correct data for No Changes status'
+);
+
+select is_empty(
+  $$
+    with record as (
+      select row(project_revision.*)::cif.project_revision
+      from cif.project_revision where id=3
+    ) select cif.project_revision_milestone_report_statuses((select * from record))
+  $$,
+  'Returns nothing if the form change operation is archive'
 );
 
 select finish();
