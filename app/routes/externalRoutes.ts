@@ -6,7 +6,10 @@ export const getMetabaseRoute = () => ({
 });
 
 ///// Support email mailto:
-const supportEmail = getConfig()?.publicRuntimeConfig?.SUPPORT_EMAIL;
-export const getSupportEmailMailTo = (subject?: string) => ({
-  pathname: `mailto:${supportEmail}${subject ? `?subject=${subject}` : ""}`,
-});
+export const getSupportEmailMailTo = (subject?: string) => {
+  return {
+    pathname: `mailto:${getConfig()?.publicRuntimeConfig?.SUPPORT_EMAIL}${
+      subject ? `?subject=${subject}` : ""
+    }`,
+  };
+};

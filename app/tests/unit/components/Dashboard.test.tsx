@@ -8,6 +8,8 @@ import compiledDashboardTestQuery, {
   DashboardTestQuery,
 } from "__generated__/DashboardTestQuery.graphql";
 import getConfig from "next/config";
+import { mocked } from "jest-mock";
+jest.mock("next/config");
 
 const testQuery = graphql`
   query DashboardTestQuery @relay_test_operation {
@@ -41,7 +43,12 @@ const componentTestingHelper = new ComponentTestingHelper<DashboardTestQuery>({
   defaultComponentProps: {},
 });
 
-const supportEmail = getConfig()?.publicRuntimeConfig?.SUPPORT_EMAIL;
+// mocking the getConfig function to return a mocked config object to be used in `getSupportEmailMailTo` function
+mocked(getConfig).mockImplementation(() => ({
+  publicRuntimeConfig: {
+    SUPPORT_EMAIL: "test@email.com",
+  },
+}));
 
 describe("The Dashboard", () => {
   beforeEach(() => {
@@ -169,7 +176,7 @@ describe("The Dashboard", () => {
       })
     ).toHaveAttribute(
       "href",
-      `mailto:${supportEmail}?subject=CIF App: Report a problem!`
+      "mailto:test@email.com?subject=CIF App: Report a problem!"
     );
   });
   it("Doesn't show admin links for non-admin users", () => {

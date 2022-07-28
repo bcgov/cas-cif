@@ -1,6 +1,4 @@
-import getConfig from "next/config";
-
-const supportEmail = getConfig()?.publicRuntimeConfig?.SUPPORT_EMAIL;
+import { getSupportEmailMailTo } from "routes/externalRoutes";
 
 const footerLinks = [
   {
@@ -25,7 +23,7 @@ const footerLinks = [
   },
   {
     name: "Contact Us",
-    href: `mailto:${supportEmail}?subject=CIF App: Report a problem!`,
+    href: getSupportEmailMailTo("CIF App: Report a problem!").pathname,
   },
 ];
 

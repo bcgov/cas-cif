@@ -124,9 +124,9 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
               </Link>
               <Link
                 passHref
-                href={decodeURI(
+                href={
                   getSupportEmailMailTo("CIF App: Report a problem!").pathname
-                )}
+                }
               >
                 <BCGovLink target="_blank">Report a Problem</BCGovLink>
               </Link>

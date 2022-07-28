@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BCGovFooter from "@button-inc/bcgov-theme/Footer";
 import footerLinks from "data/dashboardLinks/footerLinks";
+import BCGovLink from "@button-inc/bcgov-theme/Link";
 
 const Footer = () => {
   return (
@@ -8,10 +9,10 @@ const Footer = () => {
       <ul>
         {footerLinks.map(({ name, href }) => (
           <li key={name}>
-            <Link href={href}>
-              <a target="_blank" style={{ textDecoration: "none" }}>
+            <Link passHref href={href}>
+              <BCGovLink target="_blank" style={{ textDecoration: "none" }}>
                 {name}
-              </a>
+              </BCGovLink>
             </Link>
           </li>
         ))}
