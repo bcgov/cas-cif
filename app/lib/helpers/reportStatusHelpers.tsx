@@ -6,7 +6,7 @@ export const parseStringDate = (stringDate: string) => {
   return (
     stringDate &&
     DateTime.fromISO(stringDate, {
-      setZone: true,
+      zone: "America/Vancouver",
       locale: "en-CA",
     }).startOf("day")
   );
