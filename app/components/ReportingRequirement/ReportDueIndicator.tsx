@@ -63,6 +63,7 @@ const ReportDueIndicator: React.FC<Props> = ({
                   <b>
                     {DateTime.fromISO(reportingRequirement.reportDueDate)
                       .setLocale("en-CA")
+                      .setZone("America/Vancouver")
                       .toLocaleString(DateTime.DATE_MED)}
                   </b>{" "}
                   <Link href={`#form-${formChange.id}`}>
