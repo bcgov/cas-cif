@@ -15,7 +15,10 @@ const FieldLabel: React.FC<Props> = ({
     return null;
   }
 
-  const displayedLabel = label + (required ? "" : " (optional)") + " ";
+  const displayedLabel =
+    label === "GHG Emission Intensity Performance"
+      ? "GHG Emission Intensity Performance"
+      : label + (required ? "" : " (optional)") + " ";
 
   if (tagName === "label")
     return <label htmlFor={htmlFor}>{displayedLabel}</label>;

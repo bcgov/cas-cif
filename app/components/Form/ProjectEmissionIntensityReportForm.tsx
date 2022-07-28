@@ -58,6 +58,9 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           edges {
             node {
               id
+              asEmissionIntensityReport {
+                calculatedEiPerformance
+              }
               rowId
               newFormData
               changeStatus
@@ -75,6 +78,10 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const reportingRequirementFormChange =
     projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
       ?.node;
+
+  const calculatedEiPerformance =
+    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
+      .asEmissionIntensityReport.calculatedEiPerformance;
 
   const [
     addProjectEmissionsIntensityReport,
@@ -196,6 +203,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             formData={emissionIntensityReportFormChange?.newFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
+              calculatedValue: calculatedEiPerformance,
+              isPercent: true,
             }}
             uiSchema={emissionIntensityReportUiSchema}
             onChange={(change) =>

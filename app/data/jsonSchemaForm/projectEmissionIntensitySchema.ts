@@ -39,6 +39,14 @@ export const emissionIntensityReportSchema = {
       title: "Total lifetime emissions reductions",
       type: "number",
     },
+    calculatedGHGEmissionIntensityPerformance: {
+      title: "GHG Emission Intensity Performance",
+      type: "number",
+    },
+    adjustedGHGEmissionIntensityPerformance: {
+      title: "GHG Emission Intensity Performance (Adjusted)",
+      type: "number",
+    },
   },
 };
 
@@ -83,6 +91,14 @@ export const emissionIntensityReportUiSchema = {
   },
   totalLifetimeEmissionReduction: {
     "ui:widget": "TextWidget",
+  },
+  calculatedGHGEmissionIntensityPerformance: {
+    "ui:widget": "ReadOnlyCalculatedValueWidget",
+    isPercent: true,
+  },
+  adjustedGHGEmissionIntensityPerformance: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    isPercent: true,
   },
 };
 
