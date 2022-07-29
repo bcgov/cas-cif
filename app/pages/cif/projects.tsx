@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
 import { useCreateProjectMutation } from "mutations/Project/createProject";
 import { useRouter } from "next/router";
-import { getProjectRevisionFormPageRoute } from "pageRoutes";
+import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import Table from "components/Table";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import {

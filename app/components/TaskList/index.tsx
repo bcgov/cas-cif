@@ -5,7 +5,7 @@ import {
   getProjectRevisionPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectRevisionAttachmentsPageRoute,
-} from "pageRoutes";
+} from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";

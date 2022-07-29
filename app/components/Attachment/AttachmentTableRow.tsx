@@ -1,6 +1,6 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
-import { getAttachmentDownloadRoute } from "pageRoutes";
+import { getAttachmentDownloadRoute } from "routes/pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
 

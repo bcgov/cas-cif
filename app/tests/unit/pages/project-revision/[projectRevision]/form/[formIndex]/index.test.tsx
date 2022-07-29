@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import {
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
-} from "pageRoutes";
+} from "routes/pageRoutes";
 import ProjectFormPage from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledFormIndexPageQuery, {

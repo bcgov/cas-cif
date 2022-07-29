@@ -6,7 +6,7 @@ import { OperatorViewQuery } from "__generated__/OperatorViewQuery.graphql";
 import { useRouter } from "next/router";
 import { createEditOperatorFormChangeMutation$data } from "__generated__/createEditOperatorFormChangeMutation.graphql";
 import useCreateEditOperatorFormChange from "mutations/Operator/createEditOperatorFormChange";
-import { getOperatorFormPageRoute } from "pageRoutes";
+import { getOperatorFormPageRoute } from "routes/pageRoutes";
 import { Button } from "@button-inc/bcgov-theme";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 

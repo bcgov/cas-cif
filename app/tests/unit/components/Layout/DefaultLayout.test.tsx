@@ -55,7 +55,7 @@ describe("The DefaultLayout component", () => {
     });
     componentTestingHelper.renderComponent();
     expect(screen.getByText("CleanBC Industry Fund")).toBeVisible();
-    expect(screen.queryByText("Dashboard")).toBeNull();
+    expect(screen.queryByText("Home")).toBeNull();
     expect(screen.queryByText("Projects")).toBeNull();
   });
 
@@ -63,15 +63,15 @@ describe("The DefaultLayout component", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("Dashboard")).toBeVisible();
+    expect(screen.getByText("Home")).toBeVisible();
     expect(screen.getByText("Projects")).toBeVisible();
   });
 
-  it("should render the Dashboard link to /cif", () => {
+  it("should render the Home link to /cif", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute(
+    expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
       "/cif"
     );

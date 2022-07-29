@@ -3,7 +3,7 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCreateNewContactFormChange } from "mutations/Contact/createNewContactFormChange";
 import { useRouter } from "next/router";
-import { getContactFormPageRoute } from "pageRoutes";
+import { getContactFormPageRoute } from "routes/pageRoutes";
 import { createNewContactFormChangeMutation$data } from "__generated__/createNewContactFormChangeMutation.graphql";
 
 interface Props {

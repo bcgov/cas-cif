@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import {
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
-} from "pageRoutes";
+} from "routes/pageRoutes";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";

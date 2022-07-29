@@ -1,7 +1,7 @@
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import subHeaderLinks from "data/subHeaderLinks";
+import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
 import { useMemo } from "react";
 import { match } from "path-to-regexp";
 
@@ -17,7 +17,7 @@ export default function SubHeader() {
       )
     );
     if (highlightedLink) return highlightedLink.name;
-    return "Dashboard";
+    return "Home";
   }, [router]);
 
   return (
@@ -25,10 +25,8 @@ export default function SubHeader() {
       <ul>
         <li>
           <Link href="/cif">
-            <a
-              className={highlightedLinkName === "Dashboard" ? "highlight" : ""}
-            >
-              Dashboard
+            <a className={highlightedLinkName === "Home" ? "highlight" : ""}>
+              Home
             </a>
           </Link>
         </li>

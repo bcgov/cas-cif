@@ -1,7 +1,7 @@
 import OperatorForm from "components/Operator/OperatorForm";
 import relayFormPageFactory from "lib/pages/relayFormPageFactory";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { getOperatorsPageRoute } from "pageRoutes";
+import { getOperatorsPageRoute } from "routes/pageRoutes";
 import { withRelay } from "relay-nextjs";
 
 const [FormPage, query] = relayFormPageFactory(
