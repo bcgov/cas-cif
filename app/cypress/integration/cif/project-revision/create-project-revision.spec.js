@@ -104,13 +104,15 @@ describe("when creating a project, the project page", () => {
     // add teimp reports
     cy.findByRole("link", { name: /Emissions Intensity Report/i }).click();
     cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
+    cy.findAllByText("tCO2e").should("have.length", 4);
     cy.addEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
-      "1",
+      "tCO",
+      "G",
       "2",
-      "3",
-      "4"
+      "3"
     );
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main", true);
@@ -121,6 +123,8 @@ describe("when creating a project, the project page", () => {
 
     //review and submit
     cy.contains("Review and Submit Project");
+
+    // project overview section
     cy.findByText(/Funding Stream RFP ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2020");
@@ -136,6 +140,8 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Summary/i)
       .next()
       .should("have.text", "Bar");
+
+    // funding agreement section
     cy.findByText(/Total Funding Request/i)
       .next()
       .should("have.text", "$100.00");
@@ -146,6 +152,8 @@ describe("when creating a project, the project page", () => {
       .eq(0)
       .next()
       .should("have.text", "Some comments");
+
+    // project managers section
     cy.findByText(/tech team primary/i)
       .next()
       .should("have.text", "Swanson, Ron");
@@ -155,18 +163,26 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/ops team primary/i)
       .next()
       .should("have.text", "Knope, Leslie");
+
+    // project contacts section
     cy.contains(/Primary contact/i)
       .next()
       .should("have.text", "Loblaw003, Bob003");
     cy.findByText(/^Secondary contacts/i)
       .next()
       .should("have.text", "Loblaw004, Bob004");
+
+    // TEIMP section
     cy.findByText(/^Measurement period start date/i)
       .next()
       .should("have.text", "Jan. 1, 2022");
     cy.findByText(/^Functional Unit/i)
       .next()
-      .should("have.text", "1");
+      .should("have.text", "tCO");
+    cy.findByText(/^Production Functional Unit/i)
+      .next()
+      .should("have.text", "G");
+
     cy.happoAndAxe("Project summary Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");

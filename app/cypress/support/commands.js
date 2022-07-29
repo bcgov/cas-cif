@@ -382,15 +382,24 @@ Cypress.Commands.add(
   "addEmissionIntensityReport",
   (
     measurementPeriodStartDate,
-    measurmentPeriodEndDate,
-    functionalUnit,
+    measurementPeriodEndDate,
+    emissionFunctionalUnit,
+    productionFunctionalUnit = undefined,
     baselineEmissionIntensity,
     targetEmissionIntensity,
     postProjectEmissionIntensity
   ) => {
     cy.addMeasurementPeriodStartDate(measurementPeriodStartDate);
-    cy.addMeasurementPeriodEndDate(measurmentPeriodEndDate);
-    cy.get('[aria-label="Functional Unit"]').clear().type(functionalUnit);
+    cy.addMeasurementPeriodEndDate(measurementPeriodEndDate);
+    cy.get('[aria-label="Functional Unit"]')
+      .clear()
+      .type(emissionFunctionalUnit);
+
+    if (productionFunctionalUnit)
+      cy.get('[aria-label="Production Functional Unit"]')
+        .clear()
+        .type(productionFunctionalUnit);
+
     cy.get('[aria-label="Base Line Emission Intensity (BEI)"]')
       .clear()
       .type(baselineEmissionIntensity);
@@ -400,6 +409,12 @@ Cypress.Commands.add(
     cy.get('[aria-label*="Post Project Emission Intensity"]')
       .clear()
       .type(postProjectEmissionIntensity);
+
+    cy.findAllByText(
+      `${emissionFunctionalUnit}${
+        productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
+      }`
+    ).should("have.length", 4);
 
     return cy.url().should("include", "/form/6");
   }
