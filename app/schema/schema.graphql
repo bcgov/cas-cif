@@ -45088,6 +45088,9 @@ type ProjectRevision implements Node {
     reportType: String
   ): FormChangesConnection!
 
+  """Computed column to total the net payments made for a project revision"""
+  grossPaymentAmount: BigFloat
+
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
@@ -45125,6 +45128,7 @@ type ProjectRevision implements Node {
     """
     offset: Int
   ): MilestoneReportStatusReturnsConnection!
+  netPaymentAmount: BigFloat
 
   """Reads a single `Project` that is related to this `ProjectRevision`."""
   projectByProjectId: Project
@@ -45444,8 +45448,14 @@ input ProjectRevisionFilter {
   """Some related `formChangesByProjectRevisionId` exist."""
   formChangesByProjectRevisionIdExist: Boolean
 
+  """Filter by the object’s `grossPaymentAmount` field."""
+  grossPaymentAmount: BigFloatFilter
+
   """Filter by the object’s `isFirstRevision` field."""
   isFirstRevision: BooleanFilter
+
+  """Filter by the object’s `netPaymentAmount` field."""
+  netPaymentAmount: BigFloatFilter
 
   """Negates the expression."""
   not: ProjectRevisionFilter
