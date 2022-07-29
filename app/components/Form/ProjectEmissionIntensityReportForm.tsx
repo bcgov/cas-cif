@@ -24,6 +24,46 @@ interface Props {
   onSubmit: () => void;
 }
 
+// passing content suffix to fields that need nominator and denominator (example: tCO2e/GJ)
+const createEmissionIntensityReportUiSchema = (
+  emissionFunctionalUnit: string,
+  productionFunctionalUnit?: string
+) => {
+  // Example: tCO2e/GJ if we have emissionFunctionalUnit
+  const contentSuffix: JSX.Element = emissionFunctionalUnit && (
+    <b>{`${emissionFunctionalUnit}${
+      productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
+    }`}</b>
+  );
+  return {
+    ...emissionIntensityReportUiSchema,
+    baselineEmissionIntensity: {
+      ...emissionIntensityReportUiSchema.baselineEmissionIntensity,
+      "ui:options": {
+        contentSuffix,
+      },
+    },
+    targetEmissionIntensity: {
+      ...emissionIntensityReportUiSchema.targetEmissionIntensity,
+      "ui:options": {
+        contentSuffix,
+      },
+    },
+    postProjectEmissionIntensity: {
+      ...emissionIntensityReportUiSchema.postProjectEmissionIntensity,
+      "ui:options": {
+        contentSuffix,
+      },
+    },
+    totalLifetimeEmissionReduction: {
+      ...emissionIntensityReportUiSchema.totalLifetimeEmissionReduction,
+      "ui:options": {
+        contentSuffix,
+      },
+    },
+  };
+};
+
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
 
@@ -83,6 +123,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .asEmissionIntensityReport.calculatedEiPerformance;
 
+  // Mutations
   const [
     addProjectEmissionsIntensityReport,
     isAddingEmissionsIntensityReportFormChange,
@@ -206,7 +247,12 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               calculatedValue: calculatedEiPerformance,
               isPercent: true,
             }}
-            uiSchema={emissionIntensityReportUiSchema}
+            uiSchema={createEmissionIntensityReportUiSchema(
+              emissionIntensityReportFormChange?.newFormData
+                .emissionFunctionalUnit,
+              emissionIntensityReportFormChange?.newFormData
+                .productionFunctionalUnit
+            )}
             onChange={(change) =>
               handleChange(
                 emissionIntensityReportFormChange,
