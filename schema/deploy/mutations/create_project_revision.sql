@@ -74,6 +74,17 @@ begin
     and p.archived_at is null
   union
     select
+      eir.id,
+      'update'::cif.form_change_operation as operation,
+      'emission_intensity_report' as form_data_table_name,
+      'emission_intensity_report' as json_schema_name
+    from cif.emission_intensity_report eir
+    join cif.reporting_requirement rr
+    on eir.reporting_requirement_id = rr.id
+    and rr.project_id = $1
+    and eir.archived_at is null
+  union
+    select
       id,
       'update'::cif.form_change_operation as operation,
       'funding_parameter' as form_data_table_name,
