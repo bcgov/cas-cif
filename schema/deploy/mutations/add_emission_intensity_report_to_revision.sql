@@ -50,7 +50,7 @@ as $add_emission_intensity_form_change$
         json_schema_name
       ) values (
           format(
-            '{"reportingRequirementId": %s }',
+            '{"reportingRequirementId": %s, "emissionFunctionalUnit": "tCO2e" }',
             (select form_data_record_id from rep_req)
           )::jsonb,
           'create',
