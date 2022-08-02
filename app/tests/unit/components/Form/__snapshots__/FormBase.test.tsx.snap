@@ -32,7 +32,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
                   field 
                 </label>
                 <div
-                  class="jsx-4128436805"
+                  class="jsx-2766936338 inputWrapper"
                 >
                   <div
                     class="sc-crHmcD bKATQK pg-input"
