@@ -178,10 +178,6 @@ describe("when editing a project, the project page", () => {
       .should("have.text", "REMOVED");
 
     cy.get("#root_contactId-diffNew").should("have.text", "Loblaw003, Bob003");
-    cy.get("#root_contactId-diffNew")
-      .next()
-      .next()
-      .should("have.text", "ADDED");
 
     cy.findByText("Quarterly Report Removed").should("be.visible");
 
