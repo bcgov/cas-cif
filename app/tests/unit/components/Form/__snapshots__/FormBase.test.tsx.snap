@@ -89,10 +89,13 @@ exports[`The FormBase component renders a test schema with the readonly theme 1`
                 field 
               </dt>
               <dd
-                class="jsx-2629253024"
+                class="jsx-41823073"
               >
                 test
               </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
             </div>
           </div>
         </div>

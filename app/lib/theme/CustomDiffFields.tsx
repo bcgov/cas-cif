@@ -9,7 +9,8 @@ const showStringDiff = (
   id: string,
   oldData: string,
   newData: string,
-  isDate: boolean = false
+  isDate?: boolean,
+  contentSuffix?: string
 ) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
@@ -24,13 +25,21 @@ const showStringDiff = (
     <span id={id && `${id}-diffNew`} className="diffNew">
       {isDate ? getLocaleFormattedDate(newData) : newData}
     </span>
+    <span
+      id={id && `${id}-contentSuffix`}
+      className="contentSuffix"
+      style={{ paddingLeft: "1em" }}
+    >
+      {contentSuffix}
+    </span>
   </>
 );
 
 const showStringAdded = (
   id: string,
   newData: string,
-  isDate: boolean = false
+  isDate: boolean = false,
+  contentSuffix?: string
 ) => (
   <>
     <span id={id && `${id}-diffNew`} className="diffNew">
@@ -47,13 +56,21 @@ const showStringAdded = (
         <em>ADDED</em>
       </strong>
     </span>
+    <span
+      id={id && `${id}-contentSuffix`}
+      className="contentSuffix"
+      style={{ paddingLeft: "1em" }}
+    >
+      {contentSuffix}
+    </span>
   </>
 );
 
 const showStringRemoved = (
   id: string,
   oldData: string,
-  isDate: boolean = false
+  isDate: boolean = false,
+  contentSuffix?: string
 ) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
@@ -69,6 +86,13 @@ const showStringRemoved = (
       <strong>
         <em>REMOVED</em>
       </strong>
+    </span>
+    <span
+      id={id && `${id}-contentSuffix`}
+      className="contentSuffix"
+      style={{ paddingLeft: "1em" }}
+    >
+      {contentSuffix}
     </span>
   </>
 );
@@ -201,28 +225,37 @@ const CUSTOM_DIFF_FIELDS: Record<
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
+    const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
 
     if (uiSchema["ui:options"]) {
       if (previousValue && formData && formContext.operation === "UPDATE") {
+        const oldData =
+          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ||
+          formContext?.oldData?.[props.name];
+        const newData = uiSchema["ui:options"].text || formData;
+
         return showStringDiff(
           id,
-          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text,
-          uiSchema["ui:options"].text as string
+          oldData,
+          newData as string,
+          false,
+          contentSuffix as string
         );
       } else if (
         !previousValue &&
         formData &&
         formContext.operation !== "ARCHIVE"
       ) {
-        return showStringAdded(id, uiSchema["ui:options"].text as string);
+        const newData = uiSchema["ui:options"].text || formData;
+        return showStringAdded(id, newData, false, contentSuffix as string);
       } else if (
         formContext.operation === "ARCHIVE" ||
         (!formData && previousValue)
       ) {
-        return showStringRemoved(
-          id,
-          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text
-        );
+        const oldData =
+          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ||
+          formContext?.oldData?.[props.name];
+        return showStringRemoved(id, oldData, false, contentSuffix as string);
       } else if (
         !previousValue &&
         !formData &&

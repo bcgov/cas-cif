@@ -25,10 +25,10 @@ interface Props {
 }
 
 // passing content suffix to fields that need nominator and denominator (example: tCO2e/GJ)
-const createEmissionIntensityReportUiSchema = (
-  emissionFunctionalUnit: string,
-  productionFunctionalUnit?: string
-) => {
+export const createEmissionIntensityReportUiSchema = ({
+  emissionFunctionalUnit,
+  productionFunctionalUnit,
+}) => {
   // Example: tCO2e/GJ if we have emissionFunctionalUnit
   const contentSuffix: JSX.Element = emissionFunctionalUnit && (
     <b>{`${emissionFunctionalUnit}${
@@ -249,9 +249,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
               emissionIntensityReportFormChange?.newFormData
-                .emissionFunctionalUnit,
-              emissionIntensityReportFormChange?.newFormData
-                .productionFunctionalUnit
             )}
             onChange={(change) =>
               handleChange(
