@@ -111,3 +111,4 @@ computed_columns/form_change_as_project [computed_columns/form_change_as_project
 tables/funding_parameter_001 2022-08-10T18:55:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add proponent cost field to funding_parameter table
 computed_columns/project_revision_gross_payment_amount 2022-07-29T21:34:20Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column returning the sum of all gross amounts paid out for a project revision
 computed_columns/project_revision_net_payment_amount 2022-07-29T21:36:02Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column returning the sum of all net amounts paid for a project revision
+computed_columns/project_revision_teimp_payment_percentage 2022-07-30T00:00:47Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column returning the teimp payment percentage for a project revision, according to the formula and table defined in schedule G
