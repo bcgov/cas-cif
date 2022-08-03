@@ -103,6 +103,6 @@ select is(
   'Returns null when there are no payments'
 );
 
-
+select finish();
 
 rollback;
