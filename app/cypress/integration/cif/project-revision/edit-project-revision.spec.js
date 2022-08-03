@@ -120,6 +120,7 @@ describe("when editing a project, the project page", () => {
 
     // this assertion is not necessary, but it's needed to slow down the test and run the accessibility checks correctly
     cy.findByText(/Complete/i).should("be.visible");
+    cy.wait(1000); // added a wait to prevent accessibility errors
     cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
