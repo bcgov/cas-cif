@@ -31033,6 +31033,9 @@ type EmissionIntensityReport implements Node {
   """
   baselineEmissionIntensity: BigFloat
 
+  """Returns the calculated EI intensity value"""
+  calculatedEiPerformance: BigFloat
+
   """
   Reads a single `CifUser` that is related to this `EmissionIntensityReport`.
   """
@@ -31195,6 +31198,9 @@ input EmissionIntensityReportFilter {
 
   """Filter by the object’s `baselineEmissionIntensity` field."""
   baselineEmissionIntensity: BigFloatFilter
+
+  """Filter by the object’s `calculatedEiPerformance` field."""
+  calculatedEiPerformance: BigFloatFilter
 
   """Filter by the object’s `cifUserByArchivedBy` relation."""
   cifUserByArchivedBy: CifUserFilter
@@ -31558,6 +31564,8 @@ enum EmissionIntensityReportsOrderBy {
 
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
+  asEmissionIntensityReport: EmissionIntensityReport
+
   """
   Computed column returns data from the new_form_data column as if it were a project to allow graph traversal via the foreign keys.
   """
@@ -31574,7 +31582,7 @@ type FormChange implements Node {
   asProjectManager: ProjectManager
 
   """
-  Computed column returns data from the new_form_data column as if it were a reporting_requirement record to allow graph traversal via the foreign keys.
+  Computed column returns data from the new_form_data column as if it were a emission_intensity_report record to allow graph traversal via the foreign keys.
   """
   asReportingRequirement: ReportingRequirement
 
