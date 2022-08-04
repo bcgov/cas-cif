@@ -70,7 +70,7 @@ describe("the new project page", () => {
     cy.findByText(/Add emissions intensity report/i).click();
     cy.findByText(/Add TEIMP Agreement/i).click();
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
+    cy.happoAndAxe("Emissions Intensity Report", "empty", "main", true);
 
     // Annual reports
     cy.findByText(/Annual reports/i).click();
@@ -231,7 +231,8 @@ describe("the new project page", () => {
     cy.happoAndAxe(
       "Emissions intensity report Form",
       "with errors",
-      ".error-detail"
+      ".error-detail",
+      true
     );
 
     // Annual reports

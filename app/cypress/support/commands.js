@@ -374,7 +374,8 @@ Cypress.Commands.add(
     measurmentPeriodEndDate,
     functionalUnit,
     baselineEmissionIntensity,
-    targetEmissionIntensity
+    targetEmissionIntensity,
+    postProjectEmissionIntensity
   ) => {
     cy.addMeasurementPeriodStartDate(measurementPeriodStartDate);
     cy.addMeasurementPeriodEndDate(measurmentPeriodEndDate);
@@ -385,6 +386,9 @@ Cypress.Commands.add(
     cy.get('[aria-label="Target Emission Intensity (TEI)"]')
       .clear()
       .type(targetEmissionIntensity);
+    cy.get('[aria-label*="Post Project Emission Intensity"]')
+      .clear()
+      .type(postProjectEmissionIntensity);
 
     return cy.url().should("include", "/form/6");
   }
