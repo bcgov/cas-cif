@@ -25,43 +25,40 @@ interface Props {
 }
 
 // passing content suffix to fields that need nominator and denominator (example: tCO2e/GJ)
-export const createEmissionIntensityReportUiSchema = ({
-  emissionFunctionalUnit,
-  productionFunctionalUnit,
-}) => {
+export const createEmissionIntensityReportUiSchema = (
+  emissionFunctionalUnit: string,
+  productionFunctionalUnit?: string
+) => {
+  // setting a deep copy of the ui schema to avoid mutating the original
+  const uiSchemaCopy = JSON.parse(
+    JSON.stringify(emissionIntensityReportUiSchema)
+  );
+
   // Example: tCO2e/GJ if we have emissionFunctionalUnit
   const contentSuffix: JSX.Element = emissionFunctionalUnit && (
     <b>{`${emissionFunctionalUnit}${
       productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
     }`}</b>
   );
-  return {
-    ...emissionIntensityReportUiSchema,
-    baselineEmissionIntensity: {
-      ...emissionIntensityReportUiSchema.baselineEmissionIntensity,
-      "ui:options": {
-        contentSuffix,
-      },
-    },
-    targetEmissionIntensity: {
-      ...emissionIntensityReportUiSchema.targetEmissionIntensity,
-      "ui:options": {
-        contentSuffix,
-      },
-    },
-    postProjectEmissionIntensity: {
-      ...emissionIntensityReportUiSchema.postProjectEmissionIntensity,
-      "ui:options": {
-        contentSuffix,
-      },
-    },
-    totalLifetimeEmissionReduction: {
-      ...emissionIntensityReportUiSchema.totalLifetimeEmissionReduction,
-      "ui:options": {
-        contentSuffix,
-      },
-    },
+
+  uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
+    contentSuffix,
   };
+  uiSchemaCopy.targetEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.targetEmissionIntensity["ui:options"],
+    contentSuffix,
+  };
+  uiSchemaCopy.postProjectEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.postProjectEmissionIntensity["ui:options"],
+    contentSuffix,
+  };
+  uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
+    ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
+    contentSuffix,
+  };
+
+  return uiSchemaCopy;
 };
 
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
@@ -249,6 +246,9 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
               emissionIntensityReportFormChange?.newFormData
+                ?.emissionFunctionalUnit,
+              emissionIntensityReportFormChange?.newFormData
+                ?.productionFunctionalUnit
             )}
             onChange={(change) =>
               handleChange(
