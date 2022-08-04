@@ -16,7 +16,7 @@ as $$
       **/
       ($1.id * -1) as id,
       (new_form_data->>'projectId')::integer as project_id,
-      (new_form_data->>'reportType')::varchar as report_type,
+      new_form_data->>'reportType' as report_type,
       (new_form_data->>'reportDueDate')::timestamptz as report_due_date,
       (new_form_data->>'submittedDate')::timestamptz as submitted_date,
       new_form_data->>'comments' as comments,
