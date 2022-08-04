@@ -127,7 +127,6 @@ describe("the new project page", () => {
     cy.findByRole("link", { name: "Project contacts" }).click();
     cy.url().should("include", "/form/2");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    // If contacts are added to the dev data projects, change below assertion
     cy.findByText(/Primary Contact/).should("be.visible");
 
     // budgets, expenses, and payments
