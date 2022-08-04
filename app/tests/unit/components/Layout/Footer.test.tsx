@@ -9,7 +9,7 @@ describe("The Footer Component", () => {
     expect(screen.getByText("Login Page")).toBeInTheDocument();
     expect(screen.getByText("Login Page")).toHaveAttribute(
       "href",
-      "https://cif.gov.bc.ca/"
+      "https://test.cif.gov.bc.ca/"
     );
     expect(screen.getByText("Login Page")).toHaveAttribute("target", "_blank");
 
