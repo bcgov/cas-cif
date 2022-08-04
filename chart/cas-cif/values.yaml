@@ -29,6 +29,9 @@ db:
   ownerUser: cif
   # A shell script that will be executed in a pre-upgrade job, on the psql image.
   preUpgradeCommand: ~
+  restore:
+    enabled: false
+    targetTimestamp: ~ # The target timestamp to restore the database to. Format: "2021-06-09 09:00:00-07"
 
 hostName: ~
 
@@ -54,12 +57,14 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 deploy-db:
+  enabled: true
   airflowEndpoint: ~
   dagId: cas_cif_deploy_db
   helm:
     hook: false
 
 download-dags:
+  enabled: true
   airflowEndpoint: ~
   dagId: fetch_and_save_dag_from_github
   helm:

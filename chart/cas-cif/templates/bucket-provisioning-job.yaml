@@ -1,3 +1,4 @@
+{{- if not .Values.db.restore.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -44,3 +45,4 @@ spec:
               /script.sh {{ .Release.Namespace | quote }} cif-backups;
               /script.sh {{ .Release.Namespace | quote }} cif-documents;
       restartPolicy: Never
+{{- end }}
