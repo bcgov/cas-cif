@@ -350,6 +350,35 @@ describe("The ProjectFundingAgreementForm", () => {
     });
   });
 
+  it("navigation skips to review and submit project when user clicks no to is this a funded project", async () => {
+    const mockResolver = {
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementForm_projectRevision$data> =
+          {
+            " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
+            id: "Test Project Revision ID",
+            rowId: 1234,
+            projectFormChange: {
+              formDataRecordId: 51,
+            },
+            projectFundingAgreementFormChanges: {
+              __id: "connection Id",
+              edges: [],
+            },
+          };
+        return result;
+      },
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+    userEvent.click(screen.getByText(/No/i));
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/",
+      query: expect.any(Object),
+    });
+  });
+
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
