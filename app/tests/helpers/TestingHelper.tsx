@@ -31,22 +31,47 @@ class TestingHelper {
   }
 
   public expectMutationToBeCalled(mutationName: string, variables?: any) {
-    // eslint-disable-next-line jest/no-standalone-expect
-    expect(this.environment.mock.getAllOperations()).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          fragment: expect.objectContaining({
-            node: expect.objectContaining({
-              type: "Mutation",
-              name: mutationName,
+    try {
+      // eslint-disable-next-line jest/no-standalone-expect
+      expect(this.environment.mock.getAllOperations()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            fragment: expect.objectContaining({
+              node: expect.objectContaining({
+                type: "Mutation",
+                name: mutationName,
+              }),
+            }),
+            request: expect.objectContaining({
+              variables,
             }),
           }),
-          request: expect.objectContaining({
-            variables,
-          }),
-        }),
-      ])
-    );
+        ])
+      );
+    } catch (e) {
+      const allMutations = this.environment.mock
+        .getAllOperations()
+        .filter((op) => op?.fragment?.node?.type === "Mutation");
+
+      const matchingReceivedMutations = allMutations.filter(
+        (op) => op.fragment.node.name === mutationName
+      );
+
+      if (matchingReceivedMutations.length === 0) {
+        throw new Error(
+          `Expected mutation ${mutationName} to be called. Mutations called:\n` +
+            `${allMutations.map((op) => op.fragment.node.name).join(", ")}`
+        );
+      } else
+        throw new Error(
+          `Expected mutation ${mutationName} to be called with:\n` +
+            `${JSON.stringify(variables, null, 2)}\n` +
+            `received:` +
+            `${matchingReceivedMutations.map(
+              (op) => `\n${JSON.stringify(op.request.variables, null, 2)}`
+            )}`
+        );
+    }
   }
 }
 
