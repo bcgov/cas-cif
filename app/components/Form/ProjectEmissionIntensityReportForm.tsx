@@ -36,30 +36,44 @@ export const createEmissionIntensityReportUiSchema = (
   );
 
   // Example: tCO2e/GJ if we have emissionFunctionalUnit
-  const contentSuffix: JSX.Element = emissionFunctionalUnit && (
-    <b>{`${emissionFunctionalUnit}${
-      productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
-    }`}</b>
-  );
+  const contentSuffix = (
+    emissionUnit: string,
+    productionUnit?: string
+  ): JSX.Element => {
+    return (
+      emissionUnit && (
+        <b>{`${emissionUnit}${productionUnit ? `/${productionUnit}` : ""}`}</b>
+      )
+    );
+  };
 
   // We only show the label of this field on view mode and summary page
   if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
 
   uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
     ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
-    contentSuffix,
+    contentSuffix: contentSuffix(
+      emissionFunctionalUnit,
+      productionFunctionalUnit
+    ),
   };
   uiSchemaCopy.targetEmissionIntensity["ui:options"] = {
     ...uiSchemaCopy.targetEmissionIntensity["ui:options"],
-    contentSuffix,
+    contentSuffix: contentSuffix(
+      emissionFunctionalUnit,
+      productionFunctionalUnit
+    ),
   };
   uiSchemaCopy.postProjectEmissionIntensity["ui:options"] = {
     ...uiSchemaCopy.postProjectEmissionIntensity["ui:options"],
-    contentSuffix,
+    contentSuffix: contentSuffix(
+      emissionFunctionalUnit,
+      productionFunctionalUnit
+    ),
   };
   uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
     ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
-    contentSuffix,
+    contentSuffix: contentSuffix(emissionFunctionalUnit),
   };
 
   return uiSchemaCopy;

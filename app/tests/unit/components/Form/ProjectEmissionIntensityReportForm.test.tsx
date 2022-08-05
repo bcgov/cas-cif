@@ -304,7 +304,7 @@ describe("the emission intensity report form component", () => {
       name: /^production functional unit$/i,
     });
 
-    expect(screen.getAllByText(/tco2e\/gj/i)).toHaveLength(4);
+    expect(screen.getAllByText(/tco2e\/gj/i)).toHaveLength(3);
 
     expect(emissionFunctionalUnitInput).toHaveValue("tCO2e");
     expect(productionFunctionalUnitInput).toHaveValue("GJ");
@@ -314,6 +314,6 @@ describe("the emission intensity report form component", () => {
     userEvent.clear(productionFunctionalUnitInput);
     userEvent.type(productionFunctionalUnitInput, "G");
 
-    expect(screen.getAllByText(/tco2\/g/i)).toHaveLength(4);
+    expect(screen.getAllByText(/tco2\/g/i)).toHaveLength(3);
   });
 });

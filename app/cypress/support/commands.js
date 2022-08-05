@@ -414,7 +414,7 @@ Cypress.Commands.add(
       `${emissionFunctionalUnit}${
         productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
       }`
-    ).should("have.length", 4);
+    ).should("have.length", 3);
 
     return cy.url().should("include", "/form/6");
   }
