@@ -77,6 +77,14 @@ export const emissionIntensityReportingRequirementSchema = {
 };
 
 export const emissionIntensityReportUiSchema = {
+  emissionFunctionalUnit: {
+    "ui:widget": "TextWidget",
+    classNames: "functional-unit",
+  },
+  productionFunctionalUnit: {
+    "ui:widget": "TextWidget",
+    classNames: "functional-unit",
+  },
   measurementPeriodStartDate: {
     "ui:widget": "DateWidget",
   },

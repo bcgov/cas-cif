@@ -27,7 +27,8 @@ interface Props {
 // passing content suffix to fields that need nominator and denominator (example: tCO2e/GJ)
 export const createEmissionIntensityReportUiSchema = (
   emissionFunctionalUnit: string,
-  productionFunctionalUnit?: string
+  productionFunctionalUnit?: string,
+  viewOnly?: boolean
 ) => {
   // setting a deep copy of the ui schema to avoid mutating the original
   const uiSchemaCopy = JSON.parse(
@@ -40,6 +41,9 @@ export const createEmissionIntensityReportUiSchema = (
       productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
     }`}</b>
   );
+
+  // We only show the label of this field on view mode and summary page
+  if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
 
   uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
     ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
@@ -248,7 +252,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               emissionIntensityReportFormChange?.newFormData
                 ?.emissionFunctionalUnit,
               emissionIntensityReportFormChange?.newFormData
-                ?.productionFunctionalUnit
+                ?.productionFunctionalUnit,
+              true
             )}
             onChange={(change) =>
               handleChange(
@@ -283,6 +288,17 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           >
             Submit TEIMP Report
           </Button>
+          <style jsx>{`
+            :global(.functional-unit) {
+              display: inline-block;
+              vertical-align: bottom;
+              padding-right: 0.5em;
+            }
+            :global(.functional-unit:nth-child(even)) {
+              width: 6rem;
+              white-space: nowrap;
+            }
+          `}</style>
         </>
       )}
     </>

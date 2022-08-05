@@ -7,7 +7,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
     novalidate=""
   >
     <div
-      class="jsx-1751233656"
+      class="jsx-1751233656 "
     >
       <div
         class="sc-jRQBWg cDwDrH pg-grid-container"
@@ -24,7 +24,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
               class="jsx-4178779636"
             >
               <div
-                class="jsx-1751233656"
+                class="jsx-1751233656 "
               >
                 <label
                   for="root_field"

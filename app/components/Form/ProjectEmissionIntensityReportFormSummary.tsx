@@ -170,7 +170,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         schema={emissionIntensityReportDiffObject.formSchema as JSONSchema7}
         uiSchema={createEmissionIntensityReportUiSchema(
           summaryEmissionIntensityReport?.newFormData?.emissionFunctionalUnit,
-          summaryEmissionIntensityReport?.newFormData?.productionFunctionalUnit
+          summaryEmissionIntensityReport?.newFormData?.productionFunctionalUnit,
+          false
         )}
         formData={emissionIntensityReportDiffObject.formData}
         formContext={{
