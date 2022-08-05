@@ -12,6 +12,7 @@ import MoneyWidget from "lib/theme/widgets/MoneyWidget";
 import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
 import DueDateWidget from "lib/theme/widgets/DueDateWidget";
 import DateWidget from "./widgets/DateWidget";
+import DecimalWidget from "./widgets/DecimalWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
 import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
 import PercentageWidget from "./widgets/PercentageWidget";
@@ -36,6 +37,7 @@ const formTheme: ThemeProps = {
     AdjustableCalculatedValueWidget,
     ReadOnlyCalculatedValueWidget,
     PercentageWidget: PercentageWidget,
+    DecimalWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
