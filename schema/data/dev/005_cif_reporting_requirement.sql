@@ -14,8 +14,8 @@ do $$
       update cif.form_change set new_form_data =
       json_build_object(
           'projectId', temp_row.form_data_record_id,
-          'reportDueDate', '2022-08-05T12:00:01-07',
-          'submittedDate', '2022-08-05T12:00:01-07',
+          'reportDueDate', now(),
+          'submittedDate', now(),
           'reportType', 'General Milestone',
           'reportingRequirementIndex', 1,
           'description', 'general milestone report description ' || temp_row.form_data_record_id
@@ -27,7 +27,7 @@ do $$
       json_build_object(
         'certifierProfessionalDesignation', 'Professional Engineer',
         'reportingRequirementId', temp_row.form_data_record_id,
-        'substantialCompletionDate', '2022-08-05T12:00:01-07',
+        'substantialCompletionDate', now(),
         'maximumAmount', 1,
         'totalEligibleExpenses', 1,
         'certifiedBy', 'Elliot Page'
@@ -40,7 +40,7 @@ do $$
         'reportingRequirementId', temp_row.form_data_record_id,
         'adjustedGrossAmount', 1,
         'adjustedNetAmount', 1,
-        'dateSentToCsnr', '2022-08-05T12:00:01-07'
+        'dateSentToCsnr', now()
           )
       where form_data_table_name = 'payment' and project_revision_id = temp_row.project_revision_id;
 
@@ -62,8 +62,8 @@ do $$
       (
         json_build_object(
 
-          'reportDueDate', '2022-08-05T12:00:01-07',
-          'submittedDate', '2022-08-05T12:00:01-07',
+          'reportDueDate', now(),
+          'submittedDate', now(),
           'comments','annual report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
@@ -92,8 +92,8 @@ for temp_row in select id, project_id from cif.project_revision loop
       (
         json_build_object(
 
-          'reportDueDate', '2022-08-05T12:00:01-07',
-          'submittedDate', '2022-08-05T12:00:01-07',
+          'reportDueDate', now(),
+          'submittedDate', now(),
           'comments','quarterly report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
