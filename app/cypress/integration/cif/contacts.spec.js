@@ -1,9 +1,9 @@
 describe("The contacts page", () => {
   beforeEach(() => {
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
     cy.mockLogin("cif_internal");
-    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
   it("Allows creating and editing a contact", () => {

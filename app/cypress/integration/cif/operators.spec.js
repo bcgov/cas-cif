@@ -2,13 +2,13 @@ import logAxeResults from "../../plugins/logAxeResults";
 
 describe("the operators page", () => {
   beforeEach(() => {
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/003_cif_contact");
     cy.sqlFixture("dev/004_cif_project");
     cy.mockLogin("cif_internal");
-    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
   });
 
   it("displays the list of operators", () => {

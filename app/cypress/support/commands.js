@@ -52,11 +52,22 @@ Cypress.Commands.add("mockLogin", (roleName) => {
 });
 
 Cypress.Commands.add("sqlFixture", (fixtureName) => {
-  return cy.fixture(`${fixtureName}.sql`).then((fixture) =>
-    cy.exec(`psql -v "ON_ERROR_STOP=1" -d cif<< 'EOF'
+  cy.getCookies().then((cookies) => {
+    let mockedTimeCookie = cookies.filter(
+      (cookie) => cookie.name === "mocks.mocked_timestamp"
+    )[0];
+    const pgOptions = mockedTimeCookie
+      ? `PGOPTIONS="--search_path=mocks,public,pg_catalog -c mocks.mocked_timestamp=${mockedTimeCookie.value}"`
+      : "";
+
+    return cy.fixture(`${fixtureName}.sql`).then((fixture) =>
+      cy.exec(
+        `${pgOptions} psql -v "ON_ERROR_STOP=1" -d cif<< 'EOF'
 ${fixture}
-EOF`)
-  );
+EOF`
+      )
+    );
+  });
 });
 
 Cypress.Commands.add("useMockedTime", (dateTime) => {
