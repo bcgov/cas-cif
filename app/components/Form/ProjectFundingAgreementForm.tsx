@@ -7,7 +7,7 @@ import { graphql, useFragment } from "react-relay";
 import { useRouter } from "next/router";
 import FormBase from "./FormBase";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
-import { Button } from "@button-inc/bcgov-theme";
+import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
 import UndoChangesButton from "./UndoChangesButton";
@@ -131,18 +131,21 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
         0 && (
-        <>
+        <div>
           <h3>Is this a funded project?</h3>
-          <Button onClick={addFundingAgreement} style={{ marginRight: "1rem" }}>
-            Yes
-          </Button>
-          <Button
+          <RadioButton
+            name="yes"
+            label="Yes"
+            className="radio-button"
+            onClick={addFundingAgreement}
+          />
+          <RadioButton
+            name="yes"
+            label="No"
+            className="radio-button"
             onClick={navigateToReviewAndSubmit}
-            style={{ marginRight: "1rem" }}
-          >
-            No
-          </Button>
-        </>
+          />
+        </div>
       )}
       {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
         <>
@@ -184,6 +187,14 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </FormBase>
         </>
       )}
+      <style jsx>
+        {`
+          div :global(.radio-button) {
+            margin-top: 1rem;
+            margin-left: 1rem;
+          }
+        `}
+      </style>
     </>
   );
 };
