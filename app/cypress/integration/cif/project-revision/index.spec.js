@@ -1,10 +1,10 @@
 describe("the new project page", () => {
   beforeEach(() => {
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/003_cif_contact");
-    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
   });
 
@@ -26,6 +26,9 @@ describe("the new project page", () => {
     // MANAGERS
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/1");
+    cy.findByText(/Add project overview/i)
+      .next()
+      .should("have.text", "Attention Required");
     cy.happoAndAxe("Project managers Form", "empty", "main");
 
     // CONTACTS
