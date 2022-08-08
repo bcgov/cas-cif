@@ -4,7 +4,6 @@ import {
 } from "data/jsonSchemaForm/fundingAgreementSchema";
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
-import { useRouter } from "next/router";
 import FormBase from "./FormBase";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
@@ -12,7 +11,6 @@ import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
-import { getProjectRevisionPageRoute } from "routes/pageRoutes";
 interface Props {
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
   viewOnly?: boolean;
@@ -121,12 +119,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     handleChange(fundingAgreement.newFormData, "staged");
   };
 
-  const router = useRouter();
-  const navigateToReviewAndSubmit = () => {
-    console.log("navigateToReviewAndSubmit");
-    router.push(getProjectRevisionPageRoute(projectRevision.id.toString()));
-  };
-
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
@@ -139,12 +131,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             className="radio-button"
             onClick={addFundingAgreement}
           />
-          <RadioButton
-            name="yes"
-            label="No"
-            className="radio-button"
-            onClick={navigateToReviewAndSubmit}
-          />
+          <RadioButton name="yes" label="No" className="radio-button" />
         </div>
       )}
       {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
