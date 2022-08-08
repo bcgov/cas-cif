@@ -59,7 +59,7 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Add funding agreement/i).click();
     cy.url().should("include", "/form/3");
-    cy.findByRole("button", { name: /Yes/i }).click();
+    cy.findByText(/Yes/i).click();
     cy.fillFundingAgreementForm(222, 333, 70, 20, 444);
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByRole("button", { name: /Yes/i }).should("be.visible");

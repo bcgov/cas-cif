@@ -48,7 +48,7 @@ describe("the new project page", () => {
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Add funding agreement/i).click();
     cy.url().should("include", "/form/3");
-    cy.findByRole("button", { name: /Yes/i }).click();
+    cy.findByText(/Yes/i).click();
     // checking default values
     cy.get('[aria-label="Province Share Percentage"]').should(
       "have.value",
@@ -174,7 +174,7 @@ describe("the new project page", () => {
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Add funding agreement/i).click();
     cy.url().should("include", "/form/3");
-    cy.findByRole("button", { name: /Yes/i }).click();
+    cy.findByText(/Yes/i).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 3);

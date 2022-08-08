@@ -53,7 +53,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByRole("link", { name: /add funding agreement/i }).click();
     cy.url().should("include", "/form/3");
-    cy.findByRole("button", { name: /Yes/i }).click();
+    cy.findByText(/Yes/i).click();
     // checking default values
     cy.get('[aria-label="Province Share Percentage"]').should(
       "have.value",
