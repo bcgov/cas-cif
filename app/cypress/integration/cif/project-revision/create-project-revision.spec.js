@@ -55,8 +55,11 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /add funding agreement/i }).click();
     // checking default values
-    cy.get('[aria-label="Province Share Percentage"]').should("have.value", 50);
-    cy.get('[aria-label="Holdback Percentage"]').should("have.value", 10);
+    cy.get('[aria-label="Province Share Percentage"]').should(
+      "have.value",
+      "50 %"
+    );
+    cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
     cy.contains("Changes saved").should("be.visible");
