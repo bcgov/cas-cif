@@ -26,6 +26,9 @@ describe("the new project page", () => {
     // MANAGERS
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/1");
+    cy.findByText(/Add project overview/i)
+      .next()
+      .should("have.text", "Attention Required");
     cy.happoAndAxe("Project managers Form", "empty", "main");
 
     // CONTACTS
