@@ -1,3 +1,29 @@
+# [1.0.0-rc.3](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.2...1.0.0-rc.3) (2022-08-08)
+
+### Bug Fixes
+
+- add missing emission intensity report sql union ([163e5d4](https://github.com/bcgov/cas-cif/commit/163e5d48e78a375fb9d4889fa910f85305b0e00c))
+- change login page link based on environment ([918034a](https://github.com/bcgov/cas-cif/commit/918034a398ae72df51b12952f1bc3bd18083b023))
+- fix milestone status and due date badge after being removed ([d40cfdb](https://github.com/bcgov/cas-cif/commit/d40cfdbb87d487614ffbcaae9ba1b3080fdc026c))
+- fix page content bouncing ([b011052](https://github.com/bcgov/cas-cif/commit/b01105264fb59f04d43454256a007e38a33cf729))
+- fix reporting tasklist statuses ([b96ea25](https://github.com/bcgov/cas-cif/commit/b96ea25445a721eba9fab64bc52e61ba878847b0))
+- fix undoing primary contact the first time ([989612a](https://github.com/bcgov/cas-cif/commit/989612a0761e25d5bddb7f012206ef25e44feeff))
+- fix wrong annual report information on summary form ([160b6e7](https://github.com/bcgov/cas-cif/commit/160b6e752319a3815fa4a5a1c5c9f47fdc4e9bb3))
+- fixing date discrepancy between indicator and form field ([fb21d36](https://github.com/bcgov/cas-cif/commit/fb21d366d6ca249dca5c4fddb86a4561ca8bc643))
+- move default values to mutation to cover issues ([e6408f7](https://github.com/bcgov/cas-cif/commit/e6408f7e2fc9f5939a1c1e32820e1bc2df324b66))
+- possible fix to pass e2e test on CI ([3d86d26](https://github.com/bcgov/cas-cif/commit/3d86d26a0a00646159f120b8f11c03daa8cca818))
+- show $ prefix for milestone budget data ([368cad0](https://github.com/bcgov/cas-cif/commit/368cad08403d60ab822623015055658418a9198f))
+- temporary fix for footer height on mobile view ([015ebc3](https://github.com/bcgov/cas-cif/commit/015ebc3cb66df3a71d300352ac04b8b1a93b95cd))
+- uiSchema was not properly applied to Funding Agreement summary ([99bb337](https://github.com/bcgov/cas-cif/commit/99bb3376a3811470b9eaeb87f70f994a67235234))
+- use mocked time to solve happo diffs ([d17e1f4](https://github.com/bcgov/cas-cif/commit/d17e1f43a90a31795f221378effc59172a0182fe))
+
+### Features
+
+- add calculated performance field to TEIMP form ([821ccbd](https://github.com/bcgov/cas-cif/commit/821ccbd76db59a84abddd868a2527142f880535a))
+- adding discard mutation that removes emission_intensity report ([50c3705](https://github.com/bcgov/cas-cif/commit/50c37052c0aa22aa154169159ce32823c4172f51))
+- adding emission intensity report mutation and reworking report type to include teimp ([d841d4e](https://github.com/bcgov/cas-cif/commit/d841d4ec9e1a7393ba6380df5122597a0c3991cf))
+- handle multiple forms on the teimp page ([7515ca0](https://github.com/bcgov/cas-cif/commit/7515ca01f4566c0186aa4b734bd2c8eb35a9ad85))
+
 # [1.0.0-rc.2](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.1...1.0.0-rc.2) (2022-07-14)
 
 ### Bug Fixes
