@@ -102,3 +102,4 @@ computed_columns/project_revision_upcoming_reporting_requirement_form_change [co
 mutations/create_project_revision [mutations/create_project_revision@1.0.0-rc.1] 2022-07-29T21:25:54Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add missing emission intesnity report union
 computed_columns/emission_intensity_report_calculated_ei_performance 2022-07-27T20:07:35Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Returns the calculated EI intensity value
 computed_columns/form_change_as_emission_intensity_report 2022-08-03T17:12:52Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Computed column to return form change as emission intensity report type
+@1.0.0-rc.3 2022-08-08T22:14:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.3
