@@ -41,10 +41,10 @@ export const fundingAgreementUiSchema = {
     "ui:widget": "MoneyWidget",
   },
   provinceSharePercentage: {
-    "ui:widget": "TextWidget",
+    "ui:widget": "PercentageWidget",
   },
   holdbackPercentage: {
-    "ui:widget": "TextWidget",
+    "ui:widget": "PercentageWidget",
   },
   anticipatedFundingAmount: {
     "ui:widget": "MoneyWidget",
