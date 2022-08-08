@@ -6,6 +6,7 @@ import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
 import ReadOnlyMoneyWidget from "./widgets/ReadOnlyMoneyWidget";
 import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustableCalculatedValueWidget";
+import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
 const { fields, widgets } = utils.getDefaultRegistry();
 
 const readOnlyTheme: ThemeProps = {
@@ -27,6 +28,7 @@ const readOnlyTheme: ThemeProps = {
     DueDateWidget: ReadOnlyDateWidget,
     DateWidget: ReadOnlyDateWidget,
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
+    ReadOnlyCalculatedValueWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

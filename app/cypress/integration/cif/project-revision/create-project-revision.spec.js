@@ -101,9 +101,16 @@ describe("when creating a project, the project page", () => {
     // add teimp reports
     cy.findByRole("link", { name: /Emissions Intensity Report/i }).click();
     cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
-    cy.addEmissionIntensityReport("2022-01-01", "2022-02-02", "1", "2", "3");
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "1",
+      "2",
+      "3",
+      "4"
+    );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main", true);
     cy.findByText(/Submit TEIMP Report/).click();
 
     // No annual reports

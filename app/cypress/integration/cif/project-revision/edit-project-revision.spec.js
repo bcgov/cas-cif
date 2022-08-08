@@ -132,9 +132,16 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
     cy.findByText(/Edit emissions intensity report/i).click();
     cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
-    cy.addEmissionIntensityReport("2022-01-01", "2022-02-02", "1", "2", "3");
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "1",
+      "2",
+      "3",
+      "4"
+    );
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Project teimp agreement form", "editing", "main");
+    cy.happoAndAxe("Project teimp agreement form", "editing", "main", true);
     cy.findByText(/Submit TEIMP report/i).click();
 
     // edit annual reports -- change comments

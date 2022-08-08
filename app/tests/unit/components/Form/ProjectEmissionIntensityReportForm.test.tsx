@@ -49,13 +49,19 @@ const defaultMockResolver = {
           {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
+              asEmissionIntensityReport: {
+                calculatedEiPerformance: 200,
+              },
               rowId: 1,
               newFormData: {
                 measurementPeriodStartDate: "2022-01-02",
                 measurementPeriodEndDate: "2023-01-02",
-                emissionFunctionalUnit: "1",
-                baselineEmissionIntensity: "1",
-                targetEmissionIntensity: "1",
+                emissionFunctionalUnit: "unit",
+                baselineEmissionIntensity: "2",
+                targetEmissionIntensity: "3",
+                postProjectEmissionIntensity: "4",
+                totalLifetimeEmissionReduction: "5",
+                adjustedGHGEmissionIntensityPerformance: "6",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -133,6 +139,46 @@ describe("the emission intensity report form component", () => {
     expect(mutationUnderTest.fragment.node.name).toBe(
       "addEmissionIntensityReportToRevisionMutation"
     );
+  });
+
+  it("renders the the reporting requirement and TEIMP forms", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    expect(screen.getByLabelText("Report Due Date")).toHaveTextContent(
+      /Jan[.]? 01, 2022/
+    );
+    expect(screen.getByLabelText("Received Date")).toHaveTextContent(
+      /Select a date/i
+    );
+    expect(screen.getByLabelText("General Comments")).toHaveTextContent(
+      /general comments/
+    );
+    expect(
+      screen.getByLabelText(/Measurement period start date/i)
+    ).toHaveTextContent(/Jan[.]? 02, 2022/);
+    screen.logTestingPlaygroundURL();
+    expect(
+      screen.getByLabelText(/Measurement period end date/i)
+    ).toHaveTextContent(/Jan[.]? 02, 2023/);
+    expect(screen.getByLabelText(/Functional unit/i)).toHaveValue("unit");
+    expect(
+      screen.getByLabelText(/Base Line Emission Intensity \(BEI\)/)
+    ).toHaveValue("2");
+    expect(
+      screen.getByLabelText(/Target Emission Intensity \(TEI\)/i)
+    ).toHaveValue("3");
+    expect(
+      screen.getByLabelText(/Post Project Emission Intensity*/i)
+    ).toHaveValue("4");
+    expect(
+      screen.getByLabelText(/Total lifetime emissions reductions*/i)
+    ).toHaveValue("5");
+    expect(
+      screen.getAllByLabelText(/GHG Emission Intensity Performance/i)[0]
+    ).toHaveTextContent("200.00%");
+    expect(
+      screen.getAllByLabelText(/GHG Emission Intensity Performance/i)[1]
+    ).toHaveValue("6.00%");
   });
 
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {

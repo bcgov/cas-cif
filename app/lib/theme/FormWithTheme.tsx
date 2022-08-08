@@ -14,6 +14,7 @@ import DueDateWidget from "lib/theme/widgets/DueDateWidget";
 import ConditionalAmountWidget from "./widgets/ConditionalAmountWidget";
 import DateWidget from "./widgets/DateWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
+import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -34,6 +35,7 @@ const formTheme: ThemeProps = {
     DueDateWidget: DueDateWidget,
     DateWidget,
     AdjustableCalculatedValueWidget,
+    ReadOnlyCalculatedValueWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
