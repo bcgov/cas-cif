@@ -42,7 +42,8 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
               fixedDecimalScale={isMoney}
               id={adjustedInputId}
               prefix={isMoney ? "$" : ""}
-              decimalScale={isMoney ? 2 : 10}
+              suffix={isPercent ? "%" : ""}
+              decimalScale={isMoney || isPercent ? 2 : 10}
               value={value}
               displayType="text"
             />

@@ -15,7 +15,6 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
     formContext,
   } = props;
 
-  console.log("uiSchema", uiSchema);
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercent` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
   const isPercent = uiSchema?.isPercent;
@@ -24,8 +23,6 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
     formContext[uiSchema.calculatedValueFormContextProperty];
 
   const adjustedInputId = `${id}_adjusted`;
-
-  console.log("isPercent", isPercent);
 
   return (
     <div>
