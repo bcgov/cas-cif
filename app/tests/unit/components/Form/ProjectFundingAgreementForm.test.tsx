@@ -91,10 +91,10 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Province Share Percentage/i)
         .value
-    ).toBe("50");
+    ).toBe("50 %");
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Holdback Percentage/i).value
-    ).toBe("10");
+    ).toBe("10 %");
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Anticipated Funding Amount/i)
         .value

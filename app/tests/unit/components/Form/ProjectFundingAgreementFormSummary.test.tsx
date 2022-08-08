@@ -100,10 +100,10 @@ describe("The Project Funding Agreement Form Summary", () => {
 
     expect(screen.getByText("$400")).toBeInTheDocument();
     expect(screen.getByText("$500")).toBeInTheDocument();
-    expect(screen.getByText("50")).toBeInTheDocument();
-    expect(screen.getByText("60")).toBeInTheDocument();
-    expect(screen.getByText("10")).toBeInTheDocument();
-    expect(screen.getByText("20")).toBeInTheDocument();
+    expect(screen.getByText("50 %")).toBeInTheDocument();
+    expect(screen.getByText("60 %")).toBeInTheDocument();
+    expect(screen.getByText("10 %")).toBeInTheDocument();
+    expect(screen.getByText("20 %")).toBeInTheDocument();
   });
 
   it("Displays all data when isFirstRevision is true (Project Creation)", () => {
