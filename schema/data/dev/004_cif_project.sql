@@ -38,14 +38,23 @@ do $$
           ),
         'create', 'cif', 'project_manager', 'pending', 'project_manager', current_revision.id);
 
-      update cif.form_change
-      set new_form_data= jsonb_build_object(
-          'contactId', index,
-          'projectId', index,
-          'contactIndex', 1
+      insert into cif.form_change(
+        new_form_data,
+        operation,
+        form_data_schema_name,
+        form_data_table_name,
+        change_status,
+        json_schema_name,
+        project_revision_id
       )
-      where project_revision_id=current_revision.id and form_data_table_name='project_contact';
-
+      values
+      (
+        json_build_object(
+          'contactId', index,
+          'projectId', (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=current_revision.id),
+          'contactIndex', 1
+          ),
+        'create', 'cif', 'project_contact', 'pending', 'project_contact', current_revision.id);
     end loop;
   end
 $$;
