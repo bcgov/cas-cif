@@ -111,6 +111,7 @@ describe("when creating a project, the project page", () => {
       "2022-02-02",
       "tCO",
       "G",
+      "1",
       "2",
       "3"
     );

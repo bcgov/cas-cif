@@ -138,6 +138,7 @@ describe("when editing a project, the project page", () => {
       "2022-02-02",
       "tCO2",
       "G",
+      "1",
       "2",
       "3"
     );
