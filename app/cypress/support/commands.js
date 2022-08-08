@@ -53,7 +53,7 @@ Cypress.Commands.add("mockLogin", (roleName) => {
 
 Cypress.Commands.add("sqlFixture", (fixtureName) => {
   cy.getCookies().then((cookies) => {
-    let mockedTimeCookie = cookies.filter(
+    const mockedTimeCookie = cookies.filter(
       (cookie) => cookie.name === "mocks.mocked_timestamp"
     )[0];
     const pgOptions = mockedTimeCookie
