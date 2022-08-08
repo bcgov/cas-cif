@@ -7,29 +7,22 @@ returns numeric
 as
 $computed_column$
 
-  -- todo: refactor with @BCerki's computed columns when available
-
-  with emission_intensity_data as (
-    select
-      (new_form_data->>'baselineEmissionIntensity')::numeric as BEI,
-      (new_form_data->>'postProjectEmissionIntensity')::numeric as PEI,
-      (new_form_data->>'targetEmissionIntensity')::numeric as TEI
-    from cif.form_change
+  with emission_intensity_report_form_change as (
+    select row(form_change.*)::cif.form_change
+      from cif.form_change
       where project_revision_id=$1.id
       and form_data_table_name='emission_intensity_report'
       and operation != 'archive'
   ),
+  emission_intensity_report as (
+    select cif.form_change_as_emission_intensity_report((
+      select * from emission_intensity_report_form_change
+    ))
+  ),
   emission_intensity_performance as (
-    select
-      case
-        when BEI is null
-          or PEI is null
-          or TEI is null
-          or (BEI - TEI) = 0
-          then null
-        else
-          ((BEI - PEI) / (BEI - TEI)) * 100.0
-      end from emission_intensity_data
+    select cif.emission_intensity_report_calculated_ei_performance((
+      select * from emission_intensity_report
+    ))
   )
   select min(payment_percentage)
     from cif.emission_intensity_payment_percent
