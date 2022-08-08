@@ -95,6 +95,7 @@ export const emissionIntensityReportUiSchema = {
   calculatedGHGEmissionIntensityPerformance: {
     "ui:widget": "ReadOnlyCalculatedValueWidget",
     isPercent: true,
+    hideOptional: true,
   },
   adjustedGHGEmissionIntensityPerformance: {
     "ui:widget": "AdjustableCalculatedValueWidget",

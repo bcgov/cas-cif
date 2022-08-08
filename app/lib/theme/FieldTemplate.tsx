@@ -12,11 +12,17 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
   displayLabel,
   required,
   id,
+  uiSchema,
 }) => {
   return (
     <div>
       {displayLabel && (
-        <FieldLabel label={label} required={required} htmlFor={id} />
+        <FieldLabel
+          label={label}
+          required={required}
+          htmlFor={id}
+          uiSchema={uiSchema}
+        />
       )}
       {help}
       {children}
