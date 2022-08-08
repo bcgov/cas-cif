@@ -9,7 +9,7 @@ as $$
       /**
         Given form_data_record_id can be null for some form_change records, it is not a reliable id value for the returned project_contact record.
         The returned id must not be null, so we use the form_change id being passed in as a parameter (multiplied by -1 to ensure we are not touching any existing records).
-        This means the id value is not going to be the correct id for the returned project_contact record, which should be ok since we're only interested
+        This means the id value is not going to be the correct id for the returned emission_intensity_report record, which should be ok since we're only interested
         in the data in new_form_data.
       **/
       ($1.id * -1) as id,
