@@ -27,7 +27,7 @@ const ContactDetails: React.FC<Props> = ({ contact, className }) => {
   return (
     <div className={className}>
       <p>
-        <span>Email</span> {email}
+        <span>Email</span> <a href={`mailto:${email}`}>{email}</a>
       </p>
       {companyName && (
         <p>

@@ -86,7 +86,9 @@ export function ContactViewPage({
         <dd>{contact.fullPhone}</dd>
 
         <dt>Email</dt>
-        <dd>{contact.email}</dd>
+        <dd>
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </dd>
 
         {contact.companyName && (
           <>
