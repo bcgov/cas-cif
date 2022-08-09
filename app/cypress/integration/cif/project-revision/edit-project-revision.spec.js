@@ -136,10 +136,11 @@ describe("when editing a project, the project page", () => {
     cy.addEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
+      "tCO2",
+      "G",
       "1",
       "2",
-      "3",
-      "4"
+      "3"
     );
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project teimp agreement form", "editing", "main", true);

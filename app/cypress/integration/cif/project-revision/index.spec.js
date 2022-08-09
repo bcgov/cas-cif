@@ -139,6 +139,8 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm("$1.00", "$1.00", "50 %", "10 %", "$1.00");
 
+    //TODO: TEIMP Agreement, when fixture is added
+
     cy.findByRole("heading", { name: /Annual reports/i }).click();
     cy.findByRole("link", { name: /Annual reports/i }).click();
     cy.url().should("include", "/form/7");
@@ -231,7 +233,7 @@ describe("the new project page", () => {
     }).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.get(".error-detail").should("have.length", 5);
+    cy.get(".error-detail").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Emissions intensity report Form",

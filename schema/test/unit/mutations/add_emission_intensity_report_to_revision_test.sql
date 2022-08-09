@@ -21,11 +21,11 @@ select is(
 -- it returns two form_change records, one for each of the reporting_requirement and emission_intensity_report tables.
 select set_eq(
   $$
-    select project_revision_id, form_data_table_name
+    select project_revision_id, form_data_table_name, (new_form_data ->> 'emissionFunctionalUnit')::text
     from cif.add_emission_intensity_report_to_revision((select id from cif.project_revision order by id desc limit 1))
   $$,
   $$
-    values (1::bigint, 'reporting_requirement'::varchar), (1::bigint, 'emission_intensity_report'::varchar)
+    values (1::bigint, 'reporting_requirement'::varchar, null ), (1::bigint, 'emission_intensity_report'::varchar, 'tCO2e'::text )
   $$,
   'Two newly inserted records should be returned for the correct revision'
 );

@@ -80,6 +80,28 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Quarterly Report 1/i).should("not.exist");
     cy.get('[label*="Due Date"]').should("have.length", 0);
 
+    // undo TEIMP agreement
+    cy.findByText(/Emissions intensity report/i).click();
+    cy.findByText(/Add emissions intensity report/i).click();
+    cy.url().should("include", "/form/6");
+    cy.findByRole("button", { name: /add TEIMP agreement/i }).click();
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "tCO",
+      "G",
+      "1",
+      "2",
+      "3"
+    );
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByRole("button", { name: /Add TEIMP agreement/i }).should(
+      "be.visible"
+    );
+    cy.findAllByRole("link", { name: /^Add emissions intensity report/i })
+      .next()
+      .should("have.text", "Not Started");
+
     // undo annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
@@ -168,6 +190,8 @@ describe("when undoing, the project revision page", () => {
       "have.text",
       "quarterly report comments 1"
     );
+
+    //TODO: undo TEIMP agreement once fixture added
 
     // undo annual reports
     cy.findByText(/Annual reports/i).click();

@@ -24,6 +24,61 @@ interface Props {
   onSubmit: () => void;
 }
 
+// passing content suffix to fields that need nominator and denominator (example: tCO2e/GJ)
+export const createEmissionIntensityReportUiSchema = (
+  emissionFunctionalUnit: string,
+  productionFunctionalUnit?: string,
+  viewOnly?: boolean
+) => {
+  // setting a deep copy of the ui schema to avoid mutating the original
+  const uiSchemaCopy = JSON.parse(
+    JSON.stringify(emissionIntensityReportUiSchema)
+  );
+
+  // Example: tCO2e/GJ if we have emissionFunctionalUnit
+  const contentSuffix = (
+    emissionUnit: string,
+    productionUnit?: string
+  ): JSX.Element => {
+    return (
+      emissionUnit && (
+        <b>{`${emissionUnit}${productionUnit ? `/${productionUnit}` : ""}`}</b>
+      )
+    );
+  };
+
+  // We only show the label of this field on view mode and summary page
+  if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
+
+  uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
+    contentSuffix: contentSuffix(
+      emissionFunctionalUnit,
+      productionFunctionalUnit
+    ),
+  };
+  uiSchemaCopy.targetEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.targetEmissionIntensity["ui:options"],
+    contentSuffix: contentSuffix(
+      emissionFunctionalUnit,
+      productionFunctionalUnit
+    ),
+  };
+  uiSchemaCopy.postProjectEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.postProjectEmissionIntensity["ui:options"],
+    contentSuffix: contentSuffix(
+      emissionFunctionalUnit,
+      productionFunctionalUnit
+    ),
+  };
+  uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
+    ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
+    contentSuffix: contentSuffix(emissionFunctionalUnit),
+  };
+
+  return uiSchemaCopy;
+};
+
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
 
@@ -83,6 +138,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .asEmissionIntensityReport.calculatedEiPerformance;
 
+  // Mutations
   const [
     addProjectEmissionsIntensityReport,
     isAddingEmissionsIntensityReportFormChange,
@@ -206,7 +262,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               calculatedValue: calculatedEiPerformance,
               isPercent: true,
             }}
-            uiSchema={emissionIntensityReportUiSchema}
+            uiSchema={createEmissionIntensityReportUiSchema(
+              emissionIntensityReportFormChange?.newFormData
+                ?.emissionFunctionalUnit,
+              emissionIntensityReportFormChange?.newFormData
+                ?.productionFunctionalUnit,
+              true
+            )}
             onChange={(change) =>
               handleChange(
                 emissionIntensityReportFormChange,
@@ -240,6 +302,17 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           >
             Submit TEIMP Report
           </Button>
+          <style jsx>{`
+            :global(.functional-unit) {
+              display: inline-block;
+              vertical-align: bottom;
+              padding-right: 0.5em;
+            }
+            :global(.functional-unit:nth-child(even)) {
+              width: 6rem;
+              white-space: nowrap;
+            }
+          `}</style>
         </>
       )}
     </>

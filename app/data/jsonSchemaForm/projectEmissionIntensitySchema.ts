@@ -21,7 +21,10 @@ export const emissionIntensityReportSchema = {
     emissionFunctionalUnit: {
       title: "Functional Unit",
       type: "string",
-      default: undefined,
+    },
+    productionFunctionalUnit: {
+      title: "Production Functional Unit",
+      type: "string",
     },
     baselineEmissionIntensity: {
       title: "Base Line Emission Intensity (BEI)",
@@ -74,6 +77,14 @@ export const emissionIntensityReportingRequirementSchema = {
 };
 
 export const emissionIntensityReportUiSchema = {
+  emissionFunctionalUnit: {
+    "ui:widget": "TextWidget",
+    classNames: "functional-unit",
+  },
+  productionFunctionalUnit: {
+    "ui:widget": "TextWidget",
+    classNames: "functional-unit",
+  },
   measurementPeriodStartDate: {
     "ui:widget": "DateWidget",
   },

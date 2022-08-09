@@ -10,10 +10,10 @@ import {
   emissionIntensityReportSchema,
   emissionIntensityReportingRequirementSchema,
   emissionIntensityReportingRequirementUiSchema,
-  emissionIntensityReportUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import { createEmissionIntensityReportUiSchema } from "./ProjectEmissionIntensityReportForm";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props {
@@ -168,7 +168,11 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         theme={readOnlyTheme}
         fields={renderDiff ? customFields : fields}
         schema={emissionIntensityReportDiffObject.formSchema as JSONSchema7}
-        uiSchema={emissionIntensityReportUiSchema}
+        uiSchema={createEmissionIntensityReportUiSchema(
+          summaryEmissionIntensityReport?.newFormData?.emissionFunctionalUnit,
+          summaryEmissionIntensityReport?.newFormData?.productionFunctionalUnit,
+          false
+        )}
         formData={emissionIntensityReportDiffObject.formData}
         formContext={{
           operation: summaryEmissionIntensityReport?.operation,

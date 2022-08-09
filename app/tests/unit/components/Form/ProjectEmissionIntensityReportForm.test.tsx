@@ -56,7 +56,8 @@ const defaultMockResolver = {
               newFormData: {
                 measurementPeriodStartDate: "2022-01-02",
                 measurementPeriodEndDate: "2023-01-02",
-                emissionFunctionalUnit: "unit",
+                emissionFunctionalUnit: "tCO2e",
+                productionFunctionalUnit: "GJ",
                 baselineEmissionIntensity: "2",
                 targetEmissionIntensity: "3",
                 postProjectEmissionIntensity: "4",
@@ -156,11 +157,10 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByLabelText(/Measurement period start date/i)
     ).toHaveTextContent(/Jan[.]? 02, 2022/);
-    screen.logTestingPlaygroundURL();
     expect(
       screen.getByLabelText(/Measurement period end date/i)
     ).toHaveTextContent(/Jan[.]? 02, 2023/);
-    expect(screen.getByLabelText(/Functional unit/i)).toHaveValue("unit");
+    expect(screen.getByLabelText(/^Functional unit$/i)).toHaveValue("tCO2e");
     expect(
       screen.getByLabelText(/Base Line Emission Intensity \(BEI\)/)
     ).toHaveValue("2");
@@ -292,5 +292,28 @@ describe("the emission intensity report form component", () => {
     expect(mutationUnderTest.fragment.node.name).toBe(
       "updateEmissionIntensityReportFormChangeMutation"
     );
+  });
+  it("shows the correct emission functional unit and production functional unit", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const emissionFunctionalUnitInput = screen.getByRole("textbox", {
+      name: /^functional unit$/i,
+    });
+    const productionFunctionalUnitInput = screen.getByRole("textbox", {
+      name: /^production functional unit$/i,
+    });
+
+    expect(screen.getAllByText(/tco2e\/gj/i)).toHaveLength(3);
+
+    expect(emissionFunctionalUnitInput).toHaveValue("tCO2e");
+    expect(productionFunctionalUnitInput).toHaveValue("GJ");
+
+    userEvent.clear(emissionFunctionalUnitInput);
+    userEvent.type(emissionFunctionalUnitInput, "tCO2");
+    userEvent.clear(productionFunctionalUnitInput);
+    userEvent.type(productionFunctionalUnitInput, "G");
+
+    expect(screen.getAllByText(/tco2\/g/i)).toHaveLength(3);
   });
 });
