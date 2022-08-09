@@ -86,12 +86,11 @@ export const createMilestoneSchema = (reportType?: String) => {
     ),
   };
 
-  if (reportType === "Reporting Milestone")
+  if (reportType === "Reporting Milestone") {
     delete schema.properties.totalEligibleExpenses;
-  delete schema.properties.maximumAmount;
-  schema.required = [];
+    delete schema.properties.maximumAmount;
+  }
   if (reportType !== "Reporting Milestone") {
-    schema.required = ["totalEligibleExpenses", "maximumAmount"];
     schema.properties.totalEligibleExpenses = {
       type: "number",
       title: "Total Eligible Expenses",
