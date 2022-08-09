@@ -22,7 +22,9 @@ select columns_are(
     'updated_at',
     'updated_by',
     'archived_at',
-    'archived_by'
+    'archived_by',
+    'score',
+    'project_type'
   ],
   'columns in cif.project match expected columns'
 );
