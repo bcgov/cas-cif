@@ -5,6 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
 
+const contentSuffixElement = (
+  id: string,
+  contentSuffix: string
+): JSX.Element => (
+  <span
+    id={id && `${id}-contentSuffix`}
+    className="contentSuffix"
+    style={{ paddingLeft: "1em" }}
+  >
+    {contentSuffix}
+  </span>
+);
+
 const showStringDiff = (
   id: string,
   oldData: string,
@@ -16,6 +29,7 @@ const showStringDiff = (
     <span id={id && `${id}-diffOld`} className="diffOld">
       {isDate ? getLocaleFormattedDate(oldData) : oldData}
     </span>
+    {contentSuffix && contentSuffixElement(id, contentSuffix)}
     <FontAwesomeIcon
       className={"diff-arrow"}
       size="lg"
@@ -25,13 +39,7 @@ const showStringDiff = (
     <span id={id && `${id}-diffNew`} className="diffNew">
       {isDate ? getLocaleFormattedDate(newData) : newData}
     </span>
-    <span
-      id={id && `${id}-contentSuffix`}
-      className="contentSuffix"
-      style={{ paddingLeft: "1em" }}
-    >
-      {contentSuffix}
-    </span>
+    {contentSuffix && contentSuffixElement(id, contentSuffix)}
   </>
 );
 
@@ -45,6 +53,7 @@ const showStringAdded = (
     <span id={id && `${id}-diffNew`} className="diffNew">
       {isDate ? getLocaleFormattedDate(newData) : newData}
     </span>
+    {contentSuffix && contentSuffixElement(id, contentSuffix)}
     <FontAwesomeIcon
       className={"diff-arrow"}
       size="lg"
@@ -55,13 +64,6 @@ const showStringAdded = (
       <strong>
         <em>ADDED</em>
       </strong>
-    </span>
-    <span
-      id={id && `${id}-contentSuffix`}
-      className="contentSuffix"
-      style={{ paddingLeft: "1em" }}
-    >
-      {contentSuffix}
     </span>
   </>
 );
@@ -76,6 +78,7 @@ const showStringRemoved = (
     <span id={id && `${id}-diffOld`} className="diffOld">
       {isDate ? getLocaleFormattedDate(oldData) : oldData}
     </span>
+    {contentSuffix && contentSuffixElement(id, contentSuffix)}
     <FontAwesomeIcon
       className={"diff-arrow"}
       size="lg"
@@ -86,13 +89,6 @@ const showStringRemoved = (
       <strong>
         <em>REMOVED</em>
       </strong>
-    </span>
-    <span
-      id={id && `${id}-contentSuffix`}
-      className="contentSuffix"
-      style={{ paddingLeft: "1em" }}
-    >
-      {contentSuffix}
     </span>
   </>
 );
