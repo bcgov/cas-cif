@@ -62,36 +62,44 @@ const DateWidget: React.FC<WidgetProps> = ({
   uiSchema,
 }) => {
   return (
-    <div>
-      <DatePicker
-        id={id}
-        dateFormat="tz"
-        onChange={(e) => {
-          onChange(getTimestamptzFromDate(e, true));
-        }}
-        value={value}
-        selected={value ? DateTime.fromISO(value).toJSDate() : undefined}
-        required={required}
-        aria-label={label}
-        customInput={
-          <DateInput
-            formContext={formContext}
-            uiSchema={uiSchema}
-            label={label}
-            ref={useRef()}
-          />
-        }
-        showMonthDropdown
-        showYearDropdown
-        dropdownMode="select"
-        isClearable
-      />
+    <div className="dateWidgetWrapper">
+      <div className="dateWidget">
+        <DatePicker
+          id={id}
+          dateFormat="tz"
+          onChange={(e) => {
+            onChange(getTimestamptzFromDate(e, true));
+          }}
+          value={value}
+          selected={value ? DateTime.fromISO(value).toJSDate() : undefined}
+          required={required}
+          aria-label={label}
+          customInput={
+            <DateInput
+              formContext={formContext}
+              uiSchema={uiSchema}
+              label={label}
+              ref={useRef()}
+            />
+          }
+          showMonthDropdown
+          showYearDropdown
+          dropdownMode="select"
+          isClearable
+        />
+      </div>
+      {uiSchema?.["ui:options"]?.contentSuffix}
       <style jsx>{`
         :global(.react-datepicker__day.react-datepicker__day--keyboard-selected) {
           background: none;
           color: black;
         }
-        div {
+        .dateWidgetWrapper {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        .dateWidget {
           width: 300px;
         }
       `}</style>
