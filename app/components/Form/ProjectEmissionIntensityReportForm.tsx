@@ -18,6 +18,7 @@ import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import getDurationFromDates from "lib/helpers/getDurationFromDates";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -28,6 +29,8 @@ interface Props {
 export const createEmissionIntensityReportUiSchema = (
   emissionFunctionalUnit: string,
   productionFunctionalUnit?: string,
+  measurementPeriodStartDate?: string,
+  measurementPeriodEndDate?: string,
   viewOnly?: boolean
 ) => {
   // setting a deep copy of the ui schema to avoid mutating the original
@@ -46,6 +49,21 @@ export const createEmissionIntensityReportUiSchema = (
       )
     );
   };
+
+  const reportDuration = getDurationFromDates(
+    measurementPeriodStartDate,
+    measurementPeriodEndDate
+  );
+  const reportDurationSuffix = reportDuration && (
+    <b className="contentSuffix">
+      Duration: {reportDuration}{" "}
+      <style jsx>{`
+        .contentSuffix {
+          font-size: 0.8rem;
+        }
+      `}</style>
+    </b>
+  );
 
   // We only show the label of this field on view mode and summary page
   if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
@@ -74,6 +92,11 @@ export const createEmissionIntensityReportUiSchema = (
   uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
     ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
     contentSuffix: contentSuffix(emissionFunctionalUnit),
+  };
+
+  uiSchemaCopy.measurementPeriodEndDate["ui:options"] = {
+    ...uiSchemaCopy.measurementPeriodEndDate["ui:options"],
+    contentSuffix: reportDurationSuffix,
   };
 
   return uiSchemaCopy;
@@ -267,6 +290,10 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
                 ?.emissionFunctionalUnit,
               emissionIntensityReportFormChange?.newFormData
                 ?.productionFunctionalUnit,
+              emissionIntensityReportFormChange?.newFormData
+                ?.measurementPeriodStartDate,
+              emissionIntensityReportFormChange?.newFormData
+                ?.measurementPeriodEndDate,
               true
             )}
             onChange={(change) =>
