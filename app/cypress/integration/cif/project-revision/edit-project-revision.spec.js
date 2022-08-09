@@ -156,7 +156,7 @@ describe("when editing a project, the project page", () => {
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
 
-    // cy.happoAndAxe("Project annual reports Form", "editing", "main");
+    cy.happoAndAxe("Project annual reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.findByText(/Submit changes/i).click();
