@@ -18,6 +18,7 @@ import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -225,6 +226,18 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               }
             />
           </header>
+          <EmissionIntensityReportStatus
+            reportDueDateString={
+              reportingRequirementFormChange?.newFormData.reportDueDate
+            }
+            submittedDateString={
+              reportingRequirementFormChange?.newFormData.submittedDate
+            }
+            emissionIntensityEndDateString={
+              emissionIntensityReportFormChange?.newFormData
+                .measurementPeriodEndDate
+            }
+          />
           <FormBase
             id="TEIMP_ReportingRequirementForm"
             ref={(el) =>
