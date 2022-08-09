@@ -15,6 +15,7 @@ import ConditionalAmountWidget from "./widgets/ConditionalAmountWidget";
 import DateWidget from "./widgets/DateWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
 import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
+import PercentageWidget from "./widgets/PercentageWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -36,6 +37,7 @@ const formTheme: ThemeProps = {
     DateWidget,
     AdjustableCalculatedValueWidget,
     ReadOnlyCalculatedValueWidget,
+    PercentageWidget: PercentageWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,

@@ -77,13 +77,15 @@ const showNumberDiff = (
   id: string,
   oldData: number,
   newData: number,
-  isMoney: boolean
+  isMoney: boolean,
+  isPercentage: boolean
 ) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? " %" : ""}
         displayType="text"
         value={oldData}
       />
@@ -98,6 +100,7 @@ const showNumberDiff = (
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? " %" : ""}
         displayType="text"
         value={newData}
       />
@@ -105,12 +108,18 @@ const showNumberDiff = (
   </>
 );
 
-const showNumberAdded = (id: string, newData: number, isMoney: boolean) => (
+const showNumberAdded = (
+  id: string,
+  newData: number,
+  isMoney: boolean,
+  isPercentage: boolean
+) => (
   <>
     <span id={id && `${id}-diffNew`} className="diffNew">
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? " %" : ""}
         displayType="text"
         value={newData}
       />
@@ -129,12 +138,18 @@ const showNumberAdded = (id: string, newData: number, isMoney: boolean) => (
   </>
 );
 
-const showNumberRemoved = (id: string, oldData: number, isMoney: boolean) => (
+const showNumberRemoved = (
+  id: string,
+  oldData: number,
+  isMoney: boolean,
+  isPercentage: boolean
+) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
       <NumberFormat
         thousandSeparator
         prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? " %" : ""}
         displayType="text"
         value={oldData}
       />
@@ -228,7 +243,8 @@ const CUSTOM_DIFF_FIELDS: Record<
           formContext?.oldData?.[props.name],
           formData,
           uiSchema?.["ui:widget"] === "MoneyWidget" ||
-            uiSchema?.["ui:widget"] === "ConditionalAmountWidget"
+            uiSchema?.["ui:widget"] === "ConditionalAmountWidget",
+          uiSchema?.["ui:widget"] === "PercentageWidget"
         );
       } else if (
         !previousValue &&
@@ -239,7 +255,8 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formData,
           uiSchema?.["ui:widget"] === "MoneyWidget" ||
-            uiSchema?.["ui:widget"] === "ConditionalAmountWidget"
+            uiSchema?.["ui:widget"] === "ConditionalAmountWidget",
+          uiSchema?.["ui:widget"] === "PercentageWidget"
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
@@ -249,7 +266,8 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formContext?.oldData?.[props.name],
           uiSchema?.["ui:widget"] === "MoneyWidget" ||
-            uiSchema?.["ui:widget"] === "ConditionalAmountWidget"
+            uiSchema?.["ui:widget"] === "ConditionalAmountWidget",
+          uiSchema?.["ui:widget"] === "PercentageWidget"
         );
       } else {
         return <>DISPLAY ERROR</>;
