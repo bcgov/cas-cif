@@ -148,7 +148,7 @@ describe("the emission intensity report form component", () => {
     expect(screen.getByLabelText("Report Due Date")).toHaveTextContent(
       /Jan[.]? 01, 2022/
     );
-    expect(screen.getByLabelText("Received Date")).toHaveTextContent(
+    expect(screen.getByLabelText("Report Received Date")).toHaveTextContent(
       /Select a date/i
     );
     expect(screen.getByLabelText("General Comments")).toHaveTextContent(
