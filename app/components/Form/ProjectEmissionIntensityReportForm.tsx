@@ -115,6 +115,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               id
               asEmissionIntensityReport {
                 calculatedEiPerformance
+                teimpPaymentPercentage
               }
               rowId
               newFormData

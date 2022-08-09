@@ -50,6 +50,10 @@ export const emissionIntensityReportSchema = {
       title: "GHG Emission Intensity Performance (Adjusted)",
       type: "number",
     },
+    calculatedPaymentPercentage: {
+      title: "Payment percentage of performance milestone amount",
+      type: "number",
+    },
   },
 };
 
