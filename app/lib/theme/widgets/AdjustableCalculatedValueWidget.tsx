@@ -28,20 +28,24 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
     <div>
       {calculatedValue && (
         <>
-          <NumberFormat
-            thousandSeparator
-            fixedDecimalScale={isMoney || isPercent}
-            id={id}
-            prefix={isMoney ? "$" : ""}
-            suffix={isPercent ? "%" : ""}
-            disabled={disabled}
-            className="adjustable"
-            decimalScale={isMoney || isPercent ? 2 : 10} //Hardcoded for now, we can change it if we need to
-            defaultValue={(schema as any).defaultValue}
-            value={calculatedValue}
-            displayType="text"
-          />
-          <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
+          <div className="readonly">
+            <NumberFormat
+              thousandSeparator
+              fixedDecimalScale={isMoney || isPercent}
+              id={id}
+              prefix={isMoney ? "$" : ""}
+              suffix={isPercent ? "%" : ""}
+              disabled={disabled}
+              className="adjustable"
+              decimalScale={isMoney || isPercent ? 2 : 10} //Hardcoded for now, we can change it if we need to
+              defaultValue={(schema as any).defaultValue}
+              value={calculatedValue}
+              displayType="text"
+            />
+          </div>
+          <div>
+            <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
+          </div>
         </>
       )}
       <NumberFormat
@@ -74,6 +78,9 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
       />
       <style jsx>
         {`
+          .readonly {
+            margin-bottom: 1em;
+          }
           div :global(input) {
             width: 100%;
           }

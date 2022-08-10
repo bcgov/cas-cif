@@ -16,6 +16,7 @@ const mutation = graphql`
         operation
         changeStatus
         projectRevisionByProjectRevisionId {
+          teimpPaymentPercentage
           ...TaskList_projectRevision
           upcomingReportingRequirementFormChange(reportType: "TEIMP") {
             ...ReportDueIndicator_formChange

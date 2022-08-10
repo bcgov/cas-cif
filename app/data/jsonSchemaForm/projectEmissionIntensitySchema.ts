@@ -42,12 +42,8 @@ export const emissionIntensityReportSchema = {
       title: "Total lifetime emissions reductions",
       type: "number",
     },
-    calculatedGHGEmissionIntensityPerformance: {
+    adjustedEmissionsIntensityPerformance: {
       title: "GHG Emission Intensity Performance",
-      type: "number",
-    },
-    adjustedGHGEmissionIntensityPerformance: {
-      title: "GHG Emission Intensity Performance (Adjusted)",
       type: "number",
     },
     calculatedPaymentPercentage: {
@@ -107,15 +103,17 @@ export const emissionIntensityReportUiSchema = {
   totalLifetimeEmissionReduction: {
     "ui:widget": "TextWidget",
   },
-  calculatedGHGEmissionIntensityPerformance: {
+  adjustedEmissionsIntensityPerformance: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedEiPerformance",
+    isPercent: true,
+    hideOptional: true,
+  },
+  calculatedPaymentPercentage: {
     "ui:widget": "ReadOnlyCalculatedValueWidget",
     isPercent: true,
     hideOptional: true,
-    calculatedValueFormContextProperty: "calculatedEiPerformance",
-  },
-  adjustedGHGEmissionIntensityPerformance: {
-    "ui:widget": "AdjustableCalculatedValueWidget",
-    isPercent: true,
+    calculatedValueFormContextProperty: "teimpPaymentPercentage",
   },
 };
 
