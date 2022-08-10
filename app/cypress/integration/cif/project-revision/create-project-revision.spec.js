@@ -115,6 +115,7 @@ describe("when creating a project, the project page", () => {
       "2",
       "3"
     );
+    cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main", true);
     cy.findByText(/Submit TEIMP Report/).click();
@@ -176,7 +177,11 @@ describe("when creating a project, the project page", () => {
     // TEIMP section
     cy.findByText(/^Measurement period start date/i)
       .next()
-      .should("have.text", "Jan. 1, 2022");
+      .contains(/Jan(\.?) 1, 2022/i);
+    cy.findByText(/Measurement period end date/i)
+      .next()
+      .next()
+      .contains(/Duration: 1 month, 1 day/i);
     cy.findByText(/^Functional Unit/i)
       .next()
       .should("have.text", "tCO");
