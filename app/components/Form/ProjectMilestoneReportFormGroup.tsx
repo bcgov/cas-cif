@@ -21,7 +21,6 @@ import {
   getConsolidatedMilestoneFormData,
   createMilestoneReportingRequirementSchema,
   createCustomMilestoneReportingRequirementUiSchema,
-  createMilestoneSchema,
 } from "./Functions/projectMilestoneFormFunctions";
 import ProjectMilestoneReportForm from "./ProjectMilestoneReportForm";
 
@@ -166,10 +165,6 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
     return createCustomMilestoneReportingRequirementUiSchema();
   }, []);
 
-  const generatedMilestoneSchema = useMemo(() => {
-    return createMilestoneSchema();
-  }, []);
-
   const [addMilestoneReportMutation, isAdding] = useAddMilestoneToRevision();
 
   const [applyUpdateFormChangeMutation, isUpdating] =
@@ -288,7 +283,6 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
                   generatedReportingRequirementUiSchema={
                     generatedReportingRequirementUiSchema
                   }
-                  generatedMilestoneSchema={generatedMilestoneSchema}
                   connections={[
                     projectRevision.milestoneReportingRequirementFormChanges
                       .__id,

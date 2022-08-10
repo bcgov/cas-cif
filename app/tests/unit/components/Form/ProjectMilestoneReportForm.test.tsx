@@ -357,7 +357,7 @@ describe("The ProjectMilestoneReportForm", () => {
     });
   });
 
-  it("Only renders the payment form for milestones types with associated expenses", () => {
+  it("Only renders the payment form for milestone types with associated expenses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -366,6 +366,16 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText(/milestone gross payment amount/i)).toHaveLength(
       1
     );
+  });
+
+  it("Only renders the totalEligibleExpenses and maximumAmount fields for milestone types with associated expenses", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getAllByText(/milestone description/i)).toHaveLength(2);
+    expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
+    expect(screen.getAllByText(/maximum amount/i)).toHaveLength(1);
+    expect(screen.getAllByText(/total eligible expenses/i)).toHaveLength(1);
   });
 
   it("Creates a form change when changing the milestone type from one with no payments, to one with payments", async () => {

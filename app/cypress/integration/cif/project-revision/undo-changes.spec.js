@@ -118,7 +118,8 @@ describe("when undoing, the project revision page", () => {
       "General",
       "1990-08-12",
       "1991-04-17",
-      "Professional Engineer"
+      "Professional Engineer",
+      true
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByText(/Milestone Report 1/i).should("not.exist");

@@ -11,7 +11,6 @@ import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import {
   milestoneReportingRequirementUiSchema,
   milestoneReportingRequirementSchema,
-  milestoneSchema,
   milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { getConsolidatedMilestoneFormData } from "./Functions/projectMilestoneFormFunctions";
@@ -19,6 +18,7 @@ import {
   paymentSchema,
   paymentUiSchema,
 } from "data/jsonSchemaForm/paymentSchema";
+import { createMilestoneSchema } from "./Functions/projectMilestoneFormFunctions";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -159,6 +159,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     return sortedMilestoneReports.map((milestoneReport, index) => {
       if (!milestoneReport) return;
 
+      const generatedMilestoneSchema = createMilestoneSchema(
+        milestoneReport.reportingRequirementFormChange.newFormData.reportType
+      );
+
       // Set the formSchema and formData based on showing the diff or not
       const reportingRequirementFormDiffObject = renderDiff
         ? (getFilteredSchema(
@@ -173,11 +177,11 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
 
       const milestoneFormDiffObject = renderDiff
         ? (getFilteredSchema(
-            milestoneSchema as JSONSchema7,
+            generatedMilestoneSchema as JSONSchema7,
             milestoneReport.milestoneFormChange
           ) as any)
         : {
-            formSchema: milestoneSchema,
+            formSchema: generatedMilestoneSchema,
             formData: milestoneReport.milestoneFormChange.newFormData,
           };
 

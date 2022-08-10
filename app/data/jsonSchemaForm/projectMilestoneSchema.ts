@@ -86,18 +86,25 @@ export const milestoneReportingRequirementUiSchema = {
 };
 
 export const milestoneUiSchema = {
+  "ui:order": [
+    "substantialCompletionDate",
+    "maximumAmount",
+    "totalEligibleExpenses",
+    "certifiedBy",
+    "certifierProfessionalDesignation",
+  ],
   substantialCompletionDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "DateWidget",
   },
   maximumAmount: {
-    "ui:widget": "ConditionalAmountWidget",
+    "ui:widget": "MoneyWidget",
     "ui:col-md": 12,
     "bcgov:size": "small",
   },
   totalEligibleExpenses: {
-    "ui:widget": "ConditionalAmountWidget",
+    "ui:widget": "MoneyWidget",
     "ui:col-md": 12,
     "bcgov:size": "small",
   },

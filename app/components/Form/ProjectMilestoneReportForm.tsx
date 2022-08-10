@@ -19,6 +19,8 @@ import {
 import { ProjectMilestoneReportForm_reportingRequirement$key } from "__generated__/ProjectMilestoneReportForm_reportingRequirement.graphql";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { useCreateFormChange } from "mutations/FormChange/createFormChange";
+import { createMilestoneSchema } from "./Functions/projectMilestoneFormFunctions";
+import { useMemo } from "react";
 
 interface Props {
   formRefs: MutableRefObject<{}>;
@@ -37,7 +39,7 @@ interface Props {
     };
     reportingRequirementFormChange: {
       id: string;
-      newFormData: { reportDueDate: string };
+      newFormData: { reportDueDate: string; reportType: string };
       changeStatus: string;
       asReportingRequirement: ProjectMilestoneReportForm_reportingRequirement$key;
       formDataRecordId: number;
@@ -56,7 +58,6 @@ interface Props {
   ) => Disposable;
   generatedReportingRequirementSchema: object;
   generatedReportingRequirementUiSchema: object;
-  generatedMilestoneSchema: object;
   connections: string[];
 }
 
@@ -69,7 +70,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
   updateFormChange,
   generatedReportingRequirementSchema,
   generatedReportingRequirementUiSchema,
-  generatedMilestoneSchema,
   connections,
 }) => {
   const { hasExpenses } = useFragment(
@@ -86,6 +86,12 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
   );
 
   const [createFormChange] = useCreateFormChange();
+
+  const generatedMilestoneSchema = useMemo(() => {
+    return createMilestoneSchema(
+      milestoneReport.reportingRequirementFormChange.newFormData.reportType
+    );
+  }, [milestoneReport.reportingRequirementFormChange.newFormData.reportType]);
 
   useEffect(() => {
     if (hasExpenses === false && milestoneReport.paymentFormChange) {
