@@ -7,6 +7,7 @@ export const fundingAgreementSchema = {
     "provinceSharePercentage",
     "holdbackPercentage",
     "anticipatedFundingAmount",
+    "proponentCost",
   ],
   properties: {
     totalProjectValue: {
@@ -29,10 +30,22 @@ export const fundingAgreementSchema = {
       title: "Anticipated Funding Amount",
       type: "number",
     },
+    proponentCost: {
+      title: "Proponent Cost",
+      type: "number",
+    },
   },
 };
 
 export const fundingAgreementUiSchema = {
+  "ui:order": [
+    "maxFundingAmount",
+    "provinceSharePercentage",
+    "holdbackPercentage",
+    "proponentCost",
+    "totalProjectValue",
+    "anticipatedFundingAmount",
+  ],
   totalProjectValue: {
     "ui:widget": "MoneyWidget",
   },
@@ -46,6 +59,9 @@ export const fundingAgreementUiSchema = {
     "ui:widget": "PercentageWidget",
   },
   anticipatedFundingAmount: {
+    "ui:widget": "MoneyWidget",
+  },
+  proponentCost: {
     "ui:widget": "MoneyWidget",
   },
 };
