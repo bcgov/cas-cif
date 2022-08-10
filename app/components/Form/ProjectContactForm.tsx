@@ -23,6 +23,7 @@ import UndoChangesButton from "./UndoChangesButton";
 import { useCreatePrimaryContact } from "mutations/ProjectContact/createPrimaryContact";
 import ContactDetails from "components/Contact/ContactDetails";
 import NewContactButton from "./NewContactButton";
+import { useUndoFormChanges } from "mutations/FormChange/undoFormChanges";
 
 interface Props {
   query: ProjectContactForm_query$key;
@@ -146,18 +147,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   const [discardFormChange] = useDiscardFormChange(
     projectContactFormChanges.__id
   );
-
-  const deleteContact = (
-    formChangeId: string,
-    formChangeOperation: FormChangeOperation
-  ) => {
-    discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-      },
-    });
-  };
+  const [undoFormChanges] = useUndoFormChanges();
 
   const updateFormChange = (
     formChange: {
@@ -300,6 +290,39 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       ({ node }) => node?.rowId
     );
   }, [projectRevision.projectContactFormChanges]);
+
+  const deleteContact = (
+    formChangeId: string,
+    formChangeOperation: FormChangeOperation
+  ) => {
+    discardFormChange({
+      formChange: { id: formChangeId, operation: formChangeOperation },
+      onCompleted: () => {
+        delete formRefs.current[formChangeId];
+        // Will remove the primary contact form change if it is not filled out and we have only one secondary contact form
+        // This is to fix the issue where the primary contact form change is not removed when the secondary contact is deleted
+        if (
+          !primaryContactForm.newFormData.contactId &&
+          alternateContactForms.length === 1
+        ) {
+          undoFormChanges({
+            variables: {
+              input: {
+                formChangesIds: formChangeIds,
+              },
+            },
+            onCompleted: () => {
+              if (formRefs) {
+                Object.keys(formRefs.current).forEach((key) => {
+                  if (!formRefs.current[key]) delete formRefs.current[key];
+                });
+              }
+            },
+          });
+        }
+      },
+    });
+  };
 
   return (
     <div>
