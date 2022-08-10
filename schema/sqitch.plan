@@ -108,3 +108,4 @@ mutations/discard_funding_parameter_form_change 2022-08-10T23:11:54Z Gurjeet Mat
 tables/project_type 2022-08-08T18:26:33Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a table for project type
 tables/project_001 2022-08-08T15:28:44Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add a score and project type column to the project table
 computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.1 tables/project_001] 2022-08-08T21:44:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Add score and project type to project computed column
+tables/funding_parameter_001 2022-08-10T18:55:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add proponent cost field to funding_parameter table
