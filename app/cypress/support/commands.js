@@ -517,7 +517,8 @@ Cypress.Commands.add(
     maxFundingAmount,
     provinceSharePercentage,
     holdbackPercentage,
-    anticipatedFundingAmount
+    anticipatedFundingAmount,
+    proponentCost
   ) => {
     cy.findByLabelText(/Total Project Value$/i)
       .clear()
@@ -534,6 +535,9 @@ Cypress.Commands.add(
     cy.findByLabelText(/Anticipated Funding Amount$/i)
       .clear()
       .type(anticipatedFundingAmount);
+    cy.findByLabelText(/Proponent Cost$/i)
+      .clear()
+      .type(proponentCost);
     cy.contains("Changes saved");
 
     return cy.url().should("include", "/form/3");
@@ -547,7 +551,8 @@ Cypress.Commands.add(
     maxFundingAmount,
     provinceSharePercentage,
     holdbackPercentage,
-    anticipatedFundingAmount
+    anticipatedFundingAmount,
+    proponentCost
   ) => {
     cy.findByText(/Total Project Value$/i)
       .next()
@@ -564,6 +569,9 @@ Cypress.Commands.add(
     cy.findByText(/Anticipated Funding Amount$/i)
       .next()
       .should("have.text", anticipatedFundingAmount);
+    cy.findByText(/Proponent Cost$/i)
+      .next()
+      .should("have.text", proponentCost);
 
     return cy.url().should("include", "/form/3");
   }

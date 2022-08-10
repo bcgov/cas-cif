@@ -56,7 +56,7 @@ describe("the new project page", () => {
     );
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
-    cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
+    cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 777);
     cy.happoAndAxe("Project budgets Form", "empty", "main");
 
     // MILESTONE REPORTS
@@ -137,7 +137,14 @@ describe("the new project page", () => {
     cy.findByText("budgets").click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.checkFundingAgreementForm("$1.00", "$1.00", "50 %", "10 %", "$1.00");
+    cy.checkFundingAgreementForm(
+      "$1.00",
+      "$1.00",
+      "50 %",
+      "10 %",
+      "$1.00",
+      "$777.00"
+    );
 
     //TODO: TEIMP Agreement, when fixture is added
 
@@ -177,7 +184,7 @@ describe("the new project page", () => {
     cy.findByText(/Yes/i).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.get(".error-detail").should("have.length", 3);
+    cy.get(".error-detail").should("have.length", 4);
     cy.happoAndAxe(
       "Project funding agreement Form",
       "with errors",
