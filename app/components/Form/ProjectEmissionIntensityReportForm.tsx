@@ -56,7 +56,7 @@ export const createEmissionIntensityReportUiSchema = (
   );
   const reportDurationSuffix = reportDuration && (
     <b className="contentSuffix">
-      Duration: {reportDuration}{" "}
+      Duration: {reportDuration}
       <style jsx>{`
         .contentSuffix {
           font-size: 0.8rem;
