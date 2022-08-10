@@ -137,7 +137,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
         <>
           <header>
-            <h3>Project Funding Agreement</h3>
             <UndoChangesButton formChangeIds={[fundingAgreement?.rowId]} />
             <SavingIndicator
               isSaved={
@@ -146,6 +145,16 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               }
             />
           </header>
+          <div>
+            <h3>Is this a funded project?</h3>
+            <RadioButton
+              name="yes"
+              label="Yes"
+              className="radio-button"
+              checked={true}
+            />
+            <RadioButton name="yes" label="No" className="radio-button" />
+          </div>
 
           <FormBase
             id="ProjectFundingAgreementForm"
@@ -179,6 +188,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           div :global(.radio-button) {
             margin-top: 1rem;
             margin-left: 1rem;
+          }
+          div {
+            margin-bottom: 2rem;
           }
         `}
       </style>
