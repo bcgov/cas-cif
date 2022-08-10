@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(7);
+select plan(8);
 
 -- Setup
 
@@ -132,6 +132,23 @@ select is(
   'Returns null if data is missing'
 );
 
+-- Uses the adjusted emissions intensity performance if set
+-- 43% emissions performance means 20% payment
+update cif.form_change set
+    new_form_data='{"reportingRequirementId": 1, "baselineEmissionIntensity": 30, "postProjectEmissionIntensity": 20, "targetEmissionIntensity": 10, "adjustedEmissionsIntensityPerformance": 43}'
+  where id=2;
+
+select is(
+  (
+    with record as (
+      select row(project_revision.*)::cif.project_revision
+      from cif.project_revision where id=1
+    ) select * from cif.project_revision_teimp_payment_percentage((select * from record))
+  ),
+  20::numeric,
+  'Returns the adjusted teimp payment percentage if set'
+);
+
 -- only takes in account non-archiving form_changes (operation not archive)
 update cif.form_change set
     operation='archive',
@@ -148,6 +165,8 @@ select is(
   null,
   'Returns null if the form_change is set to archive'
 );
+
+
 
 
 select finish();
