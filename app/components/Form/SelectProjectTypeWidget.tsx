@@ -22,7 +22,6 @@ const SelectProjectType: React.FunctionComponent<WidgetProps> = (props) => {
     formContext.query
   );
 
-  console.log("formContext.form", formContext.form);
   const { projectType } = formContext.form || {};
 
   const projectTypeList = useMemo(() => {
