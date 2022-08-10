@@ -43,6 +43,7 @@ const defaultMockResolver = {
                 provinceSharePercentage: 50,
                 holdbackPercentage: 10,
                 anticipatedFundingAmount: 300,
+                proponentCost: 800,
               },
             },
           },
@@ -99,6 +100,9 @@ describe("The ProjectFundingAgreementForm", () => {
       screen.getByLabelText<HTMLSelectElement>(/Anticipated Funding Amount/i)
         .value
     ).toBe("$300.00");
+    expect(
+      screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value
+    ).toBe("$800.00");
   });
 
   it("calls the mutation passed in with the props with the proper data on form change", async () => {
@@ -224,6 +228,33 @@ describe("The ProjectFundingAgreementForm", () => {
         }),
       },
     });
+
+    const proponentCostField =
+      screen.getByLabelText<HTMLInputElement>(/proponent cost/i);
+
+    await act(async () => {
+      await waitFor(() => userEvent.clear(proponentCostField));
+      fireEvent.change(proponentCostField, {
+        target: { value: "$20000.00" },
+      });
+    });
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: expect.objectContaining({
+          totalProjectValue: 10000,
+          maxFundingAmount: 5000,
+          provinceSharePercentage: 60,
+          holdbackPercentage: 20,
+          anticipatedFundingAmount: 1000,
+          proponentCost: 20000,
+        }),
+      },
+    });
   });
   it("stages the form_change when clicking on the submit button", async () => {
     componentTestingHelper.loadQuery();
@@ -314,6 +345,7 @@ describe("The ProjectFundingAgreementForm", () => {
                       holdbackPercentage: 10,
                       maxFundingAmount: 1000,
                       totalProjectValue: 10000,
+                      proponentCost: 900,
                     },
                   },
                 },
