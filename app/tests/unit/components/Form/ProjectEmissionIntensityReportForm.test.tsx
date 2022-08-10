@@ -21,6 +21,8 @@ const testQuery = graphql`
 const defaultMockResolver = {
   ProjectRevision(context, generateID) {
     return {
+      teimpPaymentPercentage: "60",
+      teimpPaymentAmount: "99",
       emissionIntensityReportingRequirementFormChange: {
         edges: [
           {
@@ -62,7 +64,9 @@ const defaultMockResolver = {
                 targetEmissionIntensity: "3",
                 postProjectEmissionIntensity: "4",
                 totalLifetimeEmissionReduction: "5",
-                adjustedGHGEmissionIntensityPerformance: "6",
+                adjustedEmissionsIntensityPerformance: "6",
+                adjustedHoldbackPaymentAmount: "123456.45",
+                dateSentToCsnr: "2022-02-11",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -177,13 +181,25 @@ describe("the emission intensity report form component", () => {
     // We can't query by label for text elements,
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
     expect(
-      screen.queryByText("GHG Emission Intensity Performance")
-    ).toBeInTheDocument();
-    expect(screen.queryByText("200.00%")).toBeInTheDocument();
-
+      screen.getByLabelText("GHG Emission Intensity Performance")
+    ).toHaveTextContent("200.00%");
     expect(
-      screen.getByLabelText(/GHG Emission Intensity Performance \(Adjusted\)/i)
+      screen.getByLabelText("GHG Emission Intensity Performance (Adjusted)")
     ).toHaveValue("6.00%");
+    expect(
+      screen.getByLabelText(
+        "Payment percentage of performance milestone amount"
+      )
+    ).toHaveTextContent("60.00%");
+    expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
+      "$99.00"
+    );
+    expect(
+      screen.getByLabelText("Holdback Payment Amount (Adjusted)")
+    ).toHaveValue("$123,456.45");
+    expect(screen.getByLabelText(/Date sent to CSNR/i)).toHaveTextContent(
+      /Feb[.]? 11, 2022/
+    );
   });
 
   it("renders 0% for the GHG emissions performance if the calculated value is null", () => {

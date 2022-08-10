@@ -54,6 +54,11 @@ export const emissionIntensityReportSchema = {
       title: "Holdback Payment Amount",
       type: "number",
     },
+    dateSentToCsnr: {
+      type: "string",
+      title: "Date sent to CSNR",
+      default: undefined,
+    },
   },
 };
 
@@ -124,6 +129,9 @@ export const emissionIntensityReportUiSchema = {
     calculatedValueFormContextProperty: "teimpPaymentAmount",
     isMoney: true,
     hideOptional: true,
+  },
+  dateSentToCsnr: {
+    "ui:widget": "DateWidget",
   },
 };
 
