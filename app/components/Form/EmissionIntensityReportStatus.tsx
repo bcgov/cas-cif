@@ -42,8 +42,8 @@ export const EmissionIntensityReportStatus: React.FC<Props> = (props) => {
         );
       }
     } else if (
-      !isEmissionIntensityReportEnded &&
-      parsedEmissionIntensityEndDate
+      parsedEmissionIntensityEndDate &&
+      (!isEmissionIntensityReportEnded || !parsedDueDate)
     ) {
       return <StatusBadge variant="notDue" />;
     } else if (isEmissionIntensityReportEnded && parsedDueDate) {
@@ -63,11 +63,7 @@ export const EmissionIntensityReportStatus: React.FC<Props> = (props) => {
       return (
         <StatusBadge
           variant="dueIn"
-          label={
-            dueIn === 0
-              ? "Due Today"
-              : `Due in ${dueIn} ${dueIn > 1 ? "days" : "day"}`
-          }
+          label={`Due in ${dueIn} ${dueIn > 1 ? "days" : "day"}`}
         />
       );
     } else {
