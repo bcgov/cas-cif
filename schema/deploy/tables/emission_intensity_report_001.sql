@@ -4,6 +4,7 @@
 begin;
 
 alter table cif.emission_intensity_report
-  add column adjusted_holdback_payment_amount numeric;
+  add column adjusted_holdback_payment_amount numeric,
+  add column date_sent_to_csnr timestamptz;
 
 commit;

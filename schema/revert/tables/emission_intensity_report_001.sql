@@ -3,6 +3,7 @@
 begin;
 
 alter table cif.emission_intensity_report
-  drop column adjusted_holdback_payment_amount;
+  drop column adjusted_holdback_payment_amount,
+  drop column date_sent_to_csnr;
 
 commit;

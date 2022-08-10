@@ -32268,6 +32268,7 @@ type EmissionIntensityReport implements Node {
   User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded
   """
   adjustedEmissionsIntensityPerformance: BigFloat
+  adjustedHoldbackPaymentAmount: BigFloat
 
   """archived at timestamp"""
   archivedAt: Datetime
@@ -32303,6 +32304,7 @@ type EmissionIntensityReport implements Node {
 
   """created by user id"""
   createdBy: Int
+  dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
   emissionFunctionalUnit: String
@@ -32366,6 +32368,11 @@ input EmissionIntensityReportCondition {
   """
   adjustedEmissionsIntensityPerformance: BigFloat
 
+  """
+  Checks for equality with the object’s `adjustedHoldbackPaymentAmount` field.
+  """
+  adjustedHoldbackPaymentAmount: BigFloat
+
   """Checks for equality with the object’s `archivedAt` field."""
   archivedAt: Datetime
 
@@ -32382,6 +32389,9 @@ input EmissionIntensityReportCondition {
 
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
+
+  """Checks for equality with the object’s `dateSentToCsnr` field."""
+  dateSentToCsnr: Datetime
 
   """Checks for equality with the object’s `emissionFunctionalUnit` field."""
   emissionFunctionalUnit: String
@@ -32434,6 +32444,9 @@ input EmissionIntensityReportFilter {
   """Filter by the object’s `adjustedEmissionsIntensityPerformance` field."""
   adjustedEmissionsIntensityPerformance: BigFloatFilter
 
+  """Filter by the object’s `adjustedHoldbackPaymentAmount` field."""
+  adjustedHoldbackPaymentAmount: BigFloatFilter
+
   """Checks for all expressions in this list."""
   and: [EmissionIntensityReportFilter!]
 
@@ -32472,6 +32485,9 @@ input EmissionIntensityReportFilter {
 
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
+
+  """Filter by the object’s `dateSentToCsnr` field."""
+  dateSentToCsnr: DatetimeFilter
 
   """Filter by the object’s `emissionFunctionalUnit` field."""
   emissionFunctionalUnit: StringFilter
@@ -32524,6 +32540,7 @@ input EmissionIntensityReportInput {
   User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded
   """
   adjustedEmissionsIntensityPerformance: BigFloat
+  adjustedHoldbackPaymentAmount: BigFloat
 
   """archived at timestamp"""
   archivedAt: Datetime
@@ -32541,6 +32558,7 @@ input EmissionIntensityReportInput {
 
   """created by user id"""
   createdBy: Int
+  dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
   emissionFunctionalUnit: String
@@ -32589,6 +32607,7 @@ input EmissionIntensityReportPatch {
   User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded
   """
   adjustedEmissionsIntensityPerformance: BigFloat
+  adjustedHoldbackPaymentAmount: BigFloat
 
   """archived at timestamp"""
   archivedAt: Datetime
@@ -32606,6 +32625,7 @@ input EmissionIntensityReportPatch {
 
   """created by user id"""
   createdBy: Int
+  dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
   emissionFunctionalUnit: String
@@ -32678,6 +32698,8 @@ type EmissionIntensityReportsEdge {
 enum EmissionIntensityReportsOrderBy {
   ADJUSTED_EMISSIONS_INTENSITY_PERFORMANCE_ASC
   ADJUSTED_EMISSIONS_INTENSITY_PERFORMANCE_DESC
+  ADJUSTED_HOLDBACK_PAYMENT_AMOUNT_ASC
+  ADJUSTED_HOLDBACK_PAYMENT_AMOUNT_DESC
   ARCHIVED_AT_ASC
   ARCHIVED_AT_DESC
   ARCHIVED_BY_ASC
@@ -32754,6 +32776,8 @@ enum EmissionIntensityReportsOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
+  DATE_SENT_TO_CSNR_ASC
+  DATE_SENT_TO_CSNR_DESC
   EMISSION_FUNCTIONAL_UNIT_ASC
   EMISSION_FUNCTIONAL_UNIT_DESC
   ID_ASC
