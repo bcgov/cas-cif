@@ -88,6 +88,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
         id
         rowId
         teimpPaymentPercentage
+        teimpPaymentAmount
         emissionIntensityReportingRequirementFormChange: formChangesFor(
           first: 1
           formDataTableName: "reporting_requirement"
@@ -262,6 +263,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               form: emissionIntensityReportFormChange?.newFormData,
               calculatedEiPerformance: calculatedEiPerformance ?? 0,
               teimpPaymentPercentage: projectRevision.teimpPaymentPercentage,
+              teimpPaymentAmount: projectRevision.teimpPaymentAmount || "0",
               isPercent: true,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(

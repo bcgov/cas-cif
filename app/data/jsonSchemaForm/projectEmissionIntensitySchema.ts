@@ -50,6 +50,10 @@ export const emissionIntensityReportSchema = {
       title: "Payment percentage of performance milestone amount",
       type: "number",
     },
+    adjustedHoldbackPaymentAmount: {
+      title: "Holdback Payment Amount",
+      type: "number",
+    },
   },
 };
 
@@ -114,6 +118,12 @@ export const emissionIntensityReportUiSchema = {
     isPercent: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "teimpPaymentPercentage",
+  },
+  adjustedHoldbackPaymentAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    calculatedValueFormContextProperty: "teimpPaymentAmount",
+    isMoney: true,
+    hideOptional: true,
   },
 };
 

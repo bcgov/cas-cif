@@ -15,27 +15,38 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
     formContext[uiSchema.calculatedValueFormContextProperty];
 
   return (
-    <dd id={id}>
-      {calculatedValue !== null && calculatedValue !== undefined ? (
-        <NumberFormat
-          fixedDecimalScale={isMoney || isPercent}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercent ? "%" : ""}
-          decimalScale={isMoney || isPercent ? 2 : 10} //Hardcoded for now, we can change it if we need to
-          value={calculatedValue}
-          displayType="text"
-        />
-      ) : (
-        <NumberFormat
-          fixedDecimalScale={isMoney || isPercent}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercent ? "%" : ""}
-          decimalScale={isMoney || isPercent ? 2 : 10}
-          value={""}
-          displayType="text"
-        />
-      )}
-    </dd>
+    <>
+      <dd id={id}>
+        {calculatedValue !== null && calculatedValue !== undefined ? (
+          <NumberFormat
+            fixedDecimalScale={isMoney || isPercent}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercent ? "%" : ""}
+            id={id}
+            decimalScale={isMoney || isPercent ? 2 : 10} //Hardcoded for now, we can change it if we need to
+            value={calculatedValue}
+            displayType="text"
+          />
+        ) : (
+          <NumberFormat
+            fixedDecimalScale={isMoney || isPercent}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercent ? "%" : ""}
+            id={id}
+            decimalScale={isMoney || isPercent ? 2 : 10}
+            value={""}
+            displayType="text"
+          />
+        )}
+      </dd>
+      <style jsx>{`
+         {
+          dd {
+            margin-bottom: 0;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 
