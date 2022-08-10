@@ -41,6 +41,8 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
               defaultValue={(schema as any).defaultValue}
               value={calculatedValue}
               displayType="text"
+              // This is required since we render a <span> component
+              aria-label={label}
             />
           </div>
           <div>
