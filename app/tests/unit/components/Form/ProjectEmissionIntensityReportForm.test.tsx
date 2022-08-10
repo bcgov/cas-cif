@@ -165,6 +165,7 @@ describe("the emission intensity report form component", () => {
       screen.getByLabelText(/Measurement period end date/i)
     ).toHaveTextContent(/Jan[.]? 02, 2023/);
     expect(screen.getByText(/duration: 12 months/i)).toBeInTheDocument();
+    expect(screen.getByText(/duration: 12 months/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Functional unit$/i)).toHaveValue("tCO2e");
     expect(
       screen.getByLabelText(/Base Line Emission Intensity \(BEI\)/)
