@@ -46,7 +46,7 @@ describe("the new project page", () => {
 
     // BUDGETS, EXPENSES AND PAYMENTS
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByText(/Add funding agreement/i).click();
+    cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     // checking default values
@@ -134,7 +134,7 @@ describe("the new project page", () => {
 
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByText(/funding agreement/i).click();
+    cy.findByText(/add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm("$1.00", "$1.00", "50 %", "10 %", "$1.00");
@@ -172,7 +172,7 @@ describe("the new project page", () => {
 
     // BUDGETS, EXPENSES AND PAYMENTS
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByText(/Add funding agreement/i).click();
+    cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     cy.contains("Changes saved").should("be.visible");
