@@ -16,6 +16,14 @@ const discardMutation = graphql`
             ...ReportDueIndicator_formChange
           }
           ...TaskList_projectRevision
+          ...ProjectForm_projectRevision
+          ...ProjectManagerFormGroup_projectRevision
+          ...ProjectContactForm_projectRevision
+          ...ProjectQuarterlyReportForm_projectRevision
+          ...ProjectAnnualReportForm_projectRevision
+          ...ProjectMilestoneReportFormGroup_projectRevision
+          ...ProjectFundingAgreementForm_projectRevision
+          ...ProjectEmissionIntensityReportForm_projectRevision
         }
       }
     }
