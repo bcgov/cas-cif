@@ -228,8 +228,55 @@ describe("the emission intensity report form component", () => {
 
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
-
     expect(screen.queryByText("0.00%")).toBeInTheDocument();
+  });
+
+  it("renders the TEIMP form with placeholders for calculated values, when the form is not filled", () => {
+    const mockResolver = {
+      Query: defaultMockResolver.Query,
+      ProjectRevision: (context, generateID) => ({
+        ...defaultMockResolver.ProjectRevision(context, generateID),
+        teimpPaymentPercentage: null,
+        teimpPaymentAmount: null,
+        emissionIntensityReportFormChange: {
+          edges: [
+            {
+              node: {
+                id: `mock-project-milestone-report-form-${generateID()}`,
+                asEmissionIntensityReport: {
+                  calculatedEiPerformance: null,
+                },
+                rowId: 1,
+                newFormData: {
+                  measurementPeriodStartDate: "2022-01-02",
+                  measurementPeriodEndDate: "2023-01-02",
+                  emissionFunctionalUnit: "tCO2e",
+                },
+                operation: "CREATE",
+                changeStatus: "pending",
+                formChangeByPreviousFormChangeId: null,
+              },
+            },
+          ],
+          __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
+        },
+      }),
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByLabelText("GHG Emission Intensity Performance")
+    ).toHaveTextContent("-");
+    expect(
+      screen.getByLabelText(
+        "Payment percentage of performance milestone amount"
+      )
+    ).toHaveTextContent("-");
+    expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
+      "-"
+    );
   });
 
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
