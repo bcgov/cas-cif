@@ -4,7 +4,6 @@ import {
   parseStringDate,
 } from "lib/helpers/reportStatusHelpers";
 import { DateTime } from "luxon";
-import { useMemo } from "react";
 
 interface Props {
   reportDueDateString?: string;
@@ -12,14 +11,12 @@ interface Props {
   emissionIntensityEndDateString?: string;
 }
 
-export const EmissionIntensityReportStatus: React.FC<Props> = (props) => {
-  const getBadgeForEmissionIntensityReportStatus = useMemo(() => {
-    const {
-      reportDueDateString,
-      submittedDateString,
-      emissionIntensityEndDateString,
-    } = props;
-
+export const EmissionIntensityReportStatus: React.FC<Props> = ({
+  reportDueDateString,
+  submittedDateString,
+  emissionIntensityEndDateString,
+}) => {
+  const getBadgeForEmissionIntensityReportStatus = () => {
     const parsedDueDate = parseStringDate(reportDueDateString);
     const parsedSubmittedDate = parseStringDate(submittedDateString);
     const parsedEmissionIntensityEndDate = parseStringDate(
@@ -41,12 +38,14 @@ export const EmissionIntensityReportStatus: React.FC<Props> = (props) => {
           />
         );
       }
-    } else if (
+    }
+    if (
       parsedEmissionIntensityEndDate &&
       (!isEmissionIntensityReportEnded || !parsedDueDate)
     ) {
       return <StatusBadge variant="notDue" />;
-    } else if (isEmissionIntensityReportEnded && parsedDueDate) {
+    }
+    if (isEmissionIntensityReportEnded && parsedDueDate) {
       const dueIn = Math.ceil(getDaysUntilDue(parsedDueDate));
       if (dueIn < 0) return <StatusBadge variant="late" />;
       if (dueIn > 60) {
@@ -66,16 +65,15 @@ export const EmissionIntensityReportStatus: React.FC<Props> = (props) => {
           label={`Due in ${dueIn} ${dueIn > 1 ? "days" : "day"}`}
         />
       );
-    } else {
-      return <StatusBadge variant="none" />;
     }
-  }, [props]);
+    return <StatusBadge variant="none" />;
+  };
   return (
     <>
       <h3>Status</h3>
       <div className="status">
         Status of TEIMP Reporting
-        {getBadgeForEmissionIntensityReportStatus}
+        {getBadgeForEmissionIntensityReportStatus()}
       </div>
       <style jsx>{`
         .status {
