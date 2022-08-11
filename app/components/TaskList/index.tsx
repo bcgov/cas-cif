@@ -192,7 +192,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           <TaskListItem
             stepName="3"
             linkUrl={getProjectRevisionFormPageRoute(id, 3)}
-            formTitle="Funding Agreement"
+            formTitle="budgets"
             formStatus={fundingAgreementStatus}
             currentStep={currentStep}
             mode={mode}
