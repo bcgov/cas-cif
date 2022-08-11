@@ -7,13 +7,14 @@ import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { useState } from "react";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
-import { Alert, Button, RadioButton } from "@button-inc/bcgov-theme";
+import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
 import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
 
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
+import DangerAlert from "lib/theme/DangerAlert";
 interface Props {
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
   viewOnly?: boolean;
@@ -148,6 +149,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             label="Yes"
             className="radio-button"
             onClick={addFundingAgreement}
+            disabled={isAddingFundingParameterFormChange}
           />
           <RadioButton name="yes" label="No" className="radio-button" />
         </div>
@@ -169,13 +171,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               onClick={() => setShowDiscardConfirmation(true)}
             />
             {showDiscardConfirmation && (
-              <Alert variant="danger" size="sm">
-                All changes made will be deleted.
-                <a onClick={handleDiscard} id="confirm-discard-revision">
-                  Proceed
-                </a>
-                <a onClick={() => setShowDiscardConfirmation(false)}>Cancel</a>
-              </Alert>
+              <DangerAlert
+                proceedOnClick={handleDiscard}
+                cancelOnClick={() => setShowDiscardConfirmation(false)}
+              />
             )}
           </div>
           <header>
@@ -224,34 +223,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           div {
             margin-bottom: 2rem;
           }
-          div :global(#discard-project-icon) {
-            color: #323a45;
-            margin-right: 0.5em;
-          }
-          div :global(#discard-project-button) {
-            margin-bottom: 1em;
-            color: #cd2026;
-          }
-          div :global(#discard-project-button:hover) {
-            background-color: #aeb0b5;
-          }
-          div :global(.pg-notification) {
-            margin-bottom: 1em;
-            margin-top: 1em;
-          }
-          div :global(a) {
-            color: #1a5a96;
-          }
-          div :global(a:hover) {
-            text-decoration: none;
-            color: blue;
-            cursor: pointer;
-          }
-          div :global(#confirm-discard-revision) {
-            margin-left: 2em;
-            margin-right: 1em;
-          }
-
           div :global(fieldset) {
             border: 0px !important;
             border-radius: 0.25em !important;
