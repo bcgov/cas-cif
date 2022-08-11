@@ -118,3 +118,4 @@ computed_columns/form_change_as_emission_intensity_report [computed_columns/form
 computed_columns/emission_intensity_report_calculated_ei_performance [computed_columns/emission_intensity_report_calculated_ei_performance@1.0.0-rc.4] 2022-08-17T23:55:28Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Addressing a bug where order of operations was ambiguous for postgres
 types/additional_funding_source_status 2022-08-10T23:38:16Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # The status of each additional funding source
 tables/additional_funding_source 2022-08-11T15:49:26Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Table for storing additional funding sources data
+mutations/add_additional_funding_source_to_revision 2022-08-11T20:07:28Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation that prepopulates an insert to the form change table for a new funding source on a project revision
