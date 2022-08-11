@@ -5,7 +5,7 @@ import {
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
-import { MutableRefObject, useRef, useState } from "react";
+import { useState } from "react";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Alert, Button, RadioButton } from "@button-inc/bcgov-theme";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
@@ -123,9 +123,20 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const handleError = () => {
     handleChange(fundingAgreement.newFormData, "staged");
   };
-  const formRefs: MutableRefObject<{}> = useRef({});
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
+  const handleDiscard = () => {
+    setShowDiscardConfirmation(false);
+    discardFundingParameterFormChange({
+      variables: {
+        input: {
+          revisionId: projectRevision.rowId,
+        },
+        connections: [],
+        reportType: "funding_parameter",
+      },
+    });
+  };
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
@@ -160,28 +171,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             {showDiscardConfirmation && (
               <Alert variant="danger" size="sm">
                 All changes made will be deleted.
-                <a
-                  onClick={() =>
-                    discardFundingParameterFormChange({
-                      variables: {
-                        input: {
-                          revisionId: projectRevision.rowId,
-                        },
-                        connections: [],
-                        reportType: "funding_parameter",
-                      },
-                      onCompleted: () => {
-                        if (formRefs) {
-                          Object.keys(formRefs.current).forEach((key) => {
-                            if (!formRefs.current[key])
-                              delete formRefs.current[key];
-                          });
-                        }
-                      },
-                    })
-                  }
-                  id="confirm-discard-revision"
-                >
+                <a onClick={handleDiscard} id="confirm-discard-revision">
                   Proceed
                 </a>
                 <a onClick={() => setShowDiscardConfirmation(false)}>Cancel</a>
@@ -260,6 +250,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           div :global(#confirm-discard-revision) {
             margin-left: 2em;
             margin-right: 1em;
+          }
+
+          div :global(fieldset) {
+            border: 0px !important;
+            border-radius: 0.25em !important;
+            padding: 2em;
           }
         `}
       </style>
