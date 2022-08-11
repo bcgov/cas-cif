@@ -32268,6 +32268,10 @@ type EmissionIntensityReport implements Node {
   User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded
   """
   adjustedEmissionsIntensityPerformance: BigFloat
+
+  """
+  An override field to manually adjust the calculated TEIMP holdback payment amount
+  """
   adjustedHoldbackPaymentAmount: BigFloat
 
   """archived at timestamp"""
@@ -32304,6 +32308,8 @@ type EmissionIntensityReport implements Node {
 
   """created by user id"""
   createdBy: Int
+
+  """The date the payment was issued"""
   dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
@@ -32540,6 +32546,10 @@ input EmissionIntensityReportInput {
   User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded
   """
   adjustedEmissionsIntensityPerformance: BigFloat
+
+  """
+  An override field to manually adjust the calculated TEIMP holdback payment amount
+  """
   adjustedHoldbackPaymentAmount: BigFloat
 
   """archived at timestamp"""
@@ -32558,6 +32568,8 @@ input EmissionIntensityReportInput {
 
   """created by user id"""
   createdBy: Int
+
+  """The date the payment was issued"""
   dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
@@ -32607,6 +32619,10 @@ input EmissionIntensityReportPatch {
   User defined value corresponding to the calculated emission intensity performance. The calculated value gets manually rounded
   """
   adjustedEmissionsIntensityPerformance: BigFloat
+
+  """
+  An override field to manually adjust the calculated TEIMP holdback payment amount
+  """
   adjustedHoldbackPaymentAmount: BigFloat
 
   """archived at timestamp"""
@@ -32625,6 +32641,8 @@ input EmissionIntensityReportPatch {
 
   """created by user id"""
   createdBy: Int
+
+  """The date the payment was issued"""
   dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
