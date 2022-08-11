@@ -295,33 +295,33 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     formChangeId: string,
     formChangeOperation: FormChangeOperation
   ) => {
-    discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-        // Will remove the primary contact form change if it is not filled out and we have only one secondary contact form
-        // This is to fix the issue where the primary contact form change is not removed when the secondary contact is deleted
-        if (
-          !primaryContactForm.newFormData.contactId &&
-          alternateContactForms.length === 1
-        ) {
-          undoFormChanges({
-            variables: {
-              input: {
-                formChangesIds: formChangeIds,
-              },
-            },
-            onCompleted: () => {
-              if (formRefs) {
-                Object.keys(formRefs.current).forEach((key) => {
-                  if (!formRefs.current[key]) delete formRefs.current[key];
-                });
-              }
-            },
-          });
-        }
-      },
-    });
+    if (
+      primaryContactForm.newFormData.contactId ||
+      alternateContactForms.length > 1
+    )
+      discardFormChange({
+        formChange: { id: formChangeId, operation: formChangeOperation },
+        onCompleted: () => {
+          delete formRefs.current[formChangeId];
+        },
+      });
+    // Will remove the primary contact form change if it is not filled out and we have only one secondary contact form
+    // This is to fix the issue where the primary contact form change is not removed when the secondary contact is deleted
+    else
+      undoFormChanges({
+        variables: {
+          input: {
+            formChangesIds: formChangeIds,
+          },
+        },
+        onCompleted: () => {
+          if (formRefs) {
+            Object.keys(formRefs.current).forEach((key) => {
+              if (!formRefs.current[key]) delete formRefs.current[key];
+            });
+          }
+        },
+      });
   };
 
   return (
