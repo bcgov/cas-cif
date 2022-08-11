@@ -69,4 +69,29 @@ describe("The DateWidget", () => {
     );
     expect(container.getElementsByClassName("fa-check")[0]).toBeInTheDocument();
   });
+
+  it("displays the content suffix if one exists in the uiSchema", () => {
+    const props: any = {
+      id: "test-id",
+      onChange: jest.fn(),
+      label: "Received Date",
+      value: "2009-01-01T23:59:59.999-08:00",
+      required: true,
+      formContext: {
+        dueDate: "2010-12-15T23:59:59.999-08:00",
+      },
+      uiSchema: {
+        "ui:options": {
+          contentSuffix: (
+            <div>
+              <span style={{ marginRight: "1em" }}>Duration: 1 day</span>
+            </div>
+          ),
+        },
+      },
+    };
+    render(<DateWidget {...props} />);
+
+    expect(screen.getByText(/duration: 1 day/i)).toBeInTheDocument();
+  });
 });
