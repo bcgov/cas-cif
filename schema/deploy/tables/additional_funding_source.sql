@@ -7,10 +7,15 @@ create table cif.additional_funding_source (
   project_id integer references cif.project(id) not null,
   status cif.additional_funding_source_status,
   source varchar(1000),
-  amount numeric
+  amount numeric,
+  source_index integer not null
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'additional_funding_source');
+
+create unique index additional_funding_source_project_id_unique_index
+  on cif.additional_funding_source (project_id, source_index)
+  where archived_at is null;
 
 do
 $grant$
@@ -37,5 +42,6 @@ comment on column cif.additional_funding_source.id is 'Unique ID for the additio
 comment on column cif.additional_funding_source.status is 'The status of the additional funding source request(e.g. awaiting approval, approved, denied)';
 comment on column cif.additional_funding_source.source is 'The source of the additional funding source';
 comment on column cif.additional_funding_source.amount is 'The amount of the additional funding source';
+comment on column cif.additional_funding_source.source_index is 'The zero-based index of the source in the project';
 
 commit;
