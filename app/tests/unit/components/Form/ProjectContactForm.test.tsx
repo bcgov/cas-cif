@@ -472,4 +472,71 @@ describe("The ProjectContactForm", () => {
       {}
     );
   });
+  it("calls the undoFormChangesMutation when user clicks remove button and we have no primary contact selected and one secondary contact", () => {
+    const mockResolver = {
+      ...mockQueryPayload,
+      ProjectRevision() {
+        const result: Partial<ProjectContactForm_projectRevision$data> = {
+          " $fragmentType": "ProjectContactForm_projectRevision",
+          id: "Test Project Revision ID",
+          rowId: 1234,
+          projectContactFormChanges: {
+            __id: "connection Id",
+            edges: [
+              {
+                node: {
+                  id: "Form ID 1",
+                  rowId: 1,
+                  operation: "CREATE",
+                  changeStatus: "pending",
+                  newFormData: {
+                    projectId: 10,
+                    contactIndex: 1,
+                  },
+                },
+              },
+              {
+                node: {
+                  id: "Form ID 2",
+                  rowId: 2,
+                  operation: "CREATE",
+                  changeStatus: "pending",
+                  newFormData: {
+                    projectId: 10,
+                    contactIndex: 2,
+                  },
+                },
+              },
+            ],
+          },
+        };
+        return result;
+      },
+    };
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(
+      screen.getByRole("button", {
+        name: /remove/i,
+      })
+    );
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(2);
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "undoFormChangesMutation"
+    );
+
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        formChangesIds: [1, 2],
+      },
+    });
+  });
 });
