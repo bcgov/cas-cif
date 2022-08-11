@@ -21,9 +21,7 @@ begin
 
   for form_change_record in select * from cif.form_change
     where project_revision_id = $1
-    and (
-      (form_data_table_name = 'funding_parameter'))
-
+    and form_data_table_name = 'funding_parameter'
   loop
     if form_change_record.operation = 'create' then
       delete from cif.form_change where id = form_change_record.id;

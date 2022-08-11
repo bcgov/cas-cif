@@ -1,7 +1,7 @@
 
 begin;
 
-select plan(3);
+select plan(5);
 
 -- Test Setup
 truncate cif.operator restart identity cascade;
@@ -20,6 +20,16 @@ insert into cif.form_change(
 values (
   '{"testField": "test value"}',
   'create',
+  'pending',
+  'cif',
+  'funding_parameter',
+  'funding_parameter',
+  null,
+  1,
+  '[]'
+),(
+  '{"testField": "test value"}',
+  'update',
   'pending',
   'cif',
   'funding_parameter',
@@ -50,24 +60,44 @@ select set_eq(
 );
 
 select is(
-  (select count(*) from cif.form_change
-  where project_revision_id = 1
-  and (
-    (form_data_table_name = 'funding_parameter')
-    and project_revision_id=1
-  )),
+  (
+    select count(*) from cif.form_change
+    where project_revision_id = 1
+    and form_data_table_name = 'funding_parameter'
+    and operation = 'create'
+  ),
   0::bigint,
-  'There should be no form_change records for the deleted funding_parameter'
+  'There should be no create form_change records'
 );
 
 select is(
   (select count(*) from cif.form_change
   where project_revision_id = 1
-  and (
-    operation = 'archive'
-  )),
+  and
+    operation = 'create'
+  ),
+  2::bigint,
+  'Only the record with the correct funding_parameter is deleted, project and some_other_table still exist'
+);
+
+select is(
+  (select count(*) from cif.form_change
+  where project_revision_id = 1
+  and
+    form_data_table_name = 'some_other_table'
+  ),
   1::bigint,
-  'Only the record with the correct funding_parameter and its dependents are deleted'
+  'Only the record with the correct funding_parameter is deleted and some_other_table_name exists'
+);
+
+select is(
+  (select count(*) from cif.form_change
+  where project_revision_id = 1
+  and
+    operation = 'archive'
+  ),
+  1::bigint,
+  'There should be 1 archived form_change record'
 );
 
 rollback;
