@@ -176,6 +176,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               className="radio-button"
               onClick={() => setShowDiscardConfirmation(true)}
               disabled={isDiscardingFundingParameterFormChange}
+              checked={false}
             />
             {showDiscardConfirmation && (
               <DangerAlert
