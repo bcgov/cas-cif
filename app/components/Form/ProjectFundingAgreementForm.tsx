@@ -165,13 +165,13 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           <div>
             <h3>Is this a funded project?</h3>
             <RadioButton
-              name="create-funding-agreement"
+              name="funding-agreement"
               label="Yes"
               className="radio-button"
               checked={true}
             />
             <RadioButton
-              name="skip-funding-agreement"
+              name="funding-agreement"
               label="No"
               className="radio-button"
               onClick={() => setShowDiscardConfirmation(true)}
