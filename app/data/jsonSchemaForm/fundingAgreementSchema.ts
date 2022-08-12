@@ -1,7 +1,6 @@
 export const fundingAgreementSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
-  title: "Project Funding Agreement Form",
   required: [
     "totalProjectValue",
     "maxFundingAmount",

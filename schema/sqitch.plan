@@ -103,3 +103,5 @@ mutations/create_project_revision [mutations/create_project_revision@1.0.0-rc.1]
 computed_columns/emission_intensity_report_calculated_ei_performance 2022-07-27T20:07:35Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Returns the calculated EI intensity value
 computed_columns/form_change_as_emission_intensity_report 2022-08-03T17:12:52Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Computed column to return form change as emission intensity report type
 @1.0.0-rc.3 2022-08-08T22:14:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.3
+
+mutations/discard_funding_parameter_form_change 2022-08-10T23:11:54Z Gurjeet Matharu <gurjeet@matharuco.com> # Discarding funding parameter form change

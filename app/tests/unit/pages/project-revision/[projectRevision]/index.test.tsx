@@ -319,9 +319,8 @@ describe("The Create Project page", () => {
     pageTestingHelper.renderPage();
 
     act(() => userEvent.click(screen.queryByText("Discard Project Revision")));
-
     expect(
-      screen.getByText(/All changes made will be permanently deleted./)
+      screen.getByText(/All changes made will be permanently deleted/i)
     ).toBeInTheDocument();
   });
 

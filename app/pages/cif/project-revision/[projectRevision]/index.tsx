@@ -8,7 +8,7 @@ import { ProjectRevisionQuery } from "__generated__/ProjectRevisionQuery.graphql
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Button, Textarea, Alert } from "@button-inc/bcgov-theme";
+import { Button, Textarea } from "@button-inc/bcgov-theme";
 import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
@@ -31,6 +31,7 @@ import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportF
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
+import DangerAlert from "lib/theme/ConfirmationAlert";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -192,13 +193,11 @@ export function ProjectRevision({
         <header>
           <h2>Review and Submit Project</h2>
           {showDiscardConfirmation && (
-            <Alert variant="danger" size="sm">
-              All changes made will be permanently deleted.
-              <a id="confirm-discard-revision" onClick={discardRevision}>
-                Proceed
-              </a>
-              <a onClick={() => setShowDiscardConfirmation(false)}>Cancel</a>
-            </Alert>
+            <DangerAlert
+              onProceed={discardRevision}
+              onCancel={() => setShowDiscardConfirmation(false)}
+              alertText="All changes made will be permanently deleted."
+            />
           )}
           {!showDiscardConfirmation && (
             <Button
@@ -286,32 +285,6 @@ export function ProjectRevision({
         }
         h4 {
           margin-bottom: 0;
-        }
-        div :global(#discard-project-icon) {
-          color: #323a45;
-          margin-right: 0.5em;
-        }
-        div :global(#discard-project-button) {
-          margin-bottom: 1em;
-          color: #cd2026;
-        }
-        div :global(#discard-project-button:hover) {
-          background-color: #aeb0b5;
-        }
-        div :global(.pg-notification) {
-          margin-bottom: 1em;
-        }
-        div :global(a) {
-          color: #1a5a96;
-        }
-        div :global(a:hover) {
-          text-decoration: none;
-          color: blue;
-          cursor: pointer;
-        }
-        div :global(#confirm-discard-revision) {
-          margin-left: 2em;
-          margin-right: 1em;
         }
       `}</style>
     </DefaultLayout>

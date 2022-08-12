@@ -5,12 +5,16 @@ import {
 import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
+import { useState } from "react";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
-import { Button } from "@button-inc/bcgov-theme";
+import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
+import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
+
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
+import DangerAlert from "lib/theme/ConfirmationAlert";
 interface Props {
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
   viewOnly?: boolean;
@@ -25,6 +29,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     updateFundingParameterFormChange,
     isUpdatingFundingParameterFormChange,
   ] = useUpdateFundingParameterFormChange();
+  const [
+    discardFundingParameterFormChange,
+    isDiscardingFundingParameterFormChange,
+  ] = useDiscardFundingParameterFormChange();
 
   const projectRevision = useFragment(
     graphql`
@@ -118,19 +126,67 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const handleError = () => {
     handleChange(fundingAgreement.newFormData, "staged");
   };
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
+  const handleDiscard = () => {
+    setShowDiscardConfirmation(false);
+    discardFundingParameterFormChange({
+      variables: {
+        input: {
+          revisionId: projectRevision.rowId,
+        },
+        connections: [],
+        reportType: "funding_parameter",
+      },
+    });
+  };
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
         0 && (
-        <Button onClick={addFundingAgreement} style={{ marginRight: "1rem" }}>
-          Add Funding Agreement
-        </Button>
+        <div>
+          <h3>Is this a funded project?</h3>
+          <RadioButton
+            name="funding-agreement"
+            label="Yes"
+            className="radio-button"
+            onClick={addFundingAgreement}
+            disabled={isDiscardingFundingParameterFormChange}
+          />
+          <RadioButton
+            name="funding-agreement"
+            label="No"
+            className="radio-button"
+          />
+        </div>
       )}
       {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
         <>
+          <div>
+            <h3>Is this a funded project?</h3>
+            <RadioButton
+              name="funding-agreement"
+              label="Yes"
+              className="radio-button"
+              checked={true}
+            />
+            <RadioButton
+              name="funding-agreement"
+              label="No"
+              className="radio-button"
+              onClick={() => setShowDiscardConfirmation(true)}
+              disabled={isDiscardingFundingParameterFormChange}
+              checked={false}
+            />
+            {showDiscardConfirmation && (
+              <DangerAlert
+                onProceed={handleDiscard}
+                onCancel={() => setShowDiscardConfirmation(false)}
+                alertText="All changes made will be deleted."
+              />
+            )}
+          </div>
           <header>
-            <h3>Project Funding Agreement</h3>
             <UndoChangesButton formChangeIds={[fundingAgreement?.rowId]} />
             <SavingIndicator
               isSaved={
@@ -167,6 +223,22 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </FormBase>
         </>
       )}
+      <style jsx>
+        {`
+          div :global(.radio-button) {
+            margin-top: 1rem;
+            margin-left: 1rem;
+          }
+          div {
+            margin-bottom: 2rem;
+          }
+          div :global(fieldset) {
+            border: 0px !important;
+            border-radius: 0.25em !important;
+            padding: 2em;
+          }
+        `}
+      </style>
     </>
   );
 };
