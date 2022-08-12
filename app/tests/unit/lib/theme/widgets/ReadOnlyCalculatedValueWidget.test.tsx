@@ -9,10 +9,11 @@ describe("The ReadOnlyCalculatedValueWidget", () => {
       label: "test-label",
       uiSchema: {
         calculatedValueFormContextProperty: "someprop",
+        isMoney: true,
       },
     };
     render(<ReadOnlyCalculatedValueWidget {...props} />);
-    expect(screen.getByLabelText(/test-label/i)).toHaveTextContent("50");
+    expect(screen.getByText("$50.00")).toBeInTheDocument();
   });
 
   it("renders 0 if the calculated value is zero", () => {
@@ -25,7 +26,7 @@ describe("The ReadOnlyCalculatedValueWidget", () => {
       },
     };
     render(<ReadOnlyCalculatedValueWidget {...props} />);
-    expect(screen.getByLabelText(/test-label/i)).toHaveTextContent("0");
+    expect(screen.getByText("0")).toBeInTheDocument();
   });
 
   it("renders empty string if the calculated value is null", () => {
@@ -38,6 +39,6 @@ describe("The ReadOnlyCalculatedValueWidget", () => {
       },
     };
     render(<ReadOnlyCalculatedValueWidget {...props} />);
-    expect(screen.getByLabelText(/test-label/i)).not.toHaveTextContent("0");
+    expect(screen.queryByText("0")).not.toBeInTheDocument();
   });
 });

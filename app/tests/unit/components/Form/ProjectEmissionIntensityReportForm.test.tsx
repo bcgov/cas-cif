@@ -173,11 +173,16 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByLabelText(/Total lifetime emissions reductions*/i)
     ).toHaveValue("5");
+
+    // We can't query by label for text elements,
+    // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
     expect(
-      screen.getAllByLabelText(/GHG Emission Intensity Performance/i)[0]
-    ).toHaveTextContent("200.00%");
+      screen.queryByText("GHG Emission Intensity Performance")
+    ).toBeInTheDocument();
+    expect(screen.queryByText("200.00%")).toBeInTheDocument();
+
     expect(
-      screen.getAllByLabelText(/GHG Emission Intensity Performance/i)[1]
+      screen.getByLabelText(/GHG Emission Intensity Performance \(Adjusted\)/i)
     ).toHaveValue("6.00%");
   });
 
