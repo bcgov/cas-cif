@@ -14,7 +14,7 @@ import useDiscardFundingParameterFormChange from "mutations/FundingParameter/dis
 
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
-import DangerAlert from "lib/theme/DangerAlert";
+import DangerAlert from "lib/theme/ConfirmationAlert";
 interface Props {
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
   viewOnly?: boolean;
@@ -29,8 +29,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     updateFundingParameterFormChange,
     isUpdatingFundingParameterFormChange,
   ] = useUpdateFundingParameterFormChange();
-  const [discardFundingParameterFormChange] =
-    useDiscardFundingParameterFormChange();
+  const [
+    discardFundingParameterFormChange,
+    isDiscardingFundingParameterFormChange,
+  ] = useDiscardFundingParameterFormChange();
 
   const projectRevision = useFragment(
     graphql`
@@ -149,7 +151,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             label="Yes"
             className="radio-button"
             onClick={addFundingAgreement}
-            disabled={isAddingFundingParameterFormChange}
+            disabled={isDiscardingFundingParameterFormChange}
           />
           <RadioButton name="yes" label="No" className="radio-button" />
         </div>
@@ -169,12 +171,13 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               label="No"
               className="radio-button"
               onClick={() => setShowDiscardConfirmation(true)}
-              disabled={isAddingFundingParameterFormChange}
+              disabled={isDiscardingFundingParameterFormChange}
             />
             {showDiscardConfirmation && (
               <DangerAlert
-                proceedOnClick={handleDiscard}
-                cancelOnClick={() => setShowDiscardConfirmation(false)}
+                onProceed={handleDiscard}
+                onCancel={() => setShowDiscardConfirmation(false)}
+                alertText="All changes made will be deleted."
               />
             )}
           </div>

@@ -1,18 +1,24 @@
 import React from "react";
 import { Alert } from "@button-inc/bcgov-theme";
 
-const DangerAlert: React.FC<{ proceedOnClick; cancelOnClick }> = ({
-  proceedOnClick,
-  cancelOnClick,
+interface Props {
+  onProceed: () => void;
+  onCancel: () => void;
+  alertText: string;
+}
+const ConfirmationAlert: React.FC<Props> = ({
+  onProceed,
+  onCancel,
+  alertText,
 }) => {
   return (
     <div>
       <Alert variant="danger" size="sm">
-        All changes made will be deleted.
-        <a onClick={proceedOnClick} id="confirm-discard-revision">
+        {alertText}
+        <a onClick={onProceed} id="confirm-discard-revision">
           Proceed
         </a>
-        <a onClick={cancelOnClick}>Cancel</a>
+        <a onClick={onCancel}>Cancel</a>
       </Alert>
       <style jsx>
         {`
@@ -49,4 +55,4 @@ const DangerAlert: React.FC<{ proceedOnClick; cancelOnClick }> = ({
   );
 };
 
-export default DangerAlert;
+export default ConfirmationAlert;

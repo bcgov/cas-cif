@@ -321,7 +321,7 @@ describe("The Create Project page", () => {
     act(() => userEvent.click(screen.queryByText("Discard Project Revision")));
 
     expect(
-      screen.getByText(/All changes made will be deleted./)
+      screen.getByText(/All changes made will be permantly deleted./)
     ).toBeInTheDocument();
   });
 

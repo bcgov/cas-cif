@@ -31,7 +31,7 @@ import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportF
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
-import DangerAlert from "lib/theme/DangerAlert";
+import DangerAlert from "lib/theme/ConfirmationAlert";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -194,8 +194,9 @@ export function ProjectRevision({
           <h2>Review and Submit Project</h2>
           {showDiscardConfirmation && (
             <DangerAlert
-              proceedOnClick={discardRevision}
-              cancelOnClick={() => setShowDiscardConfirmation(false)}
+              onProceed={discardRevision}
+              onCancel={() => setShowDiscardConfirmation(false)}
+              alertText="All changes made will be permanently deleted."
             />
           )}
           {!showDiscardConfirmation && (
