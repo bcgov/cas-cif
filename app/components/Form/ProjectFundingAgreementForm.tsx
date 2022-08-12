@@ -147,13 +147,17 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         <div>
           <h3>Is this a funded project?</h3>
           <RadioButton
-            name="yes"
+            name="create-funding-agreement"
             label="Yes"
             className="radio-button"
             onClick={addFundingAgreement}
             disabled={isDiscardingFundingParameterFormChange}
           />
-          <RadioButton name="yes" label="No" className="radio-button" />
+          <RadioButton
+            name="skip-funding-agreement"
+            label="No"
+            className="radio-button"
+          />
         </div>
       )}
       {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
