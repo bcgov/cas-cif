@@ -16,6 +16,8 @@ $fn$
 
 $fn$ language sql stable;
 
-grant execute on function cif.get_form_status to cif_internal, cif_external, cif_admin;
+grant execute on function cif.get_fiscal_year_from_timestamp to cif_internal, cif_external, cif_admin;
 
-comment on function cif.get_form_status is 'A utility function that ingests a timestamp and returns the fiscal year the timestamp is from';
+comment on function cif.get_fiscal_year_from_timestamp is 'A utility function that ingests a timestamp and returns the fiscal year the timestamp is from';
+
+commit;
