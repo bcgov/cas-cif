@@ -230,3 +230,4 @@ tables/project_status_001_update_harcoded_values [tables/project_status] 2023-01
 tables/funding_stream_project_status [tables/project_status tables/funding_stream] 2023-01-10T00:26:37Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add join table with funding_stream and project_status
 util_functions/get_fiscal_year_from_timestamp 2022-08-11T23:19:28Z Dylan Leard <dylan@button.is> # Add helper function that ingests a timestamp and returns the fiscal year in format YYYY/YYYY
 types/sum_by_fiscal_year 2022-08-12T20:17:59Z Dylan Leard <dylan@button.is> # Add return type for the computed column anticipated_funding_amount_by_fiscal_year
+computed_columns/project_revision_anticipated_funding_amount_by_fiscal_year 2022-08-11T20:47:39Z Dylan Leard <dylan@button.is> # Computed column to return a set containing the anticipated funding amount per each fiscal year
