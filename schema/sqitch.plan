@@ -110,3 +110,4 @@ tables/project_001 2022-08-08T15:28:44Z Brianna Cerkiewicz <briannacerkiewicz@po
 computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.1 tables/project_001] 2022-08-08T21:44:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Add score and project type to project computed column
 util_functions/get_fiscal_year_from_timestamp 2022-08-11T23:19:28Z Dylan Leard <dylan@button.is> # Add helper function that ingests a timestamp and returns the fiscal year in format YYYY/YYYY
 types/sum_by_fiscal_year 2022-08-12T20:17:59Z Dylan Leard <dylan@button.is> # Add return type for the computed column anticipated_funding_amount_by_fiscal_year
+computed_columns/project_revision_anticipated_funding_amount_by_fiscal_year 2022-08-11T20:47:39Z Dylan Leard <dylan@button.is> # Computed column to return a set containing the anticipated funding amount per each fiscal year
