@@ -60,7 +60,7 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
             floatValue === undefined ||
             floatValue === null
           ) {
-            onChange(null);
+            onChange(undefined);
           } else {
             onChange(((floatValue * 100) / 100).toFixed(isMoney ? 2 : 10)); //Hardcoded for now, we can change it if we need to
           }
