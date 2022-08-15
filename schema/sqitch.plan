@@ -119,3 +119,4 @@ computed_columns/emission_intensity_report_calculated_ei_performance [computed_c
 types/additional_funding_source_status 2022-08-10T23:38:16Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # The status of each additional funding source
 tables/additional_funding_source 2022-08-11T15:49:26Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Table for storing additional funding sources data
 mutations/add_additional_funding_source_to_revision 2022-08-11T20:07:28Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation that prepopulates an insert to the form change table for a new funding source on a project revision
+computed_columns/form_change_as_additional_funding_source [tables/project tables/additional_funding_source tables/form_change] 2022-08-15T19:27:30Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Casts a form_change record as a cif.additional_funding_source type, so we can traverse it with graphql queries
