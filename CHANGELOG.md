@@ -1,3 +1,16 @@
+# [1.0.0-rc.4](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.3...1.0.0-rc.4) (2022-08-15)
+
+### Bug Fixes
+
+- adding project contacts to dev data ([e05bd68](https://github.com/bcgov/cas-cif/commit/e05bd6817cca21a4fa9919ff9e8a02817b441278))
+- remove conditionalAmountWidget ([ce7a75b](https://github.com/bcgov/cas-cif/commit/ce7a75b8d4e3ab5c5366e384649957cee4829117))
+
+### Features
+
+- adding percentage widget ([427ab75](https://github.com/bcgov/cas-cif/commit/427ab75901b4e37e2f562e6f05ce1d6c9d681cd7))
+- adding yes no options to funding report ([cc41b2f](https://github.com/bcgov/cas-cif/commit/cc41b2f94cb94d7c419ac9b3fc73975a8a04c230))
+- enhancing budget form flows ([940e050](https://github.com/bcgov/cas-cif/commit/940e0505766a999ce05101f564df71cca07a2979))
+
 # [1.0.0-rc.3](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.2...1.0.0-rc.3) (2022-08-08)
 
 ### Bug Fixes

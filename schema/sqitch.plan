@@ -105,3 +105,4 @@ computed_columns/form_change_as_emission_intensity_report 2022-08-03T17:12:52Z B
 @1.0.0-rc.3 2022-08-08T22:14:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.3
 
 mutations/discard_funding_parameter_form_change 2022-08-10T23:11:54Z Gurjeet Matharu <gurjeet@matharuco.com> # Discarding funding parameter form change
+@1.0.0-rc.4 2022-08-15T18:49:49Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.4
