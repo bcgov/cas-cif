@@ -17,6 +17,14 @@ describe("The getDurationFromDates helper method", () => {
     expect(duration).toBe("13 months, 3 days");
   });
 
+  it("only includes non-zero values in the return string", () => {
+    const startDate = "2022-08-11T23:59:59.999-07:00";
+    const endDate = "2022-10-11T23:59:59.999-07:00";
+    const duration = getDurationFromDates(startDate, endDate);
+
+    expect(duration).toBe("2 months");
+  });
+
   it("returns null when one or both dates have no value", () => {
     const startDate = "2022-08-9T23:59:59.999-07:00";
     const endDate = undefined;
