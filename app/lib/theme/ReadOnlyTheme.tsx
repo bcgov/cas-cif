@@ -30,6 +30,7 @@ const readOnlyTheme: ThemeProps = {
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
     ReadOnlyCalculatedValueWidget,
     PercentageWidget: ReadOnlyPercentageWidget,
+    DecimalWidget: ReadOnlyWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

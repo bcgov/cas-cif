@@ -30,6 +30,8 @@ const mockQueryPayload = {
           summary: "Test Summary",
           projectName: "Test Project Name",
           totalFundingRequest: 100.0,
+          score: 8.333,
+          projectType: "test project type",
         },
         operation: "UPDATE",
         isPristine: false,
@@ -57,6 +59,8 @@ const mockQueryPayload = {
             summary: "Test Summary",
             projectName: "Test Project Name",
             totalFundingRequest: 100.0,
+            score: 1,
+            projectType: "test project type PREVIOUS",
           },
           asProject: {
             operatorByOperatorId: {
@@ -116,9 +120,11 @@ describe("The Project Form Summary", () => {
 
     expect(screen.queryByText("Funding Stream RFP ID")).not.toBeInTheDocument();
     expect(screen.queryByText("Project Name")).not.toBeInTheDocument();
-    expect(screen.queryByText("Summary")).not.toBeInTheDocument();
+    expect(screen.queryByText("Project Description")).not.toBeInTheDocument();
     expect(screen.queryByText("Total Funding Request")).not.toBeInTheDocument();
     expect(screen.queryByText("Project Status")).not.toBeInTheDocument();
+    expect(screen.queryByText("Project Type (optional)")).toBeInTheDocument();
+    expect(screen.queryByText("Score (optional)")).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed", () => {
@@ -135,6 +141,7 @@ describe("The Project Form Summary", () => {
     expect(
       screen.getByText("Test Legal Name PREVIOUS (Test BC Registry ID)")
     ).toBeInTheDocument();
+    expect(screen.getByText("test project type PREVIOUS")).toBeInTheDocument();
   });
 
   it("Displays all data when isFirstRevision is true (Project Creation)", () => {
@@ -151,6 +158,8 @@ describe("The Project Form Summary", () => {
               summary: "Test Summary",
               projectName: "Test Project Name",
               totalFundingRequest: 100.0,
+              score: 8.333,
+              projectType: "test project type",
             },
             operation: "UPDATE",
             isPristine: false,
@@ -178,6 +187,8 @@ describe("The Project Form Summary", () => {
                 summary: "Test Summary",
                 projectName: "Test Project Name",
                 totalFundingRequest: 100.0,
+                score: 8.333,
+                projectType: "test project type",
               },
               asProject: {
                 operatorByOperatorId: {
@@ -208,8 +219,10 @@ describe("The Project Form Summary", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText("Funding Stream RFP ID")).toBeInTheDocument();
     expect(screen.queryByText("Project Name")).toBeInTheDocument();
-    expect(screen.queryByText("Summary")).toBeInTheDocument();
+    expect(screen.queryByText("Project Description")).toBeInTheDocument();
     expect(screen.queryByText("Total Funding Request")).toBeInTheDocument();
     expect(screen.queryByText("Project Status")).toBeInTheDocument();
+    expect(screen.queryByText("Project Type (optional)")).toBeInTheDocument();
+    expect(screen.queryByText("Score (optional)")).toBeInTheDocument();
   });
 });

@@ -33,6 +33,7 @@ const mockQueryPayload = {
           operatorId: 1,
           fundingStreamRfpId: 1,
           comments: "some amendment comment",
+          projectType: "project type 1",
         },
       },
     };
@@ -72,6 +73,20 @@ const mockQueryPayload = {
           {
             node: {
               sectorName: "test sector 2",
+            },
+          },
+        ],
+      },
+      allProjectTypes: {
+        edges: [
+          {
+            node: {
+              name: "project type 1",
+            },
+          },
+          {
+            node: {
+              name: "project type 2",
             },
           },
         ],
@@ -126,7 +141,7 @@ describe("The Project Form", () => {
       }
     );
 
-    fireEvent.change(screen.getByLabelText(/summary/i), {
+    fireEvent.change(screen.getByLabelText(/Project Description/i), {
       target: { value: "testsummary" },
     });
 
@@ -176,13 +191,19 @@ describe("The Project Form", () => {
     expect(
       screen.getByLabelText<HTMLInputElement>("Proposal Reference").value
     ).toBe("12345678");
-    expect(screen.getByLabelText<HTMLInputElement>("Summary").value).toBe("d");
+    expect(
+      screen.getByLabelText<HTMLInputElement>("Project Description").value
+    ).toBe("d");
     expect(
       screen.getByPlaceholderText<HTMLSelectElement>("Select an Operator").value
     ).toBe("test operator (1234abcd)");
     expect(
       screen.getByLabelText<HTMLSelectElement>("General Comments").value
     ).toBe("some amendment comment");
+    expect(
+      screen.getByPlaceholderText<HTMLSelectElement>(/Select a Project Type/)
+        .value
+    ).toBe("project type 1");
   });
   it("Displays an error message upon validation when the proposal reference is not unique", () => {
     const mockResolver = {
@@ -416,6 +437,38 @@ describe("The Project Form", () => {
       },
     });
   });
+
+  it("displays a project type dropdown with selectable choices", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByLabelText<HTMLInputElement>("Project Type (optional)")
+    ).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(screen.getAllByLabelText(/project type/i)[0]);
+    });
+
+    expect(screen.getByText(/project type 1/i)).toBeInTheDocument();
+
+    expect(screen.getByText(/project type 2/i)).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(screen.getByText(/project type 2/i));
+    });
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: { projectType: "project type 2" },
+      },
+    });
+  });
+
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();

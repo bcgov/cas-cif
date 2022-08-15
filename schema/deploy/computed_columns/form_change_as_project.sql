@@ -1,5 +1,6 @@
 -- Deploy cif:computed_columns/form_change_as_project to pg
 -- requires: tables/project
+-- requires: tables/project_001
 -- requires: tables/form_change
 
 begin;
@@ -18,19 +19,21 @@ as $$
       (new_form_data->>'operatorId')::integer as operator_id,
       (new_form_data->>'fundingStreamRfpId')::integer as funding_stream_rfp_id,
       (new_form_data->>'projectStatusId')::integer as project_status_id,
-      new_form_data->>'proposalReference' as proposal_reference,
+      (new_form_data->>'proposalReference')::varchar as proposal_reference,
       new_form_data->>'summary' as summary,
       new_form_data->>'projectName' as project_name,
       (new_form_data->>'totalFundingRequest')::numeric as total_funding_request,
-      new_form_data->>'sectorName' as sector_name,
-      new_form_data->>'additionalSectorInformation' as additional_sector_information,
-      new_form_data->>'comments' as comments,
+      (new_form_data->>'sectorName')::varchar as sector_name,
+      (new_form_data->>'additionalSectorInformation')::varchar as additional_sector_information,
+      (new_form_data->>'comments')::varchar as comments,
       null::int as created_by,
       now()::timestamptz created_at,
       null::int as updated_by,
       now()::timestamptz updated_at,
       null::int as archived_by,
-      null::timestamptz as archived_at
+      null::timestamptz as archived_at,
+      (new_form_data->>'score')::numeric as score,
+      (new_form_data->>'projectType')::varchar as project_type
     from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'project'
 
 $$ language sql stable;

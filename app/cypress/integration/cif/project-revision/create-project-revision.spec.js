@@ -140,7 +140,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Project Name/i)
       .next()
       .should("have.text", "Foo");
-    cy.findByText(/Summary/i)
+    cy.findByText(/Project Description/i)
       .next()
       .should("have.text", "Bar");
 

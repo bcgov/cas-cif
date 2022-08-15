@@ -22,7 +22,12 @@ const projectSchema = {
       title: "Total Funding Request",
       default: undefined,
     },
-    summary: { type: "string", title: "Summary" },
+    summary: { type: "string", title: "Project Description" },
+    projectType: { type: "string", title: "Project Type" },
+    score: {
+      type: "number",
+      title: "Score",
+    },
     operatorId: {
       type: "number",
       title: "Legal Operator Name and BC Registry ID",

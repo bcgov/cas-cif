@@ -89,7 +89,7 @@ Cypress.Commands.add(
     sectorName,
     proposalReference,
     projectName,
-    summary,
+    projectDescription,
     totalFundingRequest,
     projectStatus,
     comments
@@ -103,7 +103,7 @@ Cypress.Commands.add(
     cy.contains(sectorName).click();
     cy.findByLabelText(/Proposal Reference/i).type(proposalReference);
     cy.findByLabelText(/Project Name/i).type(projectName);
-    cy.findByLabelText(/Summary/i).type(summary);
+    cy.findByLabelText(/Project Description/i).type(projectDescription);
     cy.findByLabelText(/Total Funding Request/i).type(totalFundingRequest);
     cy.findByLabelText(/Project Status/i).select(projectStatus);
     cy.findByLabelText(/General Comments/i).type(comments);
@@ -121,7 +121,7 @@ Cypress.Commands.add(
     operatorName,
     proposalReference,
     projectName,
-    summary,
+    projectDescription,
     totalFundingRequest,
     projectStatus,
     comments
@@ -134,7 +134,10 @@ Cypress.Commands.add(
       proposalReference
     );
     cy.findByLabelText(/Project Name/i).should("have.value", projectName);
-    cy.findByLabelText(/Summary/i).should("have.value", summary);
+    cy.findByLabelText(/Project Description/i).should(
+      "have.value",
+      projectDescription
+    );
 
     cy.findByLabelText(/Total Funding Request/i).should(
       "have.value",

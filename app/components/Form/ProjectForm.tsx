@@ -28,16 +28,18 @@ export const createProjectUiSchema = (
   return {
     "ui:order": [
       "fundingStreamRfpId",
-      "operatorId",
-      "operatorTradeName",
       "proposalReference",
       "projectName",
-      "summary",
-      "totalFundingRequest",
+      "score",
       "projectStatus",
       "projectStatusId",
+      "summary",
+      "projectType",
       "sectorName",
       "additionalSectorInformation",
+      "operatorId",
+      "operatorTradeName",
+      "totalFundingRequest",
       "comments",
     ],
     proposalReference: {
@@ -48,6 +50,10 @@ export const createProjectUiSchema = (
     },
     summary: {
       "ui:widget": "TextAreaWidget",
+    },
+    projectType: {
+      "ui:placeholder": "Select a Project Type",
+      "ui:widget": "SearchWidget",
     },
     operatorId: {
       "ui:placeholder": "Select an Operator",
@@ -79,6 +85,10 @@ export const createProjectUiSchema = (
     },
     additionalSectorInformation: {
       "ui:widget": "TextAreaWidget",
+    },
+    score: {
+      "ui:widget": "DecimalWidget",
+      decimals: 3,
     },
     comments: {
       "ui:widget": "TextAreaWidget",
@@ -123,6 +133,13 @@ const ProjectForm: React.FC<Props> = (props) => {
           edges {
             node {
               sectorName
+            }
+          }
+        }
+        allProjectTypes {
+          edges {
+            node {
+              name
             }
           }
         }
@@ -222,6 +239,17 @@ const ProjectForm: React.FC<Props> = (props) => {
               title: node.sectorName,
               enum: [node.sectorName],
               value: node.sectorName,
+            };
+          }),
+        },
+        projectType: {
+          ...projectSchema.properties.projectType,
+          anyOf: query.allProjectTypes.edges.map(({ node }) => {
+            return {
+              type: "string",
+              title: node.name,
+              enum: [node.name],
+              value: node.name,
             };
           }),
         },
