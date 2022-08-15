@@ -5,14 +5,6 @@ describe("The Footer Component", () => {
   it("Renders footer links", () => {
     render(<Footer />);
 
-    // Login Page
-    expect(screen.getByText("Login Page")).toBeInTheDocument();
-    expect(screen.getByText("Login Page")).toHaveAttribute(
-      "href",
-      "https://test.cif.gov.bc.ca/"
-    );
-    expect(screen.getByText("Login Page")).toHaveAttribute("target", "_blank");
-
     // Disclaimer
     expect(screen.getByText("Disclaimer")).toBeInTheDocument();
     expect(screen.getByText("Disclaimer")).toHaveAttribute(
