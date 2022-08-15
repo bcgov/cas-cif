@@ -105,3 +105,4 @@ computed_columns/form_change_as_emission_intensity_report 2022-08-03T17:12:52Z B
 @1.0.0-rc.3 2022-08-08T22:14:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.3
 mutations/discard_funding_parameter_form_change 2022-08-10T23:11:54Z Gurjeet Matharu <gurjeet@matharuco.com> # Discarding funding parameter form change
 tables/funding_parameter_001 2022-08-10T18:55:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add proponent cost field to funding_parameter table
+computed_columns/project_revision_total_project_value 2022-08-15T15:07:58Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Computed column to return the Total Project Value (Maximum Funding Amount + Proponent Cost + Additional Funding Amount(s))
