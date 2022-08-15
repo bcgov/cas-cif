@@ -3,37 +3,31 @@ import React, { forwardRef, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
-import { DateTime, Interval } from "luxon";
+import { DateTime } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  getDaysUntilDue,
+  getDisplayDueDateString,
+  getWeeksUntilDue,
+  parseStringDate,
+} from "lib/helpers/reportStatusHelpers";
 
 const DueDateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value, label }, ref) => {
-    const selectedDate = DateTime.fromISO(value, {
-      setZone: true,
-      locale: "en-CA",
-    });
-
-    const formattedValue = selectedDate.toFormat("MMM dd, yyyy");
-
-    const currentDate = DateTime.now()
-      .setZone("America/Vancouver")
-      .startOf("day");
-    const diff = Interval.fromDateTimes(currentDate, selectedDate);
-    const daysFromToday = Math.floor(diff.length("days"));
-    const displayString =
-      selectedDate < currentDate
-        ? `${formattedValue}`
-        : daysFromToday > 60
-        ? `Due in ${Math.floor(diff.length("weeks"))} weeks (${formattedValue})`
-        : `Due in ${daysFromToday} ${
-            daysFromToday === 1 ? "day" : "days"
-          } (${formattedValue})`;
+    const selectedDate = parseStringDate(value);
+    const daysUntilDue = getDaysUntilDue(selectedDate);
+    const weeksUntilDue = getWeeksUntilDue(selectedDate);
+    const displayDueDateString = getDisplayDueDateString(
+      daysUntilDue,
+      weeksUntilDue,
+      selectedDate
+    );
 
     return (
       <div onClick={onClick} ref={ref} aria-label={label}>
         {value ? (
-          displayString
+          displayDueDateString
         ) : (
           <span style={{ color: "#666666" }}>Select a date</span> //This color is somehow grey-ish to bypass accessibility issues
         )}
