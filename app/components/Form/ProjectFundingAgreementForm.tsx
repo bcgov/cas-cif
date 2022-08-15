@@ -50,6 +50,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           __id
           edges {
             node {
+              # calculatedTotalProjectValue
               id
               rowId
               newFormData
@@ -64,6 +65,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
+
+  const calculatedTotalProjectValue = undefined; // put in the calculatedTotalProjectValue from the query
 
   const addFundingAgreement = () => {
     createFundingParameterFormChange({
@@ -204,6 +207,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             formData={fundingAgreement?.newFormData}
             formContext={{
               form: fundingAgreement?.newFormData,
+              calculatedTotalProjectValue: calculatedTotalProjectValue,
             }}
             uiSchema={fundingAgreementUiSchema}
             onChange={(change) => handleChange(change.formData, "pending")}

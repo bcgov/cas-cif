@@ -47,7 +47,8 @@ export const fundingAgreementUiSchema = {
     "anticipatedFundingAmount",
   ],
   totalProjectValue: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "ReadonlyCalculatedValueWidget",
+    isMoney: true,
   },
   maxFundingAmount: {
     "ui:widget": "MoneyWidget",
