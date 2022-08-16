@@ -39,9 +39,9 @@ export const getWeeksUntilDue = (reportDueDate: DateTime) => {
 };
 
 export const getDisplayDueDateString = (
-  daysUntilDue,
-  weeksUntilDue,
-  selectedDate
+  daysUntilDue: number,
+  weeksUntilDue: number,
+  selectedDate: DateTime
 ) => {
   if (selectedDate === null) return null;
   const formattedValue = selectedDate.toFormat("MMM dd, yyyy");
@@ -54,7 +54,7 @@ export const getDisplayDueDateString = (
       } (${formattedValue})`;
 };
 
-export const getDisplayDateString = (selectedDate) => {
+export const getDisplayDateString = (selectedDate: DateTime) => {
   if (!selectedDate) return null;
   return selectedDate.toFormat("MMM dd, yyyy");
 };
