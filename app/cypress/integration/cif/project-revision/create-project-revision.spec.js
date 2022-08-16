@@ -61,7 +61,7 @@ describe("when creating a project, the project page", () => {
     );
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
-    cy.fillFundingAgreementForm(111, 222, 60, 20, 333);
+    cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 800);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();

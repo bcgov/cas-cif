@@ -15,6 +15,7 @@ select columns_are(
     'province_share_percentage',
     'holdback_percentage',
     'anticipated_funding_amount',
+    'proponent_cost',
     'created_at',
     'created_by',
     'updated_at',
@@ -46,11 +47,11 @@ values
   (5, 1, 1, '2000-RFP-1-1213-ABCD', 'summary', 'project 5');
 
 insert into cif.funding_parameter
-  (project_id, total_project_value, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount) values
-  (1, 100000, 10000, 40, 10, 1000),
-  (2, 200000, 20000, 30, 20, 2000),
-  (3, 300000, 30000, 20, 30, 3000),
-  (4, 400000, 40000, 10, 40, 4000);
+  (project_id, total_project_value, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount, proponent_cost) values
+  (1, 100000, 10000, 40, 10, 1000, 1000000),
+  (2, 200000, 20000, 30, 20, 2000, 2000000),
+  (3, 300000, 30000, 20, 30, 3000, 3000000),
+  (4, 400000, 40000, 10, 40, 4000, 4000000);
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
 
@@ -67,7 +68,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.funding_parameter (project_id, total_project_value, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount) values (5, 500000, 50000, 50, 10, 5000);
+    insert into cif.funding_parameter (project_id, total_project_value, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount, proponent_cost) values (5, 500000, 50000, 50, 10, 5000, 50);
   $$,
     'cif_admin can insert data in funding_parameter table'
 );

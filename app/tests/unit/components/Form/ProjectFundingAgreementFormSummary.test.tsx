@@ -33,6 +33,7 @@ const mockQueryPayload = {
                   provinceSharePercentage: 60,
                   holdbackPercentage: 20,
                   anticipatedFundingAmount: 300,
+                  proponentCost: 100,
                 },
                 isPristine: false,
                 operation: "UPDATE",
@@ -44,6 +45,7 @@ const mockQueryPayload = {
                     provinceSharePercentage: 50,
                     holdbackPercentage: 10,
                     anticipatedFundingAmount: 300,
+                    proponentCost: 100,
                   },
                 },
               },
@@ -92,6 +94,7 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.queryByText("Anticipated Funding Amount")
     ).not.toBeInTheDocument();
+    expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed", () => {
@@ -123,6 +126,7 @@ describe("The Project Funding Agreement Form Summary", () => {
                       provinceSharePercentage: 60,
                       holdbackPercentage: 20,
                       anticipatedFundingAmount: 300,
+                      proponentCost: 800,
                     },
                     isPristine: false,
                     operation: "CREATE",
@@ -144,5 +148,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
     expect(screen.getByText("Anticipated Funding Amount")).toBeInTheDocument();
+    expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
   });
 });

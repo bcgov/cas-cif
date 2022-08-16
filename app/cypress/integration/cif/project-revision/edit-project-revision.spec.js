@@ -78,7 +78,7 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.fillFundingAgreementForm(222, 333, 70, 30, 444);
+    cy.fillFundingAgreementForm(222, 333, 70, 30, 444, 900);
     cy.contains("Changes saved.").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
