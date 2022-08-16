@@ -18,7 +18,7 @@ insert into cif.project_revision(id, change_status)
 insert into cif.form_change(id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, project_revision_id, json_schema_name, new_form_data)
   overriding system value
   values
-    (1, 'create', 'cif', 'additional_funding_source', 1, 1, 'additional_funding_source', '{"projectId": 1, "status": "awaiting approval", "source": "test source", "amount": "100", "sourceIndex": 1}'),
+    (1, 'create', 'cif', 'additional_funding_source', 1, 1, 'additional_funding_source', '{"projectId": 1, "status": "Awaiting Approval", "source": "test source", "amount": "100", "sourceIndex": 1}'),
     (2, 'create', 'cif', 'operator', 1, 1, 'operator', '{"legalName": "I am an operator"}');
 /** SETUP END **/
 
@@ -30,7 +30,7 @@ select results_eq(
   ) select project_id, status, source, amount, source_index from cif.form_change_as_additional_funding_source((select * from record))
   $$,
   $$
-  values(1::int, 'awaiting approval'::cif.additional_funding_source_status, 'test source'::varchar, 100::numeric, 1::int)
+  values(1::int, 'Awaiting Approval'::varchar, 'test source'::varchar, 100::numeric, 1::int)
   $$,
   'Returns a record with the correct data when passed a form_change record with a form_data_table_name of additional_funding_source'
 );

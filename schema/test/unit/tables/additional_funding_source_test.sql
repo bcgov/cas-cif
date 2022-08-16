@@ -38,9 +38,9 @@ values
 
 insert into cif.additional_funding_source(project_id, status, source, amount, source_index)
 values
-  (1, 'awaiting approval', 'source 1', 100, 1),
-  (1, 'approved', 'source 2', 200, 2),
-  (1, 'denied', 'source 3', 300, 3);
+  (1, 'Awaiting Approval', 'source 1', 100, 1),
+  (1, 'Approved', 'source 2', 200, 2),
+  (1, 'Denied', 'source 3', 300, 3);
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
 
@@ -57,21 +57,21 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.additional_funding_source(project_id, status, source, amount, source_index) values (1, 'denied', 'source 4', 400, 4);
+    insert into cif.additional_funding_source(project_id, status, source, amount, source_index) values (1, 'Denied', 'source 4', 400, 4);
   $$,
     'cif_admin can insert data in additional_funding_source table'
 );
 
 select lives_ok(
   $$
-    update cif.additional_funding_source set status = 'approved' where status='awaiting approval';
+    update cif.additional_funding_source set status = 'Approved' where status='Awaiting Approval';
   $$,
     'cif_admin can change data in additional_funding_source table'
 );
 
 select results_eq(
   $$
-    select count(id) from cif.additional_funding_source where status = 'approved'
+    select count(id) from cif.additional_funding_source where status = 'Approved'
   $$,
     ARRAY[2::bigint],
     'Data was changed by cif_admin'
@@ -89,12 +89,12 @@ select throws_like(
   $$
     update cif.additional_funding_source set status = 'not existing status' where id=1;
   $$,
-    'invalid input value for enum cif.additional_funding_source_status: "not existing status"'
+    'insert or update on table "additional_funding_source" violates foreign key constraint "additional_funding_source_status_fkey"'
 );
 
 select throws_like(
   $$
-    insert into cif.additional_funding_source(project_id, status, source, amount, source_index) values (1, 'approved', 'source 5', 500, 4);
+    insert into cif.additional_funding_source(project_id, status, source, amount, source_index) values (1, 'Approved', 'source 5', 500, 4);
   $$,
     'duplicate key value violates unique constraint "additional_funding_source_project_id_unique_index"'
 );
@@ -114,14 +114,14 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.additional_funding_source set status = 'approved' where status='denied';
+    update cif.additional_funding_source set status = 'Approved' where status='Denied';
   $$,
     'cif_internal can update data in the additional_funding_source table'
 );
 
 select results_eq(
   $$
-    select count(*) from cif.additional_funding_source where id=1 and status='denied';
+    select count(*) from cif.additional_funding_source where id=1 and status='Denied';
   $$,
     ARRAY[0::bigint],
     'Data was changed by cif_internal'
