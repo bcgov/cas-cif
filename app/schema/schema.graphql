@@ -1,3 +1,50 @@
+"""All input for the `addAdditionalFundingSourceToRevision` mutation."""
+input AddAdditionalFundingSourceToRevisionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  revisionId: Int!
+  sourceIndex: Int!
+}
+
+"""The output of our `addAdditionalFundingSourceToRevision` mutation."""
+type AddAdditionalFundingSourceToRevisionPayload {
+  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChange: FormChange
+
+  """Reads a single `FormChange` that is related to this `FormChange`."""
+  formChangeByPreviousFormChangeId: FormChange
+
+  """An edge for our `FormChange`. May be used by Relay 1."""
+  formChangeEdge(
+    """The method to use when ordering `FormChange`."""
+    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormChangesEdge
+
+  """Reads a single `ProjectRevision` that is related to this `FormChange`."""
+  projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `addContactToRevision` mutation."""
 input AddContactToRevisionInput {
   """
@@ -1817,6 +1864,129 @@ enum ChangeStatusesOrderBy {
 
 """Table containing information about the application's users """
 type CifUser implements Node {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -2221,6 +2391,240 @@ type CifUser implements Node {
 
   """Reads a single `CifUser` that is related to this `CifUser`."""
   cifUserByUpdatedBy: CifUser
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceArchivedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAdditionalFundingSourceArchivedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceArchivedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAdditionalFundingSourceArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceCreatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAdditionalFundingSourceCreatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAdditionalFundingSourceCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceUpdatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAdditionalFundingSourceUpdatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAdditionalFundingSourceUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByArchivedBy(
@@ -11194,6 +11598,123 @@ type CifUser implements Node {
   ): ProjectTypesConnection!
 
   """Reads and enables pagination through a set of `Project`."""
+  projectsByAdditionalFundingSourceArchivedByAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserProjectsByAdditionalFundingSourceArchivedByAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByAdditionalFundingSourceCreatedByAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserProjectsByAdditionalFundingSourceCreatedByAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByAdditionalFundingSourceUpdatedByAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserProjectsByAdditionalFundingSourceUpdatedByAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
   projectsByArchivedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -13213,6 +13734,432 @@ type CifUserChangeStatusesByProjectRevisionUpdatedByAndChangeStatusManyToManyEdg
     """The method to use when ordering `ProjectRevision`."""
     orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceArchivedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAdditionalFundingSourceArchivedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceArchivedByAndCreatedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceArchivedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAdditionalFundingSourceArchivedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceArchivedByAndUpdatedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceCreatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAdditionalFundingSourceCreatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceCreatedByAndArchivedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAdditionalFundingSourceCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceCreatedByAndUpdatedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceUpdatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAdditionalFundingSourceUpdatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceUpdatedByAndArchivedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAdditionalFundingSourceUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserCifUsersByAdditionalFundingSourceUpdatedByAndCreatedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
 }
 
 """
@@ -22976,6 +23923,26 @@ type CifUserContactsByProjectContactUpdatedByAndContactIdManyToManyEdge {
 A filter to be used against `CifUser` object types. All fields are combined with a logical ‘and.’
 """
 input CifUserFilter {
+  """
+  Filter by the object’s `additionalFundingSourcesByArchivedBy` relation.
+  """
+  additionalFundingSourcesByArchivedBy: CifUserToManyAdditionalFundingSourceFilter
+
+  """Some related `additionalFundingSourcesByArchivedBy` exist."""
+  additionalFundingSourcesByArchivedByExist: Boolean
+
+  """Filter by the object’s `additionalFundingSourcesByCreatedBy` relation."""
+  additionalFundingSourcesByCreatedBy: CifUserToManyAdditionalFundingSourceFilter
+
+  """Some related `additionalFundingSourcesByCreatedBy` exist."""
+  additionalFundingSourcesByCreatedByExist: Boolean
+
+  """Filter by the object’s `additionalFundingSourcesByUpdatedBy` relation."""
+  additionalFundingSourcesByUpdatedBy: CifUserToManyAdditionalFundingSourceFilter
+
+  """Some related `additionalFundingSourcesByUpdatedBy` exist."""
+  additionalFundingSourcesByUpdatedByExist: Boolean
+
   """Checks for all expressions in this list."""
   and: [CifUserFilter!]
 
@@ -25743,6 +26710,219 @@ type CifUserProjectTypesByProjectUpdatedByAndProjectTypeManyToManyEdge {
 }
 
 """
+A connection to a list of `Project` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserProjectsByAdditionalFundingSourceArchivedByAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserProjectsByAdditionalFundingSourceArchivedByAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserProjectsByAdditionalFundingSourceArchivedByAndProjectIdManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+}
+
+"""
+A connection to a list of `Project` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserProjectsByAdditionalFundingSourceCreatedByAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserProjectsByAdditionalFundingSourceCreatedByAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserProjectsByAdditionalFundingSourceCreatedByAndProjectIdManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+}
+
+"""
+A connection to a list of `Project` values, with data from `AdditionalFundingSource`.
+"""
+type CifUserProjectsByAdditionalFundingSourceUpdatedByAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserProjectsByAdditionalFundingSourceUpdatedByAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type CifUserProjectsByAdditionalFundingSourceUpdatedByAndProjectIdManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+}
+
+"""
 A connection to a list of `Project` values, with data from `Attachment`.
 """
 type CifUserProjectsByAttachmentArchivedByAndProjectIdManyToManyConnection {
@@ -27992,6 +29172,26 @@ type CifUserSectorsByProjectUpdatedByAndSectorNameManyToManyEdge {
 }
 
 """
+A filter to be used against many `AdditionalFundingSource` object types. All fields are combined with a logical ‘and.’
+"""
+input CifUserToManyAdditionalFundingSourceFilter {
+  """
+  Every related `AdditionalFundingSource` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AdditionalFundingSourceFilter
+
+  """
+  No related `AdditionalFundingSource` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AdditionalFundingSourceFilter
+
+  """
+  Some related `AdditionalFundingSource` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AdditionalFundingSourceFilter
+}
+
+"""
 A filter to be used against many `Attachment` object types. All fields are combined with a logical ‘and.’
 """
 input CifUserToManyAttachmentFilter {
@@ -28519,6 +29719,12 @@ type CifUsersEdge {
 
 """Methods to use when ordering `CifUser`."""
 enum CifUsersOrderBy {
+  ADDITIONAL_FUNDING_SOURCES_BY_ARCHIVED_BY__COUNT_ASC
+  ADDITIONAL_FUNDING_SOURCES_BY_ARCHIVED_BY__COUNT_DESC
+  ADDITIONAL_FUNDING_SOURCES_BY_CREATED_BY__COUNT_ASC
+  ADDITIONAL_FUNDING_SOURCES_BY_CREATED_BY__COUNT_DESC
+  ADDITIONAL_FUNDING_SOURCES_BY_UPDATED_BY__COUNT_ASC
+  ADDITIONAL_FUNDING_SOURCES_BY_UPDATED_BY__COUNT_DESC
   ARCHIVED_AT_ASC
   ARCHIVED_AT_DESC
   ARCHIVED_BY_ASC
@@ -29586,6 +30792,61 @@ enum ContactsOrderBy {
   UPDATED_BY_DESC
 }
 
+"""All input for the create `AdditionalFundingSource` mutation."""
+input CreateAdditionalFundingSourceInput {
+  """The `AdditionalFundingSource` to be created by this mutation."""
+  additionalFundingSource: AdditionalFundingSourceInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `AdditionalFundingSource` mutation."""
+type CreateAdditionalFundingSourcePayload {
+  """The `AdditionalFundingSource` that was created by this mutation."""
+  additionalFundingSource: AdditionalFundingSource
+
+  """An edge for our `AdditionalFundingSource`. May be used by Relay 1."""
+  additionalFundingSourceEdge(
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesEdge
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByArchivedBy: CifUser
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByCreatedBy: CifUser
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `Project` that is related to this `AdditionalFundingSource`.
+  """
+  projectByProjectId: Project
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `Attachment` mutation."""
 input CreateAttachmentInput {
   """The `Attachment` to be created by this mutation."""
@@ -30648,6 +31909,76 @@ input DatetimeFilter {
 
   """Not included in the specified list."""
   notIn: [Datetime!]
+}
+
+"""All input for the `deleteAdditionalFundingSourceByRowId` mutation."""
+input DeleteAdditionalFundingSourceByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the additional funding source"""
+  rowId: Int!
+}
+
+"""All input for the `deleteAdditionalFundingSource` mutation."""
+input DeleteAdditionalFundingSourceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `AdditionalFundingSource` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `AdditionalFundingSource` mutation."""
+type DeleteAdditionalFundingSourcePayload {
+  """The `AdditionalFundingSource` that was deleted by this mutation."""
+  additionalFundingSource: AdditionalFundingSource
+
+  """An edge for our `AdditionalFundingSource`. May be used by Relay 1."""
+  additionalFundingSourceEdge(
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesEdge
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByArchivedBy: CifUser
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByCreatedBy: CifUser
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedAdditionalFundingSourceId: ID
+
+  """
+  Reads a single `Project` that is related to this `AdditionalFundingSource`.
+  """
+  projectByProjectId: Project
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `deleteAttachmentByRowId` mutation."""
@@ -32853,6 +34184,10 @@ enum EmissionIntensityReportsOrderBy {
 
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
+  """
+  Computed column returns data from the new_form_data column as if it were an additional_funding_source record to allow graph traversal via the foreign keys.
+  """
+  asAdditionalFundingSource: AdditionalFundingSource
   asEmissionIntensityReport: EmissionIntensityReport
 
   """
@@ -37817,6 +39152,12 @@ enum MilestoneReportsOrderBy {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  addAdditionalFundingSourceToRevision(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: AddAdditionalFundingSourceToRevisionInput!
+  ): AddAdditionalFundingSourceToRevisionPayload
   addContactToRevision(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -37835,6 +39176,14 @@ type Mutation {
     """
     input: AddMilestoneToRevisionInput!
   ): AddMilestoneToRevisionPayload
+
+  """Creates a single `AdditionalFundingSource`."""
+  createAdditionalFundingSource(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateAdditionalFundingSourceInput!
+  ): CreateAdditionalFundingSourcePayload
 
   """Creates a single `Attachment`."""
   createAttachment(
@@ -38000,6 +39349,24 @@ type Mutation {
     """
     input: CreateUserFromSessionInput!
   ): CreateUserFromSessionPayload
+
+  """
+  Deletes a single `AdditionalFundingSource` using its globally unique id.
+  """
+  deleteAdditionalFundingSource(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAdditionalFundingSourceInput!
+  ): DeleteAdditionalFundingSourcePayload
+
+  """Deletes a single `AdditionalFundingSource` using a unique key."""
+  deleteAdditionalFundingSourceByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAdditionalFundingSourceByRowIdInput!
+  ): DeleteAdditionalFundingSourcePayload
 
   """Deletes a single `Attachment` using its globally unique id."""
   deleteAttachment(
@@ -38340,6 +39707,26 @@ type Mutation {
     """
     input: UndoFormChangesInput!
   ): UndoFormChangesPayload
+
+  """
+  Updates a single `AdditionalFundingSource` using its globally unique id and a patch.
+  """
+  updateAdditionalFundingSource(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAdditionalFundingSourceInput!
+  ): UpdateAdditionalFundingSourcePayload
+
+  """
+  Updates a single `AdditionalFundingSource` using a unique key and a patch.
+  """
+  updateAdditionalFundingSourceByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAdditionalFundingSourceByRowIdInput!
+  ): UpdateAdditionalFundingSourcePayload
 
   """
   Updates a single `Attachment` using its globally unique id and a patch.
@@ -40166,6 +41553,47 @@ enum PaymentsOrderBy {
 """Table containing information about a CIF Project"""
 type Project implements Node {
   """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """
   Any additional information about this project in reference to the industry sector such as a sub-sector
   """
   additionalSectorInformation: String
@@ -40262,6 +41690,123 @@ type Project implements Node {
 
   """Reads a single `CifUser` that is related to this `Project`."""
   cifUserByUpdatedBy: CifUser
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceProjectIdAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectCifUsersByAdditionalFundingSourceProjectIdAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceProjectIdAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectCifUsersByAdditionalFundingSourceProjectIdAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAdditionalFundingSourceProjectIdAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectCifUsersByAdditionalFundingSourceProjectIdAndUpdatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByAttachmentProjectIdAndArchivedBy(
@@ -41456,6 +43001,219 @@ type ProjectChangeStatusesByProjectRevisionProjectIdAndChangeStatusManyToManyEdg
     """The method to use when ordering `ProjectRevision`."""
     orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type ProjectCifUsersByAdditionalFundingSourceProjectIdAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectCifUsersByAdditionalFundingSourceProjectIdAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type ProjectCifUsersByAdditionalFundingSourceProjectIdAndArchivedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type ProjectCifUsersByAdditionalFundingSourceProjectIdAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectCifUsersByAdditionalFundingSourceProjectIdAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type ProjectCifUsersByAdditionalFundingSourceProjectIdAndCreatedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AdditionalFundingSource`.
+"""
+type ProjectCifUsersByAdditionalFundingSourceProjectIdAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AdditionalFundingSource`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectCifUsersByAdditionalFundingSourceProjectIdAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `AdditionalFundingSource`.
+"""
+type ProjectCifUsersByAdditionalFundingSourceProjectIdAndUpdatedByManyToManyEdge {
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  additionalFundingSourcesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
 }
 
 """
@@ -43205,6 +44963,12 @@ enum ProjectContactsOrderBy {
 A filter to be used against `Project` object types. All fields are combined with a logical ‘and.’
 """
 input ProjectFilter {
+  """Filter by the object’s `additionalFundingSourcesByProjectId` relation."""
+  additionalFundingSourcesByProjectId: ProjectToManyAdditionalFundingSourceFilter
+
+  """Some related `additionalFundingSourcesByProjectId` exist."""
+  additionalFundingSourcesByProjectIdExist: Boolean
+
   """Filter by the object’s `additionalSectorInformation` field."""
   additionalSectorInformation: StringFilter
 
@@ -47938,6 +49702,26 @@ enum ProjectStatusesOrderBy {
 }
 
 """
+A filter to be used against many `AdditionalFundingSource` object types. All fields are combined with a logical ‘and.’
+"""
+input ProjectToManyAdditionalFundingSourceFilter {
+  """
+  Every related `AdditionalFundingSource` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AdditionalFundingSourceFilter
+
+  """
+  No related `AdditionalFundingSource` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AdditionalFundingSourceFilter
+
+  """
+  Some related `AdditionalFundingSource` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AdditionalFundingSourceFilter
+}
+
+"""
 A filter to be used against many `Attachment` object types. All fields are combined with a logical ‘and.’
 """
 input ProjectToManyAttachmentFilter {
@@ -49167,6 +50951,8 @@ type ProjectsEdge {
 
 """Methods to use when ordering `Project`."""
 enum ProjectsOrderBy {
+  ADDITIONAL_FUNDING_SOURCES_BY_PROJECT_ID__COUNT_ASC
+  ADDITIONAL_FUNDING_SOURCES_BY_PROJECT_ID__COUNT_DESC
   ADDITIONAL_SECTOR_INFORMATION_ASC
   ADDITIONAL_SECTOR_INFORMATION_DESC
   ARCHIVED_AT_ASC
@@ -49382,6 +51168,58 @@ enum ProjectsOrderBy {
 
 """The root query type which gives access points into the data universe."""
 type Query implements Node {
+  """
+  Reads a single `AdditionalFundingSource` using its globally unique `ID`.
+  """
+  additionalFundingSource(
+    """
+    The globally unique `ID` to be used in selecting a single `AdditionalFundingSource`.
+    """
+    id: ID!
+  ): AdditionalFundingSource
+  additionalFundingSourceByRowId(rowId: Int!): AdditionalFundingSource
+
+  """
+  Reads and enables pagination through a set of `AdditionalFundingSource`.
+  """
+  allAdditionalFundingSources(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdditionalFundingSourceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AdditionalFundingSourceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesConnection
+
   """Reads and enables pagination through a set of `Attachment`."""
   allAttachments(
     """Read all values in the set after (below) this cursor."""
@@ -54368,6 +56206,85 @@ type UndoFormChangesPayload {
     """The method to use when ordering `ProjectRevision`."""
     orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateAdditionalFundingSourceByRowId` mutation."""
+input UpdateAdditionalFundingSourceByRowIdInput {
+  """
+  An object where the defined keys will be set on the `AdditionalFundingSource` being updated.
+  """
+  additionalFundingSourcePatch: AdditionalFundingSourcePatch!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the additional funding source"""
+  rowId: Int!
+}
+
+"""All input for the `updateAdditionalFundingSource` mutation."""
+input UpdateAdditionalFundingSourceInput {
+  """
+  An object where the defined keys will be set on the `AdditionalFundingSource` being updated.
+  """
+  additionalFundingSourcePatch: AdditionalFundingSourcePatch!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `AdditionalFundingSource` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `AdditionalFundingSource` mutation."""
+type UpdateAdditionalFundingSourcePayload {
+  """The `AdditionalFundingSource` that was updated by this mutation."""
+  additionalFundingSource: AdditionalFundingSource
+
+  """An edge for our `AdditionalFundingSource`. May be used by Relay 1."""
+  additionalFundingSourceEdge(
+    """The method to use when ordering `AdditionalFundingSource`."""
+    orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AdditionalFundingSourcesEdge
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByArchivedBy: CifUser
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByCreatedBy: CifUser
+
+  """
+  Reads a single `CifUser` that is related to this `AdditionalFundingSource`.
+  """
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `Project` that is related to this `AdditionalFundingSource`.
+  """
+  projectByProjectId: Project
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
