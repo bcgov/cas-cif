@@ -5,7 +5,7 @@ begin;
 create table cif.additional_funding_source (
   id integer primary key generated always as identity,
   project_id integer references cif.project(id) not null,
-  status cif.additional_funding_source_status,
+  status varchar(1000) references cif.additional_funding_source_status(status_name),
   source varchar(1000),
   amount numeric,
   source_index integer not null

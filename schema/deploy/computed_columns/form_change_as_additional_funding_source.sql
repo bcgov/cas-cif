@@ -17,7 +17,7 @@ as $$
       **/
       ($1.id * -1) as id,
       (new_form_data->>'projectId')::integer as project_id,
-      (new_form_data->>'status')::cif.additional_funding_source_status as status,
+      new_form_data->>'status' as status,
       (new_form_data->>'source')::varchar as source,
       (new_form_data->>'amount')::numeric as amount,
       (new_form_data->>'sourceIndex')::integer as source_index,
