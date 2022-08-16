@@ -33026,6 +33026,11 @@ type FormChange implements Node {
   """The name of the JSON schema to use for validation of this form data"""
   jsonSchemaName: String!
 
+  """
+  Computed columm to return the cumulative total_eligible_expenses to date for a specific milestone. This includes all expenses for milestones with a report_due_date before the calling milestone and the calling milestone expenses
+  """
+  milestoneTotalExpensesToDate: BigFloat
+
   """Unique ID for the form_change"""
   newFormData: JSON
 
@@ -33394,6 +33399,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `jsonSchemaName` field."""
   jsonSchemaName: StringFilter
+
+  """Filter by the object’s `milestoneTotalExpensesToDate` field."""
+  milestoneTotalExpensesToDate: BigFloatFilter
 
   """Filter by the object’s `newFormData` field."""
   newFormData: JSONFilter
