@@ -259,7 +259,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             formData={emissionIntensityReportFormChange?.newFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
-              calculatedEiPerformance: calculatedEiPerformance,
+              calculatedEiPerformance: calculatedEiPerformance ?? 0,
               isPercent: true,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(

@@ -186,6 +186,36 @@ describe("the emission intensity report form component", () => {
     ).toHaveValue("6.00%");
   });
 
+  it("renders 0% for the GHG emissions performance if the calculated value is null", () => {
+    const mockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          ...defaultMockResolver.ProjectRevision(context, generateID),
+          emissionIntensityReportFormChange: {
+            edges: [
+              {
+                node: {
+                  ...defaultMockResolver.ProjectRevision(context, generateID)
+                    .emissionIntensityReportFormChange.edges[0].node,
+                  asEmissionIntensityReport: {
+                    calculatedEiPerformance: null,
+                  },
+                },
+              },
+            ],
+            __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
+          },
+        };
+      },
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(screen.queryByText("0.00%")).toBeInTheDocument();
+  });
+
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
     const mockResolver = {
       ...defaultMockResolver,
