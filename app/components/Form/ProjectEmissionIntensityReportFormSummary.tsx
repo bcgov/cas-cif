@@ -56,6 +56,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
               formChangeByPreviousFormChangeId {
                 newFormData
               }
+              asEmissionIntensityReport {
+                calculatedEiPerformance
+              }
             }
           }
         }
@@ -175,6 +178,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         )}
         formData={emissionIntensityReportDiffObject.formData}
         formContext={{
+          calculatedEiPerformance:
+            summaryEmissionIntensityReport?.asEmissionIntensityReport
+              .calculatedEiPerformance ?? 0,
           operation: summaryEmissionIntensityReport?.operation,
           oldData:
             summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
