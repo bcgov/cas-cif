@@ -2,23 +2,43 @@ import { render, screen } from "@testing-library/react";
 import ReadOnlyCalculatedValueWidget from "lib/theme/widgets/ReadOnlyCalculatedValueWidget";
 
 describe("The ReadOnlyCalculatedValueWidget", () => {
-  it("renders the calculated value", () => {
+  it("renders the calculated value from the form context as specified in the uiSchema", () => {
     const props: any = {
       id: "test-id",
-      formContext: { calculatedValue: 50 },
+      formContext: { someprop: 50 },
       label: "test-label",
+      uiSchema: {
+        calculatedValueFormContextProperty: "someprop",
+        isMoney: true,
+      },
     };
     render(<ReadOnlyCalculatedValueWidget {...props} />);
-    expect(screen.getByLabelText(/test-label/i)).toHaveTextContent("50");
+    expect(screen.getByText("$50.00")).toBeInTheDocument();
   });
 
-  it("renders 0% if the calculated value is null", () => {
+  it("renders 0 if the calculated value is zero", () => {
     const props: any = {
       id: "test-id",
-      formContext: { calculatedValue: null },
+      formContext: { someprop: 0 },
       label: "test-label",
+      uiSchema: {
+        calculatedValueFormContextProperty: "someprop",
+      },
     };
     render(<ReadOnlyCalculatedValueWidget {...props} />);
-    expect(screen.getByLabelText(/test-label/i)).toHaveTextContent("0");
+    expect(screen.getByText("0")).toBeInTheDocument();
+  });
+
+  it("renders empty string if the calculated value is null", () => {
+    const props: any = {
+      id: "test-id",
+      formContext: { someprop: null },
+      label: "test-label",
+      uiSchema: {
+        calculatedValueFormContextProperty: "someprop",
+      },
+    };
+    render(<ReadOnlyCalculatedValueWidget {...props} />);
+    expect(screen.queryByText("0")).not.toBeInTheDocument();
   });
 });

@@ -178,7 +178,8 @@ describe("when creating a project, the project page", () => {
     // TEIMP section
     cy.findByText(/^Measurement period start date/i)
       .next()
-      .should("have.text", "Jan. 1, 2022");
+      .contains(/Jan(\.)? 1, 2022/)
+      .should("be.visible");
     cy.findByText(/^Functional Unit/i)
       .next()
       .should("have.text", "tCO");

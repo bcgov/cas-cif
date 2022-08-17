@@ -97,7 +97,6 @@ describe("the emission intensity report form component", () => {
   it("only displays the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
     expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
   });
 

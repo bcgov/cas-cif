@@ -173,12 +173,47 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByLabelText(/Total lifetime emissions reductions*/i)
     ).toHaveValue("5");
+
+    // We can't query by label for text elements,
+    // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
     expect(
-      screen.getAllByLabelText(/GHG Emission Intensity Performance/i)[0]
-    ).toHaveTextContent("200.00%");
+      screen.queryByText("GHG Emission Intensity Performance")
+    ).toBeInTheDocument();
+    expect(screen.queryByText("200.00%")).toBeInTheDocument();
+
     expect(
-      screen.getAllByLabelText(/GHG Emission Intensity Performance/i)[1]
+      screen.getByLabelText(/GHG Emission Intensity Performance \(Adjusted\)/i)
     ).toHaveValue("6.00%");
+  });
+
+  it("renders 0% for the GHG emissions performance if the calculated value is null", () => {
+    const mockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          ...defaultMockResolver.ProjectRevision(context, generateID),
+          emissionIntensityReportFormChange: {
+            edges: [
+              {
+                node: {
+                  ...defaultMockResolver.ProjectRevision(context, generateID)
+                    .emissionIntensityReportFormChange.edges[0].node,
+                  asEmissionIntensityReport: {
+                    calculatedEiPerformance: null,
+                  },
+                },
+              },
+            ],
+            __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
+          },
+        };
+      },
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(screen.queryByText("0.00%")).toBeInTheDocument();
   });
 
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
