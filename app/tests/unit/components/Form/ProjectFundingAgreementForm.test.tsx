@@ -11,6 +11,7 @@ import { ProjectFundingAgreementForm_projectRevision$data } from "__generated__/
 const testQuery = graphql`
   query ProjectFundingAgreementFormQuery @relay_test_operation {
     query {
+      ...ProjectFundingAgreementForm_query
       # Spread the fragment you want to test here
       projectRevision(id: "Test Project Revision ID") {
         ...ProjectFundingAgreementForm_projectRevision
@@ -49,8 +50,54 @@ const defaultMockResolver = {
           },
         ],
       },
+      additionalFundingSourceFormChanges: {
+        __id: "connection Id",
+        edges: [
+          {
+            node: {
+              id: "Additional Funding Source Test Form Change ID 1",
+              rowId: 1,
+              changeStatus: "pending",
+              operation: "CREATE",
+              newFormData: {
+                projectId: 51,
+                sourceIndex: 1,
+                source: "Test Source 1",
+                amount: 100,
+                status: "Approved",
+              },
+            },
+          },
+        ],
+      },
     };
     return result;
+  },
+  Query() {
+    return {
+      allAdditionalFundingSourceStatuses: {
+        edges: [
+          {
+            node: {
+              rowId: 1,
+              statusName: "Awaiting Approval",
+            },
+          },
+          {
+            node: {
+              rowId: 2,
+              statusName: "Approved",
+            },
+          },
+          {
+            node: {
+              rowId: 3,
+              statusName: "Denied",
+            },
+          },
+        ],
+      },
+    };
   },
 };
 
@@ -103,6 +150,30 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value
     ).toBe("$800.00");
+
+    // Additional Funding Source section
+    expect(
+      screen.getByRole<HTMLInputElement>("textbox", {
+        name: /additional funding source/i,
+      }).value
+    ).toBe("Test Source 1");
+    expect(
+      screen.getByRole<HTMLInputElement>("textbox", {
+        name: /additional funding amount/i,
+      }).value
+    ).toBe("$100.00");
+    expect(
+      screen.getByRole<HTMLInputElement>("combobox", {
+        name: /additional funding status/i,
+      }).value
+    ).toBe("Approved");
+
+    expect(screen.getAllByRole("button", { name: /remove/i })).toHaveLength(1);
+    expect(
+      screen.getByRole("button", {
+        name: /add funding source/i,
+      })
+    ).toBeInTheDocument();
   });
 
   it("calls the mutation passed in with the props with the proper data on form change", async () => {
@@ -255,6 +326,89 @@ describe("The ProjectFundingAgreementForm", () => {
         }),
       },
     });
+
+    // Additional Funding Source section
+    const additionalFundingSourceField = screen.getByRole<HTMLInputElement>(
+      "textbox",
+      {
+        name: /additional funding source/i,
+      }
+    );
+
+    await act(async () => {
+      await waitFor(() => userEvent.clear(additionalFundingSourceField));
+      fireEvent.change(additionalFundingSourceField, {
+        target: { value: "Test Source Updated" },
+      });
+    });
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: expect.objectContaining({
+          source: "Test Source Updated",
+        }),
+      },
+    });
+
+    const additionalFundingAmountField = screen.getByRole<HTMLInputElement>(
+      "textbox",
+      {
+        name: /additional funding amount/i,
+      }
+    );
+
+    await act(async () => {
+      await waitFor(() => userEvent.clear(additionalFundingAmountField));
+      fireEvent.change(additionalFundingAmountField, {
+        target: { value: 300 },
+      });
+    });
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: expect.objectContaining({
+          source: "Test Source Updated",
+          amount: 300,
+        }),
+      },
+    });
+
+    const additionalFundingStatusField = screen.getByRole<HTMLInputElement>(
+      "combobox",
+      {
+        name: /additional funding status/i,
+      }
+    );
+
+    await act(async () => {
+      await waitFor(() => userEvent.click(additionalFundingStatusField));
+      userEvent.click(
+        screen.getByRole("option", {
+          name: /denied/i,
+        })
+      );
+    });
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: expect.objectContaining({
+          source: "Test Source Updated",
+          amount: 300,
+          status: "Denied",
+        }),
+      },
+    });
   });
   it("stages the form_change when clicking on the submit button", async () => {
     componentTestingHelper.loadQuery();
@@ -263,13 +417,16 @@ describe("The ProjectFundingAgreementForm", () => {
     await act(async () => {
       userEvent.click(screen.getByText(/submit/i));
     });
-
     expect(
       componentTestingHelper.environment.mock.getMostRecentOperation().request
         .variables.input
     ).toMatchObject({
       formChangePatch: { changeStatus: "staged" },
     });
+
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(3);
   });
 
   it("clicking the submit button should stage a form with validation errors and not call the router to get to the other page", () => {
@@ -351,6 +508,26 @@ describe("The ProjectFundingAgreementForm", () => {
                 },
               ],
             },
+            additionalFundingSourceFormChanges: {
+              __id: "connection Id",
+              edges: [
+                {
+                  node: {
+                    id: "Additional Funding Source Test Form Change ID 1",
+                    rowId: 1,
+                    changeStatus: "staged",
+                    operation: "UPDATE",
+                    newFormData: {
+                      projectId: 51,
+                      sourceIndex: 1,
+                      source: "Test Source 1",
+                      amount: 100,
+                      status: "Approved",
+                    },
+                  },
+                },
+              ],
+            },
           };
         return result;
       },
@@ -380,6 +557,33 @@ describe("The ProjectFundingAgreementForm", () => {
         }),
       },
     });
+
+    // Additional Funding Source section
+    const additionalFundingSourceField = screen.getByRole<HTMLInputElement>(
+      "textbox",
+      {
+        name: /additional funding source/i,
+      }
+    );
+
+    await act(async () => {
+      await waitFor(() => userEvent.clear(additionalFundingSourceField));
+      fireEvent.change(additionalFundingSourceField, {
+        target: { value: "Test Source Updated" },
+      });
+    });
+
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "pending",
+        newFormData: expect.objectContaining({
+          source: "Test Source Updated",
+        }),
+      },
+    });
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
@@ -400,7 +604,47 @@ describe("The ProjectFundingAgreementForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1],
+        formChangesIds: [1, 1],
+      },
+    });
+  });
+
+  it("calls the addAdditionalFundingSourceToRevisionMutation when the user clicks the add funding source button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByText(/add funding source/i));
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "addAdditionalFundingSourceToRevisionMutation"
+    );
+
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        revisionId: 1234,
+        sourceIndex: 2,
+      },
+    });
+  });
+  it("calls the deleteFormChangeWithConnectionMutation when the user clicks the remove button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    userEvent.click(screen.getByRole("button", { name: /remove/i }));
+
+    const mutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[1];
+
+    expect(mutationUnderTest.fragment.node.name).toBe(
+      "deleteFormChangeWithConnectionMutation"
+    );
+
+    expect(mutationUnderTest.request.variables).toMatchObject({
+      input: {
+        id: "Additional Funding Source Test Form Change ID 1",
       },
     });
   });

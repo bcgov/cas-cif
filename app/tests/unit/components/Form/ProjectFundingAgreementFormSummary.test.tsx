@@ -52,6 +52,33 @@ const mockQueryPayload = {
             },
           ],
         },
+        summaryAdditionalFundingSourceFormChanges: {
+          edges: [
+            {
+              node: {
+                id: "Test Additional Funding Source ID",
+                newFormData: {
+                  projectId: "Test Project ID",
+                  sourceIndex: 1,
+                  source: "Test Source Name",
+                  amount: 2500,
+                  status: "Approved",
+                },
+                isPristine: false,
+                operation: "UPDATE",
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    projectId: "Test Project ID",
+                    sourceIndex: 1,
+                    source: "Test Source Name",
+                    amount: 1000,
+                    status: "Awaiting Approval",
+                  },
+                },
+              },
+            },
+          ],
+        },
       };
     return result;
   },
@@ -95,6 +122,15 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.queryByText("Anticipated Funding Amount")
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding amount \(source 1\) \(optional\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding status \(source 1\) \(optional\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Additional Funding Source 1")
+    ).not.toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed", () => {
@@ -107,6 +143,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("60 %")).toBeInTheDocument();
     expect(screen.getByText("10 %")).toBeInTheDocument();
     expect(screen.getByText("20 %")).toBeInTheDocument();
+    expect(screen.getByText("$2,500")).toBeInTheDocument();
+    expect(screen.getByText("$1,000")).toBeInTheDocument();
+    expect(screen.getByText("Approved")).toBeInTheDocument();
+    expect(screen.getByText("Awaiting Approval")).toBeInTheDocument();
   });
 
   it("Displays all data when isFirstRevision is true (Project Creation)", () => {
@@ -137,6 +177,27 @@ describe("The Project Funding Agreement Form Summary", () => {
                 },
               ],
             },
+            summaryAdditionalFundingSourceFormChanges: {
+              edges: [
+                {
+                  node: {
+                    id: "Test Additional Funding Source ID",
+                    newFormData: {
+                      projectId: "Test Project ID",
+                      sourceIndex: 1,
+                      source: "Test Source Name",
+                      amount: 2500,
+                      status: "Awaiting Approval",
+                    },
+                    isPristine: false,
+                    operation: "CREATE",
+                    formChangeByPreviousFormChangeId: {
+                      newFormData: {},
+                    },
+                  },
+                },
+              ],
+            },
           };
         return result;
       },
@@ -149,5 +210,14 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
     expect(screen.getByText("Anticipated Funding Amount")).toBeInTheDocument();
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding amount \(source 1\) \(optional\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding status \(source 1\) \(optional\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding source 1/i)
+    ).toBeInTheDocument();
   });
 });
