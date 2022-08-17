@@ -23,10 +23,6 @@ export const resolverWrapperGenerator =
     context,
     resolveInfo: GraphQLResolveInfo
   ) => {
-    // If the mutation doesn't change the form data, we don't need to re-validate
-    if (args.input?.formChangePatch?.newFormData === undefined)
-      return resolver();
-
     const {
       identifiers: [formChangeId],
     } = (resolveInfo as any).graphile.build.getTypeAndIdentifiersFromNodeId(
