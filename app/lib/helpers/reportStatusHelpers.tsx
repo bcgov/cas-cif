@@ -25,6 +25,40 @@ export const getDaysUntilDue = (reportDueDate: DateTime) => {
   );
 };
 
+export const getWeeksUntilDue = (reportDueDate: DateTime) => {
+  if (!reportDueDate) {
+    return null;
+  }
+  return Math.floor(
+    reportDueDate.diff(
+      // Current date without time information
+      DateTime.now().setZone("America/Vancouver").startOf("day"),
+      "week"
+    ).weeks
+  );
+};
+
+export const getDisplayDueDateString = (
+  daysUntilDue: number,
+  weeksUntilDue: number,
+  selectedDate: DateTime
+) => {
+  if (selectedDate === null) return null;
+  const formattedValue = selectedDate.toFormat("MMM dd, yyyy");
+  return daysUntilDue < 0
+    ? `${formattedValue}`
+    : daysUntilDue > 60
+    ? `Due in ${weeksUntilDue} weeks (${formattedValue})`
+    : `Due in ${daysUntilDue} ${
+        daysUntilDue === 1 ? "day" : "days"
+      } (${formattedValue})`;
+};
+
+export const getDisplayDateString = (selectedDate: DateTime) => {
+  if (!selectedDate) return null;
+  return selectedDate.toFormat("MMM dd, yyyy");
+};
+
 export const getBadgeForOverallReportStatus = (
   upcomingReportDueDateString: string,
   reportSubmittedDates: string[]

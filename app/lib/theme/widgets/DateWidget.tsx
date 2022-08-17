@@ -6,18 +6,20 @@ import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  getDisplayDateString,
+  parseStringDate,
+} from "lib/helpers/reportStatusHelpers";
 
 const DateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value, label, uiSchema }, ref) => {
     const displayString = useMemo(() => {
-      const formattedDate = DateTime.fromISO(value, {
-        setZone: true,
-        locale: "en-CA",
-      }).toFormat("MMM dd, yyyy");
+      const selectedDate = parseStringDate(value);
+      const displayDateString = getDisplayDateString(selectedDate);
 
       return (
         <>
-          {uiSchema?.contentPrefix}({formattedDate})
+          {uiSchema?.contentPrefix}({displayDateString})
         </>
       );
     }, [uiSchema, value]);
