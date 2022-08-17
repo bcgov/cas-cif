@@ -22,7 +22,7 @@ describe("The contacts page", () => {
       component: "Contact form",
     });
     cy.get("button").contains("Submit").click();
-    cy.get("table").contains("Loblaw, Bob");
+    cy.get("table").contains("Bob Loblaw");
     cy.get("table").contains("View").click();
     cy.contains("Contact Information");
     cy.get("body").happoScreenshot({
@@ -34,7 +34,7 @@ describe("The contacts page", () => {
       .clear()
       .type("Rob");
     cy.get("button").contains("Submit").click();
-    cy.get("table").contains("Loblaw, Rob");
+    cy.get("table").contains("Rob Loblaw");
   });
 
   it("Shows correct validation errors", () => {

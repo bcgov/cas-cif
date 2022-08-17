@@ -124,7 +124,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText("Tech Team Primary (optional)")
       .next()
-      .should("have.text", "Testuser, cif_internal");
+      .should("have.text", "cif_internal Testuser");
     cy.findByRole("link", { name: "Project contacts" })
       .next()
       .should("not.exist");

@@ -43,7 +43,7 @@ describe("When logged in as an analyst", () => {
       });
     cy.visit("/");
     cy.get("button").contains("Log out");
-    cy.get("header").contains("Analyst, Test");
+    cy.get("header").contains("Test Analyst");
     cy.get("h2").contains("Welcome, Test");
   });
 });
@@ -63,7 +63,7 @@ describe("When logged in as an admin", () => {
     cy.visit("/");
     cy.contains("Administration");
     cy.get("button").contains("Log out");
-    cy.get("header").contains("Admin, Test");
+    cy.get("header").contains("Test Admin");
     cy.get("h2").contains("Welcome, Test");
   });
 });

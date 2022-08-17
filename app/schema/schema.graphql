@@ -32539,9 +32539,7 @@ type Contact implements Node {
   """The family name of this contact"""
   familyName: String
 
-  """
-  Computed column for graphql to retrieve the full formatted phone of a contact
-  """
+  """Computed column for graphql to retrieve the full name of a contact"""
   fullName: String
   fullPhone: String
 
