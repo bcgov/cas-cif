@@ -36731,10 +36731,6 @@ enum EmissionIntensityReportsOrderBy {
 
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
-  """
-  Computed column returns data from the new_form_data column as if it were an additional_funding_source record to allow graph traversal via the foreign keys.
-  """
-  asAdditionalFundingSource: AdditionalFundingSource
   asEmissionIntensityReport: EmissionIntensityReport
 
   """
