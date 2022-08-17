@@ -39,6 +39,7 @@ $grant$;
 
 comment on table cif.additional_funding_source is 'Table containing information about funding provided through sources other than CIF and the proponent; often needed for program review and data request purposes.';
 comment on column cif.additional_funding_source.id is 'Unique ID for the additional funding source';
+comment on column cif.additional_funding_source.project_id is 'Foreign key to the project';
 comment on column cif.additional_funding_source.status is 'The status of the additional funding source request(e.g. awaiting approval, approved, denied)';
 comment on column cif.additional_funding_source.source is 'The source of the additional funding source';
 comment on column cif.additional_funding_source.amount is 'The amount of the additional funding source';
