@@ -1,7 +1,7 @@
 -- Deploy cif:computed_columns/full_name to pg
 -- requires: tables/cif_user
 
-BEGIN;
+begin;
 
 create or replace function cif.cif_user_full_name(u cif.cif_user)
 returns varchar(1000)
@@ -21,4 +21,4 @@ grant execute on function cif.cif_user_full_name to cif_internal, cif_admin;
 
 comment on function cif.cif_user_full_name is 'Displays a cif_user as: given_name family_name';
 
-COMMIT;
+commit;
