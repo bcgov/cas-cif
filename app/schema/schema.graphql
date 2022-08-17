@@ -192,6 +192,8 @@ type AdditionalFundingSource implements Node {
   Reads a single `Project` that is related to this `AdditionalFundingSource`.
   """
   projectByProjectId: Project
+
+  """Foreign key to the project"""
   projectId: Int!
 
   """Unique ID for the additional funding source"""
@@ -352,6 +354,8 @@ input AdditionalFundingSourceInput {
 
   """created by user id"""
   createdBy: Int
+
+  """Foreign key to the project"""
   projectId: Int!
 
   """The source of the additional funding source"""
@@ -390,6 +394,8 @@ input AdditionalFundingSourcePatch {
 
   """created by user id"""
   createdBy: Int
+
+  """Foreign key to the project"""
   projectId: Int
 
   """The source of the additional funding source"""
