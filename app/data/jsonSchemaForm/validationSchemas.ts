@@ -8,6 +8,7 @@ import { milestoneSchema } from "./projectMilestoneSchema";
 import { fundingAgreementSchema } from "./fundingAgreementSchema";
 import { paymentSchema } from "./paymentSchema";
 import { emissionIntensityReportSchema } from "./projectEmissionIntensitySchema";
+import additionalFundingSourceSchema from "./additionalFundingSourceSchema";
 
 const validationSchemas = {
   project_contact: projectContactSchema,
@@ -20,6 +21,7 @@ const validationSchemas = {
   funding_parameter: fundingAgreementSchema,
   payment: paymentSchema,
   emission_intensity_report: emissionIntensityReportSchema,
+  additional_funding_source: additionalFundingSourceSchema,
 };
 
 export default validationSchemas;
