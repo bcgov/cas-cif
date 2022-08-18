@@ -4,7 +4,7 @@ import NumberFormat from "react-number-format";
 const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
   id,
   formContext,
-
+  label,
   uiSchema,
 }) => {
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercent` to true in the uiSchema.
@@ -16,7 +16,7 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
 
   return (
     <>
-      <dd id={id}>
+      <dd id={id} aria-label={label}>
         {calculatedValue !== null && calculatedValue !== undefined ? (
           <NumberFormat
             fixedDecimalScale={isMoney || isPercent}
