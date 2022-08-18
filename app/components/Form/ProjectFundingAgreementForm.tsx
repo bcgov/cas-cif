@@ -391,6 +391,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                     <FormBase
                       id={`form-${formChange.id}`}
                       className="additionalFundingSourceForm"
+                      idPrefix="additionalFundingSource"
                       validateOnMount={formChange.changeStatus === "staged"}
                       ref={(el) => (formRefs.current[formChange.id] = el)}
                       schema={createAdditionalFundingSourceSchema(
