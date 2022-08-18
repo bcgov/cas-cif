@@ -10,10 +10,12 @@ as $$
     select * from cif.form_change rfc
     where rfc.form_data_table_name='reporting_requirement'
     and rfc.project_revision_id = fc.project_revision_id
+    and rfc.operation != 'archive'
   ), milestone as (
       select * from cif.form_change mfc
       where mfc.form_data_table_name='milestone_report'
       and mfc.project_revision_id = fc.project_revision_id
+      and mfc.operation != 'archive'
     ) select sum((milestone.new_form_data->>'totalEligibleExpenses')::numeric) from milestone
       join rep_req
       on (milestone.new_form_data->>'reportingRequirementId')::int = rep_req.form_data_record_id
