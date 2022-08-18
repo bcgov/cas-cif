@@ -138,3 +138,4 @@ computed_columns/project_revision_tasklist_status_for [computed_columns/project_
 tables/amendment_type 2022-08-22T23:55:53Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Table to store different amendment types
 tables/project_revision_amendment_type [tables/project_revision tables/amendment_type] 2022-08-23T16:13:22Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Join table to store the amendment type of the project revision
 tables/revision_type 2022-08-18T17:08:47Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a table for revision type
+tables/project_revision_001 2022-08-18T17:31:54Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a revision_type field on the project_revision table referencing the types from the revision_type table
