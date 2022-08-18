@@ -66,15 +66,6 @@ describe("The postgraphile form validation plugin", () => {
     expect(filter(testContext)).toBeNull();
   });
 
-  it("Calls the postgraphile resolver with no arguments if there is no change to the form data", async () => {
-    const wrappedResolverUnderTest = resolverWrapperGenerator();
-
-    await wrappedResolverUnderTest(mockResolver, {}, {}, {}, {} as any);
-
-    expect(mockResolver).toHaveBeenCalledTimes(1);
-    expect(mockResolver).toHaveBeenCalledWith();
-  });
-
   it("Validates the form data with the schema which name is on the record", async () => {
     const mockValidationFunction = jest.fn();
     mocked(validateRecord).mockImplementation(mockValidationFunction);
