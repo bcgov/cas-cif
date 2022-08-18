@@ -26,7 +26,7 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
 
   return (
     <div>
-      {calculatedValue && (
+      {calculatedValue !== null && calculatedValue !== undefined && (
         <>
           <div className="readonly">
             <NumberFormat

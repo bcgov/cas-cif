@@ -228,6 +228,7 @@ describe("the emission intensity report form component", () => {
 
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
+
     expect(screen.queryByText("0.00%")).toBeInTheDocument();
   });
 
@@ -268,7 +269,7 @@ describe("the emission intensity report form component", () => {
 
     expect(
       screen.getByLabelText("GHG Emission Intensity Performance")
-    ).toHaveTextContent("-");
+    ).toHaveTextContent("0.00%");
     expect(
       screen.getByLabelText(
         "Payment percentage of performance milestone amount"
