@@ -598,3 +598,45 @@ Cypress.Commands.add(
     cy.checkA11y(axeContext, enableTempRules ? tempRules : null, logAxeResults);
   }
 );
+
+Cypress.Commands.add(
+  "fillAdditionalFundingSourceForm",
+  (source, amount, status, sourceNumber) => {
+    cy.url().should("include", "/form/3");
+
+    cy.get('[aria-label="Additional Funding Source"]')
+      .eq(sourceNumber - 1)
+      .clear()
+      .type(source);
+    cy.get('[aria-label="Additional Funding Amount"]')
+      .eq(sourceNumber - 1)
+      .clear()
+      .type(amount);
+    cy.findAllByText(/Additional Funding Status/i)
+      .eq(sourceNumber - 1)
+      .next()
+      .findAllByRole("combobox")
+      .click();
+    cy.contains(status).click();
+  }
+);
+
+Cypress.Commands.add(
+  "checkAdditionalFundingSourceForm",
+  (source, amount, status, sourceNumber) => {
+    cy.url().should("include", "/form/3");
+
+    cy.findAllByText(/^Additional Funding Source/i)
+      .eq(sourceNumber - 1)
+      .next()
+      .should("have.text", source);
+    cy.findAllByText(/^Additional Funding Amount/i)
+      .eq(sourceNumber - 1)
+      .next()
+      .should("have.text", amount);
+    cy.findAllByText(/^Additional Funding Status/i)
+      .eq(sourceNumber - 1)
+      .next()
+      .should("have.text", status);
+  }
+);

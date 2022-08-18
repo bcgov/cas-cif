@@ -14,7 +14,8 @@ truncate table
   cif.milestone_report,
   cif.reporting_requirement,
   cif.payment,
-  cif.funding_parameter
+  cif.funding_parameter,
+  cif.additional_funding_source
 restart identity;
 
 
