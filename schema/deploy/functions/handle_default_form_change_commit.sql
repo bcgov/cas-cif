@@ -73,7 +73,7 @@ $$ language plpgsql volatile;
 
 grant execute on function cif_private.handle_default_form_change_commit to cif_internal, cif_external, cif_admin;
 
-comment on function cif_private.handle_default_form_change_commit()
+comment on function cif_private.handle_default_form_change_commit
   is $$
     The default function used to parse form_change data into table data when the status of the form_change record is set to 'committed'.
     This function can be used on any flat form_change record that has a 1:1 relationship with a table. Any form_change record that needs
