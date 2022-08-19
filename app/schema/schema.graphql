@@ -10636,7 +10636,7 @@ type CifUser implements Node {
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
 
-  """Displays a cif_user as: family_name, given_name"""
+  """Displays a cif_user as: given_name family_name"""
   fullName: String
 
   """Reads and enables pagination through a set of `FundingParameter`."""
@@ -32539,9 +32539,7 @@ type Contact implements Node {
   """The family name of this contact"""
   familyName: String
 
-  """
-  Computed column for graphql to retrieve the full formatted phone of a contact
-  """
+  """Computed column for graphql to retrieve the full name of a contact"""
   fullName: String
   fullPhone: String
 

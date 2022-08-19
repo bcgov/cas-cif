@@ -40,7 +40,7 @@ describe("when undoing, the project revision page", () => {
 
     // undo managers
     cy.findByText(/Add project managers/i).click();
-    cy.fillManagersForm("Swanson, Ron", "Ludgate, April", "Knope, Leslie");
+    cy.fillManagersForm("Ron Swanson", "April Ludgate", "Leslie Knope");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkManagersForm("", "", "");
 
@@ -167,26 +167,26 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
     cy.findByLabelText(/tech team primary/i).click();
-    cy.contains(/Swanson, Ron/).click();
+    cy.contains(/Ron Swanson/).click();
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
-      "Swanson, Ron"
+      "Ron Swanson"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
-      "Testuser, cif_internal"
+      "cif_internal Testuser"
     );
 
     // undo contacts
     // TODO: add this test back in once undoing contacts bug is fixed
     // cy.findByText(/Edit project contacts/i).click();
     // cy.findByLabelText(/Primary contact/i).click();
-    // cy.contains(/Loblaw006, Bob006/).click();
+    // cy.contains(/Bob006 Loblaw006/).click();
     // cy.findByLabelText(/Primary contact/i).should(
     //   "have.value",
-    //   "Loblaw006, Bob006"
+    //   "Bob006 Loblaw006"
     // );
     // cy.findByRole("button", { name: /undo changes/i }).click();
     // cy.findByRole("button", { name: /undo changes/i }).click();

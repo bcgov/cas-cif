@@ -11,7 +11,7 @@ select is(
   (
     select cif.contact_full_name((select row(contact.*)::cif.contact from cif.contact where id=1))
   ),
-  'Doe, John',
+  'John Doe',
   'Returns the full name of the contact'
 );
 
@@ -20,7 +20,7 @@ select is(
     select cif.contact_full_name((select row(contact.*)::cif.contact from cif.contact where id=2))
   ),
   'Nofamilyname',
-  'Does not print a comma if the contact has no family name'
+  'Does not print a space after the given name if the contact has no family name'
 );
 
 select is(
@@ -28,7 +28,7 @@ select is(
     select cif.contact_full_name((select row(contact.*)::cif.contact from cif.contact where id=3))
   ),
   'Nogivenname',
-  'Does not print a comma if the contact has no given name'
+  'Does not print a space before the family name if the contact has no given name'
 );
 
 select finish();

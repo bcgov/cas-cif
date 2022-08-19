@@ -41,7 +41,7 @@ describe("when editing a project, the project page", () => {
 
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
-      "Testuser, cif_internal"
+      "cif_internal Testuser"
     );
     cy.get("label")
       .contains(/tech team primary/i)
@@ -66,7 +66,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.").should("be.visible");
     cy.findByLabelText(/Primary contact/i).should(
       "have.value",
-      "Loblaw003, Bob003"
+      "Bob003 Loblaw003"
     );
     cy.happoAndAxe("Project contacts Form", "editing", "main");
     cy.contains("Changes saved.").should("be.visible");
@@ -177,14 +177,14 @@ describe("when editing a project, the project page", () => {
 
     cy.get("#root_cifUserId-diffOld").should(
       "have.text",
-      "Testuser, cif_internal"
+      "cif_internal Testuser"
     );
     cy.get("#root_cifUserId-diffOld")
       .next()
       .next()
       .should("have.text", "REMOVED");
 
-    cy.get("#root_contactId-diffNew").should("have.text", "Loblaw003, Bob003");
+    cy.get("#root_contactId-diffNew").should("have.text", "Bob003 Loblaw003");
 
     cy.findByText("Quarterly Report Removed").should("be.visible");
 

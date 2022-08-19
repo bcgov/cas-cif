@@ -174,21 +174,21 @@ describe("when creating a project, the project page", () => {
     // project managers section
     cy.findByText(/tech team primary/i)
       .next()
-      .should("have.text", "Swanson, Ron");
+      .should("have.text", "Ron Swanson");
     cy.findByText(/tech team secondary/i)
       .next()
-      .should("have.text", "Ludgate, April");
+      .should("have.text", "April Ludgate");
     cy.findByText(/ops team primary/i)
       .next()
-      .should("have.text", "Knope, Leslie");
+      .should("have.text", "Leslie Knope");
 
     // project contacts section
     cy.contains(/Primary contact/i)
       .next()
-      .should("have.text", "Loblaw003, Bob003");
+      .should("have.text", "Bob003 Loblaw003");
     cy.findByText(/^Secondary contacts/i)
       .next()
-      .should("have.text", "Loblaw004, Bob004");
+      .should("have.text", "Bob004 Loblaw004");
 
     // TEIMP section
     cy.findByText(/^Measurement period start date/i)
@@ -246,7 +246,7 @@ describe("when creating a project, the project page", () => {
     cy.get("button").contains("Submit").click();
     //Back to project contact form
     cy.url().should("include", "/form/2");
-    cy.findByLabelText(/primary contact/i).should("have.value", "Loblaw, Bob");
+    cy.findByLabelText(/primary contact/i).should("have.value", "Bob Loblaw");
 
     cy.findAllByRole("button", { name: /Create new contact/i }).should(
       "not.exist"
