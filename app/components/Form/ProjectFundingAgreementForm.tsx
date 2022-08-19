@@ -498,7 +498,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             flex-grow: 1;
             margin-right: 1rem;
           }
-          :global(.removeButton) {
+          div :global(button.removeButton) {
             margin-top: -21em;
           }
         `}
