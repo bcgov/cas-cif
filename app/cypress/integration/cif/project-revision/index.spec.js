@@ -101,6 +101,7 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
+    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /view/i }).first().click();
@@ -144,6 +145,13 @@ describe("the new project page", () => {
       "10 %",
       "$1.00",
       "$777.00"
+    );
+    // additional funding sources
+    cy.checkAdditionalFundingSourceForm(
+      "cheese import taxes",
+      "$1,000.00",
+      "Awaiting Approval",
+      1
     );
 
     //TODO: TEIMP Agreement, when fixture is added

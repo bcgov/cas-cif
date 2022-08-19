@@ -9,6 +9,7 @@ describe("when editing a project, the project page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
+    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
   });
 
@@ -79,6 +80,10 @@ describe("when editing a project, the project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.fillFundingAgreementForm(222, 333, 70, 30, 444, 900);
+    cy.contains("Changes saved.").should("be.visible");
+
+    // edit additional funding source
+    cy.fillAdditionalFundingSourceForm("Test Source", 1000, "Denied", 1);
     cy.contains("Changes saved.").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();

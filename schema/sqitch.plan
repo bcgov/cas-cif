@@ -116,3 +116,7 @@ computed_columns/project_revision_teimp_payment_amount 2022-08-03T23:47:46Z Pier
 tables/emission_intensity_report_001 [tables/emission_intensity_report] 2022-08-10T17:56:52Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Adding a column for adjusted TEIMP holdback payment
 computed_columns/form_change_as_emission_intensity_report [computed_columns/form_change_as_emission_intensity_report@1.0.0-rc.3] 2022-08-10T18:24:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Adding the adjusted holdback payment column
 computed_columns/emission_intensity_report_calculated_ei_performance [computed_columns/emission_intensity_report_calculated_ei_performance@1.0.0-rc.4] 2022-08-17T23:55:28Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Addressing a bug where order of operations was ambiguous for postgres
+tables/additional_funding_source_status 2022-08-16T17:26:13Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Table for statuses related to additional funding sources
+tables/additional_funding_source 2022-08-11T15:49:26Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Table for storing additional funding sources data
+mutations/add_additional_funding_source_to_revision 2022-08-11T20:07:28Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation that prepopulates an insert to the form change table for a new funding source on a project revision
+mutations/create_project_revision [mutations/create_project_revision@1.0.0-rc.4] 2022-08-17T23:16:56Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add missing additional funding resource union

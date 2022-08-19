@@ -67,6 +67,20 @@ describe("when undoing, the project revision page", () => {
       .next()
       .should("have.text", "Not Started");
 
+    // undo additional funding source
+    cy.findByText(/Yes/i).click();
+    cy.findByRole("button", { name: /Add funding source/i }).click();
+    cy.fillAdditionalFundingSourceForm(
+      "Test Additional Source",
+      123,
+      "Approved",
+      1
+    );
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByText("Test Additional Source").should("not.exist");
+    cy.findByText("Approved").should("not.exist");
+    cy.findByText(/Yes/i).should("be.visible");
+
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
@@ -127,7 +141,9 @@ describe("when undoing, the project revision page", () => {
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.sqlFixture("dev/004_cif_project");
     cy.sqlFixture("dev/005_cif_reporting_requirement");
+    cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
+    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
@@ -177,6 +193,33 @@ describe("when undoing, the project revision page", () => {
     // cy.contains("Changes saved.");
     // cy.wait(2000);
     // cy.findByLabelText(/Primary contact/i).should("have.value", "");
+
+    // undo budgets, expenses and payments
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Edit budgets/i).click();
+    cy.url().should("include", "/form/3");
+    cy.fillFundingAgreementForm(222, 333, 70, 30, 444, 900);
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.contains("Changes saved.");
+    cy.findByLabelText(/Max Funding Amount/i).should("have.value", "$1.00");
+    cy.findByLabelText(/Proponent Cost/i).should("have.value", "$777.00");
+
+    // undo additional funding source
+    cy.fillAdditionalFundingSourceForm("I will be undone", 2000, "Approved", 1);
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.contains("Changes saved.");
+    cy.findByLabelText(/Additional Funding Source/i).should(
+      "have.value",
+      "cheese import taxes"
+    );
+    cy.findByLabelText(/Additional Funding Amount/i).should(
+      "have.value",
+      "$1,000.00"
+    );
+    cy.findByLabelText(/Additional Funding Status/i).should(
+      "have.value",
+      "Awaiting Approval"
+    );
 
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();

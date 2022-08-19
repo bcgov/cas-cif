@@ -63,6 +63,9 @@ describe("when creating a project, the project page", () => {
 
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 800);
     cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /Add funding source/i }).click();
+    cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
+    cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -156,6 +159,17 @@ describe("when creating a project, the project page", () => {
       .eq(0)
       .next()
       .should("have.text", "Some comments");
+
+    // additional funding sources section
+    cy.findByText(/Additional Funding Source 1/i)
+      .next()
+      .should("have.text", "Test Source 1");
+    cy.findByText(/Additional Funding Amount \(Source 1\)/i)
+      .next()
+      .should("have.text", "$111.00");
+    cy.findByText(/Additional Funding Status \(Source 1\)/i)
+      .next()
+      .should("have.text", "Approved");
 
     // project managers section
     cy.findByText(/tech team primary/i)
