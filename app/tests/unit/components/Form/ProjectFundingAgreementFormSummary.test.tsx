@@ -112,7 +112,6 @@ describe("The Project Funding Agreement Form Summary", () => {
   it("Only displays the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-
     expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
     expect(screen.queryByText("Total Project Value")).toBeInTheDocument();
@@ -123,10 +122,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
     expect(
-      screen.getByText(/additional funding amount \(source 1\) \(optional\)/i)
+      screen.getByText(/additional funding amount \(source 1\)/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/additional funding status \(source 1\) \(optional\)/i)
+      screen.getByText(/additional funding status \(source 1\)/i)
     ).toBeInTheDocument();
     expect(
       screen.queryByText("Additional Funding Source 1")
@@ -211,10 +210,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("Anticipated Funding Amount")).toBeInTheDocument();
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
     expect(
-      screen.getByText(/additional funding amount \(source 1\) \(optional\)/i)
+      screen.getByText(/additional funding amount \(source 1\)/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/additional funding status \(source 1\) \(optional\)/i)
+      screen.getByText(/additional funding status \(source 1\)/i)
     ).toBeInTheDocument();
     expect(
       screen.getByText(/additional funding source 1/i)

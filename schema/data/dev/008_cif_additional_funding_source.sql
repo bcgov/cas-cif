@@ -24,7 +24,7 @@ for temp_row in select id, project_id from cif.project_revision loop
                           and form_data_table_name = 'project'
                         ),
             'sourceIndex', 1,
-            'source', 'money laundering',
+            'source', 'cheese import taxes',
             'amount', 1000,
             'status', 'Awaiting Approval'
           ),

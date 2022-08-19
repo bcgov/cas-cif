@@ -148,7 +148,7 @@ describe("the new project page", () => {
     );
     // additional funding sources
     cy.checkAdditionalFundingSourceForm(
-      "money laundering",
+      "cheese import taxes",
       "$1,000.00",
       "Awaiting Approval",
       1

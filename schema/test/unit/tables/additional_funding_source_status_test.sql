@@ -78,7 +78,7 @@ select lives_ok(
   $$
     insert into cif.additional_funding_source_status (status_name) values ('Test Status 2');
   $$,
-    'cif_admin can insert data in additional_funding_source_status table'
+    'cif_internal can insert data in additional_funding_source_status table'
 );
 
 select lives_ok(

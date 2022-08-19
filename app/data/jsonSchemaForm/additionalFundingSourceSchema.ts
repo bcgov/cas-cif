@@ -1,6 +1,7 @@
 const additionalFundingSourceSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
+  required: ["source", "amount", "status"],
   title: "Additional Funding Source",
   properties: {
     source: {

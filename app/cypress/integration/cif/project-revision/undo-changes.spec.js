@@ -210,7 +210,7 @@ describe("when undoing, the project revision page", () => {
     cy.contains("Changes saved.");
     cy.findByLabelText(/Additional Funding Source/i).should(
       "have.value",
-      "money laundering"
+      "cheese import taxes"
     );
     cy.findByLabelText(/Additional Funding Amount/i).should(
       "have.value",
