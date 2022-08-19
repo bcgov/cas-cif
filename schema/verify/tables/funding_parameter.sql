@@ -2,7 +2,7 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('cif.operator', 'select');
+select pg_catalog.has_table_privilege('cif.funding_parameter', 'select');
 
 -- cif_internal Grants
 select cif_private.verify_grant('select', 'funding_parameter', 'cif_internal');
