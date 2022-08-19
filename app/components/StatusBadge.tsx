@@ -2,7 +2,14 @@ import { Chip } from "@mui/material";
 
 interface Props {
   label?: string;
-  variant: "complete" | "late" | "onTrack" | "inReview" | "none";
+  variant:
+    | "complete"
+    | "late"
+    | "onTrack"
+    | "inReview"
+    | "none"
+    | "notDue"
+    | "dueIn";
 }
 
 const colours = {
@@ -30,6 +37,16 @@ const colours = {
     labelColour: "#003366",
     badgeColour: "#E6EBF0",
     label: "In review",
+  },
+  notDue: {
+    labelColour: "#003366",
+    badgeColour: "#E6EBF0",
+    label: "Not due",
+  },
+  dueIn: {
+    labelColour: "#FFFFFF",
+    badgeColour: "#003366",
+    label: "Due in",
   },
 };
 
