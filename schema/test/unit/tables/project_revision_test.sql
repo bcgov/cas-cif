@@ -21,7 +21,7 @@ insert into cif.project(project_name, operator_id, funding_stream_rfp_id, projec
 -- Trigger tests --
 
 insert into cif.change_status(status, triggers_commit) values ('testcommitted', true), ('testpending', false), ('testpending_2', false);
-insert into cif.project_revision(project_id, change_status) values ((select id from cif.project limit 1), 'testpending'), ((select id from cif.project limit 1), 'testcommitted');
+insert into cif.project_revision(project_id, change_status, revision_type) values ((select id from cif.project limit 1), 'testpending'), ((select id from cif.project limit 1), 'testcommitted','General Revision');
 
 select lives_ok(
   $$
