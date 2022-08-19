@@ -53,6 +53,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     annualReportsStatus,
     milestoneReportStatuses,
     fundingAgreementStatus,
+    teimpStatus,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -78,6 +79,9 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         annualReportsStatus: tasklistStatusFor(
           formDataTableName: "reporting_requirement"
           jsonMatcher: "{\"reportType\":\"Annual\"}"
+        )
+        teimpStatus: tasklistStatusFor(
+          formDataTableName: "emission_intensity_report"
         )
         fundingAgreementStatus: tasklistStatusFor(formDataTableName: "funding_parameter")
         milestoneReportStatuses {
@@ -268,8 +272,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {useShowGrowthbookFeature("teimp") && (
           <TaskListSection
             defaultExpandedState={
-              currentStep === "6" ||
-              quarterlyReportsStatus === ATTENTION_REQUIRED_STATUS
+              currentStep === "6" || teimpStatus === ATTENTION_REQUIRED_STATUS
             }
             listItemNumber="6"
             listItemName="Emissions Intensity Report"
@@ -278,7 +281,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
               stepName="6"
               linkUrl={getProjectRevisionFormPageRoute(id, 6)}
               formTitle="Emissions Intensity Report"
-              formStatus={quarterlyReportsStatus}
+              formStatus={teimpStatus}
               currentStep={currentStep}
               mode={mode}
             />

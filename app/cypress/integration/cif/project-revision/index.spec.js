@@ -232,6 +232,7 @@ describe("the new project page", () => {
     );
 
     // Emissions intensity report
+    cy.findByText(/Emissions Intensity Report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
     cy.url().should("include", "/form/6");
 
