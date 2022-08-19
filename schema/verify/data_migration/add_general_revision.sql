@@ -1,4 +1,4 @@
--- Verify cif:data_migration/data_migration_add_general_revision on pg
+-- Verify cif:data_migration/add_general_revision on pg
 
 begin;
 

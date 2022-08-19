@@ -1,4 +1,4 @@
--- Deploy cif:data_migration/data_migration_add_general_revision to pg
+-- Deploy cif:data_migration/add_general_revision to pg
 
 begin;
 
