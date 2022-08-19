@@ -9,7 +9,7 @@ create table cif.form(
   json_schema jsonb not null,
   description varchar(10000) not null,
   get_form_schema regprocedure not null default '',
-  handle_form_change_commit regprocedure not null default ''
+  handle_form_change_commit regprocedure not null default 'cif_private.handle_default_form_change_commit(cif.form_change)'::regprocedure
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'form');

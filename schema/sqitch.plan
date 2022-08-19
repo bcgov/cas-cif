@@ -123,3 +123,4 @@ mutations/create_project_revision [mutations/create_project_revision@1.0.0-rc.4]
 computed_columns/cif_user_full_name [computed_columns/cif_user_full_name@1.0.0-rc.4] 2022-08-16T21:31:48Z Mike Vesprini <mike@button.is> # Switch order to Firstname Lastname
 computed_columns/contact_full_name [computed_columns/contact_full_name@1.0.0-rc.4] 2022-08-17T14:39:31Z Mike Vesprini <mike@button.is> # Switch name order to firstname lastname
 tables/form [schemas/main] 2022-08-19T22:11:02Z Dylan Leard <dylan@button.is> # Add table to house json_schema information for a form and other data regarding how to parse it into tables
+functions/handle_default_form_change_commit [tables/form_change] 2022-08-19T22:30:19Z Dylan Leard <dylan@button.is> # Add a default commit function for form_change records
