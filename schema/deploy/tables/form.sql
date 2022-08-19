@@ -20,13 +20,9 @@ begin
 
 -- Grant cif_internal permissions
 perform cif_private.grant_permissions('select', 'form', 'cif_internal');
-perform cif_private.grant_permissions('insert', 'form', 'cif_internal');
-perform cif_private.grant_permissions('update', 'form', 'cif_internal');
 
 -- Grant cif_admin permissions
 perform cif_private.grant_permissions('select', 'form', 'cif_admin');
-perform cif_private.grant_permissions('insert', 'form', 'cif_admin');
-perform cif_private.grant_permissions('update', 'form', 'cif_admin');
 
 end
 $grant$;
