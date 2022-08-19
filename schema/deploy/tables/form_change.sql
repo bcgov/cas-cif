@@ -17,6 +17,8 @@ create table cif.form_change (
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'form_change', add_archive => false);
+alter table cif.form_change alter constraint form_change_project_revision_id_fkey deferrable;
+
 
 -- We want the immutable trigger to run first to avoid doing unnecessary work
 create trigger _100_committed_changes_are_immutable

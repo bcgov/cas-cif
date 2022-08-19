@@ -13,20 +13,12 @@ begin
 
   -- Propagate the change_status to all related form_change records
   -- Save the project table first do avoid foreign key violations from other potential tables.
-  update cif.form_change
-    set change_status = new.change_status
-    where project_revision_id=new.id
-    and form_data_table_name='project';
+
 
   update cif.form_change
     set change_status = new.change_status
     where project_revision_id=new.id
-    and form_data_table_name='reporting_requirement';
-
-  update cif.form_change
-    set change_status = new.change_status
-    where project_revision_id=new.id
-    and form_data_table_name not in ('project', 'reporting_requirement');
+    and form_data_table_name is not null;
 
   -- If a project_id wasn't created, save it after the form_change row was committed
   if (select triggers_commit from cif.change_status where status=new.change_status) and (new.project_id is null) then
