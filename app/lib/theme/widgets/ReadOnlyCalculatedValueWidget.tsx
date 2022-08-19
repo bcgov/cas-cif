@@ -16,7 +16,7 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
 
   return (
     <>
-      <dd id={id} aria-label={label}>
+      <dd aria-label={label}>
         {calculatedValue !== null && calculatedValue !== undefined ? (
           <NumberFormat
             fixedDecimalScale={isMoney || isPercent}
