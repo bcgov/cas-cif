@@ -28,7 +28,9 @@ as $$
       null::int as updated_by,
       now()::timestamptz updated_at,
       null::int as archived_by,
-      null::timestamptz as archived_at
+      null::timestamptz as archived_at,
+      (new_form_data->>'adjustedHoldbackPaymentAmount')::numeric as adjusted_holdback_payment_amount,
+      (new_form_data->>'dateSentToCsnr')::timestamptz as date_sent_to_csnr
     from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'emission_intensity_report'
 
 $$ language sql stable;

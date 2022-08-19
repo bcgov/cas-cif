@@ -21,6 +21,8 @@ const testQuery = graphql`
 const defaultMockResolver = {
   ProjectRevision(context, generateID) {
     return {
+      teimpPaymentPercentage: "60",
+      teimpPaymentAmount: "99",
       emissionIntensityReportingRequirementFormChange: {
         edges: [
           {
@@ -62,7 +64,9 @@ const defaultMockResolver = {
                 targetEmissionIntensity: "3",
                 postProjectEmissionIntensity: "4",
                 totalLifetimeEmissionReduction: "5",
-                adjustedGHGEmissionIntensityPerformance: "6",
+                adjustedEmissionsIntensityPerformance: "6",
+                adjustedHoldbackPaymentAmount: "123456.45",
+                dateSentToCsnr: "2022-02-11",
               },
               operation: "CREATE",
               changeStatus: "pending",
@@ -177,13 +181,25 @@ describe("the emission intensity report form component", () => {
     // We can't query by label for text elements,
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
     expect(
-      screen.queryByText("GHG Emission Intensity Performance")
-    ).toBeInTheDocument();
-    expect(screen.queryByText("200.00%")).toBeInTheDocument();
-
+      screen.getByLabelText("GHG Emission Intensity Performance")
+    ).toHaveTextContent("200.00%");
     expect(
-      screen.getByLabelText(/GHG Emission Intensity Performance \(Adjusted\)/i)
+      screen.getByLabelText("GHG Emission Intensity Performance (Adjusted)")
     ).toHaveValue("6.00%");
+    expect(
+      screen.getByLabelText(
+        "Payment percentage of performance milestone amount"
+      )
+    ).toHaveTextContent("60.00%");
+    expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
+      "$99.00"
+    );
+    expect(
+      screen.getByLabelText("Holdback Payment Amount (Adjusted)")
+    ).toHaveValue("$123,456.45");
+    expect(screen.getByLabelText(/Date sent to CSNR/i)).toHaveTextContent(
+      /Feb[.]? 11, 2022/
+    );
   });
 
   it("renders 0% for the GHG emissions performance if the calculated value is null", () => {
@@ -214,6 +230,54 @@ describe("the emission intensity report form component", () => {
     componentTestingHelper.renderComponent();
 
     expect(screen.queryByText("0.00%")).toBeInTheDocument();
+  });
+
+  it("renders the TEIMP form with placeholders for calculated values, when the form is not filled", () => {
+    const mockResolver = {
+      Query: defaultMockResolver.Query,
+      ProjectRevision: (context, generateID) => ({
+        ...defaultMockResolver.ProjectRevision(context, generateID),
+        teimpPaymentPercentage: null,
+        teimpPaymentAmount: null,
+        emissionIntensityReportFormChange: {
+          edges: [
+            {
+              node: {
+                id: `mock-project-milestone-report-form-${generateID()}`,
+                asEmissionIntensityReport: {
+                  calculatedEiPerformance: null,
+                },
+                rowId: 1,
+                newFormData: {
+                  measurementPeriodStartDate: "2022-01-02",
+                  measurementPeriodEndDate: "2023-01-02",
+                  emissionFunctionalUnit: "tCO2e",
+                },
+                operation: "CREATE",
+                changeStatus: "pending",
+                formChangeByPreviousFormChangeId: null,
+              },
+            },
+          ],
+          __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
+        },
+      }),
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByLabelText("GHG Emission Intensity Performance")
+    ).toHaveTextContent("0.00%");
+    expect(
+      screen.getByLabelText(
+        "Payment percentage of performance milestone amount"
+      )
+    ).toHaveTextContent("-");
+    expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
+      "-"
+    );
   });
 
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {

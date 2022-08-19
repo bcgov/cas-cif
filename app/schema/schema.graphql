@@ -32269,6 +32269,11 @@ type EmissionIntensityReport implements Node {
   """
   adjustedEmissionsIntensityPerformance: BigFloat
 
+  """
+  An override field to manually adjust the calculated TEIMP holdback payment amount
+  """
+  adjustedHoldbackPaymentAmount: BigFloat
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -32303,6 +32308,9 @@ type EmissionIntensityReport implements Node {
 
   """created by user id"""
   createdBy: Int
+
+  """The date the payment was issued"""
+  dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
   emissionFunctionalUnit: String
@@ -32366,6 +32374,11 @@ input EmissionIntensityReportCondition {
   """
   adjustedEmissionsIntensityPerformance: BigFloat
 
+  """
+  Checks for equality with the object’s `adjustedHoldbackPaymentAmount` field.
+  """
+  adjustedHoldbackPaymentAmount: BigFloat
+
   """Checks for equality with the object’s `archivedAt` field."""
   archivedAt: Datetime
 
@@ -32382,6 +32395,9 @@ input EmissionIntensityReportCondition {
 
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: Int
+
+  """Checks for equality with the object’s `dateSentToCsnr` field."""
+  dateSentToCsnr: Datetime
 
   """Checks for equality with the object’s `emissionFunctionalUnit` field."""
   emissionFunctionalUnit: String
@@ -32434,6 +32450,9 @@ input EmissionIntensityReportFilter {
   """Filter by the object’s `adjustedEmissionsIntensityPerformance` field."""
   adjustedEmissionsIntensityPerformance: BigFloatFilter
 
+  """Filter by the object’s `adjustedHoldbackPaymentAmount` field."""
+  adjustedHoldbackPaymentAmount: BigFloatFilter
+
   """Checks for all expressions in this list."""
   and: [EmissionIntensityReportFilter!]
 
@@ -32472,6 +32491,9 @@ input EmissionIntensityReportFilter {
 
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
+
+  """Filter by the object’s `dateSentToCsnr` field."""
+  dateSentToCsnr: DatetimeFilter
 
   """Filter by the object’s `emissionFunctionalUnit` field."""
   emissionFunctionalUnit: StringFilter
@@ -32525,6 +32547,11 @@ input EmissionIntensityReportInput {
   """
   adjustedEmissionsIntensityPerformance: BigFloat
 
+  """
+  An override field to manually adjust the calculated TEIMP holdback payment amount
+  """
+  adjustedHoldbackPaymentAmount: BigFloat
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -32541,6 +32568,9 @@ input EmissionIntensityReportInput {
 
   """created by user id"""
   createdBy: Int
+
+  """The date the payment was issued"""
+  dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
   emissionFunctionalUnit: String
@@ -32590,6 +32620,11 @@ input EmissionIntensityReportPatch {
   """
   adjustedEmissionsIntensityPerformance: BigFloat
 
+  """
+  An override field to manually adjust the calculated TEIMP holdback payment amount
+  """
+  adjustedHoldbackPaymentAmount: BigFloat
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -32606,6 +32641,9 @@ input EmissionIntensityReportPatch {
 
   """created by user id"""
   createdBy: Int
+
+  """The date the payment was issued"""
+  dateSentToCsnr: Datetime
 
   """The units in which the emissions are measured"""
   emissionFunctionalUnit: String
@@ -32678,6 +32716,8 @@ type EmissionIntensityReportsEdge {
 enum EmissionIntensityReportsOrderBy {
   ADJUSTED_EMISSIONS_INTENSITY_PERFORMANCE_ASC
   ADJUSTED_EMISSIONS_INTENSITY_PERFORMANCE_DESC
+  ADJUSTED_HOLDBACK_PAYMENT_AMOUNT_ASC
+  ADJUSTED_HOLDBACK_PAYMENT_AMOUNT_DESC
   ARCHIVED_AT_ASC
   ARCHIVED_AT_DESC
   ARCHIVED_BY_ASC
@@ -32754,6 +32794,8 @@ enum EmissionIntensityReportsOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
+  DATE_SENT_TO_CSNR_ASC
+  DATE_SENT_TO_CSNR_DESC
   EMISSION_FUNCTIONAL_UNIT_ASC
   EMISSION_FUNCTIONAL_UNIT_DESC
   ID_ASC
@@ -45088,6 +45130,9 @@ type ProjectRevision implements Node {
     reportType: String
   ): FormChangesConnection!
 
+  """Computed column to total the net payments made for a project revision"""
+  grossPaymentAmount: BigFloat
+
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
@@ -45125,6 +45170,7 @@ type ProjectRevision implements Node {
     """
     offset: Int
   ): MilestoneReportStatusReturnsConnection!
+  netPaymentAmount: BigFloat
 
   """Reads a single `Project` that is related to this `ProjectRevision`."""
   projectByProjectId: Project
@@ -45169,6 +45215,29 @@ type ProjectRevision implements Node {
   Computed column to return a tasklist status for any tasklist form with an optional json matcher on the form selection
   """
   tasklistStatusFor(formDataTableName: String!, jsonMatcher: String): String
+
+  """
+      Computed column to return the TEIMP payment amount, based on:
+      - X% being the TEIMP payment percentage calculated from the emissions performance (Schedule G)
+      - Gross and Net payment amounts to date
+      Formula:
+      TEIMP payment amount = X% * (Gross payment to date - Net payment to date)
+  
+  """
+  teimpPaymentAmount: BigFloat
+
+  """
+      Computed column to return the TEIMP payment percentage, calculated as specified in the schedule G.
+      The calculation for determining emission intensity performance uses three metrics and a calculation:
+      Metrics:
+      - BEI: Baseline Emission Intensity
+      - PEI: Post-Project Emission Intensity
+      - TEI: Target Emission Intensity
+      Calculation:
+      - Emission Intensity Payment Percentage = (BEI - PEI) / (BEI - TEI) * 100
+  
+  """
+  teimpPaymentPercentage: BigFloat
 
   """
   Computed column to return the form_change for the earliest due reporting requirement that hasn't been submitted, optionally constrained by the report type
@@ -45444,8 +45513,14 @@ input ProjectRevisionFilter {
   """Some related `formChangesByProjectRevisionId` exist."""
   formChangesByProjectRevisionIdExist: Boolean
 
+  """Filter by the object’s `grossPaymentAmount` field."""
+  grossPaymentAmount: BigFloatFilter
+
   """Filter by the object’s `isFirstRevision` field."""
   isFirstRevision: BooleanFilter
+
+  """Filter by the object’s `netPaymentAmount` field."""
+  netPaymentAmount: BigFloatFilter
 
   """Negates the expression."""
   not: ProjectRevisionFilter
@@ -45464,6 +45539,12 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
+
+  """Filter by the object’s `teimpPaymentAmount` field."""
+  teimpPaymentAmount: BigFloatFilter
+
+  """Filter by the object’s `teimpPaymentPercentage` field."""
+  teimpPaymentPercentage: BigFloatFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter

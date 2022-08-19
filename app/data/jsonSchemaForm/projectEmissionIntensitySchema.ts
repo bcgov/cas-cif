@@ -42,13 +42,22 @@ export const emissionIntensityReportSchema = {
       title: "Total lifetime emissions reductions",
       type: "number",
     },
-    calculatedGHGEmissionIntensityPerformance: {
+    adjustedEmissionsIntensityPerformance: {
       title: "GHG Emission Intensity Performance",
       type: "number",
     },
-    adjustedGHGEmissionIntensityPerformance: {
-      title: "GHG Emission Intensity Performance (Adjusted)",
+    calculatedPaymentPercentage: {
+      title: "Payment percentage of performance milestone amount",
       type: "number",
+    },
+    adjustedHoldbackPaymentAmount: {
+      title: "Holdback Payment Amount",
+      type: "number",
+    },
+    dateSentToCsnr: {
+      type: "string",
+      title: "Date sent to CSNR",
+      default: undefined,
     },
   },
 };
@@ -103,15 +112,26 @@ export const emissionIntensityReportUiSchema = {
   totalLifetimeEmissionReduction: {
     "ui:widget": "TextWidget",
   },
-  calculatedGHGEmissionIntensityPerformance: {
+  adjustedEmissionsIntensityPerformance: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedEiPerformance",
+    isPercent: true,
+    hideOptional: true,
+  },
+  calculatedPaymentPercentage: {
     "ui:widget": "ReadOnlyCalculatedValueWidget",
     isPercent: true,
     hideOptional: true,
-    calculatedValueFormContextProperty: "calculatedEiPerformance",
+    calculatedValueFormContextProperty: "teimpPaymentPercentage",
   },
-  adjustedGHGEmissionIntensityPerformance: {
+  adjustedHoldbackPaymentAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
-    isPercent: true,
+    calculatedValueFormContextProperty: "teimpPaymentAmount",
+    isMoney: true,
+    hideOptional: true,
+  },
+  dateSentToCsnr: {
+    "ui:widget": "DateWidget",
   },
 };
 

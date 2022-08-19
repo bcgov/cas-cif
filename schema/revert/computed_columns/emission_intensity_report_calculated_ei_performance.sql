@@ -1,7 +1,27 @@
--- Revert cif:emission_intensity_report_calculated_ei_performance from pg
+-- Deploy cif:emission_intensity_report_calculated_ei_performance to pg
+-- requires: tables/emission_intensity_report
 
 begin;
 
-drop function cif.emission_intensity_report_calculated_ei_performance(cif.emission_intensity_report);
+create or replace function cif.emission_intensity_report_calculated_ei_performance(cif.emission_intensity_report)
+returns decimal as
+$computed_column$
+
+select
+    case
+      when ($1.baseline_emission_intensity is not null)
+           and ($1.target_emission_intensity is not null)
+           and ($1.post_project_emission_intensity is not null)
+           then (round(($1.baseline_emission_intensity - $1.post_project_emission_intensity)/($1.baseline_emission_intensity - $1.target_emission_intensity)*100,2)
+)
+      when ($1.baseline_emission_intensity = $1.target_emission_intensity)
+        then null
+      else null
+    end
+
+$computed_column$ language sql stable;
+
+comment on function cif.emission_intensity_report_calculated_ei_performance(cif.emission_intensity_report) is 'Returns the calculated EI intensity value';
+
 
 commit;

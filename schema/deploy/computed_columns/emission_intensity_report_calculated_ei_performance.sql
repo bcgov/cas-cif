@@ -9,14 +9,13 @@ $computed_column$
 
 select
     case
-      when ($1.baseline_emission_intensity is not null)
-           and ($1.target_emission_intensity is not null)
-           and ($1.post_project_emission_intensity is not null)
-           then (round(($1.baseline_emission_intensity - $1.post_project_emission_intensity)/($1.baseline_emission_intensity - $1.target_emission_intensity)*100,2)
-)
-      when ($1.baseline_emission_intensity = $1.target_emission_intensity)
+      when ($1.baseline_emission_intensity is null)
+        or ($1.target_emission_intensity is null)
+        or ($1.post_project_emission_intensity is null)
+        or ($1.baseline_emission_intensity = $1.target_emission_intensity)
         then null
-      else null
+      else
+        round(($1.baseline_emission_intensity - $1.post_project_emission_intensity)/($1.baseline_emission_intensity - $1.target_emission_intensity)*100,2)
     end
 
 $computed_column$ language sql stable;

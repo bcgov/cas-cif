@@ -14,11 +14,11 @@ values (1, 1, 1, 1, '000', 'summary', 'project 1');
 
 insert into cif.reporting_requirement(id,report_due_date, comments, project_id, report_type, reporting_requirement_index)
 overriding system value
-values (1,'2020-01-01', 'comment_1', 1, 'General Milestone',1);
+values (1, '2020-01-01', 'comment_1', 1, 'General Milestone', 1);
 
 
 insert into cif.emission_intensity_report(id, reporting_requirement_id, baseline_emission_intensity, target_emission_intensity, post_project_emission_intensity) overriding system value
-  values (1, 1,1,2,3), (2, 1, null,2,3),(3,1,1,null,3),(4,1,1,2,null);
+  values (1, 1, 1, 2, 3), (2, 1, null, 2, 3), (3, 1, 1, null, 3), (4, 1, 1, 2, null);
 
 
 select is(

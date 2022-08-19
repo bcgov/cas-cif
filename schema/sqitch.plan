@@ -107,5 +107,12 @@ mutations/discard_funding_parameter_form_change 2022-08-10T23:11:54Z Gurjeet Mat
 @1.0.0-rc.4 2022-08-15T18:49:49Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.4
 tables/project_type 2022-08-08T18:26:33Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a table for project type
 tables/project_001 2022-08-08T15:28:44Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add a score and project type column to the project table
-computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.1 tables/project_001] 2022-08-08T21:44:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Add score and project type to project computed column
+computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.1 tables/project_001] 2022-08-08T21:44:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add score and project type to project computed column
 tables/funding_parameter_001 2022-08-10T18:55:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add proponent cost field to funding_parameter table
+computed_columns/project_revision_gross_payment_amount 2022-07-29T21:34:20Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column returning the sum of all gross amounts paid out for a project revision
+computed_columns/project_revision_net_payment_amount 2022-07-29T21:36:02Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column returning the sum of all net amounts paid for a project revision
+computed_columns/project_revision_teimp_payment_percentage 2022-07-30T00:00:47Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column returning the teimp payment percentage for a project revision, according to the formula and table defined in schedule G
+computed_columns/project_revision_teimp_payment_amount 2022-08-03T23:47:46Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Computed column to return the total teimp payment amount to date, based on the payment percentage and the gross and net payment amounts from the milestones
+tables/emission_intensity_report_001 [tables/emission_intensity_report] 2022-08-10T17:56:52Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Adding a column for adjusted TEIMP holdback payment
+computed_columns/form_change_as_emission_intensity_report [computed_columns/form_change_as_emission_intensity_report@1.0.0-rc.3] 2022-08-10T18:24:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Adding the adjusted holdback payment column
+computed_columns/emission_intensity_report_calculated_ei_performance [computed_columns/emission_intensity_report_calculated_ei_performance@1.0.0-rc.4] 2022-08-17T23:55:28Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Addressing a bug where order of operations was ambiguous for postgres
