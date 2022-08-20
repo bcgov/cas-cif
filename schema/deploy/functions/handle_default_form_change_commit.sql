@@ -4,17 +4,18 @@
 begin;
 
 create or replace function cif_private.handle_default_form_change_commit(fc cif.form_change)
-  returns void as $$
+  returns int as $$
 declare
   query text;
   schema_table text;
   keys text;
   vals text;
+  record_id int;
 begin
 
   -- If there is no change in the form data, return the form_change record and do not touch the associated table.
   if (fc.new_form_data = '{}') then
-    return;
+    return fc.form_data_record_id;
   end if;
 
   schema_table := quote_ident(fc.form_data_schema_name) || '.' || quote_ident(fc.form_data_table_name);
@@ -41,7 +42,7 @@ begin
         vals
       );
       raise debug '%', query;
-      execute query into fc.form_data_record_id;
+      execute query into record_id;
     end if;
 
 
@@ -67,7 +68,7 @@ begin
     execute query using fc.form_data_record_id;
   end if;
 
-  return;
+  return record_id;
 end;
 $$ language plpgsql volatile;
 
