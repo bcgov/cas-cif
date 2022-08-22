@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif_private.verify_function_not_present(text)'::regprocedure);
+select pg_get_functiondef('cif_private.verify_function_not_present(text,text,int)'::regprocedure);
 
 rollback;

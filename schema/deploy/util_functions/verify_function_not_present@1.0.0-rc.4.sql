@@ -2,8 +2,6 @@
 
 begin;
 
-drop function cif_private.verify_function_not_present;
-
 create or replace function cif_private.verify_function_not_present(function_name text)
 returns boolean
 as
