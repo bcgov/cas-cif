@@ -1,24 +1,35 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
 
-export const MoneyWidget: React.FC<WidgetProps> = ({
+export const NumberWidget: React.FC<WidgetProps> = ({
   schema,
   id,
   disabled,
+  uiSchema,
+  value,
   label,
   onChange,
-  value,
 }) => {
+  // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
+  const isMoney = uiSchema?.isMoney;
+  const isPercentage = uiSchema?.isPercentage;
+
+  // If we need to set the amount of decimal places, we can set it in the uiSchema, otherwise there will be no decimal places.
+  const numberOfDecimalPlaces = isMoney
+    ? 2
+    : uiSchema.numberOfDecimalPlaces ?? 0;
+
   return (
     <div>
       <NumberFormat
         thousandSeparator
-        fixedDecimalScale
+        fixedDecimalScale={numberOfDecimalPlaces}
+        decimalScale={numberOfDecimalPlaces}
         id={id}
-        prefix="$"
+        prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? " %" : ""}
         disabled={disabled}
-        className="money"
-        decimalScale={2}
+        className="decimal"
         defaultValue={(schema as any).defaultValue}
         value={value ?? ""}
         onValueChange={({ floatValue }) => {
@@ -29,7 +40,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           ) {
             onChange("");
           } else {
-            onChange(((floatValue * 100) / 100).toFixed(2));
+            onChange(floatValue.toFixed(numberOfDecimalPlaces));
           }
         }}
         style={{
@@ -44,7 +55,7 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
           div :global(input) {
             width: 100%;
           }
-          div :global(.money:focus) {
+          div :global(.decimal:focus) {
             outline-style: solid;
             outline-width: 4px;
             outline-color: #3b99fc;
@@ -56,4 +67,4 @@ export const MoneyWidget: React.FC<WidgetProps> = ({
   );
 };
 
-export default MoneyWidget;
+export default NumberWidget;
