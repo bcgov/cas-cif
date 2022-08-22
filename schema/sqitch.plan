@@ -136,3 +136,4 @@ mutations/add_emission_intensity_report_to_revision [mutations/add_emission_inte
 computed_columns/project_revision_tasklist_status_for [computed_columns/project_revision_tasklist_status_for@1.0.0-rc.4] 2022-08-29T21:49:01Z Dylan Leard <dylan@button.is> # Migration: Attention Required status should be the first priority loop exit
 tables/amendment_type 2022-08-22T23:55:53Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Table to store different amendment types
 tables/project_revision_amendment_type [tables/project_revision tables/amendment_type] 2022-08-23T16:13:22Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Join table to store the amendment type of the project revision
+util_functions/verify_function_not_present [util_functions/verify_function_not_present@1.0.0-rc.4] 2022-08-22T18:14:11Z Dylan Leard <dylan@button.is> # Migration: verify function should also check the schema
