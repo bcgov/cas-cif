@@ -2,6 +2,15 @@
 
 begin;
 
+/**
+  The revert for the preceding change emission_intensity_report_001 must be done here or the revert for form_change_as_emission_intensity_report
+  will not work. It will complain that it is returning too few columns.
+**/
+
+alter table cif.emission_intensity_report
+  drop column if exists adjusted_holdback_payment_amount,
+  drop column if exists date_sent_to_csnr;
+
 create or replace function cif.form_change_as_emission_intensity_report(cif.form_change)
 returns cif.emission_intensity_report
 as $$
