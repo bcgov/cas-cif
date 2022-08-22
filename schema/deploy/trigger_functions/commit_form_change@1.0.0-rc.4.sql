@@ -93,10 +93,4 @@ comment on function cif_private.commit_form_change()
   The new_form_data value is expected to be a flat jsonb object, with the keys being a camelCase version of the form_data_table_name columns.
   $$;
 
-create trigger commit_form_change
-    before insert or update of change_status on cif.form_change
-    for each row
-    when (new.change_status = 'committed')
-    execute procedure cif_private.commit_form_change();
-
 commit;
