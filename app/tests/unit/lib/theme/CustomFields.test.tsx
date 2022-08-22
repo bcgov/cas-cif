@@ -33,7 +33,8 @@ const uiTestSchema = {
     "ui:help": <small>(e.g. 2020-RFP-1-ABCD-123)</small>,
   },
   numberTest: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
   },

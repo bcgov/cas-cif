@@ -19,6 +19,11 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   const isMoney = uiSchema?.isMoney;
   const isPercentage = uiSchema?.isPercentage;
 
+  // If we need to set the amount of decimal places, we can set it in the uiSchema, otherwise there will be no decimal places.
+  const numberOfDecimalPlaces = isMoney
+    ? 2
+    : uiSchema.numberOfDecimalPlaces ?? 0;
+
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
 
@@ -31,13 +36,13 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           <div className="readonly">
             <NumberFormat
               thousandSeparator
-              fixedDecimalScale={isMoney || isPercentage}
+              fixedDecimalScale={numberOfDecimalPlaces}
+              decimalScale={numberOfDecimalPlaces}
               id={id}
               prefix={isMoney ? "$" : ""}
               suffix={isPercentage ? "%" : ""}
               disabled={disabled}
               className="adjustable"
-              decimalScale={isMoney || isPercentage ? 2 : 10} //Hardcoded for now, we can change it if we need to
               defaultValue={(schema as any).defaultValue}
               value={calculatedValue}
               displayType="text"

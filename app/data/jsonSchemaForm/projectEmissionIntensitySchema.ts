@@ -116,6 +116,7 @@ export const emissionIntensityReportUiSchema = {
     "ui:widget": "AdjustableCalculatedValueWidget",
     calculatedValueFormContextProperty: "calculatedEiPerformance",
     isPercentage: true,
+    numberOfDecimalPlaces: 2,
     hideOptional: true,
   },
   calculatedPaymentPercentage: {

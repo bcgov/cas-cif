@@ -43,7 +43,8 @@ export const createAdditionalFundingSourceUiSchema = (index: number) => {
     },
     amount: {
       "ui:title": `Additional Funding Amount (Source ${index})`,
-      "ui:widget": "MoneyWidget",
+      "ui:widget": "NumberWidget",
+      isMoney: true,
     },
     status: {
       "ui:title": `Additional Funding Status (Source ${index})`,

@@ -46,7 +46,8 @@ export const createProjectUiSchema = (
       "ui:help": <small>(e.g. 2020-RFP-1-ABCD-123)</small>,
     },
     totalFundingRequest: {
-      "ui:widget": "MoneyWidget",
+      "ui:widget": "NumberWidget",
+      isMoney: true,
     },
     summary: {
       "ui:widget": "TextAreaWidget",
@@ -87,8 +88,8 @@ export const createProjectUiSchema = (
       "ui:widget": "TextAreaWidget",
     },
     score: {
-      "ui:widget": "DecimalWidget",
-      decimals: 3,
+      "ui:widget": "NumberWidget",
+      numberOfDecimalPlaces: 3,
     },
     comments: {
       "ui:widget": "TextAreaWidget",
