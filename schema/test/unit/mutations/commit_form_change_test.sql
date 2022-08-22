@@ -1,6 +1,6 @@
 begin;
 
-select plan(5);
+select plan(6);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -35,9 +35,17 @@ values (
 -- make sure the function exists
 select has_function('cif', 'commit_form_change', ARRAY['cif.form_change'], 'Function commit_form_change should exist');
 
-with record as (
-  select row(form_change.*)::cif.form_change from cif.form_change where id=1
-) select cif.commit_form_change((select * from record));
+select results_eq(
+  $$
+    with record as (
+      select row(form_change.*)::cif.form_change from cif.form_change where id=1
+    ) select id, change_status from cif.commit_form_change((select * from record));
+  $$,
+  $$
+    values (1::int, 'committed'::varchar);
+  $$,
+  'commit_form_change returns the committed record'
+);
 
 select is(
   (select count(*) from mock_schema.mock_table),

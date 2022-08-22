@@ -53,9 +53,5 @@ comment on function cif_private.commit_project_revision()
   It has no effect if the project_revision''s change_status doesn''t have triggers_commit set to true.
   $$;
 
-create trigger commit_project_revision
-    before insert or update of change_status on cif.project_revision
-    for each row
-    execute procedure cif_private.commit_project_revision();
 
 commit;

@@ -13,6 +13,8 @@ declare
   record_id int;
 begin
 
+  select fc.form_data_record_id into record_id;
+
   -- If there is no change in the form data, return the form_change record and do not touch the associated table.
   if (fc.new_form_data = '{}') then
     return fc.form_data_record_id;
