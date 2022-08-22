@@ -301,7 +301,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               teimpPaymentPercentage:
                 projectRevision.teimpPaymentPercentage ?? "-",
               teimpPaymentAmount: projectRevision.teimpPaymentAmount ?? "-",
-              isPercent: true,
+              isPercentage: true,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
               emissionIntensityReportFormChange?.newFormData

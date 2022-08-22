@@ -15,9 +15,9 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
     formContext,
   } = props;
 
-  // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercent` to true in the uiSchema.
+  // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
-  const isPercent = uiSchema?.isPercent;
+  const isPercentage = uiSchema?.isPercentage;
 
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
@@ -31,13 +31,13 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           <div className="readonly">
             <NumberFormat
               thousandSeparator
-              fixedDecimalScale={isMoney || isPercent}
+              fixedDecimalScale={isMoney || isPercentage}
               id={id}
               prefix={isMoney ? "$" : ""}
-              suffix={isPercent ? "%" : ""}
+              suffix={isPercentage ? "%" : ""}
               disabled={disabled}
               className="adjustable"
-              decimalScale={isMoney || isPercent ? 2 : 10} //Hardcoded for now, we can change it if we need to
+              decimalScale={isMoney || isPercentage ? 2 : 10} //Hardcoded for now, we can change it if we need to
               defaultValue={(schema as any).defaultValue}
               value={calculatedValue}
               displayType="text"
@@ -52,13 +52,13 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
       )}
       <NumberFormat
         thousandSeparator
-        fixedDecimalScale={isMoney || isPercent}
+        fixedDecimalScale={isMoney || isPercentage}
         id={adjustedInputId}
         prefix={isMoney ? "$" : ""}
-        suffix={isPercent ? "%" : ""}
+        suffix={isPercentage ? "%" : ""}
         disabled={disabled}
         className="adjustable"
-        decimalScale={isMoney || isPercent ? 2 : 10} //Hardcoded for now, we can change it if we need toma as any).defaultValue}
+        decimalScale={isMoney || isPercentage ? 2 : 10} //Hardcoded for now, we can change it if we need toma as any).defaultValue}
         value={value}
         onValueChange={({ floatValue }) => {
           if (
