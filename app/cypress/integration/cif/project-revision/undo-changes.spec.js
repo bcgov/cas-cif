@@ -180,19 +180,19 @@ describe("when undoing, the project revision page", () => {
     );
 
     // undo contacts
-    // TODO: add this test back in once undoing contacts bug is fixed
-    // cy.findByText(/Edit project contacts/i).click();
-    // cy.findByLabelText(/Primary contact/i).click();
-    // cy.contains(/Bob006 Loblaw006/).click();
-    // cy.findByLabelText(/Primary contact/i).should(
-    //   "have.value",
-    //   "Bob006 Loblaw006"
-    // );
-    // cy.findByRole("button", { name: /undo changes/i }).click();
-    // cy.findByRole("button", { name: /undo changes/i }).click();
-    // cy.contains("Changes saved.");
-    // cy.wait(2000);
-    // cy.findByLabelText(/Primary contact/i).should("have.value", "");
+    cy.findByText(/Edit project contacts/i).click();
+    cy.findByLabelText(/Primary contact/i).click();
+    cy.contains(/Bob006 Loblaw006/).click();
+    cy.findByLabelText(/Primary contact/i).should(
+      "have.value",
+      "Bob006 Loblaw006"
+    );
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.contains("Changes saved.");
+    cy.findByLabelText(/Primary contact/i).should(
+      "have.value",
+      "Bob001 Loblaw001"
+    );
 
     // undo budgets, expenses and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
