@@ -98,46 +98,57 @@ const showNumberDiff = (
   oldData: number,
   newData: number,
   isMoney: boolean,
-  isPercentage: boolean
-) => (
-  <>
-    <span id={id && `${id}-diffOld`} className="diffOld">
-      <NumberFormat
-        thousandSeparator
-        prefix={isMoney ? "$" : ""}
-        suffix={isPercentage ? " %" : ""}
-        displayType="text"
-        value={oldData}
+  isPercentage: boolean,
+  numberOfDecimalPlaces: number = 0
+) => {
+  const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
+  return (
+    <>
+      <span id={id && `${id}-diffOld`} className="diffOld">
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={oldData}
+        />
+      </span>
+      <FontAwesomeIcon
+        className={"diff-arrow"}
+        size="lg"
+        color="black"
+        icon={faLongArrowAltRight}
       />
-    </span>
-    <FontAwesomeIcon
-      className={"diff-arrow"}
-      size="lg"
-      color="black"
-      icon={faLongArrowAltRight}
-    />
-    <span id={id && `${id}-diffNew`} className="diffNew">
-      <NumberFormat
-        thousandSeparator
-        prefix={isMoney ? "$" : ""}
-        suffix={isPercentage ? " %" : ""}
-        displayType="text"
-        value={newData}
-      />
-    </span>
-  </>
-);
+      <span id={id && `${id}-diffNew`} className="diffNew">
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={newData}
+        />
+      </span>
+    </>
+  );
+};
 
 const showNumberAdded = (
   id: string,
   newData: number,
   isMoney: boolean,
-  isPercentage: boolean
+  isPercentage: boolean,
+  numberOfDecimalPlaces: number = 0
 ) => (
   <>
     <span id={id && `${id}-diffNew`} className="diffNew">
       <NumberFormat
         thousandSeparator
+        fixedDecimalScale={true}
+        decimalScale={isMoney ? 2 : numberOfDecimalPlaces ?? 0}
         prefix={isMoney ? "$" : ""}
         suffix={isPercentage ? " %" : ""}
         displayType="text"
@@ -162,12 +173,15 @@ const showNumberRemoved = (
   id: string,
   oldData: number,
   isMoney: boolean,
-  isPercentage: boolean
+  isPercentage: boolean,
+  numberOfDecimalPlaces: number = 0
 ) => (
   <>
     <span id={id && `${id}-diffOld`} className="diffOld">
       <NumberFormat
         thousandSeparator
+        fixedDecimalScale={true}
+        decimalScale={isMoney ? 2 : numberOfDecimalPlaces ?? 0}
         prefix={isMoney ? "$" : ""}
         suffix={isPercentage ? " %" : ""}
         displayType="text"
@@ -271,8 +285,9 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formContext?.oldData?.[props.name],
           formData,
-          uiSchema?.["ui:widget"] === "MoneyWidget",
-          uiSchema?.["ui:widget"] === "PercentageWidget"
+          uiSchema?.isMoney,
+          uiSchema?.isPercentage,
+          uiSchema?.numberOfDecimalPlaces
         );
       } else if (
         !previousValue &&
@@ -282,8 +297,9 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberAdded(
           id,
           formData,
-          uiSchema?.["ui:widget"] === "MoneyWidget",
-          uiSchema?.["ui:widget"] === "PercentageWidget"
+          uiSchema?.isMoney,
+          uiSchema?.isPercentage,
+          uiSchema?.numberOfDecimalPlaces
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
@@ -292,8 +308,9 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberRemoved(
           id,
           formContext?.oldData?.[props.name],
-          uiSchema?.["ui:widget"] === "MoneyWidget",
-          uiSchema?.["ui:widget"] === "PercentageWidget"
+          uiSchema?.isMoney,
+          uiSchema?.isPercentage,
+          uiSchema?.numberOfDecimalPlaces
         );
       } else {
         return <>DISPLAY ERROR</>;

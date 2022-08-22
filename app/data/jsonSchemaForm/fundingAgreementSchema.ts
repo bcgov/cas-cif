@@ -47,21 +47,27 @@ export const fundingAgreementUiSchema = {
     "anticipatedFundingAmount",
   ],
   totalProjectValue: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
   },
   maxFundingAmount: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
   },
   provinceSharePercentage: {
-    "ui:widget": "PercentageWidget",
+    "ui:widget": "NumberWidget",
+    isPercentage: true,
   },
   holdbackPercentage: {
-    "ui:widget": "PercentageWidget",
+    "ui:widget": "NumberWidget",
+    isPercentage: true,
   },
   anticipatedFundingAmount: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
   },
   proponentCost: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
   },
 };

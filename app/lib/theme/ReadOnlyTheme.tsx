@@ -3,11 +3,11 @@ import ReadOnlyFieldTemplate from "./ReadOnlyFieldTemplate";
 import ReadOnlyObjectFieldTemplate from "./ReadOnlyObjectFieldTemplate";
 import { utils } from "@rjsf/core";
 import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
-import ReadOnlyMoneyWidget from "./widgets/ReadOnlyMoneyWidget";
 import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustableCalculatedValueWidget";
 import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
-import ReadOnlyPercentageWidget from "./widgets/ReadOnlyPercentageWidget";
+import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
+
 const { fields, widgets } = utils.getDefaultRegistry();
 
 const readOnlyTheme: ThemeProps = {
@@ -21,7 +21,6 @@ const readOnlyTheme: ThemeProps = {
     DisplayOnly: ReadOnlyWidget,
     SelectWidget: ReadOnlyWidget,
     SelectParentWidget: ReadOnlyWidget,
-    MoneyWidget: ReadOnlyMoneyWidget,
     PhoneNumberWidget: ReadOnlyWidget,
     SelectRfpWidget: ReadOnlyWidget,
     SelectProjectStatusWidget: ReadOnlyWidget,
@@ -29,8 +28,7 @@ const readOnlyTheme: ThemeProps = {
     DateWidget: ReadOnlyDateWidget,
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
     ReadOnlyCalculatedValueWidget,
-    PercentageWidget: ReadOnlyPercentageWidget,
-    DecimalWidget: ReadOnlyWidget,
+    NumberWidget: ReadOnlyNumberWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

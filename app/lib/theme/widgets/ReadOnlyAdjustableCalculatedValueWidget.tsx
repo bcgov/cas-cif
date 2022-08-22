@@ -6,9 +6,14 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
 ) => {
   const { id, value, uiSchema, label, formContext } = props;
 
-  // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercent` to true in the uiSchema.
+  // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
-  const isPercent = uiSchema?.isPercent;
+  const isPercentage = uiSchema?.isPercentage;
+
+  // If we need to set the amount of decimal places, we can set it in the uiSchema, otherwise there will be no decimal places.
+  const numberOfDecimalPlaces = isMoney
+    ? 2
+    : uiSchema.numberOfDecimalPlaces ?? 0;
 
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
@@ -22,11 +27,11 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           {
             <NumberFormat
               thousandSeparator
-              fixedDecimalScale={isMoney || isPercent}
+              fixedDecimalScale={numberOfDecimalPlaces}
+              decimalScale={numberOfDecimalPlaces}
               id={id}
               prefix={isMoney ? "$" : ""}
-              suffix={isPercent ? "%" : ""}
-              decimalScale={isMoney || isPercent ? 2 : 10}
+              suffix={isPercentage ? "%" : ""}
               value={value}
               displayType="text"
             />
@@ -42,8 +47,8 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
               fixedDecimalScale={isMoney}
               id={adjustedInputId}
               prefix={isMoney ? "$" : ""}
-              suffix={isPercent ? "%" : ""}
-              decimalScale={isMoney || isPercent ? 2 : 10}
+              suffix={isPercentage ? "%" : ""}
+              decimalScale={isMoney || isPercentage ? 2 : 10}
               value={value}
               displayType="text"
             />

@@ -195,8 +195,8 @@ describe("The Project Milestone Report Form Summary", () => {
     // milestone diff
     expect(screen.getByText("General")).toBeInTheDocument();
     expect(screen.getByText("Advanced")).toBeInTheDocument();
-    expect(screen.getByText("$100")).toBeInTheDocument();
-    expect(screen.getByText("$200")).toBeInTheDocument();
+    expect(screen.getByText("$100.00")).toBeInTheDocument();
+    expect(screen.getByText("$200.00")).toBeInTheDocument();
 
     // report due date diff
     expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();

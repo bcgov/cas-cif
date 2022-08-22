@@ -99,12 +99,14 @@ export const milestoneUiSchema = {
     "ui:widget": "DateWidget",
   },
   maximumAmount: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
   },
   totalEligibleExpenses: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
   },

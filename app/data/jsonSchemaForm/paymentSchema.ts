@@ -23,10 +23,12 @@ export const paymentSchema = {
 
 export const paymentUiSchema = {
   adjustedGrossAmount: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
   },
   adjustedNetAmount: {
-    "ui:widget": "MoneyWidget",
+    "ui:widget": "NumberWidget",
+    isMoney: true,
   },
   dateSentToCsnr: {
     "ui:widget": "DateWidget",
