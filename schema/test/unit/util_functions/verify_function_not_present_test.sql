@@ -1,7 +1,9 @@
 begin;
-select plan(2);
+select plan(4);
 
-create function some_function()
+create schema test_schema;
+
+create function test_schema.some_function(int)
 returns boolean
 as
 $function$
@@ -10,14 +12,26 @@ $function$
 language sql;
 
 select throws_like(
-  $$select cif_private.verify_function_not_present('some_function')$$,
+  $$select cif_private.verify_function_not_present('test_schema', 'some_function', 1)$$,
   '% exists when it should not',
   'verify_function_not_present throws an exception if the function exists'
 );
 
-drop function some_function;
 select is(
-  (select cif_private.verify_function_not_present('some_function')),
+  (select cif_private.verify_function_not_present('test_schem', 'some_function', 1)),
+  true,
+  'verify_function_not_present returns true if the function does not exist in the given schema'
+);
+
+select is(
+  (select cif_private.verify_function_not_present('test_schem', 'some_function', 2)),
+  true,
+  'verify_function_not_present returns true if a function with a matching number of parameters does not exist'
+);
+
+drop function test_schema.some_function;
+select is(
+  (select cif_private.verify_function_not_present('test_schema', 'some_function', 1)),
   true,
   'verify_function_not_present returns true if the function does not exist'
 );
