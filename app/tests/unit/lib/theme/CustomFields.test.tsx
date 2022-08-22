@@ -84,8 +84,8 @@ describe("The Object Field Template", () => {
 
     expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
     expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$100")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$200")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$100.00")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
     expect(
       componentUnderTest.getByText("I replaced the ID")
     ).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$100")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$100.00")).toBeInTheDocument();
     expect(
       componentUnderTest.getByText("I replaced the ID")
     ).toBeInTheDocument();
@@ -137,7 +137,7 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$200")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
     expect(
       componentUnderTest.getByText("I replaced the OLD ID")
     ).toBeInTheDocument();
@@ -161,7 +161,7 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$200")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
     expect(
       componentUnderTest.getByText("I replaced the OLD ID")
     ).toBeInTheDocument();
@@ -189,7 +189,7 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.queryByText("1")).not.toBeInTheDocument();
   });
 
-  it("shows the number with a preceding $ when 'ui:widget': MoneyWidget exists in a NumberField's uiSchema", () => {
+  it("shows the number with a preceding $ when uiSchema.isMoney is true in a NumberField's uiSchema", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -204,11 +204,11 @@ describe("The Object Field Template", () => {
         }}
       />
     );
-    expect(componentUnderTest.getByText("$100")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$100.00")).toBeInTheDocument();
   });
 
-  it("shows the number without a preceding $ when 'ui:widget': MoneyWidget does not exist in a NumberField's uiSchema", () => {
-    delete uiTestSchema.numberTest["ui:widget"];
+  it("shows the number without a preceding $ when uiSchema.isMoney is false in a NumberField's uiSchema", () => {
+    delete uiTestSchema.numberTest.isMoney;
 
     const componentUnderTest = render(
       <FormBase
@@ -225,7 +225,7 @@ describe("The Object Field Template", () => {
       />
     );
     expect(componentUnderTest.getByText("100")).toBeInTheDocument();
-    expect(componentUnderTest.queryByText("$100")).not.toBeInTheDocument();
+    expect(componentUnderTest.queryByText("$100.00")).not.toBeInTheDocument();
   });
 
   it("shows form has been added when there is no formData, the operation is 'CREATE' & there is no old data", () => {
