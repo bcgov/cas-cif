@@ -19,8 +19,11 @@ begin
 
   return (select row(form_change.*)::cif.form_change from cif.form_change where id = fc.id);
 end;
-    $$ language plpgsql volatile;
+  $$ language plpgsql volatile;
 
+grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
+
+comment on function cif.commit_form_change(cif.form_change) is 'Commits the form change and calls the corresponding commit handler';
 
 commit;
 
