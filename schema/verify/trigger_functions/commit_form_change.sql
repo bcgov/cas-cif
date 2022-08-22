@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif_private.commit_form_change()'::regprocedure);
+-- TODO use a verify_function_not_present that includes the schema name and parameter types
 
 rollback;
