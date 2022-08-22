@@ -1,9 +1,6 @@
 begin;
 
-select * from no_plan();
-
--- insert into cif.cif_user (uuid, given_name, family_name, email_address)
--- values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somemail.com');
+select plan(7);
 
 truncate table
   cif.form_change,
@@ -95,43 +92,64 @@ select results_eq(
   'commit_project_revision returns the committed record'
 );
 
--- -- make sure project_revision and form changes are created with change status 'test_pending'
--- select results_eq(
---   $$
---     select change_status from cif.form_change where project_revision_id = (select id from cif.project_revision order by id desc limit 1);
---   $$,
---   $$
---     values ('test_pending'::varchar);
---   $$,
---   'the form_change row should be have the test_pending status'
--- );
--- -- make sure project_revision has a null project id
--- select is(
---   (select project_id from cif.project_revision where id=1),
---   null,
---   'project_id should be null before the project is committed'
--- );
+-- make sure project_revision has a project id equal to the one that was in the form
+select is(
+  (select project_id from cif.project_revision),
+  (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
+  'revision project_id should be set to the project_id that was in the form'
+);
 
--- -- set the project_revision status to 'test_committed'
--- update cif.project_revision set change_status='committed' where id=(select id from cif.project_revision order by id desc limit 1);
+-- make sure project_contact has a project id equal to the one that was in the form
+select is(
+  (select project_id from cif.project_contact),
+  (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
+  'project_contact project_id should be set to the project_id that was in the form'
+);
 
--- -- make sure project_revision and form changes have change status 'test_committed'
--- select results_eq(
---   $$
---     select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
---   $$,
---   $$
---     values ('committed'::varchar);
---   $$,
---   'the form_change rows should have the committed status'
--- );
+/** Create a second set of records to check our deferred constraints **/
+select cif.create_project();
 
--- -- make sure project_revision has a project id equal to the one that was in the form
--- select is(
---   (select project_id from cif.project_revision),
---   (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
---   'project_id should be set to the project_id that was in the form'
--- );
+update cif.form_change set new_form_data='{
+      "projectName": "name",
+      "summary": "lorem ipsum",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=2
+    and form_data_table_name='project';
+
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  project_revision_id
+)
+  values
+(
+  json_build_object(
+    'projectId', 2,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'create', 'cif', 'project_contact', 'project_contact', 2
+);
+
+-- Delete the project form_change to create a broken foreign key constraint
+delete from cif.form_change where form_data_table_name = 'project' and project_revision_id=2;
+
+select throws_like(
+  $$
+    with record as (
+      select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2
+    ) select cif.commit_project_revision((select * from record));
+  $$,
+  'insert or update on table "project_contact" violates foreign key constraint%',
+  'Constraints are checked at the end of the transaction and fail if a foreign key relation does not exist'
+);
 
 select finish();
 
