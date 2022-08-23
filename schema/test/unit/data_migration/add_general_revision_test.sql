@@ -7,7 +7,7 @@ truncate cif.project_revision restart identity cascade;
 
 insert into cif.project_revision(id, revision_type)
   overriding system value
-  values (1, null), (2, 'Amendment'), (3, 'Minor Revision');
+  values (1, 'General Revision'), (2, 'Amendment'), (3, 'Minor Revision');
 
 select cif.add_general_revision();
 

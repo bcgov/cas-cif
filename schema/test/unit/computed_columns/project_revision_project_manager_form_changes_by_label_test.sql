@@ -52,15 +52,21 @@ insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_i
     (5, 1, 1, 1, '005', 'summary', 'project 1'),
     (6, 1, 1, 1, '006', 'summary', 'project 1');
 
-insert into cif.project_revision(id, change_status, change_reason, project_id)
+insert into cif.revision_type (type)
+  values
+    ('Amendment'),
+    ('General Revision'),
+    ('Minor Revision');
+
+insert into cif.project_revision(id, change_status, change_reason, project_id, revision_type)
   overriding system value
   values
-    (1, 'pending', 'reason for change', 1),
-    (2, 'pending', 'reason for change', 2),
-    (3, 'pending', 'reason for change', 3),
-    (4, 'pending', 'reason for change', 4),
-    (5, 'pending', 'reason for change', 5),
-    (6, 'pending', 'reason for change', 6);
+    (1, 'pending', 'reason for change', 1, 'General Revision'),
+    (2, 'pending', 'reason for change', 2, 'General Revision'),
+    (3, 'pending', 'reason for change', 3, 'General Revision'),
+    (4, 'pending', 'reason for change', 4, 'General Revision'),
+    (5, 'pending', 'reason for change', 5, 'General Revision'),
+    (6, 'pending', 'reason for change', 6, 'General Revision');
 
 /** Basic Setup End **/
 
