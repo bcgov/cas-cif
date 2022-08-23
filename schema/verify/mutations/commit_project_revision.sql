@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.commit_project_revision(cif.project_revision)'::regprocedure);
+select pg_get_functiondef('cif.commit_project_revision(int)'::regprocedure);
 
 rollback;
