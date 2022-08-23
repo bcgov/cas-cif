@@ -20,6 +20,10 @@ begin
     return fc.form_data_record_id;
   end if;
 
+  if (fc.change_status = 'committed') then
+    raise exception 'Cannot commit form_change. It has already been committed.';
+  end if;
+
   schema_table := quote_ident(fc.form_data_schema_name) || '.' || quote_ident(fc.form_data_table_name);
   keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(fc.new_form_data)), ','));
   vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(fc.new_form_data)), ','));
