@@ -28,7 +28,6 @@ values
   (3, 'committed', 'reason for change', 1),
   (4, 'committed', 'reason for change', 2);
 
-alter table cif.form_change disable trigger commit_form_change;
 /** END SETUP **/
 
 
