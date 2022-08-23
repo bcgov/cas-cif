@@ -9,6 +9,10 @@ begin
     raise exception 'Cannot commit change with validation errors: %', fc.validation_errors;
   end if;
 
+  if fc.change_status = 'committed' then
+    raise exception 'Cannot commit form_change. It has already been committed.';
+  end if;
+
   -- TODO : add a conditional behaviour based on fc.form_id
   update cif.form_change set
     form_data_record_id = (
