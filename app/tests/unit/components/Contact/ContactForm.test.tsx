@@ -48,7 +48,6 @@ const componentTestingHelper = new ComponentTestingHelper<ContactFormTestQuery>(
 describe("The Contact Form component", () => {
   beforeEach(() => {
     jest.resetAllMocks();
-
     componentTestingHelper.reinit();
   });
 
@@ -95,7 +94,43 @@ describe("The Contact Form component", () => {
     });
   });
 
-  it("displays the correct validation erros when submit is clicked with invalid data", () => {
+  it("submits the form data when optional data is left out", () => {
+    componentTestingHelper.loadQuery({
+      FormChange() {
+        const result: Partial<ContactForm_formChange> = {
+          newFormData: {
+            email: "foo@example.com",
+            givenName: "Scooby",
+            familyName: "Doo",
+          },
+          isUniqueValue: true,
+          id: "abc",
+          changeStatus: "pending",
+          formDataRecordId: 1,
+        };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+    expect(
+      componentTestingHelper.environment.mock.getMostRecentOperation().request
+        .variables.input
+    ).toMatchObject({
+      formChangePatch: {
+        changeStatus: "committed",
+        newFormData: {
+          email: "foo@example.com",
+          familyName: "Doo",
+          givenName: "Scooby",
+        },
+      },
+      id: "abc",
+    });
+  });
+
+  it("displays the correct validation errors when submit is clicked with invalid data", () => {
     const mockResolver = {
       FormChange() {
         const result: Partial<ContactForm_formChange> = {
