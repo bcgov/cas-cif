@@ -7,7 +7,7 @@ create or replace function cif.add_general_revision()
 
     alter table cif.project_revision disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
 
-    update cif.project_revision set revision_type = 'General Revision';
+    update cif.project_revision set revision_type = 'General Revision' where revision_type is null;
 
     alter table cif.project_revision enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
 
