@@ -18,6 +18,7 @@ const defaultMockResolver = {
   ProjectRevision() {
     return {
       id: "mock-proj-rev-id",
+      rowId: 123456,
       projectByProjectId: {
         proposalReference: null,
       },
@@ -360,7 +361,31 @@ describe("The Create Project page", () => {
     );
   });
 
-  it("displays an error when the Submit Button is clicked & updateProjectRevisionMutation fails", () => {
+  it("calls the commitProjectRevision mutation when the Submit button is clicked", () => {
+    // We need a non-null amount of form changes
+    const mockResolver = {
+      ...defaultMockResolver,
+      FormChange() {
+        return {
+          validationErrors: [],
+        };
+      },
+    };
+    pageTestingHelper.loadQuery(mockResolver);
+    pageTestingHelper.renderPage();
+    userEvent.click(screen.queryByText("Submit"));
+
+    pageTestingHelper.expectMutationToBeCalled(
+      "useCommitProjectRevisionMutation",
+      {
+        input: {
+          revisionToCommitId: 123456,
+        },
+      }
+    );
+  });
+
+  it("displays an error when the Submit Button is clicked & commitProjectRevisionMutation fails", () => {
     const mockResolver = {
       ...defaultMockResolver,
       FormChange() {
@@ -378,7 +403,7 @@ describe("The Create Project page", () => {
     expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
     expect(
       screen.getByText(
-        "An error occurred while attempting to update the project revision."
+        "An error occurred while attempting to commit the project revision."
       )
     ).toBeVisible();
   });

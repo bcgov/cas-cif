@@ -9,7 +9,6 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Textarea } from "@button-inc/bcgov-theme";
-import { mutation as updateProjectRevisionMutation } from "mutations/ProjectRevision/updateProjectRevision";
 import { useUpdateChangeReason } from "mutations/ProjectRevision/updateChangeReason";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
 import SavingIndicator from "components/Form/SavingIndicator";
@@ -23,7 +22,6 @@ import {
 } from "routes/pageRoutes";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import TaskList from "components/TaskList";
-import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { useMemo } from "react";
 import { TaskListMode } from "components/TaskList/types";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
@@ -32,6 +30,7 @@ import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneR
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
 import DangerAlert from "lib/theme/ConfirmationAlert";
+import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -41,6 +40,7 @@ const pageQuery = graphql`
       }
       projectRevision(id: $projectRevision) {
         id
+        rowId
         isFirstRevision
         changeReason
         changeStatus
@@ -80,11 +80,8 @@ export function ProjectRevision({
 
   const [updateChangeReason, updatingChangeReason] = useUpdateChangeReason();
 
-  const [updateProjectRevision, updatingProjectRevision] =
-    useMutationWithErrorMessage(
-      updateProjectRevisionMutation,
-      () => "An error occurred while attempting to update the project revision."
-    );
+  const [commitProjectRevision, committingProjectRevision] =
+    useCommitProjectRevision();
   const [discardProjectRevision, discardingProjectRevision] =
     useDeleteProjectRevisionMutation();
 
@@ -110,15 +107,12 @@ export function ProjectRevision({
    *  table & redirect to the project page
    */
   const commitProject = async () => {
-    updateProjectRevision({
+    commitProjectRevision({
       variables: {
         input: {
-          id: query.projectRevision.id,
-          projectRevisionPatch: { changeStatus: "committed" },
+          revisionToCommitId: query.projectRevision.rowId,
         },
       },
-      // No need for an optimistic response
-      // Since we navigate away from the page after the mutation is complete
       onCompleted: async () => {
         await router.push(getProjectsPageRoute());
       },
@@ -205,7 +199,7 @@ export function ProjectRevision({
               size="small"
               variant="secondary"
               onClick={() => setShowDiscardConfirmation(true)}
-              disabled={updatingProjectRevision || discardingProjectRevision}
+              disabled={committingProjectRevision || discardingProjectRevision}
             >
               <FontAwesomeIcon icon={faTrash} id="discard-project-icon" />
               Discard Project Revision
@@ -260,7 +254,7 @@ export function ProjectRevision({
               onClick={commitProject}
               disabled={
                 hasValidationErrors ||
-                updatingProjectRevision ||
+                committingProjectRevision ||
                 discardingProjectRevision ||
                 updatingChangeReason ||
                 (query.projectRevision.projectId &&
