@@ -41,10 +41,20 @@ overriding system value
 values
   (1, 1, 1, 1, '000', 'summary', 'project 1');
 
-update cif.form_change set change_status = 'committed'
-  where project_revision_id=(select id from cif.project_revision order by id desc limit 1)
-  and form_data_table_name in ('reporting_requirement', 'emission_intensity_report');
-
+do
+$$
+declare
+  temp_row cif.form_change;
+begin
+  for temp_row in select *
+    from cif.form_change
+    where project_revision_id=(select id from cif.project_revision order by id desc limit 1)
+    and form_data_table_name in ('reporting_requirement', 'emission_intensity_report')
+  loop
+    perform cif.commit_form_change((temp_row.*)::cif.form_change);
+  end loop;
+end;
+$$;
 
 select isnt_empty (
   $$
