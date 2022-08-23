@@ -58,7 +58,7 @@ set new_form_data =
 }'::jsonb
 where form_data_table_name = 'project';
 
-update cif.project_revision set change_status = 'committed';
+select cif.commit_project_revision((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1));
 
 select results_eq(
   $$
