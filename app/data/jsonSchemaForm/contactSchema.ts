@@ -1,7 +1,7 @@
 const contactSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
-  required: ["givenName", "familyName", "email", "phone"],
+  required: ["givenName", "familyName", "email"],
   properties: {
     givenName: {
       type: "string",
