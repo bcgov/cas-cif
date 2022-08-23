@@ -14,8 +14,22 @@ begin
     raise exception 'Cannot commit revision if change_reason is null.';
   end if;
 
+  -- Propagate the change_status to all related form_change records
+  -- Save the project table first do avoid foreign key violations from other potential tables.
   perform cif.commit_form_change(row(form_change.*)::cif.form_change)
-  from cif.form_change where project_revision_id=pr.id;
+  from cif.form_change
+  where project_revision_id=pr.id
+  and form_data_table_name='project';
+
+  perform cif.commit_form_change(row(form_change.*)::cif.form_change)
+  from cif.form_change
+  where project_revision_id=pr.id
+  and form_data_table_name='reporting_requirement';
+
+  perform cif.commit_form_change(row(form_change.*)::cif.form_change)
+  from cif.form_change
+  where project_revision_id=pr.id
+  and form_data_table_name not in ('project', 'reporting_requirement');
 
   update cif.project_revision set
     project_id=(select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=pr.id),
