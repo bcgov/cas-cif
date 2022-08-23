@@ -2,7 +2,8 @@ begin;
 
 do $$
   declare
-  temp_row record;
+    temp_row record;
+    temp_id int;
   begin
 
 for temp_row in select id, project_id from cif.project_revision loop
@@ -28,7 +29,9 @@ for temp_row in select id, project_id from cif.project_revision loop
             'amount', 1000,
             'status', 'Awaiting Approval'
           ),
-        'create', 'cif', 'additional_funding_source', 'committed', 'additional_funding_source',temp_row.id);
+        'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',temp_row.id) returning id into temp_id;
+
+      perform cif.commit_form_change((select row(form_change.*)::cif.form_change from cif.form_change where id = temp_id));
     end loop;
   end
 $$;

@@ -7,9 +7,10 @@ do $$
   begin
 
   -- insert milestone reports including payments
-    for temp_row in select id, form_data_record_id, project_revision_id from cif.form_change where form_data_table_name = 'project' loop
+    for temp_row in select id, form_data_record_id, project_revision_id from cif.form_change where form_data_table_name = 'project'
+    loop
 
-      perform cif.add_milestone_to_revision(temp_row.form_data_record_id, 1);
+      perform cif.add_milestone_to_revision(temp_row.project_revision_id, 1);
       -- reporting requirement
       update cif.form_change set new_form_data =
       json_build_object(
@@ -26,7 +27,7 @@ do $$
       update cif.form_change set new_form_data =
       json_build_object(
         'certifierProfessionalDesignation', 'Professional Engineer',
-        'reportingRequirementId', temp_row.form_data_record_id,
+        'reportingRequirementId', new_form_data->>'reportingRequirementId',
         'substantialCompletionDate', now(),
         'maximumAmount', 1,
         'totalEligibleExpenses', 1,
@@ -37,7 +38,7 @@ do $$
       -- payment info
       update cif.form_change set new_form_data =
       json_build_object(
-        'reportingRequirementId', temp_row.form_data_record_id,
+        'reportingRequirementId', new_form_data->>'reportingRequirementId',
         'adjustedGrossAmount', 1,
         'adjustedNetAmount', 1,
         'dateSentToCsnr', now()

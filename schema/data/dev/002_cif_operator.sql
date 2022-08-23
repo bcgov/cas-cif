@@ -16,7 +16,7 @@ values
   "swrsLegalName": "first operator legal name",
   "swrsTradeName": "first operator trade name",
   "bcRegistryId": "AB1234567",
-  "operatorCode": "ABCD" }', 'create', 'cif', 'operator', 'committed', 'operator'),
+  "operatorCode": "ABCD" }', 'create', 'cif', 'operator', 'pending', 'operator'),
 ('{
   "swrsOrganisationId": 1001,
   "legalName": "second operator legal name",
@@ -24,7 +24,7 @@ values
   "swrsLegalName": "second operator legal name",
   "swrsTradeName": "second operator lorem ipsum dolor sit amet limited",
   "bcRegistryId": "BC1234567",
-  "operatorCode": "EFGH" }', 'create', 'cif', 'operator', 'committed', 'operator'),
+  "operatorCode": "EFGH" }', 'create', 'cif', 'operator', 'pending', 'operator'),
 ('{
   "swrsOrganisationId": 1002,
   "legalName": "third operator legal name",
@@ -32,7 +32,11 @@ values
   "swrsLegalName": "third operator SWRS legal name",
   "swrsTradeName": "third operator SWRS trade name",
   "bcRegistryId": "EF3456789",
-  "operatorCode": "IJKL" }', 'create', 'cif', 'operator', 'committed', 'operator');
+  "operatorCode": "IJKL" }', 'create', 'cif', 'operator', 'pending', 'operator');
 
+-- Commit records
+select cif.commit_form_change(row(form_change.*)::cif.form_change)
+  from cif.form_change
+  where form_data_table_name='operator';
 
 commit;
