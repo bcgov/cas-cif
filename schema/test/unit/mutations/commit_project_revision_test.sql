@@ -2,6 +2,7 @@ begin;
 
 select plan(7);
 
+/** BEGIN SETUP **/
 truncate table
   cif.form_change,
   cif.project_revision,
@@ -53,8 +54,10 @@ insert into cif.form_change(
   'create', 'cif', 'project_contact', 'project_contact', 1
 );
 
+/** END SETUP **/
+
 -- make sure the function exists
-select has_function('cif', 'commit_project_revision', ARRAY['cif.project_revision'], 'Function commit_project_revision should exist');
+select has_function('cif', 'commit_project_revision', ARRAY['integer'], 'Function commit_project_revision should exist');
 
 -- propagates the status change to all form changes no matter what
 -- make sure project_revision and form changes are created with change status 'pending'
@@ -82,9 +85,7 @@ select results_eq(
 -- call the mutation
 select results_eq(
   $$
-    with record as (
-      select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1
-    ) select id, change_status, project_id from cif.commit_project_revision((select * from record));
+    select id, change_status, project_id from cif.commit_project_revision(1);
   $$,
   $$
     values (1::int, 'committed'::varchar, 1::int);
@@ -143,9 +144,7 @@ delete from cif.form_change where form_data_table_name = 'project' and project_r
 
 select throws_like(
   $$
-    with record as (
-      select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2
-    ) select cif.commit_project_revision((select * from record));
+    select cif.commit_project_revision(2);
   $$,
   'insert or update on table "project_contact" violates foreign key constraint%',
   'Constraints are checked at the end of the transaction and fail if a foreign key relation does not exist'
