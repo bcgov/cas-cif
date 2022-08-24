@@ -8,6 +8,7 @@ select columns_are(
   'cif',
   'project_type',
   ARRAY[
+    'id',
     'name',
     'created_at',
     'created_by',
