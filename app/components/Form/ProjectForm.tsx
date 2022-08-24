@@ -12,6 +12,7 @@ import { useUpdateProjectFormChange } from "mutations/FormChange/updateProjectFo
 import { Button } from "@button-inc/bcgov-theme";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 
 interface Props {
   query: ProjectForm_query$key;
@@ -101,6 +102,8 @@ const ProjectForm: React.FC<Props> = (props) => {
   const [updateProjectFormChange, updatingProjectFormChange] =
     useUpdateProjectFormChange();
 
+  const [stageFormChange, stagingFormChange] = useStageFormChange();
+
   const revision = useFragment(
     graphql`
       fragment ProjectForm_projectRevision on ProjectRevision {
@@ -176,10 +179,7 @@ const ProjectForm: React.FC<Props> = (props) => {
     return errors;
   };
 
-  const handleChange = (
-    changeData: any,
-    changeStatus: "pending" | "staged"
-  ) => {
+  const handleChange = (changeData: any) => {
     const updatedFormData = {
       ...revision.projectFormChange.newFormData,
       ...changeData,
@@ -189,10 +189,9 @@ const ProjectForm: React.FC<Props> = (props) => {
       updateProjectFormChange({
         variables: {
           input: {
-            id: revision.projectFormChange.id,
+            rowId: revision.projectFormChange.rowId,
             formChangePatch: {
               newFormData: updatedFormData,
-              changeStatus,
             },
           },
         },
@@ -202,7 +201,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               id: revision.projectFormChange.id,
               newFormData: updatedFormData,
               isUniqueValue: revision.projectFormChange.isUniqueValue,
-              changeStatus,
+              changeStatus: "pending",
               projectRevisionByProjectRevisionId: undefined,
             },
           },
@@ -210,6 +209,30 @@ const ProjectForm: React.FC<Props> = (props) => {
         onCompleted: resolve,
         onError: reject,
         debounceKey: revision.projectFormChange.id,
+      })
+    );
+  };
+
+  const handleStage = async (changeData?: any) => {
+    return new Promise((resolve, reject) =>
+      stageFormChange({
+        variables: {
+          input: {
+            rowId: revision.projectFormChange.rowId,
+            ...(changeData ? { newFormData: changeData } : {}),
+          },
+        },
+        optimisticResponse: {
+          stageFormChange: {
+            formChange: {
+              id: revision.projectFormChange.id,
+              changeStatus: "staged",
+              newFormData: changeData,
+            },
+          },
+        },
+        onCompleted: resolve,
+        onError: reject,
       })
     );
   };
@@ -260,12 +283,12 @@ const ProjectForm: React.FC<Props> = (props) => {
   }, [query]);
 
   const handleSubmit = async (e: ISubmitEvent<any>) => {
-    await handleChange(e.formData, "staged");
+    await handleStage(e.formData);
     props.onSubmit();
   };
 
   const handleError = () => {
-    handleChange(revision.projectFormChange.newFormData, "staged");
+    handleStage();
   };
 
   return (
@@ -273,7 +296,9 @@ const ProjectForm: React.FC<Props> = (props) => {
       <header>
         <h2>Project Overview</h2>
         <UndoChangesButton formChangeIds={[revision.projectFormChange.rowId]} />
-        <SavingIndicator isSaved={!updatingProjectFormChange} />
+        <SavingIndicator
+          isSaved={!updatingProjectFormChange || !stagingFormChange}
+        />
       </header>
 
       <FormBase
@@ -292,7 +317,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           SelectRfpWidget: SelectRfpWidget,
           SelectProjectStatusWidget: SelectProjectStatusWidget,
         }}
-        onChange={(change) => handleChange(change.formData, "pending")}
+        onChange={(change) => handleChange(change.formData)}
         onSubmit={handleSubmit}
         onError={handleError}
       >
