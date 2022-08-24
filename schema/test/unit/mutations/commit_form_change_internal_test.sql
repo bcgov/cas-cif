@@ -33,13 +33,13 @@ values (
 ;
 
 -- make sure the function exists
-select has_function('cif', 'commit_form_change', ARRAY['cif.form_change'], 'Function commit_form_change should exist');
+select has_function('cif_private', 'commit_form_change_internal', ARRAY['cif.form_change'], 'Function commit_form_change_internal should exist');
 
 select results_eq(
   $$
     with record as (
       select row(form_change.*)::cif.form_change from cif.form_change where id=1
-    ) select id, change_status from cif.commit_form_change((select * from record));
+    ) select id, change_status from cif_private.commit_form_change_internal((select * from record));
   $$,
   $$
     values (1::int, 'committed'::varchar);
@@ -63,7 +63,7 @@ select throws_like(
   $$
   with record as (
     select row(form_change.*)::cif.form_change from cif.form_change where id=2
-  ) select cif.commit_form_change((select * from record));
+  ) select cif_private.commit_form_change_internal((select * from record));
   $$,
   'Cannot commit change with validation errors: %',
   'Throws an exception if there are validation errors'

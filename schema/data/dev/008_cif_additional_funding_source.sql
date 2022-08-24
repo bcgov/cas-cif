@@ -31,7 +31,7 @@ for temp_row in select id, project_id from cif.project_revision loop
           ),
         'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',temp_row.id) returning id into temp_id;
 
-      perform cif.commit_form_change((select row(form_change.*)::cif.form_change from cif.form_change where id = temp_id));
+      perform cif_private.commit_form_change_internal((select row(form_change.*)::cif.form_change from cif.form_change where id = temp_id));
     end loop;
   end
 $$;

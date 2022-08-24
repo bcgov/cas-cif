@@ -51,7 +51,7 @@ begin
     where project_revision_id=(select id from cif.project_revision order by id desc limit 1)
     and form_data_table_name in ('reporting_requirement', 'emission_intensity_report')
   loop
-    perform cif.commit_form_change((temp_row.*)::cif.form_change);
+    perform cif_private.commit_form_change_internal((temp_row.*)::cif.form_change);
   end loop;
 end;
 $$;

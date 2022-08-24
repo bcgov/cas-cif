@@ -1,7 +1,7 @@
 -- Deploy cif:mutations/commit_form_change to pg
 begin;
 
-create or replace function cif.commit_form_change(fc cif.form_change)
+create or replace function cif_private.commit_form_change_internal(fc cif.form_change)
     returns cif.form_change as $$
 begin
 
@@ -27,6 +27,6 @@ end;
 
 grant execute on function cif.create_project to cif_internal, cif_external, cif_admin;
 
-comment on function cif.commit_form_change(cif.form_change) is 'Commits the form change and calls the corresponding commit handler';
+comment on function cif_private.commit_form_change_internal(cif.form_change) is 'Commits the form change and calls the corresponding commit handler';
 
 commit;

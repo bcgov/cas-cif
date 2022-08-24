@@ -35,7 +35,7 @@ values
   "operatorCode": "IJKL" }', 'create', 'cif', 'operator', 'pending', 'operator');
 
 -- Commit records
-select cif.commit_form_change(row(form_change.*)::cif.form_change)
+select cif_private.commit_form_change_internal(row(form_change.*)::cif.form_change)
   from cif.form_change
   where form_data_table_name='operator';
 

@@ -124,7 +124,7 @@ computed_columns/cif_user_full_name [computed_columns/cif_user_full_name@1.0.0-r
 computed_columns/contact_full_name [computed_columns/contact_full_name@1.0.0-rc.4] 2022-08-17T14:39:31Z Mike Vesprini <mike@button.is> # Switch name order to firstname lastname
 functions/handle_default_form_change_commit [tables/form_change] 2022-08-19T22:30:19Z Dylan Leard <dylan@button.is> # Add a default commit function for form_change records
 tables/form [functions/handle_default_form_change_commit] 2022-08-19T22:11:02Z Dylan Leard <dylan@button.is> # Add table to house json_schema information for a form and other data regarding how to parse it into tables
-mutations/commit_form_change 2022-08-22T17:17:22Z Matthieu Foucault <matthieu@button.is> # Add a function to commit a form_change
+mutations/commit_form_change_internal 2022-08-22T17:17:22Z Matthieu Foucault <matthieu@button.is> # Add a function to commit a form_change
 trigger_functions/commit_form_change [trigger_functions/commit_form_change@1.0.0-rc.4] 2022-08-22T17:35:06Z Matthieu Foucault <matthieu@button.is> # delete commit_form_change trigger
 mutations/commit_project_revision 2022-08-22T18:20:35Z Matthieu Foucault <matthieu@button.is> # Add a function to commit a project_revision
 trigger_functions/commit_project_revision [trigger_functions/commit_project_revision@1.0.0-rc.4] 2022-08-22T18:21:04Z Matthieu Foucault <matthieu@button.is> # delete commit_project_revision trigger

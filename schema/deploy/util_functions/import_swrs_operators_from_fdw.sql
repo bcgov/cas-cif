@@ -108,7 +108,7 @@ begin
     if form_change_ids is not null then
       foreach form_change_id in ARRAY form_change_ids
       loop
-        perform cif.commit_form_change((select row(form_change.*)::cif.form_change from cif.form_change where id = form_change_id));
+        perform cif_private.commit_form_change_internal((select row(form_change.*)::cif.form_change from cif.form_change where id = form_change_id));
       end loop;
     end if;
 

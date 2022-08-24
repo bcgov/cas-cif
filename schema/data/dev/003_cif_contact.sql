@@ -25,7 +25,7 @@ do $$
           ),
         'create', 'cif', 'contact', 'pending', 'project_contact') returning id into temp_id;
 
-      perform cif.commit_form_change((select row(form_change.*)::cif.form_change from cif.form_change where id = temp_id));
+      perform cif_private.commit_form_change_internal((select row(form_change.*)::cif.form_change from cif.form_change where id = temp_id));
     end loop;
   end
 $$;
