@@ -8,6 +8,7 @@ import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToContacts from "hooks/useRedirectToContacts";
 import { JSONSchema7 } from "json-schema";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
+import { useCommitFormChange } from "mutations/FormChange/commitFormChange";
 import { useUpdateContactFormChange } from "mutations/FormChange/updateContactFormChange";
 import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 import { useUpdateProjectContactFormChange } from "mutations/ProjectContact/updateProjectContactFormChange";
@@ -30,6 +31,7 @@ const ContactForm: React.FC<Props> = (props) => {
     graphql`
       fragment ContactForm_formChange on FormChange {
         id
+        rowId
         isUniqueValue(columnName: "email")
         newFormData
         changeStatus
@@ -44,6 +46,7 @@ const ContactForm: React.FC<Props> = (props) => {
 
   const [updateContactFormChange, isUpdatingContactFormChange] =
     useUpdateContactFormChange();
+  const [commitFormChange, isCommittingFormChange] = useCommitFormChange();
   const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
   // For when redirected from project revision
   const [updateProjectContactFormChangeMutation] =
@@ -60,15 +63,17 @@ const ContactForm: React.FC<Props> = (props) => {
 
   // If we don't have the projectContactFormId(means we don't have the primary contact form either) we need to create one
   const existingProjectContactFormId = router?.query?.projectContactFormId;
+  const existingProjectContactFormRowId =
+    router?.query?.projectContactFormRowId;
 
   const handleAfterFormSubmitting = (response: any) => {
     const updateProjectContactFormChange = (res?: any) => {
       updateProjectContactFormChangeMutation({
         variables: {
           input: {
-            id:
-              existingProjectContactFormId ||
-              res.addContactToRevision.formChangeEdge.node.id,
+            rowId:
+              Number(existingProjectContactFormRowId) ||
+              res.addContactToRevision.formChangeEdge.node.rowId,
             formChangePatch: {
               newFormData: {
                 contactId:
@@ -76,7 +81,6 @@ const ContactForm: React.FC<Props> = (props) => {
                 projectId: Number(router?.query?.projectId),
                 contactIndex: Number(router?.query?.contactIndex),
               },
-              changeStatus: "pending",
             },
           },
         },
@@ -117,7 +121,7 @@ const ContactForm: React.FC<Props> = (props) => {
     updateContactFormChange({
       variables: {
         input: {
-          id: formChange.id,
+          rowId: formChange.rowId,
           formChangePatch: {
             newFormData: formData,
           },
@@ -139,17 +143,15 @@ const ContactForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = ({ formData }) => {
-    updateContactFormChange({
+    commitFormChange({
       variables: {
         input: {
-          id: formChange.id,
+          rowId: formChange.rowId,
           formChangePatch: {
             newFormData: formData,
-            changeStatus: "committed",
           },
         },
       },
-      debounceKey: formChange.id,
       onCompleted: (response) => {
         return comingFromProjectContactForm
           ? handleAfterFormSubmitting(response)
@@ -190,7 +192,9 @@ const ContactForm: React.FC<Props> = (props) => {
     <div>
       <header>
         <h2>{isEditing ? "Edit" : "New"} Contact</h2>
-        <SavingIndicator isSaved={!isUpdatingContactFormChange} />
+        <SavingIndicator
+          isSaved={!isUpdatingContactFormChange || !isCommittingFormChange}
+        />
       </header>
       <FormBase
         {...props}
