@@ -1,4 +1,4 @@
-import { screen, act, within, waitFor } from "@testing-library/react";
+import { screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ProjectContactForm from "components/Form/ProjectContactForm";
 import { graphql } from "react-relay";
@@ -6,7 +6,6 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectContactFormQuery, {
   ProjectContactFormQuery,
 } from "__generated__/ProjectContactFormQuery.graphql";
-import { ProjectContactForm_projectRevision$data } from "__generated__/ProjectContactForm_projectRevision.graphql";
 
 const testQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
@@ -22,7 +21,7 @@ const testQuery = graphql`
 
 const mockQueryPayload = {
   ProjectRevision() {
-    const result: Partial<ProjectContactForm_projectRevision$data> = {
+    const result: any = {
       " $fragmentType": "ProjectContactForm_projectRevision",
       id: "Test Project Revision ID",
       rowId: 1234,
@@ -230,22 +229,15 @@ describe("The ProjectContactForm", () => {
     const clearButton = screen.getAllByText("Clear")[0];
     clearButton.click();
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-    ).toMatchObject({
-      variables: {
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectContactFormChangeMutation",
+      {
         input: {
-          id: "Form ID 1",
-          formChangePatch: {
-            changeStatus: "pending",
-            newFormData: {
-              contactIndex: 1,
-              projectId: 10,
-            },
-          },
+          rowId: 4,
+          formChangePatch: expect.any(Object),
         },
-      },
-    });
+      }
+    );
   });
 
   it("calls useMutationWithErrorMessage and returns expected message when the Clear button is pressed", () => {
@@ -283,7 +275,7 @@ describe("The ProjectContactForm", () => {
   it("does not throw validation errors when primary contact is blank", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
-        const result: Partial<ProjectContactForm_projectRevision$data> = {
+        const result: any = {
           " $fragmentType": "ProjectContactForm_projectRevision",
           id: "Test Project Revision ID",
           rowId: 1234,
@@ -332,25 +324,10 @@ describe("The ProjectContactForm", () => {
     expect(validateFormWithErrors).toHaveReturnedWith([]);
   });
 
-  it("stages the form changes when the `submit` button is clicked", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-    screen.getByText(/submit/i).click();
-    const allOperations =
-      componentTestingHelper.environment.mock.getAllOperations();
-    expect(allOperations.length).toEqual(5); // first operation is the initial query; next four are form_change mutations
-    for (let i = 1; i < allOperations.length; i++) {
-      expect(allOperations[i].request.variables.input).toMatchObject({
-        formChangePatch: { changeStatus: "staged" },
-      });
-    }
-  });
-
-  it("reverts the form_change status to 'pending' when editing", async () => {
-    const mockResolver = {
-      ...mockQueryPayload,
+  it("calls the correct staging mutation when the `submit` button is clicked", () => {
+    componentTestingHelper.loadQuery({
       ProjectRevision() {
-        const result: Partial<ProjectContactForm_projectRevision$data> = {
+        const result: any = {
           " $fragmentType": "ProjectContactForm_projectRevision",
           id: "Test Project Revision ID",
           rowId: 1234,
@@ -360,40 +337,15 @@ describe("The ProjectContactForm", () => {
               {
                 node: {
                   id: "Form ID 1",
-                  rowId: 1,
+                  rowId: 4,
                   operation: "CREATE",
-                  changeStatus: "staged",
+                  changeStatus: "pending",
                   newFormData: {
                     projectId: 10,
                     contactId: 2,
                     contactIndex: 1,
                   },
-                },
-              },
-              {
-                node: {
-                  id: "Form ID 2",
-                  rowId: 2,
-                  operation: "CREATE",
-                  changeStatus: "staged",
-                  newFormData: {
-                    projectId: 10,
-                    contactId: 3,
-                    contactIndex: 2,
-                  },
-                },
-              },
-              {
-                node: {
-                  id: "Form ID 3",
-                  rowId: 3,
-                  operation: "CREATE",
-                  changeStatus: "staged",
-                  newFormData: {
-                    projectId: 10,
-                    contactId: 1,
-                    contactIndex: 5,
-                  },
+                  asProjectContact: undefined,
                 },
               },
             ],
@@ -401,26 +353,13 @@ describe("The ProjectContactForm", () => {
         };
         return result;
       },
-    };
-
-    componentTestingHelper.loadQuery(mockResolver);
-    componentTestingHelper.renderComponent();
-
-    await act(async () => {
-      userEvent.click(screen.getByLabelText(/primary contact/i));
-      await waitFor(() => screen.getByRole("presentation"));
-      userEvent.click(
-        within(screen.getByRole("presentation")).getByText("Mister Test")
-      );
     });
-
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: { contactIndex: 1, projectId: 10, contactId: 1 },
+    componentTestingHelper.renderComponent();
+    screen.getByText(/submit/i).click();
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 4,
+        formChangePatch: expect.any(Object),
       },
     });
   });
@@ -476,7 +415,7 @@ describe("The ProjectContactForm", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
-        const result: Partial<ProjectContactForm_projectRevision$data> = {
+        const result: any = {
           " $fragmentType": "ProjectContactForm_projectRevision",
           id: "Test Project Revision ID",
           rowId: 1234,
