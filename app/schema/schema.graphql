@@ -60239,6 +60239,7 @@ input StageFormChangeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
+  formChangePatch: FormChangePatch!
   rowId: Int!
 }
 
