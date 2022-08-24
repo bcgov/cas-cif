@@ -2,17 +2,23 @@
 
 begin;
 
-create or replace function cif.update_form_change(row_id int, input cif.form_change)
+create or replace function cif.update_form_change(row_id int, form_change_patch cif.form_change)
 returns cif.form_change
 as
 $$
 
-  update cif.form_change set change_status = 'pending' where id=input.id;
-
-  select * from cif.form_change where id=input.id;
+  update cif.form_change set
+    new_form_data = coalesce(form_change_patch.new_form_data, new_form_data),
+    operation = coalesce(form_change_patch.operation, operation),
+    validation_errors = coalesce(form_change_patch.validation_errors, validation_errors),
+    change_status = 'pending'
+  where id=row_id
+  returning *;
 
 $$ language sql volatile;
 
-comment on function cif.update_form_change(row_id int, input cif.form_change) is E'@arg1variant patch';
+grant execute on function cif.update_form_change to cif_internal, cif_external, cif_admin;
+
+comment on function cif.update_form_change(int, cif.form_change) is 'Custom mutation that sets the change status to pending on every form_change update';
 
 commit;

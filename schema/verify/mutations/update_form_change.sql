@@ -2,6 +2,6 @@
 
 begin;
 
-raise exception "this needs to be tested and implemented";
+select pg_get_functiondef('cif.update_form_change(int, cif.form_change)'::regprocedure);
 
 rollback;
