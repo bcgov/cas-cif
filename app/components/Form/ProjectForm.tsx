@@ -137,7 +137,7 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
-        allProjectTypes {
+        allProjectTypes(orderBy: PRIMARY_KEY_ASC) {
           edges {
             node {
               name

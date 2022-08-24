@@ -4,7 +4,8 @@ begin;
 
 create table cif.project_type
 (
-  name varchar(1000) primary key
+  id integer primary key generated always as identity,
+  name varchar(1000) unique not null
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'project_type');
@@ -30,7 +31,8 @@ end
 $grant$;
 
 comment on table cif.project_type is 'Table containing information about project types';
-comment on column cif.project_type.name is 'The name of the project type as the primary key';
+comment on column cif.project_type.id is 'Unique ID for the project_type';
+comment on column cif.project_type.name is 'The name of the project_type';
 
 
 insert into cif.project_type (name)
