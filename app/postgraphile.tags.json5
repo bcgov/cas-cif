@@ -33,7 +33,14 @@
       },
       "cif.form_change": {
         tags: {
-          omit: ["create"],
+          omit: ["create", "update"],
+        },
+        attribute: {
+          change_status: {
+            tags: {
+              omit: ["create", "update", "delete"],
+            },
+          },
         },
       },
       "cif.project_revision": {
