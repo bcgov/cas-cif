@@ -54,10 +54,9 @@ export const updateReportFormChange = (
     variables: {
       reportType: reportType,
       input: {
-        id: formChange.id,
+        rowId: formChange.rowId,
         formChangePatch: {
           newFormData,
-          changeStatus: formChange.changeStatus,
         },
       },
     },
@@ -122,9 +121,9 @@ export const stageReportFormChanges = async (
   formChangeEdges.forEach(({ node }) => {
     const defaultVariables = {
       input: {
-        id: node.id,
+        rowId: node.rowId,
         formChangePatch: {
-          changeStatus: "staged",
+          newFormData: node.newFormData,
         },
       },
     };

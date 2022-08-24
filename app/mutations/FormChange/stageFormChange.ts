@@ -7,8 +7,11 @@ const mutation = graphql`
     stageFormChange(input: $input) {
       formChange {
         id
-        changeStatus
         newFormData
+        changeStatus
+        projectRevisionByProjectRevisionId {
+          ...TaskList_projectRevision
+        }
       }
     }
   }
