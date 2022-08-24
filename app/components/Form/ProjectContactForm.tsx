@@ -10,6 +10,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import {
@@ -131,6 +132,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const [addContactMutation, isAdding] = useAddContactToRevision();
 
+  const [applyStageFormChangeMutation, isStaging] = useStageFormChange();
+
   const allForms = useMemo(() => {
     const contactForms = [
       ...filteredProjectContactFormChanges.map(({ node }) => node),
@@ -152,6 +155,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
   const updateFormChange = (
     formChange: {
       readonly id: string;
+      readonly rowId: number;
       readonly newFormData: any;
       readonly operation: FormChangeOperation;
       readonly changeStatus: string;
@@ -161,10 +165,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     applyUpdateFormChangeMutation({
       variables: {
         input: {
-          id: formChange.id,
+          rowId: formChange.rowId,
           formChangePatch: {
             newFormData,
-            changeStatus: formChange?.changeStatus,
           },
         },
       },
@@ -181,10 +184,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const handlePrimaryContactChange = (change) => {
     if (primaryContactForm) {
-      updateFormChange(
-        { ...primaryContactForm, changeStatus: "pending" },
-        change.formData
-      );
+      updateFormChange({ ...primaryContactForm }, change.formData);
     } else {
       createPrimaryContact({
         variables: {
@@ -257,16 +257,15 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     projectContactFormChanges.edges.forEach(({ node }) => {
       if (node.changeStatus === "pending") {
         const promise = new Promise<void>((resolve, reject) => {
-          applyUpdateFormChangeMutation({
+          applyStageFormChangeMutation({
             variables: {
               input: {
-                id: node.id,
+                rowId: node.rowId,
                 formChangePatch: {
-                  changeStatus: "staged",
+                  newFormData: node.newFormData,
                 },
               },
             },
-            debounceKey: node.id,
             onCompleted: () => {
               resolve();
             },
@@ -329,7 +328,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       <header>
         <h2>Project Contacts</h2>
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
-        <SavingIndicator isSaved={!isUpdating && !isAdding} />
+        <SavingIndicator isSaved={!isUpdating && !isAdding && !isStaging} />
       </header>
 
       <Grid cols={10} align="center">
@@ -369,6 +368,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         projectRevision.projectContactFormChanges.__id
                       }
                       projectContactFormId={primaryContactForm?.id}
+                      projectContactFormRowId={primaryContactForm?.rowId}
                       projectId={
                         projectRevision.projectFormChange.formDataRecordId
                       }
@@ -428,6 +428,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                             projectRevision.projectContactFormChanges.__id
                           }
                           projectContactFormId={form.id}
+                          projectContactFormRowId={primaryContactForm?.rowId}
                           projectId={
                             projectRevision.projectFormChange.formDataRecordId
                           }
@@ -482,7 +483,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 size="medium"
                 variant="primary"
                 onClick={stageContactFormChanges}
-                disabled={isUpdating}
+                disabled={isUpdating || isStaging}
               >
                 Submit Contacts
               </Button>
