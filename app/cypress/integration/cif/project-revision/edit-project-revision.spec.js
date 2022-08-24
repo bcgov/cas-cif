@@ -123,9 +123,10 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/No reports due/).should("be.visible");
     cy.contains("Changes saved.");
 
-    // this assertion is not necessary, but it's needed to slow down the test and run the accessibility checks correctly
+    // two below assertions are not necessary, but it's needed to slow down the test and run the accessibility checks correctly
     cy.findByText(/Complete/i).should("be.visible");
-    cy.wait(1000); // added a wait to prevent accessibility errors
+    cy.url().should("include", "/form/5");
+
     cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
