@@ -2,6 +2,5 @@
 
 begin;
 
-raise exception "this needs to be tested and implemented";
 
 rollback;
