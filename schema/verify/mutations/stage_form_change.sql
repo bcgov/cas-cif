@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.stage_form_change(int)'::regprocedure);
+select pg_get_functiondef('cif.stage_form_change(int, cif.form_change)'::regprocedure);
 
 rollback;
