@@ -41,6 +41,36 @@
               omit: ["create", "update", "delete"],
             },
           },
+          form_data_schema_name: {
+            tags: {
+              omit: ["update"],
+            },
+          },
+          form_data_table_name: {
+            tags: {
+              omit: ["update"],
+            },
+          },
+          form_data_record_id: {
+            tags: {
+              omit: ["update"],
+            },
+          },
+          project_revision_id: {
+            tags: {
+              omit: ["update"],
+            },
+          },
+          json_schema_name: {
+            tags: {
+              omit: ["update"],
+            },
+          },
+          previous_form_change_id: {
+            tags: {
+              omit: ["update"],
+            },
+          },
         },
       },
       "cif.project_revision": {
@@ -73,6 +103,11 @@
       "cif.contact_full_phone": {
         tags: {
           sortable: true,
+        },
+      },
+      "cif.update_form_change": {
+        tags: {
+          arg1variant: "patch",
         },
       },
     },
