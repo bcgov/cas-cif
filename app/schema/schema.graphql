@@ -5836,6 +5836,84 @@ type CifUser implements Node {
   ): CifUserCifUsersByEmissionIntensityReportUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByFormArchivedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByFormArchivedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByFormArchivedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByFormArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByFormChangeCreatedByAndUpdatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -5912,6 +5990,162 @@ type CifUser implements Node {
     """The method to use when ordering `CifUser`."""
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): CifUserCifUsersByFormChangeUpdatedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByFormCreatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByFormCreatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByFormCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByFormCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByFormUpdatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByFormUpdatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByFormUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByFormUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByFundingParameterArchivedByAndCreatedBy(
@@ -10635,6 +10869,123 @@ type CifUser implements Node {
     """The method to use when ordering `FormChange`."""
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
 
   """Displays a cif_user as: given_name family_name"""
   fullName: String
@@ -18970,6 +19321,136 @@ type CifUserCifUsersByEmissionIntensityReportUpdatedByAndCreatedByManyToManyEdge
   node: CifUser
 }
 
+"""A connection to a list of `CifUser` values, with data from `Form`."""
+type CifUserCifUsersByFormArchivedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Form`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByFormArchivedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Form`."""
+type CifUserCifUsersByFormArchivedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""A connection to a list of `CifUser` values, with data from `Form`."""
+type CifUserCifUsersByFormArchivedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Form`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByFormArchivedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Form`."""
+type CifUserCifUsersByFormArchivedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
 """
 A connection to a list of `CifUser` values, with data from `FormChange`.
 """
@@ -19089,6 +19570,266 @@ type CifUserCifUsersByFormChangeUpdatedByAndCreatedByManyToManyEdge {
     """The method to use when ordering `FormChange`."""
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection!
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""A connection to a list of `CifUser` values, with data from `Form`."""
+type CifUserCifUsersByFormCreatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Form`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByFormCreatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Form`."""
+type CifUserCifUsersByFormCreatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""A connection to a list of `CifUser` values, with data from `Form`."""
+type CifUserCifUsersByFormCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Form`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByFormCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Form`."""
+type CifUserCifUsersByFormCreatedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""A connection to a list of `CifUser` values, with data from `Form`."""
+type CifUserCifUsersByFormUpdatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Form`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByFormUpdatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Form`."""
+type CifUserCifUsersByFormUpdatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""A connection to a list of `CifUser` values, with data from `Form`."""
+type CifUserCifUsersByFormUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `Form`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByFormUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `Form`."""
+type CifUserCifUsersByFormUpdatedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Form`."""
+  formsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection!
 
   """The `CifUser` at the end of the edge."""
   node: CifUser
@@ -26506,6 +27247,24 @@ input CifUserFilter {
   """Some related `formChangesByUpdatedBy` exist."""
   formChangesByUpdatedByExist: Boolean
 
+  """Filter by the object’s `formsByArchivedBy` relation."""
+  formsByArchivedBy: CifUserToManyFormFilter
+
+  """Some related `formsByArchivedBy` exist."""
+  formsByArchivedByExist: Boolean
+
+  """Filter by the object’s `formsByCreatedBy` relation."""
+  formsByCreatedBy: CifUserToManyFormFilter
+
+  """Some related `formsByCreatedBy` exist."""
+  formsByCreatedByExist: Boolean
+
+  """Filter by the object’s `formsByUpdatedBy` relation."""
+  formsByUpdatedBy: CifUserToManyFormFilter
+
+  """Some related `formsByUpdatedBy` exist."""
+  formsByUpdatedByExist: Boolean
+
   """Filter by the object’s `fullName` field."""
   fullName: StringFilter
 
@@ -31748,6 +32507,26 @@ input CifUserToManyFormChangeFilter {
 }
 
 """
+A filter to be used against many `Form` object types. All fields are combined with a logical ‘and.’
+"""
+input CifUserToManyFormFilter {
+  """
+  Every related `Form` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: FormFilter
+
+  """
+  No related `Form` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: FormFilter
+
+  """
+  Some related `Form` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: FormFilter
+}
+
+"""
 A filter to be used against many `FundingParameter` object types. All fields are combined with a logical ‘and.’
 """
 input CifUserToManyFundingParameterFilter {
@@ -32261,6 +33040,12 @@ enum CifUsersOrderBy {
   EMISSION_INTENSITY_REPORTS_BY_UPDATED_BY__COUNT_DESC
   FAMILY_NAME_ASC
   FAMILY_NAME_DESC
+  FORMS_BY_ARCHIVED_BY__COUNT_ASC
+  FORMS_BY_ARCHIVED_BY__COUNT_DESC
+  FORMS_BY_CREATED_BY__COUNT_ASC
+  FORMS_BY_CREATED_BY__COUNT_DESC
+  FORMS_BY_UPDATED_BY__COUNT_ASC
+  FORMS_BY_UPDATED_BY__COUNT_DESC
   FORM_CHANGES_BY_CREATED_BY__COUNT_ASC
   FORM_CHANGES_BY_CREATED_BY__COUNT_DESC
   FORM_CHANGES_BY_UPDATED_BY__COUNT_ASC
@@ -32382,6 +33167,97 @@ enum CifUsersOrderBy {
   UPDATED_BY_DESC
   UUID_ASC
   UUID_DESC
+}
+
+"""All input for the `commitFormChange` mutation."""
+input CommitFormChangeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  fc: FormChangeInput!
+}
+
+"""The output of our `commitFormChange` mutation."""
+type CommitFormChangePayload {
+  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChange: FormChange
+
+  """Reads a single `FormChange` that is related to this `FormChange`."""
+  formChangeByPreviousFormChangeId: FormChange
+
+  """An edge for our `FormChange`. May be used by Relay 1."""
+  formChangeEdge(
+    """The method to use when ordering `FormChange`."""
+    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormChangesEdge
+
+  """Reads a single `ProjectRevision` that is related to this `FormChange`."""
+  projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `commitProjectRevision` mutation."""
+input CommitProjectRevisionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  revisionToCommitId: Int!
+}
+
+"""The output of our `commitProjectRevision` mutation."""
+type CommitProjectRevisionPayload {
+  """
+  Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
+  """
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Project` that is related to this `ProjectRevision`."""
+  projectByProjectId: Project
+  projectRevision: ProjectRevision
+
+  """An edge for our `ProjectRevision`. May be used by Relay 1."""
+  projectRevisionEdge(
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """Table containing information about a CIF contact"""
@@ -33619,6 +34495,50 @@ type CreateFormChangePayload {
 
   """Reads a single `ProjectRevision` that is related to this `FormChange`."""
   projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `Form` mutation."""
+input CreateFormInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Form` to be created by this mutation."""
+  form: FormInput!
+}
+
+"""The output of our create `Form` mutation."""
+type CreateFormPayload {
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Form` that was created by this mutation."""
+  form: Form
+
+  """An edge for our `Form`. May be used by Relay 1."""
+  formEdge(
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -34874,6 +35794,30 @@ type DeleteEmissionIntensityReportPayload {
   reportingRequirementByReportingRequirementId: ReportingRequirement
 }
 
+"""All input for the `deleteFormByRowId` mutation."""
+input DeleteFormByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the form data."""
+  rowId: Int!
+}
+
+"""All input for the `deleteFormBySlug` mutation."""
+input DeleteFormBySlugInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique short name identifier for the json_schema data."""
+  slug: String!
+}
+
 """All input for the `deleteFormChangeByRowId` mutation."""
 input DeleteFormChangeByRowIdInput {
   """
@@ -34932,6 +35876,53 @@ type DeleteFormChangePayload {
 
   """Reads a single `ProjectRevision` that is related to this `FormChange`."""
   projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteForm` mutation."""
+input DeleteFormInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Form` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `Form` mutation."""
+type DeleteFormPayload {
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedFormId: ID
+
+  """The `Form` that was deleted by this mutation."""
+  form: Form
+
+  """An edge for our `Form`. May be used by Relay 1."""
+  formEdge(
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -36745,6 +37736,67 @@ enum EmissionIntensityReportsOrderBy {
   UPDATED_BY_DESC
 }
 
+"""
+Table containing form handling data. It contains a schema for each front-end form and regprocedure function names to handle parsing the form_change data into tables.
+"""
+type Form implements Node {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByUpdatedBy: CifUser
+
+  """created at timestamp"""
+  createdAt: Datetime!
+
+  """created by user id"""
+  createdBy: Int
+
+  """Metadata describing the json_schema."""
+  description: String!
+
+  """
+  A function that parses the form_change data into a table or set of tables.
+  """
+  formChangeCommitHandler: RegProcedure!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """
+  The json_schema describing the shape of the form_change data for the corresponding form.
+  """
+  jsonSchema: JSON!
+
+  """
+  A function that can be used to dynamically alter the schema, such as altering constraints based on the contents of a table.
+  """
+  jsonSchemaGenerator: RegProcedure
+
+  """Unique ID for the form data."""
+  rowId: Int!
+
+  """Unique short name identifier for the json_schema data."""
+  slug: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime!
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
   asEmissionIntensityReport: EmissionIntensityReport
@@ -37371,6 +38423,50 @@ input FormChangeFilter {
   validationErrors: JSONFilter
 }
 
+"""An input for mutations affecting `FormChange`"""
+input FormChangeInput {
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The id of the record on which this form change applies"""
+  formDataRecordId: Int
+
+  """The schema on which this form change applies"""
+  formDataSchemaName: String!
+
+  """The table on which this form change applies"""
+  formDataTableName: String!
+
+  """The name of the JSON schema to use for validation of this form data"""
+  jsonSchemaName: String!
+
+  """Unique ID for the form_change"""
+  newFormData: JSON
+
+  """The operation this form change describes: create, update or archive"""
+  operation: FormChangeOperation!
+
+  """The id of the form_change record that preceded this one"""
+  previousFormChangeId: Int
+
+  """The project revision this change might be associated with (if known)"""
+  projectRevisionId: Int
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+
+  """
+  The validation errors computed for this record's new_form_data and the json_schema_name schema
+  """
+  validationErrors: JSON
+}
+
 """
 The type of change operation, defining the action taken when the form_change is committed.
 """
@@ -37426,40 +38522,17 @@ input FormChangeOperationFilter {
 Represents an update to a `FormChange`. Fields that are set will be updated.
 """
 input FormChangePatch {
-  """
-  The change status of this form change, foreign key to cif.change_status.
-  """
-  changeStatus: String
-
   """created at timestamp"""
   createdAt: Datetime
 
   """created by user id"""
   createdBy: Int
 
-  """The id of the record on which this form change applies"""
-  formDataRecordId: Int
-
-  """The schema on which this form change applies"""
-  formDataSchemaName: String
-
-  """The table on which this form change applies"""
-  formDataTableName: String
-
-  """The name of the JSON schema to use for validation of this form data"""
-  jsonSchemaName: String
-
   """Unique ID for the form_change"""
   newFormData: JSON
 
   """The operation this form change describes: create, update or archive"""
   operation: FormChangeOperation
-
-  """The id of the form_change record that preceded this one"""
-  previousFormChangeId: Int
-
-  """The project revision this change might be associated with (if known)"""
-  projectRevisionId: Int
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -37732,6 +38805,316 @@ enum FormChangesOrderBy {
   UPDATED_BY_DESC
   VALIDATION_ERRORS_ASC
   VALIDATION_ERRORS_DESC
+}
+
+"""
+A condition to be used against `Form` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input FormCondition {
+  """Checks for equality with the object’s `archivedAt` field."""
+  archivedAt: Datetime
+
+  """Checks for equality with the object’s `archivedBy` field."""
+  archivedBy: Int
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `createdBy` field."""
+  createdBy: Int
+
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
+  """Checks for equality with the object’s `formChangeCommitHandler` field."""
+  formChangeCommitHandler: RegProcedure
+
+  """Checks for equality with the object’s `jsonSchema` field."""
+  jsonSchema: JSON
+
+  """Checks for equality with the object’s `jsonSchemaGenerator` field."""
+  jsonSchemaGenerator: RegProcedure
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `slug` field."""
+  slug: String
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+
+  """Checks for equality with the object’s `updatedBy` field."""
+  updatedBy: Int
+}
+
+"""
+A filter to be used against `Form` object types. All fields are combined with a logical ‘and.’
+"""
+input FormFilter {
+  """Checks for all expressions in this list."""
+  and: [FormFilter!]
+
+  """Filter by the object’s `archivedAt` field."""
+  archivedAt: DatetimeFilter
+
+  """Filter by the object’s `archivedBy` field."""
+  archivedBy: IntFilter
+
+  """Filter by the object’s `cifUserByArchivedBy` relation."""
+  cifUserByArchivedBy: CifUserFilter
+
+  """A related `cifUserByArchivedBy` exists."""
+  cifUserByArchivedByExists: Boolean
+
+  """Filter by the object’s `cifUserByCreatedBy` relation."""
+  cifUserByCreatedBy: CifUserFilter
+
+  """A related `cifUserByCreatedBy` exists."""
+  cifUserByCreatedByExists: Boolean
+
+  """Filter by the object’s `cifUserByUpdatedBy` relation."""
+  cifUserByUpdatedBy: CifUserFilter
+
+  """A related `cifUserByUpdatedBy` exists."""
+  cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `createdBy` field."""
+  createdBy: IntFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `jsonSchema` field."""
+  jsonSchema: JSONFilter
+
+  """Negates the expression."""
+  not: FormFilter
+
+  """Checks for any expressions in this list."""
+  or: [FormFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `slug` field."""
+  slug: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `updatedBy` field."""
+  updatedBy: IntFilter
+}
+
+"""An input for mutations affecting `Form`"""
+input FormInput {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """Metadata describing the json_schema."""
+  description: String!
+
+  """
+  A function that parses the form_change data into a table or set of tables.
+  """
+  formChangeCommitHandler: RegProcedure
+
+  """
+  The json_schema describing the shape of the form_change data for the corresponding form.
+  """
+  jsonSchema: JSON!
+
+  """
+  A function that can be used to dynamically alter the schema, such as altering constraints based on the contents of a table.
+  """
+  jsonSchemaGenerator: RegProcedure
+
+  """Unique short name identifier for the json_schema data."""
+  slug: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""Represents an update to a `Form`. Fields that are set will be updated."""
+input FormPatch {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """Metadata describing the json_schema."""
+  description: String
+
+  """
+  A function that parses the form_change data into a table or set of tables.
+  """
+  formChangeCommitHandler: RegProcedure
+
+  """
+  The json_schema describing the shape of the form_change data for the corresponding form.
+  """
+  jsonSchema: JSON
+
+  """
+  A function that can be used to dynamically alter the schema, such as altering constraints based on the contents of a table.
+  """
+  jsonSchemaGenerator: RegProcedure
+
+  """Unique short name identifier for the json_schema data."""
+  slug: String
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""A connection to a list of `Form` values."""
+type FormsConnection {
+  """
+  A list of edges which contains the `Form` and cursor to aid in pagination.
+  """
+  edges: [FormsEdge!]!
+
+  """A list of `Form` objects."""
+  nodes: [Form]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Form` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Form` edge in the connection."""
+type FormsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Form` at the end of the edge."""
+  node: Form
+}
+
+"""Methods to use when ordering `Form`."""
+enum FormsOrderBy {
+  ARCHIVED_AT_ASC
+  ARCHIVED_AT_DESC
+  ARCHIVED_BY_ASC
+  ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__ID_ASC
+  CIF_USER_BY_ARCHIVED_BY__ID_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__UUID_ASC
+  CIF_USER_BY_ARCHIVED_BY__UUID_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_CREATED_BY__ID_ASC
+  CIF_USER_BY_CREATED_BY__ID_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__UUID_ASC
+  CIF_USER_BY_CREATED_BY__UUID_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__ID_ASC
+  CIF_USER_BY_UPDATED_BY__ID_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__UUID_ASC
+  CIF_USER_BY_UPDATED_BY__UUID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  CREATED_BY_ASC
+  CREATED_BY_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  FORM_CHANGE_COMMIT_HANDLER_ASC
+  FORM_CHANGE_COMMIT_HANDLER_DESC
+  ID_ASC
+  ID_DESC
+  JSON_SCHEMA_ASC
+  JSON_SCHEMA_DESC
+  JSON_SCHEMA_GENERATOR_ASC
+  JSON_SCHEMA_GENERATOR_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SLUG_ASC
+  SLUG_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  UPDATED_BY_ASC
+  UPDATED_BY_DESC
 }
 
 """Table containing funding agreement data"""
@@ -41736,6 +43119,22 @@ type Mutation {
     input: AddMilestoneToRevisionInput!
   ): AddMilestoneToRevisionPayload
 
+  """Commits the form change and calls the corresponding commit handler"""
+  commitFormChange(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CommitFormChangeInput!
+  ): CommitFormChangePayload
+
+  """Commits a project_revision and all of its form changes"""
+  commitProjectRevision(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CommitProjectRevisionInput!
+  ): CommitProjectRevisionPayload
+
   """Creates a single `AdditionalFundingSource`."""
   createAdditionalFundingSource(
     """
@@ -41791,6 +43190,14 @@ type Mutation {
     """
     input: CreateEmissionIntensityReportInput!
   ): CreateEmissionIntensityReportPayload
+
+  """Creates a single `Form`."""
+  createForm(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFormInput!
+  ): CreateFormPayload
 
   """
   Creates a new form_change record.
@@ -42045,6 +43452,30 @@ type Mutation {
     input: DeleteEmissionIntensityReportByRowIdInput!
   ): DeleteEmissionIntensityReportPayload
 
+  """Deletes a single `Form` using its globally unique id."""
+  deleteForm(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFormInput!
+  ): DeleteFormPayload
+
+  """Deletes a single `Form` using a unique key."""
+  deleteFormByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFormByRowIdInput!
+  ): DeleteFormPayload
+
+  """Deletes a single `Form` using a unique key."""
+  deleteFormBySlug(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFormBySlugInput!
+  ): DeleteFormPayload
+
   """Deletes a single `FormChange` using its globally unique id."""
   deleteFormChange(
     """
@@ -42294,6 +43725,14 @@ type Mutation {
     """
     input: StageDirtyFormChangesInput!
   ): StageDirtyFormChangesPayload
+
+  """Custom mutation that stages a form_change record"""
+  stageFormChange(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: StageFormChangeInput!
+  ): StageFormChangePayload
   undoFormChanges(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -42443,22 +43882,38 @@ type Mutation {
     input: UpdateEmissionIntensityReportByRowIdInput!
   ): UpdateEmissionIntensityReportPayload
 
+  """Updates a single `Form` using its globally unique id and a patch."""
+  updateForm(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFormInput!
+  ): UpdateFormPayload
+
+  """Updates a single `Form` using a unique key and a patch."""
+  updateFormByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFormByRowIdInput!
+  ): UpdateFormPayload
+
+  """Updates a single `Form` using a unique key and a patch."""
+  updateFormBySlug(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFormBySlugInput!
+  ): UpdateFormPayload
+
   """
-  Updates a single `FormChange` using its globally unique id and a patch.
+  Custom mutation that sets the change status to pending on every form_change update
   """
   updateFormChange(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: UpdateFormChangeInput!
-  ): UpdateFormChangePayload
-
-  """Updates a single `FormChange` using a unique key and a patch."""
-  updateFormChangeByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateFormChangeByRowIdInput!
   ): UpdateFormChangePayload
 
   """
@@ -54292,6 +55747,45 @@ type Query implements Node {
     orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangesConnection
 
+  """Reads and enables pagination through a set of `Form`."""
+  allForms(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsConnection
+
   """Reads and enables pagination through a set of `FundingParameter`."""
   allFundingParameters(
     """Read all values in the set after (below) this cursor."""
@@ -55008,6 +56502,14 @@ type Query implements Node {
   ): EmissionIntensityReport
   emissionIntensityReportByRowId(rowId: Int!): EmissionIntensityReport
 
+  """Reads a single `Form` using its globally unique `ID`."""
+  form(
+    """The globally unique `ID` to be used in selecting a single `Form`."""
+    id: ID!
+  ): Form
+  formByRowId(rowId: Int!): Form
+  formBySlug(slug: String!): Form
+
   """Reads a single `FormChange` using its globally unique `ID`."""
   formChange(
     """
@@ -55227,6 +56729,9 @@ type Query implements Node {
   sectorBySectorName(sectorName: String!): Sector
   session: KeycloakJwt
 }
+
+"""A builtin object identifier type for a function with argument types"""
+scalar RegProcedure
 
 """Table containing information about report types"""
 type ReportType implements Node {
@@ -58727,6 +60232,52 @@ type StageDirtyFormChangesPayload {
   query: Query
 }
 
+"""All input for the `stageFormChange` mutation."""
+input StageFormChangeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: Int!
+}
+
+"""The output of our `stageFormChange` mutation."""
+type StageFormChangePayload {
+  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChange: FormChange
+
+  """Reads a single `FormChange` that is related to this `FormChange`."""
+  formChangeByPreviousFormChangeId: FormChange
+
+  """An edge for our `FormChange`. May be used by Relay 1."""
+  formChangeEdge(
+    """The method to use when ordering `FormChange`."""
+    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormChangesEdge
+
+  """Reads a single `ProjectRevision` that is related to this `FormChange`."""
+  projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """
 A filter to be used against String fields. All fields are combined with a logical ‘and.’
 """
@@ -59568,8 +61119,8 @@ type UpdateEmissionIntensityReportPayload {
   reportingRequirementByReportingRequirementId: ReportingRequirement
 }
 
-"""All input for the `updateFormChangeByRowId` mutation."""
-input UpdateFormChangeByRowIdInput {
+"""All input for the `updateFormByRowId` mutation."""
+input UpdateFormByRowIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -59577,12 +61128,29 @@ input UpdateFormChangeByRowIdInput {
   clientMutationId: String
 
   """
-  An object where the defined keys will be set on the `FormChange` being updated.
+  An object where the defined keys will be set on the `Form` being updated.
   """
-  formChangePatch: FormChangePatch!
+  formPatch: FormPatch!
 
-  """Unique ID for the form_change"""
+  """Unique ID for the form data."""
   rowId: Int!
+}
+
+"""All input for the `updateFormBySlug` mutation."""
+input UpdateFormBySlugInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Form` being updated.
+  """
+  formPatch: FormPatch!
+
+  """Unique short name identifier for the json_schema data."""
+  slug: String!
 }
 
 """All input for the `updateFormChange` mutation."""
@@ -59592,19 +61160,11 @@ input UpdateFormChangeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `FormChange` being updated.
-  """
   formChangePatch: FormChangePatch!
-
-  """
-  The globally unique `ID` which will identify a single `FormChange` to be updated.
-  """
-  id: ID!
+  rowId: Int!
 }
 
-"""The output of our update `FormChange` mutation."""
+"""The output of our `updateFormChange` mutation."""
 type UpdateFormChangePayload {
   """Reads a single `ChangeStatus` that is related to this `FormChange`."""
   changeStatusByChangeStatus: ChangeStatus
@@ -59620,8 +61180,6 @@ type UpdateFormChangePayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-
-  """The `FormChange` that was updated by this mutation."""
   formChange: FormChange
 
   """Reads a single `FormChange` that is related to this `FormChange`."""
@@ -59635,6 +61193,57 @@ type UpdateFormChangePayload {
 
   """Reads a single `ProjectRevision` that is related to this `FormChange`."""
   projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateForm` mutation."""
+input UpdateFormInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Form` being updated.
+  """
+  formPatch: FormPatch!
+
+  """
+  The globally unique `ID` which will identify a single `Form` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `Form` mutation."""
+type UpdateFormPayload {
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `Form`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Form` that was updated by this mutation."""
+  form: Form
+
+  """An edge for our `Form`. May be used by Relay 1."""
+  formEdge(
+    """The method to use when ordering `Form`."""
+    orderBy: [FormsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
