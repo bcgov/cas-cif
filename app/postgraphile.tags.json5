@@ -115,6 +115,11 @@
           arg1variant: "patch",
         },
       },
+      "cif.commit_form_change": {
+        tags: {
+          arg1variant: "patch",
+        },
+      },
     },
   },
 }

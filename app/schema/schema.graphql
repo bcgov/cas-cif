@@ -33176,7 +33176,8 @@ input CommitFormChangeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  fc: FormChangeInput!
+  formChangePatch: FormChangePatch!
+  rowId: Int!
 }
 
 """The output of our `commitFormChange` mutation."""
@@ -38423,50 +38424,6 @@ input FormChangeFilter {
   validationErrors: JSONFilter
 }
 
-"""An input for mutations affecting `FormChange`"""
-input FormChangeInput {
-  """created at timestamp"""
-  createdAt: Datetime
-
-  """created by user id"""
-  createdBy: Int
-
-  """The id of the record on which this form change applies"""
-  formDataRecordId: Int
-
-  """The schema on which this form change applies"""
-  formDataSchemaName: String!
-
-  """The table on which this form change applies"""
-  formDataTableName: String!
-
-  """The name of the JSON schema to use for validation of this form data"""
-  jsonSchemaName: String!
-
-  """Unique ID for the form_change"""
-  newFormData: JSON
-
-  """The operation this form change describes: create, update or archive"""
-  operation: FormChangeOperation!
-
-  """The id of the form_change record that preceded this one"""
-  previousFormChangeId: Int
-
-  """The project revision this change might be associated with (if known)"""
-  projectRevisionId: Int
-
-  """updated at timestamp"""
-  updatedAt: Datetime
-
-  """updated by user id"""
-  updatedBy: Int
-
-  """
-  The validation errors computed for this record's new_form_data and the json_schema_name schema
-  """
-  validationErrors: JSON
-}
-
 """
 The type of change operation, defining the action taken when the form_change is committed.
 """
@@ -43119,7 +43076,9 @@ type Mutation {
     input: AddMilestoneToRevisionInput!
   ): AddMilestoneToRevisionPayload
 
-  """Commits the form change and calls the corresponding commit handler"""
+  """
+  Custom mutation to commit a form_change record via the API. Only used for records that are independent of a project such as the lists of contacts and operators.
+  """
   commitFormChange(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
