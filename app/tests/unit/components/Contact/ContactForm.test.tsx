@@ -75,23 +75,25 @@ describe("The Contact Form component", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "committed",
-        newFormData: {
-          comments: "lorem ipsum",
-          contactPosition: "Detective",
-          email: "foo@example.com",
-          familyName: "Doo",
-          givenName: "Scooby",
-          phone: "+14155552671",
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "commitFormChangeMutation",
+      {
+        input: {
+          rowId: 42,
+          formChangePatch: {
+            newFormData: {
+              comments: "lorem ipsum",
+              contactPosition: "Detective",
+              email: "foo@example.com",
+              familyName: "Doo",
+              givenName: "Scooby",
+              phone: "+14155552671",
+            },
+          },
         },
-      },
-      id: "fcid",
-    });
+      }
+    );
   });
 
   it("submits the form data when optional data is left out", () => {
