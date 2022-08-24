@@ -37,7 +37,7 @@ const testDeleteFormChangeMutation = graphql`
 const testUpdateFormChangeMutation = graphql`
   mutation useConfigurableDiscardFormChange_testUpdateMutation
   @relay_test_operation {
-    updateFormChange(input: { id: "form-change-id", formChangePatch: {} }) {
+    updateFormChange(input: { rowId: 1, formChangePatch: {} }) {
       formChange {
         id
       }
