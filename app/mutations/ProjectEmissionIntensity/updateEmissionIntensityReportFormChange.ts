@@ -19,9 +19,6 @@ const mutation = graphql`
           teimpPaymentPercentage
           teimpPaymentAmount
           ...TaskList_projectRevision
-          upcomingReportingRequirementFormChange(reportType: "TEIMP") {
-            ...ReportDueIndicator_formChange
-          }
         }
       }
     }
