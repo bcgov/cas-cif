@@ -115,6 +115,7 @@ const componentTestingHelper = new ComponentTestingHelper<ProjectFormQuery>({
 
 describe("The Project Form", () => {
   beforeEach(() => {
+    jest.resetAllMocks();
     componentTestingHelper.reinit();
   });
 
