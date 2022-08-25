@@ -3,7 +3,7 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
     "title": "Milestone",
-    "required": ["description", "reportType", "reportDueDate", "maximumAmount"],
+    "required": ["description", "reportType", "reportDueDate"],
     "properties": {
       "description": {
         "type": "string",
@@ -15,6 +15,9 @@
         "title": "Milestone Type",
         "anyOf": "undefined",
         "default": "undefined"
+      },
+      "hasExpenses": {
+        "type": "boolean"
       },
       "reportDueDate": {
         "type": "string",
@@ -31,16 +34,6 @@
         "title": "Substantial Completion Date",
         "default": "undefined"
       },
-      "maximumAmount": {
-        "type": "number",
-        "title": "Maximum Amount",
-        "default": "undefined"
-      },
-      "totalEligibleExpenses": {
-        "type": "number",
-        "title": "Total Eligible Expenses",
-        "default": "undefined"
-      },
       "certifiedBy": {
         "type": "string",
         "title": "Certifier"
@@ -50,21 +43,52 @@
         "title": "Professional Designation",
         "default": "Professional Engineer",
         "anyOf": "undefined"
-      },
-      "adjustedGrossAmount": {
-        "type": "number",
-        "title": "Milestone Gross Payment Amount",
-        "default": "undefined"
-      },
-      "adjustedNetAmount": {
-        "type": "number",
-        "title": "Milestone Net Payment Amount",
-        "default": "undefined"
-      },
-      "dateSentToCsnr": {
-        "type": "string",
-        "title": "Date sent to CSNR",
-        "default": "undefined"
+      }
+    },
+    "dependencies": {
+      "hasExpenses": {
+        "oneOf": [
+          {
+            "properties": {
+              "hasExpenses": {
+                "const": false
+              }
+            }
+          },
+          {
+            "properties": {
+              "hasExpenses": {
+                "const": true
+              },
+              "maximumAmount": {
+                "type": "number",
+                "title": "Maximum Amount",
+                "default": "undefined"
+              },
+              "totalEligibleExpenses": {
+                "type": "number",
+                "title": "Total Eligible Expenses",
+                "default": "undefined"
+              },
+              "adjustedGrossAmount": {
+                "type": "number",
+                "title": "Milestone Gross Payment Amount",
+                "default": "undefined"
+              },
+              "adjustedNetAmount": {
+                "type": "number",
+                "title": "Milestone Net Payment Amount",
+                "default": "undefined"
+              },
+              "dateSentToCsnr": {
+                "type": "string",
+                "title": "Date sent to CSNR",
+                "default": "undefined"
+              }
+            },
+            "required": ["maximumAmount", "dateSentToCsnr"]
+          }
+        ]
       }
     }
   }
