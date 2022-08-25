@@ -53,8 +53,8 @@ FLAT FORMS:
 
 MULTI:
 [ ] ProjectEmissionIntensityReportForm: reporting_requirement, emission_intensity_report
-[ ] ProjectFundingAgreementForm: funding_parameter, additional_funding_source
-[ ] ProjectMilestoneReportForm: reporting_requirement, milestone_report, payment
+[x] ProjectFundingAgreementForm: funding_parameter, additional_funding_source(s)
+[x] ProjectMilestoneReportForm: reporting_requirement, milestone_report, payment
 **/
 
 --project
@@ -78,6 +78,12 @@ create temporary table operator (json_data jsonb);
 -- milestone
 create temporary table milestone (json_data jsonb);
 \copy milestone(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/milestone.json | tr -d ''\n''';
+-- funding_agreement
+create temporary table funding_agreement (json_data jsonb);
+\copy funding_agreement(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/funding_agreement.json | tr -d ''\n''';
+-- emission_intensity_report
+create temporary table emission_intensity_report (json_data jsonb);
+\copy emission_intensity_report(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/emission_intensity_report.json | tr -d ''\n''';
 
 
 insert into cif.form(slug, json_schema, description)
@@ -92,6 +98,8 @@ values
 -- add a form_change_commit_handler once they are created for the below records
 insert into cif.form(slug, json_schema, description)
 values
-('milestone', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables');
+('milestone', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables'),
+('funding_agreement', (select json_data from funding_agreement), 'schema data relating to the funding_agreement form and the funding_parameter and additional_funding_source tables'),
+('emission_intensity_report', (select json_data from emission_intensity_report), 'schema data relating to the emission_intensity_report form and the reporting_requirement and emission_intensity_report tables');
 
 commit;
