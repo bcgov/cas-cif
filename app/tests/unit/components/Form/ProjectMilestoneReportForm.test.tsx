@@ -175,7 +175,7 @@ const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
 
 describe("The ProjectMilestoneReportForm", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     componentTestingHelper.reinit();
   });
 
@@ -331,26 +331,6 @@ describe("The ProjectMilestoneReportForm", () => {
     });
   });
 
-  it("reverts the form_change status to 'pending' when editing", async () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    userEvent.type(screen.getAllByLabelText(/description/i)[0], " edited");
-
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: {
-          description: "i am the first description edited",
-          projectId: 51,
-        },
-      },
-    });
-  });
-
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -414,7 +394,7 @@ describe("The ProjectMilestoneReportForm", () => {
       {
         reportType: "Milestone",
         input: {
-          id: expect.any(String),
+          rowId: 2,
           formChangePatch: {
             newFormData: {
               reportType: "General Milestone",
@@ -424,7 +404,6 @@ describe("The ProjectMilestoneReportForm", () => {
               description: "i am the second description",
               reportingRequirementIndex: 2,
             },
-            changeStatus: "pending",
           },
         },
       }
