@@ -17,12 +17,14 @@ import UndoChangesButton from "./UndoChangesButton";
 import { useAddMilestoneToRevision } from "mutations/MilestoneReport/addMilestoneToRevision";
 import useDiscardMilestoneFormChange from "mutations/MilestoneReport/discardMilestoneFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import {
   getConsolidatedMilestoneFormData,
   createMilestoneReportingRequirementSchema,
   createCustomMilestoneReportingRequirementUiSchema,
 } from "./Functions/projectMilestoneFormFunctions";
 import ProjectMilestoneReportForm from "./ProjectMilestoneReportForm";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 
 interface Props {
   onSubmit: () => void;
@@ -81,6 +83,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               id
               rowId
               newFormData
+              changeStatus
               # eslint-disable-next-line relay/unused-fields
               formChangeByPreviousFormChangeId {
                 changeStatus
@@ -170,6 +173,13 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
+  const [
+    applyStageReportingRequirementFormChange,
+    isStagingReportingRequirement,
+  ] = useStageReportingRequirementFormChange();
+
+  const [applyStageFormChange, isStagingFormChange] = useStageFormChange();
+
   const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
   const [discardMilestoneReportMutation] = useDiscardMilestoneFormChange();
@@ -226,7 +236,14 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
       <header id={`Milestone0`}>
         <h2>Milestone Reports</h2>
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
-        <SavingIndicator isSaved={!isUpdating && !isAdding} />
+        <SavingIndicator
+          isSaved={
+            !isUpdating &&
+            !isAdding &&
+            !isStagingReportingRequirement &&
+            !isStagingFormChange
+          }
+        />
       </header>
       <Status
         upcomingReportDueDate={upcomingReportDueDate}
@@ -300,7 +317,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
         variant="primary"
         onClick={() =>
           stageReportFormChanges(
-            applyUpdateFormChangeMutation,
+            applyStageReportingRequirementFormChange,
             props.onSubmit,
             formRefs,
             [
@@ -309,10 +326,15 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               ...projectRevision.milestonePaymentFormChanges.edges,
             ],
             "General Milestone",
-            updateFormChange
+            applyStageFormChange
           )
         }
-        disabled={isUpdating || isUpdatingFormChange}
+        disabled={
+          isUpdating ||
+          isUpdatingFormChange ||
+          isStagingReportingRequirement ||
+          isStagingFormChange
+        }
       >
         Submit Milestone Reports
       </Button>

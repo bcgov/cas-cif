@@ -127,7 +127,6 @@ export const stageReportFormChanges = async (
         },
       },
     };
-
     if (node.changeStatus === "pending") {
       const promise = new Promise<void>((resolve, reject) => {
         /* The mutation used here is dependent on whether a reportType is passed in.
