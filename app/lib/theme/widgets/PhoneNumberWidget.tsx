@@ -22,7 +22,13 @@ const PhoneNumberWidget: React.FC<WidgetProps> = ({
         aria-label={label}
         defaultValue={(schema as any).defaultValue}
         value={value?.replace("+1", "")}
-        onValueChange={({ value: newValue }) => onChange(`+1${newValue}`)}
+        onValueChange={({ value: newValue }) => {
+          if (!newValue) {
+            onChange(undefined);
+          } else {
+            onChange(`+1${newValue}`);
+          }
+        }}
         style={{
           border: "2px solid #606060",
           borderRadius: "0.25em",
