@@ -1,10 +1,4 @@
-import {
-  act,
-  fireEvent,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { act, fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
@@ -32,7 +26,7 @@ const mockQueryPayload = {
     return {
       projectRevision: {
         id: "Test Revision ID",
-        rowId: 1,
+        rowId: 123,
         managerFormChanges: {
           edges: [
             {
@@ -177,14 +171,18 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getAllByTitle("Open")[0]);
     fireEvent.click(screen.getByText("Test full name 1"));
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables
-    ).toMatchObject({
-      projectRevision: "Test Revision ID",
-      projectRevisionId: 1,
-      newFormData: { cifUserId: 1, projectId: 1, projectManagerLabelId: 1 },
-    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "addManagerToRevisionMutation",
+      {
+        projectRevision: "Test Revision ID",
+        projectRevisionId: 123,
+        newFormData: {
+          cifUserId: 1,
+          projectManagerLabelId: 1,
+          projectId: 1,
+        },
+      }
+    );
   });
 
   it("Calls the update mutation when change is made in the Manager dropdown", () => {
@@ -194,45 +192,39 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getAllByTitle("Open")[1]);
     fireEvent.click(screen.getByText("Test full name 1"));
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-    ).toMatchObject({
-      variables: {
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectManagerFormChangeMutation",
+      {
         input: {
+          rowId: 9,
           formChangePatch: {
-            changeStatus: "pending",
             newFormData: {
               cifUserId: 1,
               projectId: 1,
               projectManagerLabelId: 2,
             },
           },
-          id: "Change 2 ID",
         },
-      },
-    });
+      }
+    );
   });
 
   it("Deletes the formChange record when the remove button is clicked and the formChange operation is 'CREATE'", () => {
-    const deleteMutationSpy = jest.fn();
-    const inFlight = false;
-    jest
-      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [deleteMutationSpy, inFlight]);
     componentTestingHelper.loadQuery();
 
     componentTestingHelper.renderComponent();
     const clearButton = screen.getAllByText("Clear")[1];
     clearButton.click();
 
-    expect(deleteMutationSpy).toHaveBeenCalledWith({
-      variables: {
+    componentTestingHelper.expectMutationToBeCalled(
+      "deleteManagerFromRevisionMutation",
+      {
         input: {
           id: "Change 2 ID",
         },
         projectRevision: "Test Revision ID",
-      },
-    });
+      }
+    );
   });
 
   it("Updates the formChange record with operation = 'ARCHIVE' when the remove button is clicked and the formChange operation is 'UPDATE'", () => {
@@ -272,114 +264,23 @@ describe("The ProjectManagerForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     screen.getByText(/submit/i).click();
-    const allOperations =
-      componentTestingHelper.environment.mock.getAllOperations();
-    expect(allOperations.length).toEqual(4); // first operation is the initial query; next three are form_change  mutations (there are 4 managers but only 3 have form_change)
-    for (let i = 1; i < allOperations.length; i++) {
-      expect(allOperations[i].request.variables.input).toMatchObject({
-        formChangePatch: { changeStatus: "staged" },
-      });
-    }
-  });
 
-  it("reverts the form_change status to 'pending' when editing", async () => {
-    componentTestingHelper.loadQuery({
-      Query() {
-        return {
-          projectRevision: {
-            id: "Test Revision ID",
-            rowId: 1,
-            managerFormChanges: {
-              edges: [
-                {
-                  node: {
-                    projectManagerLabel: {
-                      id: "Test Label 1 ID",
-                      rowId: 1,
-                      label: "Test Label 1",
-                    },
-                    formChange: null,
-                  },
-                },
-                {
-                  node: {
-                    projectManagerLabel: {
-                      id: "Test Label 2 ID",
-                      rowId: 2,
-                      label: "Test Label 2",
-                    },
-                    formChange: {
-                      id: "Change 2 ID",
-                      operation: "CREATE",
-                      changeStatus: "staged",
-                      newFormData: {
-                        cifUserId: 2,
-                        projectId: 1,
-                        projectManagerLabelId: 2,
-                      },
-                    },
-                  },
-                },
-                {
-                  node: {
-                    projectManagerLabel: {
-                      id: "Test Label 3 ID",
-                      rowId: 3,
-                      label: "Test Label 3",
-                    },
-                    formChange: {
-                      id: "Change 3 ID",
-                      operation: "UPDATE",
-                      changeStatus: "staged",
-                      newFormData: {
-                        cifUserId: 2,
-                        projectId: 1,
-                        projectManagerLabelId: 3,
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-            projectFormChange: {
-              formDataRecordId: 1,
-            },
-          },
-          allCifUsers: {
-            edges: [
-              {
-                node: {
-                  rowId: 1,
-                  fullName: "Test full name 1",
-                },
-              },
-              {
-                node: {
-                  rowId: 2,
-                  fullName: "Test full name 2",
-                },
-              },
-            ],
-          },
-        };
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 9,
+        formChangePatch: {},
       },
     });
-    componentTestingHelper.renderComponent();
-    await act(async () => {
-      userEvent.click(screen.getByLabelText(/test label 3/i));
-      await waitFor(() => screen.getByRole("presentation"));
-      userEvent.click(
-        within(screen.getByRole("presentation")).getByText(/Test full name 1/i)
-      );
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 10,
+        formChangePatch: {},
+      },
     });
-
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: { cifUserId: 1, projectId: 1, projectManagerLabelId: 3 },
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 11,
+        formChangePatch: {},
       },
     });
   });
