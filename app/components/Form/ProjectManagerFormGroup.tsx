@@ -11,6 +11,7 @@ import SavingIndicator from "./SavingIndicator";
 import useDeleteManagerFromRevisionMutation from "mutations/ProjectManager/deleteManagerFromRevision";
 import useAddManagerToRevisionMutation from "mutations/ProjectManager/addManagerToRevision";
 import UndoChangesButton from "./UndoChangesButton";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 
 interface Props {
   query: ProjectManagerFormGroup_query$key;
@@ -62,6 +63,9 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
   const { edges } = projectRevision.managerFormChanges;
 
   const [deleteManager, isDeleting] = useDeleteManagerFromRevisionMutation();
+
+  const [applyStageFormChangeMutation, isStaging] = useStageFormChange();
+
   const handleDelete = (formChangeId: string, operation) => {
     deleteManager({
       context: {
@@ -116,13 +120,16 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
   };
 
   const [updateFormChange, isUpdating] = useUpdateProjectManagerFormChange();
-  const handleUpdate = (formChangeId: string, newFormData: any) => {
+  const handleUpdate = (
+    formChangeId: string,
+    rowId: number,
+    newFormData: any
+  ) => {
     updateFormChange({
       variables: {
         input: {
-          id: formChangeId,
+          rowId,
           formChangePatch: {
-            changeStatus: "pending",
             newFormData,
           },
         },
@@ -153,16 +160,13 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
     edges.forEach(({ node }) => {
       if (node.formChange?.changeStatus === "pending") {
         const promise = new Promise<void>((resolve, reject) => {
-          updateFormChange({
+          applyStageFormChangeMutation({
             variables: {
               input: {
-                id: node.formChange.id,
-                formChangePatch: {
-                  changeStatus: "staged",
-                },
+                rowId: node.formChange.rowId,
+                formChangePatch: {},
               },
             },
-            debounceKey: node.formChange.id,
             onCompleted: () => resolve(),
             onError: reject,
           });
@@ -192,7 +196,9 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
       <header>
         <h2>Project Managers</h2>
         <UndoChangesButton formChangeIds={formChangeIds} />
-        <SavingIndicator isSaved={!isUpdating && !isAdding && !isDeleting} />
+        <SavingIndicator
+          isSaved={!isUpdating && !isAdding && !isDeleting && !isStaging}
+        />
       </header>
       <FormBorder>
         {edges.map(({ node }) => (
