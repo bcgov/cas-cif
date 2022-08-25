@@ -12,6 +12,9 @@ const mutation = graphql`
         changeStatus
         newFormData
         operation
+        projectRevisionByProjectRevisionId {
+          ...TaskList_projectRevision
+        }
       }
     }
   }

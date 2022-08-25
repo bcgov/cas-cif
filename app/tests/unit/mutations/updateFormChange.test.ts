@@ -48,7 +48,7 @@ describe("UpdateFormChange mutation", () => {
   it("Should return a string relay ID if valid", () => {
     const test = tester.mock(mutationString, {
       input: {
-        id: "abc",
+        rowId: 1234,
         formChangePatch: {
           newFormData: {
             cif_identifier: "test",
@@ -64,7 +64,7 @@ describe("UpdateFormChange mutation", () => {
   it("Should return newFormData if valid", () => {
     const test = tester.mock(mutationString, {
       input: {
-        id: "abc",
+        rowId: 6789,
         formChangePatch: {
           newFormData: {
             cif_identifier: "test",
