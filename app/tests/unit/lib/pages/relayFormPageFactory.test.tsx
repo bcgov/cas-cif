@@ -3,6 +3,7 @@ import { mocked } from "jest-mock";
 import relayFormPageFactory from "lib/pages/relayFormPageFactory";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import { act } from "react-dom/test-utils";
 import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import { GraphQLResponse } from "relay-runtime";
@@ -17,6 +18,7 @@ import compiledRelayFormPageFactoryQuery, {
 
 jest.mock("mutations/FormChange/updateFormChange");
 jest.mock("mutations/FormChange/deleteFormChange");
+jest.mock("mutations/FormChange/stageFormChange");
 
 let environment: RelayMockEnvironment;
 
@@ -26,6 +28,7 @@ const loadFormChangeData = (additionalData = {}) => {
       FormChange() {
         return {
           id: "test-cif-form-id",
+          rowId: "test-row-id",
           newFormData: "{}",
           formDataRecordId: "mock-form-data-record-id",
           ...additionalData,
@@ -74,8 +77,10 @@ const loadUndefinedFormChangeData = () => {
 
 describe("The relay form page factory", () => {
   beforeEach(() => {
+    jest.resetAllMocks();
     mocked(useUpdateFormChange).mockReturnValue([jest.fn(), false]);
     mocked(useDeleteFormChange).mockReturnValue([jest.fn(), false]);
+    mocked(useStageFormChange).mockReturnValue([jest.fn(), false]);
     environment = createMockEnvironment();
   });
 
@@ -197,21 +202,22 @@ describe("The relay form page factory", () => {
           formChange: {
             id: "test-cif-form-id",
             newFormData: testChangeFormData,
+            changeStatus: "pending",
           },
         },
       },
       variables: {
         input: {
           formChangePatch: { newFormData: testChangeFormData },
-          id: "test-cif-form-id",
+          rowId: "test-row-id",
         },
       },
     });
   });
 
   it("Passes the submit function to the component being rendered", () => {
-    const mockSubmitFormChange = jest.fn();
-    mocked(useUpdateFormChange).mockReturnValue([mockSubmitFormChange, false]);
+    const mockStageFormChange = jest.fn();
+    mocked(useStageFormChange).mockReturnValue([mockStageFormChange, false]);
 
     let submitFunctionUnderTest = null;
     const [TestFormPage] = relayFormPageFactory(
@@ -238,8 +244,7 @@ describe("The relay form page factory", () => {
       formData: testChangeFormData,
     });
 
-    expect(mockSubmitFormChange).toHaveBeenCalledWith({
-      debounceKey: "test-cif-form-id",
+    expect(mockStageFormChange).toHaveBeenCalledWith({
       onError: expect.any(Function),
       onCompleted: expect.any(Function),
       updater: expect.any(Function),
@@ -247,9 +252,8 @@ describe("The relay form page factory", () => {
         input: {
           formChangePatch: {
             newFormData: testChangeFormData,
-            changeStatus: "committed",
           },
-          id: "test-cif-form-id",
+          rowId: "test-row-id",
         },
       },
     });

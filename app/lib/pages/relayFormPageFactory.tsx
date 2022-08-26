@@ -2,6 +2,7 @@ import { RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import { useRouter } from "next/router";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import SavingIndicator from "components/Form/SavingIndicator";
@@ -21,6 +22,7 @@ const pageQuery = graphql`
     }
     formChange(id: $form) {
       id
+      rowId
       newFormData
       formDataRecordId
     }
@@ -53,6 +55,7 @@ const relayFormPageFactory = (
       preloadedQuery
     );
     const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
+    const [stageFormChange, isStagingFormChange] = useStageFormChange();
     const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
     const router = useRouter();
 
@@ -65,7 +68,7 @@ const relayFormPageFactory = (
       updateFormChange({
         variables: {
           input: {
-            id: formChange.id,
+            rowId: formChange.rowId,
             formChangePatch: {
               newFormData: formData,
             },
@@ -76,6 +79,7 @@ const relayFormPageFactory = (
             formChange: {
               id: formChange.id,
               newFormData: formData,
+              changeStatus: "pending",
             },
           },
         },
@@ -85,17 +89,15 @@ const relayFormPageFactory = (
     };
 
     const handleSubmit = ({ formData }) => {
-      updateFormChange({
+      stageFormChange({
         variables: {
           input: {
-            id: formChange.id,
+            rowId: formChange.rowId,
             formChangePatch: {
               newFormData: formData,
-              changeStatus: "committed",
             },
           },
         },
-        debounceKey: formChange.id,
         onCompleted: () => {
           router.push(onSubmitOrDiscardRoute);
         },
@@ -127,7 +129,9 @@ const relayFormPageFactory = (
           <h2>
             {isEditing ? "Edit" : "New"} {resourceTitle}
           </h2>
-          <SavingIndicator isSaved={!isUpdatingFormChange} />
+          <SavingIndicator
+            isSaved={!isUpdatingFormChange && !isStagingFormChange}
+          />
         </header>
         <FormComponent
           formData={formChange.newFormData}
