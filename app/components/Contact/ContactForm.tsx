@@ -65,9 +65,9 @@ const ContactForm: React.FC<Props> = (props) => {
 
   // If we don't have the projectContactFormId(means we don't have the primary contact form either) we need to create one
   const existingProjectContactFormId =
-    router?.query?.projectContactFormId.toString();
+    router?.query?.projectContactFormId?.toString();
   const existingProjectContactFormRowId =
-    router?.query?.projectContactFormRowId.toString();
+    router?.query?.projectContactFormRowId?.toString();
 
   const handleAfterFormSubmitting = (
     response: commitFormChangeMutation$data
