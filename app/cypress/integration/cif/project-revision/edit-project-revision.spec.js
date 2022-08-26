@@ -106,7 +106,7 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project milestone reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.findByText(/Submit changes/i).click();
+    // cy.findByText(/Submit changes/i).click();
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
@@ -130,7 +130,6 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.findByText(/Submit changes/i).click();
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
@@ -166,7 +165,6 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project annual reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.findByText(/Submit changes/i).click();
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
