@@ -5,6 +5,7 @@ import { Disposable, MutationParameters, PayloadError } from "relay-runtime";
 interface DiscardFormChangeOptions<TDelete$data, TUpdate$data> {
   formChange: {
     id: string;
+    rowId: number;
     operation: "CREATE" | "UPDATE" | "ARCHIVE";
   };
   onCompleted?: (
@@ -67,7 +68,7 @@ const useConfigurableDiscardFormChange = function <
       updateFormChange({
         variables: {
           input: {
-            id: formChange.id,
+            rowId: formChange.rowId,
             formChangePatch: {
               operation: "ARCHIVE",
             },
@@ -77,7 +78,7 @@ const useConfigurableDiscardFormChange = function <
         optimisticResponse: {
           updateFormChange: {
             formChange: {
-              id: formChange.id,
+              rowId: formChange.rowId,
               operation: "ARCHIVE",
               newFormData: {},
             },

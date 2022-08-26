@@ -63,12 +63,15 @@ describe("The useConfigurableDiscardFormChangeHook", () => {
     >(discardHook, updateHook, { extra: "variables" });
 
     discardFormChange({
-      formChange: { id: "some-id", operation: "CREATE" },
+      formChange: { id: "some-id", rowId: 42, operation: "CREATE" },
     });
 
     expect(discardMethod).toHaveBeenCalledWith(
       expect.objectContaining({
-        variables: expect.objectContaining({ extra: "variables" }),
+        variables: expect.objectContaining({
+          input: { id: "some-id" },
+          extra: "variables",
+        }),
       })
     );
     expect(updateMethod).not.toHaveBeenCalled();
@@ -80,12 +83,15 @@ describe("The useConfigurableDiscardFormChangeHook", () => {
     >(discardHook, updateHook, { extra: "variables" });
 
     discardFormChange({
-      formChange: { id: "some-other-id", operation: "UPDATE" },
+      formChange: { id: "some-other-id", rowId: 42, operation: "UPDATE" },
     });
 
     expect(updateMethod).toHaveBeenCalledWith(
       expect.objectContaining({
-        variables: expect.objectContaining({ extra: "variables" }),
+        variables: expect.objectContaining({
+          input: { formChangePatch: { operation: "ARCHIVE" }, rowId: 42 },
+          extra: "variables",
+        }),
       })
     );
     expect(discardMethod).not.toHaveBeenCalled();
