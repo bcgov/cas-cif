@@ -292,6 +292,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
 
   const deleteContact = (
     formChangeId: string,
+    formChangeRowId: number,
     formChangeOperation: FormChangeOperation
   ) => {
     if (
@@ -299,7 +300,11 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       alternateContactForms.length > 1
     )
       discardFormChange({
-        formChange: { id: formChangeId, operation: formChangeOperation },
+        formChange: {
+          id: formChangeId,
+          rowId: formChangeRowId,
+          operation: formChangeOperation,
+        },
         onCompleted: () => {
           delete formRefs.current[formChangeId];
         },
@@ -447,7 +452,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       <Button
                         variant="secondary"
                         size="small"
-                        onClick={() => deleteContact(form.id, form.operation)}
+                        onClick={() =>
+                          deleteContact(form.id, form.rowId, form.operation)
+                        }
                       >
                         Remove
                       </Button>

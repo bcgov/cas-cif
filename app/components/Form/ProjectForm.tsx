@@ -219,7 +219,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         variables: {
           input: {
             rowId: revision.projectFormChange.rowId,
-            ...(changeData ? { newFormData: changeData } : {}),
+            formChangePatch: changeData ? { newFormData: changeData } : {},
           },
         },
         optimisticResponse: {

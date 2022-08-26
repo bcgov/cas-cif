@@ -2,7 +2,7 @@ import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
 import { UseMutationConfig } from "react-relay";
 import { Disposable, MutationParameters, PayloadError } from "relay-runtime";
 
-interface DiscardFormChangeOptions<TDelete$data, TUpdate$data> {
+export interface DiscardFormChangeOptions<TDelete$data, TUpdate$data> {
   formChange: {
     id: string;
     rowId: number;

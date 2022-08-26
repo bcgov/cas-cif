@@ -101,6 +101,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
       discardFormChange({
         formChange: {
           id: milestoneReport.paymentFormChange.id,
+          rowId: milestoneReport.paymentFormChange.rowId,
           operation: milestoneReport.paymentFormChange.operation,
         },
         onCompleted: () => {

@@ -19,7 +19,11 @@ interface Props extends FormComponentProps {
   projectRowId: number;
   onUpdate: (formChangeId: string, rowId: number, newFormData: any) => void;
   onAdd: (newFormData: any) => void;
-  onDelete: (formChangeId: string, operation: FormChangeOperation) => void;
+  onDelete: (
+    formChangeId: string,
+    formChangeRowId: number,
+    operation: FormChangeOperation
+  ) => void;
   formRefs: MutableRefObject<{}>;
   disabled?: boolean;
 }
@@ -155,7 +159,9 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           disabled={disabled || !formChange?.id}
           variant="secondary"
           size="small"
-          onClick={() => onDelete(formChange.id, formChange.operation)}
+          onClick={() =>
+            onDelete(formChange.id, formChange.rowId, formChange.operation)
+          }
         >
           Clear
         </Button>

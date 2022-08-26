@@ -176,6 +176,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     deleteReportFormChange(
                       discardFormChange,
                       quarterlyReport.id,
+                      quarterlyReport.rowId,
                       quarterlyReport.operation,
                       formRefs
                     )

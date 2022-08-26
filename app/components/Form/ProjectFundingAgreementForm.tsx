@@ -240,10 +240,15 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const deleteAdditionalFundingSource = (
     formChangeId: string,
+    formChangeRowId: number,
     formChangeOperation: FormChangeOperation
   ) => {
     discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
+      formChange: {
+        id: formChangeId,
+        rowId: formChangeRowId,
+        operation: formChangeOperation,
+      },
       onCompleted: () => {
         delete formRefs.current[formChangeId];
       },
@@ -421,6 +426,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       onClick={() =>
                         deleteAdditionalFundingSource(
                           formChange.id,
+                          formChange.rowId,
                           formChange.operation
                         )
                       }

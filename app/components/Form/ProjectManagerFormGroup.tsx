@@ -66,11 +66,16 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
 
   const [applyStageFormChangeMutation, isStaging] = useStageFormChange();
 
-  const handleDelete = (formChangeId: string, operation) => {
+  const handleDelete = (
+    formChangeId: string,
+    formChangeRowId: number,
+    operation
+  ) => {
     deleteManager({
       context: {
         operation: operation,
         id: formChangeId,
+        rowId: formChangeRowId,
         projectRevision: projectRevision.id,
       },
     });
