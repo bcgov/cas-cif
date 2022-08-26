@@ -13,7 +13,6 @@ const mutation = graphql`
         node {
           id
           rowId
-          ...ContactForm_formChange
           projectRevisionByProjectRevisionId {
             ...ProjectContactForm_projectRevision
             ...TaskList_projectRevision
