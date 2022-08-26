@@ -6,7 +6,6 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectFormQuery, {
   ProjectFormQuery,
 } from "__generated__/ProjectFormQuery.graphql";
-import { ProjectForm_projectRevision$data } from "__generated__/ProjectForm_projectRevision.graphql";
 
 const testQuery = graphql`
   query ProjectFormQuery @relay_test_operation {
@@ -20,7 +19,7 @@ const testQuery = graphql`
 
 const mockQueryPayload = {
   ProjectRevision() {
-    const result: Partial<ProjectForm_projectRevision$data> = {
+    const result = {
       projectFormChange: {
         changeStatus: "pending",
         rowId: 1,
@@ -131,12 +130,16 @@ describe("The Project Form", () => {
       "updateProjectFormChangeMutation",
       {
         input: {
-          id: expect.any(String),
+          rowId: 1,
           formChangePatch: {
-            changeStatus: "pending",
-            newFormData: expect.objectContaining({
+            newFormData: {
               proposalReference: "testidentifier",
-            }),
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              comments: "some amendment comment",
+              projectType: "project type 1",
+            },
           },
         },
       }
@@ -150,34 +153,16 @@ describe("The Project Form", () => {
       "updateProjectFormChangeMutation",
       {
         input: {
-          id: expect.any(String),
+          rowId: 1,
           formChangePatch: {
-            changeStatus: "pending",
-            newFormData: expect.objectContaining({
+            newFormData: {
               proposalReference: "testidentifier",
               summary: "testsummary",
-            }),
-          },
-        },
-      }
-    );
-
-    fireEvent.change(screen.getByLabelText(/General Comments/i), {
-      target: { value: "new comment" },
-    });
-
-    componentTestingHelper.expectMutationToBeCalled(
-      "updateProjectFormChangeMutation",
-      {
-        input: {
-          id: expect.any(String),
-          formChangePatch: {
-            changeStatus: "pending",
-            newFormData: expect.objectContaining({
-              proposalReference: "testidentifier",
-              summary: "testsummary",
-              comments: "new comment",
-            }),
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              comments: "some amendment comment",
+              projectType: "project type 1",
+            },
           },
         },
       }
@@ -210,7 +195,7 @@ describe("The Project Form", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
-        const result: Partial<ProjectForm_projectRevision$data> = {
+        const result = {
           projectFormChange: {
             changeStatus: "pending",
             rowId: 1,
@@ -246,11 +231,10 @@ describe("The Project Form", () => {
   it("stages the form_change when clicking on the submit button", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
-        const result: Partial<ProjectForm_projectRevision$data> = {
+        const result = {
           projectFormChange: {
             id: "Test Project Form Change ID",
             isUniqueValue: true,
-            formChangeByPreviousFormChangeId: null,
             newFormData: {
               proposalReference: "12345678",
               summary: "d",
@@ -297,11 +281,11 @@ describe("The Project Form", () => {
     componentTestingHelper.renderComponent();
 
     screen.getByText(/submit/i).click();
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 42,
+        formChangePatch: {},
+      },
     });
   });
   it("clicking the submit button should stage a form with validation errors", () => {
@@ -331,11 +315,11 @@ describe("The Project Form", () => {
     componentTestingHelper.renderComponent();
 
     screen.getByText(/submit/i).click();
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 42,
+        formChangePatch: {},
+      },
     });
   });
 
@@ -359,11 +343,12 @@ describe("The Project Form", () => {
     componentTestingHelper.renderComponent();
 
     screen.getByText(/submit/i).click();
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
+
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 42,
+        formChangePatch: {},
+      },
     });
   });
 
@@ -371,7 +356,7 @@ describe("The Project Form", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
-        const result: Partial<ProjectForm_projectRevision$data> = {
+        const result = {
           projectFormChange: {
             id: "Test Project Form Change ID",
             isUniqueValue: true,
@@ -397,15 +382,24 @@ describe("The Project Form", () => {
       userEvent.type(screen.getByLabelText(/project name/i), "2");
     });
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: { projectName: "test project name2" },
-      },
-    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectFormChangeMutation",
+      {
+        input: {
+          rowId: 42,
+          formChangePatch: {
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              projectName: "test project name2",
+              totalFundingRequest: 12345,
+            },
+          },
+        },
+      }
+    );
   });
 
   it("displays a sector dropdown with selectable choices", () => {
@@ -428,15 +422,25 @@ describe("The Project Form", () => {
       userEvent.click(screen.getByText(/test sector 1/i));
     });
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: { sectorName: "test sector 1" },
-      },
-    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: {
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              comments: "some amendment comment",
+              projectType: "project type 1",
+              sectorName: "test sector 1",
+            },
+          },
+        },
+      }
+    );
   });
 
   it("displays a project type dropdown with selectable choices", () => {
@@ -459,15 +463,24 @@ describe("The Project Form", () => {
       userEvent.click(screen.getByText(/project type 2/i));
     });
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: { projectType: "project type 2" },
-      },
-    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: {
+            newFormData: {
+              proposalReference: "12345678",
+              summary: "d",
+              operatorId: 1,
+              fundingStreamRfpId: 1,
+              comments: "some amendment comment",
+              projectType: "project type 2",
+            },
+          },
+        },
+      }
+    );
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {

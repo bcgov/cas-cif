@@ -228,36 +228,23 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("Updates the formChange record with operation = 'ARCHIVE' when the remove button is clicked and the formChange operation is 'UPDATE'", () => {
-    const deleteMutationSpy = jest.fn();
-    const inFlight = false;
-    jest
-      .spyOn(require("mutations/useMutationWithErrorMessage"), "default")
-      .mockImplementation(() => [deleteMutationSpy, inFlight]);
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     const clearButton = screen.getAllByText("Clear")[2];
     clearButton.click();
 
-    expect(deleteMutationSpy).toHaveBeenCalledWith({
-      variables: {
+    componentTestingHelper.expectMutationToBeCalled(
+      "deleteManagerFromRevisionWithArchiveMutation",
+      {
         input: {
+          rowId: 10,
           formChangePatch: {
             operation: "ARCHIVE",
           },
-          id: "Change 3 ID",
         },
         projectRevision: "Test Revision ID",
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: "Change 3 ID",
-            newFormData: {},
-            operation: "ARCHIVE",
-          },
-        },
-      },
-    });
+      }
+    );
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {

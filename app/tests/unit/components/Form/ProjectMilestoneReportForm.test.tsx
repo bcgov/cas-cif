@@ -323,12 +323,25 @@ describe("The ProjectMilestoneReportForm", () => {
       }
     );
 
-    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
-      input: {
-        rowId: 1,
-        formChangePatch: expect.any(Object),
-      },
-    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 2,
+          formChangePatch: {
+            newFormData: {
+              reportDueDate: "2022-10-28",
+              projectId: 51,
+              reportType: "Reporting Milestone",
+              submittedDate: "2022-05-02",
+              description: "i am the second description",
+              reportingRequirementIndex: 2,
+            },
+          },
+        },
+        reportType: "General Milestone",
+      }
+    );
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
