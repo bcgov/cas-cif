@@ -83,7 +83,6 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               id
               rowId
               newFormData
-              changeStatus
               # eslint-disable-next-line relay/unused-fields
               formChangeByPreviousFormChangeId {
                 changeStatus
