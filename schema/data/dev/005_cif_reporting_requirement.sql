@@ -27,7 +27,7 @@ do $$
       update cif.form_change set new_form_data =
       json_build_object(
         'certifierProfessionalDesignation', 'Professional Engineer',
-        'reportingRequirementId', new_form_data->>'reportingRequirementId',
+        'reportingRequirementId', new_form_data->'reportingRequirementId',
         'substantialCompletionDate', now(),
         'maximumAmount', 1,
         'totalEligibleExpenses', 1,
@@ -38,7 +38,7 @@ do $$
       -- payment info
       update cif.form_change set new_form_data =
       json_build_object(
-        'reportingRequirementId', new_form_data->>'reportingRequirementId',
+        'reportingRequirementId', new_form_data->'reportingRequirementId',
         'adjustedGrossAmount', 1,
         'adjustedNetAmount', 1,
         'dateSentToCsnr', now()
