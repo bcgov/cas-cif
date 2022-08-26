@@ -3,7 +3,7 @@ import { mocked } from "jest-mock";
 import relayFormPageFactory from "lib/pages/relayFormPageFactory";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
-import { useStageFormChange } from "mutations/FormChange/stageFormChange";
+import { useCommitFormChange } from "mutations/FormChange/commitFormChange";
 import { act } from "react-dom/test-utils";
 import { loadQuery, RelayEnvironmentProvider } from "react-relay";
 import { GraphQLResponse } from "relay-runtime";
@@ -18,7 +18,7 @@ import compiledRelayFormPageFactoryQuery, {
 
 jest.mock("mutations/FormChange/updateFormChange");
 jest.mock("mutations/FormChange/deleteFormChange");
-jest.mock("mutations/FormChange/stageFormChange");
+jest.mock("mutations/FormChange/commitFormChange");
 
 let environment: RelayMockEnvironment;
 
@@ -80,7 +80,7 @@ describe("The relay form page factory", () => {
     jest.resetAllMocks();
     mocked(useUpdateFormChange).mockReturnValue([jest.fn(), false]);
     mocked(useDeleteFormChange).mockReturnValue([jest.fn(), false]);
-    mocked(useStageFormChange).mockReturnValue([jest.fn(), false]);
+    mocked(useCommitFormChange).mockReturnValue([jest.fn(), false]);
     environment = createMockEnvironment();
   });
 
@@ -216,8 +216,8 @@ describe("The relay form page factory", () => {
   });
 
   it("Passes the submit function to the component being rendered", () => {
-    const mockStageFormChange = jest.fn();
-    mocked(useStageFormChange).mockReturnValue([mockStageFormChange, false]);
+    const mockCommitFormChange = jest.fn();
+    mocked(useCommitFormChange).mockReturnValue([mockCommitFormChange, false]);
 
     let submitFunctionUnderTest = null;
     const [TestFormPage] = relayFormPageFactory(
@@ -244,7 +244,7 @@ describe("The relay form page factory", () => {
       formData: testChangeFormData,
     });
 
-    expect(mockStageFormChange).toHaveBeenCalledWith({
+    expect(mockCommitFormChange).toHaveBeenCalledWith({
       onError: expect.any(Function),
       onCompleted: expect.any(Function),
       updater: expect.any(Function),

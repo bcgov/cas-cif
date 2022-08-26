@@ -2,7 +2,7 @@ import { RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
-import { useStageFormChange } from "mutations/FormChange/stageFormChange";
+import { useCommitFormChange } from "mutations/FormChange/commitFormChange";
 import { useRouter } from "next/router";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import SavingIndicator from "components/Form/SavingIndicator";
@@ -55,7 +55,7 @@ const relayFormPageFactory = (
       preloadedQuery
     );
     const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
-    const [stageFormChange, isStagingFormChange] = useStageFormChange();
+    const [commitFormChange, isCommittingFormChange] = useCommitFormChange();
     const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
     const router = useRouter();
 
@@ -89,7 +89,7 @@ const relayFormPageFactory = (
     };
 
     const handleSubmit = ({ formData }) => {
-      stageFormChange({
+      commitFormChange({
         variables: {
           input: {
             rowId: formChange.rowId,
@@ -130,7 +130,7 @@ const relayFormPageFactory = (
             {isEditing ? "Edit" : "New"} {resourceTitle}
           </h2>
           <SavingIndicator
-            isSaved={!isUpdatingFormChange && !isStagingFormChange}
+            isSaved={!isUpdatingFormChange && !isCommittingFormChange}
           />
         </header>
         <FormComponent
