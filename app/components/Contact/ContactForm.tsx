@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import { getContactsPageRoute } from "routes/pageRoutes";
 import { graphql, useFragment } from "react-relay";
 import { ContactForm_formChange$key } from "__generated__/ContactForm_formChange.graphql";
+import { commitFormChangeMutation$data } from "__generated__/commitFormChangeMutation.graphql";
+import { addContactToRevisionMutation$data } from "__generated__/addContactToRevisionMutation.graphql";
 
 interface Props extends FormComponentProps {
   formChange: ContactForm_formChange$key;
@@ -62,12 +64,17 @@ const ContactForm: React.FC<Props> = (props) => {
   ].every(Boolean);
 
   // If we don't have the projectContactFormId(means we don't have the primary contact form either) we need to create one
-  const existingProjectContactFormId = router?.query?.projectContactFormId;
+  const existingProjectContactFormId =
+    router?.query?.projectContactFormId.toString();
   const existingProjectContactFormRowId =
-    router?.query?.projectContactFormRowId;
+    router?.query?.projectContactFormRowId.toString();
 
-  const handleAfterFormSubmitting = (response: any) => {
-    const updateProjectContactFormChange = (res?: any) => {
+  const handleAfterFormSubmitting = (
+    response: commitFormChangeMutation$data
+  ) => {
+    const updateProjectContactFormChange = (
+      res?: addContactToRevisionMutation$data
+    ) => {
       updateProjectContactFormChangeMutation({
         variables: {
           input: {
@@ -77,7 +84,7 @@ const ContactForm: React.FC<Props> = (props) => {
             formChangePatch: {
               newFormData: {
                 contactId:
-                  response.updateFormChange.formChange.formDataRecordId,
+                  response.commitFormChange.formChange.formDataRecordId,
                 projectId: Number(router?.query?.projectId),
                 contactIndex: Number(router?.query?.contactIndex),
               },
