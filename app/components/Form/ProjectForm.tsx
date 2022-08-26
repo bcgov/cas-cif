@@ -297,7 +297,7 @@ const ProjectForm: React.FC<Props> = (props) => {
         <h2>Project Overview</h2>
         <UndoChangesButton formChangeIds={[revision.projectFormChange.rowId]} />
         <SavingIndicator
-          isSaved={!updatingProjectFormChange || !stagingFormChange}
+          isSaved={!updatingProjectFormChange && !stagingFormChange}
         />
       </header>
 

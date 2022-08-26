@@ -193,7 +193,7 @@ const ContactForm: React.FC<Props> = (props) => {
       <header>
         <h2>{isEditing ? "Edit" : "New"} Contact</h2>
         <SavingIndicator
-          isSaved={!isUpdatingContactFormChange || !isCommittingFormChange}
+          isSaved={!isUpdatingContactFormChange && !isCommittingFormChange}
         />
       </header>
       <FormBase

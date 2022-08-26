@@ -5,7 +5,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledContactFormTestQuery, {
   ContactFormTestQuery,
 } from "__generated__/ContactFormTestQuery.graphql";
-import { ContactForm_formChange } from "__generated__/ContactForm_formChange.graphql";
+import { ContactForm_formChange$data } from "__generated__/ContactForm_formChange.graphql";
 
 const testQuery = graphql`
   query ContactFormTestQuery @relay_test_operation {
@@ -17,7 +17,7 @@ const testQuery = graphql`
 
 const mockPayload = {
   FormChange() {
-    const result: Partial<ContactForm_formChange> = {
+    const result: Partial<ContactForm_formChange$data> = {
       newFormData: {
         email: "foo@example.com",
         phone: "+14155552671",
@@ -99,7 +99,7 @@ describe("The Contact Form component", () => {
   it("submits the form data when optional data is left out", () => {
     componentTestingHelper.loadQuery({
       FormChange() {
-        const result: Partial<ContactForm_formChange> = {
+        const result: Partial<ContactForm_formChange$data> = {
           newFormData: {
             email: "foo@example.com",
             givenName: "Scooby",
@@ -116,26 +116,27 @@ describe("The Contact Form component", () => {
     componentTestingHelper.renderComponent();
 
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "committed",
-        newFormData: {
-          email: "foo@example.com",
-          familyName: "Doo",
-          givenName: "Scooby",
+    componentTestingHelper.expectMutationToBeCalled(
+      "commitFormChangeMutation",
+      {
+        input: {
+          rowId: 42,
+          formChangePatch: {
+            newFormData: {
+              email: "foo@example.com",
+              familyName: "Doo",
+              givenName: "Scooby",
+            },
+          },
         },
-      },
-      id: "abc",
-    });
+      }
+    );
   });
 
   it("displays the correct validation errors when submit is clicked with invalid data", () => {
     const mockResolver = {
       FormChange() {
-        const result: Partial<ContactForm_formChange> = {
+        const result: Partial<ContactForm_formChange$data> = {
           newFormData: {
             email: "foo@example.com",
             phone: "+14155552671",
