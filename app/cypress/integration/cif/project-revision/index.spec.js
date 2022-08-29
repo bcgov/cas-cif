@@ -57,7 +57,6 @@ describe("the new project page", () => {
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 777);
-    cy.happoAndAxe("Project budgets Form", "filled", "main");
 
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
