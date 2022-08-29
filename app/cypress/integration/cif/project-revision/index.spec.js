@@ -45,7 +45,6 @@ describe("the new project page", () => {
     cy.findByText(/Submit contacts/i).click();
 
     // BUDGETS, EXPENSES AND PAYMENTS
-    cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
@@ -135,7 +134,7 @@ describe("the new project page", () => {
 
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByText(/Budgets/i).click();
+    cy.findByRole("link", { name: "Budgets" }).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
