@@ -82,8 +82,12 @@ export function ContactViewPage({
         <dt>Name</dt>
         <dd>{contact.fullName}</dd>
 
-        <dt>Phone</dt>
-        <dd>{contact.fullPhone}</dd>
+        {contact.fullPhone && (
+          <>
+            <dt>Phone</dt>
+            <dd>{contact.fullPhone}</dd>
+          </>
+        )}
 
         <dt>Email</dt>
         <dd>

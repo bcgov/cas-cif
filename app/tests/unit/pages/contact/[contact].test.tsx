@@ -53,7 +53,7 @@ describe("ContactViewPage", () => {
     expect(spy).toHaveBeenCalledWith(null);
   });
 
-  it("displays the contact data", () => {
+  it("displays all the contact data", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
@@ -61,7 +61,32 @@ describe("ContactViewPage", () => {
     expect(screen.getByText("(123) 456-7890")).toBeInTheDocument();
     expect(screen.getByText("foo@bar.com")).toBeInTheDocument();
     expect(screen.getByText("Test Position")).toBeInTheDocument();
+
     expect(screen.getByText("Edit")).toBeInTheDocument();
+  });
+
+  it("does not display labels for optional information if not included", () => {
+    pageTestingHelper.loadQuery({
+      Contact() {
+        return {
+          id: "mock-contact-id",
+          rowId: 42,
+          fullName: "Contact, Test",
+          fullPhone: null,
+          comments: null,
+          companyName: null,
+          contactPosition: null,
+          pendingFormChange: null,
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    expect(screen.queryByText("Phone")).not.toBeInTheDocument();
+    expect(screen.queryByText("Phone Extension")).not.toBeInTheDocument();
+    expect(screen.queryByText("Company")).not.toBeInTheDocument();
+    expect(screen.queryByText("Position")).not.toBeInTheDocument();
+    expect(screen.queryByText("Comments")).not.toBeInTheDocument();
   });
 
   it("renders a resume edit button when the contact already has a pending form change", () => {
