@@ -415,10 +415,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         ref={(el) => (formRefs.current[form.id] = el)}
                         formData={form.newFormData}
                         onChange={(change) => {
-                          updateFormChange(
-                            { ...form, changeStatus: "pending" },
-                            change.formData
-                          );
+                          updateFormChange({ ...form }, change.formData);
                         }}
                         schema={contactSchema}
                         uiSchema={uiSchema}
@@ -433,7 +430,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                             projectRevision.projectContactFormChanges.__id
                           }
                           projectContactFormId={form.id}
-                          projectContactFormRowId={primaryContactForm?.rowId}
+                          projectContactFormRowId={form?.rowId}
                           projectId={
                             projectRevision.projectFormChange.formDataRecordId
                           }
