@@ -41,4 +41,20 @@ describe("PhoneNumberWidget", () => {
     expect(screen.getByLabelText(/test phone/i)).toHaveValue("(250) 123-4567");
     expect(onChange).toHaveBeenCalledWith("+12501234567");
   });
+
+  it("allows clearing of an existing phone number (including clearing the country code)", () => {
+    const onChange = jest.fn();
+    render(
+      <PhoneNumberWidget
+        id="test-phone"
+        schema={{ title: "test phone", type: "string" }}
+        label="test phone"
+        value="+12501234567"
+        onChange={onChange}
+      />
+    );
+    userEvent.clear(screen.getByLabelText(/test phone/i));
+    expect(screen.getByLabelText(/test phone/i)).toHaveValue("(___) ___-____");
+    expect(onChange).toHaveBeenCalledWith(undefined);
+  });
 });
