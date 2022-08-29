@@ -1,0 +1,95 @@
+{
+  "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Milestone",
+    "required": ["description", "reportType", "reportDueDate"],
+    "properties": {
+      "description": {
+        "type": "string",
+        "title": "Milestone Description",
+        "default": "undefined"
+      },
+      "reportType": {
+        "type": "string",
+        "title": "Milestone Type",
+        "anyOf": "undefined",
+        "default": "undefined"
+      },
+      "hasExpenses": {
+        "type": "boolean"
+      },
+      "reportDueDate": {
+        "type": "string",
+        "title": "Report Due Date",
+        "default": "undefined"
+      },
+      "submittedDate": {
+        "type": "string",
+        "title": "Received Date",
+        "default": "undefined"
+      },
+      "substantialCompletionDate": {
+        "type": "string",
+        "title": "Substantial Completion Date",
+        "default": "undefined"
+      },
+      "certifiedBy": {
+        "type": "string",
+        "title": "Certifier"
+      },
+      "certifierProfessionalDesignation": {
+        "type": "string",
+        "title": "Professional Designation",
+        "default": "Professional Engineer",
+        "anyOf": "undefined"
+      }
+    },
+    "dependencies": {
+      "hasExpenses": {
+        "oneOf": [
+          {
+            "properties": {
+              "hasExpenses": {
+                "const": false
+              }
+            }
+          },
+          {
+            "properties": {
+              "hasExpenses": {
+                "const": true
+              },
+              "maximumAmount": {
+                "type": "number",
+                "title": "Maximum Amount",
+                "default": "undefined"
+              },
+              "totalEligibleExpenses": {
+                "type": "number",
+                "title": "Total Eligible Expenses",
+                "default": "undefined"
+              },
+              "adjustedGrossAmount": {
+                "type": "number",
+                "title": "Milestone Gross Payment Amount",
+                "default": "undefined"
+              },
+              "adjustedNetAmount": {
+                "type": "number",
+                "title": "Milestone Net Payment Amount",
+                "default": "undefined"
+              },
+              "dateSentToCsnr": {
+                "type": "string",
+                "title": "Date sent to CSNR",
+                "default": "undefined"
+              }
+            },
+            "required": ["maximumAmount", "dateSentToCsnr"]
+          }
+        ]
+      }
+    }
+  }
+}
