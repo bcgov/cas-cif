@@ -1,6 +1,6 @@
 begin;
 
-select plan(15);
+select plan(16);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -285,6 +285,27 @@ select is(
   ),
   'Not Started',
   'Returns Not Started when there are no form_change records for that table and that matcher and is_first_revision field is true'
+);
+
+-- Mock cif.get_form_status() to return 'Attention Required' and another status to ensure 'Attention Required' gets the highest priority.
+create or replace function cif.get_form_status(project_revision_id int, form_data_table_name text, json_matcher jsonb default '{}')
+returns setof text
+as
+$function$
+
+  select * from (
+    values ('Attention Required'), ('In Progress')
+  ) as t;
+$function$ language sql stable;
+
+select is (
+  (
+    select cif.project_revision_tasklist_status_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=4), 'test_table_with_extra_data')
+  ),
+  (
+    'Attention Required'::text
+  ),
+  'Returns Attention Required as a status when any form requires attention'
 );
 
 
