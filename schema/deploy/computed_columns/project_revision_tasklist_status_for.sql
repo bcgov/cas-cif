@@ -15,10 +15,10 @@ select
     case
       when ($2 is null)
         then null
-      when (select exists (select * from form_status where get_form_status = 'In Progress'))
-        then 'In Progress'
       when (select exists (select * from form_status where get_form_status = 'Attention Required'))
           then 'Attention Required'
+      when (select exists (select * from form_status where get_form_status = 'In Progress'))
+        then 'In Progress'
       -- If we have only another status that is not 'Not Started' and that status is 'Filled' then we are complete
       when (select count(distinct get_form_status) from form_status where get_form_status != 'Not Started') = 1
         and (select (select distinct get_form_status from form_status where get_form_status != 'Not Started')) = 'Filled'
