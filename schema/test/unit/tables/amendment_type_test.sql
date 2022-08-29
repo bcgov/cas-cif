@@ -1,6 +1,6 @@
 begin;
 
-select plan(11);
+select plan(6);
 
 select has_table('cif', 'amendment_type', 'table cif.amendment_type exists');
 
@@ -32,28 +32,6 @@ select is(
     'cif_admin can view all data in amendment_type table'
 );
 
-select lives_ok(
-  $$
-    insert into cif.amendment_type (name) values ('Test Status');
-  $$,
-    'cif_admin can insert data in amendment_type table'
-);
-
-select lives_ok(
-  $$
-    update cif.amendment_type set name='changed by admin' where name='Test Status';
-  $$,
-    'cif_admin can change data in amendment_type table'
-);
-
-select results_eq(
-  $$
-    select count(name) from cif.amendment_type where name= 'changed by admin'
-  $$,
-    ARRAY[1::bigint],
-    'Data was changed by cif_admin'
-);
-
 select throws_like(
   $$
     delete from cif.amendment_type where name='changed by admin';
@@ -70,22 +48,8 @@ select results_eq(
   $$
     select count(*) from cif.amendment_type
   $$,
-  ARRAY['4'::bigint],
+  ARRAY['3'::bigint],
     'cif_internal can view all data from amendment_type table'
-);
-
-select lives_ok(
-  $$
-    insert into cif.amendment_type (name) values ('Test Status 2');
-  $$,
-    'cif_internal can insert data in amendment_type table'
-);
-
-select lives_ok(
-  $$
-    update cif.amendment_type set name= 'changed by internal' where name='changed by admin';
-  $$,
-    'cif_internal can update data in the amendment_type table'
 );
 
 select throws_like(
