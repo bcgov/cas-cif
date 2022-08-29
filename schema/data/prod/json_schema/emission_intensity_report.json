@@ -1,0 +1,80 @@
+{
+  "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Project TEIMP reporting",
+    "required": [
+      "reportDueDate",
+      "measurementPeriodStartDate",
+      "measurementPeriodEndDate",
+      "emissionFunctionalUnit",
+      "baselineEmissionIntensity",
+      "targetEmissionIntensity"
+    ],
+    "properties": {
+      "reportDueDate": {
+        "type": "string",
+        "title": "Report Due Date",
+        "default": "undefined"
+      },
+      "submittedDate": {
+        "type": "string",
+        "title": "Received Date",
+        "default": "undefined"
+      },
+      "comments": {
+        "type": "string",
+        "title": "General Comments"
+      },
+      "measurementPeriodStartDate": {
+        "title": "Measurement period start date",
+        "type": "string"
+      },
+      "measurementPeriodEndDate": {
+        "title": "Measurement period end date",
+        "type": "string"
+      },
+      "emissionFunctionalUnit": {
+        "title": "Functional Unit",
+        "type": "string"
+      },
+      "productionFunctionalUnit": {
+        "title": "Production Functional Unit",
+        "type": "string"
+      },
+      "baselineEmissionIntensity": {
+        "title": "Base Line Emission Intensity (BEI)",
+        "type": "number"
+      },
+      "targetEmissionIntensity": {
+        "title": "Target Emission Intensity (TEI)",
+        "type": "number"
+      },
+      "postProjectEmissionIntensity": {
+        "title": "Post Project Emission Intensity",
+        "type": "number"
+      },
+      "totalLifetimeEmissionReduction": {
+        "title": "Total lifetime emissions reductions",
+        "type": "number"
+      },
+      "adjustedEmissionsIntensityPerformance": {
+        "title": "GHG Emission Intensity Performance",
+        "type": "number"
+      },
+      "calculatedPaymentPercentage": {
+        "title": "Payment percentage of performance milestone amount",
+        "type": "number"
+      },
+      "adjustedHoldbackPaymentAmount": {
+        "title": "Holdback Payment Amount",
+        "type": "number"
+      },
+      "dateSentToCsnr": {
+        "type": "string",
+        "title": "Date sent to CSNR",
+        "default": "undefined"
+      }
+    }
+  }
+}
