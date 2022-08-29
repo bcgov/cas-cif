@@ -10,6 +10,7 @@ interface Props {
   projectRevisionRowId: number;
   connectionString: string;
   projectContactFormId: string;
+  projectContactFormRowId: number;
   projectId: number;
   contactIndex: number;
 }
@@ -18,6 +19,7 @@ const NewContactButton: React.FC<Props> = ({
   projectRevisionRowId,
   connectionString,
   projectContactFormId,
+  projectContactFormRowId,
   projectId,
   contactIndex,
 }) => {
@@ -38,7 +40,8 @@ const NewContactButton: React.FC<Props> = ({
             projectId,
             contactIndex,
             projectRevisionRowId,
-            connectionString
+            connectionString,
+            projectContactFormRowId
           )
         );
       },

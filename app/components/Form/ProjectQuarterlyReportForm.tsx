@@ -13,6 +13,7 @@ import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
 import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -96,6 +97,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
+  const [applyStageFormChangeMutation, isStaging] =
+    useStageReportingRequirementFormChange();
+
   const [discardFormChange] = useDiscardReportingRequirementFormChange(
     "Quarterly",
     projectRevision.projectQuarterlyReportFormChanges.__id
@@ -129,7 +133,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       <header>
         <h2>Quarterly Reports</h2>
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
-        <SavingIndicator isSaved={!isUpdating && !isAdding} />
+        <SavingIndicator isSaved={!isUpdating && !isAdding && !isStaging} />
       </header>
       <h3>Status</h3>
       <Status
@@ -172,6 +176,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     deleteReportFormChange(
                       discardFormChange,
                       quarterlyReport.id,
+                      quarterlyReport.rowId,
                       quarterlyReport.operation,
                       formRefs
                     )
@@ -190,7 +195,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                     updateReportFormChange(
                       applyUpdateFormChangeMutation,
                       "Quarterly",
-                      { ...quarterlyReport, changeStatus: "pending" },
+                      { ...quarterlyReport },
                       change.formData
                     );
                   }}
@@ -211,14 +216,14 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         variant="primary"
         onClick={() =>
           stageReportFormChanges(
-            applyUpdateFormChangeMutation,
+            applyStageFormChangeMutation,
             props.onSubmit,
             formRefs,
             projectRevision.projectQuarterlyReportFormChanges.edges,
             "Quarterly"
           )
         }
-        disabled={isUpdating}
+        disabled={isUpdating || isStaging}
       >
         Submit Quarterly Reports
       </Button>

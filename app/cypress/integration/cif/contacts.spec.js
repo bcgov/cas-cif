@@ -38,18 +38,11 @@ describe("The contacts page", () => {
   });
 
   it("Shows correct validation errors", () => {
+    cy.sqlFixture("dev/003_cif_contact");
     cy.visit("/cif/contacts");
     cy.get("h2").contains("Contacts");
     cy.get("button").contains("Add").click();
-    cy.get("input[aria-label='Given Name']").should("be.visible").type("A");
-    cy.get("input[aria-label='Family Name']").type("B");
-    cy.get("input[aria-label=Email]").type("foo@bar.ca");
-    cy.get("input[aria-label=Phone]").type("1234567890");
-    cy.contains("Changes saved").should("be.visible");
-    cy.get("button").contains("Submit").click();
-    cy.url().should("include", "/cif/contacts");
-    cy.get("button").contains("Add").click();
-    cy.get("input[aria-label=Email]").type("foo@bar.ca");
+    cy.get("input[aria-label=Email]").type("bob.l001@example.com");
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit").click();
     cy.contains("email already exists").should("be.visible");

@@ -31,14 +31,14 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add managers
-    cy.findByText(/Add project managers/i).click();
+    cy.url().should("include", "/form/1");
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project manager Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add contacts
-    cy.findByText(/Add project contacts/i).click();
+    cy.url().should("include", "/form/2");
     cy.fillContactsForm(
       "Loblaw003",
       "bob.l003@example.com",
@@ -50,8 +50,6 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add budgets, expenses, and payments
-    cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByRole("link", { name: /add budgets/i }).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     // checking default values
@@ -71,19 +69,18 @@ describe("when creating a project, the project page", () => {
 
     // add milestone reports
 
-    cy.findByRole("link", { name: /Milestone reports/i }).click();
-    cy.findByText(/Add another milestone report/i).click();
-
     cy.url().should("include", "/form/4");
+    cy.findByText(/Add another milestone report/i).click();
     cy.get('[aria-label="Milestone Description"]').clear().type("desc");
     cy.get('[aria-label="Maximum Amount"]').clear().type(100);
     cy.get('[aria-label="Total Eligible Expenses"]').clear().type(100);
     cy.addDueDate(0, "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
-    cy.findByRole("button", { name: /^submit/i }).click();
     cy.findAllByRole("status").first().should("have.text", "Late");
+    cy.findByRole("button", { name: /^submit/i }).click();
 
+    cy.url().should("include", "/form/5");
     //add quarterly reports
     cy.addQuarterlyReport(
       1,
@@ -107,7 +104,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/^submit/i).click();
 
     // add teimp reports
-    cy.findByRole("link", { name: /Emissions Intensity Report/i }).click();
+    cy.url().should("include", "/form/6");
     cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
     cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
     cy.findAllByText("tCO2e").should("have.length", 4);
@@ -126,6 +123,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Submit TEIMP Report/).click();
 
     // No annual reports
+    cy.url().should("include", "/form/7");
     cy.findByText(/Submit Annual Reports/i).click();
 
     //review and submit

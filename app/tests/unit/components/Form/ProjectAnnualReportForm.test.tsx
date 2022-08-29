@@ -198,64 +198,21 @@ describe("The ProjectAnnualReportForm", () => {
     expect(validateFormWithErrors).toHaveBeenCalledTimes(2);
   });
 
-  it("stages the form changes when the `submit` button is clicked", () => {
+  it("calls the correct mutation when the `submit` button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     screen.getByText(/submit/i).click();
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
-    });
-  });
 
-  it("reverts the form_change status to 'pending' when editing", async () => {
-    const mockResolver = {
-      ...defaultMockResolver,
-      ProjectRevision(context, generateID) {
-        return {
-          projectAnnualReportFormChanges: {
-            edges: [
-              {
-                node: {
-                  id: `mock-project-Annual-report-form-${generateID()}`,
-                  newFormData: {
-                    reportDueDate: "2022-01-01T00:00:00-07",
-                    projectId: 51,
-                    reportType: "Annual",
-                  },
-                  operation: "CREATE",
-                  changeStatus: "staged",
-                  formChangeByPreviousFormChangeId: null,
-                },
-              },
-            ],
-            __id: "client:mock:__connection_projectAnnualReportFormChanges_connection",
-          },
-        };
-      },
-    };
-    componentTestingHelper.loadQuery(mockResolver);
-    componentTestingHelper.renderComponent();
-
-    userEvent.type(
-      screen.getByLabelText(/General Comments \(optional\)/),
-      "comments"
-    );
-
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: {
-          comments: "comments",
-          projectId: 51,
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 58,
+          formChangePatch: expect.any(Object),
         },
-      },
-    });
+        reportType: "Annual",
+      }
+    );
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {

@@ -27,18 +27,21 @@ interface Props {
   milestoneReport: {
     milestoneFormChange: {
       id: string;
+      rowId: number;
       newFormData: object;
       changeStatus: string;
     };
     operation: "CREATE" | "UPDATE" | "ARCHIVE";
     paymentFormChange: {
       id: string;
+      rowId: number;
       newFormData: object;
       changeStatus: string;
       operation: "CREATE" | "UPDATE" | "ARCHIVE";
     };
     reportingRequirementFormChange: {
       id: string;
+      rowId: number;
       newFormData: { reportDueDate: string; reportType: string };
       changeStatus: string;
       asReportingRequirement: ProjectMilestoneReportForm_reportingRequirement$key;
@@ -98,6 +101,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
       discardFormChange({
         formChange: {
           id: milestoneReport.paymentFormChange.id,
+          rowId: milestoneReport.paymentFormChange.rowId,
           operation: milestoneReport.paymentFormChange.operation,
         },
         onCompleted: () => {
@@ -127,7 +131,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
       updateFormChange({
         variables: {
           input: {
-            id: milestoneReport.paymentFormChange.id,
+            rowId: milestoneReport.paymentFormChange.rowId,
             formChangePatch: {
               operation: "UPDATE",
             },
@@ -224,9 +228,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
           updateFormChange({
             variables: {
               input: {
-                id: milestoneReport.milestoneFormChange.id,
+                rowId: milestoneReport.milestoneFormChange.rowId,
                 formChangePatch: {
-                  changeStatus: "pending",
                   newFormData: change.formData,
                 },
               },
@@ -263,9 +266,8 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
             updateFormChange({
               variables: {
                 input: {
-                  id: milestoneReport.paymentFormChange.id,
+                  rowId: milestoneReport.paymentFormChange.rowId,
                   formChangePatch: {
-                    changeStatus: "pending",
                     newFormData: change.formData,
                   },
                 },

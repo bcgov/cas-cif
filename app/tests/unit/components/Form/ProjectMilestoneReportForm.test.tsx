@@ -298,38 +298,50 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(validateFormWithErrors).toHaveBeenCalledTimes(5);
   });
 
-  it("stages the form changes when the `submit` button is clicked", () => {
+  it("stages the form changes when the `submit` button is clicked", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    userEvent.click(screen.getByText(/submit milestone reports/i));
+    await userEvent.click(screen.getByText(/submit milestone reports/i));
 
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
-    });
-  });
-
-  it("reverts the form_change status to 'pending' when editing", async () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    userEvent.type(screen.getAllByLabelText(/description/i)[0], " edited");
-
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: {
-          description: "i am the first description edited",
-          projectId: 51,
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: {
+            newFormData: {
+              reportDueDate: "2022-01-01",
+              projectId: 51,
+              reportType: "General Milestone",
+              description: "i am the first description",
+              reportingRequirementIndex: 1,
+            },
+          },
         },
-      },
-    });
+        reportType: "General Milestone",
+      }
+    );
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 2,
+          formChangePatch: {
+            newFormData: {
+              reportDueDate: "2022-10-28",
+              projectId: 51,
+              reportType: "Reporting Milestone",
+              submittedDate: "2022-05-02",
+              description: "i am the second description",
+              reportingRequirementIndex: 2,
+            },
+          },
+        },
+        reportType: "General Milestone",
+      }
+    );
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
@@ -395,7 +407,7 @@ describe("The ProjectMilestoneReportForm", () => {
       {
         reportType: "Milestone",
         input: {
-          id: expect.any(String),
+          rowId: 2,
           formChangePatch: {
             newFormData: {
               reportType: "General Milestone",
@@ -405,7 +417,6 @@ describe("The ProjectMilestoneReportForm", () => {
               description: "i am the second description",
               reportingRequirementIndex: 2,
             },
-            changeStatus: "pending",
           },
         },
       }
@@ -460,9 +471,8 @@ describe("The ProjectMilestoneReportForm", () => {
     componentTestingHelper.expectMutationToBeCalled(
       "updateReportingRequirementFormChangeMutation",
       {
-        reportType: "Milestone",
         input: {
-          id: "mock-project-milestone-report-form-2",
+          rowId: 1,
           formChangePatch: {
             newFormData: {
               reportType: "Reporting Milestone",
@@ -471,9 +481,9 @@ describe("The ProjectMilestoneReportForm", () => {
               description: "i am the first description",
               reportingRequirementIndex: 1,
             },
-            changeStatus: "pending",
           },
         },
+        reportType: "Milestone",
       }
     );
 
@@ -523,7 +533,7 @@ describe("The ProjectMilestoneReportForm", () => {
             edges: [
               {
                 node: {
-                  id: `mock-payment-id`,
+                  id: `mock-payment-id-2`,
                   rowId: 1,
                   newFormData: {
                     reportingRequirementId: 1,
@@ -554,7 +564,7 @@ describe("The ProjectMilestoneReportForm", () => {
       "updateFormChangeMutation",
       {
         input: {
-          id: "mock-payment-id",
+          rowId: 1,
           formChangePatch: {
             operation: "UPDATE",
           },

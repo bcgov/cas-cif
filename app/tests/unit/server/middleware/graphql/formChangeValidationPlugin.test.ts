@@ -18,18 +18,6 @@ const getMockContext = (mockedSchemaName?: string) => {
   };
 };
 
-const getMockResolveInfo = (mockReturnedIdentifier?: number) => {
-  return {
-    graphile: {
-      build: {
-        getTypeAndIdentifiersFromNodeId: jest.fn().mockReturnValue({
-          identifiers: [mockReturnedIdentifier ?? 123],
-        }),
-      },
-    },
-  } as any;
-};
-
 describe("The postgraphile form validation plugin", () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -45,6 +33,28 @@ describe("The postgraphile form validation plugin", () => {
 
     expect(filter(testContext)).toEqual({});
   });
+
+  it("Has a filter method that returns an empty object for the stageFormChange mutation", () => {
+    const testContext = {
+      scope: {
+        isRootMutation: true,
+        fieldName: "stageFormChange",
+      },
+    };
+
+    expect(filter(testContext)).toEqual({});
+  });
+
+  it("Has a filter method that returns an empty object for the commitFormChange mutation", () => {
+    const testContext = {
+      scope: {
+        isRootMutation: true,
+        fieldName: "commitFormChange",
+      },
+    };
+
+    expect(filter(testContext)).toEqual({});
+  });
   it("Has a filter method that returns undefined if the operation is not a mutation", () => {
     const testContext = {
       scope: {
@@ -55,7 +65,7 @@ describe("The postgraphile form validation plugin", () => {
 
     expect(filter(testContext)).toBeNull();
   });
-  it("Has a filter method that returns undefined if the mutation is not updateFormChange", () => {
+  it("Has a filter method that returns undefined if the mutation is not updateFormChange | stageFormChange | commitFormChange", () => {
     const testContext = {
       scope: {
         isRootMutation: true,
@@ -69,7 +79,13 @@ describe("The postgraphile form validation plugin", () => {
   it("Calls the postgraphile resolver with no arguments if there is no change to the form data", async () => {
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
-    await wrappedResolverUnderTest(mockResolver, {}, {}, {}, {} as any);
+    await wrappedResolverUnderTest(
+      mockResolver,
+      {},
+      { input: { rowId: 1, formChangePatch: {} } },
+      {},
+      {} as any
+    );
 
     expect(mockResolver).toHaveBeenCalledTimes(1);
     expect(mockResolver).toHaveBeenCalledWith();
@@ -82,13 +98,13 @@ describe("The postgraphile form validation plugin", () => {
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
     const testContext = getMockContext("some_schema_name");
-    const testResolveInfo = getMockResolveInfo();
 
     await wrappedResolverUnderTest(
       mockResolver,
       {},
       {
         input: {
+          rowId: 1,
           formChangePatch: {
             newFormData: {
               column: "value",
@@ -97,7 +113,7 @@ describe("The postgraphile form validation plugin", () => {
         },
       },
       testContext,
-      testResolveInfo
+      {} as any
     );
 
     expect(mockValidationFunction).toHaveBeenCalledTimes(1);
@@ -109,7 +125,7 @@ describe("The postgraphile form validation plugin", () => {
       {},
       expect.anything(), //testing this in the next test
       testContext,
-      testResolveInfo
+      {}
     );
   });
   it("Adds the validation errors to the mutation arguments when calling the postgraphile resolver", async () => {
@@ -121,13 +137,13 @@ describe("The postgraphile form validation plugin", () => {
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
     const testContext = getMockContext("schema_name");
-    const testResolveInfo = getMockResolveInfo();
 
     await wrappedResolverUnderTest(
       mockResolver,
       {},
       {
         input: {
+          rowId: 1,
           formChangePatch: {
             newFormData: {
               column: "value",
@@ -136,7 +152,7 @@ describe("The postgraphile form validation plugin", () => {
         },
       },
       testContext,
-      testResolveInfo
+      {} as any
     );
 
     expect(mockValidationFunction).toHaveBeenCalledTimes(1);
@@ -149,6 +165,7 @@ describe("The postgraphile form validation plugin", () => {
       {},
       {
         input: {
+          rowId: 1,
           formChangePatch: {
             newFormData: {
               column: "value",
@@ -158,7 +175,7 @@ describe("The postgraphile form validation plugin", () => {
         },
       },
       testContext,
-      testResolveInfo
+      {} as any
     );
   });
 });

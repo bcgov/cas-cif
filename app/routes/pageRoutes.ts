@@ -31,12 +31,14 @@ export const getContactFormPageRoute = (
   projectId?: number,
   contactIndex?: number,
   projectRevisionRowId?: number,
-  connectionString?: string
+  connectionString?: string,
+  projectContactFormRowId?: number
 ) => ({
   pathname: `/cif/contact/form/[contactForm]/`,
   query: {
     contactForm: contactFormId,
     projectContactFormId: projectContactFormId,
+    projectContactFormRowId: projectContactFormRowId,
     projectId: projectId,
     contactIndex: contactIndex,
     projectRevisionRowId: projectRevisionRowId,

@@ -13,7 +13,12 @@ import {
 } from "__generated__/deleteManagerFromRevisionWithArchiveMutation.graphql";
 
 interface DeleteManagerOptions {
-  context: { operation: string; id: string; projectRevision: string };
+  context: {
+    operation: string;
+    id: string;
+    rowId: number;
+    projectRevision: string;
+  };
   onCompleted?: (
     response:
       | deleteManagerFromRevisionMutation$data
@@ -121,7 +126,7 @@ export const useDeleteManagerFromRevisionMutation = (): [
       const variables: deleteManagerFromRevisionWithArchiveMutation$variables =
         {
           input: {
-            id: context.id,
+            rowId: context.rowId,
             formChangePatch: {
               operation: "ARCHIVE",
             },

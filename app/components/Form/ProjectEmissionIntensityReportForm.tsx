@@ -8,7 +8,6 @@ import { JSONSchema7 } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { ProjectEmissionIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportForm_projectRevision.graphql";
-
 import { Button } from "@button-inc/bcgov-theme";
 import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/addEmissionIntensityReportToRevision";
 import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
@@ -16,7 +15,8 @@ import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
 import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
-import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
+import { useStageEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/stageEmissionIntensityFormChange";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 import getDurationFromDates from "lib/helpers/getDurationFromDates";
@@ -173,13 +173,18 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     updateEmissionsIntensityReportFormChange,
     isUpdatingEmissionsIntensityReportFormChange,
   ] = useUpdateEmissionIntensityReportFormChange();
-  const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
-  const handleChange = (
-    formChangeObject,
-    changeData,
-    changeStatus: "staged" | "pending"
-  ) => {
+  const [
+    applyStageReportingRequirementFormChangeMutation,
+    isStagingReportingRequirement,
+  ] = useStageReportingRequirementFormChange();
+
+  const [
+    applyStageEmissionIntensityFormChangeMutation,
+    isStagingEmissionIntensity,
+  ] = useStageEmissionIntensityFormChange();
+
+  const handleChange = (formChangeObject, changeData) => {
     // don't trigger a change if the form data is an empty object
     if (changeData && Object.keys(changeData).length === 0) return;
 
@@ -190,10 +195,9 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     updateEmissionsIntensityReportFormChange({
       variables: {
         input: {
-          id: formChangeObject.id,
+          rowId: formChangeObject.rowId,
           formChangePatch: {
             newFormData: updatedFormData,
-            changeStatus: changeStatus,
           },
         },
       },
@@ -202,7 +206,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           formChange: {
             id: formChangeObject.id,
             newFormData: updatedFormData,
-            changeStatus: changeStatus,
+            changeStatus: "pending",
           },
         },
       },
@@ -277,11 +281,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }}
             uiSchema={emissionIntensityReportingRequirementUiSchema}
             onChange={(change) =>
-              handleChange(
-                reportingRequirementFormChange,
-                change.formData,
-                "pending"
-              )
+              handleChange(reportingRequirementFormChange, change.formData)
             }
           />
           <FormBase
@@ -315,11 +315,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               true
             )}
             onChange={(change) =>
-              handleChange(
-                emissionIntensityReportFormChange,
-                change.formData,
-                "pending"
-              )
+              handleChange(emissionIntensityReportFormChange, change.formData)
             }
           />
           <Button
@@ -327,7 +323,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             variant="primary"
             onClick={() => {
               stageReportFormChanges(
-                updateEmissionsIntensityReportFormChange,
+                applyStageReportingRequirementFormChangeMutation,
                 props.onSubmit,
                 formRefs,
                 [
@@ -336,13 +332,14 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
                   ...projectRevision.emissionIntensityReportFormChange.edges,
                 ],
                 "TEIMP",
-                updateFormChange
+                applyStageEmissionIntensityFormChangeMutation
               );
             }}
             disabled={
               isAddingEmissionsIntensityReportFormChange ||
               isUpdatingEmissionsIntensityReportFormChange ||
-              isUpdatingFormChange
+              isStagingReportingRequirement ||
+              isStagingEmissionIntensity
             }
           >
             Submit TEIMP Report

@@ -10,6 +10,9 @@ create or replace function cif_private.import_swrs_operators_from_fdw(
 )
 returns void as
 $function$
+declare
+  form_change_ids int[];
+  form_change_id int;
 begin
 
   execute
@@ -58,46 +61,56 @@ begin
             cif_operator.swrs_legal_name != business_legal_name
           or
             cif_operator.swrs_trade_name != english_trade_name
-      )
-      insert into cif.form_change(
-        new_form_data,
-        operation,
-        form_data_schema_name,
-        form_data_table_name,
-        form_data_record_id,
-        project_revision_id,
-        change_status,
-        json_schema_name
-      ) (
-        select
-          format('{
-              "swrsOrganisationId": %%s,
-              "swrsLegalName": "%%s",
-              "swrsTradeName": "%%s",
-              "legalName": "%%s",
-              "tradeName": "%%s"
-            }',
-            operators_to_insert.swrs_organisation_id,
-            operators_to_insert.swrs_legal_name,
-            operators_to_insert.swrs_trade_name,
-            operators_to_insert.legal_name,
-            operators_to_insert.trade_name
-          )::jsonb,
-          case
-            when operators_to_insert.existing_operator_id is null
-              then 'create'::cif.form_change_operation
-              else 'update'::cif.form_change_operation
-          end,
-          'cif',
-          'operator',
-          operators_to_insert.existing_operator_id,
-          null,
-          'committed',
-          'operator'
-        from operators_to_insert
-      )
+      ),
+      inserted_ids as (
+        insert into cif.form_change(
+          new_form_data,
+          operation,
+          form_data_schema_name,
+          form_data_table_name,
+          form_data_record_id,
+          project_revision_id,
+          change_status,
+          json_schema_name
+        ) (
+          select
+            format('{
+                "swrsOrganisationId": %%s,
+                "swrsLegalName": "%%s",
+                "swrsTradeName": "%%s",
+                "legalName": "%%s",
+                "tradeName": "%%s"
+              }',
+              operators_to_insert.swrs_organisation_id,
+              operators_to_insert.swrs_legal_name,
+              operators_to_insert.swrs_trade_name,
+              operators_to_insert.legal_name,
+              operators_to_insert.trade_name
+            )::jsonb,
+            case
+              when operators_to_insert.existing_operator_id is null
+                then 'create'::cif.form_change_operation
+                else 'update'::cif.form_change_operation
+            end,
+            'cif',
+            'operator',
+            operators_to_insert.existing_operator_id,
+            null,
+            'pending',
+            'operator'
+          from operators_to_insert
+        ) returning id
+      ) select array_agg(id) from inserted_ids
     $$
-    , quote_ident($1), quote_ident($2));
+    , quote_ident($1), quote_ident($2)) into form_change_ids;
+
+
+    if form_change_ids is not null then
+      foreach form_change_id in ARRAY form_change_ids
+      loop
+        perform cif_private.commit_form_change_internal((select row(form_change.*)::cif.form_change from cif.form_change where id = form_change_id));
+      end loop;
+    end if;
 
 end;
 $function$ language plpgsql;

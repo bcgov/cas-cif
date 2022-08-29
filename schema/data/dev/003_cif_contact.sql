@@ -1,6 +1,8 @@
 begin;
 
 do $$
+  declare
+    temp_id int;
   begin
     for index in 1..50 loop
       insert into cif.form_change(
@@ -21,7 +23,9 @@ do $$
           'contactPosition', 'Manager',
           'comments', 'lorem ipsum dolor sit amet consectetur adipiscing elit 🚀'
           ),
-        'create', 'cif', 'contact', 'committed', 'project_contact');
+        'create', 'cif', 'contact', 'pending', 'project_contact') returning id into temp_id;
+
+      perform cif_private.commit_form_change_internal((select row(form_change.*)::cif.form_change from cif.form_change where id = temp_id));
     end loop;
   end
 $$;

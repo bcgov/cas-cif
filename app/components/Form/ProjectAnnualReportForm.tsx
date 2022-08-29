@@ -14,6 +14,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useAddReportingRequirementToRevision } from "mutations/ProjectReportingRequirement/addReportingRequirementToRevision";
 import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
 import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportForm_projectRevision$key } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
@@ -53,7 +54,6 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     graphql`
       fragment ProjectAnnualReportForm_projectRevision on ProjectRevision {
         id
-        # eslint-disable-next-line relay/unused-fields
         rowId
         projectAnnualReportFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
@@ -104,6 +104,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
   const [applyUpdateFormChangeMutation, isUpdating] =
     useUpdateReportingRequirementFormChange();
 
+  const [applyStageFormChangeMutation, isStaging] =
+    useStageReportingRequirementFormChange();
+
   const [discardFormChange] = useDiscardReportingRequirementFormChange(
     "Annual",
     projectRevision.projectAnnualReportFormChanges.__id
@@ -137,7 +140,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
       <header>
         <h2>Annual Reports</h2>
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
-        <SavingIndicator isSaved={!isUpdating && !isAdding} />
+        <SavingIndicator isSaved={!isUpdating && !isAdding && !isStaging} />
       </header>
       <h3>Status</h3>
       <Status
@@ -181,6 +184,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                     deleteReportFormChange(
                       discardFormChange,
                       report.id,
+                      report.rowId,
                       report.operation,
                       formRefs
                     )
@@ -199,7 +203,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                     updateReportFormChange(
                       applyUpdateFormChangeMutation,
                       "Annual",
-                      { ...report, changeStatus: "pending" },
+                      { ...report },
                       change.formData
                     );
                   }}
@@ -220,14 +224,14 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         variant="primary"
         onClick={() =>
           stageReportFormChanges(
-            applyUpdateFormChangeMutation,
+            applyStageFormChangeMutation,
             props.onSubmit,
             formRefs,
             projectRevision.projectAnnualReportFormChanges.edges,
             "Annual"
           )
         }
-        disabled={isUpdating}
+        disabled={isUpdating || isStaging}
       >
         Submit Annual Reports
       </Button>

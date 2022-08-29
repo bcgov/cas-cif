@@ -38,6 +38,7 @@ describe("the useDiscardFormChange hook", () => {
     discardFormChange({
       formChange: {
         id: "form-change-id",
+        rowId: 42,
         operation: "CREATE",
       },
       onCompleted,
@@ -63,6 +64,7 @@ describe("the useDiscardFormChange hook", () => {
     discardFormChange({
       formChange: {
         id: "form-change-id",
+        rowId: 42,
         operation: "CREATE",
       },
       onCompleted,
@@ -88,6 +90,7 @@ describe("the useDiscardFormChange hook", () => {
     discardFormChange({
       formChange: {
         id: "form-change-id",
+        rowId: 42,
         operation: "UPDATE",
       },
       onCompleted,
@@ -96,7 +99,7 @@ describe("the useDiscardFormChange hook", () => {
     expect(updateFormChange).toHaveBeenCalledWith({
       variables: {
         input: {
-          id: "form-change-id",
+          rowId: 42,
           formChangePatch: { operation: "ARCHIVE" },
         },
       },
@@ -105,7 +108,7 @@ describe("the useDiscardFormChange hook", () => {
       optimisticResponse: {
         updateFormChange: {
           formChange: {
-            id: "form-change-id",
+            rowId: 42,
             operation: "ARCHIVE",
             newFormData: {},
           },

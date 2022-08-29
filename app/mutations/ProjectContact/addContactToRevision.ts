@@ -12,7 +12,7 @@ const mutation = graphql`
         cursor
         node {
           id
-          newFormData
+          rowId
           projectRevisionByProjectRevisionId {
             ...ProjectContactForm_projectRevision
             ...TaskList_projectRevision

@@ -45,10 +45,10 @@ describe("the new project page", () => {
     cy.findByText(/Submit contacts/i).click();
 
     // BUDGETS, EXPENSES AND PAYMENTS
-    cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
+    cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
     cy.get('[aria-label="Province Share Percentage"]').should(
       "have.value",
@@ -57,7 +57,6 @@ describe("the new project page", () => {
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
     cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 777);
-    cy.happoAndAxe("Project budgets Form", "empty", "main");
 
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
@@ -135,7 +134,7 @@ describe("the new project page", () => {
 
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByText("budgets").click();
+    cy.findByRole("link", { name: "Budgets" }).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(

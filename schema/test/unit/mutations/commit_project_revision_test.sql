@@ -1,0 +1,155 @@
+begin;
+
+select plan(7);
+
+/** BEGIN SETUP **/
+truncate table
+  cif.form_change,
+  cif.project_revision,
+  cif.project,
+  cif.project_contact,
+  cif.contact,
+  cif.project_manager,
+  cif.operator,
+  cif.attachment,
+  cif.emission_intensity_report,
+  cif.milestone_report,
+  cif.reporting_requirement,
+  cif.payment,
+  cif.funding_parameter,
+  cif.additional_funding_source
+restart identity;
+
+insert into cif.operator(legal_name) values ('test operator');
+insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
+
+select cif.create_project();
+
+update cif.form_change set new_form_data='{
+      "projectName": "name",
+      "summary": "lorem ipsum",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=1
+    and form_data_table_name='project';
+
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  project_revision_id
+)
+  values
+(
+  json_build_object(
+    'projectId', 1,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'create', 'cif', 'project_contact', 'project_contact', 1
+);
+
+/** END SETUP **/
+
+-- make sure the function exists
+select has_function('cif', 'commit_project_revision', ARRAY['integer'], 'Function commit_project_revision should exist');
+
+-- propagates the status change to all form changes no matter what
+-- make sure project_revision and form changes are created with change status 'pending'
+select results_eq(
+  $$
+    select change_status from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1);
+  $$,
+  $$
+    values ('pending'::varchar), ('pending'::varchar);
+  $$,
+  'Two form changes should be initialized with the pending status'
+);
+
+-- make sure project_revision has a null project id
+select results_eq(
+  $$
+    select project_id from cif.project_revision where id=(select id from cif.project_revision order by id desc limit 1);
+  $$,
+  $$
+    values (null::integer);
+  $$,
+  'project id should be null before the project is committed'
+);
+
+-- call the mutation
+select results_eq(
+  $$
+    select id, change_status, project_id from cif.commit_project_revision(1);
+  $$,
+  $$
+    values (1::int, 'committed'::varchar, 1::int);
+  $$,
+  'commit_project_revision returns the committed record'
+);
+
+-- make sure project_revision has a project id equal to the one that was in the form
+select is(
+  (select project_id from cif.project_revision),
+  (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
+  'revision project_id should be set to the project_id that was in the form'
+);
+
+-- make sure project_contact has a project id equal to the one that was in the form
+select is(
+  (select project_id from cif.project_contact),
+  (select form_data_record_id from cif.form_change where project_revision_id=(select id from cif.project_revision order by id desc limit 1) and form_data_table_name='project'),
+  'project_contact project_id should be set to the project_id that was in the form'
+);
+
+/** Create a second set of records to check our deferred constraints **/
+select cif.create_project();
+
+update cif.form_change set new_form_data='{
+      "projectName": "name",
+      "summary": "lorem ipsum",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=2
+    and form_data_table_name='project';
+
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  project_revision_id
+)
+  values
+(
+  json_build_object(
+    'projectId', 2,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'create', 'cif', 'project_contact', 'project_contact', 2
+);
+
+-- Delete the project form_change to create a broken foreign key constraint
+delete from cif.form_change where form_data_table_name = 'project' and project_revision_id=2;
+
+select throws_like(
+  $$
+    select cif.commit_project_revision(2);
+  $$,
+  'insert or update on table "project_contact" violates foreign key constraint%',
+  'Constraints are checked at the end of the transaction and fail if a foreign key relation does not exist'
+);
+
+select finish();
+
+rollback;

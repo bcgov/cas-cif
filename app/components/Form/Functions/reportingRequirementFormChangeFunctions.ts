@@ -5,8 +5,13 @@ import { ProjectMilestoneReportFormGroup_projectRevision$data } from "__generate
 import { ProjectQuarterlyReportForm_projectRevision$data } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import { ProjectAnnualReportForm_projectRevision$data } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
-import { updateReportingRequirementFormChangeMutation$variables } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
+import {
+  updateReportingRequirementFormChangeMutation$data,
+  updateReportingRequirementFormChangeMutation$variables,
+} from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
 import { updateFormChangeMutation$variables } from "__generated__/updateFormChangeMutation.graphql";
+import { DiscardFormChangeOptions } from "hooks/useConfigurableDiscardFormChange";
+import { discardReportingRequirementFormChangeMutation$data } from "__generated__/discardReportingRequirementFormChangeMutation.graphql";
 
 /**
  * These generic functions are for use in the ProjectMilestoneReportFormGroup, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
@@ -54,10 +59,9 @@ export const updateReportFormChange = (
     variables: {
       reportType: reportType,
       input: {
-        id: formChange.id,
+        rowId: formChange.rowId,
         formChangePatch: {
           newFormData,
-          changeStatus: formChange.changeStatus,
         },
       },
     },
@@ -75,16 +79,23 @@ export const updateReportFormChange = (
 };
 
 export const deleteReportFormChange = (
-  mutationFn: (args: {
-    formChange: { id: string; operation: "ARCHIVE" | "CREATE" | "UPDATE" };
-    onCompleted: () => void;
-  }) => void,
+  mutationFn: (
+    args: DiscardFormChangeOptions<
+      discardReportingRequirementFormChangeMutation$data,
+      updateReportingRequirementFormChangeMutation$data
+    >
+  ) => void,
   formChangeId: string,
+  formChangeRowId: number,
   formChangeOperation: FormChangeOperation,
   formRefs: MutableRefObject<{}>
 ) => {
   mutationFn({
-    formChange: { id: formChangeId, operation: formChangeOperation },
+    formChange: {
+      rowId: formChangeRowId,
+      id: formChangeId,
+      operation: formChangeOperation,
+    },
     onCompleted: () => {
       delete formRefs.current[formChangeId];
     },
@@ -122,9 +133,9 @@ export const stageReportFormChanges = async (
   formChangeEdges.forEach(({ node }) => {
     const defaultVariables = {
       input: {
-        id: node.id,
+        rowId: node.rowId,
         formChangePatch: {
-          changeStatus: "staged",
+          newFormData: node.newFormData,
         },
       },
     };
@@ -135,7 +146,7 @@ export const stageReportFormChanges = async (
            to handle staging. Doing this allows us to stage all dependent form_change records for a report together & define
            how to update each those form_change records.
         */
-        if (reportType)
+        if (node?.newFormData?.reportType)
           mutationFn({
             variables: {
               reportType: reportType,
@@ -169,9 +180,11 @@ export const stageReportFormChanges = async (
   }
 };
 
-export const getSortedReports = (formChangeEdges) => {
+export const getSortedReports = function <T>(
+  formChangeEdges: readonly { node: T }[]
+) {
   const filteredReports = formChangeEdges
-    .map(({ node }) => node)
+    .map(({ node }) => node as any)
     .filter((report) => report.operation !== "ARCHIVE");
 
   filteredReports.sort(
@@ -179,11 +192,11 @@ export const getSortedReports = (formChangeEdges) => {
       a.newFormData.reportingRequirementIndex -
       b.newFormData.reportingRequirementIndex
   );
-  const nextIndex =
+  const nextIndex: number =
     filteredReports.length > 0
       ? filteredReports[filteredReports.length - 1].newFormData
           .reportingRequirementIndex + 1
       : 1;
 
-  return [filteredReports, nextIndex];
+  return [filteredReports, nextIndex] as [readonly T[], number];
 };

@@ -122,3 +122,15 @@ mutations/add_additional_funding_source_to_revision 2022-08-11T20:07:28Z Sepehr 
 mutations/create_project_revision [mutations/create_project_revision@1.0.0-rc.4] 2022-08-17T23:16:56Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add missing additional funding resource union
 computed_columns/cif_user_full_name [computed_columns/cif_user_full_name@1.0.0-rc.4] 2022-08-16T21:31:48Z Mike Vesprini <mike@button.is> # Switch order to Firstname Lastname
 computed_columns/contact_full_name [computed_columns/contact_full_name@1.0.0-rc.4] 2022-08-17T14:39:31Z Mike Vesprini <mike@button.is> # Switch name order to firstname lastname
+functions/handle_default_form_change_commit [tables/form_change] 2022-08-19T22:30:19Z Dylan Leard <dylan@button.is> # Add a default commit function for form_change records
+tables/form [functions/handle_default_form_change_commit] 2022-08-19T22:11:02Z Dylan Leard <dylan@button.is> # Add table to house json_schema information for a form and other data regarding how to parse it into tables
+mutations/commit_form_change_internal 2022-08-22T17:17:22Z Matthieu Foucault <matthieu@button.is> # Add a function to commit a form_change. Called internally by our database only.
+trigger_functions/commit_form_change [trigger_functions/commit_form_change@1.0.0-rc.4] 2022-08-22T17:35:06Z Matthieu Foucault <matthieu@button.is> # delete commit_form_change trigger
+mutations/commit_project_revision 2022-08-22T18:20:35Z Matthieu Foucault <matthieu@button.is> # Add a function to commit a project_revision
+trigger_functions/commit_project_revision [trigger_functions/commit_project_revision@1.0.0-rc.4] 2022-08-22T18:21:04Z Matthieu Foucault <matthieu@button.is> # delete commit_project_revision trigger
+util_functions/import_swrs_operators_from_fdw [util_functions/import_swrs_operators_from_fdw@1.0.0-rc.4] 2022-08-23T18:16:21Z Dylan Leard <dylan@button.is> # Migration: do not rely on trigger to immediately commit the swrs operator form_change record
+mutations/update_form_change 2022-08-23T22:54:01Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Custom update function for form_change table to reset the change_status remove it from the allowed parameters
+mutations/stage_form_change 2022-08-24T18:17:11Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Mutation to stage a form_change record
+mutations/commit_form_change [tables/form_change] 2022-08-24T21:49:44Z Dylan Leard <dylan@button.is> # Custom mutation for the graphql API to commit a form_change record directly from the front-end. For changes to forms not part of project creation/revision.
+mutations/add_emission_intensity_report_to_revision [mutations/add_emission_intensity_report_to_revision@1.0.0-rc.4] 2022-08-26T23:55:52Z Dylan Leard <dylan@button.is> # Migration: fix incorrect json_schema_name in mutation
+computed_columns/project_revision_tasklist_status_for [computed_columns/project_revision_tasklist_status_for@1.0.0-rc.4] 2022-08-29T21:49:01Z Dylan Leard <dylan@button.is> # Migration: Attention Required status should be the first priority loop exit

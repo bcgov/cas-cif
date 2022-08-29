@@ -54,9 +54,7 @@ update cif.form_change set new_form_data=format('{
   where project_revision_id=(select id from cif.project_revision order by id desc limit 1)
     and form_data_table_name='project';
 
-
-update cif.project_revision set change_status='committed' where id=(select id from cif.project_revision order by id desc limit 1);
-
+select cif.commit_project_revision(1);
 select is(
   (select id from cif.pending_new_project_revision()), null,
   'Project revision should be null if the project revision was committed'

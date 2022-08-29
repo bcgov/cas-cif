@@ -328,32 +328,27 @@ describe("the emission intensity report form component", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     userEvent.click(screen.getByText(/submit.*/i));
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: { changeStatus: "staged" },
-    });
-  });
 
-  it("reverts the form_change status to 'pending' when editing", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-    userEvent.click(screen.getByText(/submit.*/i));
-    userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
-
-    expect(
-      componentTestingHelper.environment.mock.getMostRecentOperation().request
-        .variables.input
-    ).toMatchObject({
-      formChangePatch: {
-        changeStatus: "pending",
-        newFormData: {
-          comments: "general comments edited",
-          projectId: 51,
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: expect.any(Object),
         },
-      },
-    });
+        reportType: "TEIMP",
+      }
+    );
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageEmissionIntensityFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: expect.any(Object),
+        },
+      }
+    );
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
@@ -367,15 +362,9 @@ describe("the emission intensity report form component", () => {
     // expect 4 operations update and undo for requirements and emision intensity report
     expect(
       componentTestingHelper.environment.mock.getAllOperations()
-    ).toHaveLength(4);
+    ).toHaveLength(5);
 
-    const mutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[3];
-
-    expect(mutationUnderTest.fragment.node.name).toBe(
-      "undoFormChangesMutation"
-    );
-    expect(mutationUnderTest.request.variables).toMatchObject({
+    componentTestingHelper.expectMutationToBeCalled("undoFormChangesMutation", {
       input: {
         formChangesIds: [1, 1],
       },
@@ -387,10 +376,14 @@ describe("the emission intensity report form component", () => {
     componentTestingHelper.renderComponent();
     userEvent.click(screen.getByText(/submit.*/i));
     userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
-    const mutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
-    expect(mutationUnderTest.fragment.node.name).toBe(
-      "updateEmissionIntensityReportFormChangeMutation"
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateEmissionIntensityReportFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: expect.any(Object),
+        },
+      }
     );
   });
   it("shows the correct emission functional unit and production functional unit", () => {

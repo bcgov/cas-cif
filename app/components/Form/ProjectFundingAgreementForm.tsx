@@ -12,7 +12,6 @@ import {
 } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
-import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
 import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
 
 import UndoChangesButton from "./UndoChangesButton";
@@ -24,10 +23,10 @@ import { useMemo, useRef } from "react";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
-import { useUpdateAdditionalFundingSourceFormChange } from "mutations/FundingParameter/updateAdditionalFundingSourceFormChange";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import FormBorder from "lib/theme/components/FormBorder";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
@@ -75,10 +74,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   // Mutations
   const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
     useCreateFundingParameterFormChange();
-  const [
-    updateFundingParameterFormChange,
-    isUpdatingFundingParameterFormChange,
-  ] = useUpdateFundingParameterFormChange();
+
+  const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
+  const [stageFormChange, isStaging] = useStageFormChange();
+
   const [
     discardFundingParameterFormChange,
     isDiscardingFundingParameterFormChange,
@@ -86,13 +85,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const [addAdditionalFundingSource, isAddingAdditionalFundingSource] =
     useAddAdditionalFundingSourceToRevision();
-
-  const [
-    applyUpdateAdditionalFundingSource,
-    isUpdatingAdditionalFundingSource,
-  ] = useUpdateAdditionalFundingSourceFormChange();
-
-  const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
   const projectRevision = useFragment(
     graphql`
@@ -181,7 +173,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     });
   };
 
-  const handleChange = (formData, changeStatus: "staged" | "pending") => {
+  const handleChange = (formData) => {
     // don't trigger a change if the form data is an empty object
     if (formData && Object.keys(formData).length === 0) return;
 
@@ -190,13 +182,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         ...fundingAgreement.newFormData,
         ...formData,
       };
-      updateFundingParameterFormChange({
+      updateFormChange({
         variables: {
           input: {
-            id: fundingAgreement.id,
+            rowId: fundingAgreement.rowId,
             formChangePatch: {
               newFormData: updatedFormData,
-              changeStatus: changeStatus,
             },
           },
         },
@@ -205,7 +196,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             formChange: {
               id: fundingAgreement.id,
               newFormData: updatedFormData,
-              changeStatus: changeStatus,
+              changeStatus: "pending",
             },
           },
         },
@@ -215,7 +206,22 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   };
 
   const handleError = () => {
-    handleChange(fundingAgreement.newFormData, "staged");
+    stageFormChange({
+      variables: {
+        input: {
+          rowId: fundingAgreement.rowId,
+          formChangePatch: { newFormData: fundingAgreement.newFormData },
+        },
+      },
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: fundingAgreement.id,
+            changeStatus: "staged",
+          },
+        },
+      },
+    });
   };
 
   const sortedAdditionalFundingSourceForms = useMemo(() => {
@@ -234,10 +240,15 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const deleteAdditionalFundingSource = (
     formChangeId: string,
+    formChangeRowId: number,
     formChangeOperation: FormChangeOperation
   ) => {
     discardFormChange({
-      formChange: { id: formChangeId, operation: formChangeOperation },
+      formChange: {
+        id: formChangeId,
+        rowId: formChangeRowId,
+        operation: formChangeOperation,
+      },
       onCompleted: () => {
         delete formRefs.current[formChangeId];
       },
@@ -247,19 +258,17 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const updateAdditionalFundingSource = (
     formChange: {
       readonly id: string;
+      readonly rowId: number;
       readonly newFormData: any;
-      readonly operation: FormChangeOperation;
-      readonly changeStatus: string;
     },
     newFormData: any
   ) => {
-    applyUpdateAdditionalFundingSource({
+    updateFormChange({
       variables: {
         input: {
-          id: formChange.id,
+          rowId: formChange.rowId,
           formChangePatch: {
             newFormData,
-            changeStatus: formChange?.changeStatus,
           },
         },
       },
@@ -268,7 +277,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           formChange: {
             id: formChange.id,
             newFormData: newFormData,
-            changeStatus: formChange?.changeStatus,
+            changeStatus: "pending",
           },
         },
       },
@@ -360,10 +369,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             />
             <SavingIndicator
               isSaved={
-                !isUpdatingFundingParameterFormChange &&
+                !isUpdatingFormChange &&
                 !isAddingFundingParameterFormChange &&
-                !isUpdatingAdditionalFundingSource &&
-                !isAddingAdditionalFundingSource
+                !isAddingAdditionalFundingSource &&
+                !isStaging
               }
             />
           </header>
@@ -378,7 +387,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             }}
             uiSchema={fundingAgreementUiSchema}
             ref={(el) => (formRefs.current[fundingAgreement.id] = el)}
-            onChange={(change) => handleChange(change.formData, "pending")}
+            onChange={(change) => handleChange(change.formData)}
             onError={handleError}
           ></FormBase>
           <FormBorder title="Additional Funding Sources">
@@ -401,7 +410,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       formData={formChange.newFormData}
                       onChange={(change) =>
                         updateAdditionalFundingSource(
-                          { ...formChange, changeStatus: "pending" },
+                          { ...formChange },
                           change.formData
                         )
                       }
@@ -417,6 +426,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       onClick={() =>
                         deleteAdditionalFundingSource(
                           formChange.id,
+                          formChange.rowId,
                           formChange.operation
                         )
                       }
@@ -444,7 +454,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               }
               disabled={
                 isAddingAdditionalFundingSource ||
-                isUpdatingAdditionalFundingSource
+                isUpdatingFormChange ||
+                isStaging
               }
             >
               Add Funding Source
@@ -454,7 +465,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             type="submit"
             onClick={() =>
               stageReportFormChanges(
-                updateFundingParameterFormChange,
+                () => {},
                 props.onSubmit,
                 formRefs,
                 [
@@ -462,14 +473,14 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                   ...filteredAdditionalFundingSourceFormChanges,
                 ],
                 null,
-                updateFormChange
+                stageFormChange
               )
             }
             style={{ marginRight: "1rem" }}
             disabled={
-              isUpdatingFundingParameterFormChange ||
+              isUpdatingFormChange ||
               isAddingFundingParameterFormChange ||
-              isUpdatingFormChange
+              isStaging
             }
           >
             Submit Project Funding Agreement

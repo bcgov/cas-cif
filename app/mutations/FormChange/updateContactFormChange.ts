@@ -6,11 +6,7 @@ const mutation = graphql`
   mutation updateContactFormChangeMutation($input: UpdateFormChangeInput!) {
     updateFormChange(input: $input) {
       formChange {
-        id
-        formDataRecordId
-        newFormData
-        changeStatus
-        isUniqueValue(columnName: "email")
+        ...ContactForm_formChange
       }
     }
   }

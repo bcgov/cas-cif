@@ -26,7 +26,6 @@ values
   (2, 'committed', 'reason for change', 1);
 
 alter table cif.form_change disable trigger _set_previous_form_change_id;
-alter table cif.form_change disable trigger commit_form_change;
 
 insert into cif.form_change(
   new_form_data, operation, form_data_schema_name,

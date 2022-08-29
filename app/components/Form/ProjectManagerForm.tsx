@@ -17,9 +17,13 @@ interface Props extends FormComponentProps {
   managerFormChange: ProjectManagerForm_managerFormChange$key;
   query: ProjectManagerForm_query$key;
   projectRowId: number;
-  onUpdate: (formChangeId: string, newFormData: any) => void;
+  onUpdate: (formChangeId: string, rowId: number, newFormData: any) => void;
   onAdd: (newFormData: any) => void;
-  onDelete: (formChangeId: string, operation: FormChangeOperation) => void;
+  onDelete: (
+    formChangeId: string,
+    formChangeRowId: number,
+    operation: FormChangeOperation
+  ) => void;
   formRefs: MutableRefObject<{}>;
   disabled?: boolean;
 }
@@ -87,6 +91,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           label
         }
         formChange {
+          rowId
           id
           operation
           newFormData
@@ -115,7 +120,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
     // If a form_change already exists, and the payload contains a cifUserId update it
     if (formChange && formData?.cifUserId) {
-      onUpdate(formChange.id, data);
+      onUpdate(formChange.id, formChange.rowId, data);
 
       // If a form_change does not exist, and the payload contains a cifUserId create a form_change record
     } else if (formData?.cifUserId) {
@@ -154,7 +159,9 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           disabled={disabled || !formChange?.id}
           variant="secondary"
           size="small"
-          onClick={() => onDelete(formChange.id, formChange.operation)}
+          onClick={() =>
+            onDelete(formChange.id, formChange.rowId, formChange.operation)
+          }
         >
           Clear
         </Button>
