@@ -70,6 +70,16 @@
                 "title": "Total Eligible Expenses",
                 "default": "undefined"
               },
+              "calculatedGrossAmount": {
+                "type": "number",
+                "title": "Calculated Milestone Gross Payment Amount",
+                "default": "undefined"
+              },
+              "calculatedNetAmount": {
+                "type": "number",
+                "title": "Calculated Milestone Net Payment Amount",
+                "default": "undefined"
+              },
               "adjustedGrossAmount": {
                 "type": "number",
                 "title": "Milestone Gross Payment Amount",
@@ -86,7 +96,7 @@
                 "default": "undefined"
               }
             },
-            "required": ["maximumAmount", "dateSentToCsnr"]
+            "required": ["maximumAmount"]
           }
         ]
       }
