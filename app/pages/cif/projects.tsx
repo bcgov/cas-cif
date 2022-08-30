@@ -24,7 +24,7 @@ export const ProjectsQuery = graphql`
     $operatorTradeName: String
     $proposalReference: String
     $status: String
-    $projectManagers: String
+    $primaryProjectManager: String
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
@@ -52,7 +52,10 @@ export const ProjectsQuery = graphql`
         projectManagersByProjectId: {
           some: {
             cifUserByCifUserId: {
-              fullName: { includesInsensitive: $projectManagers }
+              fullName: { includesInsensitive: $primaryProjectManager }
+            }
+            projectManagerLabelByProjectManagerLabelId: {
+              label: { includesInsensitive: "primary" }
             }
           }
         }
@@ -67,10 +70,18 @@ export const ProjectsQuery = graphql`
         }
       }
     }
-    allCifUsers {
+    allProjectManagers(
+      filter: {
+        projectManagerLabelByProjectManagerLabelId: {
+          label: { includesInsensitive: "primary" }
+        }
+      }
+    ) {
       edges {
         node {
-          fullName
+          cifUserByCifUserId {
+            fullName
+          }
         }
       }
     }
@@ -87,7 +98,7 @@ export const ProjectsQuery = graphql`
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const {
     allProjects,
-    allCifUsers,
+    allProjectManagers,
     allProjectStatuses,
     pendingNewProjectRevision,
     session,
@@ -109,15 +120,21 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       ),
       new DisplayOnlyFilter("Milestone Due"),
       new SearchableDropdownFilter(
-        "Project Managers",
-        "projectManagers",
-        allCifUsers.edges.map((e) => e.node.fullName),
+        "Primary Project Managers",
+        "primaryProjectManager",
+        [
+          ...new Set(
+            allProjectManagers.edges.map(
+              (e) => e.node.cifUserByCifUserId.fullName
+            )
+          ),
+        ],
         { allowFreeFormInput: true, sortable: false }
       ),
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
     ],
-    [allCifUsers.edges, allProjectStatuses.edges]
+    [allProjectManagers.edges, allProjectStatuses.edges]
   );
 
   const [createProject, isCreatingProject] = useCreateProjectMutation();
