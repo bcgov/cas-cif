@@ -1,4 +1,9 @@
 begin;
 
-select cif.commit_project_revision(id) from cif.project_revision;
+do $$
+  begin
+    perform cif.commit_project_revision(id) from cif.project_revision;
+  end
+$$;
+
 commit;

@@ -34,9 +34,13 @@ values
   "bcRegistryId": "EF3456789",
   "operatorCode": "IJKL" }', 'create', 'cif', 'operator', 'pending', 'operator');
 
--- Commit records
-select cif_private.commit_form_change_internal(row(form_change.*)::cif.form_change)
-  from cif.form_change
-  where form_data_table_name='operator';
+do $$
+  begin
+  -- Commit records
+    perform cif_private.commit_form_change_internal(row(form_change.*)::cif.form_change)
+      from cif.form_change
+      where form_data_table_name='operator';
+  end
+$$;
 
 commit;

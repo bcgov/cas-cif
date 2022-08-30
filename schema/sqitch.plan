@@ -105,6 +105,7 @@ computed_columns/form_change_as_emission_intensity_report 2022-08-03T17:12:52Z B
 @1.0.0-rc.3 2022-08-08T22:14:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.3
 mutations/discard_funding_parameter_form_change 2022-08-10T23:11:54Z Gurjeet Matharu <gurjeet@matharuco.com> # Discarding funding parameter form change
 @1.0.0-rc.4 2022-08-15T18:49:49Z Dylan Leard <dylan@button.is> # release v1.0.0-rc.4
+util_functions/verify_function_not_present [util_functions/verify_function_not_present@1.0.0-rc.4] 2022-08-22T18:14:11Z Dylan Leard <dylan@button.is> # Migration: verify function should also check the schema
 tables/project_type 2022-08-08T18:26:33Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a table for project type
 tables/project_001 2022-08-08T15:28:44Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add a score and project type column to the project table
 computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.1 tables/project_001] 2022-08-08T21:44:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add score and project type to project computed column
