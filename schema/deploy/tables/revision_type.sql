@@ -16,13 +16,9 @@ begin
 
 -- Grant cif_internal permissions
 perform cif_private.grant_permissions('select', 'revision_type', 'cif_internal');
-perform cif_private.grant_permissions('insert', 'revision_type', 'cif_internal');
-perform cif_private.grant_permissions('update', 'revision_type', 'cif_internal');
 
 -- Grant cif_admin permissions
 perform cif_private.grant_permissions('select', 'revision_type', 'cif_admin');
-perform cif_private.grant_permissions('insert', 'revision_type', 'cif_admin');
-perform cif_private.grant_permissions('update', 'revision_type', 'cif_admin');
 
 -- Grant cif_external no permissions
 -- Grant cif_guest no permissions

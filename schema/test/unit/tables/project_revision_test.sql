@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(8);
+select plan(7);
 
 select has_table('cif', 'project_revision', 'table cif.project_revision exists');
 
@@ -50,7 +50,7 @@ select throws_ok(
 );
 
 -- test project_revision_001_add_revision_type
-truncate table cif.project_revision cascade;
+truncate table cif.project_revision, cif.project cascade;
 
 -- use the contents of the revert file to set the database to a state where revision_type isn't required
 alter table cif.project_revision drop column revision_type, drop column comments;
@@ -75,7 +75,7 @@ select columns_are(
 insert into cif.project(id, project_name, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary)
 overriding system value
   values (
-    3,'test-project-333',
+    1,'test-project-333',
     (select id from cif.operator limit 1),
     (select id from cif.funding_stream_rfp limit 1),
     (select id from cif.project_status limit 1),
@@ -83,7 +83,7 @@ overriding system value
     'summary333'
   ),
   (
-    4,'test-project-444',
+    2,'test-project-444',
     (select id from cif.operator limit 1),
     (select id from cif.funding_stream_rfp limit 1),
     (select id from cif.project_status limit 1),
@@ -93,8 +93,8 @@ overriding system value
 
 insert into cif.project_revision(project_id)
 values
-  (3),
-  (4);
+  (1),
+  (2);
 
 -- deploy the project_revision_001_add_revision_type migration
 alter table cif.project_revision disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
@@ -131,17 +131,6 @@ select is(
   2::bigint,
   'project_revision_001_add_revision_type adds the General Revision default revision_type to revisions that do not have a type');
 
-
-truncate table cif.project_revision cascade;
-insert into cif.project_revision(project_id, revision_type)
-values
-  (3, 'Amendment'),
-  (4, 'Minor Revision');
-
-select is(
-  (select count(*) from cif.project_revision where revision_type='General Revision'),
-  0::bigint,
-  'project_revision_001_add_revision_type does not change the revision_type of projects that already have revision types');
 
 select finish();
 
