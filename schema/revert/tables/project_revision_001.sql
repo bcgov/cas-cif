@@ -2,6 +2,6 @@
 
 begin;
 
-alter table cif.project drop column revision_type, drop column comments;
+alter table cif.project_revision drop column revision_type, drop column comments;
 
 commit;
