@@ -33,7 +33,7 @@ const pageTestingHelper = new PageTestingHelper<projectsQuery>({
     operatorTradeName: null,
     proposalReference: null,
     status: null,
-    projectManagers: null,
+    primaryProjectManager: null,
     offset: null,
     pageSize: DEFAULT_PAGE_SIZE,
     orderBy: null,
@@ -124,7 +124,7 @@ describe("The projects page", () => {
     ).toBeInTheDocument();
     expect(screen.queryByLabelText("Filter by Status")).toBeInTheDocument();
     expect(
-      screen.queryByLabelText("Filter by Project Managers")
+      screen.queryByLabelText("Filter by Primary Project Managers")
     ).toBeInTheDocument();
   });
 
