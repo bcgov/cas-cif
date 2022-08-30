@@ -118,29 +118,6 @@ type AddEmissionIntensityReportToRevisionPayload {
   query: Query
 }
 
-"""All input for the `addGeneralRevision` mutation."""
-input AddGeneralRevisionInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-}
-
-"""The output of our `addGeneralRevision` mutation."""
-type AddGeneralRevisionPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `addMilestoneToRevision` mutation."""
 input AddMilestoneToRevisionInput {
   """
@@ -47639,12 +47616,6 @@ type Mutation {
     """
     input: AddEmissionIntensityReportToRevisionInput!
   ): AddEmissionIntensityReportToRevisionPayload
-  addGeneralRevision(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: AddGeneralRevisionInput!
-  ): AddGeneralRevisionPayload
   addMilestoneToRevision(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -56067,7 +56038,7 @@ type ProjectRevision implements Node {
   ): ProjectRevisionAmendmentTypesConnection!
 
   """The type of the project revision (e.g. General Revision)"""
-  revisionType: String
+  revisionType: String!
 
   """
   Reads a single `RevisionType` that is related to this `ProjectRevision`.
@@ -57078,9 +57049,6 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `revisionTypeByRevisionType` relation."""
   revisionTypeByRevisionType: RevisionTypeFilter
-
-  """A related `revisionTypeByRevisionType` exists."""
-  revisionTypeByRevisionTypeExists: Boolean
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
