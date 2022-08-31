@@ -142,3 +142,5 @@ tables/amendment_status 2022-08-30T20:46:19Z Brianna Cerkiewicz <briannacerkiewi
 tables/project_revision_001_add_amendment_columns 2022-08-18T17:31:54Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a revision_type column, columns column & amendment_status column to the project_revision table
 tables/funding_parameter_002_add_auto_generating_report_date_columns [tables/funding_parameter] 2022-09-02T21:08:44Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add contract_start_date and project_assets_life_end_date to funding_parameter table
 computed_columns/project_revision_effective_date 2022-09-12T22:42:51Z Mike Vesprini <mike@button.is> # Create computed column for project revisions effective date
+tables/project_revision_002 2022-08-30T21:12:49Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add amendment_status column to project_revision table
+computed_columns/project_revision_rank 2022-08-31T18:41:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add project_revision_rank computed column
