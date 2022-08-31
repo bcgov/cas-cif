@@ -70,18 +70,20 @@ export const ProjectsQuery = graphql`
         }
       }
     }
-    allProjectManagers(
+    allCifUsers(
       filter: {
-        projectManagerLabelByProjectManagerLabelId: {
-          label: { includesInsensitive: "primary" }
+        projectManagersByCifUserId: {
+          some: {
+            projectManagerLabelByProjectManagerLabelId: {
+              label: { includesInsensitive: "primary" }
+            }
+          }
         }
       }
     ) {
       edges {
         node {
-          cifUserByCifUserId {
-            fullName
-          }
+          fullName
         }
       }
     }
@@ -98,7 +100,7 @@ export const ProjectsQuery = graphql`
 export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const {
     allProjects,
-    allProjectManagers,
+    allCifUsers,
     allProjectStatuses,
     pendingNewProjectRevision,
     session,
@@ -122,19 +124,13 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       new SearchableDropdownFilter(
         "Primary Project Managers",
         "primaryProjectManager",
-        [
-          ...new Set(
-            allProjectManagers.edges.map(
-              (e) => e.node.cifUserByCifUserId.fullName
-            )
-          ),
-        ],
+        allCifUsers.edges.map((e) => e.node.fullName),
         { allowFreeFormInput: true, sortable: false }
       ),
       new SortOnlyFilter("Funding Request", "totalFundingRequest"),
       new NoHeaderFilter(),
     ],
-    [allProjectManagers.edges, allProjectStatuses.edges]
+    [allCifUsers.edges, allProjectStatuses.edges]
   );
 
   const [createProject, isCreatingProject] = useCreateProjectMutation();
