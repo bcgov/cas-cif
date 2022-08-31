@@ -24,7 +24,14 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
         projectStatusByProjectStatusId {
           name
         }
-        projectManagersByProjectId(orderBy: PROJECT_MANAGER_LABEL_ID_ASC) {
+        projectManagersByProjectId(
+          orderBy: PROJECT_MANAGER_LABEL_ID_ASC
+          filter: {
+            projectManagerLabelByProjectManagerLabelId: {
+              label: { includesInsensitive: "primary" }
+            }
+          }
+        ) {
           edges {
             node {
               cifUserByCifUserId {
