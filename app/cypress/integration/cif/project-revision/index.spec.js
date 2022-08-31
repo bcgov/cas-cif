@@ -192,6 +192,7 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 4);
+    cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project funding agreement Form",
       "with errors",
