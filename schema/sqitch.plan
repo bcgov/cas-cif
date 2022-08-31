@@ -141,3 +141,4 @@ tables/revision_type 2022-08-18T17:08:47Z Brianna Cerkiewicz <briannacerkiewicz@
 tables/project_revision_001_add_revision_type 2022-08-18T17:31:54Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a revision_type field on the project_revision table referencing the types from the revision_type table
 tables/amendment_status 2022-08-30T20:46:19Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create a new table amendment_status
 tables/project_revision_002 2022-08-30T21:12:49Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add amendment_status column to project_revision table
+computed_columns/project_revision_rank 2022-08-31T18:41:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add project_revision_rank computed column
