@@ -48,6 +48,7 @@ describe("the new project page", () => {
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
+    cy.contains("Project Funding Agreement");
     cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
     cy.get('[aria-label="Province Share Percentage"]').should(
