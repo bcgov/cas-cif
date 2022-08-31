@@ -3114,6 +3114,45 @@ type ChangeStatus implements Node {
     orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ChangeStatusProjectsByProjectRevisionChangeStatusAndProjectIdManyToManyConnection!
 
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByProjectRevisionChangeStatusAndRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ChangeStatusRevisionTypesByProjectRevisionChangeStatusAndRevisionTypeManyToManyConnection!
+
   """The name of the status, e.g. "pending", "committed", ..."""
   status: String!
 
@@ -3704,6 +3743,70 @@ type ChangeStatusProjectsByProjectRevisionChangeStatusAndProjectIdManyToManyEdge
 
   """Reads and enables pagination through a set of `ProjectRevision`."""
   projectRevisionsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `RevisionType` values, with data from `ProjectRevision`.
+"""
+type ChangeStatusRevisionTypesByProjectRevisionChangeStatusAndRevisionTypeManyToManyConnection {
+  """
+  A list of edges which contains the `RevisionType`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [ChangeStatusRevisionTypesByProjectRevisionChangeStatusAndRevisionTypeManyToManyEdge!]!
+
+  """A list of `RevisionType` objects."""
+  nodes: [RevisionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RevisionType` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `RevisionType` edge in the connection, with data from `ProjectRevision`.
+"""
+type ChangeStatusRevisionTypesByProjectRevisionChangeStatusAndRevisionTypeManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RevisionType` at the end of the edge."""
+  node: RevisionType
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByRevisionType(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -11461,6 +11564,240 @@ type CifUser implements Node {
   ): CifUserCifUsersByReportingRequirementUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByRevisionTypeArchivedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByRevisionTypeArchivedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByRevisionTypeArchivedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByRevisionTypeArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByRevisionTypeCreatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByRevisionTypeCreatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByRevisionTypeCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByRevisionTypeCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByRevisionTypeUpdatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByRevisionTypeUpdatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByRevisionTypeUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByRevisionTypeUpdatedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
   cifUsersBySectorArchivedByAndCreatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -17028,6 +17365,201 @@ type CifUser implements Node {
     """The method to use when ordering `ReportingRequirement`."""
     orderBy: [ReportingRequirementsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportingRequirementsConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByProjectRevisionCreatedByAndRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserRevisionTypesByProjectRevisionCreatedByAndRevisionTypeManyToManyConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByProjectRevisionUpdatedByAndRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserRevisionTypesByProjectRevisionUpdatedByAndRevisionTypeManyToManyConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
 
   """Unique ID for the user"""
   rowId: Int!
@@ -29160,6 +29692,408 @@ type CifUserCifUsersByReportingRequirementUpdatedByAndCreatedByManyToManyEdge {
   ): ReportingRequirementsConnection!
 }
 
+"""
+A connection to a list of `CifUser` values, with data from `RevisionType`.
+"""
+type CifUserCifUsersByRevisionTypeArchivedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `RevisionType`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByRevisionTypeArchivedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `RevisionType`."""
+type CifUserCifUsersByRevisionTypeArchivedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `RevisionType`.
+"""
+type CifUserCifUsersByRevisionTypeArchivedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `RevisionType`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByRevisionTypeArchivedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `RevisionType`."""
+type CifUserCifUsersByRevisionTypeArchivedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `RevisionType`.
+"""
+type CifUserCifUsersByRevisionTypeCreatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `RevisionType`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByRevisionTypeCreatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `RevisionType`."""
+type CifUserCifUsersByRevisionTypeCreatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `RevisionType`.
+"""
+type CifUserCifUsersByRevisionTypeCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `RevisionType`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByRevisionTypeCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `RevisionType`."""
+type CifUserCifUsersByRevisionTypeCreatedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `RevisionType`.
+"""
+type CifUserCifUsersByRevisionTypeUpdatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `RevisionType`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByRevisionTypeUpdatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `RevisionType`."""
+type CifUserCifUsersByRevisionTypeUpdatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `RevisionType`.
+"""
+type CifUserCifUsersByRevisionTypeUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `RevisionType`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByRevisionTypeUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `RevisionType`."""
+type CifUserCifUsersByRevisionTypeUpdatedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection!
+}
+
 """A connection to a list of `CifUser` values, with data from `Sector`."""
 type CifUserCifUsersBySectorArchivedByAndCreatedByManyToManyConnection {
   """
@@ -30375,6 +31309,24 @@ input CifUserFilter {
 
   """Some related `reportingRequirementsByUpdatedBy` exist."""
   reportingRequirementsByUpdatedByExist: Boolean
+
+  """Filter by the object’s `revisionTypesByArchivedBy` relation."""
+  revisionTypesByArchivedBy: CifUserToManyRevisionTypeFilter
+
+  """Some related `revisionTypesByArchivedBy` exist."""
+  revisionTypesByArchivedByExist: Boolean
+
+  """Filter by the object’s `revisionTypesByCreatedBy` relation."""
+  revisionTypesByCreatedBy: CifUserToManyRevisionTypeFilter
+
+  """Some related `revisionTypesByCreatedBy` exist."""
+  revisionTypesByCreatedByExist: Boolean
+
+  """Filter by the object’s `revisionTypesByUpdatedBy` relation."""
+  revisionTypesByUpdatedBy: CifUserToManyRevisionTypeFilter
+
+  """Some related `revisionTypesByUpdatedBy` exist."""
+  revisionTypesByUpdatedByExist: Boolean
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
@@ -35149,6 +36101,134 @@ type CifUserReportingRequirementsByPaymentUpdatedByAndReportingRequirementIdMany
   ): PaymentsConnection!
 }
 
+"""
+A connection to a list of `RevisionType` values, with data from `ProjectRevision`.
+"""
+type CifUserRevisionTypesByProjectRevisionCreatedByAndRevisionTypeManyToManyConnection {
+  """
+  A list of edges which contains the `RevisionType`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserRevisionTypesByProjectRevisionCreatedByAndRevisionTypeManyToManyEdge!]!
+
+  """A list of `RevisionType` objects."""
+  nodes: [RevisionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RevisionType` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `RevisionType` edge in the connection, with data from `ProjectRevision`.
+"""
+type CifUserRevisionTypesByProjectRevisionCreatedByAndRevisionTypeManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RevisionType` at the end of the edge."""
+  node: RevisionType
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `RevisionType` values, with data from `ProjectRevision`.
+"""
+type CifUserRevisionTypesByProjectRevisionUpdatedByAndRevisionTypeManyToManyConnection {
+  """
+  A list of edges which contains the `RevisionType`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserRevisionTypesByProjectRevisionUpdatedByAndRevisionTypeManyToManyEdge!]!
+
+  """A list of `RevisionType` objects."""
+  nodes: [RevisionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RevisionType` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `RevisionType` edge in the connection, with data from `ProjectRevision`.
+"""
+type CifUserRevisionTypesByProjectRevisionUpdatedByAndRevisionTypeManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RevisionType` at the end of the edge."""
+  node: RevisionType
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
 """A connection to a list of `Sector` values, with data from `Project`."""
 type CifUserSectorsByProjectArchivedByAndSectorNameManyToManyConnection {
   """
@@ -35925,6 +37005,26 @@ input CifUserToManyReportingRequirementFilter {
 }
 
 """
+A filter to be used against many `RevisionType` object types. All fields are combined with a logical ‘and.’
+"""
+input CifUserToManyRevisionTypeFilter {
+  """
+  Every related `RevisionType` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: RevisionTypeFilter
+
+  """
+  No related `RevisionType` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: RevisionTypeFilter
+
+  """
+  Some related `RevisionType` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: RevisionTypeFilter
+}
+
+"""
 A filter to be used against many `Sector` object types. All fields are combined with a logical ‘and.’
 """
 input CifUserToManySectorFilter {
@@ -36225,6 +37325,12 @@ enum CifUsersOrderBy {
   REPORT_TYPES_BY_CREATED_BY__COUNT_DESC
   REPORT_TYPES_BY_UPDATED_BY__COUNT_ASC
   REPORT_TYPES_BY_UPDATED_BY__COUNT_DESC
+  REVISION_TYPES_BY_ARCHIVED_BY__COUNT_ASC
+  REVISION_TYPES_BY_ARCHIVED_BY__COUNT_DESC
+  REVISION_TYPES_BY_CREATED_BY__COUNT_ASC
+  REVISION_TYPES_BY_CREATED_BY__COUNT_DESC
+  REVISION_TYPES_BY_UPDATED_BY__COUNT_ASC
+  REVISION_TYPES_BY_UPDATED_BY__COUNT_DESC
   SECTORS_BY_ARCHIVED_BY__COUNT_ASC
   SECTORS_BY_ARCHIVED_BY__COUNT_DESC
   SECTORS_BY_CREATED_BY__COUNT_ASC
@@ -36329,6 +37435,11 @@ type CommitProjectRevisionPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """Table containing information about a CIF contact"""
@@ -38109,6 +39220,11 @@ type CreateProjectPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the create `ProjectRevisionAmendmentType` mutation."""
@@ -38216,6 +39332,11 @@ type CreateProjectRevisionPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the create `ProjectStatus` mutation."""
@@ -38348,6 +39469,50 @@ type CreateReportTypePayload {
     """The method to use when ordering `ReportType`."""
     orderBy: [ReportTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportTypesEdge
+}
+
+"""All input for the create `RevisionType` mutation."""
+input CreateRevisionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `RevisionType` to be created by this mutation."""
+  revisionType: RevisionTypeInput!
+}
+
+"""The output of our create `RevisionType` mutation."""
+type CreateRevisionTypePayload {
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `RevisionType` that was created by this mutation."""
+  revisionType: RevisionType
+
+  """An edge for our `RevisionType`. May be used by Relay 1."""
+  revisionTypeEdge(
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesEdge
 }
 
 """All input for the create `Sector` mutation."""
@@ -39847,6 +41012,11 @@ type DeleteProjectRevisionPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the `deleteProjectStatusByRowId` mutation."""
@@ -39977,6 +41147,65 @@ type DeleteProjectTypePayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+"""All input for the `deleteRevisionTypeByType` mutation."""
+input DeleteRevisionTypeByTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The type of the revision type as the primary key"""
+  type: String!
+}
+
+"""All input for the `deleteRevisionType` mutation."""
+input DeleteRevisionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `RevisionType` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `RevisionType` mutation."""
+type DeleteRevisionTypePayload {
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedRevisionTypeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `RevisionType` that was deleted by this mutation."""
+  revisionType: RevisionType
+
+  """An edge for our `RevisionType`. May be used by Relay 1."""
+  revisionTypeEdge(
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesEdge
 }
 
 """All input for the `deleteSectorBySectorName` mutation."""
@@ -42054,6 +43283,8 @@ enum FormChangesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__COMMENTS_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__COMMENTS_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_AT_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_AT_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_BY_ASC
@@ -42064,6 +43295,8 @@ enum FormChangesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__REVISION_TYPE_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__REVISION_TYPE_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_AT_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_AT_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_BY_ASC
@@ -46599,6 +47832,14 @@ type Mutation {
     input: CreateReportTypeInput!
   ): CreateReportTypePayload
 
+  """Creates a single `RevisionType`."""
+  createRevisionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateRevisionTypeInput!
+  ): CreateRevisionTypePayload
+
   """Creates a single `Sector`."""
   createSector(
     """
@@ -47008,6 +48249,22 @@ type Mutation {
     """
     input: DeleteProjectTypeByRowIdInput!
   ): DeleteProjectTypePayload
+
+  """Deletes a single `RevisionType` using its globally unique id."""
+  deleteRevisionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteRevisionTypeInput!
+  ): DeleteRevisionTypePayload
+
+  """Deletes a single `RevisionType` using a unique key."""
+  deleteRevisionTypeByType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteRevisionTypeByTypeInput!
+  ): DeleteRevisionTypePayload
 
   """Deletes a single `Sector` using its globally unique id."""
   deleteSector(
@@ -47510,6 +48767,24 @@ type Mutation {
     """
     input: UpdateReportTypeByNameInput!
   ): UpdateReportTypePayload
+
+  """
+  Updates a single `RevisionType` using its globally unique id and a patch.
+  """
+  updateRevisionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateRevisionTypeInput!
+  ): UpdateRevisionTypePayload
+
+  """Updates a single `RevisionType` using a unique key and a patch."""
+  updateRevisionTypeByType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateRevisionTypeByTypeInput!
+  ): UpdateRevisionTypePayload
 
   """Updates a single `Sector` using its globally unique id and a patch."""
   updateSector(
@@ -50391,6 +51666,45 @@ type Project implements Node {
     """The method to use when ordering `ReportingRequirement`."""
     orderBy: [ReportingRequirementsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportingRequirementsConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByProjectRevisionProjectIdAndRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionTypesByProjectRevisionProjectIdAndRevisionTypeManyToManyConnection!
 
   """Unique ID for the project"""
   rowId: Int!
@@ -54496,6 +55810,9 @@ type ProjectRevision implements Node {
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionCifUsersByProjectRevisionAmendmentTypeProjectRevisionIdAndUpdatedByManyToManyConnection!
 
+  """Comments on the project revision"""
+  comments: String
+
   """created at timestamp"""
   createdAt: Datetime!
 
@@ -54719,6 +56036,14 @@ type ProjectRevision implements Node {
     """The method to use when ordering `ProjectRevisionAmendmentType`."""
     orderBy: [ProjectRevisionAmendmentTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionAmendmentTypesConnection!
+
+  """The type of the project revision (e.g. General Revision)"""
+  revisionType: String!
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 
   """Unique ID for the project revision"""
   rowId: Int!
@@ -55177,6 +56502,8 @@ enum ProjectRevisionAmendmentTypesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__COMMENTS_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__COMMENTS_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_AT_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_AT_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CREATED_BY_ASC
@@ -55187,6 +56514,8 @@ enum ProjectRevisionAmendmentTypesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__REVISION_TYPE_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__REVISION_TYPE_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_AT_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_AT_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__UPDATED_BY_ASC
@@ -55609,6 +56938,9 @@ input ProjectRevisionCondition {
   """Checks for equality with the object’s `changeStatus` field."""
   changeStatus: String
 
+  """Checks for equality with the object’s `comments` field."""
+  comments: String
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -55620,6 +56952,9 @@ input ProjectRevisionCondition {
 
   """Checks for equality with the object’s `projectId` field."""
   projectId: Int
+
+  """Checks for equality with the object’s `revisionType` field."""
+  revisionType: String
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
@@ -55661,6 +56996,9 @@ input ProjectRevisionFilter {
 
   """A related `cifUserByUpdatedBy` exists."""
   cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `comments` field."""
+  comments: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -55705,6 +57043,12 @@ input ProjectRevisionFilter {
 
   """Some related `projectRevisionAmendmentTypesByProjectRevisionId` exist."""
   projectRevisionAmendmentTypesByProjectRevisionIdExist: Boolean
+
+  """Filter by the object’s `revisionType` field."""
+  revisionType: StringFilter
+
+  """Filter by the object’s `revisionTypeByRevisionType` relation."""
+  revisionTypeByRevisionType: RevisionTypeFilter
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
@@ -55794,6 +57138,9 @@ input ProjectRevisionPatch {
   """Foreign key to the status of the project revision"""
   changeStatus: String
 
+  """Comments on the project revision"""
+  comments: String
+
   """created at timestamp"""
   createdAt: Datetime
 
@@ -55809,6 +57156,9 @@ input ProjectRevisionPatch {
   Foreign key to the associated project row. Will be null if the project hasn't been committed yet.
   """
   projectId: Int
+
+  """The type of the project revision (e.g. General Revision)"""
+  revisionType: String
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -55855,6 +57205,70 @@ input ProjectRevisionToManyProjectRevisionAmendmentTypeFilter {
   Some related `ProjectRevisionAmendmentType` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
   some: ProjectRevisionAmendmentTypeFilter
+}
+
+"""
+A connection to a list of `RevisionType` values, with data from `ProjectRevision`.
+"""
+type ProjectRevisionTypesByProjectRevisionProjectIdAndRevisionTypeManyToManyConnection {
+  """
+  A list of edges which contains the `RevisionType`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectRevisionTypesByProjectRevisionProjectIdAndRevisionTypeManyToManyEdge!]!
+
+  """A list of `RevisionType` objects."""
+  nodes: [RevisionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RevisionType` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `RevisionType` edge in the connection, with data from `ProjectRevision`.
+"""
+type ProjectRevisionTypesByProjectRevisionProjectIdAndRevisionTypeManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RevisionType` at the end of the edge."""
+  node: RevisionType
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
 }
 
 """A connection to a list of `ProjectRevision` values."""
@@ -55953,6 +57367,8 @@ enum ProjectRevisionsOrderBy {
   CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
   CIF_USER_BY_UPDATED_BY__UUID_ASC
   CIF_USER_BY_UPDATED_BY__UUID_DESC
+  COMMENTS_ASC
+  COMMENTS_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -56008,6 +57424,22 @@ enum ProjectRevisionsOrderBy {
   PROJECT_ID_DESC
   PROJECT_REVISION_AMENDMENT_TYPES_BY_PROJECT_REVISION_ID__COUNT_ASC
   PROJECT_REVISION_AMENDMENT_TYPES_BY_PROJECT_REVISION_ID__COUNT_DESC
+  REVISION_TYPE_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__ARCHIVED_AT_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__ARCHIVED_AT_DESC
+  REVISION_TYPE_BY_REVISION_TYPE__ARCHIVED_BY_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__ARCHIVED_BY_DESC
+  REVISION_TYPE_BY_REVISION_TYPE__CREATED_AT_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__CREATED_AT_DESC
+  REVISION_TYPE_BY_REVISION_TYPE__CREATED_BY_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__CREATED_BY_DESC
+  REVISION_TYPE_BY_REVISION_TYPE__TYPE_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__TYPE_DESC
+  REVISION_TYPE_BY_REVISION_TYPE__UPDATED_AT_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__UPDATED_AT_DESC
+  REVISION_TYPE_BY_REVISION_TYPE__UPDATED_BY_ASC
+  REVISION_TYPE_BY_REVISION_TYPE__UPDATED_BY_DESC
+  REVISION_TYPE_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC
@@ -60724,6 +62156,45 @@ type Query implements Node {
     orderBy: [ReportingRequirementsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportingRequirementsConnection
 
+  """Reads and enables pagination through a set of `RevisionType`."""
+  allRevisionTypes(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesConnection
+
   """Reads and enables pagination through a set of `Sector`."""
   allSectors(
     """Read all values in the set after (below) this cursor."""
@@ -61057,6 +62528,15 @@ type Query implements Node {
     id: ID!
   ): ReportingRequirement
   reportingRequirementByRowId(rowId: Int!): ReportingRequirement
+
+  """Reads a single `RevisionType` using its globally unique `ID`."""
+  revisionType(
+    """
+    The globally unique `ID` to be used in selecting a single `RevisionType`.
+    """
+    id: ID!
+  ): RevisionType
+  revisionTypeByType(type: String!): RevisionType
 
   """Reads a single `Sector` using its globally unique `ID`."""
   sector(
@@ -63461,6 +64941,755 @@ enum ReportingRequirementsOrderBy {
   UPDATED_BY_DESC
 }
 
+"""Table containing information about revision types"""
+type RevisionType implements Node {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """Reads and enables pagination through a set of `ChangeStatus`."""
+  changeStatusesByProjectRevisionRevisionTypeAndChangeStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ChangeStatus`."""
+    orderBy: [ChangeStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypeChangeStatusesByProjectRevisionRevisionTypeAndChangeStatusManyToManyConnection!
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByUpdatedBy: CifUser
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectRevisionRevisionTypeAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypeCifUsersByProjectRevisionRevisionTypeAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectRevisionRevisionTypeAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypeCifUsersByProjectRevisionRevisionTypeAndUpdatedByManyToManyConnection!
+
+  """created at timestamp"""
+  createdAt: Datetime!
+
+  """created by user id"""
+  createdBy: Int
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByProjectRevisionRevisionTypeAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypeProjectsByProjectRevisionRevisionTypeAndProjectIdManyToManyConnection!
+
+  """The type of the revision type as the primary key"""
+  type: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime!
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A connection to a list of `ChangeStatus` values, with data from `ProjectRevision`.
+"""
+type RevisionTypeChangeStatusesByProjectRevisionRevisionTypeAndChangeStatusManyToManyConnection {
+  """
+  A list of edges which contains the `ChangeStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [RevisionTypeChangeStatusesByProjectRevisionRevisionTypeAndChangeStatusManyToManyEdge!]!
+
+  """A list of `ChangeStatus` objects."""
+  nodes: [ChangeStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `ChangeStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `ChangeStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type RevisionTypeChangeStatusesByProjectRevisionRevisionTypeAndChangeStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ChangeStatus` at the end of the edge."""
+  node: ChangeStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByChangeStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectRevision`.
+"""
+type RevisionTypeCifUsersByProjectRevisionRevisionTypeAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [RevisionTypeCifUsersByProjectRevisionRevisionTypeAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `ProjectRevision`."""
+type RevisionTypeCifUsersByProjectRevisionRevisionTypeAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectRevision`.
+"""
+type RevisionTypeCifUsersByProjectRevisionRevisionTypeAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [RevisionTypeCifUsersByProjectRevisionRevisionTypeAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `ProjectRevision`."""
+type RevisionTypeCifUsersByProjectRevisionRevisionTypeAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A condition to be used against `RevisionType` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input RevisionTypeCondition {
+  """Checks for equality with the object’s `archivedAt` field."""
+  archivedAt: Datetime
+
+  """Checks for equality with the object’s `archivedBy` field."""
+  archivedBy: Int
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `createdBy` field."""
+  createdBy: Int
+
+  """Checks for equality with the object’s `type` field."""
+  type: String
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+
+  """Checks for equality with the object’s `updatedBy` field."""
+  updatedBy: Int
+}
+
+"""
+A filter to be used against `RevisionType` object types. All fields are combined with a logical ‘and.’
+"""
+input RevisionTypeFilter {
+  """Checks for all expressions in this list."""
+  and: [RevisionTypeFilter!]
+
+  """Filter by the object’s `archivedAt` field."""
+  archivedAt: DatetimeFilter
+
+  """Filter by the object’s `archivedBy` field."""
+  archivedBy: IntFilter
+
+  """Filter by the object’s `cifUserByArchivedBy` relation."""
+  cifUserByArchivedBy: CifUserFilter
+
+  """A related `cifUserByArchivedBy` exists."""
+  cifUserByArchivedByExists: Boolean
+
+  """Filter by the object’s `cifUserByCreatedBy` relation."""
+  cifUserByCreatedBy: CifUserFilter
+
+  """A related `cifUserByCreatedBy` exists."""
+  cifUserByCreatedByExists: Boolean
+
+  """Filter by the object’s `cifUserByUpdatedBy` relation."""
+  cifUserByUpdatedBy: CifUserFilter
+
+  """A related `cifUserByUpdatedBy` exists."""
+  cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `createdBy` field."""
+  createdBy: IntFilter
+
+  """Negates the expression."""
+  not: RevisionTypeFilter
+
+  """Checks for any expressions in this list."""
+  or: [RevisionTypeFilter!]
+
+  """Filter by the object’s `projectRevisionsByRevisionType` relation."""
+  projectRevisionsByRevisionType: RevisionTypeToManyProjectRevisionFilter
+
+  """Some related `projectRevisionsByRevisionType` exist."""
+  projectRevisionsByRevisionTypeExist: Boolean
+
+  """Filter by the object’s `type` field."""
+  type: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `updatedBy` field."""
+  updatedBy: IntFilter
+}
+
+"""An input for mutations affecting `RevisionType`"""
+input RevisionTypeInput {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The type of the revision type as the primary key"""
+  type: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+Represents an update to a `RevisionType`. Fields that are set will be updated.
+"""
+input RevisionTypePatch {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The type of the revision type as the primary key"""
+  type: String
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A connection to a list of `Project` values, with data from `ProjectRevision`.
+"""
+type RevisionTypeProjectsByProjectRevisionRevisionTypeAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [RevisionTypeProjectsByProjectRevisionRevisionTypeAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Project` edge in the connection, with data from `ProjectRevision`."""
+type RevisionTypeProjectsByProjectRevisionRevisionTypeAndProjectIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A filter to be used against many `ProjectRevision` object types. All fields are combined with a logical ‘and.’
+"""
+input RevisionTypeToManyProjectRevisionFilter {
+  """
+  Every related `ProjectRevision` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ProjectRevisionFilter
+
+  """
+  No related `ProjectRevision` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ProjectRevisionFilter
+
+  """
+  Some related `ProjectRevision` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ProjectRevisionFilter
+}
+
+"""A connection to a list of `RevisionType` values."""
+type RevisionTypesConnection {
+  """
+  A list of edges which contains the `RevisionType` and cursor to aid in pagination.
+  """
+  edges: [RevisionTypesEdge!]!
+
+  """A list of `RevisionType` objects."""
+  nodes: [RevisionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RevisionType` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `RevisionType` edge in the connection."""
+type RevisionTypesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RevisionType` at the end of the edge."""
+  node: RevisionType
+}
+
+"""Methods to use when ordering `RevisionType`."""
+enum RevisionTypesOrderBy {
+  ARCHIVED_AT_ASC
+  ARCHIVED_AT_DESC
+  ARCHIVED_BY_ASC
+  ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__ID_ASC
+  CIF_USER_BY_ARCHIVED_BY__ID_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__UUID_ASC
+  CIF_USER_BY_ARCHIVED_BY__UUID_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_CREATED_BY__ID_ASC
+  CIF_USER_BY_CREATED_BY__ID_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__UUID_ASC
+  CIF_USER_BY_CREATED_BY__UUID_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__ID_ASC
+  CIF_USER_BY_UPDATED_BY__ID_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__UUID_ASC
+  CIF_USER_BY_UPDATED_BY__UUID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  CREATED_BY_ASC
+  CREATED_BY_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  PROJECT_REVISIONS_BY_REVISION_TYPE__COUNT_ASC
+  PROJECT_REVISIONS_BY_REVISION_TYPE__COUNT_DESC
+  TYPE_ASC
+  TYPE_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  UPDATED_BY_ASC
+  UPDATED_BY_DESC
+}
+
 """Lookup table for industry sectors used by the CleanBC Industry Fund"""
 type Sector implements Node {
   """archived at timestamp"""
@@ -64901,6 +67130,11 @@ type UndoFormChangesPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the `updateAdditionalFundingSourceByRowId` mutation."""
@@ -66433,6 +68667,11 @@ type UpdateProjectRevisionPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the `updateProjectStatusByRowId` mutation."""
@@ -66654,6 +68893,74 @@ type UpdateReportTypePayload {
     """The method to use when ordering `ReportType`."""
     orderBy: [ReportTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportTypesEdge
+}
+
+"""All input for the `updateRevisionTypeByType` mutation."""
+input UpdateRevisionTypeByTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `RevisionType` being updated.
+  """
+  revisionTypePatch: RevisionTypePatch!
+
+  """The type of the revision type as the primary key"""
+  type: String!
+}
+
+"""All input for the `updateRevisionType` mutation."""
+input UpdateRevisionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `RevisionType` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `RevisionType` being updated.
+  """
+  revisionTypePatch: RevisionTypePatch!
+}
+
+"""The output of our update `RevisionType` mutation."""
+type UpdateRevisionTypePayload {
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `RevisionType`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `RevisionType` that was updated by this mutation."""
+  revisionType: RevisionType
+
+  """An edge for our `RevisionType`. May be used by Relay 1."""
+  revisionTypeEdge(
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypesEdge
 }
 
 """All input for the `updateSectorBySectorName` mutation."""

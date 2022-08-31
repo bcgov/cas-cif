@@ -5,16 +5,8 @@ select plan(7);
 
 /** Basic Setup: Entities needed by dependency **/
 
-truncate table cif.cif_user restart identity cascade;
 truncate table cif.project restart identity cascade;
 truncate table cif.funding_stream_rfp restart identity cascade;
-
-insert into cif.cif_user (uuid, given_name, family_name, email_address)
-values
-  ('00000000-0000-0000-0000-000000000000', 'user 1', 'Testuser', 'cif_internal@somemail.com'),
-  ('00000000-0000-0000-0000-000000000001', 'user 2', 'Testuser', 'cif_external@somemail.com'),
-  ('00000000-0000-0000-0000-000000000002', 'user 3', 'Testuser', 'cif_admin@somemail.com'),
-  ('00000000-0000-0000-0000-000000000003', 'user 4', 'Testuser', 'cif@somemail.com');
 
 set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
 
@@ -22,25 +14,17 @@ insert into cif.operator(id, legal_name)
   overriding system value
   values (1, 'test operator');
 
-insert into cif.funding_stream (name, description) values ('EP', 'Emissions Performance'), ('IA', 'Innovation Accelerator');
-
 insert into cif.funding_stream_rfp (year, funding_stream_id) values
 (2022, 1);
 
-insert into cif.change_status (status, triggers_commit, active)
+insert into cif.project_manager_label (id,label)
+overriding system value
 values
-  ('pending', false, true),
-  ('committed', true, true);
-
-  insert into cif.project_manager_label (label)
-values
-  ('1 Label'),
-  ('2 Label'),
-  ('3 Label'),
-  ('4 Label');
-
-insert into cif.project_status (name, description) values
-('Test Status', 'Test Status');
+  (1,'1 Label'),
+  (2,'2 Label'),
+  (3,'3 Label'),
+  (4,'4 Label')
+  on conflict (id) do update set label=excluded.label;
 
 insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
   overriding system value
@@ -52,15 +36,15 @@ insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_i
     (5, 1, 1, 1, '005', 'summary', 'project 1'),
     (6, 1, 1, 1, '006', 'summary', 'project 1');
 
-insert into cif.project_revision(id, change_status, change_reason, project_id)
+insert into cif.project_revision(id, change_status, change_reason, project_id, revision_type)
   overriding system value
   values
-    (1, 'pending', 'reason for change', 1),
-    (2, 'pending', 'reason for change', 2),
-    (3, 'pending', 'reason for change', 3),
-    (4, 'pending', 'reason for change', 4),
-    (5, 'pending', 'reason for change', 5),
-    (6, 'pending', 'reason for change', 6);
+    (1, 'pending', 'reason for change', 1, 'General Revision'),
+    (2, 'pending', 'reason for change', 2, 'General Revision'),
+    (3, 'pending', 'reason for change', 3, 'General Revision'),
+    (4, 'pending', 'reason for change', 4, 'General Revision'),
+    (5, 'pending', 'reason for change', 5, 'General Revision'),
+    (6, 'pending', 'reason for change', 6, 'General Revision');
 
 /** Basic Setup End **/
 
@@ -101,7 +85,8 @@ insert into cif.form_change(
     -- Create a record, update a record and archive a record in revision 3 (pending) non-archived label ids: 2,4
     (7, 'create', 'cif', 'project_manager', null, 3, 'project', '{"projectId": 1, "cifUserId": 2, "projectManagerLabelId": 4}'),
     (8, 'archive', 'cif', 'project_manager', 3, 3, 'project', null),
-    (9, 'update', 'cif', 'project_manager', 2, 3, 'project', '{"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'),
+    (9, 'update', 'cif', 'project_manager', 2, 3, 'project', '
+    {"projectId": 1, "cifUserId": 1, "projectManagerLabelId": 2}'),
     -- Create a record in a different project (committed)
     (10, 'create', 'cif', 'project_manager', null, 4, 'project', '{"projectId": 2, "cifUserId": 4, "projectManagerLabelId": 1}'),
     -- Create a record in a different project (pending)
