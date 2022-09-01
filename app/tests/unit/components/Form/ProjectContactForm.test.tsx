@@ -411,7 +411,7 @@ describe("The ProjectContactForm", () => {
       {}
     );
   });
-  it("calls the undoFormChangesMutation when user clicks remove button and we have no primary contact selected and one secondary contact", () => {
+  it("calls the deleteFormChangeWithConnectionMutation twice when user clicks remove button and we have no primary contact selected and one secondary contact", () => {
     const mockResolver = {
       ...mockQueryPayload,
       ProjectRevision() {
@@ -463,18 +463,31 @@ describe("The ProjectContactForm", () => {
 
     expect(
       componentTestingHelper.environment.mock.getAllOperations()
-    ).toHaveLength(2);
+    ).toHaveLength(3);
 
-    const mutationUnderTest =
+    const firstMutationUnderTest =
       componentTestingHelper.environment.mock.getAllOperations()[1];
 
-    expect(mutationUnderTest.fragment.node.name).toBe(
-      "undoFormChangesMutation"
+    expect(firstMutationUnderTest.fragment.node.name).toBe(
+      "deleteFormChangeWithConnectionMutation"
     );
 
-    expect(mutationUnderTest.request.variables).toMatchObject({
+    expect(firstMutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1, 2],
+        id: "Form ID 1",
+      },
+    });
+
+    const secondMutationUnderTest =
+      componentTestingHelper.environment.mock.getAllOperations()[2];
+
+    expect(secondMutationUnderTest.fragment.node.name).toBe(
+      "deleteFormChangeWithConnectionMutation"
+    );
+
+    expect(secondMutationUnderTest.request.variables).toMatchObject({
+      input: {
+        id: "Form ID 2",
       },
     });
   });
