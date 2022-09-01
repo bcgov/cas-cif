@@ -467,24 +467,22 @@ describe("The ProjectContactForm", () => {
 
     componentTestingHelper.expectMutationToBeCalled(
       "deleteFormChangeWithConnectionMutation",
-      ...[
-        {
-          connections: [
-            'client:Test Project Revision ID:__connection_projectContactFormChanges_connection(formDataTableName:"project_contact")',
-          ],
-          input: {
-            id: "Form ID 1",
-          },
+      {
+        connections: expect.any(Array),
+        input: {
+          id: "Form ID 1",
         },
-        {
-          connections: [
-            'client:Test Project Revision ID:__connection_projectContactFormChanges_connection(formDataTableName:"project_contact")',
-          ],
-          input: {
-            id: "Form ID 2",
-          },
+      }
+    );
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "deleteFormChangeWithConnectionMutation",
+      {
+        connections: expect.any(Array),
+        input: {
+          id: "Form ID 2",
         },
-      ]
+      }
     );
   });
 });
