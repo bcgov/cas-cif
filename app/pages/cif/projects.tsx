@@ -24,7 +24,7 @@ export const ProjectsQuery = graphql`
     $operatorTradeName: String
     $proposalReference: String
     $status: String
-    $projectManagers: String
+    $primaryProjectManager: String
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
@@ -51,8 +51,13 @@ export const ProjectsQuery = graphql`
         }
         projectManagersByProjectId: {
           some: {
-            cifUserByCifUserId: {
-              fullName: { includesInsensitive: $projectManagers }
+            and: {
+              cifUserByCifUserId: {
+                fullName: { includesInsensitive: $primaryProjectManager }
+              }
+              projectManagerLabelByProjectManagerLabelId: {
+                label: { includesInsensitive: "primary" }
+              }
             }
           }
         }
@@ -67,7 +72,17 @@ export const ProjectsQuery = graphql`
         }
       }
     }
-    allCifUsers {
+    allCifUsers(
+      filter: {
+        projectManagersByCifUserId: {
+          some: {
+            projectManagerLabelByProjectManagerLabelId: {
+              label: { includesInsensitive: "primary" }
+            }
+          }
+        }
+      }
+    ) {
       edges {
         node {
           fullName
@@ -109,8 +124,8 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
       ),
       new DisplayOnlyFilter("Milestone Due"),
       new SearchableDropdownFilter(
-        "Project Managers",
-        "projectManagers",
+        "Primary Project Managers",
+        "primaryProjectManager",
         allCifUsers.edges.map((e) => e.node.fullName),
         { allowFreeFormInput: true, sortable: false }
       ),
