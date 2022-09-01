@@ -465,30 +465,26 @@ describe("The ProjectContactForm", () => {
       componentTestingHelper.environment.mock.getAllOperations()
     ).toHaveLength(3);
 
-    const firstMutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
-
-    expect(firstMutationUnderTest.fragment.node.name).toBe(
-      "deleteFormChangeWithConnectionMutation"
+    componentTestingHelper.expectMutationToBeCalled(
+      "deleteFormChangeWithConnectionMutation",
+      ...[
+        {
+          connections: [
+            'client:Test Project Revision ID:__connection_projectContactFormChanges_connection(formDataTableName:"project_contact")',
+          ],
+          input: {
+            id: "Form ID 1",
+          },
+        },
+        {
+          connections: [
+            'client:Test Project Revision ID:__connection_projectContactFormChanges_connection(formDataTableName:"project_contact")',
+          ],
+          input: {
+            id: "Form ID 2",
+          },
+        },
+      ]
     );
-
-    expect(firstMutationUnderTest.request.variables).toMatchObject({
-      input: {
-        id: "Form ID 1",
-      },
-    });
-
-    const secondMutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[2];
-
-    expect(secondMutationUnderTest.fragment.node.name).toBe(
-      "deleteFormChangeWithConnectionMutation"
-    );
-
-    expect(secondMutationUnderTest.request.variables).toMatchObject({
-      input: {
-        id: "Form ID 2",
-      },
-    });
   });
 });
