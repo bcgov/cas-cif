@@ -51,11 +51,13 @@ export const ProjectsQuery = graphql`
         }
         projectManagersByProjectId: {
           some: {
-            cifUserByCifUserId: {
-              fullName: { includesInsensitive: $primaryProjectManager }
-            }
-            projectManagerLabelByProjectManagerLabelId: {
-              label: { includesInsensitive: "primary" }
+            and: {
+              cifUserByCifUserId: {
+                fullName: { includesInsensitive: $primaryProjectManager }
+              }
+              projectManagerLabelByProjectManagerLabelId: {
+                label: { includesInsensitive: "primary" }
+              }
             }
           }
         }
