@@ -1391,6 +1391,860 @@ enum AdditionalFundingSourcesOrderBy {
   UPDATED_BY_DESC
 }
 
+"""Table containing information about amendment statuses"""
+type AmendmentStatus implements Node {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """Reads and enables pagination through a set of `ChangeStatus`."""
+  changeStatusesByProjectRevisionAmendmentStatusAndChangeStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ChangeStatus`."""
+    orderBy: [ChangeStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusChangeStatusesByProjectRevisionAmendmentStatusAndChangeStatusManyToManyConnection!
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByUpdatedBy: CifUser
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectRevisionAmendmentStatusAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectRevisionAmendmentStatusAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndUpdatedByManyToManyConnection!
+
+  """created at timestamp"""
+  createdAt: Datetime!
+
+  """created by user id"""
+  createdBy: Int
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """The name of the amendment status as the primary key"""
+  name: String!
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByProjectRevisionAmendmentStatusAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusProjectsByProjectRevisionAmendmentStatusAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `RevisionType`."""
+  revisionTypesByProjectRevisionAmendmentStatusAndRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RevisionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RevisionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RevisionType`."""
+    orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusRevisionTypesByProjectRevisionAmendmentStatusAndRevisionTypeManyToManyConnection!
+
+  """updated at timestamp"""
+  updatedAt: Datetime!
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A connection to a list of `ChangeStatus` values, with data from `ProjectRevision`.
+"""
+type AmendmentStatusChangeStatusesByProjectRevisionAmendmentStatusAndChangeStatusManyToManyConnection {
+  """
+  A list of edges which contains the `ChangeStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [AmendmentStatusChangeStatusesByProjectRevisionAmendmentStatusAndChangeStatusManyToManyEdge!]!
+
+  """A list of `ChangeStatus` objects."""
+  nodes: [ChangeStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `ChangeStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `ChangeStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type AmendmentStatusChangeStatusesByProjectRevisionAmendmentStatusAndChangeStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ChangeStatus` at the end of the edge."""
+  node: ChangeStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByChangeStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectRevision`.
+"""
+type AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `ProjectRevision`."""
+type AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectRevision`.
+"""
+type AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `ProjectRevision`."""
+type AmendmentStatusCifUsersByProjectRevisionAmendmentStatusAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A condition to be used against `AmendmentStatus` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input AmendmentStatusCondition {
+  """Checks for equality with the object’s `archivedAt` field."""
+  archivedAt: Datetime
+
+  """Checks for equality with the object’s `archivedBy` field."""
+  archivedBy: Int
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `createdBy` field."""
+  createdBy: Int
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+
+  """Checks for equality with the object’s `updatedBy` field."""
+  updatedBy: Int
+}
+
+"""
+A filter to be used against `AmendmentStatus` object types. All fields are combined with a logical ‘and.’
+"""
+input AmendmentStatusFilter {
+  """Checks for all expressions in this list."""
+  and: [AmendmentStatusFilter!]
+
+  """Filter by the object’s `archivedAt` field."""
+  archivedAt: DatetimeFilter
+
+  """Filter by the object’s `archivedBy` field."""
+  archivedBy: IntFilter
+
+  """Filter by the object’s `cifUserByArchivedBy` relation."""
+  cifUserByArchivedBy: CifUserFilter
+
+  """A related `cifUserByArchivedBy` exists."""
+  cifUserByArchivedByExists: Boolean
+
+  """Filter by the object’s `cifUserByCreatedBy` relation."""
+  cifUserByCreatedBy: CifUserFilter
+
+  """A related `cifUserByCreatedBy` exists."""
+  cifUserByCreatedByExists: Boolean
+
+  """Filter by the object’s `cifUserByUpdatedBy` relation."""
+  cifUserByUpdatedBy: CifUserFilter
+
+  """A related `cifUserByUpdatedBy` exists."""
+  cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `createdBy` field."""
+  createdBy: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: AmendmentStatusFilter
+
+  """Checks for any expressions in this list."""
+  or: [AmendmentStatusFilter!]
+
+  """Filter by the object’s `projectRevisionsByAmendmentStatus` relation."""
+  projectRevisionsByAmendmentStatus: AmendmentStatusToManyProjectRevisionFilter
+
+  """Some related `projectRevisionsByAmendmentStatus` exist."""
+  projectRevisionsByAmendmentStatusExist: Boolean
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `updatedBy` field."""
+  updatedBy: IntFilter
+}
+
+"""An input for mutations affecting `AmendmentStatus`"""
+input AmendmentStatusInput {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The name of the amendment status as the primary key"""
+  name: String!
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+Represents an update to a `AmendmentStatus`. Fields that are set will be updated.
+"""
+input AmendmentStatusPatch {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """The name of the amendment status as the primary key"""
+  name: String
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A connection to a list of `Project` values, with data from `ProjectRevision`.
+"""
+type AmendmentStatusProjectsByProjectRevisionAmendmentStatusAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [AmendmentStatusProjectsByProjectRevisionAmendmentStatusAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Project` edge in the connection, with data from `ProjectRevision`."""
+type AmendmentStatusProjectsByProjectRevisionAmendmentStatusAndProjectIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `RevisionType` values, with data from `ProjectRevision`.
+"""
+type AmendmentStatusRevisionTypesByProjectRevisionAmendmentStatusAndRevisionTypeManyToManyConnection {
+  """
+  A list of edges which contains the `RevisionType`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [AmendmentStatusRevisionTypesByProjectRevisionAmendmentStatusAndRevisionTypeManyToManyEdge!]!
+
+  """A list of `RevisionType` objects."""
+  nodes: [RevisionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RevisionType` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `RevisionType` edge in the connection, with data from `ProjectRevision`.
+"""
+type AmendmentStatusRevisionTypesByProjectRevisionAmendmentStatusAndRevisionTypeManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RevisionType` at the end of the edge."""
+  node: RevisionType
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByRevisionType(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A filter to be used against many `ProjectRevision` object types. All fields are combined with a logical ‘and.’
+"""
+input AmendmentStatusToManyProjectRevisionFilter {
+  """
+  Every related `ProjectRevision` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ProjectRevisionFilter
+
+  """
+  No related `ProjectRevision` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ProjectRevisionFilter
+
+  """
+  Some related `ProjectRevision` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ProjectRevisionFilter
+}
+
+"""A connection to a list of `AmendmentStatus` values."""
+type AmendmentStatusesConnection {
+  """
+  A list of edges which contains the `AmendmentStatus` and cursor to aid in pagination.
+  """
+  edges: [AmendmentStatusesEdge!]!
+
+  """A list of `AmendmentStatus` objects."""
+  nodes: [AmendmentStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AmendmentStatus` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `AmendmentStatus` edge in the connection."""
+type AmendmentStatusesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AmendmentStatus` at the end of the edge."""
+  node: AmendmentStatus
+}
+
+"""Methods to use when ordering `AmendmentStatus`."""
+enum AmendmentStatusesOrderBy {
+  ARCHIVED_AT_ASC
+  ARCHIVED_AT_DESC
+  ARCHIVED_BY_ASC
+  ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__ID_ASC
+  CIF_USER_BY_ARCHIVED_BY__ID_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__UUID_ASC
+  CIF_USER_BY_ARCHIVED_BY__UUID_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_CREATED_BY__ID_ASC
+  CIF_USER_BY_CREATED_BY__ID_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__UUID_ASC
+  CIF_USER_BY_CREATED_BY__UUID_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__ID_ASC
+  CIF_USER_BY_UPDATED_BY__ID_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__UUID_ASC
+  CIF_USER_BY_UPDATED_BY__UUID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  CREATED_BY_ASC
+  CREATED_BY_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  PROJECT_REVISIONS_BY_AMENDMENT_STATUS__COUNT_ASC
+  PROJECT_REVISIONS_BY_AMENDMENT_STATUS__COUNT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  UPDATED_BY_ASC
+  UPDATED_BY_DESC
+}
+
 """Lookup table for amendment types"""
 type AmendmentType implements Node {
   """archived at timestamp"""
@@ -2757,6 +3611,45 @@ type ChangeStatus implements Node {
   """Whether that status is active"""
   active: Boolean
 
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByProjectRevisionChangeStatusAndAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ChangeStatusAmendmentStatusesByProjectRevisionChangeStatusAndAmendmentStatusManyToManyConnection!
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -3166,6 +4059,72 @@ type ChangeStatus implements Node {
 
   """updated by user id"""
   updatedBy: Int
+}
+
+"""
+A connection to a list of `AmendmentStatus` values, with data from `ProjectRevision`.
+"""
+type ChangeStatusAmendmentStatusesByProjectRevisionChangeStatusAndAmendmentStatusManyToManyConnection {
+  """
+  A list of edges which contains the `AmendmentStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [ChangeStatusAmendmentStatusesByProjectRevisionChangeStatusAndAmendmentStatusManyToManyEdge!]!
+
+  """A list of `AmendmentStatus` objects."""
+  nodes: [AmendmentStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AmendmentStatus` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `AmendmentStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type ChangeStatusAmendmentStatusesByProjectRevisionChangeStatusAndAmendmentStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AmendmentStatus` at the end of the edge."""
+  node: AmendmentStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
 }
 
 """
@@ -4372,6 +5331,201 @@ type CifUser implements Node {
     orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
   ): AdditionalFundingSourcesConnection!
 
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByProjectRevisionCreatedByAndAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserAmendmentStatusesByProjectRevisionCreatedByAndAmendmentStatusManyToManyConnection!
+
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByProjectRevisionUpdatedByAndAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserAmendmentStatusesByProjectRevisionUpdatedByAndAmendmentStatusManyToManyConnection!
+
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
   """Reads and enables pagination through a set of `AmendmentType`."""
   amendmentTypesByArchivedBy(
     """Read all values in the set after (below) this cursor."""
@@ -5478,6 +6632,240 @@ type CifUser implements Node {
     """The method to use when ordering `CifUser`."""
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): CifUserCifUsersByAdditionalFundingSourceUpdatedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAmendmentStatusArchivedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAmendmentStatusArchivedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAmendmentStatusArchivedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAmendmentStatusArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAmendmentStatusCreatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAmendmentStatusCreatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAmendmentStatusCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAmendmentStatusCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAmendmentStatusUpdatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAmendmentStatusUpdatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByAmendmentStatusUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByAmendmentStatusUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByAmendmentTypeArchivedByAndCreatedBy(
@@ -18030,6 +19418,138 @@ type CifUserAdditionalFundingSourceStatusesByAdditionalFundingSourceUpdatedByAnd
 }
 
 """
+A connection to a list of `AmendmentStatus` values, with data from `ProjectRevision`.
+"""
+type CifUserAmendmentStatusesByProjectRevisionCreatedByAndAmendmentStatusManyToManyConnection {
+  """
+  A list of edges which contains the `AmendmentStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserAmendmentStatusesByProjectRevisionCreatedByAndAmendmentStatusManyToManyEdge!]!
+
+  """A list of `AmendmentStatus` objects."""
+  nodes: [AmendmentStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AmendmentStatus` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `AmendmentStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type CifUserAmendmentStatusesByProjectRevisionCreatedByAndAmendmentStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AmendmentStatus` at the end of the edge."""
+  node: AmendmentStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
+A connection to a list of `AmendmentStatus` values, with data from `ProjectRevision`.
+"""
+type CifUserAmendmentStatusesByProjectRevisionUpdatedByAndAmendmentStatusManyToManyConnection {
+  """
+  A list of edges which contains the `AmendmentStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserAmendmentStatusesByProjectRevisionUpdatedByAndAmendmentStatusManyToManyEdge!]!
+
+  """A list of `AmendmentStatus` objects."""
+  nodes: [AmendmentStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AmendmentStatus` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `AmendmentStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type CifUserAmendmentStatusesByProjectRevisionUpdatedByAndAmendmentStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AmendmentStatus` at the end of the edge."""
+  node: AmendmentStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
+}
+
+"""
 A connection to a list of `AmendmentType` values, with data from `ProjectRevisionAmendmentType`.
 """
 type CifUserAmendmentTypesByProjectRevisionAmendmentTypeArchivedByAndAmendmentTypeManyToManyConnection {
@@ -19338,6 +20858,408 @@ type CifUserCifUsersByAdditionalFundingSourceUpdatedByAndCreatedByManyToManyEdge
     """The method to use when ordering `AdditionalFundingSource`."""
     orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
   ): AdditionalFundingSourcesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AmendmentStatus`.
+"""
+type CifUserCifUsersByAmendmentStatusArchivedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AmendmentStatus`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAmendmentStatusArchivedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `AmendmentStatus`."""
+type CifUserCifUsersByAmendmentStatusArchivedByAndCreatedByManyToManyEdge {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AmendmentStatus`.
+"""
+type CifUserCifUsersByAmendmentStatusArchivedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AmendmentStatus`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAmendmentStatusArchivedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `AmendmentStatus`."""
+type CifUserCifUsersByAmendmentStatusArchivedByAndUpdatedByManyToManyEdge {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AmendmentStatus`.
+"""
+type CifUserCifUsersByAmendmentStatusCreatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AmendmentStatus`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAmendmentStatusCreatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `AmendmentStatus`."""
+type CifUserCifUsersByAmendmentStatusCreatedByAndArchivedByManyToManyEdge {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AmendmentStatus`.
+"""
+type CifUserCifUsersByAmendmentStatusCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AmendmentStatus`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAmendmentStatusCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `AmendmentStatus`."""
+type CifUserCifUsersByAmendmentStatusCreatedByAndUpdatedByManyToManyEdge {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AmendmentStatus`.
+"""
+type CifUserCifUsersByAmendmentStatusUpdatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AmendmentStatus`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAmendmentStatusUpdatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `AmendmentStatus`."""
+type CifUserCifUsersByAmendmentStatusUpdatedByAndArchivedByManyToManyEdge {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `AmendmentStatus`.
+"""
+type CifUserCifUsersByAmendmentStatusUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `AmendmentStatus`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByAmendmentStatusUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CifUser` edge in the connection, with data from `AmendmentStatus`."""
+type CifUserCifUsersByAmendmentStatusUpdatedByAndCreatedByManyToManyEdge {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection!
 
   """A cursor for use in pagination."""
   cursor: Cursor
@@ -30771,6 +32693,24 @@ input CifUserFilter {
   """Some related `additionalFundingSourcesByUpdatedBy` exist."""
   additionalFundingSourcesByUpdatedByExist: Boolean
 
+  """Filter by the object’s `amendmentStatusesByArchivedBy` relation."""
+  amendmentStatusesByArchivedBy: CifUserToManyAmendmentStatusFilter
+
+  """Some related `amendmentStatusesByArchivedBy` exist."""
+  amendmentStatusesByArchivedByExist: Boolean
+
+  """Filter by the object’s `amendmentStatusesByCreatedBy` relation."""
+  amendmentStatusesByCreatedBy: CifUserToManyAmendmentStatusFilter
+
+  """Some related `amendmentStatusesByCreatedBy` exist."""
+  amendmentStatusesByCreatedByExist: Boolean
+
+  """Filter by the object’s `amendmentStatusesByUpdatedBy` relation."""
+  amendmentStatusesByUpdatedBy: CifUserToManyAmendmentStatusFilter
+
+  """Some related `amendmentStatusesByUpdatedBy` exist."""
+  amendmentStatusesByUpdatedByExist: Boolean
+
   """Filter by the object’s `amendmentTypesByArchivedBy` relation."""
   amendmentTypesByArchivedBy: CifUserToManyAmendmentTypeFilter
 
@@ -36465,6 +38405,26 @@ input CifUserToManyAdditionalFundingSourceStatusFilter {
 }
 
 """
+A filter to be used against many `AmendmentStatus` object types. All fields are combined with a logical ‘and.’
+"""
+input CifUserToManyAmendmentStatusFilter {
+  """
+  Every related `AmendmentStatus` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AmendmentStatusFilter
+
+  """
+  No related `AmendmentStatus` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AmendmentStatusFilter
+
+  """
+  Some related `AmendmentStatus` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AmendmentStatusFilter
+}
+
+"""
 A filter to be used against many `AmendmentType` object types. All fields are combined with a logical ‘and.’
 """
 input CifUserToManyAmendmentTypeFilter {
@@ -37084,6 +39044,12 @@ enum CifUsersOrderBy {
   ADDITIONAL_FUNDING_SOURCE_STATUSES_BY_CREATED_BY__COUNT_DESC
   ADDITIONAL_FUNDING_SOURCE_STATUSES_BY_UPDATED_BY__COUNT_ASC
   ADDITIONAL_FUNDING_SOURCE_STATUSES_BY_UPDATED_BY__COUNT_DESC
+  AMENDMENT_STATUSES_BY_ARCHIVED_BY__COUNT_ASC
+  AMENDMENT_STATUSES_BY_ARCHIVED_BY__COUNT_DESC
+  AMENDMENT_STATUSES_BY_CREATED_BY__COUNT_ASC
+  AMENDMENT_STATUSES_BY_CREATED_BY__COUNT_DESC
+  AMENDMENT_STATUSES_BY_UPDATED_BY__COUNT_ASC
+  AMENDMENT_STATUSES_BY_UPDATED_BY__COUNT_DESC
   AMENDMENT_TYPES_BY_ARCHIVED_BY__COUNT_ASC
   AMENDMENT_TYPES_BY_ARCHIVED_BY__COUNT_DESC
   AMENDMENT_TYPES_BY_CREATED_BY__COUNT_ASC
@@ -37404,6 +39370,11 @@ input CommitProjectRevisionInput {
 
 """The output of our `commitProjectRevision` mutation."""
 type CommitProjectRevisionPayload {
+  """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
   """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
@@ -38382,6 +40353,50 @@ type CreateAdditionalFundingSourceStatusPayload {
   query: Query
 }
 
+"""All input for the create `AmendmentStatus` mutation."""
+input CreateAmendmentStatusInput {
+  """The `AmendmentStatus` to be created by this mutation."""
+  amendmentStatus: AmendmentStatusInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `AmendmentStatus` mutation."""
+type CreateAmendmentStatusPayload {
+  """The `AmendmentStatus` that was created by this mutation."""
+  amendmentStatus: AmendmentStatus
+
+  """An edge for our `AmendmentStatus`. May be used by Relay 1."""
+  amendmentStatusEdge(
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesEdge
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `AmendmentType` mutation."""
 input CreateAmendmentTypeInput {
   """The `AmendmentType` to be created by this mutation."""
@@ -39190,6 +41205,11 @@ type CreateProjectManagerPayload {
 """The output of our `createProject` mutation."""
 type CreateProjectPayload {
   """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
+  """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
   changeStatusByChangeStatus: ChangeStatus
@@ -39301,6 +41321,11 @@ input CreateProjectRevisionInput {
 
 """The output of our `createProjectRevision` mutation."""
 type CreateProjectRevisionPayload {
+  """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
   """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
@@ -39787,6 +41812,65 @@ type DeleteAdditionalFundingSourceStatusPayload {
   """
   clientMutationId: String
   deletedAdditionalFundingSourceStatusId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteAmendmentStatusByName` mutation."""
+input DeleteAmendmentStatusByNameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The name of the amendment status as the primary key"""
+  name: String!
+}
+
+"""All input for the `deleteAmendmentStatus` mutation."""
+input DeleteAmendmentStatusInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `AmendmentStatus` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `AmendmentStatus` mutation."""
+type DeleteAmendmentStatusPayload {
+  """The `AmendmentStatus` that was deleted by this mutation."""
+  amendmentStatus: AmendmentStatus
+
+  """An edge for our `AmendmentStatus`. May be used by Relay 1."""
+  amendmentStatusEdge(
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesEdge
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedAmendmentStatusId: ID
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -40978,6 +43062,11 @@ input DeleteProjectRevisionInput {
 
 """The output of our delete `ProjectRevision` mutation."""
 type DeleteProjectRevisionPayload {
+  """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
   """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
@@ -43279,6 +45368,8 @@ enum FormChangesOrderBy {
   PREVIOUS_FORM_CHANGE_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__AMENDMENT_STATUS_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__AMENDMENT_STATUS_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_ASC
@@ -47657,6 +49748,14 @@ type Mutation {
     input: CreateAdditionalFundingSourceStatusInput!
   ): CreateAdditionalFundingSourceStatusPayload
 
+  """Creates a single `AmendmentStatus`."""
+  createAmendmentStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateAmendmentStatusInput!
+  ): CreateAmendmentStatusPayload
+
   """Creates a single `AmendmentType`."""
   createAmendmentType(
     """
@@ -47889,6 +49988,22 @@ type Mutation {
     """
     input: DeleteAdditionalFundingSourceStatusByStatusNameInput!
   ): DeleteAdditionalFundingSourceStatusPayload
+
+  """Deletes a single `AmendmentStatus` using its globally unique id."""
+  deleteAmendmentStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAmendmentStatusInput!
+  ): DeleteAmendmentStatusPayload
+
+  """Deletes a single `AmendmentStatus` using a unique key."""
+  deleteAmendmentStatusByName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAmendmentStatusByNameInput!
+  ): DeleteAmendmentStatusPayload
 
   """Deletes a single `AmendmentType` using its globally unique id."""
   deleteAmendmentType(
@@ -48359,6 +50474,24 @@ type Mutation {
     """
     input: UpdateAdditionalFundingSourceStatusByStatusNameInput!
   ): UpdateAdditionalFundingSourceStatusPayload
+
+  """
+  Updates a single `AmendmentStatus` using its globally unique id and a patch.
+  """
+  updateAmendmentStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAmendmentStatusInput!
+  ): UpdateAmendmentStatusPayload
+
+  """Updates a single `AmendmentStatus` using a unique key and a patch."""
+  updateAmendmentStatusByName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAmendmentStatusByNameInput!
+  ): UpdateAmendmentStatusPayload
 
   """
   Updates a single `AmendmentType` using its globally unique id and a patch.
@@ -50351,6 +52484,45 @@ type Project implements Node {
   """
   additionalSectorInformation: String
 
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByProjectRevisionProjectIdAndAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAmendmentStatusesByProjectRevisionProjectIdAndAmendmentStatusManyToManyConnection!
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -51802,6 +53974,72 @@ type ProjectAdditionalFundingSourceStatusesByAdditionalFundingSourceProjectIdAnd
 
   """The `AdditionalFundingSourceStatus` at the end of the edge."""
   node: AdditionalFundingSourceStatus
+}
+
+"""
+A connection to a list of `AmendmentStatus` values, with data from `ProjectRevision`.
+"""
+type ProjectAmendmentStatusesByProjectRevisionProjectIdAndAmendmentStatusManyToManyConnection {
+  """
+  A list of edges which contains the `AmendmentStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectAmendmentStatusesByProjectRevisionProjectIdAndAmendmentStatusManyToManyEdge!]!
+
+  """A list of `AmendmentStatus` objects."""
+  nodes: [AmendmentStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AmendmentStatus` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `AmendmentStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type ProjectAmendmentStatusesByProjectRevisionProjectIdAndAmendmentStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AmendmentStatus` at the end of the edge."""
+  node: AmendmentStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
 }
 
 """
@@ -55520,6 +57758,14 @@ type ProjectReportTypesByReportingRequirementProjectIdAndReportTypeManyToManyEdg
 
 """Table containing all the changes for a project revision"""
 type ProjectRevision implements Node {
+  """The status of the amendment of a project"""
+  amendmentStatus: String
+
+  """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
   """Reads and enables pagination through a set of `AmendmentType`."""
   amendmentTypesByProjectRevisionAmendmentTypeProjectRevisionIdAndAmendmentType(
     """Read all values in the set after (below) this cursor."""
@@ -56498,6 +58744,8 @@ enum ProjectRevisionAmendmentTypesOrderBy {
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__AMENDMENT_STATUS_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__AMENDMENT_STATUS_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_REASON_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__CHANGE_STATUS_ASC
@@ -56932,6 +59180,9 @@ A condition to be used against `ProjectRevision` object types. All fields are
 tested for equality and combined with a logical ‘and.’
 """
 input ProjectRevisionCondition {
+  """Checks for equality with the object’s `amendmentStatus` field."""
+  amendmentStatus: String
+
   """Checks for equality with the object’s `changeReason` field."""
   changeReason: String
 
@@ -56970,6 +59221,15 @@ input ProjectRevisionCondition {
 A filter to be used against `ProjectRevision` object types. All fields are combined with a logical ‘and.’
 """
 input ProjectRevisionFilter {
+  """Filter by the object’s `amendmentStatus` field."""
+  amendmentStatus: StringFilter
+
+  """Filter by the object’s `amendmentStatusByAmendmentStatus` relation."""
+  amendmentStatusByAmendmentStatus: AmendmentStatusFilter
+
+  """A related `amendmentStatusByAmendmentStatus` exists."""
+  amendmentStatusByAmendmentStatusExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [ProjectRevisionFilter!]
 
@@ -57132,6 +59392,9 @@ type ProjectRevisionFormChangesByFormChangeProjectRevisionIdAndPreviousFormChang
 Represents an update to a `ProjectRevision`. Fields that are set will be updated.
 """
 input ProjectRevisionPatch {
+  """The status of the amendment of a project"""
+  amendmentStatus: String
+
   """Explanation of why the revision was made"""
   changeReason: String
 
@@ -57301,6 +59564,22 @@ type ProjectRevisionsEdge {
 
 """Methods to use when ordering `ProjectRevision`."""
 enum ProjectRevisionsOrderBy {
+  AMENDMENT_STATUS_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__ARCHIVED_AT_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__ARCHIVED_AT_DESC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__ARCHIVED_BY_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__ARCHIVED_BY_DESC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__CREATED_AT_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__CREATED_AT_DESC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__CREATED_BY_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__CREATED_BY_DESC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__NAME_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__NAME_DESC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__UPDATED_AT_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__UPDATED_AT_DESC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__UPDATED_BY_ASC
+  AMENDMENT_STATUS_BY_AMENDMENT_STATUS__UPDATED_BY_DESC
+  AMENDMENT_STATUS_DESC
   CHANGE_REASON_ASC
   CHANGE_REASON_DESC
   CHANGE_STATUS_ASC
@@ -61144,6 +63423,45 @@ type Query implements Node {
     orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
   ): AdditionalFundingSourcesConnection
 
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  allAmendmentStatuses(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesConnection
+
   """Reads and enables pagination through a set of `AmendmentType`."""
   allAmendmentTypes(
     """Read all values in the set after (below) this cursor."""
@@ -62233,6 +64551,15 @@ type Query implements Node {
     """The method to use when ordering `Sector`."""
     orderBy: [SectorsOrderBy!] = [PRIMARY_KEY_ASC]
   ): SectorsConnection
+
+  """Reads a single `AmendmentStatus` using its globally unique `ID`."""
+  amendmentStatus(
+    """
+    The globally unique `ID` to be used in selecting a single `AmendmentStatus`.
+    """
+    id: ID!
+  ): AmendmentStatus
+  amendmentStatusByName(name: String!): AmendmentStatus
 
   """Reads a single `AmendmentType` using its globally unique `ID`."""
   amendmentType(
@@ -64943,6 +67270,45 @@ enum ReportingRequirementsOrderBy {
 
 """Table containing information about revision types"""
 type RevisionType implements Node {
+  """Reads and enables pagination through a set of `AmendmentStatus`."""
+  amendmentStatusesByProjectRevisionRevisionTypeAndAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AmendmentStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AmendmentStatusFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RevisionTypeAmendmentStatusesByProjectRevisionRevisionTypeAndAmendmentStatusManyToManyConnection!
+
   """archived at timestamp"""
   archivedAt: Datetime
 
@@ -65167,6 +67533,72 @@ type RevisionType implements Node {
 
   """updated by user id"""
   updatedBy: Int
+}
+
+"""
+A connection to a list of `AmendmentStatus` values, with data from `ProjectRevision`.
+"""
+type RevisionTypeAmendmentStatusesByProjectRevisionRevisionTypeAndAmendmentStatusManyToManyConnection {
+  """
+  A list of edges which contains the `AmendmentStatus`, info from the `ProjectRevision`, and the cursor to aid in pagination.
+  """
+  edges: [RevisionTypeAmendmentStatusesByProjectRevisionRevisionTypeAndAmendmentStatusManyToManyEdge!]!
+
+  """A list of `AmendmentStatus` objects."""
+  nodes: [AmendmentStatus]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AmendmentStatus` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""
+A `AmendmentStatus` edge in the connection, with data from `ProjectRevision`.
+"""
+type RevisionTypeAmendmentStatusesByProjectRevisionRevisionTypeAndAmendmentStatusManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AmendmentStatus` at the end of the edge."""
+  node: AmendmentStatus
+
+  """Reads and enables pagination through a set of `ProjectRevision`."""
+  projectRevisionsByAmendmentStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectRevisionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectRevisionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsConnection!
 }
 
 """
@@ -67100,6 +69532,11 @@ input UndoFormChangesInput {
 """The output of our `undoFormChanges` mutation."""
 type UndoFormChangesPayload {
   """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
+  """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
   changeStatusByChangeStatus: ChangeStatus
@@ -67285,6 +69722,74 @@ type UpdateAdditionalFundingSourceStatusPayload {
   """
   Reads a single `CifUser` that is related to this `AdditionalFundingSourceStatus`.
   """
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateAmendmentStatusByName` mutation."""
+input UpdateAmendmentStatusByNameInput {
+  """
+  An object where the defined keys will be set on the `AmendmentStatus` being updated.
+  """
+  amendmentStatusPatch: AmendmentStatusPatch!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The name of the amendment status as the primary key"""
+  name: String!
+}
+
+"""All input for the `updateAmendmentStatus` mutation."""
+input UpdateAmendmentStatusInput {
+  """
+  An object where the defined keys will be set on the `AmendmentStatus` being updated.
+  """
+  amendmentStatusPatch: AmendmentStatusPatch!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `AmendmentStatus` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `AmendmentStatus` mutation."""
+type UpdateAmendmentStatusPayload {
+  """The `AmendmentStatus` that was updated by this mutation."""
+  amendmentStatus: AmendmentStatus
+
+  """An edge for our `AmendmentStatus`. May be used by Relay 1."""
+  amendmentStatusEdge(
+    """The method to use when ordering `AmendmentStatus`."""
+    orderBy: [AmendmentStatusesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AmendmentStatusesEdge
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `AmendmentStatus`."""
   cifUserByUpdatedBy: CifUser
 
   """
@@ -68634,6 +71139,11 @@ input UpdateProjectRevisionInput {
 
 """The output of our update `ProjectRevision` mutation."""
 type UpdateProjectRevisionPayload {
+  """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
   """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
