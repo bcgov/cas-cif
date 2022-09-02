@@ -136,6 +136,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           rowId,
           formChangePatch: {
             newFormData,
+            operation: "UPDATE",
           },
         },
       },
@@ -145,7 +146,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
             id: formChangeId,
             changeStatus: "pending",
             newFormData,
-            operation: undefined,
+            operation: "UPDATE",
             projectRevisionByProjectRevisionId: undefined,
           },
         },
