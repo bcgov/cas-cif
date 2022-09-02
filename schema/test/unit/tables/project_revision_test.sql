@@ -67,7 +67,8 @@ select columns_are(
     'created_at',
     'created_by',
     'updated_at',
-    'updated_by'
+    'updated_by',
+    'amendment_status'
   ],
   'revision_type and comments column were reverted and do not exist in cif.project_revision'
 );
@@ -120,7 +121,8 @@ select columns_are(
     'created_by',
     'updated_at',
     'updated_by',
-    'revision_type'
+    'revision_type',
+    'amendment_status'
   ],
   'columns in cif.project_revision match expected columns after migration project_revision_001_add_revision_type'
 );
