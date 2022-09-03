@@ -140,3 +140,4 @@ tables/project_revision_amendment_type [tables/project_revision tables/amendment
 tables/revision_type 2022-08-18T17:08:47Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a table for revision type
 tables/amendment_status 2022-08-30T20:46:19Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create a new table amendment_status
 tables/project_revision_001_add_amendment_columns 2022-08-18T17:31:54Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Adding a revision_type column, columns column & amendment_status column to the project_revision table
+tables/funding_parameter_002 [tables/funding_parameter] 2022-09-02T21:08:44Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add contract_start_date and project_assets_life_end_date to funding_parameter table
