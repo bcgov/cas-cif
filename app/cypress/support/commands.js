@@ -521,7 +521,9 @@ Cypress.Commands.add(
     provinceSharePercentage,
     holdbackPercentage,
     anticipatedFundingAmount,
-    proponentCost
+    proponentCost,
+    contractStartDate,
+    projectAssetsLifeEndDate
   ) => {
     cy.findByLabelText(/Total Project Value$/i)
       .clear()
@@ -541,6 +543,8 @@ Cypress.Commands.add(
     cy.findByLabelText(/Proponent Cost$/i)
       .clear()
       .type(proponentCost);
+    cy.setDate(contractStartDate, "Contract Start Date");
+    cy.setDate(projectAssetsLifeEndDate, "Project Assets Life End Date");
     cy.contains("Changes saved");
 
     return cy.url().should("include", "/form/3");
@@ -555,7 +559,10 @@ Cypress.Commands.add(
     provinceSharePercentage,
     holdbackPercentage,
     anticipatedFundingAmount,
-    proponentCost
+    proponentCost,
+    contractStartDate,
+    projectAssetsLifeEndDate,
+    summaryPageMode = false
   ) => {
     cy.findByText(/Total Project Value$/i)
       .next()
@@ -576,7 +583,13 @@ Cypress.Commands.add(
       .next()
       .should("have.text", proponentCost);
 
-    return cy.url().should("include", "/form/3");
+    cy.findByText(/Contract Start Date$/i)
+      .next()
+      .contains(contractStartDate);
+    cy.findByText(/Project Assets Life End Date$/i)
+      .next()
+      .contains(projectAssetsLifeEndDate);
+    if (!summaryPageMode) return cy.url().should("include", "/form/3");
   }
 );
 
@@ -640,3 +653,29 @@ Cypress.Commands.add(
       .should("have.text", status);
   }
 );
+
+// TODO: possible candidate to replace other date related commands
+Cypress.Commands.add("setDate", (date, ariaLabel, reportNumber = 0) => {
+  const receivedDate = DateTime.fromFormat(date, "yyyy-MM-dd")
+    .setZone("America/Vancouver")
+    .setLocale("en-CA");
+  cy.get(`[aria-label*="${ariaLabel}"]`)
+    .eq(reportNumber - 1)
+    .should("exist")
+    .click();
+  cy.get(".react-datepicker__month-select")
+    // datepicker indexes months from 0, luxon indexes from 1
+    .select(receivedDate.get("month") - 1);
+  cy.get(".react-datepicker__year-select").select(
+    receivedDate.get("year").toString()
+  );
+  cy.get(`.react-datepicker__day--0${receivedDate.toFormat("dd")}`)
+    .not(`.react-datepicker__day--outside-month`)
+    .click();
+  cy.get(`[aria-label*="${ariaLabel}"]`)
+    .eq(reportNumber - 1)
+    .contains(`${receivedDate.toFormat("MMM dd, yyyy")}`);
+  cy.contains("Changes saved").should("be.visible");
+  // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
+  return cy.url().should("include", "/form");
+});

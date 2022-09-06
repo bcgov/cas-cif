@@ -59,8 +59,16 @@ describe("when creating a project, the project page", () => {
     );
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
-    cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 800);
-    cy.contains("Changes saved").should("be.visible");
+    cy.fillFundingAgreementForm(
+      111,
+      222,
+      60,
+      20,
+      333,
+      800,
+      "2020-01-01",
+      "2020-02-02"
+    );
     cy.findByRole("button", { name: /Add funding source/i }).click();
     cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
     cy.contains("Changes saved").should("be.visible");
@@ -142,8 +150,6 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Project Description/i)
       .next()
       .should("have.text", "Bar");
-
-    // funding agreement section
     cy.findByText(/Total Funding Request/i)
       .next()
       .should("have.text", "$100.00");
@@ -155,6 +161,18 @@ describe("when creating a project, the project page", () => {
       .next()
       .should("have.text", "Some comments");
 
+    // funding agreement section
+    cy.checkFundingAgreementForm(
+      "$111.00",
+      "$222.00",
+      "60 %",
+      "20 %",
+      "$333.00",
+      "$800.00",
+      /Jan(\.)? 1, 2020/,
+      /Feb(\.)? 2, 2020/,
+      true
+    );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i)
       .next()
