@@ -58472,6 +58472,9 @@ type ProjectRevision implements Node {
     orderBy: [ProjectRevisionAmendmentTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionAmendmentTypesConnection!
 
+  """Computed column to determine the rank of a project"""
+  rank: Int
+
   """The type of the project revision (e.g. General Revision)"""
   revisionType: String!
 
@@ -59503,6 +59506,9 @@ input ProjectRevisionFilter {
 
   """Some related `projectRevisionAmendmentTypesByProjectRevisionId` exist."""
   projectRevisionAmendmentTypesByProjectRevisionIdExist: Boolean
+
+  """Filter by the object’s `rank` field."""
+  rank: IntFilter
 
   """Filter by the object’s `revisionType` field."""
   revisionType: StringFilter
