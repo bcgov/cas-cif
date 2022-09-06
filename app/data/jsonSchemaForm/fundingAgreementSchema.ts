@@ -8,6 +8,8 @@ export const fundingAgreementSchema = {
     "holdbackPercentage",
     "anticipatedFundingAmount",
     "proponentCost",
+    "contractStartDate",
+    "projectAssetsLifeEndDate",
   ],
   properties: {
     totalProjectValue: {
@@ -34,6 +36,14 @@ export const fundingAgreementSchema = {
       title: "Proponent Cost",
       type: "number",
     },
+    contractStartDate: {
+      title: "Contract Start Date",
+      type: "string",
+    },
+    projectAssetsLifeEndDate: {
+      title: "Project Assets Life End Date",
+      type: "string",
+    },
   },
 };
 
@@ -43,6 +53,8 @@ export const fundingAgreementUiSchema = {
     "provinceSharePercentage",
     "holdbackPercentage",
     "proponentCost",
+    "contractStartDate",
+    "projectAssetsLifeEndDate",
     "totalProjectValue",
     "anticipatedFundingAmount",
   ],
@@ -69,5 +81,11 @@ export const fundingAgreementUiSchema = {
   proponentCost: {
     "ui:widget": "NumberWidget",
     isMoney: true,
+  },
+  contractStartDate: {
+    "ui:widget": "DateWidget",
+  },
+  projectAssetsLifeEndDate: {
+    "ui:widget": "DateWidget",
   },
 };

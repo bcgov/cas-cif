@@ -8,7 +8,9 @@
       "provinceSharePercentage",
       "holdbackPercentage",
       "anticipatedFundingAmount",
-      "proponentCost"
+      "proponentCost",
+      "contractStartDate",
+      "projectAssetsLifeEndDate"
     ],
     "properties": {
       "totalProjectValue": {
@@ -42,6 +44,14 @@
         "items": {
           "$ref": "#/definitions/additionalFundingSource"
         }
+      },
+      "contractStartDate": {
+        "title": "Contract Start Date",
+        "type": "string"
+      },
+      "projectAssetsLifeEndDate": {
+        "title": "Project Assets Life End Date",
+        "type": "string"
       }
     },
     "definitions": {
