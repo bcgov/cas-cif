@@ -30,8 +30,10 @@ for temp_row in select id, project_id from cif.project_revision loop
             'totalProjectValue', 1,
             'maxFundingAmount', 1,
             'anticipatedFundingAmount', 1,
-            'proponentCost',777
-                ),
+            'proponentCost',777,
+            'contractStartDate', now(),
+            'projectAssetsLifeEndDate', now()
+            ),
         'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter',temp_row.id);
     end loop;
 
