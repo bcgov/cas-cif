@@ -45,6 +45,8 @@ const defaultMockResolver = {
                 holdbackPercentage: 10,
                 anticipatedFundingAmount: 300,
                 proponentCost: 800,
+                contractStartDate: "2021-01-01",
+                projectAssetsLifeEndDate: "2021-12-31",
               },
             },
           },
@@ -150,6 +152,12 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value
     ).toBe("$800.00");
+    expect(
+      screen.getByLabelText<HTMLInputElement>(/Contract Start Date/i)
+    ).toHaveTextContent(/Jan[.]? 01, 2021/);
+    expect(
+      screen.getByLabelText<HTMLInputElement>(/Project Assets Life End Date/i)
+    ).toHaveTextContent(/Dec[.]? 31, 2021/);
 
     // Additional Funding Source section
     expect(
