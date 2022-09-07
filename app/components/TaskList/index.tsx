@@ -205,6 +205,27 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           );
         })}
 
+        {/* Amendments & Other Revisions section */}
+        <TaskListSection
+          defaultExpandedState={
+            currentStep === String(sectionIndex.revisionsHistory)
+          }
+          listItemNumber={String(sectionIndex.revisionsHistory)}
+          listItemName="Amendments & Other Revisions"
+        >
+          <TaskListItem
+            stepName={String(sectionIndex.revisionsHistory)}
+            linkUrl={getProjectRevisionFormPageRoute(
+              id,
+              sectionIndex.revisionsHistory
+            )}
+            formTitle="Change Log"
+            formStatus={null}
+            currentStep={currentStep}
+            mode={mode}
+          />
+        </TaskListSection>
+
         {/* Project Summary Section */}
         {mode !== "view" && (
           <TaskListSection
