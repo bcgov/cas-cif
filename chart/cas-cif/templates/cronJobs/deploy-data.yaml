@@ -47,6 +47,7 @@ spec:
                 - |
                   set -euo pipefail;
                   sqitch deploy;
+                  ./data/deploy-data.sh;
                   if [[ "$NAMESPACE" == *-dev ]]; then
                   for file in data/dev/*.sql; do
                     psql -v "ON_ERROR_STOP=1" -d cif -f "${file}";

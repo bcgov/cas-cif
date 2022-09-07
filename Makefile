@@ -135,19 +135,16 @@ deploy_db_migrations:
 	@$(SQITCH) --chdir mocks_schema deploy
 
 deploy_dev_data: ## deploy the database migrations with sqitch and load the data for local development
-deploy_dev_data: deploy_db_migrations
+deploy_dev_data: deploy_db_migrations deploy_prod_data
 deploy_dev_data:
 	@for file in $(__DIRNAME)/schema/data/dev/*; do \
 		$(PSQL) -d $(DB_NAME) -f "$${file}"; \
 	done;
 
-deploy_prod_data: ## deploy the database migrations with sqitch and load the production data
-deploy_prod_data: deploy_db_migrations
+.PHONY: deploy_prod_data
+deploy_prod_data: ## deploy the production data
 deploy_prod_data:
-	@for file in $(__DIRNAME)/schema/data/prod/*; do \
-		$(PSQL) -d $(DB_NAME) -f "$${file}"; \
-	done;
-
+	schema/data/deploy-data.sh
 
 .PHONY: revert_db_migrations
 revert_db_migrations: ## revert the database migrations with sqitch
@@ -187,7 +184,7 @@ verify_test_db_migrations:
 
 .PHONY: db_unit_tests
 db_unit_tests: ## run the database unit tests
-db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations
+db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations deploy_prod_data
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
