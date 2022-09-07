@@ -10,7 +10,7 @@ const validateRecord: (schemaName: string, formData: any) => ErrorObject[] = (
   formData
 ) => {
   const schema = validationSchemas[schemaName];
-
+  if ((schemaName = "milestone")) return [];
   if (!schema)
     throw new Error("No json schema found for schema with name " + schemaName);
 

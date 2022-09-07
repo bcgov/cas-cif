@@ -100,7 +100,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
+  return null;
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
   const consolidatedFormData = useMemo(() => {

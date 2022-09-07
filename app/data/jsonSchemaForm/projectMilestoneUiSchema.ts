@@ -2,6 +2,7 @@ const projectMilestoneUiSchema = {
   "ui:order": [
     "description",
     "reportType",
+    "hasExpenses",
     "maximumAmount",
     "reportDueDate",
     "substantialCompletionDate",
@@ -25,6 +26,10 @@ const projectMilestoneUiSchema = {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "SearchWidget",
+  },
+  hasExpenses: {
+    classNames: "hidden-title",
+    "ui:widget": "hidden",
   },
   reportDueDate: {
     "ui:col-md": 12,
