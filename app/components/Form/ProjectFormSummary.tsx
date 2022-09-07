@@ -18,10 +18,11 @@ interface Props {
 }
 
 const ProjectFormSummary: React.FC<Props> = (props) => {
-  const { projectFormChange, isFirstRevision } = useFragment(
+  const { projectFormChange, isFirstRevision, rank } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
+        rank
         projectFormChange {
           newFormData
           operation
@@ -116,6 +117,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           )}
           formData={formData}
           formContext={{
+            calculatedRank: rank,
             oldData:
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
             oldUiSchema,

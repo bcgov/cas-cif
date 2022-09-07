@@ -19,6 +19,7 @@ export const mutation = graphql`
         isUniqueValue(columnName: "proposalReference")
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
+          rank
         }
       }
     }
