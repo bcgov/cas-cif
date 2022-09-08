@@ -252,6 +252,11 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
+    // below assertion is not necessary, but it's here to make sure the happo
+    // snapshot is taken after the form is submitted
+    cy.findByText(/Add emissions intensity report/i)
+      .next()
+      .should("have.text", "Attention Required");
     cy.happoAndAxe(
       "Emissions intensity report Form",
       "with errors",
