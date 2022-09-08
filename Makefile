@@ -135,7 +135,7 @@ deploy_db_migrations:
 	@$(SQITCH) --chdir mocks_schema deploy
 
 deploy_dev_data: ## deploy the database migrations with sqitch and load the data for local development
-deploy_dev_data: deploy_db_migrations deploy_prod_data
+deploy_dev_data: | deploy_db_migrations deploy_prod_data
 deploy_dev_data:
 	@for file in $(__DIRNAME)/schema/data/dev/*; do \
 		$(PSQL) -d $(DB_NAME) -f "$${file}"; \
