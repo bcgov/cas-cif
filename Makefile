@@ -144,7 +144,7 @@ deploy_dev_data:
 .PHONY: deploy_prod_data
 deploy_prod_data: ## deploy the production data
 deploy_prod_data:
-	schema/data/deploy-data.sh
+	@PGDATABASE=$(PGDATABASE) schema/data/deploy-data.sh;
 
 .PHONY: revert_db_migrations
 revert_db_migrations: ## revert the database migrations with sqitch
@@ -184,12 +184,11 @@ verify_test_db_migrations:
 
 .PHONY: db_unit_tests
 db_unit_tests: ## run the database unit tests
-db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations
+db_unit_tests: PGDATABASE=$(DB_NAME)_test
+db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations deploy_prod_data
 db_unit_tests:
-	deploy_prod_data
-db_unit_tests:
-	@$(PG_PROVE) --failures -d $(DB_NAME)_test schema/test/unit/**/*_test.sql
-	@$(PG_PROVE) --failures -d $(DB_NAME)_test mocks_schema/test/**/*_test.sql
+	@$(PG_PROVE) --failures -d $(PGDATABASE) schema/test/unit/**/*_test.sql
+	@$(PG_PROVE) --failures -d $(PGDATABASE) mocks_schema/test/**/*_test.sql
 
 .PHONY: db_style_tests
 db_style_tests: ## run the database style tests
