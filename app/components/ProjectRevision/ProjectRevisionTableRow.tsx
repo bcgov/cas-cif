@@ -1,4 +1,8 @@
 import Button from "@button-inc/bcgov-theme/Button";
+import {
+  getDisplayDateString,
+  parseStringDate,
+} from "lib/helpers/reportStatusHelpers";
 import { useFragment, graphql } from "react-relay";
 import { ProjectRevisionTableRow_projectRevision$key } from "__generated__/ProjectRevisionTableRow_projectRevision.graphql";
 
@@ -14,23 +18,47 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
         createdAt
         amendmentStatus
         updatedAt
-        updatedBy
+        cifUserByUpdatedBy {
+          fullName
+        }
+        projectRevisionAmendmentTypesByProjectRevisionId {
+          edges {
+            node {
+              amendmentType
+            }
+          }
+        }
       }
     `,
     projectRevision
   );
 
-  const { revisionType, createdAt, amendmentStatus, updatedAt, updatedBy } =
-    projectRevisionData;
+  const {
+    revisionType,
+    createdAt,
+    amendmentStatus,
+    updatedAt,
+    cifUserByUpdatedBy,
+    projectRevisionAmendmentTypesByProjectRevisionId,
+  } = projectRevisionData;
 
   return (
     <tr>
       <td className="revision-type">{revisionType}</td>
-      <td className="created-at">{createdAt}</td>
-      <td className="effective-date">effective date placeholder</td>
-      <td className="updated-at">{updatedAt}</td>
-      <td className="updated-by">{updatedBy}</td>
-      <td className="updated">updated placeholder</td>
+      <td className="created-at">
+        {getDisplayDateString(parseStringDate(createdAt))}
+      </td>
+      <td className="effective-date">placeholder</td>
+      <td className="updated-at">
+        {getDisplayDateString(parseStringDate(updatedAt))}
+      </td>
+      <td className="updated-by">{cifUserByUpdatedBy?.fullName}</td>
+      <td className="updated">
+        {
+          projectRevisionAmendmentTypesByProjectRevisionId.edges[0]?.node
+            .amendmentType
+        }
+      </td>
       <td className="amendment-status">{amendmentStatus}</td>
       <td>
         <div className="actions">
