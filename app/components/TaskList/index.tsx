@@ -4,6 +4,7 @@ import { useStageDirtyFormChanges } from "mutations/FormChange/stageDirtyFormCha
 import {
   getProjectRevisionPageRoute,
   getProjectRevisionAttachmentsPageRoute,
+  getProjectRevisionChangeLogsPageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -136,7 +137,6 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
-
   return (
     <div className="container">
       <h2>
@@ -205,27 +205,6 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           );
         })}
 
-        {/* Amendments & Other Revisions section */}
-        <TaskListSection
-          defaultExpandedState={
-            currentStep === String(sectionIndex.revisionsHistory)
-          }
-          listItemNumber={String(sectionIndex.revisionsHistory)}
-          listItemName="Amendments & Other Revisions"
-        >
-          <TaskListItem
-            stepName={String(sectionIndex.revisionsHistory)}
-            linkUrl={getProjectRevisionFormPageRoute(
-              id,
-              sectionIndex.revisionsHistory
-            )}
-            formTitle="Change Log"
-            formStatus={null}
-            currentStep={currentStep}
-            mode={mode}
-          />
-        </TaskListSection>
-
         {/* Project Summary Section */}
         {mode !== "view" && (
           <TaskListSection
@@ -247,6 +226,23 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           </TaskListSection>
         )}
 
+        {/* Amendments & Other Revisions section */}
+        <TaskListSection
+          defaultExpandedState={
+            router.pathname ===
+            "/cif/project-revision/[projectRevision]/project-revision-change-logs"
+          }
+          listItemName="Amendments & Other Revisions"
+        >
+          <TaskListItem
+            stepName="/cif/project-revision/[projectRevision]/project-revision-change-logs"
+            linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
+            formTitle="View Revision"
+            formStatus={null}
+            currentStep={router.pathname}
+            mode={mode}
+          />
+        </TaskListSection>
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection
