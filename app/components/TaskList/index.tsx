@@ -16,6 +16,8 @@ import { TaskListMode } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import { DateTime } from "luxon";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import { getFormsInSection, numberedFormStructure } from "./viewModel";
+import e from "express";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -124,6 +126,147 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     annual: useShowGrowthbookFeature("teimp") ? 7 : 6,
     summary: useShowGrowthbookFeature("teimp") ? 8 : 7,
   };
+
+  const tasklistFormConfiguration = {
+    projectOverview: [{ status: projectOverviewStatus }],
+    projectManagers: [{ status: projectManagersStatus }],
+    projectContacts: [{ status: projectContactsStatus }],
+    quarterlyReports: [{ status: quarterlyReportsStatus }],
+    annualReports: [{ status: annualReportsStatus }],
+    projectMilestones: milestoneReportStatuses.edges.map((edge) => {
+      return { ...edge.node, status: edge.node.formCompletionStatus };
+    }),
+    fundingAgreement: [{ status: fundingAgreementStatus }],
+    teimp: [{ status: teimpStatus }],
+  };
+
+  return (
+    <div className="container">
+      <h2>
+        {mode === "view"
+          ? projectByProjectId.proposalReference
+          : mode === "update"
+          ? "Editing: " + projectByProjectId.proposalReference
+          : "Add a Project"}
+      </h2>
+      <ol>
+        {numberedFormStructure.map((section) => {
+          const formsInSection = getFormsInSection(section);
+
+          return (
+            <TaskListSection
+              key={`tasklist_section_${section.sectionNumber}`}
+              defaultExpandedState={
+                /* Tasklist section is expanded if either the current step is one of its forms,
+                 * or if any of its forms has the Attention Required status */
+                formsInSection
+                  .map((f) => f.formIndex)
+                  .includes(Number(currentStep)) ||
+                formsInSection.some((form) =>
+                  tasklistFormConfiguration[form.slug].some(
+                    (config) => config.status === ATTENTION_REQUIRED_STATUS
+                  )
+                )
+              }
+              listItemNumber={String(section.sectionNumber)}
+              listItemName={section.title}
+              listItemMode={
+                mode !== "update" && section.optional ? "(optional)" : ""
+              }
+            >
+              {section.items?.map(
+                (item) =>
+                  item.formConfiguration && (
+                    <TaskListItem
+                      stepName={String(item.formConfiguration.formIndex)}
+                      linkUrl={getProjectRevisionFormPageRoute(
+                        id,
+                        item.formConfiguration.formIndex
+                      )}
+                      formTitle={item.title}
+                      formStatus={
+                        tasklistFormConfiguration[item.formConfiguration.slug]
+                          .status
+                      }
+                      currentStep={currentStep}
+                      mode={mode}
+                    />
+                  )
+              )}
+              {section.formConfiguration &&
+                tasklistFormConfiguration[section.formConfiguration.slug]
+                  .length === 0 && (
+                  <TaskListItem
+                    stepName={String(section.formConfiguration.formIndex)}
+                    linkUrl={getProjectRevisionFormPageRoute(
+                      id,
+                      section.formConfiguration.formIndex
+                    )}
+                    formTitle={section.title}
+                    formStatus={null} // No status as there are no milestones
+                    currentStep={currentStep}
+                    mode={mode}
+                  />
+                )}
+              {section.formConfiguration &&
+                tasklistFormConfiguration[section.formConfiguration.slug]
+                  .length > 0 &&
+                tasklistFormConfiguration[section.formConfiguration.slug].map(
+                  (config, index) => (
+                    <TaskListItem
+                      key={config.milestoneIndex}
+                      stepName="4"
+                      linkUrl={getProjectRevisionFormPageRoute(
+                        id,
+                        section.formConfiguration.formIndex,
+                        `Milestone${index + 1}`
+                      )}
+                      formTitle={`Milestone ${index + 1}`}
+                      formStatus={config.status}
+                      milestoneDueDate={displayMilestoneDueDateStatus(
+                        config.reportDueDate,
+                        config.submittedDate
+                      )}
+                      currentStep={currentStep}
+                      mode={mode}
+                      hasAnchor={true}
+                    />
+                  )
+                )}
+            </TaskListSection>
+          );
+        })}
+      </ol>
+      <style jsx>{`
+        ol {
+          list-style: none;
+          margin: 0;
+        }
+
+        h2 {
+          font-size: 1.25rem;
+          margin: 0;
+          padding: 20px 0 10px 0;
+          border-bottom: 1px solid #d1d1d1;
+          text-indent: 15px;
+        }
+
+        div :global(a) {
+          color: #1a5a96;
+        }
+
+        div :global(a:hover) {
+          text-decoration: none;
+          color: blue;
+        }
+
+        div.container {
+          background-color: #e5e5e5;
+          width: 400px;
+        }
+      `}</style>
+    </div>
+  );
 
   return (
     <div className="container">

@@ -14,11 +14,13 @@ import ProjectFundingAgreementForm from "components/Form/ProjectFundingAgreement
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 import ProjectEmissionIntensityReport from "components/Form/ProjectEmissionIntensityReportForm";
 import ProjectEmissionIntensityReportSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
+import { numberedFormStructure } from "components/TaskList/viewModel";
 
 interface FormPageDefinition {
   title: string;
   editComponent; // TODO: can we require this attribute, but let typescript infer the type?
   viewComponent;
+  taskListSection?;
 }
 
 const formPages: FormPageDefinition[] = [
@@ -26,6 +28,10 @@ const formPages: FormPageDefinition[] = [
     title: "project overview",
     editComponent: ProjectForm,
     viewComponent: ProjectFormSummary,
+    taskListSection: {
+      title: "Project Overview",
+      items: [{}],
+    },
   },
   {
     title: "project managers",
@@ -64,4 +70,28 @@ const formPages: FormPageDefinition[] = [
   },
 ];
 
-export default formPages;
+const refactoredFormPages = numberedFormStructure.reduce(
+  (acc, currentSection) => {
+    // This might be made more readable by using filter - flatMap instead
+    let nextArray = acc;
+    if (currentSection.formConfiguration) {
+      nextArray = [...nextArray, currentSection.formConfiguration];
+    }
+    if (currentSection.items) {
+      nextArray = [
+        ...nextArray,
+        ...currentSection.items.reduce(
+          (a, currentItem) =>
+            currentItem.formConfiguration
+              ? [...a, currentItem.formConfiguration]
+              : a,
+          []
+        ),
+      ];
+    }
+    return nextArray;
+  },
+  []
+);
+
+export default refactoredFormPages;
