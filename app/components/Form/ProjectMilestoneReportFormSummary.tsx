@@ -3,20 +3,12 @@ import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import type { JSONSchema7 } from "json-schema";
-
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
-import {
-  milestoneReportingRequirementUiSchema,
-  milestoneReportingRequirementSchema,
-  milestoneUiSchema,
-} from "data/jsonSchemaForm/projectMilestoneSchema";
-import {
-  paymentSchema,
-  paymentUiSchema,
-} from "data/jsonSchemaForm/paymentSchema";
+import projectMilestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSchema";
+import { getSortedReports } from "./Functions/reportingRequirementFormChangeFunctions";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -28,23 +20,15 @@ interface Props {
 }
 
 const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
-  const {
-    summaryMilestoneReportingRequirementFormChanges,
-    summaryMilestoneFormChanges,
-    summaryMilestonePaymentFormChanges,
-    isFirstRevision,
-  } = useFragment(
+  const { summaryMilestoneFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectMilestoneReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
-        summaryMilestoneReportingRequirementFormChanges: formChangesFor(
+        summaryMilestoneFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Milestone"
           first: 1000
-        )
-          @connection(
-            key: "connection_summaryMilestoneReportingRequirementFormChanges"
-          ) {
+        ) @connection(key: "connection_summaryMilestoneFormChanges") {
           edges {
             # eslint-disable-next-line relay/unused-fields
             node {
@@ -57,39 +41,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
               formChangeByPreviousFormChangeId {
                 newFormData
               }
-            }
-          }
-        }
-        summaryMilestoneFormChanges: formChangesFor(
-          formDataTableName: "milestone_report"
-          first: 1000
-        ) @connection(key: "connection_summaryMilestoneFormChanges") {
-          edges {
-            # eslint-disable-next-line relay/unused-fields
-            node {
-              id
-              isPristine
-              newFormData
-              operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
-            }
-          }
-        }
-        summaryMilestonePaymentFormChanges: formChangesFor(
-          formDataTableName: "payment"
-          first: 1000
-        ) @connection(key: "connection_summaryMilestonePaymentFormChanges") {
-          edges {
-            # eslint-disable-next-line relay/unused-fields
-            node {
-              id
-              isPristine
-              newFormData
-              operation
-              formChangeByPreviousFormChangeId {
-                newFormData
+              formByJsonSchemaName {
+                jsonSchema
               }
             }
           }
@@ -98,99 +51,43 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-  return null;
+
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const consolidatedFormData = useMemo(() => {
-    return getConsolidatedMilestoneFormData(
-      summaryMilestoneReportingRequirementFormChanges.edges,
-      summaryMilestoneFormChanges.edges,
-      summaryMilestonePaymentFormChanges.edges
-    );
-  }, [
-    summaryMilestoneFormChanges.edges,
-    summaryMilestonePaymentFormChanges.edges,
-    summaryMilestoneReportingRequirementFormChanges.edges,
-  ]);
-
-  // If we are showing the diff then we want to see archived records, otherwise filter out the archived milestone reports
-  let milestoneReportFormChanges = consolidatedFormData;
-  if (!renderDiff)
-    milestoneReportFormChanges = consolidatedFormData.filter(
-      (formChange) =>
-        formChange.reportingRequirementFormChange.operation !== "ARCHIVE"
-    );
+  // If we are showing the diff then we want to see archived records,
+  // otherwise filter out the archived milestone reports
+  const milestoneReportFormChanges = renderDiff
+    ? summaryMilestoneFormChanges.edges
+    : summaryMilestoneFormChanges.edges.filter(
+        ({ node }) => node.operation !== "ARCHIVE"
+      );
 
   // Sort consolidated milestone form change records
   const [sortedMilestoneReports] = useMemo(() => {
-    const filteredReports = milestoneReportFormChanges
-      .map((formData) => formData)
-      .filter((report) => report.operation !== "ARCHIVE" || renderDiff);
-
-    filteredReports.sort(
-      (a, b) => a.reportingRequirementIndex - b.reportingRequirementIndex
-    );
-    const nextIndex =
-      filteredReports.length > 0
-        ? filteredReports[filteredReports.length - 1]
-            .reportingRequirementIndex + 1
-        : 1;
-
-    return [filteredReports, nextIndex];
-  }, [milestoneReportFormChanges, renderDiff]);
+    return getSortedReports(milestoneReportFormChanges);
+  }, [milestoneReportFormChanges]);
 
   const allFormChangesPristine = useMemo(
     () =>
       !milestoneReportFormChanges.some(
         (report) =>
-          report?.reportingRequirementFormChange.isPristine === false ||
-          report?.milestoneFormChange.isPristine === false ||
-          report?.paymentFormChange?.isPristine === false ||
-          report?.reportingRequirementFormChange.isPristine === null ||
-          report?.milestoneFormChange.isPristine === null ||
-          report?.paymentFormChange?.isPristine === null
+          report?.node.isPristine === false || report?.node.isPristine === null
       ),
     [milestoneReportFormChanges]
   );
 
   const milestoneReportsJSX = useMemo(() => {
     return sortedMilestoneReports.map((milestoneReport, index) => {
-      if (!milestoneReport) return;
-
-      const generatedMilestoneSchema = createMilestoneSchema(
-        milestoneReport.reportingRequirementFormChange.newFormData.reportType
-      );
-
       // Set the formSchema and formData based on showing the diff or not
       const reportingRequirementFormDiffObject = renderDiff
         ? (getFilteredSchema(
-            milestoneReportingRequirementSchema as JSONSchema7,
-            milestoneReport.reportingRequirementFormChange
+            milestoneReport.formByJsonSchemaName.jsonSchema
+              .schema as JSONSchema7,
+            milestoneReport
           ) as any)
         : {
-            formSchema: milestoneReportingRequirementSchema,
-            formData:
-              milestoneReport.reportingRequirementFormChange.newFormData,
-          };
-
-      const milestoneFormDiffObject = renderDiff
-        ? (getFilteredSchema(
-            generatedMilestoneSchema as JSONSchema7,
-            milestoneReport.milestoneFormChange
-          ) as any)
-        : {
-            formSchema: generatedMilestoneSchema,
-            formData: milestoneReport.milestoneFormChange.newFormData,
-          };
-
-      const paymentFormDiffObject = renderDiff
-        ? (getFilteredSchema(
-            paymentSchema as JSONSchema7,
-            milestoneReport.paymentFormChange
-          ) as any)
-        : {
-            formSchema: paymentSchema,
-            formData: milestoneReport.paymentFormChange?.newFormData,
+            formSchema: milestoneReport.formByJsonSchemaName.jsonSchema.schema,
+            formData: milestoneReport.newFormData,
           };
 
       return (
@@ -201,10 +98,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           {/* Show this part if none of milestone report form properties have been updated */}
           {Object.keys(reportingRequirementFormDiffObject.formSchema.properties)
             .length === 0 &&
-            Object.keys(milestoneFormDiffObject.formSchema.properties)
-              .length === 0 &&
-            Object.keys(paymentFormDiffObject.formSchema.properties).length ===
-              0 &&
             milestoneReport.operation !== "ARCHIVE" && (
               <em>Milestone report not updated</em>
             )}
@@ -214,57 +107,22 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             <em className="diffOld">Milestone Report Removed</em>
           )}
           <FormBase
-            liveValidate
-            key={`form-${milestoneReport.reportingRequirementFormChange.id}`}
+            key={`form-${milestoneReport.id}`}
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
             schema={
               reportingRequirementFormDiffObject.formSchema as JSONSchema7
             }
-            uiSchema={milestoneReportingRequirementUiSchema}
+            uiSchema={projectMilestoneUiSchema}
             formData={reportingRequirementFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
               oldData:
-                milestoneReport.reportingRequirementFormChange
-                  .formChangeByPreviousFormChangeId?.newFormData,
+                milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
             }}
           />
-          <FormBase
-            liveValidate
-            key={`form-${milestoneReport.milestoneFormChange.id}`}
-            tagName={"dl"}
-            theme={readOnlyTheme}
-            fields={renderDiff ? customFields : fields}
-            schema={milestoneFormDiffObject.formSchema as JSONSchema7}
-            uiSchema={milestoneUiSchema}
-            formData={milestoneFormDiffObject.formData}
-            formContext={{
-              operation: milestoneReport.operation,
-              oldData:
-                milestoneReport.milestoneFormChange
-                  .formChangeByPreviousFormChangeId?.newFormData,
-            }}
-          />
-          {milestoneReport.paymentFormChange && (
-            <FormBase
-              liveValidate
-              key={`form-${milestoneReport.paymentFormChange.id}`}
-              tagName={"dl"}
-              theme={readOnlyTheme}
-              fields={renderDiff ? customFields : fields}
-              schema={paymentFormDiffObject.formSchema as JSONSchema7}
-              uiSchema={paymentUiSchema}
-              formData={paymentFormDiffObject.formData}
-              formContext={{
-                operation: milestoneReport.operation,
-                oldData:
-                  milestoneReport.paymentFormChange
-                    .formChangeByPreviousFormChangeId?.newFormData,
-              }}
-            />
-          )}
+
           <style jsx>{`
             div.reportContainer {
               padding-top: 1em;
