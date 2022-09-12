@@ -656,25 +656,32 @@ Cypress.Commands.add(
 
 // TODO: possible candidate to replace other date related commands
 Cypress.Commands.add("setDate", (date, ariaLabel, reportNumber = 0) => {
-  const receivedDate = DateTime.fromFormat(date, "yyyy-MM-dd")
+  const receivedDate = DateTime.fromFormat(date, "yyyy-MM-dd");
+
+  const receivedDateTZ = receivedDate
     .setZone("America/Vancouver")
-    .setLocale("en-CA");
+    .setLocale("en-CA")
+    .set({
+      day: receivedDate.get("day"),
+      month: receivedDate.get("month"),
+      year: receivedDate.get("year"),
+    });
   cy.get(`[aria-label*="${ariaLabel}"]`)
     .eq(reportNumber - 1)
     .should("exist")
     .click();
   cy.get(".react-datepicker__month-select")
     // datepicker indexes months from 0, luxon indexes from 1
-    .select(receivedDate.get("month") - 1);
+    .select(receivedDateTZ.get("month") - 1);
   cy.get(".react-datepicker__year-select").select(
-    receivedDate.get("year").toString()
+    receivedDateTZ.get("year").toString()
   );
-  cy.get(`.react-datepicker__day--0${receivedDate.toFormat("dd")}`)
+  cy.get(`.react-datepicker__day--0${receivedDateTZ.toFormat("dd")}`)
     .not(`.react-datepicker__day--outside-month`)
     .click();
   cy.get(`[aria-label*="${ariaLabel}"]`)
     .eq(reportNumber - 1)
-    .contains(`${receivedDate.toFormat("MMM dd, yyyy")}`);
+    .contains(`${receivedDateTZ.toFormat("MMM dd, yyyy")}`);
   cy.contains("Changes saved").should("be.visible");
   // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
   return cy.url().should("include", "/form");
