@@ -13,12 +13,10 @@ import {
   milestoneReportingRequirementSchema,
   milestoneUiSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
-import { getConsolidatedMilestoneFormData } from "./Functions/projectMilestoneFormFunctions";
 import {
   paymentSchema,
   paymentUiSchema,
 } from "data/jsonSchemaForm/paymentSchema";
-import { createMilestoneSchema } from "./Functions/projectMilestoneFormFunctions";
 
 const { fields } = utils.getDefaultRegistry();
 

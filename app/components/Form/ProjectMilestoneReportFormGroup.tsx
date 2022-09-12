@@ -19,6 +19,8 @@ import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { useCreateMilestone } from "mutations/MilestoneReport/createMilestone";
 import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
+import { deleteReportFormChange } from "./Functions/reportingRequirementFormChangeFunctions";
 
 interface Props {
   onSubmit: () => void;
@@ -46,6 +48,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              operation
               asReportingRequirement {
                 reportType
                 ...CollapsibleReport_reportingRequirement
@@ -73,7 +76,6 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
           edges {
             node {
               name
-              hasExpenses
             }
           }
         }
@@ -112,6 +114,11 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
     applyStageReportingRequirementFormChange,
     isStagingReportingRequirement,
   ] = useStageReportingRequirementFormChange();
+  const [discardFormChange, isDiscarding] =
+    useDiscardReportingRequirementFormChange(
+      "Milestone",
+      projectRevision.milestoneFormChanges.__id
+    );
 
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
@@ -137,7 +144,9 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
       <header id={`Milestone0`}>
         <h2>Milestone Reports</h2>
         <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
-        <SavingIndicator isSaved={!isCreating && !isUpdating} />
+        <SavingIndicator
+          isSaved={!isCreating && !isUpdating && !isDiscarding}
+        />
       </header>
       <Status
         upcomingReportDueDate={upcomingReportDueDate}
@@ -182,6 +191,22 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
                 title={`Milestone ${index + 1}`}
                 reportingRequirement={node.asReportingRequirement}
               >
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() =>
+                    deleteReportFormChange(
+                      discardFormChange,
+                      node.id,
+                      node.rowId,
+                      node.operation,
+                      formRefs
+                    )
+                  }
+                  className="removeButton"
+                >
+                  Remove
+                </Button>
                 <FormBase
                   id={`form-${node.id}`}
                   validateOnMount={node.changeStatus === "staged"}
@@ -239,7 +264,7 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
             "Milestone"
           )
         }
-        disabled={isUpdating || isStagingReportingRequirement}
+        disabled={isUpdating || isStagingReportingRequirement || isDiscarding}
       >
         Submit Milestone Reports
       </Button>
