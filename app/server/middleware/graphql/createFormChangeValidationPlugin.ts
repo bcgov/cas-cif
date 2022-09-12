@@ -1,6 +1,10 @@
 import { GraphQLObjectType, GraphQLResolveInfo } from "graphql";
 import { Context, makeWrapResolversPlugin } from "postgraphile";
 import validateRecord from "./validateRecord";
+import databaseSchemaConfiguration from "./databaseSchemaConfiguration";
+import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
+
+const DATABASE_SCHEMAS = databaseSchemaConfiguration;
 
 export const filter = (context: Context<GraphQLObjectType<any, any>>) => {
   if (
@@ -26,11 +30,22 @@ export const resolverWrapperGenerator =
     if (!args.input.jsonSchemaName) {
       throw new Error("JSON schema must be set in the mutation input");
     }
+    const { pgClient } = context;
 
-    const errors = validateRecord(
-      args.input.jsonSchemaName,
-      args.input.newFormData ?? {}
-    );
+    let jsonSchema;
+
+    if (DATABASE_SCHEMAS.includes(args.input.jsonSchemaName)) {
+      const {
+        rows: [fetchedRecord],
+      } = await pgClient.query(
+        `select json_schema from cif.form
+         where slug = $1`,
+        [args.input.jsonSchemaName]
+      );
+      jsonSchema = fetchedRecord.json_schema.schema;
+    } else jsonSchema = validationSchemas[args.input.jsonSchemaName];
+
+    const errors = validateRecord(jsonSchema, args.input.newFormData ?? {});
 
     args.input.validationErrors = errors;
 
