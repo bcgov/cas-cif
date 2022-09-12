@@ -1,4 +1,4 @@
--- Deploy cif:tables/funding_parameter_002 to pg
+-- Deploy cif:tables/funding_parameter_002_add_auto_generating_report_date_columns to pg
 -- requires: tables/funding_parameter
 
 begin;

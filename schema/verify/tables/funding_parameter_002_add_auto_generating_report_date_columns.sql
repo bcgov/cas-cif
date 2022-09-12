@@ -1,4 +1,4 @@
--- Verify cif:tables/funding_parameter_002 on pg
+-- Verify cif:tables/funding_parameter_002_add_auto_generating_report_date_columns on pg
 
 begin;
 

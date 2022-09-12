@@ -1,4 +1,4 @@
--- Revert cif:tables/funding_parameter_002 from pg
+-- Revert cif:tables/funding_parameter_002_add_auto_generating_report_date_columns from pg
 
 begin;
 
