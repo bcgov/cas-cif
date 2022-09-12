@@ -128,6 +128,11 @@ const ProjectForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
+  console.log(
+    "rank:",
+    revision.projectFormChange.projectRevisionByProjectRevisionId.rank
+  );
+
   const query = useFragment(
     graphql`
       fragment ProjectForm_query on Query {

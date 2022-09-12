@@ -21,11 +21,8 @@ const mockQueryPayload = {
   ProjectRevision() {
     const result = {
       projectFormChange: {
-        changeStatus: "pending",
-        rowId: 1,
         id: "Test Project Form Change ID",
-        formChangeByPreviousFormChangeId: null,
-        isUniqueValue: true,
+        rowId: 1,
         newFormData: {
           proposalReference: "12345678",
           summary: "d",
@@ -34,6 +31,12 @@ const mockQueryPayload = {
           comments: "some amendment comment",
           projectType: "project type 1",
         },
+        changeStatus: "pending",
+        isUniqueValue: true,
+        projectRevisionByProjectRevisionId: {
+          rank: 123,
+        },
+        formChangeByPreviousFormChangeId: null,
       },
     };
     return result;
@@ -169,7 +172,7 @@ describe("The Project Form", () => {
     );
   });
 
-  it("loads with the correct initial form data", () => {
+  it.only("loads with the correct initial form data", () => {
     componentTestingHelper.loadQuery();
 
     componentTestingHelper.renderComponent();
@@ -190,6 +193,7 @@ describe("The Project Form", () => {
       screen.getByPlaceholderText<HTMLSelectElement>(/Select a Project Type/)
         .value
     ).toBe("project type 1");
+    expect(screen.getByLabelText("Rank")).toHaveTextContent("123");
   });
   it("Displays an error message upon validation when the proposal reference is not unique", () => {
     const mockResolver = {
