@@ -151,3 +151,4 @@ mutations/create_project_revision_001 2022-10-06T23:18:27Z Gurjeet Matharu <gurj
 tables/payment_001 [tables/payment] 2022-08-30T23:41:40Z Dylan Leard <dylan@button.is> # Migration: rename gross and net amount columns
 functions/handle_milestone_form_change_commit [tables/form_change] 2022-08-30T21:03:03Z Dylan Leard <dylan@button.is> # Add custom adapter function to parse the consolidated milestone form_change data into the correct tables
 tables/form_change_001 [tables/form_change tables/form] 2022-09-01T22:26:46Z Dylan Leard <dylan@button.is> # Migration: json_schema_name is now a foreign key to the form table
+mutations/add_milestone_to_revision [mutations/add_milestone_to_revision@1.0.0-rc.4] 2022-09-12T17:26:22Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Removing unused custom mutation
