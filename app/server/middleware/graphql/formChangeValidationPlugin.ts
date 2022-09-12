@@ -5,18 +5,13 @@ import { CommitFormChangeInput } from "__generated__/commitFormChangeMutation.gr
 import { StageFormChangeInput } from "__generated__/stageFormChangeMutation.graphql";
 import { UpdateFormChangeInput } from "__generated__/updateFormChangeMutation.graphql";
 import validateRecord from "./validateRecord";
+import databaseSchemaConfiguration from "./databaseSchemaConfiguration";
 
 interface Args {
   input: UpdateFormChangeInput | StageFormChangeInput | CommitFormChangeInput;
 }
 
-/**
- *  This is a list of schema names that live in the database and
- *  not as static json data in the code.
- *  The validation plugin will try to fetch them from the cif.form table
- *  instead of using the static json schema.
- */
-const DATABASE_SCHEMAS = ["milestone"];
+const DATABASE_SCHEMAS = databaseSchemaConfiguration;
 
 export const filter = (context: Context<GraphQLObjectType<any, any>>) => {
   if (

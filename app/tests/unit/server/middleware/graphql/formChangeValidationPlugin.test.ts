@@ -8,6 +8,14 @@ import { mocked } from "jest-mock";
 jest.mock("server/middleware/graphql/validateRecord");
 const mockResolver = jest.fn();
 
+jest.mock("data/jsonSchemaForm/validationSchemas", () => ({
+  some_schema_name: { prop: "string", required: ["prop"] },
+}));
+
+jest.mock("server/middleware/graphql/databaseSchemaConfiguration", () => [
+  "database_schema",
+]);
+
 const getMockContext = (mockedSchemaName?: string) => {
   return {
     pgClient: {
@@ -91,7 +99,7 @@ describe("The postgraphile form validation plugin", () => {
     expect(mockResolver).toHaveBeenCalledWith();
   });
 
-  it("Validates the form data with the schema which name is on the record", async () => {
+  it("Validates the form data with the schema which name is on the record, when the schema is not in the database", async () => {
     const mockValidationFunction = jest.fn();
     mocked(validateRecord).mockImplementation(mockValidationFunction);
 
@@ -117,15 +125,101 @@ describe("The postgraphile form validation plugin", () => {
     );
 
     expect(mockValidationFunction).toHaveBeenCalledTimes(1);
-    expect(mockValidationFunction).toHaveBeenCalledWith("some_schema_name", {
-      column: "value",
-    });
+    expect(mockValidationFunction).toHaveBeenCalledWith(
+      { prop: "string", required: ["prop"] },
+      {
+        column: "value",
+      }
+    );
     expect(mockResolver).toHaveBeenCalledTimes(1);
     expect(mockResolver).toHaveBeenCalledWith(
       {},
       expect.anything(), //testing this in the next test
       testContext,
       {}
+    );
+  });
+  it("Validates the form data with the schema fetched from the database", async () => {
+    const mockValidationFunction = jest.fn();
+    mocked(validateRecord).mockImplementation(mockValidationFunction);
+
+    const mockPgContext = {
+      pgClient: {
+        query: jest
+          .fn()
+          // Once to fetch the schema name
+          .mockReturnValueOnce({
+            rows: [{ json_schema_name: "database_schema" }],
+          })
+          // Once to fetch the schema from the database
+          .mockReturnValueOnce({
+            rows: [{ json_schema: { schema: { fake_schema: true } } }],
+          }),
+      },
+    };
+
+    const wrappedResolverUnderTest = resolverWrapperGenerator();
+
+    await wrappedResolverUnderTest(
+      mockResolver,
+      {},
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: {
+            newFormData: {
+              column: "value",
+            },
+          },
+        },
+      },
+      mockPgContext,
+      {} as any
+    );
+
+    expect(mockValidationFunction).toHaveBeenCalledTimes(1);
+    expect(mockValidationFunction).toHaveBeenCalledWith(
+      { fake_schema: true },
+      {
+        column: "value",
+      }
+    );
+    expect(mockResolver).toHaveBeenCalledTimes(1);
+    expect(mockResolver).toHaveBeenCalledWith(
+      {},
+      expect.anything(), //testing this in the next test
+      mockPgContext,
+      {}
+    );
+  });
+  it("Throws when the schema is not found neither in the database nor in the static validation schemas", async () => {
+    const mockValidationFunction = jest.fn();
+    mocked(validateRecord).mockImplementation(mockValidationFunction);
+
+    const testContext = getMockContext("non_existent_schema");
+
+    const wrappedResolverUnderTest = resolverWrapperGenerator();
+
+    await expect(
+      wrappedResolverUnderTest(
+        mockResolver,
+        {},
+        {
+          input: {
+            rowId: 1,
+            formChangePatch: {
+              newFormData: {
+                column: "value",
+              },
+            },
+          },
+        },
+        testContext,
+        {} as any
+      )
+    ).rejects.toThrowWithMessage(
+      Error,
+      "No json schema found for schema with name non_existent_schema"
     );
   });
   it("Adds the validation errors to the mutation arguments when calling the postgraphile resolver", async () => {
@@ -136,7 +230,7 @@ describe("The postgraphile form validation plugin", () => {
 
     const wrappedResolverUnderTest = resolverWrapperGenerator();
 
-    const testContext = getMockContext("schema_name");
+    const testContext = getMockContext("some_schema_name");
 
     await wrappedResolverUnderTest(
       mockResolver,
@@ -156,9 +250,6 @@ describe("The postgraphile form validation plugin", () => {
     );
 
     expect(mockValidationFunction).toHaveBeenCalledTimes(1);
-    expect(mockValidationFunction).toHaveBeenCalledWith("schema_name", {
-      column: "value",
-    });
 
     expect(mockResolver).toHaveBeenCalledTimes(1);
     expect(mockResolver).toHaveBeenCalledWith(
