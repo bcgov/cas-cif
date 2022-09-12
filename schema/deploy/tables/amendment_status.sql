@@ -34,6 +34,8 @@ values
   ('In Discussion'),
   ('Pending Province Approval'),
   ('Pending Proponent Signature'),
-  ('Approved');
+  ('Approved'),
+  ('Draft'),
+  ('Applied');
 
 commit;
