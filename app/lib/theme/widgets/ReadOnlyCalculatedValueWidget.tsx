@@ -14,6 +14,15 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
 
+  const selectMessageIfNullProperty = (schemaProperty) => {
+    switch (schemaProperty) {
+      case "calculatedRank":
+        return "Please enter a score in the above field to see the ranking of this project comparing to other ones with scores entered.";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
       <dd aria-label={label}>
@@ -28,15 +37,11 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
             displayType="text"
           />
         ) : (
-          <NumberFormat
-            fixedDecimalScale={isMoney || isPercentage}
-            prefix={isMoney ? "$" : ""}
-            suffix={isPercentage ? "%" : ""}
-            id={id}
-            decimalScale={isMoney || isPercentage ? 2 : 10}
-            value={""}
-            displayType="text"
-          />
+          <em>
+            {selectMessageIfNullProperty(
+              uiSchema.calculatedValueFormContextProperty
+            )}
+          </em>
         )}
       </dd>
       <style jsx>{`
