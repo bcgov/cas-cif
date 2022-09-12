@@ -20,6 +20,8 @@ const testQuery = graphql`
 const mockQueryPayload = {
   ProjectRevision() {
     const result = {
+      // rank needs to be placed here instead of nested like in ProjectForm because when there's nesting, it gets overwritten by the ProjectRevision() generator
+      rank: 123,
       projectFormChange: {
         changeStatus: "pending",
         rowId: 1,
@@ -190,7 +192,9 @@ describe("The Project Form", () => {
       screen.getByPlaceholderText<HTMLSelectElement>(/Select a Project Type/)
         .value
     ).toBe("project type 1");
+    expect(screen.getByLabelText("Rank")).toHaveTextContent("123");
   });
+
   it("Displays an error message upon validation when the proposal reference is not unique", () => {
     const mockResolver = {
       ...mockQueryPayload,
