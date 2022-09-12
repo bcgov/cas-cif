@@ -77,7 +77,7 @@ const formStructure: IFormSection[] = [
 ];
 
 // We walk through the structure to number everything with section numbers and form indices
-const getNumberedFormStructure = (inputFormStructure: IFormSection[]) => {
+const buildNumberedFormStructure = (inputFormStructure: IFormSection[]) => {
   let currentSectionNumber = 1;
   let currentFormIndex = 0;
 
@@ -120,4 +120,11 @@ export const getFormsInSection = function <T extends IFormConfiguration>(
   return [...sectionForm, ...items];
 };
 
-export const numberedFormStructure = getNumberedFormStructure(formStructure);
+export const numberedFormStructure = buildNumberedFormStructure(formStructure);
+
+export type TaskListDynamicConfiguration = {
+  [key: string]: {
+    status: string;
+    [key: string]: any;
+  }[];
+};

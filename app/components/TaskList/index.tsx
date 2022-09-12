@@ -16,7 +16,11 @@ import { TaskListMode } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import { DateTime } from "luxon";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
-import { getFormsInSection, numberedFormStructure } from "./viewModel";
+import {
+  getFormsInSection,
+  numberedFormStructure,
+  TaskListDynamicConfiguration,
+} from "./viewModel";
 import e from "express";
 
 interface Props {
@@ -92,7 +96,7 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
               milestoneIndex
               reportDueDate
               submittedDate
-              formCompletionStatus
+              status: formCompletionStatus
             }
           }
         }
@@ -127,15 +131,13 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     summary: useShowGrowthbookFeature("teimp") ? 8 : 7,
   };
 
-  const tasklistFormConfiguration = {
+  const tasklistFormConfiguration: TaskListDynamicConfiguration = {
     projectOverview: [{ status: projectOverviewStatus }],
     projectManagers: [{ status: projectManagersStatus }],
     projectContacts: [{ status: projectContactsStatus }],
     quarterlyReports: [{ status: quarterlyReportsStatus }],
     annualReports: [{ status: annualReportsStatus }],
-    projectMilestones: milestoneReportStatuses.edges.map((edge) => {
-      return { ...edge.node, status: edge.node.formCompletionStatus };
-    }),
+    projectMilestones: milestoneReportStatuses.edges.map((edge) => edge.node),
     fundingAgreement: [{ status: fundingAgreementStatus }],
     teimp: [{ status: teimpStatus }],
   };
