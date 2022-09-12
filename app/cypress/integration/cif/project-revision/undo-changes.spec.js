@@ -21,7 +21,8 @@ describe("when undoing, the project revision page", () => {
       "Bar",
       "100",
       "Project Underway",
-      "Some comments"
+      "Some comments",
+      "65.432"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkOverviewForm(
@@ -33,6 +34,7 @@ describe("when undoing, the project revision page", () => {
       "",
       "",
       "Select a Project Status",
+      "",
       ""
     );
 

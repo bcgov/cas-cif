@@ -92,7 +92,8 @@ Cypress.Commands.add(
     projectDescription,
     totalFundingRequest,
     projectStatus,
-    comments
+    comments,
+    score
   ) => {
     cy.url().should("include", "/form/0");
     cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
@@ -103,6 +104,7 @@ Cypress.Commands.add(
     cy.contains(sectorName).click();
     cy.findByLabelText(/Proposal Reference/i).type(proposalReference);
     cy.findByLabelText(/Project Name/i).type(projectName);
+    cy.findByLabelText(/Score/i).type(score);
     cy.findByLabelText(/Project Description/i).type(projectDescription);
     cy.findByLabelText(/Total Funding Request/i).type(totalFundingRequest);
     cy.findByLabelText(/Project Status/i).select(projectStatus);

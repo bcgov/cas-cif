@@ -18,7 +18,7 @@ describe("the new project page", () => {
     // OVERVIEW
     cy.get("button").contains("Submit Project Overview");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project Overview Form", "empty", "main");
+    cy.happoAndAxe("Project Overview Form", "empty", "main", true);
 
     //PROJECT DETAILS
     cy.findByText(/Project Details/i).click();
@@ -178,7 +178,12 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit Project Overview").click();
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project overview Form", "with errors", ".error-detail");
+    cy.happoAndAxe(
+      "Project overview Form",
+      "with errors",
+      ".error-detail",
+      true
+    );
     cy.get(".error-detail").should("have.length", 8);
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
