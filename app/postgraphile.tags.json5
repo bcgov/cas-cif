@@ -120,6 +120,16 @@
           arg1variant: "patch",
         },
       },
+      "cif.project_revision_effective_date": {
+        tags: {
+          sortable: true,
+        },
+      },
+      "cif.cif_user_full_name": {
+        tags: {
+          sortable: true,
+        },
+      },
     },
   },
 }
