@@ -1,6 +1,6 @@
 import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProjectMilestoneReportFormGroup from "components/Form/ProjectMilestoneReportFormGroup";
+import ProjectMilestoneReportForm from "components/Form/ProjectMilestoneReportForm";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledFormIndexPageQuery, {
@@ -12,9 +12,9 @@ const testQuery = graphql`
     query {
       # Spread the fragment you want to test here
       projectRevision(id: "I can be anything") {
-        ...ProjectMilestoneReportFormGroup_projectRevision
+        ...ProjectMilestoneReportForm_projectRevision
       }
-      ...ProjectMilestoneReportFormGroup_query
+      ...ProjectMilestoneReportForm_query
     }
   }
 `;
@@ -161,7 +161,7 @@ const defaultComponentProps = {
 };
 
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
-  component: ProjectMilestoneReportFormGroup,
+  component: ProjectMilestoneReportForm,
   testQuery: testQuery,
   compiledQuery: compiledFormIndexPageQuery,
   getPropsFromTestQuery: (data) => ({

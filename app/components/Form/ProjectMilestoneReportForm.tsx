@@ -1,296 +1,287 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { milestoneUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
-import { JSONSchema7 } from "json-schema";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
+import Status from "components/ReportingRequirement/Status";
+import FormBorder from "lib/theme/components/FormBorder";
+import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
+import { MutableRefObject, useMemo, useRef } from "react";
+import { graphql, useFragment } from "react-relay";
+import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
+
+import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
+import milestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSchema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { MutableRefObject, useEffect } from "react";
-import { ProjectMilestoneReportFormGroup_projectRevision$data } from "__generated__/ProjectMilestoneReportFormGroup_projectRevision.graphql";
 import FormBase from "./FormBase";
-import { updateReportFormChange } from "./Functions/reportingRequirementFormChangeFunctions";
-import { UseDebouncedMutationConfig } from "mutations/useDebouncedMutation";
-import { updateReportingRequirementFormChangeMutation } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
-import { Disposable } from "relay-runtime";
-import { discardMilestoneFormChangeMutation } from "__generated__/discardMilestoneFormChangeMutation.graphql";
-import { updateFormChangeMutation } from "__generated__/updateFormChangeMutation.graphql";
-import { useFragment, UseMutationConfig, graphql } from "react-relay";
-import {
-  paymentSchema,
-  paymentUiSchema,
-} from "data/jsonSchemaForm/paymentSchema";
-import { ProjectMilestoneReportForm_reportingRequirement$key } from "__generated__/ProjectMilestoneReportForm_reportingRequirement.graphql";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
-import { useCreateFormChange } from "mutations/FormChange/createFormChange";
-import { createMilestoneSchema } from "./Functions/projectMilestoneFormFunctions";
-import { useMemo } from "react";
+import { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import { useCreateMilestone } from "mutations/MilestoneReport/createMilestone";
+import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
+import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
+import { deleteReportFormChange } from "./Functions/reportingRequirementFormChangeFunctions";
+import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
+import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 
 interface Props {
-  formRefs: MutableRefObject<{}>;
-  milestoneReport: {
-    milestoneFormChange: {
-      id: string;
-      rowId: number;
-      newFormData: object;
-      changeStatus: string;
-    };
-    operation: "CREATE" | "UPDATE" | "ARCHIVE";
-    paymentFormChange: {
-      id: string;
-      rowId: number;
-      newFormData: object;
-      changeStatus: string;
-      operation: "CREATE" | "UPDATE" | "ARCHIVE";
-    };
-    reportingRequirementFormChange: {
-      id: string;
-      rowId: number;
-      newFormData: { reportDueDate: string; reportType: string };
-      changeStatus: string;
-      asReportingRequirement: ProjectMilestoneReportForm_reportingRequirement$key;
-      formDataRecordId: number;
-    };
-    reportingRequirementIndex: number;
-  };
-  projectRevision: ProjectMilestoneReportFormGroup_projectRevision$data;
-  discardMilestoneReportMutation: (
-    config: UseMutationConfig<discardMilestoneFormChangeMutation>
-  ) => Disposable;
-  applyUpdateFormChangeMutation: (
-    config: UseDebouncedMutationConfig<updateReportingRequirementFormChangeMutation>
-  ) => Disposable;
-  updateFormChange: (
-    config: UseDebouncedMutationConfig<updateFormChangeMutation>
-  ) => Disposable;
-  generatedReportingRequirementSchema: object;
-  reportingRequirementUiSchema: object; //brianna
-  connections: string[];
+  onSubmit: () => void;
+  projectRevision: ProjectMilestoneReportForm_projectRevision$key;
+  query: ProjectMilestoneReportForm_query$key;
 }
 
-const ProjectMilestoneReportForm: React.FC<Props> = ({
-  formRefs,
-  milestoneReport,
-  projectRevision,
-  discardMilestoneReportMutation,
-  applyUpdateFormChangeMutation,
-  updateFormChange,
-  generatedReportingRequirementSchema,
-  reportingRequirementUiSchema,
-  connections,
-}) => {
-  const { hasExpenses } = useFragment(
+const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
+  const formRefs: MutableRefObject<{}> = useRef({});
+
+  const projectRevision = useFragment(
     graphql`
-      fragment ProjectMilestoneReportForm_reportingRequirement on ReportingRequirement {
-        hasExpenses
+      fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
+        id
+        rowId
+        milestoneFormChanges: formChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Milestone"
+          first: 1000
+        ) @connection(key: "connection_milestoneFormChanges") {
+          __id
+          edges {
+            node {
+              id
+              rowId
+              newFormData
+              changeStatus
+              operation
+              asReportingRequirement {
+                reportType
+                ...CollapsibleReport_reportingRequirement
+              }
+            }
+          }
+        }
+        upcomingMilestoneReportFormChange: upcomingReportingRequirementFormChange(
+          reportType: "Milestone"
+        ) {
+          ...ReportDueIndicator_formChange
+          asReportingRequirement {
+            reportDueDate
+          }
+        }
       }
     `,
-    milestoneReport.reportingRequirementFormChange.asReportingRequirement
+    props.projectRevision
   );
 
-  const [discardFormChange] = useDiscardFormChange(
-    projectRevision.milestonePaymentFormChanges.__id
+  const query = useFragment(
+    graphql`
+      fragment ProjectMilestoneReportForm_query on Query {
+        allReportTypes(filter: { isMilestone: { equalTo: true } }) {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+
+        formBySlug(slug: "milestone") {
+          jsonSchema
+        }
+      }
+    `,
+    props.query
   );
 
-  const [createFormChange] = useCreateFormChange();
+  const schema = JSON.parse(JSON.stringify(query.formBySlug.jsonSchema.schema));
 
-  const generatedMilestoneSchema = useMemo(() => {
-    return createMilestoneSchema(
-      milestoneReport.reportingRequirementFormChange.newFormData.reportType
+  // Opportunity for a refactor here to populate the anyOf array on the server with a computed column
+  schema.properties.reportType = {
+    ...schema.properties.reportType,
+    anyOf: query.allReportTypes.edges.map(({ node }) => {
+      const replaceRegex = /\sMilestone/i;
+      const displayValue = node.name.replace(replaceRegex, "");
+      return {
+        type: "string",
+        title: displayValue,
+        enum: [node.name],
+        value: node.name,
+      } as JSONSchema7Definition;
+    }),
+    default: "General Milestone",
+  };
+
+  const [createMilestone, isCreating] = useCreateMilestone();
+  const [updateMilestone, isUpdating] =
+    useUpdateReportingRequirementFormChange();
+
+  const [
+    applyStageReportingRequirementFormChange,
+    isStagingReportingRequirement,
+  ] = useStageReportingRequirementFormChange();
+  const [discardFormChange, isDiscarding] =
+    useDiscardReportingRequirementFormChange(
+      "Milestone",
+      projectRevision.milestoneFormChanges.__id
     );
-  }, [milestoneReport.reportingRequirementFormChange.newFormData.reportType]);
 
-  useEffect(() => {
-    if (hasExpenses === false && milestoneReport.paymentFormChange) {
-      discardFormChange({
-        formChange: {
-          id: milestoneReport.paymentFormChange.id,
-          rowId: milestoneReport.paymentFormChange.rowId,
-          operation: milestoneReport.paymentFormChange.operation,
-        },
-        onCompleted: () => {
-          delete formRefs.current[milestoneReport.paymentFormChange.id];
-        },
-      });
-    } else if (hasExpenses === true && !milestoneReport.paymentFormChange) {
-      createFormChange({
-        variables: {
-          input: {
-            projectRevisionId: projectRevision.rowId,
-            formDataSchemaName: "cif",
-            formDataTableName: "payment",
-            jsonSchemaName: "payment",
-            operation: "CREATE",
-            newFormData: {
-              reportingRequirementId:
-                milestoneReport.reportingRequirementFormChange.formDataRecordId,
-            },
-          },
-        },
-      });
-    } else if (
-      hasExpenses === true &&
-      milestoneReport.paymentFormChange.operation === "ARCHIVE"
-    ) {
-      updateFormChange({
-        variables: {
-          input: {
-            rowId: milestoneReport.paymentFormChange.rowId,
-            formChangePatch: {
-              operation: "UPDATE",
-            },
-          },
-        },
-        optimisticResponse: {
-          updateFormChange: {
-            formChange: {
-              id: milestoneReport.paymentFormChange.id,
-              newFormData: milestoneReport.paymentFormChange.newFormData,
-              changeStatus: "pending",
-              projectRevisionByProjectRevisionId: undefined,
-              operation: "UPDATE",
-            },
-          },
-        },
-        debounceKey: milestoneReport.paymentFormChange.id,
-      });
-    }
-  }, [hasExpenses]);
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    return [
+      ...projectRevision.milestoneFormChanges.edges.map(
+        ({ node }) => node?.rowId
+      ),
+    ];
+  }, [projectRevision.milestoneFormChanges.edges]);
+
+  const upcomingReportDueDate =
+    projectRevision.upcomingMilestoneReportFormChange?.asReportingRequirement
+      .reportDueDate;
+
+  const reportSubmittedDates = useMemo(() => {
+    return projectRevision.milestoneFormChanges.edges.map(
+      ({ node }) => node.newFormData.submittedDate
+    );
+  }, [projectRevision.milestoneFormChanges.edges]);
 
   return (
-    <>
-      <Button
-        variant="secondary"
-        size="small"
-        onClick={() =>
-          discardMilestoneReportMutation({
-            variables: {
-              input: {
-                revisionId: projectRevision.rowId,
-                reportingRequirementIndex:
-                  milestoneReport.reportingRequirementIndex,
-              },
-              reportType: "Milestone",
-              connections: connections,
-            },
-            onCompleted: () => {
-              if (formRefs) {
-                Object.keys(formRefs.current).forEach((key) => {
-                  if (!formRefs.current[key]) delete formRefs.current[key];
-                });
-              }
-            },
-          })
-        }
-        className="removeButton"
-      >
-        Remove
-      </Button>
-      <FormBase
-        id={`form-${milestoneReport.reportingRequirementFormChange.id}`}
-        validateOnMount={
-          milestoneReport.reportingRequirementFormChange.changeStatus ===
-          "staged"
-        }
-        idPrefix={`form-${milestoneReport.reportingRequirementFormChange.id}`}
-        ref={(el) =>
-          (formRefs.current[milestoneReport.reportingRequirementFormChange.id] =
-            el)
-        }
-        formData={milestoneReport.reportingRequirementFormChange.newFormData}
-        onChange={(change) => {
-          updateReportFormChange(
-            applyUpdateFormChangeMutation,
-            "Milestone",
-            {
-              ...milestoneReport.reportingRequirementFormChange,
-              changeStatus: "pending",
-            },
-            change.formData
-          );
-        }}
-        schema={generatedReportingRequirementSchema as JSONSchema7}
-        uiSchema={reportingRequirementUiSchema}
-        ObjectFieldTemplate={EmptyObjectFieldTemplate}
-        formContext={{
-          dueDate:
-            milestoneReport.reportingRequirementFormChange.newFormData
-              ?.reportDueDate,
-        }}
+    <div>
+      <header id={`Milestone0`}>
+        <h2>Milestone Reports</h2>
+        <UndoChangesButton formChangeIds={formChangeIds} formRefs={formRefs} />
+        <SavingIndicator
+          isSaved={!isCreating && !isUpdating && !isDiscarding}
+        />
+      </header>
+      <Status
+        upcomingReportDueDate={upcomingReportDueDate}
+        reportSubmittedDates={reportSubmittedDates}
+        reportType={"Milestone"}
       />
-      <FormBase
-        id={`form-${milestoneReport.milestoneFormChange.id}`}
-        validateOnMount={
-          milestoneReport.milestoneFormChange.changeStatus === "staged"
-        }
-        idPrefix={`form-${milestoneReport.milestoneFormChange.id}`}
-        ref={(el) =>
-          (formRefs.current[milestoneReport.milestoneFormChange.id] = el)
-        }
-        formData={milestoneReport.milestoneFormChange.newFormData}
-        onChange={(change) => {
-          updateFormChange({
-            variables: {
-              input: {
-                rowId: milestoneReport.milestoneFormChange.rowId,
-                formChangePatch: {
-                  newFormData: change.formData,
-                },
-              },
-            },
-            optimisticResponse: {
-              updateFormChange: {
-                formChange: {
-                  id: milestoneReport.milestoneFormChange.id,
-                  newFormData: change.formData,
-                  changeStatus: "pending",
-                  projectRevisionByProjectRevisionId: undefined,
-                },
-              },
-            },
-            debounceKey: milestoneReport.milestoneFormChange.id,
-          });
-        }}
-        schema={generatedMilestoneSchema as JSONSchema7}
-        uiSchema={milestoneUiSchema}
-        ObjectFieldTemplate={EmptyObjectFieldTemplate}
+      <ReportDueIndicator
+        reportTitle="Milestone Report"
+        reportDueFormChange={projectRevision.upcomingMilestoneReportFormChange}
       />
-      {hasExpenses && milestoneReport.paymentFormChange && (
-        <FormBase
-          id={`form-${milestoneReport.paymentFormChange.id}`}
-          validateOnMount={
-            milestoneReport.paymentFormChange.changeStatus === "staged"
-          }
-          idPrefix={`form-${milestoneReport.paymentFormChange.id}`}
-          ref={(el) =>
-            (formRefs.current[milestoneReport.paymentFormChange.id] = el)
-          }
-          formData={milestoneReport.paymentFormChange.newFormData}
-          onChange={(change) => {
-            updateFormChange({
+      <FormBorder>
+        <Button
+          variant="secondary"
+          disabled={isCreating}
+          onClick={() =>
+            createMilestone({
               variables: {
                 input: {
-                  rowId: milestoneReport.paymentFormChange.rowId,
-                  formChangePatch: {
-                    newFormData: change.formData,
+                  operation: "CREATE",
+                  formDataSchemaName: "cif",
+                  formDataTableName: "reporting_requirement",
+                  jsonSchemaName: "milestone",
+                  newFormData: {
+                    reportType: "General Milestone",
+                    reportingRequirementIndex:
+                      projectRevision.milestoneFormChanges.edges.length + 1,
                   },
+                  projectRevisionId: projectRevision.rowId,
                 },
               },
-              optimisticResponse: {
-                updateFormChange: {
-                  formChange: {
-                    id: milestoneReport.paymentFormChange.id,
-                    newFormData: change.formData,
-                    changeStatus: "pending",
-                    projectRevisionByProjectRevisionId: undefined,
-                  },
-                },
-              },
-              debounceKey: milestoneReport.paymentFormChange.id,
-            });
-          }}
-          schema={paymentSchema as JSONSchema7}
-          uiSchema={paymentUiSchema}
-          ObjectFieldTemplate={EmptyObjectFieldTemplate}
-        />
-      )}
-    </>
+            })
+          }
+          className="addButton"
+        >
+          <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
+        </Button>
+
+        {projectRevision.milestoneFormChanges.edges.map(({ node }, index) => {
+          return (
+            <div key={node.id} id={`Milestone${index + 1}`}>
+              <CollapsibleReport
+                title={`Milestone ${index + 1}`}
+                reportingRequirement={node.asReportingRequirement}
+              >
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() =>
+                    deleteReportFormChange(
+                      discardFormChange,
+                      node.id,
+                      node.rowId,
+                      node.operation,
+                      formRefs
+                    )
+                  }
+                  className="removeButton"
+                >
+                  Remove
+                </Button>
+                <FormBase
+                  id={`form-${node.id}`}
+                  validateOnMount={node.changeStatus === "staged"}
+                  idPrefix={`form-${node.id}`}
+                  ref={(el) => (formRefs.current[node.id] = el)}
+                  formData={node.newFormData}
+                  onChange={(change) =>
+                    updateMilestone({
+                      variables: {
+                        reportType: "Milestone",
+                        input: {
+                          rowId: node.rowId,
+                          formChangePatch: {
+                            newFormData: {
+                              ...node.newFormData,
+                              ...change.formData,
+                              hasExpenses: true, // how to calculate this efficiently? Custom Widget to set both values?
+                            },
+                          },
+                        },
+                      },
+                      debounceKey: node.id,
+                      optimisticResponse: {
+                        updateFormChange: {
+                          formChange: {
+                            id: node.id,
+                            newFormData: change.formData,
+                            changeStatus: "pending",
+                          },
+                        },
+                      },
+                    })
+                  }
+                  schema={schema as JSONSchema7}
+                  uiSchema={milestoneUiSchema}
+                  ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                  formContext={{
+                    dueDate: node.newFormData?.reportDueDate,
+                  }}
+                />
+              </CollapsibleReport>
+            </div>
+          );
+        })}
+      </FormBorder>
+      <Button
+        size="medium"
+        variant="primary"
+        onClick={() =>
+          stageMultipleReportingRequirementFormChanges(
+            applyStageReportingRequirementFormChange,
+            props.onSubmit,
+            formRefs,
+            projectRevision.milestoneFormChanges.edges,
+            "Milestone"
+          )
+        }
+        disabled={isUpdating || isStagingReportingRequirement || isDiscarding}
+      >
+        Submit Milestone Reports
+      </Button>
+      <style jsx>{`
+        div :global(button.pg-button) {
+          margin-left: 0.4em;
+          margin-right: 0em;
+        }
+        div :global(button.addButton) {
+          margin-bottom: 1em;
+        }
+        div :global(button.removeButton) {
+          float: right;
+        }
+      `}</style>
+    </div>
   );
 };
 

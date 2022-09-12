@@ -26,7 +26,7 @@ export const mutation = graphql`
           projectRevisionByProjectRevisionId {
             ...ProjectQuarterlyReportForm_projectRevision
             ...ProjectAnnualReportForm_projectRevision
-            ...ProjectMilestoneReportFormGroup_projectRevision
+            ...ProjectMilestoneReportForm_projectRevision
             ...TaskList_projectRevision
           }
         }
