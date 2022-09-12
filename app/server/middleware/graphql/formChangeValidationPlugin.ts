@@ -1,3 +1,4 @@
+import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
 import { GraphQLObjectType, GraphQLResolveInfo } from "graphql";
 import { Context, makeWrapResolversPlugin } from "postgraphile";
 import { CommitFormChangeInput } from "__generated__/commitFormChangeMutation.graphql";
@@ -8,6 +9,14 @@ import validateRecord from "./validateRecord";
 interface Args {
   input: UpdateFormChangeInput | StageFormChangeInput | CommitFormChangeInput;
 }
+
+/**
+ *  This is a list of schema names that live in the database and
+ *  not as static json data in the code.
+ *  The validation plugin will try to fetch them from the cif.form table
+ *  instead of using the static json schema.
+ */
+const DATABASE_SCHEMAS = ["milestone"];
 
 export const filter = (context: Context<GraphQLObjectType<any, any>>) => {
   if (
@@ -47,8 +56,29 @@ export const resolverWrapperGenerator =
       [args.input.rowId]
     );
 
+    let jsonSchema;
+
+    if (DATABASE_SCHEMAS.includes(formChangeRecord.json_schema_name)) {
+      const {
+        rows: [fetchedRecord],
+      } = await pgClient.query(
+        `select json_schema from cif.form f
+          join cif.form_change fc on
+          f.slug = fc.json_schema_name
+          and fc.id = $1`,
+        [args.input.rowId]
+      );
+      jsonSchema = fetchedRecord.json_schema.schema;
+    } else jsonSchema = validationSchemas[formChangeRecord.json_schema_name];
+
+    if (!jsonSchema)
+      throw new Error(
+        "No json schema found for schema with name " +
+          formChangeRecord.json_schema_name
+      );
+
     const errors = validateRecord(
-      formChangeRecord.json_schema_name,
+      jsonSchema,
       args.input.formChangePatch.newFormData
     );
 
