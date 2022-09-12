@@ -101,12 +101,13 @@ const ProjectRevisionChangeLog = ({
       allRevisionTypes.edges.map(({ node }) => node.type)
     ),
     new SortOnlyFilter("Created Date", "createdAt"),
-    new DisplayOnlyFilter("Effective Date"),
+    new SortOnlyFilter("Effective Date", "effectiveDate"),
     new SortOnlyFilter("Last Updated", "updatedAt"),
     new SearchableDropdownFilter(
       "Updated by",
       "fullName",
-      allCifUsers.edges.map(({ node }) => node.fullName)
+      allCifUsers.edges.map(({ node }) => node.fullName),
+      { orderByPrefix: "CIF_USER_BY_CREATED_BY__FULL_NAME" }
     ),
     new SearchableDropdownFilter(
       "Updated",

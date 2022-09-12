@@ -10,12 +10,6 @@ interface Props {
   projectRevision: ProjectRevisionTableRow_projectRevision$key;
 }
 
-const getEffectiveDateValue = (changeStatus, updatedAt) => {
-  return changeStatus === "committed"
-    ? getDisplayDateString(parseStringDate(updatedAt))
-    : "Pending";
-};
-
 const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
   const projectRevisionData = useFragment(
     graphql`
@@ -24,7 +18,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
         createdAt
         amendmentStatus
         updatedAt
-        changeStatus
+        effectiveDate
         cifUserByUpdatedBy {
           fullName
         }
@@ -44,7 +38,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
     revisionType,
     createdAt,
     amendmentStatus,
-    changeStatus,
+    effectiveDate,
     updatedAt,
     cifUserByUpdatedBy,
     projectRevisionAmendmentTypesByProjectRevisionId,
@@ -57,7 +51,9 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
         {getDisplayDateString(parseStringDate(createdAt))}
       </td>
       <td className="effective-date">
-        {getEffectiveDateValue(changeStatus, updatedAt)}
+        {effectiveDate
+          ? getDisplayDateString(parseStringDate(effectiveDate))
+          : "Pending"}
       </td>
       <td className="updated-at">
         {getDisplayDateString(parseStringDate(updatedAt))}
