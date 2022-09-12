@@ -19,7 +19,10 @@ import { useCreateMilestone } from "mutations/MilestoneReport/createMilestone";
 import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import useDiscardReportingRequirementFormChange from "mutations/ProjectReportingRequirement/discardReportingRequirementFormChange";
-import { deleteReportFormChange } from "./Functions/reportingRequirementFormChangeFunctions";
+import {
+  deleteReportFormChange,
+  getSortedReports,
+} from "./Functions/reportingRequirementFormChangeFunctions";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 
@@ -121,6 +124,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       projectRevision.milestoneFormChanges.__id
     );
 
+  const [sortedMilestoneReports, nextMilestoneReportIndex] = useMemo(() => {
+    return getSortedReports(projectRevision.milestoneFormChanges.edges);
+  }, [projectRevision.milestoneFormChanges]);
+
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
     return [
@@ -172,8 +179,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   jsonSchemaName: "milestone",
                   newFormData: {
                     reportType: "General Milestone",
-                    reportingRequirementIndex:
-                      projectRevision.milestoneFormChanges.edges.length + 1,
+                    reportingRequirementIndex: nextMilestoneReportIndex,
                   },
                   projectRevisionId: projectRevision.rowId,
                 },
@@ -185,7 +191,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
         </Button>
 
-        {projectRevision.milestoneFormChanges.edges.map(({ node }, index) => {
+        {sortedMilestoneReports.map((node, index) => {
           return (
             <div key={node.id} id={`Milestone${index + 1}`}>
               <CollapsibleReport
