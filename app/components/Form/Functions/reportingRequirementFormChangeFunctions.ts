@@ -102,6 +102,8 @@ export const deleteReportFormChange = (
   });
 };
 
+/** Deprecated - When refactoring forms, we should use the
+ * `stageMultipleReportingRequirementFormChange` function instead  */
 export const stageReportFormChanges = async (
   mutationFn: (args: {
     variables: updateReportingRequirementFormChangeMutation$variables;

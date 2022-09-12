@@ -17,6 +17,8 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import FormBase from "./FormBase";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { useCreateMilestone } from "mutations/MilestoneReport/createMilestone";
+import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 
 interface Props {
   onSubmit: () => void;
@@ -105,6 +107,11 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
   const [createMilestone, isCreating] = useCreateMilestone();
   const [updateMilestone, isUpdating] =
     useUpdateReportingRequirementFormChange();
+
+  const [
+    applyStageReportingRequirementFormChange,
+    isStagingReportingRequirement,
+  ] = useStageReportingRequirementFormChange();
 
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
@@ -220,6 +227,22 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
           );
         })}
       </FormBorder>
+      <Button
+        size="medium"
+        variant="primary"
+        onClick={() =>
+          stageMultipleReportingRequirementFormChanges(
+            applyStageReportingRequirementFormChange,
+            props.onSubmit,
+            formRefs,
+            projectRevision.milestoneFormChanges.edges,
+            "Milestone"
+          )
+        }
+        disabled={isUpdating || isStagingReportingRequirement}
+      >
+        Submit Milestone Reports
+      </Button>
       <style jsx>{`
         div :global(button.pg-button) {
           margin-left: 0.4em;
