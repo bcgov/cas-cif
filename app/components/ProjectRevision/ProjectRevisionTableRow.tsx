@@ -60,20 +60,22 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
       </td>
       <td className="updated-by">{cifUserByUpdatedBy?.fullName}</td>
       <td className="updated">
-        {
-          projectRevisionAmendmentTypesByProjectRevisionId.edges[0]?.node
-            .amendmentType
-        }
+        {projectRevisionAmendmentTypesByProjectRevisionId.edges
+          .map(({ node }) => node.amendmentType)
+          .join(", ")}
       </td>
       <td className="amendment-status">{amendmentStatus}</td>
       <td>
         <div className="actions">
-          <Button size="small">View / edit placeholder</Button>
+          <Button size="small">View {!effectiveDate && "/ Edit"}</Button>
         </div>
       </td>
       <style jsx>{`
         td {
           vertical-align: top;
+        }
+        td :global(button.pg-button) {
+          width: 100%;
         }
       `}</style>
     </tr>
