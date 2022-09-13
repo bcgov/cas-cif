@@ -17,6 +17,7 @@ import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItemsComponent";
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 import { useNumberedFormStructure } from "data/formPages/formStructure";
+import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLogsTaskListSection";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -227,22 +228,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         )}
 
         {/* Amendments & Other Revisions section */}
-        <TaskListSection
-          defaultExpandedState={
-            router.pathname ===
-            "/cif/project-revision/[projectRevision]/project-revision-change-logs"
-          }
-          listItemName="Amendments & Other Revisions"
-        >
-          <TaskListItem
-            stepName="/cif/project-revision/[projectRevision]/project-revision-change-logs"
-            linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
-            formTitle="View Revision"
-            formStatus={null}
-            currentStep={router.pathname}
-            mode={mode}
-          />
-        </TaskListSection>
+        <ProjectRevisionChangeLogsTaskListSection
+          title="Amendments & Other Revisions"
+          linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
+        />
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection
