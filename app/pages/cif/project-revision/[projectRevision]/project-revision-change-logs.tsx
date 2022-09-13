@@ -1,7 +1,6 @@
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import Table from "components/Table";
 import {
-  DisplayOnlyFilter,
   NoHeaderFilter,
   SearchableDropdownFilter,
   SortOnlyFilter,
@@ -14,7 +13,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { Button } from "@button-inc/bcgov-theme";
 import { projectRevisionChangeLogsQuery } from "__generated__/projectRevisionChangeLogsQuery.graphql";
 
-const pageQuery = graphql`
+export const ProjectRevisionChangeLogsQuery = graphql`
   query projectRevisionChangeLogsQuery(
     $projectRevision: ID!
     $offset: Int
@@ -23,6 +22,7 @@ const pageQuery = graphql`
     $revisionType: String
     $fullName: String
     $amendmentStatus: String
+    $amendmentType: String
   ) {
     session {
       ...DefaultLayout_session
@@ -36,6 +36,9 @@ const pageQuery = graphql`
             revisionType: { includesInsensitive: $revisionType }
             cifUserByUpdatedBy: { fullName: { includesInsensitive: $fullName } }
             amendmentStatus: { includesInsensitive: $amendmentStatus }
+            projectRevisionAmendmentTypesByProjectRevisionId: {
+              some: { amendmentType: { includesInsensitive: $amendmentType } }
+            }
           }
           orderBy: $orderBy
         ) @connection(key: "connection_projectRevisionChangeLogs") {
@@ -81,9 +84,9 @@ const pageQuery = graphql`
   }
 `;
 
-const ProjectRevisionChangeLog = ({
+export function ProjectRevisionChangeLogs({
   preloadedQuery,
-}: RelayProps<{}, projectRevisionChangeLogsQuery>) => {
+}: RelayProps<{}, projectRevisionChangeLogsQuery>) {
   const {
     session,
     projectRevision,
@@ -91,7 +94,7 @@ const ProjectRevisionChangeLog = ({
     allAmendmentStatuses,
     allAmendmentTypes,
     allCifUsers,
-  } = usePreloadedQuery(pageQuery, preloadedQuery);
+  } = usePreloadedQuery(ProjectRevisionChangeLogsQuery, preloadedQuery);
   const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
 
   const tableFilters = [
@@ -112,7 +115,8 @@ const ProjectRevisionChangeLog = ({
     new SearchableDropdownFilter(
       "Updated",
       "amendmentType",
-      allAmendmentTypes.edges.map(({ node }) => node.name)
+      allAmendmentTypes.edges.map(({ node }) => node.name),
+      { sortable: false }
     ),
     new SearchableDropdownFilter(
       "Status",
@@ -134,7 +138,7 @@ const ProjectRevisionChangeLog = ({
           projectRevision.project.projectRevisionChangeLogs.totalCount
         }
         filters={tableFilters}
-        pageQuery={pageQuery}
+        pageQuery={ProjectRevisionChangeLogsQuery}
       >
         {projectRevision.project.projectRevisionChangeLogs.edges.map(
           ({ node }) => (
@@ -154,6 +158,10 @@ const ProjectRevisionChangeLog = ({
       `}</style>
     </DefaultLayout>
   );
-};
+}
 
-export default withRelay(ProjectRevisionChangeLog, pageQuery, withRelayOptions);
+export default withRelay(
+  ProjectRevisionChangeLogs,
+  ProjectRevisionChangeLogsQuery,
+  withRelayOptions
+);
