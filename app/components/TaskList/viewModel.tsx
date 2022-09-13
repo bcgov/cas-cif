@@ -6,29 +6,11 @@ import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import ProjectMilestoneReportFormGroup from "components/Form/ProjectMilestoneReportFormGroup";
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
-import React from "react";
-
-interface IFormConfiguration {
-  slug: string;
-  editComponent: React.FC;
-  viewComponent: React.FC;
-}
-interface IFormItem<TFormConfiguration extends IFormConfiguration> {
-  title: string;
-  formConfiguration?: TFormConfiguration;
-}
-interface IFormSection<
-  TFormConfiguration extends IFormConfiguration = IFormConfiguration
-> extends IFormItem<TFormConfiguration> {
-  optional?: boolean;
-  items?: IFormItem<TFormConfiguration>[];
-}
-interface IIndexedFormConfiguration extends IFormConfiguration {
-  formIndex: number;
-}
-interface INumberedFormSection extends IFormSection<IIndexedFormConfiguration> {
-  sectionNumber: number;
-}
+import {
+  IFormConfiguration,
+  IFormSection,
+  INumberedFormSection,
+} from "./types";
 
 const formStructure: IFormSection[] = [
   {
@@ -86,6 +68,7 @@ const buildNumberedFormStructure = (inputFormStructure: IFormSection[]) => {
   inputFormStructure.forEach((section) => {
     const numberedSection: INumberedFormSection = {
       title: section.title,
+      optional: section.optional,
       sectionNumber: currentSectionNumber++,
       formConfiguration: section.formConfiguration
         ? {
@@ -113,18 +96,10 @@ const buildNumberedFormStructure = (inputFormStructure: IFormSection[]) => {
 export const getFormsInSection = function <T extends IFormConfiguration>(
   section: IFormSection<T>
 ) {
-  const items: T[] =
-    section.items?.flatMap((item) => item.formConfiguration ?? []) ?? [];
-  const sectionForm: T[] = [section.formConfiguration ?? []].flat();
+  const items: IFormSection<T>[] = section.items?.map((i) => i) ?? [];
 
-  return [...sectionForm, ...items];
+  // We only return the non-null formcongiguration items
+  return [section, ...items].filter((s) => s.formConfiguration);
 };
 
 export const numberedFormStructure = buildNumberedFormStructure(formStructure);
-
-export type TaskListDynamicConfiguration = {
-  [key: string]: {
-    status: string;
-    [key: string]: any;
-  }[];
-};

@@ -12,40 +12,17 @@ import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevi
 import AttachmentsTaskListSection from "./AttachmentsTaskListSection";
 import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
-import { TaskListMode } from "./types";
+import { TaskListMode, TaskListDynamicConfiguration } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
-import { DateTime } from "luxon";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
-import {
-  getFormsInSection,
-  numberedFormStructure,
-  TaskListDynamicConfiguration,
-} from "./viewModel";
-import e from "express";
+import { getFormsInSection, numberedFormStructure } from "./viewModel";
+import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItemsComponent";
+import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
   mode: TaskListMode;
 }
-
-const displayMilestoneDueDateStatus = (
-  reportDueDate: string | undefined,
-  submittedDate: string | undefined
-) => {
-  if (submittedDate) return "Completed";
-  const diff = DateTime.fromISO(reportDueDate, {
-    setZone: true,
-    locale: "en-CA",
-  }).diff(
-    // Current date without time information
-    DateTime.now().setZone("America/Vancouver").startOf("day"),
-    "days"
-  );
-  if (diff.days < 0) return "Late";
-  if (diff.days > 60)
-    return `Due in ${Math.ceil(Math.ceil(diff.days) / 7)} weeks`;
-  return `Due in ${Math.ceil(diff.days)} days`;
-};
 
 const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
   const {
@@ -131,16 +108,48 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     summary: useShowGrowthbookFeature("teimp") ? 8 : 7,
   };
 
-  const tasklistFormConfiguration: TaskListDynamicConfiguration = {
-    projectOverview: [{ status: projectOverviewStatus }],
-    projectManagers: [{ status: projectManagersStatus }],
-    projectContacts: [{ status: projectContactsStatus }],
-    quarterlyReports: [{ status: quarterlyReportsStatus }],
-    annualReports: [{ status: annualReportsStatus }],
-    projectMilestones: milestoneReportStatuses.edges.map((edge) => edge.node),
-    fundingAgreement: [{ status: fundingAgreementStatus }],
-    teimp: [{ status: teimpStatus }],
+  const tasklistRenderingConfiguration: TaskListDynamicConfiguration = {
+    projectOverview: {
+      context: [{ status: projectOverviewStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+
+    projectManagers: {
+      context: [{ status: projectManagersStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+
+    projectContacts: {
+      context: [{ status: projectContactsStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+
+    quarterlyReports: {
+      context: [{ status: quarterlyReportsStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+
+    annualReports: {
+      context: [{ status: annualReportsStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+
+    projectMilestones: {
+      context: milestoneReportStatuses.edges.map((edge) => edge.node),
+      ItemsComponent: MilestoneTaskListItemsComponent,
+    },
+    fundingAgreement: {
+      context: [{ status: fundingAgreementStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+
+    teimp: {
+      context: [{ status: teimpStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
   };
+
+  console.log(numberedFormStructure);
 
   return (
     <div className="container">
@@ -153,21 +162,29 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
       </h2>
       <ol>
         {numberedFormStructure.map((section) => {
-          const formsInSection = getFormsInSection(section);
+          /**
+           * A section has form configuration items that need to be rendered,
+           * A section can also have its own form configuration to render
+           */
+          const taskListItems = getFormsInSection(section);
 
           return (
             <TaskListSection
               key={`tasklist_section_${section.sectionNumber}`}
               defaultExpandedState={
-                /* Tasklist section is expanded if either the current step is one of its forms,
-                 * or if any of its forms has the Attention Required status */
-                formsInSection
-                  .map((f) => f.formIndex)
-                  .includes(Number(currentStep)) ||
-                formsInSection.some((form) =>
-                  tasklistFormConfiguration[form.slug].some(
-                    (config) => config.status === ATTENTION_REQUIRED_STATUS
-                  )
+                /**
+                 * Tasklist section is expanded if:
+                 * - either the current step is one of its form items,
+                 * - or if any of its form items has the Attention Required status
+                 * */
+                taskListItems.some(
+                  (item) =>
+                    item.formConfiguration.formIndex === Number(currentStep) ||
+                    tasklistRenderingConfiguration[
+                      item.formConfiguration.slug
+                    ].context.some(
+                      (config) => config.status === ATTENTION_REQUIRED_STATUS
+                    )
                 )
               }
               listItemNumber={String(section.sectionNumber)}
@@ -176,68 +193,55 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
                 mode !== "update" && section.optional ? "(optional)" : ""
               }
             >
-              {section.items?.map(
-                (item) =>
-                  item.formConfiguration && (
-                    <TaskListItem
-                      stepName={String(item.formConfiguration.formIndex)}
-                      linkUrl={getProjectRevisionFormPageRoute(
-                        id,
-                        item.formConfiguration.formIndex
-                      )}
-                      formTitle={item.title}
-                      formStatus={
-                        tasklistFormConfiguration[item.formConfiguration.slug]
-                          .status
-                      }
-                      currentStep={currentStep}
-                      mode={mode}
-                    />
-                  )
-              )}
-              {section.formConfiguration &&
-                tasklistFormConfiguration[section.formConfiguration.slug]
-                  .length === 0 && (
-                  <TaskListItem
-                    stepName={String(section.formConfiguration.formIndex)}
-                    linkUrl={getProjectRevisionFormPageRoute(
-                      id,
-                      section.formConfiguration.formIndex
-                    )}
-                    formTitle={section.title}
-                    formStatus={null} // No status as there are no milestones
+              {taskListItems.map((item, index) => {
+                const ItemsComponent =
+                  tasklistRenderingConfiguration[item.formConfiguration.slug]
+                    .ItemsComponent;
+                return (
+                  <ItemsComponent
+                    key={"section-item-" + index}
+                    revisionId={id}
                     currentStep={currentStep}
                     mode={mode}
+                    formItem={item}
+                    context={
+                      tasklistRenderingConfiguration[
+                        item.formConfiguration.slug
+                      ].context
+                    }
                   />
-                )}
-              {section.formConfiguration &&
-                tasklistFormConfiguration[section.formConfiguration.slug]
-                  .length > 0 &&
-                tasklistFormConfiguration[section.formConfiguration.slug].map(
-                  (config, index) => (
-                    <TaskListItem
-                      key={config.milestoneIndex}
-                      stepName="4"
-                      linkUrl={getProjectRevisionFormPageRoute(
-                        id,
-                        section.formConfiguration.formIndex,
-                        `Milestone${index + 1}`
-                      )}
-                      formTitle={`Milestone ${index + 1}`}
-                      formStatus={config.status}
-                      milestoneDueDate={displayMilestoneDueDateStatus(
-                        config.reportDueDate,
-                        config.submittedDate
-                      )}
-                      currentStep={currentStep}
-                      mode={mode}
-                      hasAnchor={true}
-                    />
-                  )
-                )}
+                );
+              })}
             </TaskListSection>
           );
         })}
+
+        {/* Project Summary Section */}
+        {mode !== "view" && (
+          <TaskListSection
+            defaultExpandedState={currentStep === "summary"}
+            listItemNumber={String(sectionIndex.summary)}
+            listItemName="Submit changes"
+          >
+            <TaskListItem
+              stepName="summary"
+              linkUrl={getProjectRevisionPageRoute(id)}
+              formTitle="Review and submit information"
+              formStatus={null}
+              currentStep={currentStep}
+              mode={mode}
+            />
+          </TaskListSection>
+        )}
+
+        {/* Attachments Section */}
+        {mode === "view" && (
+          <AttachmentsTaskListSection
+            icon={faPaperclip}
+            title="Attachments"
+            linkUrl={getProjectRevisionAttachmentsPageRoute(id)}
+          />
+        )}
       </ol>
       <style jsx>{`
         ol {
