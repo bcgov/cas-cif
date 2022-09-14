@@ -32,41 +32,17 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
               id={id}
               prefix={isMoney ? "$" : ""}
               suffix={isPercentage ? "%" : ""}
-              value={value}
-              displayType="text"
+              value={value ?? "Not added"}
+              readOnly
+              style={{
+                border: "none",
+                padding: "0 0 0 0.75em",
+                fontStyle: `${value ?? "italic"}`,
+              }}
             />
           }
         </>
       )}
-      {value !== calculatedValue && (
-        <div className={calculatedValue && "adjustedValue"}>
-          {calculatedValue && <dt>{label} (Adjusted)</dt>}
-          <dd>
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={isMoney}
-              id={adjustedInputId}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? "%" : ""}
-              decimalScale={isMoney || isPercentage ? 2 : 10}
-              value={value}
-              displayType="text"
-            />
-          </dd>
-        </div>
-      )}
-      {!value && <em>Not added</em>}
-      <style jsx>{`
-        div.adjustedValue {
-          position: relative;
-          display: flex;
-          right: 12.1rem;
-          margin-top: 0.5em;
-        }
-        dt {
-          margin-right: 1em;
-        }
-      `}</style>
     </div>
   );
 };

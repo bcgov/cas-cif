@@ -16,36 +16,24 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
 
   return (
     <>
-      <dd aria-label={label}>
-        {calculatedValue !== null && calculatedValue !== undefined ? (
-          <NumberFormat
-            fixedDecimalScale={isMoney || isPercentage}
-            prefix={isMoney ? "$" : ""}
-            suffix={isPercentage ? "%" : ""}
-            id={id}
-            decimalScale={isMoney || isPercentage ? 2 : 10} //Hardcoded for now, we can change it if we need to
-            value={calculatedValue}
-            displayType="text"
-          />
-        ) : (
-          <NumberFormat
-            fixedDecimalScale={isMoney || isPercentage}
-            prefix={isMoney ? "$" : ""}
-            suffix={isPercentage ? "%" : ""}
-            id={id}
-            decimalScale={isMoney || isPercentage ? 2 : 10}
-            value={""}
-            displayType="text"
-          />
-        )}
-      </dd>
-      <style jsx>{`
-         {
-          dd {
-            margin-bottom: 0;
-          }
+      <NumberFormat
+        fixedDecimalScale={isMoney || isPercentage}
+        prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? "%" : ""}
+        id={id}
+        decimalScale={isMoney || isPercentage ? 2 : 10} //Hardcoded for now, we can change it if we need to
+        value={
+          calculatedValue !== null && calculatedValue !== undefined
+            ? calculatedValue
+            : ""
         }
-      `}</style>
+        readOnly
+        aria-label={label}
+        style={{
+          border: "none",
+          padding: "0 0 0 0.75em",
+        }}
+      />
     </>
   );
 };

@@ -30,7 +30,7 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
         style={{
           border: "none",
           padding: "0 0 0 0.75em",
-          // "font-style": `${value ?? "italic"}`,
+          fontStyle: `${value ?? "italic"}`,
         }}
       />
     </div>
