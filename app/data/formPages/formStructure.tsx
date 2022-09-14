@@ -17,7 +17,7 @@ import ProjectEmissionIntensityReportSummary from "components/Form/ProjectEmissi
 import {
   buildFormPages,
   buildNumberedFormStructure,
-} from "./formStructureFunctions";
+} from "../../lib/pages/formStructureFunctions";
 import { IFormSection } from "./types";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { useMemo } from "react";

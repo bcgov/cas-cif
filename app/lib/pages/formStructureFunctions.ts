@@ -1,4 +1,4 @@
-import { IFormSection, INumberedFormSection } from "./types";
+import { IFormSection, INumberedFormSection } from "../../data/formPages/types";
 
 // We walk through the structure to number everything with section numbers and form indices
 export const buildNumberedFormStructure = (
