@@ -20,7 +20,7 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
             label={label}
             required={required}
             htmlFor={id}
-            tagName="dt"
+            tagName="label"
           />
         )}
         {children}
