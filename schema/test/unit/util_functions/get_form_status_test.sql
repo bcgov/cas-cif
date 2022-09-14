@@ -2,7 +2,7 @@
 
 begin;
 
-select * from no_plan();
+select plan(6);
 
 truncate cif.form_change, cif.project_revision, cif.project_contact restart identity cascade;
 
