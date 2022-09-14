@@ -16,23 +16,24 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
     : uiSchema.numberOfDecimalPlaces ?? 0;
 
   return (
-    <dd>
-      {value ? (
-        <NumberFormat
-          value={value}
-          displayType="text"
-          thousandSeparator
-          fixedDecimalScale={numberOfDecimalPlaces}
-          decimalScale={numberOfDecimalPlaces}
-          id={id}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          className="decimal"
-        />
-      ) : (
-        <em>Not added</em>
-      )}
-    </dd>
+    <div>
+      <NumberFormat
+        value={value ?? "Not added"}
+        readOnly
+        thousandSeparator
+        fixedDecimalScale={numberOfDecimalPlaces}
+        decimalScale={numberOfDecimalPlaces}
+        id={id}
+        prefix={isMoney ? "$" : ""}
+        suffix={isPercentage ? " %" : ""}
+        className="decimal"
+        style={{
+          border: "none",
+          padding: "0 0 0 0.75em",
+          // "font-style": `${value ?? "italic"}`,
+        }}
+      />
+    </div>
   );
 };
 
