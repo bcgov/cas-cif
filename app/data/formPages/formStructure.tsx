@@ -5,12 +5,20 @@ import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
 import ProjectMilestoneReportFormGroup from "components/Form/ProjectMilestoneReportFormGroup";
+import ProjectQuarterlyReportForm from "components/Form/ProjectQuarterlyReportForm";
+import ProjectAnnualReportForm from "components/Form/ProjectAnnualReportForm";
+import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
+import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportFormSummary";
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
+import ProjectFundingAgreementForm from "components/Form/ProjectFundingAgreementForm";
+import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
+import ProjectEmissionIntensityReport from "components/Form/ProjectEmissionIntensityReportForm";
+import ProjectEmissionIntensityReportSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
 import {
-  IFormConfiguration,
-  IFormSection,
-  INumberedFormSection,
-} from "./types";
+  buildFormPages,
+  buildNumberedFormStructure,
+} from "./formStructureFunctions";
+import { IFormSection } from "./types";
 
 const formStructure: IFormSection[] = [
   {
@@ -58,48 +66,5 @@ const formStructure: IFormSection[] = [
   },
 ];
 
-// We walk through the structure to number everything with section numbers and form indices
-const buildNumberedFormStructure = (inputFormStructure: IFormSection[]) => {
-  let currentSectionNumber = 1;
-  let currentFormIndex = 0;
-
-  let numberedSections = [] as INumberedFormSection[];
-
-  inputFormStructure.forEach((section) => {
-    const numberedSection: INumberedFormSection = {
-      title: section.title,
-      optional: section.optional,
-      sectionNumber: currentSectionNumber++,
-      formConfiguration: section.formConfiguration
-        ? {
-            ...section.formConfiguration,
-            formIndex: currentFormIndex++,
-          }
-        : undefined,
-      items: section.items?.map((item) => {
-        return {
-          title: item.title,
-          formConfiguration: item.formConfiguration && {
-            ...item.formConfiguration,
-            formIndex: currentFormIndex++,
-          },
-        };
-      }),
-    };
-
-    numberedSections.push(numberedSection);
-  });
-
-  return numberedSections;
-};
-
-export const getFormsInSection = function <T extends IFormConfiguration>(
-  section: IFormSection<T>
-) {
-  const items: IFormSection<T>[] = section.items?.map((i) => i) ?? [];
-
-  // We only return the non-null formcongiguration items
-  return [section, ...items].filter((s) => s.formConfiguration);
-};
-
 export const numberedFormStructure = buildNumberedFormStructure(formStructure);
+export const formPages = buildFormPages(numberedFormStructure);

@@ -27,11 +27,11 @@ const MilestoneTaskListItemsComponent: React.FC<TaskListItemComponentProps> = ({
   currentStep,
   mode,
   formItem,
-  context: config,
+  context,
 }) => {
   return (
     <>
-      {config.length === 0 && (
+      {context.length === 0 && (
         <TaskListItem
           stepName={String(formItem.formConfiguration.formIndex)}
           linkUrl={getProjectRevisionFormPageRoute(
@@ -44,8 +44,8 @@ const MilestoneTaskListItemsComponent: React.FC<TaskListItemComponentProps> = ({
           mode={mode}
         />
       )}
-      {config.length > 0 &&
-        config.map((configItem, index) => (
+      {context.length > 0 &&
+        context.map((configItem, index) => (
           <TaskListItem
             key={configItem.milestoneIndex}
             stepName="4"

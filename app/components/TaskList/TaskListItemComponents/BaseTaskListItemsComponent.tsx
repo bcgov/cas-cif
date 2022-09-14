@@ -1,6 +1,7 @@
+import { IFormItem, IIndexedFormConfiguration } from "data/formPages/types";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import TaskListItem from "../TaskListItem";
-import { IFormItem, IIndexedFormConfiguration, TaskListMode } from "../types";
+import { TaskListMode } from "../types";
 
 export interface TaskListItemComponentProps {
   revisionId: string;

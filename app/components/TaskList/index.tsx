@@ -15,9 +15,9 @@ import TaskListSection from "./TaskListSection";
 import { TaskListMode, TaskListDynamicConfiguration } from "./types";
 import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
-import { getFormsInSection, numberedFormStructure } from "./viewModel";
 import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItemsComponent";
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
+import { numberedFormStructure } from "data/formPages/formStructure";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -149,8 +149,6 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
     },
   };
 
-  console.log(numberedFormStructure);
-
   return (
     <div className="container">
       <h2>
@@ -166,7 +164,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
            * A section has form configuration items that need to be rendered,
            * A section can also have its own form configuration to render
            */
-          const taskListItems = getFormsInSection(section);
+          const taskListItems = [
+            section,
+            ...(section.items?.map((i) => i) ?? []),
+          ].filter((s) => s.formConfiguration);
 
           return (
             <TaskListSection

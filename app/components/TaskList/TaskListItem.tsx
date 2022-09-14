@@ -3,7 +3,7 @@ import BCGovLink from "@button-inc/bcgov-theme/Link";
 import Link from "next/link";
 import { TaskListMode } from "./types";
 
-export interface Props {
+interface Props {
   stepName: string;
   linkUrl: { pathname: string; query: { projectRevision: string } };
   formTitle: string;
