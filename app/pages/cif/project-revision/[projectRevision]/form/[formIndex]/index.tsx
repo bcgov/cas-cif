@@ -3,7 +3,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
-import { formPages } from "data/formPages/formStructure";
+import { useFormPages } from "data/formPages/formStructure";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
@@ -89,6 +89,9 @@ export function ProjectFormPage({
       ?.id,
     mode === "view"
   );
+
+  const formPages = useFormPages();
+
   const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(
     formIndex,
     formPages.length

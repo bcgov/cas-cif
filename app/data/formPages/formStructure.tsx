@@ -19,52 +19,119 @@ import {
   buildNumberedFormStructure,
 } from "./formStructureFunctions";
 import { IFormSection } from "./types";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import { useMemo } from "react";
 
-const formStructure: IFormSection[] = [
-  {
-    title: "Project Overview",
-    items: [
+export const useFormStructure: () => IFormSection[] = () => {
+  const showTeimp = useShowGrowthbookFeature("teimp");
+
+  return useMemo(
+    () => [
       {
-        title: "Project overview",
+        title: "Project Overview",
+        items: [
+          {
+            title: "Project overview",
+            formConfiguration: {
+              slug: "projectOverview",
+              editComponent: ProjectForm,
+              viewComponent: ProjectFormSummary,
+            },
+          },
+        ],
+      },
+      {
+        title: "Project Details",
+        optional: true,
+        items: [
+          {
+            title: "Project managers",
+            formConfiguration: {
+              slug: "projectManagers",
+              editComponent: ProjectManagerFormGroup,
+              viewComponent: ProjectManagerFormSummary,
+            },
+          },
+          {
+            title: "Project contacts",
+            formConfiguration: {
+              slug: "projectContacts",
+              editComponent: ProjectContactForm,
+              viewComponent: ProjectContactFormSummary,
+            },
+          },
+        ],
+      },
+      {
+        title: "Budgets, Expenses & Payments",
+        items: [
+          {
+            title: "Budgets",
+            formConfiguration: {
+              slug: "fundingAgreement",
+              editComponent: ProjectFundingAgreementForm,
+              viewComponent: ProjectFundingAgreementFormSummary,
+            },
+          },
+        ],
+      },
+      {
+        title: "Milestone Reports",
         formConfiguration: {
-          slug: "projectOverview",
-          editComponent: ProjectForm,
-          viewComponent: ProjectFormSummary,
+          slug: "projectMilestones",
+          editComponent: ProjectMilestoneReportFormGroup,
+          viewComponent: ProjectMilestoneReportFormSummary,
         },
+      },
+      {
+        title: "Quarterly Reports",
+        items: [
+          {
+            title: "Quarterly reports",
+            formConfiguration: {
+              slug: "quarterlyReports",
+              editComponent: ProjectQuarterlyReportForm,
+              viewComponent: ProjectQuarterlyReportFormSummary,
+            },
+          },
+        ],
+      },
+      ...(showTeimp
+        ? [
+            {
+              title: "Emissions Intensity Report",
+              items: [
+                {
+                  title: "Emissions Intensity Report",
+                  formConfiguration: {
+                    slug: "teimp",
+                    editComponent: ProjectEmissionIntensityReport,
+                    viewComponent: ProjectEmissionIntensityReportSummary,
+                  },
+                },
+              ],
+            },
+          ]
+        : []),
+      ,
+      {
+        title: "Annual Reports",
+        items: [
+          {
+            title: "Annual reports",
+            formConfiguration: {
+              slug: "annualReports",
+              editComponent: ProjectAnnualReportForm,
+              viewComponent: ProjectAnnualReportFormSummary,
+            },
+          },
+        ],
       },
     ],
-  },
-  {
-    title: "Project Details",
-    optional: true,
-    items: [
-      {
-        title: "Project managers",
-        formConfiguration: {
-          slug: "projectManagers",
-          editComponent: ProjectManagerFormGroup,
-          viewComponent: ProjectManagerFormSummary,
-        },
-      },
-      {
-        title: "Project contacts",
-        formConfiguration: {
-          slug: "projectContacts",
-          editComponent: ProjectContactForm,
-          viewComponent: ProjectContactFormSummary,
-        },
-      },
-    ],
-  },
-  {
-    title: "Milestone Reports",
-    formConfiguration: {
-      slug: "projectMilestones",
-      editComponent: ProjectMilestoneReportFormGroup,
-      viewComponent: ProjectMilestoneReportFormSummary,
-    },
-  },
-];
+    [showTeimp]
+  );
+};
 
-export const numberedFormStructure = buildNumberedFormStructure(formStructure);
-export const formPages = buildFormPages(numberedFormStructure);
+export const useNumberedFormStructure = () =>
+  buildNumberedFormStructure(useFormStructure());
+export const useFormPages = () => buildFormPages(useNumberedFormStructure());

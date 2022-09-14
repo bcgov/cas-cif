@@ -1,7 +1,14 @@
 export interface IFormConfiguration {
   slug: string;
-  editComponent: React.FC;
-  viewComponent: React.FC;
+  editComponent: React.FC<{
+    query: any;
+    projectRevision: any;
+    onSubmit: () => void;
+  }>;
+  viewComponent: React.FC<{
+    projectRevision: any;
+    viewOnly: boolean;
+  }>;
 }
 export interface IFormItem<
   TFormConfiguration extends IFormConfiguration = IFormConfiguration
