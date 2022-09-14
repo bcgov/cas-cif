@@ -104,7 +104,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
         </p>
       ) : (
         <FormBase
-          tagName={"dl"}
+          tagName={"form"}
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
