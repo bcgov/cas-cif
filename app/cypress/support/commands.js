@@ -543,8 +543,11 @@ Cypress.Commands.add(
     cy.findByLabelText(/Proponent Cost$/i)
       .clear()
       .type(proponentCost);
-    cy.setDate(contractStartDate, "Contract Start Date");
-    cy.setDate(projectAssetsLifeEndDate, "Project Assets Life End Date");
+    cy.setDateInPicker("Contract Start Date", contractStartDate);
+    cy.setDateInPicker(
+      "Project Assets Life End Date",
+      projectAssetsLifeEndDate
+    );
     cy.contains("Changes saved");
 
     return cy.url().should("include", "/form/3");
@@ -655,7 +658,7 @@ Cypress.Commands.add(
 );
 
 // TODO: possible candidate to replace other date related commands
-Cypress.Commands.add("setDate", (date, ariaLabel, reportNumber = 0) => {
+Cypress.Commands.add("setDateInPicker", (ariaLabel, date, reportNumber = 0) => {
   const receivedDate = DateTime.fromFormat(date, "yyyy-MM-dd");
 
   const receivedDateTZ = receivedDate
@@ -683,6 +686,4 @@ Cypress.Commands.add("setDate", (date, ariaLabel, reportNumber = 0) => {
     .eq(reportNumber - 1)
     .contains(`${receivedDateTZ.toFormat("MMM dd, yyyy")}`);
   cy.contains("Changes saved").should("be.visible");
-  // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-  return cy.url().should("include", "/form");
 });
