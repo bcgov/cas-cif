@@ -57,7 +57,16 @@ describe("the new project page", () => {
     );
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
-    cy.fillFundingAgreementForm(111, 222, 60, 20, 333, 777);
+    cy.fillFundingAgreementForm(
+      111,
+      222,
+      60,
+      20,
+      333,
+      777,
+      "2020-01-01",
+      "2020-12-31"
+    );
 
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
@@ -144,7 +153,9 @@ describe("the new project page", () => {
       "50 %",
       "10 %",
       "$1.00",
-      "$777.00"
+      "$777.00",
+      /Jun(\.)? 10, 2020/,
+      /Jun(\.)? 10, 2020/
     );
     // additional funding sources
     cy.checkAdditionalFundingSourceForm(
@@ -192,7 +203,7 @@ describe("the new project page", () => {
     cy.findByText(/Yes/i).click();
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.get(".error-detail").should("have.length", 4);
+    cy.get(".error-detail").should("have.length", 6);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project funding agreement Form",

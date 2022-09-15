@@ -34,6 +34,8 @@ const mockQueryPayload = {
                   holdbackPercentage: 20,
                   anticipatedFundingAmount: 300,
                   proponentCost: 100,
+                  contractStartDate: "2021-02-02T23:59:59.999-07:00",
+                  projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
                 },
                 isPristine: false,
                 operation: "UPDATE",
@@ -46,6 +48,8 @@ const mockQueryPayload = {
                     holdbackPercentage: 10,
                     anticipatedFundingAmount: 300,
                     proponentCost: 100,
+                    contractStartDate: "2021-01-01T23:59:59.999-07:00",
+                    projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
                   },
                 },
               },
@@ -115,8 +119,11 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
     expect(screen.queryByText("Total Project Value")).toBeInTheDocument();
-
     expect(screen.queryByText("Max Funding Amount")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Project Assets Life End Date")
+    ).not.toBeInTheDocument();
+
     expect(
       screen.queryByText("Anticipated Funding Amount")
     ).not.toBeInTheDocument();
@@ -144,6 +151,8 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("20 %")).toBeInTheDocument();
     expect(screen.getByText("$2,500.00")).toBeInTheDocument();
     expect(screen.getByText("$1,000.00")).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
+    expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
     expect(screen.getByText("Approved")).toBeInTheDocument();
     expect(screen.getByText("Awaiting Approval")).toBeInTheDocument();
   });
@@ -166,6 +175,8 @@ describe("The Project Funding Agreement Form Summary", () => {
                       holdbackPercentage: 20,
                       anticipatedFundingAmount: 300,
                       proponentCost: 800,
+                      contractStartDate: "2021-01-01",
+                      projectAssetsLifeEndDate: "2021-12-31",
                     },
                     isPristine: false,
                     operation: "CREATE",
@@ -209,6 +220,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
     expect(screen.getByText("Anticipated Funding Amount")).toBeInTheDocument();
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
+    expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
+    expect(
+      screen.getByText("Project Assets Life End Date")
+    ).toBeInTheDocument();
     expect(
       screen.getByText(/additional funding amount \(source 1\)/i)
     ).toBeInTheDocument();

@@ -79,7 +79,16 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.fillFundingAgreementForm(222, 333, 70, 30, 444, 900);
+    cy.fillFundingAgreementForm(
+      222,
+      333,
+      70,
+      30,
+      444,
+      900,
+      "2020-01-01",
+      "2020-12-31"
+    );
     cy.contains("Changes saved.").should("be.visible");
 
     // edit additional funding source
@@ -184,6 +193,11 @@ describe("when editing a project, the project page", () => {
       .should("have.text", "REMOVED");
 
     cy.get("#root_contactId-diffNew").should("have.text", "Bob003 Loblaw003");
+
+    cy.get("#root_contractStartDate-diffNew").contains(/Jan(\.)? 1, 2020/);
+    cy.get("#root_projectAssetsLifeEndDate-diffNew").contains(
+      /Dec(\.)? 31, 2020/
+    );
 
     cy.findByText("Quarterly Report Removed").should("be.visible");
 

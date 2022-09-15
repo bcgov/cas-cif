@@ -60,7 +60,16 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
-    cy.fillFundingAgreementForm(222, 333, 70, 20, 444, 777);
+    cy.fillFundingAgreementForm(
+      222,
+      333,
+      70,
+      20,
+      444,
+      777,
+      "2020-01-01",
+      "2020-12-31"
+    );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByText(/Yes/i).should("be.visible");
     cy.findAllByRole("link", { name: /^Add budgets/i })
@@ -198,7 +207,16 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
-    cy.fillFundingAgreementForm(222, 333, 70, 30, 444, 900);
+    cy.fillFundingAgreementForm(
+      222,
+      333,
+      70,
+      30,
+      444,
+      900,
+      "2020-01-01",
+      "2020-12-31"
+    );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");
     cy.findByLabelText(/Max Funding Amount/i).should("have.value", "$1.00");
