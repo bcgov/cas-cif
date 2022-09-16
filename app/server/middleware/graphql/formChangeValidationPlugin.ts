@@ -41,14 +41,14 @@ export const resolverWrapperGenerator =
     // https://www.graphile.org/postgraphile/make-extend-schema-plugin/#the-selectgraphqlresultfromtable-helper
     const { pgClient } = context;
     const {
-      rows: [formChangeRecord],
+      rows: [formJsonSchema],
     } = await pgClient.query(
-      `select json_schema_name from cif.form_change where id = $1`,
+      `select json_schema from cif.form where slug = (select json_schema_name from cif.form_change where id = $1)`,
       [args.input.rowId]
     );
 
     const errors = validateRecord(
-      formChangeRecord.json_schema_name,
+      formJsonSchema.json_schema.schema,
       args.input.formChangePatch.newFormData
     );
 

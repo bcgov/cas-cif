@@ -13,7 +13,6 @@
       "reportType": {
         "type": "string",
         "title": "Milestone Type",
-        "anyOf": "undefined",
         "default": "undefined"
       },
       "hasExpenses": {
@@ -41,8 +40,7 @@
       "certifierProfessionalDesignation": {
         "type": "string",
         "title": "Professional Designation",
-        "default": "Professional Engineer",
-        "anyOf": "undefined"
+        "default": "Professional Engineer"
       }
     },
     "dependencies": {

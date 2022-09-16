@@ -27,8 +27,18 @@ export const resolverWrapperGenerator =
       throw new Error("JSON schema must be set in the mutation input");
     }
 
+    const { pgClient } = context;
+
+    const {
+      rows: [formJsonSchema],
+    } = await pgClient.query(
+      `select json_schema from cif.form
+       where slug = $1`,
+      [args.input.jsonSchemaName]
+    );
+
     const errors = validateRecord(
-      args.input.jsonSchemaName,
+      formJsonSchema.json_schema.schema,
       args.input.newFormData ?? {}
     );
 

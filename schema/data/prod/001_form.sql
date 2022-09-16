@@ -38,7 +38,7 @@ values
 ('contact', (select json_data from contact), 'schema data relating to the contact form and the contact table'),
 ('operator', (select json_data from operator), 'schema data relating to the operator form and the operator table'),
 -- add a form_change_commit_handler once they are created for the below records
-('milestone', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables'),
+('milestone_report', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables'),
 ('funding_agreement', (select json_data from funding_agreement), 'schema data relating to the funding_agreement form and the funding_parameter and additional_funding_source tables'),
 ('emission_intensity_report', (select json_data from emission_intensity_report), 'schema data relating to the emission_intensity_report form and the reporting_requirement and emission_intensity_report tables')
 on conflict(slug) do update

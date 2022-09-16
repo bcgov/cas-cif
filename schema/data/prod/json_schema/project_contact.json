@@ -7,8 +7,7 @@
       "contactId": {
         "title": "Contact",
         "type": "number",
-        "default": "undefined",
-        "anyOf": "undefined"
+        "default": "undefined"
       }
     }
   }
