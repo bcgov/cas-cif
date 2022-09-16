@@ -376,6 +376,8 @@ Cypress.Commands.add(
     cy.findByLabelText("Professional Designation (optional)").type(
       professionalDesignation
     );
+    // Extra assertion to bypass happo flaky issue(open dropdown)
+    cy.contains("Changes saved").should("be.visible");
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
