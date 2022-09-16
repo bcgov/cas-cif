@@ -347,6 +347,7 @@ Cypress.Commands.add(
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("link", { name: /edit milestone/i }).should("be.visible");
+    cy.findByText(`Milestone ${reportNumber}`).should("be.visible");
 
     cy.get('[aria-label="Milestone Description"]')
       .clear()
@@ -369,13 +370,12 @@ Cypress.Commands.add(
 
     cy.setDateInPicker("Due Date", reportDueDate, reportNumber);
 
-    cy.findByLabelText("Professional Designation (optional)").type(
-      professionalDesignation
-    );
-
     cy.get('[aria-label*="Substantial Completion Date"').type(
       reportSubstantialCompletionDate
     );
+
+    cy.findByLabelText("Professional Designation (optional)").click();
+    cy.contains(professionalDesignation).click();
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
