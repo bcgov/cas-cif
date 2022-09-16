@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "dependencies": {
-    "node-fetch": "^3.2.3"
+    "node-fetch": "^3.2.10"
   },
   "scripts": {
     "idir-ids": "node --experimental-modules --es-module-specifier-resolution=node idir-ids",
