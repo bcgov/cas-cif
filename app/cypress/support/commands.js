@@ -369,15 +369,13 @@ Cypress.Commands.add(
 
     cy.setDateInPicker("Due Date", reportDueDate, reportNumber);
 
-    cy.get('[aria-label*="Substantial Completion Date"').type(
-      reportSubstantialCompletionDate
-    );
-
     cy.findByLabelText("Professional Designation (optional)").type(
       professionalDesignation
     );
-    // Extra assertion to bypass happo flaky issue(open dropdown)
-    cy.contains("Changes saved").should("be.visible");
+
+    cy.get('[aria-label*="Substantial Completion Date"').type(
+      reportSubstantialCompletionDate
+    );
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
