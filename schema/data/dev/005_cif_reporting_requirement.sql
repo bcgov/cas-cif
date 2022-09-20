@@ -10,7 +10,15 @@ do $$
     for temp_row in select id, form_data_record_id, project_revision_id from cif.form_change where form_data_table_name = 'project'
     loop
 
-      perform cif.add_milestone_to_revision(temp_row.project_revision_id, 1);
+      perform cif.create_form_change(
+        'create',
+        'milestone',
+        'cif',
+        'reporting_requirement',
+        '{}'::jsonb,
+        null,
+        temp_row.project_revision_id
+      );
       -- reporting requirement
       update cif.form_change set new_form_data =
       json_build_object(

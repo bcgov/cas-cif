@@ -40,7 +40,9 @@ values
 -- add a form_change_commit_handler once they are created for the below records
 ('milestone', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables'),
 ('funding_agreement', (select json_data from funding_agreement), 'schema data relating to the funding_agreement form and the funding_parameter and additional_funding_source tables'),
-('emission_intensity_report', (select json_data from emission_intensity_report), 'schema data relating to the emission_intensity_report form and the reporting_requirement and emission_intensity_report tables')
+('emission_intensity_report', (select json_data from emission_intensity_report), 'schema data relating to the emission_intensity_report form and the reporting_requirement and emission_intensity_report tables'),
+-- additional_funding_source to be removed when funding agreement form gets refactored to be one form change, just here to pass the fkey
+('additional_funding_source', '{}'::jsonb, 'schema data relating to additional funding sources')
 on conflict(slug) do update
 set json_schema=excluded.json_schema,
     description=excluded.description,
