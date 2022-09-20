@@ -94,7 +94,7 @@ export const createProjectUiSchema = (
       numberOfDecimalPlaces: 3,
     },
     rank: {
-      "ui:widget": "ReadOnlyCalculatedValueWidget",
+      "ui:widget": "RankWidget",
       calculatedValueFormContextProperty: "calculatedRank",
       hideOptional: true,
     },

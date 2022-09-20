@@ -14,6 +14,7 @@ import DateWidget from "./widgets/DateWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
 import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
 import NumberWidget from "./widgets/NumberWidget";
+import RankWidget from "./widgets/RankWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -34,6 +35,7 @@ const formTheme: ThemeProps = {
     AdjustableCalculatedValueWidget,
     ReadOnlyCalculatedValueWidget,
     NumberWidget,
+    RankWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
