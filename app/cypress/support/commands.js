@@ -569,22 +569,22 @@ Cypress.Commands.add(
   ) => {
     cy.findByText(/Total Project Value$/i)
       .next()
-      .should("have.text", totalProjectValue);
+      .should("have.value", totalProjectValue);
     cy.findByText(/Max Funding Amount$/i)
       .next()
-      .should("have.text", maxFundingAmount);
+      .should("have.value", maxFundingAmount);
     cy.findByText(/Province Share Percentage$/i)
       .next()
-      .should("have.text", provinceSharePercentage);
+      .should("have.value", provinceSharePercentage);
     cy.findByText(/Holdback Percentage$/i)
       .next()
-      .should("have.text", holdbackPercentage);
+      .should("have.value", holdbackPercentage);
     cy.findByText(/Anticipated Funding Amount$/i)
       .next()
-      .should("have.text", anticipatedFundingAmount);
+      .should("have.value", anticipatedFundingAmount);
     cy.findByText(/Proponent Cost$/i)
       .next()
-      .should("have.text", proponentCost);
+      .should("have.value", proponentCost);
 
     cy.findByText(/Contract Start Date$/i)
       .next()
@@ -649,7 +649,7 @@ Cypress.Commands.add(
     cy.findAllByText(/^Additional Funding Amount/i)
       .eq(sourceNumber - 1)
       .next()
-      .should("have.text", amount);
+      .should("have.value", amount);
     cy.findAllByText(/^Additional Funding Status/i)
       .eq(sourceNumber - 1)
       .next()

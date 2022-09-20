@@ -299,7 +299,9 @@ describe("The Create Project page", () => {
     expect(screen.getByText(/test-project-name/i)).toBeInTheDocument();
     expect(screen.getByText(/test-project-status-name/i)).toBeInTheDocument();
     expect(screen.getByText(/test-prop-reference/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$5.00/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Total Funding Request/i)).toHaveValue(
+      "$5.00"
+    );
     expect(
       screen.getByText(/test-funding-stream-description - 2020/i)
     ).toBeInTheDocument();

@@ -152,7 +152,7 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Bar");
     cy.findByText(/Total Funding Request/i)
       .next()
-      .should("have.text", "$100.00");
+      .should("have.value", "$100.00");
     cy.findByText(/Project Status/i)
       .next()
       .should("have.text", "Project Underway");
@@ -179,7 +179,7 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Test Source 1");
     cy.findByText(/Additional Funding Amount \(Source 1\)/i)
       .next()
-      .should("have.text", "$111.00");
+      .should("have.value", "$111.00");
     cy.findByText(/Additional Funding Status \(Source 1\)/i)
       .next()
       .should("have.text", "Approved");
