@@ -6,6 +6,7 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
   formContext,
   label,
   uiSchema,
+  message = "",
 }) => {
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
@@ -13,15 +14,6 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
 
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
-
-  const selectMessageIfNullProperty = (schemaProperty) => {
-    switch (schemaProperty) {
-      case "calculatedRank":
-        return "Please enter a score in the above field to see the ranking of this project comparing to other ones with scores entered.";
-      default:
-        return "";
-    }
-  };
 
   return (
     <>
@@ -37,11 +29,7 @@ const ReadOnlyCalculatedValueWidget: React.FC<WidgetProps> = ({
             displayType="text"
           />
         ) : (
-          <em>
-            {selectMessageIfNullProperty(
-              uiSchema.calculatedValueFormContextProperty
-            )}
-          </em>
+          <em>{message}</em>
         )}
       </div>
       <style jsx>{`
