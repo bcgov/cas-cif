@@ -40,6 +40,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       fragment ProjectMilestoneReportForm_projectRevision on ProjectRevision {
         id
         rowId
+        # eslint-disable-next-line relay/unused-fields
+        projectFormChange {
+          formDataRecordId
+        }
         milestoneFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Milestone"
