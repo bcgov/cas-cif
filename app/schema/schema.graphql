@@ -45806,6 +45806,11 @@ type FundingParameter implements Node {
   """Reads a single `CifUser` that is related to this `FundingParameter`."""
   cifUserByUpdatedBy: CifUser
 
+  """
+  contract start date to support the auto-generation of quarterly and annual reports
+  """
+  contractStartDate: Datetime
+
   """created at timestamp"""
   createdAt: Datetime!
 
@@ -45824,6 +45829,11 @@ type FundingParameter implements Node {
 
   """Maximum funding amount for this project"""
   maxFundingAmount: BigFloat
+
+  """
+  project assets life end date to support the auto-generation of quarterly and annual reports
+  """
+  projectAssetsLifeEndDate: Datetime
 
   """Reads a single `Project` that is related to this `FundingParameter`."""
   projectByProjectId: Project
@@ -45868,6 +45878,9 @@ input FundingParameterCondition {
   """Checks for equality with the object’s `archivedBy` field."""
   archivedBy: Int
 
+  """Checks for equality with the object’s `contractStartDate` field."""
+  contractStartDate: Datetime
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -45879,6 +45892,11 @@ input FundingParameterCondition {
 
   """Checks for equality with the object’s `maxFundingAmount` field."""
   maxFundingAmount: BigFloat
+
+  """
+  Checks for equality with the object’s `projectAssetsLifeEndDate` field.
+  """
+  projectAssetsLifeEndDate: Datetime
 
   """Checks for equality with the object’s `projectId` field."""
   projectId: Int
@@ -45936,6 +45954,9 @@ input FundingParameterFilter {
   """A related `cifUserByUpdatedBy` exists."""
   cifUserByUpdatedByExists: Boolean
 
+  """Filter by the object’s `contractStartDate` field."""
+  contractStartDate: DatetimeFilter
+
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
 
@@ -45953,6 +45974,9 @@ input FundingParameterFilter {
 
   """Checks for any expressions in this list."""
   or: [FundingParameterFilter!]
+
+  """Filter by the object’s `projectAssetsLifeEndDate` field."""
+  projectAssetsLifeEndDate: DatetimeFilter
 
   """Filter by the object’s `projectByProjectId` relation."""
   projectByProjectId: ProjectFilter
@@ -45990,6 +46014,11 @@ input FundingParameterInput {
   """archived by user id"""
   archivedBy: Int
 
+  """
+  contract start date to support the auto-generation of quarterly and annual reports
+  """
+  contractStartDate: Datetime
+
   """created at timestamp"""
   createdAt: Datetime
 
@@ -46003,6 +46032,11 @@ input FundingParameterInput {
 
   """Maximum funding amount for this project"""
   maxFundingAmount: BigFloat
+
+  """
+  project assets life end date to support the auto-generation of quarterly and annual reports
+  """
+  projectAssetsLifeEndDate: Datetime
 
   """The related project for this data"""
   projectId: Int!
@@ -46038,6 +46072,11 @@ input FundingParameterPatch {
   """archived by user id"""
   archivedBy: Int
 
+  """
+  contract start date to support the auto-generation of quarterly and annual reports
+  """
+  contractStartDate: Datetime
+
   """created at timestamp"""
   createdAt: Datetime
 
@@ -46051,6 +46090,11 @@ input FundingParameterPatch {
 
   """Maximum funding amount for this project"""
   maxFundingAmount: BigFloat
+
+  """
+  project assets life end date to support the auto-generation of quarterly and annual reports
+  """
+  projectAssetsLifeEndDate: Datetime
 
   """The related project for this data"""
   projectId: Int
@@ -46181,6 +46225,8 @@ enum FundingParametersOrderBy {
   CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
   CIF_USER_BY_UPDATED_BY__UUID_ASC
   CIF_USER_BY_UPDATED_BY__UUID_DESC
+  CONTRACT_START_DATE_ASC
+  CONTRACT_START_DATE_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   CREATED_BY_ASC
@@ -46194,6 +46240,8 @@ enum FundingParametersOrderBy {
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROJECT_ASSETS_LIFE_END_DATE_ASC
+  PROJECT_ASSETS_LIFE_END_DATE_DESC
   PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_ASC
   PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_DESC
   PROJECT_BY_PROJECT_ID__ARCHIVED_AT_ASC
