@@ -216,138 +216,6 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add("addDueDate", (reportNumber, reportDueDate) => {
-  const dueDate = DateTime.fromFormat(reportDueDate, "yyyy-MM-dd");
-  const dueDateTZ = dueDate
-    .setLocale("en-CA")
-    .setZone("America/Vancouver")
-    .set({
-      day: dueDate.get("day"),
-      month: dueDate.get("month"),
-      year: dueDate.get("year"),
-    });
-
-  cy.get('[aria-label*="Due Date"]')
-    .eq(reportNumber - 1)
-    .should("exist")
-    .click();
-  cy.get(".react-datepicker__month-select")
-    // datepicker indexes months from 0, luxon indexes from 1
-    .select(dueDateTZ.get("month") - 1);
-  cy.get(".react-datepicker__year-select").select(
-    dueDateTZ.get("year").toString()
-  );
-  cy.get(`.react-datepicker__day--0${dueDateTZ.toFormat("dd")}`)
-    .not(`.react-datepicker__day--outside-month`)
-    .click();
-  cy.get('[aria-label*="Due Date"]')
-    .eq(reportNumber - 1)
-    .contains(`${dueDateTZ.toFormat("MMM dd, yyyy")}`);
-  cy.contains("Changes saved").should("be.visible");
-  // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-  return cy.url().should("include", "/form");
-});
-
-Cypress.Commands.add(
-  "addMeasurementPeriodStartDate",
-  (measurementPeriodStartDate) => {
-    const dueDate = DateTime.fromFormat(
-      measurementPeriodStartDate,
-      "yyyy-MM-dd"
-    );
-    const dueDateTZ = dueDate
-      .setLocale("en-CA")
-      .setZone("America/Vancouver")
-      .set({
-        day: dueDate.get("day"),
-        month: dueDate.get("month"),
-        year: dueDate.get("year"),
-      });
-
-    cy.get('[aria-label*="Measurement period start date"]')
-      .should("exist")
-      .click();
-    cy.get(".react-datepicker__month-select")
-      // datepicker indexes months from 0, luxon indexes from 1
-      .select(dueDateTZ.get("month") - 1);
-    cy.get(".react-datepicker__year-select").select(
-      dueDateTZ.get("year").toString()
-    );
-    cy.get(`.react-datepicker__day--0${dueDateTZ.toFormat("dd")}`)
-      .not(`.react-datepicker__day--outside-month`)
-      .click();
-    cy.get('[aria-label*="Measurement period start date"]').contains(
-      `${dueDateTZ.toFormat("MMM dd, yyyy")}`
-    );
-    cy.contains("Changes saved").should("be.visible");
-    return cy.url().should("include", "/form");
-  }
-);
-
-Cypress.Commands.add(
-  "addMeasurementPeriodEndDate",
-  (measurementPeriodEndDate) => {
-    const dueDate = DateTime.fromFormat(measurementPeriodEndDate, "yyyy-MM-dd");
-    const dueDateTZ = dueDate
-      .setLocale("en-CA")
-      .setZone("America/Vancouver")
-      .set({
-        day: dueDate.get("day"),
-        month: dueDate.get("month"),
-        year: dueDate.get("year"),
-      });
-
-    cy.get('[aria-label*="Measurement period end date"]')
-      .should("exist")
-      .click();
-    cy.get(".react-datepicker__month-select")
-      // datepicker indexes months from 0, luxon indexes from 1
-      .select(dueDateTZ.get("month") - 1);
-    cy.get(".react-datepicker__year-select").select(
-      dueDateTZ.get("year").toString()
-    );
-    cy.get(`.react-datepicker__day--0${dueDateTZ.toFormat("dd")}`)
-      .not(`.react-datepicker__day--outside-month`)
-      .click();
-    cy.get('[aria-label*="Measurement period end date"]').contains(
-      `${dueDateTZ.toFormat("MMM dd, yyyy")}`
-    );
-    cy.contains("Changes saved").should("be.visible");
-    return cy.url().should("include", "/form");
-  }
-);
-
-Cypress.Commands.add(
-  "setReportReceivedDate",
-  (reportNumber, reportReceivedDate) => {
-    const receivedDate = DateTime.fromFormat(reportReceivedDate, "yyyy-MM-dd")
-      .setZone("America/Vancouver")
-      .setLocale("en-CA");
-    cy.get('[aria-label*="Received Date"]')
-      .eq(reportNumber - 1)
-      .should("exist")
-      .click();
-    cy.get(".react-datepicker__month-select")
-      // datepicker indexes months from 0, luxon indexes from 1
-      .select(receivedDate.get("month") - 1);
-    cy.get(".react-datepicker__year-select").select(
-      receivedDate.get("year").toString()
-    );
-    cy.get(`.react-datepicker__day--0${receivedDate.toFormat("dd")}`)
-      .not(`.react-datepicker__day--outside-month`)
-      .click();
-    cy.get('[aria-label*="Received Date"]')
-      .eq(reportNumber - 1)
-      .should(
-        "have.text",
-        `Received(${receivedDate.toFormat("MMM dd, yyyy")})`
-      );
-    cy.contains("Changes saved").should("be.visible");
-    // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
-    return cy.url().should("include", "/form");
-  }
-);
-
 Cypress.Commands.add(
   "addQuarterlyReport",
   (
@@ -362,10 +230,10 @@ Cypress.Commands.add(
     cy.findByText(`Quarterly Report ${reportNumber}`).should("be.visible");
 
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
-    cy.addDueDate(reportNumber, reportDueDate);
+    cy.setDateInPicker("Due Date", reportDueDate, reportNumber);
 
     if (reportReceivedDate) {
-      cy.setReportReceivedDate(reportNumber, reportReceivedDate);
+      cy.setDateInPicker("Received Date", reportReceivedDate, reportNumber);
     }
 
     if (generalComments) {
@@ -392,8 +260,14 @@ Cypress.Commands.add(
     targetEmissionIntensity,
     postProjectEmissionIntensity
   ) => {
-    cy.addMeasurementPeriodStartDate(measurementPeriodStartDate);
-    cy.addMeasurementPeriodEndDate(measurementPeriodEndDate);
+    // Extra assertion to wait for the new milestone report to be added
+    cy.contains("Changes saved").should("be.visible");
+
+    cy.setDateInPicker(
+      "Measurement period start date",
+      measurementPeriodStartDate
+    );
+    cy.setDateInPicker("Measurement period end date", measurementPeriodEndDate);
     cy.get('[aria-label="Functional Unit"]')
       .clear()
       .type(emissionFunctionalUnit);
@@ -435,10 +309,10 @@ Cypress.Commands.add(
       name: /Add another annual report/i,
     }).click();
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
-    cy.addDueDate(reportNumber, reportDueDate);
+    cy.setDateInPicker("Due Date", reportDueDate, reportNumber);
 
     if (reportReceivedDate) {
-      cy.setReportReceivedDate(reportNumber, reportReceivedDate);
+      cy.setDateInPicker("Received Date", reportReceivedDate, reportNumber);
     }
 
     if (generalComments) {
@@ -470,6 +344,11 @@ Cypress.Commands.add(
       name: /Add another milestone report/i,
     }).click();
 
+    // Extra assertion to wait for the new milestone report to be added
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("link", { name: /edit milestone/i }).should("be.visible");
+    cy.findByText(`Milestone ${reportNumber}`).should("be.visible");
+
     cy.get('[aria-label="Milestone Description"]')
       .clear()
       .type(reportDescription);
@@ -489,15 +368,14 @@ Cypress.Commands.add(
       cy.get('[aria-label="Total Eligible Expenses"]').type(100);
     }
 
-    cy.addDueDate(reportNumber, reportDueDate);
+    cy.setDateInPicker("Due Date", reportDueDate, reportNumber);
 
     cy.get('[aria-label*="Substantial Completion Date"').type(
       reportSubstantialCompletionDate
     );
 
-    cy.findByLabelText("Professional Designation (optional)").type(
-      professionalDesignation
-    );
+    cy.findByLabelText("Professional Designation (optional)").click();
+    cy.contains(professionalDesignation).click();
 
     if (receivedDate) {
       cy.get('[label*="Received Date"]')
@@ -657,7 +535,6 @@ Cypress.Commands.add(
   }
 );
 
-// TODO: possible candidate to replace other date related commands
 Cypress.Commands.add("setDateInPicker", (ariaLabel, date, reportNumber = 0) => {
   const receivedDate = DateTime.fromFormat(date, "yyyy-MM-dd");
 

@@ -76,13 +76,15 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add milestone reports
-
-    cy.url().should("include", "/form/4");
-    cy.findByText(/Add another milestone report/i).click();
-    cy.get('[aria-label="Milestone Description"]').clear().type("desc");
-    cy.get('[aria-label="Maximum Amount"]').clear().type(100);
-    cy.get('[aria-label="Total Eligible Expenses"]').clear().type(100);
-    cy.addDueDate(0, "2020-01-01");
+    cy.addMilestoneReport(
+      1,
+      "desc",
+      "General",
+      "2020-01-01",
+      "1991-04-17",
+      "Professional Engineer",
+      true
+    );
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
     cy.findAllByRole("status").first().should("have.text", "Late");
