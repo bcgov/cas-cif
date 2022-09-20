@@ -138,7 +138,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           ) : (
             <FormBase
               liveValidate
-              tagName={"dl"}
+              // tagName={"dl"}
               fields={renderDiff ? customFields : fields}
               theme={readOnlyTheme}
               schema={
@@ -170,7 +170,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
         </p>
       ) : (
         <FormBase
-          tagName={"dl"}
+          // tagName={"dl"}
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}

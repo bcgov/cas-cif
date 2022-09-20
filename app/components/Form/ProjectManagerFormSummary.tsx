@@ -93,7 +93,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
         <FormBase
           liveValidate
           key={node.formChange.newFormData.projectManagerLabelId}
-          tagName={"dl"}
+          // tagName={"dl"}
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={projectManagerSchema as JSONSchema7}

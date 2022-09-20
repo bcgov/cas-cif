@@ -83,19 +83,22 @@ exports[`The FormBase component renders a test schema with the readonly theme 1`
             <div
               class="jsx-141906859 definition-container"
             >
-              <dt
-                class="jsx-156197991"
+              <label
+                for="root_field"
               >
                 field 
-              </dt>
-              <dd
-                class="jsx-41823073"
+              </label>
+              <div
+                class="jsx-3977437778"
               >
-                test
-              </dd>
-              <dd
-                class="jsx-41823073 contentSuffix"
-              />
+                <input
+                  aria-label="field"
+                  class="jsx-3977437778"
+                  id="root_field"
+                  readonly=""
+                  value="test"
+                />
+              </div>
             </div>
           </div>
         </div>

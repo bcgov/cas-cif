@@ -218,7 +218,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           <FormBase
             liveValidate
             key={`form-${milestoneReport.reportingRequirementFormChange.id}`}
-            tagName={"dl"}
+            // tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
             schema={
@@ -236,7 +236,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           <FormBase
             liveValidate
             key={`form-${milestoneReport.milestoneFormChange.id}`}
-            tagName={"dl"}
+            // tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
             schema={milestoneFormDiffObject.formSchema as JSONSchema7}
@@ -253,7 +253,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             <FormBase
               liveValidate
               key={`form-${milestoneReport.paymentFormChange.id}`}
-              tagName={"dl"}
+              // tagName={"dl"}
               theme={readOnlyTheme}
               fields={renderDiff ? customFields : fields}
               schema={paymentFormDiffObject.formSchema as JSONSchema7}

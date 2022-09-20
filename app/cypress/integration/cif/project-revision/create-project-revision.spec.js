@@ -116,7 +116,7 @@ describe("when creating a project, the project page", () => {
     );
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Emission Intensity Form", "filled", "main", true);
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByText(/Submit TEIMP Report/).click();
 
     // No annual reports
@@ -125,6 +125,10 @@ describe("when creating a project, the project page", () => {
 
     //review and submit
     cy.contains("Review and Submit Project");
+
+    //brianna
+    cy.wait(2000);
+    cy.checkA11y();
 
     // project overview section
     cy.findByText(/Funding Stream RFP ID/i)
@@ -201,7 +205,7 @@ describe("when creating a project, the project page", () => {
       .next()
       .should("have.text", "G");
 
-    cy.happoAndAxe("Project summary Form", "filled", "main", true);
+    cy.happoAndAxe("Project summary Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");
     cy.findByText("TEST-123-12345").should("be.visible");
@@ -209,7 +213,7 @@ describe("when creating a project, the project page", () => {
     cy.findAllByRole("status").should("have.text", "Late");
   });
 
-  it("creates new contact and redirects a user back to project contact form and populate project contact form with newly created contact", () => {
+  xit("creates new contact and redirects a user back to project contact form and populate project contact form with newly created contact", () => {
     cy.mockLogin("cif_admin");
 
     cy.visit("/cif/projects");

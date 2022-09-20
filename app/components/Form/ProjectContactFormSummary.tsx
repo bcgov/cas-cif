@@ -109,7 +109,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         <React.Fragment key={node.id}>
           <FormBase
             liveValidate
-            tagName={"dl"}
+            // tagName={"dl"}
             fields={renderDiff ? customFields : fields}
             theme={readOnlyTheme}
             schema={projectContactSchema as JSONSchema7}
@@ -158,7 +158,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               <FormBase
                 liveValidate
                 key={primaryContact?.node.id}
-                tagName={"dl"}
+                // tagName={"dl"}
                 theme={readOnlyTheme}
                 fields={renderDiff ? customFields : fields}
                 schema={projectContactSchema as JSONSchema7}

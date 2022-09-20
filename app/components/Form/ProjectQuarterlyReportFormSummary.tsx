@@ -113,7 +113,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
             <FormBase
               liveValidate
               key={`form-${quarterlyReport.id}`}
-              tagName={"dl"}
+              // tagName={"dl"}
               theme={readOnlyTheme}
               fields={renderDiff ? customFields : fields}
               schema={formSchema as JSONSchema7}

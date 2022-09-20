@@ -153,7 +153,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         )}
 
       <FormBase
-        tagName={"dl"}
+        // tagName={"dl"}
         theme={readOnlyTheme}
         fields={renderDiff ? customFields : fields}
         schema={reportingRequirementDiffObject.formSchema as JSONSchema7}
@@ -167,7 +167,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         }}
       />
       <FormBase
-        tagName={"dl"}
+        // tagName={"dl"}
         theme={readOnlyTheme}
         fields={renderDiff ? customFields : fields}
         schema={emissionIntensityReportDiffObject.formSchema as JSONSchema7}
