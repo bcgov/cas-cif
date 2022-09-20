@@ -29,7 +29,7 @@ describe("The ReadOnlyCalculatedValueWidget", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
-  it("renders custom message if the calculated rank value is null", () => {
+  it("renders a custom message if the calculated rank value is null", () => {
     const props: any = {
       id: "test-id",
       formContext: { calculatedRank: null },

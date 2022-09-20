@@ -1,6 +1,6 @@
 begin;
 
-select * from no_plan();
+select plan(4);
 
 
 /** SETUP **/
@@ -91,7 +91,7 @@ select is(
     ) select * from cif.project_revision_rank((select * from record))
   ),
   3,
-  'Returns the correct rank when scoring a subesquent revision of a project'
+  'Returns the correct rank when scoring a subsequent revision of a project'
 );
 
 select finish();
