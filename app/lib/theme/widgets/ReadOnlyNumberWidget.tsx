@@ -5,6 +5,7 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
   id,
   value,
   uiSchema,
+  label,
 }) => {
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
@@ -16,11 +17,11 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
     : uiSchema.numberOfDecimalPlaces ?? 0;
 
   return (
-    <dd>
+    <>
       {value ? (
         <NumberFormat
           value={value}
-          displayType="text"
+          readOnly
           thousandSeparator
           fixedDecimalScale={numberOfDecimalPlaces}
           decimalScale={numberOfDecimalPlaces}
@@ -28,11 +29,25 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
           prefix={isMoney ? "$" : ""}
           suffix={isPercentage ? " %" : ""}
           className="decimal"
+          style={{
+            border: "none",
+            padding: "0 0 0 0.75em",
+          }}
+          aria-label={label}
         />
       ) : (
-        <em>Not added</em>
+        <input
+          value={"Not added"}
+          disabled
+          style={{
+            color: "hsla(0,0%,0%,0.8)",
+            border: "none",
+            padding: "0 0 0 0.75em",
+            fontStyle: "italic",
+          }}
+        />
       )}
-    </dd>
+    </>
   );
 };
 
