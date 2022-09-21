@@ -14,12 +14,15 @@ begin
   end if;
 
   -- TODO : add a conditional behaviour based on fc.form_id
-  update cif.form_change set
-    form_data_record_id = (
-      select cif_private.handle_default_form_change_commit(fc)
-    ),
-    change_status = 'committed'
-  where id = fc.id;
+  -- if the form_change json_schema_name is milestone, we need to call cif_private.handle_milestone_form_change_commit
+  with handler as select form_change_commit_handler from cif.form where slug = fc.json_schema_name,
+    perform handler(fc);
+  -- update cif.form_change set
+  --   form_data_record_id = (
+  --     select cif_private.handle_default_form_change_commit(fc)
+  --   ),
+  --   change_status = 'committed'
+  -- where id = fc.id;
 
   return (select row(form_change.*)::cif.form_change from cif.form_change where id = fc.id);
 end;
