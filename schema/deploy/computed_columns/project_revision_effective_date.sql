@@ -14,6 +14,6 @@ $function$
   end
 $function$ language sql stable;
 
-comment on function cif.project_revision_effective_date(cif.project_revision) is 'Returns the timestamptz for updated_at if the change_status is committed, else null';
+comment on function cif.project_revision_effective_date(cif.project_revision) is 'Returns the timestamptz for updated_at if the change_status is committed, otherwise null';
 
 commit;
