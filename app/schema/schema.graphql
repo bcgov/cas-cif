@@ -58250,7 +58250,7 @@ type ProjectRevision implements Node {
   createdBy: Int
 
   """
-  Returns the timestamptz for updated_at if the change_status is committed, else null
+  Returns the timestamptz for updated_at if the change_status is committed, otherwise null
   """
   effectiveDate: Datetime
 
