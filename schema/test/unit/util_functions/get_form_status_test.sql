@@ -98,7 +98,7 @@ select results_eq(
 /* test 6 */
 update cif.form_change set new_form_data=null, change_status='pending'
   where project_revision_id=1
-    and form_data_table_name='project';
+    and form_data_table_name='project_contact';
 select results_eq(
   $$
   select cif.get_form_status(1, 'project')
