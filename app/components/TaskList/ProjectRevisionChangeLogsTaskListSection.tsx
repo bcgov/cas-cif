@@ -2,12 +2,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface Props {
-  title: string;
   linkUrl: { pathname: string; query: { projectRevision: string } };
 }
 
 const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
-  title,
   linkUrl,
 }) => {
   const router = useRouter();
@@ -22,7 +20,7 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
     >
       <Link href={linkUrl} passHref>
         <h3>
-          <span className="link">{title}</span>
+          <span className="link">Amendments & Other Revisions</span>
         </h3>
       </Link>
       <style jsx>{`
