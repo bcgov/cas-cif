@@ -10,14 +10,7 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   return (
-    <li
-      aria-current={
-        router.pathname ===
-        "/cif/project-revision/[projectRevision]/project-revision-change-logs"
-          ? "step"
-          : false
-      }
-    >
+    <li aria-current={router.pathname === linkUrl.pathname ? "step" : false}>
       <Link href={linkUrl} passHref>
         <h3>
           <span className="link">Amendments & Other Revisions</span>
