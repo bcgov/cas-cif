@@ -46,27 +46,23 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
 
   return (
     <tr>
-      <td className="revision-type">{revisionType}</td>
-      <td className="created-at">
-        {getDisplayDateString(parseStringDate(createdAt))}
-      </td>
-      <td className="effective-date">
+      <td>{revisionType}</td>
+      <td>{getDisplayDateString(parseStringDate(createdAt))}</td>
+      <td>
         {effectiveDate
           ? getDisplayDateString(parseStringDate(effectiveDate))
           : "Pending"}
       </td>
-      <td className="updated-at">
-        {getDisplayDateString(parseStringDate(updatedAt))}
-      </td>
-      <td className="updated-by">{cifUserByUpdatedBy?.fullName}</td>
-      <td className="updated">
+      <td>{getDisplayDateString(parseStringDate(updatedAt))}</td>
+      <td>{cifUserByUpdatedBy?.fullName}</td>
+      <td>
         {projectRevisionAmendmentTypesByProjectRevisionId.edges
           .map(({ node }) => node.amendmentType)
           .join(", ")}
       </td>
-      <td className="amendment-status">{amendmentStatus}</td>
+      <td>{amendmentStatus}</td>
       <td>
-        <div className="actions">
+        <div>
           <Button size="small">View {!effectiveDate && "/ Edit"}</Button>
         </div>
       </td>
