@@ -152,7 +152,10 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.milestoneFormChanges.edges]);
 
-  const handleChange = (milestoneChangeData: any, milestoneNode: any) => {
+  const handleChange = (
+    milestoneChangeData: { newFormData: any },
+    milestoneNode: { rowId: number; id: string; newFormData: any }
+  ) => {
     const formData = { ...milestoneNode.newFormData, ...milestoneChangeData };
     const reportTypeRecord = query.allReportTypes.edges.find(
       ({ node }) => node.name === formData.reportType
