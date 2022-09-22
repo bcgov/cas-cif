@@ -17,6 +17,8 @@ create table mock_schema.mock_table (
   archived_at timestamptz
 );
 
+insert into cif.form(slug, json_schema, description) values ('test_schema', '{}'::jsonb, 'test description');
+
 -- setting a form change record
 insert into cif.form_change(
   new_form_data, operation, form_data_schema_name, form_data_table_name,
