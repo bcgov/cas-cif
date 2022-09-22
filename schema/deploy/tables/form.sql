@@ -9,7 +9,7 @@ create table cif.form(
   json_schema jsonb not null,
   description varchar(10000) not null,
   json_schema_generator varchar(10000),
-  form_change_commit_handler_name varchar(10000) not null default 'handle_default_form_change_commit'
+  form_change_commit_handler varchar(10000) not null default 'handle_default_form_change_commit'
 );
 
 select cif_private.upsert_timestamp_columns('cif', 'form');
