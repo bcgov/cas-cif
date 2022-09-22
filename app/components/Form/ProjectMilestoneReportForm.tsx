@@ -84,6 +84,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           edges {
             node {
               name
+              hasExpenses
             }
           }
         }
@@ -150,6 +151,40 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       ({ node }) => node.newFormData.submittedDate
     );
   }, [projectRevision.milestoneFormChanges.edges]);
+
+  const handleChange = (milestoneChangeData: any, milestoneNode: any) => {
+    const formData = { ...milestoneNode.newFormData, ...milestoneChangeData };
+    const reportTypeRecord = query.allReportTypes.edges.find(
+      ({ node }) => node.name === formData.reportType
+    );
+    updateMilestone({
+      variables: {
+        reportType: "Milestone",
+        input: {
+          rowId: milestoneNode.rowId,
+          formChangePatch: {
+            newFormData: {
+              ...formData,
+              hasExpenses: reportTypeRecord.node.hasExpenses,
+            },
+          },
+        },
+      },
+      debounceKey: milestoneNode.id,
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: milestoneNode.id,
+            newFormData: {
+              ...milestoneChangeData,
+              hasExpenses: reportTypeRecord.node.hasExpenses,
+            },
+            changeStatus: "pending",
+          },
+        },
+      },
+    });
+  };
 
   return (
     <div>
@@ -224,33 +259,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   idPrefix={`form-${node.id}`}
                   ref={(el) => (formRefs.current[node.id] = el)}
                   formData={node.newFormData}
-                  onChange={(change) =>
-                    updateMilestone({
-                      variables: {
-                        reportType: "Milestone",
-                        input: {
-                          rowId: node.rowId,
-                          formChangePatch: {
-                            newFormData: {
-                              ...node.newFormData,
-                              ...change.formData,
-                              hasExpenses: true, // how to calculate this efficiently? Custom Widget to set both values?
-                            },
-                          },
-                        },
-                      },
-                      debounceKey: node.id,
-                      optimisticResponse: {
-                        updateFormChange: {
-                          formChange: {
-                            id: node.id,
-                            newFormData: change.formData,
-                            changeStatus: "pending",
-                          },
-                        },
-                      },
-                    })
-                  }
+                  onChange={(change) => handleChange(change.formData, node)}
                   schema={schema as JSONSchema7}
                   uiSchema={milestoneUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
