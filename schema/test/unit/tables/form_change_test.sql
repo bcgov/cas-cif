@@ -17,6 +17,7 @@ select has_column('cif', 'form_change', 'updated_at', 'table cif.form_change has
 select has_column('cif', 'form_change', 'created_by', 'table cif.form_change has created_by column');
 select has_column('cif', 'form_change', 'updated_by', 'table cif.form_change has updated_by column');
 
+insert into cif.form(slug, json_schema, description) values ('test-schema', '{}'::jsonb, 'test description');
 
 insert into cif.form_change
   (new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name) values

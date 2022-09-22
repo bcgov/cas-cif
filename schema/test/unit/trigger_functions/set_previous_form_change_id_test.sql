@@ -35,6 +35,16 @@ values
 select has_function('cif_private', 'set_previous_form_change_id', 'Function set_previous_form_change_id should exist');
 
 -- create an inital form_change record
+insert into cif.form(slug, json_schema, description) values
+('test_project_form_change', '{}'::jsonb, 'test description'),
+('test_project_manager_form_change', '{}'::jsonb, 'test description'),
+('test_contact_form_change', '{}'::jsonb, 'test description'),
+('pending_project', '{}'::jsonb, 'test description'),
+('pending_project_manager', '{}'::jsonb, 'test description'),
+('new_project_form_change_revision_2', '{}'::jsonb, 'test description'),
+('new_project_manager_form_change_revision_2', '{}'::jsonb, 'test description'),
+('new_contact_form_change_revision_2', '{}'::jsonb, 'test description');
+
 insert into cif.form_change(project_revision_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
   (1, 'create', 'cif', 'project', 1, 'test_project_form_change', 'pending'),

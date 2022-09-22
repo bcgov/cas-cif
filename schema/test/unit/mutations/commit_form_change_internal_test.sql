@@ -77,6 +77,8 @@ select is(
   'The form_change status should be committed'
 );
 
+-- Calls the proper function set in the form table
+
 select finish();
 
 rollback;

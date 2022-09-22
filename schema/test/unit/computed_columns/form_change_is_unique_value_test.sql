@@ -10,6 +10,8 @@ create table cif.test_table(
   archived_at timestamptz
 );
 
+insert into cif.form(slug, json_schema, description) values ('schema', '{}'::jsonb, 'test description');
+
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name)
 values (
   '{"testField": "test value"}',

@@ -7,6 +7,7 @@ select plan(2);
 insert into cif.project_revision(id, change_status)
   overriding system value
   values (1, 'pending'), (2, 'pending');
+insert into cif.form(slug, json_schema, description) values ('some_other_table', '{}'::jsonb, 'test description');
 insert into cif.form_change(id, operation, form_data_schema_name, form_data_table_name, project_revision_id,json_schema_name)
   overriding system value
   values

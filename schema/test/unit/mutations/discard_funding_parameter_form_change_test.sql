@@ -7,6 +7,9 @@ select plan(5);
 truncate cif.operator restart identity cascade;
 truncate cif.project restart identity cascade;
 select cif.create_project();
+
+insert into cif.form(slug, json_schema, description) values ('some_other_schema', '{}'::jsonb, 'test description');
+
 insert into cif.form_change(
   new_form_data,
   operation,
