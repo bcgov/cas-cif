@@ -56,7 +56,11 @@ Once a feature flag is no longer necessary, any code that was added (ex: `useSho
 #### Run a single test
 
 You can run a single test by calling `pg_prove` directly from the command line like so:
+
+```
 `pg_prove -v -d \<test_db_name\> \<path-to-test-file\>/file_to_test.sql`
+```
+
 flags:
 
 - `-v`runs pg_prove in verbose. This allows you to add select statements in the test file & they will show up in the output (helpful for debugging)
@@ -65,15 +69,17 @@ flags:
 The path to the test file can be a glob pattern. So if you want to run all tests in a specific folder, or don't feel like writing our the whole path,
 you could write the command like this (assuming our tests are found at `test/unit/tables/file_test.sql`:
 
-Run all table tests:
+Run all table tests:</br>
 `pg_prove -v -d \<test_db_name\> test/unit/tables/*_test.sql`
-Run a specific test anywhere in the 'unit' directory:
+
+Run a specific test anywhere in the 'unit' directory:</br>
 `pg_prove -v -d \<test_db_name\> test/unit/**/specific_file_test.sql`
 
 #### Idempotence (create or replace function...)
 
 Our make target `make db_unit_tests` drops the database, recreates it and runs all sqitch migrations.
 This is annoying if you just want to test the last thing you deployed (which is usually the case).
+
 With idempotent migrations (like functions) you can make changes to your deploy file and copy paste the `create function..` statement directly into a terminal connected to your test db to save some time.
 
 #### Revert & Deploy with a target
@@ -83,20 +89,24 @@ as you make changes to avoid having to redeploy all changes just to get the chan
 Sqitch by default is probably pointed at the local database that you use for running the app locally.
 Here we just want to target the test database and only the change you're testing.
 
-To revert to a specific change in your sqitch plan (on your test_db):
+To revert to a specific change in your sqitch plan (on your test_db):</br>
 `sqitch revert \<name-of-change\> \<your-test-db\>`
-Same thing to deploy, if you want to to deploy to the end of your migrations:
+
+Same thing to deploy, if you want to to deploy to the end of your migrations:</br>
 `sqitch deploy \<your-test-db\>`
-Or if you'd like to deploy up to a specific migration:
+
+Or if you'd like to deploy up to a specific migration:</br>
 `sqitch deploy \<name-of-change\> \<your-test-db\>`
 
 #### Debugging in the test file
 
 Using the -v option is helpful to be able to add some debugging to the output in your terminal when the test runs.
 It will also run the output of any functions your test writes, so the output can get a little hard to read.
+
 Adding some `select` statements to debug will help to debug a flaky or tricky test, but wraping these statments in "breakers" can make them much more readable.
 You can write some wrappers to break up the output and give a title to what you are debugging :
 
+```
 select '---------DEBUG 1---------';
 select 'Value before commit:';
 select \<debug statement\>
@@ -104,11 +114,14 @@ select '--------END DEBUG 1--------';
 select '---------DEBUG 2---------;
 ...
 ...
+```
 
 #### no_plan()
 
 When you're starting a test file & you don't know how many tests you will be writing,
 updating the `select plan(n)` statement at the top so n always matches the number of tests you have is unnecessary.
+
 `select plan(n)` can be replaced with `select * from no_plan` while you're writing your tests.
 This will run any number of tests without stopping after n tests have been run.
+
 Once you've finished writing your tests in that file, the output will say how many tests were run and you can switch back to `select plan(n)` and set n to that number.
