@@ -18,7 +18,7 @@ describe("the new project page", () => {
     // OVERVIEW
     cy.get("button").contains("Submit Project Overview");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project Overview Form", "empty", "main", true);
+    cy.happoAndAxe("Project Overview Form", "empty", "main");
 
     //PROJECT DETAILS
     cy.findByText(/Project Details/i).click();
@@ -85,7 +85,7 @@ describe("the new project page", () => {
     cy.findByText(/Add emissions intensity report/i).click();
     cy.findByText(/Add TEIMP Agreement/i).click();
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Emissions Intensity Report", "empty", "main", true);
+    cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
 
     // Annual reports
     cy.findByText(/Annual reports/i).click();
@@ -276,8 +276,7 @@ describe("the new project page", () => {
     cy.happoAndAxe(
       "Emissions intensity report Form",
       "with errors",
-      ".error-detail",
-      true
+      ".error-detail"
     );
 
     // Annual reports

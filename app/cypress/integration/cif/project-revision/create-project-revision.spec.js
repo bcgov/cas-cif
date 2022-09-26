@@ -28,7 +28,7 @@ describe("when creating a project, the project page", () => {
       "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project overview Form", "filled", "main", true);
+    cy.happoAndAxe("Project overview Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add managers
@@ -127,7 +127,7 @@ describe("when creating a project, the project page", () => {
     );
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Emission Intensity Form", "filled", "main", true);
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByText(/Submit TEIMP Report/).click();
 
     // No annual reports
