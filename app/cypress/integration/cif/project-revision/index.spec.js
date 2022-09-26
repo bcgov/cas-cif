@@ -144,7 +144,7 @@ describe("the new project page", () => {
 
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByRole("link", { name: "Budgets" }).click();
+    cy.findByRole("link", { name: "Budgets overview" }).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
