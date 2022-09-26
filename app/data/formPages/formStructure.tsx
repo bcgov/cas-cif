@@ -66,7 +66,7 @@ export const useFormStructure: () => IFormSection[] = () => {
         title: "Budgets, Expenses & Payments",
         items: [
           {
-            title: "Budgets",
+            title: "Budgets overview",
             formConfiguration: {
               slug: "fundingAgreement",
               editComponent: ProjectFundingAgreementForm,
