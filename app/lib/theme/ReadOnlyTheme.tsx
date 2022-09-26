@@ -29,7 +29,7 @@ const readOnlyTheme: ThemeProps = {
     DateWidget: ReadOnlyDateWidget,
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
     ReadOnlyAdjustableCalculatedValueWidget,
-    ReadOnlyCalculatedValueWidget,
+    CalculatedValueWidget: ReadOnlyCalculatedValueWidget,
     NumberWidget: ReadOnlyNumberWidget,
     RankWidget,
   },
