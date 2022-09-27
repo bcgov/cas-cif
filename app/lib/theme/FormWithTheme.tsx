@@ -12,8 +12,9 @@ import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
 import DueDateWidget from "lib/theme/widgets/DueDateWidget";
 import DateWidget from "./widgets/DateWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
-import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
+import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import NumberWidget from "./widgets/NumberWidget";
+import RankWidget from "./widgets/RankWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -32,8 +33,9 @@ const formTheme: ThemeProps = {
     DueDateWidget: DueDateWidget,
     DateWidget,
     AdjustableCalculatedValueWidget,
-    ReadOnlyCalculatedValueWidget,
+    CalculatedValueWidget,
     NumberWidget,
+    RankWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,

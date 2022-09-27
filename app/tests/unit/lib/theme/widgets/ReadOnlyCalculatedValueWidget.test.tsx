@@ -29,7 +29,7 @@ describe("The ReadOnlyCalculatedValueWidget", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
-  it("renders empty string if the calculated value is null", () => {
+  it("renders empty string if the calculated value is null and no message prop is provided", () => {
     const props: any = {
       id: "test-id",
       formContext: { someprop: null },
@@ -40,5 +40,19 @@ describe("The ReadOnlyCalculatedValueWidget", () => {
     };
     render(<ReadOnlyCalculatedValueWidget {...props} />);
     expect(screen.queryByText("0")).not.toBeInTheDocument();
+  });
+
+  it("renders an explanatory message if calculated value is null and message is provided in the props", () => {
+    const props: any = {
+      id: "test-id",
+      formContext: { someprop: null },
+      label: "test-label",
+      uiSchema: {
+        calculatedValueFormContextProperty: "someprop",
+      },
+      message: "test message",
+    };
+    render(<ReadOnlyCalculatedValueWidget {...props} />);
+    expect(screen.getByText("test message")).toBeInTheDocument();
   });
 });

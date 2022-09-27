@@ -20,6 +20,8 @@ const testQuery = graphql`
 const mockQueryPayload = {
   ProjectRevision() {
     const result = {
+      // rank needs to be placed here because for any nested ProjectRevision type, the Relay testing environment uses this top-level ProjectRevision() generator
+      rank: 123,
       projectFormChange: {
         changeStatus: "pending",
         rowId: 1,
@@ -190,7 +192,9 @@ describe("The Project Form", () => {
       screen.getByPlaceholderText<HTMLSelectElement>(/Select a Project Type/)
         .value
     ).toBe("project type 1");
+    expect(screen.getByLabelText("Rank")).toHaveTextContent("123");
   });
+
   it("Displays an error message upon validation when the proposal reference is not unique", () => {
     const mockResolver = {
       ...mockQueryPayload,

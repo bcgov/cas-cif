@@ -24,7 +24,8 @@ describe("when creating a project, the project page", () => {
       "Bar",
       "100",
       "Project Underway",
-      "Some comments"
+      "Some comments",
+      "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project overview Form", "filled", "main");
@@ -126,7 +127,7 @@ describe("when creating a project, the project page", () => {
     );
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Emission Intensity Form", "filled", "main", true);
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByText(/Submit TEIMP Report/).click();
 
     // No annual reports

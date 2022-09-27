@@ -120,7 +120,7 @@ export const emissionIntensityReportUiSchema = {
     hideOptional: true,
   },
   calculatedPaymentPercentage: {
-    "ui:widget": "ReadOnlyCalculatedValueWidget",
+    "ui:widget": "CalculatedValueWidget",
     isPercentage: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "teimpPaymentPercentage",

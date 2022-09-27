@@ -32,6 +32,7 @@ export const createProjectUiSchema = (
       "proposalReference",
       "projectName",
       "score",
+      "rank",
       "projectStatus",
       "projectStatusId",
       "summary",
@@ -92,6 +93,11 @@ export const createProjectUiSchema = (
       "ui:widget": "NumberWidget",
       numberOfDecimalPlaces: 3,
     },
+    rank: {
+      "ui:widget": "RankWidget",
+      calculatedValueFormContextProperty: "calculatedRank",
+      hideOptional: true,
+    },
     comments: {
       "ui:widget": "TextAreaWidget",
     },
@@ -113,6 +119,9 @@ const ProjectForm: React.FC<Props> = (props) => {
           newFormData
           changeStatus
           isUniqueValue(columnName: "proposalReference")
+          projectRevisionByProjectRevisionId {
+            rank
+          }
         }
       }
     `,
@@ -312,6 +321,9 @@ const ProjectForm: React.FC<Props> = (props) => {
           query,
           form: revision.projectFormChange.newFormData,
           operatorCode: selectedOperator?.node?.operatorCode,
+          calculatedRank:
+            revision.projectFormChange.projectRevisionByProjectRevisionId
+              .rank ?? null,
         }}
         widgets={{
           SelectRfpWidget: SelectRfpWidget,

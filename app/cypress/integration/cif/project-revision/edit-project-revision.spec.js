@@ -157,7 +157,7 @@ describe("when editing a project, the project page", () => {
       "3"
     );
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Project teimp agreement form", "editing", "main", true);
+    cy.happoAndAxe("Project teimp agreement form", "editing", "main");
     cy.findByText(/Submit TEIMP report/i).click();
 
     // edit annual reports -- change comments

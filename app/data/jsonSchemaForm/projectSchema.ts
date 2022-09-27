@@ -28,6 +28,10 @@ const projectSchema = {
       type: "number",
       title: "Score",
     },
+    rank: {
+      type: "number",
+      title: "Rank",
+    },
     operatorId: {
       type: "number",
       title: "Legal Operator Name and BC Registry ID",
