@@ -31,7 +31,7 @@ begin
       reporting_requirement_index,
       description
     ) values (
-      (select project_id from cif.project_revision pr where pr.id = fc.project_revision_id),
+      (select form_data_record_id from cif.form_change pfc where form_data_table_name = 'project' and pfc.project_revision_id = fc.project_revision_id),
       (fc.new_form_data->>'reportType'),
       (fc.new_form_data->>'reportDueDate')::timestamptz,
       (fc.new_form_data->>'submittedDate')::timestamptz,
@@ -68,8 +68,7 @@ begin
       (fc.new_form_data->>'dateSentToCsnr')::timestamptz
     );
 
-    -- Do commit in handler so we can updated the form_data_record_id without disabling the trigger
-    update cif.form_change set form_data_record_id = reporting_requirement_record_id, change_status = 'committed' where id = fc.id;
+    update cif.form_change set form_data_record_id = reporting_requirement_record_id where id = fc.id;
 
   elsif fc.operation = 'update' then
 
@@ -97,15 +96,11 @@ begin
       date_sent_to_csnr = (fc.new_form_data->>'dateSentToCsnr')::timestamptz
     where py.reporting_requirement_id = fc.form_data_record_id;
 
-    update cif.form_change set change_status = 'committed' where id = fc.id;
-
   elsif fc.operation = 'archive' then
 
     update cif.reporting_requirement set archived_at = now() where id = fc.form_data_record_id;
     update cif.milestone_report set archived_at = now() where reporting_requirement_id = fc.form_data_record_id;
     update cif.payment set archived_at = now() where reporting_requirement_id = fc.form_data_record_id;
-
-    update cif.form_change set change_status = 'committed' where id = fc.id;
 
   end if;
 
@@ -117,7 +112,7 @@ grant execute on function cif_private.handle_milestone_form_change_commit to cif
 
 comment on function cif_private.handle_milestone_form_change_commit
   is $$
-    The custom function used to parse milestone form_change data into table data when the status of the form_change record is set to 'committed'.
+    The custom function used to parse milestone form_change data into table data.
     The data within the single form_change record is parsed into the reporting_requirement, milestone_report and payment tables.
   $$;
 
