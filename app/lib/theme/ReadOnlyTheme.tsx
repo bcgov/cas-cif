@@ -25,7 +25,6 @@ const readOnlyTheme: ThemeProps = {
     PhoneNumberWidget: ReadOnlyWidget,
     SelectRfpWidget: ReadOnlyWidget,
     SelectProjectStatusWidget: ReadOnlyWidget,
-    DueDateWidget: ReadOnlyDateWidget,
     DateWidget: ReadOnlyDateWidget,
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
     ReadOnlyAdjustableCalculatedValueWidget,
