@@ -34,10 +34,6 @@ interface Props {
   projectRevision: ProjectAnnualReportForm_projectRevision$key;
 }
 
-export const annualReportUiSchema = {
-  ...reportingRequirementUiSchema,
-};
-
 const ProjectAnnualReportForm: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
 
@@ -199,7 +195,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                     );
                   }}
                   schema={projectReportingRequirementSchema as JSONSchema7}
-                  uiSchema={annualReportUiSchema}
+                  uiSchema={reportingRequirementUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
                     dueDate: report.newFormData?.reportDueDate,

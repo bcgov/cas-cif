@@ -3,7 +3,6 @@ import {
   milestoneSchema,
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import { milestoneReportingRequirementUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
 
 /**
   This function ingests all the sets of form_change edges that are required to render a milestone report. It matches
@@ -102,10 +101,4 @@ export const createMilestoneSchema = (reportType?: String) => {
   }
 
   return schema as JSONSchema7;
-};
-
-export const createCustomMilestoneReportingRequirementUiSchema = () => {
-  return {
-    ...milestoneReportingRequirementUiSchema,
-  };
 };

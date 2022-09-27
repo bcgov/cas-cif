@@ -60,7 +60,7 @@ interface Props {
     config: UseDebouncedMutationConfig<updateFormChangeMutation>
   ) => Disposable;
   generatedReportingRequirementSchema: object;
-  generatedReportingRequirementUiSchema: object;
+  reportingRequirementUiSchema: object; //brianna
   connections: string[];
 }
 
@@ -72,7 +72,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
   applyUpdateFormChangeMutation,
   updateFormChange,
   generatedReportingRequirementSchema,
-  generatedReportingRequirementUiSchema,
+  reportingRequirementUiSchema,
   connections,
 }) => {
   const { hasExpenses } = useFragment(
@@ -206,7 +206,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = ({
           );
         }}
         schema={generatedReportingRequirementSchema as JSONSchema7}
-        uiSchema={generatedReportingRequirementUiSchema}
+        uiSchema={reportingRequirementUiSchema}
         ObjectFieldTemplate={EmptyObjectFieldTemplate}
         formContext={{
           dueDate:

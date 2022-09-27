@@ -21,10 +21,10 @@ import { useStageReportingRequirementFormChange } from "mutations/ProjectReporti
 import {
   getConsolidatedMilestoneFormData,
   createMilestoneReportingRequirementSchema,
-  createCustomMilestoneReportingRequirementUiSchema,
 } from "./Functions/projectMilestoneFormFunctions";
 import ProjectMilestoneReportForm from "./ProjectMilestoneReportForm";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
+import { milestoneReportingRequirementUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
 
 interface Props {
   onSubmit: () => void;
@@ -163,10 +163,6 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
     return createMilestoneReportingRequirementSchema(query.allReportTypes);
   }, [query.allReportTypes]);
 
-  const generatedReportingRequirementUiSchema = useMemo(() => {
-    return createCustomMilestoneReportingRequirementUiSchema();
-  }, []);
-
   const [addMilestoneReportMutation, isAdding] = useAddMilestoneToRevision();
 
   const [applyUpdateFormChangeMutation, isUpdating] =
@@ -296,8 +292,8 @@ const ProjectMilestoneReportFormGroup: React.FC<Props> = (props) => {
                   generatedReportingRequirementSchema={
                     generatedReportingRequirementSchema
                   }
-                  generatedReportingRequirementUiSchema={
-                    generatedReportingRequirementUiSchema
+                  reportingRequirementUiSchema={
+                    milestoneReportingRequirementUiSchema
                   }
                   connections={[
                     projectRevision.milestoneReportingRequirementFormChanges
