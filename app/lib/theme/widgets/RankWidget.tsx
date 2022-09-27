@@ -10,14 +10,6 @@ const RankWidget: React.FC<WidgetProps> = (props) => {
           "Enter a project score to see the ranking compared to other scored projects."
         }
       />
-
-      <style jsx>{`
-         {
-          dd {
-            margin-bottom: 0;
-          }
-        }
-      `}</style>
     </>
   );
 };
