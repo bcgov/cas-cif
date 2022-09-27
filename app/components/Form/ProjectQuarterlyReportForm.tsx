@@ -1,5 +1,5 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { faPlusCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
@@ -36,15 +36,6 @@ interface Props {
 
 export const quarterlyReportUiSchema = {
   ...reportingRequirementUiSchema,
-  submittedDate: {
-    ...reportingRequirementUiSchema.submittedDate,
-    contentPrefix: (
-      <div>
-        <span style={{ marginRight: "1em" }}>Received</span>
-        <FontAwesomeIcon icon={faCheck} color={"green"} />
-      </div>
-    ),
-  },
 };
 
 const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {

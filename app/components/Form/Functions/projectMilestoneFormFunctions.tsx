@@ -4,8 +4,6 @@ import {
 } from "data/jsonSchemaForm/projectMilestoneSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { milestoneReportingRequirementUiSchema } from "data/jsonSchemaForm/projectMilestoneSchema";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /**
   This function ingests all the sets of form_change edges that are required to render a milestone report. It matches
@@ -109,14 +107,5 @@ export const createMilestoneSchema = (reportType?: String) => {
 export const createCustomMilestoneReportingRequirementUiSchema = () => {
   return {
     ...milestoneReportingRequirementUiSchema,
-    submittedDate: {
-      ...milestoneReportingRequirementUiSchema.submittedDate,
-      contentPrefix: (
-        <div>
-          <span style={{ marginRight: "1em" }}>Received</span>
-          <FontAwesomeIcon icon={faCheck} color={"green"} />
-        </div>
-      ),
-    },
   };
 };
