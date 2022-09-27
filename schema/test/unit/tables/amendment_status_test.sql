@@ -49,7 +49,7 @@ select results_eq(
   $$
     select count(*) from cif.amendment_status
   $$,
-  ARRAY['4'::bigint],
+  ARRAY['6'::bigint],
     'cif_internal can view all data from amendment_status table'
 );
 

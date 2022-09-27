@@ -4,6 +4,7 @@ import { useStageDirtyFormChanges } from "mutations/FormChange/stageDirtyFormCha
 import {
   getProjectRevisionPageRoute,
   getProjectRevisionAttachmentsPageRoute,
+  getProjectRevisionChangeLogsPageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -16,6 +17,7 @@ import { ATTENTION_REQUIRED_STATUS } from "./TaskListStatus";
 import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItemsComponent";
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 import { useNumberedFormStructure } from "data/formPages/formStructure";
+import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLogsTaskListSection";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -136,7 +138,6 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
-
   return (
     <div className="container">
       <h2>
@@ -226,6 +227,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
           </TaskListSection>
         )}
 
+        {/* Amendments & Other Revisions section */}
+        <ProjectRevisionChangeLogsTaskListSection
+          linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
+        />
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection

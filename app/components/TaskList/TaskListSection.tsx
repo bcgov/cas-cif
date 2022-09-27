@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 interface Props {
   defaultExpandedState: boolean;
-  listItemNumber: string;
+  listItemNumber?: string;
   listItemName: string;
   listItemMode?: string;
   children: React.ReactNode;
@@ -32,7 +32,7 @@ const TaskListSection: React.FC<Props> = ({
           aria-expanded={isExpanded}
           aria-controls="child-section"
         >
-          {listItemNumber}. {listItemName} {listItemMode}
+          {listItemNumber && `${listItemNumber}.`} {listItemName} {listItemMode}
           <span>
             <span>
               <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
