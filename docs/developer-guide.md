@@ -62,7 +62,7 @@ To add something to the database:
 
 ## Incremental Database changes
 
-Releases are tagged in the sqitch plan, ex: `@v1.0.0-rc.7 2020-06-18T18:52:29Z Matthieu Foucault <matthieu@button.is> # release v1.0.0-rc.7`
+Releases are tagged in the sqitch plan, ex: `@v1.0.0-rc.7 2020-06-18T18:52:29Z database user <db_user@mail.com> # release v1.0.0-rc.7`
 Any database entities in the plan before a release are immutable and any changes to them must be done as follows:
 
 ### Tables (or other non-idempotent changes)
