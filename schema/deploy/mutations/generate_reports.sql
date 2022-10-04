@@ -6,18 +6,18 @@ create or replace function cif.generate_reports(revision_id int, report_type tex
   returns setof cif.form_change as $generate_reports$
   declare
   form_change_record record;
-  start_date_year int := extract(year from start_date);
+  start_date_year int := extract(year from $3);
   report_interval_start_date timestamptz;
   report_interval interval := '1 year';
   initial_index int := 1;
   temp_row record;
 begin
-  if start_date >= end_date then
+  if $3 >= $4 then
       raise exception 'start_date must be before end_date';
 
   elsif $2 = 'Annual' then
     -- if start date is before or equal to jan 31st, we will start the first annual report on the same year otherwise we will start on the next year
-    if start_date <= make_date(start_date_year, 01, 31) then
+    if $3 <= make_date(start_date_year, 01, 31) then
       report_interval_start_date := make_date(start_date_year, 01, 31);
     else
       report_interval_start_date := make_date(start_date_year + 1, 01, 31);
@@ -26,13 +26,12 @@ begin
   elsif $2 = 'Quarterly' then
     report_interval := '3 month'::interval;
     -- choosing the closest quarter start date from a list of possible dates as a temporary table
-    select * from
-      (values (make_date(start_date_year, 01, 05)), (make_date(start_date_year, 04, 05)), (make_date(start_date_year, 07, 05)), (make_date(start_date_year, 10, 05)), (make_date(start_date_year + 1, 01, 05))) as temp_table(quarterly_report_due_date)
-      where start_date <= quarterly_report_due_date limit 1 into report_interval_start_date;
+    select * from generate_series(make_date(start_date_year, 01, 05), make_date(start_date_year + 1, 01, 05), report_interval) as temp_table(quarterly_report_due_date)
+      where $3 <= quarterly_report_due_date limit 1 into report_interval_start_date;
   end if;
 
   -- generating the reports
-  for temp_row in select generate_series(report_interval_start_date, end_date, report_interval) as due_date
+  for temp_row in select generate_series(report_interval_start_date, $4, report_interval) as due_date
     loop
     insert into cif.form_change(
       new_form_data,
