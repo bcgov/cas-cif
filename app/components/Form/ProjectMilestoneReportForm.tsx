@@ -88,7 +88,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
             }
           }
         }
-
         formBySlug(slug: "milestone") {
           jsonSchema
         }

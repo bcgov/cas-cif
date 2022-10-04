@@ -182,12 +182,24 @@ export const stageReportFormChanges = async (
   }
 };
 
-export const getSortedReports = function <T>(
-  formChangeEdges: readonly { node: T }[]
+/**
+ * @param formChangeEdges the edges, containing nodes of graphQL type FormChange
+ * @param keepArchivedReports if set to true, archived reports won't be pruned (for summary displays)
+ * @returns a tuple containing the reports sorted by reportingRequirementIndex, and the next index available
+ */
+export const getSortedReports = function <
+  T extends {
+    operation: string;
+    newFormData: any;
+  }
+>(
+  formChangeEdges: readonly { node: T }[],
+  keepArchivedReports: boolean = false
 ) {
-  const filteredReports = formChangeEdges
-    .map(({ node }) => node as any)
-    .filter((report) => report.operation !== "ARCHIVE");
+  const formChangeNodes = formChangeEdges.map(({ node }) => node);
+  const filteredReports = keepArchivedReports
+    ? formChangeNodes
+    : formChangeNodes.filter((report) => report.operation !== "ARCHIVE");
 
   filteredReports.sort(
     (a, b) =>

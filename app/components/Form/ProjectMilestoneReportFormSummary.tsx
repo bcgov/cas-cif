@@ -64,7 +64,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
 
   // Sort consolidated milestone form change records
   const [sortedMilestoneReports] = useMemo(() => {
-    return getSortedReports(milestoneReportFormChanges);
+    return getSortedReports(milestoneReportFormChanges, true);
   }, [milestoneReportFormChanges]);
 
   const allFormChangesPristine = useMemo(

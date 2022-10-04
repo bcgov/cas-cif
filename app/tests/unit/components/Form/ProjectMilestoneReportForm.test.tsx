@@ -6,6 +6,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
+import milestoneProdSchema from "../../../../../schema/data/prod/json_schema/milestone.json";
 
 const testQuery = graphql`
   query ProjectMilestoneReportFormQuery @relay_test_operation {
@@ -31,7 +32,7 @@ const defaultMockResolver = {
           reportingRequirementIndex: 1,
         },
       },
-      milestoneReportingRequirementFormChanges: {
+      milestoneFormChanges: {
         edges: [
           {
             node: {
@@ -43,14 +44,16 @@ const defaultMockResolver = {
                 reportType: "General Milestone",
                 description: "i am the first description",
                 reportingRequirementIndex: 1,
+                hasExpenses: true,
+                reportingRequirementId: 1,
+                totalEligibleExpenses: 100,
+                maximumAmount: 200,
+                certifierProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
-              asReportingRequirement: {
-                hasExpenses: true,
-              },
             },
           },
           {
@@ -64,70 +67,24 @@ const defaultMockResolver = {
                 submittedDate: "2022-05-02",
                 description: "i am the second description",
                 reportingRequirementIndex: 2,
-              },
-              operation: "CREATE",
-              changeStatus: "pending",
-              formChangeByPreviousFormChangeId: null,
-              formDataRecordId: 2,
-              asReportingRequirement: {
                 hasExpenses: false,
-                id: "mock-reporting-requirement-id",
-              },
-            },
-          },
-        ],
-        __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
-      },
-      milestoneFormChanges: {
-        edges: [
-          {
-            node: {
-              id: `mock-project-milestone-report-form-${generateID()}`,
-              rowId: 1,
-              newFormData: {
-                reportingRequirementId: 1,
-                totalEligibleExpenses: 100,
-                maximumAmount: 200,
-                certifierProfessionalDesignation: "Professional Engineer",
-              },
-              operation: "CREATE",
-              changeStatus: "pending",
-              formChangeByPreviousFormChangeId: null,
-            },
-          },
-          {
-            node: {
-              id: `mock-project-milestone-report-form-${generateID()}`,
-              rowId: 2,
-              newFormData: {
                 reportingRequirementId: 2,
                 certifierProfessionalDesignation: "Professional Engineer",
               },
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
+              formDataRecordId: 2,
             },
           },
         ],
-        __id: "client:mock:__connection_milestoneFormChanges_connection",
+        __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
       },
-      milestonePaymentFormChanges: {
-        edges: [
-          {
-            node: {
-              id: `mock-payment-id`,
-              rowId: 1,
-              newFormData: {
-                reportingRequirementId: 1,
-              },
-              operation: "CREATE",
-              changeStatus: "pending",
-              formChangeByPreviousFormChangeId: null,
-            },
-          },
-        ],
-        __id: "client:mock:__connection_milestonePaymentFormChanges_connection",
-      },
+    };
+  },
+  Form() {
+    return {
+      jsonSchema: milestoneProdSchema,
     };
   },
   Query() {
@@ -137,16 +94,19 @@ const defaultMockResolver = {
           {
             node: {
               name: "General Milestone",
+              hasExpenses: true,
             },
           },
           {
             node: {
               name: "Advanced Milestone",
+              hasExpenses: true,
             },
           },
           {
             node: {
               name: "Reporting Milestone",
+              hasExpenses: false,
             },
           },
         ],
