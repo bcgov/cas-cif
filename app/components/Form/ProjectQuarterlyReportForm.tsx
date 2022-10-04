@@ -1,6 +1,7 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportGenerator from "components/ReportGenerator";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
@@ -69,6 +70,31 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
             reportDueDate
           }
         }
+        projectFundingAgreementFormChanges: formChangesFor(
+          first: 500
+          formDataTableName: "funding_parameter"
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) @connection(key: "connection_projectFundingAgreementFormChanges") {
+          __id
+          edges {
+            node {
+              id
+              newFormData
+            }
+          }
+        }
+        emissionIntensityReportFormChanges: formChangesFor(
+          first: 500
+          formDataTableName: "emission_intensity_report"
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) @connection(key: "connection_emissionIntensityReportFormChanges") {
+          edges {
+            node {
+              id
+              newFormData
+            }
+          }
+        }
         # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
@@ -115,6 +141,12 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectQuarterlyReportFormChanges.edges]);
 
+  const projectFundingAgreementFormChange =
+    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
+
+  const emissionIntensityReportFormChange =
+    projectRevision.emissionIntensityReportFormChanges.edges[0]?.node;
+
   return (
     <div>
       <header>
@@ -133,6 +165,27 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
       />
       <FormBorder>
+        {projectRevision.projectQuarterlyReportFormChanges.edges.length ===
+          0 && (
+          <ReportGenerator
+            revisionId={projectRevision.rowId}
+            reportType="Quarterly"
+            startDateObject={{
+              id: projectFundingAgreementFormChange?.id,
+              label: "Contract Start Date",
+              inputName: "contractStartDate",
+              date: projectFundingAgreementFormChange?.newFormData
+                ?.contractStartDate,
+            }}
+            endDateObject={{
+              id: emissionIntensityReportFormChange?.id,
+              label: "TEIMP End Date",
+              inputName: "measurementPeriodEndDate",
+              date: emissionIntensityReportFormChange?.newFormData
+                ?.measurementPeriodEndDate,
+            }}
+          />
+        )}
         <Button
           variant="secondary"
           onClick={() =>
