@@ -20,13 +20,13 @@ describe("The ReportGenerator", () => {
         id: "start-date-id",
         label: "Start Date",
         inputName: "startDate",
-        date: "2021-01-01",
+        date: "2021-01-01T23:59:59.999-07:00",
       },
       endDateObject: {
         id: "end-date-id",
         label: "End Date",
         inputName: "endDate",
-        date: "2021-12-31",
+        date: "2021-12-31T23:59:59.999-07:00",
       },
     };
     render(<ReportGenerator {...props} />);
@@ -75,13 +75,13 @@ describe("The ReportGenerator", () => {
         id: "start-date-id",
         label: "Start Date",
         inputName: "startDate",
-        date: "2021-01-01",
+        date: "2021-01-01T23:59:59.999-07:00",
       },
       endDateObject: {
         id: "end-date-id",
         label: "End Date",
         inputName: "endDate",
-        date: "2021-12-31",
+        date: "2021-12-31T23:59:59.999-07:00",
       },
     };
     render(<ReportGenerator {...props} />);
@@ -95,8 +95,8 @@ describe("The ReportGenerator", () => {
         input: {
           revisionId: "test-revision-id",
           reportType: "Quarterly",
-          startDate: "2021-01-01",
-          endDate: "2021-12-31",
+          startDate: "2021-01-01T23:59:59.999-07:00",
+          endDate: "2021-12-31T23:59:59.999-07:00",
         },
       },
     });
