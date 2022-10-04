@@ -28,11 +28,12 @@ const ReportGenerator: React.FC<Props> = ({
   return (
     <div className="reportGenerator">
       <h3>Generate reports</h3>
-      <div key={startDateObject.id}>
+      <dl key={startDateObject.id}>
         <FieldLabel
           label={startDateObject.label}
           required={true}
           htmlFor={`form-${startDateObject.id}_${startDateObject.inputName}`}
+          tagName="dt"
         />
         <dd>
           {startDateObject.date ? (
@@ -41,12 +42,13 @@ const ReportGenerator: React.FC<Props> = ({
             <em>-</em>
           )}
         </dd>
-      </div>
-      <div key={endDateObject.id}>
+      </dl>
+      <dl key={endDateObject.id}>
         <FieldLabel
           label={endDateObject.label}
           required={true}
           htmlFor={`form-${endDateObject.id}_${endDateObject.inputName}`}
+          tagName="dt"
         />
         <dd>
           {endDateObject.date ? (
@@ -55,7 +57,7 @@ const ReportGenerator: React.FC<Props> = ({
             <em>-</em>
           )}
         </dd>
-      </div>
+      </dl>
       <Button
         variant="secondary"
         onClick={() =>

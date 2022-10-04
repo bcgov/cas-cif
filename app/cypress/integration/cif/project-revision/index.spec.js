@@ -77,6 +77,10 @@ describe("the new project page", () => {
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
+    cy.contains("Generate reports");
+    cy.findByRole("button", { name: /generate quarterly reports/i }).should(
+      "be.disabled"
+    );
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project quarterly reports Form", "empty", "main");
 
