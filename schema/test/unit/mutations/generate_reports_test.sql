@@ -32,7 +32,7 @@ select results_eq(
       2,
       format(
         '{"projectId": 1, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 1}',
-        '2022-01-31T00:00:00-08:00'
+        to_char('2022-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -45,7 +45,7 @@ select results_eq(
       3,
       format(
         '{"projectId": 1, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 2}',
-        '2023-01-31T00:00:00-08:00'
+        to_char('2023-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -58,7 +58,7 @@ select results_eq(
       4,
       format(
         '{"projectId": 1, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 3}',
-        '2024-01-31T00:00:00-08:00'
+        to_char('2024-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -71,7 +71,7 @@ select results_eq(
       5,
       format(
         '{"projectId": 1, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 4}',
-        '2025-01-31T00:00:00-08:00'
+        to_char('2025-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -104,7 +104,7 @@ select results_eq(
       7,
       format(
         '{"projectId": 2, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 1}',
-        '2023-01-31T00:00:00-08:00'
+        to_char('2023-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -137,7 +137,7 @@ select results_eq(
       9,
       format(
         '{"projectId": 3, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 1}',
-        '2022-01-31T00:00:00-08:00'
+        to_char('2022-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -150,7 +150,7 @@ select results_eq(
       10,
       format(
         '{"projectId": 3, "reportType": "Annual", "reportDueDate": "%s", "reportingRequirementIndex": 2}',
-        '2023-01-31T00:00:00-08:00'
+        to_char('2023-01-31'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -191,7 +191,7 @@ select results_eq(
       11,
       format(
         '{"projectId": 3, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 1}',
-        '2022-10-05T00:00:00-07:00'
+        to_char('2022-10-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -204,7 +204,7 @@ select results_eq(
       12,
       format(
         '{"projectId": 3, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 2}',
-        '2023-01-05T00:00:00-08:00'
+        to_char('2023-01-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -217,7 +217,7 @@ select results_eq(
       13,
       format(
         '{"projectId": 3, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 3}',
-        '2023-04-05T00:00:00-07:00'
+        to_char('2023-04-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -230,7 +230,7 @@ select results_eq(
       14,
       format(
         '{"projectId": 3, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 4}',
-        '2023-07-05T00:00:00-07:00'
+        to_char('2023-07-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -243,7 +243,7 @@ select results_eq(
       15,
       format(
         '{"projectId": 3, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 5}',
-        '2023-10-05T00:00:00-07:00'
+        to_char('2023-10-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -276,7 +276,7 @@ select results_eq(
       17,
       format(
         '{"projectId": 4, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 1}',
-        '2023-01-05T00:00:00-08:00'
+        to_char('2023-01-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -289,7 +289,7 @@ select results_eq(
       18,
       format(
         '{"projectId": 4, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 2}',
-        '2023-04-05T00:00:00-07:00'
+        to_char('2023-04-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -322,7 +322,7 @@ select results_eq(
       20,
       format(
         '{"projectId": 5, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 1}',
-        '2022-10-05T00:00:00-07:00'
+        to_char('2022-10-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
@@ -335,7 +335,7 @@ select results_eq(
       21,
       format(
         '{"projectId": 5, "reportType": "Quarterly", "reportDueDate": "%s", "reportingRequirementIndex": 2}',
-        '2023-01-05T00:00:00-08:00'
+        to_char('2023-01-05'::timestamptz, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM')
       )::jsonb,
       'create'::cif.form_change_operation,
       'cif'::varchar,
