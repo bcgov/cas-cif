@@ -28,7 +28,7 @@ import {
 } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
-import ReportGenerator from "components/ReportGenerator";
+import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
 
 interface Props {
   onSubmit: () => void;

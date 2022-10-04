@@ -1,7 +1,7 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ReportGenerator from "components/ReportGenerator";
+import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
