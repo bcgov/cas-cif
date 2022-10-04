@@ -9,7 +9,6 @@ import DisplayOnlyWidget from "lib/theme/widgets/DisplayOnlyWidget";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 import SelectParentWidget from "lib/theme/widgets/SelectParentWidget";
 import PhoneNumberWidget from "lib/theme/widgets/PhoneNumberWidget";
-import DueDateWidget from "lib/theme/widgets/DueDateWidget";
 import DateWidget from "./widgets/DateWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
 import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
@@ -30,7 +29,6 @@ const formTheme: ThemeProps = {
     SelectWidget: SelectWidget,
     SelectParentWidget: SelectParentWidget,
     PhoneNumberWidget,
-    DueDateWidget: DueDateWidget,
     DateWidget,
     AdjustableCalculatedValueWidget,
     CalculatedValueWidget,

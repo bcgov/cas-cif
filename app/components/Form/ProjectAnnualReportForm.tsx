@@ -1,5 +1,5 @@
 import { Button } from "@button-inc/bcgov-theme";
-import { faCheck, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
@@ -33,19 +33,6 @@ interface Props {
   onSubmit: () => void;
   projectRevision: ProjectAnnualReportForm_projectRevision$key;
 }
-
-export const annualReportUiSchema = {
-  ...reportingRequirementUiSchema,
-  submittedDate: {
-    ...reportingRequirementUiSchema.submittedDate,
-    contentPrefix: (
-      <div>
-        <span style={{ marginRight: "1em" }}>Received</span>
-        <FontAwesomeIcon icon={faCheck} color={"green"} />
-      </div>
-    ),
-  },
-};
 
 const ProjectAnnualReportForm: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
@@ -208,7 +195,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                     );
                   }}
                   schema={projectReportingRequirementSchema as JSONSchema7}
-                  uiSchema={annualReportUiSchema}
+                  uiSchema={reportingRequirementUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
                     dueDate: report.newFormData?.reportDueDate,

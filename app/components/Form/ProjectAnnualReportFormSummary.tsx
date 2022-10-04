@@ -1,5 +1,8 @@
 import { utils } from "@rjsf/core";
-import { projectReportingRequirementSchema } from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import {
+  projectReportingRequirementSchema,
+  reportingRequirementUiSchema,
+} from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
@@ -8,7 +11,6 @@ import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportFormSummary_projectRevision$key } from "__generated__/ProjectAnnualReportFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
-import { annualReportUiSchema } from "./ProjectAnnualReportForm";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -114,7 +116,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
               fields={renderDiff ? customFields : fields}
               schema={formSchema as JSONSchema7}
               formData={formData}
-              uiSchema={annualReportUiSchema}
+              uiSchema={reportingRequirementUiSchema}
               formContext={{
                 operation: annualReport.operation,
                 oldData:

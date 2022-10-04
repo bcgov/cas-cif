@@ -5,23 +5,44 @@ import "react-datepicker/dist/react-datepicker.css";
 import getTimestamptzFromDate from "lib/helpers/getTimestamptzFromDate";
 import { DateTime } from "luxon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
 import {
   getDisplayDateString,
   parseStringDate,
+  getDaysUntilDue,
+  getDisplayDueDateString,
+  getWeeksUntilDue,
 } from "lib/helpers/reportStatusHelpers";
 
 const DateInput = forwardRef<HTMLDivElement, WidgetProps>(
   ({ onClick, value, label, uiSchema }, ref) => {
     const displayString = useMemo(() => {
       const selectedDate = parseStringDate(value);
-      const displayDateString = getDisplayDateString(selectedDate);
 
-      return (
-        <>
-          {uiSchema?.contentPrefix}({displayDateString})
-        </>
-      );
+      if (uiSchema?.isDueDate) {
+        const daysUntilDue = getDaysUntilDue(selectedDate);
+        const weeksUntilDue = getWeeksUntilDue(selectedDate);
+        const displayDueDateString = getDisplayDueDateString(
+          daysUntilDue,
+          weeksUntilDue,
+          selectedDate
+        );
+        return displayDueDateString;
+      }
+
+      if (uiSchema?.isReceivedDate) {
+        const displayReceivedDateString = getDisplayDateString(selectedDate);
+        return (
+          <>
+            <div>
+              <span style={{ marginRight: "1em" }}>Received</span>
+              <FontAwesomeIcon icon={faCheck} color={"green"} />
+            </div>
+            ({displayReceivedDateString})
+          </>
+        );
+      }
+      return getDisplayDateString(selectedDate);
     }, [uiSchema, value]);
 
     return (
@@ -60,7 +81,6 @@ const DateWidget: React.FC<WidgetProps> = ({
   label,
   value,
   required,
-  formContext,
   uiSchema,
 }) => {
   return (
@@ -77,12 +97,7 @@ const DateWidget: React.FC<WidgetProps> = ({
           required={required}
           aria-label={label}
           customInput={
-            <DateInput
-              formContext={formContext}
-              uiSchema={uiSchema}
-              label={label}
-              ref={useRef()}
-            />
+            <DateInput uiSchema={uiSchema} label={label} ref={useRef()} />
           }
           showMonthDropdown
           showYearDropdown
