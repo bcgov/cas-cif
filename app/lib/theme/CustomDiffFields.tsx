@@ -210,7 +210,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
-    const isDate = ["DateWidget"].includes(uiSchema["ui:widget"] as string);
+    const isDate = uiSchema["ui:widget"] === "DateWidget";
 
     if (previousValue && formData && formContext.operation === "UPDATE") {
       return showStringDiff(id, previousValue, formData, isDate);
