@@ -6,9 +6,9 @@ import type { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import projectMilestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSchema";
 import { getSortedReports } from "./Functions/reportingRequirementFormChangeFunctions";
+import { getMilestoneFilteredSchema } from "./Functions/getMilestoneFilteredSchema";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -80,11 +80,11 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     return sortedMilestoneReports.map((milestoneReport, index) => {
       // Set the formSchema and formData based on showing the diff or not
       const reportingRequirementFormDiffObject = renderDiff
-        ? (getFilteredSchema(
+        ? getMilestoneFilteredSchema(
             milestoneReport.formByJsonSchemaName.jsonSchema
               .schema as JSONSchema7,
             milestoneReport
-          ) as any)
+          )
         : {
             formSchema: milestoneReport.formByJsonSchemaName.jsonSchema.schema,
             formData: milestoneReport.newFormData,
