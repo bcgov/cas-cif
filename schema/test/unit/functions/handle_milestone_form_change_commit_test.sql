@@ -32,6 +32,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (1, 'pending', 1);
 
+
 select cif.create_form_change('create', 'milestone', 'cif', 'milestone', '{}', 7, null, 'staged', '[]');
 select cif.create_form_change('update', 'milestone', 'cif', 'milestone', '{"description": "value"}', null, null, 'committed', '[]');
 select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
@@ -52,6 +53,8 @@ select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
     "calculatedNetAmount": 450,
     "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
   }', null, 1, 'staged', '[]');
+
+select cif.create_form_change('update', 'project', 'cif', 'project', '{}', 1, 1, 'pending', '[]');
 
 /** SETUP END **/
 
@@ -138,7 +141,7 @@ select results_eq(
   $$,
   'The correct values were added to the payment table on create'
 );
- 
+
 -- The next three tests confirm that the correct values were added to their three corresponsing tables when the form_change operation is "update"
 update cif.project_revision set change_status = 'committed' where id = 1;
 insert into cif.project_revision(id, change_status, project_id)
@@ -164,7 +167,7 @@ select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
     "dateSentToCsnr": "2021-09-29 14:24:46.318423-07"
   }', 1, 2, 'staged', '[]');
 
-select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 4));
+select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 5));
 -- reporting_requiement table
 select results_eq(
   $$
