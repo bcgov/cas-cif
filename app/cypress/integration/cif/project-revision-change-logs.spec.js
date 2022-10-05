@@ -25,10 +25,11 @@ describe("the project amendment and revisions page", () => {
     cy.get("button").contains("Clear").click();
     cy.get("tbody tr").should("have.length", 5);
     // below code is not a duplicate, we need to click the field twice to get the DESC sort
-    cy.get("thead th").contains("Effective Date").click();
-    cy.get("thead th").contains("Effective Date").click();
+    cy.get("thead th").contains("Type").click();
+    cy.get("thead th").contains("Type").click();
 
-    cy.url().should("include", "orderBy=EFFECTIVE_DATE_DESC"); //just to wait for the page to load
-    cy.get("tbody tr").first().contains("Pending");
+    cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
+    cy.get("tbody tr").first().contains("Minor Revision");
+    cy.get("tbody tr").last().contains("In Discussion");
   });
 });
