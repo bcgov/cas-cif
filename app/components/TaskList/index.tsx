@@ -228,9 +228,11 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         )}
 
         {/* Amendments & Other Revisions section */}
-        <ProjectRevisionChangeLogsTaskListSection
-          linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
-        />
+        {mode === "view" && (
+          <ProjectRevisionChangeLogsTaskListSection
+            linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
+          />
+        )}
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection
