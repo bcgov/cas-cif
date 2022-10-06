@@ -6,6 +6,7 @@ import {
   getProjectRevisionAttachmentsPageRoute,
   getProjectRevisionChangeLogsPageRoute,
   getProjectRevisionViewPageRoute,
+  getProjectRevisionCreatePageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -19,6 +20,7 @@ import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItem
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 import { useNumberedFormStructure } from "data/formPages/formStructure";
 import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLogsTaskListSection";
+import ProjectRevisionCreateNewTaskListSection from "./ProjectRevisionCreateTaskListSection";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -29,7 +31,12 @@ interface Props {
 const TaskList: React.FC<Props> = ({
   projectRevision,
   mode,
+<<<<<<< HEAD
   projectRevisionUnderReview,
+=======
+  // projectRevisionDetailViewId,
+  // revisionType,
+>>>>>>> 8e0d9f15 (chore:merge fix)
 }) => {
   const {
     id,
@@ -144,9 +151,15 @@ const TaskList: React.FC<Props> = ({
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
+<<<<<<< HEAD
   const projectRevisionViewPagePathName = getProjectRevisionViewPageRoute(
     projectRevisionUnderReview?.id
   ).pathname;
+=======
+  // const projectRevisionDetailPagePathName = getProjectRevisionDetailPageRoute(
+  //   projectRevisionDetailViewId
+  // ).pathname;
+>>>>>>> 8e0d9f15 (chore:merge fix)
 
   return (
     <div className="container">
@@ -238,6 +251,7 @@ const TaskList: React.FC<Props> = ({
         )}
 
         {/* Amendments & Other Revisions section */}
+<<<<<<< HEAD
         {mode === "view" && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
@@ -261,6 +275,16 @@ const TaskList: React.FC<Props> = ({
             )}
           </ProjectRevisionChangeLogsTaskListSection>
         )}
+=======
+        <ProjectRevisionChangeLogsTaskListSection
+          linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
+        />
+
+        {/* Create new revision */}
+        <ProjectRevisionCreateNewTaskListSection
+          linkUrl={getProjectRevisionCreatePageRoute(id)}
+        />
+>>>>>>> 8e0d9f15 (chore:merge fix)
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection
