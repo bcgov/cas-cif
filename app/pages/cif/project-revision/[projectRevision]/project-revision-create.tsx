@@ -13,7 +13,7 @@ import {
 import { JSONSchema7 } from "json-schema";
 import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
-import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
+import { useCreateProjectRevisionWithRevisionType } from "mutations/ProjectRevision/createProjectRevisionWithRevisionType";
 
 const pageQuery = graphql`
   query projectRevisionCreateNewQuery($projectRevision: ID!) {
@@ -43,15 +43,19 @@ export function ProjectRevisionCreate({
 
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
-    useCreateProjectRevision();
+    useCreateProjectRevisionWithRevisionType();
 
-  const handleCreateRevision = () => {
+  const handleCreateRevision = ({ formData }) => {
+    console.log(formData.revisionType);
     createProjectRevision({
-      variables: { projectId: projectRevision.project.rowId },
+      variables: {
+        projectId: projectRevision.project.rowId,
+        revisionType: formData.revisionType,
+      },
       onCompleted: (response) => {
         router.push(
           getProjectRevisionFormPageRoute(
-            response.createProjectRevision.projectRevision.id,
+            response.createProjectRevisionWithRevisionType.projectRevision.id,
             0
           )
         );
@@ -59,36 +63,43 @@ export function ProjectRevisionCreate({
     });
   };
   return (
-    <DefaultLayout session={session} leftSideNav={taskList}>
-      <div>
-        <header></header>
-        <h3>Select Revision Type</h3>
-        <FormBase
-          id="ProjectRevisionCreateForm"
-          schema={projectRevisionCreateSchema as JSONSchema7}
-          uiSchema={projectRevisionCreateUISchema}
-        ></FormBase>
-      </div>
-      <br></br>
-      <Button
-        type="submit"
-        size="small"
-        disabled={
-          isCreatingProjectRevision ||
-          projectRevision.project.pendingProjectRevision !== null
-        }
-        onClick={handleCreateRevision}
-      >
-        New Revision
-      </Button>
-
+    <>
+      <DefaultLayout session={session} leftSideNav={taskList}>
+        <div>
+          <FormBase
+            id="ProjectRevisionCreateForm"
+            schema={projectRevisionCreateSchema as JSONSchema7}
+            uiSchema={projectRevisionCreateUISchema}
+            onSubmit={handleCreateRevision}
+          >
+            <Button
+              type="submit"
+              size="small"
+              disabled={
+                isCreatingProjectRevision ||
+                projectRevision.project.pendingProjectRevision !== null
+              }
+            >
+              New Revision
+            </Button>
+          </FormBase>
+        </div>
+      </DefaultLayout>
       <style jsx>{`
-        div :global(.radio-button) {
-          margin-top: 1rem;
-          margin-left: 1rem;
+        div :global(.radio) {
+          padding: 5px;
+        }
+        div :global(.radio):first-child {
+          margin-top: 25px;
+        }
+        div :global(input[type="radio"]) {
+          margin-right: 10px;
+        }
+        div :global() {
+          border: none;
         }
       `}</style>
-    </DefaultLayout>
+    </>
   );
 }
 
