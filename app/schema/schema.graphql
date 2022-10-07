@@ -41414,6 +41414,62 @@ type CreateProjectRevisionPayload {
   revisionTypeByRevisionType: RevisionType
 }
 
+"""All input for the `createProjectRevisionWithRevisionType` mutation."""
+input CreateProjectRevisionWithRevisionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  projectId: Int!
+  revisionType: String!
+}
+
+"""The output of our `createProjectRevisionWithRevisionType` mutation."""
+type CreateProjectRevisionWithRevisionTypePayload {
+  """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
+  """
+  Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
+  """
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Project` that is related to this `ProjectRevision`."""
+  projectByProjectId: Project
+  projectRevision: ProjectRevision
+
+  """An edge for our `ProjectRevision`. May be used by Relay 1."""
+  projectRevisionEdge(
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
+}
+
 """All input for the create `ProjectStatus` mutation."""
 input CreateProjectStatusInput {
   """
@@ -50086,6 +50142,12 @@ type Mutation {
     """
     input: CreateProjectRevisionAmendmentTypeInput!
   ): CreateProjectRevisionAmendmentTypePayload
+  createProjectRevisionWithRevisionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateProjectRevisionWithRevisionTypeInput!
+  ): CreateProjectRevisionWithRevisionTypePayload
 
   """Creates a single `ProjectStatus`."""
   createProjectStatus(
