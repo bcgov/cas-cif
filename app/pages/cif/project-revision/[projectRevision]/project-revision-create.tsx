@@ -14,6 +14,7 @@ import { JSONSchema7 } from "json-schema";
 import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevisionWithRevisionType } from "mutations/ProjectRevision/createProjectRevisionWithRevisionType";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 
 const pageQuery = graphql`
   query projectRevisionCreateNewQuery($projectRevision: ID!) {
@@ -71,13 +72,14 @@ export function ProjectRevisionCreate({
             schema={projectRevisionCreateSchema as JSONSchema7}
             uiSchema={projectRevisionCreateUISchema}
             onSubmit={handleCreateRevision}
+            ObjectFieldTemplate={EmptyObjectFieldTemplate}
           >
             <Button
               type="submit"
               size="small"
               disabled={
                 isCreatingProjectRevision ||
-                projectRevision.project.pendingProjectRevision !== null
+                projectRevision?.project.pendingProjectRevision !== null
               }
             >
               New Revision
