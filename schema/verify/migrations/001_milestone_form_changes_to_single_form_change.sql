@@ -12,7 +12,6 @@ begin;
         from cif.form_change
         where
           (form_data_table_name='milestone_report' or form_data_table_name='payment')
-          and archived_at is null
       ), 'there are no form_changes for milestone_report or payment tables that are not archived';
     end;
   $$;
