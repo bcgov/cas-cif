@@ -62,10 +62,5 @@ describe("The project amendments and revisions page", () => {
     const operation =
       pageTestingHelper.environment.mock.getMostRecentOperation();
     expect(operation.fragment.node.name).toBe("projectRevisionCreateNewQuery");
-    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
-      query: { projectRevision: "mock-revision-id", formIndex: 0 },
-      anchor: undefined,
-    });
   });
 });
