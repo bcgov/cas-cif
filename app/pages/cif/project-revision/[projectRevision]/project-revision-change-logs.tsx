@@ -12,6 +12,8 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { Button } from "@button-inc/bcgov-theme";
 import { projectRevisionChangeLogsQuery } from "__generated__/projectRevisionChangeLogsQuery.graphql";
+import router from "next/router";
+import { getProjectRevisionCreatePageRoute } from "routes/pageRoutes";
 
 export const ProjectRevisionChangeLogsQuery = graphql`
   query projectRevisionChangeLogsQuery(
@@ -28,6 +30,7 @@ export const ProjectRevisionChangeLogsQuery = graphql`
       ...DefaultLayout_session
     }
     projectRevision(id: $projectRevision) {
+      id
       project: projectByProjectId {
         projectRevisionChangeLogs: projectRevisionsByProjectId(
           first: $pageSize
@@ -125,12 +128,17 @@ export function ProjectRevisionChangeLogs({
     ),
     new NoHeaderFilter(),
   ];
+  const handleRedirect = () => {
+    router.push(getProjectRevisionCreatePageRoute(projectRevision.id));
+  };
 
   return (
     <DefaultLayout session={session} leftSideNav={taskList}>
       <header>
         <h2>Amendments & Other Revisions</h2>
-        <Button size="small">New Revision</Button>
+        <Button onClick={handleRedirect} size="small">
+          New Revision
+        </Button>
       </header>
       <Table
         paginated
