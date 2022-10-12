@@ -28,6 +28,7 @@ import {
 } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
 
 interface Props {
   onSubmit: () => void;
@@ -76,6 +77,35 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
             reportDueDate
           }
         }
+        projectFundingAgreementFormChanges: formChangesFor(
+          first: 500
+          formDataTableName: "funding_parameter"
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) @connection(key: "connection_projectFundingAgreementFormChanges") {
+          __id
+          edges {
+            node {
+              id
+              newFormData
+            }
+          }
+        }
+        emissionIntensityReportingRequirementFormChange: formChangesFor(
+          first: 1
+          formDataTableName: "reporting_requirement"
+          reportType: "TEIMP"
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        )
+          @connection(
+            key: "connection_emissionIntensityReportingRequirementFormChange"
+          ) {
+          edges {
+            node {
+              id
+              newFormData
+            }
+          }
+        }
         # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
@@ -122,6 +152,13 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.projectAnnualReportFormChanges.edges]);
 
+  const projectFundingAgreementFormChange =
+    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
+
+  const emissionIntensityReportingRequirementFormChange =
+    projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
+      ?.node;
+
   return (
     <div>
       <header>
@@ -141,6 +178,26 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         reportDueFormChange={projectRevision.upcomingAnnualReportFormChange}
       />
       <FormBorder>
+        {projectRevision.projectAnnualReportFormChanges.edges.length === 0 && (
+          <ReportGenerator
+            revisionId={projectRevision.rowId}
+            reportType="Annual"
+            startDateObject={{
+              id: emissionIntensityReportingRequirementFormChange?.id,
+              label: "Emissions Intensity Report Due Date",
+              inputName: "reportDueDate",
+              date: emissionIntensityReportingRequirementFormChange?.newFormData
+                .reportDueDate,
+            }}
+            endDateObject={{
+              id: projectFundingAgreementFormChange?.id,
+              label: "Project Assets Life End Date",
+              inputName: "projectAssetsLifeEndDate",
+              date: projectFundingAgreementFormChange?.newFormData
+                .projectAssetsLifeEndDate,
+            }}
+          />
+        )}
         <Button
           variant="secondary"
           onClick={() =>
