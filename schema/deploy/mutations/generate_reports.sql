@@ -30,28 +30,31 @@ begin
 
   -- generating the reports
   return query
-  insert into cif.form_change(
-      new_form_data,
-      operation,
-      form_data_schema_name,
-      form_data_table_name,
-      json_schema_name,
-      project_revision_id
+  with report_form_changes as (
+    insert into cif.form_change(
+        new_form_data,
+        operation,
+        form_data_schema_name,
+        form_data_table_name,
+        json_schema_name,
+        project_revision_id
+    )
+    (select
+      json_build_object(
+        'projectId', (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1),
+        'reportType', $2,
+        'reportDueDate', due_date,
+        'reportingRequirementIndex', row_number() over()
+      ),
+      'create',
+      'cif',
+      'reporting_requirement',
+      'reporting_requirement',
+      $1
+      from generate_series(report_interval_start_date, $4, report_interval) as due_date
+    ) returning *
   )
-  (select
-    json_build_object(
-      'projectId', (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1),
-      'reportType', $2,
-      'reportDueDate', due_date,
-      'reportingRequirementIndex', row_number() over()
-    ),
-    'create',
-    'cif',
-    'reporting_requirement',
-    'reporting_requirement',
-    $1
-    from generate_series(report_interval_start_date, $4, report_interval) as due_date
-  ) returning *;
+  select * from report_form_changes;
 end;
   $generate_reports$ language plpgsql volatile;
 
