@@ -33,28 +33,28 @@ $migration$
         jsonb_strip_nulls(
           jsonb_build_object(
             -- reporting requirement data
-            'reportType', reporting_requirement_data->>'reportType',
-            'reportDueDate', reporting_requirement_data->>'reportDueDate',
-            'submittedDate', reporting_requirement_data->>'submittedDate',
-            'comments', reporting_requirement_data->>'comments',
-            'reportingRequirementIndex', reporting_requirement_data->>'reportingRequirementIndex',
-            'description', reporting_requirement_data->>'description',
+            'reportType', reporting_requirement_data->'reportType',
+            'reportDueDate', reporting_requirement_data->'reportDueDate',
+            'submittedDate', reporting_requirement_data->'submittedDate',
+            'comments', reporting_requirement_data->'comments',
+            'reportingRequirementIndex', reporting_requirement_data->'reportingRequirementIndex',
+            'description', reporting_requirement_data->'description',
 
             -- has_expenses comes from the report type table
-            'hasExpenses', (select has_expenses from cif.report_type where name=milestone_data->>'reportType'),
+            'hasExpenses', (select has_expenses from cif.report_type where name=(milestone_data->>'reportType')),
 
             -- milestone report data
-            'substantialCompletionDate', milestone_data->>'substantialCompletionDate',
-            'certifiedBy', milestone_data->>'certifiedBy',
-            'certifierProfessionalDesignation', milestone_data->>'certifierProfessionalDesignation',
-            'maximumAmount', milestone_data->>'maximumAmount',
-            'totalEligibleExpenses', milestone_data->>'totalEligibleExpenses',
+            'substantialCompletionDate', milestone_data->'substantialCompletionDate',
+            'certifiedBy', milestone_data->'certifiedBy',
+            'certifierProfessionalDesignation', milestone_data->'certifierProfessionalDesignation',
+            'maximumAmount', milestone_data->'maximumAmount',
+            'totalEligibleExpenses', milestone_data->'totalEligibleExpenses',
 
             -- payment data
             -- we aren't tracking calculated amounts yet, the migration function doesn't need to take care of them.
-            'adjustedGrossAmount', payment_data->>'adjustedGrossAmount',
-            'adjustedNetAmount', payment_data->>'adjustedNetAmount',
-            'dateSentToCsnr', payment_data->>'dateSentToCsnr'
+            'adjustedGrossAmount', payment_data->'adjustedGrossAmount',
+            'adjustedNetAmount', payment_data->'adjustedNetAmount',
+            'dateSentToCsnr', payment_data->'dateSentToCsnr'
           )
         ) as new_form_data
       from milestone_form_changes
