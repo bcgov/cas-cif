@@ -1,3 +1,50 @@
+# [1.0.0-rc.5](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.4...1.0.0-rc.5) (2022-10-13)
+
+### Bug Fixes
+
+- amendment and revision task list highlight ([5b8b09c](https://github.com/bcgov/cas-cif/commit/5b8b09c7e5c3303c5a784333d16a78d2028ac5f9))
+- correct budgets label ([a3416d9](https://github.com/bcgov/cas-cif/commit/a3416d9c034b7c326b039e4dd2e3d52cfa0b569b))
+- remove pending revisions from dev data ([75c7463](https://github.com/bcgov/cas-cif/commit/75c7463af883741dd3c599fb5569b7fe50b905e8))
+- replace undo change mutation with discard change mutation ([62dee15](https://github.com/bcgov/cas-cif/commit/62dee157949b0b863d3a3e8484ec5d50970ff292))
+- separate quarterly and teimp report statuses ([e8aea09](https://github.com/bcgov/cas-cif/commit/e8aea09b258f334e9e8146547730d6f4d9b9a5e9))
+- set project manager operation to update ([8352e1d](https://github.com/bcgov/cas-cif/commit/8352e1d35640a2f331cf778562e4cb693a503200))
+- showing amendments task list only in view mode ([997b77f](https://github.com/bcgov/cas-cif/commit/997b77f2d9791b4a41c1c3e76a0c2f0cc51c5736))
+- updated received date ([422c048](https://github.com/bcgov/cas-cif/commit/422c048e2db6901a4d8fa4d0531394038b138263))
+
+### Features
+
+- add additional dates to funding_parameter table ([c8afe28](https://github.com/bcgov/cas-cif/commit/c8afe285e9a9df07afdec2d1f7c11583e0b0d8fc))
+- add additional funding source forms ([e869362](https://github.com/bcgov/cas-cif/commit/e8693623838d74680a853fdaff59cd958e9431e7))
+- add additional funding source table ([0f89e8a](https://github.com/bcgov/cas-cif/commit/0f89e8a6fdc5cd94d0f7fa3b8c82622d7d301866))
+- add amendments and other revisions section to the task list ([12a47ed](https://github.com/bcgov/cas-cif/commit/12a47ed6e14275cec1466a2a4a0c7c87c4fbedc4))
+- add content suffix to date widget ([02c15bf](https://github.com/bcgov/cas-cif/commit/02c15bf668d8e7d081a518f4f786e18b8944e293))
+- add content suffix to read only date widget ([75b41a3](https://github.com/bcgov/cas-cif/commit/75b41a3b5f6b3c243f69fce27704349390189328))
+- add duration to measurement period end date ([931d67c](https://github.com/bcgov/cas-cif/commit/931d67ccc5cb27cced6975faf52ba03bc991c800))
+- add emission intensity status badge ([92da42b](https://github.com/bcgov/cas-cif/commit/92da42b89c5c8ba840d0de728207fea6b81bb2fc))
+- add generate reports mutation ([9b7456e](https://github.com/bcgov/cas-cif/commit/9b7456eaa238e98e3c18fe7f4af19c089a6d3c09))
+- add project revision amendment type table ([201c9b8](https://github.com/bcgov/cas-cif/commit/201c9b877bf770cb9e3af0567e9237bc849d2b7b))
+- add project_revision_effective_date computed column ([a1771c5](https://github.com/bcgov/cas-cif/commit/a1771c52064582a7cedfa9df85099fd62b66f582))
+- add proponent cost field to budgets form ([15ad81e](https://github.com/bcgov/cas-cif/commit/15ad81e771d729ed317bd07bc21485a6c4b7b155))
+- add rank to project form ([c17bf14](https://github.com/bcgov/cas-cif/commit/c17bf14147101e78fe0437e162f91a6e7973f64e))
+- add report duration to teimp summary ([c371914](https://github.com/bcgov/cas-cif/commit/c371914b32689d333a8b4a04e54105cc53178b57))
+- add report generator component ([57fcb24](https://github.com/bcgov/cas-cif/commit/57fcb24b8bfd9fe46ac5eff48001802876d63388))
+- add report generator component to related components ([79ff35a](https://github.com/bcgov/cas-cif/commit/79ff35a16d9b9c4a0ed1a11e3c93ce5b27b99ec2))
+- add score and project type fields to project overview form ([b4bf598](https://github.com/bcgov/cas-cif/commit/b4bf598816afe829088ce68c877ef04a1b553cd7))
+- adding calculated holdback payment amount on TEIMP form ([40c68a2](https://github.com/bcgov/cas-cif/commit/40c68a2b4546f1c7750d641c89ecf0802236c20d))
+- adding column to hold an adjusted value on teimp payment amount ([3cbead7](https://github.com/bcgov/cas-cif/commit/3cbead74185bbae474719621f5aa13d81040fdb3))
+- adding computed column to query ([60c58fb](https://github.com/bcgov/cas-cif/commit/60c58fba06a5999788a8e328105ec39f54595f1d))
+- computed column to return the teimp payment percentage ([3f45d5e](https://github.com/bcgov/cas-cif/commit/3f45d5e2f882a1fb45eda89658be3e74dba3da1d))
+- computed columns to total gross and net payment amounts ([6834a41](https://github.com/bcgov/cas-cif/commit/6834a41dd3445ae51b0cab728ca8cc98a4a4e7cd))
+- create rank widget and add to project form ([e4f4369](https://github.com/bcgov/cas-cif/commit/e4f4369e64fa1912b544f10b5b15fc565ac2699d))
+- custom update_form_change mutation ([cc967a8](https://github.com/bcgov/cas-cif/commit/cc967a8d10856864a18f36a2e45fb08ac00f3986))
+- date sent to csnr field for teimp form ([9b3b228](https://github.com/bcgov/cas-cif/commit/9b3b228d69eab96a34b1f21be4cdda10fa6c383e))
+- dynamic generation of tasklist items ([3905e04](https://github.com/bcgov/cas-cif/commit/3905e041d6948418899a63c355791701246462e6))
+- make contact phone number optional ([53d444b](https://github.com/bcgov/cas-cif/commit/53d444bd5143b5ff00523a12a07ff05d65bc606b))
+- replace commit_form_change trigger by a mutation ([f0052af](https://github.com/bcgov/cas-cif/commit/f0052af2f7995621c906ffaffcd02ed4065f270b))
+- replace commit_project_revision trigger by a mutation ([d95b4a8](https://github.com/bcgov/cas-cif/commit/d95b4a817c5b42cbf0f6ee78d448c95dcda34b9b))
+- stage form change custom mutation ([739b6cd](https://github.com/bcgov/cas-cif/commit/739b6cdb466f7338640456bc540da97b9751bd54))
+- teimp payment amount computed column ([ab17340](https://github.com/bcgov/cas-cif/commit/ab17340e3ae7d54c90c94cd00bd3bbaabf6335f2))
+
 # [1.0.0-rc.4](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.3...1.0.0-rc.4) (2022-08-15)
 
 ### Bug Fixes
