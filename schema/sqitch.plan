@@ -145,3 +145,4 @@ computed_columns/project_revision_effective_date 2022-09-12T22:42:51Z Mike Vespr
 computed_columns/project_revision_rank 2022-08-31T18:41:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add project_revision_rank computed column
 util_functions/get_form_status_001 2022-09-28T17:47:05Z Gurjeet Matharu <gurjeet@matharuco.com> # Adding coalesc to get_form_status function
 mutations/generate_reports 2022-09-21T23:55:42Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate annual or quarterly reports based on start and end dates
+@1.0.0-rc.5 2022-10-13T17:02:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.5
