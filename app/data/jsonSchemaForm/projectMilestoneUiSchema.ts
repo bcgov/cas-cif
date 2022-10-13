@@ -34,7 +34,8 @@ const projectMilestoneUiSchema = {
   reportDueDate: {
     "ui:col-md": 12,
     "bcgov:size": "small",
-    "ui:widget": "DueDateWidget",
+    "ui:widget": "DateWidget",
+    isDueDate: true,
   },
   submittedDate: {
     "ui:col-md": 12,

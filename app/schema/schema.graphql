@@ -51539,13 +51539,6 @@ type Mutation {
     """
     input: DiscardFundingParameterFormChangeInput!
   ): DiscardFundingParameterFormChangePayload
-<<<<<<< HEAD
-  discardMilestoneFormChange(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DiscardMilestoneFormChangeInput!
-  ): DiscardMilestoneFormChangePayload
 
   """
     Custom mutation to generate reports for a revision between contract_start_date and  measurement_period_end_date for quarterly reports
@@ -51558,8 +51551,6 @@ type Mutation {
     """
     input: GenerateReportsInput!
   ): GenerateReportsPayload
-=======
->>>>>>> 9ff3dbe9 (chore: schema)
   stageDirtyFormChanges(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
