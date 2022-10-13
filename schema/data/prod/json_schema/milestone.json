@@ -35,7 +35,19 @@
       "certifierProfessionalDesignation": {
         "type": "string",
         "title": "Professional Designation",
-        "default": "Professional Engineer"
+        "default": "Professional Engineer",
+        "anyOf": [
+          {
+            "type": "string",
+            "title": "Professional Engineer",
+            "enum": ["Professional Engineer"]
+          },
+          {
+            "type": "string",
+            "title": "Certified Professional Accountant",
+            "enum": ["Certified Professional Accountant"]
+          }
+        ]
       }
     },
     "dependencies": {
