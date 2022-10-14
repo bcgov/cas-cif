@@ -99,7 +99,6 @@ export const getProjectRevisionViewPageRoute = (projectRevisionId: string) => ({
     projectRevision: projectRevisionId,
   },
 });
-
 ///// Project
 
 export const getProjectsPageRoute = () => ({
