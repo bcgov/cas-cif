@@ -143,6 +143,7 @@ select results_eq(
   $$
     select new_form_data, json_schema_name from cif.form_change
     where form_data_table_name = 'reporting_requirement' and project_revision_id = 2
+    order by json_schema_name
   $$,
   $$
   values
@@ -150,7 +151,7 @@ select results_eq(
       "projectId":1,
       "reportType": "General Milestone",
       "reportingRequirementIndex": 1
-    }'::jsonb, 'milestone'::varchar),
+      }'::jsonb, 'milestone'::varchar),
     ('{
       "projectId":1,
       "reportType": "Annual",
