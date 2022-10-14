@@ -5,6 +5,7 @@ import {
   getProjectRevisionPageRoute,
   getProjectRevisionAttachmentsPageRoute,
   getProjectRevisionChangeLogsPageRoute,
+  getProjectRevisionDetailPageRoute,
   getProjectRevisionCreatePageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
@@ -19,7 +20,6 @@ import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItem
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 import { useNumberedFormStructure } from "data/formPages/formStructure";
 import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLogsTaskListSection";
-import ProjectRevisionCreateNewTaskListSection from "./ProjectRevisionCreateTaskListSection";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -31,8 +31,8 @@ interface Props {
 const TaskList: React.FC<Props> = ({
   projectRevision,
   mode,
-  // projectRevisionDetailViewId,
-  // revisionType,
+  projectRevisionDetailViewId,
+  revisionType,
 }) => {
   const {
     id,
@@ -147,9 +147,9 @@ const TaskList: React.FC<Props> = ({
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
-  // const projectRevisionDetailPagePathName = getProjectRevisionDetailPageRoute(
-  //   projectRevisionDetailViewId
-  // ).pathname;
+  const projectRevisionDetailPagePathName = getProjectRevisionDetailPageRoute(
+    projectRevisionDetailViewId
+  ).pathname;
 
   return (
     <div className="container">
@@ -241,14 +241,37 @@ const TaskList: React.FC<Props> = ({
         )}
 
         {/* Amendments & Other Revisions section */}
-        <ProjectRevisionChangeLogsTaskListSection
-          linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
-        />
-
-        {/* Create new revision */}
-        <ProjectRevisionCreateNewTaskListSection
-          linkUrl={getProjectRevisionCreatePageRoute(id)}
-        />
+        {mode === "view" && (
+          <ProjectRevisionChangeLogsTaskListSection
+            projectRevisionId={id}
+            defaultExpandedState={[
+              getProjectRevisionChangeLogsPageRoute(id).pathname,
+              projectRevisionDetailPagePathName,
+            ].includes(router.pathname)}
+            listItemName="Amendments & Other Revisions"
+          >
+            {router.pathname === projectRevisionDetailPagePathName && (
+              <TaskListItem
+                stepName={projectRevisionDetailPagePathName}
+                linkUrl={getProjectRevisionDetailPageRoute(
+                  projectRevisionDetailViewId
+                )}
+                formTitle={`View ${revisionType}`}
+                formStatus={null}
+                currentStep={projectRevisionDetailPagePathName}
+                mode={mode}
+              />
+            )}
+            <TaskListItem
+              stepName={projectRevisionDetailPagePathName}
+              linkUrl={getProjectRevisionCreatePageRoute(id)}
+              formTitle={`New Amendment`}
+              formStatus={null}
+              currentStep={projectRevisionDetailPagePathName}
+              mode={mode}
+            />
+          </ProjectRevisionChangeLogsTaskListSection>
+        )}
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection
