@@ -148,14 +148,14 @@ select results_eq(
   values
     ('{
       "projectId":1,
-      "reportType": "Annual",
-      "reportingRequirementIndex": 1
-      }'::jsonb, 'reporting_requirement'::varchar),
-    ('{
-      "projectId":1,
       "reportType": "General Milestone",
       "reportingRequirementIndex": 1
-    }'::jsonb, 'milestone'::varchar)
+    }'::jsonb, 'milestone'::varchar),
+    ('{
+      "projectId":1,
+      "reportType": "Annual",
+      "reportingRequirementIndex": 1
+      }'::jsonb, 'reporting_requirement'::varchar)
   $$,
   'creating a new project revision should create a form_change record for the reporting_requirement, either for the milestone schema, or the generic reporting_requirement schema'
 );
