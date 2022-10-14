@@ -5,7 +5,7 @@ import {
 } from "lib/helpers/reportStatusHelpers";
 import { useRouter } from "next/router";
 import { useFragment, graphql } from "react-relay";
-import { getProjectRevisionDetailPageRoute } from "routes/pageRoutes";
+import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
 import { ProjectRevisionTableRow_projectRevision$key } from "__generated__/ProjectRevisionTableRow_projectRevision.graphql";
 
 interface Props {
@@ -22,6 +22,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
         amendmentStatus
         updatedAt
         effectiveDate
+        typeRowNumber
         cifUserByUpdatedBy {
           fullName
         }
@@ -48,13 +49,16 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
     updatedAt,
     cifUserByUpdatedBy,
     projectRevisionAmendmentTypesByProjectRevisionId,
+    typeRowNumber,
   } = projectRevisionData;
 
-  const handleClick = () => router.push(getProjectRevisionDetailPageRoute(id));
+  const handleClick = () => router.push(getProjectRevisionViewPageRoute(id));
 
   return (
     <tr>
-      <td>{revisionType}</td>
+      <td>
+        {revisionType} {typeRowNumber}
+      </td>
       <td>{getDisplayDateString(parseStringDate(createdAt))}</td>
       <td>
         {effectiveDate

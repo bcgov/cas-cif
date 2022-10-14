@@ -3,7 +3,7 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
-import { projectRevisionDetailQuery } from "app/__generated__/projectRevisionDetailQuery.graphql";
+import { projectRevisionViewQuery } from "app/__generated__/projectRevisionViewQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
   projectRevisionSchema,
@@ -14,7 +14,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
 
-const createProjectRevisionDetailSchema = (allRevisionTypes) => {
+const createProjectRevisionViewSchema = (allRevisionTypes) => {
   const schema = projectRevisionSchema;
   schema.properties.revisionType = {
     ...schema.properties.revisionType,
@@ -37,8 +37,8 @@ const createProjectRevisionUISchema = () => {
   return uiSchema;
 };
 
-export const ProjectRevisionDetailQuery = graphql`
-  query projectRevisionDetailQuery($projectRevision: ID!) {
+export const ProjectRevisionViewQuery = graphql`
+  query projectRevisionViewQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
@@ -53,6 +53,7 @@ export const ProjectRevisionDetailQuery = graphql`
       cifUserByUpdatedBy {
         fullName
       }
+      typeRowNumber
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
@@ -68,11 +69,11 @@ export const ProjectRevisionDetailQuery = graphql`
     }
   }
 `;
-export function ProjectRevisionDetail({
+export function ProjectRevisionView({
   preloadedQuery,
-}: RelayProps<{}, projectRevisionDetailQuery>) {
+}: RelayProps<{}, projectRevisionViewQuery>) {
   const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
-    ProjectRevisionDetailQuery,
+    ProjectRevisionViewQuery,
     preloadedQuery
   );
   const taskList = (
@@ -81,23 +82,24 @@ export function ProjectRevisionDetail({
         projectRevision.projectByProjectId.latestCommittedProjectRevision
       }
       mode={"view"}
-      projectRevisionDetailViewId={projectRevision.id}
-      revisionType={projectRevision.revisionType}
+      projectRevisionUnderReview={projectRevision}
     />
   );
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
         <header>
-          <h2>{projectRevision.revisionType}</h2>
+          <h2>
+            {projectRevision.revisionType} {projectRevision.typeRowNumber}
+          </h2>
         </header>
         <div>
           <FormBase
             id={`form-${projectRevision.id}`}
             tagName={"dl"}
-            className="project-revision-detail-form"
+            className="project-revision-view-form"
             schema={
-              createProjectRevisionDetailSchema(allRevisionTypes) as JSONSchema7
+              createProjectRevisionViewSchema(allRevisionTypes) as JSONSchema7
             }
             uiSchema={createProjectRevisionUISchema()}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
@@ -157,7 +159,7 @@ export function ProjectRevisionDetail({
   );
 }
 export default withRelay(
-  ProjectRevisionDetail,
-  ProjectRevisionDetailQuery,
+  ProjectRevisionView,
+  ProjectRevisionViewQuery,
   withRelayOptions
 );

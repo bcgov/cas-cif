@@ -5,7 +5,7 @@ import {
   getProjectRevisionPageRoute,
   getProjectRevisionAttachmentsPageRoute,
   getProjectRevisionChangeLogsPageRoute,
-  getProjectRevisionDetailPageRoute,
+  getProjectRevisionViewPageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -23,15 +23,13 @@ import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLog
 interface Props {
   projectRevision: TaskList_projectRevision$key;
   mode: TaskListMode;
-  projectRevisionDetailViewId?: string;
-  revisionType?: string;
+  projectRevisionUnderReview?: any;
 }
 
 const TaskList: React.FC<Props> = ({
   projectRevision,
   mode,
-  projectRevisionDetailViewId,
-  revisionType,
+  projectRevisionUnderReview,
 }) => {
   const {
     id,
@@ -146,8 +144,8 @@ const TaskList: React.FC<Props> = ({
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
-  const projectRevisionDetailPagePathName = getProjectRevisionDetailPageRoute(
-    projectRevisionDetailViewId
+  const projectRevisionViewPagePathName = getProjectRevisionViewPageRoute(
+    projectRevisionUnderReview?.id
   ).pathname;
 
   return (
@@ -245,19 +243,19 @@ const TaskList: React.FC<Props> = ({
             projectRevisionId={id}
             defaultExpandedState={[
               getProjectRevisionChangeLogsPageRoute(id).pathname,
-              projectRevisionDetailPagePathName,
+              projectRevisionViewPagePathName,
             ].includes(router.pathname)}
             listItemName="Amendments & Other Revisions"
           >
-            {router.pathname === projectRevisionDetailPagePathName && (
+            {router.pathname === projectRevisionViewPagePathName && (
               <TaskListItem
-                stepName={projectRevisionDetailPagePathName}
-                linkUrl={getProjectRevisionDetailPageRoute(
-                  projectRevisionDetailViewId
+                stepName={projectRevisionViewPagePathName}
+                linkUrl={getProjectRevisionViewPageRoute(
+                  projectRevisionUnderReview?.id
                 )}
-                formTitle={`View ${revisionType}`}
+                formTitle={`View ${projectRevisionUnderReview?.revisionType} ${projectRevisionUnderReview?.typeRowNumber}`}
                 formStatus={null}
-                currentStep={projectRevisionDetailPagePathName}
+                currentStep={projectRevisionViewPagePathName}
                 mode={mode}
               />
             )}
