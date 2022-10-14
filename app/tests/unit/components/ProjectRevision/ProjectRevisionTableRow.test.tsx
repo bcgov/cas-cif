@@ -1,6 +1,8 @@
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ProjectRevisionTableRow from "components/ProjectRevision/ProjectRevisionTableRow";
 import { graphql } from "react-relay";
+import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectRevisionTableRowQuery, {
   ProjectRevisionTableRowQuery,
@@ -23,11 +25,13 @@ const mockQueryPayload = {
   ProjectRevision() {
     const result: ProjectRevisionTableRow_projectRevision = {
       $fragmentType: "ProjectRevisionTableRow_projectRevision",
+      id: "mock-id",
       revisionType: "revision-type-1",
       createdAt: "2021-01-01",
       amendmentStatus: "amendment-status-1",
       effectiveDate: "2021-02-01T23:59:59.999-07:00",
       updatedAt: "2021-02-01T23:59:59.999-07:00",
+      typeRowNumber: 1,
       cifUserByUpdatedBy: { fullName: "test-user-1" },
       projectRevisionAmendmentTypesByProjectRevisionId: {
         edges: [
@@ -75,7 +79,7 @@ describe("The ProjectRevisionTableRow", () => {
 
     expect(
       screen.getByRole("cell", {
-        name: /revision\-type\-1/i,
+        name: /revision\-type\-1 1/i,
       })
     ).toBeInTheDocument();
     expect(
@@ -106,7 +110,18 @@ describe("The ProjectRevisionTableRow", () => {
         name: /view/i,
       })
     ).toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
   });
-  // TODO: Add tests when `View/Edit` button is implemented
+
+  it("redirects the user to the project revision view page", async () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: /view/i,
+      })
+    );
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      getProjectRevisionViewPageRoute("mock-id")
+    );
+  });
 });
