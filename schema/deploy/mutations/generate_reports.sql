@@ -43,7 +43,7 @@ begin
       json_build_object(
         'projectId', (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1),
         'reportType', $2,
-        'reportDueDate', due_date,
+        'reportDueDate', due_date::timestamptz,
         'reportingRequirementIndex', row_number() over()
       ),
       'create',
