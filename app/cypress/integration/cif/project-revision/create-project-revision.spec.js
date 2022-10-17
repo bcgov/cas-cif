@@ -6,13 +6,12 @@ describe("when creating a project, the project page", () => {
     cy.sqlFixture("dev/002_cif_operator");
     cy.sqlFixture("dev/003_cif_contact");
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
-  });
-
-  it("allows an admin user to create a project", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
+  });
 
+  it("allows an admin user to create a project", () => {
     // add overview
     cy.fillOverviewForm(
       "Emissions Performance",
@@ -231,10 +230,6 @@ describe("when creating a project, the project page", () => {
   });
 
   it("creates new contact and redirects a user back to project contact form and populate project contact form with newly created contact", () => {
-    cy.mockLogin("cif_admin");
-
-    cy.visit("/cif/projects");
-    cy.get("button").contains("Add a Project").click();
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
 
@@ -267,6 +262,58 @@ describe("when creating a project, the project page", () => {
     cy.findAllByRole("button", { name: /Create new contact/i }).should(
       "not.exist"
     );
+  });
+  it("generates quarterly and annual reports automatically", () => {
+    // add budgets, expenses, and payments
+    cy.findByRole("heading", {
+      name: /3. Budgets, Expenses & Payments/i,
+    }).click();
+    cy.findByText(/Add budgets/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByText(/Yes/i).click();
+    cy.setDateInPicker("Contract Start Date", "2020-01-01");
+    cy.setDateInPicker("Project Assets Life End Date", "2024-02-02");
+    cy.contains("Changes saved").should("be.visible");
+    // add teimp reports
+    cy.findByRole("heading", {
+      name: /6. Emissions Intensity Report/i,
+    }).click();
+    cy.findByText(/Add emissions intensity report/i).click();
+    cy.url().should("include", "/form/6");
+    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.setDateInPicker("Measurement period end date", "2022-01-01");
+    cy.setDateInPicker("Report Due Date", "2020-01-01");
+    cy.contains("Changes saved").should("be.visible");
+
+    //generate quarterly reports
+    cy.findByRole("heading", { name: /5. Quarterly Reports/i }).click();
+    cy.findByText(/Add quarterly reports/i).click();
+    cy.url().should("include", "/form/5");
+    cy.findByRole("button", { name: /generate quarterly reports/i }).click();
+    cy.get(".reportHeader").should("have.length", 8);
+    cy.findAllByText(/Report Due Date$/i)
+      .first()
+      .next()
+      .contains(/Jan(\.)? 05, 2020/);
+    cy.findAllByText(/Report Due Date$/i)
+      .last()
+      .next()
+      .contains(/Oct(\.)? 05, 2021/);
+
+    //generate annual reports
+    cy.findByRole("heading", { name: /7. Annual reports/i }).click();
+    cy.findByText(/Add annual reports/i).click();
+    cy.url().should("include", "/form/7");
+    cy.findByRole("button", { name: /generate annual reports/i }).click();
+    cy.get(".reportHeader").should("have.length", 5);
+    cy.findAllByText(/Report Due Date$/i)
+      .first()
+      .next()
+      .contains(/Jan(\.)? 31, 2020/);
+    cy.findAllByText(/Report Due Date$/i)
+      .last()
+      .next()
+      .contains(/Jan(\.)? 31, 2024/);
   });
 });
 describe("the project amendment and revisions page", () => {
