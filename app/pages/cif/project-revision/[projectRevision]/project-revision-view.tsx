@@ -3,7 +3,7 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
-import { projectRevisionViewQuery } from "app/__generated__/projectRevisionViewQuery.graphql";
+import { projectRevisionViewQuery } from "__generated__/projectRevisionViewQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
   projectRevisionSchema,
