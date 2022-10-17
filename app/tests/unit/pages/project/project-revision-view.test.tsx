@@ -1,0 +1,96 @@
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import { ProjectRevisionView } from "pages/cif/project-revision/[projectRevision]/project-revision-view";
+import compiledProjectRevisionViewQuery, {
+  projectRevisionViewQuery,
+} from "__generated__/projectRevisionViewQuery.graphql";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { getProjectRevisionChangeLogsPageRoute } from "routes/pageRoutes";
+
+const defaultMockResolver = {
+  ProjectRevision(context, generateId) {
+    return {
+      id: `mock-proj-rev-${generateId()}`,
+      revisionType: "Minor Revision",
+      typeRowNumber: 1,
+      comments: "Test comment",
+      createdAt: "2021-01-01",
+      cifUserByCreatedBy: { fullName: "test-user-1" },
+      updatedAt: "2021-02-01",
+      cifUserByUpdatedBy: { fullName: "test-user-2" },
+    };
+  },
+  Query() {
+    return {
+      allRevisionTypes: {
+        edges: [
+          {
+            node: {
+              type: "Minor Revision",
+            },
+          },
+          {
+            node: {
+              type: "General Revision",
+            },
+          },
+          {
+            node: {
+              type: "Amendment",
+            },
+          },
+        ],
+      },
+    };
+  },
+};
+
+const pageTestingHelper = new PageTestingHelper<projectRevisionViewQuery>({
+  pageComponent: ProjectRevisionView,
+  compiledQuery: compiledProjectRevisionViewQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: { projectRevision: "mock-id" },
+});
+
+describe("ProjectRevisionView Page", () => {
+  beforeEach(() => {
+    pageTestingHelper.reinit();
+  });
+
+  it("displays project revision view page", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    expect(
+      screen.getByRole("heading", {
+        name: /minor revision 1/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(screen.getByText(/revision type/i)).toBeInTheDocument();
+    expect(screen.getByText(/test comment/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-user-2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Feb[.]? 1, 2021/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-user-1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Jan[.]? 1, 2021/i)).toBeInTheDocument();
+  });
+
+  it("Takes user to amendments and revisions table when they click Amendments & Other Revisions on the tasklist", async () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    expect(
+      screen.getByRole("button", {
+        name: /amendments & other revisions/i,
+      })
+    ).toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: /amendments & other revisions/i,
+      })
+    );
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
+      getProjectRevisionChangeLogsPageRoute("mock-proj-rev-5")
+    );
+  });
+});
