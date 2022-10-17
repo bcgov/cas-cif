@@ -14,9 +14,9 @@ const defaultMockResolver = {
       revisionType: "Minor Revision",
       typeRowNumber: 1,
       comments: "Test comment",
-      createdAt: "2021-01-01",
+      createdAt: "2021-01-01T23:59:59.999-07:00",
       cifUserByCreatedBy: { fullName: "test-user-1" },
-      updatedAt: "2021-02-01",
+      updatedAt: "2021-02-01T23:59:59.999-07:00",
       cifUserByUpdatedBy: { fullName: "test-user-2" },
     };
   },
