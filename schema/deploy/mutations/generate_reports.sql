@@ -51,7 +51,7 @@ begin
       'reporting_requirement',
       'reporting_requirement',
       $1
-      from generate_series(report_interval_start_date, $4, report_interval) as due_date
+      from generate_series(report_interval_start_date::timestamptz, $4::timestamptz, report_interval) as due_date
     ) returning *
   )
   select * from report_form_changes;
