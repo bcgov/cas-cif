@@ -54,6 +54,8 @@ export const ProjectRevisionViewQuery = graphql`
         fullName
       }
       typeRowNumber
+      # eslint-disable-next-line relay/unused-fields
+      comments
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
@@ -110,9 +112,9 @@ export function ProjectRevisionView({
             <dt>Revision record history</dt>
             {projectRevision.updatedAt && (
               <dd>
-                <h6>Updated by </h6>
+                <em>Updated by </em>
                 {projectRevision.cifUserByUpdatedBy?.fullName}
-                <h6>on </h6>
+                <em>on </em>
                 {getLocaleFormattedDate(
                   projectRevision.updatedAt,
                   "DATETIME_MED"
@@ -120,9 +122,9 @@ export function ProjectRevisionView({
               </dd>
             )}
             <dd>
-              <h6>Created by </h6>
+              <em>Created by </em>
               {projectRevision.cifUserByCreatedBy?.fullName}
-              <h6>on </h6>
+              <em>on </em>
               {getLocaleFormattedDate(
                 projectRevision.createdAt,
                 "DATETIME_MED"
@@ -151,8 +153,9 @@ export function ProjectRevisionView({
         div :global(.revision-record-history-section > dd) {
           margin-bottom: 0;
         }
-        div :global(.revision-record-history-section > dd > h6) {
-          display: inline;
+        div :global(.revision-record-history-section > dd > em) {
+          font-weight: bold;
+          font-size: 0.9em;
         }
       `}</style>
     </>
