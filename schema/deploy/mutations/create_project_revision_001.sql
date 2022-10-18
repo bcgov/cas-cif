@@ -1,8 +1,8 @@
--- Deploy cif:mutations/create_project_revision to pg
+-- Deploy cif:mutations/create_project_revision_001 to pg
 
 begin;
-
-create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000))
+drop function cif.create_project_revision(integer);
+create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000) default 'Amendment')
 returns cif.project_revision
 as $function$
 declare
@@ -10,7 +10,7 @@ declare
   form_change_record record;
 begin
   insert into cif.project_revision(project_id, change_status, revision_type)
-  values ($1, 'pending', $3) returning * into revision_row;
+  values ($1, 'pending', $2) returning * into revision_row;
 
   perform cif.create_form_change(
     operation => 'update',
@@ -91,15 +91,6 @@ begin
       'funding_parameter' as json_schema_name
     from cif.funding_parameter
     where funding_parameter.project_id = $1
-    and archived_at is null
-  union
-    select
-      id,
-      'update'::cif.form_change_operation as operation,
-      'additional_funding_source' as form_data_table_name,
-      'additional_funding_source' as json_schema_name
-    from cif.additional_funding_source
-    where additional_funding_source.project_id = $1
     and archived_at is null
   )
   loop

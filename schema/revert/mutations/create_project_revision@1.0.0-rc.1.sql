@@ -2,6 +2,6 @@
 
 begin;
 
-drop function cif.create_project_revision;
+drop function cif.create_project_revision(integer);
 
 commit;
