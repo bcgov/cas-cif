@@ -9,7 +9,7 @@ export const projectRevisionSchema = {
       default: undefined,
       anyOf: undefined,
     },
-    comments: {
+    changeReason: {
       type: "string",
       title: "General Comments",
     },

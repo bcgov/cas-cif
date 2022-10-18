@@ -71,17 +71,17 @@ exports[`The FormBase component renders a test schema with the readonly theme 1`
     novalidate=""
   >
     <div
-      class="jsx-141906859"
+      class="jsx-2146271977"
     >
       <div
-        class="jsx-141906859 definition-container"
+        class="jsx-2146271977 definition-container"
       >
         <div>
           <div
-            class="jsx-141906859"
+            class="jsx-2146271977"
           >
             <div
-              class="jsx-141906859 definition-container"
+              class="jsx-2146271977 definition-container"
             >
               <dt
                 class="jsx-156197991"

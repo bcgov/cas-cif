@@ -39,7 +39,6 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
         div.definition-container {
           display: flex;
         }
-
         div:not(:last-child) {
           margin-bottom: 0.5em;
         }
@@ -58,6 +57,12 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
         }
         div :global(li.text-danger) {
           color: #cd2026 !important;
+        }
+        div :global(.radio > label) {
+          font-weight: normal;
+        }
+        div :global(input[type="radio"]) {
+          margin-right: 1em;
         }
       `}</style>
     </div>

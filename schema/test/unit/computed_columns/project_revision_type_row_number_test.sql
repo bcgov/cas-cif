@@ -1,6 +1,6 @@
 begin;
 
-select plan(5);
+select plan(1);
 
 /** SETUP **/
 truncate cif.project restart identity cascade;
@@ -33,45 +33,22 @@ values
 (1, 'Minor Revision', 'committed');
 /** END SETUP **/
 
-
-select is(
-  (
-    select cif.project_revision_type_row_number((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1))
-  ),
-  1,
-  'Returns 1 as the row number of the project revision with amendment type within the scope of a project and among all other revisions of the same type.'
-);
-
-select is(
-  (
-    select cif.project_revision_type_row_number((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3))
-  ),
-  2,
-  'Returns 2 as the row number of the project revision with amendment type within the scope of a project and among all other revisions of the same type.'
-);
-
-
-select is(
-  (
-    select cif.project_revision_type_row_number((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=4))
-  ),
-  1,
-  'Returns 1 as the row number of the project revision with minor revision type within the scope of a project and among all other revisions of the same type.'
-);
-
-select is(
-  (
-    select cif.project_revision_type_row_number((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=6))
-  ),
-  2,
-  'Returns 2 as the row number of the project revision with minor revision type within the scope of a project and among all other revisions of the same type.'
-);
-
-select is(
-  (
-    select cif.project_revision_type_row_number((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=9))
-  ),
-  4,
-  'Returns 4 as the row number of the project revision with minor revision within the scope of a project and among all other revisions of the same type.'
+select results_eq(
+  $$
+    select id, cif.project_revision_type_row_number(row(project_revision.*)::cif.project_revision) from cif.project_revision;
+  $$,
+  $$
+    values
+    (1, 1),
+    (2, 1),
+    (3, 2),
+    (4, 1),
+    (5, 3),
+    (6, 2),
+    (7, 3),
+    (8, 2),
+    (9, 4)
+  $$,
+  'Returns currosponding row number for each project revision based on revision type'
 );
 rollback;

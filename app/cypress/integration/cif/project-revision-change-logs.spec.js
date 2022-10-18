@@ -16,7 +16,7 @@ describe("the project amendment and revisions page", () => {
     cy.get("h2").contains(/Amendments & Other Revisions/i);
   });
 
-  it("displays the list of project amendment and revisions", () => {
+  it("displays the list of project amendment and revisions and view page for a specific revision", () => {
     cy.happoAndAxe("Amendments & Other Revisions", "view", "main");
     cy.get("tbody tr").should("have.length", 5);
     cy.get("[placeholder='Filter']").first().type("Minor");
@@ -31,16 +31,15 @@ describe("the project amendment and revisions page", () => {
     cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
     cy.get("tbody tr").first().contains("Minor Revision");
     cy.get("tbody tr").last().contains("In Discussion");
-  });
 
-  it("displays amendment and revision view page for a specific revision", () => {
+    // checking the view page for a specific revision
     cy.findAllByRole("button", { name: /^view$/i })
       .first()
       .click();
-    cy.url().should("include", "/project-revision-view");
+    cy.url().should("include", "/view");
     cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
-    cy.get("h2").contains(/general revision 1/i);
-    cy.findByRole("link", { name: /view general revision 1/i }).should("exist");
-    cy.get('input[value="General Revision"]').should("be.checked");
+    cy.get("h2").contains(/minor revision 1/i);
+    cy.findByRole("link", { name: /view minor revision 1/i }).should("exist");
+    cy.get('input[value="Minor Revision"]').should("be.checked");
   });
 });

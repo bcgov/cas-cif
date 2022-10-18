@@ -21,14 +21,20 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
   const [isExpanded, setIsExpanded] = useState(defaultExpandedState);
   const toggleCustomAccordion = () => {
     router.push(getProjectRevisionChangeLogsPageRoute(projectRevisionId));
-    setIsExpanded(!isExpanded);
+    setIsExpanded(true);
   };
   useEffect(() => {
     setIsExpanded(defaultExpandedState);
   }, [defaultExpandedState]);
 
   return (
-    <li>
+    <li
+      aria-current={
+        router.pathname.includes("project-revision-change-logs") && isExpanded
+          ? "step"
+          : false
+      }
+    >
       <h3 onClick={toggleCustomAccordion}>
         <button
           className="accordionTrigger"
@@ -49,6 +55,10 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
         li {
           text-indent: 15px;
           margin-bottom: 0;
+        }
+        li[aria-current="step"],
+        li[aria-current="step"] div {
+          background-color: #fafafc;
         }
         h3 {
           font-size: 1rem;
