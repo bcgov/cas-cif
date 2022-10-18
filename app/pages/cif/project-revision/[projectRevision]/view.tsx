@@ -3,7 +3,7 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
-import { projectRevisionViewQuery } from "__generated__/projectRevisionViewQuery.graphql";
+import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
   projectRevisionSchema,
@@ -37,8 +37,8 @@ const createProjectRevisionUISchema = () => {
   return uiSchema;
 };
 
-export const ProjectRevisionViewQuery = graphql`
-  query projectRevisionViewQuery($projectRevision: ID!) {
+export const ViewProjectRevisionQuery = graphql`
+  query viewProjectRevisionQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
@@ -55,7 +55,7 @@ export const ProjectRevisionViewQuery = graphql`
       }
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
-      comments
+      changeReason
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
@@ -73,9 +73,9 @@ export const ProjectRevisionViewQuery = graphql`
 `;
 export function ProjectRevisionView({
   preloadedQuery,
-}: RelayProps<{}, projectRevisionViewQuery>) {
+}: RelayProps<{}, viewProjectRevisionQuery>) {
   const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
-    ProjectRevisionViewQuery,
+    ViewProjectRevisionQuery,
     preloadedQuery
   );
   const taskList = (
@@ -113,8 +113,8 @@ export function ProjectRevisionView({
             {projectRevision.updatedAt && (
               <dd>
                 <em>Updated by </em>
-                {projectRevision.cifUserByUpdatedBy?.fullName}
-                <em>on </em>
+                {projectRevision.cifUserByUpdatedBy?.fullName || "Unknown"}
+                <em> on </em>
                 {getLocaleFormattedDate(
                   projectRevision.updatedAt,
                   "DATETIME_MED"
@@ -123,8 +123,8 @@ export function ProjectRevisionView({
             )}
             <dd>
               <em>Created by </em>
-              {projectRevision.cifUserByCreatedBy?.fullName}
-              <em>on </em>
+              {projectRevision.cifUserByCreatedBy?.fullName || "Unknown"}
+              <em> on </em>
               {getLocaleFormattedDate(
                 projectRevision.createdAt,
                 "DATETIME_MED"
@@ -135,15 +135,8 @@ export function ProjectRevisionView({
       </DefaultLayout>
       <style jsx>{`
         div :global(.definition-container) {
-          display: flex;
           flex-direction: column;
           gap: 0.5rem;
-        }
-        div :global(.radio > label) {
-          font-weight: normal;
-        }
-        div :global(input[type="radio"]) {
-          margin-right: 1em;
         }
         div :global(.revision-record-history-section) {
           display: flex;
@@ -163,6 +156,6 @@ export function ProjectRevisionView({
 }
 export default withRelay(
   ProjectRevisionView,
-  ProjectRevisionViewQuery,
+  ViewProjectRevisionQuery,
   withRelayOptions
 );

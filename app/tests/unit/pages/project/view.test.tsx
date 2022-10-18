@@ -1,8 +1,8 @@
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
-import { ProjectRevisionView } from "pages/cif/project-revision/[projectRevision]/project-revision-view";
-import compiledProjectRevisionViewQuery, {
-  projectRevisionViewQuery,
-} from "__generated__/projectRevisionViewQuery.graphql";
+import { ProjectRevisionView } from "pages/cif/project-revision/[projectRevision]/view";
+import compiledViewProjectRevisionQuery, {
+  viewProjectRevisionQuery,
+} from "__generated__/viewProjectRevisionQuery.graphql";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { getProjectRevisionChangeLogsPageRoute } from "routes/pageRoutes";
@@ -13,7 +13,7 @@ const defaultMockResolver = {
       id: `mock-proj-rev-${generateId()}`,
       revisionType: "Minor Revision",
       typeRowNumber: 1,
-      comments: "Test comment",
+      changeReason: "Test comment",
       createdAt: "2021-01-01T23:59:59.999-07:00",
       cifUserByCreatedBy: { fullName: "test-user-1" },
       updatedAt: "2021-02-01T23:59:59.999-07:00",
@@ -45,9 +45,9 @@ const defaultMockResolver = {
   },
 };
 
-const pageTestingHelper = new PageTestingHelper<projectRevisionViewQuery>({
+const pageTestingHelper = new PageTestingHelper<viewProjectRevisionQuery>({
   pageComponent: ProjectRevisionView,
-  compiledQuery: compiledProjectRevisionViewQuery,
+  compiledQuery: compiledViewProjectRevisionQuery,
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: { projectRevision: "mock-id" },
 });
