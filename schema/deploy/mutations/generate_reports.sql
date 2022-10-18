@@ -29,6 +29,8 @@ begin
   end if;
 
   -- generating the reports
+  set time zone "America/Vancouver";
+
   return query
   with report_form_changes as (
     insert into cif.form_change(
