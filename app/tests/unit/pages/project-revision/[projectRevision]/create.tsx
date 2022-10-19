@@ -3,9 +3,11 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevision]/create";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
-import compiledprojectRevisionCreateNewQuery, {
-  projectRevisionCreateNewQuery,
-} from "__generated__/projectRevisionCreateNewQuery.graphql";
+
+import {
+  compliledcreateProjectRevisionQuery,
+  createProjectRevisionQuery,
+} from "__generated__/createProjectRevisionQuery.graphql";
 
 const defaultMockResolver = {
   Project() {
@@ -15,9 +17,9 @@ const defaultMockResolver = {
   },
 };
 
-const pageTestingHelper = new PageTestingHelper<projectRevisionCreateNewQuery>({
+const pageTestingHelper = new PageTestingHelper<createProjectRevisionQuery>({
   pageComponent: ProjectRevisionCreate,
-  compiledQuery: compiledprojectRevisionCreateNewQuery,
+  compiledQuery: compliledcreateProjectRevisionQuery,
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: {
     projectRevision: "test-cif-project-revision",
@@ -29,7 +31,7 @@ describe("The project amendments and revisions page", () => {
     pageTestingHelper.reinit();
   });
 
-  it("loads the New Revision Butto2n", () => {
+  it("renders an Amendment radio button", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
