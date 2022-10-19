@@ -5,6 +5,7 @@ import {
   getProjectRevisionPageRoute,
   getProjectRevisionAttachmentsPageRoute,
   getProjectRevisionChangeLogsPageRoute,
+  getProjectRevisionViewPageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -22,9 +23,14 @@ import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLog
 interface Props {
   projectRevision: TaskList_projectRevision$key;
   mode: TaskListMode;
+  projectRevisionUnderReview?: any;
 }
 
-const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
+const TaskList: React.FC<Props> = ({
+  projectRevision,
+  mode,
+  projectRevisionUnderReview,
+}) => {
   const {
     id,
     rowId,
@@ -138,6 +144,10 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
+  const projectRevisionViewPagePathName = getProjectRevisionViewPageRoute(
+    projectRevisionUnderReview?.id
+  ).pathname;
+
   return (
     <div className="container">
       <h2>
@@ -230,8 +240,26 @@ const TaskList: React.FC<Props> = ({ projectRevision, mode }) => {
         {/* Amendments & Other Revisions section */}
         {mode === "view" && (
           <ProjectRevisionChangeLogsTaskListSection
-            linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
-          />
+            projectRevisionId={id}
+            defaultExpandedState={[
+              getProjectRevisionChangeLogsPageRoute(id).pathname,
+              projectRevisionViewPagePathName,
+            ].includes(router.pathname)}
+            listItemName="Amendments & Other Revisions"
+          >
+            {router.pathname === projectRevisionViewPagePathName && (
+              <TaskListItem
+                stepName={projectRevisionViewPagePathName}
+                linkUrl={getProjectRevisionViewPageRoute(
+                  projectRevisionUnderReview?.id
+                )}
+                formTitle={`View ${projectRevisionUnderReview?.revisionType} ${projectRevisionUnderReview?.typeRowNumber}`}
+                formStatus={null}
+                currentStep={projectRevisionViewPagePathName}
+                mode={mode}
+              />
+            )}
+          </ProjectRevisionChangeLogsTaskListSection>
         )}
         {/* Attachments Section */}
         {mode === "view" && (

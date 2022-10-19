@@ -9,14 +9,14 @@ describe("the project amendment and revisions page", () => {
     cy.sqlFixture("dev/007_commit_project_revision");
     cy.sqlFixture("dev/009_cif_project_revision_logs");
     cy.mockLogin("cif_admin");
-  });
-
-  it("displays the list of project amendment and revisions", () => {
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.findByText(/Amendments & Other Revisions/i).click();
     cy.url().should("include", "/project-revision-change-logs");
     cy.get("h2").contains(/Amendments & Other Revisions/i);
+  });
+
+  it("displays the list of project amendment and revisions and view page for a specific revision", () => {
     cy.happoAndAxe("Amendments & Other Revisions", "view", "main");
     cy.get("tbody tr").should("have.length", 5);
     cy.get("[placeholder='Filter']").first().type("Minor");
@@ -31,5 +31,15 @@ describe("the project amendment and revisions page", () => {
     cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
     cy.get("tbody tr").first().contains("Minor Revision");
     cy.get("tbody tr").last().contains("In Discussion");
+
+    // checking the view page for a specific revision
+    cy.findAllByRole("button", { name: /^view$/i })
+      .first()
+      .click();
+    cy.url().should("include", "/view");
+    cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
+    cy.get("h2").contains(/minor revision 1/i);
+    cy.findByRole("link", { name: /view minor revision 1/i }).should("exist");
+    cy.get('input[value="Minor Revision"]').should("be.checked");
   });
 });

@@ -58555,6 +58555,11 @@ type ProjectRevision implements Node {
   teimpPaymentPercentage: BigFloat
 
   """
+  Returns the row number of the project revision within the scope of a project and among all other revisions of the same type.
+  """
+  typeRowNumber: Int
+
+  """
   Computed column to return the form_change for the earliest due reporting requirement that hasn't been submitted, optionally constrained by the report type
   """
   upcomingReportingRequirementFormChange(reportType: String): FormChange
@@ -59564,6 +59569,9 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `teimpPaymentPercentage` field."""
   teimpPaymentPercentage: BigFloatFilter
+
+  """Filter by the object’s `typeRowNumber` field."""
+  typeRowNumber: IntFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter

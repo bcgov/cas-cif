@@ -3,7 +3,9 @@ import {
   getDisplayDateString,
   parseStringDate,
 } from "lib/helpers/reportStatusHelpers";
+import { useRouter } from "next/router";
 import { useFragment, graphql } from "react-relay";
+import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
 import { ProjectRevisionTableRow_projectRevision$key } from "__generated__/ProjectRevisionTableRow_projectRevision.graphql";
 
 interface Props {
@@ -14,11 +16,13 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
   const projectRevisionData = useFragment(
     graphql`
       fragment ProjectRevisionTableRow_projectRevision on ProjectRevision {
+        id
         revisionType
         createdAt
         amendmentStatus
         updatedAt
         effectiveDate
+        typeRowNumber
         cifUserByUpdatedBy {
           fullName
         }
@@ -34,7 +38,10 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
     projectRevision
   );
 
+  const router = useRouter();
+
   const {
+    id,
     revisionType,
     createdAt,
     amendmentStatus,
@@ -42,11 +49,16 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
     updatedAt,
     cifUserByUpdatedBy,
     projectRevisionAmendmentTypesByProjectRevisionId,
+    typeRowNumber,
   } = projectRevisionData;
+
+  const handleClick = () => router.push(getProjectRevisionViewPageRoute(id));
 
   return (
     <tr>
-      <td>{revisionType}</td>
+      <td>
+        {revisionType} {typeRowNumber}
+      </td>
       <td>{getDisplayDateString(parseStringDate(createdAt))}</td>
       <td>
         {effectiveDate
@@ -63,7 +75,9 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
       <td>{amendmentStatus}</td>
       <td>
         <div>
-          <Button size="small">View {!effectiveDate && "/ Edit"}</Button>
+          <Button size="small" onClick={handleClick}>
+            View {!effectiveDate && "/ Edit"}
+          </Button>
         </div>
       </td>
       <style jsx>{`
