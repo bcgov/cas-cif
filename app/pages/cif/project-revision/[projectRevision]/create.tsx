@@ -4,7 +4,7 @@ import TaskList from "components/TaskList";
 import { withRelay, RelayProps } from "relay-nextjs";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { Button } from "@button-inc/bcgov-theme";
-import { createQuery } from "__generated__/createQuery.graphql";
+import { createProjectRevisionQuery } from "__generated__/createProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
   projectRevisionCreateSchema,
@@ -17,7 +17,7 @@ import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjec
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 
 const pageQuery = graphql`
-  query createQuery($projectRevision: ID!) {
+  query createProjectRevisionQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
@@ -35,7 +35,7 @@ const pageQuery = graphql`
 
 export function ProjectRevisionCreate({
   preloadedQuery,
-}: RelayProps<{}, createQuery>) {
+}: RelayProps<{}, createProjectRevisionQuery>) {
   const { session, projectRevision } = usePreloadedQuery(
     pageQuery,
     preloadedQuery
@@ -47,7 +47,6 @@ export function ProjectRevisionCreate({
     useCreateProjectRevision();
 
   const handleCreateRevision = ({ formData }) => {
-    console.log(formData.revisionType);
     createProjectRevision({
       variables: {
         projectId: projectRevision.project.rowId,
