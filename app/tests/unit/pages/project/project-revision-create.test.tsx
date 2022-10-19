@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevision]/project-revision-create";
+import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevision]/create";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledprojectRevisionCreateNewQuery, {
   projectRevisionCreateNewQuery,

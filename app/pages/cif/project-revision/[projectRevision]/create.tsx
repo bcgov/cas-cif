@@ -4,7 +4,7 @@ import TaskList from "components/TaskList";
 import { withRelay, RelayProps } from "relay-nextjs";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { Button } from "@button-inc/bcgov-theme";
-import { projectRevisionCreateNewQuery } from "__generated__/projectRevisionCreateNewQuery.graphql";
+import { createQuery } from "__generated__/createQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
   projectRevisionCreateSchema,
@@ -13,11 +13,11 @@ import {
 import { JSONSchema7 } from "json-schema";
 import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
-import { useCreateProjectRevisionWithRevisionType } from "mutations/ProjectRevision/createProjectRevisionWithRevisionType";
+import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 
 const pageQuery = graphql`
-  query projectRevisionCreateNewQuery($projectRevision: ID!) {
+  query createQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
@@ -35,7 +35,7 @@ const pageQuery = graphql`
 
 export function ProjectRevisionCreate({
   preloadedQuery,
-}: RelayProps<{}, projectRevisionCreateNewQuery>) {
+}: RelayProps<{}, createQuery>) {
   const { session, projectRevision } = usePreloadedQuery(
     pageQuery,
     preloadedQuery
@@ -44,7 +44,7 @@ export function ProjectRevisionCreate({
 
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
-    useCreateProjectRevisionWithRevisionType();
+    useCreateProjectRevision();
 
   const handleCreateRevision = ({ formData }) => {
     console.log(formData.revisionType);
@@ -56,7 +56,7 @@ export function ProjectRevisionCreate({
       onCompleted: (response) => {
         router.push(
           getProjectRevisionFormPageRoute(
-            response.createProjectRevisionWithRevisionType.projectRevision.id,
+            response.createProjectRevision.projectRevision.id,
             0
           )
         );
