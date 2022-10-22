@@ -62,7 +62,7 @@ select cif.commit_project_revision(1);
 
 select results_eq(
   $$
-  select id, project_id, change_status, revision_type from cif.create_project_revision_with_revision_type(1, 'Amendment')
+  select id, project_id, change_status, revision_type from cif.create_project_revision(1, 'Amendment')
   $$,
   $$
   values (2, 1, 'pending'::varchar, 'Amendment'::varchar)
