@@ -86,20 +86,6 @@ export function ProjectRevisionCreate({
           </FormBase>
         </div>
       </DefaultLayout>
-      <style jsx>{`
-        div :global(.radio) {
-          padding: 5px;
-        }
-        div :global(.radio):first-child {
-          margin-top: 25px;
-        }
-        div :global(input[type="radio"]) {
-          margin-right: 10px;
-        }
-        div :global() {
-          border: none;
-        }
-      `}</style>
     </>
   );
 }
