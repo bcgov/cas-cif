@@ -59,6 +59,15 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
         div :global(li.text-danger) {
           color: #cd2026 !important;
         }
+        div :global(.radio) {
+          padding: 5px;
+        }
+        div :global(.radio):first-child {
+          margin-top: 25px;
+        }
+        div :global(input[type="radio"]) {
+          margin-right: 10px;
+        }
       `}</style>
     </div>
   );
