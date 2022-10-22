@@ -12,6 +12,12 @@ const defaultMockResolver = {
   ProjectRevision() {
     return {
       id: "mock-id",
+      projectFormChange: {
+        id: "mock-id",
+        newFormData: {
+          someProjectData: "test2",
+        },
+      },
     };
   },
 };
