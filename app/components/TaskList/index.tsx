@@ -30,17 +30,7 @@ interface Props {
 const TaskList: React.FC<Props> = ({
   projectRevision,
   mode,
-<<<<<<< HEAD
-<<<<<<< HEAD
   projectRevisionUnderReview,
-=======
-  // projectRevisionDetailViewId,
-  // revisionType,
->>>>>>> 8e0d9f15 (chore:merge fix)
-=======
-  projectRevisionDetailViewId,
-  revisionType,
->>>>>>> c1ded779 (chore: updating routes and adding new revision to task list)
 }) => {
   const {
     id,
@@ -155,21 +145,9 @@ const TaskList: React.FC<Props> = ({
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
-<<<<<<< HEAD
-<<<<<<< HEAD
   const projectRevisionViewPagePathName = getProjectRevisionViewPageRoute(
     projectRevisionUnderReview?.id
   ).pathname;
-=======
-  // const projectRevisionDetailPagePathName = getProjectRevisionDetailPageRoute(
-  //   projectRevisionDetailViewId
-  // ).pathname;
->>>>>>> 8e0d9f15 (chore:merge fix)
-=======
-  const projectRevisionDetailPagePathName = getProjectRevisionDetailPageRoute(
-    projectRevisionDetailViewId
-  ).pathname;
->>>>>>> c1ded779 (chore: updating routes and adding new revision to task list)
 
   return (
     <div className="container">
@@ -261,16 +239,11 @@ const TaskList: React.FC<Props> = ({
         )}
 
         {/* Amendments & Other Revisions section */}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c1ded779 (chore: updating routes and adding new revision to task list)
         {mode === "view" && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
             defaultExpandedState={[
               getProjectRevisionChangeLogsPageRoute(id).pathname,
-<<<<<<< HEAD
               projectRevisionViewPagePathName,
             ].includes(router.pathname)}
             listItemName="Amendments & Other Revisions"
@@ -287,46 +260,16 @@ const TaskList: React.FC<Props> = ({
                 mode={mode}
               />
             )}
-          </ProjectRevisionChangeLogsTaskListSection>
-        )}
-=======
-        <ProjectRevisionChangeLogsTaskListSection
-          linkUrl={getProjectRevisionChangeLogsPageRoute(id)}
-        />
-
-        {/* Create new revision */}
-        <ProjectRevisionCreateNewTaskListSection
-          linkUrl={getProjectRevisionCreatePageRoute(id)}
-        />
->>>>>>> 8e0d9f15 (chore:merge fix)
-=======
-              projectRevisionDetailPagePathName,
-            ].includes(router.pathname)}
-            listItemName="Amendments & Other Revisions"
-          >
-            {router.pathname === projectRevisionDetailPagePathName && (
-              <TaskListItem
-                stepName={projectRevisionDetailPagePathName}
-                linkUrl={getProjectRevisionDetailPageRoute(
-                  projectRevisionDetailViewId
-                )}
-                formTitle={`View ${revisionType}`}
-                formStatus={null}
-                currentStep={projectRevisionDetailPagePathName}
-                mode={mode}
-              />
-            )}
             <TaskListItem
-              stepName={projectRevisionDetailPagePathName}
+              stepName={projectRevisionViewPagePathName}
               linkUrl={getProjectRevisionCreatePageRoute(id)}
               formTitle={`New Amendment`}
               formStatus={null}
-              currentStep={projectRevisionDetailPagePathName}
+              currentStep={projectRevisionViewPagePathName}
               mode={mode}
             />
           </ProjectRevisionChangeLogsTaskListSection>
         )}
->>>>>>> c1ded779 (chore: updating routes and adding new revision to task list)
         {/* Attachments Section */}
         {mode === "view" && (
           <AttachmentsTaskListSection
