@@ -58,9 +58,4 @@ describe("The validateRecord function", () => {
 
     expect(result).toEqual([]);
   });
-  it("Should throw exception if the schema is not valid", () => {
-    expect(() => validateRecord("this_is_not_a_schema", {})).toThrow(
-      "schema must be object or boolean"
-    );
-  });
 });
