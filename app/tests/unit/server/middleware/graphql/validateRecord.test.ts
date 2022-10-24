@@ -1,27 +1,24 @@
-import validationSchemas from "data/jsonSchemaForm/validationSchemas";
 import validateRecord from "server/middleware/graphql/validateRecord";
 
-jest.mock("data/jsonSchemaForm/validationSchemas", () => ({
-  ...{
-    $schema: "http://json-schema.org/draft-07/schema",
-    description: "test schema",
-    type: "object",
-    required: ["required_prop", "formatted_prop", "enum_prop"],
-    properties: {
-      formatted_prop: {
-        type: "string",
-        title: "Formatted",
-        pattern: "^\\d{3,4}",
-      },
-      required_prop: { type: "string", title: "Required" },
-      enum_prop: {
-        type: "number",
-        title: "Enum",
-        anyOf: undefined,
-      },
+const testSchema = {
+  $schema: "http://json-schema.org/draft-07/schema",
+  description: "test schema",
+  type: "object",
+  required: ["required_prop", "formatted_prop", "enum_prop"],
+  properties: {
+    formatted_prop: {
+      type: "string",
+      title: "Formatted",
+      pattern: "^\\d{3,4}",
+    },
+    required_prop: { type: "string", title: "Required" },
+    enum_prop: {
+      type: "number",
+      title: "Enum",
+      anyOf: undefined,
     },
   },
-}));
+};
 
 describe("The validateRecord function", () => {
   beforeEach(() => {
@@ -29,7 +26,7 @@ describe("The validateRecord function", () => {
   });
 
   it("Should return all errors in a schema", () => {
-    const result = validateRecord(validationSchemas, {
+    const result = validateRecord(testSchema, {
       formatted_prop: "invalid!",
     });
 
@@ -53,7 +50,7 @@ describe("The validateRecord function", () => {
   });
 
   it("Should return an empty array if there are no errors", () => {
-    const result = validateRecord(validationSchemas, {
+    const result = validateRecord(testSchema, {
       formatted_prop: "0987",
       required_prop: "test string...",
       enum_prop: 123,
@@ -61,9 +58,9 @@ describe("The validateRecord function", () => {
 
     expect(result).toEqual([]);
   });
-  it("Should throw exception if the schema is not found", () => {
-    expect(() => validateRecord("this_schema_doesnt_exist", {})).toThrow(
-      "No json schema found for schema with name this_schema_doesnt_exist"
+  it("Should throw exception if the schema is not valid", () => {
+    expect(() => validateRecord("this_is_not_a_schema", {})).toThrow(
+      "schema must be object or boolean"
     );
   });
 });
