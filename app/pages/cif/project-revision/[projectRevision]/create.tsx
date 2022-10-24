@@ -24,9 +24,6 @@ const pageQuery = graphql`
     projectRevision(id: $projectRevision) {
       project: projectByProjectId {
         rowId
-        pendingProjectRevision {
-          id
-        }
       }
       ...TaskList_projectRevision
     }
@@ -76,10 +73,7 @@ export function ProjectRevisionCreate({
             <Button
               type="submit"
               size="small"
-              disabled={
-                isCreatingProjectRevision ||
-                projectRevision?.project.pendingProjectRevision !== null
-              }
+              disabled={isCreatingProjectRevision}
             >
               New Revision
             </Button>

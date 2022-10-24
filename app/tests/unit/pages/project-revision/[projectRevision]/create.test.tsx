@@ -8,19 +8,7 @@ import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compliledcreateProjectRevisionQuery, {
   createProjectRevisionQuery,
 } from "__generated__/createProjectRevisionQuery.graphql";
-const defaultMockResolver = {
-  ProjectRevision() {
-    return {
-      id: "mock-id",
-      projectFormChange: {
-        id: "mock-id",
-        newFormData: {
-          someProjectData: "test2",
-        },
-      },
-    };
-  },
-};
+const defaultMockResolver = {};
 const pageTestingHelper = new PageTestingHelper<createProjectRevisionQuery>({
   pageComponent: ProjectRevisionCreate,
   compiledQuery: compliledcreateProjectRevisionQuery,
@@ -32,8 +20,8 @@ const pageTestingHelper = new PageTestingHelper<createProjectRevisionQuery>({
 
 describe("The project amendments and revisions page", () => {
   beforeEach(() => {
-    pageTestingHelper.reinit();
     jest.restoreAllMocks();
+    pageTestingHelper.reinit();
   });
   it("renders an Amendment radio button", () => {
     pageTestingHelper.loadQuery();
@@ -66,7 +54,10 @@ describe("The project amendments and revisions page", () => {
       screen.getAllByRole("button", { name: /new revision/i })[0]
     );
 
-    // pageTestingHelper.expectMutationToBeCalled("createProjectRevision", {});
+    pageTestingHelper.expectMutationToBeCalled(
+      "createProjectRevisionMutation",
+      { projectId: 1, revisionType: "Minor Revision" }
+    );
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-id")
     );
