@@ -5,13 +5,21 @@ import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevisi
 import { getProjectRevisionPageRoute } from "routes/pageRoutes";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 
-import compliledcreateProjectRevisionQuery, {
+import compiledCreateProjectRevisionQuery, {
   createProjectRevisionQuery,
 } from "__generated__/createProjectRevisionQuery.graphql";
-const defaultMockResolver = {};
+const defaultMockResolver = {
+  Project() {
+    return {
+      id: "test-project",
+      rowId: 1234,
+    };
+  },
+};
+
 const pageTestingHelper = new PageTestingHelper<createProjectRevisionQuery>({
   pageComponent: ProjectRevisionCreate,
-  compiledQuery: compliledcreateProjectRevisionQuery,
+  compiledQuery: compiledCreateProjectRevisionQuery,
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: {
     projectRevision: "mock-id",
