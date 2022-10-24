@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevision]/create";
-import { getProjectRevisionPageRoute } from "routes/pageRoutes";
+import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 
 import compiledCreateProjectRevisionQuery, {
@@ -12,6 +12,12 @@ const defaultMockResolver = {
   Project() {
     return {
       id: "test-project",
+      rowId: 1234,
+    };
+  },
+  ProjectRevision() {
+    return {
+      id: "test-project-revision",
       rowId: 1234,
     };
   },
@@ -53,21 +59,24 @@ describe("The project amendments and revisions page", () => {
     ).toBeInTheDocument();
   });
 
-  it("Triggers the createProjectRevisionQuery and redirects when the user clicks the new revision button", () => {
+  it("Triggers the createProjectRevisionQuery and redirects when the user clicks the new revision button", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
     userEvent.click(screen.getByLabelText(/minor revision/i));
-    userEvent.click(
+    await userEvent.click(
       screen.getAllByRole("button", { name: /new revision/i })[0]
     );
 
     pageTestingHelper.expectMutationToBeCalled(
       "createProjectRevisionMutation",
-      { projectId: 1, revisionType: "Minor Revision" }
+      { projectId: 1234, revisionType: "Minor Revision" }
     );
-    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-id")
-    );
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
+      pathname: getProjectRevisionFormPageRoute("test-project-revision", 0),
+      query: {
+        projectRevision: "mock-proj-rev-id",
+      },
+    });
   });
 });
