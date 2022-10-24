@@ -309,52 +309,53 @@ describe("The ProjectMilestoneReportForm", () => {
     componentTestingHelper.renderComponent();
 
     await userEvent.click(screen.getByText(/submit milestone reports/i));
-    expect(true).toBe(true);
 
-    const firstMutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
-
-    expect(firstMutationUnderTest.fragment.node.name).toBe(
-      "stageReportingRequirementFormChangeMutation"
-    );
-    expect(firstMutationUnderTest.request.variables).toMatchObject({
-      input: {
-        rowId: 1,
-        formChangePatch: {
-          newFormData: {
-            reportDueDate: "2022-01-01",
-            projectId: 51,
-            reportType: "General Milestone",
-            description: "i am the first description",
-            reportingRequirementIndex: 1,
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: {
+            newFormData: {
+              reportDueDate: "2022-01-01",
+              projectId: 51,
+              reportType: "General Milestone",
+              description: "i am the first description",
+              reportingRequirementIndex: 1,
+              hasExpenses: true,
+              reportingRequirementId: 1,
+              totalEligibleExpenses: 100,
+              maximumAmount: 200,
+              certifierProfessionalDesignation: "Professional Engineer",
+            },
           },
         },
-      },
-      reportType: "Milestone",
-    });
-
-    const secondMutationUnderTest =
-      componentTestingHelper.environment.mock.getMostRecentOperation();
-
-    expect(secondMutationUnderTest.fragment.node.name).toBe(
-      "stageReportingRequirementFormChangeMutation"
+        reportType: "Milestone",
+      }
     );
-    expect(secondMutationUnderTest.request.variables).toMatchObject({
-      input: {
-        rowId: 2,
-        formChangePatch: {
-          newFormData: {
-            reportDueDate: "2022-10-28",
-            projectId: 51,
-            reportType: "Reporting Milestone",
-            submittedDate: "2022-05-02",
-            description: "i am the second description",
-            reportingRequirementIndex: 2,
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "stageReportingRequirementFormChangeMutation",
+      {
+        input: {
+          rowId: 2,
+          formChangePatch: {
+            newFormData: {
+              reportDueDate: "2022-10-28",
+              projectId: 51,
+              reportType: "Reporting Milestone",
+              submittedDate: "2022-05-02",
+              description: "i am the second description",
+              reportingRequirementIndex: 2,
+              hasExpenses: false,
+              reportingRequirementId: 2,
+              certifierProfessionalDesignation: "Professional Engineer",
+            },
           },
         },
-      },
-      reportType: "Milestone",
-    });
+        reportType: "Milestone",
+      }
+    );
   });
 
   it("Calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
