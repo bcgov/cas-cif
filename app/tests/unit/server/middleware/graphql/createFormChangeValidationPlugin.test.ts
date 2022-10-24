@@ -73,7 +73,56 @@ describe("The postgraphile create form validation plugin", () => {
     ).rejects.toThrow("JSON schema must be set in the mutation input");
   });
 
-  it("Validates the form data with the schema which name is on the record", async () => {
+  it("Validates the form data with the schema form the database, if that schema is in the databaseSchemaConfiguration", async () => {
+    const mockValidationFunction = jest.fn();
+    mocked(validateRecord).mockImplementation(mockValidationFunction);
+    const wrappedResolverUnderTest = resolverWrapperGenerator();
+
+    const mockContext = {
+      pgClient: {
+        query: jest.fn().mockReturnValue({
+          rows: [
+            {
+              json_schema: {
+                schema: { testSchema: true },
+              },
+            },
+          ],
+        }),
+      },
+    };
+
+    await wrappedResolverUnderTest(
+      mockResolver,
+      {},
+      {
+        input: {
+          jsonSchemaName: "milestone",
+          newFormData: {
+            column: "value",
+          },
+        },
+      },
+      mockContext,
+      {} as any
+    );
+
+    expect(mockValidationFunction).toHaveBeenCalledTimes(1);
+    expect(mockValidationFunction).toHaveBeenCalledWith(
+      { testSchema: true },
+      {
+        column: "value",
+      }
+    );
+    expect(mockResolver).toHaveBeenCalledTimes(1);
+    expect(mockResolver).toHaveBeenCalledWith(
+      {},
+      expect.anything(), //testing this in the next test
+      mockContext,
+      {} as any
+    );
+  });
+  it("Validates the form data with the schema from the static data, if that schema is not in the databaseSchemaConfiguration", async () => {
     const mockValidationFunction = jest.fn();
     mocked(validateRecord).mockImplementation(mockValidationFunction);
     const wrappedResolverUnderTest = resolverWrapperGenerator();
@@ -81,15 +130,27 @@ describe("The postgraphile create form validation plugin", () => {
     await wrappedResolverUnderTest(
       mockResolver,
       {},
-      defaultArgs,
+      {
+        input: {
+          jsonSchemaName: "project",
+          newFormData: {
+            column: "value",
+          },
+        },
+      },
       {},
       {} as any
     );
 
     expect(mockValidationFunction).toHaveBeenCalledTimes(1);
-    expect(mockValidationFunction).toHaveBeenCalledWith("some_schema_name", {
-      column: "value",
-    });
+    expect(mockValidationFunction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        properties: expect.objectContaining({ projectName: expect.anything() }), // this validates it is the project schema
+      }),
+      {
+        column: "value",
+      }
+    );
     expect(mockResolver).toHaveBeenCalledTimes(1);
     expect(mockResolver).toHaveBeenCalledWith(
       {},
@@ -98,6 +159,7 @@ describe("The postgraphile create form validation plugin", () => {
       {} as any
     );
   });
+
   it("Adds the validation errors to the mutation arguments when calling the postgraphile resolver", async () => {
     const mockValidationFunction = jest
       .fn()
