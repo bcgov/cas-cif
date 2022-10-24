@@ -13,6 +13,7 @@ import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 const createProjectRevisionViewSchema = (allRevisionTypes) => {
   const schema = projectRevisionSchema;
@@ -87,6 +88,8 @@ export function ProjectRevisionView({
       projectRevisionUnderReview={projectRevision}
     />
   );
+  // Growthbook - amendments
+  if (!useShowGrowthbookFeature("amendments")) return null;
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
