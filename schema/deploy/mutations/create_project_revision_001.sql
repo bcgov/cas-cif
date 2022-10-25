@@ -93,15 +93,15 @@ begin
     where funding_parameter.project_id = $1
     and archived_at is null
    union
- select
-  id,
-  'update'::cif.form_change_operation as operation,
-  'additional_funding_source' as form_data_table_name,
-  'additional_funding_source' as json_schema_name
-  from cif.additional_funding_source
-  where additional_funding_source.project_id = $1
-  and archived_at is null
-  )
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'additional_funding_source' as form_data_table_name,
+      'additional_funding_source' as json_schema_name
+      from cif.additional_funding_source
+      where additional_funding_source.project_id = $1
+      and archived_at is null
+      )
   loop
     perform cif.create_form_change(
       operation => form_change_record.operation,
