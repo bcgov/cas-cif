@@ -41,7 +41,7 @@ $migration$
             'description', reporting_requirement_data->'description',
 
             -- has_expenses comes from the report type table
-            'hasExpenses', (select has_expenses from cif.report_type where name=(milestone_data->>'reportType')),
+            'hasExpenses', (select has_expenses from cif.report_type where name=(reporting_requirement_data->>'reportType')),
 
             -- milestone report data
             'substantialCompletionDate', milestone_data->'substantialCompletionDate',

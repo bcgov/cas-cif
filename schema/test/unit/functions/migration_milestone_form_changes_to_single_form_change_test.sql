@@ -42,8 +42,8 @@ insert into cif.form_change(
       json_schema_name
     )
 values
-       -- first project with no data
-       ('{"projectId": 1, "reportType": "General Milestone", "reportingRequirementIndex": 1 }'::jsonb,
+       -- first project with no data - and no expenses
+       ('{"projectId": 1, "reportType": "Reporting Milestone", "reportingRequirementIndex": 1 }'::jsonb,
         'create',
         'cif',
         'reporting_requirement',
@@ -68,7 +68,7 @@ values
         'pending',
         'payment'),
 
-        -- second project with all the data
+        -- second project with all the data - and expenses
         ('{"projectId": 2, "reportType": "General Milestone", "reportingRequirementIndex": 1,
            "reportDueDate": "2021-09-29 14:24:46.318423-07", "submittedDate": "2021-10-29 14:24:46.318423-07",
            "comments": "test comments", "description": "test description"}'::jsonb,
@@ -171,9 +171,10 @@ select results_eq(
     select id, change_status, new_form_data from cif.form_change where form_data_table_name='reporting_requirement' and json_schema_name='milestone' order by id;
   $$,
   $$
-   values (3, 'committed'::varchar, '{"reportType": "General Milestone", "reportingRequirementIndex": 1}'::jsonb),
+   values (3, 'committed'::varchar, '{"reportType": "Reporting Milestone", "hasExpenses":false, "reportingRequirementIndex": 1}'::jsonb),
           (6, 'pending'::varchar, '{  "comments": "test comments",
                                       "reportType": "General Milestone",
+                                      "hasExpenses": true,
                                       "certifiedBy": "A test user",
                                       "description": "test description",
                                       "maximumAmount": 123435,
@@ -186,10 +187,10 @@ select results_eq(
                                       "reportingRequirementIndex": 1,
                                       "substantialCompletionDate": "2021-09-29 14:24:46.318423-07",
                                       "certifierProfessionalDesignation": "A very real designation"}'::jsonb),
-          (12, 'pending'::varchar, '{"reportType": "General Milestone", "reportingRequirementIndex": 1}'::jsonb)
+          (12, 'pending'::varchar, '{"reportType": "Reporting Milestone", "hasExpenses":false, "reportingRequirementIndex": 1}'::jsonb)
 
   $$,
-  'It transforms the triple(reporting_requirement, milestone_report, payment) into one single form_change, without nulls'
+  'It transforms the triple (reporting_requirement, milestone_report, payment) into one single form_change, without nulls, and sets the `hasExpenses` value properly'
 );
 
 -- it transforms the existing form_change for the reporting_requirement into the new format
@@ -251,9 +252,10 @@ select results_eq(
     select id, change_status, new_form_data from cif.form_change where form_data_table_name='reporting_requirement' and json_schema_name='milestone' order by id;
   $$,
   $$
-   values (3, 'committed'::varchar, '{"reportType": "General Milestone", "reportingRequirementIndex": 1}'::jsonb),
+   values (3, 'committed'::varchar, '{"reportType": "Reporting Milestone", "hasExpenses":false, "reportingRequirementIndex": 1}'::jsonb),
           (6, 'pending'::varchar, '{  "comments": "test comments",
                                       "reportType": "General Milestone",
+                                      "hasExpenses": true,
                                       "certifiedBy": "A test user",
                                       "description": "test description",
                                       "maximumAmount": 123435,
@@ -266,10 +268,10 @@ select results_eq(
                                       "reportingRequirementIndex": 1,
                                       "substantialCompletionDate": "2021-09-29 14:24:46.318423-07",
                                       "certifierProfessionalDesignation": "A very real designation"}'::jsonb),
-          (12, 'pending'::varchar, '{"reportType": "General Milestone", "reportingRequirementIndex": 1}'::jsonb)
+          (12, 'pending'::varchar, '{"reportType": "Reporting Milestone", "hasExpenses":false, "reportingRequirementIndex": 1}'::jsonb)
 
   $$,
-  'It transforms the triple(reporting_requirement, milestone_report, payment) into one single form_change, without nulls'
+  'It transforms the triple(reporting_requirement, milestone_report, payment) into one single form_change, without nulls, and sets the `hasExpenses` value properly'
 );
 
 
