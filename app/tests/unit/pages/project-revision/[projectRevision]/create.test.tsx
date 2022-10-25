@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevision]/create";
-import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import { MockPayloadGenerator } from "relay-test-utils";
 
 import compiledCreateProjectRevisionQuery, {
   createProjectRevisionQuery,
@@ -59,12 +59,12 @@ describe("The project amendments and revisions page", () => {
     ).toBeInTheDocument();
   });
 
-  it("Triggers the createProjectRevisionQuery and redirects when the user clicks the new revision button", async () => {
+  it("Triggers the createProjectRevisionQuery and redirects when the user clicks the new revision button", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
     userEvent.click(screen.getByLabelText(/minor revision/i));
-    await userEvent.click(
+    userEvent.click(
       screen.getAllByRole("button", { name: /new revision/i })[0]
     );
 
@@ -72,11 +72,18 @@ describe("The project amendments and revisions page", () => {
       "createProjectRevisionMutation",
       { projectId: 1234, revisionType: "Minor Revision" }
     );
+    const operation =
+      pageTestingHelper.environment.mock.getMostRecentOperation();
+    act(() => {
+      pageTestingHelper.environment.mock.resolve(
+        operation,
+        MockPayloadGenerator.generate(operation)
+      );
+    });
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: getProjectRevisionFormPageRoute("test-project-revision", 0),
-      query: {
-        projectRevision: "mock-proj-rev-id",
-      },
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
+      query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
+      anchor: undefined,
     });
   });
 });
