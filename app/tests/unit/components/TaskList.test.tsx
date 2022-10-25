@@ -111,8 +111,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project overview/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=0&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/0?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=0",
+      "/cif/project-revision/test-project-revision-id/form/0",
       expect.any(Object)
     );
   });
@@ -125,8 +125,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project contacts/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=2&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/2?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=2",
+      "/cif/project-revision/test-project-revision-id/form/2",
       expect.any(Object)
     );
   });
@@ -138,8 +138,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit project managers/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=1&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/1?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=1",
+      "/cif/project-revision/test-project-revision-id/form/1",
       expect.any(Object)
     );
   });
@@ -152,8 +152,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit milestone reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/4?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4",
+      "/cif/project-revision/test-project-revision-id/form/4",
       expect.any(Object)
     );
   });
@@ -166,8 +166,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/5?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5",
+      "/cif/project-revision/test-project-revision-id/form/5",
       expect.any(Object)
     );
   });
@@ -180,8 +180,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit emissions intensity report/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/6?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6",
+      "/cif/project-revision/test-project-revision-id/form/6",
       expect.any(Object)
     );
   });
@@ -194,8 +194,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Edit annual reports/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=7&anchor=",
-      "/cif/project-revision/test-project-revision-id/form/7?anchor=",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=7",
+      "/cif/project-revision/test-project-revision-id/form/7",
       expect.any(Object)
     );
   });
@@ -334,8 +334,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Milestone 1/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=Milestone1",
-      "/cif/project-revision/test-project-revision-id/form/4?anchor=Milestone1",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=Milestone1#Milestone1",
+      "/cif/project-revision/test-project-revision-id/form/4?anchor=Milestone1#Milestone1",
       expect.any(Object)
     );
   });

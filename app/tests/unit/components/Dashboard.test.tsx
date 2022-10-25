@@ -122,7 +122,7 @@ describe("The Dashboard", () => {
     componentTestingHelper.renderComponent();
     expect(screen.getByText(/resume project/i).closest("a")).toHaveAttribute(
       "href",
-      "/cif/project-revision/mock-id-1/form/0?anchor="
+      "/cif/project-revision/mock-id-1/form/0"
     );
   });
   it("Shows dashboard links with admin privileges", () => {
