@@ -257,10 +257,10 @@ Cypress.Commands.add(
     measurementPeriodStartDate,
     measurementPeriodEndDate,
     emissionFunctionalUnit,
-    productionFunctionalUnit = undefined,
     baselineEmissionIntensity,
     targetEmissionIntensity,
-    postProjectEmissionIntensity
+    postProjectEmissionIntensity,
+    productionFunctionalUnit = undefined
   ) => {
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");

@@ -120,10 +120,10 @@ describe("when creating a project, the project page", () => {
       "2022-01-01",
       "2022-02-02",
       "tCO",
-      "G",
       "1",
       "2",
-      "3"
+      "3",
+      "G"
     );
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
