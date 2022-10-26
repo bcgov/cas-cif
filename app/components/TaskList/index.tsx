@@ -149,6 +149,9 @@ const TaskList: React.FC<Props> = ({
     projectRevisionUnderReview?.id
   ).pathname;
 
+  const projectRevisionCreatePagePathName =
+    getProjectRevisionCreatePageRoute(id).pathname;
+
   return (
     <div className="container">
       <h2>
@@ -245,6 +248,7 @@ const TaskList: React.FC<Props> = ({
             defaultExpandedState={[
               getProjectRevisionChangeLogsPageRoute(id).pathname,
               projectRevisionViewPagePathName,
+              projectRevisionCreatePagePathName,
             ].includes(router.pathname)}
             listItemName="Amendments & Other Revisions"
           >
@@ -260,14 +264,16 @@ const TaskList: React.FC<Props> = ({
                 mode={mode}
               />
             )}
-            <TaskListItem
-              stepName={projectRevisionViewPagePathName}
-              linkUrl={getProjectRevisionCreatePageRoute(id)}
-              formTitle={`New Amendment`}
-              formStatus={null}
-              currentStep={projectRevisionViewPagePathName}
-              mode={mode}
-            />
+            {router.pathname === projectRevisionCreatePagePathName && (
+              <TaskListItem
+                stepName={projectRevisionCreatePagePathName}
+                linkUrl={getProjectRevisionCreatePageRoute(id)}
+                formTitle={`New Revision`}
+                formStatus={null}
+                currentStep={projectRevisionCreatePagePathName}
+                mode={mode}
+              />
+            )}
           </ProjectRevisionChangeLogsTaskListSection>
         )}
         {/* Attachments Section */}
