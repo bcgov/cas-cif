@@ -151,10 +151,10 @@ describe("when editing a project, the project page", () => {
       "2022-01-01",
       "2022-02-02",
       "tCO2",
-      "G",
       "1",
       "2",
-      "3"
+      "3",
+      "G"
     );
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project teimp agreement form", "editing", "main");

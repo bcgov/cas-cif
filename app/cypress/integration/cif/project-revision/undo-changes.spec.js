@@ -112,10 +112,10 @@ describe("when undoing, the project revision page", () => {
       "2022-01-01",
       "2022-02-02",
       "tCO",
-      "G",
       "1",
       "2",
-      "3"
+      "3",
+      "G"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByRole("button", { name: /Add TEIMP agreement/i }).should(
