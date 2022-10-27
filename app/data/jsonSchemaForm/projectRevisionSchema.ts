@@ -8,6 +8,7 @@ export const projectRevisionSchema = {
       title: "Revision Type",
       default: undefined,
       anyOf: undefined,
+      enum: undefined,
     },
     changeReason: {
       type: "string",

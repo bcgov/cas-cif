@@ -7,9 +7,9 @@ import { Button } from "@button-inc/bcgov-theme";
 import { createProjectRevisionQuery } from "__generated__/createProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
-  projectRevisionCreateSchema,
-  projectRevisionCreateUISchema,
-} from "data/jsonSchemaForm/projectRevisionCreateSchema";
+  projectRevisionSchema,
+  projectRevisionUISchema,
+} from "data/jsonSchemaForm/projectRevisionSchema";
 import { JSONSchema7 } from "json-schema";
 import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
@@ -27,13 +27,21 @@ const pageQuery = graphql`
       }
       ...TaskList_projectRevision
     }
+    allRevisionTypes {
+      edges {
+        node {
+          id
+          type
+        }
+      }
+    }
   }
 `;
 
 export function ProjectRevisionCreate({
   preloadedQuery,
 }: RelayProps<{}, createProjectRevisionQuery>) {
-  const { session, projectRevision } = usePreloadedQuery(
+  const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
     pageQuery,
     preloadedQuery
   );
@@ -59,14 +67,16 @@ export function ProjectRevisionCreate({
       },
     });
   };
+  const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
+  projectRevisionSchema.properties.revisionType.enum = revisionEnum;
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
         <div>
           <FormBase
             id="ProjectRevisionCreateForm"
-            schema={projectRevisionCreateSchema as JSONSchema7}
-            uiSchema={projectRevisionCreateUISchema}
+            schema={projectRevisionSchema as JSONSchema7}
+            uiSchema={projectRevisionUISchema}
             onSubmit={handleCreateRevision}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
           >
