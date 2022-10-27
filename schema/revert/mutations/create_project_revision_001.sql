@@ -4,8 +4,6 @@ begin;
 
 drop function cif.create_project_revision(integer, varchar(1000));
 
-begin;
-
 create or replace function cif.create_project_revision(project_id integer)
 returns cif.project_revision
 as $function$
