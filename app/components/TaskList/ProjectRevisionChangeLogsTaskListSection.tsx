@@ -43,11 +43,11 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
           aria-controls="child-section"
         >
           {listItemName}
-          <span>
+          {children && (
             <span>
               <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
             </span>
-          </span>
+          )}
         </button>
       </h3>
       {isExpanded && <ul id="child-section">{children}</ul>}
