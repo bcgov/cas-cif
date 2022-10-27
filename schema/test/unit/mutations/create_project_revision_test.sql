@@ -66,7 +66,8 @@ select results_eq(
   $$,
   $$
   values (2, 1, 'pending'::varchar, 'Amendment'::varchar)
-  $$
+  $$,
+  'creating a project revision with revision type as Ammendment creates a new project revision in pending state and revision type as Amendment'
 );
 
 select results_eq(
