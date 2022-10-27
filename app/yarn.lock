@@ -556,10 +556,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@bcgov-cas/sso-express@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-express/-/sso-express-3.1.0.tgz#ea0d56316d2d665bc63a89c06518e4c0468b4c1d"
-  integrity sha512-R/vVaBvz7d5iujAfTJhnQrXxAauMfpHnT7GHVdU3DUztRw1RYYIFG4rWeMosnS/zOwtuigsJeVaCQPpyBKL+pw==
+"@bcgov-cas/sso-express@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-express/-/sso-express-3.2.0.tgz#1f857d9590539b23d082e1ec1300ac9fac4865e3"
+  integrity sha512-DXL201txrrTG9mf8Qpn9/S8GlbqMHR2Mf55UWiNE3jCxLX+/gxGIX8Vt1i2xppVMrh+zSVlRDP8qZndK2iVDLw==
 
 "@bcgov-cas/sso-react@^2.0.0":
   version "2.0.0"
