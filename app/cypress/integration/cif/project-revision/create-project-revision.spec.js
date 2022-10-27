@@ -285,12 +285,6 @@ describe("the project amendment and revisions page", () => {
   it("displays the list of project amendment and revisions", () => {
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /view/i }).first().click();
-    cy.findByRole("button", { name: /Edit/i }).click();
-    cy.findByRole("button", { name: /Submit Changes/i }).click();
-    cy.findByText(/Review and submit information/i).click();
-    cy.findByRole("button", { name: /Discard Project Revision/i }).click();
-    cy.findByText(/Proceed/i).click();
-
     cy.findByText(/Amendments & Other Revisions/i).click();
     cy.findByText(/New Revision/i).click();
     cy.url().should("include", "/create");
