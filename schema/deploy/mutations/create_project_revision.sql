@@ -41,7 +41,6 @@ begin
     from cif.project_contact
     where project_contact.project_id = $1
     and archived_at is null
-  -- non-milestone reporting requirements
   union
     select
       id,
@@ -51,18 +50,28 @@ begin
     from cif.reporting_requirement
     where reporting_requirement.project_id = $1
     and archived_at is null
-    and report_type not in ('General Milestone', 'Advanced Milestone', 'Reporting Milestone')
-  -- milestone reporting requirements
   union
     select
-      id,
+      mr.id,
       'update'::cif.form_change_operation as operation,
-      'reporting_requirement' as form_data_table_name,
-      'milestone' as json_schema_name
-    from cif.reporting_requirement
-    where reporting_requirement.project_id = $1
-    and archived_at is null
-    and report_type in ('General Milestone', 'Advanced Milestone', 'Reporting Milestone')
+      'milestone_report' as form_data_table_name,
+      'milestone_report' as json_schema_name
+    from cif.milestone_report mr
+    join cif.reporting_requirement rr
+    on mr.reporting_requirement_id = rr.id
+    and rr.project_id = $1
+    and mr.archived_at is null
+  union
+    select
+      p.id,
+      'update'::cif.form_change_operation as operation,
+      'payment' as form_data_table_name,
+      'payment' as json_schema_name
+    from cif.payment p
+    join cif.reporting_requirement rr
+    on p.reporting_requirement_id = rr.id
+    and rr.project_id = $1
+    and p.archived_at is null
   union
     select
       eir.id,
