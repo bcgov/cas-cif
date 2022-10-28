@@ -21,6 +21,18 @@ const defaultMockResolver = {
       rowId: 1234,
     };
   },
+  Query() {
+    return {
+      allRevisionTypes: {
+        totalCount: 2,
+        edges: [
+          { node: { id: "1", type: "Amendment" } },
+          { node: { id: "2", type: "Minor Revision" } },
+          { node: { id: "3", type: "Major Revision" } },
+        ],
+      },
+    };
+  },
 };
 
 const pageTestingHelper = new PageTestingHelper<createProjectRevisionQuery>({
@@ -40,7 +52,6 @@ describe("The project amendments and revisions page", () => {
   it("renders an Amendment radio button", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-
     expect(
       screen.getByRole("radio", {
         name: /Amendment/i,
