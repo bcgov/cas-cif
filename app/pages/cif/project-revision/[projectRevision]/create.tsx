@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -69,6 +70,9 @@ export function ProjectRevisionCreate({
   };
   const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
   projectRevisionSchema.properties.revisionType.enum = revisionEnum;
+
+  // Growthbook - amendments
+  if (!useShowGrowthbookFeature("amendments")) return null;
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
