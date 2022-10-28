@@ -6,6 +6,7 @@ import {
   getProjectRevisionAttachmentsPageRoute,
   getProjectRevisionChangeLogsPageRoute,
   getProjectRevisionViewPageRoute,
+  getProjectRevisionCreatePageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -148,6 +149,9 @@ const TaskList: React.FC<Props> = ({
     projectRevisionUnderReview?.id
   ).pathname;
 
+  const projectRevisionCreatePagePathName =
+    getProjectRevisionCreatePageRoute(id).pathname;
+
   return (
     <div className="container">
       <h2>
@@ -244,6 +248,7 @@ const TaskList: React.FC<Props> = ({
             defaultExpandedState={[
               getProjectRevisionChangeLogsPageRoute(id).pathname,
               projectRevisionViewPagePathName,
+              projectRevisionCreatePagePathName,
             ].includes(router.pathname)}
             listItemName="Amendments & Other Revisions"
           >
@@ -256,6 +261,16 @@ const TaskList: React.FC<Props> = ({
                 formTitle={`View ${projectRevisionUnderReview?.revisionType} ${projectRevisionUnderReview?.typeRowNumber}`}
                 formStatus={null}
                 currentStep={projectRevisionViewPagePathName}
+                mode={mode}
+              />
+            )}
+            {router.pathname === projectRevisionCreatePagePathName && (
+              <TaskListItem
+                stepName={projectRevisionCreatePagePathName}
+                linkUrl={getProjectRevisionCreatePageRoute(id)}
+                formTitle={`New Revision`}
+                formStatus={null}
+                currentStep={projectRevisionCreatePagePathName}
                 mode={mode}
               />
             )}

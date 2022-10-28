@@ -3,8 +3,13 @@ import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { createProjectRevisionMutation } from "__generated__/createProjectRevisionMutation.graphql";
 
 export const mutation = graphql`
-  mutation createProjectRevisionMutation($projectId: Int!) {
-    createProjectRevision(input: { projectId: $projectId }) {
+  mutation createProjectRevisionMutation(
+    $projectId: Int!
+    $revisionType: String
+  ) {
+    createProjectRevision(
+      input: { projectId: $projectId, revisionType: $revisionType }
+    ) {
       projectRevision {
         id
       }

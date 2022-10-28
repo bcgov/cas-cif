@@ -100,6 +100,14 @@ export const getProjectRevisionViewPageRoute = (projectRevisionId: string) => ({
   },
 });
 
+export const getProjectRevisionCreatePageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif/project-revision/[projectRevision]/create`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
 ///// Project
 
 export const getProjectsPageRoute = () => ({
