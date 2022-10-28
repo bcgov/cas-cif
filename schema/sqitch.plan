@@ -160,3 +160,4 @@ mutations/commit_form_change_internal [mutations/commit_form_change_internal@1.0
 tables/form [tables/form@1.0.0-rc.5] 2022-10-25T18:49:21Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # updating the commit handler to be a string, to make calling it easier
 tables/report_type_002 [tables/report_type_001] 2022-10-27T01:05:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Performance Milestone report type is not a milestone
 mutations/generate_reports [mutations/generate_reports@1.0.0-rc.5] 2022-10-17T20:19:57Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Casting report auto-generator due date to timestamptz
+migrations/keycloak_user_sub_is_text [tables/cif_user types/keycloak_jwt] 2022-10-27T22:18:58Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # migration to update user sub to text
