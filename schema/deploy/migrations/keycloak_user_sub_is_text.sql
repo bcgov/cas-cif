@@ -89,6 +89,7 @@ alter table cif.cif_user
   rename column uuid to session_sub;
 
 create unique index cif_user_session_sub on cif.cif_user(session_sub);
+drop index cif.cif_user_uuid;
 
 comment on column cif.cif_user.session_sub is 'Universally Unique ID for the user, defined by the single sign-on provider';
 
