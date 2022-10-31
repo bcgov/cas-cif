@@ -4,7 +4,7 @@ select plan(8);
 
 -- Init test
 insert into cif.cif_user
-  (given_name, family_name, email_address, uuid) values
+  (given_name, family_name, email_address, session_sub) values
   ('foo1', 'bar', 'foo1@bar.com', '11111111-1111-1111-1111-111111111112'),
   ('foo2', 'bar', 'foo2@bar.com', '11111111-1111-1111-1111-111111111113'),
   ('foo3', 'bar', 'foo3@bar.com', '11111111-1111-1111-1111-111111111114');
@@ -51,7 +51,7 @@ select has_function(
 insert into test_table_all (test_name) values ('create');
 select is (
   (select created_by from test_table_all where id=1),
-  (select id from cif.cif_user where uuid='11111111-1111-1111-1111-111111111112'),
+  (select id from cif.cif_user where session_sub='11111111-1111-1111-1111-111111111112'),
   'trigger sets created_by on insert'
 );
 select isnt (
@@ -65,7 +65,7 @@ insert into timestamp_compare(old_timestamp) values ((select created_at from tes
 update test_table_all set test_name = 'update';
 select is (
   (select updated_by from test_table_all where id=1),
-  (select id from cif.cif_user where uuid='11111111-1111-1111-1111-111111111112'),
+  (select id from cif.cif_user where session_sub='11111111-1111-1111-1111-111111111112'),
   'trigger sets updated_by on update'
 );
 select isnt (
@@ -78,7 +78,7 @@ select isnt (
 update test_table_all set archived_at=now();
 select is (
   (select archived_by from test_table_all where id=1),
-  (select id from cif.cif_user where uuid='11111111-1111-1111-1111-111111111112'),
+  (select id from cif.cif_user where session_sub='11111111-1111-1111-1111-111111111112'),
   'trigger sets archived_by on update of archived_at column'
 );
 

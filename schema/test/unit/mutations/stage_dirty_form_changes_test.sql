@@ -5,7 +5,7 @@ select plan(2);
 /** TEST SETUP **/
 truncate cif.form_change restart identity;
 
-insert into cif.cif_user(id, uuid)
+insert into cif.cif_user(id, session_sub)
   overriding system value
   values (1, '11111111-1111-1111-1111-111111111111');
 

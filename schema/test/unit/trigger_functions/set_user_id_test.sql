@@ -3,7 +3,7 @@ begin;
 select plan(2);
 
 insert into cif.cif_user
-  (given_name, family_name, email_address, uuid) values
+  (given_name, family_name, email_address, session_sub) values
   ('foo1', 'bar', 'foo1@bar.com', '11111111-1111-1111-1111-111111111112'),
   ('foo2', 'bar', 'foo2@bar.com', '11111111-1111-1111-1111-111111111113'),
   ('foo3', 'bar', 'foo3@bar.com', '11111111-1111-1111-1111-111111111114');
@@ -24,16 +24,16 @@ insert into cif.some_table (id, some_column) values (1, 'foo');
 
 select is(
   (select user_id from cif.some_table where id = 1),
-  (select id from cif.cif_user where uuid = '11111111-1111-1111-1111-111111111112'),
+  (select id from cif.cif_user where session_sub = '11111111-1111-1111-1111-111111111112'),
   'The set_user_id trigger sets the user id on insert'
 );
 
 -- attemp to update the user_id to a different user
-update cif.some_table set user_id = (select id from cif.cif_user where uuid = '11111111-1111-1111-1111-111111111113');
+update cif.some_table set user_id = (select id from cif.cif_user where session_sub = '11111111-1111-1111-1111-111111111113');
 
 select is(
   (select user_id from cif.some_table where id = 1),
-  (select id from cif.cif_user where uuid = '11111111-1111-1111-1111-111111111112'),
+  (select id from cif.cif_user where session_sub = '11111111-1111-1111-1111-111111111112'),
   'The set_user_id trigger sets the user id on update'
 );
 

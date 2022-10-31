@@ -8,7 +8,7 @@ cif.project_manager, cif.project_revision, cif.emission_intensity_report, cif.mi
 cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.payment, cif.funding_parameter, cif.additional_funding_source, cif.project_revision_amendment_type
 restart identity;
 
-insert into cif.cif_user (uuid, given_name, family_name, email_address)
+insert into cif.cif_user (session_sub, given_name, family_name, email_address)
 values ('00000000-0000-0000-0000-000000000000', 'test', 'Testuser', 'test@somemail.com'),
        ('11111111-1111-1111-1111-111111111111', 'test1', 'Testuser', 'test1@somemail.com');
 

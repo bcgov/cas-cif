@@ -4,7 +4,7 @@ select plan(3);
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
 
-insert into cif.cif_user(id, uuid)
+insert into cif.cif_user(id, session_sub)
   overriding system value
   values (1, '11111111-1111-1111-1111-111111111111');
 

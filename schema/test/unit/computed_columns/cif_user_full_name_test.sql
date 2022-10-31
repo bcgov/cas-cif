@@ -2,7 +2,7 @@ begin;
 
 select plan(3);
 
-insert into cif.cif_user(id, uuid, given_name, family_name, email_address)
+insert into cif.cif_user(id, session_sub, given_name, family_name, email_address)
   overriding system value
   values
     (1, '11111111-1111-1111-1111-111111111111', 'John', 'Doe', 'a1@abc.com'),
