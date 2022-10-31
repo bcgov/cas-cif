@@ -1,7 +1,7 @@
 import { MutableRefObject } from "react";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import { FormChangeOperation } from "__generated__/ProjectContactForm_projectRevision.graphql";
-import { ProjectMilestoneReportFormGroup_projectRevision$data } from "__generated__/ProjectMilestoneReportFormGroup_projectRevision.graphql";
+import { ProjectMilestoneReportForm_projectRevision$data } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectQuarterlyReportForm_projectRevision$data } from "__generated__/ProjectQuarterlyReportForm_projectRevision.graphql";
 import { ProjectAnnualReportForm_projectRevision$data } from "__generated__/ProjectAnnualReportForm_projectRevision.graphql";
 import { addReportingRequirementToRevisionMutation$variables } from "__generated__/addReportingRequirementToRevisionMutation.graphql";
@@ -14,7 +14,7 @@ import { DiscardFormChangeOptions } from "hooks/useConfigurableDiscardFormChange
 import { discardReportingRequirementFormChangeMutation$data } from "__generated__/discardReportingRequirementFormChangeMutation.graphql";
 
 /**
- * These generic functions are for use in the ProjectMilestoneReportFormGroup, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
+ * These generic functions are for use in the ProjectMilestoneReportForm, ProjectQuarterlyReportForm and ProjectAnnualReportForm components.
  * The report forms all need to handle CRUD operations for reporting_requirement form_change records in an identical way.
  * Staging the forms before submit and sorting the forms by index are also shared functionality of these components.
  */
@@ -24,7 +24,7 @@ export const addReportFormChange = (
     variables: addReportingRequirementToRevisionMutation$variables;
   }) => void,
   revision:
-    | ProjectMilestoneReportFormGroup_projectRevision$data
+    | ProjectMilestoneReportForm_projectRevision$data
     | ProjectQuarterlyReportForm_projectRevision$data
     | ProjectAnnualReportForm_projectRevision$data,
   reportIndex: number,
@@ -102,6 +102,8 @@ export const deleteReportFormChange = (
   });
 };
 
+/** Deprecated - When refactoring forms, we should use the
+ * `stageMultipleReportingRequirementFormChange` function instead  */
 export const stageReportFormChanges = async (
   mutationFn: (args: {
     variables: updateReportingRequirementFormChangeMutation$variables;
@@ -180,12 +182,24 @@ export const stageReportFormChanges = async (
   }
 };
 
-export const getSortedReports = function <T>(
-  formChangeEdges: readonly { node: T }[]
+/**
+ * @param formChangeEdges the edges, containing nodes of graphQL type FormChange
+ * @param keepArchivedReports if set to true, archived reports won't be pruned (for summary displays)
+ * @returns a tuple containing the reports sorted by reportingRequirementIndex, and the next index available
+ */
+export const getSortedReports = function <
+  T extends {
+    operation: string;
+    newFormData: any;
+  }
+>(
+  formChangeEdges: readonly { node: T }[],
+  keepArchivedReports: boolean = false
 ) {
-  const filteredReports = formChangeEdges
-    .map(({ node }) => node as any)
-    .filter((report) => report.operation !== "ARCHIVE");
+  const formChangeNodes = formChangeEdges.map(({ node }) => node);
+  const filteredReports = keepArchivedReports
+    ? formChangeNodes
+    : formChangeNodes.filter((report) => report.operation !== "ARCHIVE");
 
   filteredReports.sort(
     (a, b) =>

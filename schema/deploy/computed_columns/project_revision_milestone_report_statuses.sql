@@ -15,28 +15,17 @@ $function$
     (fc.new_form_data ->> 'submittedDate')::timestamptz as report_due_date,
     case
       when fc.change_status = 'pending'
-        and (
+        and
           (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
-          or (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'milestone_report' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id)) is distinct from true)
-          or (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'payment' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id)) is distinct from true)
-        )
         then  'In Progress'
       when fc.change_status= 'staged'
         and json_array_length(fc.validation_errors::json) = 0
-        and (select json_array_length(validation_errors::json) from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'milestone_report' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id) = 0
-        and (select json_array_length(validation_errors::json) from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'payment' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id) = 0
-        and (
+        and
           (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
-          or (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'milestone_report' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id)) is distinct from true)
-          or (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'payment' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id)) is distinct from true)
-        )
         then 'Filled'
       when fc.change_status= 'staged'
-        and (
+        and
           json_array_length(fc.validation_errors::json) > 0
-          or (select json_array_length(validation_errors::json) from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'milestone_report' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id) > 0
-          or (select json_array_length(validation_errors::json) from cif.form_change where project_revision_id = $1.id and form_data_table_name = 'payment' and (new_form_data->>'reportingRequirementId')::int=fc.form_data_record_id) > 0
-        )
         then 'Attention Required'
       else
         case

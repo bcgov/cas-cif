@@ -11,6 +11,7 @@ values ('00000000-0000-0000-0000-000000000000', 'user1', 'Testuser', 'test@somem
 set jwt.claims.sub to '00000000-0000-0000-0000-000000000000';
 
 select mocks.set_mocked_time_in_transaction('2020-01-12');
+insert into cif.form(slug, json_schema, description) values ('json_schema_name', '{}'::jsonb, 'test description');
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name)
 values
 ('{"test": "first_record"}'::jsonb, 'create', 'cif', 'test_table', 'json_schema_name'),

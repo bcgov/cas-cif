@@ -38,6 +38,8 @@ select has_function('cif_private', 'set_previous_form_change_id', 'Function set_
 alter table cif.form_change disable trigger _set_previous_form_change_id;
 
 -- create an inital form_change record
+insert into cif.form(slug, json_schema, description) values ('test', '{}'::jsonb, 'test description');
+
 insert into cif.form_change(project_revision_id, previous_form_change_id, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values
   (1, null, 'create', 'cif', 'project', 1, 'test', 'pending'),

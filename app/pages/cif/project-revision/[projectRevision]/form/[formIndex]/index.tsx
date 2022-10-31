@@ -46,7 +46,7 @@ const pageQuery = graphql`
         ...ProjectQuarterlyReportForm_projectRevision
         ...ProjectQuarterlyReportFormSummary_projectRevision
         ...ProjectAnnualReportForm_projectRevision
-        ...ProjectMilestoneReportFormGroup_projectRevision
+        ...ProjectMilestoneReportForm_projectRevision
         ...ProjectMilestoneReportFormSummary_projectRevision
         ...ProjectAnnualReportFormSummary_projectRevision
         ...ProjectFundingAgreementForm_projectRevision
@@ -57,7 +57,7 @@ const pageQuery = graphql`
       ...ProjectForm_query
       ...ProjectContactForm_query
       ...ProjectManagerFormGroup_query
-      ...ProjectMilestoneReportFormGroup_query
+      ...ProjectMilestoneReportForm_query
       ...ProjectFundingAgreementForm_query
     }
   }

@@ -1,4 +1,4 @@
--- Verify cif:tables/payment on pg
+-- Verify cif:tables/payment_001 on pg
 
 begin;
 

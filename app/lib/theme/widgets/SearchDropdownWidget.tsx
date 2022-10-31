@@ -11,13 +11,14 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
   const { id, onChange, schema, placeholder, readonly } = props;
 
   const handleChange = (e: React.ChangeEvent<{}>, option: any) => {
-    onChange(option?.value);
+    onChange(option?.enum?.[0]);
   };
 
   const getSelected = useCallback(() => {
-    if (props.value === null || props.value === undefined) return null;
+    if (props.value === null || props.value === undefined || !schema.anyOf)
+      return null;
     const selectedValue = schema.anyOf.find(
-      (option) => (option as any).value === props.value
+      (option) => (option as any).enum?.[0] === props.value
     );
     return selectedValue;
   }, [schema, props.value]);
@@ -33,7 +34,7 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
       value={getSelected()}
       onChange={handleChange}
       isOptionEqualToValue={(option) =>
-        props.value ? option.value === props.value : true
+        props.value ? option.enum?.[0] === props.value : true
       }
       getOptionLabel={(option) => (option ? option.title : "")}
       sx={{

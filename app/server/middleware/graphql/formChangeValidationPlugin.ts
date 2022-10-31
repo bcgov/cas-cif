@@ -1,13 +1,17 @@
+import validationSchemas from "../../../data/jsonSchemaForm/validationSchemas";
 import { GraphQLObjectType, GraphQLResolveInfo } from "graphql";
 import { Context, makeWrapResolversPlugin } from "postgraphile";
 import { CommitFormChangeInput } from "__generated__/commitFormChangeMutation.graphql";
 import { StageFormChangeInput } from "__generated__/stageFormChangeMutation.graphql";
 import { UpdateFormChangeInput } from "__generated__/updateFormChangeMutation.graphql";
 import validateRecord from "./validateRecord";
+import databaseSchemaConfiguration from "./databaseSchemaConfiguration";
 
 interface Args {
   input: UpdateFormChangeInput | StageFormChangeInput | CommitFormChangeInput;
 }
+
+const DATABASE_SCHEMAS = databaseSchemaConfiguration;
 
 export const filter = (context: Context<GraphQLObjectType<any, any>>) => {
   if (
@@ -47,8 +51,29 @@ export const resolverWrapperGenerator =
       [args.input.rowId]
     );
 
+    let jsonSchema;
+
+    if (DATABASE_SCHEMAS.includes(formChangeRecord.json_schema_name)) {
+      const {
+        rows: [fetchedRecord],
+      } = await pgClient.query(
+        `select json_schema from cif.form f
+          join cif.form_change fc on
+          f.slug = fc.json_schema_name
+          and fc.id = $1`,
+        [args.input.rowId]
+      );
+      jsonSchema = fetchedRecord.json_schema.schema;
+    } else jsonSchema = validationSchemas[formChangeRecord.json_schema_name];
+
+    if (!jsonSchema)
+      throw new Error(
+        "No json schema found for schema with name " +
+          formChangeRecord.json_schema_name
+      );
+
     const errors = validateRecord(
-      formChangeRecord.json_schema_name,
+      jsonSchema,
       args.input.formChangePatch.newFormData
     );
 

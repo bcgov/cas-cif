@@ -1,5 +1,7 @@
 ///// Operators
 
+import { TaskListLinkUrl } from "components/TaskList/types";
+
 export const getOperatorsPageRoute = () => ({
   pathname: "/cif/operators/",
 });
@@ -66,14 +68,22 @@ export const getProjectRevisionFormPageRoute = (
   projectRevisionId: string,
   formIndex: string | number,
   anchor?: string
-) => ({
-  pathname: `/cif/project-revision/[projectRevision]/form/[formIndex]`,
-  query: {
-    projectRevision: projectRevisionId,
-    formIndex,
-    anchor: anchor,
-  },
-});
+) => {
+  const urlObject: TaskListLinkUrl = {
+    pathname: `/cif/project-revision/[projectRevision]/form/[formIndex]`,
+    query: {
+      projectRevision: projectRevisionId,
+      formIndex,
+    },
+  };
+
+  if (anchor) {
+    urlObject.query.anchor = anchor;
+    urlObject.hash = anchor;
+  }
+
+  return urlObject;
+};
 
 export const getProjectRevisionAttachmentsPageRoute = (
   projectRevisionId: string

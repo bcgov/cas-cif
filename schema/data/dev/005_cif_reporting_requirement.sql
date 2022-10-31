@@ -10,41 +10,35 @@ do $$
     for temp_row in select id, form_data_record_id, project_revision_id from cif.form_change where form_data_table_name = 'project'
     loop
 
-      perform cif.add_milestone_to_revision(temp_row.project_revision_id, 1);
+      perform cif.create_form_change(
+        'create',
+        'milestone',
+        'cif',
+        'reporting_requirement',
+        '{}'::jsonb,
+        null,
+        temp_row.project_revision_id
+      );
       -- reporting requirement
       update cif.form_change set new_form_data =
       json_build_object(
-          'projectId', temp_row.form_data_record_id,
-          'reportDueDate', now(),
-          'submittedDate', now(),
-          'reportType', 'General Milestone',
-          'reportingRequirementIndex', 1,
-          'description', 'general milestone report description ' || temp_row.form_data_record_id
-          )
-      where form_data_table_name = 'reporting_requirement' and project_revision_id = temp_row.project_revision_id;
-
-      --milestone info
-      update cif.form_change set new_form_data =
-      json_build_object(
+        'projectId', temp_row.form_data_record_id,
+        'reportDueDate', now(),
+        'submittedDate', now(),
+        'reportType', 'General Milestone',
+        'reportingRequirementIndex', 1,
+        'description', 'general milestone report description ' || temp_row.form_data_record_id,
+        'adjustedGrossAmount', 1,
+        'adjustedNetAmount', 1,
+        'dateSentToCsnr', now(),
         'certifierProfessionalDesignation', 'Professional Engineer',
-        'reportingRequirementId', new_form_data->'reportingRequirementId',
         'substantialCompletionDate', now(),
         'maximumAmount', 1,
         'totalEligibleExpenses', 1,
-        'certifiedBy', 'Elliot Page'
-          )
-      where form_data_table_name = 'milestone_report' and project_revision_id = temp_row.project_revision_id;
-
-      -- payment info
-      update cif.form_change set new_form_data =
-      json_build_object(
-        'reportingRequirementId', new_form_data->'reportingRequirementId',
-        'adjustedGrossAmount', 1,
-        'adjustedNetAmount', 1,
-        'dateSentToCsnr', now()
-          )
-      where form_data_table_name = 'payment' and project_revision_id = temp_row.project_revision_id;
-
+        'certifiedBy', 'Elliot Page',
+        'hasExpenses', true
+      )
+      where form_data_table_name = 'reporting_requirement' and project_revision_id = temp_row.project_revision_id;
 
     end loop;
 

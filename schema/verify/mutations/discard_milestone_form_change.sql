@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.discard_milestone_form_change(int, int)'::regprocedure);
+select cif_private.verify_function_not_present('cif', 'discard_milestone_form_change', 2);
 
 rollback;

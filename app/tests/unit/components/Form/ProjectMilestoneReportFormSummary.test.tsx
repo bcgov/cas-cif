@@ -1,11 +1,11 @@
 import { graphql } from "react-relay";
 import { screen } from "@testing-library/react";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
-import { ProjectMilestoneReportFormSummary_projectRevision$data } from "__generated__/ProjectMilestoneReportFormSummary_projectRevision.graphql";
 import compiledProjectMilestoneReportFormSummaryQuery, {
   ProjectMilestoneReportFormSummaryQuery,
 } from "__generated__/ProjectMilestoneReportFormSummaryQuery.graphql";
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
+import milestoneProdSchema from "../../../../../schema/data/prod/json_schema/milestone.json";
 
 const testQuery = graphql`
   query ProjectMilestoneReportFormSummaryQuery @relay_test_operation {
@@ -18,131 +18,73 @@ const testQuery = graphql`
 `;
 
 const mockQueryPayload = {
+  Form() {
+    return {
+      jsonSchema: milestoneProdSchema,
+    };
+  },
   ProjectRevision() {
-    const result: Partial<ProjectMilestoneReportFormSummary_projectRevision$data> =
-      {
-        isFirstRevision: false,
-        summaryMilestoneReportingRequirementFormChanges: {
-          edges: [
-            {
-              node: {
-                id: "Test Reporting Requirement ID - 1",
-                isPristine: false,
+    const result = {
+      isFirstRevision: false,
+      summaryMilestoneFormChanges: {
+        edges: [
+          {
+            node: {
+              id: "Test Reporting Requirement ID - 1",
+              isPristine: false,
+              newFormData: {
+                description: "charmander",
+                projectId: 1,
+                reportingRequirementIndex: 1,
+                reportType: "General",
+                reportDueDate: "2020-01-10T23:59:59.999-07:00",
+                reportingRequirementId: 1,
+                totalEligibleExpenses: 100,
+                hasExpenses: true,
+              },
+              operation: "UPDATE",
+              formChangeByPreviousFormChangeId: {
                 newFormData: {
-                  description: "charmander",
+                  description: "bulbasaur",
                   projectId: 1,
                   reportingRequirementIndex: 1,
-                  reportType: "General",
-                  reportDueDate: "2020-01-10T23:59:59.999-07:00",
+                  reportDueDate: "2020-01-01T13:59:59.999-07:00",
+                  reportType: "Advanced",
+                  reportingRequirementId: 1,
+                  totalEligibleExpenses: 200,
+                  hasExpenses: true,
                 },
-                operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    description: "bulbasaur",
-                    projectId: 1,
-                    reportingRequirementIndex: 1,
-                    reportDueDate: "2020-01-01T13:59:59.999-07:00",
-                    reportType: "Advanced",
-                  },
-                },
-                formDataRecordId: 1,
               },
+              formDataRecordId: 1,
             },
-            {
-              node: {
-                id: "Test Reporting Requirement ID - 2",
-                isPristine: false,
+          },
+          {
+            node: {
+              id: "Test Reporting Requirement ID - 2",
+              isPristine: false,
+              newFormData: {
+                description: "Removed comment",
+                projectId: 1,
+                reportDueDate: "2020-01-07T23:59:59.999-07:00",
+                reportingRequirementIndex: 1,
+                reportingRequirementId: 2,
+              },
+              operation: "ARCHIVE",
+              formChangeByPreviousFormChangeId: {
                 newFormData: {
                   description: "Removed comment",
                   projectId: 1,
-                  reportDueDate: "2020-01-07T23:59:59.999-07:00",
+                  reportDueDate: "2020-01-05T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
-                },
-                operation: "ARCHIVE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    description: "Removed comment",
-                    projectId: 1,
-                    reportDueDate: "2020-01-05T23:59:59.999-07:00",
-                    reportingRequirementIndex: 1,
-                  },
-                },
-                formDataRecordId: 2,
-              },
-            },
-          ],
-        },
-        summaryMilestoneFormChanges: {
-          edges: [
-            {
-              node: {
-                id: "Test Milestone ID - 1",
-                isPristine: false,
-                newFormData: {
-                  reportingRequirementId: 1,
-                  totalEligibleExpenses: 100,
-                },
-                operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    reportingRequirementId: 1,
-                    totalEligibleExpenses: 200,
-                  },
-                },
-              },
-            },
-            {
-              node: {
-                id: "Test Milestone ID - 2",
-                isPristine: false,
-                newFormData: {
                   reportingRequirementId: 2,
                 },
-                operation: "ARCHIVE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    reportingRequirementId: 2,
-                  },
-                },
               },
+              formDataRecordId: 2,
             },
-          ],
-        },
-        summaryMilestonePaymentFormChanges: {
-          edges: [
-            {
-              node: {
-                id: "Test Payment ID - 1",
-                isPristine: false,
-                operation: "UPDATE",
-                newFormData: {
-                  reportingRequirementId: 1,
-                },
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    reportingRequirementId: 1,
-                  },
-                },
-              },
-            },
-            {
-              node: {
-                id: "Test Payment ID - 2",
-                isPristine: false,
-                newFormData: {
-                  reportingRequirementId: 2,
-                },
-                operation: "ARCHIVE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    reportingRequirementId: 2,
-                  },
-                },
-              },
-            },
-          ],
-        },
-      };
+          },
+        ],
+      },
+    };
     return result;
   },
 };

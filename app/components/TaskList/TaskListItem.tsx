@@ -1,11 +1,11 @@
 import TaskListStatus from "./TaskListStatus";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import Link from "next/link";
-import { TaskListMode } from "./types";
+import { TaskListLinkUrl, TaskListMode } from "./types";
 
 interface Props {
   stepName: string;
-  linkUrl: { pathname: string; query: { projectRevision: string } };
+  linkUrl: TaskListLinkUrl;
   formTitle: string;
   formStatus: string;
   currentStep: string;

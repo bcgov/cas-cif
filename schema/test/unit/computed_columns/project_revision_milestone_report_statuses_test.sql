@@ -22,29 +22,9 @@ insert into cif.form_change(id, new_form_data, operation, change_status, form_da
      'reporting_requirement',
      1,
      1,
-     'reporting_requirement',
+     'milestone',
      '[]'),
     (3,
-     format('{"reportingRequirementId": 1}')::jsonb,
-     'create',
-     'pending',
-     'cif',
-     'milestone_report',
-     1,
-     1,
-     'milestone_report',
-     '[]'),
-    (4,
-     format('{"reportingRequirementId": 1}')::jsonb,
-     'create',
-     'pending',
-     'cif',
-     'payment',
-     1,
-     1,
-     'payment',
-     '[]'),
-    (5,
      format('{"reportDueDate": "%s", "projectId": 1, "reportType": "General Milestone", "reportingRequirementIndex": 1}',
      now() + interval '2 days')::jsonb,
      'archive',
@@ -53,27 +33,7 @@ insert into cif.form_change(id, new_form_data, operation, change_status, form_da
      'reporting_requirement',
      1,
      3,
-     'reporting_requirement',
-     '[]'),
-    (6,
-     format('{"reportingRequirementId": 1}')::jsonb,
-     'archive',
-     'committed',
-     'cif',
-     'milestone_report',
-     1,
-     3,
-     'milestone_report',
-     '[]'),
-    (7,
-     format('{"reportingRequirementId": 1}')::jsonb,
-     'archive',
-     'committed',
-     'cif',
-     'payment',
-     1,
-     3,
-     'payment',
+     'milestone',
      '[]');
 
 /** END SETUP */
@@ -110,7 +70,7 @@ select results_eq(
 );
 
 -- Add errors
-update cif.form_change set validation_errors = '[{"errors": true}]' where id = 3;
+update cif.form_change set validation_errors = '[{"errors": true}]' where id = 2;
 
 select results_eq(
   $$
@@ -139,32 +99,10 @@ insert into cif.form_change(id, new_form_data, operation, change_status, form_da
      'reporting_requirement',
      1,
      2,
-     'reporting_requirement',
-     '[]'),
-    (33,
-     format('{"reportingRequirementId": 1}')::jsonb,
-     'create',
-     'pending',
-     'cif',
-     'milestone_report',
-     1,
-     2,
-     'milestone_report',
-     '[]'),
-    (44,
-     format('{"reportingRequirementId": 1}')::jsonb,
-     'create',
-     'pending',
-     'cif',
-     'payment',
-     1,
-     2,
-     'payment',
+     'milestone',
      '[]');
 
 update cif.form_change set previous_form_change_id = 2 where id = 22;
-update cif.form_change set previous_form_change_id = 3 where id = 33;
-update cif.form_change set previous_form_change_id = 4 where id = 44;
 
 select results_eq(
   $$

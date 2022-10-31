@@ -13,7 +13,9 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
   required,
   id,
   uiSchema,
+  hidden,
 }) => {
+  if (hidden) return <div className="hidden">{children}</div>;
   return (
     <div className={uiSchema?.classNames}>
       {displayLabel && (

@@ -18,6 +18,8 @@ create table mock_schema.mock_table (
 );
 
 -- setting a form change record
+insert into cif.form(slug, json_schema, description) values ('test_schema', '{}'::jsonb, 'test description');
+
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values (
   '{"textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',

@@ -44,6 +44,21 @@ insert into cif.form_change(new_form_data,
     "projectId":1,
     "reportType": "General Milestone",
     "reportingRequirementIndex": 1
+    }','create','cif','reporting_requirement',null,1,'pending','milestone');
+
+insert into cif.form_change(new_form_data,
+    operation,
+    form_data_schema_name,
+    form_data_table_name,
+    form_data_record_id,
+    project_revision_id,
+    change_status,
+    json_schema_name)
+    values
+    ('{
+    "projectId":1,
+    "reportType": "Annual",
+    "reportingRequirementIndex": 1
     }','create','cif','reporting_requirement',null,1,'pending','reporting_requirement');
 
 update cif.form_change
@@ -126,17 +141,24 @@ select is_empty(
 
 select results_eq(
   $$
-  select new_form_data from cif.form_change
-  where form_data_table_name = 'reporting_requirement' and project_revision_id = 2
+    select new_form_data, json_schema_name from cif.form_change
+    where form_data_table_name = 'reporting_requirement' and project_revision_id = 2
+    order by json_schema_name
   $$,
   $$
-  select '{
-    "projectId":1,
-    "reportType": "General Milestone",
-    "reportingRequirementIndex": 1
-    }'::jsonb
+  values
+    ('{
+      "projectId":1,
+      "reportType": "General Milestone",
+      "reportingRequirementIndex": 1
+      }'::jsonb, 'milestone'::varchar),
+    ('{
+      "projectId":1,
+      "reportType": "Annual",
+      "reportingRequirementIndex": 1
+      }'::jsonb, 'reporting_requirement'::varchar)
   $$,
-  'creating a new project revision should create a form_change record for the reporting_requirement'
+  'creating a new project revision should create a form_change record for the reporting_requirement, either for the milestone schema, or the generic reporting_requirement schema'
 );
 
 select results_eq(

@@ -10,8 +10,8 @@ select columns_are(
   ARRAY[
     'id',
     'reporting_requirement_id',
-    'adjusted_gross_amount',
-    'adjusted_net_amount',
+    'gross_amount',
+    'net_amount',
     'date_sent_to_csnr',
     'reporting_requirement_id',
     'created_at',
@@ -42,7 +42,7 @@ insert into cif.reporting_requirement
   values ('2020-01-01', 'comment_1', 1, 'Annual', 1);
 
 
-insert into cif.payment (adjusted_gross_amount, adjusted_net_amount, date_sent_to_csnr, reporting_requirement_id)
+insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, reporting_requirement_id)
 values
   (100, 50, '2020-01-01', 1),
   (200, 100, '2021-01-01', 1),
@@ -66,7 +66,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.payment (adjusted_gross_amount, adjusted_net_amount, date_sent_to_csnr, reporting_requirement_id)
+    insert into cif.payment (gross_amount, net_amount, date_sent_to_csnr, reporting_requirement_id)
     values (400, 200, '2023-01-01', 1);
   $$,
     'cif_admin can insert data in payment table'
@@ -74,14 +74,14 @@ select lives_ok(
 
 select lives_ok(
   $$
-    update cif.payment set adjusted_gross_amount = 500 where adjusted_gross_amount = 400;
+    update cif.payment set gross_amount = 500 where gross_amount = 400;
   $$,
     'cif_admin can change data in payment table'
 );
 
 select results_eq(
   $$
-    select count(id) from cif.payment where adjusted_gross_amount = 500
+    select count(id) from cif.payment where gross_amount = 500
   $$,
     ARRAY[1::bigint],
     'Data was changed by cif_admin in payment table'
@@ -110,7 +110,7 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.payment set adjusted_gross_amount = 600 where adjusted_gross_amount = 500;
+    update cif.payment set gross_amount = 600 where gross_amount = 500;
   $$,
     'cif_internal can update data in the payment table'
 );
