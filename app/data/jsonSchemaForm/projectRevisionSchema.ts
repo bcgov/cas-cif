@@ -14,11 +14,21 @@ export const projectRevisionSchema = {
       type: "string",
       title: "General Comments",
     },
+    amendmentType: {
+      type: "string",
+      title: "Ammendment type",
+      default: undefined,
+      anyOf: undefined,
+      enum: undefined,
+    },
   },
 };
 
 export const projectRevisionUISchema = {
   revisionType: {
+    "ui:widget": "radio",
+  },
+  amendmentType: {
     "ui:widget": "radio",
   },
 };

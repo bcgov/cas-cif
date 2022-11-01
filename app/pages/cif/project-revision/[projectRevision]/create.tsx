@@ -15,7 +15,11 @@ import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+<<<<<<< HEAD
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
+=======
+import { useState } from "react";
+>>>>>>> c72cb4f8 (chore: making amendment type mandatory)
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -36,21 +40,27 @@ const pageQuery = graphql`
         }
       }
     }
+    allAmendmentTypes {
+      edges {
+        node {
+          name
+        }
+      }
+    }
   }
 `;
 
 export function ProjectRevisionCreate({
   preloadedQuery,
 }: RelayProps<{}, createProjectRevisionQuery>) {
-  const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
-    pageQuery,
-    preloadedQuery
-  );
+  const { session, projectRevision, allRevisionTypes, allAmendmentTypes } =
+    usePreloadedQuery(pageQuery, preloadedQuery);
   const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
 
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
+  const [amendmentType, setAmendmentType] = useState(undefined);
 
   const handleCreateRevision = ({ formData }) => {
     createProjectRevision({
@@ -73,16 +83,41 @@ export function ProjectRevisionCreate({
 
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
+  const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
+
+  const localSchema = JSON.parse(JSON.stringify(projectRevisionSchema));
+  localSchema.properties.revisionType.enum = revisionEnum;
+
+  if (amendmentType === "General Revision") {
+    localSchema.properties.amendmentType =
+      projectRevisionSchema.properties.amendmentType;
+    localSchema.properties.amendmentType.enum = amendmentTypeEnum;
+    localSchema.properties.revisionType.default = "General Revision";
+    localSchema.required.push("amendmentType");
+  } else {
+    localSchema.properties.revisionType.default = amendmentType;
+    localSchema.properties.amendmentType = {};
+  }
+
+  const handleOnchange = (e) => {
+    if (e.formData.revisionType === "General Revision") {
+      setAmendmentType("General Revision");
+    } else {
+      setAmendmentType(e.formData.revisionType);
+    }
+  };
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
         <div>
           <FormBase
             id="ProjectRevisionCreateForm"
-            schema={projectRevisionSchema as JSONSchema7}
+            schema={localSchema as JSONSchema7}
             uiSchema={projectRevisionUISchema}
             onSubmit={handleCreateRevision}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
+            onChange={handleOnchange}
           >
             <Button
               type="submit"
