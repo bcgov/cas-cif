@@ -28,9 +28,6 @@ begin
       where $3 <= quarterly_report_due_date limit 1 into report_interval_start_date;
   end if;
 
-  -- generating the reports
-  set time zone "America/Vancouver";
-
   return query
   with report_form_changes as (
     insert into cif.form_change(
@@ -53,7 +50,7 @@ begin
       'reporting_requirement',
       'reporting_requirement',
       $1
-      from generate_series(report_interval_start_date::timestamptz, $4::timestamptz, report_interval) as due_date
+      from generate_series(date_trunc('day', report_interval_start_date::timestamptz) + interval '1 day' - interval '1 second', $4::timestamptz, report_interval) as due_date
     ) returning *
   )
   select * from report_form_changes;
