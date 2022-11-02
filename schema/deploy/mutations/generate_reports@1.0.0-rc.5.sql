@@ -3,7 +3,8 @@
 begin;
 
 create or replace function cif.generate_reports(revision_id int, report_type text, start_date timestamptz, end_date timestamptz)
-  returns setof cif.form_change as $generate_reports$
+  returns setof cif.form_change as
+  $generate_reports$
   declare
   start_date_year int := extract(year from $3);
   report_interval_start_date timestamptz;

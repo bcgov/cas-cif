@@ -3,7 +3,8 @@
 begin;
 
 create or replace function cif.generate_reports(revision_id int, report_type text, start_date timestamptz, end_date timestamptz)
-  returns setof cif.form_change as $generate_reports$
+  returns setof cif.form_change as
+  $generate_reports$
   declare
   start_date_year int := extract(year from $3);
   report_interval_start_date timestamptz;
@@ -50,6 +51,7 @@ begin
       'reporting_requirement',
       'reporting_requirement',
       $1
+      -- setting the `report_interval_start_date` to the end of the day to make sure we have the correct date on the front end (the front end is using the end of the day to display the date)
       from generate_series(date_trunc('day', report_interval_start_date::timestamptz) + interval '1 day' - interval '1 second', $4::timestamptz, report_interval) as due_date
     ) returning *
   )
