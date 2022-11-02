@@ -291,14 +291,20 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/form/5");
     cy.findByRole("button", { name: /generate quarterly reports/i }).click();
     cy.get(".reportHeader").should("have.length", 8);
-    cy.findAllByText(/Report Due Date$/i)
+    cy.findAllByText(/^Report Due Date$/i)
       .first()
       .next()
       .contains(/Jan(\.)? 05, 2020/);
-    cy.findAllByText(/Report Due Date$/i)
+    cy.findAllByText(/^Report Due Date$/i)
       .last()
       .next()
       .contains(/Oct(\.)? 05, 2021/);
+    cy.findByText(/contract start date/i)
+      .next()
+      .contains(/Jan(\.)? 1, 2020/);
+    cy.findByText(/TEIMP End Date/i)
+      .next()
+      .contains(/Jan(\.)? 1, 2022/);
 
     //generate annual reports
     cy.findByRole("heading", { name: /7. Annual reports/i }).click();
@@ -306,14 +312,20 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /generate annual reports/i }).click();
     cy.get(".reportHeader").should("have.length", 5);
-    cy.findAllByText(/Report Due Date$/i)
+    cy.findAllByText(/^Report Due Date$/i)
       .first()
       .next()
       .contains(/Jan(\.)? 31, 2020/);
-    cy.findAllByText(/Report Due Date$/i)
+    cy.findAllByText(/^Report Due Date$/i)
       .last()
       .next()
       .contains(/Jan(\.)? 31, 2024/);
+    cy.findByText(/Emissions Intensity Report Due Date/i)
+      .next()
+      .contains(/Jan(\.)? 1, 2020/);
+    cy.findByText(/Project Assets Life End Date/i)
+      .next()
+      .contains(/Feb(\.)? 2, 2024/);
   });
 });
 describe("the project amendment and revisions page", () => {
