@@ -29,6 +29,7 @@ begin
       where $3 <= quarterly_report_due_date limit 1 into report_interval_start_date;
   end if;
 
+  -- generating the reports
   return query
   with report_form_changes as (
     insert into cif.form_change(
@@ -43,7 +44,7 @@ begin
       json_build_object(
         'projectId', (select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1),
         'reportType', $2,
-        'reportDueDate', due_date::timestamptz,
+        'reportDueDate', due_date,
         'reportingRequirementIndex', row_number() over()
       ),
       'create',
@@ -51,8 +52,7 @@ begin
       'reporting_requirement',
       'reporting_requirement',
       $1
-      -- setting the `report_interval_start_date` to the end of the day to make sure we have the correct date on the front end (the front end is using the end of the day to display the date)
-      from generate_series(date_trunc('day', report_interval_start_date::timestamptz) + interval '1 day' - interval '1 second', $4::timestamptz, report_interval) as due_date
+      from generate_series(report_interval_start_date, $4, report_interval) as due_date
     ) returning *
   )
   select * from report_form_changes;
