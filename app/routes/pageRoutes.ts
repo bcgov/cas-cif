@@ -124,13 +124,6 @@ export const getProjectsPageRoute = () => ({
   pathname: "/cif/projects/",
 });
 
-export const getProjectViewPageRoute = (projectId: string) => ({
-  pathname: `/cif/project/[project]/`,
-  query: {
-    project: projectId,
-  },
-});
-
 export const getAttachmentDownloadRoute = (attachmentId: string) => ({
   pathname: `/download/${attachmentId}`,
 });
