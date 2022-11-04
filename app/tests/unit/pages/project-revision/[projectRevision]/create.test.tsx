@@ -24,11 +24,19 @@ const defaultMockResolver = {
   Query() {
     return {
       allRevisionTypes: {
-        totalCount: 2,
+        totalCount: 3,
         edges: [
           { node: { id: "1", type: "Amendment" } },
-          { node: { id: "2", type: "Minor Revision" } },
-          { node: { id: "3", type: "Major Revision" } },
+          { node: { id: "2", type: "General Revision" } },
+          { node: { id: "3", type: "Minor Revision" } },
+        ],
+      },
+      allAmendmentTypes: {
+        totalCount: 3,
+        edges: [
+          { node: { id: "1", name: "Cost" } },
+          { node: { id: "2", name: "Schedule" } },
+          { node: { id: "3", name: "Scope" } },
         ],
       },
     };
@@ -82,6 +90,63 @@ describe("The project amendments and revisions page", () => {
     pageTestingHelper.expectMutationToBeCalled(
       "createProjectRevisionMutation",
       { projectId: 1234, revisionType: "Minor Revision" }
+    );
+    const operation =
+      pageTestingHelper.environment.mock.getMostRecentOperation();
+    act(() => {
+      pageTestingHelper.environment.mock.resolve(
+        operation,
+        MockPayloadGenerator.generate(operation)
+      );
+    });
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
+      query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
+      anchor: undefined,
+    });
+  });
+  it("Renders general revision options when general revision is selected", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    userEvent.click(screen.getByLabelText(/General Revision/i));
+    expect(
+      screen.getByRole("radio", {
+        name: /Cost/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", {
+        name: /Schedule/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", {
+        name: /Scope/i,
+      })
+    ).toBeInTheDocument();
+    userEvent.click(
+      screen.getAllByRole("button", { name: /new revision/i })[0]
+    );
+  });
+  it("Triggers create revision mutation with correct amendment types", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    userEvent.click(screen.getByLabelText(/General Revision/i));
+    userEvent.click(screen.getByLabelText(/Cost/i));
+    userEvent.click(screen.getByLabelText(/Schedule/i));
+    userEvent.click(
+      screen.getAllByRole("button", { name: /new revision/i })[0]
+    );
+
+    pageTestingHelper.expectMutationToBeCalled(
+      "createProjectRevisionMutation",
+      {
+        projectId: 1234,
+        revisionType: "General Revision",
+        amendmentTypes: ["Cost", "Schedule"],
+      }
     );
     const operation =
       pageTestingHelper.environment.mock.getMostRecentOperation();
