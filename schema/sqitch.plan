@@ -160,6 +160,4 @@ mutations/commit_form_change_internal [mutations/commit_form_change_internal@1.0
 tables/form [tables/form@1.0.0-rc.5] 2022-10-25T18:49:21Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # updating the commit handler to be a string, to make calling it easier
 tables/report_type_002 [tables/report_type_001] 2022-10-27T01:05:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Performance Milestone report type is not a milestone
 mutations/generate_reports [mutations/generate_reports@1.0.0-rc.5] 2022-10-17T20:19:57Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Casting report auto-generator due date to timestamptz
-functions/keycloak_user_sub_is_text [tables/cif_user types/keycloak_jwt] 2022-10-31T17:29:23Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # function to update user sub to text
-functions/revert_keycloak_user_sub_is_text [functions/keycloak_user_sub_is_text] 2022-11-01T23:29:41Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # function to revert user sub to uuid
-migrations/migrate_keycloak_user_sub_to_text [functions/keycloak_user_sub_is_text] 2022-10-31T19:09:36Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # migration to replace user sub with text
+tables/cif_user_001_drop_policies [tables/cif_user] 2022-11-04T20:53:24Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Dropping policies ahead of changing column type on cif user table
