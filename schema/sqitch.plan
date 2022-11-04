@@ -161,3 +161,4 @@ tables/form [tables/form@1.0.0-rc.5] 2022-10-25T18:49:21Z Pierre Bastianelli <pi
 tables/report_type_002 [tables/report_type_001] 2022-10-27T01:05:08Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Performance Milestone report type is not a milestone
 mutations/generate_reports [mutations/generate_reports@1.0.0-rc.5] 2022-10-17T20:19:57Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Casting report auto-generator due date to timestamptz
 tables/cif_user_001_drop_policies [tables/cif_user] 2022-11-04T20:53:24Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Dropping policies ahead of changing column type on cif user table
+functions/session_001_drop_function_before_table_update [functions/session] 2022-11-04T21:07:25Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Dropping function before updating type on cif_user table
