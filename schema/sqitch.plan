@@ -178,3 +178,4 @@ functions/pending_new_form_change_for_table_002_create_after_cif_user_update [fu
 functions/pending_new_project_revision_002_create_after_cif_user_update [functions/pending_new_project_revision] 2022-11-07T22:48:34Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Creating function after updating type on cif_user table
 mutations/create_user_from_session_002_create_after_cif_user_update [mutations/create_user_from_session] 2022-11-07T22:53:08Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Creating mutation after updating type on cif_user table
 trigger_functions/set_user_id_002_create_after_cif_user_update [trigger_functions/set_user_id] 2022-11-07T22:58:39Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Creating trigger function after updating type on cif_user table
+tables/cif_user_003_create_policies [tables/cif_user] 2022-11-07T23:03:59Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Creating policies after changing column type on cif user table
