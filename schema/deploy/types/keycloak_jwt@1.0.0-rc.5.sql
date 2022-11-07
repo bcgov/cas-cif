@@ -3,8 +3,6 @@
 
 begin;
 
-drop type cif.keycloak_jwt;
-
 create type cif.keycloak_jwt as (
   jti uuid,
   exp integer,
