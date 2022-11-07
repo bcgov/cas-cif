@@ -171,3 +171,4 @@ functions/session_001_drop_function_before_table_update [functions/session] 2022
 types/keycloak_jwt [types/keycloak_jwt@1.0.0-rc.5 functions/session_001_drop_function_before_table_update tables/cif_user_001_drop_policies] 2022-11-07T17:02:37Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Changing sub type from uuid to text
 tables/cif_user_002_uuid_to_session_sub [tables/cif_user_001_drop_policies tables/cif_user] 2022-11-07T20:15:38Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Change uuid column to session sub as varchar type
 trigger_functions/update_timestamps_001_uuid_to_session_sub [trigger_functions/update_timestamps] 2022-11-07T20:44:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Change uuid to session_sub
+functions/session_002_create_function_after_table_update [functions/session] 2022-11-07T21:46:34Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # creating function after updating type on cif_user table
