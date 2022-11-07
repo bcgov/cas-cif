@@ -81,7 +81,7 @@ We also extend this prefix convention to the naming of **branches**, eg: `docs/a
 cd app && yarn test
 ```
 
-Front-end unit tests are snapshot-based. Work that changes the DOM will result in a diff from the last accepted snapshot and cause related tests to fail. You can update the snapshots and review / accept the diff with `yarn test -u`.
+Front-end unit tests include snapshots. Work that changes the DOM will result in a diff from the last accepted snapshot and cause related tests to fail. You can update the snapshots and review / accept the diff with `yarn test -u`.
 
 ### Database Unit Tests with pgTAP
 
@@ -108,7 +108,7 @@ cd app && yarn test:e2e
 [Options](https://docs.cypress.io/guides/guides/command-line.html#cypress-run) can be passed to Cypress through this command, for example to run an individual test or subset:
 
 ```
-cd app && yarn test:e2e --spec cypress/integration/accessibility/*
+cd app && yarn test:e2e --spec cypress/integration/cif/*
 ```
 
 ## Growthbook
