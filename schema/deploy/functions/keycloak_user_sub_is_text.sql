@@ -9,16 +9,27 @@ returns void as
 $function$
 
 begin
-  drop policy cif_internal_insert_cif_user on cif.cif_user;
-  drop policy cif_internal_update_cif_user on cif.cif_user;
-  drop policy cif_external_insert_cif_user on cif.cif_user;
-  drop policy cif_external_update_cif_user on cif.cif_user;
-  drop policy cif_guest_select_cif_user on cif.cif_user;
+  -- done
+  -- drop policy cif_internal_insert_cif_user on cif.cif_user;
+  -- drop policy cif_internal_update_cif_user on cif.cif_user;
+  -- drop policy cif_external_insert_cif_user on cif.cif_user;
+  -- drop policy cif_external_update_cif_user on cif.cif_user;
+  -- drop policy cif_guest_select_cif_user on cif.cif_user;
+
+
+  drop all functions:
+    cif.contact_pending_form_change --done
+    cif.operator_pending_form_change --done
+    cif.pending_new_form_change_for_table
+    cif.pending_new_project_revision
+    cif.create_user_from_session
+    cif_private.set_user_id
+
+  -- done
   drop function cif.session();
+
+  -- done (rework)
   drop type cif.keycloak_jwt;
-
-
-  -- keycloak_jwt type
   create type cif.keycloak_jwt as (
     jti uuid,
     exp integer,
@@ -149,6 +160,15 @@ begin
       for each row
       execute procedure cif_private.update_timestamps();
     $$;
+
+
+  recreate all functions:
+    cif.contact_pending_form_change
+    cif.operator_pending_form_change
+    cif.pending_new_form_change_for_table
+    cif.pending_new_project_revision
+    cif.create_user_from_session
+    cif_private.set_user_id
 
   do
   $policy$
