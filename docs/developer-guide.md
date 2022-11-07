@@ -1,8 +1,48 @@
 # Developer Guidelines
 
-## Setting up the commit-msg hook for the pre-commit
+(For development environment setup see [`developer-environment-setup`](./developer-environment-setup))
 
-Run `pre-commit install --hook-type commit-msg` to install the commit-msg hook.
+## GraphQL Query Debugger
+
+Graphiql is an interactive in-browser GraphQL IDE available in development at `localhost:3004/graphiql`. It is handy for developing queries interactively before inserting them into a Relay fragment.
+
+## Testing
+
+### Unit Tests with Jest
+
+```
+cd app && yarn test
+```
+
+Front-end unit tests include snapshots. Work that changes the DOM will result in a diff from the last accepted snapshot and cause related tests to fail. You can update the snapshots and review / accept the diff with `yarn test -u`.
+
+### Database Unit Tests with pgTAP
+
+See [Database Testing](#database-testing) below.
+
+### End-to-end Tests with Cypress
+
+#### Run Cypress Specs
+
+First, ensure the web app is running (`cd app && yarn dev`).
+
+For test error debugging and to observe tests' behavior in the browser as they run:
+
+```
+cd app && yarn cypress
+```
+
+To run the tests more efficiently in a headless mode:
+
+```
+cd app && yarn test:e2e
+```
+
+[Options](https://docs.cypress.io/guides/guides/command-line.html#cypress-run) can be passed to Cypress through this command, for example to run an individual test or subset:
+
+```
+cd app && yarn test:e2e --spec cypress/integration/cif/*
+```
 
 ## Growthbook
 
