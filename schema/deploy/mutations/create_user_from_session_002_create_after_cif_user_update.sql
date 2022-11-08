@@ -1,5 +1,5 @@
 -- Deploy cif:mutations/create_user_from_session_002_create_after_cif_user_update to pg
--- requires: mutations/create_user_from_session
+-- requires: mutations/create_user_from_session_001_drop_before_cif_user_update
 
 begin;
 

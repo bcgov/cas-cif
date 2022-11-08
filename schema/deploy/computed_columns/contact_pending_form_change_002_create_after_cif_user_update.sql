@@ -1,5 +1,5 @@
 -- Deploy cif:computed_columns/contact_pending_form_change_002_create_after_cif_user_update to pg
--- requires: computed_columns/contact_pending_form_change
+-- requires: computed_columns/contact_pending_form_change_001_drop_before_cif_user_update
 
 begin;
 

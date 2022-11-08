@@ -1,5 +1,5 @@
 -- Deploy cif:functions/session_002_create_function_after_table_update to pg
--- requires: functions/session
+-- requires: functions/session_001_drop_function_before_table_update
 
 begin;
 

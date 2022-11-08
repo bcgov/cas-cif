@@ -1,5 +1,5 @@
 -- Deploy cif:functions/pending_new_form_change_for_table_002_create_after_cif_user_update to pg
--- requires: functions/pending_new_form_change_for_table
+-- requires: functions/pending_new_form_change_for_table_001_drop_before_cif_user_update
 
 begin;
 
