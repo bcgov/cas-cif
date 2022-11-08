@@ -194,3 +194,4 @@ mutations/update_or_create_user_from_session 2022-11-23T18:18:56Z Bastianelli, P
 @1.0.0 2022-11-29T20:53:00Z Dylan Leard <dylan@button.is> # release v1.0.0
 mutations/update_or_create_user_from_session [mutations/update_or_create_user_from_session@1.0.0] 2022-11-29T23:55:46Z Dylan Leard <dylan@button.is> # Update permissions for user function
 @1.0.1 2022-11-30T00:22:17Z Dylan Leard <dylan@button.is> # release v1.0.1
+tables/project_revision_002_set_amendment_statuses 2022-11-08T17:13:48Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Set amendment_status defaults and update current records' amendment_status
