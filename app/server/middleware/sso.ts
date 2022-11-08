@@ -11,10 +11,10 @@ const mockSessionTimeout = mockLogin || config.get("enableMockAuth");
 
 let ssoServerHost;
 if (!config.get("namespace") || config.get("namespace").endsWith("-dev"))
-  ssoServerHost = "dev.oidc.gov.bc.ca";
+  ssoServerHost = "dev.loginproxy.gov.bc.ca";
 else if (config.get("namespace").endsWith("-test"))
-  ssoServerHost = "test.oidc.gov.bc.ca";
-else ssoServerHost = "oidc.gov.bc.ca";
+  ssoServerHost = "test.loginproxy.gov.bc.ca";
+else ssoServerHost = "loginproxy.gov.bc.ca";
 
 export default async function middleware() {
   return ssoExpress({
@@ -42,12 +42,15 @@ export default async function middleware() {
     },
     oidcConfig: {
       baseUrl: config.get("host"),
-      clientId: "cas-cif",
-      oidcIssuer: `https://${ssoServerHost}/auth/realms/pisrwwhx`,
+      clientId: "cif-4311",
+      oidcIssuer: `https://${ssoServerHost}/auth/realms/standard`,
+      clientSecret: `${config.get("kcClientSecret")}`,
     },
-    ...(!config.get("showKCLogin") && {
-      authorizationUrlParams: { kc_idp_hint: "idir" },
-    }),
+    authorizationUrlParams: (req) => {
+      if ((req.query.kc_idp_hint as string) === "idir")
+        return { kc_idp_hint: "idir" };
+      return {};
+    },
     onAuthCallback: createUserMiddleware(),
   });
 }

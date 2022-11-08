@@ -5,7 +5,7 @@ select plan(4);
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
 
-insert into cif.cif_user(id, uuid)
+insert into cif.cif_user(id, session_sub)
   overriding system value
   values (1, '11111111-1111-1111-1111-111111111111');
 

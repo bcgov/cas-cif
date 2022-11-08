@@ -177,6 +177,12 @@ var config = convict({
     format: "Boolean",
     env: "SHOW_KC_LOGIN",
   },
+  kcClientSecret: {
+    doc: "The Keycloak client secret",
+    default: "a super secret string",
+    format: String,
+    env: "KC_CLIENT_SECRET",
+  },
   cifRole: {
     doc: "Login as a specific role.",
     nullable: true,

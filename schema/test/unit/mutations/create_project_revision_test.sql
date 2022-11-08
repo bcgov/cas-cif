@@ -8,9 +8,9 @@ cif.project_manager, cif.project_revision, cif.emission_intensity_report, cif.mi
 cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.payment, cif.funding_parameter, cif.additional_funding_source, cif.project_revision_amendment_type
 restart identity;
 
-insert into cif.cif_user(id, uuid, given_name, family_name)
+insert into cif.cif_user(id, session_sub, given_name, family_name)
 overriding system value
-values (1, '11111111-1111-1111-1111-111111111111'::uuid, 'test', 'testerson');
+values (1, '11111111-1111-1111-1111-111111111111'::varchar, 'test', 'testerson');
 
 insert into cif.contact(given_name, family_name, email)
 values ('bob', 'loblaw', 'bob@loblaw.com');
