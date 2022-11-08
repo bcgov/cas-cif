@@ -9,11 +9,10 @@ $function$
 
 declare
   _sub text := current_setting('jwt.claims.sub', true);
-  _idir_userid text := current_setting('jwt.claims.idir_userid', true);
 
 begin
   if (coalesce(trim(_sub), '') = '') is not false then
-    return null; -- ensure null, empty, and whitespace _sub / idir_userid claims are filtered out
+    return null; -- ensure null, empty, and whitespace _sub claim is filtered out
   end if;
   return (
     select row (
