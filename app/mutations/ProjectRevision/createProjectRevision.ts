@@ -12,6 +12,7 @@ export const mutation = graphql`
     ) {
       projectRevision {
         id
+        rowId
       }
     }
   }

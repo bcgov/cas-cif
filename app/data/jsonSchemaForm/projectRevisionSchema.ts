@@ -15,11 +15,13 @@ export const projectRevisionSchema = {
       title: "General Comments",
     },
     amendmentType: {
-      type: "string",
-      title: "Ammendment type",
-      default: undefined,
-      anyOf: undefined,
-      enum: undefined,
+      type: "array",
+      title: "Ammendment Type",
+      items: {
+        type: "string",
+        enum: [],
+      },
+      uniqueItems: true,
     },
   },
 };
@@ -29,6 +31,6 @@ export const projectRevisionUISchema = {
     "ui:widget": "radio",
   },
   amendmentType: {
-    "ui:widget": "radio",
+    "ui:widget": "checkboxes",
   },
 };

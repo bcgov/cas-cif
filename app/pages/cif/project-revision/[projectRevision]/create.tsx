@@ -15,11 +15,9 @@ import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-<<<<<<< HEAD
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
-=======
 import { useState } from "react";
->>>>>>> c72cb4f8 (chore: making amendment type mandatory)
+import { useCreateProjectRevisionAmendment } from "mutations/projectRevisionAmendmentType/createProjectRevisionAmendmentType";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -60,6 +58,8 @@ export function ProjectRevisionCreate({
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
+  const [createRevisionAmendment, isCreatingRevisionAmendment] =
+    useCreateProjectRevisionAmendment();
   const [amendmentType, setAmendmentType] = useState(undefined);
 
   const handleCreateRevision = ({ formData }) => {
@@ -69,6 +69,17 @@ export function ProjectRevisionCreate({
         revisionType: formData.revisionType,
       },
       onCompleted: (response) => {
+        for (const ammendmentType of formData.amendmentType) {
+          createRevisionAmendment({
+            variables: {
+              projectRevisionAmendmentType: {
+                projectRevisionId:
+                  response.createProjectRevision.projectRevision.rowId,
+                amendmentType: ammendmentType,
+              },
+            },
+          });
+        }
         router.push(
           getProjectRevisionFormPageRoute(
             response.createProjectRevision.projectRevision.id,
@@ -91,7 +102,7 @@ export function ProjectRevisionCreate({
   if (amendmentType === "General Revision") {
     localSchema.properties.amendmentType =
       projectRevisionSchema.properties.amendmentType;
-    localSchema.properties.amendmentType.enum = amendmentTypeEnum;
+    localSchema.properties.amendmentType.items.enum = amendmentTypeEnum;
     localSchema.properties.revisionType.default = "General Revision";
     localSchema.required.push("amendmentType");
   } else {
@@ -122,7 +133,9 @@ export function ProjectRevisionCreate({
             <Button
               type="submit"
               size="small"
-              disabled={isCreatingProjectRevision}
+              disabled={
+                isCreatingProjectRevision || isCreatingRevisionAmendment
+              }
             >
               New Revision
             </Button>
