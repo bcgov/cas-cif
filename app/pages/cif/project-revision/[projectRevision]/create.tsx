@@ -60,7 +60,6 @@ export function ProjectRevisionCreate({
   const [revisionType, setRevisionType] = useState(undefined);
 
   const handleCreateRevision = ({ formData }) => {
-    console.log("-----");
     createProjectRevision({
       variables: {
         projectId: projectRevision.project.rowId,
