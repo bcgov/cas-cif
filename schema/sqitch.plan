@@ -196,3 +196,4 @@ mutations/update_or_create_user_from_session [mutations/update_or_create_user_fr
 @1.0.1 2022-11-30T00:22:17Z Dylan Leard <dylan@button.is> # release v1.0.1
 tables/full_backup_log [schemas/private] 2022-11-23T21:58:32Z Dylan Leard <dylan@button.is> # Add a log table to track timestamps to be used when validating the integrity of our database backups
 tables/project_revision_002_set_amendment_statuses 2022-11-08T17:13:48Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Set amendment_status defaults and update current records' amendment_status
+mutations/commit_project_revision [mutations/commit_project_revision@1.0.0-rc.5] 2022-11-09T16:13:46Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make commit_project_revision set amendment_status
