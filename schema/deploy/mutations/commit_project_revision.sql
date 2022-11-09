@@ -32,7 +32,14 @@ begin
 
   update cif.project_revision set
     project_id=(select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1),
-    change_status='committed'
+    change_status='committed',
+    revision_status = (case
+      when
+        (revision_type='General Revision') or
+        (revision_type='Applied')
+        then 'Applied'
+    else 'Draft'
+    end)
   where id=$1;
 
   return (select row(project_revision.*)::cif.project_revision from cif.project_revision where id = $1);
