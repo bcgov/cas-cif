@@ -14,9 +14,9 @@ export const projectRevisionSchema = {
       type: "string",
       title: "General Comments",
     },
-    amendmentType: {
+    amendmentTypes: {
       type: "array",
-      title: "Ammendment Type",
+      title: "Ammendment Types",
       items: {
         type: "string",
         enum: [],
@@ -30,7 +30,7 @@ export const projectRevisionUISchema = {
   revisionType: {
     "ui:widget": "radio",
   },
-  amendmentType: {
+  amendmentTypes: {
     "ui:widget": "checkboxes",
   },
 };

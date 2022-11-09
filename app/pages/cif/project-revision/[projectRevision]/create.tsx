@@ -17,7 +17,6 @@ import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjec
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { useState } from "react";
-import { useCreateProjectRevisionAmendment } from "mutations/projectRevisionAmendmentType/createProjectRevisionAmendmentType";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -58,28 +57,17 @@ export function ProjectRevisionCreate({
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
-  const [createRevisionAmendment, isCreatingRevisionAmendment] =
-    useCreateProjectRevisionAmendment();
-  const [amendmentType, setAmendmentType] = useState(undefined);
+  const [revisionType, setRevisionType] = useState(undefined);
 
   const handleCreateRevision = ({ formData }) => {
+    console.log("-----");
     createProjectRevision({
       variables: {
         projectId: projectRevision.project.rowId,
         revisionType: formData.revisionType,
+        amendmentTypes: formData.amendmentTypes,
       },
       onCompleted: (response) => {
-        for (const ammendmentType of formData.amendmentType) {
-          createRevisionAmendment({
-            variables: {
-              projectRevisionAmendmentType: {
-                projectRevisionId:
-                  response.createProjectRevision.projectRevision.rowId,
-                amendmentType: ammendmentType,
-              },
-            },
-          });
-        }
         router.push(
           getProjectRevisionFormPageRoute(
             response.createProjectRevision.projectRevision.id,
@@ -99,22 +87,22 @@ export function ProjectRevisionCreate({
   const localSchema = JSON.parse(JSON.stringify(projectRevisionSchema));
   localSchema.properties.revisionType.enum = revisionEnum;
 
-  if (amendmentType === "General Revision") {
-    localSchema.properties.amendmentType =
-      projectRevisionSchema.properties.amendmentType;
-    localSchema.properties.amendmentType.items.enum = amendmentTypeEnum;
+  if (revisionType === "General Revision") {
+    localSchema.properties.amendmentTypes =
+      projectRevisionSchema.properties.amendmentTypes;
+    localSchema.properties.amendmentTypes.items.enum = amendmentTypeEnum;
     localSchema.properties.revisionType.default = "General Revision";
-    localSchema.required.push("amendmentType");
+    localSchema.required.push("amendmentTypes");
   } else {
-    localSchema.properties.revisionType.default = amendmentType;
-    localSchema.properties.amendmentType = {};
+    localSchema.properties.revisionType.default = revisionType;
+    localSchema.properties.amendmentTypes = {};
   }
 
   const handleOnchange = (e) => {
     if (e.formData.revisionType === "General Revision") {
-      setAmendmentType("General Revision");
+      setRevisionType("General Revision");
     } else {
-      setAmendmentType(e.formData.revisionType);
+      setRevisionType(e.formData.revisionType);
     }
   };
 
@@ -133,9 +121,7 @@ export function ProjectRevisionCreate({
             <Button
               type="submit"
               size="small"
-              disabled={
-                isCreatingProjectRevision || isCreatingRevisionAmendment
-              }
+              disabled={isCreatingProjectRevision}
             >
               New Revision
             </Button>
