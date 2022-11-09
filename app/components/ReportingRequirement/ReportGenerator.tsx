@@ -29,7 +29,7 @@ const ReportGenerator: React.FC<Props> = ({
 
   return (
     <div className="reportGenerator">
-      <h3>Generate reports</h3>
+      {!readonly && <h3>Generate reports</h3>}
       <dl key={startDateObject.id}>
         <FieldLabel
           label={startDateObject.label}
