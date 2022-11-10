@@ -36,7 +36,7 @@ begin
     revision_status = (case
       when
         (revision_type='General Revision') or
-        (revision_type='Applied')
+        (revision_type='Minor Revision')
         then 'Applied'
     else 'Draft'
     end)
