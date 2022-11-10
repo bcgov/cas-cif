@@ -13,7 +13,7 @@ do $$
       update cif.project_revision
         set revision_type = 'Amendment',
         change_status = 'committed',
-        amendment_status = 'Approved'
+        revision_status = 'Applied'
         where id = temp_project_revision_id;
 
       insert into cif.project_revision_amendment_type(
@@ -29,7 +29,7 @@ do $$
       update cif.project_revision
         set revision_type = 'General Revision',
         change_status = 'committed',
-        amendment_status = 'Approved'
+        revision_status = 'Applied'
         where id = temp_project_revision_id;
 
       -- first Minor Revision type project revision
@@ -37,7 +37,7 @@ do $$
       update cif.project_revision
         set revision_type = 'Minor Revision',
         change_status = 'committed',
-        amendment_status = 'Approved'
+        revision_status = 'Applied'
         where id = temp_project_revision_id;
 
       -- second Amendment type project revision
@@ -45,7 +45,7 @@ do $$
       update cif.project_revision
         set revision_type = 'Amendment',
         change_status = 'committed',
-        amendment_status = 'In Discussion'
+        revision_status = 'In Discussion'
         where id = temp_project_revision_id;
 
       insert into cif.project_revision_amendment_type(
