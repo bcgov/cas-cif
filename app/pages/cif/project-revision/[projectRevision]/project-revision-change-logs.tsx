@@ -24,7 +24,7 @@ export const ProjectRevisionChangeLogsQuery = graphql`
     $orderBy: [ProjectRevisionsOrderBy!]
     $revisionType: String
     $fullName: String
-    $amendmentStatus: String
+    $revisionStatus: String
     $amendmentType: String
   ) {
     session {
@@ -39,7 +39,7 @@ export const ProjectRevisionChangeLogsQuery = graphql`
           filter: {
             revisionType: { includesInsensitive: $revisionType }
             cifUserByUpdatedBy: { fullName: { includesInsensitive: $fullName } }
-            amendmentStatus: { includesInsensitive: $amendmentStatus }
+            revisionStatus: { includesInsensitive: $revisionStatus }
             projectRevisionAmendmentTypesByProjectRevisionId: {
               some: { amendmentType: { includesInsensitive: $amendmentType } }
             }
@@ -64,7 +64,7 @@ export const ProjectRevisionChangeLogsQuery = graphql`
         }
       }
     }
-    allAmendmentStatuses {
+    allRevisionStatuses {
       edges {
         node {
           name
@@ -95,7 +95,7 @@ export function ProjectRevisionChangeLogs({
     session,
     projectRevision,
     allRevisionTypes,
-    allAmendmentStatuses,
+    allRevisionStatuses,
     allAmendmentTypes,
     allCifUsers,
   } = usePreloadedQuery(ProjectRevisionChangeLogsQuery, preloadedQuery);
@@ -124,8 +124,8 @@ export function ProjectRevisionChangeLogs({
     ),
     new SearchableDropdownFilter(
       "Status",
-      "amendmentStatus",
-      allAmendmentStatuses.edges.map(({ node }) => node.name)
+      "revisionStatus",
+      allRevisionStatuses.edges.map(({ node }) => node.name)
     ),
     new NoHeaderFilter(),
   ];
