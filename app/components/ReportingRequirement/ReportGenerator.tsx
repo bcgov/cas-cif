@@ -15,6 +15,7 @@ interface Props {
   reportType: string;
   startDateObject: DateFieldObject;
   endDateObject: DateFieldObject;
+  readonly: boolean;
 }
 
 const ReportGenerator: React.FC<Props> = ({
@@ -22,12 +23,13 @@ const ReportGenerator: React.FC<Props> = ({
   reportType,
   startDateObject,
   endDateObject,
+  readonly,
 }) => {
   const [generateReports, isGenerating] = useGenerateReports();
 
   return (
     <div className="reportGenerator">
-      <h3>Generate reports</h3>
+      {!readonly && <h3>Generate reports</h3>}
       <dl key={startDateObject.id}>
         <FieldLabel
           label={startDateObject.label}
@@ -58,24 +60,28 @@ const ReportGenerator: React.FC<Props> = ({
           )}
         </dd>
       </dl>
-      <Button
-        variant="secondary"
-        onClick={() =>
-          generateReports({
-            variables: {
-              input: {
-                revisionId,
-                reportType,
-                startDate: startDateObject.date,
-                endDate: endDateObject.date,
+      {!readonly && (
+        <Button
+          variant="secondary"
+          onClick={() =>
+            generateReports({
+              variables: {
+                input: {
+                  revisionId,
+                  reportType,
+                  startDate: startDateObject.date,
+                  endDate: endDateObject.date,
+                },
               },
-            },
-          })
-        }
-        disabled={isGenerating || !startDateObject.date || !endDateObject.date}
-      >
-        Generate {reportType.toLowerCase()} reports
-      </Button>
+            })
+          }
+          disabled={
+            isGenerating || !startDateObject.date || !endDateObject.date
+          }
+        >
+          Generate {reportType.toLowerCase()} reports
+        </Button>
+      )}
       <style jsx>{`
         .reportGenerator {
           border-bottom: 1px solid black;
