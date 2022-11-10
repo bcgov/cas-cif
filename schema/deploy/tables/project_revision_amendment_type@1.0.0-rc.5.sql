@@ -30,7 +30,6 @@ perform cif_private.grant_permissions('delete', 'project_revision_amendment_type
 perform cif_private.grant_permissions('select', 'project_revision_amendment_type', 'cif_admin');
 perform cif_private.grant_permissions('insert', 'project_revision_amendment_type', 'cif_admin');
 perform cif_private.grant_permissions('update', 'project_revision_amendment_type', 'cif_admin');
-perform cif_private.grant_permissions('delete', 'project_revision_amendment_type', 'cif_admin');
 
 -- Grant cif_external no permissions
 -- Grant cif_guest no permissions

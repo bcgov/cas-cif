@@ -182,3 +182,5 @@ tables/cif_user_003_create_policies [tables/cif_user] 2022-11-07T23:03:59Z Sepeh
 computed_columns/form_change_calculated_gross_amount_this_milestone [tables/form_change] 2022-11-10T23:15:39Z Dylan Leard <dylan@button.is> # Add computed column to return the calculated gross payment amount for a given milestone
 computed_columns/form_change_calculated_holdback_amount_this_milestone [tables/form_change] 2022-11-10T23:32:34Z Dylan Leard <dylan@button.is> # Add computed column to calculate the holdback amount for a particular milestone
 computed_columns/form_change_calculated_net_amount_this_milestone [tables/form_change] 2022-11-10T23:38:16Z Dylan Leard <dylan@button.is> # Add computed column to return the calculated net payment amount for a particular milestone
+mutations/delete_project_revision_and_amendments 2022-11-09T20:19:32Z Gurjeet Matharu <gurjeet@matharuco.com> # deletes project revision and coresponding project revision amendments
+tables/project_revision_amendment_type [tables/project_revision_amendment_type@1.0.0-rc.5] 2022-11-10T19:47:41Z Gurjeet Matharu <gurjeet@matharuco.com> # adding permissions for delete project revision amendment type
