@@ -2,8 +2,10 @@ import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import { graphql } from "react-relay";
 
 export const mutation = graphql`
-  mutation deleteProjectRevisionMutation($input: DeleteProjectRevisionInput!) {
-    deleteProjectRevision(input: $input) {
+  mutation deleteProjectRevisionMutation(
+    $input: DeleteProjectRevisionAndAmendmentsInput!
+  ) {
+    deleteProjectRevisionAndAmendments(input: $input) {
       __typename
     }
   }
