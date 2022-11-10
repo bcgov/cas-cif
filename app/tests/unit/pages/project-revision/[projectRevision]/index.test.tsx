@@ -341,7 +341,7 @@ describe("The Create Project page", () => {
 
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        id: "mock-proj-rev-id",
+        revisionId: 123456,
       },
     });
   });

@@ -89,7 +89,7 @@ describe("The project amendments and revisions page", () => {
 
     pageTestingHelper.expectMutationToBeCalled(
       "createProjectRevisionMutation",
-      { projectId: 1234, revisionType: "Minor Revision" }
+      { projectId: 1234, revisionType: "Minor Revision", amendmentTypes: null }
     );
     const operation =
       pageTestingHelper.environment.mock.getMostRecentOperation();
@@ -111,17 +111,17 @@ describe("The project amendments and revisions page", () => {
 
     userEvent.click(screen.getByLabelText(/General Revision/i));
     expect(
-      screen.getByRole("radio", {
+      screen.getByRole("checkbox", {
         name: /Cost/i,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("radio", {
+      screen.getByRole("checkbox", {
         name: /Schedule/i,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("radio", {
+      screen.getByRole("checkbox", {
         name: /Scope/i,
       })
     ).toBeInTheDocument();
