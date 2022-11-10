@@ -28,7 +28,7 @@ const mockQueryPayload = {
       id: "mock-id",
       revisionType: "revision-type-1",
       createdAt: "2021-01-01",
-      amendmentStatus: "amendment-status-1",
+      revisionStatus: "revision-status-1",
       effectiveDate: "2021-02-01T23:59:59.999-07:00",
       updatedAt: "2021-02-01T23:59:59.999-07:00",
       typeRowNumber: 1,
@@ -102,7 +102,7 @@ describe("The ProjectRevisionTableRow", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("cell", {
-        name: /amendment\-status\-1/i,
+        name: /revision\-status\-1/i,
       })
     ).toBeInTheDocument();
     expect(
