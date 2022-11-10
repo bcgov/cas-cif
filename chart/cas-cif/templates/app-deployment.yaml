@@ -92,6 +92,11 @@ spec:
               secretKeyRef:
                 name: growthbook
                 key: api-key
+          - name: KC_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-gold-client-secret
+                key: kcClientSecret
         ports:
         - containerPort: {{ .Values.app.port }}
           protocol: TCP
