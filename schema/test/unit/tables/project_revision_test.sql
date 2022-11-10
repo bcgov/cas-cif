@@ -68,7 +68,7 @@ select columns_are(
     'created_by',
     'updated_at',
     'updated_by',
-    'amendment_status'
+    'revision_status'
   ],
   'revision_type and comments column were reverted and do not exist in cif.project_revision'
 );
@@ -122,7 +122,7 @@ select columns_are(
     'updated_at',
     'updated_by',
     'revision_type',
-    'amendment_status'
+    'revision_status'
   ],
   'columns in cif.project_revision match expected columns after migration project_revision_001_add_revision_type'
 );
@@ -132,6 +132,24 @@ select is(
   (select count(*) from cif.project_revision where revision_type='General Revision'),
   2::bigint,
   'project_revision_001_add_revision_type adds the General Revision default revision_type to revisions that do not have a type');
+
+
+-- deploy project_revision_002_set_revision_statuses
+alter table cif.project_revision disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
+
+alter table cif.project_revision alter column revision_status set default 'Draft';
+
+update cif.project_revision
+set revision_status =
+(case
+      when
+        (change_status='pending') or
+        (change_status='staged')
+        then 'Draft'
+    else 'Applied'
+    end);
+
+alter table cif.project_revision enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
 
 
 select finish();
