@@ -20,7 +20,7 @@ const defaultMockResolver = {
               id: "1",
               revisionType: "revision-type-1",
               createdAt: "2021-01-01T23:59:59.999-07:00",
-              amendmentStatus: "amendment-status-1",
+              revisionStatus: "revision-status-1",
               effectiveDate: "2021-02-01T23:59:59.999-07:00",
               updatedAt: "2021-02-01T23:59:59.999-07:00",
               cifUserByUpdatedBy: { fullName: "test-user-1" },
@@ -50,7 +50,7 @@ const pageTestingHelper = new PageTestingHelper<projectRevisionChangeLogsQuery>(
       orderBy: null,
       revisionType: null,
       fullName: null,
-      amendmentStatus: null,
+      revisionStatus: null,
       amendmentType: null,
     },
   }
