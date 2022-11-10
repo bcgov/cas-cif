@@ -1,6 +1,6 @@
 begin;
 
-select plan(13);
+select plan(11);
 
 select has_table('cif', 'project_revision_amendment_type', 'table cif.project_revision_amendment_type exists');
 
@@ -84,14 +84,6 @@ select results_eq(
 
 select throws_like(
   $$
-    delete from cif.project_revision_amendment_type where amendment_type='Schedule' and project_revision_id=2;
-  $$,
-  'permission denied%',
-    'Administrator cannot delete rows from table project_revision_amendment_type'
-);
-
-select throws_like(
-  $$
     insert into cif.project_revision_amendment_type (project_revision_id, amendment_type) values (2, 'Cost');
   $$,
   'duplicate key value violates unique constraint%',
@@ -122,14 +114,6 @@ select lives_ok(
     update cif.project_revision_amendment_type set amendment_type= 'Cost' where amendment_type='Scope' and project_revision_id=1;
   $$,
     'cif_internal can update data in the project_revision_amendment_type table'
-);
-
-select throws_like(
-  $$
-    delete from cif.project_revision_amendment_type where amendment_type='Schedule' and project_revision_id=1;
-  $$,
-  'permission denied%',
-    'cif_internal cannot delete rows from project_revision_amendment_type table'
 );
 
 select throws_like(
