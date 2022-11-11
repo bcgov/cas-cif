@@ -29,6 +29,7 @@ import {
 } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import { useGenerateQuarterlyReports } from "mutations/ProjectReportingRequirement/generateQuarterlyReports";
 
 interface Props {
   onSubmit: () => void;
@@ -117,6 +118,8 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
     "Quarterly",
     projectRevision.projectQuarterlyReportFormChanges.__id
   );
+  const [generateQuarterlyReports, isGenerating] =
+    useGenerateQuarterlyReports();
 
   const [sortedQuarterlyReports, nextQuarterlyReportIndex] = useMemo(() => {
     return getSortedReports(
@@ -165,27 +168,33 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
       />
       <FormBorder>
-        <ReportGenerator
-          revisionId={projectRevision.rowId}
-          reportType="Quarterly"
-          startDateObject={{
-            id: projectFundingAgreementFormChange?.id,
-            label: "Contract Start Date",
-            inputName: "contractStartDate",
-            date: projectFundingAgreementFormChange?.newFormData
-              ?.contractStartDate,
-          }}
-          endDateObject={{
-            id: emissionIntensityReportFormChange?.id,
-            label: "TEIMP End Date",
-            inputName: "measurementPeriodEndDate",
-            date: emissionIntensityReportFormChange?.newFormData
-              ?.measurementPeriodEndDate,
-          }}
-          readonly={
-            projectRevision.projectQuarterlyReportFormChanges.edges.length !== 0
-          }
-        />
+        {projectRevision.projectQuarterlyReportFormChanges.edges.length ===
+          0 && (
+          <ReportGenerator
+            revisionId={projectRevision.rowId}
+            reportType="Quarterly"
+            startDateObject={{
+              id: projectFundingAgreementFormChange?.id,
+              label: "Contract Start Date",
+              inputName: "contractStartDate",
+              date: projectFundingAgreementFormChange?.newFormData
+                ?.contractStartDate,
+            }}
+            endDateObject={{
+              id: emissionIntensityReportFormChange?.id,
+              label: "TEIMP End Date",
+              inputName: "measurementPeriodEndDate",
+              date: emissionIntensityReportFormChange?.newFormData
+                ?.measurementPeriodEndDate,
+            }}
+            mutationFunction={generateQuarterlyReports}
+            isGenerating={isGenerating}
+            readonly={
+              projectRevision.projectQuarterlyReportFormChanges.edges.length !==
+              0
+            }
+          />
+        )}
         <Button
           variant="secondary"
           onClick={() =>

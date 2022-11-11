@@ -29,6 +29,7 @@ import {
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
+import { useGenerateReports } from "mutations/ProjectReportingRequirement/generateReports";
 
 interface Props {
   onSubmit: () => void;
@@ -129,6 +130,8 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     projectRevision.projectAnnualReportFormChanges.__id
   );
 
+  const [generateReports, isGenerating] = useGenerateReports();
+
   const [sortedAnnualReports, nextAnnualReportIndex] = useMemo(() => {
     return getSortedReports(
       projectRevision.projectAnnualReportFormChanges.edges
@@ -178,27 +181,31 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         reportDueFormChange={projectRevision.upcomingAnnualReportFormChange}
       />
       <FormBorder>
-        <ReportGenerator
-          revisionId={projectRevision.rowId}
-          reportType="Annual"
-          startDateObject={{
-            id: emissionIntensityReportingRequirementFormChange?.id,
-            label: "Emissions Intensity Report Due Date",
-            inputName: "reportDueDate",
-            date: emissionIntensityReportingRequirementFormChange?.newFormData
-              .reportDueDate,
-          }}
-          endDateObject={{
-            id: projectFundingAgreementFormChange?.id,
-            label: "Project Assets Life End Date",
-            inputName: "projectAssetsLifeEndDate",
-            date: projectFundingAgreementFormChange?.newFormData
-              .projectAssetsLifeEndDate,
-          }}
-          readonly={
-            projectRevision.projectAnnualReportFormChanges.edges.length !== 0
-          }
-        />
+        {projectRevision.projectAnnualReportFormChanges.edges.length === 0 && (
+          <ReportGenerator
+            revisionId={projectRevision.rowId}
+            reportType="Annual"
+            startDateObject={{
+              id: emissionIntensityReportingRequirementFormChange?.id,
+              label: "Emissions Intensity Report Due Date",
+              inputName: "reportDueDate",
+              date: emissionIntensityReportingRequirementFormChange?.newFormData
+                .reportDueDate,
+            }}
+            endDateObject={{
+              id: projectFundingAgreementFormChange?.id,
+              label: "Project Assets Life End Date",
+              inputName: "projectAssetsLifeEndDate",
+              date: projectFundingAgreementFormChange?.newFormData
+                .projectAssetsLifeEndDate,
+            }}
+            mutationFunction={generateReports}
+            isGenerating={isGenerating}
+            readonly={
+              projectRevision.projectAnnualReportFormChanges.edges.length !== 0
+            }
+          />
+        )}
         <Button
           variant="secondary"
           onClick={() =>
