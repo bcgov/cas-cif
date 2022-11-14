@@ -1,24 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
 import { mocked } from "jest-mock";
+import { useGenerateAnnualReports } from "mutations/ProjectReportingRequirement/generateAnnualReports";
 import { useGenerateQuarterlyReports } from "mutations/ProjectReportingRequirement/generateQuarterlyReports";
-import { useGenerateReports } from "mutations/ProjectReportingRequirement/generateReports";
-jest.mock("mutations/ProjectReportingRequirement/generateReports");
+jest.mock("mutations/ProjectReportingRequirement/generateAnnualReports");
 jest.mock("mutations/ProjectReportingRequirement/generateQuarterlyReports");
 
-// TODO: After implementing report generation for annual reports, remove this
-const generateReportsMutation = jest.fn();
 let isGenerating = false;
-mocked(useGenerateReports).mockImplementation(() => [
-  generateReportsMutation,
-  isGenerating,
-]);
-
-const generateQuarterlyReportsMutation = jest.fn();
-mocked(useGenerateQuarterlyReports).mockImplementation(() => [
-  generateQuarterlyReportsMutation,
-  isGenerating,
-]);
 
 describe("The ReportGenerator", () => {
   it("show dates and button to generate reports when required dates are provided", () => {
@@ -77,6 +65,11 @@ describe("The ReportGenerator", () => {
   });
 
   it("calls generateQuarterlyReportsMutation with the correct data for Quarterly Reports", () => {
+    const generateQuarterlyReportsMutation = jest.fn();
+    mocked(useGenerateQuarterlyReports).mockImplementation(() => [
+      generateQuarterlyReportsMutation,
+      isGenerating,
+    ]);
     const props: any = {
       revisionId: "test-revision-id",
       reportType: "Quarterly",
@@ -111,7 +104,12 @@ describe("The ReportGenerator", () => {
       },
     });
   });
-  it("calls generateReportsMutation with the correct data for Annual Reports", () => {
+  it("calls generateAnnualReportsMutation with the correct data for Annual Reports", () => {
+    const generateAnnualReportsMutation = jest.fn();
+    mocked(useGenerateAnnualReports).mockImplementation(() => [
+      generateAnnualReportsMutation,
+      isGenerating,
+    ]);
     const props: any = {
       revisionId: "test-revision-id-2",
       reportType: "Annual",
@@ -127,7 +125,7 @@ describe("The ReportGenerator", () => {
         inputName: "endDate",
         date: "2021-12-31T23:59:59.999-07:00",
       },
-      mutationFunction: generateReportsMutation,
+      mutationFunction: generateAnnualReportsMutation,
       isGenerating: isGenerating,
     };
     render(<ReportGenerator {...props} />);
@@ -136,13 +134,12 @@ describe("The ReportGenerator", () => {
         name: /generate annual reports/i,
       })
     );
-    expect(generateReportsMutation).toHaveBeenCalledWith({
+    expect(generateAnnualReportsMutation).toHaveBeenCalledWith({
       variables: {
         input: {
           revisionId: "test-revision-id-2",
           startDate: "2021-01-01T23:59:59.999-07:00",
           endDate: "2021-12-31T23:59:59.999-07:00",
-          reportType: "Annual",
         },
       },
     });
