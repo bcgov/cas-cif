@@ -35,7 +35,7 @@ export const projectRevisionSchema = {
               title: "Ammendment Types",
               items: {
                 type: "string",
-                enum: ["test", "test"],
+                enum: [],
               },
               uniqueItems: true,
             },
