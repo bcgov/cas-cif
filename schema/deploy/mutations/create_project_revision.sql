@@ -60,7 +60,7 @@ begin
     from cif.reporting_requirement
     where reporting_requirement.project_id = $1
     and archived_at is null
-    and report_type not in ('General Milestone', 'Advanced Milestone', 'Reporting Milestone')
+    and report_type not in (select name from cif.report_type where is_milestone = true)
   -- milestone reporting requirements
   union
     select
@@ -71,7 +71,7 @@ begin
     from cif.reporting_requirement
     where reporting_requirement.project_id = $1
     and archived_at is null
-    and report_type in ('General Milestone', 'Advanced Milestone', 'Reporting Milestone')
+    and report_type in (select name from cif.report_type where is_milestone = true)
   union
     select
       eir.id,

@@ -1,4 +1,4 @@
--- Deploy cif:mutations/create_project_revision to pg
+-- Revert cif:mutations/create_project_revision to pg
 
 begin;
 
