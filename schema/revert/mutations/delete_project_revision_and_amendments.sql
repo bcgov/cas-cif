@@ -1,7 +1,7 @@
 -- Revert cif:mutations/delete_project_revision_and_amendments from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function cif.delete_project_revision_and_amendments;
 
-COMMIT;
+commit;

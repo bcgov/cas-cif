@@ -6,8 +6,8 @@ do
 $grant$
 begin
 
-perform cif_private.grant_permissions('delete', 'project_revision', 'cif_internal');
-perform cif_private.grant_permissions('delete', 'project_revision', 'cif_admin');
+perform cif_private.grant_permissions('delete', 'project_revision_amendment_type', 'cif_internal');
+perform cif_private.grant_permissions('delete', 'project_revision_amendment_type', 'cif_admin');
 
 end
 $grant$;
