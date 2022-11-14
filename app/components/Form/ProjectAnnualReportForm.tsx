@@ -181,31 +181,29 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         reportDueFormChange={projectRevision.upcomingAnnualReportFormChange}
       />
       <FormBorder>
-        {projectRevision.projectAnnualReportFormChanges.edges.length === 0 && (
-          <ReportGenerator
-            revisionId={projectRevision.rowId}
-            reportType="Annual"
-            startDateObject={{
-              id: emissionIntensityReportingRequirementFormChange?.id,
-              label: "Emissions Intensity Report Due Date",
-              inputName: "reportDueDate",
-              date: emissionIntensityReportingRequirementFormChange?.newFormData
-                .reportDueDate,
-            }}
-            endDateObject={{
-              id: projectFundingAgreementFormChange?.id,
-              label: "Project Assets Life End Date",
-              inputName: "projectAssetsLifeEndDate",
-              date: projectFundingAgreementFormChange?.newFormData
-                .projectAssetsLifeEndDate,
-            }}
-            mutationFunction={generateReports}
-            isGenerating={isGenerating}
-            readonly={
-              projectRevision.projectAnnualReportFormChanges.edges.length !== 0
-            }
-          />
-        )}
+        <ReportGenerator
+          revisionId={projectRevision.rowId}
+          reportType="Annual"
+          startDateObject={{
+            id: emissionIntensityReportingRequirementFormChange?.id,
+            label: "Emissions Intensity Report Due Date",
+            inputName: "reportDueDate",
+            date: emissionIntensityReportingRequirementFormChange?.newFormData
+              .reportDueDate,
+          }}
+          endDateObject={{
+            id: projectFundingAgreementFormChange?.id,
+            label: "Project Assets Life End Date",
+            inputName: "projectAssetsLifeEndDate",
+            date: projectFundingAgreementFormChange?.newFormData
+              .projectAssetsLifeEndDate,
+          }}
+          mutationFunction={generateReports}
+          isGenerating={isGenerating}
+          readonly={
+            projectRevision.projectAnnualReportFormChanges.edges.length !== 0
+          }
+        />
         <Button
           variant="secondary"
           onClick={() =>

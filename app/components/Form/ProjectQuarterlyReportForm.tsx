@@ -168,33 +168,29 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
       />
       <FormBorder>
-        {projectRevision.projectQuarterlyReportFormChanges.edges.length ===
-          0 && (
-          <ReportGenerator
-            revisionId={projectRevision.rowId}
-            reportType="Quarterly"
-            startDateObject={{
-              id: projectFundingAgreementFormChange?.id,
-              label: "Contract Start Date",
-              inputName: "contractStartDate",
-              date: projectFundingAgreementFormChange?.newFormData
-                ?.contractStartDate,
-            }}
-            endDateObject={{
-              id: emissionIntensityReportFormChange?.id,
-              label: "TEIMP End Date",
-              inputName: "measurementPeriodEndDate",
-              date: emissionIntensityReportFormChange?.newFormData
-                ?.measurementPeriodEndDate,
-            }}
-            mutationFunction={generateQuarterlyReports}
-            isGenerating={isGenerating}
-            readonly={
-              projectRevision.projectQuarterlyReportFormChanges.edges.length !==
-              0
-            }
-          />
-        )}
+        <ReportGenerator
+          revisionId={projectRevision.rowId}
+          reportType="Quarterly"
+          startDateObject={{
+            id: projectFundingAgreementFormChange?.id,
+            label: "Contract Start Date",
+            inputName: "contractStartDate",
+            date: projectFundingAgreementFormChange?.newFormData
+              ?.contractStartDate,
+          }}
+          endDateObject={{
+            id: emissionIntensityReportFormChange?.id,
+            label: "TEIMP End Date",
+            inputName: "measurementPeriodEndDate",
+            date: emissionIntensityReportFormChange?.newFormData
+              ?.measurementPeriodEndDate,
+          }}
+          mutationFunction={generateQuarterlyReports}
+          isGenerating={isGenerating}
+          readonly={
+            projectRevision.projectQuarterlyReportFormChanges.edges.length !== 0
+          }
+        />
         <Button
           variant="secondary"
           onClick={() =>
