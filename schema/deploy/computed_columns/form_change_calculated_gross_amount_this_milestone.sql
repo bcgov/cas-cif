@@ -9,8 +9,8 @@ as
 $fn$
 
   select case
-    when (fc.new_form_data->>'hasExpenses')::boolean = false then 0
-    when (fc.new_form_data->>'hasExpenses')::boolean = true then
+    when ($1.new_form_data->>'hasExpenses')::boolean = false then 0
+    when ($1.new_form_data->>'hasExpenses')::boolean = true then
       round(least(
         (
           ($1.new_form_data->>'totalEligibleExpenses')::numeric
@@ -23,6 +23,6 @@ $fn$
 
 $fn$ language sql stable;
 
-comment on function cif.form_change_calculated_gross_amount_this_milestone(fc cif.form_change) is 'Computed column returns the calculated gross payment amount for a particular milestone based on the provinceSharePercentage for the project and eligible expenses for the milestone.';
+comment on function cif.form_change_calculated_gross_amount_this_milestone(cif.form_change) is 'Computed column returns the calculated gross payment amount for a particular milestone based on the provinceSharePercentage for the project and eligible expenses for the milestone.';
 
 commit;
