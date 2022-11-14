@@ -18,4 +18,6 @@ delete from cif.revision_status where name='Approved';
 
 alter table cif.revision_status alter column is_amendment_specific set not null;
 
+comment on column cif.revision_status.is_amendment_specific is 'Boolean value to indicate if the revision status can only be used for amendments';
+
 commit;
