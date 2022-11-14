@@ -185,3 +185,4 @@ computed_columns/form_change_calculated_net_amount_this_milestone [tables/form_c
 mutations/delete_project_revision 2022-11-09T20:19:32Z Gurjeet Matharu <gurjeet@matharuco.com> # deletes project revision and coresponding project revision amendments
 tables/project_revision_002_add_delete_permissions 2022-11-10T19:53:53Z Gurjeet Matharu <gurjeet@matharuco.com># adding delete permissions to project revision amendment type
 mutations/generate_quarterly_reports 2022-11-08T19:55:13Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate quarterly reports based on start and end dates
+mutations/generate_annual_reports 2022-11-14T18:44:55Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate annual reports based on start and end dates
