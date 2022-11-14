@@ -1,4 +1,4 @@
--- Revert cif:tables/project_revision_amendment_type_001_delete_permissions from pg
+-- Revert cif:tables/project_revision_amendment_type_001_add_delete_permissions from pg
 
 begin;
 

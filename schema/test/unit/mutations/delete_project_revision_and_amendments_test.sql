@@ -87,10 +87,10 @@ select isnt_empty(
 );
 select results_eq(
   $$
-  select cif.project_revision_amendment_type.amendment_type from cif.project_revision_amendment_type where project_revision_id =2;
+  select amendment_type from cif.project_revision_amendment_type where project_revision_id =2;
   $$,
   $$
-  select name from cif.amendment_type where name='Cost';
+  values ('Cost'::varchar);
   $$,
   'creating a project revision should create a project_revision_amendment_type record and link to the correct amendment_type'
 );

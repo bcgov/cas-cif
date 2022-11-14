@@ -1,7 +1,7 @@
 -- Verify cif:mutations/delete_project_revision_and_amendments on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select pg_get_functiondef('cif.delete_project_revision_and_amendments(int)'::regprocedure);
 
-ROLLBACK;
+rollback;
