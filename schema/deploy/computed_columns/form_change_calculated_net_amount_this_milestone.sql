@@ -8,15 +8,19 @@ returns numeric
 as
 $fn$
 
-  select(
-    coalesce(
-      ($1.new_form_data->>'adjustedGrossAmount')::numeric, cif.form_change_calculated_gross_amount_this_milestone($1)
-    )
-    -
-    coalesce(
-      ($1.new_form_data->>'adjustedHoldbackAmount')::numeric, cif.form_change_calculated_holdback_amount_this_milestone($1)
-    )
-  );
+  select case
+    when (fc.new_form_data->>'hasExpenses')::boolean = false then 0
+    when (fc.new_form_data->>'hasExpenses')::boolean = true then
+      (
+        coalesce(
+          ($1.new_form_data->>'adjustedGrossAmount')::numeric, cif.form_change_calculated_gross_amount_this_milestone($1)
+        )
+        -
+        coalesce(
+          ($1.new_form_data->>'adjustedHoldbackAmount')::numeric, cif.form_change_calculated_holdback_amount_this_milestone($1)
+        )
+      )
+  end;
 
 $fn$ language sql stable;
 
