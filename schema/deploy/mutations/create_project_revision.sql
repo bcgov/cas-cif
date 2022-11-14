@@ -10,15 +10,15 @@ as $function$
 declare
   revision_row cif.project_revision;
   form_change_record record;
-  amendment_type varchar(1000);
+  _amendment_type varchar(1000);
 begin
   insert into cif.project_revision(project_id, change_status, revision_type)
   values ($1, 'pending', $2) returning * into revision_row;
 
-  foreach amendment_type in array $3
+  foreach _amendment_type in array $3
     loop
       insert into cif.project_revision_amendment_type(project_revision_id, amendment_type)
-      values (revision_row.id, (select name from cif.amendment_type where cif.amendment_type.name = amendment_type));
+      values (revision_row.id, (select name from cif.amendment_type where cif.amendment_type.name = _amendment_type));
     end loop;
 
   perform cif.create_form_change(
