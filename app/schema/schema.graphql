@@ -68065,6 +68065,10 @@ type RevisionStatus implements Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
+
+  """
+  Boolean value to indicate if the revision status can only be used for amendments
+  """
   isAmendmentSpecific: Boolean!
 
   """The name of the amendment status as the primary key"""
@@ -68482,6 +68486,10 @@ input RevisionStatusInput {
 
   """created by user id"""
   createdBy: Int
+
+  """
+  Boolean value to indicate if the revision status can only be used for amendments
+  """
   isAmendmentSpecific: Boolean!
 
   """The name of the amendment status as the primary key"""
@@ -68509,6 +68517,10 @@ input RevisionStatusPatch {
 
   """created by user id"""
   createdBy: Int
+
+  """
+  Boolean value to indicate if the revision status can only be used for amendments
+  """
   isAmendmentSpecific: Boolean
 
   """The name of the amendment status as the primary key"""
