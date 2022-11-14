@@ -1,6 +1,6 @@
 begin;
 
-select * from no_plan();
+select plan(3);
 
 /** SETUP **/
 

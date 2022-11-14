@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(4);
 
 /** SETUP **/
 
@@ -38,17 +38,27 @@ values (
   2,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 20000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 2, "certifierProfessionalDesignation": "Professional Engineer"}'
 ),
 (
   3,
   'create',
   'cif',
   'reporting_requirement',
+  2,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "adjustedHoldbackAmount": 2000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 3, "certifierProfessionalDesignation": "Professional Engineer"}'
+),
+(
+  4,
+  'create',
+  'cif',
+  'reporting_requirement',
   3,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": false, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": false, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
 );
 
 insert into cif.form_change(
@@ -62,7 +72,7 @@ insert into cif.form_change(
   new_form_data
 ) overriding system value
 values (
-  4,
+  5,
   'create',
   'cif',
   'funding_parameter',
@@ -73,20 +83,18 @@ values (
 );
 /** SETUP END **/
 
-select (new_form_data->>'adjustedGrossAmount')::numeric from cif.form_change where id=1;
-select new_form_data->>'holdbackPercentage' from cif.form_change where project_revision_id=1 and form_data_table_name='funding_parameter';
 
 select is(
   (
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=1
-    ) select cif.form_change_calculated_holdback_amount_this_milestone((select * from record))
+    ) select cif.form_change_calculated_net_amount_this_milestone((select * from record))
   ),
   (
-    1000.00::numeric
+    9000.00::numeric
   ),
-  'Returns the correct holdback amount from the calculated gross amount when adjustedGrossAmount is not set'
+  'Returns the correct calculated amount when adjustedGrossAmount and adjustedHoldbackAmount are not set'
 );
 
 select is(
@@ -94,12 +102,12 @@ select is(
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=2
-    ) select cif.form_change_calculated_holdback_amount_this_milestone((select * from record))
+    ) select cif.form_change_calculated_net_amount_this_milestone((select * from record))
   ),
   (
-    2000.00::numeric
+    10800.00::numeric
   ),
-  'Returns the correct holdback amount from the adjusted gross amount when adjustedGrossAmount is set'
+  'Returns the correct calculated amount when adjustedGrossAmount is set'
 );
 
 select is(
@@ -107,7 +115,20 @@ select is(
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=3
-    ) select cif.form_change_calculated_holdback_amount_this_milestone((select * from record))
+    ) select cif.form_change_calculated_net_amount_this_milestone((select * from record))
+  ),
+  (
+    8000.00::numeric
+  ),
+  'Returns the correct calculated amount when adjustedHoldbackAmount is set'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=4
+    ) select cif.form_change_calculated_net_amount_this_milestone((select * from record))
   ),
   (
     0::numeric
