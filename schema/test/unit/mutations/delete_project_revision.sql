@@ -97,7 +97,7 @@ select results_eq(
 
 
 
-select cif.delete_project_revision_and_amendments(2);
+select cif.delete_project_revision(2);
 select is_empty(
   $$
   select * from cif.project_revision where id = 2
