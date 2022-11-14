@@ -14,14 +14,35 @@ export const projectRevisionSchema = {
       type: "string",
       title: "General Comments",
     },
-    amendmentTypes: {
-      type: "array",
-      title: "Ammendment Types",
-      items: {
-        type: "string",
-        enum: [],
-      },
-      uniqueItems: true,
+  },
+  dependencies: {
+    revisionType: {
+      oneOf: [
+        {
+          properties: {
+            revisionType: {
+              const: !"General Revision",
+            },
+          },
+        },
+        {
+          properties: {
+            revisionType: {
+              const: "General Revision",
+            },
+            amendmentTypes: {
+              type: "array",
+              title: "Ammendment Types",
+              items: {
+                type: "string",
+                enum: ["test", "test"],
+              },
+              uniqueItems: true,
+            },
+          },
+          required: ["amendmentTypes"],
+        },
+      ],
     },
   },
 };

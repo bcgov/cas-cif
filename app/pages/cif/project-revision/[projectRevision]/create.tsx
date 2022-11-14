@@ -16,7 +16,6 @@ import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
-import { useState } from "react";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -57,7 +56,6 @@ export function ProjectRevisionCreate({
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
-  const [revisionType, setRevisionType] = useState(undefined);
 
   const handleCreateRevision = ({ formData }) => {
     createProjectRevision({
@@ -84,26 +82,8 @@ export function ProjectRevisionCreate({
   const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
 
   const localSchema = JSON.parse(JSON.stringify(projectRevisionSchema));
-  localSchema.properties.revisionType.enum = revisionEnum;
-
-  if (revisionType === "General Revision") {
-    localSchema.properties.amendmentTypes =
-      projectRevisionSchema.properties.amendmentTypes;
-    localSchema.properties.amendmentTypes.items.enum = amendmentTypeEnum;
-    localSchema.properties.revisionType.default = "General Revision";
-    localSchema.required.push("amendmentTypes");
-  } else {
-    localSchema.properties.revisionType.default = revisionType;
-    localSchema.properties.amendmentTypes = {};
-  }
-
-  const handleOnchange = (e) => {
-    if (e.formData.revisionType === "General Revision") {
-      setRevisionType("General Revision");
-    } else {
-      setRevisionType(e.formData.revisionType);
-    }
-  };
+  localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
+    amendmentTypeEnum;
 
   return (
     <>
@@ -115,7 +95,6 @@ export function ProjectRevisionCreate({
             uiSchema={projectRevisionUISchema}
             onSubmit={handleCreateRevision}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
-            onChange={handleOnchange}
           >
             <Button
               type="submit"
