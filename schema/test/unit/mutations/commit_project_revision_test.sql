@@ -1,6 +1,6 @@
 begin;
 
-select plan(7);
+select plan(10);
 
 /** BEGIN SETUP **/
 truncate table
@@ -83,13 +83,13 @@ select results_eq(
   'project id should be null before the project is committed'
 );
 
--- call the mutation
+-- call the mutation that sets values
 select results_eq(
   $$
-    select id, change_status, project_id from cif.commit_project_revision(1);
+    select id, change_status, project_id, revision_status from cif.commit_project_revision(1);
   $$,
   $$
-    values (1::int, 'committed'::varchar, 1::int);
+    values (1::int, 'committed'::varchar, 1::int,'Applied'::varchar);
   $$,
   'commit_project_revision returns the committed record'
 );
@@ -149,6 +149,74 @@ select throws_like(
   $$,
   'insert or update on table "project_contact" violates foreign key constraint%',
   'Constraints are checked at the end of the transaction and fail if a foreign key relation does not exist'
+);
+
+-- Check revision_status is correctly applied
+insert into cif.project(id, project_name, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary)
+overriding system value
+  values (
+    10,'test-project-333',
+    (select id from cif.operator limit 1),
+    (select id from cif.funding_stream_rfp limit 1),
+    (select id from cif.project_status limit 1),
+    'rfp333',
+    'summary333'
+  ),
+  (
+    11,'test-project-444',
+    (select id from cif.operator limit 1),
+    (select id from cif.funding_stream_rfp limit 1),
+    (select id from cif.project_status limit 1),
+    'rfp444',
+    'summary444'
+  ),
+  (
+    12,'test-project-555',
+    (select id from cif.operator limit 1),
+    (select id from cif.funding_stream_rfp limit 1),
+    (select id from cif.project_status limit 1),
+    'rfp555',
+    'summary555'
+  );
+
+select * from cif.project_revision;
+
+insert into cif.project_revision(project_id, change_reason, revision_type, revision_status)
+values
+  (10, 'reasons','Amendment','Draft'),
+  (11, 'reasons','General Revision','Draft'),
+  (12, 'reasons','Minor Revision','Draft');
+
+
+
+select results_eq(
+  $$
+    select revision_type, revision_status from cif.commit_project_revision(3);
+  $$,
+  $$
+    values ('Amendment'::varchar, 'Draft'::varchar);
+  $$,
+  'commit_project_revision leaves revision_status as Draft when revision_type is Amendment'
+);
+
+select results_eq(
+  $$
+    select revision_type, revision_status from cif.commit_project_revision(4);
+  $$,
+  $$
+    values ('General Revision'::varchar, 'Applied'::varchar);
+  $$,
+  'commit_project_revision sets revision_status to Applied when revision_type is General Revision'
+);
+
+select results_eq(
+  $$
+    select revision_type, revision_status from cif.commit_project_revision(5);
+  $$,
+  $$
+    values ('Minor Revision'::varchar, 'Applied'::varchar);
+  $$,
+  'commit_project_revision sets revision_status to Applied when revision_type is Minor Revision'
 );
 
 select finish();
