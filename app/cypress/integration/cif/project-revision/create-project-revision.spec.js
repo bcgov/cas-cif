@@ -290,7 +290,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Add quarterly reports/i).click();
     cy.url().should("include", "/form/5");
     cy.findByRole("button", { name: /generate quarterly reports/i }).click();
-    cy.get(".reportHeader").should("have.length", 8);
+    cy.get(".reportHeader").should("have.length", 9);
     cy.findAllByText(/^Report Due Date$/i)
       .first()
       .next()
@@ -298,7 +298,7 @@ describe("when creating a project, the project page", () => {
     cy.findAllByText(/^Report Due Date$/i)
       .last()
       .next()
-      .contains(/Oct(\.)? 05, 2021/);
+      .contains(/Jan(\.)? 05, 2022/);
     cy.findByText(/contract start date/i)
       .next()
       .contains(/Jan(\.)? 1, 2020/);
