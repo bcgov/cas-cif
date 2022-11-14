@@ -1,5 +1,5 @@
 begin;
-select no_plan();
+select plan(4);
 
 -- restart the id sequences
 truncate table
