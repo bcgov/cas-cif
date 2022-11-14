@@ -8,14 +8,18 @@ returns numeric
 as
 $fn$
 
-  select least(
-    (
-      ($1.new_form_data->>'totalEligibleExpenses')::numeric
-      *
-      (select new_form_data->>'provinceSharePercentage' from cif.form_change where project_revision_id=$1.project_revision_id and form_data_table_name='funding_parameter')::numeric / 100
-    ),
-    ($1.new_form_data->>'maximumAmount')::numeric
-  );
+  select case
+    when (fc.new_form_data->>'hasExpenses')::boolean = false then 0
+    when (fc.new_form_data->>'hasExpenses')::boolean = true then
+      round(least(
+        (
+          ($1.new_form_data->>'totalEligibleExpenses')::numeric
+          *
+          (select new_form_data->>'provinceSharePercentage' from cif.form_change where project_revision_id=$1.project_revision_id and form_data_table_name='funding_parameter')::numeric / 100
+        ),
+        ($1.new_form_data->>'maximumAmount')::numeric
+      ), 2)
+  end;
 
 $fn$ language sql stable;
 
