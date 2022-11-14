@@ -8,13 +8,17 @@ returns numeric
 as
 $fn$
 
-  select(
-    coalesce(
-      ($1.new_form_data->>'adjustedGrossAmount')::numeric, cif.form_change_calculated_gross_amount_this_milestone($1)
-    )
-    *
-    ((select new_form_data->>'holdbackPercentage' from cif.form_change where project_revision_id=$1.project_revision_id and form_data_table_name='funding_parameter')::numeric / 100)
-  );
+  select case
+    when (fc.new_form_data->>'hasExpenses')::boolean = false then 0
+    when (fc.new_form_data->>'hasExpenses')::boolean = true then
+      (
+        coalesce(
+          ($1.new_form_data->>'adjustedGrossAmount')::numeric, cif.form_change_calculated_gross_amount_this_milestone($1)
+        )
+        *
+        ((select new_form_data->>'holdbackPercentage' from cif.form_change where project_revision_id=$1.project_revision_id and form_data_table_name='funding_parameter')::numeric / 100)
+      )
+  end;
 
 $fn$ language sql stable;
 
