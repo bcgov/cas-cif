@@ -5,8 +5,8 @@ begin;
 alter table cif.amendment_status rename to revision_status;
 alter table cif.revision_status add column is_amendment_specific boolean;
 
-update cif.revision_status set is_amendment_specific = true where name='Draft' or name='Applied';
-update cif.revision_status set is_amendment_specific = false where name not in('Draft', 'Applied');
+update cif.revision_status set is_amendment_specific = false where name='Draft' or name='Applied';
+update cif.revision_status set is_amendment_specific = true where name not in('Draft', 'Applied');
 
 alter table cif.project_revision rename amendment_status to revision_status;
 
