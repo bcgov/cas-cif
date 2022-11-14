@@ -1,6 +1,6 @@
 begin;
 
-select plan(11);
+select plan(12);
 
 select has_table('cif', 'project_revision_amendment_type', 'table cif.project_revision_amendment_type exists');
 
@@ -122,6 +122,13 @@ select throws_like(
   $$,
   'duplicate key value violates unique constraint%',
     'A project revision can only have one amendment type of each type'
+);
+
+select lives_ok(
+  $$
+    delete from cif.project_revision_amendment_type where project_revision_id=2;
+  $$,
+    'cif_internal can delete data in project_revision_amendment_type table'
 );
 
 select finish();
