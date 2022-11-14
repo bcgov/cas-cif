@@ -152,7 +152,7 @@ export function ProjectRevision({
     await discardProjectRevision({
       variables: {
         input: {
-          revisionId: query.projectRevision.rowId,
+          id: query.projectRevision.rowId,
         },
       },
       onCompleted: async () => {
