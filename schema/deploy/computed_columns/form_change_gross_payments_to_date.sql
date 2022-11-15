@@ -10,9 +10,9 @@ $fn$
   select
     round(sum(coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric)), 2)
     from cif.form_change fc
-    where fc.project_revision_id = parameter_fc.project_revision_id
+    where fc.project_revision_id = $1.project_revision_id
     and (fc.new_form_data->>'hasExpenses')::boolean = true
-    and (fc.new_form_data->>'reportDueDate')::timestamptz <= (parameter_fc.new_form_data->>'reportDueDate')::timestamptz;
+    and (fc.new_form_data->>'reportDueDate')::timestamptz <= ($1.new_form_data->>'reportDueDate')::timestamptz;
 
 $fn$ language sql stable;
 
