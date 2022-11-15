@@ -16,4 +16,6 @@ $fn$
 
 $fn$ language sql stable;
 
+comment on function cif.form_change_gross_payments_to_date(cif.form_change) is 'Computed column returns cumulative amount of gross payments reported up to and including this milestone.';
+
 commit;
