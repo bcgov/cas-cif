@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace function cif.form_change_gross_payments_to_date(parameter_fc cif.form_change)
+create or replace function cif.form_change_net_payments_to_date(parameter_fc cif.form_change)
 returns numeric as
 $fn$
 
