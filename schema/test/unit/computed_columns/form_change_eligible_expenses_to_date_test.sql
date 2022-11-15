@@ -1,6 +1,3 @@
-
-
-
 begin;
 
 select plan(3);

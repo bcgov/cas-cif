@@ -26,7 +26,7 @@ values (
   1,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "calculatedGrossAmount": 10000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "calculatedHoldbackAmount": 10000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
 ),
 (
   2,
@@ -36,7 +36,7 @@ values (
   2,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-15 15:09:36.264005-08", "adjustedGrossAmount": 30000, "calculatedGrossAmount": 20000, "reportingRequirementIndex": 2, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-15 15:09:36.264005-08", "adjustedHoldbackAmount": 30000, "calculatedHoldbackAmount": 20000, "reportingRequirementIndex": 2, "certifierProfessionalDesignation": "Professional Engineer"}'
 ),
 (
   3,
@@ -46,7 +46,7 @@ values (
   3,
   1,
   'milestone',
-  '{"reportType": "Performance Milestone", "hasExpenses": false, "reportDueDate": "2022-11-10 15:09:36.264005-08", "adjustedGrossAmount": 20000, "calculatedGrossAmount": 20000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "Performance Milestone", "hasExpenses": false, "reportDueDate": "2022-11-10 15:09:36.264005-08", "adjustedHoldbackAmount": 20000, "calculatedHoldbackAmount": 20000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
 );
 /** SETUP END **/
 
@@ -56,7 +56,7 @@ select is(
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=1
-    ) select cif.form_change_gross_payments_to_date((select * from record))
+    ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
     10000::numeric
@@ -69,12 +69,12 @@ select is(
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=2
-    ) select cif.form_change_gross_payments_to_date((select * from record))
+    ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
     40000::numeric
   ),
-  'Returns the correct cumulative amount for the second milestone with expenses, prioritizing the adjustedGrossAmount if it exists'
+  'Returns the correct cumulative amount for the second milestone with expenses, prioritizing the adjustedHoldbackAmount if it exists'
 );
 
 select is(
@@ -82,7 +82,7 @@ select is(
     with record as (
     select row(form_change.*)::cif.form_change
     from cif.form_change where id=3
-    ) select cif.form_change_gross_payments_to_date((select * from record))
+    ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
     null
