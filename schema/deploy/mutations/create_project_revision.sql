@@ -2,15 +2,24 @@
 
 begin;
 
-create or replace function cif.create_project_revision(project_id integer)
+drop function cif.create_project_revision(project_id integer);
+
+create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000) default 'Amendment', amendment_types varchar(1000)[] default array[]::varchar[])
 returns cif.project_revision
 as $function$
 declare
   revision_row cif.project_revision;
   form_change_record record;
+  _amendment_type varchar(1000);
 begin
-  insert into cif.project_revision(project_id, change_status)
-  values ($1, 'pending') returning * into revision_row;
+  insert into cif.project_revision(project_id, change_status, revision_type)
+  values ($1, 'pending', $2) returning * into revision_row;
+
+  foreach _amendment_type in array $3
+    loop
+      insert into cif.project_revision_amendment_type(project_revision_id, amendment_type)
+      values (revision_row.id, (select name from cif.amendment_type where cif.amendment_type.name = _amendment_type));
+    end loop;
 
   perform cif.create_form_change(
     operation => 'update',
@@ -41,6 +50,7 @@ begin
     from cif.project_contact
     where project_contact.project_id = $1
     and archived_at is null
+  -- non-milestone reporting requirements
   union
     select
       id,
@@ -50,28 +60,18 @@ begin
     from cif.reporting_requirement
     where reporting_requirement.project_id = $1
     and archived_at is null
+    and report_type not in (select name from cif.report_type where is_milestone = true)
+  -- milestone reporting requirements
   union
     select
-      mr.id,
+      id,
       'update'::cif.form_change_operation as operation,
-      'milestone_report' as form_data_table_name,
-      'milestone_report' as json_schema_name
-    from cif.milestone_report mr
-    join cif.reporting_requirement rr
-    on mr.reporting_requirement_id = rr.id
-    and rr.project_id = $1
-    and mr.archived_at is null
-  union
-    select
-      p.id,
-      'update'::cif.form_change_operation as operation,
-      'payment' as form_data_table_name,
-      'payment' as json_schema_name
-    from cif.payment p
-    join cif.reporting_requirement rr
-    on p.reporting_requirement_id = rr.id
-    and rr.project_id = $1
-    and p.archived_at is null
+      'reporting_requirement' as form_data_table_name,
+      'milestone' as json_schema_name
+    from cif.reporting_requirement
+    where reporting_requirement.project_id = $1
+    and archived_at is null
+    and report_type in (select name from cif.report_type where is_milestone = true)
   union
     select
       eir.id,

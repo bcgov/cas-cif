@@ -1,6 +1,8 @@
--- Deploy cif:mutations/create_project_revision to pg
+-- Revert cif:mutations/create_project_revision from pg
 
 begin;
+
+drop function cif.create_project_revision(integer, varchar(1000), varchar(1000)[]);
 
 create or replace function cif.create_project_revision(project_id integer)
 returns cif.project_revision
@@ -92,6 +94,15 @@ begin
     from cif.funding_parameter
     where funding_parameter.project_id = $1
     and archived_at is null
+  union
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'additional_funding_source' as form_data_table_name,
+      'additional_funding_source' as json_schema_name
+    from cif.additional_funding_source
+    where additional_funding_source.project_id = $1
+    and archived_at is null
   )
   loop
     perform cif.create_form_change(
@@ -107,6 +118,5 @@ begin
   return revision_row;
 end;
 $function$ language plpgsql strict;
-
 
 commit;

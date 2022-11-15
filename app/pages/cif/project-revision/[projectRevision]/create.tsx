@@ -36,16 +36,21 @@ const pageQuery = graphql`
         }
       }
     }
+    allAmendmentTypes {
+      edges {
+        node {
+          name
+        }
+      }
+    }
   }
 `;
 
 export function ProjectRevisionCreate({
   preloadedQuery,
 }: RelayProps<{}, createProjectRevisionQuery>) {
-  const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
-    pageQuery,
-    preloadedQuery
-  );
+  const { session, projectRevision, allRevisionTypes, allAmendmentTypes } =
+    usePreloadedQuery(pageQuery, preloadedQuery);
   const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
 
   const router = useRouter();
@@ -57,6 +62,7 @@ export function ProjectRevisionCreate({
       variables: {
         projectId: projectRevision.project.rowId,
         revisionType: formData.revisionType,
+        amendmentTypes: formData.amendmentTypes,
       },
       onCompleted: (response) => {
         router.push(
@@ -73,13 +79,19 @@ export function ProjectRevisionCreate({
 
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
+  const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
+
+  const localSchema = JSON.parse(JSON.stringify(projectRevisionSchema));
+  localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
+    amendmentTypeEnum;
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
         <div>
           <FormBase
             id="ProjectRevisionCreateForm"
-            schema={projectRevisionSchema as JSONSchema7}
+            schema={localSchema as JSONSchema7}
             uiSchema={projectRevisionUISchema}
             onSubmit={handleCreateRevision}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}

@@ -147,7 +147,7 @@ util_functions/get_form_status_001 2022-09-28T17:47:05Z Gurjeet Matharu <gurjeet
 mutations/generate_reports 2022-09-21T23:55:42Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate annual or quarterly reports based on start and end dates
 @1.0.0-rc.5 2022-10-13T17:02:42Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.0.0-rc.5
 computed_columns/project_revision_type_row_number [tables/project tables/project_revision] 2022-10-13T21:40:32Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add row number computed column based on the revision type
-mutations/create_project_revision_001 2022-10-06T23:18:27Z Gurjeet Matharu <gurjeet@matharuco.com> # Adding revision_type to create project revision mutation
+mutations/create_project_revision [mutations/create_project_revision@1.0.0-rc.5] 2022-11-09T18:34:54Z Gurjeet Matharu <gurjeet@matharuco.com> # adding ammendmentn types
 tables/payment_001 [tables/payment] 2022-08-30T23:41:40Z Dylan Leard <dylan@button.is> # Migration: rename gross and net amount columns
 functions/handle_milestone_form_change_commit [tables/form_change] 2022-08-30T21:03:03Z Dylan Leard <dylan@button.is> # Add custom adapter function to parse the consolidated milestone form_change data into the correct tables
 tables/form_change_001 [tables/form_change tables/form] 2022-09-01T22:26:46Z Dylan Leard <dylan@button.is> # Migration: json_schema_name is now a foreign key to the form table
@@ -182,3 +182,5 @@ tables/cif_user_003_create_policies [tables/cif_user] 2022-11-07T23:03:59Z Sepeh
 computed_columns/form_change_calculated_gross_amount_this_milestone [tables/form_change] 2022-11-10T23:15:39Z Dylan Leard <dylan@button.is> # Add computed column to return the calculated gross payment amount for a given milestone
 computed_columns/form_change_calculated_holdback_amount_this_milestone [tables/form_change] 2022-11-10T23:32:34Z Dylan Leard <dylan@button.is> # Add computed column to calculate the holdback amount for a particular milestone
 computed_columns/form_change_calculated_net_amount_this_milestone [tables/form_change] 2022-11-10T23:38:16Z Dylan Leard <dylan@button.is> # Add computed column to return the calculated net payment amount for a particular milestone
+mutations/delete_project_revision 2022-11-09T20:19:32Z Gurjeet Matharu <gurjeet@matharuco.com> # deletes project revision and coresponding project revision amendments
+tables/project_revision_002_add_delete_permissions 2022-11-10T19:53:53Z Gurjeet Matharu <gurjeet@matharuco.com># adding delete permissions to project revision amendment type

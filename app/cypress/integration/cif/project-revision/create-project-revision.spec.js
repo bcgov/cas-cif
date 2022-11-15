@@ -352,6 +352,7 @@ describe("the project amendment and revisions page", () => {
     cy.get("form").contains("Minor Revision", { matchCase: false });
     cy.happoAndAxe("Project Revision Create", "view", "main");
     cy.findByText(/General Revision/i).click();
+    cy.get(".checkbox").contains("Scope").click();
     cy.get("button").contains("New Revision").click();
     cy.url().should("include", "/form/0");
   });

@@ -6,12 +6,18 @@ export const mutation = graphql`
   mutation createProjectRevisionMutation(
     $projectId: Int!
     $revisionType: String
+    $amendmentTypes: [String]
   ) {
     createProjectRevision(
-      input: { projectId: $projectId, revisionType: $revisionType }
+      input: {
+        projectId: $projectId
+        revisionType: $revisionType
+        amendmentTypes: $amendmentTypes
+      }
     ) {
       projectRevision {
         id
+        rowId
       }
     }
   }

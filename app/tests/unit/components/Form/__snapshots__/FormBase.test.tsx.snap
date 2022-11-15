@@ -7,7 +7,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
     novalidate=""
   >
     <div
-      class="jsx-3347128647 "
+      class="jsx-2223741196 "
     >
       <div
         class="sc-jRQBWg cDwDrH pg-grid-container"
@@ -24,7 +24,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
               class="jsx-4178779636"
             >
               <div
-                class="jsx-3347128647 "
+                class="jsx-2223741196 "
               >
                 <label
                   for="root_field"
@@ -49,7 +49,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
                   </div>
                 </div>
                 <div
-                  class="jsx-3347128647 error-div"
+                  class="jsx-2223741196 error-div"
                 />
               </div>
             </fieldset>
@@ -57,7 +57,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
         </div>
       </div>
       <div
-        class="jsx-3347128647 error-div"
+        class="jsx-2223741196 error-div"
       />
     </div>
   </form>

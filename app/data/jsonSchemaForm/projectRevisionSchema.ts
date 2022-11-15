@@ -15,10 +15,43 @@ export const projectRevisionSchema = {
       title: "General Comments",
     },
   },
+  dependencies: {
+    revisionType: {
+      oneOf: [
+        {
+          properties: {
+            revisionType: {
+              const: !"General Revision",
+            },
+          },
+        },
+        {
+          properties: {
+            revisionType: {
+              const: "General Revision",
+            },
+            amendmentTypes: {
+              type: "array",
+              title: "Ammendment Types",
+              items: {
+                type: "string",
+                enum: [],
+              },
+              uniqueItems: true,
+            },
+          },
+          required: ["amendmentTypes"],
+        },
+      ],
+    },
+  },
 };
 
 export const projectRevisionUISchema = {
   revisionType: {
     "ui:widget": "radio",
+  },
+  amendmentTypes: {
+    "ui:widget": "checkboxes",
   },
 };

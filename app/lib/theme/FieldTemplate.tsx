@@ -70,6 +70,15 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
         div :global(input[type="radio"]) {
           margin-right: 10px;
         }
+        div :global(.checkbox) {
+          padding: 5px;
+        }
+        div :global(.checkbox):first-child {
+          margin-top: 10px;
+        }
+        div :global(input[type="checkbox"]) {
+          margin-right: 10px;
+        }
       `}</style>
     </div>
   );
