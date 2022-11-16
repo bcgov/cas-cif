@@ -43373,18 +43373,6 @@ type DeleteProjectRevisionAmendmentTypePayload {
   query: Query
 }
 
-"""All input for the `deleteProjectRevisionByRowId` mutation."""
-input DeleteProjectRevisionByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """Unique ID for the project revision"""
-  rowId: Int!
-}
-
 """All input for the `deleteProjectRevision` mutation."""
 input DeleteProjectRevisionInput {
   """
@@ -43392,59 +43380,21 @@ input DeleteProjectRevisionInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `ProjectRevision` to be deleted.
-  """
-  id: ID!
+  revisionId: Int!
 }
 
-"""The output of our delete `ProjectRevision` mutation."""
+"""The output of our `deleteProjectRevision` mutation."""
 type DeleteProjectRevisionPayload {
-  """
-  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
-  """
-  amendmentStatusByAmendmentStatus: AmendmentStatus
-
-  """
-  Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
-  """
-  changeStatusByChangeStatus: ChangeStatus
-
-  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
-  cifUserByCreatedBy: CifUser
-
-  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
-  cifUserByUpdatedBy: CifUser
-
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-  deletedProjectRevisionId: ID
-
-  """Reads a single `Project` that is related to this `ProjectRevision`."""
-  projectByProjectId: Project
-
-  """The `ProjectRevision` that was deleted by this mutation."""
-  projectRevision: ProjectRevision
-
-  """An edge for our `ProjectRevision`. May be used by Relay 1."""
-  projectRevisionEdge(
-    """The method to use when ordering `ProjectRevision`."""
-    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectRevisionsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-
-  """
-  Reads a single `RevisionType` that is related to this `ProjectRevision`.
-  """
-  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the `deleteProjectStatusByRowId` mutation."""
@@ -51444,8 +51394,6 @@ type Mutation {
     """
     input: DeleteProjectManagerLabelByRowIdInput!
   ): DeleteProjectManagerLabelPayload
-
-  """Deletes a single `ProjectRevision` using its globally unique id."""
   deleteProjectRevision(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -51470,14 +51418,6 @@ type Mutation {
     """
     input: DeleteProjectRevisionAmendmentTypeByRowIdInput!
   ): DeleteProjectRevisionAmendmentTypePayload
-
-  """Deletes a single `ProjectRevision` using a unique key."""
-  deleteProjectRevisionByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteProjectRevisionByRowIdInput!
-  ): DeleteProjectRevisionPayload
 
   """Deletes a single `ProjectStatus` using its globally unique id."""
   deleteProjectStatus(
