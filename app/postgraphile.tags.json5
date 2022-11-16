@@ -75,7 +75,7 @@
       },
       "cif.project_revision": {
         tags: {
-          omit: ["create"],
+          omit: ["create", "delete"],
         },
       },
       "cif.reporting_requirement": {
