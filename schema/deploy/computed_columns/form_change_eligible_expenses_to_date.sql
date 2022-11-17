@@ -11,8 +11,7 @@ $fn$
     round(sum((fc.new_form_data->>'totalEligibleExpenses')::numeric), 2)
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
-    and (fc.new_form_data->>'hasExpenses')::boolean = true
-    and (fc.new_form_data->>'reportDueDate')::timestamptz <= ($1.new_form_data->>'reportDueDate')::timestamptz;
+    and (fc.new_form_data->>'hasExpenses')::boolean = true;
 
 $fn$ language sql stable;
 
