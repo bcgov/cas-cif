@@ -14,7 +14,7 @@ begin
   end if;
 
   -- Propagate the change_status to all related form_change records
-  -- Save the project table first do avoid foreign key violations from other potential tables.
+  -- Save the project table first to avoid foreign key violations from other potential tables.
   perform cif_private.commit_form_change_internal(row(form_change.*)::cif.form_change)
   from cif.form_change
   where project_revision_id=$1

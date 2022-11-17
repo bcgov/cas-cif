@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(7);
+select plan(8);
 
 select has_table('cif', 'project_revision', 'table cif.project_revision exists');
 
@@ -133,23 +133,7 @@ select is(
   2::bigint,
   'project_revision_001_add_revision_type adds the General Revision default revision_type to revisions that do not have a type');
 
-
--- deploy project_revision_002_set_revision_statuses
-alter table cif.project_revision disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
-
-alter table cif.project_revision alter column revision_status set default 'Draft';
-
-update cif.project_revision
-set revision_status =
-(case
-      when
-        (change_status='pending') or
-        (change_status='staged')
-        then 'Draft'
-    else 'Applied'
-    end);
-
-alter table cif.project_revision enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
+select col_not_null('cif','project_revision', 'revision_status', 'revision_status column should not be nullable');
 
 
 select finish();

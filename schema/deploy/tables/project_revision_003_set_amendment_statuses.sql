@@ -1,4 +1,4 @@
--- Deploy cif:tables/project_revision_002_set_amendment_statuses to pg
+-- Deploy cif:tables/project_revision_003_set_amendment_statuses to pg
 
 begin;
 
@@ -7,9 +7,12 @@ alter table cif.project_revision disable trigger _100_committed_changes_are_immu
 alter table cif.project_revision alter column amendment_status set default 'Draft';
 alter table cif.project_revision alter column amendment_status set not null;
 
+
 update cif.project_revision
 set amendment_status =
 (case
+      when (amendment_status='Approved')
+        then 'Applied'
       when
         (change_status='pending') or
         (change_status='staged')
