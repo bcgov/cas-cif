@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.generate_reports(int, text, timestamptz, timestamptz)'::regprocedure);
+select cif_private.verify_function_not_present('cif', 'generate_reports', 4);
 
 rollback;
