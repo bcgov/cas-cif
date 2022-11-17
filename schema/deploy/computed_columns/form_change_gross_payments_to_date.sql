@@ -11,6 +11,7 @@ $fn$
     round(sum(coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric, (fc.new_form_data->>'maximumAmount')::numeric)), 2)
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
+    and json_schema_name = 'milestone'
     and (fc.new_form_data->>'hasExpenses')::boolean = true;
 
 $fn$ language sql stable;
