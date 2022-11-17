@@ -44424,12 +44424,12 @@ type FormChange implements Node {
   ): FormChangeFormsByFormChangePreviousFormChangeIdAndJsonSchemaNameManyToManyConnection!
 
   """
-  Computed column returns cumulative amount of gross payments reported up to and including this milestone.
+  Computed column returns cumulative sum of gross payments. With preference for value selection in order of adjustedGrossAmount > calculatedGrossAmount > maximumAmount
   """
   grossPaymentsToDate: BigFloat
 
   """
-  Computed column returns cumulative amount of the holdback amount reported up to and including this milestone.
+  Computed column returns sum all holdback amounts for a project. Preference for value selection is adjustedHoldbackAmount > calculuatedHoldbackAmount
   """
   holdbackAmountToDate: BigFloat
 
@@ -44444,7 +44444,7 @@ type FormChange implements Node {
   jsonSchemaName: String!
 
   """
-  Computed column returns cumulative amount of net payments reported up to and including this milestone.
+  Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount
   """
   netPaymentsToDate: BigFloat
 
