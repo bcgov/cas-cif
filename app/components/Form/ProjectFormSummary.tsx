@@ -101,7 +101,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           Object.keys(projectFormChange.newFormData).length === 0)) &&
       !props.viewOnly ? (
         <p>
-          <em>Project overview not {isFirstRevision ? "added" : "updated"}</em>
+          <em>Project Overview not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         <FormBase

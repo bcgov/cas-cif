@@ -228,12 +228,12 @@ const TaskList: React.FC<Props> = ({
               numberedFormStructure[numberedFormStructure.length - 1]
                 .sectionNumber + 1
             )}
-            listItemName="Submit changes"
+            listItemName="Submit Changes"
           >
             <TaskListItem
               stepName="summary"
               linkUrl={getProjectRevisionPageRoute(id)}
-              formTitle="Review and submit information"
+              formTitle="Review and Submit information"
               formStatus={null}
               currentStep={currentStep}
               mode={mode}
