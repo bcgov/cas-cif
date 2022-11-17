@@ -1,7 +1,8 @@
 import FieldLabel from "lib/theme/widgets/FieldLabel";
 import { Button } from "@button-inc/bcgov-theme";
 import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
-import { useGenerateReports } from "mutations/ProjectReportingRequirement/generateReports";
+import { generateQuarterlyReportsMutation$variables } from "__generated__/generateQuarterlyReportsMutation.graphql";
+import { generateReportsMutation$variables } from "__generated__/generateReportsMutation.graphql";
 
 type DateFieldObject = {
   id: string;
@@ -16,6 +17,12 @@ interface Props {
   startDateObject: DateFieldObject;
   endDateObject: DateFieldObject;
   readonly: boolean;
+  mutationFunction: (args: {
+    variables:
+      | generateQuarterlyReportsMutation$variables
+      | generateReportsMutation$variables;
+  }) => void;
+  isGenerating: boolean;
 }
 
 const ReportGenerator: React.FC<Props> = ({
@@ -24,8 +31,19 @@ const ReportGenerator: React.FC<Props> = ({
   startDateObject,
   endDateObject,
   readonly,
+  mutationFunction,
+  isGenerating,
 }) => {
-  const [generateReports, isGenerating] = useGenerateReports();
+  const reportGeneratorInput = {
+    revisionId,
+    startDate: startDateObject.date,
+    endDate: endDateObject.date,
+  };
+
+  // TODO: After implementing report generation for annual reports, remove this and pass the whole object to the mutation function
+  if (reportType === "Annual") {
+    Object.assign(reportGeneratorInput, { reportType });
+  }
 
   return (
     <div className="reportGenerator">
@@ -64,13 +82,10 @@ const ReportGenerator: React.FC<Props> = ({
         <Button
           variant="secondary"
           onClick={() =>
-            generateReports({
+            mutationFunction({
               variables: {
                 input: {
-                  revisionId,
-                  reportType,
-                  startDate: startDateObject.date,
-                  endDate: endDateObject.date,
+                  ...reportGeneratorInput,
                 },
               },
             })

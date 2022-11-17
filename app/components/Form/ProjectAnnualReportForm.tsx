@@ -29,6 +29,7 @@ import {
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
+import { useGenerateReports } from "mutations/ProjectReportingRequirement/generateReports";
 
 interface Props {
   onSubmit: () => void;
@@ -129,6 +130,8 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     projectRevision.projectAnnualReportFormChanges.__id
   );
 
+  const [generateReports, isGenerating] = useGenerateReports();
+
   const [sortedAnnualReports, nextAnnualReportIndex] = useMemo(() => {
     return getSortedReports(
       projectRevision.projectAnnualReportFormChanges.edges
@@ -195,6 +198,8 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
             date: projectFundingAgreementFormChange?.newFormData
               .projectAssetsLifeEndDate,
           }}
+          mutationFunction={generateReports}
+          isGenerating={isGenerating}
           readonly={
             projectRevision.projectAnnualReportFormChanges.edges.length !== 0
           }
