@@ -46,7 +46,27 @@ values (
   3,
   1,
   'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-10 15:09:36.264005-08", "maximumAmount": 50000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
+),
+(
+  4,
+  'create',
+  'cif',
+  'reporting_requirement',
+  3,
+  1,
+  'milestone',
   '{"reportType": "Performance Milestone", "hasExpenses": false, "reportDueDate": "2022-11-10 15:09:36.264005-08", "adjustedNetAmount": 20000, "calculatedNetAmount": 20000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
+),
+(
+  5,
+  'create',
+  'cif',
+  'funding_agreement',
+  3,
+  1,
+  'funding_agreement',
+  '{"holdbackPercentage": 10}'
 );
 /** SETUP END **/
 
@@ -55,11 +75,11 @@ select is(
   (
     with record as (
     select row(form_change.*)::cif.form_change
-    from cif.form_change where id=1
+    from cif.form_change where id=5
     ) select cif.form_change_net_payments_to_date((select * from record))
   ),
   (
-    40000::numeric
+    85000::numeric
   ),
   'Returns the correct amount for the sum of all milestone with expenses'
 );
