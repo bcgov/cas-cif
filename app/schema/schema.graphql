@@ -44429,7 +44429,7 @@ type FormChange implements Node {
   grossPaymentsToDate: BigFloat
 
   """
-  Computed column returns sum all holdback amounts for a project. Preference for value selection is adjustedHoldbackAmount > calculuatedHoldbackAmount
+  Computed column returns sum all holdback amounts for a project. Preference for value selection is adjustedHoldbackAmount > calculuatedHoldbackAmount > amount calculated via maximum milestone amount
   """
   holdbackAmountToDate: BigFloat
 
@@ -44444,7 +44444,7 @@ type FormChange implements Node {
   jsonSchemaName: String!
 
   """
-  Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount
+  Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount > amount calculated via maximum milestone amount
   """
   netPaymentsToDate: BigFloat
 
