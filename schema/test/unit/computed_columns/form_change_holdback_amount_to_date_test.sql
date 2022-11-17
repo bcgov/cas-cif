@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(1);
 
 /** SETUP **/
 
@@ -59,35 +59,9 @@ select is(
     ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
-    10000::numeric
-  ),
-  'Returns the correct amount for the first milestone with expenses'
-);
-
-select is(
-  (
-    with record as (
-    select row(form_change.*)::cif.form_change
-    from cif.form_change where id=2
-    ) select cif.form_change_holdback_amount_to_date((select * from record))
-  ),
-  (
     40000::numeric
   ),
-  'Returns the correct cumulative amount for the second milestone with expenses, prioritizing the adjustedHoldbackAmount if it exists'
-);
-
-select is(
-  (
-    with record as (
-    select row(form_change.*)::cif.form_change
-    from cif.form_change where id=3
-    ) select cif.form_change_holdback_amount_to_date((select * from record))
-  ),
-  (
-    null
-  ),
-  'Returns null for a milestone where hasExpenses is false'
+  'Returns the correct sum of all milestones with expenses'
 );
 
 select finish();
