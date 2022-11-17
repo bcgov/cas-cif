@@ -61,7 +61,7 @@ select is(
   (
     40000::numeric
   ),
-  'Returns the correct amount for the first milestone with expenses'
+  'Returns the correct amount for the sum of all milestone with expenses'
 );
 
 select finish();
