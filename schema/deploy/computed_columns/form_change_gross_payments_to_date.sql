@@ -8,14 +8,13 @@ returns numeric as
 $fn$
 
   select
-    round(sum(coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric)), 2)
+    round(sum(coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric, (fc.new_form_data->>'maximumAmount')::numeric)), 2)
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
-    and (fc.new_form_data->>'hasExpenses')::boolean = true
-    and (fc.new_form_data->>'reportDueDate')::timestamptz <= ($1.new_form_data->>'reportDueDate')::timestamptz;
+    and (fc.new_form_data->>'hasExpenses')::boolean = true;
 
 $fn$ language sql stable;
 
-comment on function cif.form_change_gross_payments_to_date(cif.form_change) is 'Computed column returns cumulative amount of gross payments reported up to and including this milestone.';
+comment on function cif.form_change_gross_payments_to_date(cif.form_change) is 'Computed column returns cumulative sum of gross payments. With preference for value selection in order of adjustedGrossAmount > calculatedGrossAmount > maximumAmount';
 
 commit;

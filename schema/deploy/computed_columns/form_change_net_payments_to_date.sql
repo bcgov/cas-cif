@@ -11,11 +11,10 @@ $fn$
     round(sum(coalesce((fc.new_form_data->>'adjustedNetAmount')::numeric, (fc.new_form_data->>'calculatedNetAmount')::numeric)), 2)
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
-    and (fc.new_form_data->>'hasExpenses')::boolean = true
-    and (fc.new_form_data->>'reportDueDate')::timestamptz <= ($1.new_form_data->>'reportDueDate')::timestamptz;
+    and (fc.new_form_data->>'hasExpenses')::boolean = true;
 
 $fn$ language sql stable;
 
-comment on function cif.form_change_net_payments_to_date(cif.form_change) is 'Computed column returns cumulative amount of net payments reported up to and including this milestone.';
+comment on function cif.form_change_net_payments_to_date(cif.form_change) is 'Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount';
 
 commit;
