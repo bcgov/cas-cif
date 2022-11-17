@@ -141,7 +141,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
       <h3>Project Contacts</h3>
       {allFormChangesPristine && !props.viewOnly ? (
         <p>
-          <em>Project contacts not {isFirstRevision ? "added" : "updated"}</em>
+          <em>Project Contacts not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         <>
