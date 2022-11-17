@@ -248,7 +248,7 @@ describe("when undoing, the project revision page", () => {
     cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
 
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.get('[aria-label="General Comments"]').should(
+    cy.findByLabelText(/General Comments/i).should(
       "have.text",
       "quarterly report comments 1"
     );
