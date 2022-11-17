@@ -11,6 +11,7 @@ $fn$
     round(sum((fc.new_form_data->>'totalEligibleExpenses')::numeric), 2)
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
+    and json_schema_name = 'milestone'
     and (fc.new_form_data->>'hasExpenses')::boolean = true;
 
 $fn$ language sql stable;
