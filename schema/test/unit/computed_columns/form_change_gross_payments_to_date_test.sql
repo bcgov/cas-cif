@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(1);
 
 /** SETUP **/
 
@@ -46,6 +46,16 @@ values (
   3,
   1,
   'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-10 15:09:36.264005-08", "maximumAmount": 50000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
+),
+(
+  4,
+  'create',
+  'cif',
+  'reporting_requirement',
+  3,
+  1,
+  'milestone',
   '{"reportType": "Performance Milestone", "hasExpenses": false, "reportDueDate": "2022-11-10 15:09:36.264005-08", "adjustedGrossAmount": 20000, "calculatedGrossAmount": 20000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer"}'
 );
 /** SETUP END **/
@@ -59,35 +69,9 @@ select is(
     ) select cif.form_change_gross_payments_to_date((select * from record))
   ),
   (
-    10000::numeric
+    90000::numeric
   ),
-  'Returns the correct amount for the first milestone with expenses'
-);
-
-select is(
-  (
-    with record as (
-    select row(form_change.*)::cif.form_change
-    from cif.form_change where id=2
-    ) select cif.form_change_gross_payments_to_date((select * from record))
-  ),
-  (
-    40000::numeric
-  ),
-  'Returns the correct cumulative amount for the second milestone with expenses, prioritizing the adjustedGrossAmount if it exists'
-);
-
-select is(
-  (
-    with record as (
-    select row(form_change.*)::cif.form_change
-    from cif.form_change where id=3
-    ) select cif.form_change_gross_payments_to_date((select * from record))
-  ),
-  (
-    null
-  ),
-  'Returns null for a milestone where hasExpenses is false'
+  'Returns the correct amount for the sum of all milestones with expenses'
 );
 
 select finish();
