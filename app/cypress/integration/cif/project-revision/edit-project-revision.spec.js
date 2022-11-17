@@ -28,7 +28,7 @@ describe("when editing a project, the project page", () => {
 
     cy.contains("Changes saved.");
 
-    cy.happoAndAxe("Project overview Form", "editing", "main");
+    cy.happoAndAxe("Project Overview Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit managers -- delete a manager
@@ -68,7 +68,7 @@ describe("when editing a project, the project page", () => {
       "have.value",
       "Bob003 Loblaw003"
     );
-    cy.happoAndAxe("Project contacts Form", "editing", "main");
+    cy.happoAndAxe("Project Contacts Form", "editing", "main");
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -116,7 +116,30 @@ describe("when editing a project, the project page", () => {
 
     // cy.findByText(/Submit changes/i).click();
     cy.contains("Changes saved.");
-    cy.findByText(/Review and submit information/i).click();
+    cy.findByText(/Review and Submit information/i).click();
+
+    // edit quarterly reports -- delete a report
+    cy.contains("Review and Submit Project");
+    cy.findByRole("button", { name: /Quarterly reports/i }).click();
+    cy.findByText(/Edit quarterly reports/i).click();
+    cy.findByText(/Quarterly Report 1/i).click();
+    cy.findAllByText(/Remove/i)
+      .first()
+      .click();
+    cy.contains("Changes saved.");
+    cy.findByText(/Quarterly Report 2/i).should("not.exist");
+    cy.findByText(/No reports due/).should("be.visible");
+    cy.contains("Changes saved.");
+
+    // two below assertions are not necessary, but it's needed to slow down the test and run the accessibility checks correctly
+    cy.findByText(/Complete/i).should("be.visible");
+    cy.url().should("include", "/form/5");
+
+    cy.happoAndAxe("Project Quarterly Reports Form", "editing", "main");
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.contains("Changes saved.");
+    cy.findByText(/Review and Submit information/i).click();
 
     // edit teimp
     cy.contains("Review and Submit Project");
@@ -170,11 +193,11 @@ describe("when editing a project, the project page", () => {
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
 
-    cy.happoAndAxe("Project annual reports Form", "editing", "main");
+    cy.happoAndAxe("Project Annual Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Changes saved.");
-    cy.findByText(/Review and submit information/i).click();
+    cy.findByText(/Review and Submit information/i).click();
 
     // check diffs
     cy.contains("Review and Submit Project");
@@ -231,13 +254,13 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /submit project overview/i }).click();
     cy.findByText(/review and submit project/i).should("exist");
 
-    // Navigate back to the review and submit information page
+    // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.findByText(/resume edition/i).click();
     cy.findByText(/submit change/i).click();
-    cy.findByText(/review and submit information/i).click();
+    cy.findByText(/Review and Submit information/i).click();
     cy.findByText(/review and submit project/i).should("exist");
     cy.get("textarea").click().type("foo");
 

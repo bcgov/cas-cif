@@ -88,7 +88,7 @@ describe("The Create Project page", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/review and submit information/i).closest("li")
+      screen.getByText(/Review and Submit information/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
 
@@ -133,9 +133,9 @@ describe("The Create Project page", () => {
     });
     pageTestingHelper.renderPage();
 
-    expect(screen.getByText(/Project overview not added/)).toBeInTheDocument();
-    expect(screen.getByText(/Project managers not added/)).toBeInTheDocument();
-    expect(screen.getByText(/Project contacts not added/)).toBeInTheDocument();
+    expect(screen.getByText(/Project Overview not added/)).toBeInTheDocument();
+    expect(screen.getByText(/Project Managers not added/)).toBeInTheDocument();
+    expect(screen.getByText(/Project Contacts not added/)).toBeInTheDocument();
   });
 
   it("Renders the summary with the filled-out details", async () => {

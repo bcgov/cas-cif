@@ -27,7 +27,7 @@ describe("when creating a project, the project page", () => {
       "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project overview Form", "filled", "main");
+    cy.happoAndAxe("Project Overview Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add managers
@@ -46,7 +46,7 @@ describe("when creating a project, the project page", () => {
       "bob.l004@example.com"
     );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project contacts Form", "filled", "main");
+    cy.happoAndAxe("Project Contacts Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add budgets, expenses, and payments
@@ -88,6 +88,26 @@ describe("when creating a project, the project page", () => {
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
     cy.findAllByRole("status").first().should("have.text", "Late");
     cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.url().should("include", "/form/5");
+    //add quarterly reports
+    cy.addQuarterlyReport(
+      1,
+      "2020-01-01",
+      "2020-02-02",
+      "I am the first general comment"
+    );
+    cy.addQuarterlyReport(
+      2,
+      "2022-01-01",
+      "2022-02-02",
+      "I am the second general comment"
+    );
+    cy.findAllByRole("status").first().should("have.text", "Complete");
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("Project Quarterly Reports Form", "filled", "main");
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByText(/^submit/i).click();
 
     // add teimp reports
     cy.url().should("include", "/form/5");
