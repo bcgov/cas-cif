@@ -1,4 +1,4 @@
--- Revert cif:tables/project_revision_002_set_amendment_statuses from pg
+-- Revert cif:tables/project_revision_003_set_amendment_statuses from pg
 
 begin;
 

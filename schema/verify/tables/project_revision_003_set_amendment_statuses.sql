@@ -1,4 +1,4 @@
--- Verify cif:tables/project_revision_002_set_amendment_statuses on pg
+-- Verify cif:tables/project_revision_003_set_amendment_statuses on pg
 
 begin;
 
