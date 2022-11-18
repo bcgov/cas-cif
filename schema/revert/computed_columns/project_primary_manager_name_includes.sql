@@ -1,7 +1,7 @@
 -- Revert cif:computed_columns/project_primary_manager_name_includes from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function cif.project_primary_manager_name_includes;
 
-COMMIT;
+commit;
