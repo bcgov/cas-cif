@@ -194,9 +194,9 @@ select results_eq(
     select revision_type, revision_status from cif.commit_project_revision(3);
   $$,
   $$
-    values ('Amendment'::varchar, 'Draft'::varchar);
+    values ('Amendment'::varchar, 'Applied'::varchar);
   $$,
-  'commit_project_revision leaves revision_status as Draft when revision_type is Amendment'
+  'commit_project_revision sets revision_status to Applied when revision_type is Amendment'
 );
 
 select results_eq(
