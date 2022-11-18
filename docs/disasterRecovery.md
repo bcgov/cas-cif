@@ -16,7 +16,7 @@ In case of a database corruption, crash or any other issue requiring us to resto
 To restore the database to any point in time, simply run:
 
 ```
-make restore TARGET_TIMESTAMP="2022-05-24 14:20:00-07"
+make restore TARGET_TIMESTAMP="2022-05-24 15:20:00-07"
 ```
 
 where TARGET_TIMESTAMP follows the format 'YYYY-MM-DD HH:MM:SS-ZZ'
