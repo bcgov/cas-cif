@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.project_primary_manager_name_includes(cif.project)'::regprocedure);
+select pg_get_functiondef('cif.project_primary_manager_name_includes(cif.project, text)'::regprocedure);
 
 rollback;
