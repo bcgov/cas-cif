@@ -2,7 +2,6 @@
 
 begin;
 
-perform cif_private.revoke_permissions('delete', 'project_revision', 'cif_internal');
-perform cif_private.revoke_permissions('delete', 'project_revision', 'cif_admin');
+revoke delete on cif.project_revision from cif_internal, cif_admin;
 
 commit;
