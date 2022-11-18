@@ -105,11 +105,11 @@ describe("The project amendments and revisions page", () => {
       anchor: undefined,
     });
   });
-  it("Renders general revision options when general revision is selected", () => {
+  it("Renders amendment type options when amendment is selected", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.getByLabelText(/General Revision/i));
+    userEvent.click(screen.getByLabelText(/Amendment/i));
     expect(
       screen.getByRole("checkbox", {
         name: /Cost/i,
@@ -133,7 +133,7 @@ describe("The project amendments and revisions page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.getByLabelText(/General Revision/i));
+    userEvent.click(screen.getByLabelText(/Amendment/i));
     userEvent.click(screen.getByLabelText(/Cost/i));
     userEvent.click(screen.getByLabelText(/Schedule/i));
     userEvent.click(
@@ -144,7 +144,7 @@ describe("The project amendments and revisions page", () => {
       "createProjectRevisionMutation",
       {
         projectId: 1234,
-        revisionType: "General Revision",
+        revisionType: "Amendment",
         amendmentTypes: ["Cost", "Schedule"],
       }
     );
