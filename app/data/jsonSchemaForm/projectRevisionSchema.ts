@@ -21,18 +21,18 @@ export const projectRevisionSchema = {
         {
           properties: {
             revisionType: {
-              const: !"General Revision",
+              const: !"Amendment",
             },
           },
         },
         {
           properties: {
             revisionType: {
-              const: "General Revision",
+              const: "Amendment",
             },
             amendmentTypes: {
               type: "array",
-              title: "Ammendment Types",
+              title: "Amendment Types",
               items: {
                 type: "string",
                 enum: [],
