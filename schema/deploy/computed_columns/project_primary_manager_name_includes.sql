@@ -15,12 +15,12 @@ $computed_column$
         -- where it's the current project
         where cif.project_manager.project_id=$1.id
         and
-        -- the name matches $2
+        -- the name matches $2 how to get cif_user_full_name?
         (select family_name from cif.cif_user
             where cif.cif_user.id =
                 (select cif_user_id from cif.project_manager
                 where cif.project_manager.project_id=$1.id)
-            ) ilike '%$2%')
+            ) ilike '%' || $2 || '%')
         is not null
     then true
     else false
