@@ -48,6 +48,7 @@ export const projectRevisionSchema = {
 };
 
 export const projectRevisionUISchema = {
+  "ui:order": ["revisionType", "amendmentTypes", "changeReason"],
   revisionType: {
     "ui:widget": "radio",
   },
