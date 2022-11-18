@@ -32,24 +32,6 @@ $computed_column$ language sql immutable;
 
 grant execute on function cif.cif_user_full_name to cif_internal, cif_admin;
 
-comment on function cif.project_primary_manager_name_includes is 'Returns primary project manager name or true';
+comment on function cif.project_primary_manager_name_includes is 'Returns true when the search string matches a primary project manager or when the search string is empty (used in filtering the projects list)';
 
 commit;
-
-
---   select case when $2 is null
---     then true
---     when
--- --  if there's an id then there's a match so true
---         (select id from cif.project_manager
---         -- where it's the current project
---         where cif.project_manager.project_id=$1.id
---         and
---         -- the name matches $2
---         (select family_name from cif.cif_user
---             where cif.user.id = cif.project_manager.id) ilike '%$2%')
---         is not null
-
---     then true
---     else false
---     end;
