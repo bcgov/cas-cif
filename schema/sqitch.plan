@@ -186,3 +186,4 @@ mutations/delete_project_revision 2022-11-09T20:19:32Z Gurjeet Matharu <gurjeet@
 tables/project_revision_002_add_delete_permissions 2022-11-10T19:53:53Z Gurjeet Matharu <gurjeet@matharuco.com># adding delete permissions to project revision amendment type
 mutations/generate_quarterly_reports 2022-11-08T19:55:13Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate quarterly reports based on start and end dates
 mutations/generate_annual_reports 2022-11-14T18:44:55Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate annual reports based on start and end dates
+tables/project_002_add_contract_number 2022-11-18T17:45:15Z Mike Vesprini <mike@button.is> # Add contract_number column
