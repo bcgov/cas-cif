@@ -27,7 +27,7 @@ describe("when undoing, the project revision page", () => {
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkOverviewForm(
       "Select a Funding Stream",
-      "Select a Funding Stream RFP Year",
+      "Select a RFP Year",
       "",
       "",
       "",

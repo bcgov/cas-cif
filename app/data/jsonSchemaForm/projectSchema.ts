@@ -40,7 +40,7 @@ const projectSchema = {
     },
     fundingStreamRfpId: {
       type: "number",
-      title: "Funding Stream RFP ID",
+      title: "RFP Year ID",
       default: undefined,
     },
     projectStatusId: {

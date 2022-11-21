@@ -118,7 +118,7 @@ describe("The Project Form Summary", () => {
       screen.getByText("Legal Operator Name and BC Registry ID")
     ).toBeInTheDocument();
 
-    expect(screen.queryByText("Funding Stream RFP ID")).not.toBeInTheDocument();
+    expect(screen.queryByText("RFP Year ID")).not.toBeInTheDocument();
     expect(screen.queryByText("Project Name")).not.toBeInTheDocument();
     expect(screen.queryByText("Project Description")).not.toBeInTheDocument();
     expect(screen.queryByText("Total Funding Request")).not.toBeInTheDocument();
@@ -217,7 +217,7 @@ describe("The Project Form Summary", () => {
     expect(
       screen.getByText("Legal Operator Name and BC Registry ID")
     ).toBeInTheDocument();
-    expect(screen.queryByText("Funding Stream RFP ID")).toBeInTheDocument();
+    expect(screen.queryByText("RFP Year ID")).toBeInTheDocument();
     expect(screen.queryByText("Project Name")).toBeInTheDocument();
     expect(screen.queryByText("Project Description")).toBeInTheDocument();
     expect(screen.queryByText("Total Funding Request")).toBeInTheDocument();

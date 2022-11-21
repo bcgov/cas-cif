@@ -97,7 +97,7 @@ Cypress.Commands.add(
   ) => {
     cy.url().should("include", "/form/0");
     cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
-    cy.findByLabelText(/Funding Stream RFP/i).select(fundingStreamYear);
+    cy.findByLabelText(/RFP Year/i).select(fundingStreamYear);
     cy.findByLabelText(/Operator Name/i).click();
     cy.contains(operatorName).click();
     cy.findByLabelText("Sector").click();
