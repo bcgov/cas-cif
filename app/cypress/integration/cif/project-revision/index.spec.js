@@ -53,11 +53,14 @@ describe("the new project page", () => {
     cy.contains("Project Funding Agreement");
     cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
-    cy.get('[aria-label="Province Share Percentage"]').should(
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
       "50 %"
     );
-    cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
+    cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
+      "have.value",
+      "10 %"
+    );
 
     cy.fillFundingAgreementForm(
       222,

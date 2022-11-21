@@ -27,16 +27,16 @@ const ContactDetails: React.FC<Props> = ({ contact, className }) => {
   return (
     <div className={className}>
       <p>
-        <span>Email</span> <a href={`mailto:${email}`}>{email}</a>
+        <span>Email:</span> <a href={`mailto:${email}`}>{email}</a>
       </p>
       {companyName && (
         <p>
-          <span>Company</span> {companyName}
+          <span>Company:</span> {companyName}
         </p>
       )}
       {contactPosition && (
         <p>
-          <span>Position</span> {contactPosition}
+          <span>Position:</span> {contactPosition}
         </p>
       )}
       <style jsx>{`
