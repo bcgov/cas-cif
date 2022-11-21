@@ -305,27 +305,29 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/TEIMP End Date/i)
       .next()
       .contains(/Jan(\.)? 1, 2022/);
+    cy.happoAndAxe("Auto-generate quarterly reports", "generated", "main");
 
     //generate annual reports
     cy.findByRole("heading", { name: /7. Annual reports/i }).click();
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /generate annual reports/i }).click();
-    cy.get(".reportHeader").should("have.length", 5);
+    cy.get(".reportHeader").should("have.length", 4);
     cy.findAllByText(/^Report Due Date$/i)
       .first()
       .next()
-      .contains(/Jan(\.)? 31, 2020/);
+      .contains(/Jan(\.)? 30, 2022/);
     cy.findAllByText(/^Report Due Date$/i)
       .last()
       .next()
-      .contains(/Jan(\.)? 31, 2024/);
+      .contains(/Jan(\.)? 30, 2025/);
     cy.findByText(/Emissions Intensity Report Due Date/i)
       .next()
       .contains(/Jan(\.)? 1, 2020/);
     cy.findByText(/Project Assets Life End Date/i)
       .next()
       .contains(/Feb(\.)? 2, 2024/);
+    cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
   });
 });
 describe("the project amendment and revisions page", () => {
