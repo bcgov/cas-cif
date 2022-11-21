@@ -126,7 +126,7 @@ describe("the new project page", () => {
       .next()
       .should("not.exist");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.findByText(/Funding Stream RFP ID/i)
+    cy.findByText(/RFP Year ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2019");
     cy.findByText(/Project Details/i).click();
