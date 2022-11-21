@@ -232,7 +232,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           onClick={stageProjectManagersFormChanges}
           disabled={isUpdating}
         >
-          Submit Managers
+          Submit Project Managers
         </Button>
       )}
       <style jsx>{`

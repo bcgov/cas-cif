@@ -92,7 +92,7 @@ describe("The Project Annual Reports page", () => {
   it("redirects the user to the project revision page on submit when editing", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-    await userEvent.click(screen.getByText(/submit managers/i));
+    await userEvent.click(screen.getByText(/submit project managers/i));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionPageRoute("mock-proj-rev-2")
     );
@@ -118,7 +118,7 @@ describe("The Project Annual Reports page", () => {
       },
     });
     pageTestingHelper.renderPage();
-    await userEvent.click(screen.getByText(/submit managers/i));
+    await userEvent.click(screen.getByText(/submit project managers/i));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionFormPageRoute("mock-proj-rev-id", 2)
     );

@@ -219,7 +219,7 @@ describe("when undoing, the project revision page", () => {
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");
-    cy.findByLabelText(/Max Funding Amount/i).should("have.value", "$1.00");
+    cy.findByLabelText(/Maximum Funding Amount/i).should("have.value", "$1.00");
     cy.findByLabelText(/Proponent Cost/i).should("have.value", "$777.00");
 
     // undo additional funding source
