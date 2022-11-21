@@ -406,16 +406,19 @@ Cypress.Commands.add(
     contractStartDate,
     projectAssetsLifeEndDate
   ) => {
-    cy.findByLabelText(/Max Funding Amount$/i)
+    cy.findByLabelText(/Total Project Value$/i)
+      .clear()
+      .type(totalProjectValue);
+    cy.findByLabelText(/Maximum Funding Amount$/i)
       .clear()
       .type(maxFundingAmount);
-    cy.findByLabelText(/Province Share Percentage$/i)
+    cy.findByLabelText(/Province's Share Percentage$/i)
       .clear()
       .type(provinceSharePercentage);
-    cy.findByLabelText(/Holdback Percentage$/i)
+    cy.findByLabelText(/Performance Milestone Holdback Percentage$/i)
       .clear()
       .type(holdbackPercentage);
-    cy.findByLabelText(/Anticipated Funding Amount$/i)
+    cy.findByLabelText(/Anticipated\/Actual Funding Amount$/i)
       .clear()
       .type(anticipatedFundingAmount);
     cy.findByLabelText(/Proponent Cost$/i)
@@ -445,16 +448,19 @@ Cypress.Commands.add(
     totalProjectValue = "$0.00",
     summaryPageMode = false
   ) => {
-    cy.findByText(/Max Funding Amount$/i)
+    cy.findByText(/Total Project Value$/i)
+      .next()
+      .should("have.text", totalProjectValue);
+    cy.findByText(/Maximum Funding Amount$/i)
       .next()
       .should("have.text", maxFundingAmount);
-    cy.findByText(/Province Share Percentage$/i)
+    cy.findByText(/Province's Share Percentage$/i)
       .next()
       .should("have.text", provinceSharePercentage);
-    cy.findByText(/Holdback Percentage$/i)
+    cy.findByText(/Performance Milestone Holdback Percentage$/i)
       .next()
       .should("have.text", holdbackPercentage);
-    cy.findByText(/Anticipated Funding Amount$/i)
+    cy.findByText(/Anticipated\/Actual Funding Amount$/i)
       .next()
       .should("have.text", anticipatedFundingAmount);
     cy.findByText(/Proponent Cost$/i)

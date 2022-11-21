@@ -135,18 +135,21 @@ describe("The ProjectFundingAgreementForm", () => {
       screen.getByLabelText<HTMLLabelElement>(/total project value/i)
     ).toHaveTextContent("$350.00");
     expect(
-      screen.getByLabelText<HTMLInputElement>(/Max Funding Amount/i).value
+      screen.getByLabelText<HTMLInputElement>(/Maximum Funding Amount/i).value
     ).toBe("$200.00");
     expect(
-      screen.getByLabelText<HTMLSelectElement>(/Province Share Percentage/i)
+      screen.getByLabelText<HTMLSelectElement>(/Province's Share Percentage/i)
         .value
     ).toBe("50 %");
     expect(
-      screen.getByLabelText<HTMLSelectElement>(/Holdback Percentage/i).value
+      screen.getByLabelText<HTMLSelectElement>(
+        /Performance Milestone Holdback Percentage/i
+      ).value
     ).toBe("10 %");
     expect(
-      screen.getByLabelText<HTMLSelectElement>(/Anticipated Funding Amount/i)
-        .value
+      screen.getByLabelText<HTMLSelectElement>(
+        /Anticipated\/Actual Funding Amount/i
+      ).value
     ).toBe("$300.00");
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value

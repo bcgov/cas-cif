@@ -485,7 +485,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 onClick={stageContactFormChanges}
                 disabled={isUpdating || isStaging}
               >
-                Submit Contacts
+                Submit Project Contacts
               </Button>
             </Grid.Row>
           </Grid.Col>
