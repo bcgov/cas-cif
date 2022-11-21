@@ -146,7 +146,7 @@ describe("when creating a project, the project page", () => {
     cy.contains("Review and Submit Project");
 
     // project overview section
-    cy.findByText(/Funding Stream RFP ID/i)
+    cy.findByText(/RFP Year ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2020");
     cy.findByText(/Operator Name/i)
