@@ -1,3 +1,5 @@
+import { aliasOperation } from "../../../utils/graphql-test-utils";
+
 describe("the new project page", () => {
   beforeEach(() => {
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
@@ -264,19 +266,20 @@ describe("the new project page", () => {
     cy.findByText(/Emissions Intensity Report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
     cy.url().should("include", "/form/6");
-
+    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
+      aliasOperation(req, "stageEmissionIntensityFormChangeMutation");
+      aliasOperation(req, "stageReportingRequirementFormChangeMutation");
+    });
     cy.findByRole("button", {
       name: /Add TEIMP /i,
     }).click();
     cy.contains("Changes saved").should("be.visible");
+
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.wait("@gqlstageEmissionIntensityFormChangeMutation");
+    cy.wait("@gqlstageReportingRequirementFormChangeMutation");
     cy.get(".error-detail").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
-    // below assertion is not necessary, but it's here to make sure the happo
-    // snapshot is taken after the form is submitted
-    cy.findByText(/Add emissions intensity report/i)
-      .next()
-      .should("have.text", "Attention Required");
     cy.happoAndAxe(
       "Emissions intensity report Form",
       "with errors",
