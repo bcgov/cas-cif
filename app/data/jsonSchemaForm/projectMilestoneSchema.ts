@@ -22,7 +22,7 @@ export const milestoneReportingRequirementSchema = {
     },
     submittedDate: {
       type: "string",
-      title: "Received Date",
+      title: "Report Received Date",
       default: undefined,
     },
   },
