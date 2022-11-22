@@ -1,7 +1,7 @@
 export const emissionIntensityReportSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
-  title: "Project TEIMP reporting",
+  title: "Emissions Intensity Report",
   required: [
     "measurementPeriodStartDate",
     "measurementPeriodEndDate",
@@ -11,11 +11,11 @@ export const emissionIntensityReportSchema = {
   ],
   properties: {
     measurementPeriodStartDate: {
-      title: "Measurement period start date",
+      title: "TEIMP Start Date",
       type: "string",
     },
     measurementPeriodEndDate: {
-      title: "Measurement period end date",
+      title: "TEIMP End Date",
       type: "string",
     },
     emissionFunctionalUnit: {
@@ -27,7 +27,7 @@ export const emissionIntensityReportSchema = {
       type: "string",
     },
     baselineEmissionIntensity: {
-      title: "Base Line Emission Intensity (BEI)",
+      title: "Baseline Emission Intensity (BEI)",
       type: "number",
     },
     targetEmissionIntensity: {
@@ -35,11 +35,11 @@ export const emissionIntensityReportSchema = {
       type: "number",
     },
     postProjectEmissionIntensity: {
-      title: "Post Project Emission Intensity",
+      title: "Post-Project Emission Intensity (PEI)",
       type: "number",
     },
     totalLifetimeEmissionReduction: {
-      title: "Total lifetime emissions reductions",
+      title: "Total Project Lifetime Emissions Reductions",
       type: "number",
     },
     adjustedEmissionsIntensityPerformance: {
@@ -47,7 +47,7 @@ export const emissionIntensityReportSchema = {
       type: "number",
     },
     calculatedPaymentPercentage: {
-      title: "Payment percentage of performance milestone amount",
+      title: "Payment Percentage of Performance Milestone Amount",
       type: "number",
     },
     adjustedHoldbackPaymentAmount: {

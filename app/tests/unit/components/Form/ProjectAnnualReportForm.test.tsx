@@ -111,7 +111,7 @@ describe("The ProjectAnnualReportForm", () => {
   it("Calls the addAnnualReportToRevision mutation when the Add button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    const addButton = screen.getByText("Add another annual report");
+    const addButton = screen.getByText(/Add another annual report/i);
     addButton.click();
     expect(
       componentTestingHelper.environment.mock.getMostRecentOperation().request
