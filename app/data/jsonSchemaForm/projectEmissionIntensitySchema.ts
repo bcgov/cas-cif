@@ -56,7 +56,7 @@ export const emissionIntensityReportSchema = {
     },
     dateSentToCsnr: {
       type: "string",
-      title: "Date sent to CSNR",
+      title: "Date Invoice Sent to CSNR",
       default: undefined,
     },
   },

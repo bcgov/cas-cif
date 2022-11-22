@@ -11,7 +11,7 @@ export const projectReportingRequirementSchema = {
     },
     submittedDate: {
       type: "string",
-      title: "Received Date",
+      title: "Report Received Date",
       default: undefined,
     },
     comments: {

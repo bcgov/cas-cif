@@ -22,7 +22,7 @@
       },
       "submittedDate": {
         "type": "string",
-        "title": "Received Date"
+        "title": "Report Received Date"
       },
       "substantialCompletionDate": {
         "type": "string",

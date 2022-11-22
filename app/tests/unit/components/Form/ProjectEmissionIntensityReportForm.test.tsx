@@ -198,9 +198,9 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByLabelText("Holdback Payment Amount (Adjusted)")
     ).toHaveValue("$123,456.45");
-    expect(screen.getByLabelText(/Date sent to CSNR/i)).toHaveTextContent(
-      /Feb[.]? 11, 2022/
-    );
+    expect(
+      screen.getByLabelText(/Date invoice sent to CSNR/i)
+    ).toHaveTextContent(/Feb[.]? 11, 2022/);
   });
 
   it("renders 0% for the GHG emissions performance if the calculated value is null", () => {

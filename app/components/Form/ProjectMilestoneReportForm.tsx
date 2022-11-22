@@ -231,7 +231,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           }
           className="addButton"
         >
-          <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
+          <FontAwesomeIcon icon={faPlusCircle} /> Add Another Milestone Report
         </Button>
         {sortedMilestoneReports.map((node, index) => {
           const formData = { ...node.newFormData };
