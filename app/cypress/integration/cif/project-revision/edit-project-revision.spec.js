@@ -145,7 +145,9 @@ describe("when editing a project, the project page", () => {
     cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
     cy.findByText(/Edit emissions intensity report/i).click();
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
     cy.addEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
@@ -157,7 +159,7 @@ describe("when editing a project, the project page", () => {
     );
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project teimp agreement form", "editing", "main");
-    cy.findByText(/Submit TEIMP report/i).click();
+    cy.findByText(/Submit Emissions Intensity Report/i).click();
 
     // edit quarterly reports -- delete a report
     cy.contains("Review and Submit Project");

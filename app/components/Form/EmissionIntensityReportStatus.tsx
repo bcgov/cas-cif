@@ -72,7 +72,7 @@ export const EmissionIntensityReportStatus: React.FC<Props> = ({
     <>
       <h3>Status</h3>
       <div className="status">
-        Status of TEIMP Reporting
+        Status of Emissions Intensity Report
         {getBadgeForEmissionIntensityReportStatus()}
       </div>
       <style jsx>{`
