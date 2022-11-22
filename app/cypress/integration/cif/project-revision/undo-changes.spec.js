@@ -94,8 +94,10 @@ describe("when undoing, the project revision page", () => {
     // undo TEIMP agreement
     cy.findByText(/Emissions intensity report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /add TEIMP agreement/i }).click();
+    cy.url().should("include", "/form/6");
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
     cy.addEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
@@ -106,7 +108,7 @@ describe("when undoing, the project revision page", () => {
       "G"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.findByRole("button", { name: /Add TEIMP agreement/i }).should(
+    cy.findByRole("button", { name: /Add Emissions Intensity Report/i }).should(
       "be.visible"
     );
     cy.findAllByRole("link", { name: /^Add emissions intensity report/i })

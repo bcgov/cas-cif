@@ -217,7 +217,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
           }
           className="addButton"
         >
-          <FontAwesomeIcon icon={faPlusCircle} /> Add another annual report
+          <FontAwesomeIcon icon={faPlusCircle} /> Add Another Annual Report
         </Button>
 
         {sortedAnnualReports.map((report, index) => {

@@ -232,7 +232,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           }
           style={{ marginRight: "1rem" }}
         >
-          Add TEIMP Agreement
+          Add Emissions Intensity Report
         </Button>
       )}
       {projectRevision.emissionIntensityReportFormChange.edges.length > 0 && (
@@ -342,7 +342,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               isStagingEmissionIntensity
             }
           >
-            Submit TEIMP Report
+            Submit Emissions Intensity Report
           </Button>
           <style jsx>{`
             :global(.functional-unit) {

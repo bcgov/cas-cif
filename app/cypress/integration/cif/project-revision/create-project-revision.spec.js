@@ -113,8 +113,10 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/^submit/i).click();
 
     // add teimp reports
-    cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.url().should("include", "/form/6");
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
     cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
     cy.findAllByText("tCO2e").should("have.length", 4);
     cy.addEmissionIntensityReport(
@@ -129,7 +131,7 @@ describe("when creating a project, the project page", () => {
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");
-    cy.findByText(/Submit TEIMP Report/).click();
+    cy.findByText(/Submit Emissions Intensity Report/).click();
 
     //add quarterly reports
     cy.url().should("include", "/form/6");
@@ -218,11 +220,11 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Bob004 Loblaw004");
 
     // TEIMP section
-    cy.findByText(/^Measurement period start date/i)
+    cy.findByText(/^TEIMP start date/i)
       .next()
       .contains(/Jan(\.)? 1, 2022/)
       .should("be.visible");
-    cy.findByText(/Measurement period end date/i)
+    cy.findByText(/TEIMP end date/i)
       .next()
       .next()
       .contains(/Duration: 1 month, 1 day/i);
@@ -293,9 +295,17 @@ describe("when creating a project, the project page", () => {
       name: /5. Emissions Intensity Report/i,
     }).click();
     cy.findByText(/Add emissions intensity report/i).click();
+<<<<<<< HEAD
     cy.url().should("include", "/form/5");
     cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
     cy.setDateInPicker("Measurement period end date", "2022-01-01");
+=======
+    cy.url().should("include", "/form/6");
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
+    cy.setDateInPicker("TEIMP End Date", "2022-01-01");
+>>>>>>> 6979b9cd (chore: update emission intensity and annual reports)
     cy.setDateInPicker("Report Due Date", "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
 

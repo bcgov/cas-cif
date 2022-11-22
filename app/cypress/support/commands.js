@@ -267,11 +267,8 @@ Cypress.Commands.add(
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");
 
-    cy.setDateInPicker(
-      "Measurement period start date",
-      measurementPeriodStartDate
-    );
-    cy.setDateInPicker("Measurement period end date", measurementPeriodEndDate);
+    cy.setDateInPicker("TEIMP Start Date", measurementPeriodStartDate);
+    cy.setDateInPicker("TEIMP End Date", measurementPeriodEndDate);
     cy.get('[aria-label="Functional Unit"]')
       .clear()
       .type(emissionFunctionalUnit);
@@ -281,13 +278,13 @@ Cypress.Commands.add(
         .clear()
         .type(productionFunctionalUnit);
 
-    cy.get('[aria-label="Base Line Emission Intensity (BEI)"]')
+    cy.get('[aria-label="Baseline Emission Intensity (BEI)"]')
       .clear()
       .type(baselineEmissionIntensity);
     cy.get('[aria-label="Target Emission Intensity (TEI)"]')
       .clear()
       .type(targetEmissionIntensity);
-    cy.get('[aria-label*="Post Project Emission Intensity"]')
+    cy.get('[aria-label*="Post-Project Emission Intensity (PEI)"]')
       .clear()
       .type(postProjectEmissionIntensity);
 
