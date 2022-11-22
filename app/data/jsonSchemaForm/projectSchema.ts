@@ -58,6 +58,10 @@ const projectSchema = {
       type: "string",
       title: "Additional Sector Information",
     },
+    contractNumber: {
+      type: "string",
+      title: "Contract Number",
+    },
     comments: { type: "string", title: "General Comments" },
   },
 };

@@ -39,6 +39,7 @@ export const createProjectUiSchema = (
       "projectType",
       "sectorName",
       "additionalSectorInformation",
+      "contractNumber",
       "operatorId",
       "operatorTradeName",
       "totalFundingRequest",
