@@ -130,6 +130,11 @@
           sortable: true,
         },
       },
+      "cif.project_manager_names_concatenated": {
+        tags: {
+          filterable: true,
+        },
+      },
     },
   },
 }
