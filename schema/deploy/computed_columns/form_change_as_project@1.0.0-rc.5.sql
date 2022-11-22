@@ -33,8 +33,7 @@ as $$
       null::int as archived_by,
       null::timestamptz as archived_at,
       (new_form_data->>'score')::numeric as score,
-      (new_form_data->>'projectType')::varchar as project_type,
-      (new_form_data->>'contractNumber')::varchar as contract_number
+      (new_form_data->>'projectType')::varchar as project_type
     from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'project'
 
 $$ language sql stable;

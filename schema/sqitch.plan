@@ -187,3 +187,4 @@ tables/project_revision_002_add_delete_permissions 2022-11-10T19:53:53Z Gurjeet 
 mutations/generate_quarterly_reports 2022-11-08T19:55:13Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate quarterly reports based on start and end dates
 mutations/generate_annual_reports 2022-11-14T18:44:55Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Custom mutation to generate annual reports based on start and end dates
 tables/project_002_add_contract_number 2022-11-18T17:45:15Z Mike Vesprini <mike@button.is> # Add contract_number column
+computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.5] 2022-11-21T18:39:44Z Mike Vesprini <mike@button.is> # Handle contract_number column being added to project table
