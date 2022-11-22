@@ -204,7 +204,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           }
           className="addButton"
         >
-          <FontAwesomeIcon icon={faPlusCircle} /> Add another quarterly report
+          <FontAwesomeIcon icon={faPlusCircle} /> Add Another Quarterly Report
         </Button>
 
         {sortedQuarterlyReports.map((quarterlyReport, index) => {

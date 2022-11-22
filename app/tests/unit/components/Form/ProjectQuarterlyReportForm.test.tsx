@@ -110,7 +110,7 @@ describe("The ProjectQuarterlyReportForm", () => {
   it("Calls the addQuarterlyReportToRevision mutation when the Add button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    const addButton = screen.getByText("Add another quarterly report");
+    const addButton = screen.getByText(/Add another quarterly report/i);
     addButton.click();
     expect(
       componentTestingHelper.environment.mock.getMostRecentOperation().request
@@ -130,7 +130,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    userEvent.click(screen.getByText(/Add another quarterly report/i));
+    userEvent.click(screen.getByText("Add Another Quarterly Report"));
     act(() => {
       componentTestingHelper.environment.mock.rejectMostRecentOperation(
         new Error()
