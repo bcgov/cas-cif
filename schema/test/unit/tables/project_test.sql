@@ -16,6 +16,7 @@ select columns_are(
     'project_status_id',
     'sector_name',
     'additional_sector_information',
+    'contract_number',
     'comments',
     'created_at',
     'created_by',

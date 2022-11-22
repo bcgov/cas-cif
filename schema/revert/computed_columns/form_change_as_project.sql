@@ -5,10 +5,10 @@
 
 begin;
 
-/** The revert for the preceding change project_001 must be done here or the revert for form_change_as_project will not work.
+/** The revert for the preceding change project_002_add_contract_number must be done here or the revert for form_change_as_project will not work.
     It will complain that it is returning too few columns.
 **/
-alter table cif.project drop column if exists score, drop column if exists project_type;
+alter table cif.project drop column if exists contract_number;
 
 create or replace function cif.form_change_as_project(cif.form_change)
 returns cif.project
@@ -36,7 +36,9 @@ as $$
       null::int as updated_by,
       now()::timestamptz updated_at,
       null::int as archived_by,
-      null::timestamptz as archived_at
+      null::timestamptz as archived_at,
+      (new_form_data->>'score')::numeric as score,
+      (new_form_data->>'projectType')::varchar as project_type
     from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'project'
 
 $$ language sql stable;
