@@ -4,7 +4,7 @@
 
 begin;
 
-create or replace function cif.project_manager_names_concatenated(cif.project)
+create or replace function cif.project_primary_managers(cif.project)
 returns text
 as $$
 declare
@@ -18,14 +18,14 @@ begin
             where cif.cif_user.id =
                 (select cif_user_id from cif.project_manager
                 where cif.project_manager.project_id=$1.id
-                and cif.project_manager.project_manager_label_id=index))))::text);
+                and cif.project_manager.project_manager_label_id in (select id from cif.project_manager_label where label ilike '%primary%')))))::text);
   end loop;
   return names;
 end;
-$$ language plpgsql;
+$$ language sql stable;
 
-grant execute on function cif.cif_user_full_name to cif_internal, cif_admin;
+grant execute on function cif.project_primary_managers to cif_internal, cif_admin;
 
-comment on function cif.project_manager_names_concatenated is 'Returns a concatenated list of the project managers (used for filtering the projects table)';
+comment on function cif.project_primary_managers is 'Returns a concatenated list of the project managers (used for filtering the projects table)';
 
 commit;
