@@ -130,7 +130,7 @@
           sortable: true,
         },
       },
-      "cif.project_manager_names_concatenated": {
+      "cif.project_primary_managers": {
         tags: {
           filterable: true,
         },

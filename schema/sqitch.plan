@@ -189,3 +189,4 @@ mutations/generate_annual_reports 2022-11-14T18:44:55Z Sepehr Sobhani <sepehr.so
 tables/project_002_add_contract_number 2022-11-18T17:45:15Z Mike Vesprini <mike@button.is> # Add contract_number column
 computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.5] 2022-11-21T18:39:44Z Mike Vesprini <mike@button.is> # Handle contract_number column being added to project table
 computed_columns/project_manager_names_concatenated 2022-11-22T15:24:51Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add computed column to concatenate the full names of all project managers of a project
+computed_columns/project_primary_managers 2022-11-22T15:24:51Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add computed column to concatenate the full names of all project managers of a project
