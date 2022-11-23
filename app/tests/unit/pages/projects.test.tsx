@@ -15,8 +15,21 @@ const defaultMockResolver = {
       allProjects: {
         totalCount: 2,
         edges: [
-          { node: { id: "1", projectName: "Project 1" } },
-          { node: { id: "2", projectName: "Project 2" } },
+          {
+            node: {
+              id: "1",
+              projectName: "Project 1",
+            },
+          },
+          {
+            node: {
+              id: "2",
+              projectName: "Project 2",
+              projectManagersByProjectId: {
+                edges: [],
+              },
+            },
+          },
         ],
       },
       pendingNewProjectRevision: null,
@@ -46,7 +59,7 @@ describe("The projects page", () => {
     jest.restoreAllMocks();
   });
 
-  it("renders the list of projects", () => {
+  it("renders the list of projects, including projects with no primary manager", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
