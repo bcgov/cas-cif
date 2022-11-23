@@ -19,7 +19,8 @@ const contactSchema = {
     phone: {
       type: "string",
       title: "Phone",
-      pattern: "^\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+      pattern:
+        "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
     },
     phoneExt: {
       type: "string",
