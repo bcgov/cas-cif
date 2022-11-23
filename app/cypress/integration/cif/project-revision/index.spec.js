@@ -44,7 +44,8 @@ describe("the new project page", () => {
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
 
     cy.happoAndAxe("Project Contacts Form", "empty", "main");
-    cy.findByText(/Submit contacts/i).click();
+    // Error: unable to find "Submit contacts"
+    cy.findByText(/Submit project contacts/i).click();
 
     // BUDGETS, EXPENSES AND PAYMENTS
     cy.findByText(/Add budgets/i).click();
@@ -125,7 +126,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
-    cy.findByRole("link", { name: "Project overview" })
+    cy.findByRole("link", { name: "Project Overview" })
       .next()
       .should("not.exist");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
