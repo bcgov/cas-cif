@@ -49,18 +49,7 @@ export const ProjectsQuery = graphql`
         projectStatusByProjectStatusId: {
           name: { includesInsensitive: $status }
         }
-        projectManagersByProjectId: {
-          some: {
-            and: {
-              cifUserByCifUserId: {
-                fullName: { includesInsensitive: $primaryProjectManager }
-              }
-              projectManagerLabelByProjectManagerLabelId: {
-                label: { includesInsensitive: "primary" }
-              }
-            }
-          }
-        }
+        primaryManagers: { includesInsensitive: $primaryProjectManager }
       }
       orderBy: $orderBy
     ) {
@@ -108,7 +97,6 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
     session,
   } = usePreloadedQuery(ProjectsQuery, preloadedQuery);
   const router = useRouter();
-
   const tableFilters = useMemo(
     () => [
       new TextFilter("Project Name", "projectName"),
