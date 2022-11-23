@@ -3,6 +3,8 @@ import Ajv, { ErrorObject } from "ajv";
 const ajv = new Ajv({ allErrors: true });
 // AJV needs to be made aware of any custom formats used in the schema
 ajv.addFormat("rfpDigits", /\d{3,4}/);
+ajv.addFormat("email", /^[\.\w-]+@([\w-]+\.)+[\w-]{2,4}$/);
+ajv.addFormat("phone", /^?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/);
 
 const validateRecord: (schema: any, formData: any) => ErrorObject[] = (
   schema,
