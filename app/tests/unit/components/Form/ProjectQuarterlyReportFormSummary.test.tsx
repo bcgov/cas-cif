@@ -137,9 +137,6 @@ describe("The Project Quarterly Report Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    // Todo: make this test pass, see ProjectAnnualReportFormSummaryTest
-    // expect(screen.getAllByText(/Received Date (optional)/i)).toHaveLength(2);
-
     // First Node
     expect(screen.getByText("Updated Test comment")).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 2, 2020/)).toBeInTheDocument();
