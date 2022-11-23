@@ -92,6 +92,9 @@ describe("the new project page", () => {
     // Emissions Intensity Report
     cy.findByText(/Emissions Intensity Report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
+    cy.findByRole("button", {
+      name: /add emissions intensity report/i,
+    }).click();
     cy.contains("Changes saved.");
     cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
 
