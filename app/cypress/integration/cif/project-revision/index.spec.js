@@ -92,7 +92,6 @@ describe("the new project page", () => {
     // Emissions Intensity Report
     cy.findByText(/Emissions Intensity Report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.findByText(/Add Emissions Intensity Report/i).click();
     cy.contains("Changes saved.");
     cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
 
@@ -289,6 +288,29 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project Quarterly Reports Form",
+      "with errors",
+      ".error-detail"
+    );
+
+    // Emissions intensity report
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add emissions intensity report/i).click();
+    cy.url().should("include", "/form/6");
+
+    cy.findByRole("button", {
+      name: "Add Emissions Intensity Report",
+    }).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 4);
+    cy.contains("Changes saved").should("be.visible");
+    // below assertion is not necessary, but it's here to make sure the happo
+    // snapshot is taken after the form is submitted
+    cy.findByText(/Add emissions intensity report/i)
+      .next()
+      .should("have.text", "Attention Required");
+    cy.happoAndAxe(
+      "Emissions intensity report Form",
       "with errors",
       ".error-detail"
     );
