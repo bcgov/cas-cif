@@ -19,9 +19,9 @@ begin
 
   insert into cif.cif_user(session_sub, given_name, family_name, email_address)
   values (jwt.sub, jwt.given_name, jwt.family_name, jwt.email)
-  on conflict(email_address) do update 
-  set session_sub=excluded.session_sub, 
-      given_name=excluded.given_name, 
+  on conflict(email_address) do update
+  set session_sub=excluded.session_sub,
+      given_name=excluded.given_name,
       family_name=excluded.family_name;
 
   select * from cif.cif_user where session_sub = jwt.sub into result;

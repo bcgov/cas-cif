@@ -7,7 +7,7 @@ import { UNAUTHORIZED_IDIR_USER } from "../../data/group-constants";
 
 const createUserMutation = `
 mutation {
-  createUserFromSession(input: {}) {
+  updateOrCreateUserFromSession(input: {}) {
     __typename
   }
 }
@@ -23,7 +23,9 @@ const createUserMiddleware = () => {
 
     if (response.errors) {
       throw new Error(
-        `Failed to create user from session:\n${response.errors.join("\n")}`
+        `Failed to update or create user from session:\n${response.errors.join(
+          "\n"
+        )}`
       );
     }
   };

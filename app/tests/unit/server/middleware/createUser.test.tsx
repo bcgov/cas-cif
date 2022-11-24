@@ -28,7 +28,7 @@ describe("The create user middleware", () => {
     await middlewareUnderTest(req);
 
     expect(performQuery).toHaveBeenCalledWith(
-      expect.stringContaining("createUserFromSession(input: {})"),
+      expect.stringContaining("updateOrCreateUserFromSession(input: {})"),
 
       {},
       req
@@ -63,7 +63,7 @@ describe("The create user middleware", () => {
           errors: [{ message: "error" }],
           data: {
             createUserFromSession: {
-              __typename: "CreateUserFromSessionPayload",
+              __typename: "UpdateOrCreateUserFromSessionPayload",
             },
           },
         };
@@ -73,6 +73,6 @@ describe("The create user middleware", () => {
 
     await expect(async () => {
       await middlewareUnderTest({ claims: {} } as any);
-    }).rejects.toThrow("Failed to create user from session:");
+    }).rejects.toThrow("Failed to update or create user from session:");
   });
 });
