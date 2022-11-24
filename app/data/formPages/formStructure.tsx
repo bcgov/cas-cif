@@ -83,19 +83,7 @@ export const useFormStructure: () => IFormSection[] = () => {
           viewComponent: ProjectMilestoneReportFormSummary,
         },
       },
-      {
-        title: "Quarterly Reports",
-        items: [
-          {
-            title: "Quarterly reports",
-            formConfiguration: {
-              slug: "quarterlyReports",
-              editComponent: ProjectQuarterlyReportForm,
-              viewComponent: ProjectQuarterlyReportFormSummary,
-            },
-          },
-        ],
-      },
+
       ...(showTeimp
         ? [
             {
@@ -114,6 +102,19 @@ export const useFormStructure: () => IFormSection[] = () => {
           ]
         : []),
       ,
+      {
+        title: "Quarterly Reports",
+        items: [
+          {
+            title: "Quarterly reports",
+            formConfiguration: {
+              slug: "quarterlyReports",
+              editComponent: ProjectQuarterlyReportForm,
+              viewComponent: ProjectQuarterlyReportFormSummary,
+            },
+          },
+        ],
+      },
       {
         title: "Annual Reports",
         items: [
