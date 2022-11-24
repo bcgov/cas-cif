@@ -3,7 +3,6 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
     "required": [
-      "totalProjectValue",
       "maxFundingAmount",
       "provinceSharePercentage",
       "holdbackPercentage",
@@ -13,10 +12,6 @@
       "projectAssetsLifeEndDate"
     ],
     "properties": {
-      "totalProjectValue": {
-        "title": "Total Project Value",
-        "type": "number"
-      },
       "maxFundingAmount": {
         "title": "Max Funding Amount",
         "type": "number"
