@@ -61,6 +61,9 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 reportType
                 ...CollapsibleReport_reportingRequirement
               }
+              calculatedGrossAmountThisMilestone
+              calculatedNetAmountThisMilestone
+              calculatedHoldbackAmountThisMilestone
             }
           }
         }
@@ -233,6 +236,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         </Button>
 
         {sortedMilestoneReports.map((node, index) => {
+          schema.dependencies.hasExpenses.oneOf[1].properties.calculatedGrossAmount.default =
+            Number(node.calculatedGrossAmountThisMilestone);
+          schema.dependencies.hasExpenses.oneOf[1].properties.calculatedNetAmount.default =
+            Number(node.calculatedNetAmountThisMilestone);
+          schema.dependencies.hasExpenses.oneOf[1].properties.calculatedHoldbackAmount.default =
+            Number(node.calculatedHoldbackAmountThisMilestone);
+
+          console.log(schema.dependencies.hasExpenses.oneOf[1].properties);
           return (
             <div key={node.id} id={`Milestone${index + 1}`}>
               <CollapsibleReport
