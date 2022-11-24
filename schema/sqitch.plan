@@ -200,3 +200,5 @@ tables/revision_status 2022-11-09T19:51:54Z Brianna Cerkiewicz <briannacerkiewic
 mutations/commit_project_revision [mutations/commit_project_revision@1.0.1] 2022-11-30T14:31:42Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make commit_project_revision set amendment_status
 mutations/create_project [mutations/create_project@1.0.1] 2022-11-30T14:33:05Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make create_project set revision_status to Draft on create
 mutations/create_project_revision [mutations/create_project_revision@1.0.1] 2022-11-30T15:44:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Make create_project_revision set revision_status to Draft
+computed_columns/project_revision_total_project_value 2022-11-17T23:05:30Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add computed column to return the calculated total project value
+tables/funding_parameter_003_drop_total_project_value_column [tables/funding_parameter] 2022-11-23T21:17:14Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping redundant column as it trurned into a computed column
