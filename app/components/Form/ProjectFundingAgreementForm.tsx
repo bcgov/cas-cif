@@ -364,7 +364,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             )}
           </div>
           <header>
-            <h3>Project Funding Agreement</h3>
+            <h3>Budgets, Expenses & Payments</h3>
             <UndoChangesButton
               formChangeIds={formChangeIds}
               formRefs={formRefs}
@@ -482,7 +482,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               isStaging
             }
           >
-            Submit Project Funding Agreement
+            Submit Budgets, Expenses & Payments
           </Button>
         </>
       )}

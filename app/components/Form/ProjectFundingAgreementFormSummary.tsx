@@ -161,7 +161,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
 
   return (
     <div className="summaryContainer">
-      <h3>Project Funding Agreement</h3>
+      <h3>Budgets, Expenses & Payments</h3>
       {(!fundingAgreementSummary ||
         fundingAgreementSummary?.isPristine ||
         (fundingAgreementSummary?.isPristine === null &&
