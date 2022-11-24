@@ -12,8 +12,11 @@ const projectMilestoneUiSchema = {
     "totalEligibleExpenses",
     "calculatedGrossAmount",
     "adjustedGrossAmount",
+    "grossPaymentAmount",
     "calculatedNetAmount",
     "adjustedNetAmount",
+    "adjustedHoldBackAmount",
+    "calculatedHoldbackAmount",
     "dateSentToCsnr",
   ],
   description: {
@@ -78,6 +81,15 @@ const projectMilestoneUiSchema = {
   },
   dateSentToCsnr: {
     "ui:widget": "DateWidget",
+  },
+  grossPaymentAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+  },
+  holdbackAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+  },
+  netPaymentAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
   },
 };
 
