@@ -92,21 +92,10 @@ describe("when undoing, the project revision page", () => {
     cy.findByText("Approved").should("not.exist");
     cy.findByText(/Yes/i).should("be.visible");
 
-    // undo quarterly reports
-    cy.findByText(/Quarterly reports/i).click();
-    cy.findByText(/Add quarterly reports/i).click();
-    cy.findByRole("button", {
-      name: /add another quarterly report/i,
-    }).click();
-    cy.get('[aria-label="General Comments"]').clear().type("I ");
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.findByText(/Quarterly Report 1/i).should("not.exist");
-    cy.get('[label*="Due Date"]').should("have.length", 0);
-
     // undo TEIMP agreement
     cy.findByText(/Emissions intensity report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/5");
     cy.findByRole("button", { name: /add TEIMP agreement/i }).click();
     cy.addEmissionIntensityReport(
       "2022-01-01",
@@ -124,6 +113,17 @@ describe("when undoing, the project revision page", () => {
     cy.findAllByRole("link", { name: /^Add emissions intensity report/i })
       .next()
       .should("have.text", "Not Started");
+
+    // undo quarterly reports
+    cy.findByText(/Quarterly reports/i).click();
+    cy.findByText(/Add quarterly reports/i).click();
+    cy.findByRole("button", {
+      name: /add another quarterly report/i,
+    }).click();
+    cy.get('[aria-label="General Comments"]').clear().type("I ");
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByText(/Quarterly Report 1/i).should("not.exist");
+    cy.get('[label*="Due Date"]').should("have.length", 0);
 
     // undo annual reports
     cy.findByText(/Annual reports/i).click();
@@ -246,7 +246,6 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Edit quarterly reports/i).click();
     cy.findByText(/Quarterly report 1/i).click();
     cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
-
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/General Comments/i).should(
       "have.text",

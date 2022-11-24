@@ -90,8 +90,27 @@ describe("when creating a project, the project page", () => {
     cy.findAllByRole("status").first().should("have.text", "Late");
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    // add teimp reports
     cy.url().should("include", "/form/5");
+    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
+    cy.findAllByText("tCO2e").should("have.length", 4);
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "tCO",
+      "1",
+      "2",
+      "3",
+      "G"
+    );
+    cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
+    cy.findByText(/Submit TEIMP Report/).click();
+
     //add quarterly reports
+    cy.url().should("include", "/form/6");
     cy.addQuarterlyReport(
       1,
       "2020-01-01",
@@ -109,25 +128,6 @@ describe("when creating a project, the project page", () => {
     cy.happoAndAxe("Project quarterly reports Form", "filled", "main");
     cy.contains("Changes saved").should("be.visible");
     cy.findByText(/^submit/i).click();
-
-    // add teimp reports
-    cy.url().should("include", "/form/6");
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
-    cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
-    cy.findAllByText("tCO2e").should("have.length", 4);
-    cy.addEmissionIntensityReport(
-      "2022-01-01",
-      "2022-02-02",
-      "tCO",
-      "1",
-      "2",
-      "3",
-      "G"
-    );
-    cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
-    cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
-    cy.findByText(/Submit TEIMP Report/).click();
 
     // No annual reports
     cy.url().should("include", "/form/7");
@@ -263,6 +263,7 @@ describe("when creating a project, the project page", () => {
       "not.exist"
     );
   });
+
   it("generates quarterly and annual reports automatically", () => {
     // add budgets, expenses, and payments
     cy.findByRole("heading", {
@@ -274,21 +275,22 @@ describe("when creating a project, the project page", () => {
     cy.setDateInPicker("Contract Start Date", "2020-01-01");
     cy.setDateInPicker("Project Assets Life End Date", "2024-02-02");
     cy.contains("Changes saved").should("be.visible");
+
     // add teimp reports
     cy.findByRole("heading", {
-      name: /6. Emissions Intensity Report/i,
+      name: /5. Emissions Intensity Report/i,
     }).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/5");
     cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
     cy.setDateInPicker("Measurement period end date", "2022-01-01");
     cy.setDateInPicker("Report Due Date", "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
 
     //generate quarterly reports
-    cy.findByRole("heading", { name: /5. Quarterly Reports/i }).click();
+    cy.findByRole("heading", { name: /6. Quarterly Reports/i }).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
     cy.findByRole("button", { name: /generate quarterly reports/i }).click();
     cy.get(".reportHeader").should("have.length", 9);
     cy.findAllByText(/^Report Due Date$/i)
@@ -330,6 +332,7 @@ describe("when creating a project, the project page", () => {
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
   });
 });
+
 describe("the project amendment and revisions page", () => {
   beforeEach(() => {
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
