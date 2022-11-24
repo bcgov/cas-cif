@@ -242,8 +242,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
             Number(node.calculatedNetAmountThisMilestone);
           schema.dependencies.hasExpenses.oneOf[1].properties.calculatedHoldbackAmount.default =
             Number(node.calculatedHoldbackAmountThisMilestone);
-
-          console.log(schema.dependencies.hasExpenses.oneOf[1].properties);
           return (
             <div key={node.id} id={`Milestone${index + 1}`}>
               <CollapsibleReport
