@@ -27,7 +27,6 @@ for temp_row in select id, project_id from cif.project_revision loop
                         ),
             'provinceSharePercentage', 50,
             'holdbackPercentage', 10,
-            'totalProjectValue', 1,
             'maxFundingAmount', 1,
             'anticipatedFundingAmount', 1,
             'proponentCost',777,
