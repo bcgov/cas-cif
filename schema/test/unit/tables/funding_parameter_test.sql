@@ -10,7 +10,6 @@ select columns_are(
   ARRAY[
     'id',
     'project_id',
-    'total_project_value',
     'max_funding_amount',
     'province_share_percentage',
     'holdback_percentage',
@@ -49,11 +48,11 @@ values
   (5, 1, 1, '2000-RFP-1-1213-ABCD', 'summary', 'project 5');
 
 insert into cif.funding_parameter
-  (project_id, total_project_value, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount, proponent_cost, contract_start_date, project_assets_life_end_date) values
-  (1, 100000, 10000, 40, 10, 1000, 1000000, '2020-01-01', '2021-01-01'),
-  (2, 200000, 20000, 30, 20, 2000, 2000000, '2020-01-01', '2021-01-01'),
-  (3, 300000, 30000, 20, 30, 3000, 3000000, '2020-01-01', '2021-01-01'),
-  (4, 400000, 40000, 10, 40, 4000, 4000000, '2020-01-01', '2021-01-01');
+  (project_id, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount, proponent_cost, contract_start_date, project_assets_life_end_date) values
+  (1, 10000, 40, 10, 1000, 1000000, '2020-01-01', '2021-01-01'),
+  (2, 20000, 30, 20, 2000, 2000000, '2020-01-01', '2021-01-01'),
+  (3, 30000, 20, 30, 3000, 3000000, '2020-01-01', '2021-01-01'),
+  (4, 40000, 10, 40, 4000, 4000000, '2020-01-01', '2021-01-01');
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
 
@@ -71,15 +70,15 @@ select lives_ok(
 select lives_ok(
   $$
     insert into cif.funding_parameter
-      (project_id, total_project_value, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount, proponent_cost, contract_start_date, project_assets_life_end_date) values
-      (5, 500000, 50000, 50, 10, 5000, 50, '2020-01-01', '2021-01-01');
+      (project_id, max_funding_amount, province_share_percentage, holdback_percentage, anticipated_funding_amount, proponent_cost, contract_start_date, project_assets_life_end_date) values
+      (5, 50000, 50, 10, 5000, 50, '2020-01-01', '2021-01-01');
   $$,
     'cif_admin can insert data in funding_parameter table'
 );
 
 select lives_ok(
   $$
-    update cif.funding_parameter set total_project_value=510000 where project_id=5;
+    update cif.funding_parameter set proponent_cost=510000 where project_id=5;
   $$,
     'cif_admin can change data in funding_parameter table'
 );
@@ -114,7 +113,7 @@ select results_eq(
 
 select lives_ok(
   $$
-    update cif.funding_parameter set total_project_value=520000 where project_id=5;
+    update cif.funding_parameter set proponent_cost=520000 where project_id=5;
   $$,
     'cif_internal can update data in the funding_parameter table'
 );
