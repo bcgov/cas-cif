@@ -1,7 +1,7 @@
 -- Verify cif:mutations/update_or_create_user_from_session on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select pg_get_functiondef('cif.update_or_create_user_from_session()'::regprocedure);
 
-ROLLBACK;
+rollback;

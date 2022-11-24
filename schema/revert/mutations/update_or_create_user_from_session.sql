@@ -1,7 +1,7 @@
 -- Revert cif:mutations/update_or_create_user_from_session from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function cif.update_or_create_user_from_session;
 
-COMMIT;
+commit;
