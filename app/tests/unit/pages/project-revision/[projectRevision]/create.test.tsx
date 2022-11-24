@@ -13,6 +13,7 @@ const defaultMockResolver = {
     return {
       id: "test-project",
       rowId: 1234,
+      pendingProjectRevision: null,
     };
   },
   ProjectRevision() {
@@ -108,7 +109,6 @@ describe("The project amendments and revisions page", () => {
   it("Renders amendment type options when amendment is selected", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-
     userEvent.click(screen.getByLabelText(/Amendment/i));
     expect(
       screen.getByRole("checkbox", {
