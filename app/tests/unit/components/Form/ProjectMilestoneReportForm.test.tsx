@@ -146,9 +146,9 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByLabelText("Total Eligible Expenses")[0]).toHaveValue(
       "$100.00"
     );
-    expect(screen.getAllByLabelText("Maximum Amount")[0]).toHaveValue(
-      "$200.00"
-    );
+    expect(
+      screen.getAllByLabelText("Maximum Amount This Milestone")[0]
+    ).toHaveValue("$200.00");
   });
 
   it("Renders two milestone reports with remove buttons, the report due indicator, and the overall status badge", () => {
