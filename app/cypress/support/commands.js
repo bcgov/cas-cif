@@ -368,7 +368,7 @@ Cypress.Commands.add(
     );
 
     if (reportMaxAmount) {
-      cy.get('[aria-label="Maximum Amount"]').type(100);
+      cy.get('[aria-label="Maximum Amount This Milestone"]').type(100);
       cy.get('[aria-label="Total Eligible Expenses"]').type(100);
     }
 
