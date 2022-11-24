@@ -5,13 +5,13 @@ begin;
 create or replace function cif.project_revision_total_project_value(project_revision cif.project_revision)
 returns numeric
 as
-$computed_column$  
+$computed_column$
   select
     (
       (select coalesce((new_form_data ->> 'proponentCost')::numeric, 0) + coalesce((new_form_data ->> 'maxFundingAmount')::numeric, 0)
         from cif.form_change fc
-        where fc.project_revision_id = $1.id and fc.form_data_table_name = 'funding_parameter') 
-      + 
+        where fc.project_revision_id = $1.id and fc.form_data_table_name = 'funding_parameter')
+      +
       coalesce((select sum((new_form_data ->> 'amount')::numeric)
         from cif.form_change fc
         where fc.project_revision_id = $1.id
