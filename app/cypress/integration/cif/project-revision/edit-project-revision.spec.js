@@ -75,7 +75,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Review and Submit Project").should("be.visible");
 
     // edit budgets, expenses, and payments -- change funding agreement
-    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.contains(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
