@@ -79,7 +79,7 @@ select is(
     ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
-    45000::numeric
+    40000::numeric
   ),
   'Returns the correct sum of all milestones with expenses'
 );
