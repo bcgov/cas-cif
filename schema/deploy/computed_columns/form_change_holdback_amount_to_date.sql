@@ -8,7 +8,7 @@ returns numeric as
 $fn$
 
   select
-    round(sum(coalesce((fc.new_form_data->>'adjustedHoldbackAmount')::numeric, (fc.new_form_data->>'calculatedHoldbackAmount')::numeric, (fc.new_form_data->>'maximumAmount')::numeric * (parameter_fc.new_form_data->>'holdbackPercentage')::numeric / 100)), 2)
+    round(sum(coalesce((fc.new_form_data->>'adjustedHoldbackAmount')::numeric, (fc.new_form_data->>'calculatedHoldbackAmount')::numeric, 0)), 2)
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
     and json_schema_name = 'milestone'
