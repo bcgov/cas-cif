@@ -1,0 +1,104 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: {{ template "backup-test.fullname" . }}-postgres
+  labels: {{ include "backup-test.labels" . | nindent 4 }}
+  {{- if .Values.db.restore.enabled }}
+  annotations:
+    postgres-operator.crunchydata.com/pgbackrest-restore: {{ now | date "2006-01-02 15:04:05.000000" | quote }}
+  {{- end }}
+spec:
+  metadata:
+    labels: {{ include "backup-test.labels" . | nindent 6 }}
+  postgresVersion: 14
+  instances:
+    - name: pgha1
+      replicas: 3
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 10Gi
+            cpu: 15m
+            memory: 600Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        storageClassName: netapp-block-standard
+      sidecars:
+        replicaCertCopy:
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  postgres-operator.crunchydata.com/cluster: {{ template "backup-test.fullname" . }}-postgres
+                  postgres-operator.crunchydata.com/instance-set: pgha1
+  proxy:
+    pgBouncer:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
+      config:
+        global:
+          client_tls_sslmode: disable
+      replicas: 2
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  postgres-operator.crunchydata.com/cluster: {{ template "backup-test.fullname" . }}-postgres
+                  postgres-operator.crunchydata.com/role: pgbouncer
+  users:
+    - name: cif
+      databases:
+        - cif
+      options: "CREATEROLE"
+    - name: cifapp
+      databases:
+        - cif
+    - name: postgres
+      databases:
+        - cif
+  backups:
+    pgbackrest:
+    {{- if .Values.db.restore.enabled }}
+      restore:
+        enabled: true
+        repoName: repo1
+        options:
+        - --type=time
+        - --target={{ .Values.db.restore.targetTimestamp | quote }}
+        - --archive-mode=off
+    {{- end }}
+      configuration:
+        - configMap:
+            name: {{ template "backup-test.fullname" . }}-pgbackrest
+        - secret:
+            name: gcs-credentials
+            items:
+              - key: credentials
+                path: gcs-key.json
+      repos:
+        - name: repo1
+          gcs:
+            bucket: {{ .Values.host.namespace }}-cif-backups
