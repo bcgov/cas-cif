@@ -37,6 +37,24 @@ describe("The contacts page", () => {
     cy.get("table").contains("Rob Loblaw");
   });
 
+  it("Validates email", () => {
+    cy.visit("/cif/contacts");
+    cy.get("h2").contains("Contacts");
+    cy.get("button").contains("Add").click();
+    cy.get("input[aria-label=Phone]").type("12345");
+    cy.contains("Changes saved").should("be.visible");
+    cy.contains("Please enter in a valid phone number format (e.g. 123 456 7890)").should("be.visible");
+  });
+
+  it("Validates phone number", () => {
+    cy.visit("/cif/contacts");
+    cy.get("h2").contains("Contacts");
+    cy.get("button").contains("Add").click();
+    cy.get("input[aria-label=Email]").type("bad.email");
+    cy.contains("Changes saved").should("be.visible");
+    cy.contains("Please enter in the format: name@example.com").should("be.visible");
+  });
+
   it("Shows correct validation errors", () => {
     cy.sqlFixture("dev/003_cif_contact");
     cy.visit("/cif/contacts");
