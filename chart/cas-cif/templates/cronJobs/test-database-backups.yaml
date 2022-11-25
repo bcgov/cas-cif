@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: test-database-backups
+  labels:
+{{ include "backup-test.labels" . | indent 4 }}
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: deployer
+          containers:
+          - name: deploy-test-cluster
+            image: ourimage
+            command:
+            - /bin/sh
+            - -c
+            - |
+                helm install -n {{namespacePrefix}}-tools backup-test --set hostnamespace={{Release.Namespace}} \
+                && ./check_for_recent_timestamps \
+                && helm uninstall -n {{namespacePrefix}}-tools backup-test
+          restartPolicy: Never
