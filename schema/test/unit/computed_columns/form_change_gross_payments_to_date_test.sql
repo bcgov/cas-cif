@@ -69,7 +69,7 @@ select is(
     ) select cif.form_change_gross_payments_to_date((select * from record))
   ),
   (
-    90000::numeric
+    40000::numeric
   ),
   'Returns the correct amount for the sum of all milestones with expenses'
 );
