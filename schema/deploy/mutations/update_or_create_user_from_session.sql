@@ -14,15 +14,19 @@ declare
 begin
   select * from cif.session() into jwt;
 
-  -- if we have a conflict on session_sub but not email, then multiple accounts are
-  -- sharing the session_sub, something is broken and we should error out.
+  if (select count(*) from cif.cif_user where session_sub=jwt.sub) = 0
+  then
 
-  insert into cif.cif_user(session_sub, given_name, family_name, email_address)
-  values (jwt.sub, jwt.given_name, jwt.family_name, jwt.email)
-  on conflict(email_address) do update
-  set session_sub=excluded.session_sub,
-      given_name=excluded.given_name,
-      family_name=excluded.family_name;
+    insert into cif.cif_user(session_sub, given_name, family_name, email_address, allow_sub_update)
+    values (jwt.sub, jwt.given_name, jwt.family_name, jwt.email, false)
+    on conflict(email_address) do
+    update
+    set session_sub=excluded.session_sub,
+        given_name=excluded.given_name,
+        family_name=excluded.family_name,
+        allow_sub_update=false;
+
+  end if;
 
   select * from cif.cif_user where session_sub = jwt.sub into result;
   return result;
