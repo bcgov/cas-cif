@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "backup-test.fullname" . }}-pgbackrest
+  labels: {{ include "backup-test.labels" . | nindent 4 }}
+data:
+  gcs.conf: |-
+    [global]
+      repo1-gcs-key=/etc/pgbackrest/conf.d/gcs-key.json
