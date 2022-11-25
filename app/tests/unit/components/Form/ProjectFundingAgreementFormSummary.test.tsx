@@ -28,7 +28,6 @@ const mockQueryPayload = {
               node: {
                 newFormData: {
                   projectId: "Test Project ID",
-                  totalProjectValue: 400,
                   maxFundingAmount: 200,
                   provinceSharePercentage: 60,
                   holdbackPercentage: 20,
@@ -42,7 +41,6 @@ const mockQueryPayload = {
                 formChangeByPreviousFormChangeId: {
                   newFormData: {
                     projectId: "Test Project ID",
-                    totalProjectValue: 500,
                     maxFundingAmount: 200,
                     provinceSharePercentage: 50,
                     holdbackPercentage: 10,
@@ -118,7 +116,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.renderComponent();
     expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
-    expect(screen.queryByText("Total Project Value")).toBeInTheDocument();
     expect(screen.queryByText("Max Funding Amount")).not.toBeInTheDocument();
     expect(
       screen.queryByText("Project Assets Life End Date")
@@ -143,8 +140,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("$400.00")).toBeInTheDocument();
-    expect(screen.getByText("$500.00")).toBeInTheDocument();
     expect(screen.getByText("50 %")).toBeInTheDocument();
     expect(screen.getByText("60 %")).toBeInTheDocument();
     expect(screen.getByText("10 %")).toBeInTheDocument();
@@ -169,7 +164,6 @@ describe("The Project Funding Agreement Form Summary", () => {
                   node: {
                     newFormData: {
                       projectId: "Test Project ID",
-                      totalProjectValue: 400,
                       maxFundingAmount: 200,
                       provinceSharePercentage: 60,
                       holdbackPercentage: 20,
@@ -214,7 +208,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     });
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("Total Project Value")).toBeInTheDocument();
     expect(screen.getByText("Max Funding Amount")).toBeInTheDocument();
     expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
     expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
