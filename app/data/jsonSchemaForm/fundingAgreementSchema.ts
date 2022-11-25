@@ -2,7 +2,6 @@ export const fundingAgreementSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   required: [
-    "totalProjectValue",
     "maxFundingAmount",
     "provinceSharePercentage",
     "holdbackPercentage",
@@ -55,12 +54,14 @@ export const fundingAgreementUiSchema = {
     "proponentCost",
     "contractStartDate",
     "projectAssetsLifeEndDate",
-    "totalProjectValue",
     "anticipatedFundingAmount",
+    "totalProjectValue",
   ],
   totalProjectValue: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "CalculatedValueWidget",
     isMoney: true,
+    hideOptional: true,
+    calculatedValueFormContextProperty: "calculatedTotalProjectValue",
   },
   maxFundingAmount: {
     "ui:widget": "NumberWidget",

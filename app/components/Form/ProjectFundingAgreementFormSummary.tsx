@@ -31,10 +31,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
     summaryProjectFundingAgreementFormChanges,
     isFirstRevision,
     summaryAdditionalFundingSourceFormChanges,
+    totalProjectValue,
   } = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
+        totalProjectValue
         summaryProjectFundingAgreementFormChanges: formChangesFor(
           formDataTableName: "funding_parameter"
         ) {
@@ -178,6 +180,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           formData={formData}
           formContext={{
             operation: fundingAgreementSummary?.operation,
+            calculatedTotalProjectValue: totalProjectValue,
             oldData:
               fundingAgreementSummary?.formChangeByPreviousFormChangeId
                 ?.newFormData,

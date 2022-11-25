@@ -6,10 +6,7 @@ import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import { useState } from "react";
-import {
-  FormChangeOperation,
-  ProjectFundingAgreementForm_projectRevision$key,
-} from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
+import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
@@ -21,12 +18,12 @@ import { useAddAdditionalFundingSourceToRevision } from "mutations/FundingParame
 import additionalFundingSourceSchema from "data/jsonSchemaForm/additionalFundingSourceSchema";
 import { useMemo, useRef } from "react";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import useDiscardFormChange from "hooks/useDiscardFormChange";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import FormBorder from "lib/theme/components/FormBorder";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
+import useDiscardAdditionalFundingSourceFormChange from "mutations/FundingParameter/discardAdditionalFundingSourceFormChange";
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
@@ -94,6 +91,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         projectFormChange {
           formDataRecordId
         }
+        totalProjectValue
         projectFundingAgreementFormChanges: formChangesFor(
           first: 500
           formDataTableName: "funding_parameter"
@@ -234,20 +232,19 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     return additionalFundingSourceForms;
   }, [filteredAdditionalFundingSourceFormChanges]);
 
-  const [discardFormChange] = useDiscardFormChange(
-    projectRevision.additionalFundingSourceFormChanges.__id
-  );
+  const [
+    discardAdditionalFundingSourceFormChange,
+    isDiscardingAdditionalFundingSourceFormChange,
+  ] = useDiscardAdditionalFundingSourceFormChange();
 
-  const deleteAdditionalFundingSource = (
-    formChangeId: string,
-    formChangeRowId: number,
-    formChangeOperation: FormChangeOperation
-  ) => {
-    discardFormChange({
-      formChange: {
-        id: formChangeId,
-        rowId: formChangeRowId,
-        operation: formChangeOperation,
+  const deleteAdditionalFundingSource = (sourceIndex, formChangeId) => {
+    discardAdditionalFundingSourceFormChange({
+      variables: {
+        input: {
+          revisionId: projectRevision.rowId,
+          sourceIndex,
+        },
+        connections: [projectRevision.additionalFundingSourceFormChanges.__id],
       },
       onCompleted: () => {
         delete formRefs.current[formChangeId];
@@ -384,6 +381,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             formData={fundingAgreement?.newFormData}
             formContext={{
               form: fundingAgreement?.newFormData,
+              calculatedTotalProjectValue: projectRevision.totalProjectValue,
             }}
             uiSchema={fundingAgreementUiSchema}
             ref={(el) => (formRefs.current[fundingAgreement.id] = el)}
@@ -424,11 +422,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       size="small"
                       className="removeButton"
                       onClick={() =>
-                        deleteAdditionalFundingSource(
-                          formChange.id,
-                          formChange.rowId,
-                          formChange.operation
-                        )
+                        deleteAdditionalFundingSource(index + 1, formChange.id)
                       }
                     >
                       Remove
@@ -455,7 +449,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               disabled={
                 isAddingAdditionalFundingSource ||
                 isUpdatingFormChange ||
-                isStaging
+                isStaging ||
+                isDiscardingAdditionalFundingSourceFormChange
               }
             >
               Add Funding Source
