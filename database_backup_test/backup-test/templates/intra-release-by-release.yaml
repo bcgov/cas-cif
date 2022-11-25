@@ -1,0 +1,17 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Release.Name }}-intra-release-by-release
+  labels: {{ include "backup-test.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      release: {{ .Release.Name }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          release: {{ .Release.Name }}
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: {{ .Release.Name }}
