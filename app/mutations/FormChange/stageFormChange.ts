@@ -12,6 +12,7 @@ const mutation = graphql`
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
           rank
+          totalProjectValue
         }
       }
     }

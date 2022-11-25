@@ -19,6 +19,7 @@ export const mutation = graphql`
           changeStatus
           projectRevisionByProjectRevisionId {
             ...TaskList_projectRevision
+            totalProjectValue
           }
         }
       }
