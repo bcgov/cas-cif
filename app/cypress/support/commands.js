@@ -398,7 +398,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "fillFundingAgreementForm",
   (
-    totalProjectValue,
     maxFundingAmount,
     provinceSharePercentage,
     holdbackPercentage,
@@ -407,9 +406,6 @@ Cypress.Commands.add(
     contractStartDate,
     projectAssetsLifeEndDate
   ) => {
-    cy.findByLabelText(/Total Project Value$/i)
-      .clear()
-      .type(totalProjectValue);
     cy.findByLabelText(/Max Funding Amount$/i)
       .clear()
       .type(maxFundingAmount);
@@ -439,7 +435,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "checkFundingAgreementForm",
   (
-    totalProjectValue,
     maxFundingAmount,
     provinceSharePercentage,
     holdbackPercentage,
@@ -447,11 +442,9 @@ Cypress.Commands.add(
     proponentCost,
     contractStartDate,
     projectAssetsLifeEndDate,
+    totalProjectValue = "$0.00",
     summaryPageMode = false
   ) => {
-    cy.findByText(/Total Project Value$/i)
-      .next()
-      .should("have.text", totalProjectValue);
     cy.findByText(/Max Funding Amount$/i)
       .next()
       .should("have.text", maxFundingAmount);
@@ -474,6 +467,9 @@ Cypress.Commands.add(
     cy.findByText(/Project Assets Life End Date$/i)
       .next()
       .contains(projectAssetsLifeEndDate);
+    cy.findByText(/Total Project Value$/i)
+      .next()
+      .should("have.text", totalProjectValue);
     if (!summaryPageMode) return cy.url().should("include", "/form/3");
   }
 );

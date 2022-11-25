@@ -60,7 +60,6 @@ describe("when creating a project, the project page", () => {
     cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
 
     cy.fillFundingAgreementForm(
-      111,
       222,
       60,
       20,
@@ -155,7 +154,6 @@ describe("when creating a project, the project page", () => {
 
     // funding agreement section
     cy.checkFundingAgreementForm(
-      "$111.00",
       "$222.00",
       "60 %",
       "20 %",
@@ -163,6 +161,7 @@ describe("when creating a project, the project page", () => {
       "$800.00",
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
+      "$1133.00",
       true
     );
     // additional funding sources section

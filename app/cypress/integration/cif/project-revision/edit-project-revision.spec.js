@@ -80,7 +80,6 @@ describe("when editing a project, the project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.fillFundingAgreementForm(
-      222,
       333,
       70,
       30,
