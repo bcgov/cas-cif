@@ -188,6 +188,6 @@ mutations/generate_annual_reports 2022-11-14T18:44:55Z Sepehr Sobhani <sepehr.so
 tables/project_002_add_contract_number 2022-11-18T17:45:15Z Mike Vesprini <mike@button.is> # Add contract_number column
 computed_columns/form_change_as_project [computed_columns/form_change_as_project@1.0.0-rc.5] 2022-11-21T18:39:44Z Mike Vesprini <mike@button.is> # Handle contract_number column being added to project table
 computed_columns/project_primary_managers 2022-11-22T15:24:51Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add computed column to concatenate the full names of all project managers of a project
-tables/cif_user_004_allow_sub_update_flag [tables/cif_user_003_create_policies] 2022-11-25T22:25:14Z Bastianelli, Pierre LWRS:EX <pierre.bastianelli@gov.bc.ca> # Adding a flag to track whether the user is allowed to change a user record's session_sub
 trigger_functions/cif_user_session_sub_immutable_with_flag 2022-11-25T23:30:15Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger function to prevent session_sub to be updated on a cif_user record, if the allow_sub_update flag is false
+tables/cif_user_004_allow_sub_update_flag [tables/cif_user_003_create_policies] 2022-11-25T22:25:14Z Bastianelli, Pierre LWRS:EX <pierre.bastianelli@gov.bc.ca> # Adding a flag to track whether the user is allowed to change a user record's session_sub
 mutations/update_or_create_user_from_session 2022-11-23T18:18:56Z Bastianelli, Pierre LWRS:EX <pierre.bastianelli@gov.bc.ca> # Mutation to update or create a user upon login, based on the email field of the session jwt

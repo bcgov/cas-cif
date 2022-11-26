@@ -1,5 +1,5 @@
 begin;
-select plan(4);
+select plan(5);
 
 select has_function(
   'cif', 'update_or_create_user_from_session',
@@ -14,10 +14,14 @@ set jwt.claims.email to 'bob.loblaw@gov.bc.ca';
 -- Returns the user that was created
 select results_eq(
   $$
-    select cif.update_or_create_user_from_session();
+    select session_sub, given_name, family_name from cif.update_or_create_user_from_session();
   $$,
   $$
-    values (1, 'bob')
+    values (
+      '11111111-1111-1111-1111-111111111111'::varchar,
+      'Bob'::varchar,
+      'Loblaw'::varchar
+    );
   $$,
   'Returns the user that was created'
 );
@@ -78,22 +82,8 @@ select throws_like (
   $$
     select cif.update_or_create_user_from_session();
   $$,
-  'aaa',
+  'session_sub cannot be updated when allow_sub_update is false',
   'throws if the user has a new sub for an existing email address, and the allow_sub_update flag is set to false'
-);
-
--- Throws if the sub already exists for a different email address
-set jwt.claims.sub to 'ABCDEF@provider';
-set jwt.claims.given_name to 'Bob';
-set jwt.claims.family_name to 'Loblaw';
-set jwt.claims.email to 'second.email@gov.bc.ca';
-
-select throws_like (
-  $$
-    select cif.update_or_create_user_from_session();
-  $$,
-  '%duplicate key value violates unique constraint "cif_user_session_sub"',
-  'update_or_create_user_from_session() throws if the sub already exists for a different email'
 );
 
 select finish();
