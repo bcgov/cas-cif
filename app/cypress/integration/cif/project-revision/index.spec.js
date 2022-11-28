@@ -44,7 +44,6 @@ describe("the new project page", () => {
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
 
     cy.happoAndAxe("Project Contacts Form", "empty", "main");
-    // Error: unable to find "Submit contacts"
     cy.findByText(/Submit project contacts/i).click();
 
     // BUDGETS, EXPENSES AND PAYMENTS

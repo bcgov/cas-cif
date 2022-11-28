@@ -133,9 +133,9 @@ describe("The Create Project page", () => {
     });
     pageTestingHelper.renderPage();
 
-    expect(screen.getByText(/Project Overview not added/)).toBeInTheDocument();
-    expect(screen.getByText(/Project Managers not added/)).toBeInTheDocument();
-    expect(screen.getByText(/Project Contacts not added/)).toBeInTheDocument();
+    expect(screen.getByText(/Project Overview not added/i)).toBeInTheDocument();
+    expect(screen.getByText(/Project Managers not added/i)).toBeInTheDocument();
+    expect(screen.getByText(/Project Contacts not added/i)).toBeInTheDocument();
   });
 
   it("Renders the summary with the filled-out details", async () => {
