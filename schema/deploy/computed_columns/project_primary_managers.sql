@@ -21,6 +21,7 @@ with names as
         (select cif_user_id from cif.project_manager
         where cif.project_manager.project_id=$1.id
         and cif.project_manager.project_manager_label_id in (select id from cif.project_manager_label where label ilike '%primary%')
+        and cif.project_manager.archived_by is null
         )
   )
 select string_agg(names.full,',') from names;
