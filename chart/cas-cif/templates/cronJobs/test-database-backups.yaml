@@ -13,12 +13,16 @@ spec:
           serviceAccountName: deployer
           containers:
           - name: deploy-test-cluster
-            image: ourimage
+            image: <ourimage>
             command:
             - /bin/sh
             - -c
             - |
-                helm install -n {{namespacePrefix}}-tools backup-test --set hostnamespace={{Release.Namespace}} \
+                set -euo pipefail;
+                helm install -n {{ cas-cif.namespacePrefix }}-tools backup-test \
+                --set host.namespace={{ Release.Namespace }} \
+                --set host.secret.secretName=gcp-{{ .Release.Namespace }}-cif-backups-service-account-key \
+                --set host.secret.secretKey=credentials.json \
                 && ./check_for_recent_timestamps \
-                && helm uninstall -n {{namespacePrefix}}-tools backup-test
+                && helm uninstall -n {{cas-cif.namespacePrefix}}-tools backup-test
           restartPolicy: Never
