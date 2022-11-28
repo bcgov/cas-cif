@@ -14,6 +14,31 @@ export const projectRevisionSchema = {
       type: "string",
       title: "General Comments",
     },
+    pendingActionsFrom: {
+      type: "string",
+      title: "Pending actions from",
+      default: "Director",
+      anyOf: [
+        {
+          type: "string",
+          title: "Director",
+          enum: ["Director"],
+          value: "Director",
+        },
+        {
+          type: "string",
+          title: "Tech Team",
+          enum: ["Tech Team"],
+          value: "Tech Team",
+        },
+        {
+          type: "string",
+          title: "Proponent",
+          enum: ["Proponent"],
+          value: "Proponent",
+        },
+      ],
+    },
   },
   dependencies: {
     revisionType: {
@@ -48,7 +73,12 @@ export const projectRevisionSchema = {
 };
 
 export const projectRevisionUISchema = {
-  "ui:order": ["revisionType", "amendmentTypes", "changeReason"],
+  "ui:order": [
+    "revisionType",
+    "amendmentTypes",
+    "pendingActionsFrom",
+    "changeReason",
+  ],
   revisionType: {
     "ui:widget": "radio",
   },
