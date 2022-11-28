@@ -232,19 +232,24 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     return additionalFundingSourceForms;
   }, [filteredAdditionalFundingSourceFormChanges]);
 
+  const nextAdditionalFundingSourceIndex =
+    filteredAdditionalFundingSourceFormChanges.length
+      ? sortedAdditionalFundingSourceForms[
+          sortedAdditionalFundingSourceForms.length - 1
+        ].newFormData.sourceIndex + 1
+      : 1;
+
   const [
     discardAdditionalFundingSourceFormChange,
     isDiscardingAdditionalFundingSourceFormChange,
   ] = useDiscardAdditionalFundingSourceFormChange();
 
-  const deleteAdditionalFundingSource = (sourceIndex, formChangeId) => {
+  const deleteAdditionalFundingSource = (formChangeId) => {
     discardAdditionalFundingSourceFormChange({
       variables: {
         input: {
-          revisionId: projectRevision.rowId,
-          sourceIndex,
+          formChangeId,
         },
-        connections: [projectRevision.additionalFundingSourceFormChanges.__id],
       },
       onCompleted: () => {
         delete formRefs.current[formChangeId];
@@ -401,7 +406,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       className="additionalFundingSourceForm"
                       idPrefix="additionalFundingSource"
                       validateOnMount={formChange.changeStatus === "staged"}
-                      ref={(el) => (formRefs.current[formChange.id] = el)}
+                      ref={(el) => (formRefs.current[formChange.rowId] = el)}
                       schema={createAdditionalFundingSourceSchema(
                         allAdditionalFundingSourceStatuses
                       )}
@@ -422,7 +427,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       size="small"
                       className="removeButton"
                       onClick={() =>
-                        deleteAdditionalFundingSource(index + 1, formChange.id)
+                        deleteAdditionalFundingSource(formChange.rowId)
                       }
                     >
                       Remove
@@ -437,8 +442,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                   variables: {
                     input: {
                       revisionId: projectRevision.rowId,
-                      sourceIndex:
-                        filteredAdditionalFundingSourceFormChanges.length + 1,
+                      sourceIndex: nextAdditionalFundingSourceIndex,
                     },
                     connections: [
                       projectRevision.additionalFundingSourceFormChanges.__id,
