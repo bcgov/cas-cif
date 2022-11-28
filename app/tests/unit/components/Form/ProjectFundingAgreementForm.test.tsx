@@ -376,8 +376,7 @@ describe("The ProjectFundingAgreementForm", () => {
 
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        revisionId: 1234,
-        sourceIndex: 1,
+        formChangeId: 789,
       },
     });
   });
