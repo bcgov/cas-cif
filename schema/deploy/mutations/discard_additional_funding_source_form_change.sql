@@ -4,25 +4,23 @@
 
 begin;
 
-create or replace function cif.discard_additional_funding_source_form_change(revision_id int, source_index int)
-returns setof cif.form_change
+create or replace function cif.discard_additional_funding_source_form_change(form_change_id integer)
+returns cif.project_revision
 as $discard_additional_funding_source_form_change$
 declare
 form_change_record record;
+return_value cif.project_revision;
 
 begin
-  for form_change_record in select * from cif.form_change
-    where project_revision_id = $1
-    and form_data_table_name = 'additional_funding_source' and (new_form_data->>'sourceIndex')::int = $2
-  loop
-    if form_change_record.operation = 'create' then
-      delete from cif.form_change where id = form_change_record.id;
-      return next form_change_record;
-    else
-      update cif.form_change set operation = 'archive' where id = form_change_record.id;
-      return next form_change_record;
-    end if;
-  end loop;
+  select * from cif.project_revision where id = (select project_revision_id from cif.form_change where id = $1) into return_value;
+  select * from cif.form_change where id = $1 into form_change_record;
+
+  if form_change_record.operation = 'create' then
+    delete from cif.form_change where id = form_change_record.id;
+  else
+    update cif.form_change set operation = 'archive' where id = form_change_record.id;
+  end if;
+  return return_value;
 end;
 
 $discard_additional_funding_source_form_change$ language plpgsql volatile;
