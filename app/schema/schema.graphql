@@ -42815,23 +42815,52 @@ input DiscardAdditionalFundingSourceFormChangeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  revisionId: Int!
-  sourceIndex: Int!
+  formChangeId: Int!
 }
 
 """The output of our `discardAdditionalFundingSourceFormChange` mutation."""
 type DiscardAdditionalFundingSourceFormChangePayload {
   """
+  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
+  """
+  amendmentStatusByAmendmentStatus: AmendmentStatus
+
+  """
+  Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
+  """
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-  formChanges: [FormChange]
+
+  """Reads a single `Project` that is related to this `ProjectRevision`."""
+  projectByProjectId: Project
+  projectRevision: ProjectRevision
+
+  """An edge for our `ProjectRevision`. May be used by Relay 1."""
+  projectRevisionEdge(
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
 }
 
 """All input for the `discardEmissionIntensityReport` mutation."""
