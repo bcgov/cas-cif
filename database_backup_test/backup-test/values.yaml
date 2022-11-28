@@ -2,15 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 3
 
 host:
-  namespace: cif-namespace
+  namespace: ~
   secret:
-    secretName: cif-sa-secret
-    secretKey: cif-gcp-credentials
+    secretName: ~
+    secretKey: ~
 
 db:
   restore:
     enabled: true
-    targetTimestamp: now - interval

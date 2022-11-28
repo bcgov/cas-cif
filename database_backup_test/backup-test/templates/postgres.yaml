@@ -13,7 +13,7 @@ spec:
   postgresVersion: 14
   instances:
     - name: pgha1
-      replicas: 3
+      replicas: {{ .Values.replicaCount}}
       dataVolumeClaimSpec:
         accessModes:
         - "ReadWriteOnce"
@@ -87,16 +87,16 @@ spec:
         repoName: repo1
         options:
         - --type=time
-        - --target={{ .Values.db.restore.targetTimestamp | quote }}
+        - --target={{ now | date_modify "-1h" | quote}}
         - --archive-mode=off
     {{- end }}
       configuration:
         - configMap:
             name: {{ template "backup-test.fullname" . }}-pgbackrest
         - secret:
-            name: gcs-credentials
+            name: gcp-{{ .Values.host.namespace }}-cif-backups-service-account-key
             items:
-              - key: credentials
+              - key: {{ .Values.host.secret.secretKey}}
                 path: gcs-key.json
       repos:
         - name: repo1
