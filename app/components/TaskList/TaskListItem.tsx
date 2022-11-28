@@ -33,9 +33,7 @@ const TaskListItem: React.FC<Props> = ({
         <BCGovLink>
           {mode === "view" || stepName === "summary"
             ? formTitle
-            : `${
-                mode === "update" || hasAnchor ? "Edit" : "Add"
-              } ${formTitle}`}
+            : `${mode === "update" || hasAnchor ? "Edit" : "Add"} ${formTitle}`}
         </BCGovLink>
       </Link>
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
