@@ -7,12 +7,14 @@ export const mutation = graphql`
     $projectId: Int!
     $revisionType: String
     $amendmentTypes: [String]
+    $pendingActionsFrom: String
   ) {
     createProjectRevision(
       input: {
         projectId: $projectId
         revisionType: $revisionType
         amendmentTypes: $amendmentTypes
+        pendingActionsFrom: $pendingActionsFrom
       }
     ) {
       projectRevision {

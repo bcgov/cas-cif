@@ -67,6 +67,7 @@ export function ProjectRevisionCreate({
         projectId: projectRevision.project.rowId,
         revisionType: formData.revisionType,
         amendmentTypes: formData.amendmentTypes,
+        pendingActionsFrom: formData.pendingActionsFrom,
       },
       onCompleted: (response) => {
         router.push(
