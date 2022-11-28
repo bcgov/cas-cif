@@ -5,15 +5,11 @@ import { discardAdditionalFundingSourceFormChangeMutation } from "__generated__/
 const discardMutation = graphql`
   mutation discardAdditionalFundingSourceFormChangeMutation(
     $input: DiscardAdditionalFundingSourceFormChangeInput!
-    $connections: [ID!]!
   ) {
     discardAdditionalFundingSourceFormChange(input: $input) {
-      formChanges {
-        id @deleteEdge(connections: $connections)
-        projectRevisionByProjectRevisionId {
-          ...TaskList_projectRevision
-          ...ProjectFundingAgreementForm_projectRevision
-        }
+      projectRevision {
+        ...TaskList_projectRevision
+        ...ProjectFundingAgreementForm_projectRevision
       }
     }
   }
