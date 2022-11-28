@@ -49,7 +49,7 @@ describe("The contacts page", () => {
     cy.contains(/please enter a value/i).should("be.visible");
   });
 
-  it("Validates email", () => {
+  it("Validates email and phone number", () => {
     cy.visit("/cif/contacts");
     cy.get("h2").contains("Contacts");
     cy.get("button").contains("Add").click();
@@ -60,31 +60,14 @@ describe("The contacts page", () => {
     cy.get("input[aria-label='Company Name']").type("ABC");
 
     cy.contains("Changes saved").should("be.visible");
-    cy.get("input[aria-label=Phone]").type("1234567890");
-    cy.contains("Changes saved").should("be.visible");
-    cy.get("button").contains("Submit").click();
-    cy.contains("Please enter in the format: name@example.com").should("be.visible");
-    
-  });
-
-  it("Validates phone number", () => {
-    cy.visit("/cif/contacts");
-    cy.get("h2").contains("Contacts");
-    cy.get("button").contains("Add").click();
-
-    cy.get("input[aria-label='Given Name']").should("be.visible").type("Bob");
-    cy.get("input[aria-label='Family Name']").type("Loblaw");
-    cy.get("input[aria-label=Email]").type("bob@loblaw.ca");
-    cy.get("input[aria-label='Company Name']").type("ABC");
-
-    cy.contains("Changes saved").should("be.visible");
     cy.get("input[aria-label=Phone]").type("12345");
     cy.contains("Changes saved").should("be.visible");
-
     cy.get("button").contains("Submit").click();
-    cy.contains("Please enter in a valid phone number format (e.g. 123 456 7890)").should("be.visible");
+    cy.contains("Please enter in the format: name@example.com").should(
+      "be.visible"
+    );
+    cy.contains(
+      "Please enter in a valid phone number format (e.g. 123 456 7890)"
+    ).should("be.visible");
   });
-  
 });
-
-
