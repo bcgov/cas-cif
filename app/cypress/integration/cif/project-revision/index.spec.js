@@ -237,10 +237,34 @@ describe("the new project page", () => {
       ".error-detail"
     );
 
+    // Emissions intensity report
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Add emissions intensity report/i).click();
+    cy.url().should("include", "/form/5");
+    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
+      aliasOperation(req, "stageEmissionIntensityFormChangeMutation");
+      aliasOperation(req, "stageReportingRequirementFormChangeMutation");
+    });
+    cy.findByRole("button", {
+      name: /Add TEIMP /i,
+    }).click();
+    cy.contains("Changes saved").should("be.visible");
+
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.wait("@gqlstageEmissionIntensityFormChangeMutation");
+    cy.wait("@gqlstageReportingRequirementFormChangeMutation");
+    cy.get(".error-detail").should("have.length", 4);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe(
+      "Emissions intensity report Form",
+      "with errors",
+      ".error-detail"
+    );
+
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Add quarterly reports/i).click();
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
 
     cy.findByRole("button", {
       name: /add another quarterly report/i,
@@ -258,30 +282,6 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project quarterly reports Form",
-      "with errors",
-      ".error-detail"
-    );
-
-    // Emissions intensity report
-    cy.findByText(/Emissions Intensity Report/i).click();
-    cy.findByText(/Add emissions intensity report/i).click();
-    cy.url().should("include", "/form/6");
-    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
-      aliasOperation(req, "stageEmissionIntensityFormChangeMutation");
-      aliasOperation(req, "stageReportingRequirementFormChangeMutation");
-    });
-    cy.findByRole("button", {
-      name: /Add TEIMP /i,
-    }).click();
-    cy.contains("Changes saved").should("be.visible");
-
-    cy.findByRole("button", { name: /^submit/i }).click();
-    cy.wait("@gqlstageEmissionIntensityFormChangeMutation");
-    cy.wait("@gqlstageReportingRequirementFormChangeMutation");
-    cy.get(".error-detail").should("have.length", 4);
-    cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe(
-      "Emissions intensity report Form",
       "with errors",
       ".error-detail"
     );
