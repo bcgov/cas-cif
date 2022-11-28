@@ -54706,6 +54706,11 @@ type Project implements Node {
   """Returns the pending project revision for the project"""
   pendingProjectRevision: ProjectRevision
 
+  """
+  Returns a concatenated list of the project managers (used for filtering the projects table)
+  """
+  primaryManagers: String
+
   """Reads and enables pagination through a set of `ProjectContact`."""
   projectContactsByProjectId(
     """Read all values in the set after (below) this cursor."""
@@ -56711,6 +56716,9 @@ input ProjectCondition {
   """Checks for equality with the object’s `operatorId` field."""
   operatorId: Int
 
+  """Checks for equality with the object’s `primaryManagers` field."""
+  primaryManagers: String
+
   """Checks for equality with the object’s `projectName` field."""
   projectName: String
 
@@ -57313,6 +57321,9 @@ input ProjectFilter {
 
   """Checks for any expressions in this list."""
   or: [ProjectFilter!]
+
+  """Filter by the object’s `primaryManagers` field."""
+  primaryManagers: StringFilter
 
   """Filter by the object’s `projectContactsByProjectId` relation."""
   projectContactsByProjectId: ProjectToManyProjectContactFilter

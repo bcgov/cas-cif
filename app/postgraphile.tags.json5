@@ -130,6 +130,11 @@
           sortable: true,
         },
       },
+      "cif.project_primary_managers": {
+        tags: {
+          filterable: true,
+        },
+      },
     },
   },
 }
