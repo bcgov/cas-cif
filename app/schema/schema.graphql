@@ -5485,6 +5485,10 @@ type CifUser implements Node {
     """The method to use when ordering `AdditionalFundingSource`."""
     orderBy: [AdditionalFundingSourcesOrderBy!] = [PRIMARY_KEY_ASC]
   ): AdditionalFundingSourcesConnection!
+
+  """
+  Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.
+  """
   allowSubUpdate: Boolean!
 
   """Reads and enables pagination through a set of `AmendmentStatus`."""
@@ -34418,6 +34422,9 @@ type CifUserFundingStreamsByFundingStreamRfpUpdatedByAndFundingStreamIdManyToMan
 
 """An input for mutations affecting `CifUser`"""
 input CifUserInput {
+  """
+  Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.
+  """
   allowSubUpdate: Boolean
 
   """archived at timestamp"""
@@ -34652,6 +34659,9 @@ type CifUserOperatorsByProjectUpdatedByAndOperatorIdManyToManyEdge {
 Represents an update to a `CifUser`. Fields that are set will be updated.
 """
 input CifUserPatch {
+  """
+  Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.
+  """
   allowSubUpdate: Boolean
 
   """archived at timestamp"""
@@ -51947,6 +51957,10 @@ type Mutation {
     """
     input: UpdateMilestoneReportByRowIdInput!
   ): UpdateMilestoneReportPayload
+
+  """
+  Function creates a user if a user with the matching session_sub does not exist, otherwise returns the matching user
+  """
   updateOrCreateUserFromSession(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
