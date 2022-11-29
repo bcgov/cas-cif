@@ -1,5 +1,8 @@
 begin;
 
+-- This is required as we now only allow user subs to be updated once.
+update cif.cif_user set allow_sub_update = true;
+
 insert into cif.cif_user (session_sub, given_name, family_name, email_address)
 values
 

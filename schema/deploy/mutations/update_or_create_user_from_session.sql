@@ -35,4 +35,6 @@ $function$ language plpgsql strict volatile;
 
 grant execute on function cif.update_or_create_user_from_session to cif_internal, cif_external, cif_admin;
 
+comment on function cif.update_or_create_user_from_session is 'Function creates a user if a user with the matching session_sub does not exist, otherwise returns the matching user';
+
 commit;

@@ -15,6 +15,6 @@ create trigger cif_user_session_sub_immutable_with_flag
 -- Allowing all the existing users to update the sub once.
 update cif.cif_user set allow_sub_update = true;
 
-
+comment on column cif.cif_user.allow_sub_update is 'Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.';
 
 commit;
