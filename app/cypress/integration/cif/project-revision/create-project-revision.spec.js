@@ -111,18 +111,8 @@ describe("when creating a project, the project page", () => {
 
     //add quarterly reports
     cy.url().should("include", "/form/6");
-    cy.addQuarterlyReport(
-      1,
-      "2020-01-01",
-      "2020-02-02",
-      "I am the first general comment"
-    );
-    cy.addQuarterlyReport(
-      2,
-      "2022-01-01",
-      "2022-02-02",
-      "I am the second general comment"
-    );
+    cy.addQuarterlyReport(1, "2020-01-01", "2020-02-02", "1st comment");
+    cy.addQuarterlyReport(2, "2022-01-01", "2022-02-02", "2nd comment");
     cy.findAllByRole("status").first().should("have.text", "Complete");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project quarterly reports Form", "filled", "main");
