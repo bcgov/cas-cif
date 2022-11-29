@@ -1,3 +1,34 @@
+# [1.0.0](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.5...1.0.0) (2022-11-29)
+
+### Bug Fixes
+
+- cast report auto-generator due date to timestamptz ([a052b42](https://github.com/bcgov/cas-cif/commit/a052b42b048d560e81dd35a3412ba7b5fd699113))
+- fix project revision view page happo screenshot ([1f188f7](https://github.com/bcgov/cas-cif/commit/1f188f701a7365f992a3e36f79492b2e38bd1467))
+- make projects filterable on primaryManagers ([6af1eab](https://github.com/bcgov/cas-cif/commit/6af1eab2d955332d892aac09fb0988a15148e9d1))
+- omitting postgraphile delete mutation for project revision ([3a535c6](https://github.com/bcgov/cas-cif/commit/3a535c673cecf45baf8710c6e6fdce7a6cd44200))
+- remove caret from project revision tasklist when has no child ([6415a16](https://github.com/bcgov/cas-cif/commit/6415a161a525339acda34f20cdba0282c859ca34))
+- set time zone to vancouver time as a possible fix ([cabba41](https://github.com/bcgov/cas-cif/commit/cabba411283b099d0c663e0a71db100a2ccc08eb))
+- typo and removing amendment type from general revision ([a3bbd3f](https://github.com/bcgov/cas-cif/commit/a3bbd3f4e1139fc0c14c2357ed84b735c76c0b05))
+
+### Features
+
+- add computed column to count revision type row number ([b36a497](https://github.com/bcgov/cas-cif/commit/b36a49784641e214cf81f4563442d21873566d91))
+- add contract number to the ProjectForm ([6a23c8a](https://github.com/bcgov/cas-cif/commit/6a23c8a37d471a13f0395bd9fa62fdd97302b9da))
+- add contract_number to project table ([c4d264f](https://github.com/bcgov/cas-cif/commit/c4d264f9395eda5700e476e42f98c2c4ac8ebf66))
+- add project revision detail page ([4e40a08](https://github.com/bcgov/cas-cif/commit/4e40a08ac5dcee0d4389c38e9fdac61f596aaf23))
+- added amendmenttype project revisions ([6313ef5](https://github.com/bcgov/cas-cif/commit/6313ef545a121c0819d767167e72cc19ff1113c5))
+- flag on cif_user table to allow or disallow session_sub update ([d6c9e35](https://github.com/bcgov/cas-cif/commit/d6c9e3503b149544d4a2b0c203e99e15c5049d4f))
+- hide amendments table and view page behind the flag ([66b26e5](https://github.com/bcgov/cas-cif/commit/66b26e5d4c2ea4bf81d82ad6215ba10eb4609ae0))
+- hide new amendment page behind the flag ([b021465](https://github.com/bcgov/cas-cif/commit/b02146539f98ef0842b09283d063f929a3543c77))
+- migration function to move the existing milestone form_changes to the new schema ([39a26df](https://github.com/bcgov/cas-cif/commit/39a26df8672d3f4156e28eded8536fe128c04455))
+- reorder tasklist reports ([143be20](https://github.com/bcgov/cas-cif/commit/143be205197aff36f64896063c401de10af584e4))
+- update computed columns to include contract number ([0ceefb1](https://github.com/bcgov/cas-cif/commit/0ceefb1c43742e3e04a8a55f5926fdbd87d0f2bb))
+- user is updated or created upon connection, if allowed ([fdf9ab6](https://github.com/bcgov/cas-cif/commit/fdf9ab643973ece29752586d878f83c8ad5a3f6a))
+
+### Reverts
+
+- Revert "chore: bump minimatch package" ([90fd010](https://github.com/bcgov/cas-cif/commit/90fd010ba97be5dd279ac5774d05e9793c766e76))
+
 # [1.0.0-rc.5](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.4...1.0.0-rc.5) (2022-10-13)
 
 ### Bug Fixes
