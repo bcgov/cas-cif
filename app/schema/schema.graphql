@@ -58701,7 +58701,7 @@ type ProjectRevision implements Node {
   """Computed column to determine the rank of a project"""
   rank: Int
 
-  """The status of the amendment of a project"""
+  """The status of the revision of a project"""
   revisionStatus: String!
 
   """
@@ -59928,7 +59928,7 @@ input ProjectRevisionPatch {
   """
   projectId: Int
 
-  """The status of the amendment of a project"""
+  """The status of the revision of a project"""
   revisionStatus: String
 
   """The type of the project revision (e.g. General Revision)"""
