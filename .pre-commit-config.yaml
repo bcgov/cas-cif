@@ -26,7 +26,7 @@ repos:
       - id: check-json
       - id: check-vcs-permalinks
       - id: check-yaml
-        exclude: ^chart/.*/templates/
+        exclude: (^chart/.*/templates/|^database_backup_test/.*/templates/)
       - id: end-of-file-fixer
         exclude: current_version\.txt
       - id: trailing-whitespace

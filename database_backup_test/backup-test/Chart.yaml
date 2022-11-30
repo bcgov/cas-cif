@@ -1,0 +1,6 @@
+apiVersion: v2
+name: backup-test
+description: A Helm chart for automatically testing database backups
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,29 @@
+{{- $currentNamespace := .Release.Namespace }}
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: test-database-backups
+  labels:
+{{ include "cas-cif.labels" . | indent 4 }}
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: deployer
+          containers:
+          - name: deploy-test-cluster
+            image: {{ .Values.image.backupTest.repository }}:{{ default .Values.defaultImageTag .Values.image.backupTest.tag }}
+            imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.backupTest.pullPolicy }}
+            command:
+            - /bin/sh
+            - -c
+            - |
+                set -euo pipefail;
+                helm install -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test \
+                --set host.namespace={{ $currentNamespace }} \
+                --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key \
+                --set host.secret.secretKey=credentials.json;
+          restartPolicy: Never

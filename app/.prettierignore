@@ -6,3 +6,5 @@ schema/schema.json
 schema/schema.graphql
 coverage
 ../chart/**/templates/**/*.yaml
+../database_backup_test/**/templates/**/*.yaml
+../database_backup_test/**/*.yaml

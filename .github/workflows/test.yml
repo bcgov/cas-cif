@@ -99,6 +99,10 @@ jobs:
             context: .
             dockerfile: schema/Dockerfile
             name: schema
+          - image: ghcr.io/bcgov/cas-cif-test-backups
+            context: .
+            dockerfile: database_backup_test/Dockerfile
+            name: testBackups
     name: Build ${{ matrix.name }} docker image
     steps:
       - uses: actions/checkout@v2

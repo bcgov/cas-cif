@@ -1,0 +1,15 @@
+# Default values for backup-test.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+host:
+  namespace: ~
+  secret:
+    secretName: ~
+    secretKey: ~
+
+db:
+  restore:
+    enabled: true
