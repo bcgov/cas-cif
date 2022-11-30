@@ -89,6 +89,7 @@ export function ProjectRevisionCreate({
   const localSchema = JSON.parse(JSON.stringify(projectRevisionSchema));
   localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
     amendmentTypeEnum;
+  delete localSchema.properties.pendingActionsFrom;
 
   return (
     <>
