@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 
 DEPLOY_DB_DAG_NAME = 'cas_cif_deploy_db'
+TEST_DB_BACKUPS_DAG_NAME = 'cas_cif_test_db_backups'
 
 cif_namespace = os.getenv('CIF_NAMESPACE')
 
@@ -52,3 +53,24 @@ cif_import_operator = PythonOperator(
 
 
 cif_db_init >> cif_app_schema >> cif_import_operator
+
+"""
+###############################################################################
+#                                                                             #
+# DAG to test database backup integrity                                       #
+#                                                                             #
+###############################################################################
+"""
+
+
+db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule_interval=None,
+    default_args=default_args, is_paused_upon_creation=False)
+
+deploy_and_restore = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='deploy_and_restore',
+    op_args=['test-database-backups', cif_namespace],
+    dag=db_backup_test_dag)
+
+
+deploy_and_restore
