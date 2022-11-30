@@ -42,7 +42,17 @@ describe("The contacts page", () => {
     cy.visit("/cif/contacts");
     cy.get("h2").contains("Contacts");
     cy.get("button").contains("Add").click();
-    cy.get("input[aria-label=Email]").type("bob.l001@example.com");
+    cy.get("input[aria-label=Email]").type("bob.l001");
+    cy.get("input[aria-label=Phone]").type("1234");
+    cy.contains("Changes saved").should("be.visible");
+    cy.get("button").contains("Submit").click();
+    cy.contains("Please enter in the format: name@example.com").should(
+      "be.visible"
+    );
+    cy.contains(
+      "Please enter in a valid phone number format (e.g. 123 456 7890)"
+    ).should("be.visible");
+    cy.get("input[aria-label=Email]").type("@example.com");
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit").click();
     cy.contains("email already exists").should("be.visible");

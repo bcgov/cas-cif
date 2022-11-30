@@ -14,10 +14,13 @@ const contactSchema = {
     email: {
       type: "string",
       title: "Email",
+      pattern: "^[\\.\\w-]+@([\\w-]+\\.)+[\\w-]{2,4}$",
     },
     phone: {
       type: "string",
       title: "Phone",
+      pattern:
+        "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
     },
     phoneExt: {
       type: "string",
