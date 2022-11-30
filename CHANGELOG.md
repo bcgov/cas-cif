@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/bcgov/cas-cif/compare/1.0.0...1.0.1) (2022-11-30)
+
+### Bug Fixes
+
+- all users should be able to execute update_or_create_user function ([8bff686](https://github.com/bcgov/cas-cif/commit/8bff68604c61887a41eb64d712c9dc1fb22c829c))
+
 # [1.0.0](https://github.com/bcgov/cas-cif/compare/1.0.0-rc.5...1.0.0) (2022-11-29)
 
 ### Bug Fixes
