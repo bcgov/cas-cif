@@ -14,14 +14,12 @@ begin
   insert into cif.project_revision (
       project_id,
       change_status,
-      is_first_revision,
-      revision_status
+      is_first_revision
     ) values (
       -- project_id is null until the project is created
       null,
       'pending',
-      true,
-      'Draft'
+      true
     ) returning * into revision_row;
 
   next_project_id :=  nextval(pg_get_serial_sequence('cif.project', 'id'));
