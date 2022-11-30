@@ -51,6 +51,8 @@ export const createEmissionIntensityReportUiSchema = (
     );
   };
 
+  const emissionFunctionalUnitSuffix = <b>/</b>;
+
   const reportDuration = getDurationFromDates(
     measurementPeriodStartDate,
     measurementPeriodEndDate
@@ -98,6 +100,11 @@ export const createEmissionIntensityReportUiSchema = (
   uiSchemaCopy.measurementPeriodEndDate["ui:options"] = {
     ...uiSchemaCopy.measurementPeriodEndDate["ui:options"],
     contentSuffix: reportDurationSuffix,
+  };
+
+  uiSchemaCopy.emissionFunctionalUnit["ui:options"] = {
+    ...uiSchemaCopy.emissionFunctionalUnit["ui:options"],
+    contentSuffix: emissionFunctionalUnitSuffix,
   };
 
   return uiSchemaCopy;
