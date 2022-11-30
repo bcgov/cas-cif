@@ -31,7 +31,7 @@ begin
   select * from cif.cif_user where session_sub = jwt.sub into result;
   return result;
 end;
-$function$ language plpgsql strict volatile;
+$function$ language plpgsql strict volatile security definer;
 
 grant execute on function cif.update_or_create_user_from_session to cif_internal, cif_external, cif_admin;
 
