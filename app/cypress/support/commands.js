@@ -246,6 +246,8 @@ Cypress.Commands.add(
         .eq(reportNumber - 1)
         .should("have.value", generalComments);
     }
+
+    cy.contains("Changes saved").should("be.visible");
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call
     return cy.url().should("include", "/form/6");
   }
