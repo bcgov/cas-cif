@@ -2,8 +2,6 @@
 
 begin;
 
-drop function cif.create_project_revision(project_id integer);
-
 create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000) default 'Amendment', amendment_types varchar(1000)[] default array[]::varchar[])
 returns cif.project_revision
 as $function$
@@ -12,8 +10,8 @@ declare
   form_change_record record;
   _amendment_type varchar(1000);
 begin
-  insert into cif.project_revision(project_id, change_status, revision_type)
-  values ($1, 'pending', $2) returning * into revision_row;
+  insert into cif.project_revision(project_id, change_status, revision_type, revision_status)
+  values ($1, 'pending', $2, 'Draft') returning * into revision_row;
 
   foreach _amendment_type in array $3
     loop
