@@ -17,7 +17,6 @@ export const projectRevisionSchema = {
     pendingActionsFrom: {
       type: "string",
       title: "Pending actions from",
-      default: "Director",
       anyOf: [
         {
           type: "string",
@@ -84,5 +83,8 @@ export const projectRevisionUISchema = {
   },
   amendmentTypes: {
     "ui:widget": "checkboxes",
+  },
+  pendingActionsFrom: {
+    "ui:widget": "SelectWithNotifyWidget",
   },
 };
