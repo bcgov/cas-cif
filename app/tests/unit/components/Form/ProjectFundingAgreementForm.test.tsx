@@ -24,11 +24,12 @@ const defaultMockResolver = {
   ProjectRevision() {
     const result: Partial<ProjectFundingAgreementForm_projectRevision$data> = {
       " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
-      id: "Test Project Revision ID",
-      rowId: 1234,
       projectFormChange: {
         formDataRecordId: 51,
       },
+      totalProjectValue: "350",
+      id: "Test Project Revision ID",
+      rowId: 1234,
       projectFundingAgreementFormChanges: {
         __id: "connection Id",
         edges: [
@@ -39,7 +40,6 @@ const defaultMockResolver = {
               changeStatus: "pending",
               newFormData: {
                 projectId: 51,
-                totalProjectValue: 400,
                 maxFundingAmount: 200,
                 provinceSharePercentage: 50,
                 holdbackPercentage: 10,
@@ -131,10 +131,9 @@ describe("The ProjectFundingAgreementForm", () => {
     componentTestingHelper.loadQuery();
 
     componentTestingHelper.renderComponent();
-
     expect(
-      screen.getByLabelText<HTMLInputElement>(/total project value/i).value
-    ).toBe("$400.00");
+      screen.getByLabelText<HTMLLabelElement>(/total project value/i)
+    ).toHaveTextContent("$350.00");
     expect(
       screen.getByLabelText<HTMLInputElement>(/Max Funding Amount/i).value
     ).toBe("$200.00");
@@ -188,12 +187,12 @@ describe("The ProjectFundingAgreementForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    const totalProjectValueField =
-      screen.getByLabelText<HTMLInputElement>(/total project value/i);
+    const proponentCostField =
+      screen.getByLabelText<HTMLInputElement>(/proponent cost/i);
 
     await act(async () => {
-      await waitFor(() => userEvent.clear(totalProjectValueField));
-      fireEvent.change(totalProjectValueField, {
+      await waitFor(() => userEvent.clear(proponentCostField));
+      fireEvent.change(proponentCostField, {
         target: { value: "$10000.00" },
       });
     });
@@ -205,7 +204,7 @@ describe("The ProjectFundingAgreementForm", () => {
           rowId: 1,
           formChangePatch: {
             newFormData: expect.objectContaining({
-              totalProjectValue: 10000,
+              proponentCost: 10000,
             }),
           },
         },
@@ -362,7 +361,7 @@ describe("The ProjectFundingAgreementForm", () => {
       },
     });
   });
-  it("calls the deleteFormChangeWithConnectionMutation when the user clicks the remove button", () => {
+  it("calls the discardAdditionalFundingSourceFormChangeMutation when the user clicks the remove button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -372,12 +371,12 @@ describe("The ProjectFundingAgreementForm", () => {
       componentTestingHelper.environment.mock.getAllOperations()[1];
 
     expect(mutationUnderTest.fragment.node.name).toBe(
-      "deleteFormChangeWithConnectionMutation"
+      "discardAdditionalFundingSourceFormChangeMutation"
     );
 
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        id: "Additional Funding Source Test Form Change ID 1",
+        formChangeId: 789,
       },
     });
   });

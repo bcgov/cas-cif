@@ -11,6 +11,7 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
   displayLabel,
   required,
   id,
+  uiSchema,
 }) => {
   return (
     <div>
@@ -21,6 +22,7 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
             required={required}
             htmlFor={id}
             tagName="dt"
+            uiSchema={uiSchema}
           />
         )}
         {children}

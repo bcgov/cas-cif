@@ -42808,6 +42808,61 @@ type DeleteSectorPayload {
   ): SectorsEdge
 }
 
+"""All input for the `discardAdditionalFundingSourceFormChange` mutation."""
+input DiscardAdditionalFundingSourceFormChangeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  formChangeId: Int!
+}
+
+"""The output of our `discardAdditionalFundingSourceFormChange` mutation."""
+type DiscardAdditionalFundingSourceFormChangePayload {
+  """
+  Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
+  """
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectRevision`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Project` that is related to this `ProjectRevision`."""
+  projectByProjectId: Project
+  projectRevision: ProjectRevision
+
+  """An edge for our `ProjectRevision`. May be used by Relay 1."""
+  projectRevisionEdge(
+    """The method to use when ordering `ProjectRevision`."""
+    orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectRevisionsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """
+  Reads a single `RevisionStatus` that is related to this `ProjectRevision`.
+  """
+  revisionStatusByRevisionStatus: RevisionStatus
+
+  """
+  Reads a single `RevisionType` that is related to this `ProjectRevision`.
+  """
+  revisionTypeByRevisionType: RevisionType
+}
+
 """All input for the `discardEmissionIntensityReport` mutation."""
 input DiscardEmissionIntensityReportInput {
   """
@@ -45967,9 +46022,6 @@ type FundingParameter implements Node {
   """Unique ID for the funding agreement data"""
   rowId: Int!
 
-  """Total project value"""
-  totalProjectValue: BigFloat
-
   """updated at timestamp"""
   updatedAt: Datetime!
 
@@ -46024,9 +46076,6 @@ input FundingParameterCondition {
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
-
-  """Checks for equality with the object’s `totalProjectValue` field."""
-  totalProjectValue: BigFloat
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
@@ -46108,9 +46157,6 @@ input FundingParameterFilter {
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
 
-  """Filter by the object’s `totalProjectValue` field."""
-  totalProjectValue: BigFloatFilter
-
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
 
@@ -46163,9 +46209,6 @@ input FundingParameterInput {
   The percent of the total funding for a project that the Province is providing
   """
   provinceSharePercentage: BigFloat
-
-  """Total project value"""
-  totalProjectValue: BigFloat
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -46221,9 +46264,6 @@ input FundingParameterPatch {
   The percent of the total funding for a project that the Province is providing
   """
   provinceSharePercentage: BigFloat
-
-  """Total project value"""
-  totalProjectValue: BigFloat
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -46409,8 +46449,6 @@ enum FundingParametersOrderBy {
   PROPONENT_COST_DESC
   PROVINCE_SHARE_PERCENTAGE_ASC
   PROVINCE_SHARE_PERCENTAGE_DESC
-  TOTAL_PROJECT_VALUE_ASC
-  TOTAL_PROJECT_VALUE_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC
@@ -50727,6 +50765,17 @@ type Mutation {
     """
     input: DeleteSectorBySectorNameInput!
   ): DeleteSectorPayload
+
+  """
+    Custom mutation to discard a form change for an additional funding source.
+  
+  """
+  discardAdditionalFundingSourceFormChange(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DiscardAdditionalFundingSourceFormChangeInput!
+  ): DiscardAdditionalFundingSourceFormChangePayload
   discardEmissionIntensityReport(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -58749,6 +58798,14 @@ type ProjectRevision implements Node {
   teimpPaymentPercentage: BigFloat
 
   """
+      Computed column to return the total project value.
+      Calculation:
+      - Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount(s)
+  
+  """
+  totalProjectValue: BigFloat
+
+  """
   Returns the row number of the project revision within the scope of a project and among all other revisions of the same type.
   """
   typeRowNumber: Int
@@ -59766,6 +59823,9 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `teimpPaymentPercentage` field."""
   teimpPaymentPercentage: BigFloatFilter
+
+  """Filter by the object’s `totalProjectValue` field."""
+  totalProjectValue: BigFloatFilter
 
   """Filter by the object’s `typeRowNumber` field."""
   typeRowNumber: IntFilter

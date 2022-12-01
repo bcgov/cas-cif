@@ -63,7 +63,6 @@ describe("when undoing, the project revision page", () => {
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     cy.fillFundingAgreementForm(
-      222,
       333,
       70,
       20,
@@ -210,7 +209,6 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.fillFundingAgreementForm(
-      222,
       333,
       70,
       30,
