@@ -73,9 +73,6 @@ values (
 );
 /** SETUP END **/
 
-select (new_form_data->>'adjustedGrossAmount')::numeric from cif.form_change where id=1;
-select new_form_data->>'holdbackPercentage' from cif.form_change where project_revision_id=1 and form_data_table_name='funding_parameter';
-
 select is(
   (
     with record as (

@@ -203,3 +203,7 @@ mutations/create_project_revision [mutations/create_project_revision@1.0.1] 2022
 computed_columns/project_revision_total_project_value 2022-11-17T23:05:30Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add computed column to return the calculated total project value
 tables/funding_parameter_003_drop_total_project_value_column [tables/funding_parameter] 2022-11-23T21:17:14Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping redundant column as it trurned into a computed column
 mutations/discard_additional_funding_source_form_change [tables/form_change tables/project_revision] 2022-11-24T20:02:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # A customized discard mutation for additional funding sources
+computed_columns/form_change_eligible_expenses_to_date [tables/form_change] 2022-11-14T23:10:26Z Dylan Leard <dylan@button.is> # Add computed column to return the cumulative eligible expenses to date for a milestone
+computed_columns/form_change_gross_payments_to_date [tables/form_change] 2022-11-14T23:55:50Z Dylan Leard <dylan@button.is> # Add computed column to retrieve the sum of all gross payemnts to date for a milestone
+computed_columns/form_change_net_payments_to_date [tables/form_change] 2022-11-15T00:09:28Z Dylan Leard <dylan@button.is> # Add computed colum to return the cumulative net payments made to date for a milestone
+computed_columns/form_change_holdback_amount_to_date [tables/form_change] 2022-11-15T00:19:02Z Dylan Leard <dylan@button.is> # Add computed column to return the cumulative holdback amount to date for a milestone

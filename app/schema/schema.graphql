@@ -44330,6 +44330,11 @@ type FormChange implements Node {
   """created by user id"""
   createdBy: Int
 
+  """
+  Computed column returns cumulative amount of eligible expenses reported up to and including this milestone.
+  """
+  eligibleExpensesToDate: BigFloat
+
   """Reads a single `Form` that is related to this `FormChange`."""
   formByJsonSchemaName: Form
 
@@ -44419,6 +44424,16 @@ type FormChange implements Node {
   ): FormChangeFormsByFormChangePreviousFormChangeIdAndJsonSchemaNameManyToManyConnection!
 
   """
+  Computed column returns cumulative sum of gross payments. With preference for value selection in order of adjustedGrossAmount > calculatedGrossAmount > maximumAmount
+  """
+  grossPaymentsToDate: BigFloat
+
+  """
+  Computed column returns sum all holdback amounts for a project. Preference for value selection is adjustedHoldbackAmount > calculuatedHoldbackAmount > amount calculated via maximum milestone amount
+  """
+  holdbackAmountToDate: BigFloat
+
+  """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
@@ -44427,6 +44442,11 @@ type FormChange implements Node {
 
   """The name of the JSON schema to use for validation of this form data"""
   jsonSchemaName: String!
+
+  """
+  Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount > amount calculated via maximum milestone amount
+  """
+  netPaymentsToDate: BigFloat
 
   """Unique ID for the form_change"""
   newFormData: JSON
@@ -44779,6 +44799,9 @@ input FormChangeFilter {
   """Filter by the object’s `createdBy` field."""
   createdBy: IntFilter
 
+  """Filter by the object’s `eligibleExpensesToDate` field."""
+  eligibleExpensesToDate: BigFloatFilter
+
   """Filter by the object’s `formByJsonSchemaName` relation."""
   formByJsonSchemaName: FormFilter
 
@@ -44803,11 +44826,20 @@ input FormChangeFilter {
   """Filter by the object’s `formDataTableName` field."""
   formDataTableName: StringFilter
 
+  """Filter by the object’s `grossPaymentsToDate` field."""
+  grossPaymentsToDate: BigFloatFilter
+
+  """Filter by the object’s `holdbackAmountToDate` field."""
+  holdbackAmountToDate: BigFloatFilter
+
   """Filter by the object’s `isPristine` field."""
   isPristine: BooleanFilter
 
   """Filter by the object’s `jsonSchemaName` field."""
   jsonSchemaName: StringFilter
+
+  """Filter by the object’s `netPaymentsToDate` field."""
+  netPaymentsToDate: BigFloatFilter
 
   """Filter by the object’s `newFormData` field."""
   newFormData: JSONFilter
