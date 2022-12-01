@@ -17,10 +17,10 @@ begin
 
       insert into cif.project_revision_amendment_type(project_revision_id, amendment_type)
       values (
-          select 
-              revision_row.id as project_revision_id, 
-              name as amendment_type 
-           from cif.amendment_type 
+          select
+              revision_row.id as project_revision_id,
+              name as amendment_type
+           from cif.amendment_type
            where cif.amendment_type.name in $3
        );
 
