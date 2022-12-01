@@ -2,7 +2,7 @@
 
 begin;
 
-drop function cif.create_project_revision(project_id integer);
+drop function cif.create_project_revision(integer, varchar(1000), varchar(1000)[]);
 
 create or replace function cif.create_project_revision(
   project_id integer,
