@@ -1,4 +1,5 @@
--- Deploy cif:mutations/delete_project_revision to pg
+-- Revert cif:mutations/delete_project_revision_001_bugfix from pg
+
 begin;
 create or replace function cif.delete_project_revision(revision_id integer) returns void as $$
     begin;
