@@ -234,14 +234,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
         </Button>
         {sortedMilestoneReports.map((node, index) => {
-          const localFormData = JSON.parse(JSON.stringify(node.newFormData));
-          localFormData.calculatedGrossAmount = Number(
+          const formData = { ...node.newFormData };
+          formData.calculatedGrossAmount = Number(
             node.calculatedGrossAmountThisMilestone
           );
-          localFormData.calculatedHoldbackAmount = Number(
+          formData.calculatedHoldbackAmount = Number(
             node.calculatedNetAmountThisMilestone
           );
-          localFormData.calculatedNetAmount = Number(
+          formData.calculatedNetAmount = Number(
             node.calculatedHoldbackAmountThisMilestone
           );
           return (
@@ -271,13 +271,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   validateOnMount={node.changeStatus === "staged"}
                   idPrefix={`form-${node.id}`}
                   ref={(el) => (formRefs.current[node.id] = el)}
-                  formData={localFormData}
+                  formData={formData}
                   onChange={(change) => handleChange(change.formData, node)}
                   schema={schema as JSONSchema7}
                   uiSchema={milestoneUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
-                    dueDate: localFormData?.reportDueDate,
+                    dueDate: formData?.reportDueDate,
                   }}
                 />
               </CollapsibleReport>
