@@ -73,6 +73,7 @@ describe("ProjectRevisionView Page", () => {
     expect(screen.getByText(/Feb[.]? 1, 2021/i)).toBeInTheDocument();
     expect(screen.getByText(/test-user-1/i)).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/i)).toBeInTheDocument();
+    expect(screen.getByText(/Pending actions from/i)).toBeInTheDocument();
   });
 
   it("Takes user to amendments and revisions table when they click Amendments & Other Revisions on the tasklist", async () => {
