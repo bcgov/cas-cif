@@ -144,7 +144,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
       !props.viewOnly ? (
         <dd>
-          <em>Milestone reports not {isFirstRevision ? "added" : "updated"}</em>
+          <em>Milestone Reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>
       ) : (
         milestoneReportsJSX

@@ -233,7 +233,7 @@ const TaskList: React.FC<Props> = ({
             <TaskListItem
               stepName="summary"
               linkUrl={getProjectRevisionPageRoute(id)}
-              formTitle="Review and Submit information"
+              formTitle="Review and Submit Information"
               formStatus={null}
               currentStep={currentStep}
               mode={mode}
