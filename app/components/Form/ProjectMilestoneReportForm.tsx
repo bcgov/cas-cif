@@ -61,6 +61,9 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 reportType
                 ...CollapsibleReport_reportingRequirement
               }
+              calculatedGrossAmountThisMilestone
+              calculatedNetAmountThisMilestone
+              calculatedHoldbackAmountThisMilestone
             }
           }
         }
@@ -117,7 +120,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const [createMilestone, isCreating] = useCreateMilestone();
   const [updateMilestone, isUpdating] =
     useUpdateReportingRequirementFormChange();
-
   const [
     applyStageReportingRequirementFormChange,
     isStagingReportingRequirement,
@@ -231,8 +233,17 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         >
           <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
         </Button>
-
         {sortedMilestoneReports.map((node, index) => {
+          const formData = { ...node.newFormData };
+          formData.calculatedGrossAmount = Number(
+            node.calculatedGrossAmountThisMilestone
+          );
+          formData.calculatedHoldbackAmount = Number(
+            node.calculatedNetAmountThisMilestone
+          );
+          formData.calculatedNetAmount = Number(
+            node.calculatedHoldbackAmountThisMilestone
+          );
           return (
             <div key={node.id} id={`Milestone${index + 1}`}>
               <CollapsibleReport
@@ -260,13 +271,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   validateOnMount={node.changeStatus === "staged"}
                   idPrefix={`form-${node.id}`}
                   ref={(el) => (formRefs.current[node.id] = el)}
-                  formData={node.newFormData}
+                  formData={formData}
                   onChange={(change) => handleChange(change.formData, node)}
                   schema={schema as JSONSchema7}
                   uiSchema={milestoneUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
-                    dueDate: node.newFormData?.reportDueDate,
+                    dueDate: formData?.reportDueDate,
                   }}
                 />
               </CollapsibleReport>

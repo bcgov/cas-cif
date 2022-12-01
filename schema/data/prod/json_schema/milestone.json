@@ -67,7 +67,7 @@
               },
               "maximumAmount": {
                 "type": "number",
-                "title": "Maximum Amount"
+                "title": "Maximum Amount This Milestone"
               },
               "totalEligibleExpenses": {
                 "type": "number",
@@ -77,6 +77,10 @@
                 "type": "number",
                 "title": "Calculated Milestone Gross Payment Amount"
               },
+              "calculatedHoldbackAmount": {
+                "type": "number",
+                "title": "Calculated Milestone Holdback Amount"
+              },
               "calculatedNetAmount": {
                 "type": "number",
                 "title": "Calculated Milestone Net Payment Amount"
@@ -84,6 +88,10 @@
               "adjustedGrossAmount": {
                 "type": "number",
                 "title": "Milestone Gross Payment Amount"
+              },
+              "adjustedHoldBackAmount": {
+                "type": "number",
+                "title": "Milestone Holdback Amount"
               },
               "adjustedNetAmount": {
                 "type": "number",

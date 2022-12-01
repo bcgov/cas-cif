@@ -54,6 +54,9 @@ const defaultMockResolver = {
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
+              calculatedGrossAmountThisMilestone: 1,
+              calculatedNetAmountThisMilestone: 1,
+              calculatedHoldbackAmountThisMilestone: 1,
             },
           },
           {
@@ -70,11 +73,17 @@ const defaultMockResolver = {
                 hasExpenses: false,
                 reportingRequirementId: 2,
                 certifierProfessionalDesignation: "Professional Engineer",
+                calculatedGrossAmount: 1,
+                calculatedNetAmount: 1,
+                calculatedHoldbackAmount: 1,
               },
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 2,
+              calculatedGrossAmountThisMilestone: 1,
+              calculatedNetAmountThisMilestone: 1,
+              calculatedHoldbackAmountThisMilestone: 1,
             },
           },
         ],
@@ -146,9 +155,9 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByLabelText("Total Eligible Expenses")[0]).toHaveValue(
       "$100.00"
     );
-    expect(screen.getAllByLabelText("Maximum Amount")[0]).toHaveValue(
-      "$200.00"
-    );
+    expect(
+      screen.getAllByLabelText("Maximum Amount This Milestone")[0]
+    ).toHaveValue("$200.00");
   });
 
   it("Renders two milestone reports with remove buttons, the report due indicator, and the overall status badge", () => {
@@ -350,6 +359,9 @@ describe("The ProjectMilestoneReportForm", () => {
               hasExpenses: false,
               reportingRequirementId: 2,
               certifierProfessionalDesignation: "Professional Engineer",
+              calculatedGrossAmount: 1,
+              calculatedNetAmount: 1,
+              calculatedHoldbackAmount: 1,
             },
           },
         },

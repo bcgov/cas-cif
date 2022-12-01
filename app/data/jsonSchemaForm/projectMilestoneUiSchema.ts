@@ -10,10 +10,16 @@ const projectMilestoneUiSchema = {
     "certifierProfessionalDesignation",
     "submittedDate",
     "totalEligibleExpenses",
+    // "totalEligibleExpensesToDate",
+    // "totalGrossPaymentAmountToDate",
+    // "totalNetPaymentAmountToDate",
+    "grossPaymentAmount",
     "calculatedGrossAmount",
     "adjustedGrossAmount",
     "calculatedNetAmount",
     "adjustedNetAmount",
+    "calculatedHoldbackAmount",
+    "adjustedHoldBackAmount",
     "dateSentToCsnr",
   ],
   description: {
@@ -78,6 +84,18 @@ const projectMilestoneUiSchema = {
   },
   dateSentToCsnr: {
     "ui:widget": "DateWidget",
+  },
+  grossPaymentAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    isMoney: true,
+  },
+  calculatedHoldbackAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    isMoney: true,
+  },
+  calculatedNetAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    isMoney: true,
   },
 };
 

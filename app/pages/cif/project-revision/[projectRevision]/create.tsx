@@ -25,6 +25,9 @@ const pageQuery = graphql`
     projectRevision(id: $projectRevision) {
       project: projectByProjectId {
         rowId
+        pendingProjectRevision {
+          id
+        }
       }
       ...TaskList_projectRevision
     }
@@ -51,6 +54,7 @@ export function ProjectRevisionCreate({
 }: RelayProps<{}, createProjectRevisionQuery>) {
   const { session, projectRevision, allRevisionTypes, allAmendmentTypes } =
     usePreloadedQuery(pageQuery, preloadedQuery);
+  const existingRevision = projectRevision?.project?.pendingProjectRevision?.id;
   const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
 
   const router = useRouter();
@@ -89,21 +93,25 @@ export function ProjectRevisionCreate({
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
         <div>
-          <FormBase
-            id="ProjectRevisionCreateForm"
-            schema={localSchema as JSONSchema7}
-            uiSchema={projectRevisionUISchema}
-            onSubmit={handleCreateRevision}
-            ObjectFieldTemplate={EmptyObjectFieldTemplate}
-          >
-            <Button
-              type="submit"
-              size="small"
-              disabled={isCreatingProjectRevision}
+          {existingRevision ? (
+            <h1>There is an existing revision</h1>
+          ) : (
+            <FormBase
+              id="ProjectRevisionCreateForm"
+              schema={localSchema as JSONSchema7}
+              uiSchema={projectRevisionUISchema}
+              onSubmit={handleCreateRevision}
+              ObjectFieldTemplate={EmptyObjectFieldTemplate}
             >
-              New Revision
-            </Button>
-          </FormBase>
+              <Button
+                type="submit"
+                size="small"
+                disabled={isCreatingProjectRevision}
+              >
+                New Revision
+              </Button>
+            </FormBase>
+          )}
         </div>
       </DefaultLayout>
     </>
