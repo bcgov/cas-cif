@@ -1,4 +1,4 @@
-FROM alpine/k8s:1.23.14
+FROM alpine/helm:3.10.2
 ENV USER_ID=1001
 ENV HOME=/root
 
