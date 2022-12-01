@@ -92,28 +92,8 @@ describe("when creating a project, the project page", () => {
     cy.findAllByRole("status").first().should("have.text", "Late");
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    // add emissions intensity reports
     cy.url().should("include", "/form/5");
-    //add quarterly reports
-    cy.addQuarterlyReport(
-      1,
-      "2020-01-01",
-      "2020-02-02",
-      "I am the first general comment"
-    );
-    cy.addQuarterlyReport(
-      2,
-      "2022-01-01",
-      "2022-02-02",
-      "I am the second general comment"
-    );
-    cy.findAllByRole("status").first().should("have.text", "Complete");
-    cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project Quarterly Reports Form", "filled", "main");
-    cy.contains("Changes saved").should("be.visible");
-    cy.findByText(/^submit/i).click();
-
-    // add teimp reports
-    cy.url().should("include", "/form/6");
     cy.findByRole("button", {
       name: /Add Emissions Intensity Report/i,
     }).click();
@@ -295,7 +275,7 @@ describe("when creating a project, the project page", () => {
       name: /5. Emissions Intensity Report/i,
     }).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/5");
     cy.findByRole("button", {
       name: /Add Emissions Intensity Report/i,
     }).click();

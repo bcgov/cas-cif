@@ -133,7 +133,7 @@ describe("when editing a project, the project page", () => {
 
     // two below assertions are not necessary, but it's needed to slow down the test and run the accessibility checks correctly
     cy.findByText(/Complete/i).should("be.visible");
-    cy.url().should("include", "/form/5");
+    cy.url().should("include", "/form/6");
 
     cy.happoAndAxe("Project Quarterly Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
@@ -160,23 +160,6 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project teimp agreement form", "editing", "main");
     cy.findByText(/Submit Emissions Intensity Report/i).click();
-
-    // edit quarterly reports -- delete a report
-    cy.contains("Review and Submit Project");
-    cy.findByRole("button", { name: /Quarterly reports/i }).click();
-    cy.findByText(/Edit quarterly reports/i).click();
-    cy.findByText(/Quarterly Report 1/i).click();
-    cy.findAllByText(/Remove/i)
-      .first()
-      .click();
-    cy.contains("Changes saved.");
-    cy.findByText(/Quarterly Report 2/i).should("not.exist");
-    cy.findByText(/No reports due/).should("be.visible");
-    cy.contains("Changes saved.");
-
-    // two below assertions are not necessary, but it's needed to slow down the test and run the accessibility checks correctly
-    cy.findByText(/Complete/i).should("be.visible");
-    cy.url().should("include", "/form/6");
 
     cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
