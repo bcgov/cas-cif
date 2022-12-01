@@ -55,8 +55,7 @@ export function ProjectRevisionCreate({
   const { session, projectRevision, allRevisionTypes, allAmendmentTypes } =
     usePreloadedQuery(pageQuery, preloadedQuery);
   const existingRevision = projectRevision?.project?.pendingProjectRevision?.id;
-  const mode = "view";
-  const taskList = <TaskList projectRevision={projectRevision} mode={mode} />;
+  const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
 
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
