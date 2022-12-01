@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(7);
+select plan(8);
 
 select has_table('cif', 'project_revision', 'table cif.project_revision exists');
 
@@ -68,7 +68,7 @@ select columns_are(
     'created_by',
     'updated_at',
     'updated_by',
-    'amendment_status'
+    'revision_status'
   ],
   'revision_type and comments column were reverted and do not exist in cif.project_revision'
 );
@@ -122,7 +122,7 @@ select columns_are(
     'updated_at',
     'updated_by',
     'revision_type',
-    'amendment_status'
+    'revision_status'
   ],
   'columns in cif.project_revision match expected columns after migration project_revision_001_add_revision_type'
 );
@@ -132,6 +132,8 @@ select is(
   (select count(*) from cif.project_revision where revision_type='General Revision'),
   2::bigint,
   'project_revision_001_add_revision_type adds the General Revision default revision_type to revisions that do not have a type');
+
+select col_not_null('cif','project_revision', 'revision_status', 'revision_status column should not be nullable');
 
 
 select finish();

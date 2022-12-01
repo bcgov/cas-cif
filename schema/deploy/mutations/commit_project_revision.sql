@@ -14,7 +14,7 @@ begin
   end if;
 
   -- Propagate the change_status to all related form_change records
-  -- Save the project table first do avoid foreign key violations from other potential tables.
+  -- Save the project table first to avoid foreign key violations from other potential tables.
   perform cif_private.commit_form_change_internal(row(form_change.*)::cif.form_change)
   from cif.form_change
   where project_revision_id=$1
@@ -32,7 +32,8 @@ begin
 
   update cif.project_revision set
     project_id=(select form_data_record_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1),
-    change_status='committed'
+    change_status='committed',
+    revision_status = 'Applied'
   where id=$1;
 
   return (select row(project_revision.*)::cif.project_revision from cif.project_revision where id = $1);

@@ -1,5 +1,5 @@
 begin;
-select no_plan();
+select plan (10);
 
 -- restart the id sequences
 truncate table
@@ -7,6 +7,8 @@ cif.project, cif.project_contact,
 cif.project_manager, cif.project_revision, cif.emission_intensity_report, cif.milestone_report,
 cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.payment, cif.funding_parameter, cif.additional_funding_source, cif.project_revision_amendment_type
 restart identity;
+
+select * from cif.cif_user;
 
 insert into cif.cif_user(id, session_sub, given_name, family_name)
 overriding system value
@@ -77,12 +79,12 @@ select cif.commit_project_revision(1);
 
 select results_eq(
   $$
-  select id, project_id, change_status, revision_type from cif.create_project_revision(1, 'Amendment')
+  select id, project_id, change_status, revision_type, revision_status from cif.create_project_revision(1, 'Amendment')
   $$,
   $$
-  values (2, 1, 'pending'::varchar, 'Amendment'::varchar)
+  values (2, 1, 'pending'::varchar, 'Amendment'::varchar, 'Draft'::varchar)
   $$,
-  'creating a project revision with revision type as Ammendment creates a new project revision in pending state and revision type as Amendment'
+  'creating a project revision with revision type as Amendment creates a new project revision in pending state, with revision type as Amendment, and with revision_status Draft'
 );
 
 update cif.project_revision set change_reason = 'changing because of reasons' where id = 2;

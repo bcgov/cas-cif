@@ -20,10 +20,10 @@ select lives_ok(
 
 select results_eq(
   $$
-    select id, project_id, change_status from cif.project_revision;
+    select id, project_id, change_status, revision_status from cif.project_revision;
   $$,
   $$
-    values (1, null::integer, 'pending'::varchar);
+    values (1, null::integer, 'pending'::varchar,'Draft'::varchar);
   $$,
   'Creates a revision with null project_id and status pending'
 );

@@ -19,7 +19,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
         id
         revisionType
         createdAt
-        amendmentStatus
+        revisionStatus
         updatedAt
         effectiveDate
         typeRowNumber
@@ -44,7 +44,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
     id,
     revisionType,
     createdAt,
-    amendmentStatus,
+    revisionStatus,
     effectiveDate,
     updatedAt,
     cifUserByUpdatedBy,
@@ -72,7 +72,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
           .map(({ node }) => node.amendmentType)
           .join(", ")}
       </td>
-      <td>{amendmentStatus}</td>
+      <td>{revisionStatus}</td>
       <td>
         <div>
           <Button size="small" onClick={handleClick}>
