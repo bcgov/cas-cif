@@ -51,7 +51,17 @@ export const createEmissionIntensityReportUiSchema = (
     );
   };
 
-  const emissionFunctionalUnitSuffix = <b>/</b>;
+  const emissionFunctionalUnitSuffix = (
+    <b>
+      /
+      <style jsx>{`
+        .emissionSuffix {
+          margin-right: 2rem
+        }
+      `}</style>
+      
+    </b>
+  );
 
   const reportDuration = getDurationFromDates(
     measurementPeriodStartDate,
@@ -358,7 +368,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               padding-right: 0.5em;
             }
             :global(.functional-unit:nth-child(even)) {
-              width: 6rem;
               white-space: nowrap;
             }
           `}</style>

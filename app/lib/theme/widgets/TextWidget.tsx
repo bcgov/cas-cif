@@ -31,6 +31,8 @@ const TextWidget: React.FC<WidgetProps> = ({
             display: flex;
             align-items: center;
             gap: 2rem;
+            min-width: 10rem;
+            padding-right: 2rem;
           }
         `}
       </style>
