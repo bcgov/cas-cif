@@ -56,10 +56,9 @@ export const createEmissionIntensityReportUiSchema = (
       /
       <style jsx>{`
         .emissionSuffix {
-          margin-right: 2rem
+          margin-right: 2rem;
         }
       `}</style>
-      
     </b>
   );
 

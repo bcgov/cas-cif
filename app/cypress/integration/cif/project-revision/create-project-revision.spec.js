@@ -295,17 +295,11 @@ describe("when creating a project, the project page", () => {
       name: /5. Emissions Intensity Report/i,
     }).click();
     cy.findByText(/Add emissions intensity report/i).click();
-<<<<<<< HEAD
-    cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
-    cy.setDateInPicker("Measurement period end date", "2022-01-01");
-=======
     cy.url().should("include", "/form/6");
     cy.findByRole("button", {
       name: /Add Emissions Intensity Report/i,
     }).click();
     cy.setDateInPicker("TEIMP End Date", "2022-01-01");
->>>>>>> 6979b9cd (chore: update emission intensity and annual reports)
     cy.setDateInPicker("Report Due Date", "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
 
