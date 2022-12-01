@@ -120,7 +120,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const [createMilestone, isCreating] = useCreateMilestone();
   const [updateMilestone, isUpdating] =
     useUpdateReportingRequirementFormChange();
-
   const [
     applyStageReportingRequirementFormChange,
     isStagingReportingRequirement,
@@ -235,14 +234,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faPlusCircle} /> Add another milestone report
         </Button>
         {sortedMilestoneReports.map((node, index) => {
-          const localNewFormData = JSON.parse(JSON.stringify(node.newFormData));
-          localNewFormData.calculatedGrossAmountThisMilestone =
-            node.calculatedGrossAmountThisMilestone;
-
-          localNewFormData.calculatedNetAmountThisMilestone = Number(
+          const localFormData = JSON.parse(JSON.stringify(node.newFormData));
+          localFormData.calculatedGrossAmount = Number(
+            node.calculatedGrossAmountThisMilestone
+          );
+          localFormData.calculatedHoldbackAmount = Number(
             node.calculatedNetAmountThisMilestone
           );
-          localNewFormData.calculatedHoldbackAmount = Number(
+          localFormData.calculatedNetAmount = Number(
             node.calculatedHoldbackAmountThisMilestone
           );
           return (
@@ -272,13 +271,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   validateOnMount={node.changeStatus === "staged"}
                   idPrefix={`form-${node.id}`}
                   ref={(el) => (formRefs.current[node.id] = el)}
-                  formData={localNewFormData}
+                  formData={localFormData}
                   onChange={(change) => handleChange(change.formData, node)}
                   schema={schema as JSONSchema7}
                   uiSchema={milestoneUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
-                    dueDate: localNewFormData?.reportDueDate,
+                    dueDate: localFormData?.reportDueDate,
                   }}
                 />
               </CollapsibleReport>
