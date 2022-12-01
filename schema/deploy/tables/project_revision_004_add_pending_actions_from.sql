@@ -1,4 +1,4 @@
--- Deploy cif:tables/project_revision_003_add_pending_actions_from to pg
+-- Deploy cif:tables/project_revision_004_add_pending_actions_from to pg
 
 begin;
 
