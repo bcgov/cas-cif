@@ -42821,11 +42821,6 @@ input DiscardAdditionalFundingSourceFormChangeInput {
 """The output of our `discardAdditionalFundingSourceFormChange` mutation."""
 type DiscardAdditionalFundingSourceFormChangePayload {
   """
-  Reads a single `AmendmentStatus` that is related to this `ProjectRevision`.
-  """
-  amendmentStatusByAmendmentStatus: AmendmentStatus
-
-  """
   Reads a single `ChangeStatus` that is related to this `ProjectRevision`.
   """
   changeStatusByChangeStatus: ChangeStatus
@@ -42856,6 +42851,11 @@ type DiscardAdditionalFundingSourceFormChangePayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """
+  Reads a single `RevisionStatus` that is related to this `ProjectRevision`.
+  """
+  revisionStatusByRevisionStatus: RevisionStatus
 
   """
   Reads a single `RevisionType` that is related to this `ProjectRevision`.
