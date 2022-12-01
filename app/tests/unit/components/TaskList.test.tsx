@@ -97,7 +97,7 @@ describe("The ProjectManagerForm", () => {
     expect(
       screen.getByText("test-project-managers-status")
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText(/Quarterly Reports/i));
+    fireEvent.click(screen.getByText(/Quarterly Reports/i)); // TODO: error multiple elements
     expect(
       screen.getByText("test-project-quarterly-reports-status")
     ).toBeInTheDocument();
@@ -164,10 +164,10 @@ describe("The ProjectManagerForm", () => {
 
     fireEvent.click(screen.getByText(/Quarterly Reports/i));
     fireEvent.click(screen.getByText(/Edit quarterly reports/i));
-
+    // TODO: error
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6",
-      "/cif/project-revision/test-project-revision-id/form/6",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5",
+      "/cif/project-revision/test-project-revision-id/form/5",
       expect.any(Object)
     );
   });
@@ -179,9 +179,10 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Emissions Intensity Report/i));
     fireEvent.click(screen.getByText(/Edit emissions intensity report/i));
 
+    //TODO: error
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=5",
-      "/cif/project-revision/test-project-revision-id/form/5",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=6",
+      "/cif/project-revision/test-project-revision-id/form/6",
       expect.any(Object)
     );
   });
@@ -192,7 +193,7 @@ describe("The ProjectManagerForm", () => {
 
     fireEvent.click(screen.getByText(/Annual Reports/i));
     fireEvent.click(screen.getByText(/Edit annual reports/i));
-
+    // TODO: error
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
       "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=7",
       "/cif/project-revision/test-project-revision-id/form/7",
