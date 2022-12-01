@@ -1,8 +1,8 @@
--- Deploy cif:mutations/create_project_revision to pg
+-- Revert cif:mutations/create_project_revision to pg
 
 begin;
 
-drop function cif.create_project_revision(integer, varchar(1000), varchar(1000)[]);
+drop function cif.create_project_revision(project_id integer);
 
 create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000) default 'Amendment', amendment_types varchar(1000)[] default array[]::varchar[])
 returns cif.project_revision
