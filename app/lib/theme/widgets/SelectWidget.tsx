@@ -18,6 +18,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
     required,
     uiSchema,
     value,
+    disabled,
   } = props;
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
@@ -35,6 +36,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         required={required}
         value={value}
         aria-label={label}
+        disabled={disabled}
       >
         <option key={`option-placeholder-${id}`} value={undefined}>
           {placeholder}
