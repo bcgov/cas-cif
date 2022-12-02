@@ -94,7 +94,7 @@ describe("when undoing, the project revision page", () => {
     // undo TEIMP agreement
     cy.findByText(/Emissions intensity report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.url().should("include", "/form/6");
+    cy.url().should("include", "/form/5");
     cy.findByRole("button", {
       name: /Add Emissions Intensity Report/i,
     }).click();
