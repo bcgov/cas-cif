@@ -118,7 +118,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("Performance Milestone Holdback Percentage")
     ).toBeInTheDocument();
-    expect(screen.queryByText("Total Project Value")).toBeInTheDocument();
     expect(
       screen.queryByText("Maximum Funding Amount")
     ).not.toBeInTheDocument();
