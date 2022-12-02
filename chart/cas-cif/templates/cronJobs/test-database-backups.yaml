@@ -46,4 +46,4 @@ spec:
                 --set host.namespace={{ $currentNamespace }} \
                 --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key \
                 --set host.secret.secretKey=credentials.json \
-                --set host.secret.credentials=$(CLOUDSQL_INSTANCE);
+                --set host.secret.credentials="$(GCP_CREDENTIALS)";
