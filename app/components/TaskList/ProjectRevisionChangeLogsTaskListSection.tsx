@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getProjectRevisionChangeLogsPageRoute } from "routes/pageRoutes";
@@ -8,7 +8,7 @@ interface Props {
   projectRevisionId: string;
   defaultExpandedState: boolean;
   listItemName: string;
-  children?: React.ReactNode;
+  children?: Array<React.ReactNode | Boolean>;
 }
 
 const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
@@ -27,6 +27,11 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
     setIsExpanded(defaultExpandedState);
   }, [defaultExpandedState]);
 
+  const hasChildren = useMemo(
+    () => children.some((child) => child),
+    [children]
+  );
+
   return (
     <li
       aria-current={
@@ -43,7 +48,7 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
           aria-controls="child-section"
         >
           {listItemName}
-          {children && (
+          {hasChildren && (
             <span>
               <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
             </span>
