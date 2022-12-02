@@ -90,6 +90,9 @@ export function ProjectRevisionCreate({
     amendmentTypeEnum;
   delete localSchema.properties.pendingActionsFrom;
 
+  // this is only required in view page
+  delete localSchema.properties.amendmentStatus;
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
