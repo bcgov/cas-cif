@@ -20,6 +20,12 @@ export const projectRevisionSchema = {
       anyOf: [
         {
           type: "string",
+          title: "Ops Team",
+          enum: ["Ops Team"],
+          value: "Ops Team",
+        },
+        {
+          type: "string",
           title: "Director",
           enum: ["Director"],
           value: "Director",
