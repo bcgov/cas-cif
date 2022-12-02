@@ -44,20 +44,23 @@ describe("the new project page", () => {
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
 
     cy.happoAndAxe("Project Contacts Form", "empty", "main");
-    cy.findByText(/Submit contacts/i).click();
+    cy.findByText(/Submit project contacts/i).click();
 
     // BUDGETS, EXPENSES AND PAYMENTS
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
-    cy.contains("Project Funding Agreement");
+    cy.contains(/Budgets, expenses & payments/i);
     cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
-    cy.get('[aria-label="Province Share Percentage"]').should(
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
       "50 %"
     );
-    cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
+    cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
+      "have.value",
+      "10 %"
+    );
 
     cy.fillFundingAgreementForm(
       222,
@@ -88,7 +91,9 @@ describe("the new project page", () => {
     // Emissions Intensity Report
     cy.findByText(/Emissions Intensity Report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.findByText(/Add TEIMP Agreement/i).click();
+    cy.findByRole("button", {
+      name: /Add emissions intensity report/i,
+    }).click();
     cy.contains("Changes saved.");
     cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
 
@@ -122,11 +127,11 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
-    cy.findByRole("link", { name: "Project overview" })
+    cy.findByRole("link", { name: "Project Overview" })
       .next()
       .should("not.exist");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.findByText(/Funding Stream RFP ID/i)
+    cy.findByText(/RFP Year ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2019");
     cy.findByText(/Project Details/i).click();
@@ -245,7 +250,7 @@ describe("the new project page", () => {
       aliasOperation(req, "stageReportingRequirementFormChangeMutation");
     });
     cy.findByRole("button", {
-      name: /Add TEIMP /i,
+      name: /Add Emissions Intensity Report/i,
     }).click();
     cy.contains("Changes saved").should("be.visible");
 
