@@ -4,7 +4,7 @@ import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjec
 import { useMemo } from "react";
 import SelectWidget from "./SelectWidget";
 
-const AmendmentStatusWidget: React.FC<WidgetProps> = (props) => {
+const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const { schema, uiSchema, value, formContext } = props;
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
@@ -29,7 +29,7 @@ const AmendmentStatusWidget: React.FC<WidgetProps> = (props) => {
         variables: {
           input: {
             id: revisionId,
-            projectRevisionPatch: { amendmentStatus: value },
+            projectRevisionPatch: { revisionStatus: value },
           },
         },
         optimisticResponse: {
@@ -70,4 +70,4 @@ const AmendmentStatusWidget: React.FC<WidgetProps> = (props) => {
   );
 };
 
-export default AmendmentStatusWidget;
+export default RevisionStatusWidget;

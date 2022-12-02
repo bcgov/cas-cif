@@ -18,7 +18,7 @@ import NotifyModal from "components/ProjectRevision/NotifyModal";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypes,
-  allAmendmentStatuses
+  allRevisionStatuses
 ) => {
   const schema = projectRevisionSchema;
   schema.properties.revisionType = {
@@ -33,9 +33,9 @@ const createProjectRevisionViewSchema = (
     }),
   };
 
-  schema.properties.amendmentStatus = {
-    ...schema.properties.amendmentStatus,
-    anyOf: allAmendmentStatuses.map(({ node }) => {
+  schema.properties.revisionStatus = {
+    ...schema.properties.revisionStatus,
+    anyOf: allRevisionStatuses.map(({ node }) => {
       return {
         type: "string",
         title: node.name,
@@ -65,7 +65,7 @@ export const ViewProjectRevisionQuery = graphql`
       id
       revisionType
       createdAt
-      amendmentStatus
+      revisionStatus
       changeStatus
       cifUserByCreatedBy {
         fullName
@@ -92,10 +92,11 @@ export const ViewProjectRevisionQuery = graphql`
         }
       }
     }
-    allAmendmentStatuses {
+    allRevisionStatuses {
       edges {
         node {
           name
+          isAmendmentSpecific
         }
       }
     }
@@ -105,7 +106,7 @@ export const ViewProjectRevisionQuery = graphql`
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
-  const { session, projectRevision, allRevisionTypes, allAmendmentStatuses } =
+  const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
   const taskList = (
     <TaskList
@@ -120,11 +121,11 @@ export function ProjectRevisionView({
   if (!useShowGrowthbookFeature("amendments")) return null;
 
   // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
-  const filteredAmendmentStatuses = allAmendmentStatuses.edges.filter(
+  const filteredRevisionStatuses = allRevisionStatuses.edges.filter(
     ({ node }) =>
       projectRevision.revisionType === "Amendment"
-        ? node.name !== "Applied"
-        : ["Approved", "Draft"].includes(node.name)
+        ? true
+        : !node.isAmendmentSpecific
   );
 
   return (
@@ -143,7 +144,7 @@ export function ProjectRevisionView({
             schema={
               createProjectRevisionViewSchema(
                 allRevisionTypes,
-                filteredAmendmentStatuses
+                filteredRevisionStatuses
               ) as JSONSchema7
             }
             uiSchema={createProjectRevisionUISchema()}

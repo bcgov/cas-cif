@@ -91,7 +91,7 @@ export function ProjectRevisionCreate({
   delete localSchema.properties.pendingActionsFrom;
 
   // this is only required in view page
-  delete localSchema.properties.amendmentStatus;
+  delete localSchema.properties.revisionStatus;
 
   return (
     <>

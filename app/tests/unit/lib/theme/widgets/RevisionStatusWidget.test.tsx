@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import AmendmentStatusWidget from "lib/theme/widgets/AmendmentStatusWidget";
+import RevisionStatusWidget from "lib/theme/widgets/RevisionStatusWidget";
 import { mocked } from "jest-mock";
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
 
@@ -12,7 +12,7 @@ mocked(useUpdateProjectRevision).mockImplementation(() => [
   isUpdatingProjectRevision,
 ]);
 
-describe("The AmendmentStatusWidget", () => {
+describe("The RevisionStatusWidget", () => {
   it("renders the select widget along with an action button", () => {
     const props: any = {
       id: "test-id",
@@ -33,7 +33,7 @@ describe("The AmendmentStatusWidget", () => {
         ],
       },
     };
-    render(<AmendmentStatusWidget {...props} />);
+    render(<RevisionStatusWidget {...props} />);
 
     expect(
       screen.getByRole("button", {
@@ -63,7 +63,7 @@ describe("The AmendmentStatusWidget", () => {
       },
     };
 
-    render(<AmendmentStatusWidget {...props} />);
+    render(<RevisionStatusWidget {...props} />);
     fireEvent.click(
       screen.getByRole("button", {
         name: /action button label/i,
@@ -75,7 +75,7 @@ describe("The AmendmentStatusWidget", () => {
           input: expect.objectContaining({
             id: "test-revision-id",
             projectRevisionPatch: expect.objectContaining({
-              amendmentStatus: "Option 1",
+              revisionStatus: "Option 1",
             }),
           }),
         }),
@@ -102,7 +102,7 @@ describe("The AmendmentStatusWidget", () => {
         ],
       },
     };
-    render(<AmendmentStatusWidget {...props} />);
+    render(<RevisionStatusWidget {...props} />);
 
     expect(screen.getByRole("combobox")).toBeDisabled();
 

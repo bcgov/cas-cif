@@ -44,7 +44,7 @@ export const projectRevisionSchema = {
         },
       ],
     },
-    amendmentStatus: {
+    revisionStatus: {
       type: "string",
       title: "Status",
       default: undefined,
@@ -90,6 +90,7 @@ export const projectRevisionUISchema = {
     "amendmentTypes",
     "pendingActionsFrom",
     "amendmentStatus",
+    "revisionStatus",
     "changeReason",
   ],
   revisionType: {
@@ -101,8 +102,8 @@ export const projectRevisionUISchema = {
   pendingActionsFrom: {
     "ui:widget": "SelectWithNotifyWidget",
   },
-  amendmentStatus: {
-    "ui:widget": "AmendmentStatusWidget",
+  revisionStatus: {
+    "ui:widget": "RevisionStatusWidget",
     "ui:options": {
       actionButtonLabel: "Update",
     },
