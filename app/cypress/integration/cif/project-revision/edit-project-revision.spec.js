@@ -161,9 +161,6 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project teimp agreement form", "editing", "main");
     cy.findByText(/Submit Emissions Intensity Report/i).click();
 
-    cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
-    cy.findByRole("button", { name: /^submit/i }).click();
-
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
 
@@ -177,7 +174,7 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
-
+    console.log("annual reports");
     cy.happoAndAxe("Project Annual Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 

@@ -403,9 +403,6 @@ Cypress.Commands.add(
     contractStartDate,
     projectAssetsLifeEndDate
   ) => {
-    cy.findByLabelText(/Total Project Value$/i)
-      .clear()
-      .type(totalProjectValue);
     cy.findByLabelText(/Maximum Funding Amount$/i)
       .clear()
       .type(maxFundingAmount);
