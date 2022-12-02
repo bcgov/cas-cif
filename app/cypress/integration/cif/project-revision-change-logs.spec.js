@@ -44,5 +44,9 @@ describe("the project amendment and revisions page", () => {
     cy.findByRole("button", { name: /update/i }).click();
     cy.findByRole("button", { name: /notify/i }).click();
     cy.findByText(/cif_internal Testuser/i).click();
+    cy.findByRole("link", { name: /view minor revision 1/i }).should("exist");
+    cy.get('input[value="Minor Revision"]').should("be.checked");
+    cy.get('[aria-label="Status"]').contains("Approved");
+    cy.findAllByRole("button", { name: /update/i }).should("be.disabled");
   });
 });
