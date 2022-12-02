@@ -44,35 +44,42 @@ export const projectRevisionSchema = {
         },
       ],
     },
-  },
-  dependencies: {
-    revisionType: {
-      oneOf: [
-        {
-          properties: {
-            revisionType: {
-              const: !"Amendment",
-            },
-          },
-        },
-        {
-          properties: {
-            revisionType: {
-              const: "Amendment",
-            },
-            amendmentTypes: {
-              type: "array",
-              title: "Amendment Types",
-              items: {
-                type: "string",
-                enum: [],
+    amendmentStatus: {
+      type: "string",
+      title: "Status",
+      default: undefined,
+      anyOf: undefined,
+      enum: undefined,
+    },
+    dependencies: {
+      revisionType: {
+        oneOf: [
+          {
+            properties: {
+              revisionType: {
+                const: !"Amendment",
               },
-              uniqueItems: true,
             },
           },
-          required: ["amendmentTypes"],
-        },
-      ],
+          {
+            properties: {
+              revisionType: {
+                const: "Amendment",
+              },
+              amendmentTypes: {
+                type: "array",
+                title: "Amendment Types",
+                items: {
+                  type: "string",
+                  enum: [],
+                },
+                uniqueItems: true,
+              },
+            },
+            required: ["amendmentTypes"],
+          },
+        ],
+      },
     },
   },
 };
@@ -82,6 +89,7 @@ export const projectRevisionUISchema = {
     "revisionType",
     "amendmentTypes",
     "pendingActionsFrom",
+    "amendmentStatus",
     "changeReason",
   ],
   revisionType: {
@@ -92,5 +100,11 @@ export const projectRevisionUISchema = {
   },
   pendingActionsFrom: {
     "ui:widget": "SelectWithNotifyWidget",
+  },
+  amendmentStatus: {
+    "ui:widget": "AmendmentStatusWidget",
+    "ui:options": {
+      actionButtonLabel: "Update",
+    },
   },
 };

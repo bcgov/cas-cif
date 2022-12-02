@@ -16,7 +16,10 @@ import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
 
-const createProjectRevisionViewSchema = (allRevisionTypes) => {
+const createProjectRevisionViewSchema = (
+  allRevisionTypes,
+  allAmendmentStatuses
+) => {
   const schema = projectRevisionSchema;
   schema.properties.revisionType = {
     ...schema.properties.revisionType,
@@ -30,13 +33,25 @@ const createProjectRevisionViewSchema = (allRevisionTypes) => {
     }),
   };
 
+  schema.properties.amendmentStatus = {
+    ...schema.properties.amendmentStatus,
+    anyOf: allAmendmentStatuses.map(({ node }) => {
+      return {
+        type: "string",
+        title: node.name,
+        enum: [node.name],
+        value: node.name,
+      } as JSONSchema7Definition;
+    }),
+  };
+
   return schema as JSONSchema7;
 };
 
 const createProjectRevisionUISchema = () => {
-  const uiSchema = projectRevisionUISchema;
-  uiSchema.revisionType["ui:readonly"] = true;
-  return uiSchema;
+  const localUiSchema = JSON.parse(JSON.stringify(projectRevisionUISchema));
+  localUiSchema.revisionType["ui:readonly"] = true;
+  return localUiSchema;
 };
 
 export const ViewProjectRevisionQuery = graphql`
@@ -50,6 +65,8 @@ export const ViewProjectRevisionQuery = graphql`
       id
       revisionType
       createdAt
+      amendmentStatus
+      changeStatus
       cifUserByCreatedBy {
         fullName
       }
@@ -75,17 +92,21 @@ export const ViewProjectRevisionQuery = graphql`
         }
       }
     }
+    allAmendmentStatuses {
+      edges {
+        node {
+          name
+        }
+      }
+    }
   }
 `;
 
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
-  const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
-    ViewProjectRevisionQuery,
-    preloadedQuery
-  );
-
+  const { session, projectRevision, allRevisionTypes, allAmendmentStatuses } =
+    usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
   const taskList = (
     <TaskList
       projectRevision={
@@ -97,6 +118,15 @@ export function ProjectRevisionView({
   );
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
+
+  // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
+  const filteredAmendmentStatuses = allAmendmentStatuses.edges.filter(
+    ({ node }) =>
+      projectRevision.revisionType === "Amendment"
+        ? node.name !== "Applied"
+        : ["Approved", "Draft"].includes(node.name)
+  );
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
@@ -111,7 +141,10 @@ export function ProjectRevisionView({
             tagName={"dl"}
             className="project-revision-view-form"
             schema={
-              createProjectRevisionViewSchema(allRevisionTypes) as JSONSchema7
+              createProjectRevisionViewSchema(
+                allRevisionTypes,
+                filteredAmendmentStatuses
+              ) as JSONSchema7
             }
             uiSchema={createProjectRevisionUISchema()}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
@@ -121,6 +154,7 @@ export function ProjectRevisionView({
               pendingActionsFrom: projectRevision.pendingActionsFrom,
               revisionId: projectRevision.id,
               revisionStatus: projectRevision.revisionStatus,
+              changeStatus: projectRevision.changeStatus,
             }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
