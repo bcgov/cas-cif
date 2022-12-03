@@ -82,11 +82,13 @@ describe("when creating a project, the project page", () => {
       1,
       "desc",
       "General",
-      "2020-01-01",
       "1991-04-17",
       "Professional Engineer",
       true
     );
+    cy.setDateInPicker("Substantial Completion Date", "1991-05-17");
+    cy.contains("Changes saved").should("be.visible");
+    cy.get('[aria-label*="Report Due Date"').contains("Jun 16, 1991");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
     cy.findAllByRole("status").first().should("have.text", "Late");
