@@ -24,25 +24,16 @@ spec:
           - name: deploy-test-cluster
             image: {{ .Values.image.backupTest.repository }}:{{ default .Values.defaultImageTag .Values.image.backupTest.tag }}
             imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.backupTest.pullPolicy }}
-            env:
-              - name: GCP_CREDENTIALS
-                valueFrom:
-                  secretKeyRef:
-                    name: gcp-{{ .Release.Namespace }}-cif-documents-service-account-key
-                    key: credentials.json
-              - name: CRED
-                value: '"$(GCP_CREDENTIALS)"'
             resources:
               limits:
-                cpu: 500m
-                memory: 128Mi
+                cpu: 800m
+                memory: 1Gi
               requests:
-                cpu: 100m
-                memory: 64Mi
+                cpu: 200m
+                memory: 256Mi
             command:
             - /bin/sh
             - -c
             - |
                 set -euo pipefail;
-                BASECRED=`echo $(CRED) | base64 -w 0`;
-                helm install -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test . --set host.namespace={{ $currentNamespace }} --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key --set host.secret.secretKey=credentials.json --set host.secret.credentials='"$(BASECRED)"' | base64;
+                helm install -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test --set host.namespace={{ $currentNamespace }} --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key --set host.secret.secretKey=credentials.json;
