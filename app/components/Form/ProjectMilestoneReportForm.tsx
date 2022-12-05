@@ -221,6 +221,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     });
   };
 
+  milestoneUiSchema.substantialCompletionDate["ui:help"] = (
+    <small>
+      Entering this field automatically calculates Report Due Date (and vice
+      versa)
+    </small>
+  );
+
   return (
     <div>
       <header id={`Milestone0`}>
