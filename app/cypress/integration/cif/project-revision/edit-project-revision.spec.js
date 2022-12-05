@@ -107,7 +107,7 @@ describe("when editing a project, the project page", () => {
     cy.setDateInPicker("Report Due Date", "1999-01-31");
     cy.contains("Changes saved").should("be.visible");
     cy.get('[aria-label*="Substantial Completion Date"').contains(
-      "Jan 01, 1999"
+      /Jan(\.)? 01, 1999/
     );
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "editing", "main");
