@@ -13,6 +13,7 @@ TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 
 DEPLOY_DB_DAG_NAME = 'cas_cif_deploy_db'
 TEST_DB_BACKUPS_DAG_NAME = 'cas_cif_test_db_backups'
+INSERT_BACKUP_TIMESTAMP_DAG_NAME = 'cas_cif_insert_backup_timestamp'
 
 cif_namespace = os.getenv('CIF_NAMESPACE')
 
@@ -79,3 +80,23 @@ test_backups = PythonOperator(
     dag=db_backup_test_dag)
 
 deploy_and_restore >> test_backups
+
+"""
+###############################################################################
+#                                                                             #
+# DAG to insert timestamp for backup testing                                  #
+#                                                                             #
+###############################################################################
+"""
+
+
+db_backup_test_dag = DAG(INSERT_BACKUP_TIMESTAMP_DAG_NAME, schedule_interval=None,
+    default_args=default_args, is_paused_upon_creation=False)
+
+insert_timestamp = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='insert_timestamp',
+    op_args=['insert-backup-test-timestamp', cif_namespace],
+    dag=db_backup_test_dag)
+
+insert_timestamp

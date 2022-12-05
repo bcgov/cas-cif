@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: insert-backup-test-timestamp
+  labels:
+{{ include "cas-cif.labels" . | indent 4 }}
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels: {{ include "cas-cif.labels" . | nindent 14 }}
+        spec:
+          activeDeadlineSeconds: 600
+          serviceAccountName: deployer
+          containers:
+          - name: insert-backup-test-timestamp
+            image: postgres:14.6-alpine
+            imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
+            env:
+              - name: CIF_DATABASE
+                valueFrom:
+                  secretKeyRef:
+                    name: cas-cif-postgres-pguser-postgres
+                    key: dbname
+              - name: CIF_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: cas-cif-postgres-pguser-postgres
+                    key: host
+              - name: CIF_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: cas-cif-postgres-pguser-postgres
+                    key: password
+            resources:
+              limits:
+                cpu: 100m
+                memory: 256Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            command:
+            - /bin/sh
+            - -c
+            - |
+                export PGPASSWORD=$(CIF_PASS);
+                psql -U postgres -h $(CIF_HOST) -d $(CIF_DATABASE) -c "insert into cif_private.full_backup_log(full_backup_timestamp) values (now())";
