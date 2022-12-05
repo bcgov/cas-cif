@@ -16,6 +16,7 @@ spec:
           labels: {{ include "cas-cif.labels" . | nindent 14 }}
         spec:
           activeDeadlineSeconds: 600
+          restartPolicy: Never
           serviceAccountName: deployer
           containers:
           - name: insert-backup-test-timestamp
