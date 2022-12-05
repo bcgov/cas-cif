@@ -121,7 +121,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
       <h3>Project Managers</h3>
       {allFormChangesPristine && !props.viewOnly ? (
         <p>
-          <em>Project managers not {isFirstRevision ? "added" : "updated"}</em>
+          <em>Project Managers not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         managersJSX

@@ -51,6 +51,20 @@ export const createEmissionIntensityReportUiSchema = (
     );
   };
 
+  const emissionFunctionalUnitSuffix = (): JSX.Element => {
+    return (
+      <b className="unitSuffix">
+        /
+        <style jsx>{`
+          .unitSuffix {
+            margin-right: 0.5rem;
+            margin-left: -1rem;
+          }
+        `}</style>
+      </b>
+    );
+  };
+
   const reportDuration = getDurationFromDates(
     measurementPeriodStartDate,
     measurementPeriodEndDate
@@ -98,6 +112,11 @@ export const createEmissionIntensityReportUiSchema = (
   uiSchemaCopy.measurementPeriodEndDate["ui:options"] = {
     ...uiSchemaCopy.measurementPeriodEndDate["ui:options"],
     contentSuffix: reportDurationSuffix,
+  };
+
+  uiSchemaCopy.emissionFunctionalUnit["ui:options"] = {
+    ...uiSchemaCopy.emissionFunctionalUnit["ui:options"],
+    contentSuffix: emissionFunctionalUnitSuffix(),
   };
 
   return uiSchemaCopy;
@@ -232,7 +251,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           }
           style={{ marginRight: "1rem" }}
         >
-          Add TEIMP Agreement
+          Add Emissions Intensity Report
         </Button>
       )}
       {projectRevision.emissionIntensityReportFormChange.edges.length > 0 && (
@@ -342,7 +361,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               isStagingEmissionIntensity
             }
           >
-            Submit TEIMP Report
+            Submit Emissions Intensity Report
           </Button>
           <style jsx>{`
             :global(.functional-unit) {
@@ -351,7 +370,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               padding-right: 0.5em;
             }
             :global(.functional-unit:nth-child(even)) {
-              width: 6rem;
               white-space: nowrap;
             }
           `}</style>

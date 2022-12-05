@@ -141,7 +141,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
       <h3>Project Contacts</h3>
       {allFormChangesPristine && !props.viewOnly ? (
         <p>
-          <em>Project contacts not {isFirstRevision ? "added" : "updated"}</em>
+          <em>Project Contacts not {isFirstRevision ? "added" : "updated"}</em>
         </p>
       ) : (
         <>
@@ -151,7 +151,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               !primaryContact.node.newFormData.contactId)) &&
           !props.viewOnly ? (
             <dd>
-              <em>Primary contact not updated</em>
+              <em>Primary Contact not updated</em>
             </dd>
           ) : (
             <>
@@ -167,7 +167,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                     primaryContact?.node?.asProjectContact?.contactByContactId
                       ?.fullName
                   ) : (
-                    <em>Primary contact not added</em>
+                    <em>Primary Contact not added</em>
                   )
                 )}
                 formData={
@@ -206,8 +206,8 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             <dd>
               <em>
                 {isFirstRevision
-                  ? "No Secondary contacts"
-                  : "Secondary contacts not updated"}
+                  ? "No Secondary Contacts"
+                  : "Secondary Contacts not updated"}
               </em>
             </dd>
           ) : (

@@ -149,7 +149,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
       {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
       !props.viewOnly ? (
         <dd>
-          <em>Quarterly reports not {isFirstRevision ? "added" : "updated"}</em>
+          <em>Quarterly Reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>
       ) : (
         quarterlyReportsJSX

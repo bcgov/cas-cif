@@ -27,7 +27,7 @@ describe("when undoing, the project revision page", () => {
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkOverviewForm(
       "Select a Funding Stream",
-      "Select a Funding Stream RFP Year",
+      "Select a RFP Year",
       "",
       "",
       "",
@@ -95,7 +95,9 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Emissions intensity report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
     cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /add TEIMP agreement/i }).click();
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
     cy.addEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
@@ -106,7 +108,7 @@ describe("when undoing, the project revision page", () => {
       "G"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.findByRole("button", { name: /Add TEIMP agreement/i }).should(
+    cy.findByRole("button", { name: /Add Emissions Intensity Report/i }).should(
       "be.visible"
     );
     cy.findAllByRole("link", { name: /^Add emissions intensity report/i })
@@ -219,7 +221,7 @@ describe("when undoing, the project revision page", () => {
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");
-    cy.findByLabelText(/Max Funding Amount/i).should("have.value", "$1.00");
+    cy.findByLabelText(/Maximum Funding Amount/i).should("have.value", "$1.00");
     cy.findByLabelText(/Proponent Cost/i).should("have.value", "$777.00");
 
     // undo additional funding source

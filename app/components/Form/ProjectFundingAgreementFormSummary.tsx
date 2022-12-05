@@ -161,14 +161,17 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
 
   return (
     <div className="summaryContainer">
-      <h3>Project Funding Agreement</h3>
+      <h3>Budgets, Expenses & Payments</h3>
       {(!fundingAgreementSummary ||
         fundingAgreementSummary?.isPristine ||
         (fundingAgreementSummary?.isPristine === null &&
           Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
       !props.viewOnly ? (
         <p>
-          <em>Funding agreement not {isFirstRevision ? "added" : "updated"}</em>
+          <em>
+            Budgets, Expenses & Payments not{" "}
+            {isFirstRevision ? "added" : "updated"}
+          </em>
         </p>
       ) : (
         <FormBase
@@ -190,7 +193,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       <h3>Project Additional Funding Source</h3>
       {sortedAdditionalFundingSourceFormChanges.length < 1 && props.viewOnly && (
         <dd>
-          <em>No Additional funding source</em>
+          <em>No Additional Funding Source</em>
         </dd>
       )}
       {(allAdditionalFundingSourceFormChangesPristine ||
@@ -198,7 +201,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       !props.viewOnly ? (
         <dd>
           <em>
-            Additional funding source not{" "}
+            Additional Funding Source not{" "}
             {isFirstRevision ? "added" : "updated"}
           </em>
         </dd>

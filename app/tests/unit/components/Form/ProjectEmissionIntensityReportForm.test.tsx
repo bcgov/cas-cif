@@ -137,8 +137,10 @@ describe("the emission intensity report form component", () => {
     };
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
-    expect(screen.getByText("Add TEIMP Agreement")).toBeInTheDocument();
-    userEvent.click(screen.getByText("Add TEIMP Agreement"));
+    expect(
+      screen.getByText("Add Emissions Intensity Report")
+    ).toBeInTheDocument();
+    userEvent.click(screen.getByText("Add Emissions Intensity Report"));
     const mutationUnderTest =
       componentTestingHelper.environment.mock.getAllOperations()[1];
     expect(mutationUnderTest.fragment.node.name).toBe(
@@ -158,25 +160,25 @@ describe("the emission intensity report form component", () => {
     expect(screen.getByLabelText("General Comments")).toHaveTextContent(
       /general comments/
     );
-    expect(
-      screen.getByLabelText(/Measurement period start date/i)
-    ).toHaveTextContent(/Jan[.]? 02, 2022/);
-    expect(
-      screen.getByLabelText(/Measurement period end date/i)
-    ).toHaveTextContent(/Jan[.]? 02, 2023/);
+    expect(screen.getByLabelText(/TEIMP start date/i)).toHaveTextContent(
+      /Jan[.]? 02, 2022/
+    );
+    expect(screen.getByLabelText(/TEIMP end date/i)).toHaveTextContent(
+      /Jan[.]? 02, 2023/
+    );
     expect(screen.getByText(/duration: 12 months/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Functional unit$/i)).toHaveValue("tCO2e");
     expect(
-      screen.getByLabelText(/Base Line Emission Intensity \(BEI\)/)
+      screen.getByLabelText(/Baseline Emission Intensity \(BEI\)/)
     ).toHaveValue("2");
     expect(
       screen.getByLabelText(/Target Emission Intensity \(TEI\)/i)
     ).toHaveValue("3");
     expect(
-      screen.getByLabelText(/Post Project Emission Intensity*/i)
+      screen.getByLabelText(/Post-Project Emission Intensity \(PEI\)*/i)
     ).toHaveValue("4");
     expect(
-      screen.getByLabelText(/Total lifetime emissions reductions*/i)
+      screen.getByLabelText(/Total Project Lifetime Emissions Reductions*/i)
     ).toHaveValue("5");
 
     // We can't query by label for text elements,
@@ -189,7 +191,7 @@ describe("the emission intensity report form component", () => {
     ).toHaveValue("6.00%");
     expect(
       screen.getByLabelText(
-        "Payment percentage of performance milestone amount"
+        /Payment percentage of performance milestone amount/i
       )
     ).toHaveTextContent("60.00%");
     expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
@@ -198,9 +200,9 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByLabelText("Holdback Payment Amount (Adjusted)")
     ).toHaveValue("$123,456.45");
-    expect(screen.getByLabelText(/Date sent to CSNR/i)).toHaveTextContent(
-      /Feb[.]? 11, 2022/
-    );
+    expect(
+      screen.getByLabelText(/Date invoice sent to CSNR/i)
+    ).toHaveTextContent(/Feb[.]? 11, 2022/);
   });
 
   it("renders 0% for the GHG emissions performance if the calculated value is null", () => {
@@ -273,7 +275,7 @@ describe("the emission intensity report form component", () => {
     ).toHaveTextContent("0.00%");
     expect(
       screen.getByLabelText(
-        "Payment percentage of performance milestone amount"
+        /Payment percentage of performance milestone amount/i
       )
     ).toHaveTextContent("-");
     expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
@@ -301,8 +303,10 @@ describe("the emission intensity report form component", () => {
     };
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
-    expect(screen.getByText("Add TEIMP Agreement")).toBeInTheDocument();
-    userEvent.click(screen.getByText("Add TEIMP Agreement"));
+    expect(
+      screen.getByText("Add Emissions Intensity Report")
+    ).toBeInTheDocument();
+    userEvent.click(screen.getByText("Add Emissions Intensity Report"));
     act(() => {
       componentTestingHelper.environment.mock.rejectMostRecentOperation(
         new Error()

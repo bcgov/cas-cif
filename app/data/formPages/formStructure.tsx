@@ -31,7 +31,7 @@ export const useFormStructure: () => IFormSection[] = () => {
         title: "Project Overview",
         items: [
           {
-            title: "Project overview",
+            title: "Project Overview",
             formConfiguration: {
               slug: "projectOverview",
               editComponent: ProjectForm,
@@ -45,7 +45,7 @@ export const useFormStructure: () => IFormSection[] = () => {
         optional: true,
         items: [
           {
-            title: "Project managers",
+            title: "Project Managers",
             formConfiguration: {
               slug: "projectManagers",
               editComponent: ProjectManagerFormGroup,
@@ -53,7 +53,7 @@ export const useFormStructure: () => IFormSection[] = () => {
             },
           },
           {
-            title: "Project contacts",
+            title: "Project Contacts",
             formConfiguration: {
               slug: "projectContacts",
               editComponent: ProjectContactForm,
@@ -66,7 +66,7 @@ export const useFormStructure: () => IFormSection[] = () => {
         title: "Budgets, Expenses & Payments",
         items: [
           {
-            title: "Budgets overview",
+            title: "Budgets, Expenses & Payments",
             formConfiguration: {
               slug: "fundingAgreement",
               editComponent: ProjectFundingAgreementForm,
@@ -83,7 +83,6 @@ export const useFormStructure: () => IFormSection[] = () => {
           viewComponent: ProjectMilestoneReportFormSummary,
         },
       },
-
       ...(showTeimp
         ? [
             {
@@ -106,7 +105,7 @@ export const useFormStructure: () => IFormSection[] = () => {
         title: "Quarterly Reports",
         items: [
           {
-            title: "Quarterly reports",
+            title: "Quarterly Reports",
             formConfiguration: {
               slug: "quarterlyReports",
               editComponent: ProjectQuarterlyReportForm,
@@ -119,7 +118,7 @@ export const useFormStructure: () => IFormSection[] = () => {
         title: "Annual Reports",
         items: [
           {
-            title: "Annual reports",
+            title: "Annual Reports",
             formConfiguration: {
               slug: "annualReports",
               editComponent: ProjectAnnualReportForm,

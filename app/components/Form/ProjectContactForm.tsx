@@ -472,8 +472,8 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       )
                     }
                   >
-                    <FontAwesomeIcon icon={faPlusCircle} /> Add a secondary
-                    contact
+                    <FontAwesomeIcon icon={faPlusCircle} /> Add a Secondary
+                    Contact
                   </Button>
                 </Grid.Col>
               </Grid.Row>
@@ -485,7 +485,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                 onClick={stageContactFormChanges}
                 disabled={isUpdating || isStaging}
               >
-                Submit Contacts
+                Submit Project Contacts
               </Button>
             </Grid.Row>
           </Grid.Col>

@@ -59,8 +59,8 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         };
       }),
       displayField: "year",
-      placeholder: "Select a Funding Stream RFP Year",
-      label: "Funding Stream RFP",
+      placeholder: "Select a RFP Year",
+      label: "RFP Year",
     };
   }, [allFundingStreamRfps]);
 

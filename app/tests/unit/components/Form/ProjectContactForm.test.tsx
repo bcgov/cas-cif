@@ -154,7 +154,7 @@ describe("The ProjectContactForm", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    const addButton = screen.getByText("Add a secondary contact");
+    const addButton = screen.getByText(/Add a secondary contact/i);
     addButton.click();
 
     expect(

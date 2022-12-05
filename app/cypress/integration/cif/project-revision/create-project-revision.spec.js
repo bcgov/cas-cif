@@ -27,7 +27,7 @@ describe("when creating a project, the project page", () => {
       "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project overview Form", "filled", "main");
+    cy.happoAndAxe("Project Overview Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add managers
@@ -46,18 +46,21 @@ describe("when creating a project, the project page", () => {
       "bob.l004@example.com"
     );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project contacts Form", "filled", "main");
+    cy.happoAndAxe("Project Contacts Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add budgets, expenses, and payments
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     // checking default values
-    cy.get('[aria-label="Province Share Percentage"]').should(
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
       "50 %"
     );
-    cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
+    cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
+      "have.value",
+      "10 %"
+    );
 
     cy.fillFundingAgreementForm(
       222,
@@ -89,9 +92,11 @@ describe("when creating a project, the project page", () => {
     cy.findAllByRole("status").first().should("have.text", "Late");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    // add teimp reports
+    // add emissions intensity reports
     cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
     cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
     cy.findAllByText("tCO2e").should("have.length", 4);
     cy.addEmissionIntensityReport(
@@ -106,7 +111,7 @@ describe("when creating a project, the project page", () => {
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");
-    cy.findByText(/Submit TEIMP Report/).click();
+    cy.findByText(/Submit Emissions Intensity Report/).click();
 
     //add quarterly reports
     cy.url().should("include", "/form/6");
@@ -126,7 +131,7 @@ describe("when creating a project, the project page", () => {
     cy.contains("Review and Submit Project");
 
     // project overview section
-    cy.findByText(/Funding Stream RFP ID/i)
+    cy.findByText(/RFP Year ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2020");
     cy.findByText(/Operator Name/i)
@@ -195,11 +200,11 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Bob004 Loblaw004");
 
     // TEIMP section
-    cy.findByText(/^Measurement period start date/i)
+    cy.findByText(/^TEIMP start date/i)
       .next()
       .contains(/Jan(\.)? 1, 2022/)
       .should("be.visible");
-    cy.findByText(/Measurement period end date/i)
+    cy.findByText(/TEIMP end date/i)
       .next()
       .next()
       .contains(/Duration: 1 month, 1 day/i);
@@ -271,8 +276,10 @@ describe("when creating a project, the project page", () => {
     }).click();
     cy.findByText(/Add emissions intensity report/i).click();
     cy.url().should("include", "/form/5");
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
-    cy.setDateInPicker("Measurement period end date", "2022-01-01");
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
+    cy.setDateInPicker("TEIMP End Date", "2022-01-01");
     cy.setDateInPicker("Report Due Date", "2020-01-01");
     cy.contains("Changes saved").should("be.visible");
 

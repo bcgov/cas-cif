@@ -31,7 +31,7 @@ describe("the new project page", () => {
     cy.findByText(/Add project overview/i)
       .next()
       .should("have.text", "Attention Required");
-    cy.happoAndAxe("Project managers Form", "empty", "main");
+    cy.happoAndAxe("Project Managers Form", "empty", "main");
 
     // CONTACTS
     cy.findByText(/Add project contacts/i).click();
@@ -43,21 +43,24 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /add a secondary contact/i }).click();
     cy.get('[placeholder="Select a Contact"]').should("have.length", 4);
 
-    cy.happoAndAxe("Project contacts Form", "empty", "main");
-    cy.findByText(/Submit contacts/i).click();
+    cy.happoAndAxe("Project Contacts Form", "empty", "main");
+    cy.findByText(/Submit project contacts/i).click();
 
     // BUDGETS, EXPENSES AND PAYMENTS
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
-    cy.contains("Project Funding Agreement");
+    cy.contains(/Budgets, expenses & payments/i);
     cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
-    cy.get('[aria-label="Province Share Percentage"]').should(
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
       "50 %"
     );
-    cy.get('[aria-label="Holdback Percentage"]').should("have.value", "10 %");
+    cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
+      "have.value",
+      "10 %"
+    );
 
     cy.fillFundingAgreementForm(
       222,
@@ -83,12 +86,14 @@ describe("the new project page", () => {
       "be.disabled"
     );
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Project quarterly reports Form", "empty", "main");
+    cy.happoAndAxe("Project Quarterly Reports Form", "empty", "main");
 
     // Emissions Intensity Report
     cy.findByText(/Emissions Intensity Report/i).click();
     cy.findByText(/Add emissions intensity report/i).click();
-    cy.findByText(/Add TEIMP Agreement/i).click();
+    cy.findByRole("button", {
+      name: /Add emissions intensity report/i,
+    }).click();
     cy.contains("Changes saved.");
     cy.happoAndAxe("Emissions Intensity Report", "empty", "main");
 
@@ -96,11 +101,11 @@ describe("the new project page", () => {
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
     cy.contains("Changes saved.");
-    cy.happoAndAxe("Project annual reports Form", "empty", "main");
+    cy.happoAndAxe("Project Annual Reports Form", "empty", "main");
 
     // SUMMMARY
     cy.findByText(/Submit Changes/i).click();
-    cy.findByText(/review and submit information/i).click();
+    cy.findByText(/Review and Submit information/i).click();
     cy.findByText(/project overview not added/i).should("be.visible");
     cy.findByText(/project managers not added/i).should("be.visible");
     cy.findByText(/milestone reports not added/i).should("be.visible");
@@ -122,34 +127,34 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
-    cy.findByRole("link", { name: "Project overview" })
+    cy.findByRole("link", { name: "Project Overview" })
       .next()
       .should("not.exist");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
-    cy.findByText(/Funding Stream RFP ID/i)
+    cy.findByText(/RFP Year ID/i)
       .next()
       .should("have.text", "Emissions Performance - 2019");
     cy.findByText(/Project Details/i).click();
-    cy.findByRole("link", { name: "Project managers" })
+    cy.findByRole("link", { name: "Project Managers" })
       .next()
       .should("not.exist");
-    cy.findByRole("link", { name: "Project managers" }).click();
+    cy.findByRole("link", { name: "Project Managers" }).click();
     cy.url().should("include", "/form/1");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText("Tech Team Primary (optional)")
       .next()
       .should("have.text", "cif_internal Testuser");
-    cy.findByRole("link", { name: "Project contacts" })
+    cy.findByRole("link", { name: "Project Contacts" })
       .next()
       .should("not.exist");
-    cy.findByRole("link", { name: "Project contacts" }).click();
+    cy.findByRole("link", { name: "Project Contacts" }).click();
     cy.url().should("include", "/form/2");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.findByText(/Primary Contact/).should("be.visible");
 
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
-    cy.findByRole("link", { name: "Budgets overview" }).click();
+    cy.findByRole("link", { name: "Budgets, Expenses & Payments" }).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
@@ -245,7 +250,7 @@ describe("the new project page", () => {
       aliasOperation(req, "stageReportingRequirementFormChangeMutation");
     });
     cy.findByRole("button", {
-      name: /Add TEIMP /i,
+      name: /Add Emissions Intensity Report/i,
     }).click();
     cy.contains("Changes saved").should("be.visible");
 
@@ -284,7 +289,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 3);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
-      "Project quarterly reports Form",
+      "Project Quarterly Reports Form",
       "with errors",
       ".error-detail"
     );
@@ -300,7 +305,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 1);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
-      "Project annual reports Form",
+      "Project Annual Reports Form",
       "with errors",
       ".error-detail"
     );

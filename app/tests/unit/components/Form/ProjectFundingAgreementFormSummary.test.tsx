@@ -114,15 +114,19 @@ describe("The Project Funding Agreement Form Summary", () => {
   it("Only displays the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
-    expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
-    expect(screen.queryByText("Max Funding Amount")).not.toBeInTheDocument();
+    expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
+    expect(
+      screen.getByText("Performance Milestone Holdback Percentage")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Maximum Funding Amount")
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByText("Project Assets Life End Date")
     ).not.toBeInTheDocument();
 
     expect(
-      screen.queryByText("Anticipated Funding Amount")
+      screen.queryByText("Anticipated/Actual Funding Amount")
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
     expect(
@@ -208,10 +212,15 @@ describe("The Project Funding Agreement Form Summary", () => {
     });
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("Max Funding Amount")).toBeInTheDocument();
-    expect(screen.getByText("Province Share Percentage")).toBeInTheDocument();
-    expect(screen.getByText("Holdback Percentage")).toBeInTheDocument();
-    expect(screen.getByText("Anticipated Funding Amount")).toBeInTheDocument();
+    expect(screen.getByText("Total Project Value")).toBeInTheDocument();
+    expect(screen.getByText("Maximum Funding Amount")).toBeInTheDocument();
+    expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
+    expect(
+      screen.getByText("Performance Milestone Holdback Percentage")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Anticipated/Actual Funding Amount")
+    ).toBeInTheDocument();
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
     expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
     expect(

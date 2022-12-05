@@ -179,7 +179,7 @@ describe("The ProjectMilestoneReportForm", () => {
   it("Calls the createMilestoneMutation mutation when the Add button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    const addButton = screen.getByText("Add another milestone report");
+    const addButton = screen.getByText(/Add another milestone report/i);
     addButton.click();
 
     const mutationUnderTest =

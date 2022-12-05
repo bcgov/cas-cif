@@ -97,7 +97,7 @@ Cypress.Commands.add(
   ) => {
     cy.url().should("include", "/form/0");
     cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
-    cy.findByLabelText(/Funding Stream RFP/i).select(fundingStreamYear);
+    cy.findByLabelText(/RFP Year/i).select(fundingStreamYear);
     cy.findByLabelText(/Operator Name/i).click();
     cy.contains(operatorName).click();
     cy.findByLabelText("Sector").click();
@@ -267,11 +267,8 @@ Cypress.Commands.add(
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");
 
-    cy.setDateInPicker(
-      "Measurement period start date",
-      measurementPeriodStartDate
-    );
-    cy.setDateInPicker("Measurement period end date", measurementPeriodEndDate);
+    cy.setDateInPicker("TEIMP Start Date", measurementPeriodStartDate);
+    cy.setDateInPicker("TEIMP End Date", measurementPeriodEndDate);
     cy.get('[aria-label="Functional Unit"]')
       .clear()
       .type(emissionFunctionalUnit);
@@ -281,13 +278,13 @@ Cypress.Commands.add(
         .clear()
         .type(productionFunctionalUnit);
 
-    cy.get('[aria-label="Base Line Emission Intensity (BEI)"]')
+    cy.get('[aria-label="Baseline Emission Intensity (BEI)"]')
       .clear()
       .type(baselineEmissionIntensity);
     cy.get('[aria-label="Target Emission Intensity (TEI)"]')
       .clear()
       .type(targetEmissionIntensity);
-    cy.get('[aria-label*="Post Project Emission Intensity"]')
+    cy.get('[aria-label*="Post-Project Emission Intensity (PEI)"]')
       .clear()
       .type(postProjectEmissionIntensity);
 
@@ -406,16 +403,16 @@ Cypress.Commands.add(
     contractStartDate,
     projectAssetsLifeEndDate
   ) => {
-    cy.findByLabelText(/Max Funding Amount$/i)
+    cy.findByLabelText(/Maximum Funding Amount$/i)
       .clear()
       .type(maxFundingAmount);
-    cy.findByLabelText(/Province Share Percentage$/i)
+    cy.findByLabelText(/Province's Share Percentage$/i)
       .clear()
       .type(provinceSharePercentage);
-    cy.findByLabelText(/Holdback Percentage$/i)
+    cy.findByLabelText(/Performance Milestone Holdback Percentage$/i)
       .clear()
       .type(holdbackPercentage);
-    cy.findByLabelText(/Anticipated Funding Amount$/i)
+    cy.findByLabelText(/Anticipated\/Actual Funding Amount$/i)
       .clear()
       .type(anticipatedFundingAmount);
     cy.findByLabelText(/Proponent Cost$/i)
@@ -445,16 +442,19 @@ Cypress.Commands.add(
     totalProjectValue = "$0.00",
     summaryPageMode = false
   ) => {
-    cy.findByText(/Max Funding Amount$/i)
+    cy.findByText(/Total Project Value$/i)
+      .next()
+      .should("have.text", totalProjectValue);
+    cy.findByText(/Maximum Funding Amount$/i)
       .next()
       .should("have.text", maxFundingAmount);
-    cy.findByText(/Province Share Percentage$/i)
+    cy.findByText(/Province's Share Percentage$/i)
       .next()
       .should("have.text", provinceSharePercentage);
-    cy.findByText(/Holdback Percentage$/i)
+    cy.findByText(/Performance Milestone Holdback Percentage$/i)
       .next()
       .should("have.text", holdbackPercentage);
-    cy.findByText(/Anticipated Funding Amount$/i)
+    cy.findByText(/Anticipated\/Actual Funding Amount$/i)
       .next()
       .should("have.text", anticipatedFundingAmount);
     cy.findByText(/Proponent Cost$/i)

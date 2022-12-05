@@ -28,7 +28,7 @@ describe("when editing a project, the project page", () => {
 
     cy.contains("Changes saved.");
 
-    cy.happoAndAxe("Project overview Form", "editing", "main");
+    cy.happoAndAxe("Project Overview Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit managers -- delete a manager
@@ -68,14 +68,14 @@ describe("when editing a project, the project page", () => {
       "have.value",
       "Bob003 Loblaw003"
     );
-    cy.happoAndAxe("Project contacts Form", "editing", "main");
+    cy.happoAndAxe("Project Contacts Form", "editing", "main");
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Review and Submit Project").should("be.visible");
 
     // edit budgets, expenses, and payments -- change funding agreement
-    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.contains(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
@@ -116,25 +116,7 @@ describe("when editing a project, the project page", () => {
 
     // cy.findByText(/Submit changes/i).click();
     cy.contains("Changes saved.");
-    cy.findByText(/Review and submit information/i).click();
-
-    // edit teimp
-    cy.contains("Review and Submit Project");
-    cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
-    cy.findByText(/Edit emissions intensity report/i).click();
-    cy.findByRole("button", { name: /Add TEIMP Agreement/i }).click();
-    cy.addEmissionIntensityReport(
-      "2022-01-01",
-      "2022-02-02",
-      "tCO2",
-      "1",
-      "2",
-      "3",
-      "G"
-    );
-    cy.contains("Changes saved.");
-    cy.happoAndAxe("Project teimp agreement form", "editing", "main");
-    cy.findByText(/Submit TEIMP report/i).click();
+    cy.findByText(/Review and Submit information/i).click();
 
     // edit quarterly reports -- delete a report
     cy.contains("Review and Submit Project");
@@ -153,8 +135,31 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Complete/i).should("be.visible");
     cy.url().should("include", "/form/6");
 
-    cy.happoAndAxe("Project quarterly reports Form", "editing", "main");
+    cy.happoAndAxe("Project Quarterly Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
+
+    cy.contains("Changes saved.");
+    cy.findByText(/Review and Submit information/i).click();
+
+    // edit teimp
+    cy.contains("Review and Submit Project");
+    cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
+    cy.findByText(/Edit emissions intensity report/i).click();
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "tCO2",
+      "1",
+      "2",
+      "3",
+      "G"
+    );
+    cy.contains("Changes saved.");
+    cy.happoAndAxe("Project teimp agreement form", "editing", "main");
+    cy.findByText(/Submit Emissions Intensity Report/i).click();
 
     cy.contains("Changes saved.");
     cy.findByText(/Review and submit information/i).click();
@@ -169,12 +174,12 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
-
-    cy.happoAndAxe("Project annual reports Form", "editing", "main");
+    console.log("annual reports");
+    cy.happoAndAxe("Project Annual Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Changes saved.");
-    cy.findByText(/Review and submit information/i).click();
+    cy.findByText(/Review and Submit information/i).click();
 
     // check diffs
     cy.contains("Review and Submit Project");
@@ -231,13 +236,13 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /submit project overview/i }).click();
     cy.findByText(/review and submit project/i).should("exist");
 
-    // Navigate back to the review and submit information page
+    // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.findByText(/resume edition/i).click();
     cy.findByText(/submit change/i).click();
-    cy.findByText(/review and submit information/i).click();
+    cy.findByText(/Review and Submit information/i).click();
     cy.findByText(/review and submit project/i).should("exist");
     cy.get("textarea").click().type("foo");
 
