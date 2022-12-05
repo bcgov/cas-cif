@@ -69,8 +69,13 @@ db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule_interval=None,
 deploy_and_restore = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='deploy_and_restore',
+    op_args=['deploy-database-backups', cif_namespace],
+    dag=db_backup_test_dag)
+
+test_backups = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='test_backups',
     op_args=['test-database-backups', cif_namespace],
     dag=db_backup_test_dag)
 
-
-deploy_and_restore
+deploy_and_restore >> test_backups
