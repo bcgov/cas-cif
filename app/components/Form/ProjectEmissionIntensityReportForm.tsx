@@ -51,16 +51,19 @@ export const createEmissionIntensityReportUiSchema = (
     );
   };
 
-  const emissionFunctionalUnitSuffix = (
-    <b>
-      /
-      <style jsx>{`
-        .emissionSuffix {
-          margin-right: 2rem;
-        }
-      `}</style>
-    </b>
-  );
+  const emissionFunctionalUnitSuffix = (): JSX.Element => {
+    return (
+      <b className="unitSuffix">
+        /
+        <style jsx>{`
+          .unitSuffix {
+            margin-right: 0.5rem;
+            margin-left: -1rem;
+          }
+        `}</style>
+      </b>
+    );
+  };
 
   const reportDuration = getDurationFromDates(
     measurementPeriodStartDate,
@@ -113,7 +116,7 @@ export const createEmissionIntensityReportUiSchema = (
 
   uiSchemaCopy.emissionFunctionalUnit["ui:options"] = {
     ...uiSchemaCopy.emissionFunctionalUnit["ui:options"],
-    contentSuffix: emissionFunctionalUnitSuffix,
+    contentSuffix: emissionFunctionalUnitSuffix(),
   };
 
   return uiSchemaCopy;
