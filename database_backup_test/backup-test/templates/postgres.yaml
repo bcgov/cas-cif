@@ -87,7 +87,7 @@ spec:
         repoName: repo1
         options:
         - --type=time
-        - --target={{ now | date_modify "-1h" | quote}}
+        - --target={{ now | date_modify "-1h" | date "2006-01-02 15:04:05.000000" | quote }}
         - --archive-mode=off
     {{- end }}
       configuration:

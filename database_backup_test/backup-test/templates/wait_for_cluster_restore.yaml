@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-cluster-restore
+  labels:
+{{ include "backup-test.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install"
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 800
+  template:
+    metadata:
+      labels: {{ include "backup-test.labels" . | nindent 14 }}
+    spec:
+      activeDeadlineSeconds: 800
+      restartPolicy: Never
+      serviceAccountName: deployer
+      containers:
+      - name: deploy-test-cluster
+        image: alpine:latest
+        imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
+        command:
+        - /bin/sh
+        - -c
+        - |
+            sleep 600; exit 0;
