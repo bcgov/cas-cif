@@ -1,7 +1,7 @@
 import { Button } from "@button-inc/bcgov-theme";
 import { WidgetProps } from "@rjsf/core";
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
-import { useMemo } from "react";
+import ReadOnlyWidget from "./ReadOnlyWidget";
 import SelectWidget from "./SelectWidget";
 
 const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
@@ -17,11 +17,6 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
     useUpdateProjectRevision();
 
   const { revisionId, changeStatus } = formContext;
-
-  const disableWidget = useMemo(
-    () => isUpdatingProjectRevision || changeStatus === "committed",
-    [isUpdatingProjectRevision, changeStatus]
-  );
 
   const clickHandler = () => {
     return new Promise((resolve, reject) =>
@@ -48,24 +43,30 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
 
   return (
     <div>
-      <SelectWidget {...props} disabled={disableWidget} />
-      <Button
-        type="submit"
-        onClick={clickHandler}
-        style={{ marginRight: "1rem" }}
-        disabled={disableWidget}
-      >
-        {actionButtonLabel}
-      </Button>
-      <style jsx>{`
-        div {
-          display: flex;
-          justify-content: space-between;
-        }
-        div :global(.pg-select) {
-          width: 18em;
-        }
-      `}</style>
+      {changeStatus === "pending" ? (
+        <div>
+          <SelectWidget {...props} readonly={true} />
+          <Button
+            type="submit"
+            onClick={clickHandler}
+            style={{ marginRight: "1rem" }}
+            disabled={isUpdatingProjectRevision}
+          >
+            {actionButtonLabel}
+          </Button>
+          <style jsx>{`
+            div {
+              display: flex;
+              justify-content: space-between;
+            }
+            div :global(.pg-select) {
+              width: 18em;
+            }
+          `}</style>
+        </div>
+      ) : (
+        <ReadOnlyWidget {...props} />
+      )}
     </div>
   );
 };

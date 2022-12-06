@@ -18,7 +18,7 @@ describe("The RevisionStatusWidget", () => {
       id: "test-id",
       formContext: {
         revisionId: "test-revision-id",
-        changeStatus: "committed",
+        changeStatus: "pending",
       },
       uiSchema: {
         "ui:options": {
@@ -82,7 +82,7 @@ describe("The RevisionStatusWidget", () => {
       })
     );
   });
-  it("renders widget in disabled mode when revision status is committed", () => {
+  it("renders widget in readonly mode when revision status is not pending", () => {
     const props: any = {
       id: "test-id",
       formContext: {
@@ -101,15 +101,13 @@ describe("The RevisionStatusWidget", () => {
           { value: 2, enum: [2], type: "string", title: "Option 2" },
         ],
       },
+      options: {
+        text: "just for testing",
+      },
     };
     render(<RevisionStatusWidget {...props} />);
 
-    expect(screen.getByRole("combobox")).toBeDisabled();
-
-    expect(
-      screen.getByRole("button", {
-        name: /action button label/i,
-      })
-    ).toBeDisabled();
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+    expect(screen.queryByText(/action button label/i)).not.toBeInTheDocument();
   });
 });
