@@ -90,13 +90,13 @@ deploy_and_restore >> test_backups
 """
 
 
-db_backup_test_dag = DAG(INSERT_BACKUP_TIMESTAMP_DAG_NAME, schedule_interval='0 6 * * *',
+insert_timestamp_dag = DAG(INSERT_BACKUP_TIMESTAMP_DAG_NAME, schedule_interval='0 6 * * *',
     default_args=default_args, is_paused_upon_creation=False)
 
 insert_timestamp = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='insert_timestamp',
     op_args=['insert-backup-test-timestamp', cif_namespace],
-    dag=db_backup_test_dag)
+    dag=insert_timestamp_dag)
 
 insert_timestamp
