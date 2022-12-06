@@ -20,6 +20,7 @@ const CalculatedValueWidget: React.FC<WidgetProps> = ({
       <div>
         {calculatedValue !== null && calculatedValue !== undefined ? (
           <NumberFormat
+            thousandSeparator={isMoney}
             fixedDecimalScale={isMoney || isPercentage}
             prefix={isMoney ? "$" : ""}
             suffix={isPercentage ? "%" : ""}
