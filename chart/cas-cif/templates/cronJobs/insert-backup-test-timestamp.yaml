@@ -49,5 +49,5 @@ spec:
             - /bin/sh
             - -c
             - |
-                export PGPASSWORD=$(CIF_PASS);
-                psql -U postgres -h $(CIF_HOST) -d $(CIF_DATABASE) -c "insert into cif_private.full_backup_log(full_backup_timestamp) values (now())";
+                export PGPASSWORD="$(CIF_PASS)"";
+                psql -U postgres -h "$(CIF_HOST)" -d "$(CIF_DATABASE)" -c "insert into cif_private.full_backup_log(full_backup_timestamp) values (now())";
