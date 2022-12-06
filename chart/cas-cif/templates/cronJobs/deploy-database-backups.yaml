@@ -12,12 +12,12 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
-      activeDeadlineSeconds: 600
+      activeDeadlineSeconds: 800
       template:
         metadata:
           labels: {{ include "cas-cif.labels" . | nindent 14 }}
         spec:
-          activeDeadlineSeconds: 600
+          activeDeadlineSeconds: 800
           restartPolicy: Never
           serviceAccountName: deployer
           containers:
@@ -36,4 +36,4 @@ spec:
             - -c
             - |
                 set -euo pipefail;
-                helm install --timeout 20m -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test --set host.namespace={{ $currentNamespace }} --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key --set host.secret.secretKey=credentials.json;
+                helm install -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test --set host.namespace={{ $currentNamespace }} --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key --set host.secret.secretKey=credentials.json;
