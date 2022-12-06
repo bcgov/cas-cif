@@ -7,7 +7,7 @@ import { TimeDuration } from "./addDurationToTimestamptz";
  * @param toSubtract The duration to be subtracted from the date
  * @returns The resulting date in timestamptz format (string).
  */
-const subtractDirationFromTimestamptz = (
+const subtractDurationFromTimestamptz = (
   timestampString: string,
   toSubtract: Partial<TimeDuration>
 ) => {
@@ -15,4 +15,4 @@ const subtractDirationFromTimestamptz = (
   return date.minus(toSubtract).toISO();
 };
 
-export default subtractDirationFromTimestamptz;
+export default subtractDurationFromTimestamptz;
