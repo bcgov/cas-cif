@@ -14,6 +14,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import NotifyModal from "components/ProjectRevision/NotifyModal";
 
 const createProjectRevisionViewSchema = (allRevisionTypes) => {
   const schema = projectRevisionSchema;
@@ -44,6 +45,8 @@ export const ViewProjectRevisionQuery = graphql`
       ...DefaultLayout_session
     }
     projectRevision(id: $projectRevision) {
+      ...NotifyModal_projectRevision
+      pendingActionsFrom
       id
       revisionType
       createdAt
@@ -74,6 +77,7 @@ export const ViewProjectRevisionQuery = graphql`
     }
   }
 `;
+
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
@@ -81,6 +85,7 @@ export function ProjectRevisionView({
     ViewProjectRevisionQuery,
     preloadedQuery
   );
+
   const taskList = (
     <TaskList
       projectRevision={
@@ -118,6 +123,7 @@ export function ProjectRevisionView({
               revisionStatus: projectRevision.revisionStatus,
             }}
           ></FormBase>
+          <NotifyModal projectRevision={projectRevision} />
           <div className="revision-record-history-section">
             <dt>Revision record history</dt>
             {projectRevision.updatedAt && (
