@@ -36,4 +36,4 @@ spec:
             - -c
             - |
                 set -euo pipefail;
-                helm install -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test --set host.namespace={{ $currentNamespace }} --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key --set host.secret.secretKey=credentials.json;
+                helm install --timeout 20m -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test --set host.namespace={{ $currentNamespace }} --set host.secret.secretName=gcp-{{ $currentNamespace }}-cif-backups-service-account-key --set host.secret.secretKey=credentials.json;
