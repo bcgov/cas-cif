@@ -8,7 +8,7 @@ do $$
       select true
       from information_schema.columns
       where table_schema='cif' and table_name='project_revision' and column_name='pending_actions_from'
-    ), 'column "pending_actions_from" is not defined on table "project_revision"';
+    ), 'column "pending_actions_from" is defined on table "project_revision"';
   end;
 $$;
 
