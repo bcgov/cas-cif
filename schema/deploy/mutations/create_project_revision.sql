@@ -12,6 +12,7 @@ declare
 begin
   insert into cif.project_revision(project_id, change_status, revision_type, revision_status)
   values ($1, 'pending', $2, 'Draft') returning * into revision_row;
+
   foreach _amendment_type in array $3
     loop
       insert into cif.project_revision_amendment_type(project_revision_id, amendment_type)
