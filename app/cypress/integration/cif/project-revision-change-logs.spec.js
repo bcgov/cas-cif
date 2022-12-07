@@ -41,6 +41,5 @@ describe("the project amendment and revisions page", () => {
     cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
     cy.findByRole("link", { name: /view minor revision 1/i }).should("exist");
     cy.get('input[value="Minor Revision"]').should("be.checked");
-    cy.get("select").should("be.visible").select("Director");
   });
 });
