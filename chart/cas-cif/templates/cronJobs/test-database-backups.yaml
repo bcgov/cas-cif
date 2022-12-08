@@ -1,11 +1,3 @@
-{{- $backupNamespace := printf "%s%s" (include "cas-cif.namespacePrefix" .) "-tools"}}
-{{- $backupHost := printf "%s%s%s" "backup-test-postgres-primary." $backupNamespace ".svc.cluster.local"}}
-{{- $secret := (lookup "v1" "Secret" $backupNamespace "backup-test-postgres-pguser-postgres" ) }}
-{{- $pgPassword := "unfetched password" }}
-{{- if $secret }}
-{{- $pgPassword = index $secret.data "password" }}
-{{- end -}}
-
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -26,27 +18,10 @@ spec:
           activeDeadlineSeconds: 600
           restartPolicy: Never
           serviceAccountName: deployer
-          containers:
-          - name: test-database-backups
+          initContainers:
+          - name: test-for-timestamp
             image: postgres:14.6-alpine
-            imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.backupTest.pullPolicy }}
-            env:
-              - name: CIF_BACKUP_DATABASE
-                valueFrom:
-                  secretKeyRef:
-                    key: cas-cif-postgres-pguser-postgres
-                    name: dbname
-              - name: CIF_BACKUP_HOST
-                value: {{ $backupHost }}
-              - name: CIF_BACKUP_PASS
-                value: {{ $pgPassword }}
-            resources:
-              limits:
-                cpu: 800m
-                memory: 1Gi
-              requests:
-                cpu: 200m
-                memory: 256Mi
+            imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
             command:
             - /bin/sh
             - -c
@@ -60,6 +35,38 @@ spec:
                   exit 1
                 else
                   echo 'timestamp found, backup ok...uninstalling test cluster';
-                  helm uninstall -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test;
                   exit 0;
                 fi;
+          containers:
+          - name: uninstall-backup-chart
+            image: {{ .Values.image.backupTest.repository }}:{{ default .Values.defaultImageTag .Values.image.backupTest.tag }}
+            imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.backupTest.pullPolicy }}
+            env:
+              - name: CIF_BACKUP_DATABASE
+                valueFrom:
+                  secretKeyRef:
+                    key: database
+                    name: test-database-backups-database
+              - name: CIF_BACKUP_HOST
+                valueFrom:
+                  secretKeyRef:
+                    key: host
+                    name: test-database-backups-database
+              - name: CIF_BACKUP_PASS
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: test-database-backups-database
+            resources:
+              limits:
+                cpu: 800m
+                memory: 1Gi
+              requests:
+                cpu: 200m
+                memory: 256Mi
+            command:
+            - /bin/sh
+            - -c
+            - |
+                set -euo pipefail;
+                helm uninstall -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test;
