@@ -34,8 +34,8 @@ spec:
               - name: CIF_BACKUP_DATABASE
                 valueFrom:
                   secretKeyRef:
-                    key: cas-cif-postgres-pguser-postgres
-                    name: dbname
+                    key: dbname
+                    name: cas-cif-postgres-pguser-postgres
               - name: CIF_BACKUP_HOST
                 value: {{ $backupHost }}
               - name: CIF_BACKUP_PASS
