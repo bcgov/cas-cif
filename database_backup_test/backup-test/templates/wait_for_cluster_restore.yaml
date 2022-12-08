@@ -16,12 +16,44 @@ spec:
       activeDeadlineSeconds: 800
       restartPolicy: Never
       serviceAccountName: deployer
-      containers:
-      - name: deploy-test-cluster
+      initContainers:
+      - name: wait-for-cluster-restore
         image: alpine:latest
         imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
         command:
         - /bin/sh
         - -c
         - |
-            sleep 600; exit 0;
+            sleep 600;
+            exit 0;
+      containers:
+      - name: use-defined-password
+        image: postgres:14.6-alpine
+        imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
+        env:
+          - name: BACKUP_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: dbname
+                name: backup-test-postgres-pguser-postgres
+          - name: BACKUP_HOST
+            valueFrom:
+              secretKeyRef:
+                key: host
+                name: backup-test-postgres-pguser-postgres
+          - name: BACKUP_PASS
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: backup-test-postgres-pguser-postgres
+          - name: DEFINED_BACKUP_PASS
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: defined-backup-password
+        command:
+        - /bin/sh
+        - -c
+        - |
+            export PGPASSWORD="$(BACKUP_PASS)";
+            psql -U postgres -h "$(BACKUP_HOST)" -d "$(BACKUP_DATABASE)" -c "ALTER USER postgres PASSWORD '$(DEFINED_BACKUP_PASS)';"
