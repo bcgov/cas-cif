@@ -1,13 +1,11 @@
 import Ajv, { ErrorObject } from "ajv";
+import { KEY_EMAIL, KEY_PHONE_NO, KEY_RFP_DIGITS, REGEX_EMAIL, REGEX_PHONE_NO, REGEX_RFP_DIGITS } from "data/validation-constants";
 
 const ajv = new Ajv({ allErrors: true });
 // AJV needs to be made aware of any custom formats used in the schema
-ajv.addFormat("rfpDigits", /\d{3,4}/);
-ajv.addFormat("email", /^[\.\w-]+@([\w-]+\.)+[\w-]{2,4}$/);
-ajv.addFormat(
-  "phone",
-  /^(\+?\d{1,2}[\s,-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-);
+ajv.addFormat(KEY_RFP_DIGITS, REGEX_RFP_DIGITS);
+ajv.addFormat(KEY_EMAIL, REGEX_EMAIL);
+ajv.addFormat(KEY_PHONE_NO, REGEX_PHONE_NO);
 
 const validateRecord: (schema: any, formData: any) => ErrorObject[] = (
   schema,
