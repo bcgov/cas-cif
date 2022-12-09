@@ -4,7 +4,6 @@ begin;
 
 alter table cif.project_revision disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
 
-
 alter table cif.project_revision rename amendment_status to revision_status;
 alter table cif.project_revision alter column revision_status set default 'Draft';
 
