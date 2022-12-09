@@ -9,7 +9,6 @@ import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidg
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
 import RankWidget from "./widgets/RankWidget";
 import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
-import RevisionStatusWidget from "./widgets/RevisionStatusWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -34,7 +33,6 @@ const readOnlyTheme: ThemeProps = {
     NumberWidget: ReadOnlyNumberWidget,
     SelectWithNotifyWidget: SelectWithNotifyWidget,
     RankWidget,
-    RevisionStatusWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

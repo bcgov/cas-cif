@@ -104,8 +104,5 @@ export const projectRevisionUISchema = {
   },
   revisionStatus: {
     "ui:widget": "RevisionStatusWidget",
-    "ui:options": {
-      actionButtonLabel: "Update",
-    },
   },
 };

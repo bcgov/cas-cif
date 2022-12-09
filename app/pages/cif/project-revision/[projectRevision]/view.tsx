@@ -15,6 +15,12 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
+import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
+import { Button } from "@button-inc/bcgov-theme";
+import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
+import { WidgetProps } from "@rjsf/core";
+import SelectWidget from "lib/theme/widgets/SelectWidget";
+import { useState } from "react";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypes,
@@ -103,6 +109,81 @@ export const ViewProjectRevisionQuery = graphql`
   }
 `;
 
+// Custom widget to update the revision status
+export const RevisionStatusWidget = (props: WidgetProps) => {
+  const { schema, value, formContext } = props;
+
+  if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
+    throw new Error("schema.anyOf does not exist!");
+  }
+
+  const [updateProjectRevision, isUpdatingProjectRevision] =
+    useUpdateProjectRevision();
+
+  const { revisionId, changeStatus } = formContext;
+
+  const [updated, setUpdated] = useState(false);
+
+  const clickHandler = () => {
+    return new Promise((resolve, reject) =>
+      updateProjectRevision({
+        variables: {
+          input: {
+            id: revisionId,
+            projectRevisionPatch: { revisionStatus: value },
+          },
+        },
+        optimisticResponse: {
+          updateProjectRevision: {
+            projectRevision: {
+              id: revisionId,
+            },
+          },
+        },
+        onCompleted: () => setUpdated(true),
+        onError: reject,
+        debounceKey: revisionId,
+      })
+    );
+  };
+
+  return (
+    <div>
+      {changeStatus === "pending" ? (
+        <div>
+          <SelectWidget
+            {...props}
+            onChange={(e) => {
+              setUpdated(false);
+              props.onChange(e);
+            }}
+          />
+          <Button
+            type="submit"
+            onClick={clickHandler}
+            style={{ marginRight: "1rem" }}
+            disabled={isUpdatingProjectRevision}
+          >
+            Update
+          </Button>
+          {updated && <small>Updated</small>}
+          <style jsx>{`
+            div {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            div :global(.pg-select) {
+              width: 18em;
+            }
+          `}</style>
+        </div>
+      ) : (
+        <ReadOnlyWidget {...props} />
+      )}
+    </div>
+  );
+};
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
@@ -157,6 +238,7 @@ export function ProjectRevisionView({
               revisionStatus: projectRevision.revisionStatus,
               changeStatus: projectRevision.changeStatus,
             }}
+            widgets={{ RevisionStatusWidget }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
           <div className="revision-record-history-section">

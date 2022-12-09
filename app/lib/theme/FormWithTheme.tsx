@@ -14,12 +14,7 @@ import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedV
 import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import NumberWidget from "./widgets/NumberWidget";
 import RankWidget from "./widgets/RankWidget";
-<<<<<<< HEAD
 import ModalWidget from "./widgets/ModalWidget";
-import AmendmentStatusWidget from "./widgets/AmendmentStatusWidget";
-=======
-import RevisionStatusWidget from "./widgets/RevisionStatusWidget";
->>>>>>> e1e13627 (chore: rewording tweaks)
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -41,7 +36,6 @@ const formTheme: ThemeProps = {
     NumberWidget,
     RankWidget,
     ModalWidget,
-    AmendmentStatusWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
