@@ -41,7 +41,7 @@ describe("The RevisionStatusWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        projectRevisionId: "test-revision-id",
+        revisionId: "test-revision-id",
         changeStatus: "pending",
       },
       value: "Option 1",
@@ -76,7 +76,7 @@ describe("The RevisionStatusWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        projectRevisionId: "test-revision-id",
+        revisionId: "test-revision-id",
         changeStatus: "committed",
       },
       value: "Option 1",

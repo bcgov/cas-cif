@@ -51,35 +51,35 @@ export const projectRevisionSchema = {
       anyOf: undefined,
       enum: undefined,
     },
-    dependencies: {
-      revisionType: {
-        oneOf: [
-          {
-            properties: {
-              revisionType: {
-                const: !"Amendment",
-              },
+  },
+  dependencies: {
+    revisionType: {
+      oneOf: [
+        {
+          properties: {
+            revisionType: {
+              const: !"Amendment",
             },
           },
-          {
-            properties: {
-              revisionType: {
-                const: "Amendment",
-              },
-              amendmentTypes: {
-                type: "array",
-                title: "Amendment Types",
-                items: {
-                  type: "string",
-                  enum: [],
-                },
-                uniqueItems: true,
-              },
+        },
+        {
+          properties: {
+            revisionType: {
+              const: "Amendment",
             },
-            required: ["amendmentTypes"],
+            amendmentTypes: {
+              type: "array",
+              title: "Amendment Types",
+              items: {
+                type: "string",
+                enum: [],
+              },
+              uniqueItems: true,
+            },
           },
-        ],
-      },
+          required: ["amendmentTypes"],
+        },
+      ],
     },
   },
 };
