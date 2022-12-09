@@ -93,3 +93,5 @@ When tracking the history of projects, using the `project_revision` table, we ar
 - when a `project_revision` is created (see the `cif.create_project_revision` function), all the `form_change` records from the previous revision are copied into the new revision.
 
 Although it comes with a higher storage cost, with potentially unnecessary `form_change` records being created, this approach is simpler and results in more maintainable code.
+
+A change to test CI
