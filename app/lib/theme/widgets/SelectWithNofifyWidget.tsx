@@ -94,7 +94,13 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
           <Button>Notify</Button>
         </>
       ) : (
-        <em>{formContext.pendingActionsFrom}</em>
+        <>
+          {formContext.pendingActionsFrom ? (
+            <>{formContext.pendingActionsFrom}</>
+          ) : (
+            <em>Not Added</em>
+          )}
+        </>
       )}
       <style jsx>
         {`
