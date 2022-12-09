@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import RevisionStatusWidget from "lib/theme/widgets/RevisionStatusWidget";
 import { mocked } from "jest-mock";
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
+import { RevisionStatusWidget } from "pages/cif/project-revision/[projectRevision]/view";
 
 jest.mock("mutations/ProjectRevision/updateProjectRevision");
 
@@ -20,11 +20,6 @@ describe("The RevisionStatusWidget", () => {
         revisionId: "test-revision-id",
         changeStatus: "pending",
       },
-      uiSchema: {
-        "ui:options": {
-          actionButtonLabel: "Action Button Label",
-        },
-      },
       value: "Option 1",
       schema: {
         anyOf: [
@@ -37,7 +32,7 @@ describe("The RevisionStatusWidget", () => {
 
     expect(
       screen.getByRole("button", {
-        name: /action button label/i,
+        name: /update/i,
       })
     ).toBeInTheDocument();
   });
@@ -46,13 +41,8 @@ describe("The RevisionStatusWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        revisionId: "test-revision-id",
+        projectRevisionId: "test-revision-id",
         changeStatus: "pending",
-      },
-      uiSchema: {
-        "ui:options": {
-          actionButtonLabel: "Action Button Label",
-        },
       },
       value: "Option 1",
       schema: {
@@ -66,7 +56,7 @@ describe("The RevisionStatusWidget", () => {
     render(<RevisionStatusWidget {...props} />);
     fireEvent.click(
       screen.getByRole("button", {
-        name: /action button label/i,
+        name: /update/i,
       })
     );
     expect(updateProjectRevisionMutation).toHaveBeenCalledWith(
@@ -86,13 +76,8 @@ describe("The RevisionStatusWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        revisionId: "test-revision-id",
+        projectRevisionId: "test-revision-id",
         changeStatus: "committed",
-      },
-      uiSchema: {
-        "ui:options": {
-          actionButtonLabel: "Action Button Label",
-        },
       },
       value: "Option 1",
       schema: {
@@ -108,6 +93,6 @@ describe("The RevisionStatusWidget", () => {
     render(<RevisionStatusWidget {...props} />);
 
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
-    expect(screen.queryByText(/action button label/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/update/i)).not.toBeInTheDocument();
   });
 });
