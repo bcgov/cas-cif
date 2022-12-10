@@ -45363,6 +45363,8 @@ enum FormChangesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__REVISION_STATUS_ASC
@@ -58702,6 +58704,9 @@ type ProjectRevision implements Node {
   ): MilestoneReportStatusReturnsConnection!
   netPaymentAmount: BigFloat
 
+  """Pending actions from (e.g. Director)"""
+  pendingActionsFrom: String
+
   """Reads a single `Project` that is related to this `ProjectRevision`."""
   projectByProjectId: Project
 
@@ -59292,6 +59297,8 @@ enum ProjectRevisionAmendmentTypesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__REVISION_STATUS_ASC
@@ -59732,6 +59739,9 @@ input ProjectRevisionCondition {
   """Checks for equality with the object’s `isFirstRevision` field."""
   isFirstRevision: Boolean
 
+  """Checks for equality with the object’s `pendingActionsFrom` field."""
+  pendingActionsFrom: String
+
   """Checks for equality with the object’s `projectId` field."""
   projectId: Int
 
@@ -59814,6 +59824,9 @@ input ProjectRevisionFilter {
 
   """Checks for any expressions in this list."""
   or: [ProjectRevisionFilter!]
+
+  """Filter by the object’s `pendingActionsFrom` field."""
+  pendingActionsFrom: StringFilter
 
   """Filter by the object’s `projectByProjectId` relation."""
   projectByProjectId: ProjectFilter
@@ -60014,6 +60027,9 @@ input ProjectRevisionPatch {
   Boolean value to indicate if the revision is the first revision for the project
   """
   isFirstRevision: Boolean
+
+  """Pending actions from (e.g. Director)"""
+  pendingActionsFrom: String
 
   """
   Foreign key to the associated project row. Will be null if the project hasn't been committed yet.
@@ -60320,6 +60336,8 @@ enum ProjectRevisionsOrderBy {
   IS_FIRST_REVISION_ASC
   IS_FIRST_REVISION_DESC
   NATURAL
+  PENDING_ACTIONS_FROM_ASC
+  PENDING_ACTIONS_FROM_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_ASC

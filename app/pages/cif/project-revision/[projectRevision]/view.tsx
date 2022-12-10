@@ -57,6 +57,8 @@ export const ViewProjectRevisionQuery = graphql`
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
       changeReason
+      pendingActionsFrom
+      revisionStatus
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
@@ -110,6 +112,11 @@ export function ProjectRevisionView({
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
             formData={projectRevision}
+            formContext={{
+              pendingActionsFrom: projectRevision.pendingActionsFrom,
+              revisionId: projectRevision.id,
+              revisionStatus: projectRevision.revisionStatus,
+            }}
           ></FormBase>
           <div className="revision-record-history-section">
             <dt>Revision record history</dt>
