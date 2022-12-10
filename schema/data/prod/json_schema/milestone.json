@@ -3,7 +3,12 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
     "title": "Milestone",
-    "required": ["description", "reportType", "reportDueDate"],
+    "required": [
+      "description",
+      "reportType",
+      "substantialCompletionDate",
+      "reportDueDate"
+    ],
     "properties": {
       "description": {
         "type": "string",
