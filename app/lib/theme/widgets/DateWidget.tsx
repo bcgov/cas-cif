@@ -12,6 +12,7 @@ import {
   getDaysUntilDue,
   getDisplayDueDateString,
   getWeeksUntilDue,
+  getDisplayBeginDateString,
 } from "lib/helpers/reportStatusHelpers";
 
 const DateInput = forwardRef<HTMLDivElement, WidgetProps>(
@@ -23,6 +24,17 @@ const DateInput = forwardRef<HTMLDivElement, WidgetProps>(
         const daysUntilDue = getDaysUntilDue(selectedDate);
         const weeksUntilDue = getWeeksUntilDue(selectedDate);
         const displayDueDateString = getDisplayDueDateString(
+          daysUntilDue,
+          weeksUntilDue,
+          selectedDate
+        );
+        return displayDueDateString;
+      }
+
+      if (uiSchema?.isBeginsDate) {
+        const daysUntilDue = getDaysUntilDue(selectedDate);
+        const weeksUntilDue = getWeeksUntilDue(selectedDate);
+        const displayDueDateString = getDisplayBeginDateString(
           daysUntilDue,
           weeksUntilDue,
           selectedDate
