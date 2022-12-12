@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
-import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNofifyWidget";
+import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
 
 jest.mock("mutations/ProjectRevision/updateProjectRevision");
 
