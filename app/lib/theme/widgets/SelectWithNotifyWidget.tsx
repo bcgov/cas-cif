@@ -1,7 +1,7 @@
 import { WidgetProps } from "@rjsf/core";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import { Button } from "@button-inc/bcgov-theme";
-import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
+import { useUpdatePendingActionsFrom } from "mutations/ProjectRevision/updatePendingActionsFrom";
 
 interface Option {
   type: string;
@@ -30,13 +30,13 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   }
   const options = schema.anyOf as Array<Option>;
 
-  const [updateProjectRevision, isUpdatingProjectRevision] =
-    useUpdateProjectRevision();
+  const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
+    useUpdatePendingActionsFrom();
   const revisionId = formContext.revisionId;
   const revisionStatus = formContext.revisionStatus;
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>
-      updateProjectRevision({
+      updatePendingActionsFrom({
         variables: {
           input: {
             id: revisionId,
@@ -86,12 +86,14 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
           </Dropdown>
           <Button
             onClick={handleUpdate}
-            disabled={isUpdatingProjectRevision}
+            disabled={isUpdatingPendingActionsFrom}
             type="submit"
           >
             Update
           </Button>
-          <Button>Notify</Button>
+          <a href="#modal">
+            <Button>Notify</Button>
+          </a>
         </>
       ) : (
         <>
