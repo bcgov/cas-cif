@@ -51,7 +51,6 @@ const NotifyModal: React.FC<Props> = ({ projectRevision }) => {
     projectRevision
   );
   const projectRevisionId = id;
-
   const router = useRouter();
   // controlling form data like this is necessary because of this bug: https://github.com/rjsf-team/react-jsonschema-form/issues/1023
   const [formData, setFormData] = useState({});
@@ -103,15 +102,15 @@ const NotifyModal: React.FC<Props> = ({ projectRevision }) => {
       "object",
       "Director",
       generateSchemaProperty(
-        process.env.REACT_APP_PROGRAM_DIRECTOR_EMAIL,
+        process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_EMAIL,
         "boolean",
-        process.env.REACT_APP_PROGRAM_DIRECTOR_NAME,
+        process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_NAME,
         false
       )
     ),
     onChange,
     formData,
-    generateModalUiSchema(process.env.REACT_APP_PROGRAM_DIRECTOR_EMAIL)
+    generateModalUiSchema(process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_EMAIL)
   );
 
   const primaryContactForm = generateNotifyModalForm(

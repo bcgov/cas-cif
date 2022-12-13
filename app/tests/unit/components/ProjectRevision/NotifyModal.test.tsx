@@ -188,8 +188,8 @@ describe("The NotifyModal", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     componentTestingHelper.reinit();
-    process.env.REACT_APP_PROGRAM_DIRECTOR_EMAIL = "director@email.com";
-    process.env.REACT_APP_PROGRAM_DIRECTOR_NAME = "director name";
+    process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_EMAIL = "director@email.com";
+    process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_NAME = "director name";
   });
 
   it("renders the director form when pendingActionsFrom is Director", () => {
