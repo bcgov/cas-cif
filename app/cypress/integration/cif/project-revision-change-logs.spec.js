@@ -27,19 +27,22 @@ describe("the project amendment and revisions page", () => {
     // below code is not a duplicate, we need to click the field twice to get the DESC sort
     cy.get("thead th").contains("Type").click();
     cy.get("thead th").contains("Type").click();
-
     cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
     cy.get("tbody tr").first().contains("Minor Revision");
-    cy.get("tbody tr").last().contains("In Discussion");
+    cy.get("tbody tr").last().contains("Draft");
 
     // checking the view page for a specific revision
-    cy.findAllByRole("button", { name: /^view$/i })
+    cy.findAllByRole("button", { name: /^view \/ edit/i })
       .first()
       .click();
     cy.url().should("include", "/view");
-    cy.get("h2").contains(/minor revision 1/i);
+    cy.get("h2").contains(/amendment 2/i);
     cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
-    cy.findByRole("link", { name: /view minor revision 1/i }).should("exist");
-    cy.get('input[value="Minor Revision"]').should("be.checked");
+    cy.findByRole("link", { name: /view amendment 2/i }).should("exist");
+    cy.get('input[value="Amendment"]').should("be.checked");
+    cy.get("select").should("be.visible").select("Tech Team");
+    cy.findByRole("button", { name: /update/i }).click();
+    cy.findByRole("button", { name: /notify/i }).click();
+    cy.findByText(/cif_internal Testuser/i).click();
   });
 });
