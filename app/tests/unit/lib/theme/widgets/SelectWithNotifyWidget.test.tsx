@@ -1,15 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { mocked } from "jest-mock";
-import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
+import { useUpdatePendingActionsFrom } from "mutations/ProjectRevision/updatePendingActionsFrom";
 import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
 
-jest.mock("mutations/ProjectRevision/updateProjectRevision");
+jest.mock("mutations/ProjectRevision/updatePendingActionsFrom");
 
-let isUpdatingProjectRevision = false;
-const updateProjectRevisionMutation = jest.fn();
-mocked(useUpdateProjectRevision).mockImplementation(() => [
-  updateProjectRevisionMutation,
-  isUpdatingProjectRevision,
+let isUpdatingPendingActionsFrom = false;
+const updatePendingActionsFromMutation = jest.fn();
+mocked(useUpdatePendingActionsFrom).mockImplementation(() => [
+  updatePendingActionsFromMutation,
+  isUpdatingPendingActionsFrom,
 ]);
 
 describe("The SelectWithNotifyWidget", () => {
@@ -43,7 +43,7 @@ describe("The SelectWithNotifyWidget", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls updateProjectRevision with the selected value from dropdown", async () => {
+  it("calls updatePendingActionsFrom with the selected value from dropdown", async () => {
     const props: any = {
       id: "test-id",
       formContext: {
@@ -65,7 +65,7 @@ describe("The SelectWithNotifyWidget", () => {
         name: /Update/i,
       })
     );
-    expect(updateProjectRevisionMutation).toHaveBeenCalledWith(
+    expect(updatePendingActionsFromMutation).toHaveBeenCalledWith(
       expect.objectContaining({
         variables: expect.objectContaining({
           input: expect.objectContaining({
