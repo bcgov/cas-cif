@@ -1,7 +1,4 @@
-// brianna, on Monday --  fix conditional rendering, e2e test, styling?
-
 import { Button } from "@button-inc/bcgov-theme";
-
 import {
   generateNotifyModalForm,
   generateSchema,
@@ -253,7 +250,12 @@ const NotifyModal: React.FC<Props> = ({ projectRevision }) => {
         )}
         <div className="buttons">
           <Link href={emailString} passHref>
-            <Button disabled={emailString === "javascript;:"}>
+            <Button
+              onClick={() => {
+                router.back();
+              }}
+              disabled={emailString === "javascript;:"}
+            >
               Notify by Email
             </Button>
           </Link>
