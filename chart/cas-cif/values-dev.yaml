@@ -6,7 +6,8 @@ app:
 hostName: dev.cif.gov.bc.ca
 
 db:
-  preUpgradeCommand: |
+  preUpgrade: true
+  upgradeCommand: |
     psql -v "ON_ERROR_STOP=1" <<EOF
       drop schema if exists sqitch cascade;
       drop schema if exists cif cascade;

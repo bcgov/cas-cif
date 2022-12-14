@@ -1,12 +1,18 @@
 {{- if not .Values.db.restore.enabled }}
-{{- if .Values.db.preUpgradeCommand }}
+{{ if or (.Values.db.preUpgrade) (.Values.db.postUpgrade) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "cas-cif.fullname" . }}-db-pre-upgrade
+  name: {{ template "cas-cif.fullname" . }}-db-reset
   labels: {{ include "cas-cif.labels" . | nindent 4 }}
+{{- if .Values.db.preUpgrade }}
   annotations:
     "helm.sh/hook": pre-upgrade
+{{- end }}
+{{- if .Values.db.postUpgrade }}
+  annotations:
+      "helm.sh/hook": post-upgrade
+{{- end }}
 spec:
   backoffLimit: 0
   template:
@@ -35,6 +41,6 @@ spec:
             - -c
             - |
               set -euo pipefail;
-{{ .Values.db.preUpgradeCommand | indent 14 }}
+{{ .Values.db.upgradeCommand | indent 14 }}
 {{- end }}
 {{- end }}
