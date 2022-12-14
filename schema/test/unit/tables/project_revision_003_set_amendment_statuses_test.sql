@@ -74,13 +74,11 @@ select is (
 
 select is (
   (
-    select revision_status from cif.project_revision where id = 2
+    select revision_status from cif.project_revision where id = 3
   ),
-  'Draft',
+  'Applied',
   'A revision in committed change_status is correctly set to a revision_status of Applied'
 );
-
-select * from cif.project_revision;
 
 select finish();
 
