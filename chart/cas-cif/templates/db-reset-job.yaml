@@ -26,8 +26,8 @@ spec:
       containers:
         - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 16 }}
           name: {{ template "cas-cif.fullname" . }}-db-pre-upgrade
-          image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
-          imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}
+          image: {{ .Values.image.schema.repository }}:{{ default .Values.defaultImageTag .Values.image.schema.tag }}
+          imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.schema.pullPolicy }}
           resources:
             limits:
               cpu: 1000m
