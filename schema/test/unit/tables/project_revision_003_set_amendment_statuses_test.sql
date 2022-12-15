@@ -53,7 +53,7 @@ select has_column(
   'cif',
   'project_revision',
   'revision_status',
-  'project_revision table now has an amendment_status column'
+  'project_revision table now has a revision_status column'
 );
 
 select is (
