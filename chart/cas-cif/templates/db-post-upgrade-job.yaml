@@ -1,0 +1,40 @@
+{{- if not .Values.db.restore.enabled }}
+{{- if .Values.db.postUpgradeCommand }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "cas-cif.fullname" . }}-db-post-upgrade
+  labels: {{ include "cas-cif.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels: {{ include "cas-cif.labels" . | nindent 8 }}
+      name: {{ template "cas-cif.fullname" . }}-db-post-upgrade
+    spec:
+      activeDeadlineSeconds: 600
+      restartPolicy: Never
+      imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
+      containers:
+        - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 16 }}
+          name: {{ template "cas-cif.fullname" . }}-db-post-upgrade
+          image: {{ .Values.image.schema.repository }}:{{ default .Values.defaultImageTag .Values.image.schema.tag }}
+          imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.schema.pullPolicy }}
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          command:
+            - /usr/bin/env
+            - bash
+            - -c
+            - |
+              set -euo pipefail;
+{{ .Values.db.postUpgradeCommand | indent 14 }}
+{{- end }}
+{{- end }}
