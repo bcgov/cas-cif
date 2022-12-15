@@ -13,6 +13,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
+import { useUpdateIsFundingStreamConfirmed } from "mutations/ProjectRevision/updateIsFundingStreamConfirmed";
 
 interface Props {
   query: ProjectForm_query$key;
@@ -108,12 +109,15 @@ export const createProjectUiSchema = (
 const ProjectForm: React.FC<Props> = (props) => {
   const [updateProjectFormChange, updatingProjectFormChange] =
     useUpdateProjectFormChange();
+  const [updateIsFundingStreamConfirmed] = useUpdateIsFundingStreamConfirmed();
 
   const [stageFormChange, stagingFormChange] = useStageFormChange();
 
   const revision = useFragment(
     graphql`
       fragment ProjectForm_projectRevision on ProjectRevision {
+        id
+        isFundingStreamConfirmed
         projectFormChange {
           id
           rowId
@@ -128,6 +132,7 @@ const ProjectForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+  console.log("isFundingStreamConfirmed", revision.isFundingStreamConfirmed);
 
   const query = useFragment(
     graphql`
@@ -163,6 +168,7 @@ const ProjectForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
+
   let selectedOperator = useMemo(() => {
     return query.allOperators.edges.find(
       ({ node }) =>
@@ -213,6 +219,30 @@ const ProjectForm: React.FC<Props> = (props) => {
               isUniqueValue: revision.projectFormChange.isUniqueValue,
               changeStatus: "pending",
               projectRevisionByProjectRevisionId: undefined,
+            },
+          },
+        },
+        onCompleted: resolve,
+        onError: reject,
+        debounceKey: revision.projectFormChange.id,
+      })
+    );
+  };
+
+  const handleConfirm = async () => {
+    await new Promise((resolve, reject) =>
+      updateIsFundingStreamConfirmed({
+        variables: {
+          input: {
+            id: revision.id,
+            projectRevisionPatch: { isFundingStreamConfirmed: true },
+          },
+        },
+        optimisticResponse: {
+          updateProjectRevision: {
+            projectRevision: {
+              id: revision.id,
+              isFundingStreamConfirmed: true,
             },
           },
         },
@@ -301,20 +331,26 @@ const ProjectForm: React.FC<Props> = (props) => {
     handleStage();
   };
 
-  return (
-    <>
-      <header>
-        <h2>Project Overview</h2>
-        <UndoChangesButton formChangeIds={[revision.projectFormChange.rowId]} />
-        <SavingIndicator
-          isSaved={!updatingProjectFormChange && !stagingFormChange}
-        />
-      </header>
+  console.log("projectSchema", projectSchema);
 
+  const rfpSchema = {
+    $schema: projectSchema.$schema,
+    type: projectSchema.type,
+    required: ["fundingStreamRfpId"],
+    properties: {
+      fundingStreamRfpId: {
+        type: "number",
+        title: "RFP Year ID",
+      },
+    },
+  };
+
+  const createProjectForm = (formSchema, uiFormSchema) => {
+    return (
       <FormBase
         {...props}
-        schema={schema}
-        uiSchema={uiSchema}
+        schema={formSchema}
+        uiSchema={uiFormSchema}
         validateOnMount={revision.projectFormChange.changeStatus === "staged"}
         validate={uniqueProposalReferenceValidation}
         formData={revision.projectFormChange.newFormData}
@@ -331,14 +367,56 @@ const ProjectForm: React.FC<Props> = (props) => {
           SelectProjectStatusWidget: SelectProjectStatusWidget,
         }}
         onChange={(change) => handleChange(change.formData)}
-        onSubmit={handleSubmit}
+        onSubmit={
+          revision.isFundingStreamConfirmed ? handleSubmit : handleConfirm
+        }
         onError={handleError}
       >
         <Button type="submit" style={{ marginRight: "1rem" }}>
-          Submit Project Overview
+          {revision.isFundingStreamConfirmed
+            ? "Submit Project Overview"
+            : "Confirm"}
         </Button>
+        {!revision.isFundingStreamConfirmed && (
+          <em>These fields are immutable once confirmed</em>
+        )}
       </FormBase>
+    );
+  };
+
+  const rfpProjectForm = (
+    <>
+      <header>
+        <h2>New Project</h2>
+      </header>
+      {createProjectForm(rfpSchema, {
+        fundingStreamRfpId: {
+          "ui:widget": "SelectRfpWidget",
+          "ui:options": {
+            text: `text`,
+            label: true,
+          },
+        },
+      })}
     </>
+  );
+
+  const fullProjectForm = (
+    <>
+      <header>
+        <h2>Project Overview</h2>
+        <UndoChangesButton formChangeIds={[revision.projectFormChange.rowId]} />
+        <SavingIndicator
+          isSaved={!updatingProjectFormChange && !stagingFormChange}
+        />
+      </header>
+
+      {createProjectForm(schema, uiSchema)}
+    </>
+  );
+
+  return (
+    <>{revision.isFundingStreamConfirmed ? fullProjectForm : rfpProjectForm}</>
   );
 };
 

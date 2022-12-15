@@ -27,6 +27,7 @@ const pageQuery = graphql`
       projectRevision(id: $projectRevision) {
         id
         changeStatus
+        isFundingStreamConfirmed
         projectId
         projectByProjectId {
           pendingProjectRevision {
@@ -163,8 +164,14 @@ export function ProjectFormPage({
 
   const EditComponent = formPages[formIndex].editComponent;
   const ViewComponent = formPages[formIndex].viewComponent;
+
   return (
-    <DefaultLayout session={query.session} leftSideNav={taskList}>
+    <DefaultLayout
+      session={query.session}
+      leftSideNav={
+        query.projectRevision.isFundingStreamConfirmed ? taskList : null
+      }
+    >
       {query.projectRevision.changeStatus === "committed" && ViewComponent ? (
         <>
           {createEditButton()}
