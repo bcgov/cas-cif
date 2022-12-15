@@ -64,7 +64,7 @@ cif_db_init >> cif_app_schema >> cif_import_operator
 """
 
 
-db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule_interval='0 10 * * *',
+db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule_interval='15 12 * * *',
     default_args=default_args, is_paused_upon_creation=False)
 
 deploy_and_restore = PythonOperator(
