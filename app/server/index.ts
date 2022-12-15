@@ -30,7 +30,7 @@ app.prepare().then(async () => {
   // even though the request reaching the express container is not secure
   server.set("trust proxy", 1);
 
-  const lightship = createLightship();
+  const lightship = await createLightship();
 
   lightship.registerShutdownHandler(async () => {
     // Allow the server to send any in-flight requests before shutting down
