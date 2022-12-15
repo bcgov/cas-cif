@@ -45363,6 +45363,8 @@ enum FormChangesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FUNDING_STREAM_CONFIRMED_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FUNDING_STREAM_CONFIRMED_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
@@ -58676,6 +58678,11 @@ type ProjectRevision implements Node {
   isFirstRevision: Boolean
 
   """
+  A boolean to indicate whether the user has confirmed the RFP funding stream and year, in which case these fields are immutable
+  """
+  isFundingStreamConfirmed: Boolean!
+
+  """
   Computed column to return both form completion statuses and reporting requirement statuses for individual milestones
   """
   milestoneReportStatuses(
@@ -59297,6 +59304,8 @@ enum ProjectRevisionAmendmentTypesOrderBy {
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__ID_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FIRST_REVISION_DESC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FUNDING_STREAM_CONFIRMED_ASC
+  PROJECT_REVISION_BY_PROJECT_REVISION_ID__IS_FUNDING_STREAM_CONFIRMED_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_ASC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PENDING_ACTIONS_FROM_DESC
   PROJECT_REVISION_BY_PROJECT_REVISION_ID__PROJECT_ID_ASC
@@ -59739,6 +59748,11 @@ input ProjectRevisionCondition {
   """Checks for equality with the object’s `isFirstRevision` field."""
   isFirstRevision: Boolean
 
+  """
+  Checks for equality with the object’s `isFundingStreamConfirmed` field.
+  """
+  isFundingStreamConfirmed: Boolean
+
   """Checks for equality with the object’s `pendingActionsFrom` field."""
   pendingActionsFrom: String
 
@@ -59815,6 +59829,9 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `isFirstRevision` field."""
   isFirstRevision: BooleanFilter
+
+  """Filter by the object’s `isFundingStreamConfirmed` field."""
+  isFundingStreamConfirmed: BooleanFilter
 
   """Filter by the object’s `netPaymentAmount` field."""
   netPaymentAmount: BigFloatFilter
@@ -60027,6 +60044,11 @@ input ProjectRevisionPatch {
   Boolean value to indicate if the revision is the first revision for the project
   """
   isFirstRevision: Boolean
+
+  """
+  A boolean to indicate whether the user has confirmed the RFP funding stream and year, in which case these fields are immutable
+  """
+  isFundingStreamConfirmed: Boolean
 
   """Pending actions from (e.g. Director)"""
   pendingActionsFrom: String
@@ -60335,6 +60357,8 @@ enum ProjectRevisionsOrderBy {
   ID_DESC
   IS_FIRST_REVISION_ASC
   IS_FIRST_REVISION_DESC
+  IS_FUNDING_STREAM_CONFIRMED_ASC
+  IS_FUNDING_STREAM_CONFIRMED_DESC
   NATURAL
   PENDING_ACTIONS_FROM_ASC
   PENDING_ACTIONS_FROM_DESC
