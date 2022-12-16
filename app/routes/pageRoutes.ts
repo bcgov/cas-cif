@@ -57,6 +57,10 @@ export const getContactViewPageRoute = (contactId: string) => ({
 
 ///// Project Revision
 
+export const getNewProjectRevisionPageRoute = () => ({
+  pathname: `/cif/project-revision/new`,
+});
+
 export const getProjectRevisionPageRoute = (projectRevisionId: string) => ({
   pathname: `/cif/project-revision/[projectRevision]/`,
   query: {
