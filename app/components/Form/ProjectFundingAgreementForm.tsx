@@ -24,6 +24,10 @@ import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import FormBorder from "lib/theme/components/FormBorder";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import useDiscardAdditionalFundingSourceFormChange from "mutations/FundingParameter/discardAdditionalFundingSourceFormChange";
+import {
+  expensesPaymentsTrackerSchema,
+  expensesPaymentsTrackerUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
@@ -104,6 +108,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              eligibleExpensesToDate
+              holdbackAmountToDate
+              netPaymentsToDate
+              grossPaymentsToDate
             }
           }
         }
@@ -144,6 +152,23 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
+  var fundingAgreementFormData = JSON.parse(
+    JSON.stringify(fundingAgreement.newFormData)
+  );
+  var proponentsSharePercentage = 0;
+  if (
+    // safeguard to prevent memory leaks
+    fundingAgreementFormData.proponentCost &&
+    projectRevision.totalProjectValue
+  ) {
+    proponentsSharePercentage =
+      Number(fundingAgreementFormData.proponentCost) /
+      Number(projectRevision.totalProjectValue);
+  }
+  fundingAgreementFormData.proponentsSharePercentage =
+    proponentsSharePercentage;
+  fundingAgreementFormData.grossPaymentsToDate =
+    fundingAgreement.grossPaymentsToDate;
 
   // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
   const filteredAdditionalFundingSourceFormChanges =
@@ -316,7 +341,20 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     projectRevision.projectFundingAgreementFormChanges,
     projectRevision.additionalFundingSourceFormChanges,
   ]);
-
+  const calculatedFormData = {
+    eligibleExpensesToDate:
+      projectRevision.projectFundingAgreementFormChanges.edges[0].node
+        .eligibleExpensesToDate,
+    holdbackAmountToDate:
+      projectRevision.projectFundingAgreementFormChanges.edges[0].node
+        .holdbackAmountToDate,
+    netPaymentsToDate:
+      projectRevision.projectFundingAgreementFormChanges.edges[0].node
+        .netPaymentsToDate,
+    grossPaymentsToDate:
+      projectRevision.projectFundingAgreementFormChanges.edges[0].node
+        .netPaymentsToDate,
+  };
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
@@ -383,7 +421,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             validateOnMount={fundingAgreement?.changeStatus === "staged"}
             idPrefix="ProjectFundingAgreementForm"
             schema={fundingAgreementSchema as JSONSchema7}
-            formData={fundingAgreement?.newFormData}
+            formData={fundingAgreementFormData}
             formContext={{
               form: fundingAgreement?.newFormData,
               calculatedTotalProjectValue: projectRevision.totalProjectValue,
@@ -459,6 +497,19 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             >
               Add Funding Source
             </Button>
+          </FormBorder>
+          <FormBorder title="Expenses & Payments Tracker">
+            <div>
+              <FormBase
+                id={`expensesPaymentsTracker`}
+                className="expensesPaymentsTrackerForm"
+                idPrefix="expensesPaymentsTracker"
+                schema={expensesPaymentsTrackerSchema as JSONSchema7}
+                formData={calculatedFormData}
+                ObjectFieldTemplate={EmptyObjectFieldTemplate}
+                uiSchema={expensesPaymentsTrackerUiSchema}
+              ></FormBase>
+            </div>
           </FormBorder>
           <Button
             type="submit"
