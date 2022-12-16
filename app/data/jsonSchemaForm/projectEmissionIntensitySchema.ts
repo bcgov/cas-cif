@@ -2,54 +2,83 @@ export const emissionIntensityReportSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Emissions Intensity Report",
-  required: [
-    "measurementPeriodStartDate",
-    "measurementPeriodEndDate",
-    "emissionFunctionalUnit",
-    "baselineEmissionIntensity",
-    "targetEmissionIntensity",
-  ],
   properties: {
-    measurementPeriodStartDate: {
-      title: "TEIMP Start Date",
-      type: "string",
+    teimpReporting: {
+      $schema: "http://json-schema.org/draft-07/schema",
+      type: "object",
+      title: "TEIMP Reporting",
+      required: [
+        "measurementPeriodStartDate",
+        "measurementPeriodEndDate",
+        "emissionFunctionalUnit",
+        "baselineEmissionIntensity",
+        "targetEmissionIntensity",
+      ],
+      properties: {
+        measurementPeriodStartDate: {
+          title: "TEIMP Start Date",
+          type: "string",
+        },
+        measurementPeriodEndDate: {
+          title: "TEIMP End Date",
+          type: "string",
+        },
+        emissionFunctionalUnit: {
+          title: "Functional Unit",
+          type: "string",
+        },
+        productionFunctionalUnit: {
+          title: "Production Functional Unit",
+          type: "string",
+        },
+        baselineEmissionIntensity: {
+          title: "Baseline Emission Intensity (BEI)",
+          type: "number",
+        },
+        targetEmissionIntensity: {
+          title: "Target Emission Intensity (TEI)",
+          type: "number",
+        },
+        postProjectEmissionIntensity: {
+          title: "Post-Project Emission Intensity (PEI)",
+          type: "number",
+        },
+        totalLifetimeEmissionReduction: {
+          title: "Total Project Lifetime Emissions Reductions",
+          type: "number",
+        },
+      },
     },
-    measurementPeriodEndDate: {
-      title: "TEIMP End Date",
-      type: "string",
-    },
-    emissionFunctionalUnit: {
-      title: "Functional Unit",
-      type: "string",
-    },
-    productionFunctionalUnit: {
-      title: "Production Functional Unit",
-      type: "string",
-    },
-    baselineEmissionIntensity: {
-      title: "Baseline Emission Intensity (BEI)",
-      type: "number",
-    },
-    targetEmissionIntensity: {
-      title: "Target Emission Intensity (TEI)",
-      type: "number",
-    },
-    postProjectEmissionIntensity: {
-      title: "Post-Project Emission Intensity (PEI)",
-      type: "number",
-    },
-    totalLifetimeEmissionReduction: {
-      title: "Total Project Lifetime Emissions Reductions",
-      type: "number",
-    },
-    adjustedEmissionsIntensityPerformance: {
-      title: "GHG Emission Intensity Performance",
-      type: "number",
-    },
-    dateSentToCsnr: {
-      type: "string",
-      title: "Date Invoice Sent to CSNR",
-      default: undefined,
+    uponCompletion: {
+      $schema: "http://json-schema.org/draft-07/schema",
+      type: "object",
+      title: "Upon Completion",
+      properties: {
+        adjustedEmissionsIntensityPerformance: {
+          title: "GHG Emission Intensity Performance",
+          type: "number",
+        },
+        dateSentToCsnr: {
+          type: "string",
+          title: "Date Invoice Sent to CSNR",
+          default: undefined,
+        },
+        paymentPercentageOfPerformanceMilestoneAmount: {
+          type: "number",
+          title: "Payment Percentage of Performance Milestone Amount (%)",
+          default: undefined,
+        },
+        maximumPerformanceMilestoneAmount: {
+          type: "number",
+          title: "Maximum Performance Milestone Amount",
+          default: undefined,
+        },
+        actualPerformanceMilestoneAmount: {
+          type: "number",
+          title: "Actual Performance Milestone Amount",
+          default: undefined,
+        },
+      },
     },
     paymentPercentageOfPerformanceMilestoneAmount: {
       type: "number",
@@ -93,68 +122,68 @@ export const emissionIntensityReportingRequirementSchema = {
 };
 
 export const emissionIntensityReportUiSchema = {
-  emissionFunctionalUnit: {
-    "ui:widget": "TextWidget",
-    classNames: "functional-unit",
+  teimpReporting: {
+    productionFunctionalUnit: {
+      "ui:widget": "TextWidget",
+      classNames: "functional-unit",
+    },
+    measurementPeriodStartDate: {
+      "ui:widget": "DateWidget",
+    },
+    measurementPeriodEndDate: {
+      "ui:widget": "DateWidget",
+    },
+    baselineEmissionIntensity: {
+      "ui:widget": "TextWidget",
+    },
+    targetEmissionIntensity: {
+      "ui:widget": "TextWidget",
+    },
+    postProjectEmissionIntensity: {
+      "ui:widget": "TextWidget",
+    },
+    totalLifetimeEmissionReduction: {
+      "ui:widget": "TextWidget",
+    },
   },
-  productionFunctionalUnit: {
-    "ui:widget": "TextWidget",
-    classNames: "functional-unit",
-  },
-  measurementPeriodStartDate: {
-    "ui:widget": "DateWidget",
-  },
-  measurementPeriodEndDate: {
-    "ui:widget": "DateWidget",
-  },
-  baselineEmissionIntensity: {
-    "ui:widget": "TextWidget",
-  },
-  targetEmissionIntensity: {
-    "ui:widget": "TextWidget",
-  },
-  postProjectEmissionIntensity: {
-    "ui:widget": "TextWidget",
-  },
-  totalLifetimeEmissionReduction: {
-    "ui:widget": "TextWidget",
-  },
-  adjustedEmissionsIntensityPerformance: {
-    "ui:widget": "AdjustableCalculatedValueWidget",
-    calculatedValueFormContextProperty: "calculatedEiPerformance",
-    isPercentage: true,
-    numberOfDecimalPlaces: 2,
-    hideOptional: true,
-  },
-  calculatedPaymentPercentage: {
-    "ui:widget": "CalculatedValueWidget",
-    isPercentage: true,
-    numberOfDecimalPlaces: 2,
-    hideOptional: true,
-    calculatedValueFormContextProperty: "teimpPaymentPercentage",
-  },
-  paymentPercentageOfPerformanceMilestoneAmount: {
-    "ui:widget": "CalculatedValueWidget",
-    calculatedValueFormContextProperty:
-      "paymentPercentageOfPerformanceMilestoneAmount",
-    isPercentage: true,
-    hideOptional: true,
-    numberOfDecimalPlaces: 2,
-  },
-  actualPerformanceMilestoneAmount: {
-    "ui:widget": "CalculatedValueWidget",
-    calculatedValueFormContextProperty: "actualPerformanceMilestoneAmount",
-    isMoney: true,
-    hideOptional: true,
-  },
-  maximumPerformanceMilestoneAmount: {
-    "ui:widget": "CalculatedValueWidget",
-    calculatedValueFormContextProperty: "maximumPerformanceMilestoneAmount",
-    isMoney: true,
-    hideOptional: true,
-  },
-  dateSentToCsnr: {
-    "ui:widget": "DateWidget",
+  uponCompletion: {
+    adjustedEmissionsIntensityPerformance: {
+      "ui:widget": "AdjustableCalculatedValueWidget",
+      calculatedValueFormContextProperty: "calculatedEiPerformance",
+      isPercentage: true,
+      numberOfDecimalPlaces: 2,
+      hideOptional: true,
+    },
+    calculatedPaymentPercentage: {
+      "ui:widget": "CalculatedValueWidget",
+      isPercentage: true,
+      numberOfDecimalPlaces: 2,
+      hideOptional: true,
+      calculatedValueFormContextProperty: "teimpPaymentPercentage",
+    },
+    paymentPercentageOfPerformanceMilestoneAmount: {
+      "ui:widget": "CalculatedValueWidget",
+      calculatedValueFormContextProperty:
+        "paymentPercentageOfPerformanceMilestoneAmount",
+      isPercentage: true,
+      hideOptional: true,
+      numberOfDecimalPlaces: 2,
+    },
+    actualPerformanceMilestoneAmount: {
+      "ui:widget": "CalculatedValueWidget",
+      calculatedValueFormContextProperty: "actualPerformanceMilestoneAmount",
+      isMoney: true,
+      hideOptional: true,
+    },
+    maximumPerformanceMilestoneAmount: {
+      "ui:widget": "CalculatedValueWidget",
+      calculatedValueFormContextProperty: "maximumPerformanceMilestoneAmount",
+      isMoney: true,
+      hideOptional: true,
+    },
+    dateSentToCsnr: {
+      "ui:widget": "DateWidget",
+    },
   },
 };
 
