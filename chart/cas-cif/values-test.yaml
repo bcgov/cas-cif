@@ -5,12 +5,17 @@ app:
 hostName: test.cif.gov.bc.ca
 
 db:
-  preUpgradeCommand: |
+  postUpgradeCommand: |
     psql -v "ON_ERROR_STOP=1" <<EOF
       drop schema if exists sqitch cascade;
       drop schema if exists cif cascade;
       drop schema if exists cif_private cascade;
-    EOF
+    EOF;
+    sqitch deploy;
+    ./data/deploy-data.sh;
+    for file in data/dev/*.sql; do
+      psql -v "ON_ERROR_STOP=1" -d cif -f "${file}";
+    done;
 
 deploy-db:
   airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
