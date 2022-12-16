@@ -20,6 +20,7 @@ import { useStageEmissionIntensityFormChange } from "mutations/ProjectEmissionIn
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 import getDurationFromDates from "lib/helpers/getDurationFromDates";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -81,44 +82,45 @@ export const createEmissionIntensityReportUiSchema = (
   );
 
   // We only show the label of this field on view mode and summary page
-  if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
+  if (viewOnly)
+    uiSchemaCopy.teimpReporting.productionFunctionalUnit["ui:label"] = "";
 
-  uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
+  uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.targetEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.targetEmissionIntensity["ui:options"],
+  uiSchemaCopy.teimpReporting.targetEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.targetEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.postProjectEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.postProjectEmissionIntensity["ui:options"],
+  uiSchemaCopy.teimpReporting.postProjectEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.postProjectEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
-    ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
+  uiSchemaCopy.teimpReporting.totalLifetimeEmissionReduction["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.totalLifetimeEmissionReduction["ui:options"],
     contentSuffix: contentSuffix(emissionFunctionalUnit),
   };
 
-  uiSchemaCopy.measurementPeriodEndDate["ui:options"] = {
-    ...uiSchemaCopy.measurementPeriodEndDate["ui:options"],
+  uiSchemaCopy.teimpReporting.measurementPeriodEndDate["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.measurementPeriodEndDate["ui:options"],
     contentSuffix: reportDurationSuffix,
   };
 
-  uiSchemaCopy.emissionFunctionalUnit["ui:options"] = {
-    ...uiSchemaCopy.emissionFunctionalUnit["ui:options"],
+  uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"],
     contentSuffix: emissionFunctionalUnitSuffix(),
   };
-
+  uiSchemaCopy["ui:ObjectFieldTemplate"] = EmptyObjectFieldTemplate; // Don't outline the parent object
   return uiSchemaCopy;
 };
 
@@ -220,14 +222,41 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     isStagingEmissionIntensity,
   ] = useStageEmissionIntensityFormChange();
 
+  const formData = emissionIntensityReportFormChange?.newFormData;
+
+  const formattedFormData = {
+    teimpReporting: {},
+    uponCompletion: {},
+  };
+
+  Object.keys(emissionIntensityReportSchema.properties).forEach(
+    (schemaProperty) =>
+      Object.keys(
+        emissionIntensityReportSchema.properties[schemaProperty].properties
+      ).forEach(
+        (key) =>
+          formData?.[key] &&
+          Object.assign(formattedFormData[schemaProperty], {
+            [key]: formData[key],
+          })
+      )
+  );
+
+  console.log("Form data: ", formData);
+  console.log("Formatted form data: ", formattedFormData);
+
   const handleChange = (formChangeObject, changeData) => {
     // don't trigger a change if the form data is an empty object
     if (changeData && Object.keys(changeData).length === 0) return;
 
     const updatedFormData = {
       ...formChangeObject.newFormData,
-      ...changeData,
+      ...changeData.teimpReporting,
+      ...changeData.uponCompletion,
     };
+
+    console.log("Updated form data: ", updatedFormData);
+
     updateEmissionsIntensityReportFormChange({
       variables: {
         input: {
@@ -330,7 +359,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }
             idPrefix="TEIMP_EmissionIntensityReportForm"
             schema={emissionIntensityReportSchema as JSONSchema7}
-            formData={emissionIntensityReportFormChange?.newFormData}
+            formData={formattedFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
               calculatedEiPerformance: calculatedEiPerformance ?? null,
