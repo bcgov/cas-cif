@@ -235,6 +235,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   const formData = emissionIntensityReportFormChange?.newFormData;
 
+  // Restructure form data to be in the same format as the schema
   const formattedFormData = {
     teimpReporting: {},
     uponCompletion: {},
@@ -257,14 +258,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     // don't trigger a change if the form data is an empty object
     if (changeData && Object.keys(changeData).length === 0) return;
 
+    // Expand TEIMP reporting and Upon Completion data to the top level of the form data
     const updatedFormData = {
       ...formChangeObject.newFormData,
       ...changeData,
       ...changeData.teimpReporting,
       ...changeData.uponCompletion,
     };
-
-    console.log("Updated form data: ", updatedFormData);
 
     updateEmissionsIntensityReportFormChange({
       variables: {
