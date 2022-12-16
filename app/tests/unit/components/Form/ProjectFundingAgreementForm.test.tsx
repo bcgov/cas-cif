@@ -157,7 +157,7 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent's Share Percentage/i)
         .value
-    ).toBe("2 %");
+    ).toBe("");
     expect(
       screen.getByLabelText<HTMLInputElement>(/Contract Start Date/i)
     ).toHaveTextContent(/Jan[.]? 01, 2021/);
@@ -191,25 +191,23 @@ describe("The ProjectFundingAgreementForm", () => {
 
     // Expenses & Payments Tracker Section
     expect(
-      screen.getByRole<HTMLInputElement>("textbox", {
-        name: /total expenses to date/i,
-      }).value
-    ).toBe("$1.00");
+      screen.getByRole("textbox", { name: /total eligible expenses to date/i })
+    ).toHaveValue("");
     expect(
-      screen.getByRole<HTMLInputElement>("textbox", {
+      screen.getByRole("textbox", {
         name: /total gross payment amount to date/i,
-      }).value
-    ).toBe("$1.00");
+      })
+    ).toHaveValue("");
     expect(
-      screen.getByRole<HTMLInputElement>("textbox", {
+      screen.getByRole("textbox", {
         name: /total holdback amount to date/i,
-      }).value
-    ).toBe("$0.00");
+      })
+    ).toHaveValue("");
     expect(
-      screen.getByRole<HTMLInputElement>("textbox", {
+      screen.getByRole("textbox", {
         name: /total net payment amount to date/i,
-      }).value
-    ).toBe("$1.00");
+      })
+    ).toHaveValue("");
   });
 
   it("calls the update mutation when entering funding agreement data", async () => {

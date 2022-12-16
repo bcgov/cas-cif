@@ -152,11 +152,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   );
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
-  var fundingAgreementFormData = JSON.parse(
-    JSON.stringify(fundingAgreement.newFormData)
-  );
+  var fundingAgreementFormData = null;
 
-  if (!projectRevision.isFirstRevision) {
+  if (!projectRevision.isFirstRevision && fundingAgreement) {
+    fundingAgreementFormData = { ...fundingAgreement.newFormData };
     const proponentsSharePercentage =
       Number(fundingAgreementFormData.proponentCost) /
       Number(projectRevision.totalProjectValue);
@@ -197,9 +196,14 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     if (formData && Object.keys(formData).length === 0) return;
 
     if (fundingAgreement) {
+      const proponentCost =
+        Number(fundingAgreement.newFormData.proponentCost) || 0;
+      const totalProjectValue = Number(projectRevision.totalProjectValue) || 1;
+      const proponentsSharePercentage = proponentCost / totalProjectValue;
       const updatedFormData = {
         ...fundingAgreement.newFormData,
         ...formData,
+        proponentsSharePercentage: proponentsSharePercentage,
       };
       updateFormChange({
         variables: {
@@ -417,10 +421,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </header>
           <FormBase
             id="ProjectFundingAgreementForm"
-            validateOnMount={true}
             idPrefix="ProjectFundingAgreementForm"
             schema={fundingAgreementSchema as JSONSchema7}
-            formData={fundingAgreementFormData}
+            formData={fundingAgreement.newFormData}
             formContext={{
               form: fundingAgreement?.newFormData,
               calculatedTotalProjectValue: projectRevision.totalProjectValue,
