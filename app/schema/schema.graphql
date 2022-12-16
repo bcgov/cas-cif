@@ -46049,6 +46049,9 @@ type FundingParameter implements Node {
   """The funding provided by the proponent"""
   proponentCost: BigFloat
 
+  """calculated proponents share percentage"""
+  proponentsSharePercentage: BigFloat
+
   """
   The percent of the total funding for a project that the Province is providing
   """
@@ -46105,6 +46108,11 @@ input FundingParameterCondition {
 
   """Checks for equality with the object’s `proponentCost` field."""
   proponentCost: BigFloat
+
+  """
+  Checks for equality with the object’s `proponentsSharePercentage` field.
+  """
+  proponentsSharePercentage: BigFloat
 
   """Checks for equality with the object’s `provinceSharePercentage` field."""
   provinceSharePercentage: BigFloat
@@ -46186,6 +46194,9 @@ input FundingParameterFilter {
   """Filter by the object’s `proponentCost` field."""
   proponentCost: BigFloatFilter
 
+  """Filter by the object’s `proponentsSharePercentage` field."""
+  proponentsSharePercentage: BigFloatFilter
+
   """Filter by the object’s `provinceSharePercentage` field."""
   provinceSharePercentage: BigFloatFilter
 
@@ -46239,6 +46250,9 @@ input FundingParameterInput {
 
   """The funding provided by the proponent"""
   proponentCost: BigFloat
+
+  """calculated proponents share percentage"""
+  proponentsSharePercentage: BigFloat
 
   """
   The percent of the total funding for a project that the Province is providing
@@ -46294,6 +46308,9 @@ input FundingParameterPatch {
 
   """The funding provided by the proponent"""
   proponentCost: BigFloat
+
+  """calculated proponents share percentage"""
+  proponentsSharePercentage: BigFloat
 
   """
   The percent of the total funding for a project that the Province is providing
@@ -46480,6 +46497,8 @@ enum FundingParametersOrderBy {
   PROJECT_BY_PROJECT_ID__UPDATED_BY_DESC
   PROJECT_ID_ASC
   PROJECT_ID_DESC
+  PROPONENTS_SHARE_PERCENTAGE_ASC
+  PROPONENTS_SHARE_PERCENTAGE_DESC
   PROPONENT_COST_ASC
   PROPONENT_COST_DESC
   PROVINCE_SHARE_PERCENTAGE_ASC
