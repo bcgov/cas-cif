@@ -22,8 +22,24 @@ spec:
           - name: test-for-timestamp
             image: postgres:14.6-alpine
             imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
+            env:
+              - name: CIF_BACKUP_DATABASE
+                valueFrom:
+                  secretKeyRef:
+                    key: database
+                    name: test-database-backups-database
+              - name: CIF_BACKUP_HOST
+                valueFrom:
+                  secretKeyRef:
+                    key: host
+                    name: test-database-backups-database
+              - name: CIF_BACKUP_PASS
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: test-database-backups-database
             command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - |
                 set -euo pipefail;
@@ -41,22 +57,6 @@ spec:
           - name: uninstall-backup-chart
             image: {{ .Values.image.backupTest.repository }}:{{ default .Values.defaultImageTag .Values.image.backupTest.tag }}
             imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.backupTest.pullPolicy }}
-            env:
-              - name: CIF_BACKUP_DATABASE
-                valueFrom:
-                  secretKeyRef:
-                    key: database
-                    name: test-database-backups-database
-              - name: CIF_BACKUP_HOST
-                valueFrom:
-                  secretKeyRef:
-                    key: host
-                    name: test-database-backups-database
-              - name: CIF_BACKUP_PASS
-                valueFrom:
-                  secretKeyRef:
-                    key: password
-                    name: test-database-backups-database
             resources:
               limits:
                 cpu: 800m
