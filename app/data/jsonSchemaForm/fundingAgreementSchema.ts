@@ -56,6 +56,8 @@ export const fundingAgreementSchema = {
 
 export const fundingAgreementUiSchema = {
   "ui:order": [
+    "contractStartDate",
+    "projectAssetsLifeEndDate",
     "maxFundingAmount",
     "provinceSharePercentage",
     "holdbackPercentage",
