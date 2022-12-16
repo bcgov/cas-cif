@@ -421,9 +421,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </header>
           <FormBase
             id="ProjectFundingAgreementForm"
+            validateOnMount={fundingAgreement?.changeStatus === "staged"}
             idPrefix="ProjectFundingAgreementForm"
             schema={fundingAgreementSchema as JSONSchema7}
-            formData={fundingAgreement.newFormData}
+            formData={fundingAgreement?.newFormData}
             formContext={{
               form: fundingAgreement?.newFormData,
               calculatedTotalProjectValue: projectRevision.totalProjectValue,
