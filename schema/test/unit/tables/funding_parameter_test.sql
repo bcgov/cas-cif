@@ -17,6 +17,7 @@ select columns_are(
     'proponent_cost',
     'contract_start_date',
     'project_assets_life_end_date',
+    'proponents_share_percentage',
     'created_at',
     'created_by',
     'updated_at',
