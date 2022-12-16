@@ -92,6 +92,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       fragment ProjectFundingAgreementForm_projectRevision on ProjectRevision {
         id
         rowId
+        isFirstRevision
         projectFormChange {
           formDataRecordId
         }
@@ -149,26 +150,21 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
   var fundingAgreementFormData = JSON.parse(
     JSON.stringify(fundingAgreement.newFormData)
   );
-  var proponentsSharePercentage = 0;
-  if (
-    // safeguard to prevent memory leaks
-    fundingAgreementFormData.proponentCost &&
-    projectRevision.totalProjectValue
-  ) {
-    proponentsSharePercentage =
+
+  if (!projectRevision.isFirstRevision) {
+    const proponentsSharePercentage =
       Number(fundingAgreementFormData.proponentCost) /
       Number(projectRevision.totalProjectValue);
+    fundingAgreementFormData.proponentsSharePercentage =
+      proponentsSharePercentage;
+    fundingAgreementFormData.grossPaymentsToDate =
+      fundingAgreement.grossPaymentsToDate;
   }
-  fundingAgreementFormData.proponentsSharePercentage =
-    proponentsSharePercentage;
-  fundingAgreementFormData.grossPaymentsToDate =
-    fundingAgreement.grossPaymentsToDate;
 
   // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
   const filteredAdditionalFundingSourceFormChanges =
@@ -341,20 +337,23 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     projectRevision.projectFundingAgreementFormChanges,
     projectRevision.additionalFundingSourceFormChanges,
   ]);
-  const calculatedFormData = {
-    eligibleExpensesToDate:
-      projectRevision.projectFundingAgreementFormChanges.edges[0].node
-        .eligibleExpensesToDate,
-    holdbackAmountToDate:
-      projectRevision.projectFundingAgreementFormChanges.edges[0].node
-        .holdbackAmountToDate,
-    netPaymentsToDate:
-      projectRevision.projectFundingAgreementFormChanges.edges[0].node
-        .netPaymentsToDate,
-    grossPaymentsToDate:
-      projectRevision.projectFundingAgreementFormChanges.edges[0].node
-        .netPaymentsToDate,
-  };
+  var calculatedFormData = {};
+  if (!projectRevision.isFirstRevision) {
+    calculatedFormData = {
+      eligibleExpensesToDate:
+        projectRevision.projectFundingAgreementFormChanges.edges[0].node
+          .eligibleExpensesToDate,
+      holdbackAmountToDate:
+        projectRevision.projectFundingAgreementFormChanges.edges[0].node
+          .holdbackAmountToDate,
+      netPaymentsToDate:
+        projectRevision.projectFundingAgreementFormChanges.edges[0].node
+          .netPaymentsToDate,
+      grossPaymentsToDate:
+        projectRevision.projectFundingAgreementFormChanges.edges[0].node
+          .netPaymentsToDate,
+    };
+  }
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
@@ -418,7 +417,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </header>
           <FormBase
             id="ProjectFundingAgreementForm"
-            validateOnMount={fundingAgreement?.changeStatus === "staged"}
+            validateOnMount={true}
             idPrefix="ProjectFundingAgreementForm"
             schema={fundingAgreementSchema as JSONSchema7}
             formData={fundingAgreementFormData}
