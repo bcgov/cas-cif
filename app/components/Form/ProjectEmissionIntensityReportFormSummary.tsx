@@ -199,7 +199,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           summaryEmissionIntensityReport?.newFormData
             ?.measurementPeriodStartDate,
           summaryEmissionIntensityReport?.newFormData?.measurementPeriodEndDate,
-          false
+          true
         )}
         formData={emissionIntensityReportDiffObject.formData}
         formContext={{
