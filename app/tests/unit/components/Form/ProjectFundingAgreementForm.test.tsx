@@ -157,7 +157,7 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent's Share Percentage/i)
         .value
-    ).toBe("$1 %");
+    ).toBe("2 %");
     expect(
       screen.getByLabelText<HTMLInputElement>(/Contract Start Date/i)
     ).toHaveTextContent(/Jan[.]? 01, 2021/);
