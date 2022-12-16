@@ -34,4 +34,20 @@ export const expensesPaymentsTrackerUiSchema = {
     "holdbackAmountToDate",
     "netPaymentsToDate",
   ],
+  eligibleExpensesToDate: {
+    "ui:widget": "NumberWidget",
+    isMoney: true,
+  },
+  grossPaymentsToDate: {
+    "ui:widget": "NumberWidget",
+    isMoney: true,
+  },
+  holdbackAmountToDate: {
+    "ui:widget": "NumberWidget",
+    isMoney: true,
+  },
+  netPaymentsToDate: {
+    "ui:widget": "NumberWidget",
+    isMoney: true,
+  },
 };
