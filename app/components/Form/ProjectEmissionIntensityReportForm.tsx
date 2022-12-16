@@ -21,6 +21,7 @@ import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 import getDurationFromDates from "lib/helpers/getDurationFromDates";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import ReadOnlyEmptyFieldTempalte from "lib/theme/ReadOnlyEmptyFieldTemplate";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -120,7 +121,17 @@ export const createEmissionIntensityReportUiSchema = (
     ...uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"],
     contentSuffix: emissionFunctionalUnitSuffix(),
   };
-  uiSchemaCopy["ui:ObjectFieldTemplate"] = EmptyObjectFieldTemplate; // Don't outline the parent object
+
+  /**
+   * We need to set the ui:FieldTemplate to the EmptyFieldTemplate
+   * and ui:ObjectFieldTemplate to the EmptyObjectFieldTemplate
+   * to avoid showing field labels and outlines on parent object.
+   * There is room for improvement on how this is done
+   * but for now it is the best solution.
+   */
+  uiSchemaCopy["ui:FieldTemplate"] = ReadOnlyEmptyFieldTempalte;
+  uiSchemaCopy["ui:ObjectFieldTemplate"] = EmptyObjectFieldTemplate;
+
   return uiSchemaCopy;
 };
 
@@ -241,9 +252,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           })
       )
   );
-
-  console.log("Form data: ", formData);
-  console.log("Formatted form data: ", formattedFormData);
 
   const handleChange = (formChangeObject, changeData) => {
     // don't trigger a change if the form data is an empty object
