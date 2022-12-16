@@ -251,6 +251,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
     const updatedFormData = {
       ...formChangeObject.newFormData,
+      ...changeData,
       ...changeData.teimpReporting,
       ...changeData.uponCompletion,
     };
