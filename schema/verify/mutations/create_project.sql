@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.create_project()'::regprocedure);
+select pg_get_functiondef('cif.create_project(integer)'::regprocedure);
 
 rollback;
