@@ -6,7 +6,7 @@ select plan(4);
 -- Test Setup
 truncate cif.operator restart identity cascade;
 truncate cif.project restart identity cascade;
-select cif.create_project();
+select cif.create_project(1);
 select cif.add_emission_intensity_report_to_revision((select id from cif.project_revision order by id desc limit 1));
 
 -- it inserts a new record

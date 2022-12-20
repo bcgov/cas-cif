@@ -13,8 +13,8 @@ truncate table cif.project restart identity cascade;
 insert into cif.operator(id, legal_name) overriding system value values (1, 'Test Operator');
 insert into cif.form(slug, json_schema, description) values ('milestone_report', '{}', 'test'), ('payment', '{}', 'test');
 
-select cif.create_project();
-select cif.create_project();
+select cif.create_project(1);
+select cif.create_project(1);
 update cif.form_change
   set new_form_data=jsonb_build_object(
       'operatorId', 1,

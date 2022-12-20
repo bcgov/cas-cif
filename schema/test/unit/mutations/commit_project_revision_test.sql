@@ -24,7 +24,7 @@ restart identity;
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
 
-select cif.create_project();
+select cif.create_project(1);
 
 update cif.form_change set new_form_data='{
       "projectName": "name",
@@ -109,7 +109,7 @@ select is(
 );
 
 /** Create a second set of records to check our deferred constraints **/
-select cif.create_project();
+select cif.create_project(1);
 
 update cif.form_change set new_form_data='{
       "projectName": "name",

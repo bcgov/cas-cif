@@ -3,7 +3,7 @@ begin;
 select plan(4);
 
 truncate cif.project restart identity cascade;
-select cif.create_project();
+select cif.create_project(1);
 
 select throws_like(
   $$
@@ -109,7 +109,7 @@ select results_eq(
   'Generate quarterly reports between start_date and end_date when start_date is before 5th of October'
 );
 
-select cif.create_project();
+select cif.create_project(1);
 
 select results_eq(
   $$
@@ -168,7 +168,7 @@ select results_eq(
   'Generate quarterly reports between start_date and end_date when start_date is after 5th of October'
 );
 
-select cif.create_project();
+select cif.create_project(1);
 
 select results_eq(
   $$

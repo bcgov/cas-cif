@@ -20,7 +20,7 @@ select is(
 );
 
 
-select cif.create_project();
+select cif.create_project(1);
 
 select is(
   (select id from cif.pending_new_project_revision()), 1,
@@ -62,7 +62,7 @@ select is(
 
 -- A deleted revision is not returned
 
-select cif.create_project();
+select cif.create_project(1);
 
 select isnt(
   (select id from cif.pending_new_project_revision()),

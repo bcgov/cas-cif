@@ -9,7 +9,7 @@ truncate cif.operator restart identity cascade;
 truncate cif.project restart identity cascade;
 insert into cif.operator (legal_name) values ('test operator');
 
-select cif.create_project();
+select cif.create_project(1);
 
 insert into cif.form(slug, json_schema, description) values ('some_other_schema', '{}'::jsonb, 'test description');
 
