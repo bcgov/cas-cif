@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import { act, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
+import { getNewProjectRevisionPageRoute } from "routes/pageRoutes";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledProjectsQuery, {
   projectsQuery,
@@ -95,31 +96,13 @@ describe("The projects page", () => {
     expect(screen.queryByText(/add a project/i)).toBeNull();
   });
 
-  it("calls the Add a Project mutation when the Add a Project Button is clicked", () => {
-    const spy = jest.spyOn(
-      require("mutations/Project/createProject"),
-      "useCreateProjectMutation"
+  it("Redirects to the New Project page when the Add a Project Button is clicked", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+    userEvent.click(screen.getByText(/Add a Project/i));
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
+      getNewProjectRevisionPageRoute()
     );
-
-    pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPage();
-    userEvent.click(screen.getByText(/Add a Project/i));
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it("displays an error when the Add a Project is clicked & createProjectMutation fails", () => {
-    pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPage();
-    userEvent.click(screen.getByText(/Add a Project/i));
-    act(() => {
-      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
-    });
-    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
-    expect(
-      screen.getByText(
-        "An error occurred while attempting to create the project."
-      )
-    ).toBeVisible();
   });
 
   it("renders the correct filters", async () => {
