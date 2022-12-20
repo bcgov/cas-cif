@@ -81,10 +81,22 @@ Cypress.Commands.add("clearMockedTime", () => {
 });
 
 Cypress.Commands.add(
+  "fillAndCheckNewProjectForm",
+  (fundingStream, fundingStreamYear) => {
+    cy.url().should("include", "/new");
+    cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
+    cy.findByLabelText(/RFP Year/i).select(fundingStreamYear);
+
+    cy.get("option").contains(fundingStream).should("be.selected");
+    cy.get("option").contains(fundingStreamYear).should("be.selected");
+
+    return cy.url().should("include", "new");
+  }
+);
+
+Cypress.Commands.add(
   "fillOverviewForm",
   (
-    fundingStream,
-    fundingStreamYear,
     operatorName,
     sectorName,
     proposalReference,
@@ -96,8 +108,6 @@ Cypress.Commands.add(
     score
   ) => {
     cy.url().should("include", "/form/0");
-    cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
-    cy.findByLabelText(/RFP Year/i).select(fundingStreamYear);
     cy.findByLabelText(/Operator Name/i).click();
     cy.contains(operatorName).click();
     cy.findByLabelText("Sector").click();

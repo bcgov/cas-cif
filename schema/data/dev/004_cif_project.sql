@@ -5,7 +5,7 @@ do $$
   begin
     for index in 1..50 loop
 
-      current_revision := cif.create_project();
+      current_revision := cif.create_project(1);
 
       update cif.form_change
       set new_form_data= jsonb_build_object(
