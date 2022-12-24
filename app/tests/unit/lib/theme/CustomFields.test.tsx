@@ -92,8 +92,6 @@ describe("The Object Field Template", () => {
     expect(
       componentUnderTest.getByText("I replaced the OLD ID")
     ).toBeInTheDocument();
-
-    // expect(componentUnderTest.getAllByRole("textbox")).toHaveLength(3);
   });
 
   it("shows data has been added when there is newData, the operation is 'CREATE' & there is no old data", () => {
@@ -248,5 +246,29 @@ describe("The Object Field Template", () => {
     expect(
       componentUnderTest.getByText("I replaced the ID")
     ).toBeInTheDocument();
+  });
+  it("shows updated forms widget specific styles", () => {
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formData}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isRevisionSpecific: true,
+        }}
+      />
+    );
+
+    expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
+      "revisionDiffNew"
+    );
+    expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
+      "revisionDiffOld"
+    );
   });
 });
