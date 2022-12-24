@@ -2,19 +2,19 @@ import { createProjectManagerUiSchema } from "components/Form/ProjectManagerForm
 import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectManagerFormSummary_projectRevision$key } from "__generated__/ProjectManagerFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
+import { SummaryFormProps } from "data/formPages/types";
 
 const { fields } = utils.getDefaultRegistry();
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectManagerFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectManagerFormSummary: React.FC<Props> = (props) => {
@@ -56,6 +56,9 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
   // Show diff if it is not the first revision and not view only (rendered from the managers page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
+
+  // defines if we are on the project revision view page to show specific UI
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived managers
   let managerFormChanges = projectManagerFormChangesByLabel.edges;
@@ -110,16 +113,27 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
               node.formChange?.formChangeByPreviousFormChangeId
                 ?.asProjectManager?.cifUserByCifUserId?.fullName
             ),
+            isRevisionSpecific: isOnProjectRevisionViewPage,
           }}
         />
       );
     });
-  }, [formChangesByLabel, renderDiff]);
+  }, [formChangesByLabel, renderDiff, isOnProjectRevisionViewPage]);
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
+    [props, allFormChangesPristine]
+  );
+
+  if (isOnProjectRevisionViewPage && allFormChangesPristine) return null;
 
   return (
     <>
       <h3>Project Managers</h3>
-      {allFormChangesPristine && !props.viewOnly ? (
+      {allFormChangesPristine &&
+      !props.viewOnly &&
+      !isOnProjectRevisionViewPage ? (
         <p>
           <em>Project Managers not {isFirstRevision ? "added" : "updated"}</em>
         </p>

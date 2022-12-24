@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -12,15 +12,15 @@ import {
 } from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { ProjectQuarterlyReportFormSummary_projectRevision$key } from "__generated__/ProjectQuarterlyReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { SummaryFormProps } from "data/formPages/types";
 
 const { fields } = utils.getDefaultRegistry();
 
 // Set custom rjsf fields to display diffs
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectQuarterlyReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
@@ -52,6 +52,8 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
 
   // Show diff if it is not the first revision and not view only (rendered from the quarterly report page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
+
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived quarterly reports
   let quarterlyReportFormChanges =
@@ -98,6 +100,14 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
             projectReportingRequirementSchema as JSONSchema7,
             quarterlyReport
           );
+
+      if (
+        isOnProjectRevisionViewPage &&
+        quarterlyReport?.isPristine &&
+        quarterlyReport.operation !== "ARCHIVE"
+      )
+        return null;
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -110,7 +120,13 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
             )}
           {/* Show this part if the whole quarterly report has been removed */}
           {renderDiff && quarterlyReport.operation === "ARCHIVE" ? (
-            <em className="diffOld">Quarterly Report Removed</em>
+            <em
+              className={
+                isOnProjectRevisionViewPage ? "revisionDiffOld" : "diffOld"
+              }
+            >
+              Quarterly Report Removed
+            </em>
           ) : (
             <FormBase
               liveValidate
@@ -125,6 +141,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
                 operation: quarterlyReport.operation,
                 oldData:
                   quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
+                isRevisionSpecific: isOnProjectRevisionViewPage,
               }}
             />
           )}
@@ -136,18 +153,25 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedQuarterlyReports, renderDiff]);
+  }, [isOnProjectRevisionViewPage, renderDiff, sortedQuarterlyReports]);
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, props]
+  );
 
   return (
     <>
-      <h3>Project Quarterly Reports</h3>
+      {!isOnProjectRevisionViewPage && <h3>Project Quarterly Reports</h3>}
       {quarterlyReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Quarterly Reports</em>
         </dd>
       )}
       {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
-      !props.viewOnly ? (
+      !props.viewOnly &&
+      !isOnProjectRevisionViewPage ? (
         <dd>
           <em>Quarterly Reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>

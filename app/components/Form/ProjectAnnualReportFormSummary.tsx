@@ -7,18 +7,18 @@ import { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportFormSummary_projectRevision$key } from "__generated__/ProjectAnnualReportFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
+import { SummaryFormProps } from "data/formPages/types";
 
 const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectAnnualReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
@@ -50,6 +50,8 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
 
   // Show diff if it is not the first revision and not view only (rendered from the annual reports page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
+
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived reports
   let annualReportFormChanges = summaryAnnualReportFormChanges.edges;
@@ -94,6 +96,13 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
             annualReport
           );
 
+      if (
+        isOnProjectRevisionViewPage &&
+        annualReport?.isPristine &&
+        annualReport.operation !== "ARCHIVE"
+      )
+        return null;
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -106,7 +115,13 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
             )}
           {/* Show this part if the whole Annual report has been removed */}
           {renderDiff && annualReport.operation === "ARCHIVE" ? (
-            <em className="diffOld">Annual report removed</em>
+            <em
+              className={
+                isOnProjectRevisionViewPage ? "revisionDiffOld" : "diffOld"
+              }
+            >
+              Annual report removed
+            </em>
           ) : (
             <FormBase
               liveValidate
@@ -121,6 +136,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
                 operation: annualReport.operation,
                 oldData:
                   annualReport.formChangeByPreviousFormChangeId?.newFormData,
+                isRevisionSpecific: isOnProjectRevisionViewPage,
               }}
             />
           )}
@@ -132,17 +148,25 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedAnnualReports, renderDiff]);
+  }, [sortedAnnualReports, renderDiff, isOnProjectRevisionViewPage]);
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, props]
+  );
 
   return (
     <>
-      <h3>Project Annual Reports</h3>
+      {!isOnProjectRevisionViewPage && <h3>Project Annual Reports</h3>}
       {annualReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Annual Reports</em>
         </dd>
       )}
-      {allFormChangesPristine && !props.viewOnly ? (
+      {allFormChangesPristine &&
+      !props.viewOnly &&
+      !isOnProjectRevisionViewPage ? (
         <p>
           <em>
             Project Annual Reports not {isFirstRevision ? "added" : "updated"}

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -9,14 +9,14 @@ import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generat
 import projectMilestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSchema";
 import { getSortedReports } from "./Functions/reportingRequirementFormChangeFunctions";
 import { getMilestoneFilteredSchema } from "./Functions/getMilestoneFilteredSchema";
+import { SummaryFormProps } from "data/formPages/types";
 
 const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectMilestoneReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
@@ -54,6 +54,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
 
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+
   // If we are showing the diff then we want to see archived records,
   // otherwise filter out the archived milestone reports
   const milestoneReportFormChanges = renderDiff
@@ -79,7 +81,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
   const milestoneReportsJSX = useMemo(() => {
     return sortedMilestoneReports.map((milestoneReport, index) => {
       // Set the formSchema and formData based on showing the diff or not
-      const reportingRequirementFormDiffObject = renderDiff
+      const milestoneFormDiffObject = renderDiff
         ? getMilestoneFilteredSchema(
             milestoneReport.formByJsonSchemaName.jsonSchema
               .schema as JSONSchema7,
@@ -90,36 +92,48 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             formData: milestoneReport.newFormData,
           };
 
+      if (
+        isOnProjectRevisionViewPage &&
+        milestoneReport?.isPristine &&
+        milestoneReport.operation !== "ARCHIVE"
+      )
+        return null;
+
       return (
         <div key={index} className="reportContainer">
           <header>
             <h4>Milestone Report {index + 1}</h4>
           </header>
           {/* Show this part if none of milestone report form properties have been updated */}
-          {Object.keys(reportingRequirementFormDiffObject.formSchema.properties)
-            .length === 0 &&
+          {Object.keys(milestoneFormDiffObject.formSchema.properties).length ===
+            0 &&
             milestoneReport.operation !== "ARCHIVE" && (
               <em>Milestone report not updated</em>
             )}
 
           {/* Show this part if the whole milestone report has been removed */}
           {renderDiff && milestoneReport.operation === "ARCHIVE" && (
-            <em className="diffOld">Milestone Report Removed</em>
+            <em
+              className={
+                isOnProjectRevisionViewPage ? "revisionDiffOld" : "diffOld"
+              }
+            >
+              Milestone Report Removed
+            </em>
           )}
           <FormBase
             key={`form-${milestoneReport.id}`}
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={
-              reportingRequirementFormDiffObject.formSchema as JSONSchema7
-            }
+            schema={milestoneFormDiffObject.formSchema as JSONSchema7}
             uiSchema={projectMilestoneUiSchema}
-            formData={reportingRequirementFormDiffObject.formData}
+            formData={milestoneFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
+              isRevisionSpecific: isOnProjectRevisionViewPage,
             }}
           />
 
@@ -131,18 +145,32 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedMilestoneReports, renderDiff]);
+  }, [sortedMilestoneReports, renderDiff, isOnProjectRevisionViewPage]);
+
+  const milestoneReportsNotUpdated = useMemo(
+    () => allFormChangesPristine || milestoneReportFormChanges.length < 1,
+    [allFormChangesPristine, milestoneReportFormChanges.length]
+  );
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!milestoneReportsNotUpdated),
+    [milestoneReportsNotUpdated, props]
+  );
+
+  if (isOnProjectRevisionViewPage && milestoneReportsNotUpdated) return null;
 
   return (
     <>
-      <h3>Project Milestone Reports</h3>
+      {!isOnProjectRevisionViewPage && <h3>Project Milestone Reports</h3>}
       {milestoneReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Milestone Reports</em>
         </dd>
       )}
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
-      !props.viewOnly ? (
+      !props.viewOnly &&
+      !isOnProjectRevisionViewPage ? (
         <dd>
           <em>Milestone Reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>

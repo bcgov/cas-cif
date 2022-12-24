@@ -11,7 +11,7 @@ import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { ProjectFundingAgreementFormSummary_projectRevision$key } from "__generated__/ProjectFundingAgreementFormSummary_projectRevision.graphql";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import React from "react";
 import additionalFundingSourceSchema from "data/jsonSchemaForm/additionalFundingSourceSchema";
 import { createAdditionalFundingSourceUiSchema } from "./ProjectFundingAgreementForm";
@@ -20,15 +20,15 @@ import {
   expensesPaymentsTrackerUiSchema,
 } from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
+import { SummaryFormProps } from "data/formPages/types";
 
 const { fields } = utils.getDefaultRegistry();
 
 // Set custom rjsf fields to display diffs
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectFundingAgreementFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
@@ -99,6 +99,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   let additionalFundingSourceFormChanges =
     summaryAdditionalFundingSourceFormChanges.edges;
 
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   if (!renderDiff)
     additionalFundingSourceFormChanges =
@@ -149,13 +151,20 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
         <div key={node.id}>
           {Object.keys(additionalFundingSourceDiffObject.formSchema.properties)
             .length === 0 &&
-            node.operation !== "ARCHIVE" && (
+            node.operation !== "ARCHIVE" &&
+            !isOnProjectRevisionViewPage && (
               <em>Additional funding source {index + 1} not updated</em>
             )}
           {renderDiff && node.operation === "ARCHIVE" ? (
-            <em className="diffOld">
-              Additional funding source {index + 1} removed
-            </em>
+            !isOnProjectRevisionViewPage ? (
+              <em className="diffOld">
+                Additional funding source {index + 1} removed
+              </em>
+            ) : (
+              <em className="revisionDiffOld">
+                Additional funding source {index + 1}
+              </em>
+            )
           ) : (
             <FormBase
               liveValidate
@@ -170,28 +179,61 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
               formContext={{
                 operation: node.operation,
                 oldData: node.formChangeByPreviousFormChangeId?.newFormData,
+                isRevisionSpecific: isOnProjectRevisionViewPage,
               }}
             />
           )}
         </div>
       );
     });
-  }, [sortedAdditionalFundingSourceFormChanges, renderDiff]);
+  }, [
+    sortedAdditionalFundingSourceFormChanges,
+    renderDiff,
+    isOnProjectRevisionViewPage,
+  ]);
+
+  const fundingAgreementFormNotUpdated = useMemo(
+    () =>
+      (fundingAgreementSummary?.isPristine ||
+        (fundingAgreementSummary?.isPristine === null &&
+          Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
+      allAdditionalFundingSourceFormChangesPristine,
+    [allAdditionalFundingSourceFormChangesPristine, fundingAgreementSummary]
+  );
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!fundingAgreementFormNotUpdated),
+    [fundingAgreementFormNotUpdated, props]
+  );
+
+  if (
+    isOnProjectRevisionViewPage &&
+    !fundingAgreementFormNotUpdated &&
+    fundingAgreementSummary?.operation === "ARCHIVE"
+  ) {
+    return (
+      <em className="revisionDiffOld">Budgets, Expenses & Payments removed</em>
+    );
+  }
 
   return (
     <div className="summaryContainer">
-      <h3>Budgets, Expenses & Payments</h3>
+      {!isOnProjectRevisionViewPage && <h3>Budgets, Expenses & Payments</h3>}
       {(!fundingAgreementSummary ||
         fundingAgreementSummary?.isPristine ||
         (fundingAgreementSummary?.isPristine === null &&
           Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
       !props.viewOnly ? (
-        <p>
-          <em>
-            Budgets, Expenses & Payments not{" "}
-            {isFirstRevision ? "added" : "updated"}
-          </em>
-        </p>
+        !isOnProjectRevisionViewPage ? (
+          <p>
+            <em>
+              Budgets, Expenses & Payments not{" "}
+              {isFirstRevision ? "added" : "updated"}
+            </em>
+          </p>
+        ) : (
+          ""
+        )
       ) : (
         <FormBase
           tagName={"dl"}
@@ -207,10 +249,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
             oldData:
               fundingAgreementSummary?.formChangeByPreviousFormChangeId
                 ?.newFormData,
+            isRevisionSpecific: isOnProjectRevisionViewPage,
           }}
         />
       )}
-      <h3>Project Additional Funding Source</h3>
+      {!isOnProjectRevisionViewPage && (
+        <h3>Project Additional Funding Source</h3>
+      )}
       {sortedAdditionalFundingSourceFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Additional Funding Source</em>
@@ -218,18 +263,18 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       )}
       {(allAdditionalFundingSourceFormChangesPristine ||
         sortedAdditionalFundingSourceFormChanges.length < 1) &&
-      !props.viewOnly ? (
-        <dd>
-          <em>
-            Additional Funding Source not{" "}
-            {isFirstRevision ? "added" : "updated"}
-          </em>
-        </dd>
-      ) : (
-        additionalFundingSourcesJSX
-      )}
+      !props.viewOnly
+        ? !isOnProjectRevisionViewPage && (
+            <dd>
+              <em>
+                Additional Funding Source not{" "}
+                {isFirstRevision ? "added" : "updated"}
+              </em>
+            </dd>
+          )
+        : additionalFundingSourcesJSX}
 
-      {props.viewOnly && (
+      {props.viewOnly && !isOnProjectRevisionViewPage && (
         <>
           <h3>Expenses & Payments Tracker</h3>
           <FormBase
@@ -260,7 +305,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           />
         </>
       )}
-
       <style jsx>{`
         .summaryContainer {
           margin-bottom: 1em;

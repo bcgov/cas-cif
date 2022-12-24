@@ -9,12 +9,13 @@ import { createProjectUiSchema } from "./ProjectForm";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { SummaryFormProps } from "data/formPages/types";
+import { useEffect, useMemo } from "react";
 
 const { fields } = utils.getDefaultRegistry();
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectFormSummary: React.FC<Props> = (props) => {
@@ -69,6 +70,9 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
+  // defines if we are on the project revision view page to show specific UI
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
     projectFormChange.formChangeByPreviousFormChangeId?.asProject;
@@ -93,9 +97,21 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
+  const projectFormNotUpdated = useMemo(
+    () => projectFormChange.isPristine === null || projectFormChange.isPristine,
+    [projectFormChange]
+  );
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!projectFormNotUpdated),
+    [projectFormNotUpdated, props]
+  );
+
+  if (isOnProjectRevisionViewPage && projectFormNotUpdated) return null;
+
   return (
     <>
-      <h3>Project Overview</h3>
+      {!isOnProjectRevisionViewPage && <h3>Project Overview</h3>}
       {(projectFormChange.isPristine ||
         (projectFormChange.isPristine === null &&
           Object.keys(projectFormChange.newFormData).length === 0)) &&
@@ -122,6 +138,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
             oldUiSchema,
             operation: projectFormChange.operation,
+            isRevisionSpecific: isOnProjectRevisionViewPage,
           }}
         />
       )}

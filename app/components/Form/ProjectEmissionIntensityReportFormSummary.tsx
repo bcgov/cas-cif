@@ -2,7 +2,6 @@ import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
-import { useMemo } from "react";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
@@ -14,11 +13,12 @@ import {
 import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { createEmissionIntensityReportUiSchema } from "./ProjectEmissionIntensityReportForm";
+import { SummaryFormProps } from "data/formPages/types";
+import { useEffect, useMemo } from "react";
 const { fields } = utils.getDefaultRegistry();
 
-interface Props {
+interface Props extends Omit<SummaryFormProps, "projectRevision"> {
   projectRevision: ProjectEmissionIntensityReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
 }
 
 const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
@@ -70,6 +70,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
+  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+
   const summaryReportingRequirement =
     summaryEmissionIntensityReportingRequirementFormChange?.edges[0]?.node;
 
@@ -114,8 +116,16 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
     summaryReportingRequirement?.isPristine,
   ]);
 
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, props]
+  );
+
   // Growthbook - teimp
   if (!useShowGrowthbookFeature("teimp")) return null;
+
+  if (isOnProjectRevisionViewPage && allFormChangesPristine) return null;
 
   if (
     allFormChangesPristine ||
@@ -123,7 +133,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   )
     return (
       <>
-        <h3>Emission Intensity Report</h3>
+        {!isOnProjectRevisionViewPage && <h3>Emission Intensity Report</h3>}
         <dd>
           <em>
             Emission Intensity Report not{" "}
@@ -135,7 +145,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
 
   return (
     <>
-      <h3>Emission Intensity Report</h3>
+      {!isOnProjectRevisionViewPage && <h3>Emission Intensity Report</h3>}
       {/* Show this part if none of the emission intensity report form properties have been updated */}
       {allFormChangesPristine &&
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
@@ -164,6 +174,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           oldData:
             summaryReportingRequirement?.formChangeByPreviousFormChangeId
               ?.newFormData,
+          isRevisionSpecific: isOnProjectRevisionViewPage,
         }}
       />
       <FormBase
@@ -188,6 +199,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           oldData:
             summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
               ?.newFormData,
+          isRevisionSpecific: isOnProjectRevisionViewPage,
         }}
       />
     </>
