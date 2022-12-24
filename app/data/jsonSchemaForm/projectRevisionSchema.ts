@@ -100,6 +100,15 @@ export const viewProjectRevisionSchema = {
       anyOf: undefined,
       enum: undefined,
     },
+    updatedForms: {
+      type: "array",
+      title: "Forms Updated",
+      items: {
+        type: "string",
+        enum: [],
+      },
+      uniqueItems: true,
+    },
   },
   dependencies: {
     revisionType: {
@@ -138,8 +147,8 @@ export const projectRevisionUISchema = {
     "revisionType",
     "amendmentTypes",
     "pendingActionsFrom",
-    "amendmentStatus",
     "revisionStatus",
+    "updatedForms",
     "changeReason",
   ],
   revisionType: {
@@ -153,5 +162,9 @@ export const projectRevisionUISchema = {
   },
   revisionStatus: {
     "ui:widget": "RevisionStatusWidget",
+  },
+  updatedForms: {
+    "ui:widget": "UpdatedFormsWidget",
+    hideOptional: true,
   },
 };

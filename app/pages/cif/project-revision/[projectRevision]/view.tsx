@@ -20,6 +20,7 @@ import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { useState } from "react";
+import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
@@ -87,6 +88,7 @@ export const ViewProjectRevisionQuery = graphql`
           ...TaskList_projectRevision
         }
       }
+      ...UpdatedFormsWidget_projectRevision
     }
     allRevisionTypes {
       edges {
@@ -164,8 +166,12 @@ export function ProjectRevisionView({
               revisionId: projectRevision.id,
               revisionStatus: projectRevision.revisionStatus,
               changeStatus: projectRevision.changeStatus,
+              projectRevision,
             }}
-            widgets={{ RevisionStatusWidget }}
+            widgets={{
+              RevisionStatusWidget,
+              UpdatedFormsWidget,
+            }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
           <div className="revision-record-history-section">
