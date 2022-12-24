@@ -103,5 +103,4 @@ describe("The project amendments and revisions page", () => {
     expect(operation.fragment.node.name).toBe("projectRevisionChangeLogsQuery");
     expect(operation.fragment.variables.revisionType).toBe("Minor");
   });
-  // TODO: Add tests when `New Revision` button is implemented
 });
