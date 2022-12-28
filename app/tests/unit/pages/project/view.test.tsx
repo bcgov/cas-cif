@@ -91,7 +91,7 @@ describe("ProjectRevisionView Page", () => {
       })
     );
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      getProjectRevisionChangeLogsPageRoute("mock-proj-rev-5")
+      getProjectRevisionChangeLogsPageRoute("mock-proj-rev-8")
     );
   });
 });

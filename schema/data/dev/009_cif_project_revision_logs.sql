@@ -44,8 +44,8 @@ do $$
       select id from cif.create_project_revision(temp_project_id) into temp_project_revision_id;
       update cif.project_revision
         set revision_type = 'Amendment',
-        change_status = 'committed',
-        revision_status = 'In Discussion'
+        change_status = 'pending',
+        revision_status = 'Draft'
         where id = temp_project_revision_id;
 
       insert into cif.project_revision_amendment_type(

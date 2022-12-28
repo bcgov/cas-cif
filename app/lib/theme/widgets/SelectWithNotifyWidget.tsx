@@ -1,7 +1,7 @@
 import { WidgetProps } from "@rjsf/core";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import { Button } from "@button-inc/bcgov-theme";
-import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
+import { useUpdatePendingActionsFrom } from "mutations/ProjectRevision/updatePendingActionsFrom";
 
 interface Option {
   type: string;
@@ -30,13 +30,13 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   }
   const options = schema.anyOf as Array<Option>;
 
-  const [updateProjectRevision, isUpdatingProjectRevision] =
-    useUpdateProjectRevision();
+  const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
+    useUpdatePendingActionsFrom();
   const revisionId = formContext.revisionId;
   const revisionStatus = formContext.revisionStatus;
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>
-      updateProjectRevision({
+      updatePendingActionsFrom({
         variables: {
           input: {
             id: revisionId,
@@ -84,14 +84,19 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
               );
             })}
           </Dropdown>
-          <Button
-            onClick={handleUpdate}
-            disabled={isUpdatingProjectRevision}
-            type="submit"
-          >
-            Update
-          </Button>
-          <Button>Notify</Button>
+          <div className="buttonGrid">
+            <Button
+              onClick={handleUpdate}
+              disabled={isUpdatingPendingActionsFrom}
+              type="submit"
+              style={{ marginBottom: "1rem" }}
+            >
+              Update
+            </Button>
+            <a href="#modal">
+              <Button>Notify</Button>
+            </a>
+          </div>
         </>
       ) : (
         <>
@@ -113,6 +118,10 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
           }
           div :global(.pg-button) {
             margin-right: 1em;
+          }
+          .buttonGrid {
+            display: flex;
+            flex-direction: column;
           }
         `}
       </style>

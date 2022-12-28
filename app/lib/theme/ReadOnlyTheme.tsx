@@ -8,7 +8,7 @@ import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustabl
 import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
 import RankWidget from "./widgets/RankWidget";
-import SelectWithNotifyWidget from "./widgets/SelectWithNofifyWidget";
+import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
