@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import ContactDetails from "components/Contact/ContactDetails";
 import { graphql } from "react-relay";
-import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
+import ComponentTestingHelper from "@button-inc/relay-testing-library";
 import compiledContactDetailsTestQuery, {
   ContactDetailsTestQuery,
 } from "__generated__/ContactDetailsTestQuery.graphql";

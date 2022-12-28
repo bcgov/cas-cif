@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
+    "@button-inc/relay-testing-library": "^0.0.8",
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",

@@ -606,6 +606,11 @@
     clsx "^1.1.1"
     styled-components "^5.2.1"
 
+"@button-inc/relay-testing-library@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@button-inc/relay-testing-library/-/relay-testing-library-0.0.8.tgz#b03ca3ea60152ab5dd60b40f7ec0d8c4657ea0e9"
+  integrity sha512-AqJpC1SW7wJswM+H7t1BNpchrc3ufKik/nmnPA8DEtKMjeyvbu+mS+DYNRuJ8TO3MRNW6X/6x3n+x3/7pBUjuw==
+
 "@button-inc/storybook-progressive-enhancement-addon@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@button-inc/storybook-progressive-enhancement-addon/-/storybook-progressive-enhancement-addon-0.0.9.tgz#c9f9656b759f96650e30e0956a27fe7869fcf717"
