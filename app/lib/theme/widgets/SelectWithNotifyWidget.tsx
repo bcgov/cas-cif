@@ -84,16 +84,19 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
               );
             })}
           </Dropdown>
-          <Button
-            onClick={handleUpdate}
-            disabled={isUpdatingPendingActionsFrom}
-            type="submit"
-          >
-            Update
-          </Button>
-          <a href="#modal">
-            <Button>Notify</Button>
-          </a>
+          <div className="buttonGrid">
+            <Button
+              onClick={handleUpdate}
+              disabled={isUpdatingPendingActionsFrom}
+              type="submit"
+              style={{ marginBottom: "1rem" }}
+            >
+              Update
+            </Button>
+            <a href="#modal">
+              <Button>Notify</Button>
+            </a>
+          </div>
         </>
       ) : (
         <>
@@ -115,6 +118,10 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
           }
           div :global(.pg-button) {
             margin-right: 1em;
+          }
+          .buttonGrid {
+            display: flex;
+            flex-direction: column;
           }
         `}
       </style>
