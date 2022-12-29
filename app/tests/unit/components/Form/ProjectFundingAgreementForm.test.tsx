@@ -38,6 +38,10 @@ const defaultMockResolver = {
               id: "Test Form Change ID 1",
               rowId: 1,
               changeStatus: "pending",
+              eligibleExpensesToDate: "5",
+              holdbackAmountToDate: "6",
+              netPaymentsToDate: "7",
+              grossPaymentsToDate: "8",
               newFormData: {
                 projectId: 51,
                 maxFundingAmount: 200,
@@ -129,7 +133,6 @@ describe("The ProjectFundingAgreementForm", () => {
 
   it("loads with the correct initial form data", () => {
     componentTestingHelper.loadQuery();
-
     componentTestingHelper.renderComponent();
     expect(
       screen.getByLabelText<HTMLLabelElement>(/total project value/i)
@@ -156,8 +159,7 @@ describe("The ProjectFundingAgreementForm", () => {
     ).toBe("$800.00");
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent's Share Percentage/i)
-        .value
-    ).toBe("");
+    ).toHaveTextContent("228.57%");
     expect(
       screen.getByLabelText<HTMLInputElement>(/Contract Start Date/i)
     ).toHaveTextContent(/Jan[.]? 01, 2021/);
@@ -190,24 +192,25 @@ describe("The ProjectFundingAgreementForm", () => {
     ).toBeInTheDocument();
 
     // Expenses & Payments Tracker Section
+
     expect(
-      screen.getByRole("textbox", { name: /total eligible expenses to date/i })
-    ).toHaveValue("");
+      screen.getByLabelText<HTMLSelectElement>(
+        /total eligible expenses to date/i
+      )
+    ).toHaveTextContent("$5.00");
     expect(
-      screen.getByRole("textbox", {
-        name: /total gross payment amount to date/i,
-      })
-    ).toHaveValue("");
+      screen.getByLabelText<HTMLSelectElement>(
+        /total gross payment amount to date/i
+      )
+    ).toHaveTextContent("$8.00");
     expect(
-      screen.getByRole("textbox", {
-        name: /total holdback amount to date/i,
-      })
-    ).toHaveValue("");
+      screen.getByLabelText<HTMLSelectElement>(/total holdback amount to date/i)
+    ).toHaveTextContent("$6.00");
     expect(
-      screen.getByRole("textbox", {
-        name: /total net payment amount to date/i,
-      })
-    ).toHaveValue("");
+      screen.getByLabelText<HTMLSelectElement>(
+        /total net payment amount to date/i
+      )
+    ).toHaveTextContent("$7.00");
   });
 
   it("calls the update mutation when entering funding agreement data", async () => {
