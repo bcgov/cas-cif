@@ -35,19 +35,35 @@ export const expensesPaymentsTrackerUiSchema = {
     "netPaymentsToDate",
   ],
   eligibleExpensesToDate: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedEligibleExpensesToDate",
+    hideOptional: true,
     isMoney: true,
+    message:
+      "ask designers what they want here when value isn't yet calculated",
   },
   grossPaymentsToDate: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedGrossPaymentsToDate",
+    hideOptional: true,
     isMoney: true,
+    message:
+      "ask designers what they want here when value isn't yet calculated",
   },
   holdbackAmountToDate: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedHoldbackAmountToDate",
+    hideOptional: true,
     isMoney: true,
+    message:
+      "ask designers what they want here when value isn't yet calculated",
   },
   netPaymentsToDate: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedNetPaymentsToDate",
+    hideOptional: true,
     isMoney: true,
+    message:
+      "ask designers what they want here when value isn't yet calculated",
   },
 };

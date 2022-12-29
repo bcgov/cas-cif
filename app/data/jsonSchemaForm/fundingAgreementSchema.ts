@@ -9,7 +9,6 @@ export const fundingAgreementSchema = {
     "proponentCost",
     "contractStartDate",
     "projectAssetsLifeEndDate",
-    "proponentsSharePercentage",
   ],
   properties: {
     totalProjectValue: {
@@ -82,8 +81,12 @@ export const fundingAgreementUiSchema = {
     isPercentage: true,
   },
   proponentsSharePercentage: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "CalculatedValueWidget",
     isPercentage: true,
+    calculatedValueFormContextProperty: "calculatedProponentsSharePercentage",
+    hideOptional: true,
+    message:
+      "ask designers what they want here when value isn't yet calculated",
   },
   anticipatedFundingAmount: {
     "ui:widget": "NumberWidget",
