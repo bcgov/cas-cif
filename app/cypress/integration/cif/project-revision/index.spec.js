@@ -32,10 +32,10 @@ describe("the new project page", () => {
     // MANAGERS
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/1");
-    // brianna fix this
-    // cy.findByText(/Add project overview/i)
-    //   .next()
-    //   .should("have.text", "Attention Required");
+
+    cy.findByText(/Add project overview/i)
+      .next()
+      .should("have.text", "Attention Required");
     cy.happoAndAxe("Project Managers Form", "empty", "main");
 
     // CONTACTS
@@ -206,6 +206,7 @@ describe("the new project page", () => {
 
     // OVERVIEW
     cy.url().should("include", "/form/0");
+    cy.findByText("Emissions Performance").should("be.visible");
     cy.findByLabelText(/Proposal Reference/i).type("001");
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit Project Overview").click();
