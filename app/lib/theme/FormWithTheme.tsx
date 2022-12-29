@@ -13,6 +13,7 @@ import DateWidget from "./widgets/DateWidget";
 import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedValueWidget";
 import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import NumberWidget from "./widgets/NumberWidget";
+import ModalWidget from "./widgets/ModalWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -32,6 +33,7 @@ const formTheme: ThemeProps = {
     AdjustableCalculatedValueWidget,
     CalculatedValueWidget,
     NumberWidget,
+    ModalWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
   FieldTemplate: FieldTemplate,
