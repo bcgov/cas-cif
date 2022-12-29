@@ -95,9 +95,11 @@ export const createProjectUiSchema = (
       numberOfDecimalPlaces: 3,
     },
     rank: {
-      "ui:widget": "RankWidget",
+      "ui:widget": "CalculatedValueWidget",
       calculatedValueFormContextProperty: "calculatedRank",
       hideOptional: true,
+      message:
+        "Enter a project score to see the ranking compared to other scored projects.",
     },
     comments: {
       "ui:widget": "TextAreaWidget",

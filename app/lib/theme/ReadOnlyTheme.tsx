@@ -7,7 +7,6 @@ import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustableCalculatedValueWidget";
 import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
-import RankWidget from "./widgets/RankWidget";
 import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
@@ -32,7 +31,6 @@ const readOnlyTheme: ThemeProps = {
     CalculatedValueWidget: ReadOnlyCalculatedValueWidget,
     NumberWidget: ReadOnlyNumberWidget,
     SelectWithNotifyWidget: SelectWithNotifyWidget,
-    RankWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,
