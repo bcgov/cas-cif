@@ -63,8 +63,6 @@ export const fundingAgreementUiSchema = {
     "holdbackPercentage",
     "proponentCost",
     "proponentsSharePercentage",
-    "contractStartDate",
-    "projectAssetsLifeEndDate",
     "anticipatedFundingAmount",
     "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
