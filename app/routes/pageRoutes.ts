@@ -71,7 +71,8 @@ export const getProjectRevisionPageRoute = (projectRevisionId: string) => ({
 export const getProjectRevisionFormPageRoute = (
   projectRevisionId: string,
   formIndex: string | number,
-  anchor?: string
+  anchor: string = undefined,
+  isRoutedFromNew?: boolean
 ) => {
   const urlObject: TaskListLinkUrl = {
     pathname: `/cif/project-revision/[projectRevision]/form/[formIndex]`,
@@ -84,6 +85,10 @@ export const getProjectRevisionFormPageRoute = (
   if (anchor) {
     urlObject.query.anchor = anchor;
     urlObject.hash = anchor;
+  }
+
+  if (isRoutedFromNew) {
+    urlObject.query.isRoutedFromNew = isRoutedFromNew;
   }
 
   return urlObject;

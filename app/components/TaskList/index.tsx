@@ -92,7 +92,7 @@ const TaskList: React.FC<Props> = ({
 
   const [stageDirtyFormChanges] = useStageDirtyFormChanges();
   useEffect(() => {
-    if (mode !== "view")
+    if (mode !== "view" && !router.query?.isRoutedFromNew)
       stageDirtyFormChanges({
         variables: {
           input: {

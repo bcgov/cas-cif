@@ -57,7 +57,6 @@ export function ProjectRevisionNew({
   const [createProject, isCreatingProject] = useCreateProjectMutation();
 
   const handleSubmit = (formData) => {
-    console.log("formData", formData);
     createProject({
       variables: {
         input: {
@@ -68,7 +67,9 @@ export function ProjectRevisionNew({
         router.push(
           getProjectRevisionFormPageRoute(
             response.createProject.projectRevision.id,
-            0
+            0,
+            undefined,
+            true
           )
         ),
     });
