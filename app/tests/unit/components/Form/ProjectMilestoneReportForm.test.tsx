@@ -39,6 +39,7 @@ const defaultMockResolver = {
               id: `mock-project-milestone-report-form-${generateID()}`,
               rowId: 1,
               newFormData: {
+                substantialCompletionDate: "2021-12-02",
                 reportDueDate: "2022-01-01",
                 projectId: 51,
                 reportType: "General Milestone",
@@ -64,6 +65,7 @@ const defaultMockResolver = {
               id: `mock-project-milestone-report-form-${generateID()}`,
               rowId: 2,
               newFormData: {
+                substantialCompletionDate: "2022-09-28",
                 reportDueDate: "2022-10-28",
                 projectId: 51,
                 reportType: "Reporting Milestone",
@@ -327,6 +329,7 @@ describe("The ProjectMilestoneReportForm", () => {
           formChangePatch: {
             newFormData: {
               reportDueDate: "2022-01-01",
+              substantialCompletionDate: "2021-12-02",
               projectId: 51,
               reportType: "General Milestone",
               description: "i am the first description",
@@ -351,6 +354,7 @@ describe("The ProjectMilestoneReportForm", () => {
           formChangePatch: {
             newFormData: {
               reportDueDate: "2022-10-28",
+              substantialCompletionDate: "2022-09-28",
               projectId: 51,
               reportType: "Reporting Milestone",
               submittedDate: "2022-05-02",

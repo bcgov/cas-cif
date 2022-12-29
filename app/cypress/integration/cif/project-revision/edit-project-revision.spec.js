@@ -104,13 +104,12 @@ describe("when editing a project, the project page", () => {
     cy.get("h3")
       .contains(/milestone 1/i)
       .click();
-    cy.get('[aria-label*="Due Date"]').eq(0).click();
-    cy.get(".react-datepicker__month-select").select(0);
-    cy.get(".react-datepicker__year-select").select("1999");
-    cy.get(`.react-datepicker__day--001`)
-      .not(`.react-datepicker__day--outside-month`)
-      .click();
-    cy.contains("Changes saved.");
+    cy.setDateInPicker("Report Due Date", "1999-01-31");
+    cy.contains("Changes saved").should("be.visible");
+    cy.get('[aria-label*="Substantial Completion Date"').contains(
+      /Jan(\.)? 01, 1999/
+    );
+    cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 

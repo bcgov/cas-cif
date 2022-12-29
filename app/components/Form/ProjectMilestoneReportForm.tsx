@@ -25,6 +25,8 @@ import {
 } from "./Functions/reportingRequirementFormChangeFunctions";
 import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/ProjectMilestoneReportForm_projectRevision.graphql";
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
+import addDurationToTimestamptz from "lib/helpers/addDurationToTimestamptz";
+import subtractDurationFromTimestamptz from "lib/helpers/subtractDurationFromTimestamptz";
 
 interface Props {
   onSubmit: () => void;
@@ -153,14 +155,43 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     );
   }, [projectRevision.milestoneFormChanges.edges]);
 
+  interface PartialMilestoneFormData {
+    substantialCompletionDate?: string;
+    [key: string]: any;
+  }
+
   const handleChange = (
-    milestoneChangeData: { newFormData: any },
-    milestoneNode: { rowId: number; id: string; newFormData: any }
+    milestoneChangeData: PartialMilestoneFormData,
+    milestoneNode: {
+      rowId: number;
+      id: string;
+      newFormData: PartialMilestoneFormData;
+    }
   ) => {
     const formData = { ...milestoneNode.newFormData, ...milestoneChangeData };
+    if (
+      milestoneChangeData.substantialCompletionDate &&
+      milestoneChangeData.substantialCompletionDate !=
+        milestoneNode.newFormData.substantialCompletionDate
+    ) {
+      formData.reportDueDate = addDurationToTimestamptz(
+        milestoneChangeData.substantialCompletionDate,
+        { days: 30 }
+      );
+    } else if (
+      milestoneChangeData.reportDueDate &&
+      milestoneChangeData.reportDueDate !=
+        milestoneNode.newFormData.reportDueDate
+    ) {
+      formData.substantialCompletionDate = subtractDurationFromTimestamptz(
+        milestoneChangeData.reportDueDate,
+        { days: 30 }
+      );
+    }
     const reportTypeRecord = query.allReportTypes.edges.find(
       ({ node }) => node.name === formData.reportType
     );
+
     updateMilestone({
       variables: {
         reportType: "Milestone",
@@ -189,6 +220,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       },
     });
   };
+
+  milestoneUiSchema.substantialCompletionDate["ui:help"] = (
+    <small>
+      Entering this field automatically calculates Report Due Date (and vice
+      versa)
+    </small>
+  );
 
   return (
     <div>

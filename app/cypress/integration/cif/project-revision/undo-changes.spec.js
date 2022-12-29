@@ -141,7 +141,6 @@ describe("when undoing, the project revision page", () => {
       "I am a description",
       "General",
       "1990-08-12",
-      "1991-04-17",
       "Professional Engineer",
       true
     );

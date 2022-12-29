@@ -335,7 +335,6 @@ Cypress.Commands.add(
     reportNumber,
     reportDescription,
     reportType,
-    reportDueDate,
     reportSubstantialCompletionDate,
     professionalDesignation,
     reportMaxAmount = undefined,
@@ -368,8 +367,6 @@ Cypress.Commands.add(
       cy.get('[aria-label="Maximum Amount This Milestone"]').type(100);
       cy.get('[aria-label="Total Eligible Expenses"]').type(100);
     }
-
-    cy.setDateInPicker("Due Date", reportDueDate, reportNumber);
 
     cy.get('[aria-label*="Substantial Completion Date"').type(
       reportSubstantialCompletionDate

@@ -4,8 +4,8 @@ const projectMilestoneUiSchema = {
     "reportType",
     "hasExpenses",
     "maximumAmount",
-    "reportDueDate",
     "substantialCompletionDate",
+    "reportDueDate",
     "certifiedBy",
     "certifierProfessionalDesignation",
     "submittedDate",
@@ -52,6 +52,7 @@ const projectMilestoneUiSchema = {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "DateWidget",
+    isBeginsDate: true,
   },
   maximumAmount: {
     "ui:widget": "NumberWidget",
