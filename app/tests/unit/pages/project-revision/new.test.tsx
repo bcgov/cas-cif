@@ -137,7 +137,11 @@ describe("ProjectRevisionNew Page", () => {
     });
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith({
       pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
-      query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
+      query: {
+        projectRevision: "<ProjectRevision-mock-id-1>",
+        formIndex: 0,
+        isRoutedFromNew: true,
+      },
       anchor: undefined,
     });
   });
