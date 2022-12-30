@@ -5,7 +5,7 @@ import { utils } from "@rjsf/core";
 import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
 import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustableCalculatedValueWidget";
-import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
+import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
 import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
 
@@ -28,7 +28,7 @@ const readOnlyTheme: ThemeProps = {
     DateWidget: ReadOnlyDateWidget,
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
     ReadOnlyAdjustableCalculatedValueWidget,
-    CalculatedValueWidget: ReadOnlyCalculatedValueWidget,
+    CalculatedValueWidget,
     NumberWidget: ReadOnlyNumberWidget,
     SelectWithNotifyWidget: SelectWithNotifyWidget,
   },
