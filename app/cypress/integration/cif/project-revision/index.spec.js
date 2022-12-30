@@ -68,16 +68,6 @@ describe("the new project page", () => {
       "10 %"
     );
 
-    cy.fillFundingAgreementForm(
-      222,
-      60,
-      20,
-      333,
-      777,
-      "2020-01-01",
-      "2020-12-31"
-    );
-
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
