@@ -16,8 +16,8 @@ const CollapsibleFormWidget: React.FC<CollapsibleFormWidgetProps> = ({
   formItems,
   query,
 }) => {
-  const [hasDiff, setHasDiff] = useState(true);
-  const [isOpen, setIsOpen] = useState(true);
+  const [hasDiff, setHasDiff] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); //This has to be true to start with, otherwise it will prevent the children from rendering
   const cursorStyle = hasDiff ? "pointer" : "default";
 
   return (
