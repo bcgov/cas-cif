@@ -209,3 +209,5 @@ computed_columns/form_change_net_payments_to_date [tables/form_change] 2022-11-1
 computed_columns/form_change_holdback_amount_to_date [tables/form_change] 2022-11-15T00:19:02Z Dylan Leard <dylan@button.is> # Add computed column to return the cumulative holdback amount to date for a milestone
 tables/project_revision_004_add_pending_actions_from 2022-11-28T21:21:29Z Gurjeet Matharu <gurjeet@matharuco.com> # adding pending actions from column
 mutations/delete_project_revision_001_bugfix 2022-12-01T18:01:02Z Gurjeet Matharu <gurjeet@matharuco.com> # bugfix removing unnecessary begin end
+util_functions/get_fiscal_year_from_timestamp 2022-08-11T23:19:28Z Dylan Leard <dylan@button.is> # Add helper function that ingests a timestamp and returns the fiscal year in format YYYY/YYYY
+types/sum_by_fiscal_year 2022-08-12T20:17:59Z Dylan Leard <dylan@button.is> # Add return type for the computed column anticipated_funding_amount_by_fiscal_year
