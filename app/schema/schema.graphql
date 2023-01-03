@@ -44832,6 +44832,34 @@ type ProjectReportTypesByReportingRequirementProjectIdAndReportTypeManyToManyEdg
 
 """Table containing all the changes for a project revision"""
 type ProjectRevision implements Node {
+  """
+  Computed column to calculate the anticipated amount of funding for a project by fiscal year
+  """
+  anticipatedFundingAmountPerFiscalYear(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SumByFiscalYearFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): SumByFiscalYearsConnection!
+
   """Explanation of why the revision was made"""
   changeReason: String
 
@@ -50320,6 +50348,11 @@ type Query implements Node {
   fundingStreamRfpProjectStatusByRowId(rowId: Int!): FundingStreamRfpProjectStatus
 
   """
+  A utility function that ingests a timestamp and returns the fiscal year the timestamp is from
+  """
+  getFiscalYearFromTimestamp(ts: Datetime!): String
+
+  """
   A utility function to return a set of statuses for form_change records relating to a single revision
   """
   getFormStatus(
@@ -54183,6 +54216,59 @@ input StringListFilter {
 
   """Overlaps the specified list of values."""
   overlaps: [String]
+}
+
+type SumByFiscalYear {
+  anticipatedFundingAmount: BigFloat
+  fiscalYear: String
+}
+
+"""
+A filter to be used against `SumByFiscalYear` object types. All fields are combined with a logical ‘and.’
+"""
+input SumByFiscalYearFilter {
+  """Checks for all expressions in this list."""
+  and: [SumByFiscalYearFilter!]
+
+  """Filter by the object’s `anticipatedFundingAmount` field."""
+  anticipatedFundingAmount: BigFloatFilter
+
+  """Filter by the object’s `fiscalYear` field."""
+  fiscalYear: StringFilter
+
+  """Negates the expression."""
+  not: SumByFiscalYearFilter
+
+  """Checks for any expressions in this list."""
+  or: [SumByFiscalYearFilter!]
+}
+
+"""A connection to a list of `SumByFiscalYear` values."""
+type SumByFiscalYearsConnection {
+  """
+  A list of edges which contains the `SumByFiscalYear` and cursor to aid in pagination.
+  """
+  edges: [SumByFiscalYearsEdge!]!
+
+  """A list of `SumByFiscalYear` objects."""
+  nodes: [SumByFiscalYear]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `SumByFiscalYear` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `SumByFiscalYear` edge in the connection."""
+type SumByFiscalYearsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `SumByFiscalYear` at the end of the edge."""
+  node: SumByFiscalYear
 }
 
 """
