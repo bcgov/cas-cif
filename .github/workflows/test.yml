@@ -8,6 +8,8 @@ on:
 
 env:
   PGUSER: postgres
+  PROGRAM_DIRECTOR_NAME: director name
+  PROGRAM_DIRECTOR_EMAIL: director@email.com
 
 jobs:
   install-dev-tools:
