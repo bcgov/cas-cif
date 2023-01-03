@@ -199,7 +199,7 @@ tables/project_revision_003_set_amendment_statuses 2022-11-08T17:13:48Z Brianna 
 tables/revision_status 2022-11-09T19:51:54Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Rename amendment_status table to revision_status
 mutations/commit_project_revision [mutations/commit_project_revision@1.0.1] 2022-11-30T14:31:42Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make commit_project_revision set amendment_status
 mutations/create_project [mutations/create_project@1.0.1] 2022-11-30T14:33:05Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make create_project set revision_status to Draft on create
-mutations/create_project_revision [mutations/create_project_revision@1.0.1] 2022-11-30T15:44:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Make create_project_revision set revision_status to Draft
+mutations/create_project_revision [mutations/create_project_revision@1.0.1] 2022-11-30T15:44:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make create_project_revision set revision_status to Draft
 computed_columns/project_revision_total_project_value 2022-11-17T23:05:30Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add computed column to return the calculated total project value
 tables/funding_parameter_003_drop_total_project_value_column [tables/funding_parameter] 2022-11-23T21:17:14Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping redundant column as it trurned into a computed column
 mutations/discard_additional_funding_source_form_change [tables/form_change tables/project_revision] 2022-11-24T20:02:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # A customized discard mutation for additional funding sources
@@ -211,3 +211,4 @@ tables/project_revision_004_add_pending_actions_from 2022-11-28T21:21:29Z Gurjee
 mutations/delete_project_revision_001_bugfix 2022-12-01T18:01:02Z Gurjeet Matharu <gurjeet@matharuco.com> # bugfix removing unnecessary begin end
 util_functions/get_fiscal_year_from_timestamp 2022-08-11T23:19:28Z Dylan Leard <dylan@button.is> # Add helper function that ingests a timestamp and returns the fiscal year in format YYYY/YYYY
 types/sum_by_fiscal_year 2022-08-12T20:17:59Z Dylan Leard <dylan@button.is> # Add return type for the computed column anticipated_funding_amount_by_fiscal_year
+computed_columns/project_revision_anticipated_funding_amount_per_fiscal_year 2023-01-03T15:31:26Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Computed column to return a set containing the anticipated funding amount per each fiscal year
