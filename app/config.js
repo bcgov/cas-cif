@@ -124,6 +124,18 @@ var config = convict({
     default: "ggircs@gov.bc.ca",
     env: "SUPPORT_EMAIL",
   },
+  directorName: {
+    doc: "CIF program director name.",
+    format: String,
+    default: null,
+    env: "PROGRAM_DIRECTOR_NAME",
+  },
+  directorEmail: {
+    doc: "CIF program director email.",
+    format: "email",
+    default: null,
+    env: "PROGRAM_DIRECTOR_EMAIL",
+  },
   sentryEnvironment: {
     doc: "",
     format: String,
