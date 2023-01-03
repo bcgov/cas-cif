@@ -92,6 +92,16 @@ spec:
               secretKeyRef:
                 name: growthbook
                 key: api-key
+          - name: PROGRAM_DIRECTOR_NAME
+            valueFrom:
+              secretKeyRef:
+                name: cif-director
+                key: cif-director-name
+          - name: PROGRAM_DIRECTOR_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: cif-director
+                key: cif-director-email
           - name: KC_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
