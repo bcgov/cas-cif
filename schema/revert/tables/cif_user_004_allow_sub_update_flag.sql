@@ -2,6 +2,7 @@
 
 begin;
 
+drop trigger cif_user_session_sub_immutable_with_flag on cif.cif_user;
 alter table cif.cif_user drop column allow_sub_update;
 
 commit;
