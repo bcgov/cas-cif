@@ -127,13 +127,13 @@ var config = convict({
   directorName: {
     doc: "CIF program director name.",
     format: String,
-    default: null,
+    default: "director name",
     env: "PROGRAM_DIRECTOR_NAME",
   },
   directorEmail: {
     doc: "CIF program director email.",
     format: "email",
-    default: null,
+    default: "director@email.com",
     env: "PROGRAM_DIRECTOR_EMAIL",
   },
   sentryEnvironment: {
