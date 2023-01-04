@@ -50,6 +50,14 @@ jobs:
       - run: yarn build:schema
         working-directory: ./app
       - run: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:schema\"?' && false)
+  db-revert-migrations:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: make test_revert_migrations
   db-tests:
     needs: install-dev-tools
     runs-on: ubuntu-latest
