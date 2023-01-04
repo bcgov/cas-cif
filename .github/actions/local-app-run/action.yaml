@@ -8,7 +8,7 @@ runs:
       run: make start_pg && make create_db
     - name: deploy migrations
       shell: bash
-      run: docker run --network=host -e "PGUSER=postgres" ghcr.io/bcgov/cas-cif-schema:${{ github.sha }} sqitch deploy && make deploy_prod_data
+      run: docker run --network=host -e "PGUSER=postgres" ghcr.io/bcgov/cas-cif-schema:${{ github.sha }} sqitch deploy
     - name: deploy mocks_schema migrations
       shell: bash
       run: docker run --network=host -e "PGUSER=postgres" --workdir="/root/mocks_schema" ghcr.io/bcgov/cas-cif-schema:${{ github.sha }} sqitch deploy
