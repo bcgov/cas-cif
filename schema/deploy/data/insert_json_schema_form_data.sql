@@ -1,34 +1,40 @@
+-- Deploy cif:migrations/insert_json_schema_form_data to pg
+-- requires: functions/handle_milestone_form_change_commit
+-- requires: tables/form
+
+-- Migration Inserts all json-schema form data into cif.form
+
 begin;
 
 --project
 create temporary table project (json_data jsonb);
-\copy project(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/project.json | tr -d ''\n''';
+\copy project(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/project.json | tr -d ''\n''';
 -- project_contact
 create temporary table project_contact (json_data jsonb);
-\copy project_contact(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/project_contact.json | tr -d ''\n''';
+\copy project_contact(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/project_contact.json | tr -d ''\n''';
 -- project_manager
 create temporary table project_manager (json_data jsonb);
-\copy project_manager(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/project_manager.json | tr -d ''\n''';
+\copy project_manager(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/project_manager.json | tr -d ''\n''';
 -- reporting_requirement (quarterly / annual report)
 create temporary table reporting_requirement (json_data jsonb);
-\copy reporting_requirement(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/reporting_requirement.json | tr -d ''\n''';
+\copy reporting_requirement(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/reporting_requirement.json | tr -d ''\n''';
 -- contact
 create temporary table contact (json_data jsonb);
-\copy contact(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/contact.json | tr -d ''\n''';
+\copy contact(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/contact.json | tr -d ''\n''';
 -- operator
 create temporary table operator (json_data jsonb);
-\copy operator(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/operator.json | tr -d ''\n''';
+\copy operator(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/operator.json | tr -d ''\n''';
 -- milestone
 create temporary table milestone (json_data jsonb);
-\copy milestone(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/milestone.json | tr -d ''\n''';
+\copy milestone(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/milestone.json | tr -d ''\n''';
 -- funding_agreement
 create temporary table funding_agreement (json_data jsonb);
-\copy funding_agreement(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/funding_agreement.json | tr -d ''\n''';
+\copy funding_agreement(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/funding_agreement.json | tr -d ''\n''';
 -- emission_intensity_report
 create temporary table emission_intensity_reporting_requirement (json_data jsonb);
-\copy emission_intensity_reporting_requirement(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/emission_intensity_reporting_requirement.json | tr -d ''\n''';
+\copy emission_intensity_reporting_requirement(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/emission_intensity_reporting_requirement.json | tr -d ''\n''';
 create temporary table emission_intensity_report (json_data jsonb);
-\copy emission_intensity_report(json_data) from program 'sed ''s/\\/\\\\/g'' < prod/json_schema/emission_intensity_report.json | tr -d ''\n''';
+\copy emission_intensity_report(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/emission_intensity_report.json | tr -d ''\n''';
 
 with rows as (
 insert into cif.form(slug, form_change_commit_handler, json_schema, description)
