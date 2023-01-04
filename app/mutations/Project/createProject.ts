@@ -1,7 +1,7 @@
+import type { createProjectMutation } from "createProjectMutation.graphql";
 import { graphql } from "react-relay";
 
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
-import { createProjectMutation } from "__generated__/createProjectMutation.graphql";
 
 const mutation = graphql`
   mutation createProjectMutation($input: CreateProjectInput!) {

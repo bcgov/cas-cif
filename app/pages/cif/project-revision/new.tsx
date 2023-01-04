@@ -21,7 +21,7 @@ const schema: JSONSchema7 = {
   properties: {
     fundingStreamRfpId: {
       type: "number",
-      title: "RFP Year ID",
+      default: undefined,
     },
   },
 };
@@ -30,8 +30,7 @@ const uiSchema = {
   fundingStreamRfpId: {
     "ui:widget": "SelectRfpWidget",
     "ui:options": {
-      text: `text`,
-      label: true,
+      label: false,
     },
   },
 };
