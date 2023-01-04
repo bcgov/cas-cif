@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { mocked } from "jest-mock";
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
-import { RevisionStatusWidget } from "pages/cif/project-revision/[projectRevision]/view";
 
 jest.mock("mutations/ProjectRevision/updateProjectRevision");
 
