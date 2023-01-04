@@ -141,11 +141,6 @@ deploy_dev_data:
 		$(PSQL) -d $(DB_NAME) -f "$${file}"; \
 	done;
 
-.PHONY: deploy_prod_data
-deploy_prod_data: ## deploy the production data
-deploy_prod_data:
-	@PGDATABASE=$(PGDATABASE) schema/data/deploy-data.sh;
-
 .PHONY: revert_db_migrations
 revert_db_migrations: ## revert the database migrations with sqitch
 revert_db_migrations: start_pg
