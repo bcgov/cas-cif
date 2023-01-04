@@ -60,9 +60,7 @@ const showStringAdded = (
   contentSuffix?: string,
   isRevisionSpecific?: boolean
 ): JSX.Element => {
-  const [diffClsName, arrowSize] = isRevisionSpecific
-    ? ["revisionDiffNew", "sm"]
-    : ["diffNew", "lg"];
+  const diffClsName = isRevisionSpecific ? "revisionDiffNew" : "diffNew";
 
   return (
     <>
@@ -70,17 +68,30 @@ const showStringAdded = (
         {isDate ? getLocaleFormattedDate(newData) : newData}
       </span>
       {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      <FontAwesomeIcon
-        className={"diff-arrow"}
-        size={arrowSize as "sm" | "lg"}
-        color="black"
-        icon={faLongArrowAltRight}
-      />
-      <span>
-        <strong>
-          <em>ADDED</em>
-        </strong>
-      </span>
+      {isRevisionSpecific ? (
+        <span>
+          <em>(ADDED)</em>
+          <style jsx>{`
+            span {
+              color: #ee0004;
+            }
+          `}</style>
+        </span>
+      ) : (
+        <>
+          <FontAwesomeIcon
+            className={"diff-arrow"}
+            size="lg"
+            color="black"
+            icon={faLongArrowAltRight}
+          />
+          <span>
+            <strong>
+              <em>ADDED</em>
+            </strong>
+          </span>
+        </>
+      )}
     </>
   );
 };
@@ -177,9 +188,7 @@ const showNumberAdded = (
   numberOfDecimalPlaces: number = 0,
   isRevisionSpecific?: boolean
 ): JSX.Element => {
-  const [diffClsName, arrowSize] = isRevisionSpecific
-    ? ["revisionDiffNew", "sm"]
-    : ["diffNew", "lg"];
+  const diffClsName = isRevisionSpecific ? "revisionDiffNew" : "diffNew";
 
   return (
     <>
@@ -194,17 +203,30 @@ const showNumberAdded = (
           value={newData}
         />
       </span>
-      <FontAwesomeIcon
-        className={"diff-arrow"}
-        size={arrowSize as "sm" | "lg"}
-        color="black"
-        icon={faLongArrowAltRight}
-      />
-      <span>
-        <strong>
-          <em>ADDED</em>
-        </strong>
-      </span>
+      {isRevisionSpecific ? (
+        <span>
+          <em>(ADDED)</em>
+          <style jsx>{`
+            span {
+              color: #ee0004;
+            }
+          `}</style>
+        </span>
+      ) : (
+        <>
+          <FontAwesomeIcon
+            className={"diff-arrow"}
+            size="lg"
+            color="black"
+            icon={faLongArrowAltRight}
+          />
+          <span>
+            <strong>
+              <em>ADDED</em>
+            </strong>
+          </span>
+        </>
+      )}
     </>
   );
 };
