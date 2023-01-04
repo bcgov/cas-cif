@@ -18,13 +18,24 @@ import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 
 const createProjectRevisionViewSchema = (
-  allRevisionTypes,
-  allRevisionStatuses
-) => {
+  allRevisionTypesEdges: {
+    readonly edges: readonly {
+      readonly node: {
+        readonly type: string;
+      };
+    }[];
+  },
+  allRevisionStatusesEdges: readonly {
+    readonly node: {
+      readonly name: string;
+      readonly isAmendmentSpecific: boolean;
+    };
+  }[]
+): JSONSchema7 => {
   const schema = viewProjectRevisionSchema;
   schema.properties.revisionType = {
     ...schema.properties.revisionType,
-    anyOf: allRevisionTypes.edges.map(({ node }) => {
+    anyOf: allRevisionTypesEdges.edges.map(({ node }) => {
       return {
         type: "string",
         title: node.type,
@@ -36,7 +47,7 @@ const createProjectRevisionViewSchema = (
 
   schema.properties.revisionStatus = {
     ...schema.properties.revisionStatus,
-    anyOf: allRevisionStatuses.map(({ node }) => {
+    anyOf: allRevisionStatusesEdges.map(({ node }) => {
       return {
         type: "string",
         title: node.name,
@@ -122,12 +133,12 @@ export function ProjectRevisionView({
   if (!useShowGrowthbookFeature("amendments")) return null;
 
   // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
-  const filteredRevisionStatuses = allRevisionStatuses.edges.filter(
-    ({ node }) =>
-      projectRevision.revisionType === "Amendment"
-        ? true
-        : !node.isAmendmentSpecific
-  );
+  const filteredRevisionStatuses =
+    projectRevision.revisionType === "Amendment"
+      ? allRevisionStatuses.edges
+      : allRevisionStatuses.edges.filter(
+          ({ node }) => !node.isAmendmentSpecific
+        );
 
   return (
     <>
@@ -142,12 +153,10 @@ export function ProjectRevisionView({
             id={`form-${projectRevision.id}`}
             tagName={"dl"}
             className="project-revision-view-form"
-            schema={
-              createProjectRevisionViewSchema(
-                allRevisionTypes,
-                filteredRevisionStatuses
-              ) as JSONSchema7
-            }
+            schema={createProjectRevisionViewSchema(
+              allRevisionTypes,
+              filteredRevisionStatuses
+            )}
             uiSchema={createProjectRevisionUISchema()}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
