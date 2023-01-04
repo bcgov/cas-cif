@@ -12,7 +12,6 @@ db:
       drop schema if exists cif_private cascade;
     EOF;
     sqitch deploy;
-    ./data/deploy-data.sh;
     for file in data/dev/*.sql; do
       psql -v "ON_ERROR_STOP=1" -d cif -f "${file}";
     done;
