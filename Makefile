@@ -135,7 +135,7 @@ deploy_db_migrations:
 	@$(SQITCH) --chdir mocks_schema deploy
 
 deploy_dev_data: ## deploy the database migrations with sqitch and load the data for local development
-deploy_dev_data: | deploy_db_migrations deploy_prod_data
+deploy_dev_data: | deploy_db_migrations
 deploy_dev_data:
 	@for file in $(__DIRNAME)/schema/data/dev/*; do \
 		$(PSQL) -d $(DB_NAME) -f "$${file}"; \
@@ -185,7 +185,7 @@ verify_test_db_migrations:
 .PHONY: db_unit_tests
 db_unit_tests: ## run the database unit tests
 db_unit_tests: PGDATABASE=$(DB_NAME)_test
-db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations deploy_prod_data
+db_unit_tests: | start_pg drop_test_db create_test_db drop_foreign_test_db create_foreign_test_db deploy_test_db_migrations
 db_unit_tests:
 	@$(PG_PROVE) --failures -d $(PGDATABASE) schema/test/unit/**/*_test.sql
 	@$(PG_PROVE) --failures -d $(PGDATABASE) mocks_schema/test/**/*_test.sql
