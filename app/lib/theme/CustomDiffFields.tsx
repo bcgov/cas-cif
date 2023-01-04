@@ -302,7 +302,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         id,
         formData,
         isDate,
-        contentSuffix as string,
+        undefined,
         isRevisionSpecific
       );
     } else if (
@@ -340,7 +340,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           oldData,
           newData as string,
           false,
-          contentSuffix as string,
+          undefined,
           isRevisionSpecific
         );
       } else if (
