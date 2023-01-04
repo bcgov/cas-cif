@@ -51,6 +51,11 @@
             "type": "string",
             "title": "Certified Professional Accountant",
             "enum": ["Certified Professional Accountant"]
+          },
+          {
+            "type": "string",
+            "title": "None",
+            "enum": ["None"]
           }
         ]
       }
