@@ -194,12 +194,13 @@ mutations/update_or_create_user_from_session 2022-11-23T18:18:56Z Bastianelli, P
 @1.0.0 2022-11-29T20:53:00Z Dylan Leard <dylan@button.is> # release v1.0.0
 mutations/update_or_create_user_from_session [mutations/update_or_create_user_from_session@1.0.0] 2022-11-29T23:55:46Z Dylan Leard <dylan@button.is> # Update permissions for user function
 @1.0.1 2022-11-30T00:22:17Z Dylan Leard <dylan@button.is> # release v1.0.1
+migrations/insert_json_schema_form_data [functions/handle_milestone_form_change_commit tables/form] 2023-01-03T23:35:44Z Dylan Leard <dylan@button.is> # Migration: insert json-schema form data into the cif.form table
 tables/full_backup_log [schemas/private] 2022-11-23T21:58:32Z Dylan Leard <dylan@button.is> # Add a log table to track timestamps to be used when validating the integrity of our database backups
 tables/project_revision_003_set_amendment_statuses 2022-11-08T17:13:48Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Set amendment_status defaults and update current records' amendment_status
 tables/revision_status 2022-11-09T19:51:54Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Rename amendment_status table to revision_status
 mutations/commit_project_revision [mutations/commit_project_revision@1.0.1] 2022-11-30T14:31:42Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make commit_project_revision set amendment_status
 mutations/create_project [mutations/create_project@1.0.1] 2022-11-30T14:33:05Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make create_project set revision_status to Draft on create
-mutations/create_project_revision [mutations/create_project_revision@1.0.1] 2022-11-30T15:44:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Make create_project_revision set revision_status to Draft
+mutations/create_project_revision [mutations/create_project_revision@1.0.1] 2022-11-30T15:44:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Make create_project_revision set revision_status to Draft
 computed_columns/project_revision_total_project_value 2022-11-17T23:05:30Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add computed column to return the calculated total project value
 tables/funding_parameter_003_drop_total_project_value_column [tables/funding_parameter] 2022-11-23T21:17:14Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping redundant column as it trurned into a computed column
 mutations/discard_additional_funding_source_form_change [tables/form_change tables/project_revision] 2022-11-24T20:02:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # A customized discard mutation for additional funding sources
