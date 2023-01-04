@@ -2,6 +2,6 @@
 
 begin;
 
-alter table cif.project_revision alter column pending_actions_from drop default;
+alter table cif.project_revision drop column pending_actions_from;
 
 commit;
