@@ -67,11 +67,11 @@ export const ViewProjectRevisionQuery = graphql`
     }
     projectRevision(id: $projectRevision) {
       ...NotifyModal_projectRevision
-      pendingActionsFrom
       id
       revisionType
       createdAt
       revisionStatus
+      # eslint-disable-next-line relay/unused-fields
       changeStatus
       cifUserByCreatedBy {
         fullName
@@ -83,6 +83,10 @@ export const ViewProjectRevisionQuery = graphql`
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
       changeReason
+      # eslint-disable-next-line relay/unused-fields
+      pendingActionsFrom
+      # eslint-disable-next-line relay/unused-fields
+      revisionStatus
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
@@ -161,13 +165,7 @@ export function ProjectRevisionView({
             theme={readOnlyTheme}
             onChange={onChange}
             formData={formData}
-            formContext={{
-              pendingActionsFrom: projectRevision.pendingActionsFrom,
-              revisionId: projectRevision.id,
-              revisionStatus: projectRevision.revisionStatus,
-              changeStatus: projectRevision.changeStatus,
-              projectRevision,
-            }}
+            formContext={{ projectRevision }}
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,

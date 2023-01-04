@@ -17,8 +17,10 @@ describe("The SelectWithNotifyWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        revisionId: "test-revision-id",
-        revisionStatus: "Draft",
+        projectRevision: {
+          id: "test-revision-id",
+          revisionStatus: "Draft",
+        },
       },
       value: "Option 1",
       schema: {
@@ -47,8 +49,10 @@ describe("The SelectWithNotifyWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        revisionId: "test-revision-id",
-        revisionStatus: "Draft",
+        projectRevision: {
+          id: "test-revision-id",
+          revisionStatus: "Draft",
+        },
       },
       value: "Option 1",
       schema: {
@@ -82,8 +86,10 @@ describe("The SelectWithNotifyWidget", () => {
     const props: any = {
       id: "test-id",
       formContext: {
-        revisionId: "test-revision-id",
-        changeStatus: "committed",
+        projectRevision: {
+          id: "test-revision-id",
+          revisionStatus: "committed",
+        },
       },
       uiSchema: {
         "ui:options": {

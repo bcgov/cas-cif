@@ -32,8 +32,12 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
 
   const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
     useUpdatePendingActionsFrom();
-  const revisionId = formContext.revisionId;
-  const revisionStatus = formContext.revisionStatus;
+  const projectRevision = formContext.projectRevision;
+  const [revisionId, revisionStatus, pendingActionsFrom] = [
+    projectRevision.id,
+    projectRevision.revisionStatus,
+    projectRevision.pendingActionsFrom,
+  ];
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>
       updatePendingActionsFrom({
@@ -100,11 +104,7 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
         </>
       ) : (
         <>
-          {formContext.pendingActionsFrom ? (
-            <>{formContext.pendingActionsFrom}</>
-          ) : (
-            <em>Not Added</em>
-          )}
+          {pendingActionsFrom ? <>{pendingActionsFrom}</> : <em>Not Added</em>}
         </>
       )}
       <style jsx>
