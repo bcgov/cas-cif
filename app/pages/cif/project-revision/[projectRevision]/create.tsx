@@ -7,7 +7,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import { createProjectRevisionQuery } from "__generated__/createProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
-  projectRevisionSchema,
+  createProjectRevisionSchema,
   projectRevisionUISchema,
 } from "data/jsonSchemaForm/projectRevisionSchema";
 import { JSONSchema7 } from "json-schema";
@@ -79,19 +79,15 @@ export function ProjectRevisionCreate({
     });
   };
   const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
-  projectRevisionSchema.properties.revisionType.enum = revisionEnum;
+  createProjectRevisionSchema.properties.revisionType.enum = revisionEnum;
 
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
   const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
 
-  const localSchema = JSON.parse(JSON.stringify(projectRevisionSchema));
+  const localSchema = JSON.parse(JSON.stringify(createProjectRevisionSchema));
   localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
     amendmentTypeEnum;
-  delete localSchema.properties.pendingActionsFrom;
-
-  // this is only required in view page
-  delete localSchema.properties.revisionStatus;
 
   return (
     <>

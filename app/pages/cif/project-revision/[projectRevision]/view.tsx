@@ -6,7 +6,7 @@ import TaskList from "components/TaskList";
 import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
-  projectRevisionSchema,
+  viewProjectRevisionSchema,
   projectRevisionUISchema,
 } from "data/jsonSchemaForm/projectRevisionSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
@@ -26,7 +26,7 @@ const createProjectRevisionViewSchema = (
   allRevisionTypes,
   allRevisionStatuses
 ) => {
-  const schema = projectRevisionSchema;
+  const schema = viewProjectRevisionSchema;
   schema.properties.revisionType = {
     ...schema.properties.revisionType,
     anyOf: allRevisionTypes.edges.map(({ node }) => {
