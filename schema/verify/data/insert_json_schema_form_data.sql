@@ -5,8 +5,8 @@ begin;
 do $$
   begin
     assert (
-      (select count(*) from cif.form) > 0
-    ), 'No values were inserted in the cif.form table';
+      (select count(*) from cif.form) = 12
+    ), 'The proper number of values were inserted in the cif.form table';
   end;
 $$;
 
