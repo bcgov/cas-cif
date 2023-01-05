@@ -1,20 +1,18 @@
-import { useCallback, useMemo } from "react";
-import Link from "next/link";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
-import { useFragment, graphql } from "react-relay";
-import { Dashboard_query$key } from "__generated__/Dashboard_query.graphql";
+import useIsAdmin from "hooks/useIsAdmin";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { graphql, useFragment } from "react-relay";
+import { getMetabaseRoute, getSupportEmailMailTo } from "routes/externalRoutes";
 import {
   getContactsPageRoute,
+  getNewProjectRevisionPageRoute,
   getOperatorsPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectsPageRoute,
 } from "routes/pageRoutes";
-import { getMetabaseRoute, getSupportEmailMailTo } from "routes/externalRoutes";
-import { mutation as createProjectMutation } from "mutations/Project/createProject";
-import { createProjectMutation$data } from "__generated__/createProjectMutation.graphql";
-import { useRouter } from "next/router";
-import useIsAdmin from "hooks/useIsAdmin";
-import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
+import { Dashboard_query$key } from "__generated__/Dashboard_query.graphql";
 
 interface Props {
   query: Dashboard_query$key;
@@ -39,26 +37,6 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
     queryKey
   );
 
-  const [createProject, isProjectCreating] = useMutationWithErrorMessage(
-    createProjectMutation,
-    () => "An error occurred when creating a project."
-  );
-
-  const handleProjectCreation = useCallback(() => {
-    if (isProjectCreating) return;
-    createProject({
-      variables: { input: {} },
-      onCompleted: (response: createProjectMutation$data) => {
-        router.push(
-          getProjectRevisionFormPageRoute(
-            response.createProject.projectRevision.id,
-            0
-          )
-        );
-      },
-    });
-  }, [createProject, isProjectCreating, router]);
-
   const isAdmin = useIsAdmin(session?.userGroups);
 
   const addOrResumeProjectLink = useMemo(
@@ -74,11 +52,11 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           <BCGovLink>Resume Project Draft</BCGovLink>
         </Link>
       ) : (
-        <button onClick={handleProjectCreation} disabled={isProjectCreating}>
+        <button onClick={() => router.push(getNewProjectRevisionPageRoute())}>
           Create a new Project
         </button>
       ),
-    [pendingNewProjectRevision, handleProjectCreation, isProjectCreating]
+    [pendingNewProjectRevision, router]
   );
 
   return (

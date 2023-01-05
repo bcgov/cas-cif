@@ -6,7 +6,7 @@ select plan(6);
 
 truncate cif.form_change, cif.project_revision, cif.project_contact restart identity cascade;
 
-select cif.create_project();
+select cif.create_project(1);
 
 
 /* test 1 */

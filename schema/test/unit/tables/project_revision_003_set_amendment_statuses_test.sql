@@ -8,9 +8,9 @@ select plan(5);
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.funding_stream(name, description) values ('test funding stream', 'desc');
 truncate cif.project restart identity cascade;
-select cif.create_project();
-select cif.create_project();
-select cif.create_project();
+select cif.create_project(1);
+select cif.create_project(1);
+select cif.create_project(1);
 
 -- disable blocking triggers
 alter table cif.project_revision disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;

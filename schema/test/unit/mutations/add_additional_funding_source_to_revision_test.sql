@@ -4,7 +4,7 @@ begin;
 select plan(2);
 
 truncate cif.project restart identity cascade;
-select cif.create_project();
+select cif.create_project(1);
 
 -- it inserts a new record
 select cif.add_additional_funding_source_to_revision((select id from cif.project_revision order by id desc limit 1), 1);

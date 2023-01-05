@@ -8,9 +8,9 @@ truncate cif.operator restart identity cascade;
 truncate cif.project restart identity cascade;
 insert into cif.operator (legal_name) values ('test operator');
 
-select cif.create_project();
-select cif.create_project();
-select cif.create_project();
+select cif.create_project(1);
+select cif.create_project(2);
+select cif.create_project(3);
 
 -- funding parameter without max funding amount and proponent cost
 insert into cif.form_change(

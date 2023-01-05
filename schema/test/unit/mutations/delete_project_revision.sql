@@ -18,7 +18,7 @@ values ('bob', 'loblaw', 'bob@loblaw.com');
 insert into cif.operator(legal_name)
 values ('test operator');
 
-select cif.create_project();
+select cif.create_project(1);
 
 insert into cif.form_change(new_form_data,
     operation,

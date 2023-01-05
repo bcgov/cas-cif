@@ -9,11 +9,11 @@ describe("when undoing, the project revision page", () => {
   it("undoes changes on a new project when the user clicks the Undo Changes button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-
     cy.get("button").contains("Add a Project").click();
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
     cy.fillOverviewForm(
-      "Emissions Performance",
-      "2020",
       "first operator legal name (AB1234567)",
       "Cement",
       "TEST-123-12345",

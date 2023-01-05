@@ -16,7 +16,7 @@ describe("createProject mutation", () => {
     tester = new EasyGraphQLTester(schemaCode);
   });
 
-  it("Should not consume anything in the input", () => {
+  it("Should throw an error if given the incorrect input", () => {
     let error;
     try {
       tester.mock(mutationString, {
@@ -31,13 +31,13 @@ describe("createProject mutation", () => {
     }
 
     expect(error.message).toEqual(
-      'Variable "$input" got invalid value { someKey: { someOtherKey: "123" } }; Field "someKey" is not defined by type "CreateProjectInput".'
+      'Variable "$input" got invalid value { someKey: { someOtherKey: "123" } }; Field "fundingStreamRpfId" of required type "Int!" was not provided.'
     );
   });
 
   it("Should return a string relay ID if valid", () => {
     const test = tester.mock(mutationString, {
-      input: {},
+      input: { fundingStreamRpfId: 1 },
     });
 
     expect(test).toBeDefined();

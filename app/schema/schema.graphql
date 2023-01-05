@@ -40587,6 +40587,7 @@ input CreateProjectInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
+  fundingStreamRpfId: Int!
 }
 
 """All input for the create `ProjectManager` mutation."""

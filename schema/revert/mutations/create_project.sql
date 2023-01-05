@@ -3,6 +3,8 @@
 
 begin;
 
+drop function cif.create_project(funding_stream_rpf_id integer);
+
 create or replace function cif.create_project()
 returns cif.project_revision
 as $function$

@@ -12,10 +12,14 @@ describe("when creating a project, the project page", () => {
   });
 
   it("allows an admin user to create a project", () => {
+    //add new
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
+    cy.happoAndAxe("Project New Form", "filled", "main");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
     // add overview
+    cy.findByText("Emissions Performance").should("be.visible");
     cy.fillOverviewForm(
-      "Emissions Performance",
-      "2020",
       "first operator legal name (AB1234567)",
       "Cement",
       "TEST-123-12345",
@@ -226,6 +230,10 @@ describe("when creating a project, the project page", () => {
   });
 
   it("creates new contact and redirects a user back to project contact form and populate project contact form with newly created contact", () => {
+    //add new
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Add project contacts/i).click();
 
@@ -251,6 +259,7 @@ describe("when creating a project, the project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Contacts Form", "filled", "main");
     cy.get("button").contains("Submit").click();
+
     //Back to project contact form
     cy.url().should("include", "/form/2");
     cy.findByLabelText(/primary contact/i).should("have.value", "Bob Loblaw");
@@ -261,6 +270,9 @@ describe("when creating a project, the project page", () => {
   });
 
   it("generates quarterly and annual reports automatically", () => {
+    //add new
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
+    cy.findByRole("button", { name: /^confirm/i }).click();
     // add budgets, expenses, and payments
     cy.findByRole("heading", {
       name: /3. Budgets, Expenses & Payments/i,
@@ -308,6 +320,7 @@ describe("when creating a project, the project page", () => {
     cy.happoAndAxe("Auto-generate quarterly reports", "generated", "main");
 
     //generate annual reports
+
     cy.findByRole("heading", { name: /7. Annual reports/i }).click();
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/7");

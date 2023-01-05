@@ -3,7 +3,9 @@
 
 begin;
 
-create or replace function cif.create_project()
+drop function cif.create_project();
+
+create or replace function cif.create_project(funding_stream_rpf_id integer)
 returns cif.project_revision
 as $function$
 declare
@@ -36,7 +38,7 @@ begin
     change_status,
     json_schema_name
   ) values (
-    null,
+    json_build_object('fundingStreamRfpId', $1),
     'create',
     'cif',
     'project',

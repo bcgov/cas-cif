@@ -1,22 +1,24 @@
-import DefaultLayout from "components/Layout/DefaultLayout";
-import { withRelay, RelayProps } from "relay-nextjs";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { projectsQuery } from "__generated__/projectsQuery.graphql";
-import withRelayOptions from "lib/relay/withRelayOptions";
 import Button from "@button-inc/bcgov-theme/Button";
-import { useCreateProjectMutation } from "mutations/Project/createProject";
-import { useRouter } from "next/router";
-import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
-import Table from "components/Table";
+import DefaultLayout from "components/Layout/DefaultLayout";
 import ProjectTableRow from "components/Project/ProjectTableRow";
+import Table from "components/Table";
 import {
+  DisplayOnlyFilter,
   NoHeaderFilter,
+  SearchableDropdownFilter,
   SortOnlyFilter,
   TextFilter,
-  SearchableDropdownFilter,
-  DisplayOnlyFilter,
 } from "components/Table/Filters";
+import withRelayOptions from "lib/relay/withRelayOptions";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { RelayProps, withRelay } from "relay-nextjs";
+import {
+  getNewProjectRevisionPageRoute,
+  getProjectRevisionFormPageRoute,
+} from "routes/pageRoutes";
+import { projectsQuery } from "__generated__/projectsQuery.graphql";
 
 export const ProjectsQuery = graphql`
   query projectsQuery(
@@ -123,22 +125,6 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
     [allCifUsers.edges, allProjectStatuses.edges]
   );
 
-  const [createProject, isCreatingProject] = useCreateProjectMutation();
-
-  const handleCreateProject = () => {
-    createProject({
-      variables: { input: {} },
-      onCompleted: (response) => {
-        router.push(
-          getProjectRevisionFormPageRoute(
-            response.createProject.projectRevision.id,
-            0
-          )
-        );
-      },
-    });
-  };
-
   const handleResumeCreateProject = () => {
     router.push(
       getProjectRevisionFormPageRoute(pendingNewProjectRevision.id, 0)
@@ -152,8 +138,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   ) : (
     <Button
       role="button"
-      onClick={handleCreateProject}
-      disabled={isCreatingProject}
+      onClick={() => router.push(getNewProjectRevisionPageRoute())}
     >
       Add a Project
     </Button>

@@ -13,5 +13,5 @@ export type TaskListDynamicConfiguration = {
 
 export type TaskListLinkUrl = {
   pathname: string;
-  query?: { projectRevision: string };
+  query?: { projectRevision: string; isRoutedFromNew?: boolean };
 } & UrlObject;

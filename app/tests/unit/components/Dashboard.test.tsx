@@ -1,14 +1,14 @@
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dashboard from "components/Dashboard";
+import { mocked } from "jest-mock";
+import getConfig from "next/config";
 import { graphql } from "react-relay";
-import { MockPayloadGenerator } from "relay-test-utils";
+import { getNewProjectRevisionPageRoute } from "routes/pageRoutes";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledDashboardTestQuery, {
   DashboardTestQuery,
 } from "__generated__/DashboardTestQuery.graphql";
-import getConfig from "next/config";
-import { mocked } from "jest-mock";
 jest.mock("next/config");
 
 const testQuery = graphql`
@@ -62,46 +62,14 @@ describe("The Dashboard", () => {
     expect(screen.getByText(/Create a new Project/i)).toBeVisible();
   });
 
-  it("Triggers the createProjectMutation and redirects when the user clicks the create project button", () => {
+  it("Redirects when the user clicks the create project button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     act(() => userEvent.click(screen.getByText(/Create a new Project/i)));
-    expect(screen.getByText(/Create a new Project/i)).toBeDisabled();
 
-    const operation =
-      componentTestingHelper.environment.mock.getMostRecentOperation();
-    expect(operation.fragment.node.name).toBe("createProjectMutation");
-    act(() => {
-      componentTestingHelper.environment.mock.resolve(
-        operation,
-        MockPayloadGenerator.generate(operation)
-      );
-    });
-    expect(componentTestingHelper.router.push).toHaveBeenCalledWith({
-      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
-      query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
-      anchor: undefined,
-    });
-  });
-
-  it("calls useMutationWithErrorMessage and returns expected message when the user clicks the create project button and there's a mutation error", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-    const spy = jest.spyOn(
-      require("app/mutations/useMutationWithErrorMessage"),
-      "default"
-    );
-    userEvent.click(screen.getByText(/Create a new Project/i));
-    act(() => {
-      componentTestingHelper.environment.mock.rejectMostRecentOperation(
-        new Error()
-      );
-    });
-    const getErrorMessage = spy.mock.calls[0][1] as Function;
-
-    expect(getErrorMessage()).toBe(
-      "An error occurred when creating a project."
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      getNewProjectRevisionPageRoute()
     );
   });
 
