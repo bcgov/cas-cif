@@ -210,5 +210,4 @@ computed_columns/form_change_net_payments_to_date [tables/form_change] 2022-11-1
 computed_columns/form_change_holdback_amount_to_date [tables/form_change] 2022-11-15T00:19:02Z Dylan Leard <dylan@button.is> # Add computed column to return the cumulative holdback amount to date for a milestone
 tables/project_revision_004_add_pending_actions_from 2022-11-28T21:21:29Z Gurjeet Matharu <gurjeet@matharuco.com> # adding pending actions from column
 mutations/delete_project_revision [mutations/delete_project_revision@1.0.1] 2023-01-04T20:11:30Z Dylan Leard <dylan@button.is> # Migration: remove unnecessary begin-end statements
-mutations/delete_project_revision_001_bugfix 2022-12-01T18:01:02Z Gurjeet Matharu <gurjeet@matharuco.com> # bugfix removing unnecessary begin end
 util_functions/get_form_status_001 [util_functions/get_form_status_001@1.0.1] 2022-12-29T17:10:00Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Add conditionals to determine project overview status
