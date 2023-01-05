@@ -194,7 +194,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
 
   const fundingAgreementFormNotUpdated = useMemo(
     () =>
-      (fundingAgreementSummary?.isPristine ||
+      (!fundingAgreementSummary ||
+        fundingAgreementSummary?.isPristine ||
         (fundingAgreementSummary?.isPristine === null &&
           Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
       allAdditionalFundingSourceFormChangesPristine,
@@ -219,11 +220,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   return (
     <div className="summaryContainer">
       {!isOnProjectRevisionViewPage && <h3>Budgets, Expenses & Payments</h3>}
-      {(!fundingAgreementSummary ||
-        fundingAgreementSummary?.isPristine ||
-        (fundingAgreementSummary?.isPristine === null &&
-          Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
-      !props.viewOnly ? (
+      {fundingAgreementFormNotUpdated && !props.viewOnly ? (
         !isOnProjectRevisionViewPage ? (
           <p>
             <em>
