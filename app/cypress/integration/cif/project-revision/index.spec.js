@@ -17,6 +17,7 @@ describe("the new project page", () => {
 
     // NEW
     cy.url().should("include", "/new");
+    cy.findByLabelText(/Funding Stream$/i).should("be.visible");
     cy.happoAndAxe("Project New Form", "unfilled", "main");
     cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
     cy.findByRole("button", { name: /^confirm/i }).click();
