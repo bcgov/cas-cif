@@ -1,4 +1,4 @@
--- Verify cif:mutations/delete_project_revision_001_bugfix on pg
+-- Verify cif:mutations/delete_project_revision on pg
 
 begin;
 

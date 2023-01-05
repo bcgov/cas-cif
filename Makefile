@@ -148,6 +148,12 @@ revert_db_migrations:
 	@$(SQITCH) --chdir schema revert
 	@$(SQITCH) --chdir mocks_schema revert
 
+.PHONY: test_revert_migrations
+test_revert_migrations: ## revert the database migrations with sqitch
+test_revert_migrations: | deploy_db_migrations
+test_revert_migrations:
+	@$(SQITCH) --chdir schema revert -y
+	@$(SQITCH) --chdir schema deploy
 
 .PHONY: verify_db_migrations
 verify_db_migrations: ## verify the database migrations with sqitch
