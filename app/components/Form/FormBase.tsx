@@ -86,7 +86,7 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
           margin-right: 10px;
         }
         :global(.revisionDiffOld) {
-          color: #ee0004;
+          color: #cd2026;
           text-decoration: line-through;
           font-size: 0.7em;
         }

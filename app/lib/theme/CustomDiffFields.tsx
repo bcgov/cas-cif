@@ -73,7 +73,7 @@ const showStringAdded = (
           <em>(ADDED)</em>
           <style jsx>{`
             span {
-              color: #ee0004;
+              color: #cd2026;
             }
           `}</style>
         </span>
@@ -208,7 +208,7 @@ const showNumberAdded = (
           <em>(ADDED)</em>
           <style jsx>{`
             span {
-              color: #ee0004;
+              color: #cd2026;
             }
           `}</style>
         </span>
