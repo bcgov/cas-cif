@@ -1,27 +1,11 @@
-/* eslint-disable relay/must-colocate-fragment-spreads*/
 import { WidgetProps } from "@rjsf/core";
-import { graphql, useFragment } from "react-relay";
 
 import { useNumberedFormStructure } from "data/formPages/formStructure";
 import CollapsibleFormWidget from "./CollapsibleFormWidget";
 
-const updatedFormsWidgetFragment = graphql`
-  fragment UpdatedFormsWidget_projectRevision on ProjectRevision {
-    ...ProjectFormSummary_projectRevision
-    ...ProjectContactFormSummary_projectRevision
-    ...ProjectManagerFormSummary_projectRevision
-    ...ProjectQuarterlyReportFormSummary_projectRevision
-    ...ProjectAnnualReportFormSummary_projectRevision
-    ...ProjectMilestoneReportFormSummary_projectRevision
-    ...ProjectFundingAgreementFormSummary_projectRevision
-    ...ProjectEmissionIntensityReportFormSummary_projectRevision
-  }
-`;
-
 const UpdatedFormsWidget: React.FC<WidgetProps> = ({ formContext }) => {
   const numberedFormStructure = useNumberedFormStructure();
-  const { projectRevision } = formContext;
-  const query = useFragment(updatedFormsWidgetFragment, projectRevision);
+
   return (
     <div>
       <ol>
@@ -34,7 +18,7 @@ const UpdatedFormsWidget: React.FC<WidgetProps> = ({ formContext }) => {
               key={"collapsible-form-widget-" + index}
               title={form.title}
               formItems={formItems}
-              query={query}
+              projectRevision={formContext.projectRevision}
             />
           );
         })}

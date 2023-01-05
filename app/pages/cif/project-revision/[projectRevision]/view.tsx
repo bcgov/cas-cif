@@ -92,7 +92,8 @@ export const ViewProjectRevisionQuery = graphql`
           ...TaskList_projectRevision
         }
       }
-      ...UpdatedFormsWidget_projectRevision
+      # eslint-disable-next-line relay/must-colocate-fragment-spreads
+      ...CollapsibleFormWidget_projectRevision
     }
     allRevisionTypes {
       edges {

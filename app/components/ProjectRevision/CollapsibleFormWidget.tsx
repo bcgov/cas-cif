@@ -1,24 +1,39 @@
+/* eslint-disable relay/must-colocate-fragment-spreads*/
 import { Checkbox } from "@button-inc/bcgov-theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-
+import { graphql, useFragment } from "react-relay";
 import { IFormItem, IIndexedFormConfiguration } from "data/formPages/types";
 
 export interface CollapsibleFormWidgetProps {
   title: string;
   formItems: IFormItem<IIndexedFormConfiguration>[];
-  query: any;
+  projectRevision: any;
 }
+
+const collapsibleFormWidgetFragment = graphql`
+  fragment CollapsibleFormWidget_projectRevision on ProjectRevision {
+    ...ProjectFormSummary_projectRevision
+    ...ProjectContactFormSummary_projectRevision
+    ...ProjectManagerFormSummary_projectRevision
+    ...ProjectQuarterlyReportFormSummary_projectRevision
+    ...ProjectAnnualReportFormSummary_projectRevision
+    ...ProjectMilestoneReportFormSummary_projectRevision
+    ...ProjectFundingAgreementFormSummary_projectRevision
+    ...ProjectEmissionIntensityReportFormSummary_projectRevision
+  }
+`;
 
 const CollapsibleFormWidget: React.FC<CollapsibleFormWidgetProps> = ({
   title,
   formItems,
-  query,
+  projectRevision,
 }) => {
   const [hasDiff, setHasDiff] = useState(false);
   const [isOpen, setIsOpen] = useState(true); //This has to be true to start with, otherwise it will prevent the children from rendering
   const cursorStyle = hasDiff ? "pointer" : "default";
+  const query = useFragment(collapsibleFormWidgetFragment, projectRevision);
 
   return (
     <li>
