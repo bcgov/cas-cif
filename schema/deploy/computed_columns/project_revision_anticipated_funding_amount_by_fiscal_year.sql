@@ -9,31 +9,29 @@ $computed_column$
 
 with form_changes as (
     select * from cif.form_change
-    where project_revision_id = 253
-    -- where project_revision_id = $1.project_id
+    where project_revision_id = $1.project_id
     and form_data_schema_name='cif'
     and form_data_table_name='reporting_requirement'
     and (new_form_data->>'reportType') in (select name from cif.report_type where has_expenses=true)
     and operation != 'archive'
 ),
 
-stuff as (
+anticipated_funding as (
     select
-        cif.get_fiscal_year_from_timestamp((select (new_form_data->>'dateSentToCsnr')::timestamptz)) as fiscal,
+        cif.get_fiscal_year_from_timestamp((select
+            coalesce((new_form_data->>'dateSentToCsnr')::timestamptz, (new_form_data->>'submittedDate')::timestamptz, (new_form_data->>'reportDueDate')::timestamptz))) as year,
         sum(
             coalesce(
                 (select new_form_data->'adjustedGrossAmount')::numeric,
                 (select cif.form_change_calculated_gross_amount_this_milestone(row(form_changes.*))),
                 (new_form_data->>'maximumAmount')::numeric
             )
-        )
+        ) as anticipatedFundingAmount
     from form_changes
-    group by fiscal
+    group by year
 )
 
-select * from stuff;
--- may need to create jsonb object for return
-
+select year, anticipatedFundingAmount from anticipated_funding;
 
 $computed_column$ language sql stable;
 
