@@ -20,6 +20,8 @@ const nextConfig = {
     SITEWIDE_NOTICE: config.get("sitewideNotice"),
     ENABLE_MOCK_TIME: config.get("enableMockTime"),
     SUPPORT_EMAIL: config.get("supportEmail"),
+    PROGRAM_DIRECTOR_NAME: config.get("directorName"),
+    PROGRAM_DIRECTOR_EMAIL: config.get("directorEmail"),
     SENTRY_ENVIRONMENT: config.get("sentryEnvironment"),
     SENTRY_RELEASE: config.get("sentryRelease"),
     GROWTHBOOK_API_KEY: config.get("growthbookApiKey"),

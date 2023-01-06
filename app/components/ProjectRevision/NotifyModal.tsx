@@ -11,12 +11,17 @@ import { NotifyModal_projectRevision$key } from "__generated__/NotifyModal_proje
 import { useRouter } from "next/router";
 import Modal from "@button-inc/bcgov-theme/Modal";
 import Link from "next/link";
+import getConfig from "next/config";
 
 interface Props {
   projectRevision: NotifyModal_projectRevision$key;
 }
 
 const NotifyModal: React.FC<Props> = ({ projectRevision }) => {
+  const directorName = getConfig()?.publicRuntimeConfig?.PROGRAM_DIRECTOR_NAME;
+  const directorEmail =
+    getConfig()?.publicRuntimeConfig?.PROGRAM_DIRECTOR_EMAIL;
+
   const { id, pendingActionsFrom, projectByProjectId } = useFragment(
     graphql`
       fragment NotifyModal_projectRevision on ProjectRevision {
@@ -101,16 +106,11 @@ const NotifyModal: React.FC<Props> = ({ projectRevision }) => {
     generateSchema(
       "object",
       "Director",
-      generateSchemaProperty(
-        process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_EMAIL,
-        "boolean",
-        process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_NAME,
-        false
-      )
+      generateSchemaProperty(directorEmail, "boolean", directorName, false)
     ),
     onChange,
     formData,
-    generateModalUiSchema(process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_EMAIL)
+    generateModalUiSchema(directorEmail)
   );
 
   const primaryContactForm = generateNotifyModalForm(

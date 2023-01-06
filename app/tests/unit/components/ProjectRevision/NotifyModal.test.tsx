@@ -7,6 +7,9 @@ import compiledNotifyModalQuery, {
   NotifyModalQuery,
 } from "__generated__/NotifyModalQuery.graphql";
 import { NotifyModal_projectRevision$data } from "__generated__/NotifyModal_projectRevision.graphql";
+import getConfig from "next/config";
+import { mocked } from "jest-mock";
+jest.mock("next/config");
 
 const testQuery = graphql`
   query NotifyModalQuery($project_revision: ID!) @relay_test_operation {
@@ -187,9 +190,13 @@ const componentTestingHelper = new ComponentTestingHelper<NotifyModalQuery>({
 describe("The NotifyModal", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    mocked(getConfig).mockImplementation(() => ({
+      publicRuntimeConfig: {
+        PROGRAM_DIRECTOR_NAME: "director name",
+        PROGRAM_DIRECTOR_EMAIL: "director@email.com",
+      },
+    }));
     componentTestingHelper.reinit();
-    process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_EMAIL = "director@email.com";
-    process.env.NEXT_PUBLIC_PROGRAM_DIRECTOR_NAME = "director name";
   });
 
   it("renders the director form when pendingActionsFrom is Director", () => {
