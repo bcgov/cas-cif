@@ -40,8 +40,13 @@ describe("the project amendment and revisions page", () => {
     cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
     cy.findByRole("link", { name: /view amendment 2/i }).should("exist");
     cy.get('input[value="Amendment"]').should("be.checked");
-    cy.get("select").should("be.visible").select("Tech Team");
-    cy.findByRole("button", { name: /update/i }).click();
+    cy.findByText(/status/i)
+      .next()
+      .contains("Draft");
+    cy.get("select").should("be.visible").eq(0).select("Tech Team");
+    cy.findAllByRole("button", { name: /update/i })
+      .first()
+      .click();
     cy.findByRole("button", { name: /notify/i }).click();
     cy.findByText(/cif_internal Testuser/i).click();
   });

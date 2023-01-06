@@ -3,10 +3,13 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
-import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
+import {
+  viewProjectRevisionQuery,
+  viewProjectRevisionQuery$data,
+} from "__generated__/viewProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
-  projectRevisionSchema,
+  viewProjectRevisionSchema,
   projectRevisionUISchema,
 } from "data/jsonSchemaForm/projectRevisionSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
@@ -15,12 +18,16 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
+import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 
-const createProjectRevisionViewSchema = (allRevisionTypes) => {
-  const schema = projectRevisionSchema;
+const createProjectRevisionViewSchema = (
+  allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
+  allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"]
+): JSONSchema7 => {
+  const schema = viewProjectRevisionSchema;
   schema.properties.revisionType = {
     ...schema.properties.revisionType,
-    anyOf: allRevisionTypes.edges.map(({ node }) => {
+    anyOf: allRevisionTypesEdges.map(({ node }) => {
       return {
         type: "string",
         title: node.type,
@@ -30,13 +37,25 @@ const createProjectRevisionViewSchema = (allRevisionTypes) => {
     }),
   };
 
+  schema.properties.revisionStatus = {
+    ...schema.properties.revisionStatus,
+    anyOf: allRevisionStatusesEdges.map(({ node }) => {
+      return {
+        type: "string",
+        title: node.name,
+        enum: [node.name],
+        value: node.name,
+      } as JSONSchema7Definition;
+    }),
+  };
+
   return schema as JSONSchema7;
 };
 
 const createProjectRevisionUISchema = () => {
-  const uiSchema = projectRevisionUISchema;
-  uiSchema.revisionType["ui:readonly"] = true;
-  return uiSchema;
+  const localUiSchema = JSON.parse(JSON.stringify(projectRevisionUISchema));
+  localUiSchema.revisionType["ui:readonly"] = true;
+  return localUiSchema;
 };
 
 export const ViewProjectRevisionQuery = graphql`
@@ -50,6 +69,8 @@ export const ViewProjectRevisionQuery = graphql`
       id
       revisionType
       createdAt
+      revisionStatus
+      changeStatus
       cifUserByCreatedBy {
         fullName
       }
@@ -75,17 +96,22 @@ export const ViewProjectRevisionQuery = graphql`
         }
       }
     }
+    allRevisionStatuses {
+      edges {
+        node {
+          name
+          isAmendmentSpecific
+        }
+      }
+    }
   }
 `;
 
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
-  const { session, projectRevision, allRevisionTypes } = usePreloadedQuery(
-    ViewProjectRevisionQuery,
-    preloadedQuery
-  );
-
+  const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
+    usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
   const taskList = (
     <TaskList
       projectRevision={
@@ -97,6 +123,15 @@ export function ProjectRevisionView({
   );
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
+
+  // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
+  const filteredRevisionStatuses =
+    projectRevision.revisionType === "Amendment"
+      ? allRevisionStatuses.edges
+      : allRevisionStatuses.edges.filter(
+          ({ node }) => !node.isAmendmentSpecific
+        );
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
@@ -110,9 +145,10 @@ export function ProjectRevisionView({
             id={`form-${projectRevision.id}`}
             tagName={"dl"}
             className="project-revision-view-form"
-            schema={
-              createProjectRevisionViewSchema(allRevisionTypes) as JSONSchema7
-            }
+            schema={createProjectRevisionViewSchema(
+              allRevisionTypes.edges,
+              filteredRevisionStatuses
+            )}
             uiSchema={createProjectRevisionUISchema()}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
@@ -121,7 +157,9 @@ export function ProjectRevisionView({
               pendingActionsFrom: projectRevision.pendingActionsFrom,
               revisionId: projectRevision.id,
               revisionStatus: projectRevision.revisionStatus,
+              changeStatus: projectRevision.changeStatus,
             }}
+            widgets={{ RevisionStatusWidget }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
           <div className="revision-record-history-section">
