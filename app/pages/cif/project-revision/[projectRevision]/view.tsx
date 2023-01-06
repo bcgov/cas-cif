@@ -3,7 +3,10 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
-import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
+import {
+  viewProjectRevisionQuery,
+  viewProjectRevisionQuery$data,
+} from "__generated__/viewProjectRevisionQuery.graphql";
 import FormBase from "components/Form/FormBase";
 import {
   viewProjectRevisionSchema,
@@ -18,24 +21,13 @@ import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 
 const createProjectRevisionViewSchema = (
-  allRevisionTypesEdges: {
-    readonly edges: readonly {
-      readonly node: {
-        readonly type: string;
-      };
-    }[];
-  },
-  allRevisionStatusesEdges: readonly {
-    readonly node: {
-      readonly name: string;
-      readonly isAmendmentSpecific: boolean;
-    };
-  }[]
+  allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
+  allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"]
 ): JSONSchema7 => {
   const schema = viewProjectRevisionSchema;
   schema.properties.revisionType = {
     ...schema.properties.revisionType,
-    anyOf: allRevisionTypesEdges.edges.map(({ node }) => {
+    anyOf: allRevisionTypesEdges.map(({ node }) => {
       return {
         type: "string",
         title: node.type,
@@ -154,7 +146,7 @@ export function ProjectRevisionView({
             tagName={"dl"}
             className="project-revision-view-form"
             schema={createProjectRevisionViewSchema(
-              allRevisionTypes,
+              allRevisionTypes.edges,
               filteredRevisionStatuses
             )}
             uiSchema={createProjectRevisionUISchema()}
