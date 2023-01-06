@@ -27,6 +27,7 @@ export const fundingAgreementSchema = {
       title: "Performance Milestone Holdback Percentage",
       type: "number",
     },
+    // brianna
     anticipatedFundingAmount: {
       title: "Anticipated/Actual Funding Amount",
       type: "number",
