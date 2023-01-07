@@ -349,6 +349,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         }
         div :global(button.removeButton) {
           float: right;
+          margin-bottom: 0.5em;
         }
       `}</style>
     </div>
