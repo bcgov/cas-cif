@@ -32,6 +32,11 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
       ) : (
         <em>Not added</em>
       )}
+      <style jsx>{`
+        dd {
+          margin: 0;
+        }
+      `}</style>
     </dd>
   );
 };

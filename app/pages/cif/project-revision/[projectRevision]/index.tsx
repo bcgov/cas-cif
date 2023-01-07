@@ -280,6 +280,9 @@ export function ProjectRevision({
         h4 {
           margin-bottom: 0;
         }
+        header {
+          margin-bottom: 1rem;
+        }
       `}</style>
     </DefaultLayout>
   );
