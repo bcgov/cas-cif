@@ -9,7 +9,7 @@ $computed_column$
 
 with form_changes as (
     select * from cif.form_change
-    where project_revision_id = $1.project_id
+    where project_revision_id = $1.id
     and form_data_schema_name='cif'
     and form_data_table_name='reporting_requirement'
     and (new_form_data->>'reportType') in (select name from cif.report_type where has_expenses=true)

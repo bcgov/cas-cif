@@ -7,6 +7,7 @@ do $$
   begin
 
   -- insert milestone reports including payments
+  -- brianna--I don't think this includes payments anymore?
     for temp_row in select id, form_data_record_id, project_revision_id from cif.form_change where form_data_table_name = 'project'
     loop
 

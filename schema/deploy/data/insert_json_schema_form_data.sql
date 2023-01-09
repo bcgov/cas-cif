@@ -1,3 +1,5 @@
+-- brianna in deploy/data make update_fudningagreementform (name nicer)
+
 -- Deploy cif:migrations/insert_json_schema_form_data to pg
 -- requires: functions/handle_milestone_form_change_commit
 -- requires: tables/form

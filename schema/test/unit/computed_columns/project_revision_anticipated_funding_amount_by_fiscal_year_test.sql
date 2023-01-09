@@ -1,3 +1,5 @@
+-- brianna tomorrow go look in the db at the various form changes in the form change table to see where you're missing info
+
 begin;
 
 select * from no_plan();
@@ -6,119 +8,121 @@ select * from no_plan();
 
 truncate cif.project restart identity cascade;
 
-select cif.create_project();
-select cif.create_project();
+-- create four projects
+select cif.create_project(1);
+-- select cif.create_project(1);
+-- select cif.create_project(1);
+-- select cif.create_project(1);
 
-select cif.add_milestone_to_revision(1,1);
-select cif.add_milestone_to_revision(1,2);
-select cif.add_milestone_to_revision(1,3);
-select cif.add_milestone_to_revision(1,4);
-select cif.add_milestone_to_revision(2,1);
-
--- reporting_requirement fiscal year 2021/2022
-update cif.form_change
-set new_form_data = new_form_data || '{"reportDueDate": "2022-02-01 16:21:42.693489-07"}'::jsonb
-where form_data_table_name = 'reporting_requirement'
-and (new_form_data->>'reportingRequirementIndex')::int in (1,3);
-
--- reporting_requirement fiscal year 2022/2023
-update cif.form_change
-set new_form_data = new_form_data || '{"reportDueDate": "2023-01-01 16:21:42.693489-07"}'::jsonb
-where form_data_table_name = 'reporting_requirement'
-and (new_form_data->>'reportingRequirementIndex')::int in (2,4);
-
--- reporting_requirement fiscal year 2024/2025
-update cif.form_change
-set new_form_data = new_form_data || '{"reportDueDate": "2025-02-01 16:21:42.693489-07"}'::jsonb
-where form_data_table_name = 'reporting_requirement'
-and project_revision_id = 2;
-
-update cif.form_change set new_form_data = new_form_data || '{"maximumAmount": 100}' where form_data_table_name='milestone_report';
-delete from cif.form_change where form_data_table_name = 'payment' and (new_form_data->>'reportingRequirementId')::int in (3,4);
-
--- payment fiscal year 2021/2022
-update cif.form_change
-set new_form_data = new_form_data || '{"date_sent_to_csnr": "2022-03-01 16:21:42.693489-07", "adjustedNetAmount": 300}'::jsonb
-where form_data_table_name='payment'
-and (new_form_data->>'reportingRequirementId')::int = 1;
--- payment fiscal year 2022/2023
-update cif.form_change
-set new_form_data = new_form_data || '{"date_sent_to_csnr": "2022-08-01 16:21:42.693489-07", "adjustedNetAmount": 900}'::jsonb
-where form_data_table_name='payment'
-and (new_form_data->>'reportingRequirementId')::int = 2;
---payment fiscal year 2024/2025
-update cif.form_change
-set new_form_data = new_form_data || '{"date_sent_to_csnr": "2025-01-01 16:21:42.693489-07", "adjustedNetAmount": 2000}'::jsonb
-where form_data_table_name='payment'
-and (new_form_data->>'reportingRequirementId')::int = 5;
+select cif.create_form_change(
+        'create',
+        'milestone',
+        'cif',
+        'reporting_requirement',
+        json_build_object(
+          'projectId', 1,
+          'reportDueDate', '2022-03-01 16:21:42.693489-07',
+          'submittedDate', '2022-03-01 16:21:42.693489-07',
+          'reportType', 'General Milestone',
+          'reportingRequirementIndex', 1,
+          'description', 'general milestone report description ' ,
+          'adjustedGrossAmount', 1,
+          'adjustedNetAmount', 1,
+          'dateSentToCsnr', '2022-03-01 16:21:42.693489-07',
+          'certifierProfessionalDesignation', 'Professional Engineer',
+          'substantialCompletionDate', '2022-03-01 16:21:42.693489-07',
+          'maximumAmount', 1,
+          'totalEligibleExpenses', 1,
+          'certifiedBy', 'Elliot Page',
+          'hasExpenses', true
+        )::jsonb,
+        null,
+        1
+      );
+     
+select cif.create_form_change(
+        'create',
+        'funding_agreement',
+        'cif',
+        'funding_parameter',
+        json_build_object(
+            'projectId', 1,
+            'provinceSharePercentage', 50,
+            'holdbackPercentage', 10,
+            'maxFundingAmount', 1,
+            'anticipatedFundingAmount', 1,
+            'proponentCost',777,
+            'contractStartDate', '2022-03-01 16:21:42.693489-07',
+            'projectAssetsLifeEndDate', '2022-03-01 16:21:42.693489-07'
+            )::jsonb,
+        null,
+        1
+      );
 
 /** END SETUP */
 
 select has_function('cif', 'project_revision_anticipated_funding_amount_per_fiscal_year', 'Function should exist');
 
-select is (
-  (
-    with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=2
-    ) select anticipated_funding_amount from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record))
-  ),
-  (
-    select (new_form_data->>'adjustedNetAmount')::numeric
-    from cif.form_change
-    where form_data_table_name='payment'
-    and (new_form_data->>'reportingRequirementId')::int = 5
-  ),
-  'Function retrieves budget data from the payment form_change when payment is present'
-);
-
-delete from cif.form_change where form_data_table_name='payment' and (new_form_data->>'reportingRequirementId')::int = 5;
-
-select is (
-  (
-    with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=2
-    ) select anticipated_funding_amount from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record))
-  ),
-  (
-    select (new_form_data->>'maximumAmount')::numeric
-    from cif.form_change
-    where form_data_table_name='milestone_report'
-    and (new_form_data->>'reportingRequirementId')::int = 5
-  ),
-  'Function retrieves budget data from the milestone_report form_change when there is no payment present'
-);
-
--- add another milestone with no data
-select cif.add_milestone_to_revision(2,2);
-update cif.form_change
-set new_form_data = new_form_data || '{"reportDueDate": "2025-02-01 16:21:42.693489-07"}'::jsonb
-where form_data_table_name = 'reporting_requirement'
-and project_revision_id = 2;
-
-select lives_ok (
-  $$
-    with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=2
-    ) select anticipated_funding_amount from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record))
-  $$,
-  'Function does not break when passed null amounts'
-);
 
 select results_eq (
   $$
+  (
     with record as (
       select row(project_revision.*)::cif.project_revision
       from cif.project_revision where id=1
-    ) select * from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record))
-  $$,
+    ) select (r).* from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record)) r
+  )
+   $$,
   $$
-    values ('2021/2022'::text, 400::numeric), ('2022/2023'::text, 1000::numeric)
+    values ('2021/2022'::text, 1::numeric), ('2024/2025'::text, 2000::numeric)
   $$,
-  'Function returns the correct summed amounts for each fiscal year'
+  'Function calculates anticipated amount when gross amounts are all calculated'
 );
+
+-- brianna also test that it excludes archived milestones, can be separate or part of other test since part of calculation
+
+-- select results_eq (
+--   $$
+--   (
+--     with record as (
+--       select row(project_revision.*)::cif.project_revision
+--       from cif.project_revision where id=2
+--     ) 
+--     select (r).* from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record)) r
+--   )
+--    $$,
+--   $$
+--     values (('2021/2022', 400)::cif.sum_by_fiscal_year), (('2022/2023', 1000)::cif.sum_by_fiscal_year)
+--   $$,
+--   'Function calculates anticipated amount when some gross amounts have been adjusted'
+-- );
+
+-- select results_eq (
+--   $$
+--   (
+--     with record as (
+--       select row(project_revision.*)::cif.project_revision
+--       from cif.project_revision where id=3
+--     ) select anticipated_funding_amount from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record))
+--   )
+--   $$,
+--   $$
+--     values ('2024/2025'::text, 3000::numeric)
+--   $$,
+--   'Function calculates anticipated amount when gross amount is not available (uses maximum amounts)'
+-- );
+
+
+-- select lives_ok (
+--   $$
+--     with record as (
+--       select row(project_revision.*)::cif.project_revision
+--       from cif.project_revision where id=4
+--     ) select anticipated_funding_amount from cif.project_revision_anticipated_funding_amount_per_fiscal_year((select * from record))
+--   $$,
+--   'Function does not break when passed null amounts'
+-- );
+
 
 select finish();
 
