@@ -1,3 +1,26 @@
+## [v1.0.3](https://github.com/bcgov/cas-cif/compare/1.0.1...v1.0.3) (2023-01-10)
+
+### Bug Fixes
+
+- adding None as an option to Professional Designation ([f3b8918](https://github.com/bcgov/cas-cif/commit/f3b8918b3356208cc999a42ccd8f87ea551b4eb8))
+- fix issue on showing caret with multiple child ([299e109](https://github.com/bcgov/cas-cif/commit/299e109ca03019170ceb284ef48a7e9a69c7277a))
+- re-order sqitch plan ([8f3e30e](https://github.com/bcgov/cas-cif/commit/8f3e30e65c3a2b16f370b7f87f1ebe575c785ebd))
+- set not null after updating column values ([8dc8627](https://github.com/bcgov/cas-cif/commit/8dc862702698c8a76daa093c6e8d44ddec3d3182))
+
+### Features
+
+- action amendment is waiting for ([742801f](https://github.com/bcgov/cas-cif/commit/742801fd1335388e75822b45d3f61060b2fc11d8))
+- add a specific widget for handling amendment status update ([306cc1a](https://github.com/bcgov/cas-cif/commit/306cc1a50cfd5af9731d0f58bfbe6879102e51d5))
+- add amedment status widget to revision schema and form ([11f6513](https://github.com/bcgov/cas-cif/commit/11f65139ca20cf1bd67970ab9c0f3fcf474b3468))
+- add begins date option for datepicker, use for substantial completion date ([b493875](https://github.com/bcgov/cas-cif/commit/b4938756eefb96cd25b59b1785aa5c3fcf08809c))
+- add email and phone regex with custom validation errors ([fd9e62e](https://github.com/bcgov/cas-cif/commit/fd9e62e3e988c515f2569b92480b085be2e3d863))
+- add functinoality to tie report due date and substantial compl. date together ([fe86fe7](https://github.com/bcgov/cas-cif/commit/fe86fe732bafb5d1ca071d17d161e0c8ef4db556))
+- add notification modal to view page ([989c3de](https://github.com/bcgov/cas-cif/commit/989c3de54d4679dd76f0d0e4b3ab8ceb3896c2f4))
+- add total project value computed column ([eb427bb](https://github.com/bcgov/cas-cif/commit/eb427bb0e2fafeb10f690ab4178ed66c787dff4e))
+- added dropdown with notify button widget ([7c331e3](https://github.com/bcgov/cas-cif/commit/7c331e3c3621951d7b8327c0fe2c1c351c56afbf))
+- adding calculated values ([34069ec](https://github.com/bcgov/cas-cif/commit/34069eca6b2da99276585572535b7716c60515db))
+- update funding agreement form and add total project value field ([5193bf6](https://github.com/bcgov/cas-cif/commit/5193bf687d6198b0ede53ff9222f0e8cf31d23a3))
+
 ## [1.0.2](https://github.com/bcgov/cas-cif/compare/1.0.1...1.0.2) (2023-01-05)
 
 ### Bug Fixes
