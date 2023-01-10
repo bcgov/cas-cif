@@ -16,7 +16,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const [updateProjectRevision, isUpdatingProjectRevision] =
     useUpdateProjectRevision();
 
-  const { revisionId, changeStatus } = formContext;
+  const projectRevision = formContext.projectRevision;
 
   const [updated, setUpdated] = useState(false);
 
@@ -25,27 +25,27 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
       updateProjectRevision({
         variables: {
           input: {
-            id: revisionId,
+            id: projectRevision.id,
             projectRevisionPatch: { revisionStatus: value },
           },
         },
         optimisticResponse: {
           updateProjectRevision: {
             projectRevision: {
-              id: revisionId,
+              id: projectRevision.id,
             },
           },
         },
         onCompleted: () => setUpdated(true),
         onError: reject,
-        debounceKey: revisionId,
+        debounceKey: projectRevision.id,
       })
     );
   };
 
   return (
     <div>
-      {changeStatus === "pending" ? (
+      {projectRevision.changeStatus === "pending" ? (
         <div>
           <SelectWidget
             {...props}
