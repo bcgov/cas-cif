@@ -225,3 +225,4 @@ mutations/undo_form_changes [mutations/undo_form_changes@1.1.4] 2023-01-18T20:46
 functions/handle_default_form_change_commit [functions/handle_default_form_change_commit@1.1.4] 2023-01-20T21:33:42Z Dylan Leard <dylan@button.is> # Rework: Function should not attempt to insert deprecated columns into tables
 @1.2.0 2023-01-23T23:41:19Z Dylan Leard <dylan@button.is> # release v1.2.0
 mutations/discard_funding_parameter_form_change [mutations/discard_funding_parameter_form_change@1.0.2] 2023-01-16T22:04:00Z Mike Vesprini <mike@button.is> # Remove additional funding sources as well
+tables/funding_stream_rfp_project_status_001_drop_table [tables/funding_stream_rfp_project_status] 2023-01-09T23:36:19Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping table in favor of creating a new join table with funding_stream and project_status
