@@ -45,7 +45,7 @@ spec:
                 set -euo pipefail;
                 declare -i VALUE;
                 export PGPASSWORD="$(CIF_BACKUP_PASS)";
-                VALUE=$(psql -U postgres -h "$(CIF_BACKUP_HOST)" -qtAX -d $(CIF_BACKUP_DATABASE) -c "select count(*) from cif_private.full_backup_log where full_backup_timestamp > now() - interval '12 hours'");
+                VALUE=$(psql -U postgres -h ${CIF_BACKUP_HOST} -qtAX -d ${CIF_BACKUP_DATABASE} -c "select count(*) from cif_private.full_backup_log where full_backup_timestamp > now() - interval '12 hours'");
                 if [[ $VALUE -lt 1 ]] ; then
                   echo 'no timestamp found'
                   exit 1
