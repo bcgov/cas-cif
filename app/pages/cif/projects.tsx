@@ -3,7 +3,6 @@ import DefaultLayout from "components/Layout/DefaultLayout";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import Table from "components/Table";
 import {
-  DisplayOnlyFilter,
   NoHeaderFilter,
   SearchableDropdownFilter,
   SortOnlyFilter,
@@ -112,7 +111,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         allProjectStatuses.edges.map((e) => e.node.name),
         { orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME" }
       ),
-      new DisplayOnlyFilter("Milestone Due"),
+      new SortOnlyFilter("Milestone Due", "milestoneDueDate"),
       new SearchableDropdownFilter(
         "Primary Project Managers",
         "primaryProjectManager",
