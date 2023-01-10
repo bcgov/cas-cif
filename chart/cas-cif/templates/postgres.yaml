@@ -113,6 +113,7 @@ spec:
   monitoring:
     pgmonitor:
       exporter:
+        image: artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-postgres-exporter:ubi8-5.0.4-0
         resources:
           requests:
             cpu: 50m
