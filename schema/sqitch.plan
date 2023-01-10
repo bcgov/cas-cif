@@ -219,3 +219,5 @@ util_functions/get_form_status_001 [util_functions/get_form_status_001@1.0.1] 20
 data/insert_json_schema_form_data_update_milestone_form_field_titles 2023-01-16T21:53:29Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update milestone form field titles and adjusted/calculated in json_schema
 mutations/update_milestone_form_change 2023-01-17T21:15:30Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create update milestone form change mutation
 @1.1.4 2023-01-18T16:57:57Z Dylan Leard <dylan@button.is> # release v1.1.4
+trigger_functions/funding_stream_is_immutable 2023-01-09T17:21:03Z Mike Vesprini <mike@button.is> # trigger function to prevent funding stream from changing once a project has been created
+tables/project_003_add_immutable_funding_stream_trigger 2023-01-10T22:05:45Z Mike Vesprini <mike@button.is> # Add funding_stream_immutable trigger to project table
