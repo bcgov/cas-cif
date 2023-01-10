@@ -140,6 +140,11 @@
           filterable: true,
         },
       },
+      "cif.project_next_milestone_due_date": {
+        tags: {
+          sortable: true,
+        },
+      },
     },
   },
 }
