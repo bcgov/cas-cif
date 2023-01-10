@@ -19,6 +19,7 @@ import { getLocaleFormattedDate } from "lib/theme/getLocaleFormattedDate";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
+import { useState } from "react";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
@@ -112,6 +113,12 @@ export function ProjectRevisionView({
 }: RelayProps<{}, viewProjectRevisionQuery>) {
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
+
+  const [formData, setFormData] = useState(projectRevision);
+  const onChange = (e) => {
+    setFormData(e.formData);
+  };
+
   const taskList = (
     <TaskList
       projectRevision={
@@ -131,6 +138,8 @@ export function ProjectRevisionView({
       : allRevisionStatuses.edges.filter(
           ({ node }) => !node.isAmendmentSpecific
         );
+
+  console.log("projectRevision.revisionStatus", projectRevision.revisionStatus);
 
   return (
     <>
@@ -152,7 +161,8 @@ export function ProjectRevisionView({
             uiSchema={createProjectRevisionUISchema()}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
-            formData={projectRevision}
+            onChange={onChange}
+            formData={formData}
             formContext={{
               pendingActionsFrom: projectRevision.pendingActionsFrom,
               revisionId: projectRevision.id,
