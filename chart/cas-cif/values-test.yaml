@@ -10,7 +10,7 @@ db:
       drop schema if exists sqitch cascade;
       drop schema if exists cif cascade;
       drop schema if exists cif_private cascade;
-    EOF;
+    EOF
     sqitch deploy;
     for file in data/dev/*.sql; do
       psql -v "ON_ERROR_STOP=1" -d cif -f "${file}";
