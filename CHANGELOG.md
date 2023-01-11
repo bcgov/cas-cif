@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/bcgov/cas-cif/compare/1.0.1...1.1.1) (2023-01-11)
+
+### Bug Fixes
+
+- remove ; from heredoc delimiter ([8f6a84c](https://github.com/bcgov/cas-cif/commit/8f6a84c78125846b677ba18656978da453a05ffb))
+
 # [1.1.0](https://github.com/bcgov/cas-cif/compare/1.0.1...1.1.0) (2023-01-10)
 
 ### Bug Fixes
