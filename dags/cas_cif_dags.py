@@ -22,6 +22,12 @@ default_args = {
     'start_date': TWO_DAYS_AGO
 }
 
+default_backup_test_args = {
+    **default_dag_args,
+    'start_date': TWO_DAYS_AGO,
+    'retries': 0
+}
+
 """
 ###############################################################################
 #                                                                             #
@@ -65,7 +71,7 @@ cif_db_init >> cif_app_schema >> cif_import_operator
 
 
 db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule_interval='15 12 * * *',
-    default_args=default_args, is_paused_upon_creation=False)
+    default_args=default_backup_test_args , is_paused_upon_creation=False)
 
 deploy_and_restore = PythonOperator(
     python_callable=trigger_k8s_cronjob,
