@@ -50,10 +50,6 @@ export const emissionIntensityReportSchema = {
       title: "Payment Percentage of Performance Milestone Amount",
       type: "number",
     },
-    adjustedHoldbackPaymentAmount: {
-      title: "Holdback Payment Amount",
-      type: "number",
-    },
     dateSentToCsnr: {
       type: "string",
       title: "Date Invoice Sent to CSNR",
