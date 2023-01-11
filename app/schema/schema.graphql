@@ -44445,6 +44445,11 @@ type FormChange implements Node {
   """
   parentFormChangeFromRevision(projectRevisionId: Int!): FormChange
 
+  """
+  Computed column that returns the payment percentage of a performance milestone.
+  """
+  paymentPercentage: BigFloat
+
   """The id of the form_change record that preceded this one"""
   previousFormChangeId: Int
 
@@ -44841,6 +44846,9 @@ input FormChangeFilter {
 
   """Checks for any expressions in this list."""
   or: [FormChangeFilter!]
+
+  """Filter by the object’s `paymentPercentage` field."""
+  paymentPercentage: BigFloatFilter
 
   """Filter by the object’s `previousFormChangeId` field."""
   previousFormChangeId: IntFilter
