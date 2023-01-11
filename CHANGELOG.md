@@ -1,3 +1,5 @@
+## [1.1.2](https://github.com/bcgov/cas-cif/compare/1.1.1...1.1.2) (2023-01-11)
+
 ## [1.1.1](https://github.com/bcgov/cas-cif/compare/1.0.1...1.1.1) (2023-01-11)
 
 ### Bug Fixes
