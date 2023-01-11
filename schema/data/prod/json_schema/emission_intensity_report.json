@@ -66,9 +66,13 @@
         "title": "Payment Percentage of Performance Milestone Amount",
         "type": "number"
       },
-      "adjustedHoldbackPaymentAmount": {
-        "title": "Holdback Payment Amount",
-        "type": "number"
+      "maximumPerformanceMilestoneAmount": {
+        "type": "number",
+        "title": "Maximum Performance Milestone Amount"
+      },
+      "actualPerformanceMilestoneAmount": {
+        "type": "number",
+        "title": "Actual Performance Milestone Amount"
       },
       "dateSentToCsnr": {
         "type": "string",

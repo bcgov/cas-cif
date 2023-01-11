@@ -147,6 +147,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              holdbackAmountToDate
             }
           }
         }
@@ -179,6 +180,12 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const calculatedEiPerformance =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .calculatedEiPerformance;
+
+  const maximumPerformanceMilestoneAmount =
+    projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
+      ?.node.holdbackAmountToDate;
+  const paymentPercentageOfPerformanceMilestoneAmount = 12;
+  const actualPerformanceMilestoneAmount = 0;
 
   // Mutations
   const [
@@ -314,6 +321,12 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
               calculatedEiPerformance: calculatedEiPerformance ?? 0,
+              maximumPerformanceMilestoneAmount:
+                maximumPerformanceMilestoneAmount ?? 0,
+              actualPerformanceMilestoneAmount:
+                actualPerformanceMilestoneAmount ?? 0,
+              paymentPercentageOfPerformanceMilestoneAmount:
+                paymentPercentageOfPerformanceMilestoneAmount ?? 0,
               teimpPaymentPercentage:
                 projectRevision.teimpPaymentPercentage ?? "-",
               teimpPaymentAmount: projectRevision.teimpPaymentAmount ?? "-",
