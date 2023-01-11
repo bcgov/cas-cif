@@ -139,8 +139,6 @@ export function ProjectRevisionView({
           ({ node }) => !node.isAmendmentSpecific
         );
 
-  console.log("projectRevision.revisionStatus", projectRevision.revisionStatus);
-
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
