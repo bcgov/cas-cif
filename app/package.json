@@ -97,7 +97,7 @@
     "body-parser": "^1.20.0",
     "bowser": "^2.11.0",
     "connect-pg-simple": "^7.0.0",
-    "convict": "^6.2.3",
+    "convict": "^6.2.4",
     "convict-format-with-validator": "^6.2.0",
     "cookie-parser": "^1.4.5",
     "delay": "^5.0.0",
