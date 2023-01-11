@@ -213,3 +213,4 @@ mutations/delete_project_revision [mutations/delete_project_revision@1.0.1] 2023
 util_functions/get_form_status_001 [util_functions/get_form_status_001@1.0.1] 2022-12-29T17:10:00Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add conditionals to determine project overview status
 @1.0.2 2023-01-05T17:08:21Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.0.2
 @1.1.0 2023-01-10T22:23:39Z Sam Warren <samwarren4@gmail.com> # release v1.1.0
+@1.1.1 2023-01-11T18:56:52Z Dylan Leard <dylan@button.is> # release v1.1.1
