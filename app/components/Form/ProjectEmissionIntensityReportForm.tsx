@@ -148,7 +148,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               newFormData
               changeStatus
               holdbackAmountToDate
-              paymentPercentage
             }
           }
         }
@@ -164,6 +163,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              paymentPercentage
             }
           }
         }
@@ -186,8 +186,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
       ?.node.holdbackAmountToDate;
   const paymentPercentageOfPerformanceMilestoneAmount =
-    projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
-      ?.node.paymentPercentage;
+    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
+      .paymentPercentage;
   const actualPerformanceMilestoneAmount =
     Number(maximumPerformanceMilestoneAmount ?? 0) *
     Number(paymentPercentageOfPerformanceMilestoneAmount ?? 0);

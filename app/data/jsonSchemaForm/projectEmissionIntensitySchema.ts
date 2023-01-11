@@ -46,10 +46,6 @@ export const emissionIntensityReportSchema = {
       title: "GHG Emission Intensity Performance",
       type: "number",
     },
-    calculatedPaymentPercentage: {
-      title: "Payment Percentage of Performance Milestone Amount",
-      type: "number",
-    },
     dateSentToCsnr: {
       type: "string",
       title: "Date Invoice Sent to CSNR",
@@ -141,7 +137,7 @@ export const emissionIntensityReportUiSchema = {
     "ui:widget": "CalculatedValueWidget",
     calculatedValueFormContextProperty:
       "paymentPercentageOfPerformanceMilestoneAmount",
-    isMoney: true,
+    isPercentage: true,
     hideOptional: true,
   },
   actualPerformanceMilestoneAmount: {

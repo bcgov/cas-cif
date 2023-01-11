@@ -180,7 +180,12 @@ export function ProjectRevision({
   const taskList = (
     <TaskList projectRevision={query.projectRevision} mode={mode} />
   );
-
+  console.log("hasValidationErrors", hasValidationErrors);
+  console.log(
+    query.projectRevision?.formChangesByProjectRevisionId.edges.some(
+      (edge) => edge.node
+    )
+  );
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <div>

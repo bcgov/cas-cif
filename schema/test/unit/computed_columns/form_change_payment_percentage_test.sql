@@ -22,11 +22,11 @@ values (
   1,
   'create',
   'cif',
-  'reporting_requirement',
+  '"emission_intensity_report"',
   1,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "adjustedEmissionsIntensityPerformance": 50, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"adjustedEmissionsIntensityPerformance": "50"}'
 );
 /** SETUP END **/
 
@@ -41,7 +41,7 @@ select is(
   (
     30::numeric
   ),
-  'Returns the correct amount for payment percentage'
+  'payments percentage is calculated correctly'
 );
 
 select finish();

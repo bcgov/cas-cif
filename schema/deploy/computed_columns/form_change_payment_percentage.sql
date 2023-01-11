@@ -4,16 +4,12 @@
 
 begin;
 
-create or replace function cif.form_change_payment_percentage(parameter_fc cif.form_change)
+create or replace function cif.form_change_payment_percentage(fc cif.form_change)
 returns numeric as
 $fn$
 
   select
-    round(100 - ((-1.5) * (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric + 145), 2)
-    from cif.form_change fc
-    where fc.project_revision_id = $1.project_revision_id
-    and json_schema_name = 'emission_intensity_report'
-    and (fc.new_form_data->>'hasExpenses')::boolean = true;
+    round(100 - ((-1.5) * (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric + 145), 2);
 
 $fn$ language sql stable;
 
