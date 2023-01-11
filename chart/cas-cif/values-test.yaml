@@ -5,6 +5,13 @@ app:
 hostName: test.cif.gov.bc.ca
 
 db:
+  postUpgradeCommandEnv: |
+    - name: SQITCH_TARGET
+      value: "db:pg:"
+    - name: SQITCH_FULLNAME
+      value: OpenShift Deployer
+    - name: SQITCH_EMAIL
+      value: deployer@pathfinder.gov.bc.ca
   postUpgradeCommand: |
     psql -v "ON_ERROR_STOP=1" <<EOF
       drop schema if exists sqitch cascade;

@@ -18,7 +18,9 @@ spec:
       restartPolicy: Never
       imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
       containers:
-        - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 16 }}
+        - env:
+{{ .Values.db.postUpgradeCommandEnv | indent 12 }}
+{{ include "cas-cif.cifUserPgEnv" . | indent 12 }}
           name: {{ template "cas-cif.fullname" . }}-db-post-upgrade
           image: {{ .Values.image.schema.repository }}:{{ default .Values.defaultImageTag .Values.image.schema.tag }}
           imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.schema.pullPolicy }}
