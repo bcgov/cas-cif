@@ -37,7 +37,7 @@ const formTheme: ThemeProps = {
     ModalWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
-  ArrayFieldTemplate: AnticipatedFundingPerFiscalYearArrayFieldTemplate, // brianna this will have to be changed once we have more arrays
+  ArrayFieldTemplate: AnticipatedFundingPerFiscalYearArrayFieldTemplate,
   FieldTemplate: FieldTemplate,
 };
 

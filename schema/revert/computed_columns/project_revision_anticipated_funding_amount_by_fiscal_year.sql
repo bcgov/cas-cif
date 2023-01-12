@@ -1,7 +1,7 @@
 -- Revert cif:computed_columns/project_revision_anticipated_funding_amount_by_fiscal_year from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function cif.project_revision_anticipated_funding_amount_by_fiscal_year;
 
-COMMIT;
+commit;

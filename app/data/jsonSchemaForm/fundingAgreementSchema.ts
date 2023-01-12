@@ -59,17 +59,6 @@ export const fundingAgreementSchema = {
       type: "number",
     },
   },
-  // definitions: {
-  //   anticipatedFundingAmountPerFiscalYear: {
-  //     type: "object",
-  //     properties: {
-  //       source: {
-  //         title: "banabab",
-  //         type: "number",
-  //       },
-  //     },
-  //   },
-  // },
 };
 
 export const fundingAgreementUiSchema = {
@@ -115,12 +104,8 @@ export const fundingAgreementUiSchema = {
     isMoney: true,
   },
   anticipatedFundingAmountPerFiscalYear: {
-    // items: {
-    //   "ui:widget": "ReadOnlyWidget",
-    //   isMoney: true,
-    // },
     items: {
-      brianna: {
+      amount: {
         "ui:widget": "text",
         calculatedValueFormContextProperty: "calculatedAnticipatedAmount",
       },
