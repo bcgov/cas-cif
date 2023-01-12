@@ -1,5 +1,5 @@
 begin;
-select plan(14);
+select plan(15);
 
 select has_table('cif', 'project', 'table cif.project exists');
 select columns_are(
@@ -151,6 +151,14 @@ select throws_like(
   $$,
   'permission denied%',
     'cif_internal cannot delete rows from table project'
+);
+
+select throws_like(
+  $$
+    update cif.project set funding_stream_rfp_id=3 where id=1
+  $$,
+  'Funding stream rfp id is immutable',
+    'funding_stream_rfp_id is immutable'
 );
 
 select finish();
