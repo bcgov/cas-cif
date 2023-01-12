@@ -27,10 +27,20 @@ export const fundingAgreementSchema = {
       title: "Performance Milestone Holdback Percentage",
       type: "number",
     },
-    // brianna
     anticipatedFundingAmount: {
       title: "Anticipated/Actual Funding Amount",
       type: "number",
+    },
+    anticipatedFundingAmountPerFiscalYear: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          amount: {
+            type: "number",
+          },
+        },
+      },
     },
     proponentCost: {
       title: "Proponent Cost",
@@ -49,6 +59,17 @@ export const fundingAgreementSchema = {
       type: "number",
     },
   },
+  // definitions: {
+  //   anticipatedFundingAmountPerFiscalYear: {
+  //     type: "object",
+  //     properties: {
+  //       source: {
+  //         title: "banabab",
+  //         type: "number",
+  //       },
+  //     },
+  //   },
+  // },
 };
 
 export const fundingAgreementUiSchema = {
@@ -61,6 +82,7 @@ export const fundingAgreementUiSchema = {
     "contractStartDate",
     "projectAssetsLifeEndDate",
     "anticipatedFundingAmount",
+    "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
   ],
   totalProjectValue: {
@@ -91,6 +113,24 @@ export const fundingAgreementUiSchema = {
   anticipatedFundingAmount: {
     "ui:widget": "NumberWidget",
     isMoney: true,
+  },
+  anticipatedFundingAmountPerFiscalYear: {
+    // items: {
+    //   "ui:widget": "ReadOnlyWidget",
+    //   isMoney: true,
+    // },
+    items: {
+      brianna: {
+        "ui:widget": "text",
+        calculatedValueFormContextProperty: "calculatedAnticipatedAmount",
+      },
+    },
+    "ui:options": {
+      addable: false,
+      orderable: false,
+      removable: false,
+      label: false,
+    },
   },
   proponentCost: {
     "ui:widget": "NumberWidget",
