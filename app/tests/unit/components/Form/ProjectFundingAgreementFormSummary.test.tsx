@@ -22,6 +22,7 @@ const mockQueryPayload = {
     const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
       {
         isFirstRevision: false,
+
         summaryProjectFundingAgreementFormChanges: {
           edges: [
             {
@@ -162,6 +163,28 @@ describe("The Project Funding Agreement Form Summary", () => {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
             isFirstRevision: true,
+            anticipatedFundingAmountPerFiscalYear: {
+              edges: [
+                {
+                  node: {
+                    anticipatedFundingAmount: "5",
+                    fiscalYear: "2021/2022",
+                  },
+                },
+                {
+                  node: {
+                    anticipatedFundingAmount: "7",
+                    fiscalYear: "2022/2023",
+                  },
+                },
+                {
+                  node: {
+                    anticipatedFundingAmount: "9",
+                    fiscalYear: "2023/2024",
+                  },
+                },
+              ],
+            },
             summaryProjectFundingAgreementFormChanges: {
               edges: [
                 {
@@ -221,6 +244,21 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("Anticipated/Actual Funding Amount")
     ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount \(2021\/2022\)/i
+      )
+    ).toHaveTextContent("$5.00");
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount \(2022\/2023\)/i
+      )
+    ).toHaveTextContent("$7.00");
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount \(2023\/2024\)/i
+      )
+    ).toHaveTextContent("$9.00");
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
     expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
     expect(
