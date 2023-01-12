@@ -4,23 +4,50 @@ import NumberFormat from "react-number-format";
 const AnticipatedFundingPerFiscalYearArrayFieldTemplate = (
   props: ArrayFieldTemplateProps
 ) => {
-  const { formContext, formData } = props;
-  console.log("formdata", formData);
+  const { formContext } = props;
+  console.log("formContext", formContext);
 
-  if (!formContext.anticipatedFundingArray) {
-    return <div>No array, ask the designers what they want here</div>;
+  const areNodesNull =
+    formContext.anticipatedFundingArray.edges.filter(({ node }) => node)
+      .length === 0;
+  console.log("areNodesNull", areNodesNull);
+
+  if (areNodesNull) {
+    const fiscalYears = [1, 2, 3];
+    return fiscalYears.map((i) => (
+      <>
+        <div key={i}>
+          <label
+            htmlFor={`ProjectFundingAgreementForm_anticipatedFundingAmountByFiscalYear${i}`}
+          >
+            Anticipated Funding Amount (Fiscal Year {i})
+          </label>
+          <div>
+            <em>
+              This field cannot be calculated due to lack of information now.
+            </em>
+          </div>
+        </div>
+        <style jsx>{`
+           {
+            div {
+              margin-bottom: 1em;
+            }
+          }
+        `}</style>
+      </>
+    ));
   }
 
   return (
     <div>
-      {formContext.anticipatedFundingArray.edges.map(({ node }) => {
-        console.log("node", node);
+      {formContext.anticipatedFundingArray.edges.map(({ node, index }) => {
         return (
           <>
             {node && node.fiscalYear && (
               <div>
                 <label
-                  htmlFor={`ProjectFundingAgreementForm_anticipatedFundingAmount${node.fiscalYear}`}
+                  htmlFor={`ProjectFundingAgreementForm_anticipatedFundingAmountByFiscalYear${index}`}
                 >
                   Anticipated Funding Amount (Fiscal Year {node.fiscalYear})
                 </label>
