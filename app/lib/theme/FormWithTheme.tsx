@@ -14,6 +14,7 @@ import { AdjustableCalculatedValueWidget } from "./widgets/AdjustableCalculatedV
 import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import NumberWidget from "./widgets/NumberWidget";
 import ModalWidget from "./widgets/ModalWidget";
+import AnticipatedFundingPerFiscalYearArrayFieldTemplate from "./AnticipatedFundingPerFiscalYearArrayFieldTemplate";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -36,6 +37,7 @@ const formTheme: ThemeProps = {
     ModalWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
+  ArrayFieldTemplate: AnticipatedFundingPerFiscalYearArrayFieldTemplate, // brianna this will have to be changed once we have more arrays
   FieldTemplate: FieldTemplate,
 };
 
