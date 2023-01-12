@@ -98,6 +98,15 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         projectFormChange {
           formDataRecordId
         }
+        anticipatedFundingAmountPerFiscalYear {
+          edges {
+            # eslint-disable-next-line relay/unused-fields
+            node {
+              anticipatedFundingAmount
+              fiscalYear
+            }
+          }
+        }
         totalProjectValue
         projectFundingAgreementFormChanges: formChangesFor(
           first: 500

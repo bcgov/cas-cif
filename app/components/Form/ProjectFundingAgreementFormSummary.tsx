@@ -45,11 +45,21 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     isFirstRevision,
     summaryAdditionalFundingSourceFormChanges,
     totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear,
   } = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
         totalProjectValue
+        anticipatedFundingAmountPerFiscalYear {
+          edges {
+            # eslint-disable-next-line relay/unused-fields
+            node {
+              anticipatedFundingAmount
+              fiscalYear
+            }
+          }
+        }
         summaryProjectFundingAgreementFormChanges: formChangesFor(
           formDataTableName: "funding_parameter"
         ) {
