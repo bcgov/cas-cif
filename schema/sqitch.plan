@@ -227,3 +227,4 @@ functions/handle_default_form_change_commit [functions/handle_default_form_chang
 mutations/discard_funding_parameter_form_change [mutations/discard_funding_parameter_form_change@1.0.2] 2023-01-16T22:04:00Z Mike Vesprini <mike@button.is> # Remove additional funding sources as well
 tables/funding_stream_rfp_project_status_001_drop_table [tables/funding_stream_rfp_project_status] 2023-01-09T23:36:19Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping table in favor of creating a new join table with funding_stream and project_status
 tables/project_status_001_update_harcoded_values [tables/project_status] 2023-01-06T23:32:45Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Updating project status hardcoded values and adding new ones based on funding stream
+tables/funding_stream_project_status [tables/project_status tables/funding_stream] 2023-01-10T00:26:37Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add join table with funding_stream and project_status
