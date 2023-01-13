@@ -20,7 +20,7 @@ describe("when undoing, the project revision page", () => {
       "Foo",
       "Bar",
       "100",
-      "Project Underway",
+      "Project in Progress",
       "Some comments",
       "65.432"
     );

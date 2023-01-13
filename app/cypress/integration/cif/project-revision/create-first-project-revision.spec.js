@@ -26,7 +26,7 @@ describe("when creating a project, the project page", () => {
       "Foo",
       "Bar",
       "100",
-      "Project Underway",
+      "Project in Progress",
       "Some comments",
       "78.456"
     );
@@ -157,7 +157,7 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "$100.00");
     cy.findByText(/Project Status/i)
       .next()
-      .should("have.text", "Project Underway");
+      .should("have.text", "Project in Progress");
     cy.findAllByText(/General Comments/i)
       .eq(0)
       .next()
@@ -341,5 +341,62 @@ describe("when creating a project, the project page", () => {
       .next()
       .contains(/Feb(\.)? 2, 2024/);
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
+  });
+
+  it("Shows customized list of project statuses based on the funding stream", () => {
+    //add new project with EP funding stream
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
+    cy.get('[aria-label="root_projectStatusId-select"] option').then(
+      (options) => {
+        const actual = [...options].map((option) => option.text);
+        expect(actual).to.deep.equal([
+          "Select a Project Status",
+          "Proposal Submitted",
+          "Under Technical Review",
+          "Technical Review Complete",
+          "Waitlisted",
+          "Disqualified",
+          "Withdrawn",
+          "Not Funded",
+          "Funding Agreement Pending",
+          "Project in Progress",
+          "Amendment Pending",
+          "Project in TEIMP",
+          "Emissions Intensity Report Complete",
+          "Project in Annual Reporting",
+          "Agreement Terminated",
+          "Closed",
+        ]);
+      }
+    );
+
+    //change project funding stream to IA
+    cy.findByLabelText(/Funding Stream$/i).select("Innovation Accelerator");
+    cy.findByLabelText(/RFP Year/i).select("2021");
+    cy.contains("Changes saved");
+
+    cy.get('[aria-label="root_projectStatusId-select"] option').then(
+      (options) => {
+        const actual = [...options].map((option) => option.text);
+        expect(actual).to.deep.equal([
+          "Select a Project Status",
+          "Proposal Submitted",
+          "Under Technical Review",
+          "Technical Review Complete",
+          "Waitlisted",
+          "Disqualified",
+          "Withdrawn",
+          "Not Funded",
+          "Funding Agreement Pending",
+          "Project in Progress",
+          "Amendment Pending",
+          "Project Summary Report Complete",
+          "Agreement Terminated",
+          "Closed",
+        ]);
+      }
+    );
   });
 });
