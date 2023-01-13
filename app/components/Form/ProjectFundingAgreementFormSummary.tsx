@@ -220,24 +220,40 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     () => setHasDiff && setHasDiff(!fundingAgreementFormNotUpdated),
     [fundingAgreementFormNotUpdated, setHasDiff]
   );
+  
 
+  // This condition handles the case where the form is archived
   if (
-    isOnAmendmentsAndOtherRevisionsPage &&
     !fundingAgreementFormNotUpdated &&
     fundingAgreementSummary?.operation === "ARCHIVE"
   ) {
     return (
-      <FormRemoved
-        isOnAmendmentsAndOtherRevisionsPage={
-          isOnAmendmentsAndOtherRevisionsPage
-        }
-        formTitle="Budgets, Expenses & Payments"
-      />
+      <div>
+        {!isOnAmendmentsAndOtherRevisionsPage && (
+          <h3>Budgets, Expenses & Payments</h3>
+        )}
+        {!viewOnly ? (
+          <>
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
+                isOnAmendmentsAndOtherRevisionsPage
+              }
+              formTitle="Budgets, Expenses & Payments"
+            />
+            <dd>{additionalFundingSourcesJSX}</dd>
+          </>
+        ) : (
+          <FormNotAddedOrUpdated
+            isFirstRevision={true}
+            formTitle="Budgets, Expenses & Payments"
+          />
+        )}
+      </div>
     );
   }
 
   return (
-    <div className="summaryContainer">
+    <div>
       {!isOnAmendmentsAndOtherRevisionsPage && (
         <h3>Budgets, Expenses & Payments</h3>
       )}
@@ -323,8 +339,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         </>
       )}
       <style jsx>{`
-        .summaryContainer {
-          margin-bottom: 1em;
+        div :global(h3) {
+          margin: 1em 0;
         }
         :global(.anticipatedFundingAmount) {
           margin-bottom: 0.5em;
