@@ -11,7 +11,7 @@ select columns_are(
     'id',
     'funding_stream_id',
     'project_status_id',
-    'position',
+    'sorting_order',
     'created_at',
     'created_by',
     'updated_at',
@@ -70,7 +70,7 @@ select lives_ok(
 
 select lives_ok(
   $$
-    insert into cif.funding_stream_project_status (funding_stream_id, project_status_id, position) values (1, 1, 1), (2, 2, 2);
+    insert into cif.funding_stream_project_status (funding_stream_id, project_status_id, sorting_order) values (1, 1, 1), (2, 2, 2);
   $$,
     'cif_admin can insert data in funding_stream_project_status table'
 );
@@ -101,7 +101,7 @@ select throws_like(
 --to check unique constraint
 select throws_like(
   $$
-    insert into cif.funding_stream_project_status (funding_stream_id, project_status_id, position) values (2, 2, 2);
+    insert into cif.funding_stream_project_status (funding_stream_id, project_status_id, sorting_order) values (2, 2, 2);
   $$,
   'duplicate key value violates unique constraint%',
     'cif_admin cannot insert duplicate data in funding_stream_project_status table'

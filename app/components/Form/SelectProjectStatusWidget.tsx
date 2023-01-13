@@ -15,7 +15,7 @@ const SelectProjectStatus: React.FunctionComponent<WidgetProps> = (props) => {
             fundingStreamRfpByFundingStreamRfpId {
               fundingStreamByFundingStreamId {
                 fundingStreamProjectStatusesByFundingStreamId(
-                  orderBy: POSITION_ASC
+                  orderBy: SORTING_ORDER_ASC
                 ) {
                   edges {
                     node {
