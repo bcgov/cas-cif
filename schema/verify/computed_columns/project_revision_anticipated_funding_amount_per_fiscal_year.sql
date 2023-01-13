@@ -1,4 +1,4 @@
--- Verify cif:computed_columns/project_revision_anticipated_funding_amount_by_fiscal_year on pg
+-- Verify cif:computed_columns/project_revision_anticipated_funding_amount_per_fiscal_year on pg
 
 begin;
 
