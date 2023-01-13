@@ -5,38 +5,43 @@ const AnticipatedFundingPerFiscalYearArrayFieldTemplate = (
   props: ArrayFieldTemplateProps
 ) => {
   const { formContext } = props;
+
   console.log("formContext", formContext);
 
   const areNodesNull =
     formContext.anticipatedFundingArray.edges.filter(({ node }) => node)
       .length === 0;
-  console.log("areNodesNull", areNodesNull);
 
   if (areNodesNull) {
     const fiscalYears = [1, 2, 3];
-    return fiscalYears.map((i) => (
-      <>
-        <div key={i}>
-          <label
-            htmlFor={`ProjectFundingAgreementForm_anticipatedFundingAmountByFiscalYear${i}`}
-          >
-            Anticipated Funding Amount (Fiscal Year {i})
-          </label>
-          <div>
-            <em>
-              This field cannot be calculated due to lack of information now.
-            </em>
-          </div>
-        </div>
-        <style jsx>{`
-           {
-            div {
-              margin-bottom: 1em;
-            }
-          }
-        `}</style>
-      </>
-    ));
+    return (
+      <div>
+        {fiscalYears.map((i) => (
+          <>
+            <div key={i}>
+              <label
+                htmlFor={`ProjectFundingAgreementForm_anticipatedFundingAmountByFiscalYear${i}`}
+              >
+                Anticipated Funding Amount (Fiscal Year {i})
+              </label>
+              <div>
+                <em>
+                  This field cannot be calculated due to lack of information
+                  now.
+                </em>
+              </div>
+            </div>
+            <style jsx>{`
+               {
+                div {
+                  margin-bottom: 1em;
+                }
+              }
+            `}</style>
+          </>
+        ))}
+      </div>
+    );
   }
 
   return (
