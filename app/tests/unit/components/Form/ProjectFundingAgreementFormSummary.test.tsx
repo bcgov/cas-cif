@@ -251,4 +251,91 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText(/additional funding source 1/i)
     ).toBeInTheDocument();
   });
+  it("Displays relevant message when funding agreement not added", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+          {
+            isFirstRevision: true,
+            summaryProjectFundingAgreementFormChanges: {
+              edges: [],
+            },
+          };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByText(/budgets, expenses & payments not added/i)
+    ).toBeInTheDocument();
+  });
+  it("Displays relevant message when funding agreement not updated", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+          {
+            isFirstRevision: false,
+            summaryProjectFundingAgreementFormChanges: {
+              edges: [],
+            },
+          };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByText(/budgets, expenses & payments not updated/i)
+    ).toBeInTheDocument();
+  });
+  it("Displays relevant message when funding agreement removed", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+          {
+            isFirstRevision: false,
+            summaryProjectFundingAgreementFormChanges: {
+              edges: [
+                {
+                  node: {
+                    newFormData: {
+                      projectId: "Test Project ID",
+                      maxFundingAmount: 200,
+                      provinceSharePercentage: 60,
+                      holdbackPercentage: 20,
+                      anticipatedFundingAmount: 300,
+                      proponentCost: 100,
+                      contractStartDate: "2021-02-02T23:59:59.999-07:00",
+                      projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                    },
+                    isPristine: false,
+                    operation: "ARCHIVE",
+                    formChangeByPreviousFormChangeId: {
+                      newFormData: {
+                        projectId: "Test Project ID",
+                        maxFundingAmount: 200,
+                        provinceSharePercentage: 50,
+                        holdbackPercentage: 10,
+                        anticipatedFundingAmount: 300,
+                        proponentCost: 100,
+                        contractStartDate: "2021-01-01T23:59:59.999-07:00",
+                        projectAssetsLifeEndDate:
+                          "2021-12-31T23:59:59.999-07:00",
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByText(/budgets, expenses & payments removed/i)
+    ).toHaveClass("diffOld");
+  });
 });
