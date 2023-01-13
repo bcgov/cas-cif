@@ -20,6 +20,7 @@ export const mutation = graphql`
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
           rank
+          ...SelectProjectStatusWidget_projectRevision
         }
       }
     }

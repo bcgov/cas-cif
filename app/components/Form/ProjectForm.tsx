@@ -134,6 +134,7 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
+        ...SelectProjectStatusWidget_projectRevision
       }
     `,
     props.projectRevision
@@ -178,6 +179,7 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
+        ...SelectRfpWidget_query
       }
     `,
     props.query
@@ -370,6 +372,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           calculatedRank:
             revision.projectFormChange.projectRevisionByProjectRevisionId
               .rank ?? null,
+          projectRevision: revision,
         }}
         widgets={{
           SelectRfpWidget: ReadOnlyWidget,
