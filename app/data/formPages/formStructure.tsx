@@ -22,8 +22,12 @@ import { IFormSection } from "./types";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { useMemo } from "react";
 
-export const useFormStructure: () => IFormSection[] = () => {
+export const useFormStructure: (fundingStream: String) => IFormSection[] = (
+  fundingStream: String
+) => {
   const showTeimp = useShowGrowthbookFeature("teimp");
+
+  const showEP = fundingStream == "EP" ? true : false;
 
   return useMemo(
     () => [
@@ -83,7 +87,7 @@ export const useFormStructure: () => IFormSection[] = () => {
           viewComponent: ProjectMilestoneReportFormSummary,
         },
       },
-      ...(showTeimp
+      ...(showTeimp && showEP
         ? [
             {
               title: "Emissions Intensity Report",
@@ -101,37 +105,61 @@ export const useFormStructure: () => IFormSection[] = () => {
           ]
         : []),
       ,
-      {
-        title: "Quarterly Reports",
-        items: [
-          {
-            title: "Quarterly Reports",
-            formConfiguration: {
-              slug: "quarterlyReports",
-              editComponent: ProjectQuarterlyReportForm,
-              viewComponent: ProjectQuarterlyReportFormSummary,
+      ...(showEP
+        ? [
+            {
+              title: "Quarterly Reports",
+              items: [
+                {
+                  title: "Quarterly Reports",
+                  formConfiguration: {
+                    slug: "quarterlyReports",
+                    editComponent: ProjectQuarterlyReportForm,
+                    viewComponent: ProjectQuarterlyReportFormSummary,
+                  },
+                },
+              ],
             },
-          },
-        ],
-      },
-      {
-        title: "Annual Reports",
-        items: [
-          {
-            title: "Annual Reports",
-            formConfiguration: {
-              slug: "annualReports",
-              editComponent: ProjectAnnualReportForm,
-              viewComponent: ProjectAnnualReportFormSummary,
+            {
+              title: "Annual Reports",
+              items: [
+                {
+                  title: "Annual Reports",
+                  formConfiguration: {
+                    slug: "annualReports",
+                    editComponent: ProjectAnnualReportForm,
+                    viewComponent: ProjectAnnualReportFormSummary,
+                  },
+                },
+              ],
             },
-          },
-        ],
-      },
+          ]
+        : []),
+      ,
+      ...(!showEP
+        ? [
+            {
+              title: "Project Summary Report",
+              items: [
+                {
+                  title: "Project Summary Report",
+                  formConfiguration: {
+                    slug: "annualReports",
+                    editComponent: ProjectAnnualReportForm,
+                    viewComponent: ProjectAnnualReportFormSummary,
+                  },
+                },
+              ],
+            },
+          ]
+        : []),
+      ,
     ],
     [showTeimp]
   );
 };
 
-export const useNumberedFormStructure = () =>
-  buildNumberedFormStructure(useFormStructure());
-export const useFormPages = () => buildFormPages(useNumberedFormStructure());
+export const useNumberedFormStructure = (fundingStream: String) =>
+  buildNumberedFormStructure(useFormStructure(fundingStream));
+export const useFormPages = (fundingStream: String) =>
+  buildFormPages(useNumberedFormStructure(fundingStream));
