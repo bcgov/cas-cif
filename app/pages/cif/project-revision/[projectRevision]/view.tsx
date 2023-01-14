@@ -82,8 +82,6 @@ export const ViewProjectRevisionQuery = graphql`
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
       changeReason
-      pendingActionsFrom
-      revisionStatus
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
