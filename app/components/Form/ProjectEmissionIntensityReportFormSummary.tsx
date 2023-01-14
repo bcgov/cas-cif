@@ -159,7 +159,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
       {/* Show this part if the whole emission intensity report has been removed */}
       {renderDiff &&
         summaryEmissionIntensityReport?.operation === "ARCHIVE" && (
-          <em className="diffOld">Emission Intensity Report Removed</em>
+          <em className="diffReviewAndSubmitInformationOld">
+            Emission Intensity Report Removed
+          </em>
         )}
 
       <FormBase

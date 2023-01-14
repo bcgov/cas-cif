@@ -122,7 +122,9 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           {renderDiff && quarterlyReport.operation === "ARCHIVE" ? (
             <em
               className={
-                isOnProjectRevisionViewPage ? "revisionDiffOld" : "diffOld"
+                isOnProjectRevisionViewPage
+                  ? "diffAmendmentsAndOtherRevisionsOld"
+                  : "diffReviewAndSubmitInformationOld"
               }
             >
               Quarterly Report Removed

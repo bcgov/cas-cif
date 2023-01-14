@@ -157,11 +157,11 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
             )}
           {renderDiff && node.operation === "ARCHIVE" ? (
             !isOnProjectRevisionViewPage ? (
-              <em className="diffOld">
+              <em className="diffReviewAndSubmitInformationOld">
                 Additional funding source {index + 1} removed
               </em>
             ) : (
-              <em className="revisionDiffOld">
+              <em className="diffAmendmentsAndOtherRevisionsOld">
                 Additional funding source {index + 1}
               </em>
             )
@@ -213,7 +213,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
     fundingAgreementSummary?.operation === "ARCHIVE"
   ) {
     return (
-      <em className="revisionDiffOld">Budgets, Expenses & Payments removed</em>
+      <em className="diffAmendmentsAndOtherRevisionsOld">
+        Budgets, Expenses & Payments removed
+      </em>
     );
   }
 

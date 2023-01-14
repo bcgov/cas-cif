@@ -89,23 +89,26 @@ describe("the project amendment and revisions page", () => {
     cy.findByText(/forms updated/i).should("be.visible");
     cy.happoAndAxe("Project Revision View", "Forms Updated", "main", true);
     cy.get("input[aria-label='Project Overview']").should("be.checked");
-    cy.get("#root_projectName-revisionDiffOld").should(
+    cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
       "Test Project 001"
     );
-    cy.get("#root_projectName-revisionDiffNew").should("have.text", "Bar");
+    cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsNew").should(
+      "have.text",
+      "Bar"
+    );
     cy.get("input[aria-label='Project Details']").should("be.checked");
     cy.findByText(/project managers/i);
-    cy.get("#root_cifUserId-revisionDiffOld").should(
+    cy.get("#root_cifUserId-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
       "cif_internal Testuser"
     );
     cy.findByText(/project contacts/i);
-    cy.get("#root_contactId-revisionDiffOld").should(
+    cy.get("#root_contactId-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
       "Bob001 Loblaw001"
     );
-    cy.get("#root_contactId-revisionDiffNew").should(
+    cy.get("#root_contactId-diffAmendmentsAndOtherRevisionsNew").should(
       "have.text",
       "Bob003 Loblaw003"
     );

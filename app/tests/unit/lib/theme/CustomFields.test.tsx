@@ -265,10 +265,10 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
-      "revisionDiffNew"
+      "diffAmendmentsAndOtherRevisionsNew"
     );
     expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
-      "revisionDiffOld"
+      "diffAmendmentsAndOtherRevisionsOld"
     );
   });
 });

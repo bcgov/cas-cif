@@ -117,7 +117,9 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
           {renderDiff && annualReport.operation === "ARCHIVE" ? (
             <em
               className={
-                isOnProjectRevisionViewPage ? "revisionDiffOld" : "diffOld"
+                isOnProjectRevisionViewPage
+                  ? "diffAmendmentsAndOtherRevisionsOld"
+                  : "diffReviewAndSubmitInformationOld"
               }
             >
               Annual report removed

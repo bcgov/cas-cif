@@ -129,10 +129,10 @@ describe("The CollapsibleFormWidget", () => {
 
     // testing some classnames that are used to style the diff
     expect(screen.getByText("Test Proposal Reference")).toHaveClass(
-      "revisionDiffNew"
+      "diffAmendmentsAndOtherRevisionsNew"
     );
     expect(screen.getByText("Test Proposal Reference PREVIOUS")).toHaveClass(
-      "revisionDiffOld"
+      "diffAmendmentsAndOtherRevisionsOld"
     );
   });
 });

@@ -115,7 +115,9 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           {renderDiff && milestoneReport.operation === "ARCHIVE" && (
             <em
               className={
-                isOnProjectRevisionViewPage ? "revisionDiffOld" : "diffOld"
+                isOnProjectRevisionViewPage
+                  ? "diffAmendmentsAndOtherRevisionsOld"
+                  : "diffReviewAndSubmitInformationOld"
               }
             >
               Milestone Report Removed

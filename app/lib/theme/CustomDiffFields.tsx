@@ -28,8 +28,14 @@ const showStringDiff = (
 ): JSX.Element => {
   // defining the class names if we are showing a revision specific diff
   const [diffOldClsName, diffNewClsName] = isRevisionSpecific
-    ? ["revisionDiffOld", "revisionDiffNew"]
-    : ["diffOld", "diffNew"];
+    ? [
+        "diffAmendmentsAndOtherRevisionsOld",
+        "diffAmendmentsAndOtherRevisionsNew",
+      ]
+    : [
+        "diffReviewAndSubmitInformationOld",
+        "diffReviewAndSubmitInformationNew",
+      ];
 
   return (
     <>
@@ -60,7 +66,9 @@ const showStringAdded = (
   contentSuffix?: string,
   isRevisionSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific ? "revisionDiffNew" : "diffNew";
+  const diffClsName = isRevisionSpecific
+    ? "diffAmendmentsAndOtherRevisionsNew"
+    : "diffReviewAndSubmitInformationNew";
 
   return (
     <>
@@ -103,7 +111,9 @@ const showStringRemoved = (
   contentSuffix?: string,
   isRevisionSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific ? "revisionDiffOld" : "diffOld";
+  const diffClsName = isRevisionSpecific
+    ? "diffAmendmentsAndOtherRevisionsOld"
+    : "diffReviewAndSubmitInformationOld";
 
   return (
     <>
@@ -141,8 +151,14 @@ const showNumberDiff = (
 ): JSX.Element => {
   const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
   const [diffOldClsName, diffNewClsName] = isRevisionSpecific
-    ? ["revisionDiffOld", "revisionDiffNew"]
-    : ["diffOld", "diffNew"];
+    ? [
+        "diffAmendmentsAndOtherRevisionsOld",
+        "diffAmendmentsAndOtherRevisionsNew",
+      ]
+    : [
+        "diffReviewAndSubmitInformationOld",
+        "diffReviewAndSubmitInformationNew",
+      ];
 
   return (
     <>
@@ -188,7 +204,9 @@ const showNumberAdded = (
   numberOfDecimalPlaces: number = 0,
   isRevisionSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific ? "revisionDiffNew" : "diffNew";
+  const diffClsName = isRevisionSpecific
+    ? "diffAmendmentsAndOtherRevisionsNew"
+    : "diffReviewAndSubmitInformationNew";
 
   return (
     <>
@@ -239,7 +257,9 @@ const showNumberRemoved = (
   numberOfDecimalPlaces: number = 0,
   isRevisionSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific ? "revisionDiffOld" : "diffOld";
+  const diffClsName = isRevisionSpecific
+    ? "diffAmendmentsAndOtherRevisionsOld"
+    : "diffReviewAndSubmitInformationOld";
   return (
     <>
       <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
