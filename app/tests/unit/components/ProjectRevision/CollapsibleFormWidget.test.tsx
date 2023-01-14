@@ -126,6 +126,10 @@ describe("The CollapsibleFormWidget", () => {
       screen.getByText("Test Legal Name PREVIOUS (Test BC Registry ID)")
     ).toBeInTheDocument();
     expect(screen.getByText("test project type PREVIOUS")).toBeInTheDocument();
+  });
+  it("Displays diffs of the the data fields that have changed with proper classnames", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     // testing some classnames that are used to style the diff
     expect(screen.getByText("Test Proposal Reference")).toHaveClass(
