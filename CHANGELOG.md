@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/bcgov/cas-cif/compare/1.1.2...1.1.3) (2023-01-16)
+
+### Bug Fixes
+
+- update pgbackrest image to use artifactory ([d9a44c5](https://github.com/bcgov/cas-cif/commit/d9a44c505456b5c7b371176762c8080edf256467))
+
 ## [1.1.2](https://github.com/bcgov/cas-cif/compare/1.1.1...1.1.2) (2023-01-11)
 
 ## [1.1.1](https://github.com/bcgov/cas-cif/compare/1.0.1...1.1.1) (2023-01-11)
