@@ -39,31 +39,27 @@ export const expensesPaymentsTrackerUiSchema = {
     calculatedValueFormContextProperty: "calculatedEligibleExpensesToDate",
     hideOptional: true,
     isMoney: true,
-    message:
-      "ask designers what they want here when value isn't yet calculated",
+    message: "This field cannot be calculated due to lack of information now.",
   },
   grossPaymentsToDate: {
     "ui:widget": "CalculatedValueWidget",
     calculatedValueFormContextProperty: "calculatedGrossPaymentsToDate",
     hideOptional: true,
     isMoney: true,
-    message:
-      "ask designers what they want here when value isn't yet calculated",
+    message: "This field cannot be calculated due to lack of information now.",
   },
   holdbackAmountToDate: {
     "ui:widget": "CalculatedValueWidget",
     calculatedValueFormContextProperty: "calculatedHoldbackAmountToDate",
     hideOptional: true,
     isMoney: true,
-    message:
-      "ask designers what they want here when value isn't yet calculated",
+    message: "This field cannot be calculated due to lack of information now.",
   },
   netPaymentsToDate: {
     "ui:widget": "CalculatedValueWidget",
     calculatedValueFormContextProperty: "calculatedNetPaymentsToDate",
     hideOptional: true,
     isMoney: true,
-    message:
-      "ask designers what they want here when value isn't yet calculated",
+    message: "This field cannot be calculated due to lack of information now.",
   },
 };

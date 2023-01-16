@@ -85,8 +85,7 @@ export const fundingAgreementUiSchema = {
     isPercentage: true,
     calculatedValueFormContextProperty: "calculatedProponentsSharePercentage",
     hideOptional: true,
-    message:
-      "ask designers what they want here when value isn't yet calculated",
+    message: "This field cannot be calculated due to lack of information now.",
   },
   anticipatedFundingAmount: {
     "ui:widget": "NumberWidget",

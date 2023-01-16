@@ -28,6 +28,7 @@ import {
   expensesPaymentsTrackerSchema,
   expensesPaymentsTrackerUiSchema,
 } from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
+import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
@@ -153,12 +154,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
 
-  const calculatedProponentsSharePercentage: number = fundingAgreement
-    ?.newFormData.proponentCost
-    ? (Number(fundingAgreement.newFormData.proponentCost) /
-        Number(projectRevision.totalProjectValue)) *
-      100
-    : undefined;
+  const calculatedProponentsSharePercentage =
+    calculateProponentsSharePercentage(
+      fundingAgreement?.newFormData.proponentCost,
+      Number(projectRevision.totalProjectValue)
+    );
 
   // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
   const filteredAdditionalFundingSourceFormChanges =
@@ -551,6 +551,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           }
           div :global(button.removeButton) {
             margin-top: -21em;
+          }
+          :global(.expensesPaymentsTrackerForm) {
+            margin-bottom: 0px;
+          }
+          :global(.expensesPaymentsTrackerForm > div > div:nth-last-child(2)) {
+            margin-bottom: 0px;
           }
         `}
       </style>

@@ -19,6 +19,7 @@ import {
   expensesPaymentsTrackerSchema,
   expensesPaymentsTrackerUiSchema,
 } from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
+import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -83,9 +84,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
     summaryProjectFundingAgreementFormChanges.edges[0]?.node.newFormData
       .proponentCost;
 
-  const calculatedProponentsSharePercentage: number = proponentCost
-    ? (Number(proponentCost) / Number(totalProjectValue)) * 100
-    : undefined;
+  const calculatedProponentsSharePercentage =
+    calculateProponentsSharePercentage(
+      proponentCost,
+      Number(totalProjectValue)
+    );
+
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
