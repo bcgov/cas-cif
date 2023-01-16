@@ -425,4 +425,81 @@ describe("The ProjectManagerForm", () => {
     expect(screen.queryByText(/add quarterly reports/i)).toBeNull();
     expect(screen.getByText(/add annual reports/i)).toBeVisible();
   });
+
+  it("renders EP funding stream task list", () => {
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "test-project-managers-status",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            milestoneReportStatuses: {
+              edges: [],
+            },
+          },
+        };
+      },
+    });
+
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/emissions intensity report/i)).toBeVisible();
+    expect(screen.getByText(/quarterly reports/i)).toBeVisible();
+    expect(screen.getByText(/annual reports/i)).toBeVisible();
+    expect(screen.queryByText(/project summary report/i)).toBeNull();
+  });
+
+  it("renders IA funding stream task list", () => {
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "IA",
+                  },
+                },
+              },
+            },
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "test-project-managers-status",
+            milestoneReportStatuses: {
+              edges: [],
+            },
+          },
+        };
+      },
+    });
+
+    componentTestingHelper.renderComponent();
+
+    expect(screen.queryByText(/emissions intensity report/i)).toBeNull();
+    expect(screen.queryByText(/quarterly reports/i)).toBeNull();
+    expect(screen.queryByText(/annual reports/i)).toBeNull();
+    expect(screen.getByText(/project summary report/i)).toBeVisible();
+  });
 });
