@@ -102,7 +102,6 @@ export function ProjectFormPage({
   const fundingStream =
     query.projectRevision.projectFormChange.asProject
       .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
-  console.log("project revision", fundingStream);
   const formPages = useFormPages(fundingStream);
 
   const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(

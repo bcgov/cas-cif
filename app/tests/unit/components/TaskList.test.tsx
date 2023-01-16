@@ -6,6 +6,7 @@ import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
 import { DateTime, Settings } from "luxon";
+import { ProjectFormPage } from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
 
 const testQuery = graphql`
   query TaskListQuery($projectRevision: ID!) @relay_test_operation {
@@ -24,6 +25,15 @@ const mockQueryPayload = {
       projectRevision: {
         id: "test-project-revision-id",
         rowId: 42,
+        projectFormChange: {
+          asProject: {
+            fundingStreamRfpByFundingStreamRfpId: {
+              fundingStreamByFundingStreamId: {
+                name: "EP",
+              },
+            },
+          },
+        },
         projectByProjectId: {
           proposalReference: "test-project-proposal-reference",
         },
@@ -379,13 +389,22 @@ describe("The ProjectManagerForm", () => {
     expect(getMutations()).toHaveLength(2);
   });
 
-  it("renders sections expended when they have a form with 'attention required'", () => {
+  it("renders sections expanded when they have a form with 'attention required'", () => {
     componentTestingHelper.loadQuery({
       Query() {
         return {
           projectRevision: {
             id: "test-project-revision-id",
             rowId: 42,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
             projectByProjectId: {
               proposalReference: "test-project-proposal-reference",
             },
