@@ -69,4 +69,4 @@ spec:
             - -c
             - |
                 set -euo pipefail;
-                helm uninstall -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test ./backup-test;
+                helm uninstall -n {{ include "cas-cif.namespacePrefix" . }}-tools backup-test;
