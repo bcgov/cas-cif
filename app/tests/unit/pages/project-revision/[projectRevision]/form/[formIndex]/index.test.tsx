@@ -32,6 +32,13 @@ const defaultMockResolver = {
         newFormData: {
           someProjectData: "test2",
         },
+        asProject: {
+          fundingStreamRfpByFundingStreamRfpId: {
+            fundingStreamByFundingStreamId: {
+              name: "EP",
+            },
+          },
+        },
       },
       managerFormChanges: {
         edges: [],

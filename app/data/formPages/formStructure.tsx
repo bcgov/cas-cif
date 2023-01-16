@@ -28,6 +28,7 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
   const showTeimp = useShowGrowthbookFeature("teimp");
 
   const showEP = fundingStream == "EP" ? true : false;
+  const showIA = fundingStream == "IA" ? true : false;
 
   return useMemo(
     () => [
@@ -136,7 +137,7 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
           ]
         : []),
       ,
-      ...(!showEP
+      ...(showIA
         ? [
             {
               title: "Project Summary Report",

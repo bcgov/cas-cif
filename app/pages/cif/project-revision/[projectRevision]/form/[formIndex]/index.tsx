@@ -99,9 +99,17 @@ export function ProjectFormPage({
     mode === "view"
   );
 
-  const fundingStream =
-    query.projectRevision.projectFormChange.asProject
-      .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
+  const isRedirectingNoFundingStream = useRedirectTo404IfFalsy(
+    query.projectRevision?.projectFormChange?.asProject
+      ?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId
+      ?.name
+  );
+
+  const fundingStream = isRedirectingNoFundingStream
+    ? "err"
+    : query.projectRevision.projectFormChange.asProject
+        .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId
+        .name;
   const formPages = useFormPages(fundingStream);
 
   const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(
@@ -111,6 +119,7 @@ export function ProjectFormPage({
 
   if (
     isRedirecting ||
+    isRedirectingNoFundingStream ||
     isRedirectingToLatestRevision ||
     isRedirectingToValidFormIndex
   )

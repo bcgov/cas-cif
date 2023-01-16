@@ -6,7 +6,6 @@ import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
 import { DateTime, Settings } from "luxon";
-import { ProjectFormPage } from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
 
 const testQuery = graphql`
   query TaskListQuery($projectRevision: ID!) @relay_test_operation {
@@ -427,36 +426,7 @@ describe("The ProjectManagerForm", () => {
   });
 
   it("renders EP funding stream task list", () => {
-    componentTestingHelper.loadQuery({
-      Query() {
-        return {
-          projectRevision: {
-            id: "test-project-revision-id",
-            rowId: 42,
-            projectFormChange: {
-              asProject: {
-                fundingStreamRfpByFundingStreamRfpId: {
-                  fundingStreamByFundingStreamId: {
-                    name: "EP",
-                  },
-                },
-              },
-            },
-            projectByProjectId: {
-              proposalReference: "test-project-proposal-reference",
-            },
-            projectOverviewStatus: "test-project-overview-status",
-            projectContactsStatus: "test-project-contacts-status",
-            projectManagersStatus: "test-project-managers-status",
-            quarterlyReportsStatus: "test-project-quarterly-reports-status",
-            milestoneReportStatuses: {
-              edges: [],
-            },
-          },
-        };
-      },
-    });
-
+    componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     expect(screen.getByText(/emissions intensity report/i)).toBeVisible();
