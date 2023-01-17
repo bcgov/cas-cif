@@ -1,19 +1,11 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
+import CalculatedValueWidget from "./CalculatedValueWidget";
 
 export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   props
 ) => {
-  const {
-    schema,
-    uiSchema,
-    id,
-    disabled,
-    label,
-    onChange,
-    value,
-    formContext,
-  } = props;
+  const { uiSchema, id, disabled, label, onChange, value } = props;
 
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
@@ -24,37 +16,18 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
     ? 2
     : uiSchema.numberOfDecimalPlaces ?? 0;
 
-  const calculatedValue =
-    formContext[uiSchema.calculatedValueFormContextProperty];
-
   const adjustedInputId = `${id}_adjusted`;
 
   return (
     <div>
-      {calculatedValue !== null && calculatedValue !== undefined && (
-        <>
-          <div className="readonly">
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={numberOfDecimalPlaces}
-              decimalScale={numberOfDecimalPlaces}
-              id={id}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? "%" : ""}
-              disabled={disabled}
-              className="adjustable"
-              defaultValue={(schema as any).defaultValue}
-              value={calculatedValue}
-              displayType="text"
-              // This is required since we render a <span> component
-              aria-label={label}
-            />
-          </div>
-          <div>
-            <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
-          </div>
-        </>
-      )}
+      <CalculatedValueWidget {...props} />
+      <div
+        style={{
+          padding: "2em 0 0 0",
+        }}
+      >
+        <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
+      </div>
       <NumberFormat
         thousandSeparator
         fixedDecimalScale={isMoney || isPercentage}
@@ -63,7 +36,7 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
         suffix={isPercentage ? "%" : ""}
         disabled={disabled}
         className="adjustable"
-        decimalScale={isMoney || isPercentage ? 2 : 10} //Hardcoded for now, we can change it if we need toma as any).defaultValue}
+        decimalScale={numberOfDecimalPlaces}
         value={value}
         onValueChange={({ floatValue }) => {
           if (
