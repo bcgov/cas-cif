@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
 import FormBorder from "lib/theme/components/FormBorder";
-import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
@@ -26,6 +25,7 @@ import { ProjectMilestoneReportForm_projectRevision$key } from "__generated__/Pr
 import { ProjectMilestoneReportForm_query$key } from "__generated__/ProjectMilestoneReportForm_query.graphql";
 import addDurationToTimestamptz from "lib/helpers/addDurationToTimestamptz";
 import subtractDurationFromTimestamptz from "lib/helpers/subtractDurationFromTimestamptz";
+import { useUpdateMilestone } from "mutations/MilestoneReport/updateMilestone";
 
 interface Props {
   onSubmit: () => void;
@@ -62,9 +62,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                 reportType
                 ...CollapsibleReport_reportingRequirement
               }
-              calculatedGrossAmountThisMilestone
-              calculatedNetAmountThisMilestone
-              calculatedHoldbackAmountThisMilestone
             }
           }
         }
@@ -119,8 +116,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   };
 
   const [createMilestone, isCreating] = useCreateMilestone();
-  const [updateMilestone, isUpdating] =
-    useUpdateReportingRequirementFormChange();
+  const [updateMilestone, isUpdating] = useUpdateMilestone();
   const [
     applyStageReportingRequirementFormChange,
     isStagingReportingRequirement,
@@ -306,11 +302,12 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
                     dueDate: formData?.reportDueDate,
+                    // retrieving calculated amounts from newFormData rather than using the calculated fields directly to avoid discrepencies between front-end and payments table
                     calculatedGrossAmount:
-                      node.calculatedGrossAmountThisMilestone,
+                      node.newFormData.calculatedGrossAmount,
                     calculatedHoldbackAmount:
-                      node.calculatedHoldbackAmountThisMilestone,
-                    calculatedNetAmount: node.calculatedNetAmountThisMilestone,
+                      node.newFormData.calculatedHoldbackAmount,
+                    calculatedNetAmount: node.newFormData.calculatedNetAmount,
                   }}
                 />
               </CollapsibleReport>
