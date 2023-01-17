@@ -405,8 +405,8 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText(/milestone description/i)).toHaveLength(2);
     expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
     expect(
-      screen.getAllByText(/^milestone gross payment amount/i)
-    ).toHaveLength(1);
+      screen.getAllByText(/^gross payment amount this milestone/i)
+    ).toHaveLength(2);
   });
 
   it("Only renders the totalEligibleExpenses and maximumAmount fields for milestone types with associated expenses", () => {
