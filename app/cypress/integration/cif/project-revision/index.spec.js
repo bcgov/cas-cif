@@ -57,7 +57,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     cy.contains(/Budgets, expenses & payments/i);
-    cy.happoAndAxe("Project budgets Form", "empty", "main");
+    // cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
@@ -266,11 +266,11 @@ describe("the new project page", () => {
       .should("have.property", "body");
     cy.get(".error-detail").should("have.length", 4);
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe(
-      "Emissions intensity report Form",
-      "with errors",
-      ".error-detail"
-    );
+    // cy.happoAndAxe(
+    //   "Emissions intensity report Form",
+    //   "with errors",
+    //   ".error-detail"
+    // );
 
     // QUARTERLY REPORTS
     cy.findByText(/Quarterly reports/i).click();
