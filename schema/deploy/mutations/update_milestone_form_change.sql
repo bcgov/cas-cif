@@ -11,7 +11,10 @@ $$
 select cif.update_form_change($1, $2);
 
 update cif.form_change set
-  new_form_data = new_form_data || jsonb_build_object('calculatedGrossAmount', cif.form_change_calculated_gross_amount_this_milestone(form_change_patch), 'calculatedNetAmount',cif.form_change_calculated_net_amount_this_milestone(form_change_patch),'calculatedHoldbackAmount',cif.form_change_calculated_holdback_amount_this_milestone(form_change_patch))
+  new_form_data = new_form_data || jsonb_build_object(
+    'calculatedGrossAmount',cif.form_change_calculated_gross_amount_this_milestone((select row(form_change.*)::cif.form_change from cif.form_change where id = row_id)),
+    'calculatedNetAmount',cif.form_change_calculated_net_amount_this_milestone((select row(form_change.*)::cif.form_change from cif.form_change where id = row_id)),
+    'calculatedHoldbackAmount',cif.form_change_calculated_holdback_amount_this_milestone((select row(form_change.*)::cif.form_change from cif.form_change where id = row_id)))
 where id=row_id
   returning *;
 
@@ -22,9 +25,3 @@ grant execute on function cif.update_milestone_form_change to cif_internal, cif_
 comment on function cif.update_milestone_form_change(int, cif.form_change) is 'Custom mutation that updates the milestone form change (adds calculated values to new_form_data)';
 
 commit;
-
-    -- new_form_data = jsonb_set(new_form_data, '{calculatedGrossAmount}', to_jsonb(cif.form_change_calculated_gross_amount_this_milestone(form_change_patch))),
-
-    -- new_form_data = jsonb_set(new_form_data, '{calculatedNetAmount}', to_jsonb(cif.form_change_calculated_net_amount_this_milestone(form_change_patch))),
-
-    -- new_form_data = jsonb_set(new_form_data, '{calculatedHoldbackAmount}', to_jsonb(cif.form_change_calculated_holdback_amount_this_milestone(form_change_patch)))
