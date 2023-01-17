@@ -8,7 +8,6 @@ import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReport
 import { MutableRefObject, useMemo, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
-
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import milestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSchema";
@@ -273,15 +272,6 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         </Button>
         {sortedMilestoneReports.map((node, index) => {
           const formData = { ...node.newFormData };
-          formData.calculatedGrossAmount = Number(
-            node.calculatedGrossAmountThisMilestone
-          );
-          formData.calculatedHoldbackAmount = Number(
-            node.calculatedNetAmountThisMilestone
-          );
-          formData.calculatedNetAmount = Number(
-            node.calculatedHoldbackAmountThisMilestone
-          );
           return (
             <div key={node.id} id={`Milestone${index + 1}`}>
               <CollapsibleReport
@@ -316,6 +306,11 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{
                     dueDate: formData?.reportDueDate,
+                    calculatedGrossAmount:
+                      node.calculatedGrossAmountThisMilestone,
+                    calculatedHoldbackAmount:
+                      node.calculatedHoldbackAmountThisMilestone,
+                    calculatedNetAmount: node.calculatedNetAmountThisMilestone,
                   }}
                 />
               </CollapsibleReport>
