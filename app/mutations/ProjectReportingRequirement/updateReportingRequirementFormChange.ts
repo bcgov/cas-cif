@@ -15,6 +15,7 @@ const mutation = graphql`
         changeStatus
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
+          ...ProjectMilestoneReportForm_projectRevision
           upcomingReportingRequirementFormChange(reportType: $reportType) {
             ...ReportDueIndicator_formChange
           }
