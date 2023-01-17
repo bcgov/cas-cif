@@ -1,13 +1,13 @@
 import { graphql } from "react-relay";
 import useDebouncedMutation from "mutations/useDebouncedMutation";
-import { updateReportingRequirementFormChangeMutation } from "__generated__/updateReportingRequirementFormChangeMutation.graphql";
+import { updateMilestoneFormChangeMutation } from "__generated__/updateMilestoneFormChangeMutation.graphql";
 
 const mutation = graphql`
-  mutation updateReportingRequirementFormChangeMutation(
-    $input: UpdateFormChangeInput!
+  mutation updateMilestoneFormChangeMutation(
+    $input: UpdateMilestoneFormChangeInput!
     $reportType: String!
   ) {
-    updateFormChange(input: $input) {
+    updateMilestoneFormChange(input: $input) {
       formChange {
         id
         newFormData
@@ -15,6 +15,7 @@ const mutation = graphql`
         changeStatus
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
+          ...ProjectMilestoneReportForm_projectRevision
           upcomingReportingRequirementFormChange(reportType: $reportType) {
             ...ReportDueIndicator_formChange
           }
@@ -27,11 +28,11 @@ const mutation = graphql`
   }
 `;
 
-const useUpdateReportingRequirementFormChange = () => {
-  return useDebouncedMutation<updateReportingRequirementFormChangeMutation>(
+const useUpdateMilestone = () => {
+  return useDebouncedMutation<updateMilestoneFormChangeMutation>(
     mutation,
-    () => "An error occurred when updating the project reports form."
+    () => "An error occurred when updating the project milestone form."
   );
 };
 
-export { mutation, useUpdateReportingRequirementFormChange };
+export { mutation, useUpdateMilestone };
