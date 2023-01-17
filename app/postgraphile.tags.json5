@@ -110,6 +110,11 @@
           arg1variant: "patch",
         },
       },
+      "cif.update_milestone_form_change": {
+        tags: {
+          arg1variant: "patch",
+        },
+      },
       "cif.stage_form_change": {
         tags: {
           arg1variant: "patch",
