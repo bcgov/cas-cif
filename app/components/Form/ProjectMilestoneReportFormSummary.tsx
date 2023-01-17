@@ -54,7 +54,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
 
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   // If we are showing the diff then we want to see archived records,
   // otherwise filter out the archived milestone reports
@@ -93,7 +94,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           };
 
       if (
-        isOnProjectRevisionViewPage &&
+        isOnAmendmentsAndOtherRevisionsPage &&
         milestoneReport?.isPristine &&
         milestoneReport.operation !== "ARCHIVE"
       )
@@ -115,7 +116,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
           {renderDiff && milestoneReport.operation === "ARCHIVE" && (
             <em
               className={
-                isOnProjectRevisionViewPage
+                isOnAmendmentsAndOtherRevisionsPage
                   ? "diffAmendmentsAndOtherRevisionsOld"
                   : "diffReviewAndSubmitInformationOld"
               }
@@ -135,7 +136,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
-              isRevisionSpecific: isOnProjectRevisionViewPage,
+              isAmendmentsAndOtherRevisionsSpecific:
+                isOnAmendmentsAndOtherRevisionsPage,
             }}
           />
 
@@ -147,7 +149,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedMilestoneReports, renderDiff, isOnProjectRevisionViewPage]);
+  }, [sortedMilestoneReports, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
 
   const milestoneReportsNotUpdated = useMemo(
     () => allFormChangesPristine || milestoneReportFormChanges.length < 1,
@@ -160,11 +162,14 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
     [milestoneReportsNotUpdated, props]
   );
 
-  if (isOnProjectRevisionViewPage && milestoneReportsNotUpdated) return null;
+  if (isOnAmendmentsAndOtherRevisionsPage && milestoneReportsNotUpdated)
+    return null;
 
   return (
     <>
-      {!isOnProjectRevisionViewPage && <h3>Project Milestone Reports</h3>}
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Project Milestone Reports</h3>
+      )}
       {milestoneReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Milestone Reports</em>
@@ -172,7 +177,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       )}
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
       !props.viewOnly &&
-      !isOnProjectRevisionViewPage ? (
+      !isOnAmendmentsAndOtherRevisionsPage ? (
         <dd>
           <em>Milestone Reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>

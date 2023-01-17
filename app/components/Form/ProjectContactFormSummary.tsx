@@ -61,7 +61,8 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
   // defines if we are on the project revision view page to show specific UI
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   let contactFormChanges = summaryContactFormChanges.edges;
@@ -131,10 +132,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                 node?.formChangeByPreviousFormChangeId?.asProjectContact
                   ?.contactByContactId?.fullName
               ),
-              isRevisionSpecific: isOnProjectRevisionViewPage,
+              isAmendmentsAndOtherRevisionsSpecific:
+                isOnAmendmentsAndOtherRevisionsPage,
             }}
           />
-          {!isOnProjectRevisionViewPage && (
+          {!isOnAmendmentsAndOtherRevisionsPage && (
             <ContactDetails
               contact={node.asProjectContact.contactByContactId}
             />
@@ -142,7 +144,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         </React.Fragment>
       );
     });
-  }, [secondaryContacts, renderDiff, isOnProjectRevisionViewPage]);
+  }, [secondaryContacts, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -158,7 +160,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   );
 
   if (
-    isOnProjectRevisionViewPage &&
+    isOnAmendmentsAndOtherRevisionsPage &&
     allFormChangesPristine &&
     secondaryContactFormChangesPristine
   )
@@ -179,7 +181,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               (primaryContact?.node?.isPristine === null &&
                 !primaryContact.node.newFormData.contactId)) &&
             !props.viewOnly &&
-            !isOnProjectRevisionViewPage ? (
+            !isOnAmendmentsAndOtherRevisionsPage ? (
               <dd>
                 <em>Primary Contact not updated</em>
               </dd>
@@ -212,11 +214,12 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                       primaryContact?.node?.formChangeByPreviousFormChangeId
                         ?.asProjectContact?.contactByContactId?.fullName
                     ),
-                    isRevisionSpecific: isOnProjectRevisionViewPage,
+                    isAmendmentsAndOtherRevisionsSpecific:
+                      isOnAmendmentsAndOtherRevisionsPage,
                   }}
                 />
                 {primaryContact?.node?.asProjectContact?.contactByContactId &&
-                  !isOnProjectRevisionViewPage && (
+                  !isOnAmendmentsAndOtherRevisionsPage && (
                     <ContactDetails
                       className="contactDetails"
                       contact={
@@ -227,7 +230,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
               </>
             )}
           </div>
-          {!isOnProjectRevisionViewPage ? (
+          {!isOnAmendmentsAndOtherRevisionsPage ? (
             <div>
               <label>Secondary Contacts</label>
               {secondaryContacts.length < 1 && props.viewOnly && (

@@ -51,7 +51,8 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the annual reports page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived reports
   let annualReportFormChanges = summaryAnnualReportFormChanges.edges;
@@ -97,7 +98,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
           );
 
       if (
-        isOnProjectRevisionViewPage &&
+        isOnAmendmentsAndOtherRevisionsPage &&
         annualReport?.isPristine &&
         annualReport.operation !== "ARCHIVE"
       )
@@ -117,7 +118,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
           {renderDiff && annualReport.operation === "ARCHIVE" ? (
             <em
               className={
-                isOnProjectRevisionViewPage
+                isOnAmendmentsAndOtherRevisionsPage
                   ? "diffAmendmentsAndOtherRevisionsOld"
                   : "diffReviewAndSubmitInformationOld"
               }
@@ -138,7 +139,8 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
                 operation: annualReport.operation,
                 oldData:
                   annualReport.formChangeByPreviousFormChangeId?.newFormData,
-                isRevisionSpecific: isOnProjectRevisionViewPage,
+                isAmendmentsAndOtherRevisionsSpecific:
+                  isOnAmendmentsAndOtherRevisionsPage,
               }}
             />
           )}
@@ -150,7 +152,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedAnnualReports, renderDiff, isOnProjectRevisionViewPage]);
+  }, [sortedAnnualReports, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -160,7 +162,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
 
   return (
     <>
-      {!isOnProjectRevisionViewPage && <h3>Project Annual Reports</h3>}
+      {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Annual Reports</h3>}
       {annualReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Annual Reports</em>
@@ -168,7 +170,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
       )}
       {allFormChangesPristine &&
       !props.viewOnly &&
-      !isOnProjectRevisionViewPage ? (
+      !isOnAmendmentsAndOtherRevisionsPage ? (
         <p>
           <em>
             Project Annual Reports not {isFirstRevision ? "added" : "updated"}

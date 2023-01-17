@@ -71,7 +71,8 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
   // defines if we are on the project revision view page to show specific UI
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
@@ -107,11 +108,11 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
     [projectFormNotUpdated, props]
   );
 
-  if (isOnProjectRevisionViewPage && projectFormNotUpdated) return null;
+  if (isOnAmendmentsAndOtherRevisionsPage && projectFormNotUpdated) return null;
 
   return (
     <>
-      {!isOnProjectRevisionViewPage && <h3>Project Overview</h3>}
+      {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Overview</h3>}
       {(projectFormChange.isPristine ||
         (projectFormChange.isPristine === null &&
           Object.keys(projectFormChange.newFormData).length === 0)) &&
@@ -138,7 +139,8 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
             oldUiSchema,
             operation: projectFormChange.operation,
-            isRevisionSpecific: isOnProjectRevisionViewPage,
+            isAmendmentsAndOtherRevisionsSpecific:
+              isOnAmendmentsAndOtherRevisionsPage,
           }}
         />
       )}

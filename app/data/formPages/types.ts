@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 export interface SummaryFormProps {
   projectRevision: any;
   viewOnly?: boolean;
-  isOnProjectRevisionViewPage?: boolean;
+  isOnAmendmentsAndOtherRevisionsPage?: boolean;
   setHasDiff?: Dispatch<SetStateAction<boolean>>;
 }
 

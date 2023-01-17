@@ -61,7 +61,7 @@ const CollapsibleFormWidget: React.FC<CollapsibleFormWidgetProps> = ({
                 <ViewComponent
                   projectRevision={query}
                   viewOnly={false}
-                  isOnProjectRevisionViewPage={true}
+                  isOnAmendmentsAndOtherRevisionsPage={true}
                   setHasDiff={setHasDiff}
                 />
               </li>

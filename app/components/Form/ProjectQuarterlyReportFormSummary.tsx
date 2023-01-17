@@ -53,7 +53,8 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the quarterly report page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived quarterly reports
   let quarterlyReportFormChanges =
@@ -102,7 +103,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           );
 
       if (
-        isOnProjectRevisionViewPage &&
+        isOnAmendmentsAndOtherRevisionsPage &&
         quarterlyReport?.isPristine &&
         quarterlyReport.operation !== "ARCHIVE"
       )
@@ -122,7 +123,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           {renderDiff && quarterlyReport.operation === "ARCHIVE" ? (
             <em
               className={
-                isOnProjectRevisionViewPage
+                isOnAmendmentsAndOtherRevisionsPage
                   ? "diffAmendmentsAndOtherRevisionsOld"
                   : "diffReviewAndSubmitInformationOld"
               }
@@ -143,7 +144,8 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
                 operation: quarterlyReport.operation,
                 oldData:
                   quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
-                isRevisionSpecific: isOnProjectRevisionViewPage,
+                isAmendmentsAndOtherRevisionsSpecific:
+                  isOnAmendmentsAndOtherRevisionsPage,
               }}
             />
           )}
@@ -155,7 +157,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [isOnProjectRevisionViewPage, renderDiff, sortedQuarterlyReports]);
+  }, [isOnAmendmentsAndOtherRevisionsPage, renderDiff, sortedQuarterlyReports]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -165,7 +167,9 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
 
   return (
     <>
-      {!isOnProjectRevisionViewPage && <h3>Project Quarterly Reports</h3>}
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Project Quarterly Reports</h3>
+      )}
       {quarterlyReportFormChanges.length < 1 && props.viewOnly && (
         <dd>
           <em>No Quarterly Reports</em>
@@ -173,7 +177,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
       )}
       {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
       !props.viewOnly &&
-      !isOnProjectRevisionViewPage ? (
+      !isOnAmendmentsAndOtherRevisionsPage ? (
         <dd>
           <em>Quarterly Reports not {isFirstRevision ? "added" : "updated"}</em>
         </dd>

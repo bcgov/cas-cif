@@ -259,7 +259,7 @@ describe("The Object Field Template", () => {
           oldData: oldFormData,
           oldUiSchema: oldUiTestSchema,
           operation: "UPDATE",
-          isRevisionSpecific: true,
+          isAmendmentsAndOtherRevisionsSpecific: true,
         }}
       />
     );

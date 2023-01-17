@@ -99,7 +99,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   let additionalFundingSourceFormChanges =
     summaryAdditionalFundingSourceFormChanges.edges;
 
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   if (!renderDiff)
@@ -152,11 +153,11 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           {Object.keys(additionalFundingSourceDiffObject.formSchema.properties)
             .length === 0 &&
             node.operation !== "ARCHIVE" &&
-            !isOnProjectRevisionViewPage && (
+            !isOnAmendmentsAndOtherRevisionsPage && (
               <em>Additional funding source {index + 1} not updated</em>
             )}
           {renderDiff && node.operation === "ARCHIVE" ? (
-            !isOnProjectRevisionViewPage ? (
+            !isOnAmendmentsAndOtherRevisionsPage ? (
               <em className="diffReviewAndSubmitInformationOld">
                 Additional funding source {index + 1} removed
               </em>
@@ -179,7 +180,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
               formContext={{
                 operation: node.operation,
                 oldData: node.formChangeByPreviousFormChangeId?.newFormData,
-                isRevisionSpecific: isOnProjectRevisionViewPage,
+                isAmendmentsAndOtherRevisionsSpecific:
+                  isOnAmendmentsAndOtherRevisionsPage,
               }}
             />
           )}
@@ -189,7 +191,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   }, [
     sortedAdditionalFundingSourceFormChanges,
     renderDiff,
-    isOnProjectRevisionViewPage,
+    isOnAmendmentsAndOtherRevisionsPage,
   ]);
 
   const fundingAgreementFormNotUpdated = useMemo(
@@ -208,7 +210,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   );
 
   if (
-    isOnProjectRevisionViewPage &&
+    isOnAmendmentsAndOtherRevisionsPage &&
     !fundingAgreementFormNotUpdated &&
     fundingAgreementSummary?.operation === "ARCHIVE"
   ) {
@@ -221,9 +223,11 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
 
   return (
     <div className="summaryContainer">
-      {!isOnProjectRevisionViewPage && <h3>Budgets, Expenses & Payments</h3>}
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Budgets, Expenses & Payments</h3>
+      )}
       {fundingAgreementFormNotUpdated && !props.viewOnly ? (
-        !isOnProjectRevisionViewPage ? (
+        !isOnAmendmentsAndOtherRevisionsPage ? (
           <p>
             <em>
               Budgets, Expenses & Payments not{" "}
@@ -248,11 +252,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
             oldData:
               fundingAgreementSummary?.formChangeByPreviousFormChangeId
                 ?.newFormData,
-            isRevisionSpecific: isOnProjectRevisionViewPage,
+            isAmendmentsAndOtherRevisionsSpecific:
+              isOnAmendmentsAndOtherRevisionsPage,
           }}
         />
       )}
-      {!isOnProjectRevisionViewPage && (
+      {!isOnAmendmentsAndOtherRevisionsPage && (
         <h3>Project Additional Funding Source</h3>
       )}
       {sortedAdditionalFundingSourceFormChanges.length < 1 && props.viewOnly && (
@@ -263,7 +268,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       {(allAdditionalFundingSourceFormChangesPristine ||
         sortedAdditionalFundingSourceFormChanges.length < 1) &&
       !props.viewOnly
-        ? !isOnProjectRevisionViewPage && (
+        ? !isOnAmendmentsAndOtherRevisionsPage && (
             <dd>
               <em>
                 Additional Funding Source not{" "}

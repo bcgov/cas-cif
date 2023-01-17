@@ -70,7 +70,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
 
-  const isOnProjectRevisionViewPage = props.isOnProjectRevisionViewPage;
+  const isOnAmendmentsAndOtherRevisionsPage =
+    props.isOnAmendmentsAndOtherRevisionsPage;
 
   const summaryReportingRequirement =
     summaryEmissionIntensityReportingRequirementFormChange?.edges[0]?.node;
@@ -125,7 +126,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   // Growthbook - teimp
   if (!useShowGrowthbookFeature("teimp")) return null;
 
-  if (isOnProjectRevisionViewPage && allFormChangesPristine) return null;
+  if (isOnAmendmentsAndOtherRevisionsPage && allFormChangesPristine)
+    return null;
 
   if (
     allFormChangesPristine ||
@@ -133,7 +135,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   )
     return (
       <>
-        {!isOnProjectRevisionViewPage && <h3>Emission Intensity Report</h3>}
+        {!isOnAmendmentsAndOtherRevisionsPage && (
+          <h3>Emission Intensity Report</h3>
+        )}
         <dd>
           <em>
             Emission Intensity Report not{" "}
@@ -145,7 +149,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
 
   return (
     <>
-      {!isOnProjectRevisionViewPage && <h3>Emission Intensity Report</h3>}
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Emission Intensity Report</h3>
+      )}
       {/* Show this part if none of the emission intensity report form properties have been updated */}
       {allFormChangesPristine &&
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
@@ -176,7 +182,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           oldData:
             summaryReportingRequirement?.formChangeByPreviousFormChangeId
               ?.newFormData,
-          isRevisionSpecific: isOnProjectRevisionViewPage,
+          isAmendmentsAndOtherRevisionsSpecific:
+            isOnAmendmentsAndOtherRevisionsPage,
         }}
       />
       <FormBase
@@ -201,7 +208,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           oldData:
             summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
               ?.newFormData,
-          isRevisionSpecific: isOnProjectRevisionViewPage,
+          isAmendmentsAndOtherRevisionsSpecific:
+            isOnAmendmentsAndOtherRevisionsPage,
         }}
       />
     </>

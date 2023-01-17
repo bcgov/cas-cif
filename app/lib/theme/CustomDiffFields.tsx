@@ -24,10 +24,10 @@ const showStringDiff = (
   newData: string,
   isDate?: boolean,
   contentSuffix?: string,
-  isRevisionSpecific?: boolean
+  isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
   // defining the class names if we are showing a revision specific diff
-  const [diffOldClsName, diffNewClsName] = isRevisionSpecific
+  const [diffOldClsName, diffNewClsName] = isAmendmentsAndOtherRevisionsSpecific
     ? [
         "diffAmendmentsAndOtherRevisionsOld",
         "diffAmendmentsAndOtherRevisionsNew",
@@ -43,7 +43,7 @@ const showStringDiff = (
         {isDate ? getLocaleFormattedDate(oldData) : oldData}
       </span>
       {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {!isRevisionSpecific && (
+      {!isAmendmentsAndOtherRevisionsSpecific && (
         <FontAwesomeIcon
           className={"diff-arrow"}
           size="lg"
@@ -64,9 +64,9 @@ const showStringAdded = (
   newData: string,
   isDate: boolean = false,
   contentSuffix?: string,
-  isRevisionSpecific?: boolean
+  isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific
+  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
     ? "diffAmendmentsAndOtherRevisionsNew"
     : "diffReviewAndSubmitInformationNew";
 
@@ -76,7 +76,7 @@ const showStringAdded = (
         {isDate ? getLocaleFormattedDate(newData) : newData}
       </span>
       {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {isRevisionSpecific ? (
+      {isAmendmentsAndOtherRevisionsSpecific ? (
         <span>
           <em>(ADDED)</em>
           <style jsx>{`
@@ -109,9 +109,9 @@ const showStringRemoved = (
   oldData: string,
   isDate: boolean = false,
   contentSuffix?: string,
-  isRevisionSpecific?: boolean
+  isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific
+  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
     ? "diffAmendmentsAndOtherRevisionsOld"
     : "diffReviewAndSubmitInformationOld";
 
@@ -121,7 +121,7 @@ const showStringRemoved = (
         {isDate ? getLocaleFormattedDate(oldData) : oldData}
       </span>
       {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {!isRevisionSpecific && (
+      {!isAmendmentsAndOtherRevisionsSpecific && (
         <>
           <FontAwesomeIcon
             className={"diff-arrow"}
@@ -147,10 +147,10 @@ const showNumberDiff = (
   isMoney: boolean,
   isPercentage: boolean,
   numberOfDecimalPlaces: number = 0,
-  isRevisionSpecific?: boolean
+  isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
   const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
-  const [diffOldClsName, diffNewClsName] = isRevisionSpecific
+  const [diffOldClsName, diffNewClsName] = isAmendmentsAndOtherRevisionsSpecific
     ? [
         "diffAmendmentsAndOtherRevisionsOld",
         "diffAmendmentsAndOtherRevisionsNew",
@@ -173,7 +173,7 @@ const showNumberDiff = (
           value={oldData}
         />
       </span>
-      {!isRevisionSpecific && (
+      {!isAmendmentsAndOtherRevisionsSpecific && (
         <FontAwesomeIcon
           className={"diff-arrow"}
           size="lg"
@@ -202,9 +202,9 @@ const showNumberAdded = (
   isMoney: boolean,
   isPercentage: boolean,
   numberOfDecimalPlaces: number = 0,
-  isRevisionSpecific?: boolean
+  isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific
+  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
     ? "diffAmendmentsAndOtherRevisionsNew"
     : "diffReviewAndSubmitInformationNew";
 
@@ -221,7 +221,7 @@ const showNumberAdded = (
           value={newData}
         />
       </span>
-      {isRevisionSpecific ? (
+      {isAmendmentsAndOtherRevisionsSpecific ? (
         <span>
           <em>(ADDED)</em>
           <style jsx>{`
@@ -255,9 +255,9 @@ const showNumberRemoved = (
   isMoney: boolean,
   isPercentage: boolean,
   numberOfDecimalPlaces: number = 0,
-  isRevisionSpecific?: boolean
+  isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
-  const diffClsName = isRevisionSpecific
+  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
     ? "diffAmendmentsAndOtherRevisionsOld"
     : "diffReviewAndSubmitInformationOld";
   return (
@@ -273,7 +273,7 @@ const showNumberRemoved = (
           value={oldData}
         />
       </span>
-      {!isRevisionSpecific && (
+      {!isAmendmentsAndOtherRevisionsSpecific && (
         <>
           <FontAwesomeIcon
             className={"diff-arrow"}
@@ -302,7 +302,8 @@ const CUSTOM_DIFF_FIELDS: Record<
     const previousValue = formContext?.oldData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-    const isRevisionSpecific = formContext?.isRevisionSpecific;
+    const isAmendmentsAndOtherRevisionsSpecific =
+      formContext?.isAmendmentsAndOtherRevisionsSpecific;
 
     if (previousValue && formData && formContext.operation === "UPDATE") {
       return showStringDiff(
@@ -311,7 +312,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         formData,
         isDate,
         contentSuffix as string,
-        isRevisionSpecific
+        isAmendmentsAndOtherRevisionsSpecific
       );
     } else if (
       !previousValue &&
@@ -323,7 +324,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         formData,
         isDate,
         undefined,
-        isRevisionSpecific
+        isAmendmentsAndOtherRevisionsSpecific
       );
     } else if (
       formContext.operation === "ARCHIVE" ||
@@ -334,7 +335,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         previousValue,
         isDate,
         contentSuffix as string,
-        isRevisionSpecific
+        isAmendmentsAndOtherRevisionsSpecific
       );
     } else {
       return <>DISPLAY ERROR</>;
@@ -346,7 +347,8 @@ const CUSTOM_DIFF_FIELDS: Record<
     const previousValue = formContext?.oldData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-    const isRevisionSpecific = formContext?.isRevisionSpecific;
+    const isAmendmentsAndOtherRevisionsSpecific =
+      formContext?.isAmendmentsAndOtherRevisionsSpecific;
 
     if (uiSchema["ui:options"]) {
       if (previousValue && formData && formContext.operation === "UPDATE") {
@@ -361,7 +363,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           newData as string,
           false,
           undefined,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else if (
         !previousValue &&
@@ -374,7 +376,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           newData,
           false,
           contentSuffix as string,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
@@ -388,7 +390,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           oldData,
           false,
           contentSuffix as string,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else if (
         !previousValue &&
@@ -400,7 +402,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           uiSchema["ui:options"].text as string,
           isDate,
           contentSuffix as string,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else {
         return <>DISPLAY ERROR</>;
@@ -418,7 +420,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           uiSchema?.isMoney,
           uiSchema?.isPercentage,
           uiSchema?.numberOfDecimalPlaces,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else if (
         !previousValue &&
@@ -431,7 +433,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           uiSchema?.isMoney,
           uiSchema?.isPercentage,
           uiSchema?.numberOfDecimalPlaces,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
@@ -443,7 +445,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           uiSchema?.isMoney,
           uiSchema?.isPercentage,
           uiSchema?.numberOfDecimalPlaces,
-          isRevisionSpecific
+          isAmendmentsAndOtherRevisionsSpecific
         );
       } else {
         return <>DISPLAY ERROR</>;
