@@ -4,10 +4,21 @@ import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 import { WidgetProps } from "@rjsf/core";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 import { useState } from "react";
+import { graphql, useFragment } from "react-relay";
+
+const RevisionStatusWidgetFragment = graphql`
+  fragment RevisionStatusWidget_projectRevision on ProjectRevision {
+    id
+    changeStatus
+  }
+`;
 
 // Custom widget to update the revision status
 const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const { schema, value, formContext } = props;
+  const projectRevision = formContext.projectRevision;
+
+  const query = useFragment(RevisionStatusWidgetFragment, projectRevision);
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");
@@ -16,8 +27,6 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const [updateProjectRevision, isUpdatingProjectRevision] =
     useUpdateProjectRevision();
 
-  const projectRevision = formContext.projectRevision;
-
   const [updated, setUpdated] = useState(false);
 
   const clickHandler = () => {
@@ -25,27 +34,27 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
       updateProjectRevision({
         variables: {
           input: {
-            id: projectRevision.id,
+            id: query.id,
             projectRevisionPatch: { revisionStatus: value },
           },
         },
         optimisticResponse: {
           updateProjectRevision: {
             projectRevision: {
-              id: projectRevision.id,
+              id: query.id,
             },
           },
         },
         onCompleted: () => setUpdated(true),
         onError: reject,
-        debounceKey: projectRevision.id,
+        debounceKey: query.id,
       })
     );
   };
 
   return (
     <div>
-      {projectRevision.changeStatus === "pending" ? (
+      {query.changeStatus === "pending" ? (
         <div>
           <SelectWidget
             {...props}

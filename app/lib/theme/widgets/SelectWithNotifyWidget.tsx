@@ -2,6 +2,7 @@ import { WidgetProps } from "@rjsf/core";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import { Button } from "@button-inc/bcgov-theme";
 import { useUpdatePendingActionsFrom } from "mutations/ProjectRevision/updatePendingActionsFrom";
+import { graphql, useFragment } from "react-relay";
 
 interface Option {
   type: string;
@@ -9,6 +10,14 @@ interface Option {
   enum: number[];
   value: number;
 }
+
+const SelectWithNotifyWidgetFragment = graphql`
+  fragment SelectWithNotifyWidget_projectRevision on ProjectRevision {
+    id
+    pendingActionsFrom
+    revisionStatus
+  }
+`;
 
 const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   props
@@ -33,10 +42,11 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
     useUpdatePendingActionsFrom();
   const projectRevision = formContext.projectRevision;
+  const query = useFragment(SelectWithNotifyWidgetFragment, projectRevision);
   const [revisionId, revisionStatus, pendingActionsFrom] = [
-    projectRevision.id,
-    projectRevision.revisionStatus,
-    projectRevision.pendingActionsFrom,
+    query.id,
+    query.revisionStatus,
+    query.pendingActionsFrom,
   ];
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>

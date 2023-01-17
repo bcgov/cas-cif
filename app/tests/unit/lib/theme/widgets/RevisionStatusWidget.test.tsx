@@ -1,7 +1,12 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
+import compiledRevisionStatusWidgetQuery, {
+  RevisionStatusWidgetQuery,
+} from "__generated__/RevisionStatusWidgetQuery.graphql";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { mocked } from "jest-mock";
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
+import { graphql } from "react-relay";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 
 jest.mock("mutations/ProjectRevision/updateProjectRevision");
 
@@ -12,25 +17,59 @@ mocked(useUpdateProjectRevision).mockImplementation(() => [
   isUpdatingProjectRevision,
 ]);
 
-describe("The RevisionStatusWidget", () => {
-  it("renders the select widget along with an action button", () => {
-    const props: any = {
-      id: "test-id",
-      formContext: {
-        projectRevision: {
-          id: "test-revision-id",
-          changeStatus: "pending",
-        },
+const testQuery = graphql`
+  query RevisionStatusWidgetQuery($projectRevision: ID!) @relay_test_operation {
+    query {
+      # eslint-disable-next-line relay/unused-fields
+      projectRevision(id: $projectRevision) {
+        ...RevisionStatusWidget_projectRevision
+      }
+    }
+  }
+`;
+
+const mockQueryPayload = {
+  Query() {
+    return {
+      projectRevision: {
+        id: "test-revision-id",
+        changeStatus: "pending",
       },
+    };
+  },
+};
+
+const componentTestingHelper =
+  new ComponentTestingHelper<RevisionStatusWidgetQuery>({
+    component: RevisionStatusWidget,
+    testQuery: testQuery,
+    compiledQuery: compiledRevisionStatusWidgetQuery,
+    getPropsFromTestQuery: (data) => ({
+      id: "test-id",
       value: "Option 1",
       schema: {
         anyOf: [
-          { value: 1, enum: [1], type: "string", title: "Option 1" },
-          { value: 2, enum: [2], type: "string", title: "Option 2" },
+          { value: 1, enum: [1], type: "number", title: "Option 1" },
+          { value: 2, enum: [2], type: "number", title: "Option 2" },
         ],
       },
-    };
-    render(<RevisionStatusWidget {...props} />);
+      formContext: data.query,
+      options: {
+        text: "just for testing", //This is a required prop but not required for the test
+      },
+    }),
+    defaultQueryResolver: mockQueryPayload,
+    defaultQueryVariables: { projectRevision: "Test Revision ID" },
+  });
+
+describe("The RevisionStatusWidget", () => {
+  beforeEach(() => {
+    componentTestingHelper.reinit();
+  });
+
+  it("renders the select widget along with an action button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
     expect(
       screen.getByRole("button", {
@@ -40,24 +79,9 @@ describe("The RevisionStatusWidget", () => {
   });
 
   it("calls updateProjectRevision with the select widget value when click button", async () => {
-    const props: any = {
-      id: "test-id",
-      formContext: {
-        projectRevision: {
-          id: "test-revision-id",
-          changeStatus: "pending",
-        },
-      },
-      value: "Option 1",
-      schema: {
-        anyOf: [
-          { value: 1, enum: [1], type: "string", title: "Option 1" },
-          { value: 2, enum: [2], type: "string", title: "Option 2" },
-        ],
-      },
-    };
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
-    render(<RevisionStatusWidget {...props} />);
     fireEvent.click(
       screen.getByRole("button", {
         name: /update/i,
@@ -77,26 +101,19 @@ describe("The RevisionStatusWidget", () => {
     );
   });
   it("renders widget in readonly mode when revision status is not pending", () => {
-    const props: any = {
-      id: "test-id",
-      formContext: {
-        projectRevision: {
-          id: "test-revision-id",
-          changeStatus: "committed",
-        },
-      },
-      value: "Option 1",
-      schema: {
-        anyOf: [
-          { value: 1, enum: [1], type: "string", title: "Option 1" },
-          { value: 2, enum: [2], type: "string", title: "Option 2" },
-        ],
-      },
-      options: {
-        text: "just for testing",
+    const customQueryPayload = {
+      ...mockQueryPayload,
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-revision-id-2",
+            changeStatus: "not-pending",
+          },
+        };
       },
     };
-    render(<RevisionStatusWidget {...props} />);
+    componentTestingHelper.loadQuery(customQueryPayload);
+    componentTestingHelper.renderComponent();
 
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     expect(screen.queryByText(/update/i)).not.toBeInTheDocument();

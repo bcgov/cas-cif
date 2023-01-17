@@ -71,8 +71,6 @@ export const ViewProjectRevisionQuery = graphql`
       revisionType
       createdAt
       revisionStatus
-      # eslint-disable-next-line relay/unused-fields
-      changeStatus
       cifUserByCreatedBy {
         fullName
       }
@@ -83,15 +81,14 @@ export const ViewProjectRevisionQuery = graphql`
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
       changeReason
-      # eslint-disable-next-line relay/unused-fields
-      pendingActionsFrom
-      # eslint-disable-next-line relay/unused-fields
-      revisionStatus
       projectByProjectId {
         latestCommittedProjectRevision {
           ...TaskList_projectRevision
         }
       }
+      ...RevisionStatusWidget_projectRevision
+      # eslint-disable-next-line relay/must-colocate-fragment-spreads
+      ...SelectWithNotifyWidget_projectRevision
       # eslint-disable-next-line relay/must-colocate-fragment-spreads
       ...CollapsibleFormWidget_projectRevision
     }
