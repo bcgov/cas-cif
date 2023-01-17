@@ -241,6 +241,9 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     uponCompletion: {},
   };
 
+  /* We should ideally offload the parsing of this data to a custom commit handler on the database.
+   * Opportunity for future tech debt work captured in ZenHub.
+   */
   Object.keys(emissionIntensityReportSchema.properties).forEach(
     (schemaProperty) =>
       Object.keys(

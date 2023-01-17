@@ -4,7 +4,6 @@ export const emissionIntensityReportSchema = {
   title: "Emissions Intensity Report",
   properties: {
     teimpReporting: {
-      $schema: "http://json-schema.org/draft-07/schema",
       type: "object",
       title: "TEIMP Reporting",
       required: [
@@ -50,7 +49,6 @@ export const emissionIntensityReportSchema = {
       },
     },
     uponCompletion: {
-      $schema: "http://json-schema.org/draft-07/schema",
       type: "object",
       title: "Upon Completion",
       properties: {
