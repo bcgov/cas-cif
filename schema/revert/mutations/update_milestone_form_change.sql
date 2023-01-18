@@ -1,7 +1,7 @@
 -- Revert cif:mutations/update_milestone_form_change from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function cif.update_milestone_form_change;
 
-COMMIT;
+commit;

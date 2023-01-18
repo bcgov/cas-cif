@@ -1,7 +1,7 @@
 -- Verify cif:mutations/update_milestone_form_change on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select pg_get_functiondef('cif.update_milestone_form_change(int, cif.form_change)'::regprocedure);
 
-ROLLBACK;
+rollback;
