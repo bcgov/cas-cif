@@ -181,21 +181,26 @@ describe("the emission intensity report form component", () => {
 
     // We can't query by label for text elements,
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
+    // screen.logTestingPlaygroundURL();
     expect(
-      screen.getByLabelText("GHG Emission Intensity Performance")
-    ).toBeInTheDocument();
+      screen.getByLabelText("GHG Emission Intensity Performance").closest("div")
+    ).toHaveTextContent("200.00%");
     expect(
-      screen.getByText("GHG Emission Intensity Performance (Adjusted)")
-    ).toBeInTheDocument();
+      screen
+        .getByLabelText("GHG Emission Intensity Performance (Adjusted)")
+        .closest("div")
+    ).toHaveTextContent("200.00%");
     expect(
-      screen.getByText("Payment Percentage of Performance Milestone Amount (%)")
-    ).toBeInTheDocument();
+      screen.getByLabelText(
+        "Payment Percentage of Performance Milestone Amount (%)"
+      )
+    ).toHaveTextContent("60%");
     expect(
       screen.getByLabelText("Maximum Performance Milestone Amount")
-    ).toBeInTheDocument();
+    ).toHaveTextContent("$100");
     expect(
       screen.getByLabelText("Actual Performance Milestone Amount")
-    ).toBeInTheDocument();
+    ).toHaveTextContent("$6,000.00");
     expect(
       screen.getByLabelText(/Date invoice sent to CSNR/i)
     ).toHaveTextContent(/Feb[.]? 11, 2022/);
@@ -261,10 +266,11 @@ describe("the emission intensity report form component", () => {
 
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
-
     expect(
-      screen.getByLabelText("GHG Emission Intensity Performance")
-    ).toBeInTheDocument();
+      screen.getByText("GHG Emission Intensity Performance").closest("div")
+    ).toHaveTextContent(
+      "This field cannot be calculated due to lack of information now"
+    );
   });
 
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
