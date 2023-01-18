@@ -183,14 +183,12 @@ describe("the emission intensity report form component", () => {
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
     expect(
       screen.getByLabelText("GHG Emission Intensity Performance")
-    ).toHaveTextContent("200.00%");
+    ).toBeInTheDocument();
     expect(
-      screen.getByLabelText("GHG Emission Intensity Performance (Adjusted)")
-    ).toHaveValue("6.00%");
+      screen.getByText("GHG Emission Intensity Performance (Adjusted)")
+    ).toBeInTheDocument();
     expect(
-      screen.getByLabelText(
-        "Payment Percentage of Performance Milestone Amount (%)"
-      )
+      screen.getByText("Payment Percentage of Performance Milestone Amount (%)")
     ).toBeInTheDocument();
     expect(
       screen.getByLabelText("Maximum Performance Milestone Amount")

@@ -188,9 +188,17 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const paymentPercentageOfPerformanceMilestoneAmount =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .paymentPercentage;
-  const actualPerformanceMilestoneAmount =
-    Number(maximumPerformanceMilestoneAmount ?? null) *
-    Number(paymentPercentageOfPerformanceMilestoneAmount ?? null);
+  var actualPerformanceMilestoneAmount;
+  if (
+    maximumPerformanceMilestoneAmount == null ||
+    paymentPercentageOfPerformanceMilestoneAmount == null
+  ) {
+    actualPerformanceMilestoneAmount = null;
+  } else {
+    actualPerformanceMilestoneAmount =
+      Number(maximumPerformanceMilestoneAmount ?? null) *
+      Number(paymentPercentageOfPerformanceMilestoneAmount ?? null);
+  }
 
   // Mutations
   const [
