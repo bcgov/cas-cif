@@ -24,6 +24,12 @@ import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 import FormBorder from "lib/theme/components/FormBorder";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import useDiscardAdditionalFundingSourceFormChange from "mutations/FundingParameter/discardAdditionalFundingSourceFormChange";
+import {
+  expensesPaymentsTrackerSchema,
+  expensesPaymentsTrackerUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
+import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
+
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
   projectRevision: ProjectFundingAgreementForm_projectRevision$key;
@@ -104,6 +110,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              eligibleExpensesToDate
+              holdbackAmountToDate
+              netPaymentsToDate
+              grossPaymentsToDate
             }
           }
         }
@@ -141,9 +151,14 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     `,
     props.query
   );
-
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
+
+  const calculatedProponentsSharePercentage =
+    calculateProponentsSharePercentage(
+      fundingAgreement?.newFormData.proponentCost,
+      Number(projectRevision.totalProjectValue)
+    );
 
   // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
   const filteredAdditionalFundingSourceFormChanges =
@@ -387,6 +402,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             formContext={{
               form: fundingAgreement?.newFormData,
               calculatedTotalProjectValue: projectRevision.totalProjectValue,
+              calculatedProponentsSharePercentage,
             }}
             uiSchema={fundingAgreementUiSchema}
             ref={(el) => (formRefs.current[fundingAgreement.id] = el)}
@@ -460,6 +476,30 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               Add Funding Source
             </Button>
           </FormBorder>
+          <FormBorder title="Expenses & Payments Tracker">
+            <FormBase
+              id={`expensesPaymentsTracker`}
+              className="expensesPaymentsTrackerForm"
+              idPrefix="expensesPaymentsTracker"
+              schema={expensesPaymentsTrackerSchema as JSONSchema7}
+              formContext={{
+                calculatedEligibleExpensesToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.eligibleExpensesToDate,
+                calculatedHoldbackAmountToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.holdbackAmountToDate,
+                calculatedNetPaymentsToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.netPaymentsToDate,
+                calculatedGrossPaymentsToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.grossPaymentsToDate,
+              }}
+              ObjectFieldTemplate={EmptyObjectFieldTemplate}
+              uiSchema={expensesPaymentsTrackerUiSchema}
+            ></FormBase>
+          </FormBorder>
           <Button
             type="submit"
             onClick={() =>
@@ -511,6 +551,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           }
           div :global(button.removeButton) {
             margin-top: -21em;
+          }
+          :global(.expensesPaymentsTrackerForm) {
+            margin-bottom: 0px;
+          }
+          :global(.expensesPaymentsTrackerForm > div > div:nth-last-child(2)) {
+            margin-bottom: 0px;
           }
         `}
       </style>

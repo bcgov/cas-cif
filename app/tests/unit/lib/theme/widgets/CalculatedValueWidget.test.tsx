@@ -29,7 +29,7 @@ describe("The CalculatedValueWidget", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
-  it("renders empty string if the calculated value is null and no message prop is provided", () => {
+  it("renders empty string if the calculated value is null and no message is provided", () => {
     const props: any = {
       id: "test-id",
       formContext: { someprop: null },
@@ -49,8 +49,8 @@ describe("The CalculatedValueWidget", () => {
       label: "test-label",
       uiSchema: {
         calculatedValueFormContextProperty: "someprop",
+        message: "test message",
       },
-      message: "test message",
     };
     render(<CalculatedValueWidget {...props} />);
     expect(screen.getByText("test message")).toBeInTheDocument();

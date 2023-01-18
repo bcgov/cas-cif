@@ -5,10 +5,10 @@ import { utils } from "@rjsf/core";
 import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
 import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustableCalculatedValueWidget";
-import ReadOnlyCalculatedValueWidget from "./widgets/ReadOnlyCalculatedValueWidget";
+import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
-import RankWidget from "./widgets/RankWidget";
 import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
+import ModalWidget from "./widgets/ModalWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -29,10 +29,10 @@ const readOnlyTheme: ThemeProps = {
     DateWidget: ReadOnlyDateWidget,
     AdjustableCalculatedValueWidget: ReadOnlyAdjustableCalculatedValueWidget,
     ReadOnlyAdjustableCalculatedValueWidget,
-    CalculatedValueWidget: ReadOnlyCalculatedValueWidget,
+    CalculatedValueWidget,
     NumberWidget: ReadOnlyNumberWidget,
     SelectWithNotifyWidget: SelectWithNotifyWidget,
-    RankWidget,
+    ModalWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

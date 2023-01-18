@@ -15,6 +15,11 @@ import { useMemo } from "react";
 import React from "react";
 import additionalFundingSourceSchema from "data/jsonSchemaForm/additionalFundingSourceSchema";
 import { createAdditionalFundingSourceUiSchema } from "./ProjectFundingAgreementForm";
+import {
+  expensesPaymentsTrackerSchema,
+  expensesPaymentsTrackerUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
+import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -43,6 +48,10 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           edges {
             node {
               newFormData
+              eligibleExpensesToDate
+              holdbackAmountToDate
+              netPaymentsToDate
+              grossPaymentsToDate
               isPristine
               operation
               formChangeByPreviousFormChangeId {
@@ -70,6 +79,16 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
+  const proponentCost =
+    summaryProjectFundingAgreementFormChanges.edges[0]?.node.newFormData
+      .proponentCost;
+
+  const calculatedProponentsSharePercentage =
+    calculateProponentsSharePercentage(
+      proponentCost,
+      Number(totalProjectValue)
+    );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !props.viewOnly;
@@ -184,6 +203,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
           formContext={{
             operation: fundingAgreementSummary?.operation,
             calculatedTotalProjectValue: totalProjectValue,
+            calculatedProponentsSharePercentage,
             oldData:
               fundingAgreementSummary?.formChangeByPreviousFormChangeId
                 ?.newFormData,
@@ -208,6 +228,39 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       ) : (
         additionalFundingSourcesJSX
       )}
+
+      {props.viewOnly && (
+        <>
+          <h3>Expenses & Payments Tracker</h3>
+          <FormBase
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            fields={renderDiff ? customFields : fields}
+            schema={expensesPaymentsTrackerSchema as JSONSchema7}
+            uiSchema={expensesPaymentsTrackerUiSchema}
+            formData={formData}
+            formContext={{
+              calculatedEligibleExpensesToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .eligibleExpensesToDate,
+              calculatedHoldbackAmountToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .holdbackAmountToDate,
+              calculatedNetPaymentsToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .netPaymentsToDate,
+              calculatedGrossPaymentsToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .grossPaymentsToDate,
+              operation: fundingAgreementSummary?.operation,
+              oldData:
+                fundingAgreementSummary?.formChangeByPreviousFormChangeId
+                  ?.newFormData,
+            }}
+          />
+        </>
+      )}
+
       <style jsx>{`
         .summaryContainer {
           margin-bottom: 1em;

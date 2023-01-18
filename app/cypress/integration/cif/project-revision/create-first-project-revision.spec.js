@@ -172,7 +172,7 @@ describe("when creating a project, the project page", () => {
       "$800.00",
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
-      "$1133.00",
+      "$1,133.00",
       true
     );
     // additional funding sources section

@@ -6,7 +6,6 @@ const CalculatedValueWidget: React.FC<WidgetProps> = ({
   formContext,
   label,
   uiSchema,
-  message = "This field cannot be calculated due to lack of information now.",
 }) => {
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
@@ -19,6 +18,9 @@ const CalculatedValueWidget: React.FC<WidgetProps> = ({
 
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
+  const message =
+    uiSchema.message ??
+    "This field cannot be calculated due to lack of information now.";
 
   return (
     <>
