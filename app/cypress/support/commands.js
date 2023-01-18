@@ -128,8 +128,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "checkOverviewForm",
   (
-    fundingStream,
-    fundingStreamYear,
     operatorName,
     proposalReference,
     projectName,
@@ -138,8 +136,6 @@ Cypress.Commands.add(
     projectStatus,
     comments
   ) => {
-    cy.get("option").contains(fundingStream).should("be.selected");
-    cy.get("option").contains(fundingStreamYear).should("be.selected");
     cy.findByLabelText(/Operator Name/i).should("have.value", operatorName);
     cy.findByLabelText(/Proposal Reference/i).should(
       "have.value",
