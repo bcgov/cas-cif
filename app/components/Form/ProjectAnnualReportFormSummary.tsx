@@ -12,6 +12,10 @@ import { graphql, useFragment } from "react-relay";
 import { ProjectAnnualReportFormSummary_projectRevision$key } from "__generated__/ProjectAnnualReportFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
 import { SummaryFormProps } from "data/formPages/types";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -113,19 +117,19 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
           {/* Show this part if none of Annual report form properties have been updated */}
           {Object.keys(formSchema.properties).length === 0 &&
             annualReport.operation !== "ARCHIVE" && (
-              <em>Annual report not updated</em>
+              <FormNotAddedOrUpdated
+                isFirstRevision={isFirstRevision}
+                text="Annual Report"
+              />
             )}
           {/* Show this part if the whole Annual report has been removed */}
           {renderDiff && annualReport.operation === "ARCHIVE" ? (
-            <em
-              className={
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
-                  ? "diffAmendmentsAndOtherRevisionsOld"
-                  : "diffReviewAndSubmitInformationOld"
               }
-            >
-              Annual report removed
-            </em>
+              text="Annual Report"
+            />
           ) : (
             <FormBase
               liveValidate
@@ -153,7 +157,12 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
         </div>
       );
     });
-  }, [sortedAnnualReports, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    renderDiff,
+    sortedAnnualReports,
+  ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -172,11 +181,10 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
       {allFormChangesPristine &&
       !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
-        <p>
-          <em>
-            Project Annual Reports not {isFirstRevision ? "added" : "updated"}
-          </em>
-        </p>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Project Annual Reports"
+        />
       ) : (
         annualReportsJSX
       )}

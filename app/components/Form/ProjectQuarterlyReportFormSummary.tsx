@@ -13,6 +13,10 @@ import {
 import { ProjectQuarterlyReportFormSummary_projectRevision$key } from "__generated__/ProjectQuarterlyReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { SummaryFormProps } from "data/formPages/types";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -118,19 +122,19 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
           {/* Show this part if none of the quarterly reports' form properties have been updated */}
           {Object.keys(formSchema.properties).length === 0 &&
             quarterlyReport.operation !== "ARCHIVE" && (
-              <em>Quarterly report not updated</em>
+              <FormNotAddedOrUpdated
+                isFirstRevision={isFirstRevision}
+                text="Quarterly Report"
+              />
             )}
           {/* Show this part if the whole quarterly report has been removed */}
           {renderDiff && quarterlyReport.operation === "ARCHIVE" ? (
-            <em
-              className={
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
-                  ? "diffAmendmentsAndOtherRevisionsOld"
-                  : "diffReviewAndSubmitInformationOld"
               }
-            >
-              Quarterly Report Removed
-            </em>
+              text="Quarterly Report"
+            />
           ) : (
             <FormBase
               liveValidate
@@ -158,7 +162,12 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
         </div>
       );
     });
-  }, [isOnAmendmentsAndOtherRevisionsPage, renderDiff, sortedQuarterlyReports]);
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    renderDiff,
+    sortedQuarterlyReports,
+  ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -172,16 +181,18 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
         <h3>Project Quarterly Reports</h3>
       )}
       {quarterlyReportFormChanges.length < 1 && viewOnly && (
-        <dd>
-          <em>No Quarterly Reports</em>
-        </dd>
+        <FormNotAddedOrUpdated
+          isFirstRevision={true} //setting this to true so that the text is "Quarterly Reports not added"
+          text="Quarterly Reports"
+        />
       )}
       {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
       !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
-        <dd>
-          <em>Quarterly Reports not {isFirstRevision ? "added" : "updated"}</em>
-        </dd>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Quarterly Reports"
+        />
       ) : (
         quarterlyReportsJSX
       )}

@@ -21,6 +21,10 @@ import {
 } from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 import { SummaryFormProps } from "data/formPages/types";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -159,9 +163,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             )}
           {renderDiff && node.operation === "ARCHIVE" ? (
             !isOnAmendmentsAndOtherRevisionsPage ? (
-              <em className="diffReviewAndSubmitInformationOld">
-                Additional funding source {index + 1} removed
-              </em>
+              <FormRemoved
+                isOnAmendmentsAndOtherRevisionsPage={
+                  isOnAmendmentsAndOtherRevisionsPage
+                }
+                text={`Additional funding source ${index + 1}`}
+              />
             ) : (
               <em className="diffAmendmentsAndOtherRevisionsOld">
                 Additional funding source {index + 1}
@@ -216,9 +223,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     fundingAgreementSummary?.operation === "ARCHIVE"
   ) {
     return (
-      <em className="diffAmendmentsAndOtherRevisionsOld">
-        Budgets, Expenses & Payments removed
-      </em>
+      <FormRemoved
+        isOnAmendmentsAndOtherRevisionsPage={
+          isOnAmendmentsAndOtherRevisionsPage
+        }
+        text="Budgets, Expenses & Payments"
+      />
     );
   }
 
@@ -229,12 +239,10 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       )}
       {fundingAgreementFormNotUpdated && !viewOnly ? (
         !isOnAmendmentsAndOtherRevisionsPage ? (
-          <p>
-            <em>
-              Budgets, Expenses & Payments not{" "}
-              {isFirstRevision ? "added" : "updated"}
-            </em>
-          </p>
+          <FormNotAddedOrUpdated
+            isFirstRevision={isFirstRevision}
+            text="Budgets, Expenses & Payments"
+          />
         ) : (
           ""
         )
@@ -262,20 +270,19 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         <h3>Project Additional Funding Source</h3>
       )}
       {sortedAdditionalFundingSourceFormChanges.length < 1 && viewOnly && (
-        <dd>
-          <em>No Additional Funding Source</em>
-        </dd>
+        <FormNotAddedOrUpdated
+          isFirstRevision={true} //setting this to true so that the text is "Additional Funding Source not added"
+          text="Additional Funding Source"
+        />
       )}
       {(allAdditionalFundingSourceFormChangesPristine ||
         sortedAdditionalFundingSourceFormChanges.length < 1) &&
       !viewOnly
         ? !isOnAmendmentsAndOtherRevisionsPage && (
-            <dd>
-              <em>
-                Additional Funding Source not{" "}
-                {isFirstRevision ? "added" : "updated"}
-              </em>
-            </dd>
+            <FormNotAddedOrUpdated
+              isFirstRevision={isFirstRevision}
+              text="Additional Funding Source"
+            />
           )
         : additionalFundingSourcesJSX}
 

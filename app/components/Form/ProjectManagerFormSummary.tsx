@@ -10,6 +10,7 @@ import FormBase from "./FormBase";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { SummaryFormProps } from "data/formPages/types";
+import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -137,9 +138,10 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
       {allFormChangesPristine &&
       !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
-        <p>
-          <em>Project Managers not {isFirstRevision ? "added" : "updated"}</em>
-        </p>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Project Managers"
+        />
       ) : (
         managersJSX
       )}

@@ -213,7 +213,7 @@ describe("when editing a project, the project page", () => {
       "#root_projectAssetsLifeEndDate-diffReviewAndSubmitInformationNew"
     ).contains(/Dec(\.)? 31, 2020/);
 
-    cy.findByText("Quarterly Report Removed").should("be.visible");
+    cy.findByText("Quarterly Report removed").should("be.visible");
 
     cy.get("#root_measurementPeriodStartDate-diffReviewAndSubmitInformationNew")
       .next()

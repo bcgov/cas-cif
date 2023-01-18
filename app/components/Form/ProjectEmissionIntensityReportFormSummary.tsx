@@ -15,6 +15,10 @@ import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { createEmissionIntensityReportUiSchema } from "./ProjectEmissionIntensityReportForm";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props
@@ -139,12 +143,10 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         {!isOnAmendmentsAndOtherRevisionsPage && (
           <h3>Emission Intensity Report</h3>
         )}
-        <dd>
-          <em>
-            Emission Intensity Report not{" "}
-            {isFirstRevision ? "added" : "updated"}
-          </em>
-        </dd>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Emission Intensity Report"
+        />
       </>
     );
 
@@ -156,19 +158,20 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
       {/* Show this part if none of the emission intensity report form properties have been updated */}
       {allFormChangesPristine &&
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
-          <p>
-            <em>
-              Emission Intensity Report
-              {isFirstRevision ? "added" : "updated"}
-            </em>
-          </p>
+          <FormNotAddedOrUpdated
+            isFirstRevision={isFirstRevision}
+            text="Emission Intensity Report"
+          />
         )}
       {/* Show this part if the whole emission intensity report has been removed */}
       {renderDiff &&
         summaryEmissionIntensityReport?.operation === "ARCHIVE" && (
-          <em className="diffReviewAndSubmitInformationOld">
-            Emission Intensity Report Removed
-          </em>
+          <FormRemoved
+            isOnAmendmentsAndOtherRevisionsPage={
+              isOnAmendmentsAndOtherRevisionsPage
+            }
+            text="Emission Intensity Report"
+          />
         )}
 
       <FormBase

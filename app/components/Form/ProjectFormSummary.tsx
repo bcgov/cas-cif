@@ -11,6 +11,7 @@ import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
+import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -117,9 +118,10 @@ const ProjectFormSummary: React.FC<Props> = ({
         (projectFormChange.isPristine === null &&
           Object.keys(projectFormChange.newFormData).length === 0)) &&
       !viewOnly ? (
-        <p>
-          <em>Project Overview not {isFirstRevision ? "added" : "updated"}</em>
-        </p>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Project Overview"
+        />
       ) : (
         <FormBase
           tagName={"dl"}

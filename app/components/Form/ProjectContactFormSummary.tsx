@@ -12,6 +12,7 @@ import { utils } from "@rjsf/core";
 import ContactDetails from "components/Contact/ContactDetails";
 import React from "react";
 import { SummaryFormProps } from "data/formPages/types";
+import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -170,9 +171,10 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     <div>
       <h3>Project Contacts</h3>
       {allFormChangesPristine && !viewOnly ? (
-        <p>
-          <em>Project Contacts not {isFirstRevision ? "added" : "updated"}</em>
-        </p>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Project Contacts"
+        />
       ) : (
         <>
           <div className="contactFormContainer">
@@ -182,9 +184,10 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                 !primaryContact.node.newFormData.contactId)) &&
             !viewOnly &&
             !isOnAmendmentsAndOtherRevisionsPage ? (
-              <dd>
-                <em>Primary Contact not updated</em>
-              </dd>
+              <FormNotAddedOrUpdated
+                isFirstRevision={isFirstRevision}
+                text="Primary Contact"
+              />
             ) : (
               <>
                 <FormBase
@@ -234,20 +237,18 @@ const ProjectContactFormSummary: React.FC<Props> = ({
             <div>
               <label>Secondary Contacts</label>
               {secondaryContacts.length < 1 && viewOnly && (
-                <dd>
-                  <em>No Secondary contacts</em>
-                </dd>
+                <FormNotAddedOrUpdated
+                  isFirstRevision={true} //setting this to true so that the text is "Secondary Contacts not added"
+                  text="Secondary Contacts"
+                />
               )}
               {(secondaryContactFormChangesPristine ||
                 secondaryContacts.length < 1) &&
               !viewOnly ? (
-                <dd>
-                  <em>
-                    {isFirstRevision
-                      ? "No Secondary Contacts"
-                      : "Secondary Contacts not updated"}
-                  </em>
-                </dd>
+                <FormNotAddedOrUpdated
+                  isFirstRevision={isFirstRevision}
+                  text="Secondary Contacts"
+                />
               ) : (
                 contactsJSX
               )}

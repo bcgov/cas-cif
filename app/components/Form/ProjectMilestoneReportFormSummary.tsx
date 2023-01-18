@@ -10,6 +10,10 @@ import projectMilestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSche
 import { getSortedReports } from "./Functions/reportingRequirementFormChangeFunctions";
 import { getMilestoneFilteredSchema } from "./Functions/getMilestoneFilteredSchema";
 import { SummaryFormProps } from "data/formPages/types";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -110,20 +114,20 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
           {Object.keys(milestoneFormDiffObject.formSchema.properties).length ===
             0 &&
             milestoneReport.operation !== "ARCHIVE" && (
-              <em>Milestone report not updated</em>
+              <FormNotAddedOrUpdated
+                isFirstRevision={isFirstRevision}
+                text="Milestone Report"
+              />
             )}
 
           {/* Show this part if the whole milestone report has been removed */}
           {renderDiff && milestoneReport.operation === "ARCHIVE" && (
-            <em
-              className={
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
-                  ? "diffAmendmentsAndOtherRevisionsOld"
-                  : "diffReviewAndSubmitInformationOld"
               }
-            >
-              Milestone Report Removed
-            </em>
+              text="Milestone Report"
+            />
           )}
           <FormBase
             key={`form-${milestoneReport.id}`}
@@ -150,7 +154,12 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
         </div>
       );
     });
-  }, [sortedMilestoneReports, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    renderDiff,
+    sortedMilestoneReports,
+  ]);
 
   const milestoneReportsNotUpdated = useMemo(
     () => allFormChangesPristine || milestoneReportFormChanges.length < 1,
@@ -172,16 +181,18 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
         <h3>Project Milestone Reports</h3>
       )}
       {milestoneReportFormChanges.length < 1 && viewOnly && (
-        <dd>
-          <em>No Milestone Reports</em>
-        </dd>
+        <FormNotAddedOrUpdated
+          isFirstRevision={true} //setting this to true so that the text is "Milestone Reports not added"
+          text="Milestone Reports"
+        />
       )}
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
       !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
-        <dd>
-          <em>Milestone Reports not {isFirstRevision ? "added" : "updated"}</em>
-        </dd>
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          text="Milestone Reports"
+        />
       ) : (
         milestoneReportsJSX
       )}
