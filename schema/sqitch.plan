@@ -217,4 +217,5 @@ util_functions/get_form_status_001 [util_functions/get_form_status_001@1.0.1] 20
 @1.1.2 2023-01-11T23:21:59Z Dylan Leard <dylan@button.is> # release v1.1.2
 @1.1.3 2023-01-16T18:04:35Z Dylan Leard <dylan@button.is> # release v1.1.3
 data/insert_json_schema_form_data_update_milestone_form_field_titles 2023-01-16T21:53:29Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update milestone form field titles and adjusted/calculated in json_schema
-mutations/update_milestone_form_change 2023-01-17T21:15:30Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Create update milestone form change mutation
+mutations/update_milestone_form_change 2023-01-17T21:15:30Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create update milestone form change mutation
+@1.1.4 2023-01-18T16:57:57Z Dylan Leard <dylan@button.is> # release v1.1.4

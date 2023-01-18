@@ -1,3 +1,9 @@
+## [1.1.4](https://github.com/bcgov/cas-cif/compare/1.1.3...1.1.4) (2023-01-18)
+
+### Bug Fixes
+
+- fix reversed calculated values and add to formContext ([372f3d0](https://github.com/bcgov/cas-cif/commit/372f3d0b0f883c70c275be681e33a87a3aff9f2c))
+
 ## [1.1.3](https://github.com/bcgov/cas-cif/compare/1.1.2...1.1.3) (2023-01-16)
 
 ### Bug Fixes
