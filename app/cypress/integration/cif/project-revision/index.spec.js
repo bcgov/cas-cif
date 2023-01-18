@@ -26,7 +26,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/0");
     cy.get("button").contains("Submit Project Overview");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project Overview Form", "empty", "main");
+    cy.happoAndAxe("Project Overview Form", "empty", "main", true);
 
     //PROJECT DETAILS
     cy.findByText(/Project Details/i).click();
