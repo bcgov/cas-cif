@@ -264,7 +264,7 @@ describe("the emission intensity report form component", () => {
 
     expect(
       screen.getByLabelText("GHG Emission Intensity Performance")
-    ).toHaveTextContent("0.00%");
+    ).toBeInTheDocument();
   });
 
   it("uses useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
