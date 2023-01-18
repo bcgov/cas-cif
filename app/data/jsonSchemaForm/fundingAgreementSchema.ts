@@ -82,6 +82,7 @@ export const fundingAgreementUiSchema = {
   },
   proponentsSharePercentage: {
     "ui:widget": "CalculatedValueWidget",
+    numberOfDecimalPlaces: 2,
     isPercentage: true,
     calculatedValueFormContextProperty: "calculatedProponentsSharePercentage",
     hideOptional: true,
