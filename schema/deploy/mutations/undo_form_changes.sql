@@ -23,7 +23,7 @@ begin
     else
     -- we need to treat project overview table differently as it needs a null object as form data
       if fc.form_data_table_name = 'project' then
-        update cif.form_change set new_form_data = '{}'::jsonb where id = fc.id;
+        update cif.form_change set new_form_data = json_build_object('fundingStreamRfpId', fc.new_form_data->>'fundingStreamRfpId') where id = fc.id;
       else
         delete from cif.form_change where id = fc.id;
       end if;
