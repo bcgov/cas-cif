@@ -83,29 +83,17 @@
                 "type": "number",
                 "title": "Total Eligible Expenses"
               },
-              "calculatedGrossAmount": {
-                "type": "number",
-                "title": "Calculated Milestone Gross Payment Amount"
-              },
-              "calculatedHoldbackAmount": {
-                "type": "number",
-                "title": "Calculated Milestone Holdback Amount"
-              },
-              "calculatedNetAmount": {
-                "type": "number",
-                "title": "Calculated Milestone Net Payment Amount"
-              },
               "adjustedGrossAmount": {
                 "type": "number",
-                "title": "Milestone Gross Payment Amount"
+                "title": "Gross Payment Amount This Milestone"
               },
               "adjustedHoldBackAmount": {
                 "type": "number",
-                "title": "Milestone Holdback Amount"
+                "title": "Holdback Amount This Milestone"
               },
               "adjustedNetAmount": {
                 "type": "number",
-                "title": "Milestone Net Payment Amount"
+                "title": "Net Payment Amount This Milestone"
               },
               "dateSentToCsnr": {
                 "type": "string",

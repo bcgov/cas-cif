@@ -50,14 +50,14 @@ const defaultMockResolver = {
                 totalEligibleExpenses: 100,
                 maximumAmount: 200,
                 certifierProfessionalDesignation: "Professional Engineer",
+                calculatedGrossAmount: 1,
+                calculatedNetAmount: 1,
+                calculatedHoldbackAmount: 1,
               },
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
-              calculatedGrossAmountThisMilestone: 1,
-              calculatedNetAmountThisMilestone: 1,
-              calculatedHoldbackAmountThisMilestone: 1,
             },
           },
           {
@@ -207,7 +207,7 @@ describe("The ProjectMilestoneReportForm", () => {
     });
   });
 
-  it("Calls updateReportingRequirementFormChangeMutation when changing the milestone form", async () => {
+  it("Calls updateMilestoneFormChangeMutation when changing the milestone form", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -223,7 +223,7 @@ describe("The ProjectMilestoneReportForm", () => {
       componentTestingHelper.environment.mock.getMostRecentOperation();
 
     expect(updateMutationUnderTest.fragment.node.name).toBe(
-      "updateReportingRequirementFormChangeMutation"
+      "updateMilestoneFormChangeMutation"
     );
     expect(updateMutationUnderTest.request.variables).toMatchObject({
       reportType: "Milestone",
@@ -339,6 +339,9 @@ describe("The ProjectMilestoneReportForm", () => {
               totalEligibleExpenses: 100,
               maximumAmount: 200,
               certifierProfessionalDesignation: "Professional Engineer",
+              calculatedGrossAmount: 1,
+              calculatedNetAmount: 1,
+              calculatedHoldbackAmount: 1,
             },
           },
         },
@@ -405,8 +408,8 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText(/milestone description/i)).toHaveLength(2);
     expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
     expect(
-      screen.getAllByText(/^milestone gross payment amount/i)
-    ).toHaveLength(1);
+      screen.getAllByText(/^gross payment amount this milestone/i)
+    ).toHaveLength(2);
   });
 
   it("Only renders the totalEligibleExpenses and maximumAmount fields for milestone types with associated expenses", () => {

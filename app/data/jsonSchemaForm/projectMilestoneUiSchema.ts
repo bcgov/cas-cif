@@ -73,27 +73,25 @@ const projectMilestoneUiSchema = {
     "ui:widget": "SearchWidget",
   },
   adjustedGrossAmount: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "AdjustableCalculatedValueWidget",
     isMoney: true,
+    hideOptional: true,
+    calculatedValueFormContextProperty: "calculatedGrossAmount",
   },
   adjustedNetAmount: {
-    "ui:widget": "NumberWidget",
+    "ui:widget": "AdjustableCalculatedValueWidget",
     isMoney: true,
+    hideOptional: true,
+    calculatedValueFormContextProperty: "calculatedNetAmount",
+  },
+  adjustedHoldBackAmount: {
+    "ui:widget": "AdjustableCalculatedValueWidget",
+    isMoney: true,
+    hideOptional: true,
+    calculatedValueFormContextProperty: "calculatedHoldbackAmount",
   },
   dateSentToCsnr: {
     "ui:widget": "DateWidget",
-  },
-  grossPaymentAmount: {
-    "ui:widget": "AdjustableCalculatedValueWidget",
-    isMoney: true,
-  },
-  calculatedHoldbackAmount: {
-    "ui:widget": "AdjustableCalculatedValueWidget",
-    isMoney: true,
-  },
-  calculatedNetAmount: {
-    "ui:widget": "AdjustableCalculatedValueWidget",
-    isMoney: true,
   },
 };
 
