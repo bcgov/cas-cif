@@ -17,11 +17,15 @@ import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
 const { fields } = utils.getDefaultRegistry();
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectEmissionIntensityReportFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectEmissionIntensityReportFormSummary_projectRevision$key> {}
 
-const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
+const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const {
     summaryEmissionIntensityReportFormChange,
     summaryEmissionIntensityReportingRequirementFormChange,
@@ -64,14 +68,11 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
-
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   const summaryReportingRequirement =
     summaryEmissionIntensityReportingRequirementFormChange?.edges[0]?.node;
@@ -119,8 +120,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
-    [allFormChangesPristine, props]
+    () => setHasDiff && setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, setHasDiff]
   );
 
   // Growthbook - teimp

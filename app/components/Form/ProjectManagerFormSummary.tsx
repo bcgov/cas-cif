@@ -13,11 +13,15 @@ import { SummaryFormProps } from "data/formPages/types";
 
 const { fields } = utils.getDefaultRegistry();
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectManagerFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectManagerFormSummary_projectRevision$key> {}
 
-const ProjectManagerFormSummary: React.FC<Props> = (props) => {
+const ProjectManagerFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { projectManagerFormChangesByLabel, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
@@ -51,15 +55,11 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the managers page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
-
-  // defines if we are on the project revision view page to show specific UI
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived managers
   let managerFormChanges = projectManagerFormChangesByLabel.edges;
@@ -79,7 +79,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
   );
 
   let formChangesByLabel = managerFormChanges;
-  if (!props.viewOnly)
+  if (!viewOnly)
     formChangesByLabel = managerFormChanges.filter(
       ({ node }) =>
         node.formChange?.isPristine === false ||
@@ -124,8 +124,8 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
-    [props, allFormChangesPristine]
+    () => setHasDiff && setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, setHasDiff]
   );
 
   if (isOnAmendmentsAndOtherRevisionsPage && allFormChangesPristine)
@@ -135,7 +135,7 @@ const ProjectManagerFormSummary: React.FC<Props> = (props) => {
     <>
       <h3>Project Managers</h3>
       {allFormChangesPristine &&
-      !props.viewOnly &&
+      !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <p>
           <em>Project Managers not {isFirstRevision ? "added" : "updated"}</em>

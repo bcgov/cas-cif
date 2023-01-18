@@ -17,11 +17,15 @@ const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectAnnualReportFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectAnnualReportFormSummary_projectRevision$key> {}
 
-const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
+const ProjectAnnualReportFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { summaryAnnualReportFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectAnnualReportFormSummary_projectRevision on ProjectRevision {
@@ -45,14 +49,11 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the annual reports page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
-
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived reports
   let annualReportFormChanges = summaryAnnualReportFormChanges.edges;
@@ -99,7 +100,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
 
       if (
         isOnAmendmentsAndOtherRevisionsPage &&
-        annualReport?.isPristine &&
+        annualReport.isPristine &&
         annualReport.operation !== "ARCHIVE"
       )
         return null;
@@ -156,20 +157,20 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = (props) => {
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => props.setHasDiff && props.setHasDiff(!allFormChangesPristine),
-    [allFormChangesPristine, props]
+    () => setHasDiff && setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, setHasDiff]
   );
 
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Annual Reports</h3>}
-      {annualReportFormChanges.length < 1 && props.viewOnly && (
+      {annualReportFormChanges.length < 1 && viewOnly && (
         <dd>
           <em>No Annual Reports</em>
         </dd>
       )}
       {allFormChangesPristine &&
-      !props.viewOnly &&
+      !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <p>
           <em>

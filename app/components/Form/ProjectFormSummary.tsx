@@ -14,11 +14,15 @@ import { useEffect, useMemo } from "react";
 
 const { fields } = utils.getDefaultRegistry();
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectFormSummary_projectRevision$key> {}
 
-const ProjectFormSummary: React.FC<Props> = (props) => {
+const ProjectFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { projectFormChange, isFirstRevision, rank } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
@@ -64,15 +68,11 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
-
-  // defines if we are on the project revision view page to show specific UI
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
@@ -104,8 +104,8 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   );
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => props.setHasDiff && props.setHasDiff(!projectFormNotUpdated),
-    [projectFormNotUpdated, props]
+    () => setHasDiff && setHasDiff(!projectFormNotUpdated),
+    [projectFormNotUpdated, setHasDiff]
   );
 
   if (isOnAmendmentsAndOtherRevisionsPage && projectFormNotUpdated) return null;
@@ -116,7 +116,7 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
       {(projectFormChange.isPristine ||
         (projectFormChange.isPristine === null &&
           Object.keys(projectFormChange.newFormData).length === 0)) &&
-      !props.viewOnly ? (
+      !viewOnly ? (
         <p>
           <em>Project Overview not {isFirstRevision ? "added" : "updated"}</em>
         </p>

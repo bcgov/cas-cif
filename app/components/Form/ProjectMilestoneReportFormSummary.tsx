@@ -15,11 +15,15 @@ const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectMilestoneReportFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectMilestoneReportFormSummary_projectRevision$key> {}
 
-const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
+const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { summaryMilestoneFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectMilestoneReportFormSummary_projectRevision on ProjectRevision {
@@ -49,13 +53,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
-  const renderDiff = !isFirstRevision && !props.viewOnly;
-
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records,
   // otherwise filter out the archived milestone reports
@@ -158,8 +159,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => props.setHasDiff && props.setHasDiff(!milestoneReportsNotUpdated),
-    [milestoneReportsNotUpdated, props]
+    () => setHasDiff && setHasDiff(!milestoneReportsNotUpdated),
+    [milestoneReportsNotUpdated, setHasDiff]
   );
 
   if (isOnAmendmentsAndOtherRevisionsPage && milestoneReportsNotUpdated)
@@ -170,13 +171,13 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
       {!isOnAmendmentsAndOtherRevisionsPage && (
         <h3>Project Milestone Reports</h3>
       )}
-      {milestoneReportFormChanges.length < 1 && props.viewOnly && (
+      {milestoneReportFormChanges.length < 1 && viewOnly && (
         <dd>
           <em>No Milestone Reports</em>
         </dd>
       )}
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
-      !props.viewOnly &&
+      !viewOnly &&
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <dd>
           <em>Milestone Reports not {isFirstRevision ? "added" : "updated"}</em>

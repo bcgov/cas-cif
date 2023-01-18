@@ -27,11 +27,15 @@ const { fields } = utils.getDefaultRegistry();
 // Set custom rjsf fields to display diffs
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectFundingAgreementFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectFundingAgreementFormSummary_projectRevision$key> {}
 
-const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
+const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const {
     summaryProjectFundingAgreementFormChanges,
     isFirstRevision,
@@ -77,7 +81,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   const proponentCost =
@@ -91,16 +95,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
     );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   const fundingAgreementSummary =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node;
 
   let additionalFundingSourceFormChanges =
     summaryAdditionalFundingSourceFormChanges.edges;
-
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   if (!renderDiff)
@@ -205,8 +206,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
   );
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => props.setHasDiff && props.setHasDiff(!fundingAgreementFormNotUpdated),
-    [fundingAgreementFormNotUpdated, props]
+    () => setHasDiff && setHasDiff(!fundingAgreementFormNotUpdated),
+    [fundingAgreementFormNotUpdated, setHasDiff]
   );
 
   if (
@@ -226,7 +227,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       {!isOnAmendmentsAndOtherRevisionsPage && (
         <h3>Budgets, Expenses & Payments</h3>
       )}
-      {fundingAgreementFormNotUpdated && !props.viewOnly ? (
+      {fundingAgreementFormNotUpdated && !viewOnly ? (
         !isOnAmendmentsAndOtherRevisionsPage ? (
           <p>
             <em>
@@ -260,14 +261,14 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = (props) => {
       {!isOnAmendmentsAndOtherRevisionsPage && (
         <h3>Project Additional Funding Source</h3>
       )}
-      {sortedAdditionalFundingSourceFormChanges.length < 1 && props.viewOnly && (
+      {sortedAdditionalFundingSourceFormChanges.length < 1 && viewOnly && (
         <dd>
           <em>No Additional Funding Source</em>
         </dd>
       )}
       {(allAdditionalFundingSourceFormChangesPristine ||
         sortedAdditionalFundingSourceFormChanges.length < 1) &&
-      !props.viewOnly
+      !viewOnly
         ? !isOnAmendmentsAndOtherRevisionsPage && (
             <dd>
               <em>

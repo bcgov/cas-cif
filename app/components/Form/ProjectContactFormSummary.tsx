@@ -17,11 +17,15 @@ const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props extends Omit<SummaryFormProps, "projectRevision"> {
-  projectRevision: ProjectContactFormSummary_projectRevision$key;
-}
+interface Props
+  extends SummaryFormProps<ProjectContactFormSummary_projectRevision$key> {}
 
-const ProjectContactFormSummary: React.FC<Props> = (props) => {
+const ProjectContactFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { summaryContactFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
@@ -54,15 +58,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the contacts page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
-
-  // defines if we are on the project revision view page to show specific UI
-  const isOnAmendmentsAndOtherRevisionsPage =
-    props.isOnAmendmentsAndOtherRevisionsPage;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   let contactFormChanges = summaryContactFormChanges.edges;
@@ -149,14 +149,14 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
     () =>
-      props.setHasDiff &&
-      props.setHasDiff(
+      setHasDiff &&
+      setHasDiff(
         (prev) =>
           // we need to check previous value since this form and the project managers form are rendered under same CollapsibleFormWidget
           prev ||
           (!allFormChangesPristine && !secondaryContactFormChangesPristine)
       ),
-    [props, allFormChangesPristine, secondaryContactFormChangesPristine]
+    [allFormChangesPristine, secondaryContactFormChangesPristine, setHasDiff]
   );
 
   if (
@@ -169,7 +169,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
   return (
     <div>
       <h3>Project Contacts</h3>
-      {allFormChangesPristine && !props.viewOnly ? (
+      {allFormChangesPristine && !viewOnly ? (
         <p>
           <em>Project Contacts not {isFirstRevision ? "added" : "updated"}</em>
         </p>
@@ -180,7 +180,7 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
             {(primaryContact?.node?.isPristine ||
               (primaryContact?.node?.isPristine === null &&
                 !primaryContact.node.newFormData.contactId)) &&
-            !props.viewOnly &&
+            !viewOnly &&
             !isOnAmendmentsAndOtherRevisionsPage ? (
               <dd>
                 <em>Primary Contact not updated</em>
@@ -233,14 +233,14 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
           {!isOnAmendmentsAndOtherRevisionsPage ? (
             <div>
               <label>Secondary Contacts</label>
-              {secondaryContacts.length < 1 && props.viewOnly && (
+              {secondaryContacts.length < 1 && viewOnly && (
                 <dd>
                   <em>No Secondary contacts</em>
                 </dd>
               )}
               {(secondaryContactFormChangesPristine ||
                 secondaryContacts.length < 1) &&
-              !props.viewOnly ? (
+              !viewOnly ? (
                 <dd>
                   <em>
                     {isFirstRevision
