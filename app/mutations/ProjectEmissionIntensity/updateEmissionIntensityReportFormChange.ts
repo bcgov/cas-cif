@@ -18,6 +18,7 @@ const mutation = graphql`
           teimpPaymentAmount
           ...TaskList_projectRevision
         }
+        paymentPercentage
       }
     }
   }
