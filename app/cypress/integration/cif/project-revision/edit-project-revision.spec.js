@@ -28,7 +28,7 @@ describe("when editing a project, the project page", () => {
 
     cy.contains("Changes saved.");
 
-    cy.happoAndAxe("Project Overview Form", "editing", "main");
+    cy.happoAndAxe("Project Overview Form", "editing", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit managers -- delete a manager
