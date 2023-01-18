@@ -202,7 +202,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       },
       debounceKey: milestoneNode.id,
       optimisticResponse: {
-        updateFormChange: {
+        updateMilestoneFormChange: {
           formChange: {
             id: milestoneNode.id,
             newFormData: {
