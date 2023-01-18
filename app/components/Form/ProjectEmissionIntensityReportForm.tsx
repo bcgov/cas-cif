@@ -189,8 +189,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .paymentPercentage;
   const actualPerformanceMilestoneAmount =
-    Number(maximumPerformanceMilestoneAmount ?? 0) *
-    Number(paymentPercentageOfPerformanceMilestoneAmount ?? 0);
+    Number(maximumPerformanceMilestoneAmount ?? null) *
+    Number(paymentPercentageOfPerformanceMilestoneAmount ?? null);
 
   // Mutations
   const [
@@ -325,13 +325,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             formData={emissionIntensityReportFormChange?.newFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
-              calculatedEiPerformance: calculatedEiPerformance ?? 0,
+              calculatedEiPerformance: calculatedEiPerformance ?? null,
               paymentPercentageOfPerformanceMilestoneAmount:
-                paymentPercentageOfPerformanceMilestoneAmount ?? 0,
+                paymentPercentageOfPerformanceMilestoneAmount ?? null,
               maximumPerformanceMilestoneAmount:
-                maximumPerformanceMilestoneAmount ?? 0,
+                maximumPerformanceMilestoneAmount ?? null,
               actualPerformanceMilestoneAmount:
-                actualPerformanceMilestoneAmount ?? 0,
+                actualPerformanceMilestoneAmount ?? null,
               teimpPaymentPercentage:
                 projectRevision.teimpPaymentPercentage ?? "-",
               teimpPaymentAmount: projectRevision.teimpPaymentAmount ?? "-",
