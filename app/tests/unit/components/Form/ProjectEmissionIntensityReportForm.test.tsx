@@ -56,7 +56,6 @@ const defaultMockResolver = {
               paymentPercentage: 60,
               rowId: 1,
               newFormData: {
-                paymentPercentage: 60,
                 measurementPeriodStartDate: "2022-01-02",
                 measurementPeriodEndDate: "2023-01-02",
                 emissionFunctionalUnit: "tCO2e",
