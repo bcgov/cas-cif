@@ -47,6 +47,7 @@ const projectSchema = {
       type: "number",
       title: "Project Status",
       default: undefined,
+      anyOf: undefined,
     },
     sectorName: {
       type: "string",

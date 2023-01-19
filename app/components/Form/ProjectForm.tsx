@@ -3,7 +3,6 @@ import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
 import { useMemo } from "react";
-import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
 import { FormValidation, ISubmitEvent } from "@rjsf/core";
@@ -78,10 +77,7 @@ export const createProjectUiSchema = (
     },
     projectStatusId: {
       "ui:placeholder": "Select a Project Status",
-      "ui:widget": "SelectProjectStatusWidget",
-      "ui:options": {
-        text: `${projectStatus}`,
-      },
+      "ui:widget": "SearchWidget",
     },
     sectorName: {
       "ui:placeholder": "Select a Sector",
@@ -126,6 +122,7 @@ const ProjectForm: React.FC<Props> = (props) => {
             rank
           }
           asProject {
+            fundingStreamRfpId
             fundingStreamRfpByFundingStreamRfpId {
               year
               fundingStreamByFundingStreamId {
@@ -167,7 +164,17 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
-        ...SelectProjectStatusWidget_query
+        allFundingStreamRfpProjectStatuses {
+          edges {
+            node {
+              fundingStreamRfpId
+              projectStatusByProjectStatusId {
+                rowId
+                name
+              }
+            }
+          }
+        }
       }
     `,
     props.query
@@ -304,10 +311,28 @@ const ProjectForm: React.FC<Props> = (props) => {
             };
           }),
         },
+        projectStatusId: {
+          ...projectSchema.properties.projectStatusId,
+          anyOf: query.allFundingStreamRfpProjectStatuses.edges
+            .filter(({ node }) => {
+              return (
+                node.fundingStreamRfpId ==
+                revision.projectFormChange.asProject.fundingStreamRfpId
+              );
+            })
+            .map(({ node }) => {
+              return {
+                type: "number",
+                title: node.projectStatusByProjectStatusId.name,
+                enum: [node.projectStatusByProjectStatusId.rowId],
+                value: node.projectStatusByProjectStatusId.rowId,
+              };
+            }),
+        },
       },
     };
     return initialSchema as JSONSchema7;
-  }, [query]);
+  }, [query, revision]);
 
   const handleSubmit = async (e: ISubmitEvent<any>) => {
     await handleStage(e.formData);
@@ -345,7 +370,6 @@ const ProjectForm: React.FC<Props> = (props) => {
         }}
         widgets={{
           SelectRfpWidget: ReadOnlyWidget,
-          SelectProjectStatusWidget: SelectProjectStatusWidget,
         }}
         onChange={(change) => handleChange(change.formData)}
         onSubmit={handleSubmit}

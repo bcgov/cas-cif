@@ -52,7 +52,8 @@
       "projectStatusId": {
         "type": "number",
         "title": "Project Status",
-        "default": "undefined"
+        "default": "undefined",
+        "anyOf": "undefined"
       },
       "sectorName": {
         "type": "string",
