@@ -134,7 +134,7 @@ select is(
     select new_form_data from cif.form_change
     where id = 6
   ),
-  '{"fundingStreamRfpId": "3"}'::jsonb
+  '{"fundingStreamRfpId": 3}'::jsonb
   ,
   'project form changes with no previous form change id keep their fundingStreamRfpId'
 );
