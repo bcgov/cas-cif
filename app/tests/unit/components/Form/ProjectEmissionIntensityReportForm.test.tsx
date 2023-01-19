@@ -231,7 +231,11 @@ describe("the emission intensity report form component", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    expect(screen.queryByText("0.00%")).toBeInTheDocument();
+    expect(
+      screen.getByText("GHG Emission Intensity Performance").closest("div")
+    ).toHaveTextContent(
+      "This field cannot be calculated due to lack of information now"
+    );
   });
 
   it("renders the TEIMP form with placeholders for calculated values, when the form is not filled", () => {
