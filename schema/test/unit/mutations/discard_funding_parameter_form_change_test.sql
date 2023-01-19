@@ -1,7 +1,7 @@
 
 begin;
 
-select plan(5);
+select plan(6);
 
 -- Test Setup
 truncate cif.operator restart identity cascade;
@@ -47,6 +47,16 @@ values (
   'cif',
   'some_other_table',
   'some_other_schema',
+  null,
+  1,
+  '[]'
+),(
+  '{"testField": "test value"}',
+  'update',
+  'pending',
+  'cif',
+  'additional_funding_source',
+  'additional_funding_source',
   null,
   1,
   '[]'
@@ -98,9 +108,20 @@ select is(
   where project_revision_id = 1
   and
     operation = 'archive'
+  and form_data_table_name = 'funding_parameter'
   ),
   1::bigint,
-  'There should be 1 archived form_change record'
+  'There should be 1 archived form_change record for the funding_parameter table'
 );
+
+select is(
+  (select count(*) from cif.form_change
+  where project_revision_id = 1
+  and operation = 'archive'
+  and form_data_table_name = 'additional_funding_source'
+  ),
+  1::bigint,
+  'The additional funding source associated with this funding agreement should be archived'
+)
 
 rollback;
