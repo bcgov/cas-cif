@@ -28,6 +28,14 @@ const mockQueryPayload = {
         id: "Test Project Form Change ID",
         formChangeByPreviousFormChangeId: null,
         isUniqueValue: true,
+        asProject: {
+          fundingStreamRfpByFundingStreamRfpId: {
+            year: 2019,
+            fundingStreamByFundingStreamId: {
+              description: "Emissions Performance",
+            },
+          },
+        },
         newFormData: {
           proposalReference: "12345678",
           summary: "d",
@@ -178,7 +186,10 @@ describe("The Project Form", () => {
     componentTestingHelper.loadQuery();
 
     componentTestingHelper.renderComponent();
-
+    // Also ensures that funding stream is read only
+    expect(screen.getAllByRole("definition")[0]).toHaveTextContent(
+      /Emissions Performance - 2019/i
+    );
     expect(
       screen.getByLabelText<HTMLInputElement>("Proposal Reference").value
     ).toBe("12345678");

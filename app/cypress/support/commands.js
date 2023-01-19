@@ -117,7 +117,8 @@ Cypress.Commands.add(
     cy.findByLabelText(/Score/i).type(score);
     cy.findByLabelText(/Project Description/i).type(projectDescription);
     cy.findByLabelText(/Total Funding Request/i).type(totalFundingRequest);
-    cy.findByLabelText(/Project Status/i).select(projectStatus);
+    cy.findByLabelText("Project Status").click();
+    cy.contains(projectStatus).click();
     cy.findByLabelText(/General Comments/i).type(comments);
     // There is a bug where if cypress starts changing another form on the page too quickly,
     // the last change is discarded and rjsf throws an error.
@@ -128,8 +129,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "checkOverviewForm",
   (
-    fundingStream,
-    fundingStreamYear,
     operatorName,
     proposalReference,
     projectName,
@@ -138,8 +137,6 @@ Cypress.Commands.add(
     projectStatus,
     comments
   ) => {
-    cy.get("option").contains(fundingStream).should("be.selected");
-    cy.get("option").contains(fundingStreamYear).should("be.selected");
     cy.findByLabelText(/Operator Name/i).should("have.value", operatorName);
     cy.findByLabelText(/Proposal Reference/i).should(
       "have.value",
@@ -155,7 +152,7 @@ Cypress.Commands.add(
       "have.value",
       totalFundingRequest
     );
-    cy.get("option").contains(projectStatus).should("be.selected");
+    cy.findByLabelText(/Project Status/i).should("have.value", projectStatus);
     cy.findByLabelText(/General Comments/i).should("have.value", comments);
   }
 );

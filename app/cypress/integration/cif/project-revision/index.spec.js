@@ -26,7 +26,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/0");
     cy.get("button").contains("Submit Project Overview");
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project Overview Form", "empty", "main");
+    cy.happoAndAxe("Project Overview Form", "empty", "main", true);
 
     //PROJECT DETAILS
     cy.findByText(/Project Details/i).click();
@@ -197,7 +197,7 @@ describe("the new project page", () => {
 
     // OVERVIEW
     cy.url().should("include", "/form/0");
-    cy.findByText("Emissions Performance").should("be.visible");
+    cy.findByText(/Emissions Performance/i).should("be.visible");
     cy.findByLabelText(/Proposal Reference/i).type("001");
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit Project Overview").click();

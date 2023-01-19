@@ -76,8 +76,8 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   const oldUiSchema = previousDataAsProject
     ? createProjectUiSchema(
         previousDataAsProject.operatorByOperatorId.legalName,
-        previousDataAsProject.operatorByOperatorId.bcRegistryId,
         `${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+        previousDataAsProject.operatorByOperatorId.bcRegistryId,
         previousDataAsProject.projectStatusByProjectStatusId.name
       )
     : null;
@@ -111,8 +111,8 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
           schema={formSchema as JSONSchema7}
           uiSchema={createProjectUiSchema(
             newDataAsProject?.operatorByOperatorId?.legalName,
-            newDataAsProject?.operatorByOperatorId?.bcRegistryId,
             `${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId?.description} - ${newDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+            newDataAsProject?.operatorByOperatorId?.bcRegistryId,
             newDataAsProject?.projectStatusByProjectStatusId?.name
           )}
           formData={formData}

@@ -3,8 +3,6 @@ import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
 import type { ProjectForm_query$key } from "__generated__/ProjectForm_query.graphql";
 import { useMemo } from "react";
-import SelectRfpWidget from "components/Form/SelectRfpWidget";
-import SelectProjectStatusWidget from "./SelectProjectStatusWidget";
 import projectSchema from "data/jsonSchemaForm/projectSchema";
 import { ProjectForm_projectRevision$key } from "__generated__/ProjectForm_projectRevision.graphql";
 import { FormValidation, ISubmitEvent } from "@rjsf/core";
@@ -13,6 +11,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
+import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 
 interface Props {
   query: ProjectForm_query$key;
@@ -22,8 +21,8 @@ interface Props {
 // You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectUiSchema = (
   legalName?,
-  bcRegistryId?,
   rfpStream?,
+  bcRegistryId?,
   projectStatus?
 ) => {
   return {
@@ -78,7 +77,7 @@ export const createProjectUiSchema = (
     },
     projectStatusId: {
       "ui:placeholder": "Select a Project Status",
-      "ui:widget": "SelectProjectStatusWidget",
+      "ui:widget": "SearchWidget",
       "ui:options": {
         text: `${projectStatus}`,
       },
@@ -125,6 +124,15 @@ const ProjectForm: React.FC<Props> = (props) => {
           projectRevisionByProjectRevisionId {
             rank
           }
+          asProject {
+            fundingStreamRfpId
+            fundingStreamRfpByFundingStreamRfpId {
+              year
+              fundingStreamByFundingStreamId {
+                description
+              }
+            }
+          }
         }
       }
     `,
@@ -159,8 +167,17 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
-        ...SelectRfpWidget_query
-        ...SelectProjectStatusWidget_query
+        allFundingStreamRfpProjectStatuses {
+          edges {
+            node {
+              fundingStreamRfpId
+              projectStatusByProjectStatusId {
+                rowId
+                name
+              }
+            }
+          }
+        }
       }
     `,
     props.query
@@ -172,9 +189,17 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   }, [query, revision.projectFormChange.newFormData?.operatorId]);
 
+  const rfpDescription =
+    revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      .fundingStreamByFundingStreamId.description;
+  const rfpYear =
+    revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      .year;
+  const rfpStream = `${rfpDescription} - ${rfpYear}`;
   const uiSchema = useMemo(() => {
     return createProjectUiSchema(
-      selectedOperator ? selectedOperator.node.tradeName : ""
+      selectedOperator ? selectedOperator.node.tradeName : "",
+      rfpStream
     );
   }, [selectedOperator]);
 
@@ -289,10 +314,28 @@ const ProjectForm: React.FC<Props> = (props) => {
             };
           }),
         },
+        projectStatusId: {
+          ...projectSchema.properties.projectStatusId,
+          anyOf: query.allFundingStreamRfpProjectStatuses.edges
+            .filter(({ node }) => {
+              return (
+                node.fundingStreamRfpId ==
+                revision.projectFormChange.asProject.fundingStreamRfpId
+              );
+            })
+            .map(({ node }) => {
+              return {
+                type: "number",
+                title: node.projectStatusByProjectStatusId.name,
+                enum: [node.projectStatusByProjectStatusId.rowId],
+                value: node.projectStatusByProjectStatusId.rowId,
+              };
+            }),
+        },
       },
     };
     return initialSchema as JSONSchema7;
-  }, [query]);
+  }, [query, revision]);
 
   const handleSubmit = async (e: ISubmitEvent<any>) => {
     await handleStage(e.formData);
@@ -329,8 +372,7 @@ const ProjectForm: React.FC<Props> = (props) => {
               .rank ?? null,
         }}
         widgets={{
-          SelectRfpWidget: SelectRfpWidget,
-          SelectProjectStatusWidget: SelectProjectStatusWidget,
+          SelectRfpWidget: ReadOnlyWidget,
         }}
         onChange={(change) => handleChange(change.formData)}
         onSubmit={handleSubmit}

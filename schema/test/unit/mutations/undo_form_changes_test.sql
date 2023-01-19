@@ -1,6 +1,6 @@
 begin;
 
-select plan(6);
+select plan(7);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -63,27 +63,37 @@ values (
   'update',
   'staged',
   'cif',
+  'test_table_name',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+('{"testField": "do not change me"}',
+  'create',
+  'pending',
+  'cif',
+  'test_table_name',
+  'schema',
+  null,
+  1,
+  '[]'
+),
+('{"testField": "do not change me"}',
+  'create',
+  'pending',
+  'cif',
+  'test_table_name',
+  'schema',
+  null,
+  1,
+  '[]'
+),(
+  '{"fundingStreamRfpId": 3}',
+  'update',
+  'staged',
+  'cif',
   'project',
-  'schema',
-  null,
-  1,
-  '[]'
-),
-('{"testField": "do not change me"}',
-  'create',
-  'pending',
-  'cif',
-  'test_table_name',
-  'schema',
-  null,
-  1,
-  '[]'
-),
-('{"testField": "do not change me"}',
-  'create',
-  'pending',
-  'cif',
-  'test_table_name',
   'schema',
   null,
   1,
@@ -94,7 +104,7 @@ values (
 /* END SETUP */
 
 -- we are calling the function once with an array of form_change_ids
-select cif.undo_form_changes(ARRAY[2, 3, 5]);
+select cif.undo_form_changes(ARRAY[2, 3, 5, 6]);
 
 select is(
   (
@@ -122,11 +132,21 @@ select is(
 select is(
   (
     select new_form_data from cif.form_change
+    where id = 6
+  ),
+  '{"fundingStreamRfpId": 3}'::jsonb
+  ,
+  'project form changes with no previous form change id keep their fundingStreamRfpId'
+);
+
+select is(
+  (
+    select new_form_data from cif.form_change
     where id = 3
   ),
-  '{}'::jsonb
+  null
   ,
-  'form changes with no previous form change id are set to empty json object when form_data_table name is project'
+  'non project form changes with no previous form change id are deleted'
 );
 
 select is(
@@ -158,8 +178,6 @@ select results_eq(
   $$,
   'Returns project revision on calling undo_form_changes'
 );
-
-
 
 select finish();
 

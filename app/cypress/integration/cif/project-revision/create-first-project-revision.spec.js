@@ -31,7 +31,7 @@ describe("when creating a project, the project page", () => {
       "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project Overview Form", "filled", "main");
+    cy.happoAndAxe("Project Overview Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add managers
