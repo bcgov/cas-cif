@@ -25,7 +25,7 @@ describe("when undoing, the project revision page", () => {
       "65.432"
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.checkOverviewForm("", "", "", "", "", "Select a Project Status", "");
+    cy.checkOverviewForm("", "", "", "", "", "", "", "");
 
     cy.findByText(/Project Details/i).click();
 

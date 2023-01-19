@@ -78,6 +78,9 @@ export const createProjectUiSchema = (
     projectStatusId: {
       "ui:placeholder": "Select a Project Status",
       "ui:widget": "SearchWidget",
+      "ui:options": {
+        text: `${projectStatus}`,
+      },
     },
     sectorName: {
       "ui:placeholder": "Select a Sector",
