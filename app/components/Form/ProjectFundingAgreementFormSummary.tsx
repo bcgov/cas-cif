@@ -45,21 +45,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     isFirstRevision,
     summaryAdditionalFundingSourceFormChanges,
     totalProjectValue,
-    anticipatedFundingAmountPerFiscalYear,
   } = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
+        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         totalProjectValue
-        anticipatedFundingAmountPerFiscalYear {
-          edges {
-            # eslint-disable-next-line relay/unused-fields
-            node {
-              anticipatedFundingAmount
-              fiscalYear
-            }
-          }
-        }
         summaryProjectFundingAgreementFormChanges: formChangesFor(
           formDataTableName: "funding_parameter"
         ) {
@@ -265,6 +256,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           uiSchema={fundingAgreementUiSchema}
           formData={formData}
           formContext={{
+            projectRevision,
             operation: fundingAgreementSummary?.operation,
             calculatedTotalProjectValue: totalProjectValue,
             calculatedProponentsSharePercentage,
@@ -330,6 +322,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       <style jsx>{`
         .summaryContainer {
           margin-bottom: 1em;
+        }
+        :global(.anticipatedFundingAmount) {
+          margin-bottom: 0.5em;
+        }
+        :global(#root_anticipatedFundingAmountPerFiscalYear) {
+          border: none;
         }
       `}</style>
     </div>

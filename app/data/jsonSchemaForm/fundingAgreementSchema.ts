@@ -32,15 +32,8 @@ export const fundingAgreementSchema = {
       type: "number",
     },
     anticipatedFundingAmountPerFiscalYear: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          amount: {
-            type: "number",
-          },
-        },
-      },
+      title: " ",
+      type: "string",
     },
     proponentCost: {
       title: "Proponent Cost",
@@ -104,18 +97,12 @@ export const fundingAgreementUiSchema = {
     isMoney: true,
   },
   anticipatedFundingAmountPerFiscalYear: {
-    items: {
-      amount: {
-        "ui:widget": "text",
-        calculatedValueFormContextProperty: "calculatedAnticipatedAmount",
-      },
-    },
     "ui:options": {
-      addable: false,
-      orderable: false,
-      removable: false,
       label: false,
     },
+    "ui:widget": "AnticipatedFundingAmountPerFiscalYearWidget",
+    title: "",
+    hideOptional: true,
   },
   proponentCost: {
     "ui:widget": "NumberWidget",

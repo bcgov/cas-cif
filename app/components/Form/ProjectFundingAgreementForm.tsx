@@ -92,19 +92,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const projectRevision = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_projectRevision on ProjectRevision {
+        # eslint-disable-next-line relay/must-colocate-fragment-spreads
+        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         id
         rowId
         projectFormChange {
           formDataRecordId
-        }
-        anticipatedFundingAmountPerFiscalYear {
-          edges {
-            # eslint-disable-next-line relay/unused-fields
-            node {
-              anticipatedFundingAmount
-              fiscalYear
-            }
-          }
         }
         totalProjectValue
         projectFundingAgreementFormChanges: formChangesFor(
@@ -409,6 +402,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             schema={fundingAgreementSchema as JSONSchema7}
             formData={fundingAgreement?.newFormData}
             formContext={{
+              projectRevision,
               form: fundingAgreement?.newFormData,
               calculatedTotalProjectValue: projectRevision.totalProjectValue,
               calculatedProponentsSharePercentage,
@@ -566,6 +560,19 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           }
           :global(.expensesPaymentsTrackerForm > div > div:nth-last-child(2)) {
             margin-bottom: 0px;
+
+          :global(.array-item-list fieldset) {
+            border: none;
+            padding: 0;
+            margin: 0;
+          }
+          :global(.array-item) {
+            padding: 0;
+            margin: 0;
+          }
+          :global(#ProjectFundingAgreementForm_anticipatedFundingAmountPerFiscalYear) {
+            border: none;
+            padding: 0;
           }
         `}
       </style>
