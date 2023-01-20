@@ -1,6 +1,6 @@
 begin;
 
-select plan(9);
+select plan(11);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -41,7 +41,7 @@ select is(
   'A record should be created on a committed change'
 );
 
--- -- doesnt insert if the data is missing required fields
+-- doesnt insert if the data is missing required fields
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values (
   '{"textCol":"test2 text"}',
@@ -58,7 +58,7 @@ select throws_ok(
 );
 
 
--- -- inserts with default value if data is missing
+-- inserts with default value if data is missing
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values (
   '{"textCol":"test3", "requiredCol":"required"}',
@@ -97,7 +97,7 @@ select is(
 );
 
 -- set client_min_messages to debug;
--- -- archive test
+-- archive test
 insert into cif.form_change(operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
   values (
     'archive', 'mock_schema', 'mock_table', 1, 'test_schema', 'pending'
@@ -117,7 +117,7 @@ select is(
   'The record should be archived when the committed change operation is archive'
 );
 
--- -- setting up pending change without specifying the record id
+-- setting up pending change without specifying the record id
 delete from cif.form_change;
 truncate mock_schema.mock_table restart identity;
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name, change_status)
@@ -140,6 +140,35 @@ select is(
   (select count(*) from mock_schema.mock_table where text_col='test text'),
   1::bigint,
   'A record should be inserted when no form_data_record_id is specified'
+);
+
+-- setting up pending change without specifying the record id
+delete from cif.form_change;
+truncate mock_schema.mock_table restart identity;
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
+values (
+  '{"notATableCol": "shouldBeIgnored", "textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
+  'create', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_schema', 'pending'
+);
+
+-- Function does not error when form_data object contains keys that are not columns in the target table (deprecated columns)
+select lives_ok(
+  $$
+    with record as (
+      select row(form_change.*)::cif.form_change from cif.form_change where id=7
+    ) select cif_private.handle_default_form_change_commit((select * from record))
+  $$,
+  'Function ignores keys in the form_data that do not correspond to column in the target table (does not throw an error)'
+);
+
+select results_eq(
+  $$
+    select * from mock_schema.mock_table where id=1
+  $$,
+  $$
+    values (1::integer, 'test text'::text, 234::integer, true::boolean, 'req'::text, 1::int, null::timestamptz)
+  $$,
+  'All proper values were inserted when form_data includes a key that does not correspond to a column in the target table'
 );
 
 select finish();
