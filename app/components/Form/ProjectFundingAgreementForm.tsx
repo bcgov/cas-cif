@@ -560,7 +560,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           }
           :global(.expensesPaymentsTrackerForm > div > div:nth-last-child(2)) {
             margin-bottom: 0px;
-
+          }
           :global(.array-item-list fieldset) {
             border: none;
             padding: 0;
