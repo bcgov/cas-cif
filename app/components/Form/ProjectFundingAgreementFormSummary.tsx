@@ -48,6 +48,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   } = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
+        # eslint-disable-next-line relay/must-colocate-fragment-spreads
         ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         totalProjectValue
