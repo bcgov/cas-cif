@@ -100,8 +100,11 @@ const ProjectFormSummary: React.FC<Props> = ({
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
   const projectFormNotUpdated = useMemo(
-    () => projectFormChange.isPristine === null || projectFormChange.isPristine,
-    [projectFormChange]
+    () =>
+      projectFormChange.isPristine ||
+      (projectFormChange.isPristine === null &&
+        Object.keys(formData).length === 0),
+    [projectFormChange, formData]
   );
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -114,10 +117,7 @@ const ProjectFormSummary: React.FC<Props> = ({
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Overview</h3>}
-      {(projectFormChange.isPristine ||
-        (projectFormChange.isPristine === null &&
-          Object.keys(projectFormChange.newFormData).length === 0)) &&
-      !viewOnly ? (
+      {projectFormNotUpdated && !viewOnly ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
           text="Project Overview"
