@@ -9,7 +9,15 @@ returns numeric as
 $fn$
 
   select
-    round(100 - ((-1.5) * coalesce(cif.emission_intensity_report_calculated_ei_performance(cif.emission_intensity_report),fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric + 145), 2);
+    round(100 - ((-1.5) *
+      coalesce(
+        cif.emission_intensity_report_calculated_ei_performance(
+          (select row(emission_intensity_report.*)::cif.emission_intensity_report from cif.emission_intensity_report where reporting_requirement_id = 1)
+          )::numeric,
+        (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric)
+         + 145),
+      2
+    );
 
 $fn$ language sql stable;
 
