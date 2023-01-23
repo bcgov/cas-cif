@@ -160,6 +160,75 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     [allFormChangesPristine, secondaryContactFormChangesPristine, setHasDiff]
   );
 
+  const primaryContactNotUpdated =
+    primaryContact?.node?.isPristine ||
+    (primaryContact?.node?.isPristine === null &&
+      !primaryContact.node.newFormData.contactId);
+
+  const primaryContactForm = useMemo(() => {
+    return (
+      <div className="contactFormContainer">
+        <label>Primary Contact</label>
+        {(primaryContact?.node?.isPristine ||
+          (primaryContact?.node?.isPristine === null &&
+            !primaryContact.node.newFormData.contactId)) &&
+        !viewOnly ? (
+          <FormNotAddedOrUpdated
+            isFirstRevision={isFirstRevision}
+            text="Primary Contact"
+          />
+        ) : (
+          <>
+            <FormBase
+              liveValidate
+              key={primaryContact?.node.id}
+              tagName={"dl"}
+              theme={readOnlyTheme}
+              fields={renderDiff ? customFields : fields}
+              schema={projectContactSchema as JSONSchema7}
+              uiSchema={createProjectContactUiSchema(
+                primaryContact ? (
+                  primaryContact?.node?.asProjectContact?.contactByContactId
+                    ?.fullName
+                ) : (
+                  <em>Primary Contact not added</em>
+                )
+              )}
+              formData={primaryContact ? primaryContact.node.newFormData : null}
+              formContext={{
+                operation: primaryContact?.node.operation,
+                oldData:
+                  primaryContact?.node.formChangeByPreviousFormChangeId
+                    ?.newFormData,
+                oldUiSchema: createProjectContactUiSchema(
+                  primaryContact?.node?.formChangeByPreviousFormChangeId
+                    ?.asProjectContact?.contactByContactId?.fullName
+                ),
+                isAmendmentsAndOtherRevisionsSpecific:
+                  isOnAmendmentsAndOtherRevisionsPage,
+              }}
+            />
+            {primaryContact?.node?.asProjectContact?.contactByContactId &&
+              !isOnAmendmentsAndOtherRevisionsPage && (
+                <ContactDetails
+                  className="contactDetails"
+                  contact={
+                    primaryContact.node.asProjectContact.contactByContactId
+                  }
+                />
+              )}
+          </>
+        )}
+      </div>
+    );
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    primaryContact,
+    renderDiff,
+    viewOnly,
+  ]);
+
   if (
     isOnAmendmentsAndOtherRevisionsPage &&
     allFormChangesPristine &&
@@ -177,89 +246,39 @@ const ProjectContactFormSummary: React.FC<Props> = ({
         />
       ) : (
         <>
-          <div className="contactFormContainer">
-            <label>Primary Contact</label>
-            {(primaryContact?.node?.isPristine ||
-              (primaryContact?.node?.isPristine === null &&
-                !primaryContact.node.newFormData.contactId)) &&
-            !viewOnly &&
-            !isOnAmendmentsAndOtherRevisionsPage ? (
-              <FormNotAddedOrUpdated
-                isFirstRevision={isFirstRevision}
-                text="Primary Contact"
-              />
-            ) : (
-              <>
-                <FormBase
-                  liveValidate
-                  key={primaryContact?.node.id}
-                  tagName={"dl"}
-                  theme={readOnlyTheme}
-                  fields={renderDiff ? customFields : fields}
-                  schema={projectContactSchema as JSONSchema7}
-                  uiSchema={createProjectContactUiSchema(
-                    primaryContact ? (
-                      primaryContact?.node?.asProjectContact?.contactByContactId
-                        ?.fullName
-                    ) : (
-                      <em>Primary Contact not added</em>
-                    )
-                  )}
-                  formData={
-                    primaryContact ? primaryContact.node.newFormData : null
-                  }
-                  formContext={{
-                    operation: primaryContact?.node.operation,
-                    oldData:
-                      primaryContact?.node.formChangeByPreviousFormChangeId
-                        ?.newFormData,
-                    oldUiSchema: createProjectContactUiSchema(
-                      primaryContact?.node?.formChangeByPreviousFormChangeId
-                        ?.asProjectContact?.contactByContactId?.fullName
-                    ),
-                    isAmendmentsAndOtherRevisionsSpecific:
-                      isOnAmendmentsAndOtherRevisionsPage,
-                  }}
-                />
-                {primaryContact?.node?.asProjectContact?.contactByContactId &&
-                  !isOnAmendmentsAndOtherRevisionsPage && (
-                    <ContactDetails
-                      className="contactDetails"
-                      contact={
-                        primaryContact.node.asProjectContact.contactByContactId
-                      }
-                    />
-                  )}
-              </>
-            )}
-          </div>
           {!isOnAmendmentsAndOtherRevisionsPage ? (
-            <div>
-              <label>Secondary Contacts</label>
-              {secondaryContacts.length < 1 && viewOnly && (
-                <FormNotAddedOrUpdated
-                  isFirstRevision={true} //setting this to true so that the text is "Secondary Contacts not added"
-                  text="Secondary Contacts"
-                />
-              )}
-              {(secondaryContactFormChangesPristine ||
-                secondaryContacts.length < 1) &&
-              !viewOnly ? (
-                <FormNotAddedOrUpdated
-                  isFirstRevision={isFirstRevision}
-                  text="Secondary Contacts"
-                />
-              ) : (
-                contactsJSX
-              )}
-            </div>
-          ) : (
-            secondaryContacts.length > 0 && (
-              <div className="contactFormContainer">
+            <>
+              {primaryContactForm}
+              <div>
                 <label>Secondary Contacts</label>
-                {contactsJSX}
+                {secondaryContacts.length < 1 && viewOnly && (
+                  <FormNotAddedOrUpdated
+                    isFirstRevision={true} //setting this to true so that the text is "Secondary Contacts not added"
+                    text="Secondary Contacts"
+                  />
+                )}
+                {(secondaryContactFormChangesPristine ||
+                  secondaryContacts.length < 1) &&
+                !viewOnly ? (
+                  <FormNotAddedOrUpdated
+                    isFirstRevision={isFirstRevision}
+                    text="Secondary Contacts"
+                  />
+                ) : (
+                  contactsJSX
+                )}
               </div>
-            )
+            </>
+          ) : (
+            <>
+              {!primaryContactNotUpdated && primaryContactForm}
+              {secondaryContacts.length > 0 && (
+                <div className="contactFormContainer">
+                  <label>Secondary Contacts</label>
+                  {contactsJSX}
+                </div>
+              )}
+            </>
           )}
         </>
       )}
