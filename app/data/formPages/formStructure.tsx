@@ -14,6 +14,8 @@ import ProjectFundingAgreementForm from "components/Form/ProjectFundingAgreement
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 import ProjectEmissionIntensityReport from "components/Form/ProjectEmissionIntensityReportForm";
 import ProjectEmissionIntensityReportSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
+import ProjectSummaryReportForm from "components/Form/ProjectSummaryReportForm";
+import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryReportFormSummary";
 import {
   buildFormPages,
   buildNumberedFormStructure,
@@ -28,8 +30,7 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
   const showTeimp = useShowGrowthbookFeature("teimp");
 
   const showEP = fundingStream == "EP" ? true : false;
-  // TODO: use this to conditionally show IA specific items in the task list
-  // const showIA = fundingStream == "IA" ? true : false;
+  const showIA = fundingStream == "IA" ? true : false;
 
   return useMemo(
     () => [
@@ -137,25 +138,24 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
             },
           ]
         : []),
-      // TODO: Create the project summary report
-      // ...(showIA
-      //   ? [
-      //       {
-      //         title: "Project Summary Report",
-      //         items: [
-      //           {
-      //             title: "Project Summary Report",
-      //             formConfiguration: {
-      //               slug: "annualReports",
-      //               editComponent: ProjectAnnualReportForm,
-      //               viewComponent: ProjectAnnualReportFormSummary,
-      //             },
-      //           },
-      //         ],
-      //       },
-      //     ]
-      //   : []),
-      // ,
+      ...(showIA
+        ? [
+            {
+              title: "Project Summary Report",
+              items: [
+                {
+                  title: "Project Summary Report",
+                  formConfiguration: {
+                    slug: "projectSummaryReport",
+                    editComponent: ProjectSummaryReportForm,
+                    viewComponent: ProjectSummaryReportFormSummary,
+                  },
+                },
+              ],
+            },
+          ]
+        : []),
+      ,
       ,
     ],
     [showTeimp]

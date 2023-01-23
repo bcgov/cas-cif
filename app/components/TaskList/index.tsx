@@ -157,6 +157,10 @@ const TaskList: React.FC<Props> = ({
       context: [{ status: teimpStatus }],
       ItemsComponent: BaseTaskListItemComponent,
     },
+    projectSummaryReport: {
+      context: [{ status: "" }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
   };
   const projectRevisionViewPagePathName = getProjectRevisionViewPageRoute(
     projectRevisionUnderReview?.id
