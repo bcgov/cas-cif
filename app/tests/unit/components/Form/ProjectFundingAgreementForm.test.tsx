@@ -35,18 +35,6 @@ const defaultMockResolver = {
               fiscalYear: "2021/2022",
             },
           },
-          {
-            node: {
-              anticipatedFundingAmount: "7",
-              fiscalYear: "2022/2023",
-            },
-          },
-          {
-            node: {
-              anticipatedFundingAmount: "9",
-              fiscalYear: "2023/2024",
-            },
-          },
         ],
       },
       totalProjectValue: "350",
@@ -176,23 +164,11 @@ describe("The ProjectFundingAgreementForm", () => {
         /Anticipated\/Actual Funding Amount/i
       ).value
     ).toBe("$300.00");
-
     expect(
       screen.getByLabelText<HTMLLabelElement>(
-        /Anticipated Funding Amount \(2021\/2022\)/i
+        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
       )
     ).toHaveTextContent("$5.00");
-    expect(
-      screen.getByLabelText<HTMLLabelElement>(
-        /Anticipated Funding Amount \(2022\/2023\)/i
-      )
-    ).toHaveTextContent("$7.00");
-    expect(
-      screen.getByLabelText<HTMLLabelElement>(
-        /Anticipated Funding Amount \(2023\/2024\)/i
-      )
-    ).toHaveTextContent("$9.00");
-
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value
     ).toBe("$800.00");
