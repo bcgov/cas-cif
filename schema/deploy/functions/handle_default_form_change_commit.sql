@@ -11,6 +11,8 @@ declare
   keys text;
   vals text;
   record_id int;
+  json_key text;
+  json_data jsonb;
 begin
 
   select fc.form_data_record_id into record_id;
@@ -24,9 +26,27 @@ begin
     raise exception 'Cannot commit form_change. It has already been committed.';
   end if;
 
+  /**
+    Prune the form_data object of any deprecated columns.
+    If a column is deprecated, but the key still exists in older form data records
+    it will cause an error when trying to insert data into that column.
+  **/
+  json_data = fc.new_form_data;
+  for json_key in (select key from jsonb_each(json_data))
+  loop
+    if (select quote_ident(cif_private.camel_to_snake_case(json_key))) not in (
+      select column_name::text
+        from information_schema.columns
+        where table_schema = fc.form_data_schema_name
+        AND table_name   = fc.form_data_table_name
+    ) then
+      json_data = json_data - json_key;
+    end if;
+  end loop;
+
   schema_table := quote_ident(fc.form_data_schema_name) || '.' || quote_ident(fc.form_data_table_name);
-  keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(fc.new_form_data)), ','));
-  vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(fc.new_form_data)), ','));
+  keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(json_data)), ','));
+  vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(json_data)), ','));
 
   if fc.operation = 'create' then
     if fc.form_data_record_id is not null then

@@ -222,3 +222,4 @@ mutations/update_milestone_form_change 2023-01-17T21:15:30Z Brianna Cerkiewicz <
 trigger_functions/funding_stream_is_immutable 2023-01-09T17:21:03Z Mike Vesprini <mike@button.is> # trigger function to prevent funding stream from changing once a project has been created
 tables/project_003_add_immutable_funding_stream_trigger 2023-01-10T22:05:45Z Mike Vesprini <mike@button.is> # Add funding_stream_immutable trigger to project table
 mutations/undo_form_changes [mutations/undo_form_changes@1.1.4] 2023-01-18T20:46:21Z Mike Vesprini <mike@button.is> # Keep the funding stream when undo_changes used on a new project form
+functions/handle_default_form_change_commit [functions/handle_default_form_change_commit@1.1.4] 2023-01-20T21:33:42Z Dylan Leard <dylan@button.is> # Rework: Function should not attempt to insert deprecated columns into tables
