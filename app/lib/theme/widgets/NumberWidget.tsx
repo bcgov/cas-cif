@@ -17,7 +17,7 @@ export const NumberWidget: React.FC<WidgetProps> = ({
   // If we need to set the amount of decimal places, we can set it in the uiSchema, otherwise there will be no decimal places.
   const numberOfDecimalPlaces = isMoney
     ? 2
-    : uiSchema.numberOfDecimalPlaces ?? 0;
+    : uiSchema?.numberOfDecimalPlaces ?? 0;
 
   return (
     <div>

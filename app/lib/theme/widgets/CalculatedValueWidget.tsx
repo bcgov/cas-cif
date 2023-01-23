@@ -16,6 +16,7 @@ const CalculatedValueWidget: React.FC<WidgetProps> = ({
   const numberOfDecimalPlaces = isMoney
     ? 2
     : uiSchema?.numberOfDecimalPlaces ?? 0;
+
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
 
