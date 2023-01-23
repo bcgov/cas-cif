@@ -32,7 +32,7 @@ export const fundingAgreementSchema = {
       type: "number",
     },
     anticipatedFundingAmountPerFiscalYear: {
-      title: " ",
+      title: "Anticipated Funding Amount Per Fiscal Year",
       type: "string",
     },
     proponentCost: {
