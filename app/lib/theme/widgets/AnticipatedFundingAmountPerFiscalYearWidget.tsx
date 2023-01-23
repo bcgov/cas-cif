@@ -48,8 +48,17 @@ const AnticipatedFundingAmountPerFiscalYearWidget: React.FC<WidgetProps> = (
               </label>
               <CalculatedValueWidget
                 {...props}
-                value={node?.anticipatedFundingAmount}
-                uiSchema={{ isMoney: true }}
+                formContext={{
+                  calculatedAnticipatedFundingAmount:
+                    node?.anticipatedFundingAmount,
+                }}
+                uiSchema={{
+                  isMoney: true,
+                  calculatedValueFormContextProperty:
+                    "calculatedAnticipatedFundingAmount",
+                }}
+                label={`Anticipated Funding Amount Per Fiscal Year ${index + 1}
+                ${yearLabel}`}
               />
             </div>
             <style jsx>{`
