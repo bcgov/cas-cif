@@ -286,7 +286,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           )
         : additionalFundingSourcesJSX}
 
-      {props.viewOnly && !isOnProjectRevisionViewPage && (
+      {viewOnly && !isOnAmendmentsAndOtherRevisionsPage && (
         <>
           <h3>Expenses & Payments Tracker</h3>
           <FormBase
