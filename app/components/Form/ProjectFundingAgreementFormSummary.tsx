@@ -208,19 +208,26 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
 
   const fundingAgreementFormNotUpdated = useMemo(
     () =>
-      (!fundingAgreementSummary ||
-        fundingAgreementSummary?.isPristine ||
-        (fundingAgreementSummary?.isPristine === null &&
-          Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
-      allAdditionalFundingSourceFormChangesPristine,
-    [allAdditionalFundingSourceFormChangesPristine, fundingAgreementSummary]
+      !fundingAgreementSummary ||
+      fundingAgreementSummary?.isPristine ||
+      (fundingAgreementSummary?.isPristine === null &&
+        Object.keys(fundingAgreementSummary?.newFormData).length === 0),
+    [fundingAgreementSummary]
   );
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => setHasDiff && setHasDiff(!fundingAgreementFormNotUpdated),
-    [fundingAgreementFormNotUpdated, setHasDiff]
+    () =>
+      setHasDiff &&
+      setHasDiff(
+        !fundingAgreementFormNotUpdated ||
+          !allAdditionalFundingSourceFormChangesPristine
+      ),
+    [
+      allAdditionalFundingSourceFormChangesPristine,
+      fundingAgreementFormNotUpdated,
+      setHasDiff,
+    ]
   );
-  
 
   // This condition handles the case where the form is archived
   if (
@@ -240,6 +247,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               }
               formTitle="Budgets, Expenses & Payments"
             />
+            {!isOnAmendmentsAndOtherRevisionsPage && (
+              <h3>Project Additional Funding Source</h3>
+            )}
             <dd>{additionalFundingSourcesJSX}</dd>
           </>
         ) : (

@@ -336,6 +336,6 @@ describe("The Project Funding Agreement Form Summary", () => {
 
     expect(
       screen.getByText(/budgets, expenses & payments removed/i)
-    ).toHaveClass("diffOld");
+    ).toHaveClass("diffReviewAndSubmitInformationOld");
   });
 });
