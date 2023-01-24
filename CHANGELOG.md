@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/bcgov/cas-cif/compare/1.1.4...1.2.0) (2023-01-23)
+
+### Bug Fixes
+
+- commit function should ignore form_data keys that are not columns ([caee07d](https://github.com/bcgov/cas-cif/commit/caee07d9e779623de6f7e525e84fb8336101284b))
+
+### Features
+
+- add calculated values to funding form ([1a8650d](https://github.com/bcgov/cas-cif/commit/1a8650d7b6482231abc188f764762503e91dcef2))
+- adding calculated values for expenses and payments tracker ([89fd505](https://github.com/bcgov/cas-cif/commit/89fd5053ee110e1472210d2de48b6ca9750f2318))
+- make funding stream read only on project form ([bf984a4](https://github.com/bcgov/cas-cif/commit/bf984a4fea6885bd35038f6c46050740c2c7c810))
+
 ## [1.1.4](https://github.com/bcgov/cas-cif/compare/1.1.3...1.1.4) (2023-01-18)
 
 ### Bug Fixes
