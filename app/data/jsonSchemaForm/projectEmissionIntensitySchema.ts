@@ -123,6 +123,7 @@ export const emissionIntensityReportUiSchema = {
   teimpReporting: {
     emissionFunctionalUnit: {
       "ui:widget": "TextWidget",
+      classNames: "functional-unit",
     },
     productionFunctionalUnit: {
       "ui:widget": "TextWidget",
