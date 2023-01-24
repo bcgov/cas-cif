@@ -125,16 +125,26 @@ const ProjectForm: React.FC<Props> = (props) => {
             rank
           }
           asProject {
-            fundingStreamRfpId
             fundingStreamRfpByFundingStreamRfpId {
               year
               fundingStreamByFundingStreamId {
                 description
+                fundingStreamProjectStatusesByFundingStreamId(
+                  orderBy: SORTING_ORDER_ASC
+                ) {
+                  edges {
+                    node {
+                      projectStatusByProjectStatusId {
+                        rowId
+                        name
+                      }
+                    }
+                  }
+                }
               }
             }
           }
         }
-        ...SelectProjectStatusWidget_projectRevision
       }
     `,
     props.projectRevision
@@ -168,18 +178,6 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
-        allFundingStreamRfpProjectStatuses {
-          edges {
-            node {
-              fundingStreamRfpId
-              projectStatusByProjectStatusId {
-                rowId
-                name
-              }
-            }
-          }
-        }
-        ...SelectRfpWidget_query
       }
     `,
     props.query
@@ -203,7 +201,7 @@ const ProjectForm: React.FC<Props> = (props) => {
       selectedOperator ? selectedOperator.node.tradeName : "",
       rfpStream
     );
-  }, [selectedOperator]);
+  }, [rfpStream, selectedOperator]);
 
   const uniqueProposalReferenceValidation = (
     formData: any,
@@ -276,6 +274,16 @@ const ProjectForm: React.FC<Props> = (props) => {
     );
   };
 
+  const projectStatusList = useMemo(() => {
+    return revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.fundingStreamProjectStatusesByFundingStreamId.edges.map(
+      (edge) => edge.node.projectStatusByProjectStatusId
+    );
+  }, [
+    revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      ?.fundingStreamByFundingStreamId
+      .fundingStreamProjectStatusesByFundingStreamId.edges,
+  ]);
+
   const schema: JSONSchema7 = useMemo(() => {
     const initialSchema = {
       ...projectSchema,
@@ -318,26 +326,24 @@ const ProjectForm: React.FC<Props> = (props) => {
         },
         projectStatusId: {
           ...projectSchema.properties.projectStatusId,
-          anyOf: query.allFundingStreamRfpProjectStatuses.edges
-            .filter(({ node }) => {
-              return (
-                node.fundingStreamRfpId ==
-                revision.projectFormChange.asProject.fundingStreamRfpId
-              );
-            })
-            .map(({ node }) => {
-              return {
-                type: "number",
-                title: node.projectStatusByProjectStatusId.name,
-                enum: [node.projectStatusByProjectStatusId.rowId],
-                value: node.projectStatusByProjectStatusId.rowId,
-              };
-            }),
+          anyOf: projectStatusList.map((node) => {
+            return {
+              type: "number",
+              title: node.name,
+              enum: [node.rowId],
+              value: node.rowId,
+            };
+          }),
         },
       },
     };
     return initialSchema as JSONSchema7;
-  }, [query, revision]);
+  }, [
+    projectStatusList,
+    query.allOperators.edges,
+    query.allProjectTypes.edges,
+    query.allSectors.edges,
+  ]);
 
   const handleSubmit = async (e: ISubmitEvent<any>) => {
     await handleStage(e.formData);
