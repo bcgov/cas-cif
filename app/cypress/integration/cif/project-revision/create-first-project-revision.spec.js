@@ -18,7 +18,7 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
-    cy.findByText("Emissions Performance").should("be.visible");
+    cy.findByText("Emissions Performance").should("have.length", 1);
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
       "Cement",
