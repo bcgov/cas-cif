@@ -12,6 +12,7 @@ create table cif.funding_stream_project_status (
 );
 
 create unique index fs_project_status_fs_id_project_status_id_uindex on cif.funding_stream_project_status(funding_stream_id, project_status_id);
+create unique index fs_id_sorting_order_uindex on cif.funding_stream_project_status(funding_stream_id, sorting_order);
 
 select cif_private.upsert_timestamp_columns('cif', 'funding_stream_project_status');
 
@@ -33,9 +34,9 @@ end
 $grant$;
 
 comment on table cif.funding_stream_project_status is 'Defines project statuses based on the project funding stream.';
-comment on column cif.funding_stream_project_status.id is 'Primary key for funding_stream_project_status table';
-comment on column cif.funding_stream_project_status.funding_stream_id is 'The id referencing the funding_stream table';
-comment on column cif.funding_stream_project_status.project_status_id is 'The id refrencing the project_status table';
+comment on column cif.funding_stream_project_status.id is 'Unique ID for funding_stream_project_status table';
+comment on column cif.funding_stream_project_status.funding_stream_id is 'Foreign key referencing the funding_stream table';
+comment on column cif.funding_stream_project_status.project_status_id is 'Foreign key refrencing the project_status table';
 comment on column cif.funding_stream_project_status.sorting_order is 'Defines a way to order the project statuses';
 
 --EP and IA statuses

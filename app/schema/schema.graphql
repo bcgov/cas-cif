@@ -41980,7 +41980,7 @@ input DeleteFundingStreamProjectStatusByRowIdInput {
   """
   clientMutationId: String
 
-  """Primary key for funding_stream_project_status table"""
+  """Unique ID for funding_stream_project_status table"""
   rowId: Int!
 }
 
@@ -47485,7 +47485,7 @@ type FundingStreamProjectStatus implements Node {
   """
   fundingStreamByFundingStreamId: FundingStream
 
-  """The id referencing the funding_stream table"""
+  """Foreign key referencing the funding_stream table"""
   fundingStreamId: Int!
 
   """
@@ -47498,10 +47498,10 @@ type FundingStreamProjectStatus implements Node {
   """
   projectStatusByProjectStatusId: ProjectStatus
 
-  """The id refrencing the project_status table"""
+  """Foreign key refrencing the project_status table"""
   projectStatusId: Int!
 
-  """Primary key for funding_stream_project_status table"""
+  """Unique ID for funding_stream_project_status table"""
   rowId: Int!
 
   """Defines a way to order the project statuses"""
@@ -47632,10 +47632,10 @@ input FundingStreamProjectStatusInput {
   """created by user id"""
   createdBy: Int
 
-  """The id referencing the funding_stream table"""
+  """Foreign key referencing the funding_stream table"""
   fundingStreamId: Int!
 
-  """The id refrencing the project_status table"""
+  """Foreign key refrencing the project_status table"""
   projectStatusId: Int!
 
   """Defines a way to order the project statuses"""
@@ -47664,10 +47664,10 @@ input FundingStreamProjectStatusPatch {
   """created by user id"""
   createdBy: Int
 
-  """The id referencing the funding_stream table"""
+  """Foreign key referencing the funding_stream table"""
   fundingStreamId: Int
 
-  """The id refrencing the project_status table"""
+  """Foreign key refrencing the project_status table"""
   projectStatusId: Int
 
   """Defines a way to order the project statuses"""
@@ -72166,7 +72166,7 @@ input UpdateFundingStreamProjectStatusByRowIdInput {
   """
   fundingStreamProjectStatusPatch: FundingStreamProjectStatusPatch!
 
-  """Primary key for funding_stream_project_status table"""
+  """Unique ID for funding_stream_project_status table"""
   rowId: Int!
 }
 
