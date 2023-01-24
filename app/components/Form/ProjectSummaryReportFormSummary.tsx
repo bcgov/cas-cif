@@ -1,14 +1,14 @@
 interface Props {
-  query: any;
   projectRevision: any;
-  onSubmit: () => void;
+  viewOnly?: boolean;
 }
 
-const ProjectSummaryReportFormSummary: React.FC<Props> = () => {
+const ProjectSummaryReportFormSummary: React.FC<Props> = (props) => {
   return (
-    <div>
-      <p> Project Summary Report Form Summary Placeholder </p>
-    </div>
+    <>
+      <h3> Project Summary Report Form Summary Placeholder </h3>
+      <p>{props.projectRevision.changeStatus}</p>
+    </>
   );
 };
 

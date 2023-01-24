@@ -3,11 +3,12 @@ interface Props {
   projectRevision: any;
   onSubmit: () => void;
 }
-const ProjectSummaryReportForm: React.FC<Props> = () => {
+const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   return (
-    <div>
-      <p> Project Summary Report Form Placeholder </p>
-    </div>
+    <>
+      <h3>Project Summary Report Form Placeholder</h3>
+      <p>{props.projectRevision.changeStatus}</p>
+    </>
   );
 };
 
