@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.emission_intensity_report_calculated_ei_performance(cif.emission_intensity_report)'::regprocedure);
+select cif_private.verify_function_not_present('cif', 'emission_intensity_report_calculated_ei_performance', 1);
 
 rollback;
