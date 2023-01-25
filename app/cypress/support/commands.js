@@ -233,9 +233,7 @@ Cypress.Commands.add(
     reportReceivedDate = undefined,
     generalComments = undefined
   ) => {
-    cy.findByRole("button", {
-      name: /add another quarterly report/i,
-    }).click();
+    cy.get(".addButton").should("have.length", 1).click();
     cy.findByText(`Quarterly Report ${reportNumber}`).should("be.visible");
 
     cy.get('[aria-label*="Due Date"]').should("have.length", reportNumber);
@@ -552,7 +550,7 @@ Cypress.Commands.add("setDateInPicker", (ariaLabel, date, reportNumber = 0) => {
     });
   cy.get(`[aria-label*="${ariaLabel}"]`)
     .eq(reportNumber - 1)
-    .should("exist")
+    .should("be.visible")
     .click();
   cy.get(".react-datepicker__month-select")
     // datepicker indexes months from 0, luxon indexes from 1

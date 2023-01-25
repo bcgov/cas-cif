@@ -18,7 +18,7 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
-    cy.findByText("Emissions Performance").should("be.visible");
+    cy.findByText("Emissions Performance").should("have.length", 1);
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
       "Cement",
@@ -119,7 +119,7 @@ describe("when creating a project, the project page", () => {
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByText(/Submit Emissions Intensity Report/).click();
 
-    //add quarterly reports
+    // Add Quarterly Reports
     cy.url().should("include", "/form/6");
     cy.addQuarterlyReport(1, "2020-01-01", "2020-02-02", "1st comment");
     cy.addQuarterlyReport(2, "2022-01-01", "2022-02-02", "2nd comment");
