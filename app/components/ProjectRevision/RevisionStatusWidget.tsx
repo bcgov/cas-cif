@@ -18,7 +18,10 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const { schema, value, formContext } = props;
   const projectRevision = formContext.projectRevision;
 
-  const query = useFragment(RevisionStatusWidgetFragment, projectRevision);
+  const { id, changeStatus } = useFragment(
+    RevisionStatusWidgetFragment,
+    projectRevision
+  );
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");
@@ -34,27 +37,27 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
       updateProjectRevision({
         variables: {
           input: {
-            id: query.id,
+            id: id,
             projectRevisionPatch: { revisionStatus: value },
           },
         },
         optimisticResponse: {
           updateProjectRevision: {
             projectRevision: {
-              id: query.id,
+              id: id,
             },
           },
         },
         onCompleted: () => setUpdated(true),
         onError: reject,
-        debounceKey: query.id,
+        debounceKey: id,
       })
     );
   };
 
   return (
     <div>
-      {query.changeStatus === "pending" ? (
+      {changeStatus === "pending" ? (
         <div>
           <SelectWidget
             {...props}

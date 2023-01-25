@@ -1,10 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
-
 export interface SummaryFormProps<TProjectRevision> {
   projectRevision: TProjectRevision;
   viewOnly?: boolean;
   isOnAmendmentsAndOtherRevisionsPage?: boolean;
-  setHasDiff?: Dispatch<SetStateAction<boolean>>;
+  setHasDiff?: (hasDiff: boolean) => void;
 }
 
 export interface IFormConfiguration {

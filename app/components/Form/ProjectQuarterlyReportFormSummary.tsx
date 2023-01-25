@@ -124,7 +124,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
             quarterlyReport.operation !== "ARCHIVE" && (
               <FormNotAddedOrUpdated
                 isFirstRevision={isFirstRevision}
-                text="Quarterly Report"
+                formTitle="Quarterly Report"
               />
             )}
           {/* Show this part if the whole quarterly report has been removed */}
@@ -133,7 +133,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
               isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
               }
-              text="Quarterly Report"
+              formTitle="Quarterly Report"
             />
           ) : (
             <FormBase
@@ -183,7 +183,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
       {quarterlyReportFormChanges.length < 1 && viewOnly && (
         <FormNotAddedOrUpdated
           isFirstRevision={true} //setting this to true so that the text is "Quarterly Reports not added"
-          text="Quarterly Reports"
+          formTitle="Quarterly Reports"
         />
       )}
       {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
@@ -191,7 +191,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Quarterly Reports"
+          formTitle="Quarterly Reports"
         />
       ) : (
         quarterlyReportsJSX

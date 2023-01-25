@@ -10,6 +10,10 @@ const UpdatedFormsWidget: React.FC<WidgetProps> = ({ formContext }) => {
     <div>
       <ol>
         {numberedFormStructure.map((form, index) => {
+          /**
+           * A section has form configuration items that need to be rendered,
+           * A section can also have its own form configuration to render
+           */
           const formItems = [form, ...(form.items?.map((i) => i) ?? [])].filter(
             (s) => s.formConfiguration
           );

@@ -120,7 +120,7 @@ const ProjectFormSummary: React.FC<Props> = ({
       {projectFormNotUpdated && !viewOnly ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Project Overview"
+          formTitle="Project Overview"
         />
       ) : (
         <FormBase

@@ -6,12 +6,12 @@
 
 interface FormRemovedProps {
   isOnAmendmentsAndOtherRevisionsPage: boolean;
-  text: string;
+  formTitle: string;
 }
 
 export const FormRemoved: React.FC<FormRemovedProps> = ({
   isOnAmendmentsAndOtherRevisionsPage,
-  text,
+  formTitle,
 }) => (
   <em
     className={
@@ -20,22 +20,22 @@ export const FormRemoved: React.FC<FormRemovedProps> = ({
         : "diffReviewAndSubmitInformationOld"
     }
   >
-    {text} removed
+    {formTitle} removed
   </em>
 );
 
 interface FormNotAddedOrUpdatedProps {
   isFirstRevision: boolean;
-  text: string;
+  formTitle: string;
 }
 
 export const FormNotAddedOrUpdated: React.FC<FormNotAddedOrUpdatedProps> = ({
   isFirstRevision,
-  text,
+  formTitle,
 }) => (
   <dd>
     <em>
-      {text} not {isFirstRevision ? "added" : "updated"}
+      {formTitle} not {isFirstRevision ? "added" : "updated"}
     </em>
   </dd>
 );

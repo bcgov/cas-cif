@@ -145,7 +145,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         )}
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Emission Intensity Report"
+          formTitle="Emission Intensity Report"
         />
       </>
     );
@@ -160,7 +160,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
-            text="Emission Intensity Report"
+            formTitle="Emission Intensity Report"
           />
         )}
       {/* Show this part if the whole emission intensity report has been removed */}
@@ -170,7 +170,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
             isOnAmendmentsAndOtherRevisionsPage={
               isOnAmendmentsAndOtherRevisionsPage
             }
-            text="Emission Intensity Report"
+            formTitle="Emission Intensity Report"
           />
         )}
 

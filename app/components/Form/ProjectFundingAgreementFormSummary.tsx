@@ -167,7 +167,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
                 isOnAmendmentsAndOtherRevisionsPage={
                   isOnAmendmentsAndOtherRevisionsPage
                 }
-                text={`Additional funding source ${index + 1}`}
+                formTitle={`Additional funding source ${index + 1}`}
               />
             ) : (
               <em className="diffAmendmentsAndOtherRevisionsOld">
@@ -227,7 +227,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         isOnAmendmentsAndOtherRevisionsPage={
           isOnAmendmentsAndOtherRevisionsPage
         }
-        text="Budgets, Expenses & Payments"
+        formTitle="Budgets, Expenses & Payments"
       />
     );
   }
@@ -241,7 +241,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         !isOnAmendmentsAndOtherRevisionsPage ? (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
-            text="Budgets, Expenses & Payments"
+            formTitle="Budgets, Expenses & Payments"
           />
         ) : (
           ""
@@ -272,7 +272,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       {sortedAdditionalFundingSourceFormChanges.length < 1 && viewOnly && (
         <FormNotAddedOrUpdated
           isFirstRevision={true} //setting this to true so that the text is "Additional Funding Source not added"
-          text="Additional Funding Source"
+          formTitle="Additional Funding Source"
         />
       )}
       {(allAdditionalFundingSourceFormChangesPristine ||
@@ -281,7 +281,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         ? !isOnAmendmentsAndOtherRevisionsPage && (
             <FormNotAddedOrUpdated
               isFirstRevision={isFirstRevision}
-              text="Additional Funding Source"
+              formTitle="Additional Funding Source"
             />
           )
         : additionalFundingSourcesJSX}

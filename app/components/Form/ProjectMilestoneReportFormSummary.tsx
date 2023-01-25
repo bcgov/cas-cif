@@ -116,7 +116,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             milestoneReport.operation !== "ARCHIVE" && (
               <FormNotAddedOrUpdated
                 isFirstRevision={isFirstRevision}
-                text="Milestone Report"
+                formTitle="Milestone Report"
               />
             )}
 
@@ -126,7 +126,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
               }
-              text="Milestone Report"
+              formTitle="Milestone Report"
             />
           )}
           <FormBase
@@ -183,7 +183,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       {milestoneReportFormChanges.length < 1 && viewOnly && (
         <FormNotAddedOrUpdated
           isFirstRevision={true} //setting this to true so that the text is "Milestone Reports not added"
-          text="Milestone Reports"
+          formTitle="Milestone Reports"
         />
       )}
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
@@ -191,7 +191,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Milestone Reports"
+          formTitle="Milestone Reports"
         />
       ) : (
         milestoneReportsJSX

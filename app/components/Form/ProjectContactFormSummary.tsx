@@ -175,7 +175,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
         !viewOnly ? (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
-            text="Primary Contact"
+            formTitle="Primary Contact"
           />
         ) : (
           <>
@@ -242,7 +242,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
       {allFormChangesPristine && !viewOnly ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Project Contacts"
+          formTitle="Project Contacts"
         />
       ) : (
         <>
@@ -254,7 +254,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                 {secondaryContacts.length < 1 && viewOnly && (
                   <FormNotAddedOrUpdated
                     isFirstRevision={true} //setting this to true so that the text is "Secondary Contacts not added"
-                    text="Secondary Contacts"
+                    formTitle="Secondary Contacts"
                   />
                 )}
                 {(secondaryContactFormChangesPristine ||
@@ -262,7 +262,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                 !viewOnly ? (
                   <FormNotAddedOrUpdated
                     isFirstRevision={isFirstRevision}
-                    text="Secondary Contacts"
+                    formTitle="Secondary Contacts"
                   />
                 ) : (
                   contactsJSX

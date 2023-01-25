@@ -119,7 +119,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
             annualReport.operation !== "ARCHIVE" && (
               <FormNotAddedOrUpdated
                 isFirstRevision={isFirstRevision}
-                text="Annual Report"
+                formTitle="Annual Report"
               />
             )}
           {/* Show this part if the whole Annual report has been removed */}
@@ -128,7 +128,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
               }
-              text="Annual Report"
+              formTitle="Annual Report"
             />
           ) : (
             <FormBase
@@ -183,7 +183,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Project Annual Reports"
+          formTitle="Project Annual Reports"
         />
       ) : (
         annualReportsJSX

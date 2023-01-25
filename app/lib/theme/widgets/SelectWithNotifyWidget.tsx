@@ -42,12 +42,11 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
     useUpdatePendingActionsFrom();
   const projectRevision = formContext.projectRevision;
-  const query = useFragment(SelectWithNotifyWidgetFragment, projectRevision);
-  const [revisionId, revisionStatus, pendingActionsFrom] = [
-    query.id,
-    query.revisionStatus,
-    query.pendingActionsFrom,
-  ];
+  const {
+    id: revisionId,
+    revisionStatus,
+    pendingActionsFrom,
+  } = useFragment(SelectWithNotifyWidgetFragment, projectRevision);
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>
       updatePendingActionsFrom({

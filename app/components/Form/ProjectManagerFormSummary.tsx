@@ -140,7 +140,7 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
       !isOnAmendmentsAndOtherRevisionsPage ? (
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
-          text="Project Managers"
+          formTitle="Project Managers"
         />
       ) : (
         managersJSX
