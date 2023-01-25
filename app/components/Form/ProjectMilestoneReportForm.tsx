@@ -68,6 +68,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         upcomingMilestoneReportFormChange: upcomingReportingRequirementFormChange(
           reportType: "Milestone"
         ) {
+          id
           ...ReportDueIndicator_formChange
           asReportingRequirement {
             reportDueDate
@@ -143,6 +144,14 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const upcomingReportDueDate =
     projectRevision.upcomingMilestoneReportFormChange?.asReportingRequirement
       .reportDueDate;
+
+  const upcomingReportFormChange =
+    projectRevision.upcomingMilestoneReportFormChange;
+
+  var indexOfNextMilestone =
+    sortedMilestoneReports.findIndex(
+      (x) => x.id === upcomingReportFormChange.id
+    ) + 1;
 
   const reportSubmittedDates = useMemo(() => {
     return projectRevision.milestoneFormChanges.edges.map(
@@ -240,6 +249,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       <ReportDueIndicator
         reportTitle="Milestone Report"
         reportDueFormChange={projectRevision.upcomingMilestoneReportFormChange}
+        milestoneIndex={indexOfNextMilestone}
       />
       <FormBorder>
         <Button
