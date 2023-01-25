@@ -1,10 +1,32 @@
 import { WidgetProps } from "@rjsf/core";
+import { graphql, useFragment } from "react-relay";
 
 import { useNumberedFormStructure } from "data/formPages/formStructure";
 import CollapsibleFormWidget from "./CollapsibleFormWidget";
 
 const UpdatedFormsWidget: React.FC<WidgetProps> = ({ formContext }) => {
-  const numberedFormStructure = useNumberedFormStructure();
+  const { projectFormChange } = useFragment(
+    // eslint-disable-next-line relay/graphql-syntax
+    graphql`
+      fragment UpdatedFormsWidget_projectRevision on ProjectRevision {
+        projectFormChange {
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
+        }
+      }
+    `,
+    formContext.projectRevision
+  );
+
+  const fundingStream =
+    projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      .fundingStreamByFundingStreamId.name;
+  const numberedFormStructure = useNumberedFormStructure(fundingStream);
 
   return (
     <div>

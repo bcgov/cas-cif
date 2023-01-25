@@ -91,6 +91,7 @@ export const ViewProjectRevisionQuery = graphql`
       ...SelectWithNotifyWidget_projectRevision
       # eslint-disable-next-line relay/must-colocate-fragment-spreads
       ...CollapsibleFormWidget_projectRevision
+      ...UpdatedFormsWidget_projectRevision
     }
     allRevisionTypes {
       edges {
