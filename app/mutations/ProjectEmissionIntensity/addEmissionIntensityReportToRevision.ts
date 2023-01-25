@@ -11,9 +11,6 @@ const mutation = graphql`
       formChanges {
         id
         rowId
-        asEmissionIntensityReport {
-          calculatedEiPerformance
-        }
         newFormData
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision

@@ -58,14 +58,12 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         ) {
           edges {
             node {
+              calculatedEiPerformance
               newFormData
               operation
               isPristine
               formChangeByPreviousFormChangeId {
                 newFormData
-              }
-              asEmissionIntensityReport {
-                calculatedEiPerformance
               }
             }
           }
@@ -206,8 +204,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         formData={emissionIntensityReportDiffObject.formData}
         formContext={{
           calculatedEiPerformance:
-            summaryEmissionIntensityReport?.asEmissionIntensityReport
-              .calculatedEiPerformance ?? 0,
+            summaryEmissionIntensityReport?.calculatedEiPerformance ?? 0,
           operation: summaryEmissionIntensityReport?.operation,
           oldData:
             summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId

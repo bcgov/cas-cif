@@ -157,10 +157,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
         ) @connection(key: "connection_emissionIntensityReportFormChange") {
           edges {
             node {
+              calculatedEiPerformance
               id
-              asEmissionIntensityReport {
-                calculatedEiPerformance
-              }
               rowId
               newFormData
               changeStatus
@@ -171,7 +169,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
   const emissionIntensityReportFormChange =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node;
 
@@ -181,7 +178,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   const calculatedEiPerformance =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
-      .asEmissionIntensityReport.calculatedEiPerformance;
+      .calculatedEiPerformance;
 
   // Mutations
   const [
