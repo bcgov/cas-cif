@@ -18,7 +18,8 @@
     "test:e2e": "wait-on --timeout 60000 http://localhost:3004 && HAPPO_DOWNLOAD_ALL=true happo-e2e -- cypress run",
     "audit-deps": "improved-yarn-audit",
     "start": "NODE_ENV=production node --unhandled-rejections=strict dist/server/index.js",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "start:graphiql": "npx postgraphile --cors -c postgres://localhost/cif -s cif --export-schema-graphql schema/schema.graphql --enhance-graphiql --watch"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

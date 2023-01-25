@@ -35,6 +35,7 @@ const TaskList: React.FC<Props> = ({
   const {
     id,
     rowId,
+    projectFormChange,
     projectByProjectId,
     projectOverviewStatus,
     projectManagersStatus,
@@ -52,6 +53,15 @@ const TaskList: React.FC<Props> = ({
         id
         rowId
         changeStatus
+        projectFormChange {
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
+        }
         projectByProjectId {
           proposalReference
         }
@@ -109,7 +119,10 @@ const TaskList: React.FC<Props> = ({
     return (router.query.formIndex as string) ?? "summary";
   }, [router]);
 
-  const numberedFormStructure = useNumberedFormStructure();
+  const fundingStream =
+    projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      .fundingStreamByFundingStreamId.name;
+  const numberedFormStructure = useNumberedFormStructure(fundingStream);
 
   const tasklistRenderingConfiguration: TaskListDynamicConfiguration = {
     projectOverview: {
@@ -142,6 +155,10 @@ const TaskList: React.FC<Props> = ({
     },
     teimp: {
       context: [{ status: teimpStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+    projectSummaryReport: {
+      context: [{ status: "" }],
       ItemsComponent: BaseTaskListItemComponent,
     },
   };

@@ -111,6 +111,23 @@ describe("the new project page", () => {
     cy.happoAndAxe("Project summary Form", "empty", "main", true);
   });
 
+  it("renders the IA specific project forms", () => {
+    cy.mockLogin("cif_admin");
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+
+    // NEW
+    cy.url().should("include", "/new");
+    cy.findByLabelText(/Funding Stream$/i).should("be.visible");
+    cy.fillAndCheckNewProjectForm("Innovation Accelerator", "2021");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
+    // PROJECT SUMMARY REPORT
+    cy.findByText(/Project summary report/i).click();
+    cy.findByText(/Add Project Summary Report/i).click();
+    cy.contains(/Project Summary Report Form Placeholder/i);
+  });
+
   it("renders filled project forms in view mode for committed project revisions", () => {
     cy.sqlFixture("dev/004_cif_project");
     cy.sqlFixture("dev/005_cif_reporting_requirement");

@@ -36,6 +36,15 @@ const pageQuery = graphql`
             id
           }
         }
+        projectFormChange {
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
+        }
         ...TaskList_projectRevision
         ...ProjectForm_projectRevision
         ...ProjectFormSummary_projectRevision
@@ -90,7 +99,18 @@ export function ProjectFormPage({
     mode === "view"
   );
 
-  const formPages = useFormPages();
+  const isRedirectingNoFundingStream = useRedirectTo404IfFalsy(
+    query.projectRevision?.projectFormChange?.asProject
+      ?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId
+      ?.name
+  );
+
+  const fundingStream = isRedirectingNoFundingStream
+    ? "err"
+    : query.projectRevision.projectFormChange.asProject
+        .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId
+        .name;
+  const formPages = useFormPages(fundingStream);
 
   const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(
     formIndex,
@@ -99,6 +119,7 @@ export function ProjectFormPage({
 
   if (
     isRedirecting ||
+    isRedirectingNoFundingStream ||
     isRedirectingToLatestRevision ||
     isRedirectingToValidFormIndex
   )
