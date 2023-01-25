@@ -2,7 +2,7 @@ export interface SummaryFormProps<TProjectRevision> {
   projectRevision: TProjectRevision;
   viewOnly?: boolean;
   isOnAmendmentsAndOtherRevisionsPage?: boolean;
-  setHasDiff?: (hasDiff: boolean) => void;
+  setHasDiff?: (hasDiff: boolean | ((prevState: boolean) => void)) => void;
 }
 
 export interface IFormConfiguration {

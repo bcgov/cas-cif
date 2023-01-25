@@ -152,9 +152,9 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     () =>
       setHasDiff &&
       setHasDiff(
-        (prev) =>
+        (prevState) =>
           // we need to check previous value since this form and the project managers form are rendered under same CollapsibleFormWidget
-          prev ||
+          prevState ||
           (!allFormChangesPristine && !secondaryContactFormChangesPristine)
       ),
     [allFormChangesPristine, secondaryContactFormChangesPristine, setHasDiff]
