@@ -9,6 +9,7 @@ const mutation = graphql`
     stageFormChange(input: $input) {
       formChange {
         id
+        calculatedEiPerformance
         newFormData
         operation
         changeStatus
