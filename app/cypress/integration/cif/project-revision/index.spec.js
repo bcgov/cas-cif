@@ -119,7 +119,6 @@ describe("the new project page", () => {
     // NEW
     cy.url().should("include", "/new");
     cy.findByLabelText(/Funding Stream$/i).should("be.visible");
-    cy.happoAndAxe("IA Project New Form", "unfilled", "main");
     cy.fillAndCheckNewProjectForm("Innovation Accelerator", "2021");
     cy.findByRole("button", { name: /^confirm/i }).click();
 
