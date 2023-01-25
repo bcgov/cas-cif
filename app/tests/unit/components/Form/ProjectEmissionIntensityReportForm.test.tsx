@@ -51,9 +51,7 @@ const defaultMockResolver = {
           {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
-              asEmissionIntensityReport: {
-                calculatedEiPerformance: 200,
-              },
+              calculatedEiPerformance: 200,
               rowId: 1,
               newFormData: {
                 measurementPeriodStartDate: "2022-01-02",
@@ -217,9 +215,7 @@ describe("the emission intensity report form component", () => {
                 node: {
                   ...defaultMockResolver.ProjectRevision(context, generateID)
                     .emissionIntensityReportFormChange.edges[0].node,
-                  asEmissionIntensityReport: {
-                    calculatedEiPerformance: null,
-                  },
+                  calculatedEiPerformance: null,
                 },
               },
             ],
@@ -247,9 +243,7 @@ describe("the emission intensity report form component", () => {
             {
               node: {
                 id: `mock-project-milestone-report-form-${generateID()}`,
-                asEmissionIntensityReport: {
-                  calculatedEiPerformance: null,
-                },
+                calculatedEiPerformance: null,
                 rowId: 1,
                 newFormData: {
                   measurementPeriodStartDate: "2022-01-02",
