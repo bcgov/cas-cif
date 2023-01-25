@@ -2,7 +2,7 @@ import { createProjectContactUiSchema } from "components/Form/ProjectContactForm
 import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectContactFormSummary_projectRevision$key } from "__generated__/ProjectContactFormSummary_projectRevision.graphql";
 import FormBase from "./FormBase";
@@ -11,17 +11,22 @@ import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import ContactDetails from "components/Contact/ContactDetails";
 import React from "react";
+import { SummaryFormProps } from "data/formPages/types";
+import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
-  projectRevision: ProjectContactFormSummary_projectRevision$key;
-  viewOnly?: boolean;
-}
+interface Props
+  extends SummaryFormProps<ProjectContactFormSummary_projectRevision$key> {}
 
-const ProjectContactFormSummary: React.FC<Props> = (props) => {
+const ProjectContactFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { summaryContactFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
@@ -54,11 +59,11 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the contacts page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   let contactFormChanges = summaryContactFormChanges.edges;
@@ -128,63 +133,83 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                 node?.formChangeByPreviousFormChangeId?.asProjectContact
                   ?.contactByContactId?.fullName
               ),
+              isAmendmentsAndOtherRevisionsSpecific:
+                isOnAmendmentsAndOtherRevisionsPage,
             }}
           />
-          <ContactDetails contact={node.asProjectContact.contactByContactId} />
+          {!isOnAmendmentsAndOtherRevisionsPage && (
+            <ContactDetails
+              contact={node.asProjectContact.contactByContactId}
+            />
+          )}
         </React.Fragment>
       );
     });
-  }, [secondaryContacts, renderDiff]);
+  }, [secondaryContacts, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
 
-  return (
-    <div>
-      <h3>Project Contacts</h3>
-      {allFormChangesPristine && !props.viewOnly ? (
-        <p>
-          <em>Project Contacts not {isFirstRevision ? "added" : "updated"}</em>
-        </p>
-      ) : (
-        <>
-          <label>Primary Contact</label>
-          {(primaryContact?.node?.isPristine ||
-            (primaryContact?.node?.isPristine === null &&
-              !primaryContact.node.newFormData.contactId)) &&
-          !props.viewOnly ? (
-            <dd>
-              <em>Primary Contact not updated</em>
-            </dd>
-          ) : (
-            <>
-              <FormBase
-                liveValidate
-                key={primaryContact?.node.id}
-                tagName={"dl"}
-                theme={readOnlyTheme}
-                fields={renderDiff ? customFields : fields}
-                schema={projectContactSchema as JSONSchema7}
-                uiSchema={createProjectContactUiSchema(
-                  primaryContact ? (
-                    primaryContact?.node?.asProjectContact?.contactByContactId
-                      ?.fullName
-                  ) : (
-                    <em>Primary Contact not added</em>
-                  )
-                )}
-                formData={
-                  primaryContact ? primaryContact.node.newFormData : null
-                }
-                formContext={{
-                  operation: primaryContact?.node.operation,
-                  oldData:
-                    primaryContact?.node.formChangeByPreviousFormChangeId
-                      ?.newFormData,
-                  oldUiSchema: createProjectContactUiSchema(
-                    primaryContact?.node?.formChangeByPreviousFormChangeId
-                      ?.asProjectContact?.contactByContactId?.fullName
-                  ),
-                }}
-              />
-              {primaryContact?.node?.asProjectContact?.contactByContactId && (
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () =>
+      setHasDiff &&
+      setHasDiff(
+        (prevState) =>
+          // we need to check previous value since this form and the project managers form are rendered under same CollapsibleFormWidget
+          prevState ||
+          (!allFormChangesPristine && !secondaryContactFormChangesPristine)
+      ),
+    [allFormChangesPristine, secondaryContactFormChangesPristine, setHasDiff]
+  );
+
+  const primaryContactNotUpdated =
+    primaryContact?.node?.isPristine ||
+    (primaryContact?.node?.isPristine === null &&
+      !primaryContact.node.newFormData.contactId);
+
+  const primaryContactForm = useMemo(() => {
+    return (
+      <div className="contactFormContainer">
+        <label>Primary Contact</label>
+        {(primaryContact?.node?.isPristine ||
+          (primaryContact?.node?.isPristine === null &&
+            !primaryContact.node.newFormData.contactId)) &&
+        !viewOnly ? (
+          <FormNotAddedOrUpdated
+            isFirstRevision={isFirstRevision}
+            formTitle="Primary Contact"
+          />
+        ) : (
+          <>
+            <FormBase
+              liveValidate
+              key={primaryContact?.node.id}
+              tagName={"dl"}
+              theme={readOnlyTheme}
+              fields={renderDiff ? customFields : fields}
+              schema={projectContactSchema as JSONSchema7}
+              uiSchema={createProjectContactUiSchema(
+                primaryContact ? (
+                  primaryContact?.node?.asProjectContact?.contactByContactId
+                    ?.fullName
+                ) : (
+                  <em>Primary Contact not added</em>
+                )
+              )}
+              formData={primaryContact ? primaryContact.node.newFormData : null}
+              formContext={{
+                operation: primaryContact?.node.operation,
+                oldData:
+                  primaryContact?.node.formChangeByPreviousFormChangeId
+                    ?.newFormData,
+                oldUiSchema: createProjectContactUiSchema(
+                  primaryContact?.node?.formChangeByPreviousFormChangeId
+                    ?.asProjectContact?.contactByContactId?.fullName
+                ),
+                isAmendmentsAndOtherRevisionsSpecific:
+                  isOnAmendmentsAndOtherRevisionsPage,
+              }}
+            />
+            {primaryContact?.node?.asProjectContact?.contactByContactId &&
+              !isOnAmendmentsAndOtherRevisionsPage && (
                 <ContactDetails
                   className="contactDetails"
                   contact={
@@ -192,26 +217,68 @@ const ProjectContactFormSummary: React.FC<Props> = (props) => {
                   }
                 />
               )}
+          </>
+        )}
+      </div>
+    );
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    primaryContact,
+    renderDiff,
+    viewOnly,
+  ]);
+
+  if (
+    isOnAmendmentsAndOtherRevisionsPage &&
+    allFormChangesPristine &&
+    secondaryContactFormChangesPristine
+  )
+    return null;
+
+  return (
+    <div>
+      <h3>Project Contacts</h3>
+      {allFormChangesPristine && !viewOnly ? (
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          formTitle="Project Contacts"
+        />
+      ) : (
+        <>
+          {!isOnAmendmentsAndOtherRevisionsPage ? (
+            <>
+              {primaryContactForm}
+              <div>
+                <label>Secondary Contacts</label>
+                {secondaryContacts.length < 1 && viewOnly && (
+                  <FormNotAddedOrUpdated
+                    isFirstRevision={true} //setting this to true so that the text is "Secondary Contacts not added"
+                    formTitle="Secondary Contacts"
+                  />
+                )}
+                {(secondaryContactFormChangesPristine ||
+                  secondaryContacts.length < 1) &&
+                !viewOnly ? (
+                  <FormNotAddedOrUpdated
+                    isFirstRevision={isFirstRevision}
+                    formTitle="Secondary Contacts"
+                  />
+                ) : (
+                  contactsJSX
+                )}
+              </div>
             </>
-          )}
-          <label>Secondary Contacts</label>
-          {secondaryContacts.length < 1 && props.viewOnly && (
-            <dd>
-              <em>No Secondary contacts</em>
-            </dd>
-          )}
-          {(secondaryContactFormChangesPristine ||
-            secondaryContacts.length < 1) &&
-          !props.viewOnly ? (
-            <dd>
-              <em>
-                {isFirstRevision
-                  ? "No Secondary Contacts"
-                  : "Secondary Contacts not updated"}
-              </em>
-            </dd>
           ) : (
-            contactsJSX
+            <>
+              {!primaryContactNotUpdated && primaryContactForm}
+              {secondaryContacts.length > 0 && (
+                <div className="contactFormContainer">
+                  <label>Secondary Contacts</label>
+                  {contactsJSX}
+                </div>
+              )}
+            </>
           )}
         </>
       )}

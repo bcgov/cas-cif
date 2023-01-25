@@ -74,6 +74,13 @@ describe("ProjectRevisionView Page", () => {
     expect(screen.getByText(/test-user-1/i)).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/i)).toBeInTheDocument();
     expect(screen.getByText(/Pending actions from/i)).toBeInTheDocument();
+    expect(screen.getByText(/forms updated/i)).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("checkbox", {
+        name: /project overview/i,
+      })
+    ).toBeInTheDocument();
   });
 
   it("Takes user to amendments and revisions table when they click Amendments & Other Revisions on the tasklist", async () => {

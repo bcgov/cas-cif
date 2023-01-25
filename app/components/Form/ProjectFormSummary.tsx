@@ -9,15 +9,21 @@ import { createProjectUiSchema } from "./ProjectForm";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { SummaryFormProps } from "data/formPages/types";
+import { useEffect, useMemo } from "react";
+import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
-interface Props {
-  projectRevision: ProjectFormSummary_projectRevision$key;
-  viewOnly?: boolean;
-}
+interface Props
+  extends SummaryFormProps<ProjectFormSummary_projectRevision$key> {}
 
-const ProjectFormSummary: React.FC<Props> = (props) => {
+const ProjectFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { projectFormChange, isFirstRevision, rank } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
@@ -63,11 +69,11 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
@@ -93,16 +99,29 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
+  const projectFormNotUpdated = useMemo(
+    () =>
+      projectFormChange.isPristine ||
+      (projectFormChange.isPristine === null &&
+        Object.keys(formData).length === 0),
+    [projectFormChange, formData]
+  );
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => setHasDiff && setHasDiff(!projectFormNotUpdated),
+    [projectFormNotUpdated, setHasDiff]
+  );
+
+  if (isOnAmendmentsAndOtherRevisionsPage && projectFormNotUpdated) return null;
+
   return (
     <>
-      <h3>Project Overview</h3>
-      {(projectFormChange.isPristine ||
-        (projectFormChange.isPristine === null &&
-          Object.keys(projectFormChange.newFormData).length === 0)) &&
-      !props.viewOnly ? (
-        <p>
-          <em>Project Overview not {isFirstRevision ? "added" : "updated"}</em>
-        </p>
+      {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Overview</h3>}
+      {projectFormNotUpdated && !viewOnly ? (
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          formTitle="Project Overview"
+        />
       ) : (
         <FormBase
           tagName={"dl"}
@@ -122,6 +141,8 @@ const ProjectFormSummary: React.FC<Props> = (props) => {
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
             oldUiSchema,
             operation: projectFormChange.operation,
+            isAmendmentsAndOtherRevisionsSpecific:
+              isOnAmendmentsAndOtherRevisionsPage,
           }}
         />
       )}

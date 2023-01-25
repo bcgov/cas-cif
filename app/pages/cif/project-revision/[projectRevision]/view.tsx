@@ -20,6 +20,7 @@ import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { useState } from "react";
+import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
@@ -66,12 +67,10 @@ export const ViewProjectRevisionQuery = graphql`
     }
     projectRevision(id: $projectRevision) {
       ...NotifyModal_projectRevision
-      pendingActionsFrom
       id
       revisionType
       createdAt
       revisionStatus
-      changeStatus
       cifUserByCreatedBy {
         fullName
       }
@@ -87,6 +86,12 @@ export const ViewProjectRevisionQuery = graphql`
           ...TaskList_projectRevision
         }
       }
+      ...RevisionStatusWidget_projectRevision
+      # eslint-disable-next-line relay/must-colocate-fragment-spreads
+      ...SelectWithNotifyWidget_projectRevision
+      # eslint-disable-next-line relay/must-colocate-fragment-spreads
+      ...CollapsibleFormWidget_projectRevision
+      ...UpdatedFormsWidget_projectRevision
     }
     allRevisionTypes {
       edges {
@@ -159,13 +164,11 @@ export function ProjectRevisionView({
             theme={readOnlyTheme}
             onChange={onChange}
             formData={formData}
-            formContext={{
-              pendingActionsFrom: projectRevision.pendingActionsFrom,
-              revisionId: projectRevision.id,
-              revisionStatus: projectRevision.revisionStatus,
-              changeStatus: projectRevision.changeStatus,
+            formContext={{ projectRevision }}
+            widgets={{
+              RevisionStatusWidget,
+              UpdatedFormsWidget,
             }}
-            widgets={{ RevisionStatusWidget }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
           <div className="revision-record-history-section">

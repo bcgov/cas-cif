@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -12,18 +12,26 @@ import {
 } from "data/jsonSchemaForm/projectReportingRequirementSchema";
 import { ProjectQuarterlyReportFormSummary_projectRevision$key } from "__generated__/ProjectQuarterlyReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { SummaryFormProps } from "data/formPages/types";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
 // Set custom rjsf fields to display diffs
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
-  projectRevision: ProjectQuarterlyReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
-}
+interface Props
+  extends SummaryFormProps<ProjectQuarterlyReportFormSummary_projectRevision$key> {}
 
-const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
+const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { summaryProjectQuarterlyReportFormChanges, isFirstRevision } =
     useFragment(
       graphql`
@@ -47,11 +55,11 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           }
         }
       `,
-      props.projectRevision
+      projectRevision
     );
 
   // Show diff if it is not the first revision and not view only (rendered from the quarterly report page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived quarterly reports
   let quarterlyReportFormChanges =
@@ -98,6 +106,14 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
             projectReportingRequirementSchema as JSONSchema7,
             quarterlyReport
           );
+
+      if (
+        isOnAmendmentsAndOtherRevisionsPage &&
+        quarterlyReport?.isPristine &&
+        quarterlyReport.operation !== "ARCHIVE"
+      )
+        return null;
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -106,11 +122,19 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
           {/* Show this part if none of the quarterly reports' form properties have been updated */}
           {Object.keys(formSchema.properties).length === 0 &&
             quarterlyReport.operation !== "ARCHIVE" && (
-              <em>Quarterly report not updated</em>
+              <FormNotAddedOrUpdated
+                isFirstRevision={isFirstRevision}
+                formTitle="Quarterly Report"
+              />
             )}
           {/* Show this part if the whole quarterly report has been removed */}
           {renderDiff && quarterlyReport.operation === "ARCHIVE" ? (
-            <em className="diffOld">Quarterly Report Removed</em>
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
+                isOnAmendmentsAndOtherRevisionsPage
+              }
+              formTitle="Quarterly Report"
+            />
           ) : (
             <FormBase
               liveValidate
@@ -125,6 +149,8 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
                 operation: quarterlyReport.operation,
                 oldData:
                   quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
+                isAmendmentsAndOtherRevisionsSpecific:
+                  isOnAmendmentsAndOtherRevisionsPage,
               }}
             />
           )}
@@ -136,21 +162,37 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedQuarterlyReports, renderDiff]);
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    renderDiff,
+    sortedQuarterlyReports,
+  ]);
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => setHasDiff && setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, setHasDiff]
+  );
 
   return (
     <>
-      <h3>Project Quarterly Reports</h3>
-      {quarterlyReportFormChanges.length < 1 && props.viewOnly && (
-        <dd>
-          <em>No Quarterly Reports</em>
-        </dd>
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Project Quarterly Reports</h3>
+      )}
+      {quarterlyReportFormChanges.length < 1 && viewOnly && (
+        <FormNotAddedOrUpdated
+          isFirstRevision={true} //setting this to true so that the text is "Quarterly Reports not added"
+          formTitle="Quarterly Reports"
+        />
       )}
       {(allFormChangesPristine || quarterlyReportFormChanges.length < 1) &&
-      !props.viewOnly ? (
-        <dd>
-          <em>Quarterly Reports not {isFirstRevision ? "added" : "updated"}</em>
-        </dd>
+      !viewOnly &&
+      !isOnAmendmentsAndOtherRevisionsPage ? (
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          formTitle="Quarterly Reports"
+        />
       ) : (
         quarterlyReportsJSX
       )}

@@ -183,38 +183,52 @@ describe("when editing a project, the project page", () => {
     // check diffs
     cy.contains("Review and Submit Project");
 
-    cy.get("#root_projectName-diffOld").should("have.text", "Test Project 001");
-    cy.get("#root_projectName-diffNew").should("have.text", "Bar");
+    cy.get("#root_projectName-diffReviewAndSubmitInformationOld").should(
+      "have.text",
+      "Test Project 001"
+    );
+    cy.get("#root_projectName-diffReviewAndSubmitInformationNew").should(
+      "have.text",
+      "Bar"
+    );
 
-    cy.get("#root_cifUserId-diffOld").should(
+    cy.get("#root_cifUserId-diffReviewAndSubmitInformationOld").should(
       "have.text",
       "cif_internal Testuser"
     );
-    cy.get("#root_cifUserId-diffOld")
+    cy.get("#root_cifUserId-diffReviewAndSubmitInformationOld")
       .next()
       .next()
       .should("have.text", "REMOVED");
 
-    cy.get("#root_contactId-diffNew").should("have.text", "Bob003 Loblaw003");
-
-    cy.get("#root_contractStartDate-diffNew").contains(/Jan(\.)? 1, 2020/);
-    cy.get("#root_projectAssetsLifeEndDate-diffNew").contains(
-      /Dec(\.)? 31, 2020/
+    cy.get("#root_contactId-diffReviewAndSubmitInformationNew").should(
+      "have.text",
+      "Bob003 Loblaw003"
     );
 
-    cy.findByText("Quarterly Report Removed").should("be.visible");
+    cy.get(
+      "#root_contractStartDate-diffReviewAndSubmitInformationNew"
+    ).contains(/Jan(\.)? 1, 2020/);
+    cy.get(
+      "#root_projectAssetsLifeEndDate-diffReviewAndSubmitInformationNew"
+    ).contains(/Dec(\.)? 31, 2020/);
 
-    cy.get("#root_measurementPeriodStartDate-diffNew")
+    cy.findByText("Quarterly Report removed").should("be.visible");
+
+    cy.get("#root_measurementPeriodStartDate-diffReviewAndSubmitInformationNew")
       .next()
       .next()
       .should("have.text", "ADDED");
 
-    cy.get("#root_comments-diffOld").should(
+    cy.get("#root_comments-diffReviewAndSubmitInformationOld").should(
       "have.text",
       "annual report comments 1"
     );
 
-    cy.get("#root_comments-diffNew").should("have.text", "new comment");
+    cy.get("#root_comments-diffReviewAndSubmitInformationNew").should(
+      "have.text",
+      "new comment"
+    );
 
     cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
 

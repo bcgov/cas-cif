@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -9,17 +9,25 @@ import { ProjectMilestoneReportFormSummary_projectRevision$key } from "__generat
 import projectMilestoneUiSchema from "data/jsonSchemaForm/projectMilestoneUiSchema";
 import { getSortedReports } from "./Functions/reportingRequirementFormChangeFunctions";
 import { getMilestoneFilteredSchema } from "./Functions/getMilestoneFilteredSchema";
+import { SummaryFormProps } from "data/formPages/types";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 
 const { fields } = utils.getDefaultRegistry();
 
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-interface Props {
-  projectRevision: ProjectMilestoneReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
-}
+interface Props
+  extends SummaryFormProps<ProjectMilestoneReportFormSummary_projectRevision$key> {}
 
-const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
+const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const { summaryMilestoneFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectMilestoneReportFormSummary_projectRevision on ProjectRevision {
@@ -49,10 +57,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
-  const renderDiff = !isFirstRevision && !props.viewOnly;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records,
   // otherwise filter out the archived milestone reports
@@ -79,7 +87,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
   const milestoneReportsJSX = useMemo(() => {
     return sortedMilestoneReports.map((milestoneReport, index) => {
       // Set the formSchema and formData based on showing the diff or not
-      const reportingRequirementFormDiffObject = renderDiff
+      const milestoneFormDiffObject = renderDiff
         ? getMilestoneFilteredSchema(
             milestoneReport.formByJsonSchemaName.jsonSchema
               .schema as JSONSchema7,
@@ -90,36 +98,51 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
             formData: milestoneReport.newFormData,
           };
 
+      if (
+        isOnAmendmentsAndOtherRevisionsPage &&
+        milestoneReport?.isPristine &&
+        milestoneReport.operation !== "ARCHIVE"
+      )
+        return null;
+
       return (
         <div key={index} className="reportContainer">
           <header>
             <h4>Milestone Report {index + 1}</h4>
           </header>
           {/* Show this part if none of milestone report form properties have been updated */}
-          {Object.keys(reportingRequirementFormDiffObject.formSchema.properties)
-            .length === 0 &&
+          {Object.keys(milestoneFormDiffObject.formSchema.properties).length ===
+            0 &&
             milestoneReport.operation !== "ARCHIVE" && (
-              <em>Milestone report not updated</em>
+              <FormNotAddedOrUpdated
+                isFirstRevision={isFirstRevision}
+                formTitle="Milestone Report"
+              />
             )}
 
           {/* Show this part if the whole milestone report has been removed */}
           {renderDiff && milestoneReport.operation === "ARCHIVE" && (
-            <em className="diffOld">Milestone Report Removed</em>
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
+                isOnAmendmentsAndOtherRevisionsPage
+              }
+              formTitle="Milestone Report"
+            />
           )}
           <FormBase
             key={`form-${milestoneReport.id}`}
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={
-              reportingRequirementFormDiffObject.formSchema as JSONSchema7
-            }
+            schema={milestoneFormDiffObject.formSchema as JSONSchema7}
             uiSchema={projectMilestoneUiSchema}
-            formData={reportingRequirementFormDiffObject.formData}
+            formData={milestoneFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
+              isAmendmentsAndOtherRevisionsSpecific:
+                isOnAmendmentsAndOtherRevisionsPage,
             }}
           />
 
@@ -131,21 +154,45 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = (props) => {
         </div>
       );
     });
-  }, [sortedMilestoneReports, renderDiff]);
+  }, [
+    isFirstRevision,
+    isOnAmendmentsAndOtherRevisionsPage,
+    renderDiff,
+    sortedMilestoneReports,
+  ]);
+
+  const milestoneReportsNotUpdated = useMemo(
+    () => allFormChangesPristine || milestoneReportFormChanges.length < 1,
+    [allFormChangesPristine, milestoneReportFormChanges.length]
+  );
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => setHasDiff && setHasDiff(!milestoneReportsNotUpdated),
+    [milestoneReportsNotUpdated, setHasDiff]
+  );
+
+  if (isOnAmendmentsAndOtherRevisionsPage && milestoneReportsNotUpdated)
+    return null;
 
   return (
     <>
-      <h3>Project Milestone Reports</h3>
-      {milestoneReportFormChanges.length < 1 && props.viewOnly && (
-        <dd>
-          <em>No Milestone Reports</em>
-        </dd>
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Project Milestone Reports</h3>
+      )}
+      {milestoneReportFormChanges.length < 1 && viewOnly && (
+        <FormNotAddedOrUpdated
+          isFirstRevision={true} //setting this to true so that the text is "Milestone Reports not added"
+          formTitle="Milestone Reports"
+        />
       )}
       {(allFormChangesPristine || milestoneReportFormChanges.length < 1) &&
-      !props.viewOnly ? (
-        <dd>
-          <em>Milestone Reports not {isFirstRevision ? "added" : "updated"}</em>
-        </dd>
+      !viewOnly &&
+      !isOnAmendmentsAndOtherRevisionsPage ? (
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          formTitle="Milestone Reports"
+        />
       ) : (
         milestoneReportsJSX
       )}

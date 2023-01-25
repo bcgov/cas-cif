@@ -56,9 +56,8 @@ describe("the new project page", () => {
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
-    cy.contains(/Budgets, expenses & payments/i);
-    // temporarily removing this flaky screenshot until a permanent fix is in place
-    // cy.happoAndAxe("Project budgets Form", "empty", "main");
+    cy.contains(/^Budgets, expenses & payments/i);
+    cy.happoAndAxe("Project budgets Form", "empty", "main");
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",

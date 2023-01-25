@@ -2,7 +2,6 @@ import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
-import { useMemo } from "react";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
@@ -14,14 +13,23 @@ import {
 import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { createEmissionIntensityReportUiSchema } from "./ProjectEmissionIntensityReportForm";
+import { SummaryFormProps } from "data/formPages/types";
+import { useEffect, useMemo } from "react";
+import {
+  FormNotAddedOrUpdated,
+  FormRemoved,
+} from "./SummaryFormCommonComponents";
 const { fields } = utils.getDefaultRegistry();
 
-interface Props {
-  projectRevision: ProjectEmissionIntensityReportFormSummary_projectRevision$key;
-  viewOnly?: boolean;
-}
+interface Props
+  extends SummaryFormProps<ProjectEmissionIntensityReportFormSummary_projectRevision$key> {}
 
-const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
+const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
+  projectRevision,
+  viewOnly,
+  isOnAmendmentsAndOtherRevisionsPage,
+  setHasDiff,
+}) => {
   const {
     summaryEmissionIntensityReportFormChange,
     summaryEmissionIntensityReportingRequirementFormChange,
@@ -64,11 +72,11 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
         }
       }
     `,
-    props.projectRevision
+    projectRevision
   );
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
-  const renderDiff = !isFirstRevision && !props.viewOnly;
+  const renderDiff = !isFirstRevision && !viewOnly;
 
   const summaryReportingRequirement =
     summaryEmissionIntensityReportingRequirementFormChange?.edges[0]?.node;
@@ -114,8 +122,17 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
     summaryReportingRequirement?.isPristine,
   ]);
 
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => setHasDiff && setHasDiff(!allFormChangesPristine),
+    [allFormChangesPristine, setHasDiff]
+  );
+
   // Growthbook - teimp
   if (!useShowGrowthbookFeature("teimp")) return null;
+
+  if (isOnAmendmentsAndOtherRevisionsPage && allFormChangesPristine)
+    return null;
 
   if (
     allFormChangesPristine ||
@@ -123,33 +140,38 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
   )
     return (
       <>
-        <h3>Emission Intensity Report</h3>
-        <dd>
-          <em>
-            Emission Intensity Report not{" "}
-            {isFirstRevision ? "added" : "updated"}
-          </em>
-        </dd>
+        {!isOnAmendmentsAndOtherRevisionsPage && (
+          <h3>Emission Intensity Report</h3>
+        )}
+        <FormNotAddedOrUpdated
+          isFirstRevision={isFirstRevision}
+          formTitle="Emission Intensity Report"
+        />
       </>
     );
 
   return (
     <>
-      <h3>Emission Intensity Report</h3>
+      {!isOnAmendmentsAndOtherRevisionsPage && (
+        <h3>Emission Intensity Report</h3>
+      )}
       {/* Show this part if none of the emission intensity report form properties have been updated */}
       {allFormChangesPristine &&
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
-          <p>
-            <em>
-              Emission Intensity Report
-              {isFirstRevision ? "added" : "updated"}
-            </em>
-          </p>
+          <FormNotAddedOrUpdated
+            isFirstRevision={isFirstRevision}
+            formTitle="Emission Intensity Report"
+          />
         )}
       {/* Show this part if the whole emission intensity report has been removed */}
       {renderDiff &&
         summaryEmissionIntensityReport?.operation === "ARCHIVE" && (
-          <em className="diffOld">Emission Intensity Report Removed</em>
+          <FormRemoved
+            isOnAmendmentsAndOtherRevisionsPage={
+              isOnAmendmentsAndOtherRevisionsPage
+            }
+            formTitle="Emission Intensity Report"
+          />
         )}
 
       <FormBase
@@ -164,6 +186,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           oldData:
             summaryReportingRequirement?.formChangeByPreviousFormChangeId
               ?.newFormData,
+          isAmendmentsAndOtherRevisionsSpecific:
+            isOnAmendmentsAndOtherRevisionsPage,
         }}
       />
       <FormBase
@@ -188,6 +212,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = (props) => {
           oldData:
             summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
               ?.newFormData,
+          isAmendmentsAndOtherRevisionsSpecific:
+            isOnAmendmentsAndOtherRevisionsPage,
         }}
       />
     </>

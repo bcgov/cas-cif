@@ -1,3 +1,10 @@
+export interface SummaryFormProps<TProjectRevision> {
+  projectRevision: TProjectRevision;
+  viewOnly?: boolean;
+  isOnAmendmentsAndOtherRevisionsPage?: boolean;
+  setHasDiff?: (hasDiff: boolean | ((prevState: boolean) => void)) => void;
+}
+
 export interface IFormConfiguration {
   slug: string;
   editComponent: React.FC<{
@@ -5,10 +12,7 @@ export interface IFormConfiguration {
     projectRevision: any;
     onSubmit: () => void;
   }>;
-  viewComponent: React.FC<{
-    projectRevision: any;
-    viewOnly: boolean;
-  }>;
+  viewComponent: React.FC<SummaryFormProps<any>>;
 }
 export interface IFormItem<
   TFormConfiguration extends IFormConfiguration = IFormConfiguration

@@ -2,6 +2,7 @@ import { WidgetProps } from "@rjsf/core";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import { Button } from "@button-inc/bcgov-theme";
 import { useUpdatePendingActionsFrom } from "mutations/ProjectRevision/updatePendingActionsFrom";
+import { graphql, useFragment } from "react-relay";
 
 interface Option {
   type: string;
@@ -9,6 +10,14 @@ interface Option {
   enum: number[];
   value: number;
 }
+
+const SelectWithNotifyWidgetFragment = graphql`
+  fragment SelectWithNotifyWidget_projectRevision on ProjectRevision {
+    id
+    pendingActionsFrom
+    revisionStatus
+  }
+`;
 
 const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   props
@@ -32,8 +41,12 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
 
   const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
     useUpdatePendingActionsFrom();
-  const revisionId = formContext.revisionId;
-  const revisionStatus = formContext.revisionStatus;
+  const projectRevision = formContext.projectRevision;
+  const {
+    id: revisionId,
+    revisionStatus,
+    pendingActionsFrom,
+  } = useFragment(SelectWithNotifyWidgetFragment, projectRevision);
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>
       updatePendingActionsFrom({
@@ -100,11 +113,7 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
         </>
       ) : (
         <>
-          {formContext.pendingActionsFrom ? (
-            <>{formContext.pendingActionsFrom}</>
-          ) : (
-            <em>Not Added</em>
-          )}
+          {pendingActionsFrom ? <>{pendingActionsFrom}</> : <em>Not Added</em>}
         </>
       )}
       <style jsx>

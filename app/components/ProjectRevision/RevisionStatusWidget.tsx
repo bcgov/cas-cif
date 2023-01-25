@@ -4,10 +4,24 @@ import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 import { WidgetProps } from "@rjsf/core";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
 import { useState } from "react";
+import { graphql, useFragment } from "react-relay";
+
+const RevisionStatusWidgetFragment = graphql`
+  fragment RevisionStatusWidget_projectRevision on ProjectRevision {
+    id
+    changeStatus
+  }
+`;
 
 // Custom widget to update the revision status
 const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const { schema, value, formContext } = props;
+  const projectRevision = formContext.projectRevision;
+
+  const { id, changeStatus } = useFragment(
+    RevisionStatusWidgetFragment,
+    projectRevision
+  );
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");
@@ -16,8 +30,6 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const [updateProjectRevision, isUpdatingProjectRevision] =
     useUpdateProjectRevision();
 
-  const { revisionId, changeStatus } = formContext;
-
   const [updated, setUpdated] = useState(false);
 
   const clickHandler = () => {
@@ -25,20 +37,20 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
       updateProjectRevision({
         variables: {
           input: {
-            id: revisionId,
+            id: id,
             projectRevisionPatch: { revisionStatus: value },
           },
         },
         optimisticResponse: {
           updateProjectRevision: {
             projectRevision: {
-              id: revisionId,
+              id: id,
             },
           },
         },
         onCompleted: () => setUpdated(true),
         onError: reject,
-        debounceKey: revisionId,
+        debounceKey: id,
       })
     );
   };
