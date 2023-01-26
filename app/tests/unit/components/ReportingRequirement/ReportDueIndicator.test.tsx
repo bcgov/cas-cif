@@ -103,7 +103,6 @@ describe("The report due indicator", () => {
   it("Shows an anchor link to the form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
     // Group role grabs the fieldset
     expect(screen.getByText("Test report 3").closest("a")).toHaveAttribute(
       "href",
