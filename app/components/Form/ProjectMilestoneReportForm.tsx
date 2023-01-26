@@ -150,7 +150,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
 
   var indexOfNextMilestone =
     sortedMilestoneReports.findIndex(
-      (x) => x.id === upcomingReportFormChange.id
+      (x) => x.id === upcomingReportFormChange?.id
     ) + 1;
 
   const reportSubmittedDates = useMemo(() => {
