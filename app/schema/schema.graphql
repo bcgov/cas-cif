@@ -65446,25 +65446,11 @@ type Query implements Node {
   fundingStreamRfpByRowId(rowId: Int!): FundingStreamRfp
 
   """
-<<<<<<< HEAD
-=======
-  Reads a single `FundingStreamRfpProjectStatus` using its globally unique `ID`.
-  """
-  fundingStreamRfpProjectStatus(
-    """
-    The globally unique `ID` to be used in selecting a single `FundingStreamRfpProjectStatus`.
-    """
-    id: ID!
-  ): FundingStreamRfpProjectStatus
-  fundingStreamRfpProjectStatusByRowId(rowId: Int!): FundingStreamRfpProjectStatus
-
-  """
   A utility function that ingests a timestamp and returns the fiscal year the timestamp is from
   """
   getFiscalYearFromTimestamp(ts: Datetime!): String
 
   """
->>>>>>> 19dc0032 (experimenting with funding schema)
   A utility function to return a set of statuses for form_change records relating to a single revision
   """
   getFormStatus(
