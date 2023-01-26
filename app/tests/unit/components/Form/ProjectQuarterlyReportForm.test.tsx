@@ -38,6 +38,7 @@ const defaultMockResolver = {
               id: firstFormId,
               rowId: 1,
               newFormData: {
+                id: 1,
                 reportDueDate: "2022-01-01T00:00:00-07",
                 projectId: 51,
                 reportType: "Quarterly",
@@ -52,6 +53,7 @@ const defaultMockResolver = {
               id: `mock-project-quarterly-report-form-${generateID()}`,
               rowId: 2,
               newFormData: {
+                id: 2,
                 reportDueDate: "2022-10-28T00:00:00-07",
                 comments: "some comments",
                 projectId: 51,
@@ -97,9 +99,12 @@ describe("The ProjectQuarterlyReportForm", () => {
   it("Renders two quarterly reports with remove buttons, the report due indicator, and the overall status badge", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-
-    expect(screen.getByText("Quarterly Report 1")).toBeInTheDocument();
-    expect(screen.getByText("Quarterly Report 2")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /quarterly report 1/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /quarterly report 2/i })
+    ).toBeInTheDocument();
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
       /Overdue by \d+ day\(s\)/
     );

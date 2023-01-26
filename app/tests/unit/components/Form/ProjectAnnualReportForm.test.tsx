@@ -38,6 +38,7 @@ const defaultMockResolver = {
               id: firstFormId,
               rowId: 57,
               newFormData: {
+                id: 1,
                 reportDueDate: "2022-01-01T00:00:00-07",
                 projectId: 51,
                 reportType: "Annual",
@@ -52,6 +53,7 @@ const defaultMockResolver = {
               id: `mock-project-Annual-report-form-${generateID()}`,
               rowId: 58,
               newFormData: {
+                id: 2,
                 reportDueDate: "2022-10-28T00:00:00-07",
                 comments: "some comments",
                 projectId: 51,
@@ -98,8 +100,12 @@ describe("The ProjectAnnualReportForm", () => {
   it("Renders two Annual reports with remove buttons, the report due indicator, and the overall status badge", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(screen.getByText("Annual Report 1")).toBeInTheDocument();
-    expect(screen.getByText("Annual Report 2")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /annual report 1/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /annual report 2/i })
+    ).toBeInTheDocument();
 
     expect(screen.getAllByText("Remove")).toHaveLength(2);
     expect(screen.getAllByRole("group")[0]).toHaveTextContent(
