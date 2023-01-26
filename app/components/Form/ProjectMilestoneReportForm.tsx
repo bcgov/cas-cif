@@ -148,7 +148,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
   const upcomingReportFormChange =
     projectRevision.upcomingMilestoneReportFormChange;
 
-  var indexOfNextMilestone =
+  const indexOfNextMilestone =
     sortedMilestoneReports.findIndex(
       (x) => x.id === upcomingReportFormChange?.id
     ) + 1;

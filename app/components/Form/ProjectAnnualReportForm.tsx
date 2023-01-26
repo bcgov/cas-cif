@@ -166,7 +166,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
   const upcomingReportFormChange =
     projectRevision.upcomingAnnualReportFormChange;
 
-  var indexOfNextAnnualReport =
+  const indexOfNextAnnualReport =
     sortedAnnualReports.findIndex(
       (x) => x.id === upcomingReportFormChange?.id
     ) + 1;
