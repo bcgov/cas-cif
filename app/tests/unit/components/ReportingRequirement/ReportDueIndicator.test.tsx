@@ -37,7 +37,7 @@ const componentTestingHelper =
     getPropsFromTestQuery: (data) => ({
       reportDueFormChange: data.query.formChange,
       reportTitle: "Test report",
-      milestoneIndex: 3,
+      renderingIndex: 3,
     }),
   });
 
