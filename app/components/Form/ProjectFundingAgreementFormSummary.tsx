@@ -40,12 +40,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const {
-    summaryProjectFundingAgreementFormChanges,
-    isFirstRevision,
-    summaryAdditionalFundingSourceFormChanges,
-    totalProjectValue,
-  } = useFragment(
+  const revision = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
         # eslint-disable-next-line relay/must-colocate-fragment-spreads
@@ -89,6 +84,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     `,
     projectRevision
   );
+
+  const {
+    summaryProjectFundingAgreementFormChanges,
+    isFirstRevision,
+    summaryAdditionalFundingSourceFormChanges,
+    totalProjectValue,
+  } = revision;
 
   const proponentCost =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node.newFormData
@@ -257,7 +259,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           uiSchema={fundingAgreementUiSchema}
           formData={formData}
           formContext={{
-            projectRevision,
+            projectRevision: revision,
             operation: fundingAgreementSummary?.operation,
             calculatedTotalProjectValue: totalProjectValue,
             calculatedProponentsSharePercentage,
