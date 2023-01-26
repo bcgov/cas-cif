@@ -8,7 +8,6 @@ insert into cif.project_status (name, description) values
 ('Agreement Signed', 'Agreement Signed'),
 ('Advanced Milestone Complete', 'Advanced Milestone Complete'),
 ('Performance Milestone Complete', 'Performance Milestone Complete'),
-('Complete', 'Complete'),
 ('Under Review', 'Under Review');
 
 
@@ -19,8 +18,9 @@ update cif.project_status set name = 'Project Underway', description = 'Project 
 update cif.project_status set name = 'TEIMP', description = 'TEIMP' where name = 'Project in TEIMP';
 update cif.project_status set name = 'Summary Report Submitted', description = 'Summary Report Submitted' where name = 'Project Summary Report Complete';
 update cif.project_status set name = 'Annual Reporting', description = 'Annual Reporting' where name = 'Project in Annual Reporting';
+update cif.project_status set name = 'Complete', description = 'Complete' where name = 'Closed';
 
 -- delete new status values
-delete from cif.project_status where name in ('Not Funded', 'Funding Agreement Pending', 'Amendment Pending', 'Emissions Intensity Report Complete', 'Closed');
+delete from cif.project_status where name in ('Not Funded', 'Funding Agreement Pending', 'Amendment Pending', 'Emissions Intensity Report Complete');
 
 commit;
