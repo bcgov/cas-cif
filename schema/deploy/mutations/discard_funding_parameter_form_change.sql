@@ -16,6 +16,7 @@ returns setof cif.form_change
 as $discard_funding_parameter_form_change$
 declare
 form_change_record record;
+additional_funding_source_form_change_record record;
 
 begin
 
@@ -32,6 +33,12 @@ begin
     end if;
   end loop;
 
+  for additional_funding_source_form_change_record in select id from cif.form_change
+    where project_revision_id = $1
+    and form_data_table_name = 'additional_funding_source'
+  loop
+    perform cif.discard_additional_funding_source_form_change(additional_funding_source_form_change_record.id);
+  end loop;
 end;
 
 $discard_funding_parameter_form_change$ language plpgsql volatile;
