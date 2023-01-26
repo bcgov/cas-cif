@@ -221,7 +221,6 @@ describe("The Project Funding Agreement Form Summary", () => {
       },
     });
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
 
     expect(screen.getByText("Total Project Value")).toBeInTheDocument();
     expect(screen.getByText("Maximum Funding Amount")).toBeInTheDocument();
