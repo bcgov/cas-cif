@@ -72,6 +72,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         upcomingAnnualReportFormChange: upcomingReportingRequirementFormChange(
           reportType: "Annual"
         ) {
+          id
           # eslint-disable-next-line relay/must-colocate-fragment-spreads
           ...ReportDueIndicator_formChange
           asReportingRequirement {
@@ -162,6 +163,14 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
     projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
       ?.node;
 
+  const upcomingReportFormChange =
+    projectRevision.upcomingAnnualReportFormChange;
+
+  var indexOfNextAnnualReport =
+    sortedAnnualReports.findIndex(
+      (x) => x.id === upcomingReportFormChange?.id
+    ) + 1;
+
   return (
     <div>
       <header>
@@ -179,6 +188,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
       <ReportDueIndicator
         reportTitle="Annual Report"
         reportDueFormChange={projectRevision.upcomingAnnualReportFormChange}
+        renderingIndex={indexOfNextAnnualReport}
       />
       <FormBorder>
         <ReportGenerator

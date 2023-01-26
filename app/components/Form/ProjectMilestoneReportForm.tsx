@@ -249,7 +249,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
       <ReportDueIndicator
         reportTitle="Milestone Report"
         reportDueFormChange={projectRevision.upcomingMilestoneReportFormChange}
-        milestoneIndex={indexOfNextMilestone}
+        renderingIndex={indexOfNextMilestone}
       />
       <FormBorder>
         <Button
