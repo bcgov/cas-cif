@@ -162,6 +162,16 @@ describe("The Project Funding Agreement Form Summary", () => {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
             isFirstRevision: true,
+            anticipatedFundingAmountPerFiscalYear: {
+              edges: [
+                {
+                  node: {
+                    anticipatedFundingAmount: "5",
+                    fiscalYear: "2021/2022",
+                  },
+                },
+              ],
+            },
             summaryProjectFundingAgreementFormChanges: {
               edges: [
                 {
@@ -221,6 +231,11 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("Anticipated/Actual Funding Amount")
     ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
+      )
+    ).toHaveTextContent("$5.00");
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
     expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
     expect(

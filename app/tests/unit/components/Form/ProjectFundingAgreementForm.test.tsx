@@ -27,6 +27,16 @@ const defaultMockResolver = {
       projectFormChange: {
         formDataRecordId: 51,
       },
+      anticipatedFundingAmountPerFiscalYear: {
+        edges: [
+          {
+            node: {
+              anticipatedFundingAmount: "5",
+              fiscalYear: "2021/2022",
+            },
+          },
+        ],
+      },
       totalProjectValue: "350",
       id: "Test Project Revision ID",
       rowId: 1234,
@@ -154,6 +164,11 @@ describe("The ProjectFundingAgreementForm", () => {
         /Anticipated\/Actual Funding Amount/i
       ).value
     ).toBe("$300.00");
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
+      )
+    ).toHaveTextContent("$5.00");
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value
     ).toBe("$800.00");

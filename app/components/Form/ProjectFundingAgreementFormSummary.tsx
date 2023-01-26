@@ -40,14 +40,11 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const {
-    summaryProjectFundingAgreementFormChanges,
-    isFirstRevision,
-    summaryAdditionalFundingSourceFormChanges,
-    totalProjectValue,
-  } = useFragment(
+  const revision = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
+        # eslint-disable-next-line relay/must-colocate-fragment-spreads
+        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         totalProjectValue
         summaryProjectFundingAgreementFormChanges: formChangesFor(
@@ -87,6 +84,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     `,
     projectRevision
   );
+
+  const {
+    summaryProjectFundingAgreementFormChanges,
+    isFirstRevision,
+    summaryAdditionalFundingSourceFormChanges,
+    totalProjectValue,
+  } = revision;
 
   const proponentCost =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node.newFormData
@@ -255,6 +259,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           uiSchema={fundingAgreementUiSchema}
           formData={formData}
           formContext={{
+            projectRevision: revision,
             operation: fundingAgreementSummary?.operation,
             calculatedTotalProjectValue: totalProjectValue,
             calculatedProponentsSharePercentage,
@@ -320,6 +325,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       <style jsx>{`
         .summaryContainer {
           margin-bottom: 1em;
+        }
+        :global(.anticipatedFundingAmount) {
+          margin-bottom: 0.5em;
+        }
+        :global(#root_anticipatedFundingAmountPerFiscalYear) {
+          border: none;
         }
       `}</style>
     </div>

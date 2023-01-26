@@ -9,6 +9,7 @@ import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
 import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
 import ModalWidget from "./widgets/ModalWidget";
+import AnticipatedFundingAmountPerFiscalYearWidget from "./widgets/AnticipatedFundingAmountPerFiscalYearWidget";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -32,6 +33,7 @@ const readOnlyTheme: ThemeProps = {
     NumberWidget: ReadOnlyNumberWidget,
     SelectWithNotifyWidget: SelectWithNotifyWidget,
     ModalWidget,
+    AnticipatedFundingAmountPerFiscalYearWidget,
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,

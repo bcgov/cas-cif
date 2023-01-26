@@ -31,6 +31,10 @@ export const fundingAgreementSchema = {
       title: "Anticipated/Actual Funding Amount",
       type: "number",
     },
+    anticipatedFundingAmountPerFiscalYear: {
+      title: "Anticipated Funding Amount Per Fiscal Year",
+      type: "string",
+    },
     proponentCost: {
       title: "Proponent Cost",
       type: "number",
@@ -60,6 +64,7 @@ export const fundingAgreementUiSchema = {
     "contractStartDate",
     "projectAssetsLifeEndDate",
     "anticipatedFundingAmount",
+    "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
   ],
   totalProjectValue: {
@@ -90,6 +95,14 @@ export const fundingAgreementUiSchema = {
   anticipatedFundingAmount: {
     "ui:widget": "NumberWidget",
     isMoney: true,
+  },
+  anticipatedFundingAmountPerFiscalYear: {
+    "ui:options": {
+      label: false,
+    },
+    "ui:widget": "AnticipatedFundingAmountPerFiscalYearWidget",
+    title: "",
+    hideOptional: true,
   },
   proponentCost: {
     "ui:widget": "NumberWidget",
