@@ -23,7 +23,6 @@ const mockResolver = {
       id: "the-id-of-the-form-change",
       reportingRequirement: {
         reportDueDate: "2020-01-10T00:00:00-08",
-        reportingRequirementIndex: 3,
       },
     };
   },
@@ -38,6 +37,7 @@ const componentTestingHelper =
     getPropsFromTestQuery: (data) => ({
       reportDueFormChange: data.query.formChange,
       reportTitle: "Test report",
+      renderingIndex: 3,
     }),
   });
 
@@ -103,7 +103,6 @@ describe("The report due indicator", () => {
   it("Shows an anchor link to the form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-
     // Group role grabs the fieldset
     expect(screen.getByText("Test report 3").closest("a")).toHaveAttribute(
       "href",

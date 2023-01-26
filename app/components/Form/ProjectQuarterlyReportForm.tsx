@@ -66,6 +66,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         upcomingQuarterlyReportFormChange: upcomingReportingRequirementFormChange(
           reportType: "Quarterly"
         ) {
+          id
           ...ReportDueIndicator_formChange
           asReportingRequirement {
             reportDueDate
@@ -150,6 +151,14 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
   const emissionIntensityReportFormChange =
     projectRevision.emissionIntensityReportFormChanges.edges[0]?.node;
 
+  const upcomingReportFormChange =
+    projectRevision.upcomingQuarterlyReportFormChange;
+
+  const indexOfNextAnnualReport =
+    sortedQuarterlyReports.findIndex(
+      (x) => x.id === upcomingReportFormChange?.id
+    ) + 1;
+
   return (
     <div>
       <header>
@@ -166,6 +175,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
       <ReportDueIndicator
         reportTitle="Quarterly Report"
         reportDueFormChange={projectRevision.upcomingQuarterlyReportFormChange}
+        renderingIndex={indexOfNextAnnualReport}
       />
       <FormBorder>
         <ReportGenerator

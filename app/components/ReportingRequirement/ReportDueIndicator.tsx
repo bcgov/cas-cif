@@ -20,11 +20,13 @@ interface Props {
    * e.g. "Quarterly Report" to display "Quarterly Report <reportIndex>"
    */
   reportTitle: string;
+  renderingIndex: number;
 }
 
 const ReportDueIndicator: React.FC<Props> = ({
   reportDueFormChange,
   reportTitle,
+  renderingIndex,
 }) => {
   const formChange = useFragment(
     graphql`
@@ -32,7 +34,6 @@ const ReportDueIndicator: React.FC<Props> = ({
         id
         reportingRequirement: asReportingRequirement {
           reportDueDate
-          reportingRequirementIndex
         }
       }
     `,
@@ -67,7 +68,7 @@ const ReportDueIndicator: React.FC<Props> = ({
                       .toLocaleString(DateTime.DATE_MED)}
                   </b>{" "}
                   <Link href={`#form-${formChange.id}`}>
-                    {`${reportTitle} ${reportingRequirement.reportingRequirementIndex}`}
+                    {`${reportTitle} ${renderingIndex}`}
                   </Link>
                 </>
               ) : (
