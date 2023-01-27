@@ -1,0 +1,218 @@
+﻿kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Name }}-helm-deployer-role
+  labels: {{ include "backup-test-init.labels" . | nindent 4 }}
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+      - update
+    apiGroups:
+      - image.openshift.io
+    resources:
+      - imagestreamimages
+      - imagestreammappings
+      - imagestreams
+      - imagestreamtags
+  - verbs:
+      - delete
+    apiGroups:
+      - image.openshift.io
+    resources:
+      - imagestreamtags
+  - verbs:
+      - get
+    apiGroups:
+      - project.openshift.io
+      - ''
+    resources:
+      - projects
+  - verbs:
+      - watch
+      - list
+      - get
+      - create
+      - update
+      - patch
+      - delete
+      - deletecollection
+    apiGroups:
+      - ''
+    resources:
+      - replicationcontrollers
+      - persistentvolumeclaims
+      - services
+      - secrets
+      - configmaps
+      - endpoints
+      - pods
+      - pods/exec
+  - verbs:
+      - watch
+      - list
+      - get
+    apiGroups:
+      - ''
+    resources:
+      - pods/status
+      - pods/log
+  - verbs:
+      - get
+      - create
+      - update
+      - patch
+    apiGroups:
+      - apps.openshift.io
+    resources:
+      - deploymentconfigs
+  - verbs:
+      - get
+      - create
+      - delete
+      - update
+      - patch
+    apiGroups:
+      - apps
+    resources:
+      - statefulsets
+  - verbs:
+      - list
+      - get
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+  - verbs:
+      - create
+    apiGroups:
+      - template.openshift.io
+    resources:
+      - processedtemplates
+  - verbs:
+      - get
+      - create
+      - update
+      - patch
+    apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+  - verbs:
+      - create
+    apiGroups:
+      - route.openshift.io
+      - ''
+    resources:
+      - routes/custom-host
+  - verbs:
+      - get
+      - create
+      - update
+      - patch
+      - delete
+      - watch
+      - list
+    apiGroups:
+      - batch
+    resources:
+      - jobs
+      - cronjobs
+  - verbs:
+      - get
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - policy
+    resources:
+      - poddisruptionbudgets
+  - verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - ''
+    resources:
+      - serviceaccounts
+  - verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - rbac.authorization.k8s.io
+      - authorization.openshift.io
+    resources:
+      - roles
+      - rolebindings
+  - verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - extensions
+      - apps
+    resources:
+      - deployments
+      - replicasets
+  - verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - networking.k8s.io
+    resources:
+      - networkpolicies
+  - verbs:
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - events
+  - verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - autoscaling
+    resources:
+      - horizontalpodautoscalers
+  - verbs:
+      - get
+      - list
+    apiGroups:
+      - artifactory.devops.gov.bc.ca
+    resources:
+      - artifactoryserviceaccounts
+  - verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - postgres-operator.crunchydata.com
+    resources:
+      - postgresclusters
