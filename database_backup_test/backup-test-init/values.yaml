@@ -6,5 +6,7 @@ host:
   namespace: ~
   BoundServiceAccountName: ~
   secret:
-    secretName: ~
-    secretKey: ~
+    gcsSecretName: ~
+    gcsSecretKey: ~
+    dbSecretName: ~
+    dbSecretKey: ~
