@@ -9,9 +9,7 @@ const mutation = graphql`
     stageFormChange(input: $input) {
       formChange {
         id
-        asEmissionIntensityReport {
-          calculatedEiPerformance
-        }
+        calculatedEiPerformance
         newFormData
         operation
         changeStatus

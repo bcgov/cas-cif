@@ -43285,9 +43285,6 @@ type EmissionIntensityReport implements Node {
   """
   baselineEmissionIntensity: BigFloat
 
-  """Returns the calculated EI intensity value"""
-  calculatedEiPerformance: BigFloat
-
   """
   Reads a single `CifUser` that is related to this `EmissionIntensityReport`.
   """
@@ -43464,9 +43461,6 @@ input EmissionIntensityReportFilter {
 
   """Filter by the object’s `baselineEmissionIntensity` field."""
   baselineEmissionIntensity: BigFloatFilter
-
-  """Filter by the object’s `calculatedEiPerformance` field."""
-  calculatedEiPerformance: BigFloatFilter
 
   """Filter by the object’s `cifUserByArchivedBy` relation."""
   cifUserByArchivedBy: CifUserFilter
@@ -44167,6 +44161,9 @@ type FormChange implements Node {
   """
   asReportingRequirement: ReportingRequirement
 
+  """Returns the calculated EI intensity value"""
+  calculatedEiPerformance: BigFloat
+
   """
   Computed column returns the calculated gross payment amount for a particular milestone based on the provinceSharePercentage for the project and eligible expenses for the milestone.
   """
@@ -44754,6 +44751,9 @@ A filter to be used against `FormChange` object types. All fields are combined w
 input FormChangeFilter {
   """Checks for all expressions in this list."""
   and: [FormChangeFilter!]
+
+  """Filter by the object’s `calculatedEiPerformance` field."""
+  calculatedEiPerformance: BigFloatFilter
 
   """Filter by the object’s `calculatedGrossAmountThisMilestone` field."""
   calculatedGrossAmountThisMilestone: BigFloatFilter

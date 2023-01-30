@@ -10,10 +10,8 @@ const mutation = graphql`
     addEmissionIntensityReportToRevision(input: $input) {
       formChanges {
         id
+        calculatedEiPerformance
         rowId
-        asEmissionIntensityReport {
-          calculatedEiPerformance
-        }
         newFormData
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
