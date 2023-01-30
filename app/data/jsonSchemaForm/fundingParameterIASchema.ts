@@ -1,10 +1,9 @@
-export const fundingAgreementSchema = {
+export const fundingParameterIASchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   required: [
     "maxFundingAmount",
     "provinceSharePercentage",
-    "holdbackPercentage",
     "anticipatedFundingAmount",
     "proponentCost",
     "contractStartDate",
@@ -21,10 +20,6 @@ export const fundingAgreementSchema = {
     },
     provinceSharePercentage: {
       title: "Province's Share Percentage",
-      type: "number",
-    },
-    holdbackPercentage: {
-      title: "Performance Milestone Holdback Percentage",
       type: "number",
     },
     anticipatedFundingAmount: {
@@ -54,15 +49,14 @@ export const fundingAgreementSchema = {
   },
 };
 
-export const fundingAgreementUiSchema = {
+export const fundingParameterIAUiSchema = {
   "ui:order": [
-    "contractStartDate",
-    "projectAssetsLifeEndDate",
     "maxFundingAmount",
     "provinceSharePercentage",
-    "holdbackPercentage",
     "proponentCost",
     "proponentsSharePercentage",
+    "contractStartDate",
+    "projectAssetsLifeEndDate",
     "anticipatedFundingAmount",
     "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
@@ -78,11 +72,6 @@ export const fundingAgreementUiSchema = {
     isMoney: true,
   },
   provinceSharePercentage: {
-    "ui:widget": "NumberWidget",
-    isPercentage: true,
-    numberOfDecimalPlaces: 2,
-  },
-  holdbackPercentage: {
     "ui:widget": "NumberWidget",
     isPercentage: true,
   },
