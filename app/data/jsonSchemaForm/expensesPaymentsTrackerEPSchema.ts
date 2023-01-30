@@ -1,4 +1,4 @@
-export const expensesPaymentsTrackerSchema = {
+export const expensesPaymentsTrackerEPSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   required: [
@@ -27,7 +27,7 @@ export const expensesPaymentsTrackerSchema = {
   },
 };
 
-export const expensesPaymentsTrackerUiSchema = {
+export const expensesPaymentsTrackerEPUiSchema = {
   "ui:order": [
     "eligibleExpensesToDate",
     "grossPaymentsToDate",
