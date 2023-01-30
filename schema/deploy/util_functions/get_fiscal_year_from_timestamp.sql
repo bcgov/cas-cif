@@ -8,7 +8,7 @@ as
 $fn$
 
   select case
-    when ts::date < (select to_char(ts, 'YYYY') || '-04-01')::date then
+    when (select ts at time zone 'America/Vancouver')::date < (select to_char(ts, 'YYYY') || '-04-01')::date then
       to_char(date_trunc('year', ts::date) - interval '1 year', 'YYYY') || '/' || to_char(ts, 'YYYY')
     else
       to_char(ts, 'YYYY') || '/' || to_char(date_trunc('year', ts) + interval '1 year', 'YYYY')
