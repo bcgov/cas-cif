@@ -4,8 +4,7 @@ import useDebouncedMutation from "mutations/useDebouncedMutation";
 
 /**
  *
- * Specific mutation for a form_change for a project.
- * Includes whether the suggested proposal reference is unique in the system.
+ * Specific mutation for a form_change for a funding agreement.
  *
  */
 
@@ -20,7 +19,9 @@ const mutation = graphql`
         newFormData
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
+          totalProjectValue
         }
+        calculatedTotalPaymentAmountToDate
       }
     }
   }
