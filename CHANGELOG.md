@@ -1,3 +1,23 @@
+# [1.3.0](https://github.com/bcgov/cas-cif/compare/1.2.0...1.3.0) (2023-01-31)
+
+### Bug Fixes
+
+- add new calculation to forms ([e11a9d0](https://github.com/bcgov/cas-cif/commit/e11a9d0ebd17a74d3996a6969d005160663d72c7))
+- add new calculation to forms ([c7ed018](https://github.com/bcgov/cas-cif/commit/c7ed01877d630bd62a2df9da2500f7af907f7c97))
+- determing index from milestones ([2e88494](https://github.com/bcgov/cas-cif/commit/2e8849422661a451c037c00fdf2d60030751866a))
+- milestone report due date updates according to milestones ([2964334](https://github.com/bcgov/cas-cif/commit/2964334688470f41ea98f6f8fc7e5c160902e0d3))
+
+### Features
+
+- add anticipated funding per fiscal year to funding form ([5eecb1f](https://github.com/bcgov/cas-cif/commit/5eecb1f4827441e2157058e10432a553864f3db1))
+- new widget to display diffs on revision view page ([7c26235](https://github.com/bcgov/cas-cif/commit/7c262355c5f35e415e15416b84e9af1e97105c4a))
+- project summary report form placeholder component ([026b738](https://github.com/bcgov/cas-cif/commit/026b738f068c13e748c4e9157255958b57f55622))
+- render items in task list based on project funding stream ([95cff73](https://github.com/bcgov/cas-cif/commit/95cff73c640347ec5d11b1e8f8fef5472bd06741))
+
+### Reverts
+
+- Revert "chore: not showing content suffix when rendering diff on TEIMP form" ([b4cc3f1](https://github.com/bcgov/cas-cif/commit/b4cc3f19111cc0c139958f84209e5093ff2ec426))
+
 # [1.2.0](https://github.com/bcgov/cas-cif/compare/1.1.4...1.2.0) (2023-01-23)
 
 ### Bug Fixes
