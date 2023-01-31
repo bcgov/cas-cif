@@ -194,7 +194,7 @@ describe("the emission intensity report form component", () => {
       screen.getByLabelText(
         "Payment Percentage of Performance Milestone Amount (%)"
       )
-    ).toHaveTextContent("60%");
+    ).toHaveTextContent("60.00%");
     expect(
       screen.getByLabelText("Maximum Performance Milestone Amount")
     ).toHaveTextContent("$100");
