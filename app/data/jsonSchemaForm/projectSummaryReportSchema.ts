@@ -2,7 +2,12 @@ export const projectSummaryReportSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
   title: "Upon Completion",
-  required: ["reportDueDate", "submittedDate"],
+  required: [
+    "reportDueDate",
+    "projectSummaryReportPayment",
+    "paymentNotes",
+    "dateSentToCsnr",
+  ],
   properties: {
     reportDueDate: {
       type: "string",
