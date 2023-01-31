@@ -1,5 +1,6 @@
 -- Deploy cif:functions/form_change_payment_percentage to pg
 -- requires: tables/form_change
+-- requires: computed_columns/emission_intensity_report_calculated_ei_performance
 -- 100 – ((-1.5) x GHG Emission Intensity Performance + 145)
 
 begin;
@@ -9,14 +10,14 @@ returns numeric as
 $fn$
 
   select
-    round(100 - ((-1.5) *
+    round(
+      100 - ((-1.5) *
       coalesce(
-        cif.emission_intensity_report_calculated_ei_performance(
-          (select row(emission_intensity_report.*)::cif.emission_intensity_report from cif.emission_intensity_report where reporting_requirement_id = 1)
-          )::numeric,
-        (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric)
-         + 145),
-      2
+        (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric,
+        (cif.form_change_calculated_ei_performance(fc))
+      )
+    + 145),
+    2
     );
 
 $fn$ language sql stable;

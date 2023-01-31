@@ -64,7 +64,7 @@ select is(
   (
     null
   ),
-  'should return null if the form chanage does not have adjustedEmissionsIntensityPerformance'
+  'should return null if the form change does not have adjustedEmissionsIntensityPerformance'
 );
 
 select finish();

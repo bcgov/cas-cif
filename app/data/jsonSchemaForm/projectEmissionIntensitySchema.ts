@@ -139,6 +139,7 @@ export const emissionIntensityReportUiSchema = {
       "paymentPercentageOfPerformanceMilestoneAmount",
     isPercentage: true,
     hideOptional: true,
+    numberOfDecimalPlaces: 2,
   },
   actualPerformanceMilestoneAmount: {
     "ui:widget": "CalculatedValueWidget",
