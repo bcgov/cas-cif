@@ -56,7 +56,7 @@ values
 -- additional_funding_source and funding_parameter to be removed when funding agreement form gets refactored to be one form change, just here to pass the fkey
 ('additional_funding_source', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to additional funding sources'),
 ('funding_parameter', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to funding_parameter'),
-('project_summary_report', 'handle_project_summary_report_form_change_commit', (select json_data from project_summary_report), 'schema data relating to the project summary report'),
+('project_summary_report', 'handle_project_summary_report_form_change_commit', (select json_data from project_summary_report), 'schema data relating to the project summary report')
 on conflict(slug) do update
 set json_schema=excluded.json_schema,
     description=excluded.description,
