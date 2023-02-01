@@ -5,7 +5,8 @@ begin;
 do $$
   begin
     assert (
-      (select count(*) from cif.form) = 14
+      -- brianna change to 14 when T's PR is in
+      (select count(*) from cif.form) = 15
     ), 'The proper number of values were inserted in the cif.form table';
   end;
 $$;
