@@ -44180,6 +44180,11 @@ type FormChange implements Node {
   calculatedNetAmountThisMilestone: BigFloat
 
   """
+  Computed column to calculate the total payment amount to date for an IA project.
+  """
+  calculatedTotalPaymentAmountToDate: BigFloat
+
+  """
   The change status of this form change, foreign key to cif.change_status.
   """
   changeStatus: String!
@@ -44768,6 +44773,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `calculatedNetAmountThisMilestone` field."""
   calculatedNetAmountThisMilestone: BigFloatFilter
+
+  """Filter by the object’s `calculatedTotalPaymentAmountToDate` field."""
+  calculatedTotalPaymentAmountToDate: BigFloatFilter
 
   """Filter by the object’s `changeStatus` field."""
   changeStatus: StringFilter
