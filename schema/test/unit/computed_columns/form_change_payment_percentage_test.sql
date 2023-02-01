@@ -1,6 +1,6 @@
 begin;
 
-select plan(2);
+select plan(3);
 
 /** SETUP **/
 
@@ -37,6 +37,19 @@ values (
   1,
   'milestone',
   '{"Other": "100"}'
+),(
+  3,
+  'create',
+  'cif',
+  '"emission_intensity_report"',
+  1,
+  1,
+  'milestone',
+  '{
+    "form_change_calculated_ei_performance": "1",
+    "postProjectEmissionIntensity": "3",
+    "targetEmissionIntensity": "4"
+    }'
 );
 /** SETUP END **/
 
@@ -51,7 +64,7 @@ select is(
   (
     30::numeric
   ),
-  'payments percentage is calculated correctly'
+  'payments percentage is 30 from the formula: 100 - ((-1.5) x 50 + 145) = 30'
 );
 
 select is(
@@ -67,6 +80,20 @@ select is(
   'should return null if the form change does not have adjustedEmissionsIntensityPerformance'
 );
 
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=3
+    ) select cif.form_change_payment_percentage((select * from record))
+  ),
+  (
+    null
+  ),
+  'should return 200 if the form change does not have adjustedEmissionsIntensityPerformance and has all information to calculate ei performance'
+);
+
+-- 200.00,
 select finish();
 
 rollback;
