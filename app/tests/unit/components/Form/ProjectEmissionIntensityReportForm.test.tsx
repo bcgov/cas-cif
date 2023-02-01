@@ -41,6 +41,7 @@ const defaultMockResolver = {
               reportType: "TEIMP",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
+              holdbackAmountToDate: "100",
             },
           },
         ],
@@ -52,6 +53,7 @@ const defaultMockResolver = {
             node: {
               id: `mock-project-milestone-report-form-${generateID()}`,
               calculatedEiPerformance: 200,
+              paymentPercentage: 60,
               rowId: 1,
               newFormData: {
                 measurementPeriodStartDate: "2022-01-02",
@@ -63,7 +65,6 @@ const defaultMockResolver = {
                 postProjectEmissionIntensity: "4",
                 totalLifetimeEmissionReduction: "5",
                 adjustedEmissionsIntensityPerformance: "6",
-                adjustedHoldbackPaymentAmount: "123456.45",
                 dateSentToCsnr: "2022-02-11",
               },
               operation: "CREATE",
@@ -72,7 +73,6 @@ const defaultMockResolver = {
             },
           },
         ],
-        __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
       },
     };
   },
@@ -181,23 +181,26 @@ describe("the emission intensity report form component", () => {
 
     // We can't query by label for text elements,
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
+    // screen.logTestingPlaygroundURL();
     expect(
-      screen.getByLabelText("GHG Emission Intensity Performance")
+      screen.getByLabelText("GHG Emission Intensity Performance").closest("div")
     ).toHaveTextContent("200.00%");
     expect(
-      screen.getByLabelText("GHG Emission Intensity Performance (Adjusted)")
-    ).toHaveValue("6.00%");
+      screen
+        .getByLabelText("GHG Emission Intensity Performance (Adjusted)")
+        .closest("div")
+    ).toHaveTextContent("200.00%");
     expect(
       screen.getByLabelText(
-        /Payment percentage of performance milestone amount/i
+        "Payment Percentage of Performance Milestone Amount (%)"
       )
     ).toHaveTextContent("60.00%");
-    expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
-      "$99.00"
-    );
     expect(
-      screen.getByLabelText("Holdback Payment Amount (Adjusted)")
-    ).toHaveValue("$123,456.45");
+      screen.getByLabelText("Maximum Performance Milestone Amount")
+    ).toHaveTextContent("$100");
+    expect(
+      screen.getByLabelText("Actual Performance Milestone Amount")
+    ).toHaveTextContent("$6,000.00");
     expect(
       screen.getByLabelText(/Date invoice sent to CSNR/i)
     ).toHaveTextContent(/Feb[.]? 11, 2022/);
@@ -228,7 +231,11 @@ describe("the emission intensity report form component", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    expect(screen.queryByText("0.00%")).toBeInTheDocument();
+    expect(
+      screen.getByText("GHG Emission Intensity Performance").closest("div")
+    ).toHaveTextContent(
+      "This field cannot be calculated due to lack of information now"
+    );
   });
 
   it("renders the TEIMP form with placeholders for calculated values, when the form is not filled", () => {
@@ -263,17 +270,10 @@ describe("the emission intensity report form component", () => {
 
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
-
     expect(
-      screen.getByLabelText("GHG Emission Intensity Performance")
-    ).toHaveTextContent("0.00%");
-    expect(
-      screen.getByLabelText(
-        /Payment percentage of performance milestone amount/i
-      )
-    ).toHaveTextContent("-");
-    expect(screen.getByLabelText("Holdback Payment Amount")).toHaveTextContent(
-      "-"
+      screen.getByText("GHG Emission Intensity Performance").closest("div")
+    ).toHaveTextContent(
+      "This field cannot be calculated due to lack of information now"
     );
   });
 

@@ -147,6 +147,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              holdbackAmountToDate
             }
           }
         }
@@ -162,6 +163,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
+              paymentPercentage
             }
           }
         }
@@ -179,6 +181,24 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const calculatedEiPerformance =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .calculatedEiPerformance;
+
+  const maximumPerformanceMilestoneAmount =
+    projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
+      ?.node.holdbackAmountToDate;
+  const paymentPercentageOfPerformanceMilestoneAmount =
+    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
+      .paymentPercentage;
+  var actualPerformanceMilestoneAmount;
+  if (
+    maximumPerformanceMilestoneAmount == null ||
+    paymentPercentageOfPerformanceMilestoneAmount == null
+  ) {
+    actualPerformanceMilestoneAmount = null;
+  } else {
+    actualPerformanceMilestoneAmount =
+      Number(maximumPerformanceMilestoneAmount ?? null) *
+      Number(paymentPercentageOfPerformanceMilestoneAmount ?? null);
+  }
 
   // Mutations
   const [
@@ -313,7 +333,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             formData={emissionIntensityReportFormChange?.newFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
-              calculatedEiPerformance: calculatedEiPerformance ?? 0,
+              calculatedEiPerformance: calculatedEiPerformance ?? null,
+              paymentPercentageOfPerformanceMilestoneAmount:
+                paymentPercentageOfPerformanceMilestoneAmount ?? null,
+              maximumPerformanceMilestoneAmount:
+                maximumPerformanceMilestoneAmount ?? null,
+              actualPerformanceMilestoneAmount:
+                actualPerformanceMilestoneAmount ?? null,
               teimpPaymentPercentage:
                 projectRevision.teimpPaymentPercentage ?? "-",
               teimpPaymentAmount: projectRevision.teimpPaymentAmount ?? "-",

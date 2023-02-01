@@ -180,7 +180,6 @@ export function ProjectRevision({
   const taskList = (
     <TaskList projectRevision={query.projectRevision} mode={mode} />
   );
-
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <div>
