@@ -17,11 +17,20 @@ const testQuery = graphql`
   }
 `;
 
-const mockQueryPayload = {
+const mockQueryPayloadEP = {
   ProjectRevision() {
     const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
       {
         isFirstRevision: false,
+        projectFormChange: {
+          asProject: {
+            fundingStreamRfpByFundingStreamRfpId: {
+              fundingStreamByFundingStreamId: {
+                name: "EP",
+              },
+            },
+          },
+        },
         summaryProjectFundingAgreementFormChanges: {
           edges: [
             {
@@ -86,6 +95,58 @@ const mockQueryPayload = {
   },
 };
 
+const mockQueryPayloadIA = {
+  ProjectRevision() {
+    const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+      {
+        isFirstRevision: false,
+        projectFormChange: {
+          asProject: {
+            fundingStreamRfpByFundingStreamRfpId: {
+              fundingStreamByFundingStreamId: {
+                name: "IA",
+              },
+            },
+          },
+        },
+        summaryProjectFundingAgreementFormChanges: {
+          edges: [
+            {
+              node: {
+                newFormData: {
+                  projectId: "Test Project ID",
+                  maxFundingAmount: 200,
+                  provinceSharePercentage: 60,
+                  anticipatedFundingAmount: 300,
+                  proponentCost: 100,
+                  contractStartDate: "2021-02-02T23:59:59.999-07:00",
+                  projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                },
+                isPristine: false,
+                operation: "UPDATE",
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    projectId: "Test Project ID",
+                    maxFundingAmount: 300,
+                    provinceSharePercentage: 50,
+                    anticipatedFundingAmount: 300,
+                    proponentCost: 100,
+                    contractStartDate: "2021-01-01T23:59:59.999-07:00",
+                    projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                  },
+                },
+              },
+            },
+          ],
+        },
+        summaryAdditionalFundingSourceFormChanges: {
+          edges: [],
+        },
+      };
+    return result;
+  },
+};
+
 const defaultComponentProps = {
   setValidatingForm: jest.fn(),
   onSubmit: jest.fn(),
@@ -100,7 +161,7 @@ const componentTestingHelper =
       query: data.query,
       projectRevision: data.query.projectRevision,
     }),
-    defaultQueryResolver: mockQueryPayload,
+    defaultQueryResolver: mockQueryPayloadEP,
     defaultQueryVariables: {},
     defaultComponentProps: defaultComponentProps,
   });
@@ -111,7 +172,7 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Only displays the data fields that have changed", () => {
+  it("Only displays the data fields that have changed for an EP form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
@@ -140,7 +201,31 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("Displays diffs of the the data fields that have changed", () => {
+  it("Only displays the data fields that have changed for an IA form", () => {
+    componentTestingHelper.loadQuery(mockQueryPayloadIA);
+    componentTestingHelper.renderComponent();
+    expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Performance Milestone Holdback Percentage")
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Maximum Funding Amount")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Project Assets Life End Date")
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Anticipated/Actual Funding Amount")
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/additional funding amount \(source 1\)/i)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/additional funding status \(source 1\)/i)
+    ).not.toBeInTheDocument();
+  });
+
+  it("Displays diffs of the the data fields that have changed for an EP form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -156,12 +241,33 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("Awaiting Approval")).toBeInTheDocument();
   });
 
-  it("Displays all data when isFirstRevision is true (Project Creation)", () => {
+  it("Displays diffs of the the data fields that have changed for an IA form", () => {
+    componentTestingHelper.loadQuery(mockQueryPayloadIA);
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText("50 %")).toBeInTheDocument();
+    expect(screen.getByText("60 %")).toBeInTheDocument();
+    expect(screen.getByText("$200.00")).toBeInTheDocument(); //max funding changes
+    expect(screen.getByText("$300.00")).toBeInTheDocument(); // max funding changes
+    expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
+    expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
+  });
+
+  it("Displays all data for an EP projectwhen isFirstRevision is true (Project Creation)", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
             isFirstRevision: true,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
             anticipatedFundingAmountPerFiscalYear: {
               edges: [
                 {
@@ -251,6 +357,111 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText(/additional funding source 1/i)
     ).toBeInTheDocument();
   });
+
+  it("Displays all data for an IA projectwhen isFirstRevision is true (Project Creation)", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+          {
+            isFirstRevision: true,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "IA",
+                  },
+                },
+              },
+            },
+            anticipatedFundingAmountPerFiscalYear: {
+              edges: [
+                {
+                  node: {
+                    anticipatedFundingAmount: "5",
+                    fiscalYear: "2021/2022",
+                  },
+                },
+              ],
+            },
+            summaryProjectFundingAgreementFormChanges: {
+              edges: [
+                {
+                  node: {
+                    newFormData: {
+                      projectId: "Test Project ID",
+                      maxFundingAmount: 200,
+                      provinceSharePercentage: 60,
+                      anticipatedFundingAmount: 300,
+                      proponentCost: 800,
+                      contractStartDate: "2021-01-01",
+                      projectAssetsLifeEndDate: "2021-12-31",
+                    },
+                    isPristine: false,
+                    operation: "CREATE",
+                    formChangeByPreviousFormChangeId: {
+                      newFormData: {},
+                    },
+                  },
+                },
+              ],
+            },
+            summaryAdditionalFundingSourceFormChanges: {
+              edges: [
+                {
+                  node: {
+                    id: "Test Additional Funding Source ID",
+                    newFormData: {
+                      projectId: "Test Project ID",
+                      sourceIndex: 1,
+                      source: "Test Source Name",
+                      amount: 2500,
+                      status: "Awaiting Approval",
+                    },
+                    isPristine: false,
+                    operation: "CREATE",
+                    formChangeByPreviousFormChangeId: {
+                      newFormData: {},
+                    },
+                  },
+                },
+              ],
+            },
+          };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText("Total Project Value")).toBeInTheDocument();
+    expect(screen.getByText("Maximum Funding Amount")).toBeInTheDocument();
+    expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Performance Milestone Holdback Percentage")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText("Anticipated/Actual Funding Amount")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
+      )
+    ).toHaveTextContent("$5.00");
+    expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
+    expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
+    expect(
+      screen.getByText("Project Assets Life End Date")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding amount \(source 1\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding status \(source 1\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding source 1/i)
+    ).toBeInTheDocument();
+  });
+
   it("Displays relevant message when funding agreement not added", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
