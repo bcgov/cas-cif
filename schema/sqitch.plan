@@ -257,3 +257,4 @@ computed_columns/form_change_payment_percentage [computed_columns/form_change_pa
 tables/report_type_003 2023-01-31T00:01:02Z Thomas Mastromonaco <thomas@button.is> # Add summary report to the report type table
 functions/handle_project_summary_form_change_commit 2023-02-02T23:54:40Z Thomas Mastromonaco <thomas@button.is> # custom commit handler for the project summary form
 data/insert_json_schema_form_data_project_summary 2023-02-02T23:59:58Z Thomas Mastromonaco <thomas@button.is> # add json schema form data for the project summary report
+mutations/create_project_revision [mutations/create_project_revision@1.2.0] 2023-02-03T21:42:01Z Thomas Mastromonaco <thomas@button.is> # add project_summary_report to form change record
