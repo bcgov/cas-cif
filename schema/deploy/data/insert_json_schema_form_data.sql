@@ -35,9 +35,6 @@ create temporary table emission_intensity_reporting_requirement (json_data jsonb
 \copy emission_intensity_reporting_requirement(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/emission_intensity_reporting_requirement.json | tr -d ''\n''';
 create temporary table emission_intensity_report (json_data jsonb);
 \copy emission_intensity_report(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/emission_intensity_report.json | tr -d ''\n''';
---- project_summary_report
-create temporary table project_summary_report (json_data jsonb);
-\copy project_summary_report(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/project_summary_report.json | tr -d ''\n''';
 
 with rows as (
 insert into cif.form(slug, form_change_commit_handler, json_schema, description)
@@ -55,8 +52,7 @@ values
 ('emission_intensity_report', default, (select json_data from emission_intensity_report), 'schema data relating to the emission_intensity_report form and the reporting_requirement and emission_intensity_report tables'),
 -- additional_funding_source and funding_parameter to be removed when funding agreement form gets refactored to be one form change, just here to pass the fkey
 ('additional_funding_source', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to additional funding sources'),
-('funding_parameter', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to funding_parameter'),
-('project_summary_report', 'handle_project_summary_report_form_change_commit', (select json_data from project_summary_report), 'schema data relating to the project summary report')
+('funding_parameter', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to funding_parameter')
 on conflict(slug) do update
 set json_schema=excluded.json_schema,
     description=excluded.description,
