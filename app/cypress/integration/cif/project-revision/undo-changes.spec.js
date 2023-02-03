@@ -54,11 +54,11 @@ describe("when undoing, the project revision page", () => {
     cy.fillFundingAgreementForm(
       333,
       70,
-      20,
       444,
       777,
       "2020-01-01",
-      "2020-12-31"
+      "2020-12-31",
+      20
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByText(/Yes/i).should("be.visible");
@@ -201,11 +201,11 @@ describe("when undoing, the project revision page", () => {
     cy.fillFundingAgreementForm(
       333,
       70,
-      30,
       444,
       900,
       "2020-01-01",
-      "2020-12-31"
+      "2020-12-31",
+      30
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");

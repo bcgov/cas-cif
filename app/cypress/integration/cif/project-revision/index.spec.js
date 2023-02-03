@@ -10,7 +10,7 @@ describe("the new project page", () => {
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
   });
 
-  it("renders the unfilled project forms", () => {
+  it("renders the EP unfilled project forms", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
@@ -57,7 +57,7 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     cy.contains(/^Budgets, expenses & payments/i);
-    cy.happoAndAxe("Project budgets Form", "empty", "main");
+    cy.happoAndAxe("EP Project budgets Form", "empty", "main");
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
@@ -106,11 +106,14 @@ describe("the new project page", () => {
     cy.findByText(/milestone reports not added/i).should("be.visible");
     cy.findByText(/quarterly reports not added/i).should("be.visible");
     cy.findByText(/annual reports not added/i).should("be.visible");
+    cy.findByText(/Performance Milestone Holdback Percentage/i).should(
+      "be.visible"
+    );
 
-    cy.happoAndAxe("Project summary Form", "empty", "main", true);
+    cy.happoAndAxe("EP Project summary Form", "empty", "main", true);
   });
 
-  it("renders the IA specific project forms", () => {
+  it("renders the IA-specific unfilled project forms", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("button").contains("Add a Project").click();
@@ -121,13 +124,40 @@ describe("the new project page", () => {
     cy.fillAndCheckNewProjectForm("Innovation Accelerator", "2021");
     cy.findByRole("button", { name: /^confirm/i }).click();
 
+    // BUDGETS, EXPENSES AND PAYMENTS
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Add budgets/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByText(/Yes/i).click();
+    cy.contains(/^Budgets, expenses & payments/i);
+    cy.happoAndAxe("IA Project budgets Form", "empty", "main");
+    // checking default values
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
+      "have.value",
+      "50 %"
+    );
+
     // PROJECT SUMMARY REPORT
     cy.findByText(/Project summary report/i).click();
     cy.findByText(/Add Project Summary Report/i).click();
     cy.contains(/Project Summary Report Form Placeholder/i);
+
+    // SUMMMARY
+    cy.findByText(/Submit Changes/i).click();
+    cy.findByText(/Review and Submit information/i).click();
+    cy.findByText(/project managers not added/i).should("be.visible");
+    cy.findByText(/milestone reports not added/i).should("be.visible");
+    cy.findByText(/quarterly reports not added/i).should("be.visible");
+    cy.findByText(/annual reports not added/i).should("be.visible");
+    cy.findByText(/Performance Milestone Holdback Percentage/i).should(
+      "not.exist"
+    );
+    // TODO assertion for project summary report Thomas
+
+    cy.happoAndAxe("IA Project summary Form", "empty", "main", true);
   });
 
-  it("renders filled project forms in view mode for committed project revisions", () => {
+  it("renders filled EP project forms in view mode for committed project revisions", () => {
     cy.sqlFixture("dev/004_cif_project");
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
@@ -172,12 +202,12 @@ describe("the new project page", () => {
     cy.checkFundingAgreementForm(
       "$1.00",
       "50 %",
-      "10 %",
       "$1.00",
       "$777.00",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
-      "$778.00"
+      "$778.00",
+      "10 %"
     );
     // additional funding sources
     cy.checkAdditionalFundingSourceForm(
@@ -196,7 +226,47 @@ describe("the new project page", () => {
     cy.findByText(/Annual Report 1/);
   });
 
-  it("properly displays validation errors", () => {
+  it("renders filled IA-specific project forms in view mode for committed project revisions", () => {
+    cy.sqlFixture("dev/004_cif_project");
+    cy.sqlFixture("dev/005_cif_reporting_requirement");
+    cy.sqlFixture("dev/006_cif_funding_parameter");
+    cy.sqlFixture("dev/007_commit_project_revision");
+    cy.sqlFixture("dev/008_cif_additional_funding_source");
+    cy.mockLogin("cif_admin");
+    cy.visit("/cif/projects");
+    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.url().should("include", "/form/0");
+
+    cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
+    cy.findByText(/RFP Year ID/i)
+      .next()
+      .should("have.text", "Emissions Performance - 2019");
+
+    // budgets, expenses, and payments
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByRole("link", { name: "Budgets, Expenses & Payments" }).click();
+    cy.url().should("include", "/form/3");
+    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+    cy.checkFundingAgreementForm(
+      "$1.00",
+      "50 %",
+      "$1.00",
+      "$777.00",
+      /Jun(\.)? 10, 2020/,
+      /Jun(\.)? 10, 2020/,
+      "$778.00",
+      "10 %"
+    );
+    // additional funding sources
+    cy.checkAdditionalFundingSourceForm(
+      "cheese import taxes",
+      "$1,000.00",
+      "Awaiting Approval",
+      1
+    );
+  });
+
+  it("properly displays validation errors for EP projects", () => {
     // load more projects to trigger unique proposal reference error
     cy.sqlFixture("dev/004_cif_project");
     cy.sqlFixture("dev/007_commit_project_revision");
@@ -241,7 +311,7 @@ describe("the new project page", () => {
     cy.get(".error-detail").should("have.length", 5);
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
-      "Project funding agreement Form",
+      "EP Project funding agreement Form",
       "with errors",
       ".error-detail"
     );
@@ -327,6 +397,35 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe(
       "Project Annual Reports Form",
+      "with errors",
+      ".error-detail"
+    );
+  });
+
+  it("properly displays validation errors for IA-specific forms", () => {
+    // load more projects to trigger unique proposal reference error
+    cy.mockLogin("cif_admin");
+
+    cy.visit("/cif/projects");
+    cy.get("button").contains("Add a Project").click();
+
+    // NEW
+    cy.url().should("include", "/new");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+    cy.fillAndCheckNewProjectForm("Innovation Accelerator", "2021");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
+    // BUDGETS, EXPENSES AND PAYMENTS
+    cy.findByText(/Budgets, Expenses & Payments/i).click();
+    cy.findByText(/Add budgets/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByText(/Yes/i).click();
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(".error-detail").should("have.length", 5);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe(
+      "IA Project funding agreement Form",
       "with errors",
       ".error-detail"
     );
