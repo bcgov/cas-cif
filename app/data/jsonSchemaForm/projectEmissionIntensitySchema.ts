@@ -78,21 +78,6 @@ export const emissionIntensityReportSchema = {
         },
       },
     },
-    paymentPercentageOfPerformanceMilestoneAmount: {
-      type: "number",
-      title: "Payment Percentage of Performance Milestone Amount (%)",
-      default: undefined,
-    },
-    maximumPerformanceMilestoneAmount: {
-      type: "number",
-      title: "Maximum Performance Milestone Amount",
-      default: undefined,
-    },
-    actualPerformanceMilestoneAmount: {
-      type: "number",
-      title: "Actual Performance Milestone Amount",
-      default: undefined,
-    },
   },
 };
 
