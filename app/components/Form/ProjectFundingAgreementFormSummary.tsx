@@ -208,36 +208,62 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
 
   const fundingAgreementFormNotUpdated = useMemo(
     () =>
-      (!fundingAgreementSummary ||
-        fundingAgreementSummary?.isPristine ||
-        (fundingAgreementSummary?.isPristine === null &&
-          Object.keys(fundingAgreementSummary?.newFormData).length === 0)) &&
-      allAdditionalFundingSourceFormChangesPristine,
-    [allAdditionalFundingSourceFormChangesPristine, fundingAgreementSummary]
+      !fundingAgreementSummary ||
+      fundingAgreementSummary?.isPristine ||
+      (fundingAgreementSummary?.isPristine === null &&
+        Object.keys(fundingAgreementSummary?.newFormData).length === 0),
+    [fundingAgreementSummary]
   );
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
-    () => setHasDiff && setHasDiff(!fundingAgreementFormNotUpdated),
-    [fundingAgreementFormNotUpdated, setHasDiff]
+    () =>
+      setHasDiff &&
+      setHasDiff(
+        !fundingAgreementFormNotUpdated ||
+          !allAdditionalFundingSourceFormChangesPristine
+      ),
+    [
+      allAdditionalFundingSourceFormChangesPristine,
+      fundingAgreementFormNotUpdated,
+      setHasDiff,
+    ]
   );
 
+  // This condition handles the case where the form is archived
   if (
-    isOnAmendmentsAndOtherRevisionsPage &&
     !fundingAgreementFormNotUpdated &&
     fundingAgreementSummary?.operation === "ARCHIVE"
   ) {
     return (
-      <FormRemoved
-        isOnAmendmentsAndOtherRevisionsPage={
-          isOnAmendmentsAndOtherRevisionsPage
-        }
-        formTitle="Budgets, Expenses & Payments"
-      />
+      <div>
+        {!isOnAmendmentsAndOtherRevisionsPage && (
+          <h3>Budgets, Expenses & Payments</h3>
+        )}
+        {!viewOnly ? (
+          <>
+            <FormRemoved
+              isOnAmendmentsAndOtherRevisionsPage={
+                isOnAmendmentsAndOtherRevisionsPage
+              }
+              formTitle="Budgets, Expenses & Payments"
+            />
+            {!isOnAmendmentsAndOtherRevisionsPage && (
+              <h3>Project Additional Funding Source</h3>
+            )}
+            <dd>{additionalFundingSourcesJSX}</dd>
+          </>
+        ) : (
+          <FormNotAddedOrUpdated
+            isFirstRevision={true}
+            formTitle="Budgets, Expenses & Payments"
+          />
+        )}
+      </div>
     );
   }
 
   return (
-    <div className="summaryContainer">
+    <div>
       {!isOnAmendmentsAndOtherRevisionsPage && (
         <h3>Budgets, Expenses & Payments</h3>
       )}
@@ -323,8 +349,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         </>
       )}
       <style jsx>{`
-        .summaryContainer {
-          margin-bottom: 1em;
+        div :global(h3) {
+          margin: 1em 0;
         }
         :global(.anticipatedFundingAmount) {
           margin-bottom: 0.5em;
