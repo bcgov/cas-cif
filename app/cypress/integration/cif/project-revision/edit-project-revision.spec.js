@@ -215,7 +215,9 @@ describe("when editing a project, the project page", () => {
 
     cy.findByText("Quarterly Report removed").should("be.visible");
 
-    cy.get("#root_measurementPeriodStartDate-diffReviewAndSubmitInformationNew")
+    cy.get(
+      "#root_teimpReporting_measurementPeriodStartDate-diffReviewAndSubmitInformationNew"
+    )
       .next()
       .next()
       .should("have.text", "ADDED");

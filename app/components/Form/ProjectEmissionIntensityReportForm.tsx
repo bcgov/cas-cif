@@ -20,6 +20,8 @@ import { useStageEmissionIntensityFormChange } from "mutations/ProjectEmissionIn
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 import getDurationFromDates from "lib/helpers/getDurationFromDates";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import ReadOnlyEmptyFieldTempalte from "lib/theme/ReadOnlyEmptyFieldTemplate";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -81,43 +83,54 @@ export const createEmissionIntensityReportUiSchema = (
   );
 
   // We only show the label of this field on view mode and summary page
-  if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
+  if (viewOnly)
+    uiSchemaCopy.teimpReporting.productionFunctionalUnit["ui:label"] = "";
 
-  uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
+  uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.targetEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.targetEmissionIntensity["ui:options"],
+  uiSchemaCopy.teimpReporting.targetEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.targetEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.postProjectEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.postProjectEmissionIntensity["ui:options"],
+  uiSchemaCopy.teimpReporting.postProjectEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.postProjectEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
-    ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
+  uiSchemaCopy.teimpReporting.totalLifetimeEmissionReduction["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.totalLifetimeEmissionReduction["ui:options"],
     contentSuffix: contentSuffix(emissionFunctionalUnit),
   };
 
-  uiSchemaCopy.measurementPeriodEndDate["ui:options"] = {
-    ...uiSchemaCopy.measurementPeriodEndDate["ui:options"],
+  uiSchemaCopy.teimpReporting.measurementPeriodEndDate["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.measurementPeriodEndDate["ui:options"],
     contentSuffix: reportDurationSuffix,
   };
 
-  uiSchemaCopy.emissionFunctionalUnit["ui:options"] = {
-    ...uiSchemaCopy.emissionFunctionalUnit["ui:options"],
+  uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"] = {
+    ...uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"],
     contentSuffix: emissionFunctionalUnitSuffix(),
   };
+
+  /**
+   * We need to set the ui:FieldTemplate to the EmptyFieldTemplate
+   * and ui:ObjectFieldTemplate to the EmptyObjectFieldTemplate
+   * to avoid showing field labels and outlines on parent object.
+   * There is room for improvement on how this is done
+   * but for now it is the best solution.
+   */
+  uiSchemaCopy["ui:FieldTemplate"] = ReadOnlyEmptyFieldTempalte;
+  uiSchemaCopy["ui:ObjectFieldTemplate"] = EmptyObjectFieldTemplate;
 
   return uiSchemaCopy;
 };
@@ -220,14 +233,42 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     isStagingEmissionIntensity,
   ] = useStageEmissionIntensityFormChange();
 
+  const formData = emissionIntensityReportFormChange?.newFormData;
+
+  // Restructure form data to be in the same format as the schema
+  const formattedFormData = {
+    teimpReporting: {},
+    uponCompletion: {},
+  };
+
+  /* We should ideally offload the parsing of this data to a custom commit handler on the database.
+   * Opportunity for future tech debt work captured in ZenHub.
+   */
+  Object.keys(emissionIntensityReportSchema.properties).forEach(
+    (schemaProperty) =>
+      Object.keys(
+        emissionIntensityReportSchema.properties[schemaProperty].properties
+      ).forEach(
+        (key) =>
+          formData?.[key] &&
+          Object.assign(formattedFormData[schemaProperty], {
+            [key]: formData[key],
+          })
+      )
+  );
+
   const handleChange = (formChangeObject, changeData) => {
     // don't trigger a change if the form data is an empty object
     if (changeData && Object.keys(changeData).length === 0) return;
 
+    // Expand TEIMP reporting and Upon Completion data to the top level of the form data
     const updatedFormData = {
       ...formChangeObject.newFormData,
       ...changeData,
+      ...changeData.teimpReporting,
+      ...changeData.uponCompletion,
     };
+
     updateEmissionsIntensityReportFormChange({
       variables: {
         input: {
@@ -330,7 +371,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
             }
             idPrefix="TEIMP_EmissionIntensityReportForm"
             schema={emissionIntensityReportSchema as JSONSchema7}
-            formData={emissionIntensityReportFormChange?.newFormData}
+            formData={formattedFormData}
             formContext={{
               form: emissionIntensityReportFormChange?.newFormData,
               calculatedEiPerformance: calculatedEiPerformance ?? null,

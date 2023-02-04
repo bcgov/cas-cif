@@ -19,6 +19,7 @@ import {
   FormNotAddedOrUpdated,
   FormRemoved,
 } from "./SummaryFormCommonComponents";
+import { getFilteredEmissionIntensitySchema } from "lib/theme/getFilteredEmissionIntensitySchema";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props
@@ -98,7 +99,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         formSchema: emissionIntensityReportSchema,
         formData: summaryEmissionIntensityReport?.newFormData,
       }
-    : getFilteredSchema(
+    : getFilteredEmissionIntensitySchema(
         emissionIntensityReportSchema as JSONSchema7,
         summaryEmissionIntensityReport || {}
       );
