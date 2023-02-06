@@ -206,3 +206,46 @@ updating the `select plan(n)` statement at the top so n always matches the numbe
 This will run any number of tests without stopping after n tests have been run.
 
 Once you've finished writing your tests in that file, the output will say how many tests were run and you can switch back to `select plan(n)` and set n to that number.
+
+## Automated database backup testing
+
+We automatically test our production database backups on schedule to ensure we have confidence that the database backups in GCS exist and are usable if necessary. To do this we have some supporting helm charts, cronjobs and dags that take care of the setup and automation of this task.
+
+### Components
+
+We have two supporting helm charts:
+`backup-test-init` and `backup-test`
+
+The init helm chart sets up all the pieces that are required to exist in the -tools namespace where the test Postgres cluster will be installed & checked. This was deployed manually with the following command:
+
+```
+helm install -n <tools-namespace> <ReleaseName> ./backup-test-init \
+--set host.namespace=<host-namespace> \
+--set host.secret.gcsSecretName=gcp-<host-namespace>-cif-backups-service-account-key \
+--set host.secret.gcsSecretKey=credentials.json \
+--set host.secret.dbSecretName=cas-cif-defined-backup-password \
+--set host.secret.dbSecretKey=password
+```
+
+In the cas-cif helm chart:
+
+- A cronjob `insert-backup-test-timestamp` that inserts a timestamp into a table in our private database schema overnight.
+- A cronjob `deploy-database-backups` that spins up a Postgres cluster & restores from the latest backup.
+- A cronjob `test-database-backups` that tests for the existence of that timestamp. If found, it succeeds and tears down the test cluster. If not found, it fails and the test cluster persists for debugging.
+- A secret `backup-test-secret` that we set our password to for the postgres user in the test cluster so that we can read that database from our prod namespace.
+
+In our cas_cif_dags:
+
+- a dag to trigger the `insert-backup-test-timestamp` cronjob
+- a dag to trigger the `deploy-database-backups` and `test-database-backups` cronjobs
+
+### How it works
+
+1. The initial infrastructure needed to spin up the test backup cluster is installed with the `backup-test-init` helm chart
+2. On a schedule overnight, a timestamp is inserted into a tracking table in the cif_private schema
+3. After the timestamp has been inserted and a backup has been made, the `backup-test` helm chart is installed from the host namespace into the -tools namespace. This creates a PostgresCluster that should have the timestamp if all went well
+4. Once the test cluster has been restored, the `test-database-backups` cronjob checks for the existence of the timestamp. If it exists, then the job succeeds and tears down the test cluster in the -tools namespace with `helm uninstall`. If it fails, the job will init-error and the test cluster will persist for debugging.
+
+### Future work
+
+- There are still some things hardcoded in the templates that could be templated to make this re-usable for others with minimal effort. - This probably does not need to be called from the host namespace & could all run in the -tools namespace. This would remove the need for some of the objects created in the init chart.
