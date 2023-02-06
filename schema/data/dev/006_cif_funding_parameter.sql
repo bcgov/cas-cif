@@ -6,8 +6,16 @@ do $$
   temp_row record;
   begin
 
-  -- ep funding parameters
-for temp_row in select id, project_id from cif.project_revision where id <51 loop
+-- ep funding parameters
+for temp_row in select id, project_id from cif.project_revision
+    where cif.project_revision.id = ((
+      select project_revision_id from cif.form_change
+      where project_revision_id = cif.project_revision.id
+      and (new_form_data->>'fundingStreamRfpId')=((
+              select id from cif.funding_stream
+              where name='EP')::text)
+    ))
+  loop
       insert into cif.form_change(
         new_form_data,
         operation,
@@ -39,9 +47,16 @@ for temp_row in select id, project_id from cif.project_revision where id <51 loo
 
 
 
-  -- ia funding parameters
-
-for temp_row in select id, project_id from cif.project_revision where id > 50 loop
+-- ia funding parameters
+for temp_row in select id, project_id from cif.project_revision
+    where cif.project_revision.id = ((
+      select project_revision_id from cif.form_change
+      where project_revision_id = cif.project_revision.id
+      and (new_form_data->>'fundingStreamRfpId')=((
+              select id from cif.funding_stream
+              where name='IA')::text)
+    ))
+  loop
       insert into cif.form_change(
         new_form_data,
         operation,

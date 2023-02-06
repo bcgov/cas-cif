@@ -18,7 +18,8 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
-    cy.findByText("Emissions Performance").should("have.length", 1);
+    cy.url().should("include", "/form/0");
+    cy.findByText("Emissions Performance - 2020");
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
       "Cement",
@@ -238,7 +239,8 @@ describe("when creating a project, the project page", () => {
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
-    cy.findByText("Innovation Accelerator").should("have.length", 1);
+    cy.url().should("include", "/form/0");
+    cy.findByText("Innovation Accelerator - 2021");
 
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
