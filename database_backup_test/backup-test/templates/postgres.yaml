@@ -98,7 +98,7 @@ spec:
         - secret:
             name: gcp-{{ .Values.host.namespace }}-cif-backups-service-account-key
             items:
-              - key: {{ .Values.host.secret.secretKey}}
+              - key: credentials.json
                 path: gcs-key.json
       repos:
         - name: repo1
