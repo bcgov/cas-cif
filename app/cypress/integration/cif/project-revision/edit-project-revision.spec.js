@@ -22,7 +22,7 @@ describe("when editing a project, the project page", () => {
     // edit overview -- change project name
 
     cy.findByLabelText(/Project Name/i)
-      .should("have.value", "Test Project 001")
+      .should("have.value", "Test EP Project 001")
       .clear()
       .type("Bar");
 
@@ -185,7 +185,7 @@ describe("when editing a project, the project page", () => {
 
     cy.get("#root_projectName-diffReviewAndSubmitInformationOld").should(
       "have.text",
-      "Test Project 001"
+      "Test EP Project 001"
     );
     cy.get("#root_projectName-diffReviewAndSubmitInformationNew").should(
       "have.text",

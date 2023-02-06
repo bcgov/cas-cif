@@ -215,7 +215,7 @@ describe("the new project page", () => {
     // OVERVIEW
     cy.url().should("include", "/form/0");
     cy.findByText(/Emissions Performance/i).should("be.visible");
-    cy.findByLabelText(/Proposal Reference/i).type("001");
+    cy.findByLabelText(/Proposal Reference/i).type("EP001");
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit Project Overview").click();
     cy.contains("Changes saved").should("be.visible");

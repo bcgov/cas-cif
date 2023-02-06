@@ -161,7 +161,7 @@ describe("when undoing, the project revision page", () => {
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");
 
-    cy.findByLabelText(/Proposal Reference/i).should("have.value", "001");
+    cy.findByLabelText(/Proposal Reference/i).should("have.value", "EP001");
 
     // undo managers
     cy.findByText(/Project Details/i).click();
