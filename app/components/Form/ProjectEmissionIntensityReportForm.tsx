@@ -201,7 +201,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const paymentPercentageOfPerformanceMilestoneAmount =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .paymentPercentage;
-  var actualPerformanceMilestoneAmount;
+  let actualPerformanceMilestoneAmount;
   if (
     maximumPerformanceMilestoneAmount == null ||
     paymentPercentageOfPerformanceMilestoneAmount == null
