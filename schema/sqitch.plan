@@ -244,5 +244,5 @@ data/insert_json_schema_form_data_separate_EP_and_IA_funding_schemas 2023-01-31T
 computed_columns/form_change_calculated_total_payment_amount_to_date 2023-01-31T21:33:27Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Computed column to calculate total payment amount to date (IA funding stream only)
 functions/funding_form_changes_to_separate_schemas 2023-02-02T22:52:06Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Function to update json_schema_name to specify funding stream
 migrations/002_separate_funding_schemas_for_EP_and_IA 2023-02-02T16:34:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration to update json_schema_name for funding stream forms to separate them by EP and IA funding streams
-
 mutations/create_project_revision [mutations/create_project_revision@1.4.1] 2023-02-15T23:31:52Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update function to add either EP or IA version of the funding form schema
+computed_columns/project_next_milestone_due_date 2023-02-07T22:50:15Z Sam Warren <samwarren4@gmail.com> # Computed column to return the next milestone due date for a given project
