@@ -14,7 +14,7 @@ describe("when discarding a project revision, the project page", () => {
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText(/Project Name/i)
-      .should("have.value", "Test Project 001")
+      .should("have.value", "Test EP Project 001")
       .clear()
       .type("this will be discarded");
     cy.findByText(/Submit Changes/i).click();
@@ -24,6 +24,6 @@ describe("when discarding a project revision, the project page", () => {
     cy.findByRole("button", { name: /^discard/i }).click();
     cy.findByText("Proceed").click();
 
-    cy.findByText(/Test Project 001/i).should("be.visible");
+    cy.findByText(/Test EP Project 001/i).should("be.visible");
   });
 });

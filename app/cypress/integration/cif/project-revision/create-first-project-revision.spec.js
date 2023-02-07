@@ -11,14 +11,15 @@ describe("when creating a project, the project page", () => {
     cy.get("button").contains("Add a Project").click();
   });
 
-  it("allows an admin user to create a project", () => {
+  it("allows an admin user to create an EP project", () => {
     //add new
     cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
-    cy.happoAndAxe("Project New Form", "filled", "main");
+    cy.happoAndAxe("EP Project New Form", "filled", "main");
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
-    cy.findByText("Emissions Performance").should("have.length", 1);
+    cy.url().should("include", "/form/0");
+    cy.findByText("Emissions Performance - 2020");
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
       "Cement",
@@ -69,16 +70,16 @@ describe("when creating a project, the project page", () => {
     cy.fillFundingAgreementForm(
       222,
       60,
-      20,
       333,
       800,
       "2020-01-01",
-      "2020-02-02"
+      "2020-02-02",
+      20
     );
     cy.findByRole("button", { name: /Add funding source/i }).click();
     cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe("Project budgets Form", "filled", "main");
+    cy.happoAndAxe("EP Project budgets Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add milestone reports
@@ -167,13 +168,13 @@ describe("when creating a project, the project page", () => {
     cy.checkFundingAgreementForm(
       "$222.00",
       "60 %",
-      "20 %",
       "$333.00",
       "$800.00",
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
       "$1,133.00",
-      true
+      true,
+      "20 %"
     );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i)
@@ -227,6 +228,91 @@ describe("when creating a project, the project page", () => {
     cy.findByText("TEST-123-12345").should("be.visible");
     // this checks that the project view list shows the milestone report status vs. the other report statuses
     cy.findAllByRole("status").should("have.text", "Late");
+  });
+
+  it("allows an admin user to create an IA project", () => {
+    // this test only checks the mandatory and IA-specific forms. The other forms are already tested above in the EP project creation test
+
+    //add new
+    cy.fillAndCheckNewProjectForm("Innovation Accelerator", "2021");
+    cy.happoAndAxe("IA Project New Form", "filled", "main");
+    cy.findByRole("button", { name: /^confirm/i }).click();
+
+    // add overview
+    cy.url().should("include", "/form/0");
+    cy.findByText("Innovation Accelerator - 2021");
+
+    cy.fillOverviewForm(
+      "first operator legal name (AB1234567)",
+      "Cement",
+      "TEST-123-12345",
+      "Foo",
+      "Bar",
+      "100",
+      "Project in Progress",
+      "Some comments",
+      "78.456"
+    );
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    // add budgets, expenses, and payments
+    cy.findByRole("heading", {
+      name: /3. Budgets, Expenses & Payments/i,
+    }).click();
+    cy.findByText(/Add budgets/i).click();
+    cy.url().should("include", "/form/3");
+    cy.findByText(/Yes/i).click();
+    // checking default values
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
+      "have.value",
+      "50 %"
+    );
+
+    cy.fillFundingAgreementForm(222, 60, 333, 800, "2020-01-01", "2020-02-02");
+    cy.findByRole("button", { name: /Add funding source/i }).click();
+    cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("IA Project budgets Form", "filled", "main");
+    cy.findByRole("button", { name: /^submit/i }).click();
+
+    // project summary form section Thomas
+
+    //review and submit
+    cy.findByRole("heading", {
+      name: /6. Submit Changes/i,
+    }).click();
+    cy.findByText(/Review and Submit information/i).click();
+    cy.contains("Review and Submit Project");
+
+    // project overview section
+    cy.findByText(/RFP Year ID/i)
+      .next()
+      .should("have.text", "Innovation Accelerator - 2021");
+
+    // funding agreement section
+    cy.checkFundingAgreementForm(
+      "$222.00",
+      "60 %",
+      "$333.00",
+      "$800.00",
+      /Jan(\.)? 1, 2020/,
+      /Feb(\.)? 2, 2020/,
+      "$1,133.00",
+      true
+    );
+    // additional funding sources section
+    cy.findByText(/Additional Funding Source 1/i)
+      .next()
+      .should("have.text", "Test Source 1");
+    cy.findByText(/Additional Funding Amount \(Source 1\)/i)
+      .next()
+      .should("have.text", "$111.00");
+    cy.findByText(/Additional Funding Status \(Source 1\)/i)
+      .next()
+      .should("have.text", "Approved");
+
+    // project summary report section Thomas
   });
 
   it("creates new contact and redirects a user back to project contact form and populate project contact form with newly created contact", () => {

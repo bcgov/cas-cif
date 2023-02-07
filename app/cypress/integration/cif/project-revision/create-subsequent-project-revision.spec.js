@@ -37,7 +37,7 @@ describe("the project amendment and revisions page", () => {
 
     // edit overview -- change project name
     cy.findByLabelText(/project name/i)
-      .should("have.value", "Test Project 001")
+      .should("have.value", "Test EP Project 001")
       .clear()
       .type("Bar");
     cy.contains("Changes saved.");
@@ -91,7 +91,7 @@ describe("the project amendment and revisions page", () => {
     cy.get("input[aria-label='Project Overview']").should("be.checked");
     cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
-      "Test Project 001"
+      "Test EP Project 001"
     );
     cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsNew").should(
       "have.text",
