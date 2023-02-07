@@ -60,7 +60,7 @@ describe("when creating a project, the project page", () => {
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
-      "50 %"
+      "50.00 %"
     );
     cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
       "have.value",
@@ -167,7 +167,8 @@ describe("when creating a project, the project page", () => {
     // funding agreement section
     cy.checkFundingAgreementForm(
       "$222.00",
-      "60 %",
+      "60.00 %",
+      "20 %",
       "$333.00",
       "$800.00",
       /Jan(\.)? 1, 2020/,
