@@ -62,7 +62,7 @@ export function ProjectAttachments({
   if (isRedirecting) return null;
 
   const saveAttachment = async (e) => {
-    var file = e.target.files[0];
+    const file = e.target.files[0];
     const variables = {
       input: {
         attachment: {
