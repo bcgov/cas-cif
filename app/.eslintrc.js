@@ -35,7 +35,8 @@ module.exports = {
     // "import/newline-after-import": 0,
     // "import/order": 0,
     // "@typescript-eslint/lines-between-class-members": 0,
-    "relay/generated-flow-types": 0, // we are not using flow
+    "relay/generated-flow-types": 0, // we are not using flow,
+    "no-var": 2,
   },
   overrides: [
     {
