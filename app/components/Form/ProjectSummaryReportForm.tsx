@@ -10,6 +10,9 @@ import { graphql, useFragment } from "react-relay";
 import { MutableRefObject, useRef } from "react";
 import { useCreateProjectSummaryReport } from "mutations/ProjectSummaryReport/createProjectSummaryReport";
 import { useUpdateProjectSummaryReportFormChangeMutation } from "mutations/ProjectSummaryReport/updateProjectSummaryReportFormChange";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
+import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 
 interface Props {
   query: any;
@@ -25,6 +28,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
       fragment ProjectSummaryReportForm_projectRevision on ProjectRevision {
         id
         rowId
+        # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
         }
@@ -62,61 +66,117 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   );
 
   // mutations
-  // const [createMilestone, isCreating] = useCreateMilestone();
+  const [createProjectSummary, isCreating] = useCreateProjectSummaryReport();
+
   const [updateProjectSummary, isUpdating] =
     useUpdateProjectSummaryReportFormChangeMutation();
-  // create project summary report form on project revision if not created
 
-  // update project summary report with new data on change
-
-  // apply changes on submit
+  const [
+    applyStageReportingRequirementFormChange,
+    isStagingReportingRequirement,
+  ] = useStageReportingRequirementFormChange();
 
   // no requirement for undo
 
-  const report = projectRevision.projectSummaryFormChanges.edges[0]?.node;
+  //TODO: get time until due date?
+  // const upcomingReportDueDate =
+  //     projectRevision.upcomingProjectSummaryReportFormChange?.asReportingRequirement
+  //       .reportDueDate;
 
-  console.log("projectRevision: ", projectRevision);
+  const formChangeNode =
+    projectRevision.projectSummaryFormChanges.edges[0]?.node;
 
-  const handleChange = (changeData: any) => {
-    console.log("handle change");
-    console.log(changeData);
+  interface PartialProjectSummaryFormData {
+    [key: string]: any;
+  }
+
+  const handleChange = (changeData: PartialProjectSummaryFormData) => {
+    const formData = { ...formChangeNode.newFormData, ...changeData };
 
     updateProjectSummary({
       variables: {
         reportType: "Project Summary Report",
         input: {
-          rowId: changeData.rowId,
+          rowId: formChangeNode.rowId,
           formChangePatch: {
             newFormData: {
-              ...report.newFormData,
+              ...formData,
             },
           },
         },
       },
-      debounceKey: changeData.id,
+      debounceKey: formChangeNode.id,
+      optimisticResponse: {
+        updateFormChange: {
+          formChange: {
+            id: formChangeNode.id,
+            newFormData: {
+              ...changeData,
+            },
+            changeStatus: "pending",
+          },
+        },
+      },
     });
   };
 
   return (
     <>
-      <h3>Project Summary Report Form Placeholder</h3>
-      <FormBase
-        id={`form-${projectRevision.id}`}
-        // validateOnMount={projectRevision.projectFormChange[0].node.changeStatus === "staged"}
-        schema={projectSummaryReportSchema as JSONSchema7}
-        uiSchema={projectSummaryReportUiSchema}
-        onChange={(change) => handleChange(change.formData)}
-        // ref={(el) => (formRefs.current[report.id] = el)}
-        // formData={report.newFormData}
-        // ObjectFieldTemplate={EmptyObjectFieldTemplate}
-        // formContext={{
-        //   dueDate: report.newFormData?.reportDueDate,
-        // }}
-      >
-        <Button type="submit" style={{ marginRight: "1rem" }}>
-          Submit Project Summary
+      <h3>Project Summary Report</h3>
+      {projectRevision.projectSummaryFormChanges.edges.length == 0 && (
+        <Button
+          variant="secondary"
+          disabled={isCreating}
+          onClick={() =>
+            createProjectSummary({
+              variables: {
+                input: {
+                  operation: "CREATE",
+                  formDataSchemaName: "cif",
+                  formDataTableName: "reporting_requirement",
+                  jsonSchemaName: "project_summary_report",
+                  newFormData: {
+                    reportType: "Project Summary Report",
+                  },
+                  projectRevisionId: projectRevision.rowId,
+                },
+              },
+            })
+          }
+        >
+          Create
         </Button>
-      </FormBase>
+      )}
+      {projectRevision.projectSummaryFormChanges.edges.length > 0 && (
+        <div>
+          <FormBase
+            id={`form-${projectRevision.id}`}
+            validateOnMount={formChangeNode.changeStatus === "staged"}
+            schema={projectSummaryReportSchema as JSONSchema7}
+            uiSchema={projectSummaryReportUiSchema}
+            onChange={(change) => handleChange(change.formData)}
+            ref={(el) => (formRefs.current[formChangeNode.id] = el)}
+            formData={formChangeNode.newFormData}
+            ObjectFieldTemplate={EmptyObjectFieldTemplate}
+          />
+          <Button
+            size="medium"
+            variant="primary"
+            onClick={() =>
+              stageMultipleReportingRequirementFormChanges(
+                applyStageReportingRequirementFormChange,
+                props.onSubmit,
+                formRefs,
+                projectRevision.projectSummaryFormChanges.edges,
+                "Project Summary Report"
+              )
+            }
+            disabled={isUpdating || isStagingReportingRequirement}
+          >
+            Submit Project Summary
+          </Button>
+        </div>
+      )}
     </>
   );
 };
