@@ -7,12 +7,13 @@ import FormBase from "./FormBase";
 import { Button } from "@button-inc/bcgov-theme";
 import { ProjectSummaryReportForm_projectRevision$key } from "__generated__/ProjectSummaryReportForm_projectRevision.graphql";
 import { graphql, useFragment } from "react-relay";
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject, useRef, useMemo } from "react";
 import { useCreateProjectSummaryReport } from "mutations/ProjectSummaryReport/createProjectSummaryReport";
 import { useUpdateProjectSummaryReportFormChangeMutation } from "mutations/ProjectSummaryReport/updateProjectSummaryReportFormChange";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
+import Status from "components/ReportingRequirement/Status";
 
 interface Props {
   query: any;
@@ -76,12 +77,17 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
     isStagingReportingRequirement,
   ] = useStageReportingRequirementFormChange();
 
-  // no requirement for undo
+  // TODO: handle discard
 
-  //TODO: get time until due date?
-  // const upcomingReportDueDate =
-  //     projectRevision.upcomingProjectSummaryReportFormChange?.asReportingRequirement
-  //       .reportDueDate;
+  const upcomingReportDueDate =
+    projectRevision.upcomingProjectSummaryReportFormChange
+      ?.asReportingRequirement.reportDueDate;
+
+  const reportSubmittedDates = useMemo(() => {
+    return projectRevision.projectSummaryFormChanges.edges.map(
+      ({ node }) => node.newFormData.submittedDate
+    );
+  }, [projectRevision.projectSummaryFormChanges.edges]);
 
   const formChangeNode =
     projectRevision.projectSummaryFormChanges.edges[0]?.node;
@@ -123,6 +129,11 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   return (
     <>
       <h3>Project Summary Report</h3>
+      <Status
+        upcomingReportDueDate={upcomingReportDueDate}
+        reportSubmittedDates={reportSubmittedDates}
+        reportType={"Project Summary"}
+      />
       {projectRevision.projectSummaryFormChanges.edges.length == 0 && (
         <Button
           variant="secondary"
