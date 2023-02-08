@@ -294,7 +294,7 @@ describe("when creating a project, the project page", () => {
     // funding agreement section
     cy.checkFundingAgreementForm(
       "$222.00",
-      "60 %",
+      "60.00 %",
       "$333.00",
       "$800.00",
       /Jan(\.)? 1, 2020/,
