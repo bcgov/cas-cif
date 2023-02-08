@@ -80,6 +80,7 @@ export const fundingAgreementUiSchema = {
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
     isPercentage: true,
+    numberOfDecimalPlaces: 2,
   },
   holdbackPercentage: {
     "ui:widget": "NumberWidget",

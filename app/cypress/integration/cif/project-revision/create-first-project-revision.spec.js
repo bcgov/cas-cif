@@ -60,7 +60,7 @@ describe("when creating a project, the project page", () => {
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
-      "50 %"
+      "50.00 %"
     );
     cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
       "have.value",
@@ -167,7 +167,7 @@ describe("when creating a project, the project page", () => {
     // funding agreement section
     cy.checkFundingAgreementForm(
       "$222.00",
-      "60 %",
+      "60.00 %",
       "$333.00",
       "$800.00",
       /Jan(\.)? 1, 2020/,
@@ -266,7 +266,7 @@ describe("when creating a project, the project page", () => {
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
-      "50 %"
+      "50.00 %"
     );
 
     cy.fillFundingAgreementForm(222, 60, 333, 800, "2020-01-01", "2020-02-02");
@@ -293,13 +293,14 @@ describe("when creating a project, the project page", () => {
     // funding agreement section
     cy.checkFundingAgreementForm(
       "$222.00",
-      "60 %",
+      "60.00 %",
       "$333.00",
       "$800.00",
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
       "$1,133.00",
-      true
+      true,
+      undefined
     );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i)

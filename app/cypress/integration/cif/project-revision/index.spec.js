@@ -61,7 +61,7 @@ describe("the new project page", () => {
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
-      "50 %"
+      "50.00 %"
     );
     cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
       "have.value",
@@ -134,7 +134,7 @@ describe("the new project page", () => {
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
-      "50 %"
+      "50.00 %"
     );
 
     // PROJECT SUMMARY REPORT
@@ -201,7 +201,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
       "$1.00",
-      "50 %",
+      "50.00 %",
       "$1.00",
       "$777.00",
       /Jun(\.)? 10, 2020/,
@@ -249,7 +249,7 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
       "$1.00",
-      "50 %",
+      "50.00 %",
       "$1.00",
       "$777.00",
       /Jun(\.)? 10, 2020/,
