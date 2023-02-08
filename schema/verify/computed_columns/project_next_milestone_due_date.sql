@@ -2,6 +2,6 @@
 
 begin;
 
-select project_next_milestone_due_date('cif.project_next_milestone_due_date(cif.project)'::regprocedure);
+select pg_get_functiondef('cif.project_next_milestone_due_date(cif.project)'::regprocedure);
 
 rollback;
