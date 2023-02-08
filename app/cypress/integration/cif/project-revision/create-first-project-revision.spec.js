@@ -168,7 +168,6 @@ describe("when creating a project, the project page", () => {
     cy.checkFundingAgreementForm(
       "$222.00",
       "60.00 %",
-      "20 %",
       "$333.00",
       "$800.00",
       /Jan(\.)? 1, 2020/,
@@ -300,7 +299,8 @@ describe("when creating a project, the project page", () => {
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
       "$1,133.00",
-      true
+      true,
+      undefined
     );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i)
