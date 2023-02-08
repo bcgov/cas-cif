@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/bcgov/cas-cif/compare/1.3.0...1.4.0) (2023-02-08)
+
+### Bug Fixes
+
+- added paymentPercentage to update mutation ([e43a494](https://github.com/bcgov/cas-cif/commit/e43a4943593b1ae9d519e13dcd149d776e52addf))
+- adding 2 decimal places to provence share percerntage ([4670f07](https://github.com/bcgov/cas-cif/commit/4670f07f8b4b51fbe3dd201578f29c17591ff27e))
+- show funding agreement in the summary page ([5e2b181](https://github.com/bcgov/cas-cif/commit/5e2b1817859b19ad9c2b979a468ef3af56742a5c))
+- show yellow bg color when removing funding agreement ([a973a49](https://github.com/bcgov/cas-cif/commit/a973a49c97b9d9b3d4ab579c4e602d92346938ee))
+
+### Features
+
+- removed holdback and added payment percentage ([ee5e100](https://github.com/bcgov/cas-cif/commit/ee5e1009d704451ddc8febe2089211b1f34bedb8))
+
 # [1.3.0](https://github.com/bcgov/cas-cif/compare/1.2.0...1.3.0) (2023-01-31)
 
 ### Bug Fixes
