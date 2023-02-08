@@ -5,6 +5,11 @@ select plan(4);
 truncate table cif.form_change restart identity;
 truncate cif.project restart identity cascade;
 
+insert into cif.operator (id, legal_name, trade_name, bc_registry_id, operator_code)
+overriding system value
+values
+  (1, 'first operator legal name', 'first operator trade name', 'AB1234567', 'ABCD');
+
 insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
 overriding system value
 values

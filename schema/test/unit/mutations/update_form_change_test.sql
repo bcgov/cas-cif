@@ -39,7 +39,7 @@ select results_eq(
       change_status,
       json_schema_name
     from cif.update_form_change(
-      12345, (select row( null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      12345, (select row( null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     );
   $$,
   $$
@@ -82,7 +82,7 @@ select results_eq(
       json_schema_name,
       validation_errors
     from cif.update_form_change(
-      12345, (select row( 123, '{"test":2}'::jsonb, 'archive', 'test-schema', 'test-table', 1111, 2222, 'committed', 'some-schema-name', '[{"error":"yes"}]'::jsonb, null, null, null, null, null)::cif.form_change)
+      12345, (select row( 123, '{"test":2}'::jsonb, 'archive', 'test-schema', 'test-table', 1111, 2222, 'committed', 'some-schema-name', '[{"error":"yes"}]'::jsonb, null, null, null, null, null, null)::cif.form_change)
     );
   $$,
   $$

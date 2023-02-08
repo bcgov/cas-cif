@@ -4,6 +4,7 @@ select plan(4);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
+truncate cif.cif_user restart identity cascade;
 
 insert into cif.cif_user(id, session_sub)
   overriding system value

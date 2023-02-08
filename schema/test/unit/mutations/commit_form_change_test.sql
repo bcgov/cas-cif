@@ -54,7 +54,7 @@ select results_eq(
       validation_errors
     from cif.commit_form_change(
       12345,
-      (select row( null, '{"updated":true}', null, null, null, null, null, null, null, '["hazErrors"]', null, null, null, null, null)::cif.form_change)
+      (select row( null, '{"updated":true}', null, null, null, null, null, null, null, '["hazErrors"]', null, null, null, null, null, null)::cif.form_change)
     );
   $$,
   $$
