@@ -267,7 +267,7 @@ describe("when creating a project, the project page", () => {
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
-      "50 %"
+      "50.00 %"
     );
 
     cy.fillFundingAgreementForm(222, 60, 333, 800, "2020-01-01", "2020-02-02");
