@@ -29,6 +29,7 @@ export const ProjectsQuery = graphql`
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
+    $nextMilestoneDueDate: Date
   ) {
     session {
       ...DefaultLayout_session
@@ -51,6 +52,7 @@ export const ProjectsQuery = graphql`
           name: { includesInsensitive: $status }
         }
         primaryManagers: { includesInsensitive: $primaryProjectManager }
+        nextMilestoneDueDate: { includesInsensitive: $nextMilestoneDueDate }
       }
       orderBy: $orderBy
     ) {
@@ -111,7 +113,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         allProjectStatuses.edges.map((e) => e.node.name),
         { orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME" }
       ),
-      new SortOnlyFilter("Milestone Due", "milestoneDueDate"),
+      new SortOnlyFilter("Milestone Due", "nextMilestoneDueDate"),
       new SearchableDropdownFilter(
         "Primary Project Managers",
         "primaryProjectManager",
