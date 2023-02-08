@@ -39,7 +39,7 @@ select cif.create_form_change(
 
 select cif.create_form_change(
         'create',
-        'funding_agreement',
+        'funding_parameter_EP',
         'cif',
         'funding_parameter',
         json_build_object(
@@ -197,7 +197,7 @@ select cif.create_form_change(
 
 select cif.create_form_change(
         'create',
-        'funding_agreement',
+        'funding_parameter_EP',
         'cif',
         'funding_parameter',
         '{}'::jsonb,

@@ -27,7 +27,7 @@ values
 json_build_object(
     'projectId', 1
     ),
-'create', 'cif', 'funding_parameter', 'pending', 'funding_agreement', 1);
+'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_EP', 1);
 
 -- funding parameter with max funding amount, proponent cost and additional funding sources
 insert into cif.form_change(
@@ -46,7 +46,7 @@ json_build_object(
     'maxFundingAmount', 200000,
     'proponentCost', 150000
     ),
-'create', 'cif', 'funding_parameter', 'pending', 'funding_agreement', 2);
+'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_EP', 2);
 
 -- funding parameter with max funding amount and proponent cost but no additional funding sources
 insert into cif.form_change(
@@ -65,7 +65,7 @@ json_build_object(
     'maxFundingAmount', 300000,
     'proponentCost', 200000
     ),
-'create', 'cif', 'funding_parameter', 'pending', 'funding_agreement', 3);
+'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_EP', 3);
 
 
 -- adding additional funding sources

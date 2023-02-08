@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(4);
 
 -- test setup
 
@@ -29,9 +29,15 @@ alter table cif.form_change enable trigger _100_committed_changes_are_immutable,
 
 
 select is(
-  (select count(*) from cif.form_change where json_schema_name='funding_parameter'),
+  (select count(*) from cif.form_change where json_schema_name='funding_agreement'),
   0::bigint,
-  'There are no form_change records with a json_schema_name of funding_parameter'
+  'There are no form_change records with a json_schema_name of funding_agreement'
+);
+
+select is (
+  (select count(*) from cif.form where slug='funding_agreement'),
+  0::bigint,
+  'The funding_agreement json_schema_name has been removed from the form table'
 );
 
 select is (
@@ -41,15 +47,15 @@ select is (
 );
 
 select is(
-  (select count(*) from cif.form_change where json_schema_name='funding_parameter_EP'),
+  (select count(*) from cif.form_change where json_schema_name='funding_agreement_EP'),
   2::bigint,
-  'All EP projects have had their funding_parameter json_schema_name changed to funding_parameter_EP'
+  'All EP projects have had their funding_agreement json_schema_name changed to funding_agreement_EP'
 );
 
 select is(
-  (select count(*) from cif.form_change where json_schema_name='funding_parameter_IA'),
+  (select count(*) from cif.form_change where json_schema_name='funding_agreement_IA'),
   3::bigint,
-  'All IA projects have had their funding_parameter json_schema_name changed to funding_parameter_IA'
+  'All IA projects have had their funding_agreement json_schema_name changed to funding_agreement_IA'
 );
 
 
