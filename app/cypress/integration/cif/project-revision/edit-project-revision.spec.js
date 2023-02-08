@@ -95,7 +95,6 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.").should("be.visible");
     cy.happoAndAxe("Project budgets Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
-
     // edit milestone reports -- change date
     cy.contains("Review and Submit Project");
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
