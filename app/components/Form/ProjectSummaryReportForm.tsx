@@ -174,6 +174,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             size="medium"
             variant="primary"
             onClick={() =>
+              // stage reporting requirement changes is deprecated?
               stageMultipleReportingRequirementFormChanges(
                 applyStageReportingRequirementFormChange,
                 props.onSubmit,
