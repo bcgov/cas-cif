@@ -12,10 +12,10 @@ $function$
         cif.reporting_requirement
     where
         reporting_requirement.project_id = $1.id
-        and reporting_requirement.report_due_date > now()
+        and reporting_requirement.report_due_date > now();
 
 $function$ language sql stable;
 
-comment on function cif.project_next_milestone_due_date(cif.project) is 'Computed column to return the next milestone due date for a given project'
+comment on function cif.project_next_milestone_due_date(cif.project) is 'Computed column to return the next milestone due date for a given project';
 
 commit;
