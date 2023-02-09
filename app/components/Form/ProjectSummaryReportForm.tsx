@@ -14,6 +14,7 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 import Status from "components/ReportingRequirement/Status";
+import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   query: any;
@@ -38,16 +39,16 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
           reportType: "Project Summary Report"
           first: 1000
         ) @connection(key: "connection_projectSummaryFormChanges") {
-          __id
+          __id # this file does not seem to use it directly
           edges {
             node {
               id
               rowId
               newFormData
               changeStatus
-              operation
+              # operation # this file does not seem to use it directly
               asReportingRequirement {
-                reportType
+                reportType # this file does not seem to use it directly
               }
             }
           }
@@ -56,7 +57,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
           reportType: "Project Summary Report"
         ) {
           id
-          ...ReportDueIndicator_formChange
+          ...ReportDueIndicator_formChange # this file does not seem to use it directly
           asReportingRequirement {
             reportDueDate
           }
@@ -129,6 +130,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   return (
     <>
       <h3>Project Summary Report</h3>
+      <SavingIndicator isSaved={!isCreating && !isUpdating} />
       <Status
         upcomingReportDueDate={upcomingReportDueDate}
         reportSubmittedDates={reportSubmittedDates}
