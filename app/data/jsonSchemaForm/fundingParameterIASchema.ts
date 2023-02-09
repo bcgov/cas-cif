@@ -74,6 +74,7 @@ export const fundingParameterIAUiSchema = {
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
     isPercentage: true,
+    numberOfDecimalPlaces: 2,
   },
   proponentsSharePercentage: {
     "ui:widget": "CalculatedValueWidget",

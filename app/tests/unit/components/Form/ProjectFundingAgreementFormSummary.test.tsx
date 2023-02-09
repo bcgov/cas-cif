@@ -245,8 +245,8 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.loadQuery(mockQueryPayloadIA);
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("50 %")).toBeInTheDocument();
-    expect(screen.getByText("60 %")).toBeInTheDocument();
+    expect(screen.getByText("50.00 %")).toBeInTheDocument();
+    expect(screen.getByText("60.00 %")).toBeInTheDocument();
     expect(screen.getByText("$200.00")).toBeInTheDocument(); //max funding changes
     expect(screen.getByText("$300.00")).toBeInTheDocument(); // max funding changes
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();

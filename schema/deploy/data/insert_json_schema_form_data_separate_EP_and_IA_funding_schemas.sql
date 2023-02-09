@@ -8,8 +8,6 @@ values
 -- funding_parameter_IA and funding_parameter_EP to be removed when funding agreement form gets refactored to be one form change, just here to pass the fkey
 ('funding_parameter_EP', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to funding_parameter_EP'),
 ('funding_parameter_IA', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to funding_parameter_IA')
--- ,
--- ('project_summary_report', default, '{}'::jsonb, 'OBSOLETE (see comment above) schema data relating to project_summary_report')
 on conflict(slug) do update
 set json_schema=excluded.json_schema,
     description=excluded.description,
