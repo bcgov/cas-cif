@@ -12,7 +12,7 @@ $function$
         cif.reporting_requirement
     where
         reporting_requirement.project_id = $1.id
-        and reporting_requirement.report_due_date > now();
+        and reporting_requirement.report_type = 'General Milestone';
 
 $function$ language sql stable;
 
