@@ -2,7 +2,7 @@
 
 begin;
 
-create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000) default 'General Revision', amendment_types varchar(1000)[] default array[]::varchar[])
+create or replace function cif.create_project_revision(project_id integer, revision_type varchar(1000) default 'Amendment', amendment_types varchar(1000)[] default array[]::varchar[])
 returns cif.project_revision
 as $function$
 declare
@@ -86,37 +86,10 @@ begin
       id,
       'update'::cif.form_change_operation as operation,
       'funding_parameter' as form_data_table_name,
-      'funding_parameter_EP' as json_schema_name
+      'funding_parameter' as json_schema_name
     from cif.funding_parameter
     where funding_parameter.project_id = $1
     and archived_at is null
-    and (select name from cif.funding_stream
-              where id=((
-                  select (new_form_data->>'fundingStreamRfpId') from cif.form_change where project_revision_id =
-                    (select id from cif.project_revision where cif.project_revision.project_id = $1
-                    -- don't need to order before limiting or further filter because funding stream is immutable and will be the same in all form changes
-                    limit 1
-                    )
-                    limit 1
-                    )::integer)
-    )='EP'
-  union
-    select
-      id,
-      'update'::cif.form_change_operation as operation,
-      'funding_parameter' as form_data_table_name,
-      'funding_parameter_IA' as json_schema_name
-    from cif.funding_parameter
-    where funding_parameter.project_id = $1
-    and archived_at is null
-    and (select name from cif.funding_stream
-              where id=((
-                  select (new_form_data->>'fundingStreamRfpId') from cif.form_change where project_revision_id =
-                    (select id from cif.project_revision where cif.project_revision.project_id = $1
-                    limit 1)
-                    limit 1
-                    )::integer)
-    )='IA'
   union
     select
       id,

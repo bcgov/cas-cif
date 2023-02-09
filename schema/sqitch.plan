@@ -242,5 +242,6 @@ tables/project_revision_005_correct_revision_type [tables/project_revision_004_a
 @1.4.1 2023-02-14T23:23:23Z Dylan Leard <dylan@button.is> # release v1.4.1
 data/insert_json_schema_form_data_separate_EP_and_IA_funding_schemas 2023-01-31T17:19:29Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create separate schemas for EP and IA funding stream funding forms
 computed_columns/form_change_calculated_total_payment_amount_to_date 2023-01-31T21:33:27Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Computed column to calculate total payment amount to date (IA funding stream only)
-functions/funding_form_changes_to_separate_schemas 2023-02-02T22:52:06Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Function to update json_schema_name to specify funding stream
+functions/funding_form_changes_to_separate_schemas 2023-02-02T22:52:06Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Function to update json_schema_name to specify funding stream
 migrations/002_separate_funding_schemas_for_EP_and_IA 2023-02-02T16:34:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration to update json_schema_name for funding stream forms to separate them by EP and IA funding streams
+mutations/create_project_revision [mutations/create_project_revision@1.3.0] 2023-02-09T18:19:22Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Update function to add either EP or IA version of the funding form schema
