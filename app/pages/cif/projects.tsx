@@ -29,7 +29,7 @@ export const ProjectsQuery = graphql`
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
-    $nextMilestoneDueDate: Date
+    $nextMilestoneDueDate: DatetimeFilter
   ) {
     session {
       ...DefaultLayout_session
@@ -52,7 +52,7 @@ export const ProjectsQuery = graphql`
           name: { includesInsensitive: $status }
         }
         primaryManagers: { includesInsensitive: $primaryProjectManager }
-        nextMilestoneDueDate: { includesInsensitive: $nextMilestoneDueDate }
+        nextMilestoneDueDate: $nextMilestoneDueDate
       }
       orderBy: $orderBy
     ) {
