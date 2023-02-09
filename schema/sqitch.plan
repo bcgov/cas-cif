@@ -240,6 +240,7 @@ computed_columns/form_change_payment_percentage 2023-01-11T15:33:18Z Gurjeet Mat
 mutations/create_project_revision [mutations/create_project_revision@1.4.0] 2023-02-14T22:47:17Z Dylan Leard <dylan@button.is> # Migration: change parameter default
 tables/project_revision_005_correct_revision_type [tables/project_revision_004_add_pending_actions_from] 2023-02-14T22:49:43Z Dylan Leard <dylan@button.is> # Migration: set revision_type column values to correct value
 @1.4.1 2023-02-14T23:23:23Z Dylan Leard <dylan@button.is> # release v1.4.1
+trigger_functions/set_initial_ancestor_form_change_ids 2023-02-09T19:47:08Z Mike Vesprini <mike@button.is> # Trigger function to set the inital values of previous_form_change_id and original_parent_form_change_id
 tables/form_change_002_add_original_parent_form_change_id 2023-02-07T03:12:24Z Mike Vesprini <mike@button.is> # Add original_parent_form_change_id column to cif.form_change
 functions/migration_set_original_parent_form_change_id 2023-02-07T03:21:05Z Mike Vesprini <mike@button.is> # Migration function to copy previous_form_change_id into original_parent_form_change_id for old records
 migrations/002_form_change_set_original_parent_form_change_id 2023-02-07T03:35:15Z Mike Vesprini <mike@button.is> # Migration to set the original_parent_form_change_id to the value of previous_form_change_id
