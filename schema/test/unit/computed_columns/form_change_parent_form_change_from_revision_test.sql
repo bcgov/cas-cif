@@ -35,7 +35,7 @@ values
 -- make sure the function exists
 select has_function('cif_private', 'set_previous_form_change_id', 'Function set_previous_form_change_id should exist');
 
-alter table cif.form_change disable trigger _set_previous_form_change_id;
+alter table cif.form_change disable trigger _set_initial_ancestor_form_change_ids;
 
 -- create an inital form_change record
 insert into cif.form(slug, json_schema, description) values ('test', '{}'::jsonb, 'test description');

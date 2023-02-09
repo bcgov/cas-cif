@@ -1,10 +1,9 @@
 begin;
 
-select plan(4);
+select plan(5);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
-truncate cif.cif_user restart identity cascade;
 
 insert into cif.cif_user(id, session_sub)
   overriding system value
@@ -92,6 +91,12 @@ select is (
   (select previous_form_change_id from cif.form_change where json_schema_name='new_project_form_change_revision_2'),
   (select id from cif.form_change where json_schema_name='pending_project'),
   'Trigger sets the correct previous_form_change_id for the first form_change in a new revision, using the latest committed form_change'
+);
+
+select is (
+  (select original_parent_form_change_id from cif.form_change where json_schema_name='new_project_form_change_revision_2'),
+  (select id from cif.form_change where json_schema_name='pending_project'),
+  'Trigger sets the correct original_parent_form_change_id for the first form_change in a new revision, using the latest committed form_change'
 );
 
 select finish();

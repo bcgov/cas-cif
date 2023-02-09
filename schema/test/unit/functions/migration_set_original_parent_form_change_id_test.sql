@@ -22,7 +22,7 @@ values
   (2, 'committed', 'reason for change', 1),
   (3, 'committed', 'reason for change', 1);
 
-alter table cif.form_change disable trigger _set_previous_form_change_id;
+alter table cif.form_change disable trigger _set_initial_ancestor_form_change_ids;
 
 insert into cif.form(slug, json_schema, description) values ('test', '{}'::jsonb, 'test description');
 
