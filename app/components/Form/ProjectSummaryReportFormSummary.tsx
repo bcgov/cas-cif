@@ -1,8 +1,5 @@
 import { utils } from "@rjsf/core";
-import {
-  projectSummaryReportSchema,
-  projectSummaryReportUiSchema,
-} from "data/jsonSchemaForm/projectSummaryReportSchema";
+import { projectSummaryReportSchema } from "data/jsonSchemaForm/projectSummaryReportSchema";
 import { JSONSchema7 } from "json-schema";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -179,7 +176,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           formTitle="Project Summary Report"
         />
       ) : (
-        projectSummaryFormChanges
+        projectSummaryReportsJSX
       )}
     </>
   );
