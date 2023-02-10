@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif_private.set_previous_form_change_id()'::regprocedure);
+select cif_private.verify_function_not_present('cif_private', 'set_previous_form_change_id', 0);
 
 rollback;

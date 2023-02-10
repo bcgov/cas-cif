@@ -1,7 +1,7 @@
 -- Revert cif:trigger_functions/set_initial_ancestor_form_change_ids from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function if exists cif_private.set_initial_ancestor_form_change_ids;
 
-COMMIT;
+commit;
