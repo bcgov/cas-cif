@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { BaseNavigation } from "@button-inc/bcgov-theme/Navigation";
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import LogoutForm from "components/Session/LogoutForm";
