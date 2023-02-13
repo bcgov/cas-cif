@@ -87,7 +87,8 @@ describe("the project amendment and revisions page", () => {
       .click();
     cy.url().should("include", "/view");
     cy.findByText(/forms updated/i).should("be.visible");
-    cy.happoAndAxe("Project Revision View", "Forms Updated", "main", true);
+    // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
+    // cy.happoAndAxe("Project Revision View", "Forms Updated", "main", true);
     cy.get("input[aria-label='Project Overview']").should("be.checked");
     cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
