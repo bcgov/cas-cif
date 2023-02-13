@@ -5,7 +5,7 @@
 begin;
 
 /**
-  Adding a project summary report to a project_revision is a chained operation. The data for milestones is spread across two tables:
+  Adding a project summary report to a project_revision is a chained operation. The data for project summary is spread across two tables:
     - reporting_requirement (base table, common to all reports)
     - payment (payment data, common to some reports)
   Because this data is spread across two tables we have to create two form_change records within one transaction, one for each table.
