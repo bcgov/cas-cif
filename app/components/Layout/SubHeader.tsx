@@ -33,18 +33,18 @@ export default function SubHeader({ links }: Props) {
                 ? "/cif-external"
                 : "/cif"
             }
+            className={highlightedLinkName === "Home" ? "highlight" : ""}
           >
-            <a className={highlightedLinkName === "Home" ? "highlight" : ""}>
-              Home
-            </a>
+            Home
           </Link>
         </li>
         {links?.map(({ name, href }) => (
           <li key={name}>
-            <Link href={href}>
-              <a className={highlightedLinkName === name ? "highlight" : ""}>
-                {name}
-              </a>
+            <Link
+              href={href}
+              className={highlightedLinkName === name ? "highlight" : ""}
+            >
+              {name}
             </Link>
           </li>
         ))}
