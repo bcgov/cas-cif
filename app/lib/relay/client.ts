@@ -1,5 +1,5 @@
 import { Environment, RecordSource, Store } from "relay-runtime";
-import { getRelaySerializedState } from "relay-nextjs";
+import { hydrateRelayEnvironment } from "relay-nextjs";
 import {
   RelayNetworkLayer,
   urlMiddleware,
@@ -8,6 +8,7 @@ import {
   uploadMiddleware,
 } from "react-relay-network-modern/node8";
 import debounceMutationMiddleware from "./debounceMutationMiddleware";
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
 
 const oneMinute = 60 * 1000;
 
@@ -35,15 +36,17 @@ export function createClientNetwork() {
 }
 
 let clientEnv: Environment | undefined;
-export function getClientEnvironment() {
+export function getClientEnvironment(): RelayModernEnvironment {
   if (typeof window === "undefined") return null;
 
   if (clientEnv == null) {
     clientEnv = new Environment({
       network: createClientNetwork(),
-      store: new Store(new RecordSource(getRelaySerializedState()?.records)),
+      // removed `getRelaySerializedState` in favor of new API: https://github.com/RevereCRE/relay-nextjs/releases/tag/v1.0.0
+      store: new Store(new RecordSource()),
       isServer: false,
     });
+    hydrateRelayEnvironment(clientEnv);
   }
 
   return clientEnv;
