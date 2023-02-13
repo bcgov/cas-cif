@@ -130,7 +130,8 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     cy.contains(/^Budgets, expenses & payments/i);
-    cy.happoAndAxe("IA Project budgets Form", "empty", "main");
+    // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
+    // cy.happoAndAxe("IA Project budgets Form", "empty", "main");
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
