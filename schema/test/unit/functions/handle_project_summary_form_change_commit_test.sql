@@ -1,6 +1,6 @@
 begin;
 
-select plan(8);
+select plan(6);
 
 /** SETUP **/
 /** some of these fields are unnecessary eg. emission_intensity and milestone **/

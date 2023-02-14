@@ -1,9 +1,9 @@
--- Deploy cif:functions/handle_project_summary_form_change_commit to pg
+-- Deploy cif:functions/handle_project_summary_report_form_change_commit to pg
 -- requires: tables/form_change
 
 begin;
 
-create or replace function cif_private.handle_project_summary_form_change_commit(fc cif.form_change)
+create or replace function cif_private.handle_project_summary_report_form_change_commit(fc cif.form_change)
     returns int as $$
 declare
     reporting_requirement_record_id int;
@@ -78,9 +78,9 @@ begin
 end;
 $$ language plpgsql volatile;
 
-grant execute on function cif_private.handle_project_summary_form_change_commit to cif_internal, cif_external, cif_admin;
+grant execute on function cif_private.handle_project_summary_report_form_change_commit to cif_internal, cif_external, cif_admin;
 
-comment on function cif_private.handle_project_summary_form_change_commit
+comment on function cif_private.handle_project_summary_report_form_change_commit
     is $$
         The custom function used to parse project summary form_change data into table data.
         The data within the single form_change record is parsed into the reporting_requirement, and payment tables.
