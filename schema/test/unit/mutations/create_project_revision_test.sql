@@ -116,9 +116,9 @@ select results_eq(
   select id, project_id, change_status, revision_type from cif.create_project_revision(1)
   $$,
   $$
-  values (4, 1, 'pending'::varchar, 'Amendment'::varchar)
+  values (4, 1, 'pending'::varchar, 'General Revision'::varchar)
   $$,
-  'creating a project revision without revision type and creates a new project revision in pending state and defaults revision_type to Amendment'
+  'creating a project revision without revision type and creates a new project revision in pending state and defaults revision_type to General Revision'
 );
 
 
