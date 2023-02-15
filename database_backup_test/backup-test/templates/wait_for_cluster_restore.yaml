@@ -50,7 +50,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: password
-                name: defined-backup-password
+                name: cas-cif-defined-backup-password
         command:
         - /bin/sh
         - -c
