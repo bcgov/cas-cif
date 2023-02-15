@@ -8,48 +8,36 @@ interface Props {
 }
 
 const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
-  const {
-    latestCommittedProjectRevision,
-    latestCompletedReportingRequirements,
-  } = useFragment(
-    graphql`
-      fragment ProjectMilestoneDue_project on Project {
-        latestCommittedProjectRevision {
-          upcomingReportingRequirementFormChange(reportType: "Milestone") {
-            asReportingRequirement {
-              reportDueDate
+  const { nextMilestoneDueDate, latestCompletedReportingRequirements } =
+    useFragment(
+      graphql`
+        fragment ProjectMilestoneDue_project on Project {
+          nextMilestoneDueDate
+          latestCompletedReportingRequirements: reportingRequirementsByProjectId(
+            orderBy: REPORT_DUE_DATE_ASC
+            filter: {
+              submittedDate: { isNull: false }
+              reportTypeByReportType: { isMilestone: { equalTo: true } }
+            }
+            first: 1
+          ) {
+            edges {
+              node {
+                reportDueDate
+              }
             }
           }
         }
-        latestCompletedReportingRequirements: reportingRequirementsByProjectId(
-          orderBy: REPORT_DUE_DATE_ASC
-          filter: {
-            submittedDate: { isNull: false }
-            reportTypeByReportType: { isMilestone: { equalTo: true } }
-          }
-          first: 1
-        ) {
-          edges {
-            node {
-              reportDueDate
-            }
-          }
-        }
-      }
-    `,
-    project
-  );
-
-  const upcomingReportDueDate =
-    latestCommittedProjectRevision.upcomingReportingRequirementFormChange
-      ?.asReportingRequirement?.reportDueDate;
+      `,
+      project
+    );
   const latestCompletedReportDueDate =
     latestCompletedReportingRequirements.edges[0]?.node?.reportDueDate;
 
-  const nextReportDueDate =
-    upcomingReportDueDate || latestCompletedReportDueDate;
+  const milestoneComplete =
+    latestCompletedReportDueDate == nextMilestoneDueDate;
 
-  if (!nextReportDueDate) {
+  if (!nextMilestoneDueDate) {
     return (
       <>
         <Badge variant="none" />
@@ -58,8 +46,8 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
   }
 
   const parsedNextReportDueDate =
-    nextReportDueDate &&
-    DateTime.fromISO(nextReportDueDate, {
+    nextMilestoneDueDate &&
+    DateTime.fromISO(nextMilestoneDueDate, {
       setZone: true,
       locale: "en-CA",
     }).startOf("day");
@@ -79,7 +67,7 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
       )}
       <Badge
         variant={
-          upcomingReportDueDate
+          !milestoneComplete
             ? reportDueIn < 0
               ? "late"
               : "onTrack"
