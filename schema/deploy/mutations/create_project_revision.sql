@@ -91,17 +91,23 @@ begin
     where funding_parameter.project_id = $1
     and archived_at is null
     and (select name from cif.funding_stream
-              where id=((
-                  select (new_form_data->>'fundingStreamRfpId') from cif.form_change where project_revision_id =
-                    (select id from cif.project_revision where cif.project_revision.project_id = $1
+        where id=((
+          select funding_stream_id from cif.funding_stream_rfp
+          where id=((
+                  select (new_form_data->>'fundingStreamRfpId') from cif.form_change
+                  where
+                  (new_form_data->>'fundingStreamRfpId') is not null
+                  and project_revision_id =
+                    (select id from cif.project_revision
+                    where cif.project_revision.project_id = $1
                     -- don't need to order before limiting or further filter because funding stream is immutable and will be the same in all form changes
-                    limit 1
-                    )
-                    limit 1
-                    )::integer)
+                    limit 1)
+                  limit 1
+                  )::integer)
+            ))
     )='EP'
   union
-    select
+   select
       id,
       'update'::cif.form_change_operation as operation,
       'funding_parameter' as form_data_table_name,
@@ -110,12 +116,18 @@ begin
     where funding_parameter.project_id = $1
     and archived_at is null
     and (select name from cif.funding_stream
-              where id=((
-                  select (new_form_data->>'fundingStreamRfpId') from cif.form_change where project_revision_id =
-                    (select id from cif.project_revision where cif.project_revision.project_id = $1
-                    limit 1)
-                    limit 1
-                    )::integer)
+        where id=((
+            select funding_stream_id from cif.funding_stream_rfp
+            where id=((
+                select (new_form_data->>'fundingStreamRfpId') from cif.form_change where
+                (new_form_data->>'fundingStreamRfpId') is not null
+                and project_revision_id =
+                  (select id from cif.project_revision where cif.project_revision.project_id = $1
+                  -- don't need to order before limiting or further filter because funding stream is immutable and will be the same in all form changes
+                  limit 1)
+                limit 1
+                )::integer)
+          ))
     )='IA'
   union
     select

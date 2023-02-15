@@ -164,6 +164,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     projectRevision.projectFormChange.asProject
       .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
 
+  const isFundingStreamEP = fundingStream === "EP";
+
   const { allAdditionalFundingSourceStatuses } = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_query on Query {
@@ -193,8 +195,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       ({ node }) => node.operation !== "ARCHIVE"
     );
   // putting the conditional directly in the mutation throws errors
-  const jsonSchemaName =
-    fundingStream === "EP" ? "funding_parameter_EP" : "funding_parameter_IA";
+  const jsonSchemaName = isFundingStreamEP
+    ? "funding_parameter_EP"
+    : "funding_parameter_IA";
 
   const addFundingAgreement = () => {
     createFundingParameterFormChange({
@@ -208,7 +211,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           newFormData: {
             projectId: projectRevision.projectFormChange.formDataRecordId,
             provinceSharePercentage: 50, // Default to 50%
-            ...(fundingStream === "EP" && { holdbackPercentage: 10 }), // Default to 10%
+            ...(isFundingStreamEP && { holdbackPercentage: 10 }), // Default to 10%
           },
         },
         connections: [projectRevision.projectFundingAgreementFormChanges.__id],
@@ -429,7 +432,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             validateOnMount={fundingAgreement?.changeStatus === "staged"}
             idPrefix="ProjectFundingAgreementForm"
             schema={
-              fundingStream === "EP"
+              isFundingStreamEP
                 ? (fundingParameterEPSchema as JSONSchema7)
                 : (fundingParameterIASchema as JSONSchema7)
             }
@@ -441,7 +444,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               calculatedProponentsSharePercentage,
             }}
             uiSchema={
-              fundingStream === "EP"
+              isFundingStreamEP
                 ? fundingParameterEPUiSchema
                 : fundingParameterIAUiSchema
             }
@@ -523,7 +526,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               className="expensesPaymentsTrackerForm"
               idPrefix="expensesPaymentsTracker"
               schema={
-                fundingStream === "EP"
+                isFundingStreamEP
                   ? (expensesPaymentsTrackerEPSchema as JSONSchema7)
                   : (expensesPaymentsTrackerIASchema as JSONSchema7)
               }
@@ -546,7 +549,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               }}
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
               uiSchema={
-                fundingStream === "EP"
+                isFundingStreamEP
                   ? expensesPaymentsTrackerEPUiSchema
                   : expensesPaymentsTrackerIAUiSchema
               }
