@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/bcgov/cas-cif/compare/1.4.0...1.4.1) (2023-02-14)
+
+### Bug Fixes
+
+- correct the default parameter value for revision_type ([f326068](https://github.com/bcgov/cas-cif/commit/f3260682f56d0d3d25c43cb909b6cbae554844ec))
+
 # [1.4.0](https://github.com/bcgov/cas-cif/compare/1.3.0...1.4.0) (2023-02-08)
 
 ### Bug Fixes
