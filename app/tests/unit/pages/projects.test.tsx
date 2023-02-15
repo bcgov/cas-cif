@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
 import { getNewProjectRevisionPageRoute } from "routes/pageRoutes";
@@ -123,6 +123,17 @@ describe("The projects page", () => {
     expect(
       screen.queryByLabelText("Filter by Primary Project Managers")
     ).toBeInTheDocument();
+    expect(screen.getByText("Milestone Due")).toHaveAttribute(
+      "aria-sort",
+      "none"
+    );
+    userEvent.click(screen.getByText("Milestone Due"));
+    waitFor(() => {
+      expect(screen.findByText("Milestone Due")).toHaveAttribute(
+        "aria-sort",
+        "descending"
+      );
+    });
   });
 
   it("renders the page with the status query variable from the status filter", () => {
