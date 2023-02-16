@@ -5,10 +5,10 @@ begin;
 do $$
   begin
     assert (
-      (select count(*) from pg_indexes where indexname='project_revision_unique_pending_general_revision_per_project_id')
+      (select count(*) from pg_indexes where indexname='project_revision_unique_pending_general_revision_per_project_id') = 1
     ), 'project_revision_unique_pending_general_revision_per_project_id was not created on cif.project_revision';
      assert (
-      (select count(*) from pg_indexes where indexname='project_revision_unique_pending_amendment_per_project_id')
+      (select count(*) from pg_indexes where indexname='project_revision_unique_pending_amendment_per_project_id') = 1
     ), 'project_revision_unique_pending_amendment_per_project_id was not created on cif.project_revision';
   end;
 $$;
