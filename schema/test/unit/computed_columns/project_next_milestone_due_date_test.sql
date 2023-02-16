@@ -18,7 +18,7 @@ add several upcoming reports, make sure we get the next one
 
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
 
-//* Create mock user *//
+/* Create mock user */
 insert into cif.cif_user(id, session_sub)
   overriding system value
   values (1, '11111111-1111-1111-1111-111111111111'),
