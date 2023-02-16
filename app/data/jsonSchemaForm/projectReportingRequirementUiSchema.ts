@@ -1,4 +1,5 @@
 export const reportingRequirementUiSchema = {
+  "ui:order": ["reportDueDate", "submittedDate", "comments"],
   reportDueDate: {
     "ui:widget": "DateWidget",
     isDueDate: true,
