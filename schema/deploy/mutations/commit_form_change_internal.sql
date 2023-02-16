@@ -26,12 +26,23 @@ begin
     change_status = 'committed'
   where id = fc.id;
 
+  -- Update previous_form_change_id for any corresponding form_change records associated with pending proejct revisions on the same project
+  update cif.form_change set
+    previous_form_change_id = fc.id
+    where project_revision_id in 
+      (select id from cif.project_revision
+        where project_id = (select project_id from cif.project_revision where id = fc.project_revision_id)
+        and id != fc.project_revision_id
+        and change_status = 'pending')
+    and form_data_table_name = fc.form_data_table_name;
+
   return (select row(form_change.*)::cif.form_change from cif.form_change where id = fc.id);
 end;
   $$ language plpgsql volatile;
 
 grant execute on function cif_private.commit_form_change_internal to cif_internal, cif_external, cif_admin;
 
-comment on function cif_private.commit_form_change_internal(cif.form_change) is 'Commits the form change and calls the corresponding commit handler.';
+comment on function cif_private.commit_form_change_internal(cif.form_change) is
+  'Commits the form change, calls the corresponding commit handler, and sets the original_form_change_record_id for any pending form changes';
 
 commit;

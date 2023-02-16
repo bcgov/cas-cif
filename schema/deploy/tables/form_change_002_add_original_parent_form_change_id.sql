@@ -14,4 +14,3 @@ drop trigger if exists _set_previous_form_change_id on cif.form_change;
 comment on column cif.form_change.original_parent_form_change_id is 'The form_change id of the original parent of the record.';
 
 commit;
-
