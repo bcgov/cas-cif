@@ -11,9 +11,14 @@ for temp_row in select id, project_id from cif.project_revision
     where cif.project_revision.id = ((
       select project_revision_id from cif.form_change
       where project_revision_id = cif.project_revision.id
-      and (new_form_data->>'fundingStreamRfpId')=((
+     and (new_form_data->>'fundingStreamRfpId')::integer
+
+      in ((
+            select id from cif.funding_stream_rfp
+            where funding_stream_id=((
               select id from cif.funding_stream
-              where name='EP')::text)
+                where name='EP'))
+            ))
     ))
   loop
       insert into cif.form_change(
@@ -52,9 +57,13 @@ for temp_row in select id, project_id from cif.project_revision
     where cif.project_revision.id = ((
       select project_revision_id from cif.form_change
       where project_revision_id = cif.project_revision.id
-      and (new_form_data->>'fundingStreamRfpId')=((
-              select id from cif.funding_stream
-              where name='IA')::text)
+      and (new_form_data->>'fundingStreamRfpId')::integer
+      in ((
+        select id from cif.funding_stream_rfp
+        where funding_stream_id=((
+          select id from cif.funding_stream
+            where name='IA'))
+        ))
     ))
   loop
       insert into cif.form_change(
