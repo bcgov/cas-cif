@@ -248,4 +248,3 @@ migrations/002_form_change_set_original_parent_form_change_id 2023-02-07T03:35:1
 trigger_functions/set_previous_form_change_id [trigger_functions/set_previous_form_change_id@1.2.0] 2023-02-10T00:10:15Z Mike Vesprini <mike@button.is> # Delete set_previous_form_change_id trigger function
 mutations/create_single_field_project_revision 2023-02-10T23:44:28Z Mike Vesprini <mike@button.is> # Mutation to create and commit project revisions affecting only one field
 mutations/commit_form_change_internal [mutations/commit_form_change_internal@1.2.0] 2023-02-13T18:34:03Z Mike Vesprini <mike@button.is> # Set original_form_change_parent_id in commit_form_change_internal
-mutations/commit_project_revision [mutations/commit_project_revision@1.2.0] 2023-02-13T18:34:03Z Mike Vesprini <mike@button.is> # Allow minor revisions to be committed without a change_reason

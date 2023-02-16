@@ -20,10 +20,18 @@ begin
     where project_revision_id = revision_row.id
     and fc.form_data_table_name = $2;
 
+  -- Set the change reason on the project revision
+  update cif.project_revision
+    set change_reason = (select format(
+      'Changed %s to %s',
+      (select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(partial_form_data) limit 1),
+      (select quote_nullable(value) from jsonb_each_text(partial_form_data) limit 1)))
+    where id = revision_row.id;
+
   perform cif.commit_project_revision(revision_row.id);
 
--- This approach means that Minor revisions have the potential to update a value in a General revision, preventing unintentional
--- overwriting of the Minor revision. The approach may be revisited in the future.
+  -- This approach means that Minor revisions have the potential to update a value in a General revision, preventing unintentional
+  -- overwriting of the Minor revision. The approach may be revisited in the future.
   update cif.form_change fc
     set new_form_data = (fc.new_form_data || $3)
     where form_data_record_id = $1
