@@ -29,7 +29,7 @@ begin
   -- Update previous_form_change_id for any corresponding form_change records associated with pending proejct revisions on the same project
   update cif.form_change set
     previous_form_change_id = fc.id
-    where project_revision_id in 
+    where project_revision_id in
       (select id from cif.project_revision
         where project_id = (select project_id from cif.project_revision where id = fc.project_revision_id)
         and id != fc.project_revision_id

@@ -18,7 +18,7 @@ do $$
 
   begin
     current_revision := cif.create_project(3);
-    
+
     update cif.form_change
     set new_form_data = jsonb_build_object(
         'operatorId', 1,
