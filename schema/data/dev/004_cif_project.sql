@@ -62,12 +62,12 @@ do $$
   -- ia projects
     for index in 1..5 loop
 
-      current_revision := cif.create_project(2);
+      current_revision := cif.create_project(5);
 
       update cif.form_change
       set new_form_data= jsonb_build_object(
           'operatorId', 2,
-          'fundingStreamRfpId', 2,
+          'fundingStreamRfpId', 5,
           'projectStatusId', 2,
           'proposalReference', 'IA' || lpad(index::text, 3, '0'),
           'summary', 'lorem ipsum dolor sit amet adipiscing eli',
