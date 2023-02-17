@@ -82,7 +82,7 @@ begin
     and rr.project_id = $1
     and eir.archived_at is null
   union
-    select
+     select
       id,
       'update'::cif.form_change_operation as operation,
       'funding_parameter' as form_data_table_name,
