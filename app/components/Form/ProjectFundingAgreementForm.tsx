@@ -1,7 +1,11 @@
 import {
-  fundingAgreementSchema,
-  fundingAgreementUiSchema,
-} from "data/jsonSchemaForm/fundingAgreementSchema";
+  fundingParameterEPSchema,
+  fundingParameterEPUiSchema,
+} from "data/jsonSchemaForm/fundingParameterEPSchema";
+import {
+  fundingParameterIASchema,
+  fundingParameterIAUiSchema,
+} from "data/jsonSchemaForm/fundingParameterIASchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
@@ -25,10 +29,15 @@ import FormBorder from "lib/theme/components/FormBorder";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import useDiscardAdditionalFundingSourceFormChange from "mutations/FundingParameter/discardAdditionalFundingSourceFormChange";
 import {
-  expensesPaymentsTrackerSchema,
-  expensesPaymentsTrackerUiSchema,
-} from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
+  expensesPaymentsTrackerEPSchema,
+  expensesPaymentsTrackerEPUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerEPSchema";
+import {
+  expensesPaymentsTrackerIASchema,
+  expensesPaymentsTrackerIAUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerIASchema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
+import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
 
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
@@ -79,6 +88,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     useCreateFundingParameterFormChange();
 
   const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
+  const [
+    updateFundingParameterFormChange,
+    isUpdatingFundingParameterFormChange,
+  ] = useUpdateFundingParameterFormChange();
   const [stageFormChange, isStaging] = useStageFormChange();
 
   const [
@@ -98,6 +111,13 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         rowId
         projectFormChange {
           formDataRecordId
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
         }
         totalProjectValue
         projectFundingAgreementFormChanges: formChangesFor(
@@ -116,6 +136,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               holdbackAmountToDate
               netPaymentsToDate
               grossPaymentsToDate
+              calculatedTotalPaymentAmountToDate
             }
           }
         }
@@ -138,6 +159,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
+
+  const fundingStream =
+    projectRevision.projectFormChange.asProject
+      .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
+
+  const isFundingStreamEP = fundingStream === "EP";
 
   const { allAdditionalFundingSourceStatuses } = useFragment(
     graphql`
@@ -167,6 +194,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     projectRevision.additionalFundingSourceFormChanges.edges.filter(
       ({ node }) => node.operation !== "ARCHIVE"
     );
+  // putting the conditional directly in the mutation throws errors
+  const jsonSchemaName = isFundingStreamEP
+    ? "funding_parameter_EP"
+    : "funding_parameter_IA";
 
   const addFundingAgreement = () => {
     createFundingParameterFormChange({
@@ -175,12 +206,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           projectRevisionId: projectRevision.rowId,
           formDataSchemaName: "cif",
           formDataTableName: "funding_parameter",
-          jsonSchemaName: "funding_parameter",
+          jsonSchemaName,
           operation: "CREATE",
           newFormData: {
             projectId: projectRevision.projectFormChange.formDataRecordId,
             provinceSharePercentage: 50, // Default to 50%
-            holdbackPercentage: 10, // Default to 10%
+            ...(isFundingStreamEP && { holdbackPercentage: 10 }), // Default to 10%
           },
         },
         connections: [projectRevision.projectFundingAgreementFormChanges.__id],
@@ -197,7 +228,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         ...fundingAgreement.newFormData,
         ...formData,
       };
-      updateFormChange({
+      updateFundingParameterFormChange({
         variables: {
           input: {
             rowId: fundingAgreement.rowId,
@@ -389,6 +420,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             <SavingIndicator
               isSaved={
                 !isUpdatingFormChange &&
+                !isUpdatingFundingParameterFormChange &&
                 !isAddingFundingParameterFormChange &&
                 !isAddingAdditionalFundingSource &&
                 !isStaging
@@ -399,7 +431,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             id="ProjectFundingAgreementForm"
             validateOnMount={fundingAgreement?.changeStatus === "staged"}
             idPrefix="ProjectFundingAgreementForm"
-            schema={fundingAgreementSchema as JSONSchema7}
+            schema={
+              isFundingStreamEP
+                ? (fundingParameterEPSchema as JSONSchema7)
+                : (fundingParameterIASchema as JSONSchema7)
+            }
             formData={fundingAgreement?.newFormData}
             formContext={{
               projectRevision,
@@ -407,7 +443,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               calculatedTotalProjectValue: projectRevision.totalProjectValue,
               calculatedProponentsSharePercentage,
             }}
-            uiSchema={fundingAgreementUiSchema}
+            uiSchema={
+              isFundingStreamEP
+                ? fundingParameterEPUiSchema
+                : fundingParameterIAUiSchema
+            }
             ref={(el) => (formRefs.current[fundingAgreement.id] = el)}
             onChange={(change) => handleChange(change.formData)}
             onError={handleError}
@@ -471,6 +511,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               }
               disabled={
                 isAddingAdditionalFundingSource ||
+                isUpdatingFundingParameterFormChange ||
                 isUpdatingFormChange ||
                 isStaging ||
                 isDiscardingAdditionalFundingSourceFormChange
@@ -484,8 +525,15 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               id={`expensesPaymentsTracker`}
               className="expensesPaymentsTrackerForm"
               idPrefix="expensesPaymentsTracker"
-              schema={expensesPaymentsTrackerSchema as JSONSchema7}
+              schema={
+                isFundingStreamEP
+                  ? (expensesPaymentsTrackerEPSchema as JSONSchema7)
+                  : (expensesPaymentsTrackerIASchema as JSONSchema7)
+              }
               formContext={{
+                calculatedTotalPaymentAmountToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.calculatedTotalPaymentAmountToDate,
                 calculatedEligibleExpensesToDate:
                   projectRevision.projectFundingAgreementFormChanges?.edges[0]
                     .node.eligibleExpensesToDate,
@@ -500,7 +548,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                     .node.grossPaymentsToDate,
               }}
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
-              uiSchema={expensesPaymentsTrackerUiSchema}
+              uiSchema={
+                isFundingStreamEP
+                  ? expensesPaymentsTrackerEPUiSchema
+                  : expensesPaymentsTrackerIAUiSchema
+              }
             ></FormBase>
           </FormBorder>
           <Button
@@ -521,6 +573,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             style={{ marginRight: "1rem" }}
             disabled={
               isUpdatingFormChange ||
+              isUpdatingFundingParameterFormChange ||
               isAddingFundingParameterFormChange ||
               isStaging
             }

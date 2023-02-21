@@ -78,7 +78,7 @@ values (
   'funding_parameter',
   1,
   1,
-  'funding_parameter',
+  'funding_parameter_EP',
   '{"projectId": 1, "maxFundingAmount": 1000000, "provinceSharePercentage": 50, "holdbackPercentage": 10}'
 );
 /** SETUP END **/

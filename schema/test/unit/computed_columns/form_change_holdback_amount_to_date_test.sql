@@ -62,10 +62,10 @@ values (
   5,
   'create',
   'cif',
-  'funding_agreement',
+  'funding_parameter',
   3,
   1,
-  'funding_agreement',
+  'funding_parameter_EP',
   '{"holdbackPercentage": 10}'
 );
 /** SETUP END **/

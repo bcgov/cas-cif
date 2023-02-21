@@ -57,6 +57,7 @@ describe("when creating a project, the project page", () => {
     // add budgets, expenses, and payments
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
+    cy.contains("Changes saved").should("be.visible");
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",
@@ -263,6 +264,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Add budgets/i).click();
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
+    cy.contains("Changes saved").should("be.visible");
     // checking default values
     cy.get('[aria-label="Province\'s Share Percentage"]').should(
       "have.value",

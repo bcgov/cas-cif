@@ -26,6 +26,13 @@ const defaultMockResolver = {
       " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
       projectFormChange: {
         formDataRecordId: 51,
+        asProject: {
+          fundingStreamRfpByFundingStreamRfpId: {
+            fundingStreamByFundingStreamId: {
+              name: "EP",
+            },
+          },
+        },
       },
       anticipatedFundingAmountPerFiscalYear: {
         edges: [
@@ -141,7 +148,7 @@ describe("The ProjectFundingAgreementForm", () => {
     componentTestingHelper.reinit();
   });
 
-  it("loads with the correct initial form data", () => {
+  it("loads with the correct initial form data for an EP project", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     expect(
@@ -207,7 +214,11 @@ describe("The ProjectFundingAgreementForm", () => {
     ).toBeInTheDocument();
 
     // Expenses & Payments Tracker Section
-
+    expect(
+      screen.queryByLabelText<HTMLSelectElement>(
+        /total payment amount to date/i
+      )
+    ).not.toBeInTheDocument();
     expect(
       screen.getByLabelText<HTMLSelectElement>(
         /total eligible expenses to date/i
@@ -228,6 +239,198 @@ describe("The ProjectFundingAgreementForm", () => {
     ).toHaveTextContent("$7.00");
   });
 
+  it("loads with the correct initial form data for an IA project", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementForm_projectRevision$data> =
+          {
+            " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
+            projectFormChange: {
+              formDataRecordId: 51,
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "IA",
+                  },
+                },
+              },
+            },
+            anticipatedFundingAmountPerFiscalYear: {
+              edges: [
+                {
+                  node: {
+                    anticipatedFundingAmount: "5",
+                    fiscalYear: "2021/2022",
+                  },
+                },
+              ],
+            },
+            totalProjectValue: "350",
+            id: "Test Project Revision ID",
+            rowId: 1234,
+            projectFundingAgreementFormChanges: {
+              __id: "connection Id",
+              edges: [
+                {
+                  node: {
+                    id: "Test Form Change ID 1",
+                    rowId: 1,
+                    changeStatus: "pending",
+                    calculatedTotalPaymentAmountToDate: 160,
+                    newFormData: {
+                      projectId: 51,
+                      maxFundingAmount: 200,
+                      provinceSharePercentage: 50,
+                      holdbackPercentage: 10,
+                      anticipatedFundingAmount: 300,
+                      proponentCost: 800,
+                      contractStartDate: "2021-01-01",
+                      projectAssetsLifeEndDate: "2021-12-31",
+                    },
+                  },
+                },
+              ],
+            },
+            additionalFundingSourceFormChanges: {
+              __id: "connection Id",
+              edges: [
+                {
+                  node: {
+                    id: "Additional Funding Source Test Form Change ID 1",
+                    rowId: 789,
+                    changeStatus: "pending",
+                    operation: "CREATE",
+                    newFormData: {
+                      projectId: 51,
+                      sourceIndex: 1,
+                      source: "Test Source 1",
+                      amount: 100,
+                      status: "Approved",
+                    },
+                  },
+                },
+              ],
+            },
+          };
+        return result;
+      },
+      Query() {
+        return {
+          allAdditionalFundingSourceStatuses: {
+            edges: [
+              {
+                node: {
+                  rowId: 1,
+                  statusName: "Awaiting Approval",
+                },
+              },
+              {
+                node: {
+                  rowId: 2,
+                  statusName: "Approved",
+                },
+              },
+              {
+                node: {
+                  rowId: 3,
+                  statusName: "Denied",
+                },
+              },
+            ],
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(/total project value/i)
+    ).toHaveTextContent("$350.00");
+    expect(
+      screen.getByLabelText<HTMLInputElement>(/Maximum Funding Amount/i).value
+    ).toBe("$200.00");
+    expect(
+      screen.getByLabelText<HTMLSelectElement>(/Province's Share Percentage/i)
+        .value
+    ).toBe("50.00 %");
+    expect(
+      screen.queryByLabelText<HTMLSelectElement>(
+        /Performance Milestone Holdback Percentage/i
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByLabelText<HTMLSelectElement>(
+        /Anticipated\/Actual Funding Amount/i
+      ).value
+    ).toBe("$300.00");
+    expect(
+      screen.getByLabelText<HTMLLabelElement>(
+        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
+      )
+    ).toHaveTextContent("$5.00");
+    expect(
+      screen.getByLabelText<HTMLSelectElement>(/Proponent Cost/i).value
+    ).toBe("$800.00");
+    expect(
+      screen.getByLabelText<HTMLSelectElement>(/Proponent's Share Percentage/i)
+    ).toHaveTextContent("228.57%");
+    expect(
+      screen.getByLabelText<HTMLInputElement>(/Contract Start Date/i)
+    ).toHaveTextContent(/Jan[.]? 01, 2021/);
+    expect(
+      screen.getByLabelText<HTMLInputElement>(/Project Assets Life End Date/i)
+    ).toHaveTextContent(/Dec[.]? 31, 2021/);
+
+    // Additional Funding Source section
+    expect(
+      screen.getByRole<HTMLInputElement>("textbox", {
+        name: /additional funding source/i,
+      }).value
+    ).toBe("Test Source 1");
+    expect(
+      screen.getByRole<HTMLInputElement>("textbox", {
+        name: /additional funding amount/i,
+      }).value
+    ).toBe("$100.00");
+    expect(
+      screen.getByRole<HTMLInputElement>("combobox", {
+        name: /additional funding status/i,
+      }).value
+    ).toBe("Approved");
+
+    expect(screen.getAllByRole("button", { name: /remove/i })).toHaveLength(1);
+    expect(
+      screen.getByRole("button", {
+        name: /add funding source/i,
+      })
+    ).toBeInTheDocument();
+
+    // Expenses & Payments Tracker Section
+
+    expect(
+      screen.queryByLabelText<HTMLSelectElement>(
+        /total eligible expenses to date/i
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText<HTMLSelectElement>(
+        /total gross payment amount to date/i
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText<HTMLSelectElement>(
+        /total holdback amount to date/i
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText<HTMLSelectElement>(
+        /total net payment amount to date/i
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByLabelText<HTMLSelectElement>(/total payment amount to date/i)
+    ).toHaveTextContent("$160.00");
+  });
+
   it("calls the update mutation when entering funding agreement data", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -243,7 +446,7 @@ describe("The ProjectFundingAgreementForm", () => {
     });
 
     componentTestingHelper.expectMutationToBeCalled(
-      "updateFormChangeMutation",
+      "updateFundingParameterFormChangeMutation",
       {
         input: {
           rowId: 1,

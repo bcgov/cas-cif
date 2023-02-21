@@ -3,6 +3,7 @@ begin;
 
 select plan(2);
 
+truncate cif.project restart identity cascade;
 select cif.create_project(1);
 
 -- it inserts a new record

@@ -47,7 +47,7 @@ for temp_row in select id, project_id from cif.project_revision
             'contractStartDate', now(),
             'projectAssetsLifeEndDate', now()
             ),
-        'create', 'cif', 'funding_parameter', 'pending', 'funding_agreement', temp_row.id);
+        'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_EP', temp_row.id);
     end loop;
 
 
@@ -91,7 +91,7 @@ for temp_row in select id, project_id from cif.project_revision
             'contractStartDate', now(),
             'projectAssetsLifeEndDate', now()
             ),
-        'create', 'cif', 'funding_parameter', 'pending', 'funding_agreement', temp_row.id);
+        'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_IA', temp_row.id);
     end loop;
 
   end

@@ -26,7 +26,7 @@ values (
   'pending',
   'cif',
   'funding_parameter',
-  'funding_parameter',
+  'funding_parameter_EP',
   null,
   1,
   '[]'
@@ -36,7 +36,7 @@ values (
   'pending',
   'cif',
   'funding_parameter',
-  'funding_parameter',
+  'funding_parameter_EP',
   null,
   1,
   '[]'

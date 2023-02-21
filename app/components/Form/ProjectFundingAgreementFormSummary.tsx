@@ -1,7 +1,11 @@
 import {
-  fundingAgreementSchema,
-  fundingAgreementUiSchema,
-} from "data/jsonSchemaForm/fundingAgreementSchema";
+  fundingParameterEPSchema,
+  fundingParameterEPUiSchema,
+} from "data/jsonSchemaForm/fundingParameterEPSchema";
+import {
+  fundingParameterIASchema,
+  fundingParameterIAUiSchema,
+} from "data/jsonSchemaForm/fundingParameterIASchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { graphql, useFragment } from "react-relay";
@@ -16,9 +20,13 @@ import React from "react";
 import additionalFundingSourceSchema from "data/jsonSchemaForm/additionalFundingSourceSchema";
 import { createAdditionalFundingSourceUiSchema } from "./ProjectFundingAgreementForm";
 import {
-  expensesPaymentsTrackerSchema,
-  expensesPaymentsTrackerUiSchema,
-} from "data/jsonSchemaForm/expensesPaymentsTrackerSchema";
+  expensesPaymentsTrackerEPSchema,
+  expensesPaymentsTrackerEPUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerEPSchema";
+import {
+  expensesPaymentsTrackerIASchema,
+  expensesPaymentsTrackerIAUiSchema,
+} from "data/jsonSchemaForm/expensesPaymentsTrackerIASchema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 import { SummaryFormProps } from "data/formPages/types";
 import {
@@ -47,6 +55,15 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         totalProjectValue
+        projectFormChange {
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
+        }
         summaryProjectFundingAgreementFormChanges: formChangesFor(
           formDataTableName: "funding_parameter"
         ) {
@@ -92,6 +109,10 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     totalProjectValue,
   } = revision;
 
+  const fundingStream =
+    revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      .fundingStreamByFundingStreamId.name;
+
   const proponentCost =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node.newFormData
       .proponentCost;
@@ -131,11 +152,16 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
     ? {
-        formSchema: fundingAgreementSchema,
+        formSchema:
+          fundingStream === "EP"
+            ? fundingParameterEPSchema
+            : fundingParameterIASchema,
         formData: fundingAgreementSummary?.newFormData,
       }
     : getFilteredSchema(
-        fundingAgreementSchema as JSONSchema7,
+        fundingStream === "EP"
+          ? (fundingParameterEPSchema as JSONSchema7)
+          : (fundingParameterIASchema as JSONSchema7),
         fundingAgreementSummary || {}
       );
 
@@ -282,7 +308,11 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
-          uiSchema={fundingAgreementUiSchema}
+          uiSchema={
+            fundingStream === "EP"
+              ? fundingParameterEPUiSchema
+              : fundingParameterIAUiSchema
+          }
           formData={formData}
           formContext={{
             projectRevision: revision,
@@ -324,8 +354,16 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={expensesPaymentsTrackerSchema as JSONSchema7}
-            uiSchema={expensesPaymentsTrackerUiSchema}
+            schema={
+              fundingStream === "EP"
+                ? (expensesPaymentsTrackerEPSchema as JSONSchema7)
+                : (expensesPaymentsTrackerIASchema as JSONSchema7)
+            }
+            uiSchema={
+              fundingStream === "EP"
+                ? expensesPaymentsTrackerEPUiSchema
+                : expensesPaymentsTrackerIAUiSchema
+            }
             formData={formData}
             formContext={{
               calculatedEligibleExpensesToDate:
