@@ -1,6 +1,6 @@
 begin;
 
-select plan(10);
+select plan(9);
 
 /** BEGIN SETUP **/
 truncate table
@@ -184,8 +184,7 @@ select * from cif.project_revision;
 insert into cif.project_revision(project_id, change_reason, revision_type, revision_status)
 values
   (10, 'reasons','Amendment','Draft'),
-  (11, 'reasons','General Revision','Draft'),
-  (12, 'reasons','Minor Revision','Draft');
+  (11, 'reasons','General Revision','Draft');
 
 
 
@@ -207,16 +206,6 @@ select results_eq(
     values ('General Revision'::varchar, 'Applied'::varchar);
   $$,
   'commit_project_revision sets revision_status to Applied when revision_type is General Revision'
-);
-
-select results_eq(
-  $$
-    select revision_type, revision_status from cif.commit_project_revision(5);
-  $$,
-  $$
-    values ('Minor Revision'::varchar, 'Applied'::varchar);
-  $$,
-  'commit_project_revision sets revision_status to Applied when revision_type is Minor Revision'
 );
 
 select finish();

@@ -1,6 +1,6 @@
 begin;
 
-select plan(6);
+select plan(5);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;
@@ -35,34 +35,31 @@ do $$
     where project_revision_id=current_revision.id and form_data_table_name='project';
     perform cif.commit_project_revision(1);
     perform cif.create_project_revision(1, 'Amendment');
-    perform cif.create_project_revision(1, 'General Revision');
     update cif.form_change set new_form_data = new_form_data || '{"totalFundingRequest": 9}' where id=2;
-    update cif.form_change set new_form_data = new_form_data || '{"projectStatusId": 2}' where id=3;
     perform cif.create_single_field_project_revision(1, 'project', '{"score": 1234}'::jsonb);
-    -- id 4 ^
   end
 $$;
 
 select is(
-  (select revision_type from cif.project_revision where id=4),
-  'Minor Revision',
-  'create_single_field_project_revision creates a Minor Revision'
+  (select revision_type from cif.project_revision where id=3),
+  'General Revision',
+  'create_single_field_project_revision creates a General Revision'
 );
 
 select is(
-  (select change_status from cif.project_revision where id=4),
+  (select change_status from cif.project_revision where id=3),
   'committed',
   'create_single_field_project_revision commits the project revision that it creates'
 );
 
 select is(
-  (select change_reason from cif.project_revision where id=4),
+  (select change_reason from cif.project_revision where id=3),
   'Changed score to ''1234''',
   'create_single_field_project_revision correctly sets the change_reason in the project_revision'
 );
 
 select is(
-  (select new_form_data from cif.form_change where id=4),
+  (select new_form_data from cif.form_change where id=3),
   jsonb_build_object(
     'operatorId', 1,
     'fundingStreamRfpId', 3,
@@ -94,23 +91,6 @@ select is(
     'score', 1234
   ),
   'create_single_field_project_revision updates the field on the corresponding form_change record for pending Amendment'
-);
-
-select is(
-  (select new_form_data from cif.form_change where id=3),
-  jsonb_build_object(
-    'operatorId', 1,
-    'fundingStreamRfpId', 3,
-    'projectStatusId', 2,
-    'proposalReference', 001,
-    'summary', 'lorem ipsum dolor sit amet adipiscing eli',
-    'projectName', 'Test Project 1',
-    'totalFundingRequest', cast(100000 as bigint),
-    'sectorName', 'Agriculture',
-    'projectType', 'Carbon Capture',
-    'score', 1234
-  ),
-  'create_single_field_project_revision updates the field on the corresponding form_change record for pending General Revision'
 );
 
 select finish();

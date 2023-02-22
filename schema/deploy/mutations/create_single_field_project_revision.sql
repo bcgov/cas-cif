@@ -12,7 +12,7 @@ create or replace function cif.create_single_field_project_revision(
 returns cif.project_revision
 as $function$
 declare
-  revision_row cif.project_revision := cif.create_project_revision(project_id => $1, revision_type => 'Minor Revision');
+  revision_row cif.project_revision := cif.create_project_revision(project_id => $1, revision_type => 'General Revision');
   form_change_record record;
 begin
   update cif.form_change fc
@@ -30,8 +30,6 @@ begin
 
   perform cif.commit_project_revision(revision_row.id);
 
-  -- This approach means that Minor revisions have the potential to update a value in a General revision, preventing unintentional
-  -- overwriting of the Minor revision. The approach may be revisited in the future.
   update cif.form_change fc
     set new_form_data = (fc.new_form_data || $3)
     where form_data_record_id = $1

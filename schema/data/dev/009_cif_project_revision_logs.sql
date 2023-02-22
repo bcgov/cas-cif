@@ -32,14 +32,6 @@ do $$
         revision_status = 'Applied'
         where id = temp_project_revision_id;
 
-      -- first Minor Revision type project revision
-      select id from cif.create_project_revision(temp_project_id) into temp_project_revision_id;
-      update cif.project_revision
-        set revision_type = 'Minor Revision',
-        change_status = 'committed',
-        revision_status = 'Applied'
-        where id = temp_project_revision_id;
-
       -- second Amendment type project revision
       select id from cif.create_project_revision(temp_project_id) into temp_project_revision_id;
       update cif.project_revision
