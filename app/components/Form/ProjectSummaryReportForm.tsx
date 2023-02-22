@@ -46,7 +46,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
-              # operation # this file does not seem to use it directly
+              operation # this file does not seem to use it directly
               asReportingRequirement {
                 reportType # this file does not seem to use it directly
               }

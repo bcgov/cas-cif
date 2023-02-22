@@ -41,6 +41,8 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           edges {
             node {
               id
+              # eslint-disable-next-line relay/unused-fields
+              formDataRecordId
               isPristine
               newFormData
               operation

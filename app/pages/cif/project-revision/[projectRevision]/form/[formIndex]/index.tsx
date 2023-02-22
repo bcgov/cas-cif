@@ -63,6 +63,7 @@ const pageQuery = graphql`
         ...ProjectEmissionIntensityReportForm_projectRevision
         ...ProjectEmissionIntensityReportFormSummary_projectRevision
         ...ProjectSummaryReportForm_projectRevision
+        ...ProjectSummaryReportFormSummary_projectRevision
       }
       ...ProjectForm_query
       ...ProjectContactForm_query
