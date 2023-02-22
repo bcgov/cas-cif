@@ -44,28 +44,28 @@ values
 insert into cif.report_type(name, is_milestone, has_expenses)
 overriding system value
 values
-('Quarterly', false, false),
-('Annual', false, false),
-('General Milestone', true, true),
-('Advanced Milestone', true, true),
-('Reporting Milestone', true, false),
-('TEIMP', false, false),
-('Performance Milestone', false, true);
+('Q', false, false),
+('A', false, false),
+('GM', true, true),
+('AM', true, true),
+('RM', true, false),
+('T', false, false),
+('PM', false, true);
 
 /** Create mock reporting requirement **/
 insert into cif.reporting_requirement(id, project_id, report_type, report_due_date, submitted_date, comments, reporting_requirement_index, description)
 overriding system value
 values
-(1, 1, 'General Milestone', '2023-05-20 13:42:59.085 -0800', null, 'milestone 1', 1, 'upcoming milestone'),
-(2, 1, 'Advanced Milestone', '2023-01-23 13:42:59.085 -0800', null, 'milestone 2', 1, 'late milestone'),
-(3, 1, 'Performance Milestone', '2023-01-16 13:42:59.085 -0800', '2023-01-06 13:42:59.085 -0800', 'milestone 3', 1, 'completed milestone'),
-(4, 2, 'Annual', '2023-04-15 13:42:59.085 -0800', '2023-02-15 13:42:59.085 -0800', 'milestone 4', 1, 'annual') ,
-(5, 2, 'Advanced Milestone', '2023-08-05 13:42:59.085 -0800', '2023-06-11 13:42:59.085 -0800', 'milestone 5', 1, 'completed milestone'),
-(6, 2, 'General Milestone', '2023-03-02 13:42:59.085 -0800', '2023-02-21 13:42:59.085 -0800', 'milestone 6', 1, 'completed milestone'),
-(7, 2, 'General Milestone', '2023-09-01 13:42:59.085 -0800', '2023-04-018 13:42:59.085 -0800', 'milestone 7', 1, 'completed milestone'),
-(8, 3, 'Advanced Milestone', '2023-04-22 13:42:59.085 -0800', null, 'milestone 8', 1, 'upcoming milestone'),
-(9, 3, 'Quarterly', '2023-06-15 13:42:59.085 -0800', null, 'milestone 9', 1, 'upcoming milestone'),
-(10, 3, 'General Milestone', '2023-04-04 13:42:59.085 -0800', null, 'milestone 10', 1, 'upcoming milestone');
+(1, 1, 'GM', '2023-05-20 13:42:59.085 -0800', null, 'milestone 1', 1, 'upcoming milestone'),
+(2, 1, 'AM', '2023-01-23 13:42:59.085 -0800', null, 'milestone 2', 1, 'late milestone'),
+(3, 1, 'PM', '2023-01-16 13:42:59.085 -0800', '2023-01-06 13:42:59.085 -0800', 'milestone 3', 1, 'completed milestone'),
+(4, 2, 'A', '2023-04-15 13:42:59.085 -0800', '2023-02-15 13:42:59.085 -0800', 'milestone 4', 1, 'annual') ,
+(5, 2, 'AM', '2023-08-05 13:42:59.085 -0800', '2023-06-11 13:42:59.085 -0800', 'milestone 5', 1, 'completed milestone'),
+(6, 2, 'GM', '2023-03-02 13:42:59.085 -0800', '2023-02-21 13:42:59.085 -0800', 'milestone 6', 1, 'completed milestone'),
+(7, 2, 'GM', '2023-09-01 13:42:59.085 -0800', '2023-04-018 13:42:59.085 -0800', 'milestone 7', 1, 'completed milestone'),
+(8, 3, 'AM', '2023-04-22 13:42:59.085 -0800', null, 'milestone 8', 1, 'upcoming milestone'),
+(9, 3, 'Q', '2023-06-15 13:42:59.085 -0800', null, 'milestone 9', 1, 'upcoming milestone'),
+(10, 3, 'GM', '2023-04-04 13:42:59.085 -0800', null, 'milestone 10', 1, 'upcoming milestone');
 
 select is (
   (select cif.project_next_milestone_due_date(
