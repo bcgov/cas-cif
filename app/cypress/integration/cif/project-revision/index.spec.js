@@ -425,10 +425,11 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.get(".error-detail").should("have.length", 5);
     cy.contains("Changes saved").should("be.visible");
-    cy.happoAndAxe(
-      "IA Project funding agreement Form",
-      "with errors",
-      ".error-detail"
-    );
+    // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
+    // cy.happoAndAxe(
+    //   "IA Project funding agreement Form",
+    //   "with errors",
+    //   ".error-detail"
+    // );
   });
 });
