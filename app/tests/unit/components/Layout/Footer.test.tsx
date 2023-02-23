@@ -1,9 +1,10 @@
 import Footer from "components/Layout/Footer";
 import { render, screen } from "@testing-library/react";
+import footerLinks from "../../../../data/dashboardLinks/footerLinks";
 
 describe("The Footer Component", () => {
   it("Renders footer links", () => {
-    render(<Footer />);
+    render(<Footer links={footerLinks} />);
 
     // Disclaimer
     expect(screen.getByText("Disclaimer")).toBeInTheDocument();

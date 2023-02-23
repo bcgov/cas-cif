@@ -2,12 +2,14 @@ import SubHeader from "components/Layout/SubHeader";
 import { useRouter } from "next/router";
 import { render, screen, cleanup } from "@testing-library/react";
 import { mocked } from "jest-mock";
+import subHeader from "../../../../data/dashboardLinks/subHeaderLinks";
+
 jest.mock("next/router");
 
 describe("The SubHeader Component", () => {
   it("Renders the home link", () => {
     mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
-    render(<SubHeader />);
+    render(<SubHeader links={subHeader} />);
     expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
       "/cif"
@@ -16,7 +18,7 @@ describe("The SubHeader Component", () => {
 
   it("Highlights the correct link depending on the current page", () => {
     mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
-    render(<SubHeader />);
+    render(<SubHeader links={subHeader} />);
 
     expect(screen.getByText("Home").closest("a")).toHaveStyle(
       "text-decoration: underline;"
@@ -29,7 +31,7 @@ describe("The SubHeader Component", () => {
     mocked(useRouter).mockReturnValue({
       asPath: "/cif/project/some-other-page",
     } as any);
-    render(<SubHeader />);
+    render(<SubHeader links={subHeader} />);
 
     expect(screen.getByText("Home").closest("a")).not.toHaveStyle(
       "text-decoration: underline;"
