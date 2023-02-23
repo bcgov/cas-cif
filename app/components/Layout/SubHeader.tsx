@@ -1,15 +1,18 @@
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
 import { useMemo } from "react";
 import { match } from "path-to-regexp";
 
-export default function SubHeader() {
+interface Props {
+  links: { name: string; href: { pathname: string }; highlightOn: string[] }[];
+}
+
+export default function SubHeader(props: Props) {
   const router = useRouter();
 
   const highlightedLinkName = useMemo(() => {
-    const highlightedLink = subHeaderLinks.find(({ highlightOn }) =>
+    const highlightedLink = props.links?.find(({ highlightOn }) =>
       highlightOn.some((routePath) =>
         match(routePath, { decode: decodeURIComponent, endsWith: "?" })(
           router?.asPath
@@ -30,7 +33,7 @@ export default function SubHeader() {
             </a>
           </Link>
         </li>
-        {subHeaderLinks.map(({ name, href }) => (
+        {props.links?.map(({ name, href }) => (
           <li key={name}>
             <Link href={href}>
               <a className={highlightedLinkName === name ? "highlight" : ""}>
