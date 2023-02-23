@@ -1,5 +1,8 @@
 import { utils } from "@rjsf/core";
-import { projectSummaryReportSchema } from "data/jsonSchemaForm/projectSummaryReportSchema";
+import {
+  projectSummaryReportSchema,
+  projectSummaryReportUiSchema,
+} from "data/jsonSchemaForm/projectSummaryReportSchema";
 import { JSONSchema7 } from "json-schema";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -49,6 +52,9 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
               formChangeByPreviousFormChangeId {
                 newFormData
               }
+              formByJsonSchemaName {
+                jsonSchema
+              }
             }
           }
         }
@@ -81,7 +87,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   );
 
   const projectSummaryReportsJSX = useMemo(() => {
-    // There should just be one report ya?
+    // TODO: There should just be one report ya?
     return sortedProjectSummaryReports.map((projectSummaryReport, index) => {
       const projectSummaryFormDiffObject = renderDiff
         ? getFilteredSchema(
@@ -131,7 +137,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
               fields={renderDiff ? customFields : fields}
               schema={projectSummaryFormDiffObject.formSchema as JSONSchema7}
               formData={projectSummaryFormDiffObject.formData}
-              uiSchema={projectSummaryReportSchema}
+              uiSchema={projectSummaryReportUiSchema}
               formContext={{
                 operation: projectSummaryReport.operation,
                 oldData:

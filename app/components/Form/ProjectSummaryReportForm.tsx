@@ -150,6 +150,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
                   jsonSchemaName: "project_summary_report",
                   newFormData: {
                     reportType: "Project Summary Report",
+                    reportingRequirementIndex: 1,
                   },
                   projectRevisionId: projectRevision.rowId,
                 },
