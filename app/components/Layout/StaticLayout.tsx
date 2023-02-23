@@ -2,6 +2,8 @@ import getConfig from "next/config";
 import Navigation from "components/Layout/Navigation";
 import Footer from "components/Layout/Footer";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
+import footerLinks from "data/dashboardLinks/footerLinks";
+import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -18,6 +20,7 @@ const StaticLayout: React.FC<Props> = ({
   return (
     <div id="page-wrap">
       <Navigation
+        links={subHeaderLinks}
         title={title}
         hideLoginButton={true}
         alwaysShowSubheader={showSubheader}
@@ -27,7 +30,7 @@ const StaticLayout: React.FC<Props> = ({
         )}
       </Navigation>
       <main>{children}</main>
-      <Footer />
+      <Footer links={footerLinks} />
       <style jsx>
         {`
           #page-wrap {
