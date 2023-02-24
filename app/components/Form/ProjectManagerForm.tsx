@@ -146,7 +146,7 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
           id={`form-manager-${projectManagerLabel.label}`}
           validateOnMount={formChange?.changeStatus === "staged"}
           idPrefix={formIdPrefix}
-          ref={(el) => (formRefs.current[projectManagerLabel.id] = el)}
+          ref={(el) => el && (formRefs.current[projectManagerLabel.id] = el)}
           formData={formData}
           onChange={(data) => {
             createOrUpdateFormChange(data.formData);

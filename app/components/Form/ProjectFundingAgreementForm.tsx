@@ -448,7 +448,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 ? fundingParameterEPUiSchema
                 : fundingParameterIAUiSchema
             }
-            ref={(el) => (formRefs.current[fundingAgreement.id] = el)}
+            ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
             onChange={(change) => handleChange(change.formData)}
             onError={handleError}
           ></FormBase>
@@ -465,7 +465,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                       className="additionalFundingSourceForm"
                       idPrefix="additionalFundingSource"
                       validateOnMount={formChange.changeStatus === "staged"}
-                      ref={(el) => (formRefs.current[formChange.rowId] = el)}
+                      ref={(el) =>
+                        el && (formRefs.current[formChange.rowId] = el)
+                      }
                       schema={createAdditionalFundingSourceSchema(
                         allAdditionalFundingSourceStatuses
                       )}

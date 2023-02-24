@@ -357,7 +357,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                       primaryContactForm?.changeStatus === "staged"
                     }
                     idPrefix="primaryContactForm"
-                    ref={(el) => (formRefs.current.primaryContact = el)}
+                    ref={(el) => el && (formRefs.current.primaryContact = el)}
                     formData={
                       primaryContactForm?.newFormData || {
                         contactIndex: 1,
@@ -418,7 +418,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
                         id={`form-${form.id}`}
                         validateOnMount={form.changeStatus === "staged"}
                         idPrefix={`form-${form.id}`}
-                        ref={(el) => (formRefs.current[form.id] = el)}
+                        ref={(el) => el && (formRefs.current[form.id] = el)}
                         formData={form.newFormData}
                         onChange={(change) => {
                           updateFormChange({ ...form }, change.formData);

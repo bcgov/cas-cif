@@ -344,7 +344,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           <FormBase
             id="TEIMP_ReportingRequirementForm"
             ref={(el) =>
-              (formRefs.current[reportingRequirementFormChange.id] = el)
+              el && (formRefs.current[reportingRequirementFormChange.id] = el)
             }
             validateOnMount={
               reportingRequirementFormChange?.changeStatus === "staged"
@@ -363,6 +363,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           <FormBase
             id="TEIMP_EmissionIntensityReportForm"
             ref={(el) =>
+              el &&
               (formRefs.current[emissionIntensityReportFormChange.id] = el)
             }
             validateOnMount={

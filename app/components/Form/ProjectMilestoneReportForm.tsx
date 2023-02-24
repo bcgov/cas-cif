@@ -304,7 +304,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
                   id={`form-${node.id}`}
                   validateOnMount={node.changeStatus === "staged"}
                   idPrefix={`form-${node.id}`}
-                  ref={(el) => (formRefs.current[node.id] = el)}
+                  ref={(el) => el && (formRefs.current[node.id] = el)}
                   formData={formData}
                   onChange={(change) => handleChange(change.formData, node)}
                   schema={schema as JSONSchema7}
