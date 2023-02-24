@@ -17,7 +17,6 @@ import { MutableRefObject, useRef } from "react";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import { useStageEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/stageEmissionIntensityFormChange";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 import getDurationFromDates from "lib/helpers/getDurationFromDates";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -293,8 +292,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     });
   };
 
-  // Growthbook - teimp
-  if (!useShowGrowthbookFeature("teimp")) return null;
   return (
     <>
       {projectRevision.emissionIntensityReportFormChange.edges.length === 0 && (

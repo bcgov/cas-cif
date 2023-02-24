@@ -21,14 +21,11 @@ import {
   buildNumberedFormStructure,
 } from "../../lib/pages/formStructureFunctions";
 import { IFormSection } from "./types";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { useMemo } from "react";
 
 export const useFormStructure: (fundingStream: String) => IFormSection[] = (
   fundingStream: String
 ) => {
-  const showTeimp = useShowGrowthbookFeature("teimp");
-
   const showEP = fundingStream == "EP" ? true : false;
   const showIA = fundingStream == "IA" ? true : false;
 
@@ -90,7 +87,7 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
           viewComponent: ProjectMilestoneReportFormSummary,
         },
       },
-      ...(showTeimp && showEP
+      ...(showEP
         ? [
             {
               title: "Emissions Intensity Report",
@@ -158,7 +155,7 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
       ,
       ,
     ],
-    [showTeimp]
+    [showEP, showIA]
   );
 };
 
