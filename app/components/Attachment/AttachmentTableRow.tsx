@@ -32,6 +32,10 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
     attachment
   );
 
+  const archiveAttachment = (attachmentId: string) => {
+    console.log("Archive attachment with id: " + attachmentId);
+  };
+
   return (
     <>
       <tr>
@@ -44,11 +48,17 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
           <Link href={getAttachmentDownloadRoute(id)} passHref>
             <Button size="small">Download</Button>
           </Link>
+          <Button onClick={archiveAttachment(id)} size="small">
+            Delete
+          </Button>
         </td>
       </tr>
       <style jsx>{`
         td.links {
           min-width: 15em;
+        }
+        td.links :global(button) {
+          margin-right: 0.5em;
         }
       `}</style>
     </>

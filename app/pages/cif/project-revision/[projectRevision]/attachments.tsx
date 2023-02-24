@@ -22,8 +22,10 @@ const pageQuery = graphql`
       project: projectByProjectId {
         projectName
         rowId
-        attachments: attachmentsByProjectId(first: 2147483647)
-          @connection(key: "connection_attachments") {
+        attachments: attachmentsByProjectId(
+          first: 2147483647
+          filter: { archived_at: { equalTo: null } }
+        ) @connection(key: "connection_attachments") {
           __id
           totalCount
           edges {
