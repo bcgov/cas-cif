@@ -13,6 +13,7 @@ describe("the project amendment and revisions page", () => {
 
   it("displays the list of project amendment and revisions and view page for a specific revision", () => {
     cy.visit("/cif/projects");
+    cy.contains(/^cif projects/i).should("be.visible");
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.findByText(/Amendments & Other Revisions/i).click();
     cy.url().should("include", "/project-revision-change-logs");

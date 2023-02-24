@@ -175,7 +175,7 @@ describe("when undoing, the project revision page", () => {
       "have.value",
       "Ron Swanson"
     );
-    cy.wait(100);
+    cy.wait(200);
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
@@ -242,7 +242,7 @@ describe("when undoing, the project revision page", () => {
       .click()
       .clear();
     cy.findByLabelText(/milestone description/i).type("I will be undone");
-    cy.wait(100);
+    cy.wait(200);
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/milestone description/i).should(
       "have.text",
@@ -257,7 +257,7 @@ describe("when undoing, the project revision page", () => {
       .click()
       .clear();
     cy.findByLabelText(/General Comments/i).type("I will be undone");
-    cy.wait(100);
+    cy.wait(200);
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/General Comments/i).should(
       "have.text",
@@ -272,7 +272,7 @@ describe("when undoing, the project revision page", () => {
       .click()
       .clear();
     cy.findByLabelText(/General Comments/i).type("I will be undone");
-    cy.wait(100);
+    cy.wait(200);
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.contains("Changes saved.");
     cy.findByLabelText(/General Comments/i).should(

@@ -34,9 +34,10 @@ describe("the new project page", () => {
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/1");
 
-    cy.findByText(/Add project overview/i)
-      .next()
-      .should("have.text", "Attention Required");
+    cy.findByRole("link", { name: /^Add project overview$/i }).should(
+      "be.visible"
+    );
+    cy.contains("Attention Required").should("be.visible");
     cy.happoAndAxe("Project Managers Form", "empty", "main");
 
     // CONTACTS
@@ -166,7 +167,10 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.contains(/^cif projects/i).should("be.visible");
+    cy.findAllByRole("button", { name: /^view$/i })
+      .first()
+      .click();
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
@@ -235,7 +239,10 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.findAllByRole("button", { name: /view/i }).first().as("firstViewButton");
+    cy.get("@firstViewButton").should("be.visible");
+    cy.contains(/^cif projects/i).should("be.visible");
+    cy.get("@firstViewButton").click();
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
