@@ -120,7 +120,10 @@ describe("ProjectRevisionNew Page", () => {
       ),
       ["2019"]
     );
-    userEvent.click(screen.getByRole("button", { name: /confirm/i }));
+
+    await act(() =>
+      userEvent.click(screen.getByRole("button", { name: /confirm/i }))
+    );
 
     pageTestingHelper.expectMutationToBeCalled("createProjectMutation", {
       input: {
@@ -149,8 +152,9 @@ describe("ProjectRevisionNew Page", () => {
   it("Triggers an error if the confirm button is clicked and the form is incomplete", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-    userEvent.click(screen.getByRole("button", { name: /confirm/i }));
-
+    await act(() =>
+      userEvent.click(screen.getByRole("button", { name: /confirm/i }))
+    );
     expect(screen.getByText(/Please enter a value/i)).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import { act, screen, waitFor, within } from "@testing-library/react";
+import { act, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ProjectMilestoneReportForm from "components/Form/ProjectMilestoneReportForm";
 import { graphql } from "react-relay";
@@ -213,50 +213,49 @@ describe("The ProjectMilestoneReportForm", () => {
 
     await act(async () => {
       userEvent.click(screen.getAllByLabelText(/milestone type/i)[1]);
-      await waitFor(() => screen.getByRole("presentation"));
-      userEvent.click(
-        within(screen.getByRole("presentation")).getByText("General")
-      );
     });
-
-    const updateMutationUnderTest =
-      componentTestingHelper.environment.mock.getMostRecentOperation();
-
-    expect(updateMutationUnderTest.fragment.node.name).toBe(
-      "updateMilestoneFormChangeMutation"
+    await userEvent.click(
+      within(screen.getByRole("presentation")).getByText("General")
     );
-    expect(updateMutationUnderTest.request.variables).toMatchObject({
-      reportType: "Milestone",
-      input: {
-        rowId: 2,
-        formChangePatch: {
-          newFormData: {
-            reportType: "General Milestone",
-            reportDueDate: "2022-10-28",
-            projectId: 51,
-            submittedDate: "2022-05-02",
-            description: "i am the second description",
-            reportingRequirementIndex: 2,
+    await act(async () => {
+      const updateMutationUnderTest =
+        await componentTestingHelper.environment.mock.getMostRecentOperation();
+
+      await expect(updateMutationUnderTest.fragment.node.name).toBe(
+        "updateMilestoneFormChangeMutation"
+      );
+      expect(updateMutationUnderTest.request.variables).toMatchObject({
+        reportType: "Milestone",
+        input: {
+          rowId: 2,
+          formChangePatch: {
+            newFormData: {
+              reportType: "General Milestone",
+              reportDueDate: "2022-10-28",
+              projectId: 51,
+              submittedDate: "2022-05-02",
+              description: "i am the second description",
+              reportingRequirementIndex: 2,
+            },
           },
         },
-      },
+      });
     });
   });
 
-  it("Calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", () => {
+  it("Calls useMutationWithErrorMessage and returns expected message when the user clicks the Add button and there's a mutation error", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    userEvent.click(screen.getByText(/Add another milestone report/i));
-    act(() => {
+    await act(async () => {
+      await userEvent.click(screen.getByText(/Add another milestone report/i));
       componentTestingHelper.environment.mock.rejectMostRecentOperation(
         new Error()
       );
+      expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
+        "An error occurred while adding the Milestone to the revision."
+      );
     });
-
-    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
-      "An error occurred while adding the Milestone to the revision."
-    );
   });
 
   it("Calls discardReportingRequirementFormChangeMutation when the remove button is clicked", () => {

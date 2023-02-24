@@ -68,7 +68,7 @@ describe("The Project Annual Reports page", () => {
     });
   });
 
-  it("renders the task list in the left navigation with correct highlighting", () => {
+  it("renders the task list in the left navigation with correct highlighting", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
@@ -90,8 +90,7 @@ describe("The Project Annual Reports page", () => {
     });
 
     pageTestingHelper.renderPage();
-
-    expect(
+    await expect(
       screen.getByText(/Edit milestone reports/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });

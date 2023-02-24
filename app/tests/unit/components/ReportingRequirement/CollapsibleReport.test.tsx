@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
@@ -90,9 +90,13 @@ describe("The Collapsible Report component", () => {
       children: <div>some report content</div>,
     });
 
-    screen.getByText(/Test Reporting Requirement/).click();
+    act(() => {
+      screen.getByText(/Test Reporting Requirement/).click();
+    });
     expect(screen.queryByText(/some report content/)).toBeVisible();
-    screen.getByText(/Test Reporting Requirement/).click();
+    act(() => {
+      screen.getByText(/Test Reporting Requirement/).click();
+    });
     expect(screen.queryByText(/some report content/)).not.toBeVisible();
   });
 
