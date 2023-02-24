@@ -66,6 +66,7 @@ describe("The DefaultLayout component", () => {
 
     expect(screen.getByText("Home")).toBeVisible();
     expect(screen.getByText("Email Us")).toBeVisible();
+    expect(screen.getByText("Contact Information")).toBeVisible();
   });
 
   it("should render the Home link to /cif", () => {
