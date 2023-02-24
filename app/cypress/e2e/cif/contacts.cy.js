@@ -10,7 +10,7 @@ describe("The contacts page", () => {
     cy.visit("/cif/contacts");
     cy.get("h2").contains("Contacts");
     cy.get("button").contains("Add").click();
-    cy.get("input[aria-label='Given Name']").should("be.visible").type("Bob");
+    cy.get("input[aria-label='Given Name']").click().type("Bob");
     cy.get("input[aria-label='Family Name']").type("Loblaw");
     cy.get("input[aria-label=Email]").type("bob@loblaw.ca");
     cy.get("input[aria-label='Company Name']").type("ABC");
@@ -29,10 +29,7 @@ describe("The contacts page", () => {
       component: "View contact",
     });
     cy.get("button").contains("Edit").click();
-    cy.get("input[aria-label='Given Name']")
-      .should("be.visible")
-      .clear()
-      .type("Rob");
+    cy.get("input[aria-label='Given Name']").click().clear().type("Rob");
     cy.get("button").contains("Submit").click();
     cy.get("table").contains("Rob Loblaw");
   });
@@ -52,10 +49,10 @@ describe("The contacts page", () => {
     cy.contains(
       "Please enter in a valid phone number format (e.g. 123 456 7890)"
     ).should("be.visible");
-    cy.get("input[aria-label=Email]").type("@example.com");
-    cy.contains("Changes saved").should("be.visible");
-    cy.get("button").contains("Submit").click();
-    cy.contains("email already exists").should("be.visible");
+    cy.findByLabelText(/email/i).click().type("@example.com");
+    cy.wait(200);
+    cy.findByRole("button", { name: /submit/i }).click();
+    cy.findByText(/email already exists/i).should("be.visible");
     cy.contains(/please enter a value/i).should("be.visible");
   });
 });

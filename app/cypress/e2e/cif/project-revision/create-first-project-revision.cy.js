@@ -340,7 +340,8 @@ describe("when creating a project, the project page", () => {
       .should("include", "connectionString");
 
     //Add new contact
-    cy.get("input[aria-label='Given Name']").should("be.visible").type("Bob");
+    cy.get("input[aria-label='Given Name']").as("givenNameInput").click();
+    cy.get("@givenNameInput").type("Bob");
     cy.get("input[aria-label='Family Name']").type("Loblaw");
     cy.get("input[aria-label=Email]").type("bob@loblaw.ca");
     cy.get("input[aria-label=Phone]").type("1234567890");
@@ -429,6 +430,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Project Assets Life End Date/i)
       .next()
       .contains(/Feb(\.)? 2, 2024/);
+    cy.findAllByText(/^on track$/i).should("have.length", 5);
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
   });
 

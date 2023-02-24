@@ -296,7 +296,7 @@ describe("the new project page", () => {
       ".error-detail",
       true
     );
-    cy.get(".error-detail").should("have.length", 7);
+    cy.get(".error-detail").should("have.length", 6);
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 

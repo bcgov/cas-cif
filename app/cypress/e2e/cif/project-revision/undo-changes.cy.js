@@ -24,6 +24,7 @@ describe("when undoing, the project revision page", () => {
       "Some comments",
       "65.432"
     );
+    cy.contains("Changes saved.");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkOverviewForm("", "", "", "", "", "", "", "");
 
@@ -43,6 +44,7 @@ describe("when undoing, the project revision page", () => {
       "Loblaw004",
       "bob.l004@example.com"
     );
+    cy.contains("Changes saved.");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.checkContactsForm("", "");
 
@@ -147,7 +149,8 @@ describe("when undoing, the project revision page", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("button").contains("View").first().as("firstViewButton");
+    cy.get("@firstViewButton").click();
     cy.findByRole("button", { name: /edit/i }).click();
 
     //undo overview
@@ -172,8 +175,8 @@ describe("when undoing, the project revision page", () => {
       "have.value",
       "Ron Swanson"
     );
+    cy.wait(100);
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.contains("Changes saved.");
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
       "cif_internal Testuser"
@@ -229,43 +232,52 @@ describe("when undoing, the project revision page", () => {
       "Awaiting Approval"
     );
 
-    // undo quarterly reports
-    cy.findByText(/Quarterly reports/i).click();
-    cy.findByText(/Edit quarterly reports/i).click();
-    cy.findByText(/Quarterly report 1/i).click();
-    cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.findByLabelText(/General Comments/i).should(
-      "have.text",
-      "quarterly report comments 1"
-    );
-
-    //TODO: undo TEIMP agreement once fixture added
-
-    // undo annual reports
-    cy.findByText(/Annual reports/i).click();
-    cy.findByText(/Edit annual reports/i).click();
-    cy.findByText(/annual report 1/i).click();
-    cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
-
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.get('[aria-label="General Comments"]').should(
-      "have.text",
-      "annual report comments 1"
-    );
-
     // undo milestone reports
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Edit milestone 1/i).click();
     cy.get("h3")
       .contains(/Milestone 1/i)
       .click();
-    cy.get('[aria-label*="Description"]').clear().type("I will be undone");
-
+    cy.findByLabelText(/milestone description/i)
+      .click()
+      .clear();
+    cy.findByLabelText(/milestone description/i).type("I will be undone");
+    cy.wait(100);
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.get('[aria-label*="Description"]').should(
+    cy.findByLabelText(/milestone description/i).should(
       "have.text",
       "general milestone report description 1"
+    );
+
+    // undo quarterly reports
+    cy.findByText(/Quarterly reports/i).click();
+    cy.findByText(/Edit quarterly reports/i).click();
+    cy.findByText(/Quarterly report 1/i).click();
+    cy.findByLabelText(/General Comments/i)
+      .click()
+      .clear();
+    cy.findByLabelText(/General Comments/i).type("I will be undone");
+    cy.wait(100);
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByLabelText(/General Comments/i).should(
+      "have.text",
+      "quarterly report comments 1"
+    );
+
+    // undo annual reports
+    cy.findByText(/Annual reports/i).click();
+    cy.findByText(/Edit annual reports/i).click();
+    cy.findByText(/annual report 1/i).click();
+    cy.findByLabelText(/General Comments/i)
+      .click()
+      .clear();
+    cy.findByLabelText(/General Comments/i).type("I will be undone");
+    cy.wait(100);
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.contains("Changes saved.");
+    cy.findByLabelText(/General Comments/i).should(
+      "have.text",
+      "annual report comments 1"
     );
   });
 });
