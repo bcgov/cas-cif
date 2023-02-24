@@ -37,9 +37,11 @@ select cif.create_form_change('create', 'project_summary_report', 'cif', 'projec
 select cif.create_form_change('update', 'project_summary_report', 'cif', 'project_summary_report', '{"description": "value"}', null, null, 'committed', '[]');
 select cif.create_form_change('create', 'project_summary_report', 'cif', 'project_summary_report',
   '{
+    "reportType": "Project Summary Report",
     "reportDueDate": "2021-08-31 14:24:46.318423-07",
     "submittedDate": "2021-08-31 14:24:46.318423-07",
     "comments": "comments",
+    "reportingRequirementIndex": 1,
     "projectSummaryReportPayment": 111,
     "paymentNotes": "payment notes",
     "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
@@ -53,7 +55,7 @@ select results_eq(
   $$
   with record as (
     select row(form_change.*)::cif.form_change from cif.form_change where id = 1
-  ) select cif_private.handle_project_summary_form_change_commit((select * from record));
+  ) select cif_private.handle_project_summary_report_form_change_commit((select * from record));
   $$,
   $$
   values (
@@ -67,17 +69,17 @@ select throws_like(
   $$
   with record as (
     select row(form_change.*)::cif.form_change from cif.form_change where id = 2
-  ) select cif_private.handle_project_summary_form_change_commit((select * from record));
+  ) select cif_private.handle_project_summary_report_form_change_commit((select * from record));
   $$,
   'Cannot commit form_change. It has already been committed.',
   'Throws an exception if the form_change has a change_status of committed'
 );
 
 
-/** The next two tests confirm that the correct values were added to their three corresponsing tables (reporting_requirement & payment)
+/** The next two tests confirm that the correct values were added to their corresponsing tables (reporting_requirement & payment)
  after performing the commit, when the form_change operation is "create"
 **/
-select cif_private.handle_project_summary_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 3));
+select cif_private.handle_project_summary_report_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 3));
 -- reporting_requiement table
 select results_eq(
   $$
@@ -102,8 +104,8 @@ select results_eq(
   $$
   values (
     1,
-    300::numeric,
-    450::numeric,
+    111::numeric,
+    111::numeric,
     '2021-08-29 14:24:46.318423-07'::timestamptz
   )
   $$,
@@ -120,15 +122,17 @@ insert into cif.project_revision(id, change_status, project_id)
 
 select cif.create_form_change('update', 'project_summary_report', 'cif', 'project_summary_report',
   '{
-    "reportDueDate": "2022-20-31 14:24:46.318423-07",
+    "reportType": "Project Summary Report",
+    "reportDueDate": "2022-11-30 14:24:46.318423-07",
     "submittedDate": "2022-10-31 14:24:46.318423-07",
     "comments": "new comments",
+    "reportingRequirementIndex": 1,
     "projectSummaryReportPayment": 222,
     "paymentNotes": "new payment notes",
     "dateSentToCsnr": "2022-09-29 14:24:46.318423-07"
   }', 1, 2, 'staged', '[]');
 
-select cif_private.handle_project_summary_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 5));
+select cif_private.handle_project_summary_report_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 5));
 -- reporting_requiement table
 select results_eq(
   $$
@@ -136,7 +140,7 @@ select results_eq(
   $$,
   $$
   values (
-  '2022-20-31 14:24:46.318423-07'::timestamptz,
+  '2022-11-30 14:24:46.318423-07'::timestamptz,
   '2022-10-31 14:24:46.318423-07'::timestamptz,
   'new comments'::varchar,
   1

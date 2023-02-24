@@ -74,6 +74,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     );
 
   // Sort form changes by the reporting requirement index
+  // TODO: get project summary report, should only be one
   const [sortedProjectSummaryReports] = useMemo(() => {
     return getSortedReports(projectSummaryFormChanges, true);
   }, [projectSummaryFormChanges]);
@@ -111,7 +112,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           <header>
             <h4>Project Summary Report</h4>
           </header>
-          {/* Show this part if none of Annual report form properties have been updated */}
           {Object.keys(projectSummaryFormDiffObject.formSchema.properties)
             .length === 0 &&
             projectSummaryReport.operation !== "ARCHIVE" && (
@@ -120,7 +120,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
                 formTitle="Project Summary Report"
               />
             )}
-          {/* Show this part if the whole Annual report has been removed */}
           {renderDiff && projectSummaryReport.operation === "ARCHIVE" ? (
             <FormRemoved
               isOnAmendmentsAndOtherRevisionsPage={
