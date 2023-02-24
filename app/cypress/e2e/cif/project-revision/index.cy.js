@@ -239,6 +239,7 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
+    cy.wait(1000);
     cy.findAllByRole("button", { name: /view/i }).first().as("firstViewButton");
     cy.get("@firstViewButton").should("be.visible");
     cy.wait(1000);
