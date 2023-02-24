@@ -15,6 +15,7 @@ export function createMockRouter(
     push: jest.fn(),
     reload: jest.fn(),
     replace: jest.fn(),
+    forward: jest.fn(),
     events: {
       on: jest.fn(),
       off: jest.fn(),
