@@ -50,8 +50,8 @@ export default function SubHeader({ links }: Props) {
         ))}
       </ul>
       <style jsx>{`
-        .highlight {
-          text-decoration: underline;
+        :global(a.highlight) {
+          text-decoration: underline !important;
         }
       `}</style>
     </BaseHeader>
