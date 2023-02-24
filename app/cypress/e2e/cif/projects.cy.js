@@ -39,6 +39,7 @@ describe("the projects page", () => {
     cy.contains("Test EP Project 001");
     cy.get("thead th").contains("Project Name").click();
     cy.get("thead th").contains("Project Name").click();
+    cy.wait(1000);
     cy.contains("Test EP Project 050");
   });
 });
