@@ -64,7 +64,7 @@ begin
       id,
       'update'::cif.form_change_operation as operation,
       'reporting_requirement' as form_data_table_name,
-      'project_summary' as json_schema_name
+      'project_summary_report' as json_schema_name
     from cif.reporting_requirement
     where reporting_requirement.project_id = $1
     and archived_at is null

@@ -43,7 +43,19 @@ do $$
     end loop;
 
   -- insert annual reports for EP projects
-    for temp_row in select id, project_id from cif.project_revision where project_id in (select id from cif.project where funding_stream_rfp_id between 1 and 4)
+    for temp_row in select id, project_id from cif.project_revision
+      where cif.project_revision.id = ((
+      select project_revision_id from cif.form_change
+      where project_revision_id = cif.project_revision.id
+     and (new_form_data->>'fundingStreamRfpId')::integer
+
+      in ((
+            select id from cif.funding_stream_rfp
+            where funding_stream_id=((
+              select id from cif.funding_stream
+                where name='EP'))
+            ))
+    ))
     loop
 
       insert into cif.form_change(
@@ -74,7 +86,19 @@ do $$
 
 
   -- insert quarterly reports for EP projects
-    for temp_row in select id, project_id from cif.project_revision where project_id in (select id from cif.project where funding_stream_rfp_id between 1 and 4)
+    for temp_row in select id, project_id from cif.project_revision
+      where cif.project_revision.id = ((
+        select project_revision_id from cif.form_change
+        where project_revision_id = cif.project_revision.id
+      and (new_form_data->>'fundingStreamRfpId')::integer
+
+        in ((
+              select id from cif.funding_stream_rfp
+              where funding_stream_id=((
+                select id from cif.funding_stream
+                  where name='EP'))
+              ))
+      ))
     loop
 
       insert into cif.form_change(
@@ -105,7 +129,19 @@ do $$
     end loop;
 
   -- insert project summary reports for IA projects
-    for temp_row in select id, project_id from cif.project_revision where project_id in (select id from cif.project where funding_stream_rfp_id between 5 and 6)
+    for temp_row in select id, project_id from cif.project_revision
+      where cif.project_revision.id = ((
+        select project_revision_id from cif.form_change
+        where project_revision_id = cif.project_revision.id
+      and (new_form_data->>'fundingStreamRfpId')::integer
+
+        in ((
+              select id from cif.funding_stream_rfp
+              where funding_stream_id=((
+                select id from cif.funding_stream
+                  where name='IA'))
+              ))
+      ))
     loop
 
       insert into cif.form_change(
