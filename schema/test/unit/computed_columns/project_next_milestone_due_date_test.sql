@@ -71,7 +71,7 @@ select is (
   (select cif.project_next_milestone_due_date(
     (select row(project.*)::cif.project from cif.project where id=1)
   )),
-  '2023-05-20 13:42:59.085 -0800'::timestamptz,
+  '2023-01-23 13:42:59.085 -0800'::timestamptz,
   'returns the next upcoming milestone due date for project id=1'
 );
 
