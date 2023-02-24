@@ -14,6 +14,7 @@ interface Props {
   title?: string;
   userProfileComponent?: React.ReactNode;
   hideLoginButton?: boolean;
+  links: { name: string; href: { pathname: string }; highlightOn: string[] }[];
 }
 
 const DEFAULT_MOBILE_BREAK_POINT = "900";
@@ -24,6 +25,7 @@ const Navigation: React.FC<Props> = ({
   title = "CleanBC Industry Fund",
   userProfileComponent,
   hideLoginButton,
+  links,
 }) => {
   let rightSide = isLoggedIn ? (
     <>
@@ -68,7 +70,7 @@ const Navigation: React.FC<Props> = ({
             {rightSide}
           </BaseHeader.Group>
         </BaseHeader>
-        {(isLoggedIn || alwaysShowSubheader) && <SubHeader />}
+        {(isLoggedIn || alwaysShowSubheader) && <SubHeader links={links} />}
       </BaseNavigation>
       <style jsx>{`
         h1 {
