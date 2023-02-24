@@ -3,12 +3,11 @@
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import Table from "components/Table";
 import { DisplayOnlyFilter, TextFilter } from "components/Table/Filters";
-import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 import { graphql } from "relay-runtime";
 import { RelayEnvironmentProvider } from "react-relay";
 import { createMockEnvironment } from "relay-test-utils";
-jest.mock("next/router");
+const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
 const routerPush = jest.fn();
 mocked(useRouter).mockReturnValue({

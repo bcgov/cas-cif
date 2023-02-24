@@ -1,8 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
-jest.mock("next/router");
+const useRouter = jest.spyOn(require("next/router"), "useRouter");
 mocked(useRouter).mockReturnValue({
   replace: jest.fn(),
 } as any);

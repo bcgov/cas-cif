@@ -20,6 +20,8 @@ jest.mock("mutations/FormChange/updateFormChange");
 jest.mock("mutations/FormChange/deleteFormChange");
 jest.mock("mutations/FormChange/commitFormChange");
 
+jest.spyOn(require("next/router"), "useRouter");
+
 let environment: RelayMockEnvironment;
 
 const loadFormChangeData = (additionalData = {}) => {
