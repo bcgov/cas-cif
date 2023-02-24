@@ -16,7 +16,7 @@ const footerLinks = [
     href: "https://www2.gov.bc.ca/gov/content/home/accessible-government",
   },
   {
-    name: "Copywrite",
+    name: "Copyright",
     href: "https://www2.gov.bc.ca/gov/content/home/copyright",
   },
 ];

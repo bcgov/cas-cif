@@ -2,12 +2,12 @@ const subHeaderLinks = [
   {
     name: "Email Us",
     href: { pathname: "mailto:CleanBCIndustryFund@gov.bc.ca" },
-    highlightOn: ["/cif/operator(.*)"],
+    highlightOn: [""],
   },
   {
     name: "Contact Information",
     href: { pathname: "#" },
-    highlightOn: ["/cif/contact(.*)"],
+    highlightOn: [""],
   },
 ];
 
