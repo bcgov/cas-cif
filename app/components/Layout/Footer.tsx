@@ -1,6 +1,5 @@
 import BCGovFooter from "@button-inc/bcgov-theme/Footer";
 import BCGovLink from "components/BCGovLink";
-import footerLinks from "data/dashboardLinks/footerLinks";
 
 interface Props {
   links: { name: string; href: string }[];
