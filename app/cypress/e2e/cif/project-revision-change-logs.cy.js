@@ -29,6 +29,7 @@ describe("the project amendment and revisions page", () => {
     cy.get("thead th").contains("Type").click();
     cy.url().should("include", "orderBy=REVISION_TYPE_ASC"); //just to wait for the page to load
     cy.get("thead th").contains("Type").click();
+    cy.wait(1000);
     cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
     cy.get("tbody tr").first().contains("Minor Revision");
     cy.get("tbody tr").last().contains("Draft");
