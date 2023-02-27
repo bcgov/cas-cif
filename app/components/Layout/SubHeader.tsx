@@ -27,18 +27,20 @@ export default function SubHeader(props: Props) {
     <BaseHeader header="sub">
       <ul>
         <li>
-          <Link href="/cif">
-            <a className={highlightedLinkName === "Home" ? "highlight" : ""}>
-              Home
-            </a>
+          <Link
+            href="/cif"
+            className={highlightedLinkName === "Home" ? "highlight" : ""}
+          >
+            Home
           </Link>
         </li>
         {props.links?.map(({ name, href }) => (
           <li key={name}>
-            <Link href={href}>
-              <a className={highlightedLinkName === name ? "highlight" : ""}>
-                {name}
-              </a>
+            <Link
+              href={href}
+              className={highlightedLinkName === name ? "highlight" : ""}
+            >
+              {name}
             </Link>
           </li>
         ))}
