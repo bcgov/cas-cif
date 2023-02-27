@@ -158,7 +158,7 @@ do $$
         json_build_object(
           'reportDueDate', now(),
           'submittedDate', now(),
-          'comments','project summary report comments' || temp_row.id,
+          'comments','project summary report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
                           where project_revision_id = temp_row.id
@@ -170,7 +170,7 @@ do $$
           'paymentNotes', 'payment notes',
           'dateSentToCsnr', now()
           ),
-        'create', 'cif', 'reporting_requirement', 'pending', 'reporting_requirement',temp_row.id);
+        'create', 'cif', 'reporting_requirement', 'pending', 'project_summary_report',temp_row.id);
       end loop;
   end
 $$;

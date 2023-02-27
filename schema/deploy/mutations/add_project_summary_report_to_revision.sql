@@ -37,7 +37,7 @@ as $add_project_summary_form_change$
         (select nextval(pg_get_serial_sequence('cif.reporting_requirement', 'id'))),
         $1,
         'pending',
-        'reporting_requirement'
+        'project_summary_report'
       ) returning *
   ), payment as (
         insert into cif.form_change(
