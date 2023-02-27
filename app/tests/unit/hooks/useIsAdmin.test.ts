@@ -1,5 +1,5 @@
 import useIsAdmin from "hooks/useIsAdmin";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 
 describe("the useIsAdmin hook", () => {
   it("returns true if the user is a cif_admin", () => {

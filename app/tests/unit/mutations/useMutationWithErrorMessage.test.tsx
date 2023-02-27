@@ -1,4 +1,4 @@
-import { renderHook, act } from "@testing-library/react-hooks";
+import { renderHook, act } from "@testing-library/react";
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 import * as Sentry from "@sentry/nextjs";
 import React from "react";

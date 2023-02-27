@@ -1,5 +1,5 @@
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 jest.mock("next/router");
