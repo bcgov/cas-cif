@@ -14,7 +14,7 @@ const Footer = (props: Props) => {
           <ul>
             {props.links?.map(({ name, href }) => (
               <li key={name}>
-                <Link passHref href={href}>
+                <Link passHref href={href} legacyBehavior>
                   <BCGovLink target="_blank">{name}</BCGovLink>
                 </Link>
               </li>
