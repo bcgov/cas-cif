@@ -27,7 +27,14 @@ export default function SubHeader(props: Props) {
     <BaseHeader header="sub">
       <ul>
         <li>
-          <Link href="/cif">
+          <Link
+            href={
+              // The external user subheader doesn't contain an operators link, so we can use its presence/absence to check if we're routing internal vs. external users
+              props.links.some((link) => link.name === "Operators")
+                ? "/cif"
+                : "/cif-external"
+            }
+          >
             <a className={highlightedLinkName === "Home" ? "highlight" : ""}>
               Home
             </a>
