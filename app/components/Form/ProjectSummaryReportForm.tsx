@@ -14,7 +14,6 @@ import Status from "components/ReportingRequirement/Status";
 import SavingIndicator from "./SavingIndicator";
 
 interface Props {
-  query: any;
   projectRevision: ProjectSummaryReportForm_projectRevision$key;
   onSubmit: () => void;
 }
@@ -36,17 +35,12 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
           reportType: "Project Summary Report"
           first: 1000
         ) @connection(key: "connection_projectSummaryFormChanges") {
-          __id # this file does not seem to use it directly
           edges {
             node {
               id
               rowId
               newFormData
               changeStatus
-              operation # this file does not seem to use it directly
-              asReportingRequirement {
-                reportType # this file does not seem to use it directly
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -57,7 +51,8 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
           reportType: "Project Summary Report"
         ) {
           id
-          ...ReportDueIndicator_formChange # this file does not seem to use it directly
+          # eslint-disable-next-line relay/must-colocate-fragment-spreads
+          ...ReportDueIndicator_formChange
           asReportingRequirement {
             reportDueDate
           }

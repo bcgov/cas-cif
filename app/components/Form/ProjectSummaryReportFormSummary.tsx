@@ -71,7 +71,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     );
 
   // Sort form changes by the reporting requirement index
-  // TODO: get project summary report, should only be one
+  // TODO: get project summary report (only 1)
   const [sortedProjectSummaryReports] = useMemo(() => {
     return getSortedReports(projectSummaryFormChanges, true);
   }, [projectSummaryFormChanges]);
