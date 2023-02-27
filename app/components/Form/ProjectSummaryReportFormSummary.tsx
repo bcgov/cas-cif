@@ -8,7 +8,6 @@ import { ProjectSummaryReportFormSummary_projectRevision$key } from "__generated
 import { graphql, useFragment } from "react-relay";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
-import { getSortedReports } from "./Functions/reportingRequirementFormChangeFunctions";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import {
   FormNotAddedOrUpdated,
@@ -41,8 +40,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           edges {
             node {
               id
-              # eslint-disable-next-line relay/unused-fields
-              formDataRecordId
               isPristine
               newFormData
               operation
@@ -70,12 +67,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
       ({ node }) => node.operation !== "ARCHIVE"
     );
 
-  // Sort form changes by the reporting requirement index
-  // TODO: get project summary report (only 1)
-  const [sortedProjectSummaryReports] = useMemo(() => {
-    return getSortedReports(projectSummaryFormChanges, true);
-  }, [projectSummaryFormChanges]);
-
   const allFormChangesPristine = useMemo(
     () =>
       !projectSummaryFormChanges.some(
@@ -84,41 +75,39 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     [projectSummaryFormChanges]
   );
 
-  const projectSummaryReportsJSX = useMemo(() => {
-    return sortedProjectSummaryReports.map((projectSummaryReport, index) => {
+  const projectSummaryReportJSX = useMemo(() => {
+    return projectSummaryFormChanges.map(({ node }) => {
       const projectSummaryFormDiffObject = renderDiff
         ? getFilteredSchema(
-            projectSummaryReport.formByJsonSchemaName.jsonSchema
-              .schema as JSONSchema7,
-            projectSummaryReport || {}
+            node.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
+            node || {}
           )
         : {
-            formSchema:
-              projectSummaryReport.formByJsonSchemaName.jsonSchema.schema,
-            formData: projectSummaryReport.newFormData,
+            formSchema: node.formByJsonSchemaName.jsonSchema.schema,
+            formData: node.newFormData,
           };
 
       if (
         isOnAmendmentsAndOtherRevisionsPage &&
-        projectSummaryReport?.isPristine &&
-        projectSummaryReport.operation !== "ARCHIVE"
+        node?.isPristine &&
+        node.operation !== "ARCHIVE"
       )
         return null;
 
       return (
-        <div key={index} className="reportContainer">
+        <div key={node.id} className="reportContainer">
           <header>
             <h4>Project Summary Report</h4>
           </header>
           {Object.keys(projectSummaryFormDiffObject.formSchema.properties)
             .length === 0 &&
-            projectSummaryReport.operation !== "ARCHIVE" && (
+            node.operation !== "ARCHIVE" && (
               <FormNotAddedOrUpdated
                 isFirstRevision={isFirstRevision}
                 formTitle="Project Summary Report"
               />
             )}
-          {renderDiff && projectSummaryReport.operation === "ARCHIVE" ? (
+          {renderDiff && node.operation === "ARCHIVE" ? (
             <FormRemoved
               isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
@@ -128,7 +117,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           ) : (
             <FormBase
               liveValidate
-              key={`form-${projectSummaryReport.id}`}
+              key={`form-${node.id}`}
               tagName={"dl"}
               theme={readOnlyTheme}
               fields={renderDiff ? customFields : fields}
@@ -136,10 +125,8 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
               formData={projectSummaryFormDiffObject.formData}
               uiSchema={projectSummaryReportUiSchema}
               formContext={{
-                operation: projectSummaryReport.operation,
-                oldData:
-                  projectSummaryReport.formChangeByPreviousFormChangeId
-                    ?.newFormData,
+                operation: node.operation,
+                oldData: node.formChangeByPreviousFormChangeId?.newFormData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,
               }}
@@ -157,7 +144,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     isFirstRevision,
     isOnAmendmentsAndOtherRevisionsPage,
     renderDiff,
-    sortedProjectSummaryReports,
+    projectSummaryFormChanges,
   ]);
 
   useEffect(
@@ -181,7 +168,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           formTitle="Project Summary Report"
         />
       ) : (
-        projectSummaryReportsJSX
+        projectSummaryReportJSX
       )}
     </>
   );
