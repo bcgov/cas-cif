@@ -6,6 +6,7 @@ import compiledProjectQuarterlyReportFormSummaryQuery, {
   ProjectQuarterlyReportFormSummaryQuery,
 } from "__generated__/ProjectQuarterlyReportFormSummaryQuery.graphql";
 import ProjectQuarterlyReportFormSummary from "components/Form/ProjectQuarterlyReportFormSummary";
+import reportingRequirementProdSchema from "../../../../../schema/data/prod/json_schema/reporting_requirement.json";
 
 const testQuery = graphql`
   query ProjectQuarterlyReportFormSummaryQuery @relay_test_operation {
@@ -43,6 +44,9 @@ const mockQueryPayload = {
                     reportingRequirementIndex: 1,
                   },
                 },
+                formByJsonSchemaName: {
+                  jsonSchema: reportingRequirementProdSchema,
+                },
               },
             },
             {
@@ -64,6 +68,9 @@ const mockQueryPayload = {
                     reportingRequirementIndex: 1,
                   },
                 },
+                formByJsonSchemaName: {
+                  jsonSchema: reportingRequirementProdSchema,
+                },
               },
             },
             {
@@ -78,6 +85,9 @@ const mockQueryPayload = {
                 },
                 operation: "CREATE",
                 formChangeByPreviousFormChangeId: null,
+                formByJsonSchemaName: {
+                  jsonSchema: reportingRequirementProdSchema,
+                },
               },
             },
             {
@@ -98,6 +108,9 @@ const mockQueryPayload = {
                     reportDueDate: "2020-01-05T23:59:59.999-07:00",
                     reportingRequirementIndex: 1,
                   },
+                },
+                formByJsonSchemaName: {
+                  jsonSchema: reportingRequirementProdSchema,
                 },
               },
             },

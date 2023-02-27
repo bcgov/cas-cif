@@ -4,10 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
-import {
-  projectReportingRequirementSchema,
-  reportingRequirementUiSchema,
-} from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import { reportingRequirementUiSchema } from "data/jsonSchemaForm/projectReportingRequirementUiSchema";
 import { JSONSchema7 } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -64,6 +61,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
               }
               asReportingRequirement {
                 ...CollapsibleReport_reportingRequirement
+              }
+              formByJsonSchemaName {
+                jsonSchema
               }
             }
           }
@@ -267,7 +267,9 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
                       change.formData
                     );
                   }}
-                  schema={projectReportingRequirementSchema as JSONSchema7}
+                  schema={
+                    report.formByJsonSchemaName.jsonSchema.schema as JSONSchema7
+                  }
                   uiSchema={reportingRequirementUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{

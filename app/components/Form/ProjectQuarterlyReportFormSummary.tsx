@@ -6,10 +6,7 @@ import type { JSONSchema7 } from "json-schema";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
-import {
-  projectReportingRequirementSchema,
-  reportingRequirementUiSchema,
-} from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import { reportingRequirementUiSchema } from "data/jsonSchemaForm/projectReportingRequirementUiSchema";
 import { ProjectQuarterlyReportFormSummary_projectRevision$key } from "__generated__/ProjectQuarterlyReportFormSummary_projectRevision.graphql";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { SummaryFormProps } from "data/formPages/types";
@@ -49,6 +46,9 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
                 operation
                 formChangeByPreviousFormChangeId {
                   newFormData
+                }
+                formByJsonSchemaName {
+                  jsonSchema
                 }
               }
             }
@@ -99,11 +99,12 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
         ? {
-            formSchema: projectReportingRequirementSchema,
+            formSchema: quarterlyReport.formByJsonSchemaName.jsonSchema.schema,
             formData: quarterlyReport.newFormData,
           }
         : getFilteredSchema(
-            projectReportingRequirementSchema as JSONSchema7,
+            quarterlyReport.formByJsonSchemaName.jsonSchema
+              .schema as JSONSchema7,
             quarterlyReport
           );
 
