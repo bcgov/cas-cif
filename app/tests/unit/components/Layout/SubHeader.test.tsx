@@ -8,7 +8,7 @@ import externalLinks from "../../../../data/externalLinks/subHeaderLinks";
 jest.mock("next/router");
 
 describe("The SubHeader Component", () => {
-  it("Renders the home link", () => {
+  it("Renders the home link for internal users", () => {
     mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
     render(<SubHeader links={dashboardLinks} />);
     expect(screen.getByText("Home").closest("a")).toHaveAttribute(
@@ -47,7 +47,7 @@ describe("The SubHeader Component", () => {
     render(<SubHeader links={externalLinks} />);
     expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
-      "/cif"
+      "/cif-external"
     );
   });
 
