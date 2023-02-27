@@ -88,7 +88,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   );
 
   const projectSummaryReportsJSX = useMemo(() => {
-    // TODO: There should just be one report ya?
     return sortedProjectSummaryReports.map((projectSummaryReport, index) => {
       const projectSummaryFormDiffObject = renderDiff
         ? getFilteredSchema(
@@ -125,7 +124,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
               isOnAmendmentsAndOtherRevisionsPage={
                 isOnAmendmentsAndOtherRevisionsPage
               }
-              formTitle="Annual Report"
+              formTitle="Project Summary Report"
             />
           ) : (
             <FormBase
