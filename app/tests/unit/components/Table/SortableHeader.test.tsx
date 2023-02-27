@@ -1,9 +1,8 @@
-import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
 import React from "react";
 import SortableHeader from "components/Table/SortableHeader";
 import { render, screen } from "@testing-library/react";
-jest.mock("next/router");
+const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
 mocked(useRouter).mockReturnValue({
   route: "/",
