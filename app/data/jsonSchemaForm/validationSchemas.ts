@@ -9,7 +9,6 @@ import {
 import additionalFundingSourceSchema from "./additionalFundingSourceSchema";
 import { fundingParameterEPSchema } from "./fundingParameterEPSchema";
 import { fundingParameterIASchema } from "./fundingParameterIASchema";
-import { projectSummaryReportSchema } from "./projectSummaryReportSchema";
 
 const validationSchemas = {
   project: projectSchema,
@@ -22,7 +21,6 @@ const validationSchemas = {
   emission_intensity_reporting_requirement:
     emissionIntensityReportingRequirementSchema,
   additional_funding_source: additionalFundingSourceSchema,
-  project_summary_report: projectSummaryReportSchema,
 };
 
 export default validationSchemas;

@@ -1,8 +1,5 @@
 import { utils } from "@rjsf/core";
-import {
-  projectSummaryReportSchema,
-  projectSummaryReportUiSchema,
-} from "data/jsonSchemaForm/projectSummaryReportSchema";
+import { projectSummaryReportUiSchema } from "data/jsonSchemaForm/projectSummaryReportUISchema";
 import { JSONSchema7 } from "json-schema";
 import FormBase from "./FormBase";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -91,11 +88,13 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     return sortedProjectSummaryReports.map((projectSummaryReport, index) => {
       const projectSummaryFormDiffObject = renderDiff
         ? getFilteredSchema(
-            projectSummaryReportSchema as JSONSchema7,
+            projectSummaryReport.formByJsonSchemaName.jsonSchema
+              .schema as JSONSchema7,
             projectSummaryReport || {}
           )
         : {
-            formSchema: projectSummaryReportSchema,
+            formSchema:
+              projectSummaryReport.formByJsonSchemaName.jsonSchema.schema,
             formData: projectSummaryReport.newFormData,
           };
 

@@ -1,7 +1,4 @@
-import {
-  projectSummaryReportSchema,
-  projectSummaryReportUiSchema,
-} from "data/jsonSchemaForm/projectSummaryReportSchema";
+import { projectSummaryReportUiSchema } from "data/jsonSchemaForm/projectSummaryReportUISchema";
 import { JSONSchema7 } from "json-schema";
 import FormBase from "./FormBase";
 import { Button } from "@button-inc/bcgov-theme";
@@ -50,6 +47,9 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
               asReportingRequirement {
                 reportType # this file does not seem to use it directly
               }
+              formByJsonSchemaName {
+                jsonSchema
+              }
             }
           }
         }
@@ -78,7 +78,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
     isStagingReportingRequirement,
   ] = useStageReportingRequirementFormChange();
 
-  // TODO: handle discard
+  // TODO: handle discard???
 
   const upcomingReportDueDate =
     projectRevision.upcomingProjectSummaryReportFormChange
@@ -129,13 +129,6 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
 
   return (
     <>
-      <h3>Project Summary Report</h3>
-      <SavingIndicator isSaved={!isCreating && !isUpdating} />
-      <Status
-        upcomingReportDueDate={upcomingReportDueDate}
-        reportSubmittedDates={reportSubmittedDates}
-        reportType={"Project Summary"}
-      />
       {projectRevision.projectSummaryFormChanges.edges.length == 0 && (
         <Button
           variant="secondary"
@@ -162,35 +155,48 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
         </Button>
       )}
       {projectRevision.projectSummaryFormChanges.edges.length > 0 && (
-        <div>
-          <FormBase
-            id={`form-${projectRevision.id}`}
-            validateOnMount={formChangeNode.changeStatus === "staged"}
-            schema={projectSummaryReportSchema as JSONSchema7}
-            uiSchema={projectSummaryReportUiSchema}
-            onChange={(change) => handleChange(change.formData)}
-            ref={(el) => (formRefs.current[formChangeNode.id] = el)}
-            formData={formChangeNode.newFormData}
-            ObjectFieldTemplate={EmptyObjectFieldTemplate}
-          />
-          <Button
-            size="medium"
-            variant="primary"
-            onClick={() =>
-              // stage reporting requirement changes is deprecated?
-              stageMultipleReportingRequirementFormChanges(
-                applyStageReportingRequirementFormChange,
-                props.onSubmit,
-                formRefs,
-                projectRevision.projectSummaryFormChanges.edges,
-                "Project Summary Report"
-              )
-            }
-            disabled={isUpdating || isStagingReportingRequirement}
-          >
-            Submit Project Summary
-          </Button>
-        </div>
+        <>
+          <header>
+            <h3>Project Summary Report</h3>
+            <SavingIndicator isSaved={!isCreating && !isUpdating} />
+            <Status
+              upcomingReportDueDate={upcomingReportDueDate}
+              reportSubmittedDates={reportSubmittedDates}
+              reportType={"Project Summary"}
+            />
+          </header>
+          <div>
+            <FormBase
+              id={`form-${projectRevision.id}`}
+              validateOnMount={formChangeNode.changeStatus === "staged"}
+              schema={
+                formChangeNode.formByJsonSchemaName.jsonSchema
+                  .schema as JSONSchema7
+              }
+              uiSchema={projectSummaryReportUiSchema}
+              onChange={(change) => handleChange(change.formData)}
+              ref={(el) => (formRefs.current[formChangeNode.id] = el)}
+              formData={formChangeNode.newFormData}
+              ObjectFieldTemplate={EmptyObjectFieldTemplate}
+            />
+            <Button
+              size="medium"
+              variant="primary"
+              onClick={() =>
+                stageMultipleReportingRequirementFormChanges(
+                  applyStageReportingRequirementFormChange,
+                  props.onSubmit,
+                  formRefs,
+                  projectRevision.projectSummaryFormChanges.edges,
+                  "Project Summary Report"
+                )
+              }
+              disabled={isUpdating || isStagingReportingRequirement}
+            >
+              Submit Project Summary
+            </Button>
+          </div>
+        </>
       )}
     </>
   );
