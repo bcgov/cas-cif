@@ -46,7 +46,7 @@ export default function SubHeader(props: Props) {
         ))}
       </ul>
       <style jsx>{`
-        .highlight {
+        :global(a.highlight) {
           text-decoration: underline;
         }
       `}</style>
