@@ -86,13 +86,13 @@ describe("The Project Annual Reports page", () => {
 
     pageTestingHelper.setMockRouterValues({
       pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
-      query: { projectRevision: "mock-id", formIndex: "4" },
+      query: { projectRevision: "mock-id", formIndex: "3" },
     });
 
     pageTestingHelper.renderPage();
 
     await expect(
-      screen.getByText(/Edit milestone reports/i).closest("li")
+      screen.getByText(/edit budgets, expenses & payments/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
 
