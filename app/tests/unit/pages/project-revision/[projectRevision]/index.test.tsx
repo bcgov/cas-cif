@@ -329,7 +329,9 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.getByText("Discard Project Revision"));
+    await act(async () => {
+      userEvent.click(screen.getByText("Discard Project Revision"));
+    });
     userEvent.click(screen.getByText("Proceed"));
 
     const mutationUnderTest =
@@ -408,15 +410,17 @@ describe("The Create Project page", () => {
     ).toBeVisible();
   });
 
-  it("displays an error when the deleteProjectRevision mutation fails", () => {
+  it("displays an error when the deleteProjectRevision mutation fails", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-    userEvent.click(screen.queryByText("Discard Project Revision"));
-    userEvent.click(screen.queryByText("Proceed"));
-    act(() => {
-      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
+    await act(() => {
+      userEvent.click(screen.queryByText("Discard Project Revision"));
     });
-    expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
+    await act(() => {
+      userEvent.click(screen.queryByText("Proceed"));
+      pageTestingHelper.environment.mock.rejectMostRecentOperation(new Error());
+      expect(pageTestingHelper.errorContext.setError).toHaveBeenCalledTimes(1);
+    });
     expect(
       screen.getByText(
         "An error occurred while attempting to delete the project revision."
@@ -495,7 +499,7 @@ describe("The Create Project page", () => {
     expect(screen.getByText("Submit")).toBeEnabled();
   });
 
-  it("routes to the project list page when discarding a project revision and isFirstRevision is true", () => {
+  it("routes to the project list page when discarding a project revision and isFirstRevision is true", async () => {
     const mockResolver = {
       ProjectRevision() {
         return {
@@ -515,7 +519,9 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.queryByText("Discard Project Revision"));
+    await act(() =>
+      userEvent.click(screen.queryByText("Discard Project Revision"))
+    );
     userEvent.click(screen.queryByText("Proceed"));
 
     act(() => {
@@ -529,7 +535,7 @@ describe("The Create Project page", () => {
     });
   });
 
-  it("routes to the project overview when discarding project revision and isFirstRevision is false", () => {
+  it("routes to the project overview when discarding project revision and isFirstRevision is false", async () => {
     const mockResolver = {
       ProjectRevision() {
         return {
@@ -555,7 +561,9 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery(mockResolver);
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.queryByText("Discard Project Revision"));
+    await act(() =>
+      userEvent.click(screen.queryByText("Discard Project Revision"))
+    );
     userEvent.click(screen.queryByText("Proceed"));
 
     act(() => {
