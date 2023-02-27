@@ -29,7 +29,7 @@ const TaskListItem: React.FC<Props> = ({
       aria-current={currentStep === stepName ? "step" : false}
       className="bordered"
     >
-      <Link passHref href={linkUrl} scroll={!hasAnchor}>
+      <Link passHref href={linkUrl} scroll={!hasAnchor} legacyBehavior>
         <BCGovLink>
           {mode === "view" || stepName === "summary"
             ? formTitle
