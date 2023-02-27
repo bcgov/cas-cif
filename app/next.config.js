@@ -2,7 +2,6 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const config = require("./config");
 
 const nextConfig = {
-  cssModules: true,
   webpack: (inputConfig) => {
     inputConfig.resolve.fallback = {
       ...inputConfig.resolve.fallback,
