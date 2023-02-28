@@ -23,21 +23,16 @@ spec:
             image: postgres:14.6-alpine
             imagePullPolicy: {{ default .Values.defaultImagePullPolicy "Always" }}
             env:
-              - name: CIF_BACKUP_DATABASE
-                valueFrom:
-                  secretKeyRef:
-                    key: database
-                    name: test-database-backups-database
               - name: CIF_BACKUP_HOST
                 valueFrom:
                   secretKeyRef:
                     key: host
-                    name: test-database-backups-database
+                    name: {{ .Release.Name }}-defined-backup-password
               - name: CIF_BACKUP_PASS
                 valueFrom:
                   secretKeyRef:
                     key: password
-                    name: test-database-backups-database
+                    name: {{ .Release.Name }}-defined-backup-password
             command:
             - /bin/bash
             - -c
@@ -45,7 +40,7 @@ spec:
                 set -euo pipefail;
                 declare -i VALUE;
                 export PGPASSWORD="$(CIF_BACKUP_PASS)";
-                VALUE=$(psql -U postgres -h ${CIF_BACKUP_HOST} -qtAX -d ${CIF_BACKUP_DATABASE} -c "select count(*) from cif_private.full_backup_log where full_backup_timestamp > now() - interval '12 hours'");
+                VALUE=$(psql -U postgres -h ${CIF_BACKUP_HOST} -qtAX -d cif -c "select count(*) from cif_private.full_backup_log where full_backup_timestamp > now() - interval '12 hours'");
                 if [[ $VALUE -lt 1 ]] ; then
                   echo 'no timestamp found'
                   exit 1
