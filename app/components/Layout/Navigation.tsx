@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { BaseNavigation } from "@button-inc/bcgov-theme/Navigation";
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
-import LoginForm from "components/Session/LoginForm";
 import LogoutForm from "components/Session/LogoutForm";
 
 import SubHeader from "./SubHeader";
@@ -24,18 +23,13 @@ const Navigation: React.FC<Props> = ({
   alwaysShowSubheader = false,
   title = "CleanBC Industry Fund",
   userProfileComponent,
-  hideLoginButton,
   links,
 }) => {
-  let rightSide = isLoggedIn ? (
+  let rightSide = isLoggedIn && (
     <>
       {userProfileComponent}
       <LogoutForm />
     </>
-  ) : hideLoginButton ? (
-    <></>
-  ) : (
-    <LoginForm />
   );
   return (
     <>

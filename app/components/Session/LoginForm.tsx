@@ -14,16 +14,8 @@ const LoginForm: React.FC = () => {
   return (
     <>
       <form action={loginURI} method="post">
-        <Button variant="secondary-inverse" type="submit">
-          Log in
-        </Button>
+        <Button type="submit">Administrator Login</Button>
       </form>
-      <style jsx>{`
-        form {
-          margin-top: auto;
-          margin-bottom: auto;
-        }
-      `}</style>
     </>
   );
 };
