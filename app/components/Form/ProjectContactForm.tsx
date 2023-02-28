@@ -11,7 +11,6 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAddContactToRevision } from "mutations/ProjectContact/addContactToRevision";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
-import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
 import validateFormWithErrors from "lib/helpers/validateFormWithErrors";
 import {
   ProjectContactForm_projectRevision$key,
@@ -30,6 +29,7 @@ interface Props {
   onSubmit: () => void;
   projectRevision: ProjectContactForm_projectRevision$key;
 }
+
 // You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectContactUiSchema = (contact?) => {
   return {
@@ -45,23 +45,6 @@ export const createProjectContactUiSchema = (contact?) => {
       },
     },
   };
-};
-
-export const createProjectContactSchema = (allContacts) => {
-  const schema = projectContactSchema;
-  schema.properties.contactId = {
-    ...schema.properties.contactId,
-    anyOf: allContacts.edges.map(({ node }) => {
-      return {
-        type: "number",
-        title: node.fullName,
-        enum: [node.rowId],
-        value: node.rowId,
-      } as JSONSchema7Definition;
-    }),
-  };
-
-  return schema as JSONSchema7;
 };
 
 const ProjectContactForm: React.FC<Props> = (props) => {
@@ -107,7 +90,7 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       ({ node }) => node.operation !== "ARCHIVE"
     );
 
-  const { allContacts } = useFragment(
+  const { allContacts, contactFormBySlug } = useFragment(
     graphql`
       fragment ProjectContactForm_query on Query {
         allContacts {
@@ -118,14 +101,33 @@ const ProjectContactForm: React.FC<Props> = (props) => {
             }
           }
         }
+        contactFormBySlug: formBySlug(slug: "project_contact") {
+          jsonSchema
+        }
       }
     `,
     props.query
   );
 
   const contactSchema = useMemo(() => {
-    return createProjectContactSchema(allContacts);
-  }, [allContacts]);
+    const parsedSchema = JSON.parse(
+      JSON.stringify(contactFormBySlug.jsonSchema.schema)
+    );
+    const schema = { ...parsedSchema };
+
+    schema.properties.contactId = {
+      ...schema.properties.contactId,
+      anyOf: allContacts.edges.map(({ node }) => {
+        return {
+          type: "number",
+          title: node.fullName,
+          enum: [node.rowId],
+          value: node.rowId,
+        } as JSONSchema7Definition;
+      }),
+    };
+    return schema as JSONSchema7;
+  }, [allContacts, contactFormBySlug]);
 
   const uiSchema = createProjectContactUiSchema();
 

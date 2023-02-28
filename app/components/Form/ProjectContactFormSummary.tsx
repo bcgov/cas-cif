@@ -1,6 +1,3 @@
-import { createProjectContactUiSchema } from "components/Form/ProjectContactForm";
-import projectContactSchema from "data/jsonSchemaForm/projectContactSchema";
-import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -13,6 +10,7 @@ import ContactDetails from "components/Contact/ContactDetails";
 import React from "react";
 import { SummaryFormProps } from "data/formPages/types";
 import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
+import { createProjectContactUiSchema } from "./ProjectContactForm";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -53,6 +51,9 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                     fullName
                   }
                 }
+              }
+              formByJsonSchemaName {
+                jsonSchema
               }
             }
           }
@@ -117,7 +118,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
             tagName={"dl"}
             fields={renderDiff ? customFields : fields}
             theme={readOnlyTheme}
-            schema={projectContactSchema as JSONSchema7}
+            schema={node.formByJsonSchemaName.jsonSchema.schema}
             uiSchema={createProjectContactUiSchema(
               node?.asProjectContact?.contactByContactId ? (
                 node.asProjectContact.contactByContactId.fullName
@@ -145,7 +146,12 @@ const ProjectContactFormSummary: React.FC<Props> = ({
         </React.Fragment>
       );
     });
-  }, [secondaryContacts, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
+  }, [
+    secondaryContacts,
+    renderDiff,
+    isOnAmendmentsAndOtherRevisionsPage,
+    summaryContactFormChanges,
+  ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -185,7 +191,9 @@ const ProjectContactFormSummary: React.FC<Props> = ({
               tagName={"dl"}
               theme={readOnlyTheme}
               fields={renderDiff ? customFields : fields}
-              schema={projectContactSchema as JSONSchema7}
+              schema={
+                primaryContact?.node.formByJsonSchemaName.jsonSchema.schema
+              }
               uiSchema={createProjectContactUiSchema(
                 primaryContact ? (
                   primaryContact?.node?.asProjectContact?.contactByContactId
@@ -227,6 +235,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     primaryContact,
     renderDiff,
     viewOnly,
+    summaryContactFormChanges,
   ]);
 
   if (
