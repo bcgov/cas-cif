@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
-    "@testing-library/cypress": "^8.0.2",
+    "@testing-library/cypress": "^9.0.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/react-hooks": "^7.0.2",
@@ -44,7 +44,7 @@
     "babel-plugin-relay": "13.2.0",
     "babel-plugin-styled-components": "^1.13.3",
     "cypress": "12.6.0",
-    "cypress-axe": "^0.13.0",
+    "cypress-axe": "^1.4.0",
     "cypress-file-upload": "^5.0.8",
     "easygraphql-tester": "^6.0.1",
     "eslint": "^8.26.0",
