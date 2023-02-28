@@ -1,10 +1,11 @@
+import { screen } from "@testing-library/react";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryReportFormSummary";
-import projectSummaryProdSchema from "../../../../../schema/data/prod/json_schema/project_summary_report.json";
-import compiledProjectSummaryReportFormSummaryQuery, {
-  ProjectSummaryReportFormSummaryQuery,
-} from "__generated__/ProjectSummaryReportFormSummaryQuery.graphql";
+import compiledFormIndexPageQuery, {
+  FormIndexPageQuery,
+} from "__generated__/FormIndexPageQuery.graphql";
+import projectSummaryReportProdSchema from "../../../../../schema/data/prod/json_schema/project_summary_report.json";
 
 const testQuery = graphql`
   query ProjectSummaryReportFormSummaryQuery @relay_test_operation {
@@ -16,47 +17,33 @@ const testQuery = graphql`
   }
 `;
 
-const mockQueryPayload = {
-  Form() {
-    return {
-      jsonSchema: projectSummaryProdSchema,
-    };
-  },
+const defaultMockResolver = {
   ProjectRevision() {
-    const result = {
+    return {
+      id: "mock-id-1",
       isFirstRevision: false,
       summaryProjectSummaryFormChanges: {
         edges: [
           {
             node: {
               id: `mock-project-summary-report-form-summary-1`,
-              rowId: 1,
               newFormData: {
-                reportDueDate: "2022-02-01",
-                submittedDate: "2022-01-01",
-                comments: "comments",
-                projectSummaryReportPayment: 1234,
-                paymentNotes: "payment notes",
-                dateSentToCsnr: "2022-02-02",
+                comments: "old",
               },
-              changeStatus: "pending",
               operation: "UPDATE",
               formChangeByPreviousFormChangeId: {
                 newFormData: {
-                  reportDueDate: "2022-02-01",
-                  submittedDate: "2022-01-01",
-                  comments: "new comments",
-                  projectSummaryReportPayment: 4321,
-                  paymentNotes: "new payment notes",
-                  dateSentToCsnr: "2022-02-02",
+                  comments: "new",
                 },
+              },
+              formByJsonSchemaName: {
+                jsonSchema: projectSummaryReportProdSchema,
               },
             },
           },
         ],
       },
     };
-    return result;
   },
 };
 
@@ -65,23 +52,51 @@ const defaultComponentProps = {
   onSubmit: jest.fn(),
 };
 
-const componentTestingHelper =
-  new ComponentTestingHelper<ProjectSummaryReportFormSummaryQuery>({
-    component: ProjectSummaryReportFormSummary,
-    testQuery: testQuery,
-    compiledQuery: compiledProjectSummaryReportFormSummaryQuery,
-    getPropsFromTestQuery: (data) => ({
-      query: data.query,
-      projectRevision: data.query.projectRevision,
-    }),
-    defaultQueryResolver: mockQueryPayload,
-    defaultQueryVariables: {},
-    defaultComponentProps: defaultComponentProps,
-  });
+const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
+  component: ProjectSummaryReportFormSummary,
+  testQuery: testQuery,
+  compiledQuery: compiledFormIndexPageQuery,
+  getPropsFromTestQuery: (data) => ({
+    query: data.query,
+    projectRevision: data.query.projectRevision,
+  }),
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: { projectRevision: "mock-id" },
+  defaultComponentProps: defaultComponentProps,
+});
 
 describe("The Project Summary Report Form Summary", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     componentTestingHelper.reinit();
+  });
+
+  it("only displays the fields that have changed", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    // only the changed field is visible
+    expect(screen.getByText(/old/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Report Due Date/i)).toBeNull();
+  });
+
+  it("displays not updated when there are no form updates", () => {
+    const mockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision() {
+        return {
+          ...defaultMockResolver.ProjectRevision(),
+
+          summaryProjectSummaryFormChanges: {
+            edges: [],
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByText("Project Summary Report not updated")
+    ).toBeInTheDocument();
   });
 });
