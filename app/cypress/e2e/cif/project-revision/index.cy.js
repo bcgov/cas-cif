@@ -150,7 +150,9 @@ describe("the new project page", () => {
     // PROJECT SUMMARY REPORT
     cy.findByText(/Project summary report/i).click();
     cy.findByText(/Add Project Summary Report/i).click();
-    cy.contains(/Project Summary Report Form Placeholder/i);
+    cy.findByRole("button", { name: /create/i }).click();
+    cy.url().should("include", "/form/5");
+    cy.contains("Changes saved.");
 
     // SUMMMARY
     cy.findByText(/Submit Changes/i).click();

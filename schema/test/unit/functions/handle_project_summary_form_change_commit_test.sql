@@ -76,7 +76,7 @@ select throws_like(
 );
 
 
-/** The next two tests confirm that the correct values were added to their corresponsing tables (reporting_requirement & payment)
+/** The next two tests confirm that the correct values were added to their corresponding tables (reporting_requirement & payment)
  after performing the commit, when the form_change operation is "create"
 **/
 select cif_private.handle_project_summary_report_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 3));
@@ -112,7 +112,7 @@ select results_eq(
   'The correct values were added to the payment table on create'
 );
 
-/** The next two tests confirm that the correct values were added to their three corresponsing tables (reporting_requirement & payment)
+/** The next two tests confirm that the correct values were added to their two corresponding tables (reporting_requirement & payment)
  after performing the commit, when the form_change operation is "update"
 **/
 update cif.project_revision set change_status = 'committed' where id = 1;
