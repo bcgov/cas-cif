@@ -4,6 +4,10 @@
  *  The validation plugin will try to fetch them from the cif.form table
  *  instead of using the static json schema.
  */
-const DATABASE_SCHEMAS = ["milestone", "reporting_requirement"];
+const DATABASE_SCHEMAS = [
+  "milestone",
+  "reporting_requirement",
+  "project_contact",
+];
 
 export default DATABASE_SCHEMAS;
