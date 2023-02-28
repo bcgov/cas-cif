@@ -24,7 +24,7 @@ const pageQuery = graphql`
         rowId
         attachments: attachmentsByProjectId(
           first: 2147483647
-          filter: { archived_at: { equalTo: null } }
+          filter: { archivedAt: { equalTo: null } }
         ) @connection(key: "connection_attachments") {
           __id
           totalCount
