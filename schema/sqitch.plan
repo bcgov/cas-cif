@@ -248,3 +248,4 @@ mutations/create_project_revision [mutations/create_project_revision@1.4.1] 2023
 computed_columns/project_next_milestone_due_date 2023-02-07T22:50:15Z Sam Warren <samwarren4@gmail.com> # Computed column to return the next milestone due date for a given project
 data/002_insert_json_schema_form_data_remove_default_from_annual_report_schema 2023-02-13T21:08:47Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove the default values in the reporting requirement json schema
 @1.5.0 2023-03-03T18:11:48Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.5.0
+data/005_insert_json_schema_form_data_remove_undefined_from_project_contact_schema 2023-02-28T19:43:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  # Remove the default and anyof value in the project contact json schema
