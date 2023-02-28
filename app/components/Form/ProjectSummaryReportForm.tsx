@@ -11,7 +11,6 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 import Status from "components/ReportingRequirement/Status";
-import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   projectRevision: ProjectSummaryReportForm_projectRevision$key;
@@ -153,7 +152,6 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
         <>
           <header>
             <h3>Project Summary Report</h3>
-            <SavingIndicator isSaved={!isCreating && !isUpdating} />
             <Status
               upcomingReportDueDate={upcomingReportDueDate}
               reportSubmittedDates={reportSubmittedDates}
