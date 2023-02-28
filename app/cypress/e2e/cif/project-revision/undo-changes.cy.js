@@ -218,7 +218,7 @@ describe("when undoing, the project revision page", () => {
     // undo additional funding source
     cy.fillAdditionalFundingSourceForm("I will be undone", 2000, "Approved", 1);
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
     cy.findByLabelText(/Additional Funding Source/i).should(
       "have.value",
       "cheese import taxes"
