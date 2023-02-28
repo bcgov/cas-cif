@@ -157,7 +157,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             <Status
               upcomingReportDueDate={upcomingReportDueDate}
               reportSubmittedDates={reportSubmittedDates}
-              reportType={"Project Summary"}
+              reportType={"Project Summary Report"}
             />
           </header>
           <div>

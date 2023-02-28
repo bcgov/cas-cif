@@ -23,7 +23,7 @@ const mutation = graphql`
 const useCreateProjectSummaryReport = () => {
   return useMutationWithErrorMessage<createProjectSummaryReportMutation>(
     mutation,
-    () => "An error occured while add the Project Summary to the revision."
+    () => "An error occured while adding the Project Summary to the revision."
   );
 };
 

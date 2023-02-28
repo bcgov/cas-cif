@@ -1,7 +1,7 @@
 import { getBadgeForOverallReportStatus } from "lib/helpers/reportStatusHelpers";
 
 interface Props {
-  reportType: "Quarterly" | "Annual" | "Milestone" | "Project Summary";
+  reportType: "Quarterly" | "Annual" | "Milestone" | "Project Summary Report";
   upcomingReportDueDate: string;
   reportSubmittedDates: string[];
 }
