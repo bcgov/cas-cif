@@ -124,32 +124,6 @@ type AddEmissionIntensityReportToRevisionPayload {
   query: Query
 }
 
-"""All input for the `addProjectSummaryReportToRevision` mutation."""
-input AddProjectSummaryReportToRevisionInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  reportingRequirementIndex: Int!
-  revisionId: Int!
-}
-
-"""The output of our `addProjectSummaryReportToRevision` mutation."""
-type AddProjectSummaryReportToRevisionPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  formChanges: [FormChange]
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """
 Table containing information about funding provided through sources other than CIF and the proponent; often needed for program review and data request purposes.
 """
@@ -50180,12 +50154,6 @@ type Mutation {
     """
     input: AddEmissionIntensityReportToRevisionInput!
   ): AddEmissionIntensityReportToRevisionPayload
-  addProjectSummaryReportToRevision(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: AddProjectSummaryReportToRevisionInput!
-  ): AddProjectSummaryReportToRevisionPayload
 
   """
   Custom mutation to commit a form_change record via the API. Only used for records that are independent of a project such as the lists of contacts and operators.

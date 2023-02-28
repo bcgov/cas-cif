@@ -1,4 +1,12 @@
 export const projectSummaryReportUiSchema = {
+  "ui:order": [
+    "reportDueDate",
+    "submittedDate",
+    "comments",
+    "projectSummaryReportPayment",
+    "paymentNotes",
+    "dateSentToCsnr",
+  ],
   reportDueDate: {
     "ui:widget": "DateWidget",
     isDueDate: true,
