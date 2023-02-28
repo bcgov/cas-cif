@@ -6,6 +6,7 @@ import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
 } from "__generated__/ProjectRevisionQuery.graphql";
+import reportingRequirementProdSchema from "../../../../../../schema/data/prod/json_schema/reporting_requirement.json";
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -15,6 +16,11 @@ import compiledProjectRevisionQuery, {
  */
 
 const defaultMockResolver = {
+  Form() {
+    return {
+      jsonSchema: reportingRequirementProdSchema,
+    };
+  },
   ProjectRevision() {
     return {
       id: "mock-proj-rev-id",
@@ -63,6 +69,11 @@ describe("The Create Project page", () => {
     });
 
     pageTestingHelper.loadQuery({
+      Form() {
+        return {
+          jsonSchema: reportingRequirementProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           id: "mock-id",
@@ -115,6 +126,11 @@ describe("The Create Project page", () => {
 
   it("Renders an empty summary before the form has been filled out", async () => {
     pageTestingHelper.loadQuery({
+      Form() {
+        return {
+          jsonSchema: reportingRequirementProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           id: "mock-proj-rev-id",
@@ -140,6 +156,11 @@ describe("The Create Project page", () => {
 
   it("Renders the summary with the filled-out details", async () => {
     pageTestingHelper.loadQuery({
+      Form() {
+        return {
+          jsonSchema: reportingRequirementProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           id: "Test Project Revision ID",
@@ -497,6 +518,11 @@ describe("The Create Project page", () => {
 
   it("routes to the project list page when discarding a project revision and isFirstRevision is true", () => {
     const mockResolver = {
+      Form() {
+        return {
+          jsonSchema: reportingRequirementProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           isFirstRevision: true,
@@ -531,6 +557,11 @@ describe("The Create Project page", () => {
 
   it("routes to the project overview when discarding project revision and isFirstRevision is false", () => {
     const mockResolver = {
+      Form() {
+        return {
+          jsonSchema: reportingRequirementProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           id: "mock-proj-rev-id",

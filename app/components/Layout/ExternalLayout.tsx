@@ -1,5 +1,5 @@
 import { graphql, useFragment } from "react-relay";
-import type { DefaultLayout_session$key } from "DefaultLayout_session.graphql";
+import type { ExternalLayout_session$key } from "ExternalLayout_session.graphql";
 import getConfig from "next/config";
 import Navigation from "components/Layout/Navigation";
 import Footer from "components/Layout/Footer";
@@ -8,18 +8,18 @@ import UserProfile from "components/User/UserProfile";
 import GlobalAlert from "./GlobalAlert";
 import { useContext } from "react";
 import { ErrorContext } from "contexts/ErrorContext";
-import footerLinks from "data/dashboardLinks/footerLinks";
-import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
 
+import footerLinks from "data/externalLinks/footerLinks";
+import subHeaderLinks from "data/externalLinks/subHeaderLinks";
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
 interface Props {
   title?: string;
-  session: DefaultLayout_session$key;
+  session: ExternalLayout_session$key;
   leftSideNav?: React.ReactNode;
 }
 
-const DefaultLayout: React.FC<Props> = ({
+const ExternalLayout: React.FC<Props> = ({
   children,
   title,
   session: sessionFragment,
@@ -27,7 +27,7 @@ const DefaultLayout: React.FC<Props> = ({
 }) => {
   const session = useFragment(
     graphql`
-      fragment DefaultLayout_session on KeycloakJwt {
+      fragment ExternalLayout_session on KeycloakJwt {
         cifUserBySub {
           ...UserProfile_user
         }
@@ -108,4 +108,4 @@ const DefaultLayout: React.FC<Props> = ({
   );
 };
 
-export default DefaultLayout;
+export default ExternalLayout;

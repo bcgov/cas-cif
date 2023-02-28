@@ -246,3 +246,4 @@ functions/funding_form_changes_to_separate_schemas 2023-02-02T22:52:06Z Brianna 
 migrations/002_separate_funding_schemas_for_EP_and_IA 2023-02-02T16:34:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration to update json_schema_name for funding stream forms to separate them by EP and IA funding streams
 mutations/create_project_revision [mutations/create_project_revision@1.4.1] 2023-02-15T23:31:52Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update function to add either EP or IA version of the funding form schema
 computed_columns/project_next_milestone_due_date 2023-02-07T22:50:15Z Sam Warren <samwarren4@gmail.com> # Computed column to return the next milestone due date for a given project
+data/002_insert_json_schema_form_data_remove_default_from_annual_report_schema 2023-02-13T21:08:47Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove the default values in the reporting requirement json schema

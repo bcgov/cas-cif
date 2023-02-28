@@ -6,6 +6,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
+import reportingRequirementProdSchema from "../../../../../schema/data/prod/json_schema/reporting_requirement.json";
 
 const testQuery = graphql`
   query ProjectQuarterlyReportFormQuery @relay_test_operation {
@@ -46,6 +47,9 @@ const defaultMockResolver = {
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
+              formByJsonSchemaName: {
+                jsonSchema: reportingRequirementProdSchema,
+              },
             },
           },
           {
@@ -63,6 +67,9 @@ const defaultMockResolver = {
               operation: "CREATE",
               changeStatus: "pending",
               formChangeByPreviousFormChangeId: null,
+              formByJsonSchemaName: {
+                jsonSchema: reportingRequirementProdSchema,
+              },
             },
           },
         ],

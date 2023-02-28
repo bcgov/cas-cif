@@ -5,10 +5,7 @@ import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
 import CollapsibleReport from "components/ReportingRequirement/CollapsibleReport";
 import ReportDueIndicator from "components/ReportingRequirement/ReportDueIndicator";
 import Status from "components/ReportingRequirement/Status";
-import {
-  projectReportingRequirementSchema,
-  reportingRequirementUiSchema,
-} from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import { reportingRequirementUiSchema } from "data/jsonSchemaForm/projectReportingRequirementUiSchema";
 import { JSONSchema7 } from "json-schema";
 import FormBorder from "lib/theme/components/FormBorder";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -59,6 +56,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
               changeStatus
               asReportingRequirement {
                 ...CollapsibleReport_reportingRequirement
+              }
+              formByJsonSchemaName {
+                jsonSchema
               }
             }
           }
@@ -254,7 +254,10 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                       change.formData
                     );
                   }}
-                  schema={projectReportingRequirementSchema as JSONSchema7}
+                  schema={
+                    quarterlyReport.formByJsonSchemaName.jsonSchema
+                      .schema as JSONSchema7
+                  }
                   uiSchema={reportingRequirementUiSchema}
                   ObjectFieldTemplate={EmptyObjectFieldTemplate}
                   formContext={{

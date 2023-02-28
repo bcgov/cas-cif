@@ -7,13 +7,11 @@
     "properties": {
       "reportDueDate": {
         "type": "string",
-        "title": "Report Due Date",
-        "default": "undefined"
+        "title": "Report Due Date"
       },
       "submittedDate": {
         "type": "string",
-        "title": "Received Date",
-        "default": "undefined"
+        "title": "Report Received Date"
       },
       "comments": {
         "type": "string",

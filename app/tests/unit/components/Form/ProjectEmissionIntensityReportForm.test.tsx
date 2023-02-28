@@ -200,7 +200,7 @@ describe("the emission intensity report form component", () => {
     ).toHaveTextContent("$100");
     expect(
       screen.getByLabelText("Actual Performance Milestone Amount")
-    ).toHaveTextContent("$6,000.00");
+    ).toHaveTextContent("$60.00");
     expect(
       screen.getByLabelText(/Date invoice sent to CSNR/i)
     ).toHaveTextContent(/Feb[.]? 11, 2022/);

@@ -1,8 +1,5 @@
 import { utils } from "@rjsf/core";
-import {
-  projectReportingRequirementSchema,
-  reportingRequirementUiSchema,
-} from "data/jsonSchemaForm/projectReportingRequirementSchema";
+import { reportingRequirementUiSchema } from "data/jsonSchemaForm/projectReportingRequirementUiSchema";
 import { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { getFilteredSchema } from "lib/theme/getFilteredSchema";
@@ -48,6 +45,9 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               formChangeByPreviousFormChangeId {
                 newFormData
               }
+              formByJsonSchemaName {
+                jsonSchema
+              }
             }
           }
         }
@@ -90,15 +90,14 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
   const annualReportsJSX = useMemo(() => {
     return sortedAnnualReports.map((annualReport, index) => {
       if (!annualReport) return;
-
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
         ? {
-            formSchema: projectReportingRequirementSchema,
+            formSchema: annualReport.formByJsonSchemaName.jsonSchema.schema,
             formData: annualReport.newFormData,
           }
         : getFilteredSchema(
-            projectReportingRequirementSchema as JSONSchema7,
+            annualReport.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
             annualReport
           );
 
