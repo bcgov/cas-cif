@@ -99,6 +99,9 @@ describe("The Attachment table row component", () => {
         connections: expect.any(Array),
         input: {
           id: "Cif Test Attachment ID",
+          attachmentPath: {
+            updatedAt: expect.any(String),
+          },
         },
       }
     );
