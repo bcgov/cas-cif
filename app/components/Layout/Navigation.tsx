@@ -4,6 +4,7 @@ import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import LogoutForm from "components/Session/LogoutForm";
 
 import SubHeader from "./SubHeader";
+import { useRouter } from "next/router";
 
 interface Props {
   isLoggedIn?: boolean;
@@ -31,6 +32,8 @@ const Navigation: React.FC<Props> = ({
       <LogoutForm />
     </>
   );
+
+  const router = useRouter();
   return (
     <>
       <BaseNavigation>
@@ -40,8 +43,13 @@ const Navigation: React.FC<Props> = ({
               We don't want a front end navigation here,
               to ensure that a back-end redirect is performed when clicking on the banner image
             */}
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages*/}
-            <a href="/">
+            <a
+              href={
+                router.pathname.includes("/cif-external")
+                  ? "/cif-external"
+                  : "/cif"
+              }
+            >
               <Image
                 priority
                 src="/img/BCID_CleanBC_rev_tagline_colour.svg"

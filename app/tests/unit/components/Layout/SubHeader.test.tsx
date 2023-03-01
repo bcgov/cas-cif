@@ -9,7 +9,7 @@ jest.mock("next/router");
 
 describe("The SubHeader Component", () => {
   it("Renders the home link for internal users", () => {
-    mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
+    mocked(useRouter).mockReturnValue({ asPath: "/", pathname: "/" } as any);
     render(<SubHeader links={dashboardLinks} />);
     expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
@@ -18,7 +18,7 @@ describe("The SubHeader Component", () => {
   });
 
   it("Highlights the correct link depending on the current page", () => {
-    mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
+    mocked(useRouter).mockReturnValue({ asPath: "/", pathname: "/" } as any);
     render(<SubHeader links={dashboardLinks} />);
 
     expect(screen.getByText("Home").closest("a")).toHaveStyle(
@@ -31,6 +31,7 @@ describe("The SubHeader Component", () => {
     cleanup();
     mocked(useRouter).mockReturnValue({
       asPath: "/cif/project/some-other-page",
+      pathname: "/",
     } as any);
     render(<SubHeader links={dashboardLinks} />);
 
@@ -43,7 +44,10 @@ describe("The SubHeader Component", () => {
   });
 
   it("Renders the home link for the external facing subheader", () => {
-    mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
+    mocked(useRouter).mockReturnValue({
+      asPath: "/",
+      pathname: "/cif-external",
+    } as any);
     render(<SubHeader links={externalLinks} />);
     expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
@@ -52,7 +56,7 @@ describe("The SubHeader Component", () => {
   });
 
   it("Renders the correct subheadings", () => {
-    mocked(useRouter).mockReturnValue({ asPath: "/" } as any);
+    mocked(useRouter).mockReturnValue({ asPath: "/", pathname: "/" } as any);
     render(<SubHeader links={externalLinks} />);
     expect(screen.getByText("Email Us")).toBeVisible();
     expect(screen.getByText("Contact Information")).toBeVisible();

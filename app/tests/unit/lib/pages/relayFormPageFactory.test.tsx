@@ -82,6 +82,9 @@ describe("The relay form page factory", () => {
     mocked(useDeleteFormChange).mockReturnValue([jest.fn(), false]);
     mocked(useCommitFormChange).mockReturnValue([jest.fn(), false]);
     environment = createMockEnvironment();
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { pathname: "/" };
+    });
   });
 
   it("Returns a component and a graphql tagged node", () => {

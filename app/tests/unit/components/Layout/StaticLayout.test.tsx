@@ -6,6 +6,11 @@ const renderStaticLayout = () => {
 };
 
 describe("The StaticLayout component", () => {
+  beforeEach(() => {
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { pathname: "/" };
+    });
+  });
   it("should not render login button", () => {
     renderStaticLayout();
     expect(screen.queryByText("Login")).toBeNull();
