@@ -18,7 +18,8 @@ describe("when editing a project, the project page", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
     cy.get("@firstViewButton").click();
-    cy.wait(1000);
+    cy.contains("Project Overview").should("be.visible");
+    cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
 
     // edit overview -- change project name
@@ -174,7 +175,6 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
-    console.log("annual reports");
     cy.happoAndAxe("Project Annual Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
