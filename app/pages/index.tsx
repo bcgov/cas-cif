@@ -8,6 +8,7 @@ import Link from "next/link";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import LoginForm from "components/Session/LoginForm";
 import footerLinks from "data/externalLinks/footerLinks";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 export const IndexQuery = graphql`
   query pagesQuery {
@@ -21,6 +22,10 @@ export const IndexQuery = graphql`
 
 function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
   const { query } = usePreloadedQuery(IndexQuery, preloadedQuery);
+
+  // Growthbook - external-operators
+  const showExternalOperatorsLogin =
+    useShowGrowthbookFeature("external-operators");
 
   return (
     <DefaultLayout session={query.session}>
