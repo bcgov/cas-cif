@@ -246,7 +246,9 @@ describe("when editing a project, the project page", () => {
     cy.mockLogin("cif_internal");
     cy.visit("/cif/projects");
     cy.get("@firstViewButton").click();
-    cy.findByText(/edit/i).click();
+    cy.contains("Project Overview").should("be.visible");
+    cy.findByRole("button", { name: /edit/i }).should("be.visible");
+    cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
     cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
