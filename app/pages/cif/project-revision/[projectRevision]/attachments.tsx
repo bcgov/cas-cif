@@ -12,6 +12,7 @@ import { FilePicker } from "@button-inc/bcgov-theme";
 import { useCreateAttachment } from "mutations/attachment/createAttachment";
 import bytesToSize from "lib/helpers/bytesToText";
 import LoadingSpinner from "components/LoadingSpinner";
+import { useArchiveAttachment } from "mutations/attachment/archiveAttachment";
 
 const pageQuery = graphql`
   query attachmentsQuery($projectRevision: ID!) {
@@ -59,6 +60,7 @@ export function ProjectAttachments({
   );
 
   const [createAttachment, isCreatingAttachment] = useCreateAttachment();
+  const [archiveAttachment, isArchivingAttachment] = useArchiveAttachment();
 
   const isRedirecting = useRedirectTo404IfFalsy(projectRevision);
   if (isRedirecting) return null;
@@ -80,6 +82,32 @@ export function ProjectAttachments({
     createAttachment({
       variables,
       onError: (err) => console.error(err),
+    });
+  };
+
+  const archiveAttachmentByID = (id: string) => {
+    console.log("ID: ", projectRevision.project.attachments.__id);
+    archiveAttachment({
+      variables: {
+        connections: [projectRevision.project.attachments.__id],
+        input: {
+          id,
+          attachmentPatch: {
+            archivedAt: new Date().toISOString(),
+          },
+        },
+      },
+      onCompleted: (c) => {
+        console.log(c);
+      },
+      optimisticResponse: {
+        updateAttachment: {
+          attachment: {
+            id,
+            archivedAt: new Date().toISOString(),
+          },
+        },
+      },
     });
   };
 
@@ -108,7 +136,12 @@ export function ProjectAttachments({
         pageQuery={pageQuery}
       >
         {projectRevision.project.attachments.edges.map(({ node }) => (
-          <AttachmentTableRow key={node.file} attachment={node} />
+          <AttachmentTableRow
+            key={node.file}
+            attachment={node}
+            isArchivingAttachment={isArchivingAttachment}
+            archiveAttachmentByID={archiveAttachmentByID}
+          />
         ))}
       </Table>
       <style jsx>{`
