@@ -6,6 +6,7 @@ import compiledProjectContactFormSummaryQuery, {
   ProjectContactFormSummaryQuery,
 } from "__generated__/ProjectContactFormSummaryQuery.graphql";
 import { ProjectContactFormSummary_projectRevision } from "__generated__/ProjectContactFormSummary_projectRevision.graphql";
+import projectContactProdSchema from "../../../../../schema/data/prod/json_schema/project_contact.json";
 
 const testQuery = graphql`
   query ProjectContactFormSummaryQuery @relay_test_operation {
@@ -50,6 +51,9 @@ const mockQueryPayload = {
                   },
                 },
               },
+              formByJsonSchemaName: {
+                jsonSchema: projectContactProdSchema,
+              },
             },
           },
           {
@@ -78,6 +82,9 @@ const mockQueryPayload = {
                   },
                 },
               },
+              formByJsonSchemaName: {
+                jsonSchema: projectContactProdSchema,
+              },
             },
           },
           {
@@ -95,6 +102,9 @@ const mockQueryPayload = {
                 },
               },
               formChangeByPreviousFormChangeId: null,
+              formByJsonSchemaName: {
+                jsonSchema: projectContactProdSchema,
+              },
             },
           },
           {
@@ -122,6 +132,9 @@ const mockQueryPayload = {
                     fullName: "I was removed",
                   },
                 },
+              },
+              formByJsonSchemaName: {
+                jsonSchema: projectContactProdSchema,
               },
             },
           },
