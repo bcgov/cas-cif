@@ -86,24 +86,12 @@ export function ProjectAttachments({
   };
 
   const archiveAttachmentByID = (id: string) => {
-    console.log("ID: ", projectRevision.project.attachments.__id);
     archiveAttachment({
       variables: {
         connections: [projectRevision.project.attachments.__id],
         input: {
           id,
           attachmentPatch: {
-            archivedAt: new Date().toISOString(),
-          },
-        },
-      },
-      onCompleted: (c) => {
-        console.log(c);
-      },
-      optimisticResponse: {
-        updateAttachment: {
-          attachment: {
-            id,
             archivedAt: new Date().toISOString(),
           },
         },
