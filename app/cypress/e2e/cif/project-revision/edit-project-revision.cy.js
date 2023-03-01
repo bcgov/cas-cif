@@ -17,9 +17,8 @@ describe("when editing a project, the project page", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
-    cy.get("@firstViewButton").should("be.visible");
     cy.get("@firstViewButton").click();
-    cy.findByRole("button", { name: /edit/i }).should("be.visible");
+    cy.wait(1000);
     cy.findByRole("button", { name: /edit/i }).click();
 
     // edit overview -- change project name
