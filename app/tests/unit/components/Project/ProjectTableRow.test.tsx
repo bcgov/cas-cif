@@ -86,9 +86,12 @@ describe("The ProjectTableRow", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Renders a row with the appropriate data in each cell", () => {
+  it("Renders a row with the appropriate data for CIF internal users in each cell", () => {
     componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent(
+      (data) => ({ project: data.query.project }),
+      { isInternal: true }
+    );
 
     expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
     expect(screen.getByText(/12345/i)).toBeInTheDocument();
@@ -97,5 +100,20 @@ describe("The ProjectTableRow", () => {
     expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager full name 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager full name 2/i)).toBeInTheDocument();
+  });
+
+  it("Renders a row with the appropriate data for external users in each cell", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/12345/i)).toBeInTheDocument();
+    expect(screen.queryByText(/1.00/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Operator 1 trade name/i)
+    ).not.toBeInTheDocument();
+    expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Manager full name 1/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Manager full name 2/i)).not.toBeInTheDocument();
   });
 });

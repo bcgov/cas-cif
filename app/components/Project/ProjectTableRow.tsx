@@ -8,9 +8,10 @@ import ProjectMilestoneDue from "./ProjectMilestoneDue";
 
 interface Props {
   project: ProjectTableRow_project$key;
+  isInternal: boolean;
 }
 
-const ProjectTableRow: React.FC<Props> = ({ project }) => {
+const ProjectTableRow: React.FC<Props> = ({ project, isInternal }) => {
   const projectData = useFragment(
     graphql`
       fragment ProjectTableRow_project on Project {
@@ -70,30 +71,47 @@ const ProjectTableRow: React.FC<Props> = ({ project }) => {
 
   return (
     <tr>
-      <td className="project-name">{projectName}</td>
-      <td className="op-trade-name">{tradeName}</td>
-      <td className="proposal-reference">{proposalReference}</td>
-      <td className="status-container">
-        <span className="status-badge">{name}</span>
-      </td>
-      <td className="milestone-due">
-        <ProjectMilestoneDue project={projectData} />
-      </td>
-      <td>
-        {projectManagersByProjectId.edges.map((manager, index) => {
-          return (
-            <span key={manager.node.cifUserByCifUserId.id}>
-              {index ? "," : ""} {manager.node.cifUserByCifUserId.fullName}
-            </span>
-          );
-        })}
-      </td>
-      <td>
-        <Money amount={totalFundingRequest} />
-      </td>
+      {isInternal ? (
+        <>
+          <td className="project-name">{projectName}</td>
+          <td className="op-trade-name">{tradeName}</td>
+          <td className="proposal-reference">{proposalReference}</td>
+          <td className="status-container">
+            <span className="status-badge">{name}</span>
+          </td>
+          <td className="milestone-due">
+            <ProjectMilestoneDue project={projectData} />
+          </td>
+          <td>
+            {projectManagersByProjectId.edges.map((manager, index) => {
+              return (
+                <span key={manager.node.cifUserByCifUserId.id}>
+                  {index ? "," : ""} {manager.node.cifUserByCifUserId.fullName}
+                </span>
+              );
+            })}
+          </td>
+          <td>
+            <Money amount={totalFundingRequest} />
+          </td>
+        </>
+      ) : (
+        <>
+          <td className="proposal-reference">{proposalReference}</td>
+          <td className="project-name">{projectName}</td>
+          <td className="status-container">
+            <span className="status-badge">{name}</span>
+          </td>
+        </>
+      )}
       <td>
         <div className="actions">
-          <Button size="small" onClick={handleViewClick}>
+          <Button
+            size="small"
+            onClick={
+              isInternal ? handleViewClick : () => console.log("placeholder")
+            }
+          >
             View
           </Button>
         </div>

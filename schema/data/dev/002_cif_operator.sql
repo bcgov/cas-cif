@@ -32,7 +32,16 @@ values
   "swrsLegalName": "third operator SWRS legal name",
   "swrsTradeName": "third operator SWRS trade name",
   "bcRegistryId": "EF3456789",
-  "operatorCode": "IJKL" }', 'create', 'cif', 'operator', 'pending', 'operator');
+  "operatorCode": "IJKL" }', 'create', 'cif', 'operator', 'pending', 'operator'),
+('{
+  "swrsOrganisationId": 1003,
+  "legalName": "external testing operator",
+  "tradeName": "external testing operator",
+  "swrsLegalName": "external testing operator SWRS legal name",
+  "swrsTradeName": "external testing operator SWRS trade name",
+  "bcRegistryId": "GH3456789",
+  "operatorCode": "UDBJ" }', 'create', 'cif', 'operator', 'pending', 'operator')
+  ;
 
 do $$
   begin
