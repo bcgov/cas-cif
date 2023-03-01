@@ -1,10 +1,17 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { Button } from "@button-inc/bcgov-theme";
+import { getExternalUserLandingPageRoute } from "routes/pageRoutes";
 
-const LoginForm: React.FC = () => {
+interface Props {
+  isExternal?: boolean;
+}
+
+const LoginForm: React.FC<Props> = ({ isExternal }) => {
   const router = useRouter();
-  let loginURI = "/login";
+  let loginURI = isExternal
+    ? `/login?redirectTo=${getExternalUserLandingPageRoute().pathname}`
+    : "/login";
 
   if (router.query.redirectTo)
     loginURI += `?redirectTo=${encodeURIComponent(
@@ -14,7 +21,13 @@ const LoginForm: React.FC = () => {
   return (
     <>
       <form action={loginURI} method="post">
-        <Button type="submit">Administrator Login</Button>
+        {isExternal ? (
+          <Button type="submit" variant="secondary">
+            External User Login
+          </Button>
+        ) : (
+          <Button type="submit">Administrator Login</Button>
+        )}
       </form>
     </>
   );

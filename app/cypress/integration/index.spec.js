@@ -5,10 +5,5 @@ describe("The index page", () => {
     cy.contains("h3", "CleanBC Industry Fund").should("be.visible");
     cy.findByRole("button", { name: /Administrator Login/i }).should("exist");
     cy.findByRole("button", { name: /External User Login/i }).should("exist");
-    cy.findByRole("button", { name: /External User Login/i }).should(
-      "have.attr",
-      "href",
-      "/cif-external"
-    );
   });
 });

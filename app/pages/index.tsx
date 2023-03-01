@@ -7,9 +7,7 @@ import { getUserGroupLandingRoute } from "lib/userGroups";
 import Link from "next/link";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import LoginForm from "components/Session/LoginForm";
-import { Button } from "@button-inc/bcgov-theme";
 import footerLinks from "data/externalLinks/footerLinks";
-import { getExternalUserLandingPageRoute } from "routes/pageRoutes";
 
 export const IndexQuery = graphql`
   query pagesQuery {
@@ -46,9 +44,7 @@ function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
         </div>
         <div id="login-buttons">
           <LoginForm />
-          <Link href={getExternalUserLandingPageRoute()} passHref>
-            <Button variant="secondary">External User Login</Button>
-          </Link>
+          {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
         </div>
       </div>
       <style jsx>
