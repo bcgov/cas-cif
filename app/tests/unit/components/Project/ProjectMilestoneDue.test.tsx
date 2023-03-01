@@ -34,9 +34,7 @@ describe("The Project Milestone Due component", () => {
     componentTestingHelper.loadQuery({
       Project() {
         return {
-          latestCommittedProjectRevision: {
-            upcomingReportingRequirementFormChange: null,
-          },
+          nextMilestoneDueDate: null,
           latestCompletedReportingRequirements: {
             edges: [],
           },
@@ -52,9 +50,7 @@ describe("The Project Milestone Due component", () => {
     componentTestingHelper.loadQuery({
       Project() {
         return {
-          latestCommittedProjectRevision: {
-            upcomingReportingRequirementFormChange: null,
-          },
+          nextMilestoneDueDate: "2020-01-02",
           latestCompletedReportingRequirements: {
             edges: [
               {
@@ -76,13 +72,7 @@ describe("The Project Milestone Due component", () => {
     componentTestingHelper.loadQuery({
       Project() {
         return {
-          latestCommittedProjectRevision: {
-            upcomingReportingRequirementFormChange: {
-              asReportingRequirement: {
-                reportDueDate: "2020-01-01",
-              },
-            },
-          },
+          nextMilestoneDueDate: "2020-01-01",
           latestCompletedReportingRequirements: {
             edges: [
               {
@@ -104,13 +94,7 @@ describe("The Project Milestone Due component", () => {
     componentTestingHelper.loadQuery({
       Project() {
         return {
-          latestCommittedProjectRevision: {
-            upcomingReportingRequirementFormChange: {
-              asReportingRequirement: {
-                reportDueDate: "2080-01-01",
-              },
-            },
-          },
+          nextMilestoneDueDate: "2080-01-01",
           latestCompletedReportingRequirements: {
             edges: [],
           },

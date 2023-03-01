@@ -3,7 +3,6 @@ import DefaultLayout from "components/Layout/DefaultLayout";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import Table from "components/Table";
 import {
-  DisplayOnlyFilter,
   NoHeaderFilter,
   SearchableDropdownFilter,
   SortOnlyFilter,
@@ -30,6 +29,7 @@ export const ProjectsQuery = graphql`
     $offset: Int
     $pageSize: Int
     $orderBy: [ProjectsOrderBy!]
+    $nextMilestoneDueDate: DatetimeFilter
   ) {
     session {
       ...DefaultLayout_session
@@ -52,6 +52,7 @@ export const ProjectsQuery = graphql`
           name: { includesInsensitive: $status }
         }
         primaryManagers: { includesInsensitive: $primaryProjectManager }
+        nextMilestoneDueDate: $nextMilestoneDueDate
       }
       orderBy: $orderBy
     ) {
@@ -112,7 +113,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         allProjectStatuses.edges.map((e) => e.node.name),
         { orderByPrefix: "PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME" }
       ),
-      new DisplayOnlyFilter("Milestone Due"),
+      new SortOnlyFilter("Milestone Due", "nextMilestoneDueDate"),
       new SearchableDropdownFilter(
         "Primary Project Managers",
         "primaryProjectManager",
