@@ -85,4 +85,22 @@ describe("The Attachment table row component", () => {
       expect.anything()
     );
   });
+
+  it("has a working delete button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const deleteButton = screen.getByText("Delete");
+    deleteButton.click();
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "archiveAttachmentMutation",
+      {
+        connections: expect.any(Array),
+        input: {
+          id: "Cif Test Attachment ID",
+        },
+      }
+    );
+  });
 });

@@ -73,7 +73,7 @@ describe("The project's attachment page", () => {
         },
       },
       connections: [
-        "client:test-cif-project:__connection_attachments_connection",
+        'client:test-cif-project:__connection_attachments_connection(filter:{"archivedAt":{"equalTo":null}})',
       ],
     });
   });
