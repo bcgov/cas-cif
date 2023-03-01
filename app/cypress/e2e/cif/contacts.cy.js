@@ -50,7 +50,7 @@ describe("The contacts page", () => {
       "Please enter in a valid phone number format (e.g. 123 456 7890)"
     ).should("be.visible");
     cy.findByLabelText(/email/i).click().type("@example.com");
-    cy.wait(200);
+    cy.wait(1000);
     cy.findByRole("button", { name: /submit/i }).click();
     cy.findByText(/email already exists/i).should("be.visible");
     cy.contains(/please enter a value/i).should("be.visible");
