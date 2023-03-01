@@ -162,7 +162,7 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
         pageQuery={ProjectsQuery}
       >
         {allProjects.edges.map(({ node }) => (
-          <ProjectTableRow key={node.id} project={node} />
+          <ProjectTableRow key={node.id} project={node} isInternal={true} />
         ))}
       </Table>
 

@@ -69,13 +69,13 @@ describe("The DefaultLayout component", () => {
     expect(screen.getByText("Contact Information")).toBeVisible();
   });
 
-  it("should render the Home link to /cif", () => {
+  it("should render the Home link to /cif-external", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Home").closest("a")).toHaveAttribute(
       "href",
-      "/cif"
+      "/cif-external"
     );
   });
 

@@ -112,6 +112,32 @@ do $$
           'contactIndex', 1
           ),
         'create', 'cif', 'project_contact', 'pending', 'project_contact', current_revision.id);
+
+
+
+
+
+    end loop;
+
+      -- external testing operator projects
+ for index in 1..6 loop
+      current_revision := cif.create_project(index);
+
+      update cif.form_change
+      set new_form_data= jsonb_build_object(
+          'operatorId', 4,
+          'fundingStreamRfpId', index,
+          'projectStatusId', index,
+          'proposalReference', 'EXTERNAL' || lpad(index::text, 3, '0'),
+          'summary', 'lorem ipsum dolor sit amet adipiscing eli',
+          'projectName', 'Test External Project ' || lpad(index::text, 3, '0'),
+          'totalFundingRequest', cast(rpad(index::text, 3, '0') as bigint),
+          'sectorName', 'Agriculture',
+          'projectType', 'Carbon Capture',
+          'score', index
+          )
+      where project_revision_id=current_revision.id and form_data_table_name='project';
+
     end loop;
   end
 $$;
