@@ -29,7 +29,6 @@ export default function SubHeader({ links }: Props) {
         <li>
           <Link
             href={
-              // The external user subheader doesn't contain an operators link, so we can use its presence/absence to check if we're routing internal vs. external users
               router.pathname.includes("/cif-external")
                 ? "/cif-external"
                 : "/cif"
