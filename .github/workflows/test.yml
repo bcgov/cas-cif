@@ -166,7 +166,7 @@ jobs:
     needs: ["docker-build", "install-dev-tools"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - name: run app locally
