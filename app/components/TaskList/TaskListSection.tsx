@@ -8,6 +8,7 @@ interface Props {
   listItemName: string;
   listItemMode?: string;
   children: React.ReactNode;
+  renderCaret?: boolean;
 }
 
 const TaskListSection: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const TaskListSection: React.FC<Props> = ({
   listItemName,
   listItemMode,
   children,
+  renderCaret = true,
 }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpandedState);
   const toggleCustomAccordion = () => setIsExpanded(!isExpanded);
@@ -35,7 +37,9 @@ const TaskListSection: React.FC<Props> = ({
           {listItemNumber && `${listItemNumber}.`} {listItemName} {listItemMode}
           <span>
             <span>
-              <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
+              {renderCaret && (
+                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretUp} />
+              )}
             </span>
           </span>
         </button>
