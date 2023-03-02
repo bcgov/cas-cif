@@ -109,11 +109,21 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     props.query
   );
 
+  const areContactsEmpty = allContacts.edges.length === 0;
   const contactSchema = useMemo(() => {
     const parsedSchema = JSON.parse(
       JSON.stringify(contactFormBySlug.jsonSchema.schema)
     );
     const schema = { ...parsedSchema };
+
+    if (areContactsEmpty) {
+      console.log("empty", areContactsEmpty);
+      schema.properties.contactId = {
+        ...schema.properties.contactId,
+        default: undefined,
+      };
+      return schema;
+    }
 
     schema.properties.contactId = {
       ...schema.properties.contactId,
@@ -127,7 +137,9 @@ const ProjectContactForm: React.FC<Props> = (props) => {
       }),
     };
     return schema as JSONSchema7;
-  }, [allContacts, contactFormBySlug]);
+  }, [allContacts, contactFormBySlug, areContactsEmpty]);
+
+  console.log("contactSchema", contactSchema);
 
   const uiSchema = createProjectContactUiSchema();
 
