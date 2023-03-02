@@ -1,4 +1,5 @@
-import { screen } from "@testing-library/react";
+import { Button } from "@button-inc/bcgov-theme";
+import { render, screen } from "@testing-library/react";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
@@ -72,6 +73,7 @@ describe("The Attachment table row component", () => {
     expect(screen.getByText("Cif User")).toBeInTheDocument();
     expect(screen.getByText("2019-01-01")).toBeInTheDocument();
   });
+
   it("has a working download button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -84,5 +86,27 @@ describe("The Attachment table row component", () => {
       expect.anything(),
       expect.anything()
     );
+  });
+
+  it("has a working delete button", () => {
+    const handleArchiveAttachment = jest.fn();
+    render(
+      <tr>
+        <td className="links">
+          <Button
+            onClick={handleArchiveAttachment}
+            disabled={false}
+            size="small"
+          >
+            Delete
+          </Button>
+        </td>
+      </tr>
+    );
+
+    const deleteButton = screen.getByText("Delete");
+    deleteButton.click();
+
+    expect(handleArchiveAttachment).toHaveBeenCalledTimes(1);
   });
 });

@@ -3,12 +3,17 @@ import Link from "next/link";
 import { getAttachmentDownloadRoute } from "routes/pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
-
 interface Props {
   attachment: AttachmentTableRow_attachment$key;
+  isArchivingAttachment: boolean;
+  archiveAttachmentByID: (id: string) => void;
 }
 
-const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
+const AttachmentTableRow: React.FC<Props> = ({
+  attachment,
+  isArchivingAttachment,
+  archiveAttachmentByID,
+}) => {
   const {
     id,
     fileName,
@@ -32,6 +37,10 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
     attachment
   );
 
+  const handleArchiveAttachment = () => {
+    archiveAttachmentByID(id);
+  };
+
   return (
     <>
       <tr>
@@ -44,11 +53,21 @@ const AttachmentTableRow: React.FC<Props> = ({ attachment }) => {
           <Link href={getAttachmentDownloadRoute(id)} passHref>
             <Button size="small">Download</Button>
           </Link>
+          <Button
+            onClick={handleArchiveAttachment}
+            disabled={isArchivingAttachment}
+            size="small"
+          >
+            Delete
+          </Button>
         </td>
       </tr>
       <style jsx>{`
         td.links {
           min-width: 15em;
+        }
+        td.links :global(button) {
+          margin-right: 0.5em;
         }
       `}</style>
     </>

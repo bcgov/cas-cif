@@ -19,11 +19,13 @@ const defaultQueryResolver = {
           {
             node: {
               file: "test-file-1",
+              id: "test-attachment-1",
             },
           },
           {
             node: {
               file: "test-file-2",
+              id: "test-attachment-2",
             },
           },
         ],
@@ -73,8 +75,26 @@ describe("The project's attachment page", () => {
         },
       },
       connections: [
-        "client:test-cif-project:__connection_attachments_connection",
+        'client:test-cif-project:__connection_attachments_connection(filter:{"archivedAt":{"equalTo":null}})',
       ],
+    });
+  });
+
+  it("calls the archiveAttachmentMutation when the delete button is clicked", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    const deleteButton = screen.getAllByText("Delete")[0];
+    deleteButton.click();
+
+    pageTestingHelper.expectMutationToBeCalled("archiveAttachmentMutation", {
+      connections: expect.any(Array),
+      input: {
+        id: "test-attachment-1",
+        attachmentPatch: {
+          archivedAt: expect.any(String),
+        },
+      },
     });
   });
 });
