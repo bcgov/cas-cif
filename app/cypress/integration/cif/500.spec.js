@@ -12,6 +12,9 @@ describe("The 500 page", () => {
     });
     cy.get("a[href='javascript:;']").click();
     cy.url().should("eq", Cypress.config().baseUrl + "/");
-    cy.contains("Welcome to the cif web application.").should("be.visible");
+    cy.contains("h1", "Welcome").should("be.visible");
+    cy.contains("h3", "CleanBC Industry Fund").should("be.visible");
+    cy.findByRole("button", { name: /Administrator Login/i }).should("exist");
+    cy.findByRole("button", { name: /External User Login/i }).should("exist");
   });
 });

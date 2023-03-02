@@ -136,3 +136,9 @@ export const getProjectsPageRoute = () => ({
 export const getAttachmentDownloadRoute = (attachmentId: string) => ({
   pathname: `/download/${attachmentId}`,
 });
+
+//// External User
+
+export const getExternalUserLandingPageRoute = () => ({
+  pathname: "/cif-external/",
+});

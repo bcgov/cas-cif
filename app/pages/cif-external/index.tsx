@@ -11,6 +11,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import { useMemo } from "react";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { cifExternalQuery } from "__generated__/cifExternalQuery.graphql";
 
 export const ExternalProjectsQuery = graphql`
@@ -81,6 +82,9 @@ export function ExternalProjects({
     ],
     [allProjectStatuses.edges]
   );
+
+  // Growthbook - external-operators
+  if (!useShowGrowthbookFeature("external-operators")) return null;
 
   return (
     <ExternalLayout session={session}>

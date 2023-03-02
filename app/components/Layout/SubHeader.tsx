@@ -8,11 +8,11 @@ interface Props {
   links: { name: string; href: { pathname: string }; highlightOn: string[] }[];
 }
 
-export default function SubHeader(props: Props) {
+export default function SubHeader({ links }: Props) {
   const router = useRouter();
 
   const highlightedLinkName = useMemo(() => {
-    const highlightedLink = props.links?.find(({ highlightOn }) =>
+    const highlightedLink = links?.find(({ highlightOn }) =>
       highlightOn.some((routePath) =>
         match(routePath, { decode: decodeURIComponent, endsWith: "?" })(
           router?.asPath
@@ -21,7 +21,7 @@ export default function SubHeader(props: Props) {
     );
     if (highlightedLink) return highlightedLink.name;
     return "Home";
-  }, [router]);
+  }, [links, router]);
 
   return (
     <BaseHeader header="sub">
@@ -29,10 +29,9 @@ export default function SubHeader(props: Props) {
         <li>
           <Link
             href={
-              // The external user subheader doesn't contain an operators link, so we can use its presence/absence to check if we're routing internal vs. external users
-              props.links.some((link) => link.name === "Operators")
-                ? "/cif"
-                : "/cif-external"
+              router.pathname.includes("/cif-external")
+                ? "/cif-external"
+                : "/cif"
             }
           >
             <a className={highlightedLinkName === "Home" ? "highlight" : ""}>
@@ -40,7 +39,7 @@ export default function SubHeader(props: Props) {
             </a>
           </Link>
         </li>
-        {props.links?.map(({ name, href }) => (
+        {links?.map(({ name, href }) => (
           <li key={name}>
             <Link href={href}>
               <a className={highlightedLinkName === name ? "highlight" : ""}>

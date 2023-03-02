@@ -45,6 +45,9 @@ const componentTestingHelper =
 describe("The DefaultLayout component", () => {
   beforeEach(() => {
     componentTestingHelper.reinit();
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
+      return { pathname: "/cif-external" };
+    });
   });
 
   it("should not render the subheader links if the user is logged out", () => {

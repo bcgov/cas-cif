@@ -4,6 +4,11 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { pagesQuery } from "__generated__/pagesQuery.graphql";
 import defaultRelayOptions from "lib/relay/withRelayOptions";
 import { getUserGroupLandingRoute } from "lib/userGroups";
+import Link from "next/link";
+import BCGovLink from "@button-inc/bcgov-theme/Link";
+import LoginForm from "components/Session/LoginForm";
+import footerLinks from "data/externalLinks/footerLinks";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 export const IndexQuery = graphql`
   query pagesQuery {
@@ -18,11 +23,49 @@ export const IndexQuery = graphql`
 function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
   const { query } = usePreloadedQuery(IndexQuery, preloadedQuery);
 
+  // Growthbook - external-operators
+  const showExternalOperatorsLogin =
+    useShowGrowthbookFeature("external-operators");
+
   return (
     <DefaultLayout session={query.session}>
-      <div>
-        <p>Welcome to the cif web application.</p>
+      <div id="welcoming-container">
+        <div id="message">
+          <h1>Welcome</h1>
+          <h3>CleanBC Industry Fund</h3>
+          <p>
+            Refer to
+            <Link
+              passHref
+              href={
+                footerLinks.find(({ name }) => name === "Program Details").href
+              }
+            >
+              <BCGovLink target="_blank"> program details </BCGovLink>
+            </Link>
+            for the application materials and full information about the CleanBC
+            Industry Fund (CIF).
+          </p>
+        </div>
+        <div id="login-buttons">
+          <LoginForm />
+          {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
+        </div>
       </div>
+      <style jsx>
+        {`
+          #welcoming-container {
+            display: flex;
+            margin: 20em auto;
+            gap: 10em;
+          }
+          #login-buttons {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+          }
+        `}
+      </style>
     </DefaultLayout>
   );
 }
