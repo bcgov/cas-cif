@@ -16,7 +16,7 @@ const ExternalCifProjectViewQuery = graphql`
     }
   }
 `;
-export function ProjectFormPage({
+export function ExternalProjectFormPage({
   preloadedQuery,
 }: RelayProps<{}, viewExternalProjectRevisionQuery>) {
   const { session, projectRevision } = usePreloadedQuery(
@@ -34,7 +34,7 @@ export function ProjectFormPage({
 }
 
 export default withRelay(
-  ProjectFormPage,
+  ExternalProjectFormPage,
   ExternalCifProjectViewQuery,
   withRelayOptions
 );

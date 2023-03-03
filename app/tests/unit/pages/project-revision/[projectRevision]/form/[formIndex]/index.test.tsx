@@ -10,6 +10,8 @@ import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
+import externalCompiledQuery from "__generated__/viewExternalProjectRevisionQuery.graphql";
+import ExternalProjectFormPage from "pages/cif-external/project-revision/[projectRevision]/view";
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -129,6 +131,68 @@ describe("The Project Annual Reports page", () => {
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
       getProjectRevisionFormPageRoute("mock-proj-rev-id", 2)
     );
+  });
+
+  it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
+    pageTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: null,
+        };
+      },
+    });
+
+    const { container } = pageTestingHelper.renderPage();
+
+    expect(container.childElementCount).toEqual(0);
+    expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
+  });
+});
+
+const externalPageTestingHelper = new PageTestingHelper<FormIndexPageQuery>({
+  pageComponent: ExternalProjectFormPage,
+  compiledQuery: externalCompiledQuery,
+  defaultQueryResolver: defaultMockResolver,
+  defaultQueryVariables: {
+    projectRevision: "mock-id",
+  },
+});
+describe("The Project Overview Page (external)", () => {
+  beforeEach(() => {
+    externalPageTestingHelper.reinit();
+    externalPageTestingHelper.setMockRouterValues({
+      pathname: "/cif-external/project-revision/[projectRevision]/view",
+      query: { projectRevision: "mock-id" },
+    });
+  });
+
+  it("renders the task list in the left navigation with correct highlighting", () => {
+    externalPageTestingHelper.loadQuery();
+    externalPageTestingHelper.renderPage();
+
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "side navigation" })
+      ).getByText(/Application Overview/i)
+    ).toBeInTheDocument();
+
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "side navigation" })
+      ).getByText(/Attachments/i)
+    ).toBeInTheDocument();
+
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "side navigation" })
+      ).getByText(/Review/i)
+    ).toBeInTheDocument();
+
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "side navigation" })
+      ).getByText(/Declaration/i)
+    ).toBeInTheDocument();
   });
 
   it("renders null and redirects to a 404 page when a revision doesn't exist", async () => {
