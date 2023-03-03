@@ -251,4 +251,5 @@ data/002_insert_json_schema_form_data_remove_default_from_annual_report_schema 2
 data/005_insert_json_schema_form_data_remove_undefined_from_project_contact_schema 2023-02-28T19:43:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # # Remove the default and anyof value in the project contact json schema
 @1.5.1 2023-03-06T22:36:45Z Dylan Leard <dylan@button.is> # release v1.5.1
 @1.5.2 2023-03-07T23:23:58Z Dylan Leard <dylan@button.is> # release v1.5.2
-data/006_insert_json_schema_form_data_refactor_funding_schema 2023-03-02T23:38:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Please enter a note for your change. Lines starting with '#' will
+data/006_insert_json_schema_form_data_refactor_funding_schema 2023-03-02T23:38:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Please enter a note for your change. Lines starting with '#' will
+functions/handle_funding_parameter_form_change_commit 2023-03-03T16:44:16Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Please enter a note for your change. Lines starting with '#' will
