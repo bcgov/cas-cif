@@ -1,11 +1,12 @@
 import { screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProjectContactForm from "components/Form/ProjectContactForm";
+import projectContactProdSchema from "../../../../../schema/data/prod/json_schema/project_contact.json";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectContactFormQuery, {
   ProjectContactFormQuery,
 } from "__generated__/ProjectContactFormQuery.graphql";
+import ProjectContactForm from "components/Form/ProjectContactForm";
 
 const testQuery = graphql`
   query ProjectContactFormQuery @relay_test_operation {
@@ -84,6 +85,11 @@ const mockQueryPayload = {
       },
     };
     return result;
+  },
+  Form() {
+    return {
+      jsonSchema: projectContactProdSchema,
+    };
   },
   Query() {
     return {
@@ -286,6 +292,11 @@ describe("The ProjectContactForm", () => {
         };
         return result;
       },
+      Form() {
+        return {
+          jsonSchema: projectContactProdSchema,
+        };
+      },
       Query() {
         return {
           allContacts: {
@@ -326,6 +337,11 @@ describe("The ProjectContactForm", () => {
 
   it("calls the correct staging mutation when the `submit` button is clicked", () => {
     componentTestingHelper.loadQuery({
+      Form() {
+        return {
+          jsonSchema: projectContactProdSchema,
+        };
+      },
       ProjectRevision() {
         const result: any = {
           " $fragmentType": "ProjectContactForm_projectRevision",
@@ -389,6 +405,11 @@ describe("The ProjectContactForm", () => {
 
   it("Shows Create new contact button display when no contact selected and will call createNewContactFormChangeMutation on click", () => {
     componentTestingHelper.loadQuery({
+      Form() {
+        return {
+          jsonSchema: projectContactProdSchema,
+        };
+      },
       Query() {
         return {
           allContacts: {

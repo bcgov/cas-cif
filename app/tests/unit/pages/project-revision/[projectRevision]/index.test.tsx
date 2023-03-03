@@ -7,6 +7,7 @@ import compiledProjectRevisionQuery, {
   ProjectRevisionQuery,
 } from "__generated__/ProjectRevisionQuery.graphql";
 import reportingRequirementProdSchema from "../../../../../../schema/data/prod/json_schema/reporting_requirement.json";
+import projectContactProdSchema from "../../../../../../schema/data/prod/json_schema/project_contact.json";
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -158,7 +159,7 @@ describe("The Create Project page", () => {
     pageTestingHelper.loadQuery({
       Form() {
         return {
-          jsonSchema: reportingRequirementProdSchema,
+          jsonSchema: projectContactProdSchema,
         };
       },
       ProjectRevision() {
