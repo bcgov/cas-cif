@@ -78,7 +78,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
     projectRevision.upcomingProjectSummaryReportFormChange
       ?.asReportingRequirement.reportDueDate;
 
-  const reportSubmittedDate = useMemo(() => {
+  const reportSubmittedDates = useMemo(() => {
     return projectRevision.projectSummaryFormChanges.edges.map(
       ({ node }) => node.newFormData.submittedDate
     );
@@ -154,7 +154,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             <h3>Project Summary Report</h3>
             <Status
               upcomingReportDueDate={upcomingReportDueDate}
-              reportSubmittedDates={reportSubmittedDate}
+              reportSubmittedDates={reportSubmittedDates}
               reportType={"Project Summary Report"}
             />
           </header>
