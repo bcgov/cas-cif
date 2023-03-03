@@ -1,6 +1,7 @@
 import { ThemeProps } from "@rjsf/core";
 import ReadOnlyFieldTemplate from "./ReadOnlyFieldTemplate";
 import ReadOnlyObjectFieldTemplate from "./ReadOnlyObjectFieldTemplate";
+import ReadOnlyAdditionalFundingSourcesArrayFieldTemplate from "./ReadOnlyAdditionalFundingSourcesArrayFieldTemplate";
 import { utils } from "@rjsf/core";
 import ReadOnlyWidget from "./widgets/ReadOnlyWidget";
 import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
@@ -37,6 +38,7 @@ const readOnlyTheme: ThemeProps = {
   },
   ObjectFieldTemplate: ReadOnlyObjectFieldTemplate,
   FieldTemplate: ReadOnlyFieldTemplate,
+  ArrayFieldTemplate: ReadOnlyAdditionalFundingSourcesArrayFieldTemplate,
 };
 
 export default readOnlyTheme;

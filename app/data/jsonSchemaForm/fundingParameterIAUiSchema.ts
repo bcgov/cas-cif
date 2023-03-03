@@ -81,11 +81,6 @@ export const fundingParameterIAUiSchema = {
         "ui:widget": "SearchWidget",
         "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
       },
-      // Custom array button prop that is used in ArrayFieldTemplate
-      "ui:array-buttons": {
-        addBtnLabel: "Add Funding Source",
-        removeBtnLabel: "Remove",
-      },
     },
   },
 };

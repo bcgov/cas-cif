@@ -15,6 +15,7 @@ import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import NumberWidget from "./widgets/NumberWidget";
 import ModalWidget from "./widgets/ModalWidget";
 import AnticipatedFundingAmountPerFiscalYearWidget from "./widgets/AnticipatedFundingAmountPerFiscalYearWidget";
+import AdditionalFundingSourcesArrayFieldTemplate from "./AdditionalFundingSourcesArrayFieldTemplate";
 
 const { fields, widgets } = utils.getDefaultRegistry();
 
@@ -38,8 +39,8 @@ const formTheme: ThemeProps = {
     AnticipatedFundingAmountPerFiscalYearWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
-  // ArrayFieldTemplate: AnticipatedFundingPerFiscalYearArrayFieldTemplate,
   FieldTemplate: FieldTemplate,
+  ArrayFieldTemplate: AdditionalFundingSourcesArrayFieldTemplate,
 };
 
 export default formTheme;
