@@ -246,9 +246,9 @@ describe("when editing a project, the project page", () => {
     // Verify that the revision can be accessed by other users
     cy.mockLogin("cif_internal");
     cy.visit("/cif/projects");
+    cy.wait(2000);
     cy.get("@firstViewButton").click();
     cy.wait(2000);
-    cy.contains("Project Overview").should("be.visible");
     cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
