@@ -1,59 +1,3 @@
-export const fundingParameterEPSchema = {
-  $schema: "http://json-schema.org/draft-07/schema",
-  type: "object",
-  required: [
-    "maxFundingAmount",
-    "provinceSharePercentage",
-    "holdbackPercentage",
-    "anticipatedFundingAmount",
-    "proponentCost",
-    "contractStartDate",
-    "projectAssetsLifeEndDate",
-  ],
-  properties: {
-    totalProjectValue: {
-      title: "Total Project Value",
-      type: "number",
-    },
-    maxFundingAmount: {
-      title: "Maximum Funding Amount",
-      type: "number",
-    },
-    provinceSharePercentage: {
-      title: "Province's Share Percentage",
-      type: "number",
-    },
-    holdbackPercentage: {
-      title: "Performance Milestone Holdback Percentage",
-      type: "number",
-    },
-    anticipatedFundingAmount: {
-      title: "Anticipated/Actual Funding Amount",
-      type: "number",
-    },
-    anticipatedFundingAmountPerFiscalYear: {
-      title: "Anticipated Funding Amount Per Fiscal Year",
-      type: "string",
-    },
-    proponentCost: {
-      title: "Proponent Cost",
-      type: "number",
-    },
-    contractStartDate: {
-      title: "Contract Start Date",
-      type: "string",
-    },
-    projectAssetsLifeEndDate: {
-      title: "Project Assets Life End Date",
-      type: "string",
-    },
-    proponentsSharePercentage: {
-      title: "Proponent's Share Percentage",
-      type: "number",
-    },
-  },
-};
-
 export const fundingParameterEPUiSchema = {
   "ui:order": [
     "contractStartDate",
@@ -66,6 +10,11 @@ export const fundingParameterEPUiSchema = {
     "anticipatedFundingAmount",
     "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
+    "netPaymentsToDate",
+    "grossPaymentsToDate",
+    "holdbackAmountToDate",
+    "eligibleExpensesToDate",
+    "additionalFundingSources",
   ],
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
