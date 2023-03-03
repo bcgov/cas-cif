@@ -32,7 +32,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
         projectSummaryFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Project Summary Report"
-          first: 1000
+          first: 1
         ) @connection(key: "connection_projectSummaryFormChanges") {
           edges {
             node {
@@ -78,7 +78,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
     projectRevision.upcomingProjectSummaryReportFormChange
       ?.asReportingRequirement.reportDueDate;
 
-  const reportSubmittedDates = useMemo(() => {
+  const reportSubmittedDate = useMemo(() => {
     return projectRevision.projectSummaryFormChanges.edges.map(
       ({ node }) => node.newFormData.submittedDate
     );
@@ -154,7 +154,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             <h3>Project Summary Report</h3>
             <Status
               upcomingReportDueDate={upcomingReportDueDate}
-              reportSubmittedDates={reportSubmittedDates}
+              reportSubmittedDates={reportSubmittedDate}
               reportType={"Project Summary Report"}
             />
           </header>

@@ -96,9 +96,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
 
       return (
         <div key={node.id} className="reportContainer">
-          <header>
-            <h4>Project Summary Report</h4>
-          </header>
           {Object.keys(projectSummaryFormDiffObject.formSchema.properties)
             .length === 0 &&
             node.operation !== "ARCHIVE" && (
