@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/bcgov/cas-cif/compare/1.4.1...1.5.0) (2023-03-03)
+
+### Bug Fixes
+
+- correct Actual Performance Milestone Amount calculation ([9877be4](https://github.com/bcgov/cas-cif/commit/9877be429451fd73a47dac22c7650c34d4bbf57c))
+
+### Features
+
+- add EP/IA schemas to funding form ([fa73a90](https://github.com/bcgov/cas-cif/commit/fa73a90aabc4d5fa1cc420fd77e8707a522f27ba))
+- add external user login button ([598e784](https://github.com/bcgov/cas-cif/commit/598e7846c8ddd1ca2451384709eebff297630d84))
+- create external projects page ([529132a](https://github.com/bcgov/cas-cif/commit/529132a2ecabcd2d25e11a0f0d2c61a82bf3f565))
+- external layout component ([e612f1c](https://github.com/bcgov/cas-cif/commit/e612f1cbcba461b003ddd36562c71db935802a36))
+
 ## [1.4.1](https://github.com/bcgov/cas-cif/compare/1.4.0...1.4.1) (2023-02-14)
 
 ### Bug Fixes
