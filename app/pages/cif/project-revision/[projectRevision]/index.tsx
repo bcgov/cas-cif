@@ -38,6 +38,7 @@ const pageQuery = graphql`
       session {
         ...DefaultLayout_session
       }
+      ...ProjectFundingAgreementFormSummary_query
       projectRevision(id: $projectRevision) {
         id
         rowId
@@ -210,6 +211,7 @@ export function ProjectRevision({
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
         <ProjectFundingAgreementFormSummary
           projectRevision={query.projectRevision}
+          query={query}
         />
         <ProjectMilestoneReportFormSummary
           projectRevision={query.projectRevision}

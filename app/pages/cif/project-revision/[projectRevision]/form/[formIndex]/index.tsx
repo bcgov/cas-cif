@@ -24,6 +24,7 @@ const pageQuery = graphql`
       session {
         ...DefaultLayout_session
       }
+      ...ProjectFundingAgreementFormSummary_query
       projectRevision(id: $projectRevision) {
         id
         changeStatus
@@ -192,6 +193,7 @@ export function ProjectFormPage({
           <ViewComponent
             projectRevision={query.projectRevision}
             viewOnly={true}
+            query={query}
           />
         </>
       ) : (
