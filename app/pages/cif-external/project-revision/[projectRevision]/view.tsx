@@ -27,7 +27,7 @@ export function ProjectFormPage({
   return (
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
-        <ProjectFormSummary projectRevision={projectRevision} />
+        <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />
       </div>
     </ExternalLayout>
   );
