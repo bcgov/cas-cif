@@ -1,4 +1,4 @@
-// brianna - commit handler, pgtap tests, summary query, jest tests, dev data
+// brianna - commit handler, pgtap tests, jest tests, dev data, diffs are for whole array element, source numbering
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
