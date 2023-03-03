@@ -7,6 +7,8 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import { ProjectFundingAgreementForm_projectRevision$data } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
+import projectFundingParameterEPSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_EP.json";
+import projectFundingParameterIASchema from "../../../../../schema/data/prod/json_schema/funding_parameter_IA.json";
 
 const testQuery = graphql`
   query ProjectFundingAgreementFormQuery @relay_test_operation {
@@ -68,26 +70,13 @@ const defaultMockResolver = {
                 proponentCost: 800,
                 contractStartDate: "2021-01-01",
                 projectAssetsLifeEndDate: "2021-12-31",
-              },
-            },
-          },
-        ],
-      },
-      additionalFundingSourceFormChanges: {
-        __id: "connection Id",
-        edges: [
-          {
-            node: {
-              id: "Additional Funding Source Test Form Change ID 1",
-              rowId: 789,
-              changeStatus: "pending",
-              operation: "CREATE",
-              newFormData: {
-                projectId: 51,
-                sourceIndex: 1,
-                source: "Test Source 1",
-                amount: 100,
-                status: "Approved",
+                additionalFundingSources: [
+                  {
+                    source: "Test Source 1",
+                    amount: 100,
+                    status: "Approved",
+                  },
+                ],
               },
             },
           },
@@ -95,6 +84,11 @@ const defaultMockResolver = {
       },
     };
     return result;
+  },
+  Form() {
+    return {
+      jsonSchema: projectFundingParameterEPSchema,
+    };
   },
   Query() {
     return {
@@ -286,26 +280,13 @@ describe("The ProjectFundingAgreementForm", () => {
                       proponentCost: 800,
                       contractStartDate: "2021-01-01",
                       projectAssetsLifeEndDate: "2021-12-31",
-                    },
-                  },
-                },
-              ],
-            },
-            additionalFundingSourceFormChanges: {
-              __id: "connection Id",
-              edges: [
-                {
-                  node: {
-                    id: "Additional Funding Source Test Form Change ID 1",
-                    rowId: 789,
-                    changeStatus: "pending",
-                    operation: "CREATE",
-                    newFormData: {
-                      projectId: 51,
-                      sourceIndex: 1,
-                      source: "Test Source 1",
-                      amount: 100,
-                      status: "Approved",
+                      additionalFundingSources: [
+                        {
+                          source: "Test Source IA",
+                          amount: 100,
+                          status: "Approved",
+                        },
+                      ],
                     },
                   },
                 },
@@ -313,6 +294,11 @@ describe("The ProjectFundingAgreementForm", () => {
             },
           };
         return result;
+      },
+      Form() {
+        return {
+          jsonSchema: projectFundingParameterIASchema,
+        };
       },
       Query() {
         return {
@@ -385,7 +371,7 @@ describe("The ProjectFundingAgreementForm", () => {
       screen.getByRole<HTMLInputElement>("textbox", {
         name: /additional funding source/i,
       }).value
-    ).toBe("Test Source 1");
+    ).toBe("Test Source IA");
     expect(
       screen.getByRole<HTMLInputElement>("textbox", {
         name: /additional funding amount/i,
@@ -445,25 +431,6 @@ describe("The ProjectFundingAgreementForm", () => {
       });
     });
 
-    componentTestingHelper.expectMutationToBeCalled(
-      "updateFundingParameterFormChangeMutation",
-      {
-        input: {
-          rowId: 1,
-          formChangePatch: {
-            newFormData: expect.objectContaining({
-              proponentCost: 10000,
-            }),
-          },
-        },
-      }
-    );
-  });
-
-  it("calls the update mutation when entering additional funding source data", async () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
     const additionalFundingSourceField = screen.getByRole<HTMLInputElement>(
       "textbox",
       {
@@ -479,12 +446,13 @@ describe("The ProjectFundingAgreementForm", () => {
     });
 
     componentTestingHelper.expectMutationToBeCalled(
-      "updateFormChangeMutation",
+      "updateFundingParameterFormChangeMutation",
       {
         input: {
-          rowId: 789,
+          rowId: 1,
           formChangePatch: {
             newFormData: expect.objectContaining({
+              proponentCost: 10000,
               source: "Test Source Updated",
             }),
           },
@@ -585,46 +553,6 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
         formChangesIds: [789, 1],
-      },
-    });
-  });
-
-  it("calls the addAdditionalFundingSourceToRevisionMutation when the user clicks the add funding source button", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    userEvent.click(screen.getByText(/add funding source/i));
-
-    const mutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
-
-    expect(mutationUnderTest.fragment.node.name).toBe(
-      "addAdditionalFundingSourceToRevisionMutation"
-    );
-
-    expect(mutationUnderTest.request.variables).toMatchObject({
-      input: {
-        revisionId: 1234,
-        sourceIndex: 2,
-      },
-    });
-  });
-  it("calls the discardAdditionalFundingSourceFormChangeMutation when the user clicks the remove button", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    userEvent.click(screen.getByRole("button", { name: /remove/i }));
-
-    const mutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
-
-    expect(mutationUnderTest.fragment.node.name).toBe(
-      "discardAdditionalFundingSourceFormChangeMutation"
-    );
-
-    expect(mutationUnderTest.request.variables).toMatchObject({
-      input: {
-        formChangeId: 789,
       },
     });
   });

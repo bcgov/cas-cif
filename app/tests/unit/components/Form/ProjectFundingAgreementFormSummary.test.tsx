@@ -3,13 +3,16 @@ import { screen } from "@testing-library/react";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import { ProjectFundingAgreementFormSummary_projectRevision$data } from "__generated__/ProjectFundingAgreementFormSummary_projectRevision.graphql";
 import compiledProjectFundingAgreementFormSummaryQuery, {
-  ProjectFundingAgreementFormSummaryQuery,
-} from "__generated__/ProjectFundingAgreementFormSummaryQuery.graphql";
+  ProjectFundingAgreementFormSummaryTestQuery,
+} from "__generated__/ProjectFundingAgreementFormSummaryTestQuery.graphql";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
+import projectFundingParameterEPSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_EP.json";
+import projectFundingParameterIASchema from "../../../../../schema/data/prod/json_schema/funding_parameter_IA.json";
 
 const testQuery = graphql`
-  query ProjectFundingAgreementFormSummaryQuery @relay_test_operation {
+  query ProjectFundingAgreementFormSummaryTestQuery @relay_test_operation {
     query {
+      ...ProjectFundingAgreementFormSummary_query
       projectRevision(id: "Test Project Revision ID") {
         ...ProjectFundingAgreementFormSummary_projectRevision
       }
@@ -63,35 +66,18 @@ const mockQueryPayloadEP = {
             },
           ],
         },
-        summaryAdditionalFundingSourceFormChanges: {
-          edges: [
-            {
-              node: {
-                id: "Test Additional Funding Source ID",
-                newFormData: {
-                  projectId: "Test Project ID",
-                  sourceIndex: 1,
-                  source: "Test Source Name",
-                  amount: 2500,
-                  status: "Approved",
-                },
-                isPristine: false,
-                operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    projectId: "Test Project ID",
-                    sourceIndex: 1,
-                    source: "Test Source Name",
-                    amount: 1000,
-                    status: "Awaiting Approval",
-                  },
-                },
-              },
-            },
-          ],
-        },
       };
     return result;
+  },
+  Query() {
+    return {
+      epFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterEPSchema,
+      },
+      iaFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterIASchema,
+      },
+    };
   },
 };
 
@@ -145,6 +131,16 @@ const mockQueryPayloadIA = {
       };
     return result;
   },
+  Query() {
+    return {
+      epFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterEPSchema,
+      },
+      iaFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterIASchema,
+      },
+    };
+  },
 };
 
 const defaultComponentProps = {
@@ -153,7 +149,7 @@ const defaultComponentProps = {
 };
 
 const componentTestingHelper =
-  new ComponentTestingHelper<ProjectFundingAgreementFormSummaryQuery>({
+  new ComponentTestingHelper<ProjectFundingAgreementFormSummaryTestQuery>({
     component: ProjectFundingAgreementFormSummary,
     testQuery: testQuery,
     compiledQuery: compiledProjectFundingAgreementFormSummaryQuery,
@@ -325,6 +321,16 @@ describe("The Project Funding Agreement Form Summary", () => {
           };
         return result;
       },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
+      },
     });
     componentTestingHelper.renderComponent();
 
@@ -429,6 +435,16 @@ describe("The Project Funding Agreement Form Summary", () => {
           };
         return result;
       },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
+      },
     });
     componentTestingHelper.renderComponent();
 
@@ -474,6 +490,16 @@ describe("The Project Funding Agreement Form Summary", () => {
           };
         return result;
       },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
+      },
     });
     componentTestingHelper.renderComponent();
 
@@ -492,6 +518,16 @@ describe("The Project Funding Agreement Form Summary", () => {
             },
           };
         return result;
+      },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
       },
     });
     componentTestingHelper.renderComponent();
@@ -541,6 +577,16 @@ describe("The Project Funding Agreement Form Summary", () => {
             },
           };
         return result;
+      },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
       },
     });
     componentTestingHelper.renderComponent();
