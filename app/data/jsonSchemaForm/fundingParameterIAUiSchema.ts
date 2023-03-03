@@ -1,54 +1,3 @@
-export const fundingParameterIASchema = {
-  $schema: "http://json-schema.org/draft-07/schema",
-  type: "object",
-  required: [
-    "maxFundingAmount",
-    "provinceSharePercentage",
-    "anticipatedFundingAmount",
-    "proponentCost",
-    "contractStartDate",
-    "projectAssetsLifeEndDate",
-  ],
-  properties: {
-    totalProjectValue: {
-      title: "Total Project Value",
-      type: "number",
-    },
-    maxFundingAmount: {
-      title: "Maximum Funding Amount",
-      type: "number",
-    },
-    provinceSharePercentage: {
-      title: "Province's Share Percentage",
-      type: "number",
-    },
-    anticipatedFundingAmount: {
-      title: "Anticipated/Actual Funding Amount",
-      type: "number",
-    },
-    anticipatedFundingAmountPerFiscalYear: {
-      title: "Anticipated Funding Amount Per Fiscal Year",
-      type: "string",
-    },
-    proponentCost: {
-      title: "Proponent Cost",
-      type: "number",
-    },
-    contractStartDate: {
-      title: "Contract Start Date",
-      type: "string",
-    },
-    projectAssetsLifeEndDate: {
-      title: "Project Assets Life End Date",
-      type: "string",
-    },
-    proponentsSharePercentage: {
-      title: "Proponent's Share Percentage",
-      type: "number",
-    },
-  },
-};
-
 export const fundingParameterIAUiSchema = {
   "ui:order": [
     "maxFundingAmount",
@@ -60,6 +9,8 @@ export const fundingParameterIAUiSchema = {
     "anticipatedFundingAmount",
     "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
+    "additionalFundingSources",
+    "totalPaymentAmountToDate",
   ],
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
@@ -104,5 +55,37 @@ export const fundingParameterIAUiSchema = {
   },
   projectAssetsLifeEndDate: {
     "ui:widget": "DateWidget",
+  },
+  totalPaymentAmountToDate: {
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedTotalPaymentAmountToDate",
+    hideOptional: true,
+    isMoney: true,
+  },
+  additionalFundingSources: {
+    items: {
+      "ui:order": ["source", "amount", "status"],
+      source: {
+        "ui:title": `Additional Funding Source`,
+        "ui:widget": "TextWidget",
+        "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
+      },
+      amount: {
+        "ui:title": `Additional Funding Amount`,
+        "ui:widget": "NumberWidget",
+        isMoney: true,
+        "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
+      },
+      status: {
+        "ui:title": `Additional Funding Status`,
+        "ui:widget": "SearchWidget",
+        "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
+      },
+      // Custom array button prop that is used in ArrayFieldTemplate
+      "ui:array-buttons": {
+        addBtnLabel: "Add Funding Source",
+        removeBtnLabel: "Remove",
+      },
+    },
   },
 };
