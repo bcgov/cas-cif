@@ -23,7 +23,7 @@ export function ExternalProjectFormPage({
     ExternalCifProjectViewQuery,
     preloadedQuery
   );
-  const taskList = <ExternalTaskList projectRevision={projectRevision} />;
+  const taskList = <ExternalTaskList />;
   return (
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
