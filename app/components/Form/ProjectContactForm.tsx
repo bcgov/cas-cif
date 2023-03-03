@@ -29,7 +29,6 @@ interface Props {
   onSubmit: () => void;
   projectRevision: ProjectContactForm_projectRevision$key;
 }
-
 // You only need to include the optional arguments when using this function to create the schema for the summary (read-only) page.
 export const createProjectContactUiSchema = (contact?) => {
   return {
@@ -117,7 +116,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     const schema = { ...parsedSchema };
 
     if (areContactsEmpty) {
-      console.log("empty", areContactsEmpty);
       schema.properties.contactId = {
         ...schema.properties.contactId,
         default: undefined,
@@ -138,8 +136,6 @@ const ProjectContactForm: React.FC<Props> = (props) => {
     };
     return schema as JSONSchema7;
   }, [allContacts, contactFormBySlug, areContactsEmpty]);
-
-  console.log("contactSchema", contactSchema);
 
   const uiSchema = createProjectContactUiSchema();
 
