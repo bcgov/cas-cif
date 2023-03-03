@@ -1,6 +1,9 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { useRouter } from "next/router";
-import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
+import {
+  getExternalProjectRevisionViewPageRoute,
+  getProjectRevisionFormPageRoute,
+} from "routes/pageRoutes";
 import { useFragment, graphql } from "react-relay";
 import { ProjectTableRow_project$key } from "__generated__/ProjectTableRow_project.graphql";
 import Money from "lib/helpers/Money";
@@ -109,7 +112,14 @@ const ProjectTableRow: React.FC<Props> = ({ project, isInternal }) => {
           <Button
             size="small"
             onClick={
-              isInternal ? handleViewClick : () => console.log("placeholder")
+              isInternal
+                ? handleViewClick
+                : () =>
+                    router.push(
+                      getExternalProjectRevisionViewPageRoute(
+                        latestCommittedProjectRevision.id
+                      )
+                    )
             }
           >
             View
