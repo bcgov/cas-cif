@@ -9,7 +9,7 @@ jobs:
   make-lint-chart:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Authenticate to OpenShift Linter namespace
         uses: redhat-actions/oc-login@v1
         with:
