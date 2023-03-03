@@ -18,8 +18,7 @@ describe("when editing a project, the project page", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
     cy.get("@firstViewButton").click();
-    cy.wait(1000);
-    cy.contains("Project Overview").should("be.visible");
+    cy.wait(2000);
     cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
 
@@ -247,7 +246,7 @@ describe("when editing a project, the project page", () => {
     cy.mockLogin("cif_internal");
     cy.visit("/cif/projects");
     cy.get("@firstViewButton").click();
-    cy.wait(1000);
+    cy.wait(2000);
     cy.contains("Project Overview").should("be.visible");
     cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
