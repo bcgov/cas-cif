@@ -1,11 +1,6 @@
-import { ExternalTaskList_projectRevision$key } from "__generated__/ExternalTaskList_projectRevision.graphql";
-
 import TaskListSection from "./TaskListSection";
 
-interface Props {
-  projectRevision: ExternalTaskList_projectRevision$key;
-}
-const ExternalTaskList: React.FC<Props> = ({}) => {
+const ExternalTaskList = ({}) => {
   return (
     <div className="container">
       <ol>
