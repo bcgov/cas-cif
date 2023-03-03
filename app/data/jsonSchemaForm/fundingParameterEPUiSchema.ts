@@ -10,11 +10,11 @@ export const fundingParameterEPUiSchema = {
     "anticipatedFundingAmount",
     "anticipatedFundingAmountPerFiscalYear",
     "totalProjectValue",
+    "additionalFundingSources",
     "netPaymentsToDate",
     "grossPaymentsToDate",
     "holdbackAmountToDate",
     "eligibleExpensesToDate",
-    "additionalFundingSources",
   ],
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
@@ -63,5 +63,51 @@ export const fundingParameterEPUiSchema = {
   },
   projectAssetsLifeEndDate: {
     "ui:widget": "DateWidget",
+  },
+  eligibleExpensesToDate: {
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedEligibleExpensesToDate",
+    hideOptional: true,
+    isMoney: true,
+  },
+  grossPaymentsToDate: {
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedGrossPaymentsToDate",
+    hideOptional: true,
+    isMoney: true,
+  },
+  holdbackAmountToDate: {
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedHoldbackAmountToDate",
+    hideOptional: true,
+    isMoney: true,
+  },
+  netPaymentsToDate: {
+    "ui:widget": "CalculatedValueWidget",
+    calculatedValueFormContextProperty: "calculatedNetPaymentsToDate",
+    hideOptional: true,
+    isMoney: true,
+  },
+  additionalFundingSources: {
+    items: {
+      "ui:order": ["source", "amount", "status"],
+      source: {
+        "ui:widget": "TextWidget",
+      },
+      amount: {
+        "ui:title": `Additional Funding Amount`,
+        "ui:widget": "NumberWidget",
+        isMoney: true,
+      },
+      status: {
+        "ui:title": `Additional Funding Status`,
+        "ui:widget": "SearchWidget",
+      },
+      // Custom array button prop that is used in ArrayFieldTemplate
+      "ui:array-buttons": {
+        addBtnLabel: "Add Funding Source",
+        removeBtnLabel: "Remove",
+      },
+    },
   },
 };

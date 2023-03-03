@@ -8,6 +8,8 @@ const DATABASE_SCHEMAS = [
   "milestone",
   "reporting_requirement",
   "project_contact",
+  "funding_parameter_EP",
+  "funding_parameter_IA",
 ];
 
 export default DATABASE_SCHEMAS;
