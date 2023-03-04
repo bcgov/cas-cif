@@ -259,7 +259,9 @@ describe("when editing a project, the project page", () => {
     // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
+    cy.wait(1000);
     cy.get("@firstViewButton").click();
+    cy.wait(1000);
     cy.findByText(/resume edition/i).click();
     cy.findByText(/submit change/i).click();
     cy.findByText(/Review and Submit information/i).click();
