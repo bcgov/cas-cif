@@ -30,8 +30,10 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("Bar");
 
-    cy.contains("Changes saved.");
-
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Edit Project Overview")
+      .next()
+      .should("have.text", "In Progress");
     cy.happoAndAxe("Project Overview Form", "editing", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -40,7 +42,7 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/1");
-
+    cy.findByText("Project Managers").should("be.visible");
     cy.happoAndAxe("Project manager Form", "editing", "main");
 
     cy.findByLabelText(/tech team primary/i).should(
@@ -176,6 +178,9 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
+    cy.findByText(/Edit annual reports/i)
+      .next()
+      .should("have.text", "In Progress");
     cy.happoAndAxe("Project Annual Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 

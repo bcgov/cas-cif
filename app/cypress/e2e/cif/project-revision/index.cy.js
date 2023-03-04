@@ -82,7 +82,8 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /generate quarterly reports/i }).should(
       "be.disabled"
     );
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Add Budgets, Expenses & Payments").should("be.visible");
     cy.happoAndAxe("Project Quarterly Reports Form", "empty", "main");
 
     // Emissions Intensity Report
@@ -97,7 +98,11 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Annual Reports").should("be.visible");
+    cy.findByText("Add Annual Reports")
+      .next()
+      .should("have.text", "Not Started");
     cy.happoAndAxe("Project Annual Reports Form", "empty", "main");
 
     // SUMMMARY
@@ -296,15 +301,19 @@ describe("the new project page", () => {
     cy.findByText(/Emissions Performance/i).should("be.visible");
     cy.findByLabelText(/Proposal Reference/i).type("EP001");
     cy.contains("Changes saved").should("be.visible");
+    cy.wait(1000);
     cy.get("button").contains("Submit Project Overview").click();
     cy.contains("Changes saved").should("be.visible");
+    cy.contains(
+      "This proposal reference already exists, please specify a different one."
+    ).should("be.visible");
     cy.happoAndAxe(
       "Project overview Form",
       "with errors",
       ".error-detail",
       true
     );
-    cy.get(".error-detail").should("have.length", 6);
+    cy.get(".error-detail").should("have.length", 7);
     // Renders the default error message for a required field
     cy.get(".error-detail").last().should("contain", "Please enter a value");
 

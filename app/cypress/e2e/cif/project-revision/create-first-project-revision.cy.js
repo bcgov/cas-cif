@@ -32,6 +32,7 @@ describe("when creating a project, the project page", () => {
       "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
+    cy.findByText("Rank").next().should("have.text", "1");
     cy.happoAndAxe("Project Overview Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
