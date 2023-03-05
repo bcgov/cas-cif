@@ -85,6 +85,7 @@ describe("the new project page", () => {
     );
     cy.contains("Changes saved.").should("be.visible");
     cy.findByText("Add Budgets, Expenses & Payments").should("be.visible");
+    cy.findByText("Add Milestone Reports").should("not.exist");
     cy.happoAndAxe("Project Quarterly Reports Form", "empty", "main");
 
     // Emissions Intensity Report
@@ -104,6 +105,7 @@ describe("the new project page", () => {
     cy.findByText("Add Annual Reports")
       .next()
       .should("have.text", "Not Started");
+    cy.findByText("Add Emissions Intensity Report").should("not.exist");
     cy.happoAndAxe("Project Annual Reports Form", "empty", "main");
 
     // SUMMMARY
