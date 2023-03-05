@@ -15,6 +15,7 @@ import LoadingFallback from "components/Layout/LoadingFallback";
 import Custom500 from "./500";
 import { GrowthBook, GrowthBookProvider } from "@growthbook/growthbook-react";
 import getConfig from "next/config";
+import Head from "next/head";
 config.autoAddCss = false;
 
 const clientEnv = getClientEnvironment();
@@ -63,10 +64,20 @@ function MyApp({ Component, pageProps }: AppProps) {
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
 
+  // Based on: https://nextjs.org/docs/messages/no-document-viewport-meta#possible-ways-to-fix-it*/
+  // we needed to move the meta tag into the _app.tsx file rather than the _document.tsx file
   const component = hasMounted ? (
-    <Component {...pageProps} {...relayProps} />
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <Component {...pageProps} {...relayProps} />
+    </>
   ) : (
     <Suspense fallback={<LoadingFallback />}>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Component {...pageProps} {...relayProps} />
     </Suspense>
   );
