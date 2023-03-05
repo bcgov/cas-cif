@@ -43,12 +43,12 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/1");
     cy.findByText("Project Managers").should("be.visible");
-    cy.happoAndAxe("Project manager Form", "editing", "main");
 
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
       "cif_internal Testuser"
     );
+    cy.happoAndAxe("Project manager Form", "editing", "main");
     cy.get("label")
       .contains(/tech team primary/i)
       .next()
