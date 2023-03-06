@@ -21,7 +21,9 @@ const { fields, widgets } = utils.getDefaultRegistry();
 
 const formTheme: ThemeProps = {
   children: <></>,
-  fields: { ...fields },
+  fields: {
+    ...fields,
+  },
   widgets: {
     ...widgets,
     TextWidget: TextWidget,

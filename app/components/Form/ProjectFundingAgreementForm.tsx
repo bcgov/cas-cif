@@ -4,6 +4,7 @@ import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameter
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import { JSONSchema7Definition } from "json-schema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
+import AdditionalFundingSourcesFieldTemplate from "lib/theme/AdditionalFundingSourcesFieldTemplate";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
@@ -362,6 +363,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 ? fundingParameterEPUiSchema
                 : fundingParameterIAUiSchema
             }
+            FieldTemplate={AdditionalFundingSourcesFieldTemplate}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
             onChange={(change) => handleChange(change.formData)}

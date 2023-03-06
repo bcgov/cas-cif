@@ -68,18 +68,18 @@ export const fundingParameterIAUiSchema = {
       source: {
         "ui:title": `Additional Funding Source`,
         "ui:widget": "TextWidget",
-        "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
+        isAdditionalFundingSource: true,
       },
       amount: {
         "ui:title": `Additional Funding Amount`,
         "ui:widget": "NumberWidget",
         isMoney: true,
-        "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
+        isAdditionalFundingSource: true,
       },
       status: {
         "ui:title": `Additional Funding Status`,
         "ui:widget": "SearchWidget",
-        "ui:FieldTemplate": "AdditionalFundingSourcesFieldTemplate",
+        isAdditionalFundingSource: true,
       },
     },
   },
