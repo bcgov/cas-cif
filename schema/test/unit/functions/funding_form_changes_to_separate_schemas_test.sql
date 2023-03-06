@@ -1,6 +1,6 @@
 begin;
 
-select plan(5);
+select plan(7);
 
 -- test setup
 
@@ -36,7 +36,26 @@ do $$
           'maxFundingAmount', 200000,
           'proponentCost', 150000
           ),
-      'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter', index);
+      'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter', index),
+      (
+      json_build_object(
+
+        'reportDueDate', now(),
+        'submittedDate', now(),
+        'projectId', index,
+        'reportType', 'Annual',
+        'reportingRequirementIndex',1
+        ),
+      'create', 'cif', 'reporting_requirement', 'pending', 'reporting_requirement',index),
+      (
+      json_build_object(
+          'projectId', index,
+          'sourceIndex', 1,
+          'source', 'cheese import taxes',
+          'amount', 1000,
+          'status', 'Awaiting Approval'
+        ),
+      'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',index);
     end loop;
   end;
 $$;
@@ -89,6 +108,17 @@ select is(
   'All IA projects have had their funding_parameter json_schema_name changed to funding_parameter_IA'
 );
 
+select is(
+  (select count(*) from cif.form_change where json_schema_name='reporting_requirement'),
+  5::bigint,
+  'There are 5 form_change records with a json_schema_name of reporting_requirement to make sure they are not affected by the migration'
+);
+
+select is(
+  (select count(*) from cif.form_change where json_schema_name='additional_funding_source'),
+  5::bigint,
+  'There are 5 form_change records with a json_schema_name of additional_funding_source to make sure they are not affected by the migration'
+);
 
 select finish();
 
