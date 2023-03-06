@@ -8,22 +8,24 @@ $migration$
 
 update cif.form_change
     set json_schema_name = 'funding_parameter_EP'
-    where id in (
-        with ep_projects as (
+    where json_schema_name = 'funding_parameter'
+    and project_revision_id in (
+        with ep_projects_from_changes as (
             select * from cif.form_change
-            where (new_form_data->>'fundingStreamRfpId')::numeric=((select id from cif.funding_stream where name='EP'))
+            where (new_form_data->>'fundingStreamRfpId')::numeric in ((select id from cif.funding_stream_rfp where funding_stream_id=(select id from cif.funding_stream where name='EP')))
             )
-        select id from ep_projects
+        select project_revision_id from ep_projects_from_changes
     );
 
 update cif.form_change
     set json_schema_name = 'funding_parameter_IA'
-    where id in (
-        with ia_projects as (
+    where json_schema_name = 'funding_parameter'
+    and project_revision_id in (
+        with ia_projects_from_changes as (
             select * from cif.form_change
-            where (new_form_data->>'fundingStreamRfpId')::numeric=((select id from cif.funding_stream where name='IA'))
+            where (new_form_data->>'fundingStreamRfpId')::numeric in ((select id from cif.funding_stream_rfp where funding_stream_id=(select id from cif.funding_stream where name='IA')))
             )
-        select id from ia_projects
+        select project_revision_id from ia_projects_from_changes
     );
 
 delete from cif.form where slug='funding_parameter';
