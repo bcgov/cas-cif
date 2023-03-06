@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/bcgov/cas-cif/compare/1.5.0...1.5.1) (2023-03-06)
+
+### Bug Fixes
+
+- fix funding_form_changes_to_separate_schemas migration ([c6a3340](https://github.com/bcgov/cas-cif/commit/c6a3340dee8439b5af9d20adf315d3d51d7f987d))
+
 # [1.5.0](https://github.com/bcgov/cas-cif/compare/1.4.1...1.5.0) (2023-03-03)
 
 ### Bug Fixes
