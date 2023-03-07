@@ -26,6 +26,11 @@ See [Database Testing](#database-testing) below.
 
 First, ensure the web app is running (`cd app && yarn dev`).
 
+For faster performance, build and run the app:
+```
+yarn build && yarn start
+```
+
 For test error debugging and to observe tests' behavior in the browser as they run:
 
 ```
@@ -34,8 +39,9 @@ cd app && yarn cypress
 
 To run the tests more efficiently in a headless mode:
 
+Ensure Happo apiKey and apiSecret are commented out of your .env
 ```
-cd app && yarn test:e2e
+cd app && yarn build yarn test:e2e
 ```
 
 [Options](https://docs.cypress.io/guides/guides/command-line.html#cypress-run) can be passed to Cypress through this command, for example to run an individual test or subset:
