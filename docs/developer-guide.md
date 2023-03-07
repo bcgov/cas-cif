@@ -27,6 +27,7 @@ See [Database Testing](#database-testing) below.
 First, ensure the web app is running (`cd app && yarn dev`).
 
 For faster performance, build and run the app:
+
 ```
 yarn build && yarn start
 ```
@@ -40,6 +41,7 @@ cd app && yarn cypress
 To run the tests more efficiently in a headless mode:
 
 Ensure Happo apiKey and apiSecret are commented out of your .env
+
 ```
 cd app && yarn build yarn test:e2e
 ```
