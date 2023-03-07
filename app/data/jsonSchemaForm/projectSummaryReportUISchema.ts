@@ -21,7 +21,6 @@ export const projectSummaryReportUiSchema = {
   projectSummaryReportPayment: {
     "ui:widget": "NumberWidget",
     isMoney: true,
-    hideOptional: true,
   },
   paymentNotes: {
     "ui:widget": "TextAreaWidget",

@@ -125,7 +125,6 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
     <>
       {projectRevision.projectSummaryFormChanges.edges.length == 0 && (
         <Button
-          variant="secondary"
           disabled={isCreating}
           onClick={() =>
             createProjectSummary({
@@ -145,7 +144,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             })
           }
         >
-          Create
+          Add Project Summary Report
         </Button>
       )}
       {projectRevision.projectSummaryFormChanges.edges.length > 0 && (
