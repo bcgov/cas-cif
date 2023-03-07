@@ -39,7 +39,7 @@ hostName: ~
 
 certbot:
   image:
-    tag: "1.0"
+    pullPolicy: IfNotPresent
   certbot:
     email: ggircs@gov.bc.ca
 
