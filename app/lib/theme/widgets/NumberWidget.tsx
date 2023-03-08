@@ -20,10 +20,10 @@ export const NumberWidget: React.FC<WidgetProps> = ({
     : uiSchema?.numberOfDecimalPlaces ?? 0;
 
   return (
-    <div>
+    <div className="inputWrapper">
       <NumberFormat
         thousandSeparator
-        fixedDecimalScale={numberOfDecimalPlaces}
+        fixedDecimalScale={isMoney || isPercentage}
         decimalScale={numberOfDecimalPlaces}
         id={id}
         prefix={isMoney ? "$" : ""}
@@ -40,7 +40,7 @@ export const NumberWidget: React.FC<WidgetProps> = ({
           ) {
             onChange("");
           } else {
-            onChange(floatValue.toFixed(numberOfDecimalPlaces));
+            onChange(floatValue);
           }
         }}
         style={{
@@ -50,6 +50,7 @@ export const NumberWidget: React.FC<WidgetProps> = ({
         }}
         aria-label={label}
       />
+      {uiSchema?.["ui:options"]?.contentSuffix}
       <style jsx>
         {`
           div :global(input) {
@@ -60,6 +61,11 @@ export const NumberWidget: React.FC<WidgetProps> = ({
             outline-width: 4px;
             outline-color: #3b99fc;
             outline-offset: 1px;
+          }
+          .inputWrapper {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
           }
         `}
       </style>
