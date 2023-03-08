@@ -407,4 +407,52 @@ describe("the emission intensity report form component", () => {
 
     expect(screen.getAllByText(/tco2\/g/i)).toHaveLength(3);
   });
+  it("can call updateEmissionIntensityReportFormChangeMutation with zero values and decimal points on BEI/TEI/PEI and Total Lifetime Emission Reduction", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const baselineEmissionIntensityInput = screen.getByLabelText(
+      "Baseline Emission Intensity (BEI)"
+    );
+    const targetEmissionIntensityInput = screen.getByLabelText(
+      "Target Emission Intensity (TEI)"
+    );
+
+    const postProjectEmissionIntensityInput = screen.getByLabelText(
+      "Post-Project Emission Intensity (PEI)"
+    );
+
+    const totalLifetimeEmissionReductionsInput = screen.getByLabelText(
+      "Total Project Lifetime Emissions Reductions"
+    );
+
+    userEvent.clear(baselineEmissionIntensityInput);
+    userEvent.type(baselineEmissionIntensityInput, "0");
+
+    userEvent.clear(targetEmissionIntensityInput);
+    userEvent.type(targetEmissionIntensityInput, "0.12345678");
+
+    userEvent.clear(postProjectEmissionIntensityInput);
+    userEvent.type(postProjectEmissionIntensityInput, "0.123");
+
+    userEvent.clear(totalLifetimeEmissionReductionsInput);
+    userEvent.type(totalLifetimeEmissionReductionsInput, "0.000000000");
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateEmissionIntensityReportFormChangeMutation",
+      {
+        input: {
+          rowId: 1,
+          formChangePatch: {
+            newFormData: expect.objectContaining({
+              baselineEmissionIntensity: 0,
+              targetEmissionIntensity: 0.12345678,
+              postProjectEmissionIntensity: 0.123,
+              totalLifetimeEmissionReduction: 0,
+            }),
+          },
+        },
+      }
+    );
+  });
 });
