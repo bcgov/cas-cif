@@ -5,6 +5,7 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
   id,
   value,
   uiSchema,
+  options,
 }) => {
   // If we are using this widget to show numbers as money or percent, we can set `isMoney` or `isPercentage` to true in the uiSchema.
   const isMoney = uiSchema?.isMoney;
@@ -18,23 +19,31 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
   return (
     <dd>
       {value ? (
-        <NumberFormat
-          value={value}
-          displayType="text"
-          thousandSeparator
-          fixedDecimalScale={numberOfDecimalPlaces}
-          decimalScale={numberOfDecimalPlaces}
-          id={id}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          className="decimal"
-        />
+        <>
+          <NumberFormat
+            value={value}
+            displayType="text"
+            thousandSeparator
+            fixedDecimalScale={isMoney || isPercentage}
+            decimalScale={numberOfDecimalPlaces}
+            id={id}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercentage ? " %" : ""}
+            className="decimal"
+          />
+          <span className="contentSuffix">
+            {value && options.contentSuffix}
+          </span>
+        </>
       ) : (
         <em>Not added</em>
       )}
       <style jsx>{`
         dd {
           margin: 0;
+        }
+        .contentSuffix {
+          margin-left: 1em;
         }
       `}</style>
     </dd>
