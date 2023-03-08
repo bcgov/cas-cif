@@ -50,10 +50,11 @@ const TaskListItem: React.FC<Props> = ({
         li[aria-current="step"],
         li[aria-current="step"] div {
           background-color: #fafafc;
+          padding-left: 15px;
         }
         .bordered {
           border-bottom: 1px solid #d1d1d1;
-          padding: 10px 0 10px 0;
+          padding: 10px 0 10px 15px;
         }
       `}</style>
     </li>
