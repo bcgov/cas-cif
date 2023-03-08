@@ -43,7 +43,6 @@ const TaskListSection: React.FC<Props> = ({
       {isExpanded && <ul id="child-section">{children}</ul>}
       <style jsx>{`
         li {
-          text-indent: 15px;
           margin-bottom: 0;
         }
         h3 {
