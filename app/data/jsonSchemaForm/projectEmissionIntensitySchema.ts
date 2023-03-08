@@ -121,16 +121,20 @@ export const emissionIntensityReportUiSchema = {
       "ui:widget": "DateWidget",
     },
     baselineEmissionIntensity: {
-      "ui:widget": "TextWidget",
+      "ui:widget": "NumberWidget",
+      numberOfDecimalPlaces: 8,
     },
     targetEmissionIntensity: {
-      "ui:widget": "TextWidget",
+      "ui:widget": "NumberWidget",
+      numberOfDecimalPlaces: 8,
     },
     postProjectEmissionIntensity: {
-      "ui:widget": "TextWidget",
+      "ui:widget": "NumberWidget",
+      numberOfDecimalPlaces: 8,
     },
     totalLifetimeEmissionReduction: {
-      "ui:widget": "TextWidget",
+      "ui:widget": "NumberWidget",
+      numberOfDecimalPlaces: 8,
     },
   },
   uponCompletion: {
