@@ -259,6 +259,55 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "addProjectSummaryReport",
+  (
+    reportDueDate,
+    receivedDate,
+    comments,
+    projectSummaryReportPayment,
+    paymentNotes,
+    dateSentToCsnr
+  ) => {
+    // Extra assertion to wait for the new report to be added
+    cy.contains(/Status of Project Summary Report/i).should("be.visible");
+
+    cy.setDateInPicker("Report Due Date", reportDueDate);
+
+    if (receivedDate) {
+      cy.setDateInPicker("Received Date", receivedDate);
+    }
+
+    if (comments) {
+      cy.get('[aria-label="General Comments"]').clear().type(comments);
+      cy.get('[aria-label="General Comments"]').should("have.value", comments);
+    }
+
+    if (projectSummaryReportPayment) {
+      cy.get('[aria-label="Project Summary Report Payment"]')
+        .clear()
+        .type(projectSummaryReportPayment);
+      cy.get('[aria-label="Project Summary Report Payment"]').should(
+        "have.value",
+        projectSummaryReportPayment
+      );
+    }
+
+    if (paymentNotes) {
+      cy.get('[aria-label="Notes for the Payment"]').clear().type(paymentNotes);
+      cy.get('[aria-label="Notes for the Payment"]').should(
+        "have.value",
+        paymentNotes
+      );
+    }
+
+    if (dateSentToCsnr) {
+      cy.setDateInPicker("Date Invoice Sent to CSNR", dateSentToCsnr);
+    }
+    return cy.url().should("include", "/form/5");
+  }
+);
+
+Cypress.Commands.add(
   "addEmissionIntensityReport",
   (
     measurementPeriodStartDate,

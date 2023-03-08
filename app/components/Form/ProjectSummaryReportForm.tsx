@@ -11,8 +11,8 @@ import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
 import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 import Status from "components/ReportingRequirement/Status";
-// import UndoChangesButton from "./UndoChangesButton";
-// import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
+import SavingIndicator from "./SavingIndicator";
 
 interface Props {
   projectRevision: ProjectSummaryReportForm_projectRevision$key;
@@ -151,23 +151,17 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
         <>
           <header>
             <h3>Project Summary Report</h3>
-            {/* <UndoChangesButton
-              formChangeIds={[
-                projectSummaryFormChange.rowId,
-              ]}
+            <UndoChangesButton
+              formChangeIds={[projectSummaryFormChange.rowId]}
               formRefs={formRefs}
             />
-            <SavingIndicator
-              isSaved={
-                !isUpdating &&
-                !isCreating
-              }
-            /> */}
+            <SavingIndicator isSaved={!isUpdating && !isCreating} />
           </header>
           <Status
             upcomingReportDueDate={upcomingReportDueDate}
             reportSubmittedDates={reportSubmittedDates}
-            reportType={"Project Summary Report"}
+            // TODO: fix status text (make singular??)
+            reportType={"Project Summary"}
           />
           <FormBase
             id={`form-${projectRevision.id}`}
