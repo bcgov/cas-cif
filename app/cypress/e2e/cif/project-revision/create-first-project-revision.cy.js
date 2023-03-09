@@ -333,7 +333,7 @@ describe("when creating a project, the project page", () => {
       .next()
       .should("have.text", "Approved");
 
-    // project summary report section Thomas
+    // project summary report section
     cy.contains(/Project Summary Report/i).should("be.visible");
     cy.findByText(/Project Summary Report Payment/i)
       .next()

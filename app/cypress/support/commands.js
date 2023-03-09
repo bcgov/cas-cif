@@ -308,6 +308,42 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "checkProjectSummaryReport",
+  (
+    reportDueDate,
+    receivedDate,
+    comments,
+    projectSummaryReportPayment,
+    paymentNotes,
+    dateSentToCsnr
+  ) => {
+    cy.findByText(/Report Due Date$/i)
+      .next()
+      .contains(reportDueDate);
+
+    cy.findByText(/Received Date$/i)
+      .next()
+      .contains(receivedDate);
+
+    cy.findByText(/General Comments$/i)
+      .next()
+      .should("have.text", comments);
+
+    cy.findByText(/Project Summary Report Payment$/i)
+      .next()
+      .should("have.text", projectSummaryReportPayment);
+
+    cy.findByText(/Notes for the Payment$/i)
+      .next()
+      .should("have.text", paymentNotes);
+
+    cy.findByText(/Date Invoice Sent to CSNR$/i)
+      .next()
+      .contains(dateSentToCsnr);
+  }
+);
+
+Cypress.Commands.add(
   "addEmissionIntensityReport",
   (
     measurementPeriodStartDate,
