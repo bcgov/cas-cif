@@ -18,7 +18,7 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
 
   return (
     <dd>
-      {value ? (
+      {value !== null && value !== undefined ? (
         <>
           <NumberFormat
             value={value}
@@ -31,9 +31,7 @@ const ReadOnlyNumberWidget: React.FC<WidgetProps> = ({
             suffix={isPercentage ? " %" : ""}
             className="decimal"
           />
-          <span className="contentSuffix">
-            {value && options.contentSuffix}
-          </span>
+          <span className="contentSuffix">{options?.contentSuffix}</span>
         </>
       ) : (
         <em>Not added</em>
