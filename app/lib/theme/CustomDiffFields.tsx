@@ -304,7 +304,6 @@ const CUSTOM_DIFF_FIELDS: Record<
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
     const isAmendmentsAndOtherRevisionsSpecific =
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
-
     if (previousValue && formData && formContext.operation === "UPDATE") {
       return showStringDiff(
         id,
@@ -351,9 +350,15 @@ const CUSTOM_DIFF_FIELDS: Record<
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
 
     if (uiSchema["ui:options"]) {
-      if (previousValue && formData && formContext.operation === "UPDATE") {
+      if (
+        previousValue !== null &&
+        previousValue !== undefined &&
+        formData !== null &&
+        formData !== undefined &&
+        formContext.operation === "UPDATE"
+      ) {
         const oldData =
-          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ||
+          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
           formContext?.oldData?.[props.name];
         const newData = uiSchema["ui:options"].text || formData;
 
@@ -366,7 +371,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           isAmendmentsAndOtherRevisionsSpecific
         );
       } else if (
-        !previousValue &&
+        (previousValue === null || previousValue === undefined) &&
         formData &&
         formContext.operation !== "ARCHIVE"
       ) {
@@ -380,10 +385,12 @@ const CUSTOM_DIFF_FIELDS: Record<
         );
       } else if (
         formContext.operation === "ARCHIVE" ||
-        (!formData && previousValue)
+        ((formData === null || formData === undefined) &&
+          previousValue !== null &&
+          previousValue !== undefined)
       ) {
         const oldData =
-          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ||
+          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
           formContext?.oldData?.[props.name];
         return showStringRemoved(
           id,
@@ -399,7 +406,7 @@ const CUSTOM_DIFF_FIELDS: Record<
       ) {
         return showStringAdded(
           id,
-          uiSchema["ui:options"].text as string,
+          (uiSchema["ui:options"].text as string) ?? formData,
           isDate,
           contentSuffix as string,
           isAmendmentsAndOtherRevisionsSpecific

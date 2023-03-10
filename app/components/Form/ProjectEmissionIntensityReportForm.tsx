@@ -251,7 +251,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
         emissionIntensityReportSchema.properties[schemaProperty].properties
       ).forEach(
         (key) =>
-          formData?.[key] &&
+          formData?.[key] !== null &&
+          formData?.[key] !== undefined &&
           Object.assign(formattedFormData[schemaProperty], {
             [key]: formData[key],
           })
