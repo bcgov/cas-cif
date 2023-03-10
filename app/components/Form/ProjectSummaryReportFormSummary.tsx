@@ -35,7 +35,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
         summaryProjectSummaryFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Project Summary Report"
-          first: 1000
+          first: 1
         ) @connection(key: "connection_summaryProjectSummaryFormChanges") {
           edges {
             node {

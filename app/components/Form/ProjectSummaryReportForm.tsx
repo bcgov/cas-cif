@@ -78,20 +78,14 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
     projectRevision.upcomingProjectSummaryReportFormChange
       ?.asReportingRequirement.reportDueDate;
 
-  const reportSubmittedDates = useMemo(() => {
-    return projectRevision.projectSummaryFormChanges.edges.map(
-      ({ node }) => node.newFormData.submittedDate
-    );
-  }, [projectRevision.projectSummaryFormChanges.edges]);
+  const reportSubmittedDate =
+    projectRevision.projectSummaryFormChanges.edges[0]?.node.newFormData
+      .submittedDate;
 
   const projectSummaryFormChange =
     projectRevision.projectSummaryFormChanges.edges[0]?.node;
 
-  interface PartialProjectSummaryFormData {
-    [key: string]: any;
-  }
-
-  const handleChange = (changeData: PartialProjectSummaryFormData) => {
+  const handleChange = (changeData) => {
     const formData = { ...projectSummaryFormChange.newFormData, ...changeData };
 
     updateProjectSummary({
@@ -159,7 +153,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
           </header>
           <Status
             upcomingReportDueDate={upcomingReportDueDate}
-            reportSubmittedDates={reportSubmittedDates}
+            reportSubmittedDates={reportSubmittedDate}
             // TODO: fix status text (make singular??)
             reportType={"Project Summary"}
           />

@@ -50,11 +50,6 @@ const defaultMockResolver = {
       jsonSchema: projectSummaryProdSchema,
     };
   },
-  Query() {
-    return {
-      // Todo
-    };
-  },
 };
 
 const defaultComponentProps = {
@@ -98,8 +93,10 @@ describe("The ProjectSummaryReportForm", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByRole("button", { name: /create/i })).toBeInTheDocument();
-    userEvent.click(screen.getByText(/create/i));
+    expect(
+      screen.getByRole("button", { name: /Add Project Summary Report/i })
+    ).toBeInTheDocument();
+    userEvent.click(screen.getByText(/Add Project Summary Report/i));
     const mutationUnderTest =
       componentTestingHelper.environment.mock.getAllOperations()[1];
     expect(mutationUnderTest.fragment.node.name).toBe(
@@ -128,7 +125,7 @@ describe("The ProjectSummaryReportForm", () => {
     );
     expect(
       screen.getAllByLabelText("Project Summary Report Payment")[0]
-    ).toHaveValue("1234");
+    ).toHaveValue("$1,234.00");
     expect(
       screen.getByLabelText(/Date invoice sent to CSNR/i)
     ).toHaveTextContent(/Feb[.]? 02, 2022/);
