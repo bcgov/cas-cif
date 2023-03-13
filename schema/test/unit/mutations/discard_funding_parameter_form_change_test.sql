@@ -56,7 +56,7 @@ values (
   'pending',
   'cif',
   'additional_funding_source',
-  'additional_funding_source',
+  'funding_parameter_EP',
   null,
   1,
   '[]'
