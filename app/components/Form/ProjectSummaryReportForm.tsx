@@ -4,15 +4,15 @@ import FormBase from "./FormBase";
 import { Button } from "@button-inc/bcgov-theme";
 import { ProjectSummaryReportForm_projectRevision$key } from "__generated__/ProjectSummaryReportForm_projectRevision.graphql";
 import { graphql, useFragment } from "react-relay";
-import { MutableRefObject, useRef, useMemo } from "react";
+import { MutableRefObject, useRef } from "react";
 import { useCreateProjectSummaryReport } from "mutations/ProjectSummaryReport/createProjectSummaryReport";
 import { useUpdateProjectSummaryReportFormChangeMutation } from "mutations/ProjectSummaryReport/updateProjectSummaryReportFormChange";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
-import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import Status from "components/ReportingRequirement/Status";
 import UndoChangesButton from "./UndoChangesButton";
 import SavingIndicator from "./SavingIndicator";
+import { ISubmitEvent } from "@rjsf/core";
 
 interface Props {
   projectRevision: ProjectSummaryReportForm_projectRevision$key;
@@ -69,25 +69,22 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   const [updateProjectSummary, isUpdating] =
     useUpdateProjectSummaryReportFormChangeMutation();
 
-  const [
-    applyStageReportingRequirementFormChange,
-    isStagingReportingRequirement,
-  ] = useStageReportingRequirementFormChange();
+  const [stageFormChange, isStaging] = useStageFormChange();
 
   const upcomingReportDueDate =
     projectRevision.upcomingProjectSummaryReportFormChange
       ?.asReportingRequirement.reportDueDate;
 
-  const reportSubmittedDate =
+  const reportSubmittedDate = [
     projectRevision.projectSummaryFormChanges.edges[0]?.node.newFormData
-      .submittedDate;
+      .submittedDate,
+  ];
 
   const projectSummaryFormChange =
     projectRevision.projectSummaryFormChanges.edges[0]?.node;
 
   const handleChange = (changeData) => {
     const formData = { ...projectSummaryFormChange.newFormData, ...changeData };
-
     updateProjectSummary({
       variables: {
         reportType: "Project Summary Report",
@@ -113,6 +110,40 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
         },
       },
     });
+  };
+
+  const handleStage = async (changeData?: any) => {
+    return new Promise((resolve, reject) =>
+      stageFormChange({
+        variables: {
+          input: {
+            rowId: projectSummaryFormChange.rowId,
+            formChangePatch: changeData ? { newFormData: changeData } : {},
+          },
+        },
+        optimisticResponse: {
+          stageFormChange: {
+            formChange: {
+              id: projectSummaryFormChange.id,
+              changeStatus: "staged",
+              newFormData: changeData,
+            },
+          },
+        },
+        onCompleted: resolve,
+        onError: reject,
+      })
+    );
+  };
+
+  const handleSubmit = async (e: ISubmitEvent<any>) => {
+    console.log("handle submit");
+    await handleStage(e.formData);
+    props.onSubmit();
+  };
+
+  const handleError = () => {
+    handleStage();
   };
 
   return (
@@ -149,12 +180,13 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
               formChangeIds={[projectSummaryFormChange.rowId]}
               formRefs={formRefs}
             />
-            <SavingIndicator isSaved={!isUpdating && !isCreating} />
+            <SavingIndicator
+              isSaved={!isUpdating && !isCreating && !isStaging}
+            />
           </header>
           <Status
             upcomingReportDueDate={upcomingReportDueDate}
             reportSubmittedDates={reportSubmittedDate}
-            // TODO: fix status text (make singular??)
             reportType={"Project Summary"}
           />
           <FormBase
@@ -167,25 +199,20 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             }
             uiSchema={projectSummaryReportUiSchema}
             onChange={(change) => handleChange(change.formData)}
+            onSubmit={handleSubmit}
+            onError={handleError}
             formData={projectSummaryFormChange.newFormData}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
-          />
-          <Button
-            size="medium"
-            variant="primary"
-            onClick={() =>
-              stageMultipleReportingRequirementFormChanges(
-                applyStageReportingRequirementFormChange,
-                props.onSubmit,
-                formRefs,
-                projectRevision.projectSummaryFormChanges.edges,
-                "Project Summary Report"
-              )
-            }
-            disabled={isUpdating || isStagingReportingRequirement}
           >
-            Submit Project Summary
-          </Button>
+            <Button
+              size="medium"
+              variant="primary"
+              type="submit"
+              disabled={isUpdating || isStaging}
+            >
+              Submit Project Summary
+            </Button>
+          </FormBase>
         </>
       )}
     </>

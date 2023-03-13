@@ -131,36 +131,50 @@ describe("The ProjectSummaryReportForm", () => {
     ).toHaveTextContent(/Feb[.]? 02, 2022/);
   });
 
-  it("calls useMutationWithErrorMessage and returns expected message when there is a mutation error", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
+  it("calls useMutationWithErrorMessage and returns expected message when there is a mutation error adding a project summary report", () => {
+    const mockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          ...defaultMockResolver.ProjectRevision(context, generateID),
 
-    userEvent.click(screen.getByText(/submit project summary/i));
+          projectSummaryFormChanges: {
+            edges: [],
+            __id: "client:mock:__connection_projectSummaryFormChanges_connection",
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+    expect(screen.getByText(/Add Project Summary Report/i)).toBeInTheDocument();
+    userEvent.click(screen.getByText(/Add Project Summary Report/i));
     act(() => {
       componentTestingHelper.environment.mock.rejectMostRecentOperation(
         new Error()
       );
     });
     expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
-      "An error occurred when staging the form change."
+      "An error occured while adding the Project Summary to the revision."
     );
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    userEvent.click(screen.getByText(/submit.*/i));
-
-    componentTestingHelper.expectMutationToBeCalled(
-      "stageReportingRequirementFormChangeMutation",
-      {
-        input: {
-          rowId: 1,
-          formChangePatch: expect.any(Object),
-        },
-        reportType: "Project Summary Report",
-      }
+    expect(
+      screen.getByRole("button", { name: /submit project summary/i })
+    ).toBeInTheDocument();
+    userEvent.click(
+      screen.getByRole("button", { name: /submit project summary/i })
     );
+
+    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
+      input: {
+        rowId: 1,
+        formChangePatch: expect.any(Object),
+      },
+    });
   });
 
   it("calls the updateformchange mutation when the user types in data", () => {
@@ -177,5 +191,25 @@ describe("The ProjectSummaryReportForm", () => {
         reportType: "Project Summary Report",
       }
     );
+  });
+
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    userEvent.click(screen.getByText(/submit.*/i));
+    userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
+
+    userEvent.click(screen.getByText(/Undo Changes/i));
+
+    // expect 4 operations update and undo
+    expect(
+      componentTestingHelper.environment.mock.getAllOperations()
+    ).toHaveLength(4);
+
+    componentTestingHelper.expectMutationToBeCalled("undoFormChangesMutation", {
+      input: {
+        formChangesIds: [1],
+      },
+    });
   });
 });
