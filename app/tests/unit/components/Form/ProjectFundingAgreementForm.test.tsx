@@ -55,7 +55,7 @@ const defaultMockResolver = {
           {
             node: {
               id: "Test Form Change ID 1",
-              rowId: 1,
+              rowId: 999999999,
               changeStatus: "pending",
               eligibleExpensesToDate: "5",
               holdbackAmountToDate: "6",
@@ -87,11 +87,13 @@ const defaultMockResolver = {
   },
   Form() {
     return {
+      rowId: 15,
       jsonSchema: projectFundingParameterEPSchema,
     };
   },
   Query() {
     return {
+      rowId: 30,
       allAdditionalFundingSourceStatuses: {
         edges: [
           {
@@ -139,6 +141,7 @@ const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
 describe("The ProjectFundingAgreementForm", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetAllMocks();
     componentTestingHelper.reinit();
   });
 
@@ -449,11 +452,13 @@ describe("The ProjectFundingAgreementForm", () => {
       "updateFundingParameterFormChangeMutation",
       {
         input: {
-          rowId: 1,
+          rowId: 999999999,
           formChangePatch: {
             newFormData: expect.objectContaining({
               proponentCost: 10000,
-              source: "Test Source Updated",
+              additionalFundingSources: [
+                expect.objectContaining({ source: "Test Source Updated" }),
+              ],
             }),
           },
         },
@@ -472,15 +477,7 @@ describe("The ProjectFundingAgreementForm", () => {
     // The Funding Parameters
     componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
       input: {
-        rowId: 1,
-        formChangePatch: expect.any(Object),
-      },
-    });
-
-    // The additional funding source
-    componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
-      input: {
-        rowId: 789,
+        rowId: 999999999,
         formChangePatch: expect.any(Object),
       },
     });
@@ -517,6 +514,11 @@ describe("The ProjectFundingAgreementForm", () => {
           };
         return result;
       },
+      Form() {
+        return {
+          jsonSchema: projectFundingParameterEPSchema,
+        };
+      },
     };
 
     componentTestingHelper.loadQuery(mockResolver);
@@ -540,19 +542,9 @@ describe("The ProjectFundingAgreementForm", () => {
 
     userEvent.click(screen.getByText(/Undo Changes/i));
 
-    expect(
-      componentTestingHelper.environment.mock.getAllOperations()
-    ).toHaveLength(2);
-
-    const mutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
-
-    expect(mutationUnderTest.fragment.node.name).toBe(
-      "undoFormChangesMutation"
-    );
-    expect(mutationUnderTest.request.variables).toMatchObject({
+    componentTestingHelper.expectMutationToBeCalled("undoFormChangesMutation", {
       input: {
-        formChangesIds: [789, 1],
+        formChangesIds: [999999999],
       },
     });
   });

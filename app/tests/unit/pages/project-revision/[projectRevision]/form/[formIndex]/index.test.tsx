@@ -19,16 +19,16 @@ import compiledFormIndexPageQuery, {
  */
 
 const defaultMockResolver = {
-  ProjectRevision(context, generateId) {
+  ProjectRevision() {
     return {
-      id: `mock-proj-rev-${generateId()}`,
+      id: `mock-proj-rev-1`,
       projectId: 123,
       changeStatus: "pending",
       projectByProjectId: {
         proposalReference: "001",
       },
       projectFormChange: {
-        id: `mock-project-form-${generateId()}`,
+        id: `mock-project-form-2`,
         newFormData: {
           someProjectData: "test2",
         },
@@ -99,19 +99,19 @@ describe("The form index page", () => {
     pageTestingHelper.renderPage();
     await userEvent.click(screen.getByText(/submit project managers/i));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-proj-rev-2")
+      getProjectRevisionPageRoute("mock-proj-rev-1")
     );
   });
 
   it("redirects the user to the next page on submit when creating a project", async () => {
     pageTestingHelper.loadQuery({
-      ProjectRevision(context, generateId) {
+      ProjectRevision() {
         return {
           id: "mock-proj-rev-id",
           projectId: null,
           projectByProjectId: null,
           projectFormChange: {
-            id: `mock-project-form-${generateId()}`,
+            id: `mock-project-form-3`,
             newFormData: {
               someProjectData: "test2",
             },
