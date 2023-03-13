@@ -16,8 +16,6 @@ import {
 
 const { fields } = utils.getDefaultRegistry();
 
-const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
-
 interface Props
   extends SummaryFormProps<ProjectSummaryReportFormSummary_projectRevision$key> {}
 
@@ -31,7 +29,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     graphql`
       fragment ProjectSummaryReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
-        id
         summaryProjectSummaryFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
           reportType: "Project Summary Report"
@@ -39,7 +36,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
         ) @connection(key: "connection_summaryProjectSummaryFormChanges") {
           edges {
             node {
-              id
               isPristine
               newFormData
               operation
@@ -60,113 +56,84 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   // Show diff if it is not the first revision and the view only
   const renderDiff = !isFirstRevision && !viewOnly;
 
-  // Show archived records if showing the diff
-  let projectSummaryFormChanges = summaryProjectSummaryFormChanges.edges;
-  if (!renderDiff)
-    projectSummaryFormChanges = summaryProjectSummaryFormChanges.edges.filter(
-      ({ node }) => node.operation !== "ARCHIVE"
-    );
+  const projectSummaryFormChange =
+    summaryProjectSummaryFormChanges?.edges[0]?.node;
 
-  const allFormChangesPristine = useMemo(
-    () =>
-      !projectSummaryFormChanges.some(
-        ({ node }) => node.isPristine === false || node.isPristine === null
-      ),
-    [projectSummaryFormChanges]
-  );
+  // Set custom rjsf fields to display diffs
+  const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-  const projectSummaryReportJSX = useMemo(() => {
-    return projectSummaryFormChanges.map(({ node }) => {
-      const projectSummaryFormDiffObject = renderDiff
-        ? getFilteredSchema(
-            node.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
-            node || {}
-          )
-        : {
-            formSchema: node.formByJsonSchemaName.jsonSchema.schema,
-            formData: node.newFormData,
-          };
-
-      if (
-        isOnAmendmentsAndOtherRevisionsPage &&
-        node?.isPristine &&
-        node.operation !== "ARCHIVE"
-      )
-        return null;
-
-      return (
-        <div key={node.id} className="reportContainer">
-          {Object.keys(projectSummaryFormDiffObject.formSchema.properties)
-            .length === 0 &&
-            node.operation !== "ARCHIVE" && (
-              <FormNotAddedOrUpdated
-                isFirstRevision={isFirstRevision}
-                formTitle="Project Summary Report"
-              />
-            )}
-          {renderDiff && node.operation === "ARCHIVE" ? (
-            <FormRemoved
-              isOnAmendmentsAndOtherRevisionsPage={
-                isOnAmendmentsAndOtherRevisionsPage
-              }
-              formTitle="Project Summary Report"
-            />
-          ) : (
-            <FormBase
-              liveValidate
-              key={`form-${node.id}`}
-              tagName={"dl"}
-              theme={readOnlyTheme}
-              fields={renderDiff ? customFields : fields}
-              schema={projectSummaryFormDiffObject.formSchema as JSONSchema7}
-              formData={projectSummaryFormDiffObject.formData}
-              uiSchema={projectSummaryReportUiSchema}
-              formContext={{
-                operation: node.operation,
-                oldData: node.formChangeByPreviousFormChangeId?.newFormData,
-                isAmendmentsAndOtherRevisionsSpecific:
-                  isOnAmendmentsAndOtherRevisionsPage,
-              }}
-            />
-          )}
-          <style jsx>{`
-            .reportContainer {
-              margin-bottom: 1em;
-            }
-          `}</style>
-        </div>
-      );
-    });
-  }, [
-    isFirstRevision,
-    isOnAmendmentsAndOtherRevisionsPage,
-    renderDiff,
-    projectSummaryFormChanges,
-  ]);
+  const allFormChangesPristine = useMemo(() => {
+    if (
+      projectSummaryFormChange?.isPristine === false ||
+      projectSummaryFormChange?.isPristine === null
+    )
+      return false;
+    return true;
+  }, [projectSummaryFormChange?.isPristine]);
 
   useEffect(
     () => setHasDiff && setHasDiff(!allFormChangesPristine),
     [allFormChangesPristine, setHasDiff]
   );
 
-  return (
-    <>
-      {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Summary Report</h3>}
-      {projectSummaryFormChanges.length < 1 && viewOnly && (
-        <dd>
-          <em>No Project Summary Report</em>
-        </dd>
-      )}
-      {allFormChangesPristine &&
-      !viewOnly &&
-      !isOnAmendmentsAndOtherRevisionsPage ? (
+  if (allFormChangesPristine || !projectSummaryFormChange)
+    return (
+      <>
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
           formTitle="Project Summary Report"
         />
-      ) : (
-        projectSummaryReportJSX
+      </>
+    );
+
+  // Set the formSchema and formData based on showing the diff or not
+  const projectSummaryFormDiffObject = renderDiff
+    ? getFilteredSchema(
+        projectSummaryFormChange.formByJsonSchemaName.jsonSchema
+          .schema as JSONSchema7,
+        projectSummaryFormChange || {}
+      )
+    : {
+        formSchema:
+          projectSummaryFormChange.formByJsonSchemaName.jsonSchema.schema,
+        formData: projectSummaryFormChange.newFormData,
+      };
+
+  return (
+    <>
+      {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Summary Report</h3>}
+      {allFormChangesPristine &&
+        projectSummaryFormChange?.operation !== "ARCHIVE" && (
+          <FormNotAddedOrUpdated
+            isFirstRevision={isFirstRevision}
+            formTitle="Project Summary Report"
+          />
+        )}
+      {renderDiff && projectSummaryFormChange?.operation === "ARCHIVE" && (
+        <FormRemoved
+          isOnAmendmentsAndOtherRevisionsPage={
+            isOnAmendmentsAndOtherRevisionsPage
+          }
+          formTitle="Project Summary Report"
+        />
       )}
+      <FormBase
+        liveValidate
+        tagName={"dl"}
+        theme={readOnlyTheme}
+        fields={renderDiff ? customFields : fields}
+        schema={projectSummaryFormDiffObject.formSchema as JSONSchema7}
+        formData={projectSummaryFormDiffObject.formData}
+        uiSchema={projectSummaryReportUiSchema}
+        formContext={{
+          operation: projectSummaryFormChange.operation,
+          oldData:
+            projectSummaryFormChange.formChangeByPreviousFormChangeId
+              ?.newFormData,
+          isAmendmentsAndOtherRevisionsSpecific:
+            isOnAmendmentsAndOtherRevisionsPage,
+        }}
+      />
     </>
   );
 };
