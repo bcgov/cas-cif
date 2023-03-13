@@ -6,6 +6,8 @@ import compiledViewProjectRevisionQuery, {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { getProjectRevisionChangeLogsPageRoute } from "routes/pageRoutes";
+import projectFundingParameterEPSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_EP.json";
+import projectFundingParameterIASchema from "../../../../../schema/data/prod/json_schema/funding_parameter_IA.json";
 
 const defaultMockResolver = {
   ProjectRevision(context, generateId) {
@@ -40,6 +42,12 @@ const defaultMockResolver = {
             },
           },
         ],
+      },
+      epFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterEPSchema,
+      },
+      iaFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterIASchema,
       },
     };
   },
