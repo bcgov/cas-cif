@@ -1,6 +1,6 @@
 begin;
 
-select plan(7);
+select plan(6);
 
 -- test setup
 
@@ -55,7 +55,7 @@ do $$
           'amount', 1000,
           'status', 'Awaiting Approval'
         ),
-      'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',index);
+      'create', 'cif', 'additional_funding_source', 'pending', 'funding_parameter',index);
     end loop;
   end;
 $$;
@@ -71,7 +71,7 @@ update cif.form_change
 -- test setup ends
 
 select is(
-  (select count(*) from cif.form_change where json_schema_name='funding_parameter'),
+  (select count(*) from cif.form_change where json_schema_name='funding_parameter' and form_data_table_name='funding_parameter'),
   5::bigint,
   'There are 5 form_change records with a json_schema_name of funding_parameter'
 );
@@ -97,13 +97,13 @@ select is (
 );
 
 select is(
-  (select count(*) from cif.form_change where json_schema_name='funding_parameter_EP'),
+  (select count(*) from cif.form_change where json_schema_name='funding_parameter_EP' and form_data_table_name='funding_parameter'),
   3::bigint,
   'All EP projects have had their funding_parameter json_schema_name changed to funding_parameter_EP'
 );
 
 select is(
-  (select count(*) from cif.form_change where json_schema_name='funding_parameter_IA'),
+  (select count(*) from cif.form_change where json_schema_name='funding_parameter_IA' and form_data_table_name='funding_parameter'),
   2::bigint,
   'All IA projects have had their funding_parameter json_schema_name changed to funding_parameter_IA'
 );
@@ -112,12 +112,6 @@ select is(
   (select count(*) from cif.form_change where json_schema_name='reporting_requirement'),
   5::bigint,
   'There are 5 form_change records with a json_schema_name of reporting_requirement to make sure they are not affected by the migration'
-);
-
-select is(
-  (select count(*) from cif.form_change where json_schema_name='additional_funding_source'),
-  5::bigint,
-  'There are 5 form_change records with a json_schema_name of additional_funding_source to make sure they are not affected by the migration'
 );
 
 select finish();

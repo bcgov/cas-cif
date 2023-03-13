@@ -82,12 +82,11 @@ values
 (
 json_build_object(
     'projectId', 2,
-    'sourceIndex', 1,
     'source', 'cheese import taxes-1',
     'amount', 1000,
     'status', 'Awaiting Approval'
   ),
-'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',2),
+'create', 'cif', 'additional_funding_source', 'pending', 'funding_parameter_EP',2),
 (
 json_build_object(
     'projectId', 2,
@@ -96,25 +95,23 @@ json_build_object(
     'amount', 2000,
     'status', 'Approved'
   ),
-'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',2),
+'create', 'cif', 'additional_funding_source', 'pending', 'funding_parameter_EP',2),
 (
 json_build_object(
     'projectId', 2,
-    'sourceIndex', 3,
     'source', 'cheese import taxes-3',
     'amount', 3000,
     'status', 'Approved'
   ),
-'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',2),
+'create', 'cif', 'additional_funding_source', 'pending', 'funding_parameter_EP',2),
 (
 json_build_object(
     'projectId', 2,
-    'sourceIndex', 4,
     'source', 'cheese export taxes-4',
     'amount', 4000,
     'status', 'Denied'
   ),
-'create', 'cif', 'additional_funding_source', 'pending', 'additional_funding_source',2);
+'create', 'cif', 'additional_funding_source', 'pending', 'funding_parameter_EP',2);
 
 /** END SETUP **/
 
