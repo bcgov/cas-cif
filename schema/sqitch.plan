@@ -267,5 +267,4 @@ data/006_insert_json_schema_form_data_refactor_funding_schema 2023-03-02T23:38:1
 data/006_insert_json_schema_form_data_refactor_funding_schema 2023-03-02T23:38:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Please enter a note for your change. Lines starting with '#' will
 functions/handle_funding_parameter_form_change_commit 2023-03-03T16:44:16Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Please enter a note for your change. Lines starting with '#' will
 mutations/add_additional_funding_source_to_revision [mutations/add_additional_funding_source_to_revision@1.4.1] 2023-03-07T22:20:04Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # drop function add_additional_funding_source_to_revision
-mutations/discard_additional_funding_source_form_change [mutations/discard_additional_funding_source_form_change@1.4.1] 2023-03-07T22:21:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # drop function discard_additional_funding_source_form_change
 mutations/create_project_revision [mutations/create_project_revision@1.5.1] 2023-03-08T19:49:33Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Remove additional funding sources union in create_project_revision
