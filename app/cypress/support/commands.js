@@ -571,15 +571,3 @@ Cypress.Commands.add("setDateInPicker", (ariaLabel, date, reportNumber = 0) => {
     .contains(`${receivedDateTZ.toFormat("MMM dd, yyyy")}`);
   cy.contains("Changes saved").should("be.visible");
 });
-
-// This is a workaround for CI tests failing due to hydration errors but they are not failing locally
-Cypress.on("uncaught:exception", (err) => {
-  // we check if the error is
-  if (
-    err.message.includes("Minified React error #425;") ||
-    err.message.includes("Minified React error #418;") ||
-    err.message.includes("Minified React error #422;")
-  ) {
-    return false;
-  }
-});
