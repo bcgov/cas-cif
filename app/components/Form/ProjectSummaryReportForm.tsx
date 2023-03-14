@@ -113,12 +113,13 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   };
 
   const handleStage = async (changeData?: any) => {
+    const formData = { ...projectSummaryFormChange.newFormData, ...changeData };
     return new Promise((resolve, reject) =>
       stageFormChange({
         variables: {
           input: {
             rowId: projectSummaryFormChange.rowId,
-            formChangePatch: changeData ? { newFormData: changeData } : {},
+            formChangePatch: changeData ? { newFormData: { ...formData } } : {},
           },
         },
         optimisticResponse: {
@@ -126,7 +127,7 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
             formChange: {
               id: projectSummaryFormChange.id,
               changeStatus: "staged",
-              newFormData: changeData,
+              newFormData: { ...changeData },
             },
           },
         },
@@ -137,7 +138,6 @@ const ProjectSummaryReportForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = async (e: ISubmitEvent<any>) => {
-    console.log("handle submit");
     await handleStage(e.formData);
     props.onSubmit();
   };

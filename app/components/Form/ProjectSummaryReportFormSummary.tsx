@@ -56,29 +56,31 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   // Show diff if it is not the first revision and the view only
   const renderDiff = !isFirstRevision && !viewOnly;
 
-  const projectSummaryFormChange =
-    summaryProjectSummaryFormChanges?.edges[0]?.node;
+  const projectSummaryReport = summaryProjectSummaryFormChanges?.edges[0]?.node;
 
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
   const allFormChangesPristine = useMemo(() => {
     if (
-      projectSummaryFormChange?.isPristine === false ||
-      projectSummaryFormChange?.isPristine === null
+      projectSummaryReport?.isPristine === false ||
+      projectSummaryReport?.isPristine === null
     )
       return false;
     return true;
-  }, [projectSummaryFormChange?.isPristine]);
+  }, [projectSummaryReport?.isPristine]);
 
   useEffect(
     () => setHasDiff && setHasDiff(!allFormChangesPristine),
     [allFormChangesPristine, setHasDiff]
   );
 
-  if (allFormChangesPristine || !projectSummaryFormChange)
+  if (allFormChangesPristine || !projectSummaryReport)
     return (
       <>
+        {!isOnAmendmentsAndOtherRevisionsPage && (
+          <h3>Project Summary Report</h3>
+        )}
         <FormNotAddedOrUpdated
           isFirstRevision={isFirstRevision}
           formTitle="Project Summary Report"
@@ -87,29 +89,30 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     );
 
   // Set the formSchema and formData based on showing the diff or not
-  const projectSummaryFormDiffObject = renderDiff
-    ? getFilteredSchema(
-        projectSummaryFormChange.formByJsonSchemaName.jsonSchema
+  const projectSummaryFormDiffObject = !renderDiff
+    ? {
+        formSchema: projectSummaryReport.formByJsonSchemaName.jsonSchema.schema,
+        formData: projectSummaryReport.newFormData,
+      }
+    : getFilteredSchema(
+        projectSummaryReport.formByJsonSchemaName.jsonSchema
           .schema as JSONSchema7,
-        projectSummaryFormChange || {}
-      )
-    : {
-        formSchema:
-          projectSummaryFormChange.formByJsonSchemaName.jsonSchema.schema,
-        formData: projectSummaryFormChange.newFormData,
-      };
+        projectSummaryReport || {}
+      );
+
+  // todo: not displaying when reviewing changes
 
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Summary Report</h3>}
       {allFormChangesPristine &&
-        projectSummaryFormChange?.operation !== "ARCHIVE" && (
+        projectSummaryReport?.operation !== "ARCHIVE" && (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
             formTitle="Project Summary Report"
           />
         )}
-      {renderDiff && projectSummaryFormChange?.operation === "ARCHIVE" && (
+      {renderDiff && projectSummaryReport?.operation === "ARCHIVE" && (
         <FormRemoved
           isOnAmendmentsAndOtherRevisionsPage={
             isOnAmendmentsAndOtherRevisionsPage
@@ -126,10 +129,9 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
         formData={projectSummaryFormDiffObject.formData}
         uiSchema={projectSummaryReportUiSchema}
         formContext={{
-          operation: projectSummaryFormChange.operation,
+          operation: projectSummaryReport.operation,
           oldData:
-            projectSummaryFormChange.formChangeByPreviousFormChangeId
-              ?.newFormData,
+            projectSummaryReport.formChangeByPreviousFormChangeId?.newFormData,
           isAmendmentsAndOtherRevisionsSpecific:
             isOnAmendmentsAndOtherRevisionsPage,
         }}
