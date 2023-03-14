@@ -13,6 +13,7 @@ describe("the project amendment and revisions page", () => {
 
   it("displays the list of project amendment and revisions and view page for a specific revision", () => {
     cy.visit("/cif/projects");
+    cy.wait(1000);
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.findByText(/Amendments & Other Revisions/i).click();
     cy.url().should("include", "/project-revision-change-logs");
@@ -26,8 +27,10 @@ describe("the project amendment and revisions page", () => {
     cy.get("tbody tr").should("have.length", 5);
     // below code is not a duplicate, we need to click the field twice to get the DESC sort
     cy.get("thead th").contains("Type").click();
+    cy.wait(1000);
     cy.url().should("include", "orderBy=REVISION_TYPE_ASC"); //just to wait for the page to load
     cy.get("thead th").contains("Type").click();
+    cy.wait(1000);
     cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
     cy.get("tbody tr").first().contains("Minor Revision");
     cy.get("tbody tr").last().contains("Draft");
