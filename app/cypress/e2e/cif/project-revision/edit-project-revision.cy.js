@@ -17,9 +17,7 @@ describe("when editing a project, the project page", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
-    cy.wait(2000);
     cy.get("@firstViewButton").click();
-    cy.wait(2000);
     cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
 
@@ -251,9 +249,7 @@ describe("when editing a project, the project page", () => {
     // Verify that the revision can be accessed by other users
     cy.mockLogin("cif_internal");
     cy.visit("/cif/projects");
-    cy.wait(2000);
     cy.get("@firstViewButton").click();
-    cy.wait(2000);
     cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
@@ -264,9 +260,7 @@ describe("when editing a project, the project page", () => {
     // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.wait(1000);
     cy.get("@firstViewButton").click();
-    cy.wait(1000);
     cy.findByText(/resume edition/i).click();
     cy.findByText(/submit change/i).click();
     cy.findByText(/Review and Submit information/i).click();

@@ -175,7 +175,6 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.wait(1000);
     cy.findAllByRole("button", { name: /^view$/i })
       .first()
       .click();
@@ -247,10 +246,8 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.wait(1000);
     cy.findAllByRole("button", { name: /view/i }).first().as("firstViewButton");
     cy.get("@firstViewButton").should("be.visible");
-    cy.wait(1000);
     cy.get("@firstViewButton").click();
     cy.url().should("include", "/form/0");
 
@@ -304,7 +301,6 @@ describe("the new project page", () => {
     cy.findByText(/Emissions Performance/i).should("be.visible");
     cy.findByLabelText(/Proposal Reference/i).type("EP001");
     cy.contains("Changes saved").should("be.visible");
-    cy.wait(1000);
     cy.get("button").contains("Submit Project Overview").click();
     cy.contains("Changes saved").should("be.visible");
     cy.contains(
