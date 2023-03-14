@@ -12,6 +12,7 @@ import { getFilteredSchema } from "lib/theme/getFilteredSchema";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
 import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
+import { Button } from "@button-inc/bcgov-theme";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -146,6 +147,14 @@ const ProjectFormSummary: React.FC<Props> = ({
           }}
         />
       )}
+      <Button
+        size="small"
+        onClick={() => {
+          console.log("to be implemented 🍰");
+        }}
+      >
+        Next
+      </Button>
     </>
   );
 };
