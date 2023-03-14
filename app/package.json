@@ -131,7 +131,7 @@
     "relay-nextjs": "0.8.0",
     "relay-runtime": "13.2.0",
     "styled-components": "^5.2.1",
-    "webpack": "^5.58.2"
+    "webpack": "^5.76.0"
   },
   "resolutions": {
     "**/jsonpointer": "5.0.0",
