@@ -39,7 +39,6 @@ const pageQuery = graphql`
       session {
         ...DefaultLayout_session
       }
-      ...ProjectFundingAgreementFormSummary_query
       projectRevision(id: $projectRevision) {
         id
         rowId
@@ -79,17 +78,18 @@ const pageQuery = graphql`
           }
         }
       }
+      ...ProjectFundingAgreementFormSummary_query
     }
   }
 `;
-
+console.log("pageQuery", pageQuery);
 export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const router = useRouter();
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
-
+  console.log("query in index", query);
   const [updateChangeReason, updatingChangeReason] = useUpdateChangeReason();
 
   const [commitProjectRevision, committingProjectRevision] =

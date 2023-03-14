@@ -1,10 +1,8 @@
-// brianna - commit handler, pgtap tests, jest tests, dev data, diffs are for whole array element, source numbering
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import { JSONSchema7Definition } from "json-schema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
-import AdditionalFundingSourcesFieldTemplate from "lib/theme/AdditionalFundingSourcesFieldTemplate";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
@@ -82,24 +80,14 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             }
           }
         }
-        additionalFundingSourceFormChanges: formChangesFor(
-          first: 500
-          formDataTableName: "additional_funding_source"
-        ) @connection(key: "connection_additionalFundingSourceFormChanges") {
-          __id
-          edges {
-            node {
-              id
-              rowId
-              newFormData
-              changeStatus
-              operation
-            }
-          }
-        }
       }
     `,
     props.projectRevision
+  );
+
+  console.log(
+    "projectFundingAgreementFormChanges",
+    projectRevision.projectFundingAgreementFormChanges.edges
   );
 
   const fundingStream =
@@ -160,10 +148,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     );
 
   // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
-  const filteredAdditionalFundingSourceFormChanges =
-    projectRevision.additionalFundingSourceFormChanges.edges.filter(
-      ({ node }) => node.operation !== "ARCHIVE"
-    );
+
   // putting the conditional directly in the mutation throws errors
   const jsonSchemaName = isFundingStreamEP
     ? "funding_parameter_EP"
@@ -256,20 +241,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   };
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
-    const additionalFundingSourceFormChangeIds =
-      projectRevision.additionalFundingSourceFormChanges.edges.map(
-        ({ node }) => node?.rowId
-      );
     const fundingAgreementFormChangeId =
       projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.rowId;
-    return [
-      ...additionalFundingSourceFormChangeIds,
-      fundingAgreementFormChangeId,
-    ];
-  }, [
-    projectRevision.projectFundingAgreementFormChanges,
-    projectRevision.additionalFundingSourceFormChanges,
-  ]);
+    return [fundingAgreementFormChangeId];
+  }, [projectRevision.projectFundingAgreementFormChanges]);
 
   return (
     <>
@@ -363,7 +338,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 ? fundingParameterEPUiSchema
                 : fundingParameterIAUiSchema
             }
-            FieldTemplate={AdditionalFundingSourcesFieldTemplate}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
             onChange={(change) => handleChange(change.formData)}
@@ -376,10 +350,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 () => {},
                 props.onSubmit,
                 formRefs,
-                [
-                  ...projectRevision.projectFundingAgreementFormChanges.edges,
-                  ...filteredAdditionalFundingSourceFormChanges,
-                ],
+                [...projectRevision.projectFundingAgreementFormChanges.edges],
                 null,
                 stageFormChange
               )

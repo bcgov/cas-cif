@@ -108,14 +108,17 @@ export const ViewProjectRevisionQuery = graphql`
         }
       }
     }
+    # eslint-disable-next-line relay/must-colocate-fragment-spreads
+    ...ProjectFundingAgreementFormSummary_query
   }
 `;
 
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
+  const query = usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
-    usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
+    query;
 
   const [formData, setFormData] = useState(projectRevision);
   const onChange = (e) => {
@@ -164,7 +167,7 @@ export function ProjectRevisionView({
             theme={readOnlyTheme}
             onChange={onChange}
             formData={formData}
-            formContext={{ projectRevision }}
+            formContext={{ projectRevision, query }}
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,
