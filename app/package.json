@@ -125,11 +125,11 @@
     "react-dom": "^18.2.0",
     "react-is": "^17.0.2",
     "react-number-format": "^4.9.1",
-    "react-relay": "14.1.0",
+    "react-relay": "13.2.0",
     "react-relay-network-modern": "^6.2.1",
     "react-typography": "^0.16.23",
     "relay-nextjs": "1.0.1",
-    "relay-runtime": "14.1.0",
+    "relay-runtime": "13.2.0",
     "styled-components": "^5.2.1",
     "webpack": "^5.76.0"
   },
