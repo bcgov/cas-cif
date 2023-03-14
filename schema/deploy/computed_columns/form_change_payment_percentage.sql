@@ -10,14 +10,20 @@ returns numeric as
 $fn$
 
   select
-    round(
-      100 - ((-1.5) *
-      coalesce(
-        (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric,
-        (cif.form_change_calculated_ei_performance(fc))
-      )
-    + 145),
-    2
+    greatest(
+      least(
+        round(
+          100 - ((-1.5) *
+          coalesce(
+            (fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric,
+            (cif.form_change_calculated_ei_performance(fc))
+          )
+        + 145),
+        2
+        ),
+        100
+      ),
+      0
     );
 
 $fn$ language sql stable;
