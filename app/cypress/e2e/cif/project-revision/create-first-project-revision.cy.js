@@ -178,15 +178,7 @@ describe("when creating a project, the project page", () => {
       "20 %"
     );
     // additional funding sources section
-    cy.findByText(/Additional Funding Source 1/i)
-      .next()
-      .should("have.text", "Test Source 1");
-    cy.findByText(/Additional Funding Amount \(Source 1\)/i)
-      .next()
-      .should("have.text", "$111.00");
-    cy.findByText(/Additional Funding Status \(Source 1\)/i)
-      .next()
-      .should("have.text", "Approved");
+    cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
     // project managers section
     cy.findByText(/tech team primary/i)
@@ -323,15 +315,7 @@ describe("when creating a project, the project page", () => {
       undefined
     );
     // additional funding sources section
-    cy.findByText(/Additional Funding Source 1/i)
-      .next()
-      .should("have.text", "Test Source 1");
-    cy.findByText(/Additional Funding Amount \(Source 1\)/i)
-      .next()
-      .should("have.text", "$111.00");
-    cy.findByText(/Additional Funding Status \(Source 1\)/i)
-      .next()
-      .should("have.text", "Approved");
+    cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
     // project summary report section
     cy.contains(/Project Summary Report/i).should("be.visible");

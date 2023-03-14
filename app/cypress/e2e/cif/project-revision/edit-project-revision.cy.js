@@ -9,7 +9,6 @@ describe("when editing a project, the project page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
-    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
   });
 

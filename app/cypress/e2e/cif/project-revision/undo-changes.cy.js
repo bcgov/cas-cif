@@ -145,7 +145,6 @@ describe("when undoing, the project revision page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
-    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
 
