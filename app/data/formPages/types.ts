@@ -1,5 +1,6 @@
 export interface SummaryFormProps<TProjectRevision> {
   projectRevision: TProjectRevision;
+  query?: any;
   viewOnly?: boolean;
   isOnAmendmentsAndOtherRevisionsPage?: boolean;
   setHasDiff?: (hasDiff: boolean | ((prevState: boolean) => void)) => void;

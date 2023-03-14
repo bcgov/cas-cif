@@ -1,53 +1,3 @@
-"""All input for the `addAdditionalFundingSourceToRevision` mutation."""
-input AddAdditionalFundingSourceToRevisionInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  revisionId: Int!
-  sourceIndex: Int!
-}
-
-"""The output of our `addAdditionalFundingSourceToRevision` mutation."""
-type AddAdditionalFundingSourceToRevisionPayload {
-  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
-  changeStatusByChangeStatus: ChangeStatus
-
-  """Reads a single `CifUser` that is related to this `FormChange`."""
-  cifUserByCreatedBy: CifUser
-
-  """Reads a single `CifUser` that is related to this `FormChange`."""
-  cifUserByUpdatedBy: CifUser
-
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """Reads a single `Form` that is related to this `FormChange`."""
-  formByJsonSchemaName: Form
-  formChange: FormChange
-
-  """Reads a single `FormChange` that is related to this `FormChange`."""
-  formChangeByPreviousFormChangeId: FormChange
-
-  """An edge for our `FormChange`. May be used by Relay 1."""
-  formChangeEdge(
-    """The method to use when ordering `FormChange`."""
-    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): FormChangesEdge
-
-  """Reads a single `ProjectRevision` that is related to this `FormChange`."""
-  projectRevisionByProjectRevisionId: ProjectRevision
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `addContactToRevision` mutation."""
 input AddContactToRevisionInput {
   """
@@ -50136,12 +50086,6 @@ enum MilestoneReportsOrderBy {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
-  addAdditionalFundingSourceToRevision(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: AddAdditionalFundingSourceToRevisionInput!
-  ): AddAdditionalFundingSourceToRevisionPayload
   addContactToRevision(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.

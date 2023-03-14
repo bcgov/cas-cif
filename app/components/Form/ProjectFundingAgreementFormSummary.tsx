@@ -88,6 +88,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
 
   const isFundingStreamEP = fundingStream === "EP";
 
+  console.log("query", query);
+
   const { epFundingParameterFormBySlug, iaFundingParameterFormBySlug } =
     useFragment(
       graphql`

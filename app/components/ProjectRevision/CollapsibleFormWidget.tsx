@@ -10,6 +10,7 @@ export interface CollapsibleFormWidgetProps {
   title: string;
   formItems: IFormItem<IIndexedFormConfiguration>[];
   projectRevision: any;
+  query?: any;
 }
 
 const collapsibleFormWidgetFragment = graphql`
@@ -29,11 +30,15 @@ const CollapsibleFormWidget: React.FC<CollapsibleFormWidgetProps> = ({
   title,
   formItems,
   projectRevision,
+  query,
 }) => {
   const [hasDiff, setHasDiff] = useState(false);
   const [isOpen, setIsOpen] = useState(true); //This has to be true to start with, otherwise it will prevent the children from rendering
   const cursorStyle = hasDiff ? "pointer" : "default";
-  const query = useFragment(collapsibleFormWidgetFragment, projectRevision);
+  const widgetQuery = useFragment(
+    collapsibleFormWidgetFragment,
+    projectRevision
+  );
 
   return (
     <li>
@@ -59,10 +64,11 @@ const CollapsibleFormWidget: React.FC<CollapsibleFormWidgetProps> = ({
             return (
               <li key={formItemsIndex}>
                 <ViewComponent
-                  projectRevision={query}
+                  projectRevision={widgetQuery}
                   viewOnly={false}
                   isOnAmendmentsAndOtherRevisionsPage={true}
                   setHasDiff={setHasDiff}
+                  query={query}
                 />
               </li>
             );

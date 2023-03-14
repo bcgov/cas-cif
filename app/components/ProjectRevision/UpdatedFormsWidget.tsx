@@ -39,12 +39,14 @@ const UpdatedFormsWidget: React.FC<WidgetProps> = ({ formContext }) => {
           const formItems = [form, ...(form.items?.map((i) => i) ?? [])].filter(
             (s) => s.formConfiguration
           );
+          console.log("formItems,", formItems);
           return (
             <CollapsibleFormWidget
               key={"collapsible-form-widget-" + index}
               title={form.title}
               formItems={formItems}
               projectRevision={formContext.projectRevision}
+              query={formContext.query}
             />
           );
         })}
