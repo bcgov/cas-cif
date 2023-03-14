@@ -48,7 +48,7 @@ begin
     from cif.project_contact
     where project_contact.project_id = $1
     and archived_at is null
-  -- non-milestone reporting requirements
+   -- non-milestone reporting requirements
   union
     select
       id,
