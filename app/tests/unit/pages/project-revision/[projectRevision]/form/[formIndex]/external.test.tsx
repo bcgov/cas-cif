@@ -9,7 +9,7 @@ import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
 const defaultMockResolver = {
   ProjectRevision(context, generateId) {
     return {
-      id: `mock-proj-rev-${generateId()}`,
+      id: `mock-id`,
       projectId: 123,
       changeStatus: "pending",
       projectByProjectId: {
@@ -29,7 +29,18 @@ const defaultMockResolver = {
         },
       },
       managerFormChanges: {
-        edges: [],
+        edges: [
+          {
+            node: {
+              projectManagerLabel: {
+                id: "Test Label 1 ID",
+                rowId: 1,
+                label: "Test Label 1",
+              },
+              formChange: null,
+            },
+          },
+        ],
       },
       milestoneReportStatuses: {
         edges: [],
@@ -84,6 +95,17 @@ describe("The Project Overview Page (external)", () => {
       within(
         screen.getByRole("navigation", { name: "side navigation" })
       ).getByText(/Declaration/i)
+    ).toBeInTheDocument();
+  });
+
+  it("renders the next button", () => {
+    externalPageTestingHelper.loadQuery();
+    externalPageTestingHelper.renderPage();
+    screen.logTestingPlaygroundURL();
+    expect(
+      screen.getByRole("button", {
+        name: /next/i,
+      })
     ).toBeInTheDocument();
   });
 });

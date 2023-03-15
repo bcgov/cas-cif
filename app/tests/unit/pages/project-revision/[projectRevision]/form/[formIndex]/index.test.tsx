@@ -145,4 +145,15 @@ describe("The Project Annual Reports page", () => {
     expect(container.childElementCount).toEqual(0);
     expect(pageTestingHelper.router.replace).toHaveBeenCalledWith("/404");
   });
+
+  it("does not render the next button", () => {
+    pageTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: null,
+        };
+      },
+    });
+    expect(screen.queryByText(/next/i)).not.toBeInTheDocument();
+  });
 });
