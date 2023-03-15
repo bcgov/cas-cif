@@ -5,6 +5,7 @@ import { viewExternalProjectRevisionQuery } from "__generated__/viewExternalProj
 import ExternalLayout from "components/Layout/ExternalLayout";
 import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ExternalTaskList from "components/TaskList/ExternalTaskList";
+import { Button } from "@button-inc/bcgov-theme";
 
 const ExternalCifProjectViewQuery = graphql`
   query viewExternalProjectRevisionQuery($projectRevision: ID!) {
@@ -28,6 +29,14 @@ export function ExternalProjectFormPage({
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
         <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />
+        <Button
+          size="small"
+          onClick={() => {
+            console.log("to be implemented 🍰");
+          }}
+        >
+          Next
+        </Button>
       </div>
     </ExternalLayout>
   );
