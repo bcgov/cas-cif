@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(5);
 
 /** SETUP **/
 
@@ -136,7 +136,7 @@ select is(
   (
     0::numeric
   ),
-  'payments percentage is 30 from the formula: 100 - ((-1.5) x 50 + 145) = -1245 < 0 ==> return 0'
+  'payments percentage is 0 from the formula: 100 - ((-1.5) x 50 + 145) = -1245 < 0 ==> return 0'
 );
 
 -- 200.00,

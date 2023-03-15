@@ -9,7 +9,12 @@ create or replace function cif.form_change_payment_percentage(fc cif.form_change
 returns numeric as
 $fn$
 
-  select
+-- We need a case here becase greatest() and least() will ignore null values, while we care
+-- about returning null if both values are null.
+select case when ((fc.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric is null
+and cif.form_change_calculated_ei_performance(fc) is null)
+  then null
+  else
     greatest(
       least(
         round(
@@ -24,7 +29,8 @@ $fn$
         100
       ),
       0
-    );
+    )
+end;
 
 $fn$ language sql stable;
 
