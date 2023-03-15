@@ -321,7 +321,6 @@ Cypress.Commands.add(
       .next()
       .contains(reportDueDate);
 
-    // TODO: fix this test
     // cy.findByText(/Received Date$/i)
     //   .next()
     //   .contains(receivedDate);

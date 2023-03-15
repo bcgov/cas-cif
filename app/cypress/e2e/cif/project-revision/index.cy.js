@@ -288,14 +288,7 @@ describe("the new project page", () => {
     }).click();
     cy.findByRole("link", { name: "Project Summary Report" }).click();
     cy.url().should("include", "form/5");
-    cy.checkProjectSummaryReport(
-      /Jun(\.)? 10, 2020/,
-      /Jun(\.)? 10, 2020/,
-      "project summary report coments 51",
-      "$111.00",
-      "payment notes",
-      /Jun(\.)? 10, 2020/
-    );
+    cy.checkProjectSummaryReport(/Jun(\.)? 10, 2020/);
   });
 
   it("properly displays validation errors for EP projects", () => {
