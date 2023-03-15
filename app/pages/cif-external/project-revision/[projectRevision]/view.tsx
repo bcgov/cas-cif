@@ -6,6 +6,7 @@ import ExternalLayout from "components/Layout/ExternalLayout";
 import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ExternalTaskList from "components/TaskList/ExternalTaskList";
 import { Button } from "@button-inc/bcgov-theme";
+import { useRouter } from "next/router";
 
 const ExternalCifProjectViewQuery = graphql`
   query viewExternalProjectRevisionQuery($projectRevision: ID!) {
@@ -20,23 +21,32 @@ const ExternalCifProjectViewQuery = graphql`
 export function ExternalProjectFormPage({
   preloadedQuery,
 }: RelayProps<{}, viewExternalProjectRevisionQuery>) {
+  const router = useRouter();
   const { session, projectRevision } = usePreloadedQuery(
     ExternalCifProjectViewQuery,
     preloadedQuery
   );
   const taskList = <ExternalTaskList />;
+  let renderList = false;
+  if (
+    router.pathname === "/cif-external/project-revision/[projectRevision]/view"
+  ) {
+    renderList = true;
+  }
   return (
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
         <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />
-        <Button
-          size="small"
-          onClick={() => {
-            console.log("to be implemented 🍰");
-          }}
-        >
-          Next
-        </Button>
+        {renderList && (
+          <Button
+            size="small"
+            onClick={() => {
+              console.log("to be implemented 🍰");
+            }}
+          >
+            Next
+          </Button>
+        )}
       </div>
     </ExternalLayout>
   );
