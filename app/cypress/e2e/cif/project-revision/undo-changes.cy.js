@@ -171,11 +171,11 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Edit project managers/i).click();
     cy.findByLabelText(/tech team primary/i).click();
     cy.contains(/Ron Swanson/).click();
+    cy.contains("Changes saved").should("be.visible");
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
       "Ron Swanson"
     );
-    cy.wait(200);
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
@@ -242,7 +242,7 @@ describe("when undoing, the project revision page", () => {
       .click()
       .clear();
     cy.findByLabelText(/milestone description/i).type("I will be undone");
-    cy.wait(200);
+    cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/milestone description/i).should(
       "have.text",
@@ -257,7 +257,7 @@ describe("when undoing, the project revision page", () => {
       .click()
       .clear();
     cy.findByLabelText(/General Comments/i).type("I will be undone");
-    cy.wait(200);
+    cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByLabelText(/General Comments/i).should(
       "have.text",
@@ -272,9 +272,8 @@ describe("when undoing, the project revision page", () => {
       .click()
       .clear();
     cy.findByLabelText(/General Comments/i).type("I will be undone");
-    cy.wait(200);
+    cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.contains("Changes saved.");
     cy.findByLabelText(/General Comments/i).should(
       "have.text",
       "annual report comments 1"

@@ -38,10 +38,10 @@ describe("the projects page", () => {
     cy.get("button[title='Go to first page']").click();
     cy.contains("Test EP Project 001");
     cy.get("thead th").contains("Project Name").click();
-    cy.wait(1000);
+    cy.get("tbody tr").first().contains("Test EP Project 001");
     cy.url().should("include", "orderBy=PROJECT_NAME_ASC");
     cy.get("thead th").contains("Project Name").click();
-    cy.wait(1000);
+    cy.get("tbody tr").first().contains("Test IA Project 005");
     cy.url().should("include", "orderBy=PROJECT_NAME_DESC");
     cy.contains("Test EP Project 050").should("be.visible");
   });
