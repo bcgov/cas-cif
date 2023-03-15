@@ -78,6 +78,8 @@ describe("The Project Overview Page (external)", () => {
       ).getByText(/Review/i)
     ).toBeInTheDocument();
 
+    expect(screen.getByText("< Return to Dashboard")).toBeInTheDocument();
+
     expect(
       within(
         screen.getByRole("navigation", { name: "side navigation" })
