@@ -85,11 +85,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     props.projectRevision
   );
 
-  console.log(
-    "projectFundingAgreementFormChanges",
-    projectRevision.projectFundingAgreementFormChanges.edges
-  );
-
   const fundingStream =
     projectRevision.projectFormChange.asProject
       .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;

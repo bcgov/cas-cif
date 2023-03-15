@@ -1,4 +1,3 @@
-// brianna diffs don't work properly
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import type { JSONSchema7 } from "json-schema";
@@ -87,8 +86,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       .fundingStreamByFundingStreamId.name;
 
   const isFundingStreamEP = fundingStream === "EP";
-
-  console.log("query", query);
 
   const { epFundingParameterFormBySlug, iaFundingParameterFormBySlug } =
     useFragment(
