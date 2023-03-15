@@ -142,3 +142,12 @@ export const getAttachmentDownloadRoute = (attachmentId: string) => ({
 export const getExternalUserLandingPageRoute = () => ({
   pathname: "/cif-external/",
 });
+
+export const getExternalProjectRevisionViewPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif-external/project-revision/[projectRevision]/view`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
