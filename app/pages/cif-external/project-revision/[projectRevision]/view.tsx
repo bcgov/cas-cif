@@ -41,7 +41,7 @@ export function ExternalProjectFormPage({
           <Button
             size="small"
             onClick={() => {
-              console.log("to be implemented 🍰");
+              console.log("to be implemented: 🍰");
             }}
           >
             Next
