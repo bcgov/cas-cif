@@ -1,5 +1,5 @@
 import { createProjectManagerUiSchema } from "components/Form/ProjectManagerForm";
-import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
+// import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useEffect, useMemo } from "react";
@@ -46,6 +46,9 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
                       fullName
                     }
                   }
+                }
+                formByJsonSchemaName {
+                  jsonSchema
                 }
               }
               projectManagerLabel {
@@ -101,7 +104,10 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
           tagName={"dl"}
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
-          schema={projectManagerSchema as JSONSchema7}
+          schema={
+            node.formChange.formByJsonSchemaName.jsonSchema
+              .schema as JSONSchema7
+          }
           uiSchema={createProjectManagerUiSchema(
             node.formChange?.asProjectManager?.cifUserByCifUserId?.fullName,
             node.projectManagerLabel.label
