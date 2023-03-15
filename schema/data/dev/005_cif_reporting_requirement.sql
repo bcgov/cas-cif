@@ -43,19 +43,15 @@ do $$
     end loop;
 
   -- insert annual reports for EP projects
-    for temp_row in select id, project_id from cif.project_revision
-      where cif.project_revision.id = ((
-      select project_revision_id from cif.form_change
-      where project_revision_id = cif.project_revision.id
-     and (new_form_data->>'fundingStreamRfpId')::integer
-
-      in ((
-            select id from cif.funding_stream_rfp
-            where funding_stream_id=((
-              select id from cif.funding_stream
-                where name='EP'))
-            ))
-    ))
+    for temp_row in select pr.id from cif.project_revision pr
+      join cif.form_change fc
+      on pr.id=fc.project_revision_id
+      and fc.form_data_table_name='project'
+      and (fc.new_form_data->>'fundingStreamRfpId')::integer in
+          (select fsr.id from cif.funding_stream_rfp fsr
+          join cif.funding_stream fs
+          on fsr.funding_stream_id=fs.id
+          and fs.name='EP')
     loop
 
       insert into cif.form_change(
@@ -86,19 +82,15 @@ do $$
 
 
   -- insert quarterly reports for EP projects
-    for temp_row in select id, project_id from cif.project_revision
-      where cif.project_revision.id = ((
-        select project_revision_id from cif.form_change
-        where project_revision_id = cif.project_revision.id
-      and (new_form_data->>'fundingStreamRfpId')::integer
-
-        in ((
-              select id from cif.funding_stream_rfp
-              where funding_stream_id=((
-                select id from cif.funding_stream
-                  where name='EP'))
-              ))
-      ))
+    for temp_row in select pr.id from cif.project_revision pr
+      join cif.form_change fc
+      on pr.id=fc.project_revision_id
+      and fc.form_data_table_name='project'
+      and (fc.new_form_data->>'fundingStreamRfpId')::integer in
+          (select fsr.id from cif.funding_stream_rfp fsr
+          join cif.funding_stream fs
+          on fsr.funding_stream_id=fs.id
+          and fs.name='EP')
     loop
 
       insert into cif.form_change(
@@ -125,23 +117,19 @@ do $$
           'reportType', 'Quarterly',
           'reportingRequirementIndex',1
           ),
-        'create', 'cif', 'reporting_requirement', 'pending', 'reporting_requirement',temp_row.id);
+        'create', 'cif', 'reporting_requirement', 'pending', 'reporting_requirement', temp_row.id);
     end loop;
 
   -- insert project summary reports for IA projects
-    for temp_row in select id, project_id from cif.project_revision
-      where cif.project_revision.id = ((
-        select project_revision_id from cif.form_change
-        where project_revision_id = cif.project_revision.id
-      and (new_form_data->>'fundingStreamRfpId')::integer
-
-        in ((
-              select id from cif.funding_stream_rfp
-              where funding_stream_id=((
-                select id from cif.funding_stream
-                  where name='IA'))
-              ))
-      ))
+    for temp_row in select pr.id from cif.project_revision pr
+      join cif.form_change fc
+      on pr.id=fc.project_revision_id
+      and fc.form_data_table_name='project'
+      and (fc.new_form_data->>'fundingStreamRfpId')::integer in
+          (select fsr.id from cif.funding_stream_rfp fsr
+          join cif.funding_stream fs
+          on fsr.funding_stream_id=fs.id
+          and fs.name='IA')
     loop
 
       insert into cif.form_change(
