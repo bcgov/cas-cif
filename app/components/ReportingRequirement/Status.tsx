@@ -11,9 +11,14 @@ const Status: React.FC<Props> = ({
   upcomingReportDueDate,
   reportSubmittedDates,
 }) => {
+  let reportString = "Reports ";
+  if (reportType === "Project Summary") {
+    reportString = "Report ";
+  }
+
   return (
     <div>
-      Status of {reportType} Reports{" "}
+      Status of {reportType} {reportString}
       {getBadgeForOverallReportStatus(
         upcomingReportDueDate,
         reportSubmittedDates
