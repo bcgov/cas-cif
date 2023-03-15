@@ -6,7 +6,7 @@ import withRelayOptions from "lib/relay/withRelayOptions";
 import getConfig from "next/config";
 import Button from "@button-inc/bcgov-theme/Button";
 import Link from "next/link";
-import BCGovLink from "components/BCGovLink";
+import BCGovLink from "@button-inc/bcgov-theme/Link";
 
 const UnauthorizedIdirQuery = graphql`
   query unauthorizedIdirQuery {
@@ -30,9 +30,9 @@ function UnauthorizedIdir({
         <p id="unauthorized-idir-content">
           Hi there! Your IDIR needs to be granted access to use the application.
           You can contact the administrator at{" "}
-          <BCGovLink href={`mailto:${supportEmail}`} passHref>
-            {supportEmail}
-          </BCGovLink>{" "}
+          <Link href={`mailto:${supportEmail}`} passHref legacyBehavior>
+            <BCGovLink>{supportEmail}</BCGovLink>
+          </Link>{" "}
           or reach out via the <b>CIF Internal Users</b> channel on Microsoft
           Teams to request access.
         </p>

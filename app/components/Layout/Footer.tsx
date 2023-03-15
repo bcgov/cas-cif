@@ -1,5 +1,6 @@
+import Link from "next/link";
 import BCGovFooter from "@button-inc/bcgov-theme/Footer";
-import BCGovLink from "components/BCGovLink";
+import BCGovLink from "@button-inc/bcgov-theme/Link";
 
 interface Props {
   links: { name: string; href: string }[];
@@ -13,9 +14,9 @@ const Footer = (props: Props) => {
           <ul>
             {props.links?.map(({ name, href }) => (
               <li key={name}>
-                <BCGovLink passHref href={href} target="_blank">
-                  {name}
-                </BCGovLink>
+                <Link passHref href={href} legacyBehavior>
+                  <BCGovLink target="_blank">{name}</BCGovLink>
+                </Link>
               </li>
             ))}
           </ul>

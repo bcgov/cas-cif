@@ -1,6 +1,7 @@
 import TaskListStatus from "./TaskListStatus";
+import BCGovLink from "@button-inc/bcgov-theme/Link";
+import Link from "next/link";
 import { TaskListLinkUrl, TaskListMode } from "./types";
-import BCGovLink from "components/BCGovLink";
 
 interface Props {
   stepName: string;
@@ -28,11 +29,13 @@ const TaskListItem: React.FC<Props> = ({
       aria-current={currentStep === stepName ? "step" : false}
       className="bordered"
     >
-      <BCGovLink passHref href={linkUrl} scroll={!hasAnchor}>
-        {mode === "view" || stepName === "summary"
-          ? formTitle
-          : `${mode === "update" || hasAnchor ? "Edit" : "Add"} ${formTitle}`}
-      </BCGovLink>
+      <Link passHref href={linkUrl} scroll={!hasAnchor} legacyBehavior>
+        <BCGovLink>
+          {mode === "view" || stepName === "summary"
+            ? formTitle
+            : `${mode === "update" || hasAnchor ? "Edit" : "Add"} ${formTitle}`}
+        </BCGovLink>
+      </Link>
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
       {mode === "view" && milestoneDueDate && (
         <TaskListStatus formStatus={milestoneDueDate} />

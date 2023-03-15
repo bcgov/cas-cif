@@ -40,6 +40,7 @@ function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
               href={
                 footerLinks.find(({ name }) => name === "Program Details").href
               }
+              legacyBehavior
             >
               <BCGovLink target="_blank"> program details </BCGovLink>
             </Link>
