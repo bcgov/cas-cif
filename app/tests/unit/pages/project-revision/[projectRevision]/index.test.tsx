@@ -8,7 +8,7 @@ import compiledProjectRevisionQuery, {
 } from "__generated__/ProjectRevisionQuery.graphql";
 import reportingRequirementProdSchema from "../../../../../../schema/data/prod/json_schema/reporting_requirement.json";
 import projectContactProdSchema from "../../../../../../schema/data/prod/json_schema/project_contact.json";
-
+import projectManagerProdSchema from "../../../../../../schema/data/prod/json_schema/project_manager.json";
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
  * To find the key of the generated operation, one can call
@@ -155,7 +155,7 @@ describe("The Create Project page", () => {
     expect(screen.getByText(/Project Contacts not added/i)).toBeInTheDocument();
   });
 
-  it("Renders the summary with the filled-out details", async () => {
+  it("Renders the summary with the filled-out details for contacts", async () => {
     pageTestingHelper.loadQuery({
       Form() {
         return {
@@ -325,11 +325,190 @@ describe("The Create Project page", () => {
     expect(
       screen.getByText(/test-funding-stream-description - 2020/i)
     ).toBeInTheDocument();
+    screen.logTestingPlaygroundURL();
+    // expect(screen.getByText(/test manager one/i)).toBeInTheDocument();
+    // expect(screen.getByText(/test manager two/i)).toBeInTheDocument();
+    // expect(screen.getByText(/test manager three/i)).toBeInTheDocument();
+    expect(screen.getByText(/test primary contact/i)).toBeInTheDocument();
+    expect(screen.getByText(/test secondary contact/i)).toBeInTheDocument();
+  });
+
+  it("Renders the summary with the filled-out detials for project managers", async () => {
+    pageTestingHelper.loadQuery({
+      Form() {
+        return {
+          jsonSchema: projectManagerProdSchema,
+        };
+      },
+      ProjectRevision() {
+        return {
+          id: "Test Project Revision ID",
+          isFirstRevision: true,
+          projectFormChange: {
+            id: "mock-project-form-id",
+            isPristine: false,
+            newFormData: {
+              summary: "test-summary",
+              operatorId: 3,
+              projectName: "test-project-name",
+              projectStatusId: 1,
+              proposalReference: "test-prop-reference",
+              fundingStreamRfpId: 1,
+              totalFundingRequest: 5,
+            },
+            asProject: {
+              operatorByOperatorId: {
+                legalName: "test-legal-name",
+                bcRegistryId: "test-bc-registry-id",
+              },
+              fundingStreamRfpByFundingStreamRfpId: {
+                year: 2020,
+                fundingStreamByFundingStreamId: {
+                  description: "test-funding-stream-description",
+                },
+              },
+              projectStatusByProjectStatusId: {
+                name: "test-project-status-name",
+              },
+            },
+          },
+          summaryMilestoneReportingRequirementFormChanges: {
+            edges: [],
+          },
+          summaryMilestoneFormChanges: {
+            edges: [],
+          },
+          summaryMilestonePaymentFormChanges: {
+            edges: [],
+          },
+          projectManagerFormChangesByLabel: {
+            edges: [
+              {
+                node: {
+                  formChange: {
+                    isPristine: false,
+                    newFormData: {
+                      cifUserId: 4,
+                      projectId: 2,
+                      projectManagerLabelId: 1,
+                    },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager one",
+                      },
+                    },
+                    operation: "CREATE",
+                  },
+                  projectManagerLabel: {
+                    label: "Tech Team Primary",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: {
+                    isPristine: false,
+                    newFormData: {
+                      cifUserId: 5,
+                      projectId: 2,
+                      projectManagerLabelId: 2,
+                    },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager two",
+                      },
+                    },
+                    operation: "CREATE",
+                  },
+                  projectManagerLabel: {
+                    label: "Tech Team Secondary",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: {
+                    isPristine: false,
+                    newFormData: {
+                      cifUserId: 6,
+                      projectId: 2,
+                      projectManagerLabelId: 3,
+                    },
+                    asProjectManager: {
+                      cifUserByCifUserId: {
+                        fullName: "test manager three",
+                      },
+                    },
+                    operation: "CREATE",
+                  },
+                  projectManagerLabel: {
+                    label: "Ops Team Primary",
+                  },
+                },
+              },
+              {
+                node: {
+                  formChange: null,
+                  projectManagerLabel: {
+                    label: "Ops Team Secondary",
+                  },
+                },
+              },
+            ],
+          },
+          summaryContactFormChanges: {
+            edges: [
+              {
+                node: {
+                  isPristine: false,
+                  newFormData: {
+                    contactId: 2,
+                    projectId: 2,
+                    contactIndex: 2,
+                  },
+                  asProjectContact: {
+                    contactByContactId: {
+                      fullName: "test secondary contact",
+                    },
+                  },
+                },
+              },
+              {
+                node: {
+                  isPristine: false,
+                  newFormData: {
+                    contactId: 5,
+                    projectId: 2,
+                    contactIndex: 1,
+                  },
+                  asProjectContact: {
+                    contactByContactId: {
+                      fullName: "test primary contact",
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+    expect(screen.getByText(/test-summary/)).toBeInTheDocument();
+    expect(screen.getByText(/test-legal-name/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-project-name/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-project-status-name/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-prop-reference/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$5.00/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/test-funding-stream-description - 2020/i)
+    ).toBeInTheDocument();
+    screen.logTestingPlaygroundURL();
     expect(screen.getByText(/test manager one/i)).toBeInTheDocument();
     expect(screen.getByText(/test manager two/i)).toBeInTheDocument();
     expect(screen.getByText(/test manager three/i)).toBeInTheDocument();
-    expect(screen.getByText(/test primary contact/i)).toBeInTheDocument();
-    expect(screen.getByText(/test secondary contact/i)).toBeInTheDocument();
+    // expect(screen.getByText(/test primary contact/i)).toBeInTheDocument();
+    // expect(screen.getByText(/test secondary contact/i)).toBeInTheDocument();
   });
 
   it("Shows a confirmation alert when clicking the Discard Project Revision button", async () => {
