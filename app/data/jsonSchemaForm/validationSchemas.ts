@@ -1,7 +1,7 @@
 import projectManagerSchema from "../../../schema/data/prod/json_schema/project_manager.json";
 import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
-import operatorSchema from "../../../schema/data/prod/json_schema/operator.json";
+import operatorSchema from "./operatorSchema";
 import { paymentSchema } from "./paymentSchema";
 import {
   emissionIntensityReportSchema,
