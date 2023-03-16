@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { ValidatingFormProps } from "components/Form/Interfaces/FormValidationTypes";
 import ProjectManagerFormGroup from "components/Form/ProjectManagerFormGroup";
 import { graphql } from "react-relay";
+import projectManagerProdSchema from "../../../../../schema/data/prod/json_schema/project_manager.json";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectManagerFormGroupQuery, {
   ProjectManagerFormGroupQuery,
@@ -121,6 +122,11 @@ const mockQueryPayload = {
           },
         ],
       },
+    };
+  },
+  Form() {
+    return {
+      jsonSchema: projectManagerProdSchema,
     };
   },
 };
