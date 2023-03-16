@@ -325,7 +325,6 @@ describe("The Create Project page", () => {
     expect(
       screen.getByText(/test-funding-stream-description - 2020/i)
     ).toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
     // expect(screen.getByText(/test manager one/i)).toBeInTheDocument();
     // expect(screen.getByText(/test manager two/i)).toBeInTheDocument();
     // expect(screen.getByText(/test manager three/i)).toBeInTheDocument();

@@ -9,7 +9,6 @@ const DATABASE_SCHEMAS = [
   "reporting_requirement",
   "project_contact",
   "project_manager",
-  "operator",
 ];
 
 export default DATABASE_SCHEMAS;
