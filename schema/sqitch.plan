@@ -251,4 +251,4 @@ data/002_insert_json_schema_form_data_remove_default_from_annual_report_schema 2
 data/005_insert_json_schema_form_data_remove_undefined_from_project_contact_schema 2023-02-28T19:43:24Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # # Remove the default and anyof value in the project contact json schema
 @1.5.1 2023-03-06T22:36:45Z Dylan Leard <dylan@button.is> # release v1.5.1
 @1.5.2 2023-03-07T23:23:58Z Dylan Leard <dylan@button.is> # release v1.5.2
-data/006_json_form_data_remove_default_undefined_from_project_manager_schema 2023-03-15T19:21:20Z Gurjeet Matharu <gurjeet@matharuco.com> # Remove the default and anyof value in the project contact json schema
+data/006_json_form_data_remove_default_undefined_from_project_manager_schema 2023-03-15T19:21:20Z Gurjeet Matharu <gurjeet@matharuco.com> # Remove the default and anyof value in the project manager json schema
