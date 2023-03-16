@@ -43,8 +43,9 @@ describe("the projects page", () => {
     cy.get("h2").contains("Projects");
     cy.get("tbody tr").should("have.length", 20);
     cy.get("thead th").contains("Project Name").click();
+    cy.wait(1000);
     cy.get("tbody tr").first().contains("Test IA Project 005");
-    cy.contains("Test EP Project 050").should("be.visible");
     cy.url().should("include", "orderBy=PROJECT_NAME_DESC");
+    cy.contains("Test EP Project 050").should("be.visible");
   });
 });
