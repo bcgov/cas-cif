@@ -1,5 +1,4 @@
 import { createProjectManagerUiSchema } from "components/Form/ProjectManagerForm";
-// import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import type { JSONSchema7 } from "json-schema";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useEffect, useMemo } from "react";
