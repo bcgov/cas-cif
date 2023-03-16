@@ -1,4 +1,4 @@
-import projectManagerSchema from "./projectManagerSchema";
+import projectManagerSchema from "../../../schema/data/prod/json_schema/operator.json";
 import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
 import operatorSchema from "./operatorSchema";
