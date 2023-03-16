@@ -27,7 +27,8 @@ describe("the projects page", () => {
     cy.visit("/cif/projects");
     cy.get("h2").contains("Projects");
     cy.get("tbody tr").should("have.length", 20);
-    cy.get("[placeholder='Filter']").first().click().type("EP 001");
+    cy.get("[placeholder='Filter']").first().click().should("be.focused");
+    cy.get("[placeholder='Filter']").first().type("EP 001");
     cy.get("button").contains("Apply").click();
     cy.get("tbody tr").should("have.length", 1);
     cy.get("button").contains("Clear").click();
