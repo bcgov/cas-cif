@@ -79,10 +79,6 @@
                 "type": "number",
                 "title": "Maximum Amount This Milestone"
               },
-              "totalEligibleExpenses": {
-                "type": "number",
-                "title": "Total Eligible Expenses"
-              },
               "adjustedGrossAmount": {
                 "type": "number",
                 "title": "Gross Payment Amount This Milestone"
@@ -101,6 +97,28 @@
               }
             },
             "required": ["maximumAmount"]
+          }
+        ]
+      },
+      "reportType": {
+        "oneOf": [
+          {
+            "properties": {
+              "reportType": {
+                "enum": ["Advanced Milestone", "Reporting Milestone"]
+              }
+            }
+          },
+          {
+            "properties": {
+              "reportType": {
+                "enum": ["General Milestone"]
+              },
+              "totalEligibleExpenses": {
+                "type": "number",
+                "title": "Total Eligible Expenses"
+              }
+            }
           }
         ]
       }
