@@ -3,8 +3,11 @@ import { render, screen, cleanup } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import dashboardLinks from "../../../../data/dashboardLinks/subHeaderLinks";
 import externalLinks from "../../../../data/externalLinks/subHeaderLinks";
+import { useRouter } from "next/router";
 
-const useRouter = jest.spyOn(require("next/router"), "useRouter");
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
 
 describe("The SubHeader Component", () => {
   it("Renders the home link for internal users", () => {
