@@ -16,7 +16,9 @@ describe("when editing a project, the project page", () => {
   it("allows multiple users to edit an existing project", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("button").contains("View").first().as("firstViewButton");
+    cy.get("@firstViewButton").click();
+    cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
 
     // edit overview -- change project name
@@ -26,8 +28,10 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("Bar");
 
-    cy.contains("Changes saved.");
-
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Edit Project Overview")
+      .next()
+      .should("have.text", "In Progress");
     cy.happoAndAxe("Project Overview Form", "editing", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -36,13 +40,13 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Project Details/i).click();
     cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/1");
-
-    cy.happoAndAxe("Project manager Form", "editing", "main");
+    cy.findByText("Project Managers").should("be.visible");
 
     cy.findByLabelText(/tech team primary/i).should(
       "have.value",
       "cif_internal Testuser"
     );
+    cy.happoAndAxe("Project manager Form", "editing", "main");
     cy.get("label")
       .contains(/tech team primary/i)
       .next()
@@ -113,7 +117,6 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project milestone reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    // cy.findByText(/Submit changes/i).click();
     cy.contains("Changes saved.");
     cy.findByText(/Review and Submit information/i).click();
 
@@ -126,7 +129,7 @@ describe("when editing a project, the project page", () => {
       .first()
       .click();
     cy.contains("Changes saved.");
-    cy.findByText(/Quarterly Report 2/i).should("not.exist");
+    cy.findByText(/Quarterly Report 1/i).should("not.exist");
     cy.findByText(/No reports due/).should("be.visible");
     cy.contains("Changes saved.");
 
@@ -173,7 +176,9 @@ describe("when editing a project, the project page", () => {
       .clear()
       .type("new comment");
     cy.contains("Changes saved.").should("be.visible");
-    console.log("annual reports");
+    cy.findByText(/Edit annual reports/i)
+      .next()
+      .should("have.text", "In Progress");
     cy.happoAndAxe("Project Annual Reports Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -244,8 +249,9 @@ describe("when editing a project, the project page", () => {
     // Verify that the revision can be accessed by other users
     cy.mockLogin("cif_internal");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
-    cy.findByText(/edit/i).click();
+    cy.get("@firstViewButton").click();
+    cy.findByRole("button", { name: /edit/i }).should("be.visible");
+    cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
     cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
@@ -254,7 +260,7 @@ describe("when editing a project, the project page", () => {
     // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("@firstViewButton").click();
     cy.findByText(/resume edition/i).click();
     cy.findByText(/submit change/i).click();
     cy.findByText(/Review and Submit information/i).click();

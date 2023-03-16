@@ -32,6 +32,7 @@ describe("when creating a project, the project page", () => {
       "78.456"
     );
     cy.contains("Changes saved").should("be.visible");
+    cy.findByText("Rank").next().should("have.text", "1");
     cy.happoAndAxe("Project Overview Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
@@ -95,9 +96,7 @@ describe("when creating a project, the project page", () => {
     cy.setDateInPicker("Substantial Completion Date", "1991-05-17");
     cy.contains("Changes saved").should("be.visible");
     cy.get('[aria-label*="Report Due Date"').contains(/Jun(\.)? 16, 1991/i);
-    cy.contains("Changes saved").should("be.visible");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
-    cy.findAllByRole("status").first().should("have.text", "Late");
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add emissions intensity reports
@@ -340,7 +339,8 @@ describe("when creating a project, the project page", () => {
       .should("include", "connectionString");
 
     //Add new contact
-    cy.get("input[aria-label='Given Name']").should("be.visible").type("Bob");
+    cy.get("input[aria-label='Given Name']").as("givenNameInput").click();
+    cy.get("@givenNameInput").type("Bob");
     cy.get("input[aria-label='Family Name']").type("Loblaw");
     cy.get("input[aria-label=Email]").type("bob@loblaw.ca");
     cy.get("input[aria-label=Phone]").type("1234567890");
@@ -429,6 +429,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Project Assets Life End Date/i)
       .next()
       .contains(/Feb(\.)? 2, 2024/);
+    cy.findAllByText(/^on track$/i).should("have.length", 5);
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
   });
 

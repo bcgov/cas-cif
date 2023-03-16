@@ -30,7 +30,7 @@ function UnauthorizedIdir({
         <p id="unauthorized-idir-content">
           Hi there! Your IDIR needs to be granted access to use the application.
           You can contact the administrator at{" "}
-          <Link href={`mailto:${supportEmail}`} passHref>
+          <Link href={`mailto:${supportEmail}`} passHref legacyBehavior>
             <BCGovLink>{supportEmail}</BCGovLink>
           </Link>{" "}
           or reach out via the <b>CIF Internal Users</b> channel on Microsoft

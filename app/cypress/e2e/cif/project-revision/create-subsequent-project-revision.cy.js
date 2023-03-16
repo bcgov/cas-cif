@@ -12,7 +12,8 @@ describe("the project amendment and revisions page", () => {
 
   it("displays the list of project amendment and revisions", () => {
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("button").contains("View").first().as("firstViewButton");
+    cy.get("@firstViewButton").click();
     cy.findByText(/Amendments & Other Revisions/i).click();
     cy.findByText(/New Revision/i).click();
     cy.url().should("include", "/create");
@@ -27,7 +28,8 @@ describe("the project amendment and revisions page", () => {
   });
   it("displays updated forms in a project revision/amendment", () => {
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("button").contains("View").first().as("firstViewButton");
+    cy.get("@firstViewButton").click();
     cy.findByText(/Amendments & Other Revisions/i).click();
     cy.findByText(/New Revision/i).click();
     cy.url().should("include", "/create");
@@ -78,7 +80,7 @@ describe("the project amendment and revisions page", () => {
 
     //current flow for reaching to the project amendment/revision
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("@firstViewButton").click();
     cy.findByText(/Amendments & Other Revisions/i).click();
 
     // checking the view page for a draft revision

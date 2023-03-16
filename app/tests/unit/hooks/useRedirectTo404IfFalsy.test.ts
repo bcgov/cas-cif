@@ -1,8 +1,11 @@
+import { renderHook } from "@testing-library/react";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import { renderHook } from "@testing-library/react-hooks";
-import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
-jest.mock("next/router");
+import { useRouter } from "next/router";
+
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
 mocked(useRouter).mockReturnValue({
   replace: jest.fn(),
 } as any);

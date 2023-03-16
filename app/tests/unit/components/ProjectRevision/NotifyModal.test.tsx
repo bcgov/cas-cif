@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import NotifyModal from "components/ProjectRevision/NotifyModal";
 import { graphql } from "react-relay";
@@ -206,10 +206,12 @@ describe("The NotifyModal", () => {
     expect(screen.getByText(`director name`)).toBeInTheDocument();
   });
 
-  it("creates the correct mailto link when the director checkbox is checked", () => {
+  it("creates the correct mailto link when the director checkbox is checked", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    userEvent.click(screen.getByText(/director name/i));
+    await act(() => {
+      userEvent.click(screen.getByText(/director name/i));
+    });
     expect(screen.getByText(/notify by email/i)).toHaveAttribute(
       "href",
       "mailto:director@email.com?subject=Amendment%20pending%20your%20actions%20(CIF: 001)&body=View amendment here: https://cif.gov.bc.ca/cif.project-revision/director-id"

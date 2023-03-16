@@ -24,9 +24,9 @@ const AttachmentsTaskListSection: React.FC<Props> = ({
           : false
       }
     >
-      <Link href={linkUrl} passHref>
+      <Link href={linkUrl} passHref legacyBehavior>
         <h3>
-          <span className="link">
+          <span>
             {title} <FontAwesomeIcon icon={icon} />
           </span>
         </h3>
@@ -48,11 +48,6 @@ const AttachmentsTaskListSection: React.FC<Props> = ({
           margin: 0;
           display: flex;
           justify-content: space-between;
-        }
-        h3,
-        ul {
-          list-style: none;
-          margin: 0;
         }
       `}</style>
     </li>

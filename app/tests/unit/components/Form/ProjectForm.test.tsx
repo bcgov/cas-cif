@@ -298,7 +298,9 @@ describe("The Project Form", () => {
 
     componentTestingHelper.renderComponent();
 
-    screen.getByText(/submit/i).click();
+    act(() => {
+      screen.getByText(/submit/i).click();
+    });
     componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
       input: {
         rowId: 42,
@@ -332,7 +334,9 @@ describe("The Project Form", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    screen.getByText(/submit/i).click();
+    act(() => {
+      screen.getByText(/submit/i).click();
+    });
     componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
       input: {
         rowId: 42,
@@ -360,7 +364,9 @@ describe("The Project Form", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    screen.getByText(/submit/i).click();
+    act(() => {
+      screen.getByText(/submit/i).click();
+    });
 
     componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
       input: {

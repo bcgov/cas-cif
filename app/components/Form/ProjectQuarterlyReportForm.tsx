@@ -244,7 +244,9 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
                   id={`form-${quarterlyReport.id}`}
                   validateOnMount={quarterlyReport.changeStatus === "staged"}
                   idPrefix={`form-${quarterlyReport.id}`}
-                  ref={(el) => (formRefs.current[quarterlyReport.id] = el)}
+                  ref={(el) =>
+                    el && (formRefs.current[quarterlyReport.id] = el)
+                  }
                   formData={quarterlyReport.newFormData}
                   onChange={(change) => {
                     updateReportFormChange(

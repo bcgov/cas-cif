@@ -248,7 +248,7 @@ const NotifyModal: React.FC<Props> = ({ projectRevision }) => {
           </>
         )}
         <div className="buttons">
-          <Link href={emailString} passHref>
+          <Link href={emailString} passHref legacyBehavior>
             <Button
               onClick={() => {
                 router.back();

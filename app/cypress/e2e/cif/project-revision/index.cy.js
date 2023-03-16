@@ -34,9 +34,10 @@ describe("the new project page", () => {
     cy.findByText(/Add project managers/i).click();
     cy.url().should("include", "/form/1");
 
-    cy.findByText(/Add project overview/i)
-      .next()
-      .should("have.text", "Attention Required");
+    cy.findByRole("link", { name: /^Add project overview$/i }).should(
+      "be.visible"
+    );
+    cy.contains("Attention Required").should("be.visible");
     cy.happoAndAxe("Project Managers Form", "empty", "main");
 
     // CONTACTS
@@ -71,7 +72,8 @@ describe("the new project page", () => {
     // MILESTONE REPORTS
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Add milestone reports/i).click();
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Milestone Reports").should("be.visible");
     cy.happoAndAxe("Project milestone Form", "empty", "main");
 
     // QUARTERLY REPORTS
@@ -81,7 +83,9 @@ describe("the new project page", () => {
     cy.findByRole("button", { name: /generate quarterly reports/i }).should(
       "be.disabled"
     );
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Add Budgets, Expenses & Payments").should("be.visible");
+    cy.findByText("Add Milestone Reports").should("not.exist");
     cy.happoAndAxe("Project Quarterly Reports Form", "empty", "main");
 
     // Emissions Intensity Report
@@ -96,7 +100,12 @@ describe("the new project page", () => {
     // Annual reports
     cy.findByText(/Annual reports/i).click();
     cy.findByText(/Add annual reports/i).click();
-    cy.contains("Changes saved.");
+    cy.contains("Changes saved.").should("be.visible");
+    cy.findByText("Annual Reports").should("be.visible");
+    cy.findByText("Add Annual Reports")
+      .next()
+      .should("have.text", "Not Started");
+    cy.findByText("Add Emissions Intensity Report").should("not.exist");
     cy.happoAndAxe("Project Annual Reports Form", "empty", "main");
 
     // SUMMMARY
@@ -166,7 +175,9 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.findAllByRole("button", { name: /^view$/i })
+      .first()
+      .click();
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
@@ -235,7 +246,9 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.findAllByRole("button", { name: /view/i }).first().as("firstViewButton");
+    cy.get("@firstViewButton").should("be.visible");
+    cy.get("@firstViewButton").click();
     cy.url().should("include", "/form/0");
 
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
@@ -290,6 +303,9 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
     cy.get("button").contains("Submit Project Overview").click();
     cy.contains("Changes saved").should("be.visible");
+    cy.contains(
+      "This proposal reference already exists, please specify a different one."
+    ).should("be.visible");
     cy.happoAndAxe(
       "Project overview Form",
       "with errors",

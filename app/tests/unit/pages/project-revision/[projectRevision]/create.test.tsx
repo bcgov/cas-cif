@@ -83,15 +83,21 @@ describe("The project amendments and revisions page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.getByLabelText(/minor revision/i));
-    userEvent.click(
-      screen.getAllByRole("button", { name: /new revision/i })[0]
-    );
-
+    act(() => {
+      userEvent.click(screen.getByLabelText(/minor revision/i));
+      userEvent.click(
+        screen.getAllByRole("button", { name: /new revision/i })[0]
+      );
+    });
     pageTestingHelper.expectMutationToBeCalled(
       "createProjectRevisionMutation",
-      { projectId: 1234, revisionType: "Minor Revision", amendmentTypes: null }
+      {
+        projectId: 1234,
+        revisionType: "Minor Revision",
+        amendmentTypes: null,
+      }
     );
+
     const operation =
       pageTestingHelper.environment.mock.getMostRecentOperation();
     act(() => {
@@ -133,13 +139,14 @@ describe("The project amendments and revisions page", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
-    userEvent.click(screen.getByLabelText(/Amendment/i));
-    userEvent.click(screen.getByLabelText(/Cost/i));
-    userEvent.click(screen.getByLabelText(/Schedule/i));
-    userEvent.click(
-      screen.getAllByRole("button", { name: /new revision/i })[0]
-    );
-
+    act(() => {
+      userEvent.click(screen.getByLabelText(/Amendment/i));
+      userEvent.click(screen.getByLabelText(/Cost/i));
+      userEvent.click(screen.getByLabelText(/Schedule/i));
+      userEvent.click(
+        screen.getAllByRole("button", { name: /new revision/i })[0]
+      );
+    });
     pageTestingHelper.expectMutationToBeCalled(
       "createProjectRevisionMutation",
       {
@@ -148,6 +155,7 @@ describe("The project amendments and revisions page", () => {
         amendmentTypes: ["Cost", "Schedule"],
       }
     );
+
     const operation =
       pageTestingHelper.environment.mock.getMostRecentOperation();
     act(() => {

@@ -15,6 +15,7 @@ import LoadingFallback from "components/Layout/LoadingFallback";
 import Custom500 from "./500";
 import { GrowthBook, GrowthBookProvider } from "@growthbook/growthbook-react";
 import getConfig from "next/config";
+import Head from "next/head";
 config.autoAddCss = false;
 
 const clientEnv = getClientEnvironment();
@@ -27,15 +28,20 @@ const growthbook = new GrowthBook();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [error, setError] = useState(null);
+  const [hasMounted, setHasMounted] = useState(false);
   const value = { error, setError };
   useEffect(() => {
     setError(null);
   }, [Component]);
 
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   /* Running the fetch to the growthbook API inside a useMemo cuts down on the amount of fetches done,
-     however it does mean that any on/off toggling done in the Growthbook dashboard while a user is using the app
-     will not take effect the page is refreshed. We decided this fit our use case, since we're unlikely to be
-     toggling things on/off outside of releases to production.
+  however it does mean that any on/off toggling done in the Growthbook dashboard while a user is using the app
+  will not take effect the page is refreshed. We decided this fit our use case, since we're unlikely to be
+  toggling things on/off outside of releases to production.
   */
   useMemo(() => {
     const fetchGrowthbook = async () => {
@@ -58,14 +64,23 @@ function MyApp({ Component, pageProps }: AppProps) {
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
 
-  const component =
-    typeof window !== "undefined" ? (
-      <Suspense fallback={<LoadingFallback />}>
-        <Component {...pageProps} {...relayProps} />
-      </Suspense>
-    ) : (
+  // Based on: https://nextjs.org/docs/messages/no-document-viewport-meta#possible-ways-to-fix-it*/
+  // we needed to move the meta tag into the _app.tsx file rather than the _document.tsx file
+  const component = hasMounted ? (
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Component {...pageProps} {...relayProps} />
-    );
+    </>
+  ) : (
+    <Suspense fallback={<LoadingFallback />}>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <Component {...pageProps} {...relayProps} />
+    </Suspense>
+  );
 
   return (
     <GrowthBookProvider growthbook={growthbook}>
@@ -73,7 +88,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <BCGovTypography />
         <Sentry.ErrorBoundary fallback={<Custom500 />}>
           <RelayEnvironmentProvider environment={env}>
-            {typeof window !== "undefined" && <SessionExpiryHandler />}
+            {hasMounted && <SessionExpiryHandler />}
             {component}
           </RelayEnvironmentProvider>
         </Sentry.ErrorBoundary>

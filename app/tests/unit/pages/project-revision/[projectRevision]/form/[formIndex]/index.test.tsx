@@ -68,7 +68,7 @@ describe("The Project Annual Reports page", () => {
     });
   });
 
-  it("renders the task list in the left navigation with correct highlighting", () => {
+  it("renders the task list in the left navigation with correct highlighting", async () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
 
@@ -86,13 +86,11 @@ describe("The Project Annual Reports page", () => {
 
     pageTestingHelper.setMockRouterValues({
       pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
-      query: { projectRevision: "mock-id", formIndex: "4" },
+      query: { projectRevision: "mock-id", formIndex: "3" },
     });
-
     pageTestingHelper.renderPage();
-
     expect(
-      screen.getByText(/Edit milestone reports/i).closest("li")
+      screen.getByText(/edit budgets, expenses & payments/i).closest("li")
     ).toHaveAttribute("aria-current", "step");
   });
 

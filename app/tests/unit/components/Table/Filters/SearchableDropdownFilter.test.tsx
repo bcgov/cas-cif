@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SearchableDropdownFilter } from "components/Table/Filters";
 
@@ -35,7 +35,9 @@ describe("The searchable dropdown filter", () => {
     renderFilterComponent();
 
     const input = screen.queryByPlaceholderText("Filter");
-    userEvent.click(input);
+    act(() => {
+      userEvent.click(input);
+    });
 
     expect(screen.getByText("one")).toBeInTheDocument();
     expect(screen.getByText("two")).toBeInTheDocument();
@@ -46,7 +48,9 @@ describe("The searchable dropdown filter", () => {
     renderFilterComponent({ onChange, filterArgs: {} });
 
     const input = screen.queryByPlaceholderText("Filter");
-    userEvent.click(input);
+    act(() => {
+      userEvent.click(input);
+    });
 
     screen.getByText("one").click();
     expect(onChange).toHaveBeenCalledWith("one", "filterName");

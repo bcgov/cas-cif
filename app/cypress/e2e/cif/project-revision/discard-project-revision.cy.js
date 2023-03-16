@@ -11,7 +11,8 @@ describe("when discarding a project revision, the project page", () => {
   it("discards a revision when the user clicks the Discard Revision button", () => {
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.get("button").contains("View").first().as("firstViewButton");
+    cy.get("@firstViewButton").click();
     cy.findByRole("button", { name: /edit/i }).click();
     cy.findByLabelText(/Project Name/i)
       .should("have.value", "Test EP Project 001")

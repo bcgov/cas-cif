@@ -1,6 +1,4 @@
-import BCGovLink from "@button-inc/bcgov-theme/Link";
 import useIsAdmin from "hooks/useIsAdmin";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -13,6 +11,8 @@ import {
   getProjectsPageRoute,
 } from "routes/pageRoutes";
 import { Dashboard_query$key } from "__generated__/Dashboard_query.graphql";
+import BCGovLink from "@button-inc/bcgov-theme/Link";
+import Link from "next/link";
 
 interface Props {
   query: Dashboard_query$key;
@@ -48,6 +48,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
             pendingNewProjectRevision.id,
             0
           )}
+          legacyBehavior
         >
           <BCGovLink>Resume Project Draft</BCGovLink>
         </Link>
@@ -71,7 +72,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
             <small>Create, view and manage projects</small>
           </div>
           <nav aria-labelledby="projects-heading">
-            <Link passHref href={getProjectsPageRoute()}>
+            <Link passHref href={getProjectsPageRoute()} legacyBehavior>
               <BCGovLink>Projects List</BCGovLink>
             </Link>
             {addOrResumeProjectLink}
@@ -83,10 +84,10 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
             <small>Create, manage and search</small>
           </div>
           <nav aria-labelledby="reporting-op-heading">
-            <Link passHref href={getOperatorsPageRoute()}>
+            <Link passHref href={getOperatorsPageRoute()} legacyBehavior>
               <BCGovLink>Operators</BCGovLink>
             </Link>
-            <Link passHref href={getContactsPageRoute()}>
+            <Link passHref href={getContactsPageRoute()} legacyBehavior>
               <BCGovLink>Contacts</BCGovLink>
             </Link>
           </nav>
@@ -97,7 +98,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
               <h3>Administration</h3>
             </div>
             <nav aria-labelledby="admin-heading">
-              <Link passHref href={getMetabaseRoute()}>
+              <Link passHref href={getMetabaseRoute()} legacyBehavior>
                 <BCGovLink target="_blank">Data Insights (Metabase)</BCGovLink>
               </Link>
               <Link
@@ -105,6 +106,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
                 href={
                   getSupportEmailMailTo("CIF App: Report a problem!").pathname
                 }
+                legacyBehavior
               >
                 <BCGovLink target="_blank">Report a Problem</BCGovLink>
               </Link>
@@ -155,6 +157,17 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
         :global(button:hover) {
           text-decoration: none;
           color: blue;
+        }
+        :global(a) {
+          color: #1a5a96;
+          text-decoration: underline;
+        }
+        :global(a:hover) {
+          text-decoration: none;
+          color: blue;
+        }
+        :global(i.fa-external-link-alt) {
+          color: #1a5a96;
         }
       `}</style>
     </>

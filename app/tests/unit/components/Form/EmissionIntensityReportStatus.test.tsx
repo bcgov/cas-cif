@@ -26,9 +26,7 @@ describe("The Emission Intensity Report Status", () => {
       submittedDateString: "2020-01-10T00:00:00-08",
     };
     render(<EmissionIntensityReportStatus {...props} />);
-    expect(
-      screen.getByText(/complete \(jan\. 10, 2020\)/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/complete \(jan 10, 2020\)/i)).toBeInTheDocument();
   });
   it("Shows Not due when TEIMP end date has not reached", () => {
     const props: any = {
