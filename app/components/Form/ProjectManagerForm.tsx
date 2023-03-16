@@ -7,7 +7,6 @@ import {
 } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
 import { ProjectManagerForm_query$key } from "__generated__/ProjectManagerForm_query.graphql";
 import FormBase from "./FormBase";
-// import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import FormComponentProps from "./Interfaces/FormComponentProps";
 import { Button } from "@button-inc/bcgov-theme";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
