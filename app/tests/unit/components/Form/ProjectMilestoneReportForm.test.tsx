@@ -88,6 +88,34 @@ const defaultMockResolver = {
               calculatedHoldbackAmountThisMilestone: 1,
             },
           },
+          {
+            node: {
+              id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 3,
+              newFormData: {
+                substantialCompletionDate: "2022-10-28",
+                reportDueDate: "2022-11-28",
+                projectId: 51,
+                reportType: "Advanced Milestone",
+                submittedDate: "2022-05-02",
+                description: "i am the third description",
+                reportingRequirementIndex: 3,
+                hasExpenses: true,
+                reportingRequirementId: 2,
+                certifierProfessionalDesignation: "Professional Engineer",
+                calculatedGrossAmount: 1,
+                calculatedNetAmount: 1,
+                calculatedHoldbackAmount: 1,
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+              formDataRecordId: 2,
+              calculatedGrossAmountThisMilestone: 1,
+              calculatedNetAmountThisMilestone: 1,
+              calculatedHoldbackAmountThisMilestone: 1,
+            },
+          },
         ],
         __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
       },
@@ -175,7 +203,7 @@ describe("The ProjectMilestoneReportForm", () => {
     // select the overall status badge
     expect(screen.getAllByRole("status")[0]).toHaveTextContent("Late");
 
-    expect(screen.getAllByText("Remove")).toHaveLength(2);
+    expect(screen.getAllByText("Remove")).toHaveLength(3);
   });
 
   it("Calls the createMilestoneMutation mutation when the Add button is clicked", () => {
@@ -198,7 +226,7 @@ describe("The ProjectMilestoneReportForm", () => {
           formDataTableName: "reporting_requirement",
           jsonSchemaName: "milestone",
           newFormData: {
-            reportingRequirementIndex: 3,
+            reportingRequirementIndex: 4,
           },
           operation: "CREATE",
           projectRevisionId: 1234,
@@ -311,7 +339,7 @@ describe("The ProjectMilestoneReportForm", () => {
     userEvent.click(screen.getByText(/submit.*/i));
 
     // Once per form
-    expect(validateFormWithErrors).toHaveBeenCalledTimes(2);
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(3);
   });
 
   it("Stages the form changes when the `submit` button is clicked", async () => {
@@ -396,7 +424,7 @@ describe("The ProjectMilestoneReportForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1, 2],
+        formChangesIds: [1, 2, 3],
       },
     });
   });
@@ -404,20 +432,21 @@ describe("The ProjectMilestoneReportForm", () => {
   it("Only renders the payment form for milestone types with associated expenses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(screen.getAllByText(/milestone description/i)).toHaveLength(2);
-    expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
+    screen.logTestingPlaygroundURL();
+    expect(screen.getAllByText(/milestone description/i)).toHaveLength(3);
+    expect(screen.getAllByText(/Certifier/i)).toHaveLength(3);
     expect(
       screen.getAllByText(/^gross payment amount this milestone/i)
-    ).toHaveLength(2);
+    ).toHaveLength(4);
   });
 
   it("Only renders the totalEligibleExpenses and maximumAmount fields for milestone types with associated expenses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getAllByText(/milestone description/i)).toHaveLength(2);
-    expect(screen.getAllByText(/Certifier/i)).toHaveLength(2);
-    expect(screen.getAllByText(/maximum amount/i)).toHaveLength(1);
+    expect(screen.getAllByText(/milestone description/i)).toHaveLength(3);
+    expect(screen.getAllByText(/Certifier/i)).toHaveLength(3);
+    expect(screen.getAllByText(/maximum amount/i)).toHaveLength(2);
     expect(screen.getAllByText(/total eligible expenses/i)).toHaveLength(1);
   });
 });

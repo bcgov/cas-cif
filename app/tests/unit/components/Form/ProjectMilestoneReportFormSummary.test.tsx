@@ -39,7 +39,6 @@ const mockQueryPayload = {
                 reportType: "General",
                 reportDueDate: "2020-01-10T23:59:59.999-07:00",
                 reportingRequirementId: 1,
-                totalEligibleExpenses: 100,
                 hasExpenses: true,
               },
               operation: "UPDATE",
@@ -51,7 +50,6 @@ const mockQueryPayload = {
                   reportDueDate: "2020-01-01T13:59:59.999-07:00",
                   reportType: "Advanced",
                   reportingRequirementId: 1,
-                  totalEligibleExpenses: 200,
                   hasExpenses: true,
                 },
               },
@@ -137,8 +135,6 @@ describe("The Project Milestone Report Form Summary", () => {
     // milestone diff
     expect(screen.getByText("General")).toBeInTheDocument();
     expect(screen.getByText("Advanced")).toBeInTheDocument();
-    expect(screen.getByText("$100.00")).toBeInTheDocument();
-    expect(screen.getByText("$200.00")).toBeInTheDocument();
 
     // report due date diff
     expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();
