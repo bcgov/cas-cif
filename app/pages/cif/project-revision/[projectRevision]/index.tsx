@@ -39,6 +39,7 @@ const pageQuery = graphql`
       session {
         ...DefaultLayout_session
       }
+      ...Form_query
       projectRevision(id: $projectRevision) {
         id
         rowId
