@@ -131,7 +131,7 @@ describe("The ProjectSummaryReportForm", () => {
     ).toHaveTextContent(/Feb[.]? 02, 2022/);
   });
 
-  it("calls useMutationWithErrorMessage and returns expected message when there is a mutation error adding a project summary report", () => {
+  it("calls useMutationWithErrorMessage and returns expected message when there is a mutation error adding a project summary report", async () => {
     const mockResolver = {
       ...defaultMockResolver,
       ProjectRevision(context, generateID) {
@@ -147,27 +147,27 @@ describe("The ProjectSummaryReportForm", () => {
     };
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
-    expect(screen.getByText(/Add Project Summary Report/i)).toBeInTheDocument();
-    userEvent.click(screen.getByText(/Add Project Summary Report/i));
-    act(() => {
+
+    await act(async () => {
+      userEvent.click(screen.getByText(/Add Project Summary Report/i));
       componentTestingHelper.environment.mock.rejectMostRecentOperation(
         new Error()
       );
+      expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
+        "An error occured while adding the Project Summary to the revision."
+      );
     });
-    expect(componentTestingHelper.errorContext.setError).toBeCalledWith(
-      "An error occured while adding the Project Summary to the revision."
-    );
   });
 
-  it("stages the form changes when the `submit` button is clicked", () => {
+  it("stages the form changes when the `submit` button is clicked", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(
-      screen.getByRole("button", { name: /submit project summary/i })
-    ).toBeInTheDocument();
-    userEvent.click(
-      screen.getByRole("button", { name: /submit project summary/i })
-    );
+
+    await act(async () => {
+      userEvent.click(
+        screen.getByRole("button", { name: /submit project summary/i })
+      );
+    });
 
     componentTestingHelper.expectMutationToBeCalled("stageFormChangeMutation", {
       input: {
@@ -193,13 +193,16 @@ describe("The ProjectSummaryReportForm", () => {
     );
   });
 
-  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
+  it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    userEvent.click(screen.getByText(/submit.*/i));
-    userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
+    await act(async () => {
+      userEvent.click(screen.getByText(/submit.*/i));
 
-    userEvent.click(screen.getByText(/Undo Changes/i));
+      userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
+
+      userEvent.click(screen.getByText(/Undo Changes/i));
+    });
 
     // expect 4 operations update and undo
     expect(

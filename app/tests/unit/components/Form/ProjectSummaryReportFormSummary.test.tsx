@@ -96,8 +96,6 @@ describe("The Project Summary Report Form Summary", () => {
     componentTestingHelper.loadQuery(mockResolver);
     componentTestingHelper.renderComponent();
 
-    screen.logTestingPlaygroundURL();
-
     expect(
       screen.getByText("Project Summary Report not updated")
     ).toBeInTheDocument();
