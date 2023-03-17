@@ -262,3 +262,4 @@ data/insert_json_schema_form_dependency_update_milestone_form_total_eligible_exp
 mutations/update_milestone_form_change [mutations/update_milestone_form_change@1.5.1] 2023-03-21T21:17:39Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # update change handler to set total_eligible_expenses to null if report type is not general milestone
 @1.6.0 2023-03-29T20:51:28Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.6.0
 data/007_json_form_data_remove_default_undefined_operator 2023-03-29T22:46:02Z Gurjeet Matharu <gurjeet@matharuco.com> # Remove the default value in the operator json schema
+tables/funding_stream_rfp_001 2023-03-17T22:31:59Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add 2023 funding streams values to funding_stream_rfp table
