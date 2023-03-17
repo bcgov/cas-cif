@@ -177,7 +177,16 @@ describe("The Create Project page", () => {
           };
         }
         // Handle default case
-        return { jsonSchema: projectContactProdSchema };
+        return {
+          jsonSchema: {
+            schema: {
+              $schema: "http://json-schema.org/draft-07/schema",
+              type: "object",
+              title: null,
+              properties: {},
+            },
+          },
+        };
       },
       ProjectRevision() {
         return {
