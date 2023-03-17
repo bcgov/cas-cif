@@ -175,3 +175,12 @@ export const getExternalProjectRevisionFormPageRoute = (
 
   return urlObject;
 };
+
+export const getExternalProjectRevisionPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif-external/project-revision/[projectRevision]/`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
