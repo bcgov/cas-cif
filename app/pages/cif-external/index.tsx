@@ -1,4 +1,5 @@
 /* eslint-disable relay/graphql-naming */
+import { Button } from "@button-inc/bcgov-theme";
 import ExternalLayout from "components/Layout/ExternalLayout";
 import ProjectTableRow from "components/Project/ProjectTableRow";
 import Table from "components/Table";
@@ -7,11 +8,13 @@ import {
   SearchableDropdownFilter,
   TextFilter,
 } from "components/Table/Filters";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import withRelayOptions from "lib/relay/withRelayOptions";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
+import { getExternalNewProjectRevisionPageRoute } from "routes/pageRoutes";
 import { cifExternalQuery } from "__generated__/cifExternalQuery.graphql";
 
 export const ExternalProjectsQuery = graphql`
@@ -63,6 +66,8 @@ export const ExternalProjectsQuery = graphql`
 export function ExternalProjects({
   preloadedQuery,
 }: RelayProps<{}, cifExternalQuery>) {
+  const router = useRouter();
+
   const { allProjects, allProjectStatuses, session } = usePreloadedQuery(
     ExternalProjectsQuery,
     preloadedQuery
@@ -90,6 +95,16 @@ export function ExternalProjects({
     <ExternalLayout session={session}>
       <header>
         <h2>Welcome</h2>
+        <section>
+          <Button
+            role="button"
+            onClick={() =>
+              router.push(getExternalNewProjectRevisionPageRoute())
+            }
+          >
+            Create Application
+          </Button>
+        </section>
       </header>
 
       <Table
@@ -104,7 +119,7 @@ export function ExternalProjects({
       </Table>
 
       <style jsx>{`
-        header > section {
+        header {
           display: flex;
           justify-content: space-between;
         }

@@ -151,3 +151,27 @@ export const getExternalProjectRevisionViewPageRoute = (
     projectRevision: projectRevisionId,
   },
 });
+
+export const getExternalNewProjectRevisionPageRoute = () => ({
+  pathname: `/cif-external/project-revision/new`,
+});
+
+export const getExternalProjectRevisionFormPageRoute = (
+  projectRevisionId: string,
+  formIndex: string | number,
+  isRoutedFromNew?: boolean
+) => {
+  const urlObject: TaskListLinkUrl = {
+    pathname: `/cif-external/project-revision/[projectRevision]/form/[formIndex]`,
+    query: {
+      projectRevision: projectRevisionId,
+      formIndex,
+    },
+  };
+
+  if (isRoutedFromNew) {
+    urlObject.query.isRoutedFromNew = isRoutedFromNew;
+  }
+
+  return urlObject;
+};
