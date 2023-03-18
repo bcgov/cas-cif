@@ -11,10 +11,8 @@ const Status: React.FC<Props> = ({
   upcomingReportDueDate,
   reportSubmittedDates,
 }) => {
-  let reportString = "Reports ";
-  if (reportType === "Project Summary") {
-    reportString = "Report ";
-  }
+  const reportString =
+    reportType === "Project Summary" ? "Report " : "Reports ";
 
   return (
     <div>
