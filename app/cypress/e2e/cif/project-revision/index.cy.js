@@ -247,10 +247,9 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.get("input[aria-label='Filter by Proposal Reference']")
-      .should("be.visible")
-      .type("IA{enter}");
-    cy.wait(1000);
+    cy.get("input[aria-label='Filter by Proposal Reference']").as("inpt");
+    cy.get("@inpt").type("IA{enter}");
+    cy.wait(1000); // need to ensure that the filter re renders to get IA projects
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.url().should("include", "/form/0");
 
@@ -288,7 +287,14 @@ describe("the new project page", () => {
     }).click();
     cy.findByRole("link", { name: "Project Summary Report" }).click();
     cy.url().should("include", "form/5");
-    cy.checkProjectSummaryReport(/Jun(\.)? 10, 2020/);
+    cy.checkProjectSummaryReport(
+      /Jun(\.)? 10, 2020/,
+      /Jun(\.)? 10, 2020/,
+      "comments",
+      "$4,321.00",
+      "payment notes",
+      /Jun(\.)? 10, 2020/
+    );
   });
 
   it("properly displays validation errors for EP projects", () => {

@@ -268,7 +268,6 @@ Cypress.Commands.add(
     paymentNotes,
     dateSentToCsnr
   ) => {
-    // Extra assertion to wait for the new report to be added
     cy.contains(/Status of Project Summary Report/i).should("be.visible");
 
     cy.setDateInPicker("Report Due Date", reportDueDate);
@@ -310,36 +309,44 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "checkProjectSummaryReport",
   (
-    reportDueDate
-    // receivedDate,
-    // comments,
-    // projectSummaryReportPayment,
-    // paymentNotes,
-    // dateSentToCsnr
+    reportDueDate,
+    receivedDate,
+    comments,
+    projectSummaryReportPayment,
+    paymentNotes,
+    dateSentToCsnr
   ) => {
     cy.findByText(/Report Due Date$/i)
       .next()
       .contains(reportDueDate);
 
-    // cy.findByText(/Received Date$/i)
-    //   .next()
-    //   .contains(receivedDate);
+    if (receivedDate) {
+      cy.findByText(/Received Date$/i).contains(receivedDate);
+    }
 
-    // cy.findByText(/General Comments$/i)
-    //   .next()
-    //   .should("have.text", comments);
+    if (comments) {
+      cy.findByText(/General Comments$/i)
+        .next()
+        .should("have.text", comments);
+    }
 
-    // cy.findByText(/Project Summary Report Payment$/i)
-    //   .next()
-    //   .should("have.text", projectSummaryReportPayment);
+    if (projectSummaryReportPayment) {
+      cy.findByText(/Project Summary Report Payment$/i)
+        .next()
+        .should("have.text", projectSummaryReportPayment);
+    }
 
-    // cy.findByText(/Notes for the Payment$/i)
-    //   .next()
-    //   .should("have.text", paymentNotes);
+    if (paymentNotes) {
+      cy.findByText(/Notes for the Payment$/i)
+        .next()
+        .should("have.text", paymentNotes);
+    }
 
-    // cy.findByText(/Date Invoice Sent to CSNR$/i)
-    //   .next()
-    //   .contains(dateSentToCsnr);
+    if (dateSentToCsnr) {
+      cy.findByText(/Date Invoice Sent to CSNR$/i)
+        .next()
+        .contains(dateSentToCsnr);
+    }
   }
 );
 
