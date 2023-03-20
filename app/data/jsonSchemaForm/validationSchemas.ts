@@ -1,4 +1,3 @@
-import projectManagerSchema from "./projectManagerSchema";
 import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
 import operatorSchema from "./operatorSchema";
@@ -12,7 +11,6 @@ import { fundingParameterEPSchema } from "./fundingParameterEPSchema";
 import { fundingParameterIASchema } from "./fundingParameterIASchema";
 
 const validationSchemas = {
-  project_manager: projectManagerSchema,
   project: projectSchema,
   contact: contactSchema,
   operator: operatorSchema,

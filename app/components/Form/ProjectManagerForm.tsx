@@ -7,7 +7,6 @@ import {
 } from "__generated__/ProjectManagerForm_managerFormChange.graphql";
 import { ProjectManagerForm_query$key } from "__generated__/ProjectManagerForm_query.graphql";
 import FormBase from "./FormBase";
-import projectManagerSchema from "data/jsonSchemaForm/projectManagerSchema";
 import FormComponentProps from "./Interfaces/FormComponentProps";
 import { Button } from "@button-inc/bcgov-theme";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -45,28 +44,11 @@ export const createProjectManagerUiSchema = (contact?, role?) => {
   };
 };
 
-export const createProjectManagerSchema = (allCifUsers) => {
-  const schema = projectManagerSchema;
-  schema.properties.cifUserId = {
-    ...schema.properties.cifUserId,
-    anyOf: allCifUsers.edges.map(({ node }) => {
-      return {
-        type: "number",
-        title: node.fullName,
-        enum: [node.rowId],
-        value: node.rowId,
-      } as JSONSchema7Definition;
-    }),
-  };
-
-  return schema as JSONSchema7;
-};
-
 const ProjectManagerForm: React.FC<Props> = (props) => {
   const { query, projectRowId, formRefs, onAdd, onUpdate, onDelete, disabled } =
     props;
 
-  const { allCifUsers } = useFragment(
+  const { allCifUsers, projectMangerFormBySlug } = useFragment(
     graphql`
       fragment ProjectManagerForm_query on Query {
         allCifUsers {
@@ -76,6 +58,9 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
               fullName
             }
           }
+        }
+        projectMangerFormBySlug: formBySlug(slug: "project_manager") {
+          jsonSchema
         }
       }
     `,
@@ -104,8 +89,24 @@ const ProjectManagerForm: React.FC<Props> = (props) => {
 
   // Dynamically build the schema from the list of cif_users
   const managerSchema = useMemo(() => {
-    return createProjectManagerSchema(allCifUsers);
-  }, [allCifUsers]);
+    const parsedSchema = JSON.parse(
+      JSON.stringify(projectMangerFormBySlug.jsonSchema.schema)
+    );
+    const schema = { ...parsedSchema };
+
+    schema.properties.cifUserId = {
+      ...schema.properties.cifUserId,
+      anyOf: allCifUsers.edges.map(({ node }) => {
+        return {
+          type: "number",
+          title: node.fullName,
+          enum: [node.rowId],
+          value: node.rowId,
+        } as JSONSchema7Definition;
+      }),
+    };
+    return schema as JSONSchema7;
+  }, [allCifUsers, projectMangerFormBySlug]);
 
   const uiSchema = createProjectManagerUiSchema();
 

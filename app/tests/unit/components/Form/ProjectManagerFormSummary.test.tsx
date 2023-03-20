@@ -1,5 +1,7 @@
 import { screen } from "@testing-library/react";
 import ProjectManagerFormSummary from "components/Form/ProjectManagerFormSummary";
+import projectManagerProdSchema from "../../../../../schema/data/prod/json_schema/project_manager.json";
+
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledProjectManagerFormSummaryQuery, {
@@ -149,6 +151,11 @@ const mockQueryPayload = {
           ],
         },
       },
+    };
+  },
+  Form() {
+    return {
+      jsonSchema: projectManagerProdSchema,
     };
   },
 };

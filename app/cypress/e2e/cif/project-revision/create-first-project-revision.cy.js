@@ -40,6 +40,7 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/form/1");
     cy.fillManagersForm("Swanson", "Ludgate", "Knope");
     cy.contains("Changes saved").should("be.visible");
+    cy.wait(1000);
     cy.happoAndAxe("Project manager Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 

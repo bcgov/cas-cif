@@ -8,7 +8,7 @@ import compiledProjectRevisionQuery, {
 } from "__generated__/ProjectRevisionQuery.graphql";
 import reportingRequirementProdSchema from "../../../../../../schema/data/prod/json_schema/reporting_requirement.json";
 import projectContactProdSchema from "../../../../../../schema/data/prod/json_schema/project_contact.json";
-
+import projectManagerProdSchema from "../../../../../../schema/data/prod/json_schema/project_manager.json";
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
  * To find the key of the generated operation, one can call
@@ -157,9 +157,35 @@ describe("The Create Project page", () => {
 
   it("Renders the summary with the filled-out details", async () => {
     pageTestingHelper.loadQuery({
-      Form() {
+      Form(context) {
+        // If the form is the project manager form, return the project manager schema
+        if (
+          context.name === "formByJsonSchemaName" &&
+          context.path[2] == "projectManagerFormChangesByLabel"
+        ) {
+          return {
+            jsonSchema: projectManagerProdSchema,
+          };
+        }
+        // If the form is the project contact form, return the project contact schema
+        if (
+          context.name === "formByJsonSchemaName" &&
+          context.path[2] == "summaryContactFormChanges"
+        ) {
+          return {
+            jsonSchema: projectContactProdSchema,
+          };
+        }
+        // Handle default case
         return {
-          jsonSchema: projectContactProdSchema,
+          jsonSchema: {
+            schema: {
+              $schema: "http://json-schema.org/draft-07/schema",
+              type: "object",
+              title: null,
+              properties: {},
+            },
+          },
         };
       },
       ProjectRevision() {
