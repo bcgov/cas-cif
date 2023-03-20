@@ -249,7 +249,7 @@ describe("the new project page", () => {
     cy.visit("/cif/projects");
     cy.get("input[aria-label='Filter by Proposal Reference']").as("inpt");
     cy.get("@inpt").type("IA{enter}");
-    cy.wait(1000); // need to ensure that the filter re renders to get IA projects
+    cy.findByText("IA001").should("be.visible");
     cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.url().should("include", "/form/0");
 
@@ -287,6 +287,8 @@ describe("the new project page", () => {
     }).click();
     cy.findByRole("link", { name: "Project Summary Report" }).click();
     cy.url().should("include", "form/5");
+
+    cy.contains(/Received Date (optional) $/i);
     cy.checkProjectSummaryReport(
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,

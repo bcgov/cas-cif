@@ -489,7 +489,6 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Review and Submit information/i).click();
     cy.contains("Review and Submit Project").should("be.visible");
     cy.findByRole("button", { name: /^discard/i }).click();
-    cy.wait(1000);
     cy.findByText("Proceed").click();
     cy.get("button").contains("Add a Project").click();
 

@@ -321,7 +321,9 @@ Cypress.Commands.add(
       .contains(reportDueDate);
 
     if (receivedDate) {
-      cy.findByText(/Received Date$/i).contains(receivedDate);
+      cy.contains(/Received Date$/i)
+        .next()
+        .contains(receivedDate);
     }
 
     if (comments) {
