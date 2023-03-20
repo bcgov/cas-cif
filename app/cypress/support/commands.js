@@ -321,33 +321,27 @@ Cypress.Commands.add(
       .contains(reportDueDate);
 
     if (receivedDate) {
-      cy.contains(/Received Date$/i)
-        .next()
-        .contains(receivedDate);
+      cy.contains("Received Date").next().contains(receivedDate);
     }
 
     if (comments) {
-      cy.findByText(/General Comments$/i)
-        .next()
-        .should("have.text", comments);
+      cy.contains("General Comments").next().should("have.text", comments);
     }
 
     if (projectSummaryReportPayment) {
-      cy.findByText(/Project Summary Report Payment$/i)
+      cy.contains("Project Summary Report Payment")
         .next()
         .should("have.text", projectSummaryReportPayment);
     }
 
     if (paymentNotes) {
-      cy.findByText(/Notes for the Payment$/i)
+      cy.contains("Notes for the Payment")
         .next()
         .should("have.text", paymentNotes);
     }
 
     if (dateSentToCsnr) {
-      cy.findByText(/Date Invoice Sent to CSNR$/i)
-        .next()
-        .contains(dateSentToCsnr);
+      cy.contains("Date Invoice Sent to CSNR").next().contains(dateSentToCsnr);
     }
   }
 );

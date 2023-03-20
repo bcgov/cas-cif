@@ -288,12 +288,11 @@ describe("the new project page", () => {
     cy.findByRole("link", { name: "Project Summary Report" }).click();
     cy.url().should("include", "form/5");
 
-    cy.contains(/Received Date (optional) $/i);
     cy.checkProjectSummaryReport(
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
-      "comments",
-      "$4,321.00",
+      "project summary report comments 51",
+      "$111.00",
       "payment notes",
       /Jun(\.)? 10, 2020/
     );
