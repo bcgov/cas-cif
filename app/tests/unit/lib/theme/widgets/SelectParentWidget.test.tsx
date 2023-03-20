@@ -88,4 +88,95 @@ describe("The SelectParentWidget Widget", () => {
     const componentUnderTest = render(<SelectParentWidget {...props} />);
     expect(componentUnderTest.container).toMatchSnapshot();
   });
+
+  it("does not show a child placeholder if none is provided", async () => {
+    const propsWithoutChildPlaceholder: any = {
+      id: "test-id",
+      onChange: jest.fn(),
+      value: undefined,
+      required: false,
+      parent: {
+        list: [
+          {
+            rowId: 1,
+            name: "EP",
+            fundingStreamId: 1,
+          },
+          {
+            rowId: 2,
+            name: "IA",
+            fundingStreamId: 2,
+          },
+        ],
+        label: "Parent Label",
+        placeholder: "parent placeholder",
+        displayField: "name",
+      },
+      child: {
+        list: [
+          {
+            rowId: 1,
+            year: 2019,
+            fundingStreamId: 1,
+          },
+          {
+            rowId: 2,
+            year: 2020,
+            fundingStreamId: 1,
+          },
+          {
+            rowId: 3,
+            year: 2021,
+            fundingStreamId: 2,
+          },
+          {
+            rowId: 4,
+            year: 2022,
+            fundingStreamId: 2,
+          },
+        ],
+        label: "Child Label",
+        displayField: "year",
+      },
+      foreignKey: "fundingStreamId",
+    };
+    render(<SelectParentWidget {...propsWithoutChildPlaceholder} />);
+    const childDropdown = screen.getByLabelText("Child Label");
+    expect(childDropdown.value).toBe("");
+  });
+
+  it("shows a value when the child list is empty if displayIfChildrenEmpty prop is given", async () => {
+    const emptyChildrenProps: any = {
+      displayIfChildrenEmpty: "emptiness",
+      id: "test-id",
+      onChange: jest.fn(),
+      value: undefined,
+      required: false,
+      parent: {
+        list: [
+          {
+            rowId: 1,
+            name: "EP",
+            fundingStreamId: 1,
+          },
+          {
+            rowId: 2,
+            name: "IA",
+            fundingStreamId: 2,
+          },
+        ],
+        label: "Parent Label",
+        placeholder: "parent placeholder",
+        displayField: "name",
+      },
+      child: {
+        list: [],
+        label: "Child Label",
+        displayField: "year",
+      },
+      foreignKey: "fundingStreamId",
+    };
+    render(<SelectParentWidget {...emptyChildrenProps} />);
+    expect(screen.getByText("emptiness")).toBeVisible();
+  });
 });
