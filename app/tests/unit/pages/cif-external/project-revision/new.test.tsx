@@ -1,9 +1,9 @@
 import { screen } from "@testing-library/react";
-import { ProjectRevisionNew } from "pages/cif/project-revision/new";
+import { ExternalProjectRevisionNew } from "pages/cif-external/project-revision/new";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
-import compiledNewProjectRevisionQuery, {
-  newProjectRevisionQuery,
-} from "__generated__/newProjectRevisionQuery.graphql";
+import compiledExternalNewProjectRevisionQuery, {
+  newProjectRevisionExternalQuery,
+} from "__generated__/newProjectRevisionExternalQuery.graphql";
 
 const defaultMockResolver = {
   Query() {
@@ -76,12 +76,13 @@ const defaultMockResolver = {
   },
 };
 
-const pageTestingHelper = new PageTestingHelper<newProjectRevisionQuery>({
-  pageComponent: ProjectRevisionNew,
-  compiledQuery: compiledNewProjectRevisionQuery,
-  defaultQueryResolver: defaultMockResolver,
-  defaultQueryVariables: {},
-});
+const pageTestingHelper =
+  new PageTestingHelper<newProjectRevisionExternalQuery>({
+    pageComponent: ExternalProjectRevisionNew,
+    compiledQuery: compiledExternalNewProjectRevisionQuery,
+    defaultQueryResolver: defaultMockResolver,
+    defaultQueryVariables: {},
+  });
 
 describe("ProjectRevisionNew Page", () => {
   beforeEach(() => {
