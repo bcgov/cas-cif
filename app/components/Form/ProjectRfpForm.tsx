@@ -52,7 +52,6 @@ const ProjectRfpForm: React.FC<Props> = (props) => {
   const router = useRouter();
   const [formState, setFormState] = useState({});
   const [createProject, isCreatingProject] = useCreateProjectMutation();
-
   const handleSubmit = (formData) => {
     createProject({
       variables: {
@@ -90,6 +89,7 @@ const ProjectRfpForm: React.FC<Props> = (props) => {
         ObjectFieldTemplate={EmptyObjectFieldTemplate}
         formContext={{
           query,
+          isInternal: props.isInternal,
         }}
         id="ProjectRfpFormForm"
         onSubmit={(e) => handleSubmit(e.formData)}
