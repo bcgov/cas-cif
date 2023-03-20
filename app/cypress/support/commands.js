@@ -316,7 +316,7 @@ Cypress.Commands.add(
     paymentNotes,
     dateSentToCsnr
   ) => {
-    cy.findByText(/Report Due Date$/i)
+    cy.contains(/Report Due Date/i)
       .next()
       .contains(reportDueDate);
 
