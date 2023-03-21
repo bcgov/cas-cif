@@ -18,7 +18,7 @@ const ExternalCifProjectViewQuery = graphql`
     }
   }
 `;
-export function ExternalProjectFormPage({
+export function ExternalProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewExternalProjectRevisionQuery>) {
   const router = useRouter();
@@ -53,7 +53,7 @@ export function ExternalProjectFormPage({
 }
 
 export default withRelay(
-  ExternalProjectFormPage,
+  ExternalProjectRevisionView,
   ExternalCifProjectViewQuery,
   withRelayOptions
 );
