@@ -1,31 +1,23 @@
-import { Button } from "@button-inc/bcgov-theme";
-import DefaultLayout from "components/Layout/DefaultLayout";
-import TaskList from "components/TaskList";
-import { TaskListMode } from "components/TaskList/types";
+import { useExternalFormPages } from "data/formPages/externalFormStructure";
 import { useFormPages } from "data/formPages/formStructure";
 import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
 import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
 import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
-import withRelayOptions from "lib/relay/withRelayOptions";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
 import {
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
 } from "routes/pageRoutes";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { RelayProps, withRelay } from "relay-nextjs";
-import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
-import { useExternalFormPages } from "data/formPages/externalFormStructure";
 
 export const useFormIndexHelpers = (
-  projectId,
-  projectRevisionId,
-  pendingProjectRevisionId,
-  latestCommitedProjectRevisionId,
-  fundingStreamName,
-  mode,
-  formIndex,
+  projectId: number,
+  projectRevisionId: string,
+  pendingProjectRevisionId: string,
+  latestCommitedProjectRevisionId: string,
+  fundingStreamName: string,
+  mode: string,
+  formIndex: number,
   isInternal: boolean
 ) => {
   const router = useRouter();

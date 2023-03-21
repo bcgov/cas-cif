@@ -5,7 +5,7 @@ import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { useFormIndexHelpers } from "pages/helpers";
+import { useFormIndexHelpers } from "../../../../../../hooks/useFormIndexHelpers";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
@@ -90,7 +90,7 @@ export function ProjectFormPage({
   } = useFormIndexHelpers(
     query.projectRevision?.projectId,
     query.projectRevision?.id,
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision.id,
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision?.id,
     query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
       ?.id,
     query.projectRevision?.projectFormChange?.asProject

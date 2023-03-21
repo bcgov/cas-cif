@@ -1,13 +1,13 @@
 /* eslint-disable relay/must-colocate-fragment-spreads*/
-import ExternalLayout from "components/Layout/ExternalLayout";
 import ExternalTaskList from "components/TaskList/ExternalTaskList";
 import { TaskListMode } from "components/TaskList/types";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { useFormIndexHelpers } from "pages/helpers";
+import { useFormIndexHelpers } from "../../../../../../hooks/useFormIndexHelpers";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
+import { FormIndexExternalPageQuery } from "__generated__/FormIndexExternalPageQuery.graphql";
+import ExternalLayout from "components/Layout/ExternalLayout";
 
 const pageQuery = graphql`
   query FormIndexExternalPageQuery($projectRevision: ID!) {
@@ -44,7 +44,7 @@ const pageQuery = graphql`
 
 export function ExternalProjectFormPage({
   preloadedQuery,
-}: RelayProps<{}, FormIndexPageQuery>) {
+}: RelayProps<{}, FormIndexExternalPageQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
   let mode: TaskListMode;
@@ -65,7 +65,7 @@ export function ExternalProjectFormPage({
   } = useFormIndexHelpers(
     query.projectRevision?.projectId,
     query.projectRevision?.id,
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision.id,
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision?.id,
     query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
       ?.id,
     query.projectRevision?.projectFormChange?.asProject
