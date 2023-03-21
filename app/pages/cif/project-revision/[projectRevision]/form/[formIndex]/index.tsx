@@ -1,22 +1,14 @@
+/* eslint-disable relay/must-colocate-fragment-spreads*/
 import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
-import { useFormPages } from "data/formPages/formStructure";
-import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
-import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
-import {
-  getProjectRevisionFormPageRoute,
-  getProjectRevisionPageRoute,
-} from "routes/pageRoutes";
+import { useFormIndexHelpers } from "pages/helpers";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
-import Form from "components/Form/Form";
 
 const pageQuery = graphql`
   query FormIndexPageQuery($projectRevision: ID!) {
@@ -25,11 +17,49 @@ const pageQuery = graphql`
         ...DefaultLayout_session
       }
       projectRevision(id: $projectRevision) {
+        id
         changeStatus
         projectId
+        projectByProjectId {
+          pendingProjectRevision {
+            id
+          }
+          latestCommittedProjectRevision {
+            id
+          }
+        }
+        projectFormChange {
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
+        }
         ...TaskList_projectRevision
+        ...ProjectForm_projectRevision
+        ...ProjectFormSummary_projectRevision
+        ...ProjectContactForm_projectRevision
+        ...ProjectContactFormSummary_projectRevision
+        ...ProjectManagerFormGroup_projectRevision
+        ...ProjectManagerFormSummary_projectRevision
+        ...ProjectQuarterlyReportForm_projectRevision
+        ...ProjectQuarterlyReportFormSummary_projectRevision
+        ...ProjectAnnualReportForm_projectRevision
+        ...ProjectMilestoneReportForm_projectRevision
+        ...ProjectMilestoneReportFormSummary_projectRevision
+        ...ProjectAnnualReportFormSummary_projectRevision
+        ...ProjectFundingAgreementForm_projectRevision
+        ...ProjectFundingAgreementFormSummary_projectRevision
+        ...ProjectEmissionIntensityReportForm_projectRevision
+        ...ProjectEmissionIntensityReportFormSummary_projectRevision
       }
-      ...Form_query
+      ...ProjectForm_query
+      ...ProjectContactForm_query
+      ...ProjectManagerFormGroup_query
+      ...ProjectMilestoneReportForm_query
+      ...ProjectFundingAgreementForm_query
     }
   }
 `;
@@ -44,13 +74,88 @@ export function ProjectFormPage({
   else if (query.projectRevision.changeStatus === "committed") mode = "view";
   else mode = "update";
 
+  const router = useRouter();
+  const formIndex = Number(router.query.formIndex);
+
+  const {
+    handleCreateRevision,
+    isCreatingProjectRevision,
+    handleResumeRevision,
+    handleSubmit,
+    isRedirecting,
+    isRedirectingToLatestRevision,
+    isRedirectingNoFundingStream,
+    formPages,
+    isRedirectingToValidFormIndex,
+  } = useFormIndexHelpers(
+    query.projectRevision.projectId,
+    query.projectRevision?.id,
+    query.projectRevision.projectByProjectId?.pendingProjectRevision.id,
+    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
+      ?.id,
+    query.projectRevision?.projectFormChange?.asProject
+      ?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId
+      ?.name,
+    mode,
+    formIndex,
+    true
+  );
+
+  const existingRevision =
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
+
+  if (
+    isRedirecting ||
+    isRedirectingNoFundingStream ||
+    isRedirectingToLatestRevision ||
+    isRedirectingToValidFormIndex
+  )
+    return null;
+
+  const createEditButton = () => {
+    return (
+      <div>
+        <Button
+          className="edit-button"
+          onClick={
+            existingRevision ? handleResumeRevision : handleCreateRevision
+          }
+          disabled={isCreatingProjectRevision}
+        >
+          {existingRevision ? "Resume Edition" : "Edit"}
+        </Button>
+        <style jsx>{`
+          div :global(.edit-button) {
+            float: right;
+          }
+        `}</style>
+      </div>
+    );
+  };
+
   const taskList = (
     <TaskList projectRevision={query.projectRevision} mode={mode} />
   );
 
+  const EditComponent = formPages[formIndex].editComponent;
+  const ViewComponent = formPages[formIndex].viewComponent;
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
-      <Form query={query} mode={mode} isInternal />
+      {query.projectRevision.changeStatus === "committed" && ViewComponent ? (
+        <>
+          {createEditButton()}
+          <ViewComponent
+            projectRevision={query.projectRevision}
+            viewOnly={true}
+          />
+        </>
+      ) : (
+        <EditComponent
+          query={query}
+          projectRevision={query.projectRevision}
+          onSubmit={handleSubmit}
+        />
+      )}
     </DefaultLayout>
   );
 }
