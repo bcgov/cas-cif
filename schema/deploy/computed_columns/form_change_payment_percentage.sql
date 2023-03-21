@@ -1,7 +1,7 @@
 -- Deploy cif:functions/form_change_payment_percentage to pg
 -- requires: tables/form_change
 -- requires: computed_columns/emission_intensity_report_calculated_ei_performance
--- greatest(least(100 – ((-1.5) x GHG Emission Intensity Performance + 145), 100), 0) .
+-- 100 – ((-1.5) x GHG Emission Intensity Performance + 145), values capped at 0 and 100
 
 begin;
 

@@ -82,7 +82,7 @@ select is(
   (
     30::numeric
   ),
-  'payments percentage is 30 from the formula: greatest(least(100 - ((-1.5) x 50 + 145), 100), 0) = 30'
+  'payments percentage is 30 from the formula: 100 – ((-1.5) x GHG Emission Intensity Performance + 145), values capped at 0 and 100'
 );
 
 select is(
@@ -122,7 +122,7 @@ select is(
   (
     100::numeric
   ),
-  'payments percentage is 100 from the formula: greatest(least(100 - ((-1.5) x 500 + 145), 100), 0) = 100'
+  'payments percentage is 100 from the formula: 100 – ((-1.5) x GHG Emission Intensity Performance + 145), values capped at 0 and 100'
 );
 
 -- should return 0 if payment percentage is negative
@@ -136,7 +136,7 @@ select is(
   (
     0::numeric
   ),
-  'payments percentage is 0 from the formula: greatest(least(100 - ((-1.5) x 50 + 145), 100), 0) = 0'
+  'payments percentage is 0 from the formula: 100 – ((-1.5) x GHG Emission Intensity Performance + 145), values capped at 0 and 100'
 );
 
 -- 200.00,
