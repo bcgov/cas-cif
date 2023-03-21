@@ -67,7 +67,7 @@ select results_eq(
   $$
     select count(*) from cif.funding_stream_rfp
   $$,
-  ARRAY['8'::bigint],
+  ARRAY['10'::bigint],
     'cif_internal can view all data from funding_stream_rfp'
 );
 
