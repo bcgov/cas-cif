@@ -101,7 +101,6 @@ describe("The Project Overview Page (external)", () => {
   it("renders the next button", () => {
     externalPageTestingHelper.loadQuery();
     externalPageTestingHelper.renderPage();
-    screen.logTestingPlaygroundURL();
     expect(
       screen.getByRole("button", {
         name: /next/i,

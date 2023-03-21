@@ -181,7 +181,6 @@ describe("the emission intensity report form component", () => {
 
     // We can't query by label for text elements,
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
-    // screen.logTestingPlaygroundURL();
     expect(
       screen.getByLabelText("GHG Emission Intensity Performance").closest("div")
     ).toHaveTextContent("200.00%");
