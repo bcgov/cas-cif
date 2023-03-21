@@ -88,9 +88,9 @@ export function ProjectFormPage({
     formPages,
     isRedirectingToValidFormIndex,
   } = useFormIndexHelpers(
-    query.projectRevision.projectId,
+    query.projectRevision?.projectId,
     query.projectRevision?.id,
-    query.projectRevision.projectByProjectId?.pendingProjectRevision.id,
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision.id,
     query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
       ?.id,
     query.projectRevision?.projectFormChange?.asProject
