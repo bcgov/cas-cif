@@ -1,7 +1,6 @@
 import type { JSONSchema7 } from "json-schema";
 import FormBase from "../Form/FormBase";
 import { graphql, useFragment } from "react-relay";
-import type { ApplicationOverviewForm_query$key } from "__generated__/ApplicationOverviewForm_query.graphql";
 import { useMemo } from "react";
 import { ApplicationOverviewForm_projectRevision$key } from "__generated__/ApplicationOverviewForm_projectRevision.graphql";
 import { ISubmitEvent } from "@rjsf/core";
@@ -14,7 +13,6 @@ import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 import externalSchema from "data/jsonSchemaForm/externalSchema";
 
 interface Props {
-  query: ApplicationOverviewForm_query$key;
   projectRevision: ApplicationOverviewForm_projectRevision$key;
   onSubmit: () => void;
 }
@@ -46,8 +44,6 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-
-  console.log("revision", revision);
 
   const uiSchema = useMemo(() => {
     const rfpDescription =
