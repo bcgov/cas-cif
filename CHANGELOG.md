@@ -1,3 +1,14 @@
+## [1.5.3](https://github.com/bcgov/cas-cif/compare/1.5.2...1.5.3) (2023-03-21)
+
+### Bug Fixes
+
+- fix the issue with not saving zero values ([376a944](https://github.com/bcgov/cas-cif/commit/376a944565e2ebe8c22c1e1cad885927e3dfd6cf))
+
+### Features
+
+- add external project overview ([d8d54cc](https://github.com/bcgov/cas-cif/commit/d8d54cc6826a8513dbd33559dfed881ace57aa0c))
+- set the Payment Percentage of Performance Milestone Amount between 0 and 100% ([f7663e7](https://github.com/bcgov/cas-cif/commit/f7663e7cd70e8586cc6f85dc3b0980d8291e2f22))
+
 ## [1.5.2](https://github.com/bcgov/cas-cif/compare/1.5.1...1.5.2) (2023-03-07)
 
 ## [1.5.1](https://github.com/bcgov/cas-cif/compare/1.5.0...1.5.1) (2023-03-06)
