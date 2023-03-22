@@ -259,3 +259,4 @@ functions/handle_project_summary_report_form_change_commit 2023-02-02T23:54:40Z 
 data/insert_json_schema_form_data_project_summary 2023-02-02T23:59:58Z Thomas Mastromonaco <thomas@button.is> # add json schema form data for the project summary report
 mutations/create_project_revision [mutations/create_project_revision@1.5.1] 2023-03-14T22:13:05Z Thomas Mastromonaco <thomas@button.is> # Add project summary reporting requirement
 data/insert_json_schema_form_dependency_update_milestone_form_total_eligible_expenses 2023-03-16T18:12:53Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update milestone form dependency to not show total_eligible_expenses field on advanced milestone types
+mutations/update_milestone_form_change [mutations/update_milestone_form_change@1.5.1] 2023-03-21T21:17:39Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # update change handler to set total_eligible_expenses to null if report type is not general milestone
