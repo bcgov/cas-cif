@@ -105,14 +105,16 @@
           {
             "properties": {
               "reportType": {
-                "enum": ["Advanced Milestone", "Reporting Milestone"]
+                "enum": ["Advanced Milestone", "Reporting Milestone"],
+                "title": "Milestone Type"
               }
             }
           },
           {
             "properties": {
               "reportType": {
-                "enum": ["General Milestone"]
+                "enum": ["General Milestone"],
+                "title": "Milestone Type"
               },
               "totalEligibleExpenses": {
                 "type": "number",
