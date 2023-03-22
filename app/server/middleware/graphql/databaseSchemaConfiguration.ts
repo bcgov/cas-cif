@@ -10,6 +10,7 @@ const DATABASE_SCHEMAS = [
   "project_contact",
   "project_manager",
   "project_summary_report",
+  "operator",
 ];
 
 export default DATABASE_SCHEMAS;
