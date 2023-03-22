@@ -84,9 +84,13 @@ Cypress.Commands.add(
   "fillAndCheckNewProjectForm",
   (fundingStream, fundingStreamYear) => {
     cy.url().should("include", "/new");
-    cy.findByLabelText(/Funding Stream$/i).select(fundingStream);
-    cy.findByLabelText(/RFP Year/i).select(fundingStreamYear);
-
+    cy.get("[id=select-parent-dropdown-root_fundingStreamRfpId]")
+      // selecting twice ensures cypress selects the correct funding stream
+      .select(fundingStream)
+      .select(fundingStream);
+    cy.get("[id=select-child-dropdown-root_fundingStreamRfpId]").select(
+      fundingStreamYear
+    );
     cy.get("option").contains(fundingStream).should("be.selected");
     cy.get("option").contains(fundingStreamYear).should("be.selected");
 
