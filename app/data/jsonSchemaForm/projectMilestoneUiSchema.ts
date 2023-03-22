@@ -31,8 +31,10 @@ const projectMilestoneUiSchema = {
     "ui:widget": "SearchWidget",
   },
   hasExpenses: {
-    classNames: "hidden-title",
     "ui:widget": "hidden",
+    "ui:options": {
+      label: false,
+    },
   },
   reportDueDate: {
     "ui:col-md": 12,
