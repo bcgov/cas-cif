@@ -5,7 +5,7 @@ import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
-import { useFormIndexHelpers } from "../../../../../../hooks/useFormIndexHelpers";
+import { useFormIndexHelpers } from "hooks/useFormIndexHelpers";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";

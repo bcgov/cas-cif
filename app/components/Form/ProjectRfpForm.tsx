@@ -12,9 +12,10 @@ import {
   getExternalProjectRevisionFormPageRoute,
   getProjectRevisionFormPageRoute,
 } from "routes/pageRoutes";
+import { ProjectRfpForm_query$key } from "__generated__/ProjectRfpForm_query.graphql";
 
 interface Props {
-  query: any;
+  query: ProjectRfpForm_query$key;
   isInternal: boolean;
 }
 

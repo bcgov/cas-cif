@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { WidgetProps } from "@rjsf/core";
 
 export interface EntitySchema {
-  list: [{ rowId: any; year?: number }];
+  list: [{ rowId: number; year?: number }];
   displayField: string;
   placeholder: string;
   label: string;
@@ -13,7 +13,7 @@ interface SelectParentComponentProps extends WidgetProps {
   parent: EntitySchema;
   child: EntitySchema;
   foreignKey: string;
-  displayIfChildrenEmpty: any;
+  displayIfChildrenEmpty: string | number;
 }
 
 const SelectParentWidget: React.FunctionComponent<

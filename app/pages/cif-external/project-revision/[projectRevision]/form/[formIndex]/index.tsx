@@ -47,11 +47,16 @@ export function ExternalProjectFormPage({
 }: RelayProps<{}, FormIndexExternalPageQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
 
+  console.log(
+    "query.projectRevision?.projectId",
+    query.projectRevision?.projectId
+  );
+
   let mode: TaskListMode;
   if (!query.projectRevision?.projectId) mode = "create";
   else if (query.projectRevision.changeStatus === "committed") mode = "view";
   else mode = "update";
-
+  console.log("mode", mode);
   const router = useRouter();
   const formIndex = Number(router.query.formIndex);
 
