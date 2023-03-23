@@ -28,7 +28,10 @@ export function OperatorFormPage({
   );
   return (
     <DefaultLayout session={session}>
-      <OperatorForm formChange={formChange} schema={formBySlug.jsonSchema} />
+      <OperatorForm
+        formChange={formChange}
+        schema={formBySlug.jsonSchema.schema}
+      />
     </DefaultLayout>
   );
 }

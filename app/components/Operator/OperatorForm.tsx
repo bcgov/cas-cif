@@ -13,6 +13,7 @@ const OperatorForm: React.FC<Props> = (props) => {
     graphql`
       fragment OperatorForm_formChange on FormChange {
         id
+        newFormData
       }
     `,
     props.formChange
