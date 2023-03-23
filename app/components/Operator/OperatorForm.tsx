@@ -3,6 +3,9 @@ import { Button } from "@button-inc/bcgov-theme";
 import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
 import { OperatorForm_formChange$key } from "__generated__/OperatorForm_formChange.graphql";
 import { graphql, useFragment } from "react-relay/hooks";
+import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
+import { useRouter } from "next/router";
+import { getOperatorsPageRoute } from "routes/pageRoutes";
 
 interface Props extends FormComponentProps {
   formChange: OperatorForm_formChange$key;
@@ -19,7 +22,22 @@ const OperatorForm: React.FC<Props> = (props) => {
     props.formChange
   );
   const { newFormData } = formChange;
-  console.log("newFormData id", newFormData.id);
+  const router = useRouter();
+
+  const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
+
+  const handleDiscard = () => {
+    deleteFormChange({
+      variables: {
+        input: {
+          id: formChange.id,
+        },
+      },
+      onCompleted: () => {
+        return router.push(getOperatorsPageRoute());
+      },
+    });
+  };
 
   return (
     <FormBase
@@ -31,7 +49,12 @@ const OperatorForm: React.FC<Props> = (props) => {
       <Button type="submit" style={{ marginRight: "1rem" }}>
         Submit
       </Button>
-      <Button type="button" variant="secondary">
+      <Button
+        type="button"
+        variant="secondary"
+        onClick={handleDiscard}
+        disabled={!isDeletingFormChange}
+      >
         Discard Changes
       </Button>
     </FormBase>
