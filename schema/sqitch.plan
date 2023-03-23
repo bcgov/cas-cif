@@ -254,3 +254,7 @@ data/005_insert_json_schema_form_data_remove_undefined_from_project_contact_sche
 data/006_json_form_data_remove_default_undefined_from_project_manager_schema 2023-03-15T19:21:20Z Gurjeet Matharu <gurjeet@matharuco.com> # Remove the default and anyof value in the project manager json schema
 computed_columns/form_change_payment_percentage [computed_columns/form_change_payment_percentage@1.5.1] 2023-03-16T17:37:26Z Sam Warren <samwarren4@gmail.com> # Update payment percentage computed column to only return values between 0% and 100%
 @1.5.3 2023-03-21T23:20:42Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.5.3
+tables/report_type_003 2023-01-31T00:01:02Z Thomas Mastromonaco <thomas@button.is> # Add summary report to the report type table
+functions/handle_project_summary_report_form_change_commit 2023-02-02T23:54:40Z Thomas Mastromonaco <thomas@button.is> # custom commit handler for the project summary form
+data/insert_json_schema_form_data_project_summary 2023-02-02T23:59:58Z Thomas Mastromonaco <thomas@button.is> # add json schema form data for the project summary report
+mutations/create_project_revision [mutations/create_project_revision@1.5.1] 2023-03-14T22:13:05Z Thomas Mastromonaco <thomas@button.is> # Add project summary reporting requirement

@@ -150,19 +150,20 @@ describe("the new project page", () => {
     // PROJECT SUMMARY REPORT
     cy.findByText(/Project summary report/i).click();
     cy.findByText(/Add Project Summary Report/i).click();
-    cy.contains(/Project Summary Report Form Placeholder/i);
+    cy.findByRole("button", { name: /Add Project Summary Report/i }).should(
+      "be.visible"
+    );
+    cy.url().should("include", "/form/5");
 
     // SUMMMARY
     cy.findByText(/Submit Changes/i).click();
     cy.findByText(/Review and Submit information/i).click();
     cy.findByText(/project managers not added/i).should("be.visible");
     cy.findByText(/milestone reports not added/i).should("be.visible");
-    cy.findByText(/quarterly reports not added/i).should("be.visible");
-    cy.findByText(/annual reports not added/i).should("be.visible");
     cy.findByText(/Performance Milestone Holdback Percentage/i).should(
       "not.exist"
     );
-    // TODO assertion for project summary report Thomas
+    cy.findByText(/project summary report not added/i).should("be.visible");
 
     cy.happoAndAxe("IA Project summary Form", "empty", "main", true);
   });
@@ -246,15 +247,17 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
-    cy.findAllByRole("button", { name: /view/i }).first().as("firstViewButton");
-    cy.get("@firstViewButton").should("be.visible");
-    cy.get("@firstViewButton").click();
+    cy.get("input[aria-label='Filter by Proposal Reference']").as("inpt");
+    cy.get("@inpt").type("IA{enter}");
+    cy.findByText("IA001").should("be.visible");
+    cy.findAllByRole("button", { name: /view/i }).first().click();
     cy.url().should("include", "/form/0");
 
+    // filter by "IA"
     cy.findByRole("heading", { name: "3. Submit changes" }).should("not.exist");
     cy.findByText(/RFP Year ID/i)
       .next()
-      .should("have.text", "Emissions Performance - 2019");
+      .should("have.text", "Innovation Accelerator - 2021");
 
     // budgets, expenses, and payments
     cy.findByText(/Budgets, Expenses & Payments/i).click();
@@ -262,14 +265,13 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
-      "$1.00",
+      "$500.00",
       "50.00 %",
-      "$1.00",
-      "$777.00",
+      "$200.00",
+      "$3,000.00",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
-      "$778.00",
-      "10 %"
+      "$3,500.00"
     );
     // additional funding sources
     cy.checkAdditionalFundingSourceForm(
@@ -277,6 +279,22 @@ describe("the new project page", () => {
       "$1,000.00",
       "Awaiting Approval",
       1
+    );
+
+    // project summary report
+    cy.findByRole("heading", {
+      name: /5. Project Summary Report/i,
+    }).click();
+    cy.findByRole("link", { name: "Project Summary Report" }).click();
+    cy.url().should("include", "form/5");
+
+    cy.checkProjectSummaryReport(
+      /Jun(\.)? 10, 2020/,
+      /Jun(\.)? 10, 2020/,
+      "project summary report comments 51",
+      "$111.00",
+      "payment notes",
+      /Jun(\.)? 10, 2020/
     );
   });
 

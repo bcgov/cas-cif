@@ -278,7 +278,25 @@ describe("when creating a project, the project page", () => {
     cy.happoAndAxe("IA Project budgets Form", "filled", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    // project summary form section Thomas
+    // project summary form
+    cy.findByRole("heading", {
+      name: /5. Project Summary Report/i,
+    }).click();
+    cy.findByText(/Add Project Summary Report/i).click();
+    cy.findByRole("button", {
+      name: /Add Project Summary Report/i,
+    }).click();
+    cy.addProjectSummaryReport(
+      "2020-01-01",
+      "2020-01-01",
+      "comments",
+      "$4,321.00",
+      "payment notes",
+      "2020-01-01"
+    );
+    cy.contains(/Complete/i).should("be.visible");
+    cy.happoAndAxe("Project Summary Report Form", "filled", "main");
+    cy.findByText(/Submit Project Summary/).click();
 
     //review and submit
     cy.findByRole("heading", {
@@ -315,7 +333,11 @@ describe("when creating a project, the project page", () => {
       .next()
       .should("have.text", "Approved");
 
-    // project summary report section Thomas
+    // project summary report section
+    cy.contains(/Project Summary Report/i).should("be.visible");
+    cy.findByText(/Project Summary Report Payment/i)
+      .next()
+      .should("have.text", "$4,321.00");
   });
 
   it("creates new contact and redirects a user back to project contact form and populate project contact form with newly created contact", () => {

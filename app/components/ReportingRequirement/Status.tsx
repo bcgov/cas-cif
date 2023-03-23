@@ -1,7 +1,7 @@
 import { getBadgeForOverallReportStatus } from "lib/helpers/reportStatusHelpers";
 
 interface Props {
-  reportType: "Quarterly" | "Annual" | "Milestone";
+  reportType: "Quarterly" | "Annual" | "Milestone" | "Project Summary";
   upcomingReportDueDate: string;
   reportSubmittedDates: string[];
 }
@@ -11,9 +11,12 @@ const Status: React.FC<Props> = ({
   upcomingReportDueDate,
   reportSubmittedDates,
 }) => {
+  const reportString =
+    reportType === "Project Summary" ? "Report " : "Reports ";
+
   return (
     <div>
-      Status of {reportType} Reports{" "}
+      Status of {reportType} {reportString}
       {getBadgeForOverallReportStatus(
         upcomingReportDueDate,
         reportSubmittedDates

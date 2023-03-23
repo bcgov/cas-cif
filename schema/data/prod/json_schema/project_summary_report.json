@@ -1,0 +1,34 @@
+{
+  "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Project Summary Report",
+    "required": ["reportDueDate"],
+    "properties": {
+      "reportDueDate": {
+        "type": "string",
+        "title": "Report Due Date"
+      },
+      "submittedDate": {
+        "type": "string",
+        "title": "Received Date"
+      },
+      "comments": {
+        "type": "string",
+        "title": "General Comments"
+      },
+      "projectSummaryReportPayment": {
+        "title": "Project Summary Report Payment",
+        "type": "number"
+      },
+      "paymentNotes": {
+        "title": "Notes for the Payment",
+        "type": "string"
+      },
+      "dateSentToCsnr": {
+        "title": "Date Invoice Sent to CSNR",
+        "type": "string"
+      }
+    }
+  }
+}

@@ -29,6 +29,7 @@ import ProjectAnnualReportFormSummary from "components/Form/ProjectAnnualReportF
 import ProjectMilestoneReportFormSummary from "components/Form/ProjectMilestoneReportFormSummary";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
 import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectEmissionIntensityReportFormSummary";
+import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryReportFormSummary";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 
@@ -54,9 +55,19 @@ const pageQuery = graphql`
         ...ProjectMilestoneReportFormSummary_projectRevision
         ...ProjectFundingAgreementFormSummary_projectRevision
         ...ProjectEmissionIntensityReportFormSummary_projectRevision
+        ...ProjectSummaryReportFormSummary_projectRevision
         projectByProjectId {
           latestCommittedProjectRevision {
             id
+          }
+        }
+        projectFormChange {
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
           }
         }
         formChangesByProjectRevisionId {
@@ -180,6 +191,11 @@ export function ProjectRevision({
   const taskList = (
     <TaskList projectRevision={query.projectRevision} mode={mode} />
   );
+
+  const fundingStream =
+    query.projectRevision.projectFormChange.asProject
+      .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
+
   return (
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       <div>
@@ -214,15 +230,25 @@ export function ProjectRevision({
         <ProjectMilestoneReportFormSummary
           projectRevision={query.projectRevision}
         />
-        <ProjectQuarterlyReportFormSummary
-          projectRevision={query.projectRevision}
-        />
-        <ProjectEmissionsIntensityReportFormSummary
-          projectRevision={query.projectRevision}
-        />
-        <ProjectAnnualReportFormSummary
-          projectRevision={query.projectRevision}
-        />
+
+        {fundingStream == "EP" && (
+          <>
+            <ProjectQuarterlyReportFormSummary
+              projectRevision={query.projectRevision}
+            />
+            <ProjectEmissionsIntensityReportFormSummary
+              projectRevision={query.projectRevision}
+            />
+            <ProjectAnnualReportFormSummary
+              projectRevision={query.projectRevision}
+            />
+          </>
+        )}
+        {fundingStream == "IA" && (
+          <ProjectSummaryReportFormSummary
+            projectRevision={query.projectRevision}
+          />
+        )}
 
         {query.projectRevision.projectId && (
           <div>

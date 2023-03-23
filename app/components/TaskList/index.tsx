@@ -45,6 +45,7 @@ const TaskList: React.FC<Props> = ({
     milestoneReportStatuses,
     fundingAgreementStatus,
     teimpStatus,
+    projectSummaryReportStatus,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -94,6 +95,10 @@ const TaskList: React.FC<Props> = ({
             }
           }
         }
+        projectSummaryReportStatus: tasklistStatusFor(
+          formDataTableName: "reporting_requirement"
+          jsonMatcher: "{\"reportType\":\"Project Summary Report\"}"
+        )
       }
     `,
     projectRevision
@@ -158,7 +163,7 @@ const TaskList: React.FC<Props> = ({
       ItemsComponent: BaseTaskListItemComponent,
     },
     projectSummaryReport: {
-      context: [{ status: "" }],
+      context: [{ status: projectSummaryReportStatus }],
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
