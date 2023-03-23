@@ -65,7 +65,58 @@ const oldUiTestSchema = JSON.parse(JSON.stringify(uiTestSchema));
 
 oldUiTestSchema.numericIdTest["ui:options"].text = "I replaced the OLD ID";
 
+const latestCommittedUiTestSchema = JSON.parse(JSON.stringify(uiTestSchema));
+
+latestCommittedUiTestSchema.numericIdTest["ui:options"].text =
+  "I am the last committed value";
+
+const latestCommittedData = {
+  stringTest: "stringTest LAST COMMITTED",
+  numberTest: 300,
+  numericIdTest: 3,
+};
+
 describe("The Object Field Template", () => {
+  it("shows the latest committed value", () => {
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formData}
+        formContext={{
+          oldData: oldFormData,
+          latestCommittedData,
+          oldUiSchema: oldUiTestSchema,
+          latestCommittedUiSchema: latestCommittedUiTestSchema,
+          operation: "UPDATE",
+        }}
+      />
+    );
+
+    expect(
+      componentUnderTest.getAllByText(/Latest committed value:/i)
+    ).toHaveLength(3);
+    expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText(/^(.*?)stringTest LAST COMMITTED/)
+    ).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$100.00")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$300.00")).toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText("I replaced the ID")
+    ).toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText("I replaced the OLD ID")
+    ).toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText(/I am the last committed value/i)
+    ).toBeInTheDocument();
+  });
+
   it("shows a diff when there is oldData, newData & the operation is 'UPDATE'", () => {
     const componentUnderTest = render(
       <FormBase
