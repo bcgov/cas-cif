@@ -1,11 +1,11 @@
-import FormBase from "components/Form/FormBase";
 import { Button } from "@button-inc/bcgov-theme";
+import FormBase from "components/Form/FormBase";
 import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
-import { OperatorForm_formChange$key } from "__generated__/OperatorForm_formChange.graphql";
+import { getOperatorsPageRoute } from "routes/pageRoutes";
 import { graphql, useFragment } from "react-relay/hooks";
+import { OperatorForm_formChange$key } from "__generated__/OperatorForm_formChange.graphql";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
 import { useRouter } from "next/router";
-import { getOperatorsPageRoute } from "routes/pageRoutes";
 
 interface Props extends FormComponentProps {
   formChange: OperatorForm_formChange$key;
@@ -21,10 +21,12 @@ const OperatorForm: React.FC<Props> = (props) => {
     `,
     props.formChange
   );
-  const { newFormData } = formChange;
+
   const router = useRouter();
 
   const [deleteFormChange, isDeletingFormChange] = useDeleteFormChange();
+
+  const { newFormData } = formChange;
 
   const handleDiscard = () => {
     deleteFormChange({
