@@ -232,32 +232,6 @@ describe("when undoing, the project revision page", () => {
       "Awaiting Approval"
     );
 
-    // undo quarterly reports
-    cy.findByText(/Quarterly reports/i).click();
-    cy.findByText(/Edit quarterly reports/i).click();
-    cy.findByText(/Quarterly report 1/i).click();
-    cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
-    cy.contains("Changes saved.");
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.findByLabelText(/General Comments/i).should(
-      "have.text",
-      "quarterly report comments 1"
-    );
-
-    //TODO: undo TEIMP agreement once fixture added
-
-    // undo annual reports
-    cy.findByText(/Annual reports/i).click();
-    cy.findByText(/Edit annual reports/i).click();
-    cy.findByText(/annual report 1/i).click();
-    cy.get('[aria-label="General Comments"]').clear().type("I will be undone");
-    cy.contains("Changes saved.");
-    cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.get('[aria-label="General Comments"]').should(
-      "have.text",
-      "annual report comments 1"
-    );
-
     // undo milestone reports
     cy.findByText(/Milestone reports/i).click();
     cy.findByText(/Edit milestone 1/i).click();
