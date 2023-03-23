@@ -6,9 +6,12 @@ import DefaultLayout from "components/Layout/DefaultLayout";
 import { FormOperatorFormQuery } from "__generated__/FormOperatorFormQuery.graphql";
 
 const pageQuery = graphql`
-  query FormOperatorFormQuery {
+  query FormOperatorFormQuery($form: ID!) {
     session {
       ...DefaultLayout_session
+    }
+    formChange(id: $form) {
+      ...OperatorForm_formChange
     }
     formBySlug(slug: "operator") {
       jsonSchema
@@ -19,10 +22,13 @@ const pageQuery = graphql`
 export function OperatorFormPage({
   preloadedQuery,
 }: RelayProps<{}, FormOperatorFormQuery>) {
-  const { session, formBySlug } = usePreloadedQuery(pageQuery, preloadedQuery);
+  const { session, formChange, formBySlug } = usePreloadedQuery(
+    pageQuery,
+    preloadedQuery
+  );
   return (
     <DefaultLayout session={session}>
-      <OperatorForm jsonSchema={formBySlug.jsonSchema} />
+      <OperatorForm formChange={formChange} schema={formBySlug.jsonSchema} />
     </DefaultLayout>
   );
 }

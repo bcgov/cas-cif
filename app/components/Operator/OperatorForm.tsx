@@ -1,18 +1,32 @@
 import FormBase from "components/Form/FormBase";
 import { Button } from "@button-inc/bcgov-theme";
-import { JSONSchema7 } from "json-schema";
+import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
+import { OperatorForm_formChange$key } from "__generated__/OperatorForm_formChange.graphql";
+import { graphql, useFragment } from "react-relay/hooks";
 
-interface Props {
-  jsonSchema: {
-    schema: string;
-  };
+interface Props extends FormComponentProps {
+  formChange: OperatorForm_formChange$key;
 }
 
-const OperatorForm: React.FC<Props> = ({ jsonSchema }) => {
-  console.log(jsonSchema);
-  const parsedSchema = JSON.parse(JSON.stringify(jsonSchema.schema));
+const OperatorForm: React.FC<Props> = (props) => {
+  const formChange = useFragment(
+    graphql`
+      fragment OperatorForm_formChange on FormChange {
+        id
+      }
+    `,
+    props.formChange
+  );
+  const { newFormData } = formChange;
+  console.log("newFormData id", newFormData.id);
+
   return (
-    <FormBase schema={parsedSchema as JSONSchema7} uiSchema={{}}>
+    <FormBase
+      {...props}
+      id="operator-form"
+      formData={newFormData}
+      schema={props.schema}
+    >
       <Button type="submit" style={{ marginRight: "1rem" }}>
         Submit
       </Button>
