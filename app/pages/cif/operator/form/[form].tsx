@@ -1,13 +1,30 @@
 import OperatorForm from "components/Operator/OperatorForm";
-import relayFormPageFactory from "lib/pages/relayFormPageFactory";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { getOperatorsPageRoute } from "routes/pageRoutes";
-import { withRelay } from "relay-nextjs";
+import { RelayProps, withRelay } from "relay-nextjs";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import DefaultLayout from "components/Layout/DefaultLayout";
+import { FormOperatorFormQuery } from "__generated__/FormOperatorFormQuery.graphql";
 
-const [FormPage, query] = relayFormPageFactory(
-  "Operator",
-  getOperatorsPageRoute(),
-  OperatorForm
-);
+const pageQuery = graphql`
+  query FormOperatorFormQuery {
+    session {
+      ...DefaultLayout_session
+    }
+    formBySlug(slug: "operator") {
+      jsonSchema
+    }
+  }
+`;
 
-export default withRelay(FormPage, query, withRelayOptions);
+export function OperatorFormPage({
+  preloadedQuery,
+}: RelayProps<{}, FormOperatorFormQuery>) {
+  const { session, formBySlug } = usePreloadedQuery(pageQuery, preloadedQuery);
+  return (
+    <DefaultLayout session={session}>
+      <OperatorForm jsonSchema={formBySlug.jsonSchema} />
+    </DefaultLayout>
+  );
+}
+
+export default withRelay(OperatorFormPage, pageQuery, withRelayOptions);

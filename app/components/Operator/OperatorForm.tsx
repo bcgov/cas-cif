@@ -1,31 +1,18 @@
 import FormBase from "components/Form/FormBase";
-import withRelayOptions from "lib/relay/withRelayOptions";
 import { Button } from "@button-inc/bcgov-theme";
 import { JSONSchema7 } from "json-schema";
-import { OperatorFormQuery } from "__generated__/OperatorFormQuery.graphql";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { withRelay, RelayProps } from "relay-nextjs";
 
-export const Query = graphql`
-  query OperatorFormQuery {
-    contactFormBySlug: formBySlug(slug: "operator") {
-      jsonSchema
-    }
-  }
-`;
+interface Props {
+  jsonSchema: {
+    schema: string;
+  };
+}
 
-export function OperatorForm({
-  preloadedQuery,
-}: RelayProps<{}, OperatorFormQuery>) {
-  const contactFormBySlug = usePreloadedQuery(Query, preloadedQuery);
-  console.log(contactFormBySlug);
-  console.log("----");
-  return null;
+const OperatorForm: React.FC<Props> = ({ jsonSchema }) => {
+  console.log(jsonSchema);
+  const parsedSchema = JSON.parse(JSON.stringify(jsonSchema.schema));
   return (
-    <FormBase
-      schema={operatorFormBySlug.jsonSchema as JSONSchema7}
-      uiSchema={{}}
-    >
+    <FormBase schema={parsedSchema as JSONSchema7} uiSchema={{}}>
       <Button type="submit" style={{ marginRight: "1rem" }}>
         Submit
       </Button>
@@ -34,6 +21,6 @@ export function OperatorForm({
       </Button>
     </FormBase>
   );
-}
+};
 
-export default withRelay(OperatorForm, Query, withRelayOptions);
+export default OperatorForm;
