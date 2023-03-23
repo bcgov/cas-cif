@@ -1,7 +1,7 @@
 
 begin;
 
-select * from no_plan();
+select plan(10);
 
 /** SETUP **/
 
@@ -152,6 +152,45 @@ select is(
   ),
   false,
   'The update_mutation_form_change custom mutation properly updates data other than calculated values'
+);
+
+-- It makes the total eligible expenses null when report type is not general milestone
+select is(
+  (
+    select
+      (new_form_data->>'totalEligibleExpenses')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Advanced Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  null,
+  'The update_mutation_form_change custom mutation makes the total eligible expenses null when report type is not general milestone'
+);
+
+-- It populates the total eligible expenses with the correct value when report type is general milestone
+select is(
+  (
+    select
+      (new_form_data->>'totalEligibleExpenses')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  20000.00,
+  'The update_mutation_form_change custom mutation populates the total eligible expenses with the correct value when report type is general milestone'
+);
+
+-- It updates the total eligible expenses with the correct value when updating the total eligible expenses field
+select is(
+  (
+    select
+      (new_form_data->>'totalEligibleExpenses')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 10000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  10000.00,
+  'The update_mutation_form_change custom mutation updates the total eligible expenses with the correct value when updating the total eligible expenses field'
 );
 
 select finish();

@@ -8,21 +8,25 @@ import { JSONSchema7 } from "json-schema";
  *
  * @param formSchema
  * @param formChange
- * @returns
+ * @returns {{formSchema: JSONSchema7, formData: any}}
  */
 export const getMilestoneFilteredSchema = (
   formSchema: JSONSchema7,
   formChange
 ) => {
   const properties = formSchema.properties;
-  const dependencyProperties = (formSchema as any).dependencies.hasExpenses
-    .oneOf[1].properties;
+  // schema dependencies
+  const hasExpensesDependencyProperties = (formSchema as any).dependencies
+    .hasExpenses.oneOf[1].properties;
+  const reportTypeDependencyProperties = (formSchema as any).dependencies
+    .reportType.oneOf[1].properties;
 
   const filteredSchema = {
     ...formSchema,
     properties: {
       ...properties,
-      ...dependencyProperties,
+      ...hasExpensesDependencyProperties,
+      ...reportTypeDependencyProperties,
     },
   };
   delete filteredSchema.dependencies;
