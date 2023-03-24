@@ -10,7 +10,8 @@ $fn$
 
   select case
     when ($1.new_form_data->>'hasExpenses')::boolean = false then 0
-    when ($1.new_form_data->>'hasExpenses')::boolean = true then
+    when ($1.new_form_data->>'reportType')::text = 'General Milestone' and ($1.new_form_data->>'totalEligibleExpenses')::numeric is null then null
+    when ($1.new_form_data->>'hasExpenses')::boolean = true and ($1.new_form_data->>'submittedDate')::timestamptz is not null then
       (
         coalesce(
           ($1.new_form_data->>'adjustedGrossAmount')::numeric, cif.form_change_calculated_gross_amount_this_milestone($1)
@@ -18,6 +19,7 @@ $fn$
         *
         ((select new_form_data->>'holdbackPercentage' from cif.form_change where project_revision_id=$1.project_revision_id and form_data_table_name='funding_parameter')::numeric / 100)
       )
+    else null
   end;
 
 $fn$ language sql stable;
