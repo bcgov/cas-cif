@@ -90,11 +90,11 @@ describe("when creating a project, the project page", () => {
       1,
       "desc",
       "General",
-      "1991-04-17",
+      "1991-05-17",
       "Professional Engineer",
-      true
+      true,
+      "2020-01-01"
     );
-    cy.setDateInPicker("Substantial Completion Date", "1991-05-17");
     cy.contains("Changes saved").should("be.visible");
     cy.get('[aria-label*="Report Due Date"').contains(/Jun(\.)? 16, 1991/i);
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
@@ -220,7 +220,7 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/cif/projects");
     cy.findByText("TEST-123-12345").should("be.visible");
     // this checks that the project view list shows the milestone report status vs. the other report statuses
-    cy.findAllByRole("status").should("have.text", "Late");
+    cy.findAllByRole("status").should("have.text", "Complete");
   });
 
   it("allows an admin user to create an IA project", () => {
