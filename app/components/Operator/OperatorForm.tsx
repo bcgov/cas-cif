@@ -4,7 +4,6 @@ import FormComponentProps from "components/Form/Interfaces/FormComponentProps";
 import { getOperatorsPageRoute } from "routes/pageRoutes";
 import { graphql, useFragment } from "react-relay/hooks";
 import { OperatorForm_formChange$key } from "__generated__/OperatorForm_formChange.graphql";
-// import { OperatorForm_query$key } from "__generated__/OperatorForm_query.graphql";
 import { useDeleteFormChange } from "mutations/FormChange/deleteFormChange";
 import { useRouter } from "next/router";
 import { useCommitFormChange } from "mutations/FormChange/commitFormChange";
@@ -13,7 +12,6 @@ import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
 
 interface Props extends FormComponentProps {
   formChange: OperatorForm_formChange$key;
-  // query: OperatorForm_query$key;
 }
 
 const OperatorForm: React.FC<Props> = (props) => {
@@ -28,17 +26,6 @@ const OperatorForm: React.FC<Props> = (props) => {
     `,
     props.formChange
   );
-  // TODO: fix this.
-  // const { operatorFormBySlug } = useFragment(
-  //   graphql`
-  //     fragment OperatorForm_query on Query {
-  //       operatorFormBySlug: formBySlug(slug: "operator") {
-  //         jsonSchema
-  //       }
-  //     }
-  //   `,
-  //   props.query
-  // );
 
   const router = useRouter();
 
