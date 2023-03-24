@@ -63,6 +63,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               holdbackAmountToDate
               netPaymentsToDate
               grossPaymentsToDate
+              calculatedTotalPaymentAmountToDate
               isPristine
               operation
               formChangeByPreviousFormChangeId {
@@ -233,6 +234,48 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         />
       )}
 
+      {viewOnly && !isOnAmendmentsAndOtherRevisionsPage && (
+        <>
+          <h3>Expenses & Payments Tracker</h3>
+          <FormBase
+            tagName={"dl"}
+            theme={readOnlyTheme}
+            fields={renderDiff ? customFields : fields}
+            schema={
+              fundingStream === "EP"
+                ? (expensesPaymentsTrackerEPSchema as JSONSchema7)
+                : (expensesPaymentsTrackerIASchema as JSONSchema7)
+            }
+            uiSchema={
+              fundingStream === "EP"
+                ? expensesPaymentsTrackerEPUiSchema
+                : expensesPaymentsTrackerIAUiSchema
+            }
+            formData={formData}
+            formContext={{
+              calculatedTotalPaymentAmountToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .calculatedTotalPaymentAmountToDate,
+              calculatedEligibleExpensesToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .eligibleExpensesToDate,
+              calculatedHoldbackAmountToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .holdbackAmountToDate,
+              calculatedNetPaymentsToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .netPaymentsToDate,
+              calculatedGrossPaymentsToDate:
+                summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                  .grossPaymentsToDate,
+              operation: fundingAgreementSummary?.operation,
+              oldData:
+                fundingAgreementSummary?.formChangeByPreviousFormChangeId
+                  ?.newFormData,
+            }}
+          />
+        </>
+      )}
       <style jsx>{`
         div :global(h3) {
           margin: 1em 0;
