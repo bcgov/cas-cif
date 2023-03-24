@@ -69,7 +69,7 @@ select is(
     select
       (new_form_data->>'calculatedGrossAmount')::numeric
     from cif.update_milestone_form_change(
-      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     )
   ),
   10000.00,
@@ -82,7 +82,7 @@ select is(
     select
       (new_form_data->>'calculatedNetAmount')::numeric
     from cif.update_milestone_form_change(
-      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     )
   ),
   9000.00,
@@ -95,7 +95,7 @@ select is(
     select
       (new_form_data->>'calculatedHoldbackAmount')::numeric
     from cif.update_milestone_form_change(
-      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     )
   ),
   1000.00,
@@ -108,7 +108,7 @@ select is(
     select
       (new_form_data->>'adjustedGrossAmount')::numeric
     from cif.update_milestone_form_change(
-      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     )
   ),
   500.00,
@@ -121,7 +121,7 @@ select is(
     select
       (new_form_data->>'calculatedNetAmount')::numeric
     from cif.update_milestone_form_change(
-      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     )
   ),
   450.00,
@@ -134,7 +134,7 @@ select is(
     select
       (new_form_data->>'calculatedHoldbackAmount')::numeric
     from cif.update_milestone_form_change(
-      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+      1, (select row( null, '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
     )
   ),
   50.00,
