@@ -449,4 +449,114 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText(/maximum amount/i)).toHaveLength(2);
     expect(screen.getAllByText(/total eligible expenses/i)).toHaveLength(1);
   });
+
+  it("Shows `This field cannot be calculated due to lack of information now.` message for calculated fields when submittedDate not provided", () => {
+    const customMockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          id: `mock-proj-rev-${generateID()}`,
+          rowId: 1234,
+          upcomingMilestoneReportFormChange: {
+            id: "mock-id",
+            asReportingRequirement: {
+              reportDueDate: "2022-01-01T00:00:00-07",
+              reportingRequirementIndex: 1,
+            },
+          },
+          milestoneFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: `mock-project-milestone-report-form-${generateID()}`,
+                  rowId: 1,
+                  newFormData: {
+                    substantialCompletionDate: "2021-12-02",
+                    reportDueDate: "2022-01-01",
+                    projectId: 51,
+                    reportType: "General Milestone",
+                    description: "i am the first description",
+                    reportingRequirementIndex: 1,
+                    hasExpenses: true,
+                    reportingRequirementId: 1,
+                    totalEligibleExpenses: 100,
+                    maximumAmount: 200,
+                    certifierProfessionalDesignation: "Professional Engineer",
+                  },
+                  operation: "CREATE",
+                  changeStatus: "pending",
+                  formChangeByPreviousFormChangeId: null,
+                  formDataRecordId: 1,
+                },
+              },
+            ],
+            __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(customMockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByText(
+        /This field cannot be calculated due to lack of information now./i
+      )
+    ).toHaveLength(3);
+  });
+
+  it("Shows `This field cannot be calculated due to lack of information now.` message for calculated fields when report type is General Milestone and totalEligibleExpenses not provided", () => {
+    const customMockResolver = {
+      ...defaultMockResolver,
+      ProjectRevision(context, generateID) {
+        return {
+          id: `mock-proj-rev-${generateID()}`,
+          rowId: 1234,
+          upcomingMilestoneReportFormChange: {
+            id: "mock-id",
+            asReportingRequirement: {
+              reportDueDate: "2022-01-01T00:00:00-07",
+              reportingRequirementIndex: 1,
+            },
+          },
+          milestoneFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: `mock-project-milestone-report-form-${generateID()}`,
+                  rowId: 1,
+                  newFormData: {
+                    substantialCompletionDate: "2021-12-02",
+                    reportDueDate: "2022-01-01",
+                    projectId: 51,
+                    reportType: "General Milestone",
+                    submittedDate: "2022-05-02",
+                    description: "i am the first description",
+                    reportingRequirementIndex: 1,
+                    hasExpenses: true,
+                    reportingRequirementId: 1,
+                    maximumAmount: 200,
+                    certifierProfessionalDesignation: "Professional Engineer",
+                  },
+                  operation: "CREATE",
+                  changeStatus: "pending",
+                  formChangeByPreviousFormChangeId: null,
+                  formDataRecordId: 1,
+                },
+              },
+            ],
+            __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(customMockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByText(
+        /This field cannot be calculated due to lack of information now./i
+      )
+    ).toHaveLength(3);
+  });
 });
