@@ -27,7 +27,11 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { summaryAnnualReportFormChanges, isFirstRevision } = useFragment(
+  const {
+    summaryAnnualReportFormChanges,
+    isFirstRevision,
+    latestCommittedAnnualReportFormChanges,
+  } = useFragment(
     graphql`
       fragment ProjectAnnualReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
@@ -48,6 +52,16 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               formByJsonSchemaName {
                 jsonSchema
               }
+            }
+          }
+        }
+        latestCommittedAnnualReportFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Annual"
+        ) {
+          edges {
+            node {
+              newFormData
             }
           }
         }
@@ -108,6 +122,13 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
       )
         return null;
 
+      const latestCommittedData =
+        latestCommittedAnnualReportFormChanges?.edges?.find(
+          ({ node }) =>
+            node.newFormData.reportingRequirementIndex ===
+            annualReport.newFormData.reportingRequirementIndex
+        )?.node?.newFormData;
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -143,6 +164,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
                 operation: annualReport.operation,
                 oldData:
                   annualReport.formChangeByPreviousFormChangeId?.newFormData,
+                latestCommittedData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,
               }}
