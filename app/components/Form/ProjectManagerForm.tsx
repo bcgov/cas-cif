@@ -38,7 +38,7 @@ export const createProjectManagerUiSchema = (contact?, role?) => {
       "ui:title": role,
       "ui:options": {
         label: role ? true : false,
-        text: `${contact}`,
+        text: contact ? `${contact}` : undefined,
       },
     },
   };
