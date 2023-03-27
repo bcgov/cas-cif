@@ -24,7 +24,12 @@ const ProjectFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { projectFormChange, isFirstRevision, rank } = useFragment(
+  const {
+    projectFormChange,
+    isFirstRevision,
+    rank,
+    latestCommittedProjectFormChanges,
+  } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
@@ -67,10 +72,37 @@ const ProjectFormSummary: React.FC<Props> = ({
             }
           }
         }
+        latestCommittedProjectFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "project"
+        ) {
+          edges {
+            node {
+              newFormData
+              asProject {
+                operatorByOperatorId {
+                  legalName
+                  bcRegistryId
+                }
+                fundingStreamRfpByFundingStreamRfpId {
+                  year
+                  fundingStreamByFundingStreamId {
+                    description
+                  }
+                }
+                projectStatusByProjectStatusId {
+                  name
+                }
+              }
+            }
+          }
+        }
       }
     `,
     projectRevision
   );
+
+  const latestCommittedProjectData =
+    latestCommittedProjectFormChanges?.edges[0]?.node;
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
@@ -85,6 +117,15 @@ const ProjectFormSummary: React.FC<Props> = ({
         `${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
         previousDataAsProject.operatorByOperatorId.bcRegistryId,
         previousDataAsProject.projectStatusByProjectStatusId.name
+      )
+    : null;
+
+  const latestCommittedUiSchema = latestCommittedProjectData?.asProject
+    ? createProjectUiSchema(
+        latestCommittedProjectData.asProject.operatorByOperatorId.legalName,
+        `${latestCommittedProjectData.asProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedProjectData.asProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+        latestCommittedProjectData.asProject.operatorByOperatorId.bcRegistryId,
+        latestCommittedProjectData.asProject.projectStatusByProjectStatusId.name
       )
     : null;
 
@@ -140,6 +181,8 @@ const ProjectFormSummary: React.FC<Props> = ({
             oldData:
               projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
             oldUiSchema,
+            latestCommittedData: latestCommittedProjectData?.newFormData,
+            latestCommittedUiSchema,
             operation: projectFormChange.operation,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,
