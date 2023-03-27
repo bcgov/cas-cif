@@ -72,6 +72,15 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             }
           }
         }
+        latestCommittedFundingFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "funding_parameter"
+        ) {
+          edges {
+            node {
+              newFormData
+            }
+          }
+        }
       }
     `,
     projectRevision
@@ -81,6 +90,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     summaryProjectFundingAgreementFormChanges,
     isFirstRevision,
     totalProjectValue,
+    latestCommittedFundingFormChanges,
   } = revision;
 
   const fundingStream =
@@ -214,6 +224,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             oldData:
               fundingAgreementSummary?.formChangeByPreviousFormChangeId
                 ?.newFormData,
+            latestCommittedData:
+              latestCommittedFundingFormChanges?.edges[0]?.node.newFormData,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,
             calculatedEligibleExpensesToDate:
