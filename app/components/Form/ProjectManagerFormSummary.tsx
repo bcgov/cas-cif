@@ -25,7 +25,7 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
   const {
     projectManagerFormChangesByLabel,
     isFirstRevision,
-    latestCommittedManagerData,
+    latestCommittedProjectManagerFormChanges,
   } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
@@ -60,7 +60,7 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
             }
           }
         }
-        latestCommittedManagerData: latestCommittedFormChangeFor(
+        latestCommittedProjectManagerFormChanges: latestCommittedFormChangesFor(
           formDataTableName: "project_manager"
         ) {
           edges {
@@ -113,17 +113,18 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
       // Set custom rjsf fields to display diffs
       const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-      const latestCommittedData = latestCommittedManagerData?.edges?.find(
-        (latestCommittedNode) => {
-          return (
-            latestCommittedNode.node.newFormData.projectManagerLabelId ===
-            node.formChange.newFormData.projectManagerLabelId
-          );
-        }
-      );
+      const latestCommittedManagerNode =
+        latestCommittedProjectManagerFormChanges?.edges?.find(
+          (latestCommittedNode) => {
+            return (
+              latestCommittedNode.node.newFormData.projectManagerLabelId ===
+              node.formChange.newFormData.projectManagerLabelId
+            );
+          }
+        );
 
       const latestCommittedUiSchema = createProjectManagerUiSchema(
-        latestCommittedData?.node?.asProjectManager?.cifUserByCifUserId
+        latestCommittedManagerNode?.node?.asProjectManager?.cifUserByCifUserId
           ?.fullName
       );
 
@@ -151,7 +152,7 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
               node.formChange?.formChangeByPreviousFormChangeId
                 ?.asProjectManager?.cifUserByCifUserId?.fullName
             ),
-            latestCommittedData,
+            latestCommittedData: latestCommittedManagerNode?.node?.newFormData,
             latestCommittedUiSchema,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,
@@ -161,7 +162,7 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
     });
   }, [
     formChangesByLabel,
-    latestCommittedManagerData?.edges,
+    latestCommittedProjectManagerFormChanges?.edges,
     renderDiff,
     isOnAmendmentsAndOtherRevisionsPage,
   ]);
