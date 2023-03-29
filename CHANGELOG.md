@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/bcgov/cas-cif/compare/1.5.3...1.6.0) (2023-03-29)
+
+### Features
+
+- add dependency to milestone schema ([6bc5ad8](https://github.com/bcgov/cas-cif/commit/6bc5ad806a31d7dc5589b9dd7e10806ef2e444af))
+- create project summary report summary page ([7868dcf](https://github.com/bcgov/cas-cif/commit/7868dcfdaf8044a6a110ed0bd28022db5f4f3fe2))
+
 ## [1.5.3](https://github.com/bcgov/cas-cif/compare/1.5.2...1.5.3) (2023-03-21)
 
 ### Bug Fixes
