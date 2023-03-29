@@ -55,6 +55,10 @@ const mockQueryPayloadEP = {
                     },
                   ],
                 },
+                eligibleExpensesToDate: "1.00",
+                holdbackAmountToDate: "0.00",
+                netPaymentsToDate: "1.00",
+                grossPaymentsToDate: "1.00",
                 isPristine: false,
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
@@ -115,24 +119,26 @@ const mockQueryPayloadIA = {
               node: {
                 newFormData: {
                   projectId: "Test Project ID",
-                  maxFundingAmount: 200,
+                  maxFundingAmount: 501,
                   provinceSharePercentage: 60,
-                  anticipatedFundingAmount: 300,
+                  anticipatedFundingAmount: 200,
                   proponentCost: 100,
                   contractStartDate: "2021-02-02T23:59:59.999-07:00",
-                  projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                  projectAssetsLifeEndDate: "2023-03-28T14:41:23.626132-07:00",
                 },
+                calculatedTotalPaymentAmountToDate: "511.0",
                 isPristine: false,
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
                   newFormData: {
                     projectId: "Test Project ID",
-                    maxFundingAmount: 300,
+                    maxFundingAmount: 500,
                     provinceSharePercentage: 50,
-                    anticipatedFundingAmount: 300,
+                    anticipatedFundingAmount: 200,
                     proponentCost: 100,
                     contractStartDate: "2021-01-01T23:59:59.999-07:00",
-                    projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                    projectAssetsLifeEndDate:
+                      "2023-03-28T14:41:23.626132-07:00",
                   },
                 },
               },
@@ -200,13 +206,37 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.queryByText("Anticipated/Actual Funding Amount")
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
-    expect(screen.getByText(/additional funding amount/i)).toBeInTheDocument();
-    expect(screen.getByText(/additional funding status/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding amount \(source 1\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/additional funding status \(source 1\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Additional Funding Source 1")
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Expenses & Payments Tracker/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Eligible Expenses to Date/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Gross Payment Amount to Date/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Holdback Amount to Date/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Net Payment Amount to Date/i)
+    ).toBeInTheDocument();
   });
 
   it("Only displays the data fields that have changed for an IA form", () => {
     componentTestingHelper.loadQuery(mockQueryPayloadIA);
     componentTestingHelper.renderComponent();
+
     expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
     expect(
       screen.queryByText("Performance Milestone Holdback Percentage")
@@ -226,6 +256,13 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.queryByText(/additional funding status/i)
     ).not.toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Expenses & Payments Tracker/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Payment Amount to Date/i)
+    ).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed for an EP form", () => {
@@ -248,7 +285,8 @@ describe("The Project Funding Agreement Form Summary", () => {
 
     expect(screen.getByText("50.00 %")).toBeInTheDocument();
     expect(screen.getByText("60.00 %")).toBeInTheDocument();
-    expect(screen.getByText("$300.00")).toBeInTheDocument(); // max funding changes
+    expect(screen.getByText("$500.00")).toBeInTheDocument(); //max funding changes
+    expect(screen.getByText("$501.00")).toBeInTheDocument(); // max funding changes
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
   });
 
