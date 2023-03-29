@@ -1,30 +1,9 @@
 # [1.6.0](https://github.com/bcgov/cas-cif/compare/1.5.3...1.6.0) (2023-03-29)
 
-### Bug Fixes
-
-- cypress test finding filter ([9be865d](https://github.com/bcgov/cas-cif/commit/9be865ddc7c62ac958fb5479679e1c31d9892f83))
-- remove wait in cypress test ([547b574](https://github.com/bcgov/cas-cif/commit/547b5741692de90d71aade316ec144dee2d457cb))
-- sqitch rework after release ([c53597f](https://github.com/bcgov/cas-cif/commit/c53597f8d0c9e4b4e69e5d0115b5b07525bb5251))
-- unit testing ([554cb13](https://github.com/bcgov/cas-cif/commit/554cb132ce235e0502a0c06700ff73cfd4a6a467))
-
 ### Features
 
-- add custom commit handler and json form schema data ([878b388](https://github.com/bcgov/cas-cif/commit/878b388bae0ecdc2212c5c5db0a5f0eb28efeb76))
 - add dependency to milestone schema ([6bc5ad8](https://github.com/bcgov/cas-cif/commit/6bc5ad806a31d7dc5589b9dd7e10806ef2e444af))
-- add json schema to project summary pages ([726f745](https://github.com/bcgov/cas-cif/commit/726f745612cecc00e64f0b3705e367785e09d0b5))
-- add new rjsf json schema for project summary report ([81cb85e](https://github.com/bcgov/cas-cif/commit/81cb85e537c5e5f6c4478cc782c50f8f960ba039))
-- add project summary status to task list ([9db5759](https://github.com/bcgov/cas-cif/commit/9db575978f56c9b7fae4925e1d0a23d9c7bcaaad))
-- add project summary to report_type table ([1245587](https://github.com/bcgov/cas-cif/commit/12455876f302336e24aa2aad261675cde13ef3d9))
-- add saving indicator ([b678810](https://github.com/bcgov/cas-cif/commit/b6788104be63df39a76f5718c9abc4ac1448dc51))
-- conditionally pluralize text in status component for project summary report ([3d4ea4d](https://github.com/bcgov/cas-cif/commit/3d4ea4d114508daeb6cc31618c24c95c37732c91))
-- confirmed create project summary and required fields ([5ba89dd](https://github.com/bcgov/cas-cif/commit/5ba89dd641c470ab8863be684d8246c75ca10ac5))
 - create project summary report summary page ([7868dcf](https://github.com/bcgov/cas-cif/commit/7868dcfdaf8044a6a110ed0bd28022db5f4f3fe2))
-- custom commit handler for project summary report form change ([bcce4be](https://github.com/bcgov/cas-cif/commit/bcce4be1edadc0fd4432f50a6139d4e1eb052c69))
-- handle project summary form data ([ed890b1](https://github.com/bcgov/cas-cif/commit/ed890b139397c3478411428a1d5f18b4fe1fb7ea))
-- insert newly created json_schema ([625a42a](https://github.com/bcgov/cas-cif/commit/625a42abe0488cc710af3bf923007a6eead33cb3))
-- render stream specific form summary data on review page ([26fd926](https://github.com/bcgov/cas-cif/commit/26fd9261bf2a379c937d9378ccd5466daa9d60f8))
-- report status ([bf63845](https://github.com/bcgov/cas-cif/commit/bf63845924ed83da2af202c90a63d20fa9a29d1a))
-- undo project summary form changes ([191095a](https://github.com/bcgov/cas-cif/commit/191095a6da8849b60f6553666934366c4e0a4248))
 
 ## [1.5.3](https://github.com/bcgov/cas-cif/compare/1.5.2...1.5.3) (2023-03-21)
 
