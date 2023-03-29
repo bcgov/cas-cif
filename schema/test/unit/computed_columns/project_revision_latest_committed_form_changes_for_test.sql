@@ -17,16 +17,23 @@ values
 insert into cif.project(id, operator_id, funding_stream_rfp_id, project_status_id, proposal_reference, summary, project_name)
 overriding system value
 values
-  (1, 1, 1, 1, '000', 'summary', 'project 1');
+  (1, 1, 1, 1, '001', 'summary 1', 'project 1'),
+  (2, 1, 1, 1, '002', 'summary 2', 'project 2');
 
-insert into cif.project_revision(id, change_status, change_reason, project_id, is_first_revision)
+insert into cif.project_revision(id, change_status, change_reason, project_id)
 overriding system value
 values
-  (1, 'committed', 'reason for change', 1, false);
+-- brianna why is 1 the latest committed project revision?
+  -- revisions for project 1
+  (1, 'committed', 'reason for change 2', 1),
+  (2, 'pending', 'reason for change 2', 1),
+  -- revisions for project 2
+  (3, 'committed', 'reason for change 3', 2);
+
+update cif.project_revision set change_status='committed', change_reason = 'make updated_at most recent' where id = 2;
 
 insert into cif.form(slug, json_schema, description) values ('schema', '{}'::jsonb, 'test description');
 
-alter table cif.form_change disable trigger _set_previous_form_change_id;
 insert into cif.form_change(
   id,
   new_form_data,
@@ -35,69 +42,51 @@ insert into cif.form_change(
   form_data_schema_name,
   form_data_table_name,
   json_schema_name,
-  previous_form_change_id,
   project_revision_id,
   validation_errors)
 overriding system value
 values
--- test_table_name
 (
-    1,
-  '{"testField": "test value"}',
+  1,
+  '{"testField": "test value 1"}',
   'create',
   'committed',
   'cif',
   'test_table_name',
   'schema',
-  1,
   1,
   '[]'
 ),(
     2,
-  '{"testField": "test value"}',
+  '{"testField": "test value 2"}',
   'update',
-  'pending',
+  'committed',
   'cif',
   'test_table_name',
   'schema',
-  1,
-  null,
+  2, -- project rev 2 (latest committed) on project 1
   '[]'
 ),
 (
-    3,
-    '{"testField": "test value", "ExtraData":"TestOne"}',
+  3,
+  '{"testField": "test value 3"}',
   'create',
-  'committed',
+  'pending',
   'cif',
-  'test_table_with_extra_data',
+  'test_table_name_2', -- different table name
   'schema',
-  null,
-  1,
+  2, -- project rev 2 (latest committed) on project 1
   '[]'
-),(
-    4,
-  '{"testField": "test value", "ExtraData":"TestOne"}',
-  'update',
-  'committed',
-  'cif',
-  'test_table_with_extra_data',
-  'schema',
+),
+(
   4,
-  1,
-  '[]'
-),
--- This form is a decoy to make sure we test the json filtering
-(
-    5,
-'{"testField": "test value", "ExtraData":"TestTwo"}',
-  'create',
+  '{"testField": "test value 4"}',
+  'archive',
   'committed',
   'cif',
-  'test_table_with_extra_data',
+  'test_table_name',
   'schema',
-  null,
-  1,
+  3,
   '[]'
 ),
 (
@@ -108,8 +97,7 @@ values
   'cif',
   'reporting_requirement',
   'schema',
-  null,
-  1,
+  2,
   '[]'
 ),
 (
@@ -120,11 +108,9 @@ values
   'cif',
   'reporting_requirement',
   'schema',
-  null,
-  1,
+  2,
   '[]'
 ),
--- brianna check what milestones we still have
 (
     8,
   '{"testField": "test value", "reportType":"General Milestone"}',
@@ -133,8 +119,7 @@ values
   'cif',
   'reporting_requirement',
   'schema',
-  null,
-  1,
+  2,
   '[]'
 ),
 (
@@ -145,8 +130,7 @@ values
   'cif',
   'reporting_requirement',
   'schema',
-  null,
-  1,
+  2,
   '[]'
 ),
 (
@@ -157,8 +141,7 @@ values
   'cif',
   'reporting_requirement',
   'schema',
-  null,
-  1,
+  2,
   '[]'
 ),
 (
@@ -169,8 +152,7 @@ values
   'cif',
   'reporting_requirement',
   'schema',
-  null,
-  1,
+  2,
   '[]'
 );
 
@@ -178,41 +160,27 @@ values
 
 select results_eq(
   $$
-    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'test_table_name') fc
-  $$,
-  $$
-    values (1)
-  $$,
-  'Returns the correct form_change record when queried without a json matcher when there is only one committed form_change'
-);
-
-update cif.form_change set change_status = 'committed', project_revision_id=1 where id = 2;
-
-select * from cif.form_change;
-
-select results_eq(
-  $$
-    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'test_table_name') fc
+    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'test_table_name') fc
   $$,
   $$
     values (2)
   $$,
-  'Returns the correct form_change records when queried without a json matcher when there are multiple committed form_changes'
+  'Returns the correct form_change records from test_table_name from the latest committed project revision'
 );
 
 select results_eq(
   $$
-    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'test_table_with_extra_data', '{"ExtraData":"TestOne"}') fc
+    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=3), 'test_table_name') fc
   $$,
   $$
-    values (3), (4)
+    values (4)
   $$,
-  'Returns the correct form_change records when queried with a json matcher'
+  'Returns the correct (archived) form_change records from test_table_name from the latest committed project revision'
 );
 
 select results_eq(
   $$
-    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Annual') fc
+    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'reporting_requirement', report_type => 'Annual') fc
   $$,
   $$
     values (6)
@@ -222,7 +190,7 @@ select results_eq(
 
 select results_eq(
   $$
-    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Quarterly') fc
+    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'reporting_requirement', report_type => 'Quarterly') fc
   $$,
   $$
     values (7)
@@ -232,7 +200,7 @@ select results_eq(
 
 select results_eq(
   $$
-    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Milestone') fc
+    select (fc).id from cif.project_revision_latest_committed_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=2), 'reporting_requirement', report_type => 'Milestone') fc
   $$,
   $$
     values (8), (9), (10), (11)
