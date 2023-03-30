@@ -13,16 +13,13 @@ const pageQuery = graphql`
     formChange(id: $form) {
       ...OperatorForm_formChange
     }
-    formBySlug(slug: "operator") {
-      jsonSchema
-    }
   }
 `;
 
 export function OperatorFormPage({
   preloadedQuery,
 }: RelayProps<{}, FormOperatorFormQuery>) {
-  const { session, formChange, formBySlug } = usePreloadedQuery(
+  const { session, formChange } = usePreloadedQuery(
     pageQuery,
     preloadedQuery
   );
@@ -30,7 +27,6 @@ export function OperatorFormPage({
     <DefaultLayout session={session}>
       <OperatorForm
         formChange={formChange}
-        schema={formBySlug.jsonSchema.schema}
       />
     </DefaultLayout>
   );

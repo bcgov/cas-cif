@@ -22,6 +22,9 @@ const OperatorForm: React.FC<Props> = (props) => {
         rowId
         newFormData
         formDataRecordId
+        formByJsonSchemaName {
+          jsonSchema
+        }
       }
     `,
     props.formChange
@@ -34,6 +37,7 @@ const OperatorForm: React.FC<Props> = (props) => {
   const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
 
   const { newFormData } = formChange;
+  const { schema } = formChange.formByJsonSchemaName.jsonSchema;
   const isEditing = formChange.formDataRecordId !== null;
 
   const handleChange = ({ formData }) => {
@@ -102,7 +106,7 @@ const OperatorForm: React.FC<Props> = (props) => {
         {...props}
         id="operator-form"
         formData={newFormData}
-        schema={props.schema}
+        schema={schema}
         onSubmit={handleSubmit}
         onChange={handleChange}
         disabled={isDeletingFormChange}
