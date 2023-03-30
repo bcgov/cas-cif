@@ -18,6 +18,7 @@ import {
   FormRemoved,
 } from "./SummaryFormCommonComponents";
 import { ProjectFundingAgreementFormSummary_query$key } from "__generated__/ProjectFundingAgreementFormSummary_query.graphql";
+import ReadOnlyAdditionalFundingSourcesArrayFieldTemplate from "lib/theme/ReadOnlyAdditionalFundingSourcesArrayFieldTemplate";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -226,6 +227,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               summaryProjectFundingAgreementFormChanges.edges[0]?.node
                 .grossPaymentsToDate,
           }}
+          ArrayFieldTemplate={
+            ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
+          }
         />
       )}
 

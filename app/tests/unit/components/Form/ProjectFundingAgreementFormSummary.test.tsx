@@ -6,8 +6,8 @@ import compiledProjectFundingAgreementFormSummaryQuery, {
   ProjectFundingAgreementFormSummaryTestQuery,
 } from "__generated__/ProjectFundingAgreementFormSummaryTestQuery.graphql";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
-import projectFundingParameterEPSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_EP.json";
-import projectFundingParameterIASchema from "../../../../../schema/data/prod/json_schema/funding_parameter_IA.json";
+import projectFundingParameterEPSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
+import projectFundingParameterIASchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
 
 const testQuery = graphql`
   query ProjectFundingAgreementFormSummaryTestQuery @relay_test_operation {
@@ -349,8 +349,9 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).toBeInTheDocument();
   });
 
-  it("Displays all data for an IA projectwhen isFirstRevision is true (Project Creation)", () => {
+  it("Displays all data for an IA project when isFirstRevision is true (Project Creation)", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadIA,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -406,16 +407,6 @@ describe("The Project Funding Agreement Form Summary", () => {
           };
         return result;
       },
-      Query() {
-        return {
-          epFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterEPSchema,
-          },
-          iaFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterIASchema,
-          },
-        };
-      },
     });
     componentTestingHelper.renderComponent();
 
@@ -447,6 +438,7 @@ describe("The Project Funding Agreement Form Summary", () => {
 
   it("Displays relevant message when funding agreement not added", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadEP,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -457,16 +449,6 @@ describe("The Project Funding Agreement Form Summary", () => {
           };
         return result;
       },
-      Query() {
-        return {
-          epFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterEPSchema,
-          },
-          iaFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterIASchema,
-          },
-        };
-      },
     });
     componentTestingHelper.renderComponent();
 
@@ -476,6 +458,7 @@ describe("The Project Funding Agreement Form Summary", () => {
   });
   it("Displays relevant message when funding agreement not updated", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadEP,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -486,16 +469,6 @@ describe("The Project Funding Agreement Form Summary", () => {
           };
         return result;
       },
-      Query() {
-        return {
-          epFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterEPSchema,
-          },
-          iaFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterIASchema,
-          },
-        };
-      },
     });
     componentTestingHelper.renderComponent();
 
@@ -505,6 +478,7 @@ describe("The Project Funding Agreement Form Summary", () => {
   });
   it("Displays relevant message when funding agreement removed", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadEP,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -544,16 +518,6 @@ describe("The Project Funding Agreement Form Summary", () => {
             },
           };
         return result;
-      },
-      Query() {
-        return {
-          epFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterEPSchema,
-          },
-          iaFundingParameterFormBySlug: {
-            jsonSchema: projectFundingParameterIASchema,
-          },
-        };
       },
     });
     componentTestingHelper.renderComponent();

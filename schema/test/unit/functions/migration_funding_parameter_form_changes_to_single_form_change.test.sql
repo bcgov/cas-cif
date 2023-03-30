@@ -3,7 +3,7 @@
 begin;
 
 
-select no_plan();
+select plan(4);
 
 
 -- Test Setup --

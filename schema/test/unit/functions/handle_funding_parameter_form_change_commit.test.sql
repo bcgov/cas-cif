@@ -1,6 +1,6 @@
 begin;
 
-select no_plan();
+select plan(15);
 
 /** SETUP **/
 truncate table cif.form_change,
@@ -350,7 +350,7 @@ select cif_private.handle_funding_parameter_form_change_commit((select row(form_
 -- funding_parameter table
 select isnt_empty(
   $$
-  select archived_by from cif.funding_parameter where id = 1;
+  select archived_by from cif.funding_parameter where id = 2;
   $$,
   'The IA values were archived in the funding_parameter table on archive'
 );

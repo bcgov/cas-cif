@@ -1,8 +1,11 @@
+// brianna Would adding <FormBorder> to the whole form without having a title, makes the look a bit better?! until we make the layout as requested in mockups. Just a suggestion.
+
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import { JSONSchema7Definition } from "json-schema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
+import AdditionalFundingSourcesArrayFieldTemplate from "lib/theme/AdditionalFundingSourcesArrayFieldTemplate";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
@@ -334,6 +337,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 : fundingParameterIAUiSchema
             }
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
+            ArrayFieldTemplate={AdditionalFundingSourcesArrayFieldTemplate}
             ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
             onChange={(change) => handleChange(change.formData)}
             onError={handleError}
@@ -361,6 +365,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </Button>
         </>
       )}
+
       <style jsx>
         {`
           div :global(.radio-button) {

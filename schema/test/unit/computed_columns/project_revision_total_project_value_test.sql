@@ -91,49 +91,6 @@ json_build_object(
 
 /** END SETUP **/
 
--- select '------';
--- with additional_funding_sources as (
---       select jsonb_array_elements(
---         (select (new_form_data ->> 'additionalFundingSources')
---         from cif.form_change fc
---         where fc.project_revision_id = 2
---         and fc.form_data_table_name = 'funding_parameter'
---         -- and fc.new_form_data ->> 'status' = 'Approved'
---         and operation != 'archive'
---         )::jsonb
---       )
---     )
---     -- select * from additional_funding_sources;
---     select ('amount') from additional_funding_sources;
-    -- select '------';
-
--- with additional_funding_sources as (
---       select jsonb_to_recordset(
---         (select (new_form_data ->> 'additionalFundingSources')
---         from cif.form_change fc
---         where fc.project_revision_id = 2
---         and fc.form_data_table_name = 'funding_parameter'
---         -- and fc.new_form_data ->> 'status' = 'Approved'
---         and operation != 'archive'
---         )::jsonb
---       ) as x(amount int, status text, name text)
---     )
---     select * from additional_funding_sources;
---     -- select ('amount') from additional_funding_sources;
-    select '------';
-
-
-select * from jsonb_to_recordset(
-        (select (new_form_data ->> 'additionalFundingSources')
-        from cif.form_change fc
-        where fc.project_revision_id = 2
-        and fc.form_data_table_name = 'funding_parameter'
-        and operation != 'archive'
-        )::jsonb
-      ) as x(source text, amount int, status text);
-
-
-
 select is(
   (
     with record as (

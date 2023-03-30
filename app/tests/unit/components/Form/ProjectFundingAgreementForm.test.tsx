@@ -7,8 +7,8 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import { ProjectFundingAgreementForm_projectRevision$data } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
-import projectFundingParameterEPSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_EP.json";
-import projectFundingParameterIASchema from "../../../../../schema/data/prod/json_schema/funding_parameter_IA.json";
+import projectFundingParameterEPSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
+import projectFundingParameterIASchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
 
 const testQuery = graphql`
   query ProjectFundingAgreementFormQuery @relay_test_operation {

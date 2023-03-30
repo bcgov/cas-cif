@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import FormBase from "components/Form/FormBase";
 import { JSONSchema7 } from "json-schema";
 import AdditionalFundingSourcesArrayFieldTemplate from "lib/theme/AdditionalFundingSourcesArrayFieldTemplate";
-import epSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_EP.json";
-import iaSchema from "../../../../../schema/data/prod/json_schema/funding_parameter_IA.json";
+import epSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
+import iaSchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
 
 describe("AdditionalFundingSourcesArrayFieldTemplate", () => {
   it("Displays only an Add button when there are no additional funding sources", () => {

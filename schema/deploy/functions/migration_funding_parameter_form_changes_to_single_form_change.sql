@@ -21,7 +21,7 @@ with
                     'amount',(new_form_data ->> 'amount')::int,
                     'status',(new_form_data ->> 'status')
                 )
-            )
+            ) as source
             from sources
             group by project_revision_id
         )
@@ -29,15 +29,24 @@ update cif.form_change
     set new_form_data = new_form_data ||
         jsonb_build_object(
         'additionalFundingSources',(
-            select array_agg
+            select source
             from aggregated_sources
             where cif.form_change.project_revision_id=aggregated_sources.project_revision_id
             )
         )
     where form_data_table_name = 'funding_parameter'
-    and (select array_agg
+    and (select source
         from aggregated_sources
         where cif.form_change.project_revision_id=aggregated_sources.project_revision_id) is not null;
+
+assert (
+      (select count(*)
+      from cif.form_change
+      where new_form_data->>'additionalFundingSources') =
+      (select count(*)
+      from cif.form_change
+      where json_schema_name 'additional_funding_source')
+    ), 'All additional_funding_source form changes were added to the new_form_data of the funding form';
 
 delete from cif.form_change
 where json_schema_name = 'additional_funding_source';
