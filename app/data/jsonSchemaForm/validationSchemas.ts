@@ -1,6 +1,5 @@
 import projectSchema from "./projectSchema";
 import contactSchema from "./contactSchema";
-import operatorSchema from "./operatorSchema";
 import { paymentSchema } from "./paymentSchema";
 import {
   emissionIntensityReportSchema,
@@ -13,7 +12,6 @@ import { fundingParameterIASchema } from "./fundingParameterIASchema";
 const validationSchemas = {
   project: projectSchema,
   contact: contactSchema,
-  operator: operatorSchema,
   funding_parameter_EP: fundingParameterEPSchema,
   funding_parameter_IA: fundingParameterIASchema,
   payment: paymentSchema,
