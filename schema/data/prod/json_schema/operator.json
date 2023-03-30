@@ -7,13 +7,11 @@
     "properties": {
       "legalName": {
         "type": "string",
-        "title": "Legal Name",
-        "default": "undefined"
+        "title": "Legal Name"
       },
       "tradeName": {
         "type": "string",
-        "title": "Trade Name",
-        "default": "undefined"
+        "title": "Trade Name"
       },
       "bcRegistryId": {
         "type": "string",
