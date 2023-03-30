@@ -249,6 +249,29 @@ describe("when undoing, the project revision page", () => {
       "general milestone report description 1"
     );
 
+    // undo TEIMP agreement
+    cy.findByText(/Emissions Intensity Report/i).click();
+    cy.findByText(/Edit Emissions Intensity Report/i)
+      .should("be.visible")
+      .click();
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "tCO",
+      "1",
+      "2",
+      "3",
+      "G"
+    );
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByRole("button", { name: /undo changes/i }).click();
+    cy.findByRole("button", { name: /Add Emissions Intensity Report/i }).should(
+      "be.visible"
+    );
+
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();
     cy.findByText(/Edit quarterly reports/i).click();
