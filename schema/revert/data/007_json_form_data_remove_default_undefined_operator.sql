@@ -1,7 +1,9 @@
 -- Revert cif:data/007_json_form_data_remove_default_undefined_operator from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+/* No revert required.
+   This is an idempotent data insertion migration.
+*/
 
-COMMIT;
+commit;
