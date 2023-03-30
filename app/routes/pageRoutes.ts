@@ -81,7 +81,6 @@ export const getProjectRevisionFormPageRoute = (
   isInternal: boolean = true,
   isRoutedFromNew?: boolean
 ) => {
-  console.log("is internal", isInternal);
   const userType = isInternal ? "/cif" : "/cif-external";
   const urlObject: TaskListLinkUrl = {
     pathname: `${userType}/project-revision/[projectRevision]/form/[formIndex]`,

@@ -20,7 +20,6 @@ export const useFormIndexHelpers = (
   formIndex: number,
   isInternal: boolean
 ) => {
-  console.log("modein helpers", mode);
   const router = useRouter();
   const [createProjectRevision, isCreatingProjectRevision] =
     useCreateProjectRevision();
@@ -59,11 +58,9 @@ export const useFormIndexHelpers = (
   const formPages = isInternal ? internalFormPages : externalFormPages;
 
   const handleSubmit = () => {
-    console.log("i am in handlesubmit");
     if (mode === "update" || formIndex === formPages.length - 1) {
       router.push(getProjectRevisionPageRoute(projectRevisionId, isInternal));
     } else {
-      console.log("isintneral in helpers", isInternal);
       router.push(
         getProjectRevisionFormPageRoute(
           projectRevisionId,
