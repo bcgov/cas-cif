@@ -215,22 +215,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.queryByText("Additional Funding Source 1")
     ).not.toBeInTheDocument();
-
-    expect(
-      screen.getByText(/Expenses & Payments Tracker/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Total Eligible Expenses to Date/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Total Gross Payment Amount to Date/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Total Holdback Amount to Date/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Total Net Payment Amount to Date/i)
-    ).toBeInTheDocument();
   });
 
   it("Only displays the data fields that have changed for an IA form", () => {
@@ -256,13 +240,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.queryByText(/additional funding status/i)
     ).not.toBeInTheDocument();
-
-    expect(
-      screen.getByText(/Expenses & Payments Tracker/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Total Payment Amount to Date/i)
-    ).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed for an EP form", () => {
@@ -385,6 +362,22 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText(/additional funding source 1/i)
     ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Expenses & Payments Tracker/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Eligible Expenses to Date/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Gross Payment Amount to Date/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Holdback Amount to Date/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Net Payment Amount to Date/i)
+    ).toBeInTheDocument();
   });
 
   it("Displays all data for an IA project when isFirstRevision is true (Project Creation)", () => {
@@ -471,6 +464,13 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText(/additional funding status/i)).toBeInTheDocument();
     expect(
       screen.getByText(/additional funding source 1/i)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Expenses & Payments Tracker/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Total Payment Amount to Date/i)
     ).toBeInTheDocument();
   });
 
