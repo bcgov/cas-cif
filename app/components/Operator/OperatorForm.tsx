@@ -93,10 +93,10 @@ const OperatorForm: React.FC<Props> = (props) => {
       <header>
         <h2>
           {isEditing ? "Edit" : "New"} {"Operator"}
+          <SavingIndicator
+            isSaved={!isUpdatingFormChange && !isCommittingFormChange}
+          />
         </h2>
-        <SavingIndicator
-          isSaved={!isUpdatingFormChange && !isCommittingFormChange}
-        />
       </header>
       <FormBase
         {...props}
