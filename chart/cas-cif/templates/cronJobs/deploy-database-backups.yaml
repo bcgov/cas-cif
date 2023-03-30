@@ -8,7 +8,7 @@ metadata:
 {{ include "cas-cif.labels" . | indent 4 }}
 spec:
   suspend: true # This cron job is intended to be triggered manually
-  schedule: "* * * * *"
+  schedule: "0 * * * *"
   jobTemplate:
     spec:
       backoffLimit: 0
