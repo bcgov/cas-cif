@@ -32,6 +32,8 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
     props.formContext.query
   );
 
+  const isInternal = props.formContext.isInternal;
+
   const parent: EntitySchema = useMemo(() => {
     return {
       list: allFundingStreams.edges.map((edge) => {
@@ -48,21 +50,31 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
     };
   }, [allFundingStreams]);
 
+  const formattedAllFundingStreamRfps = allFundingStreamRfps.edges.map(
+    (edge) => {
+      const { rowId, year, fundingStreamId } = edge.node;
+      return {
+        rowId: rowId,
+        year: year,
+        fundingStreamId: fundingStreamId,
+      };
+    }
+  );
+
+  const currentYearFundingStreamRfps = formattedAllFundingStreamRfps.filter(
+    (stream) => stream.year === new Date().getFullYear()
+  );
+
   const child: EntitySchema = useMemo(() => {
     return {
-      list: allFundingStreamRfps.edges.map((edge) => {
-        const { rowId, year, fundingStreamId } = edge.node;
-        return {
-          rowId: rowId,
-          year: year,
-          fundingStreamId: fundingStreamId,
-        };
-      }),
+      list: isInternal
+        ? formattedAllFundingStreamRfps
+        : currentYearFundingStreamRfps,
       displayField: "year",
-      placeholder: "Select a RFP Year",
+      placeholder: isInternal ? "Select a RFP Year" : undefined,
       label: "RFP Year",
     };
-  }, [allFundingStreamRfps]);
+  }, [currentYearFundingStreamRfps, formattedAllFundingStreamRfps, isInternal]);
 
   return (
     <SelectParentWidget
@@ -70,6 +82,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       parent={parent}
       child={child}
       foreignKey="fundingStreamId"
+      displayIfChildrenEmpty={isInternal ? undefined : new Date().getFullYear()}
     />
   );
 };

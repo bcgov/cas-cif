@@ -3,7 +3,7 @@ import { screen, within } from "@testing-library/react";
 
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import externalCompiledQuery from "__generated__/viewExternalProjectRevisionQuery.graphql";
-import ExternalProjectFormPage from "pages/cif-external/project-revision/[projectRevision]/view";
+import ExternalProjectRevisionView from "pages/cif-external/project-revision/[projectRevision]/view";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
 
 const defaultMockResolver = {
@@ -50,7 +50,7 @@ const defaultMockResolver = {
 };
 
 const externalPageTestingHelper = new PageTestingHelper<FormIndexPageQuery>({
-  pageComponent: ExternalProjectFormPage,
+  pageComponent: ExternalProjectRevisionView,
   compiledQuery: externalCompiledQuery,
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: {

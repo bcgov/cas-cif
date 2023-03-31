@@ -61,21 +61,29 @@ export const getNewProjectRevisionPageRoute = () => ({
   pathname: `/cif/project-revision/new`,
 });
 
-export const getProjectRevisionPageRoute = (projectRevisionId: string) => ({
-  pathname: `/cif/project-revision/[projectRevision]/`,
-  query: {
-    projectRevision: projectRevisionId,
-  },
-});
+export const getProjectRevisionPageRoute = (
+  projectRevisionId: string,
+  isInternal: boolean = true
+) => {
+  const userType = isInternal ? "/cif" : "/cif-external";
+  return {
+    pathname: `${userType}/project-revision/[projectRevision]/`,
+    query: {
+      projectRevision: projectRevisionId,
+    },
+  };
+};
 
 export const getProjectRevisionFormPageRoute = (
   projectRevisionId: string,
   formIndex: string | number,
   anchor: string = undefined,
+  isInternal: boolean = true,
   isRoutedFromNew?: boolean
 ) => {
+  const userType = isInternal ? "/cif" : "/cif-external";
   const urlObject: TaskListLinkUrl = {
-    pathname: `/cif/project-revision/[projectRevision]/form/[formIndex]`,
+    pathname: `${userType}/project-revision/[projectRevision]/form/[formIndex]`,
     query: {
       projectRevision: projectRevisionId,
       formIndex,
@@ -147,6 +155,39 @@ export const getExternalProjectRevisionViewPageRoute = (
   projectRevisionId: string
 ) => ({
   pathname: `/cif-external/project-revision/[projectRevision]/view`,
+  query: {
+    projectRevision: projectRevisionId,
+  },
+});
+
+export const getExternalNewProjectRevisionPageRoute = () => ({
+  pathname: `/cif-external/project-revision/new`,
+});
+
+export const getExternalProjectRevisionFormPageRoute = (
+  projectRevisionId: string,
+  formIndex: string | number,
+  isRoutedFromNew?: boolean
+) => {
+  const urlObject: TaskListLinkUrl = {
+    pathname: `/cif-external/project-revision/[projectRevision]/form/[formIndex]`,
+    query: {
+      projectRevision: projectRevisionId,
+      formIndex,
+    },
+  };
+
+  if (isRoutedFromNew) {
+    urlObject.query.isRoutedFromNew = isRoutedFromNew;
+  }
+
+  return urlObject;
+};
+
+export const getExternalProjectRevisionPageRoute = (
+  projectRevisionId: string
+) => ({
+  pathname: `/cif-external/project-revision/[projectRevision]/`,
   query: {
     projectRevision: projectRevisionId,
   },

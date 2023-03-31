@@ -3,17 +3,9 @@ import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
-import { useFormPages } from "data/formPages/formStructure";
-import useRedirectTo404IfFalsy from "hooks/useRedirectTo404IfFalsy";
-import useRedirectToLatestRevision from "hooks/useRedirectToLatestRevision";
-import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
 import withRelayOptions from "lib/relay/withRelayOptions";
-import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
-import {
-  getProjectRevisionFormPageRoute,
-  getProjectRevisionPageRoute,
-} from "routes/pageRoutes";
+import { useFormIndexHelpers } from "hooks/useFormIndexHelpers";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { FormIndexPageQuery } from "__generated__/FormIndexPageQuery.graphql";
@@ -78,46 +70,41 @@ export function ProjectFormPage({
   preloadedQuery,
 }: RelayProps<{}, FormIndexPageQuery>) {
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
-  const router = useRouter();
 
   let mode: TaskListMode;
   if (!query.projectRevision?.projectId) mode = "create";
   else if (query.projectRevision.changeStatus === "committed") mode = "view";
   else mode = "update";
 
+  const router = useRouter();
   const formIndex = Number(router.query.formIndex);
+
+  const {
+    handleCreateRevision,
+    isCreatingProjectRevision,
+    handleResumeRevision,
+    handleSubmit,
+    isRedirecting,
+    isRedirectingToLatestRevision,
+    isRedirectingNoFundingStream,
+    formPages,
+    isRedirectingToValidFormIndex,
+  } = useFormIndexHelpers(
+    query.projectRevision?.projectId,
+    query.projectRevision?.id,
+    query.projectRevision?.projectByProjectId?.pendingProjectRevision?.id,
+    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
+      ?.id,
+    query.projectRevision?.projectFormChange?.asProject
+      ?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId
+      ?.name,
+    mode,
+    formIndex,
+    true
+  );
 
   const existingRevision =
     query.projectRevision?.projectByProjectId?.pendingProjectRevision;
-
-  const [createProjectRevision, isCreatingProjectRevision] =
-    useCreateProjectRevision();
-
-  const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
-  const isRedirectingToLatestRevision = useRedirectToLatestRevision(
-    query.projectRevision?.id,
-    query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
-      ?.id,
-    mode === "view"
-  );
-
-  const isRedirectingNoFundingStream = useRedirectTo404IfFalsy(
-    query.projectRevision?.projectFormChange?.asProject
-      ?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId
-      ?.name
-  );
-
-  const fundingStream = isRedirectingNoFundingStream
-    ? "err"
-    : query.projectRevision.projectFormChange.asProject
-        .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId
-        .name;
-  const formPages = useFormPages(fundingStream);
-
-  const isRedirectingToValidFormIndex = useRedirectToValidFormIndex(
-    formIndex,
-    formPages.length
-  );
 
   if (
     isRedirecting ||
@@ -126,28 +113,6 @@ export function ProjectFormPage({
     isRedirectingToValidFormIndex
   )
     return null;
-
-  const handleCreateRevision = () => {
-    createProjectRevision({
-      variables: { projectId: query.projectRevision.projectId },
-      onCompleted: (response) => {
-        router.push(
-          getProjectRevisionFormPageRoute(
-            response.createProjectRevision.projectRevision.id,
-            router.query.formIndex as string
-          )
-        );
-      },
-    });
-  };
-  const handleResumeRevision = () => {
-    router.push(
-      getProjectRevisionFormPageRoute(
-        query.projectRevision.projectByProjectId.pendingProjectRevision.id,
-        router.query.formIndex as string
-      )
-    );
-  };
 
   const createEditButton = () => {
     return (
@@ -173,16 +138,6 @@ export function ProjectFormPage({
   const taskList = (
     <TaskList projectRevision={query.projectRevision} mode={mode} />
   );
-
-  const handleSubmit = () => {
-    if (mode === "update" || formIndex === formPages.length - 1) {
-      router.push(getProjectRevisionPageRoute(query.projectRevision.id));
-    } else {
-      router.push(
-        getProjectRevisionFormPageRoute(query.projectRevision.id, formIndex + 1)
-      );
-    }
-  };
 
   const EditComponent = formPages[formIndex].editComponent;
   const ViewComponent = formPages[formIndex].viewComponent;

@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DEFAULT_PAGE_SIZE } from "components/Table/Pagination";
+import { getExternalNewProjectRevisionPageRoute } from "routes/pageRoutes";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledcifExternalQuery, {
   cifExternalQuery,
@@ -88,5 +89,20 @@ describe("The external projects page", () => {
       pageTestingHelper.environment.mock.getMostRecentOperation();
     expect(operation.fragment.node.name).toBe("cifExternalQuery");
     expect(operation.fragment.variables.status).toBe("Wait");
+  });
+
+  it("renders the Create Application button", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+    expect(screen.getByText(/create application/i)).toBeInTheDocument();
+  });
+
+  it("Redirects to the New Project page when the Create Application Button is clicked", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+    userEvent.click(screen.getByText(/Create Application/i));
+    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
+      getExternalNewProjectRevisionPageRoute()
+    );
   });
 });

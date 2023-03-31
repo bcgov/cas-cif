@@ -59,7 +59,7 @@ const pageTestingHelper = new PageTestingHelper<FormIndexPageQuery>({
   },
 });
 
-describe("The Project Annual Reports page", () => {
+describe("The form index page", () => {
   beforeEach(() => {
     pageTestingHelper.reinit();
     pageTestingHelper.setMockRouterValues({
@@ -153,5 +153,12 @@ describe("The Project Annual Reports page", () => {
       },
     });
     expect(screen.queryByText(/next/i)).not.toBeInTheDocument();
+  });
+
+  it("uses the correct formStructure (shows the internal user form)", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+    // for internal users, formIndex 1 is the project managers form
+    expect(screen.getByText(/Submit Project Managers/i)).toBeInTheDocument();
   });
 });
