@@ -102,7 +102,7 @@ values
 
 select cif.commit_project_revision(1);
 
--- We can't use the cif.create_project_revision() function since it is already updated with the new milestone schema, so we create the form_changes manually.
+-- We can't use the cif.create_project_revision() function since it is already updated with the new schema, so we create the form_changes manually.
 insert into cif.project_revision(project_id, change_status) values (1, 'pending');
 
 select cif.create_form_change(
@@ -117,6 +117,8 @@ select cif.create_form_change(
 
 -- End Test Setup --
 
+
+
 -- At this point, we have 3 revisions:
   -- One committed (id=1) and one pending (id=3) for the project_id=1
   -- One pending (id=2) for the project_id=2
@@ -127,7 +129,6 @@ alter table cif.form_change disable trigger _100_committed_changes_are_immutable
 select cif_private.migration_funding_parameter_form_changes_to_single_form_change();
 
 alter table cif.form_change enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
-
 
 select is(
   (select count(*) from cif.form_change where (form_data_table_name='additional_funding_source')),

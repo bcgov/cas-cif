@@ -10,6 +10,7 @@ import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
+import projectFundingParameterEPSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
 
 /***
  * https://relay.dev/docs/next/guides/testing-relay-with-preloaded-queries/#configure-the-query-resolver-to-generate-the-response
@@ -46,6 +47,12 @@ const defaultMockResolver = {
       milestoneReportStatuses: {
         edges: [],
       },
+    };
+  },
+  Form() {
+    return {
+      rowId: 15,
+      jsonSchema: projectFundingParameterEPSchema,
     };
   },
 };

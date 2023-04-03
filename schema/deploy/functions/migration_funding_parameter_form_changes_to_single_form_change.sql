@@ -1,4 +1,4 @@
--- Deploy cif:functions/migration_funding_parameter_form_changes_to_single_form_change to pg
+-- -- Deploy cif:functions/migration_funding_parameter_form_changes_to_single_form_change to pg
 
 begin;
 
@@ -39,17 +39,22 @@ update cif.form_change
         from aggregated_sources
         where cif.form_change.project_revision_id=aggregated_sources.project_revision_id) is not null;
 
-select assert (
-      (select count(*)
-      from cif.form_change
-      where new_form_data->>'additionalFundingSources' is not null) =
-      (select count(*)
-      from cif.form_change
-      where json_schema_name = 'additional_funding_source')
-    ), 'All additional_funding_source form changes were added to the new_form_data of the funding form';
-
 delete from cif.form_change
-where json_schema_name = 'additional_funding_source';
+where json_schema_name = 'additional_funding_source'
+-- check that everything in the sources table has been moved to new_form_data
+and  1 =
+    case
+        when ((
+            select sum((select jsonb_array_length((new_form_data->>'additionalFundingSources')::jsonb)))
+        from cif.form_change)::int
+            =
+            (select count(*)
+            from cif.form_change
+            where json_schema_name = 'additional_funding_source')::int
+            )
+        then 1
+        else 0
+    end;
 
 $migration$ language sql volatile;
 

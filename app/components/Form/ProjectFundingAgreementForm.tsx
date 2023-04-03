@@ -1,11 +1,10 @@
-// brianna Would adding <FormBorder> to the whole form without having a title, makes the look a bit better?! until we make the layout as requested in mockups. Just a suggestion.
-
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import { JSONSchema7Definition } from "json-schema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 import AdditionalFundingSourcesArrayFieldTemplate from "lib/theme/AdditionalFundingSourcesArrayFieldTemplate";
+import FormBorder from "lib/theme/components/FormBorder";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
@@ -304,44 +303,46 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               }
             />
           </header>
-          <FormBase
-            id="ProjectFundingAgreementForm"
-            validateOnMount={fundingAgreement?.changeStatus === "staged"}
-            idPrefix="ProjectFundingAgreementForm"
-            schema={parsedSchema}
-            formData={fundingAgreement?.newFormData}
-            formContext={{
-              projectRevision,
-              form: fundingAgreement?.newFormData,
-              calculatedTotalProjectValue: projectRevision.totalProjectValue,
-              calculatedProponentsSharePercentage,
-              calculatedTotalPaymentAmountToDate:
-                projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                  .node.calculatedTotalPaymentAmountToDate,
-              calculatedEligibleExpensesToDate:
-                projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                  .node.eligibleExpensesToDate,
-              calculatedHoldbackAmountToDate:
-                projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                  .node.holdbackAmountToDate,
-              calculatedNetPaymentsToDate:
-                projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                  .node.netPaymentsToDate,
-              calculatedGrossPaymentsToDate:
-                projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                  .node.grossPaymentsToDate,
-            }}
-            uiSchema={
-              isFundingStreamEP
-                ? fundingParameterEPUiSchema
-                : fundingParameterIAUiSchema
-            }
-            ObjectFieldTemplate={EmptyObjectFieldTemplate}
-            ArrayFieldTemplate={AdditionalFundingSourcesArrayFieldTemplate}
-            ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
-            onChange={(change) => handleChange(change.formData)}
-            onError={handleError}
-          ></FormBase>
+          <FormBorder>
+            <FormBase
+              id="ProjectFundingAgreementForm"
+              validateOnMount={fundingAgreement?.changeStatus === "staged"}
+              idPrefix="ProjectFundingAgreementForm"
+              schema={parsedSchema}
+              formData={fundingAgreement?.newFormData}
+              formContext={{
+                projectRevision,
+                form: fundingAgreement?.newFormData,
+                calculatedTotalProjectValue: projectRevision.totalProjectValue,
+                calculatedProponentsSharePercentage,
+                calculatedTotalPaymentAmountToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.calculatedTotalPaymentAmountToDate,
+                calculatedEligibleExpensesToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.eligibleExpensesToDate,
+                calculatedHoldbackAmountToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.holdbackAmountToDate,
+                calculatedNetPaymentsToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.netPaymentsToDate,
+                calculatedGrossPaymentsToDate:
+                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
+                    .node.grossPaymentsToDate,
+              }}
+              uiSchema={
+                isFundingStreamEP
+                  ? fundingParameterEPUiSchema
+                  : fundingParameterIAUiSchema
+              }
+              ObjectFieldTemplate={EmptyObjectFieldTemplate}
+              ArrayFieldTemplate={AdditionalFundingSourcesArrayFieldTemplate}
+              ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
+              onChange={(change) => handleChange(change.formData)}
+              onError={handleError}
+            ></FormBase>
+          </FormBorder>
           <Button
             type="submit"
             onClick={() =>
