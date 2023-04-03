@@ -38,9 +38,11 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         aria-label={label}
         disabled={disabled}
       >
-        <option key={`option-placeholder-${id}`} value={undefined}>
-          {placeholder}
-        </option>
+        {placeholder && (
+          <option key={`option-placeholder-${id}`} value={undefined}>
+            {placeholder}
+          </option>
+        )}
         {options.map((opt) => {
           return (
             <option key={opt.enum[0]} value={opt.enum[0]}>
