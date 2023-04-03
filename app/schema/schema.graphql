@@ -60443,6 +60443,8 @@ enum ProjectRevisionsOrderBy {
   REVISION_STATUS_BY_REVISION_STATUS__IS_AMENDMENT_SPECIFIC_DESC
   REVISION_STATUS_BY_REVISION_STATUS__NAME_ASC
   REVISION_STATUS_BY_REVISION_STATUS__NAME_DESC
+  REVISION_STATUS_BY_REVISION_STATUS__SORTING_ORDER_ASC
+  REVISION_STATUS_BY_REVISION_STATUS__SORTING_ORDER_DESC
   REVISION_STATUS_BY_REVISION_STATUS__UPDATED_AT_ASC
   REVISION_STATUS_BY_REVISION_STATUS__UPDATED_AT_DESC
   REVISION_STATUS_BY_REVISION_STATUS__UPDATED_BY_ASC
@@ -68349,6 +68351,11 @@ type RevisionStatus implements Node {
     orderBy: [RevisionTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): RevisionStatusRevisionTypesByProjectRevisionRevisionStatusAndRevisionTypeManyToManyConnection!
 
+  """
+  Integer value to indicate the order in which the revision status should be displayed
+  """
+  sortingOrder: Int!
+
   """updated at timestamp"""
   updatedAt: Datetime!
 
@@ -68567,6 +68574,9 @@ input RevisionStatusCondition {
   """Checks for equality with the object’s `name` field."""
   name: String
 
+  """Checks for equality with the object’s `sortingOrder` field."""
+  sortingOrder: Int
+
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
 
@@ -68629,6 +68639,9 @@ input RevisionStatusFilter {
   """Some related `projectRevisionsByRevisionStatus` exist."""
   projectRevisionsByRevisionStatusExist: Boolean
 
+  """Filter by the object’s `sortingOrder` field."""
+  sortingOrder: IntFilter
+
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
 
@@ -68657,6 +68670,11 @@ input RevisionStatusInput {
 
   """The name of the amendment status as the primary key"""
   name: String!
+
+  """
+  Integer value to indicate the order in which the revision status should be displayed
+  """
+  sortingOrder: Int
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -68688,6 +68706,11 @@ input RevisionStatusPatch {
 
   """The name of the amendment status as the primary key"""
   name: String
+
+  """
+  Integer value to indicate the order in which the revision status should be displayed
+  """
+  sortingOrder: Int
 
   """updated at timestamp"""
   updatedAt: Datetime
@@ -68965,6 +68988,8 @@ enum RevisionStatusesOrderBy {
   PRIMARY_KEY_DESC
   PROJECT_REVISIONS_BY_REVISION_STATUS__COUNT_ASC
   PROJECT_REVISIONS_BY_REVISION_STATUS__COUNT_DESC
+  SORTING_ORDER_ASC
+  SORTING_ORDER_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC
