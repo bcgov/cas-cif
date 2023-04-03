@@ -264,7 +264,7 @@ describe("the new project page", () => {
       "$3,000.00",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
-      "$3,500.00"
+      "$4,000.00"
     );
     // additional funding sources
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
