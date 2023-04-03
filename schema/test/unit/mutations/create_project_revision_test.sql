@@ -82,9 +82,9 @@ select results_eq(
   select id, project_id, change_status, revision_type, revision_status from cif.create_project_revision(1, 'Amendment')
   $$,
   $$
-  values (2, 1, 'pending'::varchar, 'Amendment'::varchar, 'Draft'::varchar)
+  values (2, 1, 'pending'::varchar, 'Amendment'::varchar, 'In Discussion'::varchar)
   $$,
-  'creating a project revision with revision type as Amendment creates a new project revision in pending state, with revision type as Amendment, and with revision_status Draft'
+  'creating a project revision with revision type as Amendment creates a new project revision in pending state, with revision type as Amendment, and with revision_status In Discussion'
 );
 
 update cif.project_revision set change_reason = 'changing because of reasons' where id = 2;
@@ -113,12 +113,12 @@ select cif.commit_project_revision(3);
 
 select results_eq(
   $$
-  select id, project_id, change_status, revision_type from cif.create_project_revision(1)
+  select id, project_id, change_status, revision_type, revision_status from cif.create_project_revision(1)
   $$,
   $$
-  values (4, 1, 'pending'::varchar, 'General Revision'::varchar)
+  values (4, 1, 'pending'::varchar, 'General Revision'::varchar, 'Draft'::varchar)
   $$,
-  'creating a project revision without revision type and creates a new project revision in pending state and defaults revision_type to General Revision'
+  'creating a project revision without revision type and creates a new project revision in pending state and defaults revision_type to General Revision and revision_status to Draft'
 );
 
 
