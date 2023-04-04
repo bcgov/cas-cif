@@ -15,6 +15,7 @@ const ExternalCifProjectViewQuery = graphql`
     }
     projectRevision(id: $projectRevision) {
       ...ProjectFormSummary_projectRevision
+      ...ExternalTaskList_projectRevision
     }
   }
 `;
@@ -26,7 +27,7 @@ export function ExternalProjectRevisionView({
     ExternalCifProjectViewQuery,
     preloadedQuery
   );
-  const taskList = <ExternalTaskList />;
+  const taskList = <ExternalTaskList projectRevision={projectRevision} />;
   let renderList = false;
   if (
     router.pathname === "/cif-external/project-revision/[projectRevision]/view"

@@ -37,6 +37,7 @@ const pageQuery = graphql`
           }
         }
         ...ApplicationOverviewForm_projectRevision
+        ...ExternalTaskList_projectRevision
       }
     }
   }
@@ -83,7 +84,7 @@ export function ExternalProjectFormPage({
   )
     return null;
 
-  const taskList = <ExternalTaskList />;
+  const taskList = <ExternalTaskList projectRevision={query.projectRevision} />;
 
   const EditComponent = formPages[formIndex].editComponent;
   const ViewComponent = formPages[formIndex].viewComponent;
