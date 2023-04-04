@@ -3,7 +3,7 @@ import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameter
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import { JSONSchema7Definition } from "json-schema";
 import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
-import AdditionalFundingSourcesArrayFieldTemplate from "lib/theme/AdditionalFundingSourcesArrayFieldTemplate";
+
 import FormBorder from "lib/theme/components/FormBorder";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -15,6 +15,7 @@ import { useMemo, useRef, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
+import AdditionalFundingSourcesArrayFieldTemplate from "./AdditionalFundingSourcesArrayFieldTemplate";
 import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";

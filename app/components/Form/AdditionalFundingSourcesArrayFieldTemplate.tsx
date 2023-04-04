@@ -1,6 +1,6 @@
 import Button from "@button-inc/bcgov-theme/Button";
 import { ArrayFieldTemplateProps } from "@rjsf/core";
-import FormBorder from "./components/FormBorder";
+import FormBorder from "../../lib/theme/components/FormBorder";
 
 const AdditionalFundingSourcesArrayFieldTemplate = (
   props: ArrayFieldTemplateProps

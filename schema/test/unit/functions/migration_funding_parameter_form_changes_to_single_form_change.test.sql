@@ -3,7 +3,7 @@
 begin;
 
 
-select plan(4);
+select plan(5);
 
 
 -- Test Setup --
@@ -217,6 +217,45 @@ select results_eq(
 
   $$,
   'It transforms the double (funding_parameter and additional_funding_sources) into one single form_change'
+);
+
+-- create a form change to trigger a throw
+insert into cif.form_change(
+      new_form_data,
+      operation,
+      form_data_schema_name,
+      form_data_table_name,
+      form_data_record_id,
+      project_revision_id,
+      change_status,
+      json_schema_name
+    )
+values
+      (json_build_object(
+            'projectId', 2,
+            'provinceSharePercentage', 50,
+            'maxFundingAmount', 1,
+            'anticipatedFundingAmount', 1,
+            'proponentCost',777,
+            'contractStartDate', '2012-01-01',
+            'projectAssetsLifeEndDate', '2012-01-01'
+            ),
+        'create',
+        'cif',
+        'funding_parameter',
+        2,
+        2,
+        'pending',
+        'funding_parameter_IA');
+
+select throws_like(
+  $$
+  with record as (
+    select row(form_change.*)::cif.form_change from cif.form_change where id = 2
+  ) select cif_private.handle_funding_parameter_form_change_commit((select * from record));
+  $$,
+  'Cannot commit form_change. It has already been committed.',
+  'The function does not delete anything if there are not the same number of additional funding sources in json as the table'
 );
 
 

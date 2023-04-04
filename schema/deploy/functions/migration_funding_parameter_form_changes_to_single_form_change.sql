@@ -39,22 +39,24 @@ update cif.form_change
         from aggregated_sources
         where cif.form_change.project_revision_id=aggregated_sources.project_revision_id) is not null;
 
-delete from cif.form_change
-where json_schema_name = 'additional_funding_source'
--- check that everything in the sources table has been moved to new_form_data
-and  1 =
-    case
+select case
         when ((
             select sum((select jsonb_array_length((new_form_data->>'additionalFundingSources')::jsonb)))
-        from cif.form_change)::int
+            from cif.form_change)::int
             =
             (select count(*)
             from cif.form_change
             where json_schema_name = 'additional_funding_source')::int
             )
-        then 1
-        else 0
-    end;
+        then
+             cif_private.raise_exception('Some additional funding sources have not been correctly migrated'::text)
+
+        else
+            null
+       end;
+
+delete from cif.form_change
+    where json_schema_name = 'additional_funding_source';
 
 $migration$ language sql volatile;
 
