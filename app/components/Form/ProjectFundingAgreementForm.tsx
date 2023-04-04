@@ -1,43 +1,25 @@
-import {
-  fundingParameterEPSchema,
-  fundingParameterEPUiSchema,
-} from "data/jsonSchemaForm/fundingParameterEPSchema";
-import {
-  fundingParameterIASchema,
-  fundingParameterIAUiSchema,
-} from "data/jsonSchemaForm/fundingParameterIASchema";
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import { graphql, useFragment } from "react-relay";
-import FormBase from "./FormBase";
-import { useState } from "react";
-import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { Button, RadioButton } from "@button-inc/bcgov-theme";
+import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
+import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
+import { JSONSchema7Definition } from "json-schema";
+import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
+
+import FormBorder from "lib/theme/components/FormBorder";
+import DangerAlert from "lib/theme/ConfirmationAlert";
+import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
-
-import UndoChangesButton from "./UndoChangesButton";
-import SavingIndicator from "./SavingIndicator";
-import DangerAlert from "lib/theme/ConfirmationAlert";
-import { useAddAdditionalFundingSourceToRevision } from "mutations/FundingParameter/addAdditionalFundingSourceToRevision";
-import additionalFundingSourceSchema from "data/jsonSchemaForm/additionalFundingSourceSchema";
-import { useMemo, useRef } from "react";
-import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
-import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
-import { useUpdateFormChange } from "mutations/FormChange/updateFormChange";
-import FormBorder from "lib/theme/components/FormBorder";
-import { useStageFormChange } from "mutations/FormChange/stageFormChange";
-import useDiscardAdditionalFundingSourceFormChange from "mutations/FundingParameter/discardAdditionalFundingSourceFormChange";
-import {
-  expensesPaymentsTrackerEPSchema,
-  expensesPaymentsTrackerEPUiSchema,
-} from "data/jsonSchemaForm/expensesPaymentsTrackerEPSchema";
-import {
-  expensesPaymentsTrackerIASchema,
-  expensesPaymentsTrackerIAUiSchema,
-} from "data/jsonSchemaForm/expensesPaymentsTrackerIASchema";
-import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
+import { useMemo, useRef, useState } from "react";
+import { graphql, useFragment } from "react-relay";
+import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
+import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
+import AdditionalFundingSourcesArrayFieldTemplate from "./AdditionalFundingSourcesArrayFieldTemplate";
+import FormBase from "./FormBase";
+import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
+import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
 
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
@@ -46,48 +28,12 @@ interface Props {
   onSubmit: () => void;
 }
 
-export const createAdditionalFundingSourceUiSchema = (index: number) => {
-  return {
-    source: {
-      "ui:title": `Additional Funding Source ${index}`,
-      "ui:widget": "TextWidget",
-    },
-    amount: {
-      "ui:title": `Additional Funding Amount (Source ${index})`,
-      "ui:widget": "NumberWidget",
-      isMoney: true,
-    },
-    status: {
-      "ui:title": `Additional Funding Status (Source ${index})`,
-      "ui:widget": "SearchWidget",
-    },
-  };
-};
-
-const createAdditionalFundingSourceSchema = (allStatuses) => {
-  const schema = additionalFundingSourceSchema;
-  schema.properties.status = {
-    ...schema.properties.status,
-    anyOf: allStatuses.edges.map(({ node }) => {
-      return {
-        type: "string",
-        title: node.statusName,
-        enum: [node.statusName],
-        value: node.statusName,
-      } as JSONSchema7Definition;
-    }),
-  };
-
-  return schema as JSONSchema7;
-};
-
 const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const formRefs = useRef<Record<string, any>>({});
   // Mutations
   const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
     useCreateFundingParameterFormChange();
 
-  const [updateFormChange, isUpdatingFormChange] = useUpdateFormChange();
   const [
     updateFundingParameterFormChange,
     isUpdatingFundingParameterFormChange,
@@ -98,9 +44,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     discardFundingParameterFormChange,
     isDiscardingFundingParameterFormChange,
   ] = useDiscardFundingParameterFormChange();
-
-  const [addAdditionalFundingSource, isAddingAdditionalFundingSource] =
-    useAddAdditionalFundingSourceToRevision();
 
   const projectRevision = useFragment(
     graphql`
@@ -140,21 +83,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             }
           }
         }
-        additionalFundingSourceFormChanges: formChangesFor(
-          first: 500
-          formDataTableName: "additional_funding_source"
-        ) @connection(key: "connection_additionalFundingSourceFormChanges") {
-          __id
-          edges {
-            node {
-              id
-              rowId
-              newFormData
-              changeStatus
-              operation
-            }
-          }
-        }
       }
     `,
     props.projectRevision
@@ -166,7 +94,11 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const isFundingStreamEP = fundingStream === "EP";
 
-  const { allAdditionalFundingSourceStatuses } = useFragment(
+  const {
+    allAdditionalFundingSourceStatuses,
+    epFundingParameterFormBySlug,
+    iaFundingParameterFormBySlug,
+  } = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_query on Query {
         allAdditionalFundingSourceStatuses {
@@ -176,12 +108,36 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             }
           }
         }
+        epFundingParameterFormBySlug: formBySlug(slug: "funding_parameter_EP") {
+          jsonSchema
+        }
+        iaFundingParameterFormBySlug: formBySlug(slug: "funding_parameter_IA") {
+          jsonSchema
+        }
       }
     `,
     props.query
   );
+
   const fundingAgreement =
     projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
+
+  // Update schema to include additional funding source dropdown options
+  const schema = isFundingStreamEP
+    ? { ...epFundingParameterFormBySlug.jsonSchema.schema }
+    : { ...iaFundingParameterFormBySlug.jsonSchema.schema };
+  const parsedSchema = JSON.parse(JSON.stringify(schema));
+  parsedSchema.definitions.additionalFundingSource.properties.status = {
+    ...parsedSchema.definitions.additionalFundingSource.properties.status,
+    anyOf: allAdditionalFundingSourceStatuses.edges.map(({ node }) => {
+      return {
+        type: "string",
+        title: node.statusName,
+        enum: [node.statusName],
+        value: node.statusName,
+      } as JSONSchema7Definition;
+    }),
+  };
 
   const calculatedProponentsSharePercentage =
     calculateProponentsSharePercentage(
@@ -190,10 +146,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     );
 
   // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
-  const filteredAdditionalFundingSourceFormChanges =
-    projectRevision.additionalFundingSourceFormChanges.edges.filter(
-      ({ node }) => node.operation !== "ARCHIVE"
-    );
+
   // putting the conditional directly in the mutation throws errors
   const jsonSchemaName = isFundingStreamEP
     ? "funding_parameter_EP"
@@ -270,70 +223,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     });
   };
 
-  const sortedAdditionalFundingSourceForms = useMemo(() => {
-    const additionalFundingSourceForms = [
-      ...filteredAdditionalFundingSourceFormChanges.map(({ node }) => node),
-    ];
-    additionalFundingSourceForms.sort(
-      (a, b) => a.newFormData.sourceIndex - b.newFormData.sourceIndex
-    );
-    return additionalFundingSourceForms;
-  }, [filteredAdditionalFundingSourceFormChanges]);
-
-  const nextAdditionalFundingSourceIndex =
-    filteredAdditionalFundingSourceFormChanges.length
-      ? sortedAdditionalFundingSourceForms[
-          sortedAdditionalFundingSourceForms.length - 1
-        ].newFormData.sourceIndex + 1
-      : 1;
-
-  const [
-    discardAdditionalFundingSourceFormChange,
-    isDiscardingAdditionalFundingSourceFormChange,
-  ] = useDiscardAdditionalFundingSourceFormChange();
-
-  const deleteAdditionalFundingSource = (formChangeId) => {
-    discardAdditionalFundingSourceFormChange({
-      variables: {
-        input: {
-          formChangeId,
-        },
-      },
-      onCompleted: () => {
-        delete formRefs.current[formChangeId];
-      },
-    });
-  };
-
-  const updateAdditionalFundingSource = (
-    formChange: {
-      readonly id: string;
-      readonly rowId: number;
-      readonly newFormData: any;
-    },
-    newFormData: any
-  ) => {
-    updateFormChange({
-      variables: {
-        input: {
-          rowId: formChange.rowId,
-          formChangePatch: {
-            newFormData,
-          },
-        },
-      },
-      optimisticResponse: {
-        updateFormChange: {
-          formChange: {
-            id: formChange.id,
-            newFormData: newFormData,
-            changeStatus: "pending",
-          },
-        },
-      },
-      debounceKey: formChange.id,
-    });
-  };
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
   const handleDiscard = () => {
@@ -350,20 +239,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   };
   // Get all form changes ids to get used in the undo changes button
   const formChangeIds = useMemo(() => {
-    const additionalFundingSourceFormChangeIds =
-      projectRevision.additionalFundingSourceFormChanges.edges.map(
-        ({ node }) => node?.rowId
-      );
     const fundingAgreementFormChangeId =
       projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.rowId;
-    return [
-      ...additionalFundingSourceFormChangeIds,
-      fundingAgreementFormChangeId,
-    ];
-  }, [
-    projectRevision.projectFundingAgreementFormChanges,
-    projectRevision.additionalFundingSourceFormChanges,
-  ]);
+    return [fundingAgreementFormChangeId];
+  }, [projectRevision.projectFundingAgreementFormChanges]);
 
   return (
     <>
@@ -419,120 +298,24 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             />
             <SavingIndicator
               isSaved={
-                !isUpdatingFormChange &&
                 !isUpdatingFundingParameterFormChange &&
                 !isAddingFundingParameterFormChange &&
-                !isAddingAdditionalFundingSource &&
                 !isStaging
               }
             />
           </header>
-          <FormBase
-            id="ProjectFundingAgreementForm"
-            validateOnMount={fundingAgreement?.changeStatus === "staged"}
-            idPrefix="ProjectFundingAgreementForm"
-            schema={
-              isFundingStreamEP
-                ? (fundingParameterEPSchema as JSONSchema7)
-                : (fundingParameterIASchema as JSONSchema7)
-            }
-            formData={fundingAgreement?.newFormData}
-            formContext={{
-              projectRevision,
-              form: fundingAgreement?.newFormData,
-              calculatedTotalProjectValue: projectRevision.totalProjectValue,
-              calculatedProponentsSharePercentage,
-            }}
-            uiSchema={
-              isFundingStreamEP
-                ? fundingParameterEPUiSchema
-                : fundingParameterIAUiSchema
-            }
-            ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
-            onChange={(change) => handleChange(change.formData)}
-            onError={handleError}
-          ></FormBase>
-          <FormBorder title="Additional Funding Sources">
-            {sortedAdditionalFundingSourceForms.length > 0 &&
-              sortedAdditionalFundingSourceForms.map((formChange, index) => {
-                return (
-                  <div
-                    key={formChange.id}
-                    className="additionalFundingSourceSection"
-                  >
-                    <FormBase
-                      id={`form-${formChange.id}`}
-                      className="additionalFundingSourceForm"
-                      idPrefix="additionalFundingSource"
-                      validateOnMount={formChange.changeStatus === "staged"}
-                      ref={(el) =>
-                        el && (formRefs.current[formChange.rowId] = el)
-                      }
-                      schema={createAdditionalFundingSourceSchema(
-                        allAdditionalFundingSourceStatuses
-                      )}
-                      formData={formChange.newFormData}
-                      onChange={(change) =>
-                        updateAdditionalFundingSource(
-                          { ...formChange },
-                          change.formData
-                        )
-                      }
-                      ObjectFieldTemplate={EmptyObjectFieldTemplate}
-                      uiSchema={createAdditionalFundingSourceUiSchema(
-                        index + 1
-                      )}
-                    ></FormBase>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      className="removeButton"
-                      onClick={() =>
-                        deleteAdditionalFundingSource(formChange.rowId)
-                      }
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                );
-              })}
-            <Button
-              variant="secondary"
-              onClick={() =>
-                addAdditionalFundingSource({
-                  variables: {
-                    input: {
-                      revisionId: projectRevision.rowId,
-                      sourceIndex: nextAdditionalFundingSourceIndex,
-                    },
-                    connections: [
-                      projectRevision.additionalFundingSourceFormChanges.__id,
-                    ],
-                  },
-                })
-              }
-              disabled={
-                isAddingAdditionalFundingSource ||
-                isUpdatingFundingParameterFormChange ||
-                isUpdatingFormChange ||
-                isStaging ||
-                isDiscardingAdditionalFundingSourceFormChange
-              }
-            >
-              Add Funding Source
-            </Button>
-          </FormBorder>
-          <FormBorder title="Expenses & Payments Tracker">
+          <FormBorder>
             <FormBase
-              id={`expensesPaymentsTracker`}
-              className="expensesPaymentsTrackerForm"
-              idPrefix="expensesPaymentsTracker"
-              schema={
-                isFundingStreamEP
-                  ? (expensesPaymentsTrackerEPSchema as JSONSchema7)
-                  : (expensesPaymentsTrackerIASchema as JSONSchema7)
-              }
+              id="ProjectFundingAgreementForm"
+              validateOnMount={fundingAgreement?.changeStatus === "staged"}
+              idPrefix="ProjectFundingAgreementForm"
+              schema={parsedSchema}
+              formData={fundingAgreement?.newFormData}
               formContext={{
+                projectRevision,
+                form: fundingAgreement?.newFormData,
+                calculatedTotalProjectValue: projectRevision.totalProjectValue,
+                calculatedProponentsSharePercentage,
                 calculatedTotalPaymentAmountToDate:
                   projectRevision.projectFundingAgreementFormChanges?.edges[0]
                     .node.calculatedTotalPaymentAmountToDate,
@@ -549,12 +332,16 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                   projectRevision.projectFundingAgreementFormChanges?.edges[0]
                     .node.grossPaymentsToDate,
               }}
-              ObjectFieldTemplate={EmptyObjectFieldTemplate}
               uiSchema={
                 isFundingStreamEP
-                  ? expensesPaymentsTrackerEPUiSchema
-                  : expensesPaymentsTrackerIAUiSchema
+                  ? fundingParameterEPUiSchema
+                  : fundingParameterIAUiSchema
               }
+              ObjectFieldTemplate={EmptyObjectFieldTemplate}
+              ArrayFieldTemplate={AdditionalFundingSourcesArrayFieldTemplate}
+              ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
+              onChange={(change) => handleChange(change.formData)}
+              onError={handleError}
             ></FormBase>
           </FormBorder>
           <Button
@@ -564,17 +351,13 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 () => {},
                 props.onSubmit,
                 formRefs,
-                [
-                  ...projectRevision.projectFundingAgreementFormChanges.edges,
-                  ...filteredAdditionalFundingSourceFormChanges,
-                ],
+                [...projectRevision.projectFundingAgreementFormChanges.edges],
                 null,
                 stageFormChange
               )
             }
             style={{ marginRight: "1rem" }}
             disabled={
-              isUpdatingFormChange ||
               isUpdatingFundingParameterFormChange ||
               isAddingFundingParameterFormChange ||
               isStaging
@@ -584,6 +367,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </Button>
         </>
       )}
+
       <style jsx>
         {`
           div :global(.radio-button) {
@@ -597,33 +381,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             border: 0px !important;
             border-radius: 0.25em !important;
             padding: 2em;
-          }
-          .additionalFundingSourceSection {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          :global(.additionalFundingSourceForm) {
-            flex-grow: 1;
-            margin-right: 1rem;
-          }
-          div :global(button.removeButton) {
-            margin-top: -21em;
-          }
-          :global(.expensesPaymentsTrackerForm) {
-            margin-bottom: 0px;
-          }
-          :global(.expensesPaymentsTrackerForm > div > div:nth-last-child(2)) {
-            margin-bottom: 0px;
-          }
-          :global(.array-item-list fieldset) {
-            border: none;
-            padding: 0;
-            margin: 0;
-          }
-          :global(.array-item) {
-            padding: 0;
-            margin: 0;
           }
           :global(#ProjectFundingAgreementForm_anticipatedFundingAmountPerFiscalYear) {
             border: none;

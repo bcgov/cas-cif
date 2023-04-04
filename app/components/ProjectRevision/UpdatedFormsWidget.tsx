@@ -45,6 +45,7 @@ const UpdatedFormsWidget: React.FC<WidgetProps> = ({ formContext }) => {
               title={form.title}
               formItems={formItems}
               projectRevision={formContext.projectRevision}
+              query={formContext.query}
             />
           );
         })}

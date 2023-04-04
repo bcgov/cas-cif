@@ -78,17 +78,16 @@ const pageQuery = graphql`
           }
         }
       }
+      ...ProjectFundingAgreementFormSummary_query
     }
   }
 `;
-
 export function ProjectRevision({
   preloadedQuery,
 }: RelayProps<{}, ProjectRevisionQuery>) {
   const router = useRouter();
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const { query } = usePreloadedQuery(pageQuery, preloadedQuery);
-
   const [updateChangeReason, updatingChangeReason] = useUpdateChangeReason();
 
   const [commitProjectRevision, committingProjectRevision] =
@@ -226,6 +225,7 @@ export function ProjectRevision({
         <ProjectContactFormSummary projectRevision={query.projectRevision} />
         <ProjectFundingAgreementFormSummary
           projectRevision={query.projectRevision}
+          query={query}
         />
         <ProjectMilestoneReportFormSummary
           projectRevision={query.projectRevision}

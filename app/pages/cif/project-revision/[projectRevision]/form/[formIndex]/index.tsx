@@ -16,6 +16,7 @@ const pageQuery = graphql`
       session {
         ...DefaultLayout_session
       }
+      ...ProjectFundingAgreementFormSummary_query
       projectRevision(id: $projectRevision) {
         id
         changeStatus
@@ -62,6 +63,7 @@ const pageQuery = graphql`
       ...ProjectManagerFormGroup_query
       ...ProjectMilestoneReportForm_query
       ...ProjectFundingAgreementForm_query
+      ...ProjectFundingAgreementFormSummary_query
     }
   }
 `;
@@ -149,6 +151,7 @@ export function ProjectFormPage({
           <ViewComponent
             projectRevision={query.projectRevision}
             viewOnly={true}
+            query={query}
           />
         </>
       ) : (

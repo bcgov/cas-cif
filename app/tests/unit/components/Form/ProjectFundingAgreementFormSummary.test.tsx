@@ -3,13 +3,16 @@ import { screen } from "@testing-library/react";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import { ProjectFundingAgreementFormSummary_projectRevision$data } from "__generated__/ProjectFundingAgreementFormSummary_projectRevision.graphql";
 import compiledProjectFundingAgreementFormSummaryQuery, {
-  ProjectFundingAgreementFormSummaryQuery,
-} from "__generated__/ProjectFundingAgreementFormSummaryQuery.graphql";
+  ProjectFundingAgreementFormSummaryTestQuery,
+} from "__generated__/ProjectFundingAgreementFormSummaryTestQuery.graphql";
 import ProjectFundingAgreementFormSummary from "components/Form/ProjectFundingAgreementFormSummary";
+import projectFundingParameterEPSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
+import projectFundingParameterIASchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
 
 const testQuery = graphql`
-  query ProjectFundingAgreementFormSummaryQuery @relay_test_operation {
+  query ProjectFundingAgreementFormSummaryTestQuery @relay_test_operation {
     query {
+      ...ProjectFundingAgreementFormSummary_query
       projectRevision(id: "Test Project Revision ID") {
         ...ProjectFundingAgreementFormSummary_projectRevision
       }
@@ -44,6 +47,13 @@ const mockQueryPayloadEP = {
                   proponentCost: 100,
                   contractStartDate: "2021-02-02T23:59:59.999-07:00",
                   projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                  additionalFundingSources: [
+                    {
+                      source: "Test Source Name",
+                      amount: 2500,
+                      status: "Approved",
+                    },
+                  ],
                 },
                 isPristine: false,
                 operation: "UPDATE",
@@ -57,33 +67,13 @@ const mockQueryPayloadEP = {
                     proponentCost: 100,
                     contractStartDate: "2021-01-01T23:59:59.999-07:00",
                     projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
-                  },
-                },
-              },
-            },
-          ],
-        },
-        summaryAdditionalFundingSourceFormChanges: {
-          edges: [
-            {
-              node: {
-                id: "Test Additional Funding Source ID",
-                newFormData: {
-                  projectId: "Test Project ID",
-                  sourceIndex: 1,
-                  source: "Test Source Name",
-                  amount: 2500,
-                  status: "Approved",
-                },
-                isPristine: false,
-                operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    projectId: "Test Project ID",
-                    sourceIndex: 1,
-                    source: "Test Source Name",
-                    amount: 1000,
-                    status: "Awaiting Approval",
+                    additionalFundingSources: [
+                      {
+                        source: "Test Source Name",
+                        amount: 1000,
+                        status: "Awaiting Approval",
+                      },
+                    ],
                   },
                 },
               },
@@ -92,6 +82,16 @@ const mockQueryPayloadEP = {
         },
       };
     return result;
+  },
+  Query() {
+    return {
+      epFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterEPSchema,
+      },
+      iaFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterIASchema,
+      },
+    };
   },
 };
 
@@ -145,6 +145,16 @@ const mockQueryPayloadIA = {
       };
     return result;
   },
+  Query() {
+    return {
+      epFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterEPSchema,
+      },
+      iaFundingParameterFormBySlug: {
+        jsonSchema: projectFundingParameterIASchema,
+      },
+    };
+  },
 };
 
 const defaultComponentProps = {
@@ -153,7 +163,7 @@ const defaultComponentProps = {
 };
 
 const componentTestingHelper =
-  new ComponentTestingHelper<ProjectFundingAgreementFormSummaryQuery>({
+  new ComponentTestingHelper<ProjectFundingAgreementFormSummaryTestQuery>({
     component: ProjectFundingAgreementFormSummary,
     testQuery: testQuery,
     compiledQuery: compiledProjectFundingAgreementFormSummaryQuery,
@@ -190,15 +200,8 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.queryByText("Anticipated/Actual Funding Amount")
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding amount \(source 1\)/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding status \(source 1\)/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText("Additional Funding Source 1")
-    ).not.toBeInTheDocument();
+    expect(screen.getByText(/additional funding amount/i)).toBeInTheDocument();
+    expect(screen.getByText(/additional funding status/i)).toBeInTheDocument();
   });
 
   it("Only displays the data fields that have changed for an IA form", () => {
@@ -218,10 +221,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/additional funding amount \(source 1\)/i)
+      screen.queryByText(/additional funding amount/i)
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/additional funding status \(source 1\)/i)
+      screen.queryByText(/additional funding status/i)
     ).not.toBeInTheDocument();
   });
 
@@ -234,11 +237,9 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("10 %")).toBeInTheDocument();
     expect(screen.getByText("20 %")).toBeInTheDocument();
     expect(screen.getByText("$2,500.00")).toBeInTheDocument();
-    expect(screen.getByText("$1,000.00")).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
     expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
     expect(screen.getByText("Approved")).toBeInTheDocument();
-    expect(screen.getByText("Awaiting Approval")).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed for an IA form", () => {
@@ -247,13 +248,11 @@ describe("The Project Funding Agreement Form Summary", () => {
 
     expect(screen.getByText("50.00 %")).toBeInTheDocument();
     expect(screen.getByText("60.00 %")).toBeInTheDocument();
-    expect(screen.getByText("$200.00")).toBeInTheDocument(); //max funding changes
     expect(screen.getByText("$300.00")).toBeInTheDocument(); // max funding changes
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
-    expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
   });
 
-  it("Displays all data for an EP projectwhen isFirstRevision is true (Project Creation)", () => {
+  it("Displays all data for an EP project when isFirstRevision is true (Project Creation)", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
@@ -291,27 +290,13 @@ describe("The Project Funding Agreement Form Summary", () => {
                       proponentCost: 800,
                       contractStartDate: "2021-01-01",
                       projectAssetsLifeEndDate: "2021-12-31",
-                    },
-                    isPristine: false,
-                    operation: "CREATE",
-                    formChangeByPreviousFormChangeId: {
-                      newFormData: {},
-                    },
-                  },
-                },
-              ],
-            },
-            summaryAdditionalFundingSourceFormChanges: {
-              edges: [
-                {
-                  node: {
-                    id: "Test Additional Funding Source ID",
-                    newFormData: {
-                      projectId: "Test Project ID",
-                      sourceIndex: 1,
-                      source: "Test Source Name",
-                      amount: 2500,
-                      status: "Awaiting Approval",
+                      additionalFundingSources: [
+                        {
+                          source: "Test Source Name",
+                          amount: 2500,
+                          status: "Awaiting Approval",
+                        },
+                      ],
                     },
                     isPristine: false,
                     operation: "CREATE",
@@ -324,6 +309,16 @@ describe("The Project Funding Agreement Form Summary", () => {
             },
           };
         return result;
+      },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
       },
     });
     componentTestingHelper.renderComponent();
@@ -347,19 +342,16 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("Project Assets Life End Date")
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding amount \(source 1\)/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding status \(source 1\)/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/additional funding amount/i)).toBeInTheDocument();
+    expect(screen.getByText(/additional funding status/i)).toBeInTheDocument();
     expect(
       screen.getByText(/additional funding source 1/i)
     ).toBeInTheDocument();
   });
 
-  it("Displays all data for an IA projectwhen isFirstRevision is true (Project Creation)", () => {
+  it("Displays all data for an IA project when isFirstRevision is true (Project Creation)", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadIA,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -395,27 +387,13 @@ describe("The Project Funding Agreement Form Summary", () => {
                       proponentCost: 800,
                       contractStartDate: "2021-01-01",
                       projectAssetsLifeEndDate: "2021-12-31",
-                    },
-                    isPristine: false,
-                    operation: "CREATE",
-                    formChangeByPreviousFormChangeId: {
-                      newFormData: {},
-                    },
-                  },
-                },
-              ],
-            },
-            summaryAdditionalFundingSourceFormChanges: {
-              edges: [
-                {
-                  node: {
-                    id: "Test Additional Funding Source ID",
-                    newFormData: {
-                      projectId: "Test Project ID",
-                      sourceIndex: 1,
-                      source: "Test Source Name",
-                      amount: 2500,
-                      status: "Awaiting Approval",
+                      additionalFundingSources: [
+                        {
+                          source: "Test Source Name",
+                          amount: 2500,
+                          status: "Awaiting Approval",
+                        },
+                      ],
                     },
                     isPristine: false,
                     operation: "CREATE",
@@ -451,12 +429,8 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("Project Assets Life End Date")
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding amount \(source 1\)/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding status \(source 1\)/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/additional funding amount/i)).toBeInTheDocument();
+    expect(screen.getByText(/additional funding status/i)).toBeInTheDocument();
     expect(
       screen.getByText(/additional funding source 1/i)
     ).toBeInTheDocument();
@@ -464,6 +438,7 @@ describe("The Project Funding Agreement Form Summary", () => {
 
   it("Displays relevant message when funding agreement not added", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadEP,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -483,6 +458,7 @@ describe("The Project Funding Agreement Form Summary", () => {
   });
   it("Displays relevant message when funding agreement not updated", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadEP,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {
@@ -502,6 +478,7 @@ describe("The Project Funding Agreement Form Summary", () => {
   });
   it("Displays relevant message when funding agreement removed", () => {
     componentTestingHelper.loadQuery({
+      ...mockQueryPayloadEP,
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
           {

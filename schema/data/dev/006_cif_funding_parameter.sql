@@ -45,7 +45,14 @@ for temp_row in select id, project_id from cif.project_revision
             'anticipatedFundingAmount', 1,
             'proponentCost',777,
             'contractStartDate', now(),
-            'projectAssetsLifeEndDate', now()
+            'projectAssetsLifeEndDate', now(),
+            'additionalFundingSources', json_build_array(
+              json_build_object(
+                'source', 'cheese import taxes',
+                'amount', 1000,
+                'status', 'Awaiting Approval'
+                )
+             )
             ),
         'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_EP', temp_row.id);
     end loop;
@@ -89,7 +96,14 @@ for temp_row in select id, project_id from cif.project_revision
             'anticipatedFundingAmount', 200,
             'proponentCost',3000,
             'contractStartDate', now(),
-            'projectAssetsLifeEndDate', now()
+            'projectAssetsLifeEndDate', now(),
+            'additionalFundingSources', json_build_array(
+              json_build_object(
+                'source', 'pretzel import taxes',
+                'amount', 500,
+                'status', 'Approved'
+                )
+             )
             ),
         'create', 'cif', 'funding_parameter', 'pending', 'funding_parameter_IA', temp_row.id);
     end loop;

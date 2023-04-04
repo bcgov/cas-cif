@@ -20,7 +20,9 @@ const { fields, widgets } = utils.getDefaultRegistry();
 
 const formTheme: ThemeProps = {
   children: <></>,
-  fields: { ...fields },
+  fields: {
+    ...fields,
+  },
   widgets: {
     ...widgets,
     TextWidget: TextWidget,
@@ -38,7 +40,6 @@ const formTheme: ThemeProps = {
     AnticipatedFundingAmountPerFiscalYearWidget,
   },
   ObjectFieldTemplate: ObjectFieldTemplate,
-  // ArrayFieldTemplate: AnticipatedFundingPerFiscalYearArrayFieldTemplate,
   FieldTemplate: FieldTemplate,
 };
 

@@ -173,7 +173,6 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
-    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.findAllByRole("button", { name: /^view$/i })
@@ -223,12 +222,7 @@ describe("the new project page", () => {
       "10 %"
     );
     // additional funding sources
-    cy.checkAdditionalFundingSourceForm(
-      "cheese import taxes",
-      "$1,000.00",
-      "Awaiting Approval",
-      1
-    );
+    cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
     //TODO: TEIMP Agreement, when fixture is added
 
@@ -244,7 +238,6 @@ describe("the new project page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
-    cy.sqlFixture("dev/008_cif_additional_funding_source");
     cy.mockLogin("cif_admin");
     cy.visit("/cif/projects");
     cy.get("input[aria-label='Filter by Proposal Reference']").as("inpt");
@@ -271,15 +264,10 @@ describe("the new project page", () => {
       "$3,000.00",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
-      "$3,500.00"
+      "$4,000.00"
     );
     // additional funding sources
-    cy.checkAdditionalFundingSourceForm(
-      "cheese import taxes",
-      "$1,000.00",
-      "Awaiting Approval",
-      1
-    );
+    cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
     // project summary report
     cy.findByRole("heading", {

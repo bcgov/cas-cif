@@ -11,6 +11,8 @@ const DATABASE_SCHEMAS = [
   "project_manager",
   "project_summary_report",
   "operator",
+  "funding_parameter_EP",
+  "funding_parameter_IA",
 ];
 
 export default DATABASE_SCHEMAS;
