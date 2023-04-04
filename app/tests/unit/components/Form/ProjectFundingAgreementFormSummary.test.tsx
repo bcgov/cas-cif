@@ -215,6 +215,9 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.queryByText("Additional Funding Source 1")
     ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Project Expenses & Payments Tracker/i)
+    ).not.toBeInTheDocument();
   });
 
   it("Only displays the data fields that have changed for an IA form", () => {
@@ -239,6 +242,9 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByText(/additional funding status/i)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Project Expenses & Payments Tracker/i)
     ).not.toBeInTheDocument();
   });
 
