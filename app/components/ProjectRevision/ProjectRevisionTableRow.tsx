@@ -73,7 +73,7 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
           .join(", ")}
       </td>
       <td>
-        {revisionType == "Amendment" && revisionStatus == "Applied"
+        {revisionType === "Amendment" && revisionStatus === "Applied"
           ? "Approved"
           : revisionStatus}
       </td>
