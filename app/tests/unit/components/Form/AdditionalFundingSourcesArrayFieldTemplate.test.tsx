@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
+import AdditionalFundingSourcesArrayFieldTemplate from "components/Form/AdditionalFundingSourcesArrayFieldTemplate";
 import FormBase from "components/Form/FormBase";
 import { JSONSchema7 } from "json-schema";
-import AdditionalFundingSourcesArrayFieldTemplate from "lib/theme/AdditionalFundingSourcesArrayFieldTemplate";
+
 import epSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
 import iaSchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
 
