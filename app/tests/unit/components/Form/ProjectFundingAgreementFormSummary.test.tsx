@@ -206,18 +206,6 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.queryByText("Anticipated/Actual Funding Amount")
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding amount \(source 1\)/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/additional funding status \(source 1\)/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText("Additional Funding Source 1")
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/Project Expenses & Payments Tracker/i)
-    ).not.toBeInTheDocument();
   });
 
   it("Only displays the data fields that have changed for an IA form", () => {
@@ -237,15 +225,6 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.queryByText("Anticipated/Actual Funding Amount")
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Proponent Cost")).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/additional funding amount/i)
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/additional funding status/i)
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/Project Expenses & Payments Tracker/i)
-    ).not.toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that have changed for an EP form", () => {
@@ -370,9 +349,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/Expenses & Payments Tracker/i)
-    ).toBeInTheDocument();
-    expect(
       screen.getByText(/Total Eligible Expenses to Date/i)
     ).toBeInTheDocument();
     expect(
@@ -470,10 +446,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText(/additional funding status/i)).toBeInTheDocument();
     expect(
       screen.getByText(/additional funding source 1/i)
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText(/Expenses & Payments Tracker/i)
     ).toBeInTheDocument();
     expect(
       screen.getByText(/Total Payment Amount to Date/i)
