@@ -228,85 +228,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             calculatedGrossPaymentsToDate:
               summaryProjectFundingAgreementFormChanges.edges[0]?.node
                 .grossPaymentsToDate,
+            calculatedTotalPaymentAmountToDate:
+              summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                .calculatedTotalPaymentAmountToDate,
           }}
           ArrayFieldTemplate={
             ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
           }
-        />
-      )}
-<<<<<<< HEAD
-=======
-      {!isOnAmendmentsAndOtherRevisionsPage && (
-        <h3>Project Additional Funding Source</h3>
-      )}
-      {sortedAdditionalFundingSourceFormChanges.length < 1 && viewOnly && (
-        <FormNotAddedOrUpdated
-          isFirstRevision={true} //setting this to true so that the text is "Additional Funding Source not added"
-          formTitle="Additional Funding Source"
-        />
-      )}
-      {(allAdditionalFundingSourceFormChangesPristine ||
-        sortedAdditionalFundingSourceFormChanges.length < 1) &&
-      !viewOnly
-        ? !isOnAmendmentsAndOtherRevisionsPage && (
-            // I am the review and submit page
-            <FormNotAddedOrUpdated
-              isFirstRevision={isFirstRevision}
-              formTitle="Additional Funding Source"
-            />
-          )
-        : additionalFundingSourcesJSX}
->>>>>>> c0b6b688 (fix: show expenses tracker on review and submit page)
-
-      {!isOnAmendmentsAndOtherRevisionsPage && (
-        <h3>Expenses & Payments Tracker</h3>
-      )}
-      {fundingAgreementFormNotUpdated && !viewOnly ? (
-        !isOnAmendmentsAndOtherRevisionsPage ? (
-          <FormNotAddedOrUpdated
-            isFirstRevision={isFirstRevision}
-            formTitle="Expenses & Payments Tracker"
-          />
-        ) : (
-          ""
-        )
-      ) : (
-        <FormBase
-          tagName={"dl"}
-          theme={readOnlyTheme}
-          fields={renderDiff ? customFields : fields}
-          schema={
-            fundingStream === "EP"
-              ? (expensesPaymentsTrackerEPSchema as JSONSchema7)
-              : (expensesPaymentsTrackerIASchema as JSONSchema7)
-          }
-          uiSchema={
-            fundingStream === "EP"
-              ? expensesPaymentsTrackerEPUiSchema
-              : expensesPaymentsTrackerIAUiSchema
-          }
-          formData={formData}
-          formContext={{
-            calculatedTotalPaymentAmountToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .calculatedTotalPaymentAmountToDate,
-            calculatedEligibleExpensesToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .eligibleExpensesToDate,
-            calculatedHoldbackAmountToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .holdbackAmountToDate,
-            calculatedNetPaymentsToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .netPaymentsToDate,
-            calculatedGrossPaymentsToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .grossPaymentsToDate,
-            operation: fundingAgreementSummary?.operation,
-            oldData:
-              fundingAgreementSummary?.formChangeByPreviousFormChangeId
-                ?.newFormData,
-          }}
         />
       )}
       <style jsx>{`
