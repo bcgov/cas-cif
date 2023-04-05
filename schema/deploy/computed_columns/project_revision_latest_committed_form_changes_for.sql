@@ -5,7 +5,6 @@ begin;
 create or replace function cif.project_revision_latest_committed_form_changes_for(
  cif.project_revision,
   form_data_table_name text,
-  json_matcher text default '{}',
   report_type text default null
 )
 returns setof cif.form_change
@@ -20,13 +19,12 @@ $computed_column$
       where cif.project.id = $1.project_id
     )))
       and form_data_table_name=$2
-      and new_form_data::jsonb @> $3::jsonb
       and case
-        when $4 is null
+        when $3 is null
         then new_form_data->>'reportType' is null
-        when $4 = 'Milestone'
+        when $3 = 'Milestone'
         then new_form_data->>'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone')
-        else new_form_data->>'reportType' = $4 end
+        else new_form_data->>'reportType' = $3 end
     order by updated_at desc;
 
 $computed_column$ language sql stable;

@@ -1,6 +1,6 @@
 begin;
 
-select no_plan();
+select plan(6);
 
 /** TEST SETUP **/
 truncate cif.project restart identity cascade;

@@ -58707,7 +58707,6 @@ type ProjectRevision implements Node {
     """Only read the first `n` values of the set."""
     first: Int
     formDataTableName: String!
-    jsonMatcher: String
 
     """Only read the last `n` values of the set."""
     last: Int
