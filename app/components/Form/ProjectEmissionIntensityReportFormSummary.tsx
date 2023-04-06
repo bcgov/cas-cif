@@ -35,6 +35,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     summaryEmissionIntensityReportFormChange,
     summaryEmissionIntensityReportingRequirementFormChange,
     isFirstRevision,
+    latestCommittedEmissionIntensityReportingRequirementFormChange,
+    latestCommittedEmissionIntensityReportFormChange,
   } = useFragment(
     graphql`
       fragment ProjectEmissionIntensityReportFormSummary_projectRevision on ProjectRevision {
@@ -66,6 +68,25 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
               formChangeByPreviousFormChangeId {
                 newFormData
               }
+            }
+          }
+        }
+        latestCommittedEmissionIntensityReportingRequirementFormChange: latestCommittedFormChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "TEIMP"
+        ) {
+          edges {
+            node {
+              newFormData
+            }
+          }
+        }
+        latestCommittedEmissionIntensityReportFormChange: latestCommittedFormChangesFor(
+          formDataTableName: "emission_intensity_report"
+        ) {
+          edges {
+            node {
+              newFormData
             }
           }
         }
@@ -185,6 +206,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           oldData:
             summaryReportingRequirement?.formChangeByPreviousFormChangeId
               ?.newFormData,
+          latestCommittedData:
+            latestCommittedEmissionIntensityReportingRequirementFormChange
+              ?.edges[0]?.node?.newFormData,
           isAmendmentsAndOtherRevisionsSpecific:
             isOnAmendmentsAndOtherRevisionsPage,
         }}
@@ -209,6 +233,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           operation: summaryEmissionIntensityReport?.operation,
           oldData:
             summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+              ?.newFormData,
+          latestCommittedData:
+            latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
               ?.newFormData,
           isAmendmentsAndOtherRevisionsSpecific:
             isOnAmendmentsAndOtherRevisionsPage,

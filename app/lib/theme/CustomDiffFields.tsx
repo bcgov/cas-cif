@@ -8,20 +8,75 @@ import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
 const contentSuffixElement = (
   id: string,
   contentSuffix: string
-): JSX.Element => (
-  <span
-    id={id && `${id}-contentSuffix`}
-    className="contentSuffix"
-    style={{ paddingLeft: "1em" }}
-  >
-    {contentSuffix}
-  </span>
-);
+): JSX.Element => {
+  return (
+    <span
+      id={id && `${id}-contentSuffix`}
+      className="contentSuffix"
+      style={{ paddingLeft: "1em" }}
+    >
+      {contentSuffix}
+    </span>
+  );
+};
+
+interface OverwriteNotificationArgument {
+  latestCommittedData: any;
+  isNumber?: boolean;
+  isDate?: boolean;
+  isMoney?: boolean;
+  isPercentage?: boolean;
+  numberOfDecimalPlaces?: number;
+}
+
+const overwriteNotification = (
+  specs: OverwriteNotificationArgument
+): string | number | JSX.Element => {
+  const {
+    latestCommittedData,
+    isNumber,
+    isDate,
+    isMoney,
+    isPercentage,
+    numberOfDecimalPlaces,
+  } = specs;
+
+  const displayString = "Latest committed value: ";
+
+  if (!latestCommittedData) {
+    return `${displayString}none`;
+  }
+  if (latestCommittedData.isArray && latestCommittedData.length() === 0) {
+    return `${displayString}none`;
+  }
+  if (isDate) {
+    return `${displayString}${getLocaleFormattedDate(latestCommittedData)}`;
+  }
+  if (isNumber) {
+    const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
+    return (
+      <>
+        {displayString}
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={latestCommittedData}
+        />
+      </>
+    );
+  }
+  return `${displayString}${latestCommittedData}`;
+};
 
 const showStringDiff = (
   id: string,
   oldData: string,
   newData: string,
+  latestCommittedData: string,
   isDate?: boolean,
   contentSuffix?: string,
   isAmendmentsAndOtherRevisionsSpecific?: boolean
@@ -36,7 +91,6 @@ const showStringDiff = (
         "diffReviewAndSubmitInformationOld",
         "diffReviewAndSubmitInformationNew",
       ];
-
   return (
     <>
       <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
@@ -55,6 +109,11 @@ const showStringDiff = (
         {isDate ? getLocaleFormattedDate(newData) : newData}
       </span>
       {contentSuffix && contentSuffixElement(id, contentSuffix)}
+      {/* Ultimately, we'll only show the latest committed value if there's a conflict, but show for now to facilitate manual testing. */}
+      {
+        // latestCommittedData && oldData && latestCommittedData !== oldData &&
+        overwriteNotification({ latestCommittedData, isDate })
+      }
     </>
   );
 };
@@ -62,6 +121,7 @@ const showStringDiff = (
 const showStringAdded = (
   id: string,
   newData: string,
+  latestCommittedData,
   isDate: boolean = false,
   contentSuffix?: string,
   isAmendmentsAndOtherRevisionsSpecific?: boolean
@@ -100,6 +160,11 @@ const showStringAdded = (
           </span>
         </>
       )}
+
+      {
+        //   latestCommittedData &&
+        overwriteNotification({ latestCommittedData, isDate })
+      }
     </>
   );
 };
@@ -107,6 +172,7 @@ const showStringAdded = (
 const showStringRemoved = (
   id: string,
   oldData: string,
+  latestCommittedData: string,
   isDate: boolean = false,
   contentSuffix?: string,
   isAmendmentsAndOtherRevisionsSpecific?: boolean
@@ -114,7 +180,6 @@ const showStringRemoved = (
   const diffClsName = isAmendmentsAndOtherRevisionsSpecific
     ? "diffAmendmentsAndOtherRevisionsOld"
     : "diffReviewAndSubmitInformationOld";
-
   return (
     <>
       <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
@@ -136,6 +201,10 @@ const showStringRemoved = (
           </span>
         </>
       )}
+      {
+        // latestCommittedData && oldData && oldData !== latestCommittedData &&
+        overwriteNotification({ latestCommittedData, isDate })
+      }
     </>
   );
 };
@@ -144,6 +213,7 @@ const showNumberDiff = (
   id: string,
   oldData: number,
   newData: number,
+  latestCommittedData: number,
   isMoney: boolean,
   isPercentage: boolean,
   numberOfDecimalPlaces: number = 0,
@@ -159,7 +229,6 @@ const showNumberDiff = (
         "diffReviewAndSubmitInformationOld",
         "diffReviewAndSubmitInformationNew",
       ];
-
   return (
     <>
       <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
@@ -192,6 +261,16 @@ const showNumberDiff = (
           value={newData}
         />
       </span>
+      {
+        // latestCommittedData && oldData && latestCommittedData !== oldData &&
+        overwriteNotification({
+          latestCommittedData,
+          isNumber: true,
+          isMoney,
+          isPercentage,
+          numberOfDecimalPlaces,
+        })
+      }
     </>
   );
 };
@@ -199,6 +278,7 @@ const showNumberDiff = (
 const showNumberAdded = (
   id: string,
   newData: number,
+  latestCommittedData: number,
   isMoney: boolean,
   isPercentage: boolean,
   numberOfDecimalPlaces: number = 0,
@@ -245,6 +325,16 @@ const showNumberAdded = (
           </span>
         </>
       )}
+      {
+        // latestCommittedData &&
+        overwriteNotification({
+          latestCommittedData,
+          isNumber: true,
+          isMoney,
+          isPercentage,
+          numberOfDecimalPlaces,
+        })
+      }
     </>
   );
 };
@@ -252,6 +342,7 @@ const showNumberAdded = (
 const showNumberRemoved = (
   id: string,
   oldData: number,
+  latestCommittedData: number,
   isMoney: boolean,
   isPercentage: boolean,
   numberOfDecimalPlaces: number = 0,
@@ -288,6 +379,18 @@ const showNumberRemoved = (
           </span>
         </>
       )}
+      {
+        // latestCommittedData &&
+        //   oldData &&
+        //   oldData !== latestCommittedData &&
+        overwriteNotification({
+          latestCommittedData,
+          isNumber: true,
+          isMoney,
+          isPercentage,
+          numberOfDecimalPlaces,
+        })
+      }
     </>
   );
 };
@@ -300,15 +403,18 @@ const CUSTOM_DIFF_FIELDS: Record<
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
+    const latestCommittedValue = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
     const isAmendmentsAndOtherRevisionsSpecific =
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
+
     if (previousValue && formData && formContext.operation === "UPDATE") {
       return showStringDiff(
         id,
         previousValue,
         formData,
+        latestCommittedValue,
         isDate,
         contentSuffix as string,
         isAmendmentsAndOtherRevisionsSpecific
@@ -321,6 +427,7 @@ const CUSTOM_DIFF_FIELDS: Record<
       return showStringAdded(
         id,
         formData,
+        latestCommittedValue,
         isDate,
         undefined,
         isAmendmentsAndOtherRevisionsSpecific
@@ -332,6 +439,7 @@ const CUSTOM_DIFF_FIELDS: Record<
       return showStringRemoved(
         id,
         previousValue,
+        latestCommittedValue,
         isDate,
         contentSuffix as string,
         isAmendmentsAndOtherRevisionsSpecific
@@ -344,12 +452,23 @@ const CUSTOM_DIFF_FIELDS: Record<
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
+    const latestCommittedValue = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
     const isAmendmentsAndOtherRevisionsSpecific =
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
 
     if (uiSchema["ui:options"]) {
+      const oldDataOptionText =
+        formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
+        previousValue;
+
+      const newDataOptionText = uiSchema["ui:options"].text || formData;
+
+      const latestCommittedDataOptionText =
+        formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]
+          ?.text || latestCommittedValue;
+
       if (
         previousValue !== null &&
         previousValue !== undefined &&
@@ -357,15 +476,11 @@ const CUSTOM_DIFF_FIELDS: Record<
         formData !== undefined &&
         formContext.operation === "UPDATE"
       ) {
-        const oldData =
-          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
-          formContext?.oldData?.[props.name];
-        const newData = uiSchema["ui:options"].text || formData;
-
         return showStringDiff(
           id,
-          oldData,
-          newData as string,
+          oldDataOptionText,
+          newDataOptionText as string,
+          latestCommittedDataOptionText,
           false,
           undefined,
           isAmendmentsAndOtherRevisionsSpecific
@@ -375,10 +490,11 @@ const CUSTOM_DIFF_FIELDS: Record<
         formData &&
         formContext.operation !== "ARCHIVE"
       ) {
-        const newData = uiSchema["ui:options"].text || formData;
+        // const newData = uiSchema["ui:options"].text || formData;
         return showStringAdded(
           id,
-          newData,
+          newDataOptionText,
+          latestCommittedDataOptionText,
           false,
           contentSuffix as string,
           isAmendmentsAndOtherRevisionsSpecific
@@ -389,12 +505,13 @@ const CUSTOM_DIFF_FIELDS: Record<
           previousValue !== null &&
           previousValue !== undefined)
       ) {
-        const oldData =
-          formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
-          formContext?.oldData?.[props.name];
+        // const oldData =
+        //   formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
+        //   formContext?.oldData?.[props.name];
         return showStringRemoved(
           id,
-          oldData,
+          oldDataOptionText,
+          latestCommittedDataOptionText,
           false,
           contentSuffix as string,
           isAmendmentsAndOtherRevisionsSpecific
@@ -407,6 +524,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showStringAdded(
           id,
           (uiSchema["ui:options"].text as string) ?? formData,
+          latestCommittedDataOptionText,
           isDate,
           contentSuffix as string,
           isAmendmentsAndOtherRevisionsSpecific
@@ -424,6 +542,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           id,
           formContext?.oldData?.[props.name],
           formData,
+          latestCommittedValue,
           uiSchema?.isMoney,
           uiSchema?.isPercentage,
           uiSchema?.numberOfDecimalPlaces,
@@ -437,6 +556,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberAdded(
           id,
           formData,
+          latestCommittedValue,
           uiSchema?.isMoney,
           uiSchema?.isPercentage,
           uiSchema?.numberOfDecimalPlaces,
@@ -449,6 +569,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         return showNumberRemoved(
           id,
           formContext?.oldData?.[props.name],
+          latestCommittedValue,
           uiSchema?.isMoney,
           uiSchema?.isPercentage,
           uiSchema?.numberOfDecimalPlaces,

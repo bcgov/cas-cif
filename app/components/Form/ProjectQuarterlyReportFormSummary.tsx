@@ -29,34 +29,48 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { summaryProjectQuarterlyReportFormChanges, isFirstRevision } =
-    useFragment(
-      graphql`
-        fragment ProjectQuarterlyReportFormSummary_projectRevision on ProjectRevision {
-          isFirstRevision
-          summaryProjectQuarterlyReportFormChanges: formChangesFor(
-            formDataTableName: "reporting_requirement"
-            reportType: "Quarterly"
-          ) {
-            edges {
-              node {
-                id
-                isPristine
+  const {
+    summaryProjectQuarterlyReportFormChanges,
+    isFirstRevision,
+    latestCommittedProjectQuarterlyReportFormChanges,
+  } = useFragment(
+    graphql`
+      fragment ProjectQuarterlyReportFormSummary_projectRevision on ProjectRevision {
+        isFirstRevision
+        summaryProjectQuarterlyReportFormChanges: formChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Quarterly"
+        ) {
+          edges {
+            node {
+              id
+              isPristine
+              newFormData
+              operation
+              formChangeByPreviousFormChangeId {
                 newFormData
-                operation
-                formChangeByPreviousFormChangeId {
-                  newFormData
-                }
-                formByJsonSchemaName {
-                  jsonSchema
-                }
+              }
+              formByJsonSchemaName {
+                jsonSchema
               }
             }
           }
         }
-      `,
-      projectRevision
-    );
+        latestCommittedProjectQuarterlyReportFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Quarterly"
+        ) {
+          edges {
+            node {
+              id
+              newFormData
+            }
+          }
+        }
+      }
+    `,
+    projectRevision
+  );
 
   // Show diff if it is not the first revision and not view only (rendered from the quarterly report page)
   const renderDiff = !isFirstRevision && !viewOnly;
@@ -115,6 +129,13 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
       )
         return null;
 
+      const latestCommittedData =
+        latestCommittedProjectQuarterlyReportFormChanges?.edges?.find(
+          ({ node }) =>
+            node.newFormData.reportingRequirementIndex ===
+            quarterlyReport.newFormData.reportingRequirementIndex
+        )?.node?.newFormData;
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -150,6 +171,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
                 operation: quarterlyReport.operation,
                 oldData:
                   quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
+                latestCommittedData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,
               }}
@@ -166,6 +188,7 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
   }, [
     isFirstRevision,
     isOnAmendmentsAndOtherRevisionsPage,
+    latestCommittedProjectQuarterlyReportFormChanges?.edges,
     renderDiff,
     sortedQuarterlyReports,
   ]);

@@ -25,7 +25,11 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { summaryProjectSummaryFormChanges, isFirstRevision } = useFragment(
+  const {
+    summaryProjectSummaryFormChanges,
+    isFirstRevision,
+    latestCommittedProjectSummaryFormChanges,
+  } = useFragment(
     graphql`
       fragment ProjectSummaryReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
@@ -45,6 +49,20 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
               formByJsonSchemaName {
                 jsonSchema
               }
+            }
+          }
+        }
+        latestCommittedProjectSummaryFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Project Summary Report"
+          first: 1
+        )
+          @connection(
+            key: "connection_latestCommittedProjectSummaryFormChanges"
+          ) {
+          edges {
+            node {
+              newFormData
             }
           }
         }
@@ -132,6 +150,9 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
           operation: projectSummaryReport.operation,
           oldData:
             projectSummaryReport.formChangeByPreviousFormChangeId?.newFormData,
+          latestCommittedData:
+            latestCommittedProjectSummaryFormChanges?.edges[0]?.node
+              ?.newFormData,
           isAmendmentsAndOtherRevisionsSpecific:
             isOnAmendmentsAndOtherRevisionsPage,
         }}

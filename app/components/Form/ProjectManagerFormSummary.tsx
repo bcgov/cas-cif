@@ -22,7 +22,11 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { projectManagerFormChangesByLabel, isFirstRevision } = useFragment(
+  const {
+    projectManagerFormChangesByLabel,
+    isFirstRevision,
+    latestCommittedProjectManagerFormChanges,
+  } = useFragment(
     graphql`
       fragment ProjectManagerFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
@@ -56,12 +60,25 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
             }
           }
         }
+        latestCommittedProjectManagerFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "project_manager"
+        ) {
+          edges {
+            node {
+              newFormData
+              asProjectManager {
+                cifUserByCifUserId {
+                  fullName
+                }
+              }
+            }
+          }
+        }
       }
     `,
     projectRevision
   );
 
-  // Show diff if it is not the first revision and not view only (rendered from the managers page)
   const renderDiff = !isFirstRevision && !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived managers
@@ -96,6 +113,21 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
       // Set custom rjsf fields to display diffs
       const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
+      const latestCommittedManagerNode =
+        latestCommittedProjectManagerFormChanges?.edges?.find(
+          (latestCommittedNode) => {
+            return (
+              latestCommittedNode.node.newFormData.projectManagerLabelId ===
+              node.formChange.newFormData.projectManagerLabelId
+            );
+          }
+        );
+
+      const latestCommittedUiSchema = createProjectManagerUiSchema(
+        latestCommittedManagerNode?.node?.asProjectManager?.cifUserByCifUserId
+          ?.fullName
+      );
+
       return (
         <FormBase
           liveValidate
@@ -120,13 +152,20 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
               node.formChange?.formChangeByPreviousFormChangeId
                 ?.asProjectManager?.cifUserByCifUserId?.fullName
             ),
+            latestCommittedData: latestCommittedManagerNode?.node?.newFormData,
+            latestCommittedUiSchema,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,
           }}
         />
       );
     });
-  }, [formChangesByLabel, renderDiff, isOnAmendmentsAndOtherRevisionsPage]);
+  }, [
+    formChangesByLabel,
+    latestCommittedProjectManagerFormChanges?.edges,
+    renderDiff,
+    isOnAmendmentsAndOtherRevisionsPage,
+  ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(

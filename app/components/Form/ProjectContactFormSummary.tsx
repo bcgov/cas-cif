@@ -25,7 +25,11 @@ const ProjectContactFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { summaryContactFormChanges, isFirstRevision } = useFragment(
+  const {
+    summaryContactFormChanges,
+    isFirstRevision,
+    latestCommittedProjectContactFormChanges,
+  } = useFragment(
     graphql`
       fragment ProjectContactFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
@@ -58,6 +62,23 @@ const ProjectContactFormSummary: React.FC<Props> = ({
             }
           }
         }
+        latestCommittedProjectContactFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "project_contact"
+        ) {
+          edges {
+            node {
+              id
+              isPristine
+              newFormData
+              asProjectContact {
+                contactByContactId {
+                  fullName
+                  ...ContactDetails_contact
+                }
+              }
+            }
+          }
+        }
       }
     `,
     projectRevision
@@ -81,6 +102,14 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     [contactFormChanges]
   );
 
+  const lastCommittedPrimaryContact = useMemo(
+    () =>
+      latestCommittedProjectContactFormChanges?.edges?.find(
+        ({ node }) => node.newFormData?.contactIndex === 1
+      ),
+    [latestCommittedProjectContactFormChanges]
+  );
+
   const secondaryContacts = useMemo(
     () =>
       contactFormChanges.filter(
@@ -89,6 +118,16 @@ const ProjectContactFormSummary: React.FC<Props> = ({
           (node.isPristine === false || node.isPristine === null)
       ),
     [contactFormChanges]
+  );
+
+  const lastCommittedSecondaryContacts = useMemo(
+    () =>
+      latestCommittedProjectContactFormChanges?.edges?.filter(
+        ({ node }) =>
+          node.newFormData?.contactIndex !== 1 &&
+          (node.isPristine === false || node.isPristine === null)
+      ),
+    [latestCommittedProjectContactFormChanges?.edges]
   );
 
   const allFormChangesPristine = useMemo(
@@ -111,6 +150,20 @@ const ProjectContactFormSummary: React.FC<Props> = ({
 
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
+      const latestCommittedContactNode = lastCommittedSecondaryContacts.find(
+        (latestCommittedNode) => {
+          return (
+            latestCommittedNode.node.newFormData.contactIndex ===
+            node.newFormData.contactIndex
+          );
+        }
+      );
+
+      const latestCommittedUiSchema = createProjectContactUiSchema(
+        latestCommittedContactNode?.node?.asProjectContact?.contactByContactId
+          ?.fullName
+      );
+
       return (
         <React.Fragment key={node.id}>
           <FormBase
@@ -134,6 +187,9 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                 node?.formChangeByPreviousFormChangeId?.asProjectContact
                   ?.contactByContactId?.fullName
               ),
+              latestCommittedData:
+                latestCommittedContactNode?.node?.newFormData,
+              latestCommittedUiSchema,
               isAmendmentsAndOtherRevisionsSpecific:
                 isOnAmendmentsAndOtherRevisionsPage,
             }}
@@ -211,6 +267,12 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                 oldUiSchema: createProjectContactUiSchema(
                   primaryContact?.node?.formChangeByPreviousFormChangeId
                     ?.asProjectContact?.contactByContactId?.fullName
+                ),
+                latestCommittedData:
+                  lastCommittedPrimaryContact?.node?.newFormData,
+                latestCommittedUiSchema: createProjectContactUiSchema(
+                  lastCommittedPrimaryContact?.node?.asProjectContact
+                    ?.contactByContactId?.fullName
                 ),
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,

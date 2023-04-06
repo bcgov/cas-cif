@@ -28,7 +28,11 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
 }) => {
-  const { summaryMilestoneFormChanges, isFirstRevision } = useFragment(
+  const {
+    summaryMilestoneFormChanges,
+    isFirstRevision,
+    latestCommittedMilestoneFormChanges,
+  } = useFragment(
     graphql`
       fragment ProjectMilestoneReportFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
@@ -52,6 +56,18 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               formByJsonSchemaName {
                 jsonSchema
               }
+            }
+          }
+        }
+        latestCommittedMilestoneFormChanges: latestCommittedFormChangesFor(
+          formDataTableName: "reporting_requirement"
+          reportType: "Milestone"
+          first: 1000
+        ) @connection(key: "connection_latestCommittedMilestoneFormChanges") {
+          edges {
+            # eslint-disable-next-line relay/unused-fields
+            node {
+              newFormData
             }
           }
         }
@@ -105,6 +121,16 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       )
         return null;
 
+      const latestCommittedData =
+        latestCommittedMilestoneFormChanges?.edges?.find(
+          (latestCommittedNode) => {
+            return (
+              latestCommittedNode.node.newFormData.reportingRequirementIndex ===
+              milestoneReport.newFormData.reportingRequirementIndex
+            );
+          }
+        )?.node?.newFormData;
+
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -141,6 +167,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
+              latestCommittedData,
               isAmendmentsAndOtherRevisionsSpecific:
                 isOnAmendmentsAndOtherRevisionsPage,
             }}
