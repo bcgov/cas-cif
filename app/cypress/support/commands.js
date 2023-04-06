@@ -454,7 +454,7 @@ Cypress.Commands.add(
       reportDescription
     );
 
-    cy.get('[placeholder="Select a Milestone Type"]').type(reportType);
+    cy.get('[placeholder="Select a Milestone Type"]').clear().type(reportType);
     cy.get('[placeholder="Select a Milestone Type"]').should(
       "have.value",
       reportType
@@ -465,7 +465,8 @@ Cypress.Commands.add(
       cy.get('[aria-label="Total Eligible Expenses"]').type(100);
     }
 
-    cy.get('[aria-label*="Substantial Completion Date"').type(
+    cy.setDateInPicker(
+      "Substantial Completion Date",
       reportSubstantialCompletionDate
     );
 
@@ -473,12 +474,7 @@ Cypress.Commands.add(
     cy.contains(professionalDesignation).click();
 
     if (receivedDate) {
-      cy.get('[label*="Received Date"]')
-        .eq(reportNumber - 1)
-        .type(receivedDate);
-      cy.get('[label*="Received Date"]')
-        .eq(reportNumber - 1)
-        .should("have.value", receivedDate);
+      cy.setDateInPicker("Report Received Date", receivedDate, reportNumber);
     }
 
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call

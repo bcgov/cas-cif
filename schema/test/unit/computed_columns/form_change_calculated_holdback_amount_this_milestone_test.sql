@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(5);
 
 /** SETUP **/
 
@@ -28,7 +28,7 @@ values (
   1,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": true, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
 ),
 (
   2,
@@ -36,20 +36,41 @@ values (
   'cif',
   'reporting_requirement',
   2,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 20000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
+),
+(
+  3,
+  'create',
+  'cif',
+  'reporting_requirement',
+  3,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": false, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
+),
+(
+  4,
+  'create',
+  'cif',
+  'reporting_requirement',
+  3,
   1,
   'milestone',
   '{"reportType": "General Milestone", "hasExpenses": true, "adjustedGrossAmount": 20000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
 ),
 (
-  3,
+  5,
   'create',
   'cif',
   'reporting_requirement',
   3,
   1,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": false, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 12000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
 );
+
 
 insert into cif.form_change(
   id,
@@ -62,7 +83,7 @@ insert into cif.form_change(
   new_form_data
 ) overriding system value
 values (
-  4,
+  6,
   'create',
   'cif',
   'funding_parameter',
@@ -110,6 +131,32 @@ select is(
     0::numeric
   ),
   'Returns 0 when hasExpenses is false'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=4
+    ) select cif.form_change_calculated_holdback_amount_this_milestone((select * from record))
+  ),
+  (
+    null
+  ),
+  'Returns null when submittedDate not provided'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=5
+    ) select cif.form_change_calculated_holdback_amount_this_milestone((select * from record))
+  ),
+  (
+    null
+  ),
+  'Returns null when milestoneType is General Milestone and totalEligibleExpenses is null'
 );
 
 select finish();

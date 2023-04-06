@@ -74,6 +74,7 @@ describe("the new project page", () => {
     cy.findByText(/Add milestone reports/i).click();
     cy.contains("Changes saved.").should("be.visible");
     cy.findByText("Milestone Reports").should("be.visible");
+    cy.findByText("In Progress").should("not.exist");
     cy.happoAndAxe("Project milestone Form", "empty", "main");
 
     // QUARTERLY REPORTS
