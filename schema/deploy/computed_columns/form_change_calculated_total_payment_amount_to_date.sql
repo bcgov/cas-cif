@@ -7,8 +7,16 @@ returns numeric
 as
 $fn$
 
--- TODO: placeholder
-select 0;
+select (($1.new_form_data->>'maxFundingAmount')::numeric*.8) +
+  coalesce(
+    ((select new_form_data->>'projectSummaryReportPayment'
+      from cif.form_change
+      where project_revision_id = $1.project_revision_id
+      and json_schema_name = 'project_summary_report'
+      and operation != 'archive'
+      order by id desc
+      limit 1)::numeric),
+    0);
 
 $fn$ language sql stable;
 

@@ -269,6 +269,10 @@ describe("the new project page", () => {
     // additional funding sources
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
+    cy.contains(/Total Payment Amount to Date/i)
+      .next()
+      .contains(/511/i);
+
     // project summary report
     cy.findByRole("heading", {
       name: /5. Project Summary Report/i,

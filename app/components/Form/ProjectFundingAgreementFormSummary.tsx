@@ -63,6 +63,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               holdbackAmountToDate
               netPaymentsToDate
               grossPaymentsToDate
+              calculatedTotalPaymentAmountToDate
               isPristine
               operation
               formChangeByPreviousFormChangeId {
@@ -143,6 +144,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         Object.keys(fundingAgreementSummary?.newFormData).length === 0),
     [fundingAgreementSummary]
   );
+
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
     () => setHasDiff && setHasDiff(!fundingAgreementFormNotUpdated),
@@ -226,13 +228,15 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             calculatedGrossPaymentsToDate:
               summaryProjectFundingAgreementFormChanges.edges[0]?.node
                 .grossPaymentsToDate,
+            calculatedTotalPaymentAmountToDate:
+              summaryProjectFundingAgreementFormChanges.edges[0]?.node
+                .calculatedTotalPaymentAmountToDate,
           }}
           ArrayFieldTemplate={
             ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
           }
         />
       )}
-
       <style jsx>{`
         div :global(h3) {
           margin: 1em 0;
