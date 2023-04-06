@@ -23,7 +23,6 @@ values
 insert into cif.project_revision(id, change_status, change_reason, project_id)
 overriding system value
 values
--- brianna why is 1 the latest committed project revision?
   -- revisions for project 1
   (1, 'committed', 'reason for change 2', 1),
   (2, 'pending', 'reason for change 2', 1),

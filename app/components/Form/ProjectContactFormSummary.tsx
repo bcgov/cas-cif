@@ -120,7 +120,6 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     [contactFormChanges]
   );
 
-  // brianna these are
   const lastCommittedSecondaryContacts = useMemo(
     () =>
       latestCommittedProjectContactFormChanges?.edges?.filter(
