@@ -78,10 +78,25 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
       .year,
   ]);
 
+  const placeHolderFormData = {
+    proposalReference: "ABC",
+    summary: "This is a summary of the project",
+    operatorId: 1,
+    fundingStreamRfpId: 1,
+    comments: "some amendment comment",
+    contractNumber: "654321",
+    totalFundingRequest: 1000,
+    projectStatusId: 1,
+    operatorTradeName: "test trade name",
+    sectorName: "Lime",
+    projectType: "Carbon Capture",
+  };
+
   const handleChange = (changeData: any) => {
     const updatedFormData = {
       ...revision.projectFormChange.newFormData,
       ...changeData,
+      ...placeHolderFormData,
     };
 
     return new Promise((resolve, reject) =>
@@ -117,7 +132,9 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
         variables: {
           input: {
             rowId: revision.projectFormChange.rowId,
-            formChangePatch: changeData ? { newFormData: changeData } : {},
+            formChangePatch: changeData
+              ? { newFormData: { ...changeData, ...placeHolderFormData } }
+              : {},
           },
         },
         optimisticResponse: {
@@ -125,7 +142,7 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
             formChange: {
               id: revision.projectFormChange.id,
               changeStatus: "staged",
-              newFormData: changeData,
+              newFormData: { changeData, ...placeHolderFormData },
             },
           },
         },

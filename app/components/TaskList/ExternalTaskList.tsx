@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { graphql, useFragment } from "react-relay";
-import { getExternalProjectRevisionViewPageRoute } from "routes/pageRoutes";
+import {
+  getExternalProjectRevisionPageRoute,
+  getExternalProjectRevisionViewPageRoute,
+} from "routes/pageRoutes";
 import ExternalTaskListSection from "./ExternalTaskListSection";
 import { ExternalTaskList_projectRevision$key } from "__generated__/ExternalTaskList_projectRevision.graphql";
 
@@ -25,6 +28,7 @@ const ExternalTaskList: React.FC<Props> = ({ projectRevision }) => {
           <ExternalTaskListSection
             key={"tasklist_section_1"}
             title={"Application Overview"}
+            url={getExternalProjectRevisionViewPageRoute(id)}
           ></ExternalTaskListSection>
           <ExternalTaskListSection
             key={"tasklist_section_2"}
@@ -33,7 +37,7 @@ const ExternalTaskList: React.FC<Props> = ({ projectRevision }) => {
           <ExternalTaskListSection
             key={"tasklist_section_3"}
             title={"Review"}
-            url={getExternalProjectRevisionViewPageRoute(id)}
+            url={getExternalProjectRevisionPageRoute(id)}
           ></ExternalTaskListSection>
           <ExternalTaskListSection
             key={"tasklist_section_4"}
@@ -63,11 +67,12 @@ const ExternalTaskList: React.FC<Props> = ({ projectRevision }) => {
 
           div :global(a) {
             color: #1a5a96;
+            text-decoration: none;
           }
 
           div :global(a:hover) {
             text-decoration: none;
-            color: blue;
+            color: none;
           }
 
           div.container {

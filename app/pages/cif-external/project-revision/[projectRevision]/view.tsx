@@ -3,10 +3,10 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { viewExternalProjectRevisionQuery } from "__generated__/viewExternalProjectRevisionQuery.graphql";
 import ExternalLayout from "components/Layout/ExternalLayout";
-import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ExternalTaskList from "components/TaskList/ExternalTaskList";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
+import ExternalProjectFormSummary from "components/Form/ExternalProjectFormSummary";
 
 const ExternalCifProjectViewQuery = graphql`
   query viewExternalProjectRevisionQuery($projectRevision: ID!) {
@@ -14,7 +14,7 @@ const ExternalCifProjectViewQuery = graphql`
       ...ExternalLayout_session
     }
     projectRevision(id: $projectRevision) {
-      ...ProjectFormSummary_projectRevision
+      ...ExternalProjectFormSummary_projectRevision
       ...ExternalTaskList_projectRevision
     }
   }
@@ -37,7 +37,8 @@ export function ExternalProjectRevisionView({
   return (
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
-        <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />
+        <h2>Application Overview</h2>
+        <ExternalProjectFormSummary projectRevision={projectRevision} />
         {renderList && (
           <Button
             size="small"
