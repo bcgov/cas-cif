@@ -79,7 +79,7 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
   ]);
 
   const placeHolderFormData = {
-    proposalReference: "ABC",
+    proposalReference: (Math.random() * 1000).toString(),
     summary: "This is a summary of the project",
     operatorId: 1,
     fundingStreamRfpId: 1,
