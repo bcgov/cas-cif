@@ -1,5 +1,5 @@
 begin;
-select plan (10);
+select plan (13);
 
 -- restart the id sequences
 truncate table
@@ -199,10 +199,34 @@ $$,
 
 select throws_like(
   $$
-    select cif.create_project_revision(1)
+    select cif.create_project_revision(1, 'General Revision')
   $$,
-    'duplicate key value violates unique constraint%',
-    'cannot create a pending project revision on a project_id that already has a pending revision'
+  'duplicate key value violates unique constraint%',
+  'prevents creating a pending General Revision on a project_id that already has a pending General Revision'
+);
+
+select lives_ok(
+  $$
+    select cif.create_project_revision(1, 'Amendment')
+  $$,
+  'allows creating a pending Amendment on a project a pending General Revision'
+);
+
+delete from cif.project_revision where project_id = 1 and change_status = 'pending' and revision_type = 'General Revision';
+
+select throws_like(
+  $$
+    select cif.create_project_revision(1, 'Amendment')
+  $$,
+  'duplicate key value violates unique constraint%',
+  'prevents creating a pending Amendment on a project_id that already has a pending Amendment'
+);
+
+select lives_ok(
+  $$
+    select cif.create_project_revision(1, 'General Revision')
+  $$,
+  'allows creating a pending General Revision on a project with a pending Amendment'
 );
 
 select finish();
