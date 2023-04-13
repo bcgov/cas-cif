@@ -7,6 +7,7 @@ import ExternalTaskList from "components/TaskList/ExternalTaskList";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
 import ExternalProjectFormSummary from "components/Form/ExternalProjectFormSummary";
+import { getExternalProjectRevisionPageRoute } from "routes/pageRoutes";
 
 const ExternalCifProjectViewQuery = graphql`
   query viewExternalProjectRevisionQuery($projectRevision: ID!) {
@@ -14,6 +15,7 @@ const ExternalCifProjectViewQuery = graphql`
       ...ExternalLayout_session
     }
     projectRevision(id: $projectRevision) {
+      id
       ...ExternalProjectFormSummary_projectRevision
       ...ExternalTaskList_projectRevision
     }
@@ -43,7 +45,9 @@ export function ExternalProjectRevisionView({
           <Button
             size="small"
             onClick={() => {
-              console.log("to be implemented: 🍰");
+              router.push(
+                getExternalProjectRevisionPageRoute(projectRevision.id)
+              );
             }}
           >
             Next
