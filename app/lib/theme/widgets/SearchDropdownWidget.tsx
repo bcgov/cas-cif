@@ -23,13 +23,15 @@ const SearchDropdownWidget: React.FC<WidgetProps> = (props) => {
     return selectedValue;
   }, [schema, props.value]);
 
+  const options = schema && schema.anyOf ? schema.anyOf : [];
+
   if (readonly) return <Widgets.SelectWidget {...props} />;
 
   return (
     <Autocomplete
       disableClearable
       id={id}
-      options={schema.anyOf}
+      options={options}
       defaultValue={getSelected()}
       value={getSelected()}
       onChange={handleChange}
