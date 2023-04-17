@@ -89,6 +89,10 @@ export function ExternalProjectRevisionSummary({
           display: flex;
           padding-bottom: 20px;
         }
+        :global(.pg-checkbox-label) {
+          padding: 10px;
+          margin-right: 10px;
+        }
       `}</style>
     </ExternalLayout>
   );
