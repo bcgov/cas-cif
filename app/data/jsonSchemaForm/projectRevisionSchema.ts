@@ -162,6 +162,7 @@ export const projectRevisionUISchema = {
   },
   revisionStatus: {
     "ui:widget": "RevisionStatusWidget",
+    hideOptional: true,
   },
   updatedForms: {
     "ui:widget": "UpdatedFormsWidget",
