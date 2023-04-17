@@ -432,7 +432,6 @@ describe("The ProjectMilestoneReportForm", () => {
   it("Only renders the payment form for milestone types with associated expenses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
     expect(screen.getAllByText(/milestone description/i)).toHaveLength(3);
     expect(screen.getAllByText(/Certifier/i)).toHaveLength(3);
     expect(
