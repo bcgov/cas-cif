@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { TaskListLinkUrl } from "./types";
 
 interface Props {
@@ -6,7 +7,18 @@ interface Props {
   url?: TaskListLinkUrl;
 }
 
+const removeTrailingSlash = (url: string) => {
+  if (url?.slice(-1) === "/") {
+    return url.slice(0, -1);
+  }
+  return url;
+};
 const ExternalTaskListSection: React.FC<Props> = ({ title, url }) => {
+  const router = useRouter();
+  const textDecoration =
+    removeTrailingSlash(router.pathname) === removeTrailingSlash(url?.pathname)
+      ? "underline"
+      : "none";
   return (
     <li>
       <h3>{url ? <Link href={url}>{title}</Link> : title}</h3>
@@ -39,6 +51,7 @@ const ExternalTaskListSection: React.FC<Props> = ({ title, url }) => {
           display: flex;
           justify-content: space-between;
           color: #1a5a96;
+          text-decoration: ${textDecoration};
         }
         }
       `}</style>

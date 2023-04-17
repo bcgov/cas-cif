@@ -71,7 +71,7 @@ const ExternalTaskList: React.FC<Props> = ({ projectRevision }) => {
           }
 
           div :global(a:hover) {
-            text-decoration: none;
+            text-decoration: underline;
             color: none;
           }
 
