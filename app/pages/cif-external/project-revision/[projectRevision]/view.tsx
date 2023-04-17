@@ -6,8 +6,8 @@ import ExternalLayout from "components/Layout/ExternalLayout";
 import ExternalTaskList from "components/TaskList/ExternalTaskList";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
-import ExternalProjectFormSummary from "components/Form/ExternalProjectFormSummary";
 import { getExternalProjectRevisionPageRoute } from "routes/pageRoutes";
+import ProjectFormSummary from "components/Form/ProjectFormSummary";
 
 const ExternalCifProjectViewQuery = graphql`
   query viewExternalProjectRevisionQuery($projectRevision: ID!) {
@@ -16,8 +16,8 @@ const ExternalCifProjectViewQuery = graphql`
     }
     projectRevision(id: $projectRevision) {
       id
-      ...ExternalProjectFormSummary_projectRevision
       ...ExternalTaskList_projectRevision
+      ...ProjectFormSummary_projectRevision
     }
   }
 `;
@@ -39,8 +39,7 @@ export function ExternalProjectRevisionView({
   return (
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
-        <h2>Application Overview</h2>
-        <ExternalProjectFormSummary projectRevision={projectRevision} />
+        <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />{" "}
         {renderList && (
           <Button
             size="small"
