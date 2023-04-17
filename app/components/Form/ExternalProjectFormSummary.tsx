@@ -15,12 +15,35 @@ const ExternalProjectFormSummary: React.FC<Props> = ({ projectRevision }) => {
       fragment ExternalProjectFormSummary_projectRevision on ProjectRevision {
         projectFormChange {
           newFormData
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              year
+              fundingStreamByFundingStreamId {
+                description
+              }
+            }
+          }
         }
       }
     `,
     projectRevision
   );
+  const rfpDescription =
+    projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
+      .fundingStreamByFundingStreamId.description;
+  const rfpYear =
+    projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId.year;
+  const rfpStream = `${rfpDescription} - ${rfpYear}`;
 
+  const uiSchema = {
+    fundingStreamRfpId: {
+      "ui:widget": "SelectRfpWidget",
+      "ui:options": {
+        text: rfpStream,
+        label: rfpStream ? true : false,
+      },
+    },
+  };
   return (
     <>
       <FormBase
@@ -28,6 +51,7 @@ const ExternalProjectFormSummary: React.FC<Props> = ({ projectRevision }) => {
         theme={readOnlyTheme}
         schema={externalSchema as JSONSchema7}
         formData={projectFormChange?.newFormData}
+        uiSchema={uiSchema}
       />
     </>
   );
