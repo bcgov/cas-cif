@@ -10,7 +10,7 @@ describe("the project amendment and revisions page", () => {
     cy.mockLogin("cif_admin");
   });
 
-  it("displays the list of project amendment and revisions", () => {
+  it("creates new revision/amendment", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
     cy.get("@firstViewButton").click();
