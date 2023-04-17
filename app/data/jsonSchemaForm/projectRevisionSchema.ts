@@ -10,10 +10,6 @@ export const createProjectRevisionSchema = {
       anyOf: undefined,
       enum: undefined,
     },
-    changeReason: {
-      type: "string",
-      title: "General Comments",
-    },
   },
   dependencies: {
     revisionType: {
@@ -167,5 +163,8 @@ export const projectRevisionUISchema = {
   updatedForms: {
     "ui:widget": "UpdatedFormsWidget",
     hideOptional: true,
+  },
+  changeReason: {
+    "ui:widget": "ChangeReasonWidget",
   },
 };

@@ -21,6 +21,7 @@ import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { useState } from "react";
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
+import ChangeReasonWidget from "components/ProjectRevision/ChangeReasonWidget";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
@@ -97,6 +98,7 @@ export const ViewProjectRevisionQuery = graphql`
       # eslint-disable-next-line relay/must-colocate-fragment-spreads
       ...CollapsibleFormWidget_projectRevision
       ...UpdatedFormsWidget_projectRevision
+      ...ChangeReasonWidget_projectRevision
     }
     allRevisionTypes {
       edges {
@@ -177,6 +179,7 @@ export function ProjectRevisionView({
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,
+              ChangeReasonWidget,
             }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
