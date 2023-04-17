@@ -75,7 +75,7 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
 
   return (
     <div>
-      {revisionStatus == "Draft" ? (
+      {["Draft", "In Discussion"].includes(revisionStatus) ? (
         <>
           <Dropdown
             id={id}

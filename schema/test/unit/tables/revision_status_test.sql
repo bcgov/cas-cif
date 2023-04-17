@@ -1,6 +1,6 @@
 begin;
 
-select plan(8);
+select plan(9);
 
 select has_table('cif', 'revision_status', 'table cif.revision_status exists');
 
@@ -15,7 +15,8 @@ select columns_are(
     'updated_by',
     'archived_at',
     'archived_by',
-    'is_amendment_specific'
+    'is_amendment_specific',
+    'sorting_order'
   ],
   'columns in cif.revision_status match expected columns'
 );
@@ -74,7 +75,20 @@ select is (
   'sets is_amendment_specific to false when status is Discussion / Pending Province Approval / Pending Proponent Signature'
 );
 
-
+select results_eq(
+  $$
+    select name, sorting_order from cif.revision_status order by sorting_order
+  $$,
+  $$
+    values
+      ('Draft'::varchar, 0::int),
+      ('In Discussion'::varchar, 0::int),
+      ('Pending Province Approval'::varchar, 1::int),
+      ('Pending Proponent Signature'::varchar, 2::int),
+      ('Applied'::varchar, 3::int)
+  $$,
+  'Has correct sorting_order values'
+);
 
 select finish();
 

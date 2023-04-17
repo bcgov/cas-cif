@@ -45,7 +45,7 @@ do $$
       update cif.project_revision
         set revision_type = 'Amendment',
         change_status = 'pending',
-        revision_status = 'Draft'
+        revision_status = 'In Discussion'
         where id = temp_project_revision_id;
 
       insert into cif.project_revision_amendment_type(

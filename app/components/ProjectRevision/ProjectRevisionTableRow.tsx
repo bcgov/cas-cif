@@ -72,7 +72,11 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
           .map(({ node }) => node.amendmentType)
           .join(", ")}
       </td>
-      <td>{revisionStatus}</td>
+      <td>
+        {revisionType === "Amendment" && revisionStatus === "Applied"
+          ? "Approved"
+          : revisionStatus}
+      </td>
       <td>
         <div>
           <Button size="small" onClick={handleClick}>

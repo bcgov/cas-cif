@@ -24,7 +24,8 @@ import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
-  allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"]
+  allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"],
+  revisionType: string
 ): JSONSchema7 => {
   const schema = viewProjectRevisionSchema;
   schema.properties.revisionType = {
@@ -44,7 +45,11 @@ const createProjectRevisionViewSchema = (
     anyOf: allRevisionStatusesEdges.map(({ node }) => {
       return {
         type: "string",
-        title: node.name,
+        // relabel "Applied" to "Approved" for amendments
+        title:
+          revisionType === "Amendment" && node.name === "Applied"
+            ? "Approved"
+            : node.name,
         enum: [node.name],
         value: node.name,
       } as JSONSchema7Definition;
@@ -100,7 +105,7 @@ export const ViewProjectRevisionQuery = graphql`
         }
       }
     }
-    allRevisionStatuses {
+    allRevisionStatuses(orderBy: SORTING_ORDER_ASC) {
       edges {
         node {
           name
@@ -138,12 +143,12 @@ export function ProjectRevisionView({
   if (!useShowGrowthbookFeature("amendments")) return null;
 
   // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
-  const filteredRevisionStatuses =
-    projectRevision.revisionType === "Amendment"
-      ? allRevisionStatuses.edges
-      : allRevisionStatuses.edges.filter(
-          ({ node }) => !node.isAmendmentSpecific
-        );
+  const filteredRevisionStatuses = allRevisionStatuses.edges.filter(
+    ({ node }) =>
+      projectRevision.revisionType === "Amendment"
+        ? node.name !== "Draft"
+        : !node.isAmendmentSpecific
+  );
 
   return (
     <>
@@ -160,7 +165,8 @@ export function ProjectRevisionView({
             className="project-revision-view-form"
             schema={createProjectRevisionViewSchema(
               allRevisionTypes.edges,
-              filteredRevisionStatuses
+              filteredRevisionStatuses,
+              projectRevision.revisionType
             )}
             uiSchema={createProjectRevisionUISchema()}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}

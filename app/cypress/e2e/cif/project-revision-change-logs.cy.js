@@ -33,7 +33,7 @@ describe("the project amendment and revisions page", () => {
     cy.get("tbody tr").first().contains("Minor Revision 1");
     cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
     cy.get("tbody tr").first().contains("Minor Revision");
-    cy.get("tbody tr").last().contains("Draft");
+    cy.get("tbody tr").last().contains("In Discussion");
 
     // checking the view page for a specific revision
     cy.findAllByRole("button", { name: /^view \/ edit/i })
@@ -46,7 +46,7 @@ describe("the project amendment and revisions page", () => {
     cy.get('input[value="Amendment"]').should("be.checked");
     cy.findByText(/status/i)
       .next()
-      .contains("Draft");
+      .contains("In Discussion");
     cy.get("select").should("be.visible").eq(0).select("Tech Team");
     cy.findAllByRole("button", { name: /update/i })
       .first()
