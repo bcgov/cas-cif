@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { WidgetProps } from "@rjsf/core";
 
 export interface EntitySchema {
-  list: [{ rowId: number; year?: number }];
+  list: [{ rowId: number; year?: number; fundingStreamId?: number }];
   displayField: string;
   placeholder: string;
   label: string;
@@ -39,8 +39,11 @@ const SelectParentWidget: React.FunctionComponent<
   }, [parentValue]);
 
   const onParentChange = (val) => {
+    const rfpId = child.list
+      .reverse()
+      .find((x) => x.fundingStreamId == val).rowId;
+    onChange(rfpId);
     setSelectedParentId(parseInt(val));
-    onChange(parseInt(val));
     if (!parseInt(val)) onChange(undefined);
   };
 
