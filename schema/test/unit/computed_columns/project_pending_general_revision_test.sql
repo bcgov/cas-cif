@@ -26,44 +26,44 @@ values
 insert into cif.project_revision(id, revision_type, change_status, change_reason, project_id)
 overriding system value
 values
-  (1, 'Amendment', 'committed', 'reason for change', 1),
-  (2, 'Amendment', 'committed', 'reason for change', 2),
-  (3, 'Amendment', 'pending', 'reason for change', 3),
-  (4, 'Amendment', 'pending', 'reason for change', 1),
-  (5, 'General Revision', 'pending', 'reason for change', 2);
+  (1, 'General Revision', 'committed', 'reason for change', 1),
+  (2, 'General Revision', 'committed', 'reason for change', 2),
+  (3, 'General Revision', 'pending', 'reason for change', 3),
+  (4, 'General Revision', 'pending', 'reason for change', 1),
+  (5, 'Amendment', 'pending', 'reason for change', 2);
 
 select is (
-  (select id from cif.project_pending_amendment(
+  (select id from cif.project_pending_general_revision(
     (select row(project.*)::cif.project from cif.project where id=1)
   )),
   4::integer,
-  'returns the pending amendment for the project when there is a previous committed revision'
+  'returns the pending general revision for the project when there is a previous committed revision'
 );
 
 select is (
-  (select id from cif.project_pending_amendment(
+  (select id from cif.project_pending_general_revision(
     (select row(project.*)::cif.project from cif.project where id=3)
   )),
   3::integer,
-  'returns the pending amendment for the project when there is no previous committed revision'
+  'returns the pending general revision for the project when there is no previous committed revision'
 );
 
 select is (
-  (select id from cif.project_pending_amendment(
+  (select id from cif.project_pending_general_revision(
     (select row(project.*)::cif.project from cif.project where id=2)
   )),
   null,
-  'returns null when there is no pending amendment for the project'
+  'returns null when there is no pending general revision for the project'
 );
 
 set jwt.claims.sub to '22222222-2222-2222-2222-222222222222';
 
 select is (
-  (select id from cif.project_pending_amendment(
+  (select id from cif.project_pending_general_revision(
     (select row(project.*)::cif.project from cif.project where id=1)
   )),
   4,
-  'returns correct id when the pending amendment was created by another user'
+  'returns correct id when the pending general revision was created by another user'
 );
 
 select finish();

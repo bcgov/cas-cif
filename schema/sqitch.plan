@@ -280,3 +280,4 @@ tables/revision_status_001_add_sorting_order [tables/revision_status] 2023-03-31
 tables/project_revision_006_unique_pending_per_revision_type 2023-04-12T00:19:46Z Mike Vesprini <mike@button.is> # Change the pessimistic lock on project revisions by project to be seaparate locks based on reivsion type
 computed_columns/project_pending_project_revision [computed_columns/project_pending_project_revision@1.6.0] 2023-04-17T18:34:33Z Mike Vesprini <mike@button.is> # Remove function to be replaced by two separate functions
 computed_columns/project_pending_amendment 2023-04-17T18:37:44Z Mike Vesprini <mike@button.is> # Computed column to return a pending amendment on a project
+computed_columns/project_pending_general_revision 2023-04-18T00:32:22Z Mike Vesprini <mike@button.is> # Computed column to return the pending general revision on a project
