@@ -3,10 +3,11 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { viewExternalProjectRevisionQuery } from "__generated__/viewExternalProjectRevisionQuery.graphql";
 import ExternalLayout from "components/Layout/ExternalLayout";
-import ProjectFormSummary from "components/Form/ProjectFormSummary";
 import ExternalTaskList from "components/TaskList/ExternalTaskList";
 import { Button } from "@button-inc/bcgov-theme";
 import { useRouter } from "next/router";
+import { getExternalProjectRevisionPageRoute } from "routes/pageRoutes";
+import ProjectFormSummary from "components/Form/ProjectFormSummary";
 
 const ExternalCifProjectViewQuery = graphql`
   query viewExternalProjectRevisionQuery($projectRevision: ID!) {
@@ -14,6 +15,8 @@ const ExternalCifProjectViewQuery = graphql`
       ...ExternalLayout_session
     }
     projectRevision(id: $projectRevision) {
+      id
+      ...ExternalTaskList_projectRevision
       ...ProjectFormSummary_projectRevision
     }
   }
@@ -26,7 +29,7 @@ export function ExternalProjectRevisionView({
     ExternalCifProjectViewQuery,
     preloadedQuery
   );
-  const taskList = <ExternalTaskList />;
+  const taskList = <ExternalTaskList projectRevision={projectRevision} />;
   let renderList = false;
   if (
     router.pathname === "/cif-external/project-revision/[projectRevision]/view"
@@ -36,12 +39,14 @@ export function ExternalProjectRevisionView({
   return (
     <ExternalLayout session={session} leftSideNav={taskList}>
       <div className="container">
-        <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />
+        <ProjectFormSummary projectRevision={projectRevision} viewOnly={true} />{" "}
         {renderList && (
           <Button
             size="small"
             onClick={() => {
-              console.log("to be implemented: 🍰");
+              router.push(
+                getExternalProjectRevisionPageRoute(projectRevision.id)
+              );
             }}
           >
             Next

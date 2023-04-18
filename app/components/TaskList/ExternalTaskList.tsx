@@ -1,57 +1,52 @@
 import Link from "next/link";
-import TaskListSection from "./TaskListSection";
+import { graphql, useFragment } from "react-relay";
+import {
+  getExternalProjectRevisionPageRoute,
+  getExternalProjectRevisionViewPageRoute,
+} from "routes/pageRoutes";
+import ExternalTaskListSection from "./ExternalTaskListSection";
+import { ExternalTaskList_projectRevision$key } from "__generated__/ExternalTaskList_projectRevision.graphql";
 
-const ExternalTaskList = ({}) => {
+interface Props {
+  projectRevision: ExternalTaskList_projectRevision$key;
+}
+
+const ExternalTaskList: React.FC<Props> = ({ projectRevision }) => {
+  const { id } = useFragment(
+    graphql`
+      fragment ExternalTaskList_projectRevision on ProjectRevision {
+        id
+      }
+    `,
+    projectRevision
+  );
   return (
     <>
       <Link href="/cif-external">{"< Return to Dashboard"}</Link>
       <div className="container">
         <ol>
-          <TaskListSection
+          <ExternalTaskListSection
             key={"tasklist_section_1"}
-            defaultExpandedState={false}
-            listItemName={"Application Overview"}
-            listItemMode={""}
-            renderCaret={false}
-          >
-            {null}
-          </TaskListSection>
-          <TaskListSection
+            title={"Application Overview"}
+            url={getExternalProjectRevisionViewPageRoute(id)}
+          ></ExternalTaskListSection>
+          <ExternalTaskListSection
             key={"tasklist_section_2"}
-            defaultExpandedState={false}
-            listItemName={"Attachments"}
-            listItemMode={""}
-            renderCaret={false}
-          >
-            {null}
-          </TaskListSection>
-          <TaskListSection
+            title={"Attachments"}
+          ></ExternalTaskListSection>
+          <ExternalTaskListSection
             key={"tasklist_section_3"}
-            defaultExpandedState={false}
-            listItemName={"Review"}
-            listItemMode={""}
-            renderCaret={false}
-          >
-            {null}
-          </TaskListSection>
-          <TaskListSection
+            title={"Review"}
+            url={getExternalProjectRevisionPageRoute(id)}
+          ></ExternalTaskListSection>
+          <ExternalTaskListSection
             key={"tasklist_section_4"}
-            defaultExpandedState={false}
-            listItemName={"Declarations"}
-            listItemMode={""}
-            renderCaret={false}
-          >
-            {null}
-          </TaskListSection>
-          <TaskListSection
+            title={"Declarations"}
+          ></ExternalTaskListSection>
+          <ExternalTaskListSection
             key={"tasklist_section_5"}
-            defaultExpandedState={false}
-            listItemName={"Submit"}
-            listItemMode={""}
-            renderCaret={false}
-          >
-            {null}
-          </TaskListSection>
+            title={"Submit"}
+          ></ExternalTaskListSection>
         </ol>
         <style jsx>{`
           ol {
@@ -72,11 +67,12 @@ const ExternalTaskList = ({}) => {
 
           div :global(a) {
             color: #1a5a96;
+            text-decoration: none;
           }
 
           div :global(a:hover) {
-            text-decoration: none;
-            color: blue;
+            text-decoration: underline;
+            color: none;
           }
 
           div.container {
