@@ -36,14 +36,8 @@ const SelectParentWidget: React.FunctionComponent<
   const [selectedParentId, setSelectedParentId] = useState(parentValue);
 
   const onParentChange = (e) => {
-    const fundingStreamVal = parseInt(e.target.value) || undefined;
-    const rfpId =
-      fundingStreamVal &&
-      child.list
-        .reverse()
-        .find((opt) => opt.fundingStreamId == fundingStreamVal).rowId;
-    onChange(rfpId);
-    setSelectedParentId(fundingStreamVal || undefined);
+    onChange(undefined);
+    setSelectedParentId(parseInt(e.target.value) || undefined);
   };
 
   const childOptions = useMemo(() => {
