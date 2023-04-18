@@ -142,8 +142,8 @@ export const projectRevisionUISchema = {
   "ui:order": [
     "revisionType",
     "amendmentTypes",
-    "pendingActionsFrom",
     "revisionStatus",
+    "pendingActionsFrom",
     "updatedForms",
     "changeReason",
   ],
