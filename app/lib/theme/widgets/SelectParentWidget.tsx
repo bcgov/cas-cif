@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { WidgetProps } from "@rjsf/core";
 
 export interface EntitySchema {
-  list: [{ rowId: number; year?: number; fundingStreamId?: number }];
+  list: [{ rowId: number; year?: number }];
   displayField: string;
   placeholder: string;
   label: string;
