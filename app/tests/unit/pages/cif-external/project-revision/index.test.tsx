@@ -21,6 +21,14 @@ const defaultMockResolver = {
           legalName: "Optimus Prime",
           fundingStreamRfpId: 7,
         },
+        asProject: {
+          fundingStreamRfpByFundingStreamRfpId: {
+            year: 2023,
+            fundingStreamByFundingStreamId: {
+              description: "RFP Description",
+            },
+          },
+        },
       },
     };
   },
@@ -54,7 +62,7 @@ describe("External Review Page", () => {
     pageTestingHelper.renderPage();
     screen.logTestingPlaygroundURL();
     expect(screen.getByText(/RFP Year ID/i)).toBeInTheDocument();
-    expect(screen.getByText(/7/i)).toBeInTheDocument();
+    expect(screen.getByText(/RFP Description - 2023/i)).toBeInTheDocument();
     expect(screen.getByText(/Project Name/i)).toBeInTheDocument();
     expect(screen.getByText(/My Fancy Project/i)).toBeInTheDocument();
     expect(screen.getByText(/Legal name/i)).toBeInTheDocument();
