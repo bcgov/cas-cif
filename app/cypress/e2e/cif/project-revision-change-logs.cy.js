@@ -47,10 +47,8 @@ describe("the project amendment and revisions page", () => {
     cy.findByText(/status/i)
       .next()
       .contains("In Discussion");
-    cy.get("select").should("be.visible").eq(0).select("Tech Team");
-    cy.findAllByRole("button", { name: /update/i })
-      .first()
-      .click();
+    cy.get("select").should("be.visible").eq(1).select("Tech Team");
+    cy.get("button").filter(':contains("Update")').eq(1).click();
     cy.findByRole("button", { name: /notify/i }).click();
     cy.findByText(/cif_internal Testuser/i).click();
   });
