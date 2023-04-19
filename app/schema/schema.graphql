@@ -53955,8 +53955,11 @@ type Project implements Node {
   """Foreign key references the cif.operator table"""
   operatorId: Int!
 
-  """Returns the pending project revision for the project"""
-  pendingProjectRevision: ProjectRevision
+  """Returns the pending amendment for the project"""
+  pendingAmendment: ProjectRevision
+
+  """Returns the pending general revision for the project"""
+  pendingGeneralRevision: ProjectRevision
 
   """
   Returns a concatenated list of the project managers (used for filtering the projects table)

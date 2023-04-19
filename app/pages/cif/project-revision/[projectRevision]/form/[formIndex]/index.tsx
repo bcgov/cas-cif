@@ -22,7 +22,7 @@ const pageQuery = graphql`
         changeStatus
         projectId
         projectByProjectId {
-          pendingProjectRevision {
+          pendingGeneralRevision {
             id
           }
           latestCommittedProjectRevision {
@@ -94,7 +94,7 @@ export function ProjectFormPage({
   } = useFormIndexHelpers(
     query.projectRevision?.projectId,
     query.projectRevision?.id,
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision?.id,
+    query.projectRevision?.projectByProjectId?.pendingGeneralRevision?.id,
     query.projectRevision?.projectByProjectId?.latestCommittedProjectRevision
       ?.id,
     query.projectRevision?.projectFormChange?.asProject
@@ -106,7 +106,7 @@ export function ProjectFormPage({
   );
 
   const existingRevision =
-    query.projectRevision?.projectByProjectId?.pendingProjectRevision;
+    query.projectRevision?.projectByProjectId?.pendingGeneralRevision;
 
   if (
     isRedirecting ||
