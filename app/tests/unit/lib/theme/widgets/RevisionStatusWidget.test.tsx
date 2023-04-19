@@ -30,6 +30,22 @@ const mockQueryPayload = {
   },
 };
 
+const widgetOptions = [
+  { value: "Draft", enum: ["Draft"], type: "string", title: "Draft" },
+  {
+    value: "In Discussion",
+    enum: ["In Discussion"],
+    type: "string",
+    title: "In Discussion",
+  },
+  {
+    value: "Applied",
+    enum: ["Applied"],
+    type: "string",
+    title: "Applied",
+  },
+];
+
 const handleChangeStatus = jest.fn();
 
 const componentTestingHelper =
@@ -49,21 +65,7 @@ const componentTestingHelper =
       enum: undefined,
       type: "string",
       schema: {
-        anyOf: [
-          { value: "Draft", enum: ["Draft"], type: "string", title: "Draft" },
-          {
-            value: "In Discussion",
-            enum: ["In Discussion"],
-            type: "string",
-            title: "In Discussion",
-          },
-          {
-            value: "Applied",
-            enum: ["Applied"],
-            type: "string",
-            title: "Applied",
-          },
-        ],
+        anyOf: widgetOptions,
       },
       options: {
         text: "just for testing", //This is a required prop but not required for the test
@@ -100,12 +102,11 @@ describe("The RevisionStatusWidget", () => {
     const dropdown: HTMLInputElement = screen.getByRole("combobox", {
       name: /revision status/i,
     });
-    const newStatus = "In Discussion";
 
     act(() => {
-      fireEvent.change(dropdown, { target: { value: newStatus } });
+      fireEvent.change(dropdown, { target: { value: "In Discussion" } });
     });
-    expect(handleChangeStatus).toHaveBeenCalledWith(newStatus);
+    expect(handleChangeStatus).toHaveBeenCalledWith("In Discussion");
 
     expect(
       screen.getByText(
@@ -114,23 +115,9 @@ describe("The RevisionStatusWidget", () => {
     ).toBeInTheDocument();
 
     componentTestingHelper.rerenderComponent(undefined, {
-      value: newStatus,
+      value: "In Discussion",
       schema: {
-        anyOf: [
-          { value: "Draft", enum: ["Draft"], type: "string", title: "Draft" },
-          {
-            value: "In Discussion",
-            enum: ["In Discussion"],
-            type: "string",
-            title: "In Discussion",
-          },
-          {
-            value: "Applied",
-            enum: ["Applied"],
-            type: "string",
-            title: "Applied",
-          },
-        ],
+        anyOf: widgetOptions,
       },
     });
 
@@ -147,7 +134,7 @@ describe("The RevisionStatusWidget", () => {
         input: {
           id: "test-revision-id",
           projectRevisionPatch: {
-            revisionStatus: newStatus,
+            revisionStatus: "In Discussion",
           },
         },
       }
@@ -174,34 +161,19 @@ describe("The RevisionStatusWidget", () => {
   it("calls commitProjectRevision when the select value is `Applied`", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    const newStatus = "Applied";
 
     const dropdown: HTMLInputElement = screen.getByRole("combobox");
 
     act(() => {
-      fireEvent.change(dropdown, { target: { value: newStatus } });
+      fireEvent.change(dropdown, { target: { value: "Applied" } });
     });
     componentTestingHelper.rerenderComponent(undefined, {
-      value: newStatus,
+      value: "Applied",
       schema: {
-        anyOf: [
-          { value: "Draft", enum: ["Draft"], type: "string", title: "Draft" },
-          {
-            value: "In Discussion",
-            enum: ["In Discussion"],
-            type: "string",
-            title: "In Discussion",
-          },
-          {
-            value: "Applied",
-            enum: ["Applied"],
-            type: "string",
-            title: "Applied",
-          },
-        ],
+        anyOf: widgetOptions,
       },
     });
-    expect(dropdown.value).toEqual(newStatus);
+    expect(dropdown.value).toEqual("Applied");
     expect(
       screen.getByText(
         /once approved, this revision will be immutable\. click the "update" button to confirm\./i

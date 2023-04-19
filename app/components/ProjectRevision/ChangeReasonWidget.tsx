@@ -1,6 +1,5 @@
 import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
 import { Button, Textarea } from "@button-inc/bcgov-theme";
-import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 import { WidgetProps } from "@rjsf/core";
 import { useState } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -22,9 +21,7 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
     projectRevision
   );
 
-  const [updated, setUpdated] = useState(true);
   const [informationalText, setInformationalText] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [initialValue, setInitialValue] = useState(value ?? "");
 
   const [updateProjectRevision, isUpdatingProjectRevision] =
@@ -46,7 +43,6 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
         },
       },
       onCompleted: () => {
-        setUpdated(true);
         setInformationalText("Updated");
         setInitialValue(value);
       },
@@ -56,12 +52,9 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
 
   const changeHandler = (e) => {
     const newValue = e.target.value;
-
-    let valueChanged: boolean = initialValue !== newValue;
-    setUpdated(!valueChanged);
     // set the text next to the button based on whether the value has changed or not
     setInformationalText(
-      valueChanged
+      initialValue !== newValue
         ? 'To confirm your change, please click the "Update" button.'
         : ""
     );
@@ -74,7 +67,7 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
         <div>
           <Textarea
             value={value}
-            size={"medium"}
+            size="medium"
             resize="vertical"
             onChange={changeHandler}
           />
@@ -83,7 +76,10 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
               type="submit"
               onClick={updateRevisionStatus}
               style={{ marginRight: "1rem" }}
-              disabled={updated || isUpdatingProjectRevision}
+              disabled={
+                initialValue === (value ?? "") || isUpdatingProjectRevision
+              }
+              size="small"
             >
               Update
             </Button>
@@ -92,23 +88,26 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
           <style jsx>{`
             div {
               display: flex;
-              justify-content: space-between;
+              flex-wrap: wrap;
               align-items: center;
             }
             div :global(button.pg-button) {
               margin: 0 1em;
             }
-            div :global(.pg-textarea) {
-              flex-grow: 1;
-            }
             :global(textarea) {
-              width: 100%;
+              width: 28em;
               min-height: 10rem;
+            }
+            // Just to make the text wrap when the screen is small
+            @media (max-width: 1520px) {
+              div :global(small) {
+                flex-basis: 100%;
+              }
             }
           `}</style>
         </div>
       ) : (
-        <ReadOnlyWidget {...props} />
+        <dd>{value || <em>Not added</em>}</dd>
       )}
     </div>
   );

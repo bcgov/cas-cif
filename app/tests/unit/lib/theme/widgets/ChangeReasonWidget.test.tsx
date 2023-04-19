@@ -59,6 +59,7 @@ describe("The ChangeReasonWidget", () => {
   it("renders the change reason textbox widget with default value along with an action button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
+    expect(screen.getByText("A reason for change")).toBeInTheDocument();
 
     expect(
       screen.getByRole("button", {

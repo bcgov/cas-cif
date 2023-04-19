@@ -108,14 +108,14 @@ describe("The SelectWithNotifyWidget", () => {
       })
     );
   });
-  it("renders widget in readonly mode when revision status is not pending", () => {
+  it("renders widget in readonly mode when revision status is Applied", () => {
     const customQueryPayload = {
       ...mockQueryPayload,
       Query() {
         return {
           projectRevision: {
             id: "test-revision-id-2",
-            changeStatus: "not-pending",
+            revisionStatus: "Applied",
           },
         };
       },

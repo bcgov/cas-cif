@@ -29,9 +29,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
     throw new Error("schema.anyOf does not exist!");
   }
 
-  const [updated, setUpdated] = useState(true);
   const [informationalText, setInformationalText] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [initialValue, setInitialValue] = useState(value);
 
   const [updateProjectRevision, isUpdatingProjectRevision] =
@@ -72,7 +70,6 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
         },
       },
       onCompleted: () => {
-        setUpdated(true);
         setInformationalText("Updated");
         setInitialValue(value);
       },
@@ -80,13 +77,11 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
     });
 
   const statusChangeHandler = (newStatus: string) => {
-    let valueChanged: boolean = initialValue !== newStatus;
-    setUpdated(!valueChanged);
     // set the text next to the button based on whether the value has changed or not
     setInformationalText(
       newStatus === "Applied"
         ? 'Once approved, this revision will be immutable. Click the "Update" button to confirm.'
-        : valueChanged
+        : initialValue !== newStatus
         ? 'To confirm your change, please click the "Update" button.'
         : ""
     );
@@ -107,10 +102,11 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
               onClick={clickHandler}
               style={{ marginRight: "1rem" }}
               disabled={
-                updated ||
+                initialValue === value ||
                 isUpdatingProjectRevision ||
                 isCommittingProjectRevision
               }
+              size="small"
             >
               Update
             </Button>
@@ -119,7 +115,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
           <style jsx>{`
             div {
               display: flex;
-              justify-content: space-between;
+              flex-wrap: wrap;
               align-items: center;
             }
             div :global(.pg-select) {
@@ -127,6 +123,13 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
             }
             div :global(button.pg-button) {
               margin: 0 1em;
+            }
+            // Just to make the text wrap when the screen is small
+            @media (max-width: 1520px) {
+              div :global(small) {
+                flex-basis: 100%;
+                margin-top: 0.5rem;
+              }
             }
           `}</style>
         </div>

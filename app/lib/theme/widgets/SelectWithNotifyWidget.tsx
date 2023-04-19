@@ -75,7 +75,7 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
 
   return (
     <div>
-      {["Draft", "In Discussion"].includes(revisionStatus) ? (
+      {revisionStatus !== "Applied" ? (
         <>
           <Dropdown
             id={id}
@@ -103,18 +103,19 @@ const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
               disabled={isUpdatingPendingActionsFrom}
               type="submit"
               style={{ marginBottom: "1rem" }}
+              size="small"
             >
               Update
             </Button>
             <a href="#modal">
-              <Button>Notify</Button>
+              <Button type="button" size="small">
+                Notify
+              </Button>
             </a>
           </div>
         </>
       ) : (
-        <>
-          {pendingActionsFrom ? <>{pendingActionsFrom}</> : <em>Not Added</em>}
-        </>
+        <>{pendingActionsFrom || <em>Not Added</em>}</>
       )}
       <style jsx>
         {`

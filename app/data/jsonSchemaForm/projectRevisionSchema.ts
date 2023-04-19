@@ -155,10 +155,12 @@ export const projectRevisionUISchema = {
   },
   pendingActionsFrom: {
     "ui:widget": "SelectWithNotifyWidget",
+    "bcgov:size": "medium",
   },
   revisionStatus: {
     "ui:widget": "RevisionStatusWidget",
     hideOptional: true,
+    "bcgov:size": "medium",
   },
   updatedForms: {
     "ui:widget": "UpdatedFormsWidget",
