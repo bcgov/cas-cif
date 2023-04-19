@@ -60,7 +60,6 @@ describe("External Review Page", () => {
   it("displays the application form review", () => {
     pageTestingHelper.loadQuery();
     pageTestingHelper.renderPage();
-    screen.logTestingPlaygroundURL();
     expect(screen.getByText(/RFP Year ID/i)).toBeInTheDocument();
     expect(screen.getByText(/RFP Description - 2023/i)).toBeInTheDocument();
     expect(screen.getByText(/Project Name/i)).toBeInTheDocument();
