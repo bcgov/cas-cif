@@ -52,7 +52,7 @@ select results_eq(
   $$
     select count(*) from cif.revision_type
   $$,
-  ARRAY['3'::bigint],
+  ARRAY['2'::bigint],
     'cif_internal can view all data from revision_type table'
 );
 

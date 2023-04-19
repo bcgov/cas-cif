@@ -19,21 +19,17 @@ describe("the project amendment and revisions page", () => {
     cy.url().should("include", "/project-revision-change-logs");
     cy.get("h2").contains(/Amendments & Other Revisions/i);
     cy.happoAndAxe("Amendments & Other Revisions", "view", "main");
-    cy.get("tbody tr").should("have.length", 5);
+    cy.get("tbody tr").should("have.length", 4);
     cy.get("[placeholder='Filter']").first().type("Minor");
     cy.get("button").contains("Apply").click();
     cy.get("tbody tr").should("have.length", 1);
     cy.get("button").contains("Clear").click();
-    cy.get("tbody tr").should("have.length", 5);
+    cy.get("tbody tr").should("have.length", 4);
     // below code is not a duplicate, we need to click the field twice to get the DESC sort
     cy.get("thead th").contains("Type").click();
     cy.get("tbody tr").first().contains("Amendment 1");
     cy.url().should("include", "orderBy=REVISION_TYPE_ASC"); //just to wait for the page to load
     cy.get("thead th").contains("Type").click();
-    cy.get("tbody tr").first().contains("Minor Revision 1");
-    cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
-    cy.get("tbody tr").first().contains("Minor Revision");
-    cy.get("tbody tr").last().contains("In Discussion");
 
     // checking the view page for a specific revision
     cy.findAllByRole("button", { name: /^view \/ edit/i })

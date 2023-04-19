@@ -83,10 +83,7 @@ export function ProjectRevisionCreate({
       },
     });
   };
-  const revisionEnum = allRevisionTypes.edges
-    .map((e) => e.node.type)
-    // temporary fix to be handled in a separate PR removing minor revisions
-    .filter((type) => type !== "Minor Revision");
+  const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
   createProjectRevisionSchema.properties.revisionType.enum = revisionEnum;
 
   // Growthbook - amendments
