@@ -281,3 +281,4 @@ tables/project_revision_006_unique_pending_per_revision_type 2023-04-12T00:19:46
 computed_columns/project_pending_project_revision [computed_columns/project_pending_project_revision@1.6.0] 2023-04-17T18:34:33Z Mike Vesprini <mike@button.is> # Remove function to be replaced by two separate functions
 computed_columns/project_pending_amendment 2023-04-17T18:37:44Z Mike Vesprini <mike@button.is> # Computed column to return a pending amendment on a project
 computed_columns/project_pending_general_revision 2023-04-18T00:32:22Z Mike Vesprini <mike@button.is> # Computed column to return the pending general revision on a project
+migrations/004_delete_revision_type_minor_revision 2023-04-19T22:07:13Z Mike Vesprini <mike@button.is> # Migration to remove the unused revision type Minor Revision
