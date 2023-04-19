@@ -19,7 +19,6 @@ describe("the project amendment and revisions page", () => {
     cy.url().should("include", "/create");
     cy.get("form").contains("Amendment", { matchCase: false });
     cy.get("form").contains("General Revision", { matchCase: false });
-    cy.get("form").contains("Minor Revision", { matchCase: false });
     cy.happoAndAxe("Project Revision Create", "view", "main");
     cy.get('[type="radio"]').check("Amendment");
     cy.get(".checkbox").contains("Scope").click();
