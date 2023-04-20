@@ -119,7 +119,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
               align-items: center;
             }
             div :global(.pg-select) {
-              width: 18em;
+              width: 16.5em;
             }
             div :global(button.pg-button) {
               margin: 0 1em;
