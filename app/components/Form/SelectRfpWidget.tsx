@@ -71,7 +71,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
         ? formattedAllFundingStreamRfps
         : currentYearFundingStreamRfps,
       displayField: "year",
-      placeholder: isInternal ? "Select a RFP Year" : undefined,
+      placeholder: "Select a RFP Year",
       label: "RFP Year",
     };
   }, [currentYearFundingStreamRfps, formattedAllFundingStreamRfps, isInternal]);
@@ -82,7 +82,7 @@ const SelectWidget: React.FunctionComponent<WidgetProps> = (props) => {
       parent={parent}
       child={child}
       foreignKey="fundingStreamId"
-      displayIfChildrenEmpty={isInternal ? undefined : new Date().getFullYear()}
+      isInternal={isInternal}
     />
   );
 };
