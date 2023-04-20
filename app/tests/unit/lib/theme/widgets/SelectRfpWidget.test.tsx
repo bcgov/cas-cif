@@ -109,8 +109,6 @@ describe("The SelectRfpWidget", () => {
   });
 
   it("renders the funding stream and year dropdowns for an external user", () => {
-    jest.useFakeTimers("modern").setSystemTime(new Date("2025-06-06"));
-
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent((data) => ({
       formContext: { query: data.query, isInternal: false },
@@ -118,6 +116,6 @@ describe("The SelectRfpWidget", () => {
     const parentDropdown = screen.getByLabelText(/Funding Stream/i);
     expect(parentDropdown.value).toEqual("Select a Funding Stream");
     const childDropdown = screen.getByLabelText(/RFP Year/i);
-    expect(childDropdown.value).toEqual("2025");
+    expect(childDropdown.value).toEqual("Select a RFP Year");
   });
 });
