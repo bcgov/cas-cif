@@ -84,10 +84,9 @@ Cypress.Commands.add(
   "fillAndCheckNewProjectForm",
   (fundingStream, fundingStreamYear) => {
     cy.url().should("include", "/new");
-    cy.get("[id=select-parent-dropdown-root_fundingStreamRfpId]")
-      // selecting twice ensures cypress selects the correct funding stream
-      .select(fundingStream)
-      .select(fundingStream);
+    cy.get("[id=select-parent-dropdown-root_fundingStreamRfpId]").select(
+      fundingStream
+    );
     cy.get("[id=select-child-dropdown-root_fundingStreamRfpId]").select(
       fundingStreamYear
     );

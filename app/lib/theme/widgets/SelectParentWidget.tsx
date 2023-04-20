@@ -1,5 +1,5 @@
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { WidgetProps } from "@rjsf/core";
 
 export interface EntitySchema {
@@ -34,14 +34,10 @@ const SelectParentWidget: React.FunctionComponent<
   const parentValue =
     child.list.find((opt) => opt.rowId == parseInt(value))?.[foreignKey] || "";
   const [selectedParentId, setSelectedParentId] = useState(parentValue);
-  useEffect(() => {
-    setSelectedParentId(parentValue);
-  }, [parentValue]);
 
-  const onParentChange = (val) => {
-    setSelectedParentId(parseInt(val));
-    onChange(parseInt(val));
-    if (!parseInt(val)) onChange(undefined);
+  const onParentChange = (e) => {
+    onChange(undefined);
+    setSelectedParentId(parseInt(e.target.value) || undefined);
   };
 
   const childOptions = useMemo(() => {
@@ -55,7 +51,7 @@ const SelectParentWidget: React.FunctionComponent<
       <label htmlFor={`select-parent-dropdown-${id}`}>{parent.label}</label>
       <Dropdown
         id={`select-parent-dropdown-${id}`}
-        onChange={(e) => onParentChange(e.target.value || undefined)}
+        onChange={onParentChange}
         size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
         required={required}
         value={selectedParentId}
