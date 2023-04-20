@@ -30,6 +30,10 @@ describe("the project amendment and revisions page", () => {
     cy.get("tbody tr").first().contains("Amendment 1");
     cy.url().should("include", "orderBy=REVISION_TYPE_ASC"); //just to wait for the page to load
     cy.get("thead th").contains("Type").click();
+    cy.get("tbody tr").first().contains("General Revision 1");
+    cy.url().should("include", "orderBy=REVISION_TYPE_DESC"); //just to wait for the page to load
+    cy.get("tbody tr").first().contains("General Revision");
+    cy.get("tbody tr").last().contains("In Discussion");
 
     // checking the view page for a specific revision
     cy.findAllByRole("button", { name: /^view \/ edit/i })

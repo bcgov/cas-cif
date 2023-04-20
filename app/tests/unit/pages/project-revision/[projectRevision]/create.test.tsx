@@ -30,7 +30,6 @@ const defaultMockResolver = {
         edges: [
           { node: { id: "1", type: "Amendment" } },
           { node: { id: "2", type: "General Revision" } },
-          { node: { id: "3", type: "Minor Revision" } },
         ],
       },
       allAmendmentTypes: {
