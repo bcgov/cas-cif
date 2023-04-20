@@ -7,7 +7,6 @@ import ReadOnlyDateWidget from "./widgets/ReadOnlyDateWidget";
 import ReadOnlyAdjustableCalculatedValueWidget from "./widgets/ReadOnlyAdjustableCalculatedValueWidget";
 import CalculatedValueWidget from "./widgets/CalculatedValueWidget";
 import ReadOnlyNumberWidget from "./widgets/ReadOnlyNumberWidget";
-import SelectWithNotifyWidget from "./widgets/SelectWithNotifyWidget";
 import ModalWidget from "./widgets/ModalWidget";
 import AnticipatedFundingAmountPerFiscalYearWidget from "./widgets/AnticipatedFundingAmountPerFiscalYearWidget";
 
@@ -31,7 +30,6 @@ const readOnlyTheme: ThemeProps = {
     ReadOnlyAdjustableCalculatedValueWidget,
     CalculatedValueWidget,
     NumberWidget: ReadOnlyNumberWidget,
-    SelectWithNotifyWidget: SelectWithNotifyWidget,
     ModalWidget,
     AnticipatedFundingAmountPerFiscalYearWidget,
   },

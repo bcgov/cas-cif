@@ -1,20 +1,14 @@
 import { WidgetProps } from "@rjsf/core";
-import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import { Button } from "@button-inc/bcgov-theme";
 import { useUpdatePendingActionsFrom } from "mutations/ProjectRevision/updatePendingActionsFrom";
 import { graphql, useFragment } from "react-relay";
-
-interface Option {
-  type: string;
-  title: string;
-  enum: number[];
-  value: number;
-}
+import SelectWidget from "lib/theme/widgets/SelectWidget";
+import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
+import { useState } from "react";
 
 const SelectWithNotifyWidgetFragment = graphql`
   fragment SelectWithNotifyWidget_projectRevision on ProjectRevision {
     id
-    pendingActionsFrom
     revisionStatus
   }
 `;
@@ -22,119 +16,128 @@ const SelectWithNotifyWidgetFragment = graphql`
 const SelectWithNotifyWidget: React.FunctionComponent<WidgetProps> = (
   props
 ) => {
-  const {
-    id,
-    onChange,
-    schema,
-    placeholder,
-    label,
-    required,
-    uiSchema,
-    value,
-    formContext,
-  } = props;
+  const { onChange, schema, value, formContext } = props;
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");
   }
-  const options = schema.anyOf as Array<Option>;
+
+  const [informationalText, setInformationalText] = useState("");
+  const [initialValue, setInitialValue] = useState(value);
 
   const [updatePendingActionsFrom, isUpdatingPendingActionsFrom] =
     useUpdatePendingActionsFrom();
   const projectRevision = formContext.projectRevision;
-  const {
-    id: revisionId,
-    revisionStatus,
-    pendingActionsFrom,
-  } = useFragment(SelectWithNotifyWidgetFragment, projectRevision);
+
+  const { id, revisionStatus } = useFragment(
+    SelectWithNotifyWidgetFragment,
+    projectRevision
+  );
+
   const handleUpdate = () => {
     return new Promise((resolve, reject) =>
       updatePendingActionsFrom({
         variables: {
           input: {
-            id: revisionId,
+            id,
             projectRevisionPatch: {
-              pendingActionsFrom: value,
+              pendingActionsFrom: value ?? null,
             },
           },
         },
         optimisticResponse: {
           updateProjectRevision: {
             projectRevision: {
-              id: revisionId,
+              id,
               pendingActionsFrom: value,
             },
           },
         },
-        onCompleted: resolve,
+        onCompleted: () => {
+          setInformationalText("Updated");
+          setInitialValue(value);
+        },
         onError: reject,
-        debounceKey: revisionId,
+        debounceKey: id,
       })
     );
+  };
+
+  const changeHandler = (newValue: string) => {
+    // set the text next to the button based on whether the value has changed or not
+    setInformationalText(
+      initialValue !== newValue
+        ? 'To confirm your change, please click the "Update" button.'
+        : ""
+    );
+    onChange(newValue);
   };
 
   return (
     <div>
       {revisionStatus !== "Applied" ? (
-        <>
-          <Dropdown
-            id={id}
-            onChange={(e) => onChange(e.target.value || undefined)}
-            placeholder={placeholder}
-            size={(uiSchema && uiSchema["bcgov:size"]) || "large"}
-            required={required}
-            value={value}
-            aria-label={label}
-          >
-            <option key={`option-placeholder-${id}`} value={undefined}>
-              {placeholder}
-            </option>
-            {options.map((opt) => {
-              return (
-                <option key={opt.enum[0]} value={opt.enum[0]}>
-                  {opt.title}
-                </option>
-              );
-            })}
-          </Dropdown>
+        <div>
+          <SelectWidget {...props} onChange={changeHandler} placeholder=" " />
           <div className="buttonGrid">
-            <Button
-              onClick={handleUpdate}
-              disabled={isUpdatingPendingActionsFrom}
-              type="submit"
-              style={{ marginBottom: "1rem" }}
-              size="small"
-            >
-              Update
-            </Button>
-            <a href="#modal">
-              <Button type="button" size="small">
-                Notify
+            <div className="updateButton">
+              <Button
+                onClick={handleUpdate}
+                disabled={
+                  initialValue === value || isUpdatingPendingActionsFrom
+                }
+                type="submit"
+                size="small"
+              >
+                Update
               </Button>
-            </a>
+              <small>{informationalText}</small>
+            </div>
+            <div className="notifyButton">
+              <a href="#modal">
+                <Button type="button" size="small">
+                  Notify
+                </Button>
+              </a>
+              <small>
+                To notify them by email, please click the &quot;Notify&quot;
+                button.
+              </small>
+            </div>
           </div>
-        </>
+          <style jsx>
+            {`
+              div {
+                display: flex;
+              }
+              div :global(.pg-select) {
+                width: 16.5em;
+                margin-right: 1em;
+              }
+              div :global(.pg-button) {
+                margin-right: 1em;
+              }
+              .buttonGrid {
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+              }
+              .updateButton {
+                align-items: center;
+                margin-bottom: 0;
+              }
+              .notifyButton {
+                align-items: center;
+              }
+              .notifyButton :global(.pg-button) {
+                padding-left: 2em;
+                padding-right: 2em;
+              }
+            `}
+          </style>
+        </div>
       ) : (
-        <>{pendingActionsFrom || <em>Not Added</em>}</>
+        <ReadOnlyWidget {...props} />
       )}
-      <style jsx>
-        {`
-          div :global() {
-            display: flex;
-          }
-          div :global(.pg-select) {
-            width: 18em;
-            margin-right: 1em;
-          }
-          div :global(.pg-button) {
-            margin-right: 1em;
-          }
-          .buttonGrid {
-            display: flex;
-            flex-direction: column;
-          }
-        `}
-      </style>
     </div>
   );
 };

@@ -119,7 +119,7 @@ describe("the project amendment and revisions page", () => {
       "not.be.checked"
     );
   });
-  it("changes the status and change reason for a revision/amendment", () => {
+  it("changes the status, pending actions from and change reason for a revision/amendment", () => {
     cy.sqlFixture("dev/009_cif_project_revision_logs");
     cy.visit("/cif/projects");
     cy.get("h2").contains(/cif projects/i);
@@ -153,6 +153,20 @@ describe("the project amendment and revisions page", () => {
     cy.findAllByText("Updated").should("have.length", 1);
     cy.get("@revisionStatusUpdateButton").should("be.disabled");
 
+    // changing the pending actions from
+    cy.findAllByRole("button", { name: /update/i })
+      .eq(1)
+      .as("pendingActionsFromUpdateButton");
+    cy.get("@pendingActionsFromUpdateButton").should("be.disabled");
+    cy.get('[aria-label="Pending actions from"]').select("Tech Team");
+    cy.get("@pendingActionsFromUpdateButton").should("not.be.disabled");
+    cy.contains(
+      'To confirm your change, please click the "Update" button.'
+    ).should("be.visible");
+    cy.get("@pendingActionsFromUpdateButton").click();
+    cy.findAllByText("Updated").should("have.length", 2);
+    cy.get("@pendingActionsFromUpdateButton").should("be.disabled");
+
     // changing the general comments(change reason)
     cy.findAllByRole("button", { name: /update/i })
       .last()
@@ -164,7 +178,7 @@ describe("the project amendment and revisions page", () => {
       'To confirm your change, please click the "Update" button.'
     ).should("be.visible");
     cy.get("@changeReasonUpdateButton").click();
-    cy.findAllByText("Updated").should("have.length", 2);
+    cy.findAllByText("Updated").should("have.length", 3);
 
     // change the status to applied and make the page read only
     cy.get("@revisionStatusUpdateButton").should("be.disabled");
@@ -177,6 +191,9 @@ describe("the project amendment and revisions page", () => {
     cy.findByText(/status/i)
       .next()
       .contains("Applied");
+    cy.findByText("Pending actions from (optional)")
+      .next()
+      .contains("Tech Team");
     cy.findByText("General Comments (optional)")
       .next()
       .contains("test change reason");

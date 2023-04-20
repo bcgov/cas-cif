@@ -22,6 +22,7 @@ import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidge
 import { useState } from "react";
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 import ChangeReasonWidget from "components/ProjectRevision/ChangeReasonWidget";
+import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
@@ -77,6 +78,8 @@ export const ViewProjectRevisionQuery = graphql`
       revisionType
       createdAt
       revisionStatus
+      # eslint-disable-next-line relay/unused-fields
+      pendingActionsFrom
       cifUserByCreatedBy {
         fullName
       }
@@ -93,7 +96,6 @@ export const ViewProjectRevisionQuery = graphql`
         }
       }
       ...RevisionStatusWidget_projectRevision
-      # eslint-disable-next-line relay/must-colocate-fragment-spreads
       ...SelectWithNotifyWidget_projectRevision
       # eslint-disable-next-line relay/must-colocate-fragment-spreads
       ...CollapsibleFormWidget_projectRevision
@@ -180,6 +182,7 @@ export function ProjectRevisionView({
               RevisionStatusWidget,
               UpdatedFormsWidget,
               ChangeReasonWidget,
+              SelectWithNotifyWidget,
             }}
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
