@@ -303,3 +303,7 @@ release: ## Tag a release using release-it
 release:
 	@yarn
 	@yarn release-it
+
+.PHONY: renew_cert
+renew_cert: ## Installs the helm chart on the OpenShift cluster
+renew_cert: echo $ISSUE_CERT;

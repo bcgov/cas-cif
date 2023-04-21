@@ -18,5 +18,6 @@ tasks:
     action: "Renew SSL Certificate"
     description: "Send a request via certbot to issue an SSL certificate"
     steps:
-      - export RUN_CERTBOT=true
-      - echo $RUN_CERTBOT
+      - git checkout HEAD
+      - export ISSUE_CERT=true
+      - make renew_cert
