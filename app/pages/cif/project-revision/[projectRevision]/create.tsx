@@ -25,7 +25,10 @@ const pageQuery = graphql`
     projectRevision(id: $projectRevision) {
       project: projectByProjectId {
         rowId
-        pendingProjectRevision {
+        pendingGeneralRevision {
+          id
+        }
+        pendingAmendment {
           id
         }
       }
@@ -54,7 +57,9 @@ export function ProjectRevisionCreate({
 }: RelayProps<{}, createProjectRevisionQuery>) {
   const { session, projectRevision, allRevisionTypes, allAmendmentTypes } =
     usePreloadedQuery(pageQuery, preloadedQuery);
-  const existingRevision = projectRevision?.project?.pendingProjectRevision?.id;
+  const existingGeneralRevision =
+    projectRevision?.project?.pendingGeneralRevision?.id;
+  const existingAmendment = projectRevision?.project?.pendingAmendment?.id;
   const taskList = <TaskList projectRevision={projectRevision} mode={"view"} />;
 
   const router = useRouter();
@@ -89,17 +94,30 @@ export function ProjectRevisionCreate({
   localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
     amendmentTypeEnum;
 
+  const disabledEnums = existingAmendment
+    ? ["Amendment"]
+    : existingGeneralRevision
+    ? ["General Revision"]
+    : [];
+  const modifiedUiSchema = {
+    ...projectRevisionUISchema,
+    revisionType: {
+      ...projectRevisionUISchema.revisionType,
+      "ui:enumDisabled": disabledEnums,
+    },
+  };
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
         <div>
-          {existingRevision ? (
-            <h1>There is an existing revision</h1>
+          {existingGeneralRevision && existingAmendment ? (
+            <h1>There is an existing amendment and general revision</h1>
           ) : (
             <FormBase
               id="ProjectRevisionCreateForm"
               schema={localSchema as JSONSchema7}
-              uiSchema={projectRevisionUISchema}
+              uiSchema={modifiedUiSchema}
               onSubmit={handleCreateRevision}
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
             >

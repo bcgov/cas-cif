@@ -13,7 +13,8 @@ const defaultMockResolver = {
     return {
       id: "test-project",
       rowId: 1234,
-      pendingProjectRevision: null,
+      pendingGeneralRevision: null,
+      pendingAmendment: null,
     };
   },
   ProjectRevision() {
@@ -29,7 +30,6 @@ const defaultMockResolver = {
         edges: [
           { node: { id: "1", type: "Amendment" } },
           { node: { id: "2", type: "General Revision" } },
-          { node: { id: "3", type: "Minor Revision" } },
         ],
       },
       allAmendmentTypes: {
@@ -84,7 +84,7 @@ describe("The project amendments and revisions page", () => {
     pageTestingHelper.renderPage();
 
     act(() => {
-      userEvent.click(screen.getByLabelText(/minor revision/i));
+      userEvent.click(screen.getByLabelText(/general revision/i));
       userEvent.click(
         screen.getAllByRole("button", { name: /new revision/i })[0]
       );
@@ -93,7 +93,7 @@ describe("The project amendments and revisions page", () => {
       "createProjectRevisionMutation",
       {
         projectId: 1234,
-        revisionType: "Minor Revision",
+        revisionType: "General Revision",
         amendmentTypes: null,
       }
     );
@@ -169,5 +169,51 @@ describe("The project amendments and revisions page", () => {
       query: { projectRevision: "<ProjectRevision-mock-id-1>", formIndex: 0 },
       anchor: undefined,
     });
+  });
+  it("Disables only the amendment revision type if one is already pending", () => {
+    pageTestingHelper.loadQuery({
+      ...defaultMockResolver,
+      Project() {
+        return {
+          id: "test-project",
+          rowId: 2345,
+          pendingGeneralRevision: null,
+          pendingAmendment: {
+            id: 6543,
+          },
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    const amendmentRadio = screen.getByRole("radio", { name: /amendment/i });
+    const generalRevisionRadio = screen.getByRole("radio", {
+      name: /general revision/i,
+    });
+    expect(amendmentRadio).toBeDisabled();
+    expect(generalRevisionRadio).not.toBeDisabled();
+  });
+  it("Does not render the create form if a general revision and amendment are both already in progress", () => {
+    pageTestingHelper.loadQuery({
+      ...defaultMockResolver,
+      Project() {
+        return {
+          id: "test-project",
+          rowId: 3456,
+          pendingGeneralRevision: {
+            id: 8765,
+          },
+          pendingAmendment: {
+            id: 6543,
+          },
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    expect(screen.queryByText("Revision Type")).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/There is an existing amendment and general revision/i)
+    ).toBeInTheDocument();
   });
 });

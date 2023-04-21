@@ -13,7 +13,7 @@ const defaultMockResolver = {
   ProjectRevision(context, generateId) {
     return {
       id: `mock-proj-rev-${generateId()}`,
-      revisionType: "Minor Revision",
+      revisionType: "General Revision",
       typeRowNumber: 1,
       changeReason: "Test comment",
       createdAt: "2021-01-01T23:59:59.999-07:00",
@@ -26,11 +26,6 @@ const defaultMockResolver = {
     return {
       allRevisionTypes: {
         edges: [
-          {
-            node: {
-              type: "Minor Revision",
-            },
-          },
           {
             node: {
               type: "General Revision",
@@ -71,7 +66,7 @@ describe("ProjectRevisionView Page", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /minor revision 1/i,
+        name: /general revision 1/i,
       })
     ).toBeInTheDocument();
 

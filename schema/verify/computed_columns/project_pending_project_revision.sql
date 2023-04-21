@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.project_pending_project_revision(cif.project)'::regprocedure);
+select cif_private.verify_function_not_present('cif', 'project_pending_project_revision', 1);
 
 rollback;

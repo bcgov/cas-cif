@@ -25,12 +25,12 @@ values
 (1, 'Amendment', 'committed'),
 (1, 'General Revision', 'committed'),
 (1, 'Amendment', 'committed'),
-(1, 'Minor Revision', 'committed'),
-(1, 'Amendment', 'committed'),
-(1, 'Minor Revision', 'committed'),
-(1, 'Minor Revision', 'committed'),
 (1, 'General Revision', 'committed'),
-(1, 'Minor Revision', 'committed');
+(1, 'Amendment', 'committed'),
+(1, 'General Revision', 'committed'),
+(1, 'General Revision', 'committed'),
+(1, 'General Revision', 'committed'),
+(1, 'General Revision', 'committed');
 /** END SETUP **/
 
 select results_eq(
@@ -42,12 +42,12 @@ select results_eq(
     (1, 1),
     (2, 1),
     (3, 2),
-    (4, 1),
+    (4, 2),
     (5, 3),
-    (6, 2),
-    (7, 3),
-    (8, 2),
-    (9, 4)
+    (6, 3),
+    (7, 4),
+    (8, 5),
+    (9, 6)
   $$,
   'Returns currosponding row number for each project revision based on revision type'
 );
