@@ -84,7 +84,7 @@ const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
               Update
             </Button>
           </div>
-          <small>{informationalText}</small>
+          {informationalText && <small>{informationalText}</small>}
           <style jsx>{`
             div {
               display: flex;
