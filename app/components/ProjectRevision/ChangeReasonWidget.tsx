@@ -12,6 +12,8 @@ const ChangeReasonWidgetFragment = graphql`
 `;
 
 // Custom widget to update the revision change reason
+// This widget is responsible to update the `change_reason` field on the `project_revision` table
+// Name of this widget on the UI is `General Comments`
 const ChangeReasonWidget: React.FC<WidgetProps> = (props) => {
   const { value, formContext, onChange } = props;
   const projectRevision = formContext.projectRevision;

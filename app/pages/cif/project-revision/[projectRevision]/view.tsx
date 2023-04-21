@@ -181,6 +181,8 @@ export function ProjectRevisionView({
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,
+              // This widget is responsible to update the `change_reason` field on the `project_revision` table
+              // Name of this widget on the UI is `General Comments`
               ChangeReasonWidget,
               SelectWithNotifyWidget,
             }}
