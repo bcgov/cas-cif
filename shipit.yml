@@ -18,6 +18,6 @@ tasks:
     action: "Renew SSL Certificate"
     description: "Send a request via certbot to issue an SSL certificate"
     steps:
-      - git checkout HEAD
       - export ISSUE_CERT=true
-      - make renew_cert
+      - make install:
+          timeout: 5000
