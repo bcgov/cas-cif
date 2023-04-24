@@ -12,3 +12,12 @@ deploy:
 ci:
   allow_failures:
     - "yarn-audit"
+
+tasks:
+  renew_cert:
+    action: "Renew SSL Certificate"
+    description: "Send a request via certbot to issue an SSL certificate"
+    steps:
+      - export ISSUE_CERT=true
+      - make install:
+          timeout: 5000
