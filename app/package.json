@@ -138,6 +138,7 @@
     "cypress/@cypress/request/http-signature/jsprim/json-schema": "0.4.0",
     "next/node-fetch": "2.6.7",
     "**/jsonwebtoken": "9.0.0",
-    "**/json5": "2.2.2"
+    "**/json5": "2.2.2",
+    "yaml": ">=2.2.2"
   }
 }
