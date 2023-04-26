@@ -283,3 +283,4 @@ computed_columns/project_pending_amendment 2023-04-17T18:37:44Z Mike Vesprini <m
 computed_columns/project_pending_general_revision 2023-04-18T00:32:22Z Mike Vesprini <mike@button.is> # Computed column to return the pending general revision on a project
 migrations/004_delete_revision_type_minor_revision 2023-04-19T22:07:13Z Mike Vesprini <mike@button.is> # Migration to remove the unused revision type Minor Revision
 mutations/commit_project_revision [mutations/commit_project_revision@1.6.0] 2023-04-06T23:09:06Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Allow project revisions to be committed without a change reason
+@1.7.0 2023-04-26T18:48:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.0
