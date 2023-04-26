@@ -20,14 +20,13 @@ import {
   addReportFormChange,
   deleteReportFormChange,
   getSortedReports,
-  stageReportFormChanges,
   updateReportFormChange,
 } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 import ReportGenerator from "components/ReportingRequirement/ReportGenerator";
 import { useGenerateAnnualReports } from "mutations/ProjectReportingRequirement/generateAnnualReports";
-
+import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 interface Props {
   onSubmit: () => void;
   projectRevision: ProjectAnnualReportForm_projectRevision$key;
@@ -285,7 +284,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
         size="medium"
         variant="primary"
         onClick={() =>
-          stageReportFormChanges(
+          stageMultipleReportingRequirementFormChanges(
             applyStageFormChangeMutation,
             props.onSubmit,
             formRefs,

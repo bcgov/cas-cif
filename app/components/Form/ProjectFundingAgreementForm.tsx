@@ -17,9 +17,9 @@ import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/P
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
 import AdditionalFundingSourcesArrayFieldTemplate from "./AdditionalFundingSourcesArrayFieldTemplate";
 import FormBase from "./FormBase";
-import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import stageMultipleReportingRequirementFormChanges from "./Functions/stageMultipleReportingRequirementFormChanges";
 
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
@@ -347,13 +347,12 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           <Button
             type="submit"
             onClick={() =>
-              stageReportFormChanges(
-                () => {},
+              stageMultipleReportingRequirementFormChanges(
+                stageFormChange,
                 props.onSubmit,
                 formRefs,
                 [...projectRevision.projectFundingAgreementFormChanges.edges],
-                null,
-                stageFormChange
+                null
               )
             }
             style={{ marginRight: "1rem" }}
