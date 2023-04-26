@@ -1,21 +1,11 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { act, fireEvent, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import compiledRevisionStatusWidgetQuery, {
   RevisionStatusWidgetQuery,
 } from "__generated__/RevisionStatusWidgetQuery.graphql";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
-import { mocked } from "jest-mock";
-import { useUpdateProjectRevision } from "mutations/ProjectRevision/updateProjectRevision";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
-
-jest.mock("mutations/ProjectRevision/updateProjectRevision");
-
-let isUpdatingProjectRevision = false;
-const updateProjectRevisionMutation = jest.fn();
-mocked(useUpdateProjectRevision).mockImplementation(() => [
-  updateProjectRevisionMutation,
-  isUpdatingProjectRevision,
-]);
 
 const testQuery = graphql`
   query RevisionStatusWidgetQuery($projectRevision: ID!) @relay_test_operation {
@@ -33,11 +23,30 @@ const mockQueryPayload = {
     return {
       projectRevision: {
         id: "test-revision-id",
+        rowId: "test-row-id",
         changeStatus: "pending",
       },
     };
   },
 };
+
+const widgetOptions = [
+  { value: "Draft", enum: ["Draft"], type: "string", title: "Draft" },
+  {
+    value: "In Discussion",
+    enum: ["In Discussion"],
+    type: "string",
+    title: "In Discussion",
+  },
+  {
+    value: "Applied",
+    enum: ["Applied"],
+    type: "string",
+    title: "Applied",
+  },
+];
+
+const handleChangeStatus = jest.fn();
 
 const componentTestingHelper =
   new ComponentTestingHelper<RevisionStatusWidgetQuery>({
@@ -45,21 +54,24 @@ const componentTestingHelper =
     testQuery: testQuery,
     compiledQuery: compiledRevisionStatusWidgetQuery,
     getPropsFromTestQuery: (data) => ({
-      id: "test-id",
-      value: "Option 1",
-      schema: {
-        anyOf: [
-          { value: 1, enum: [1], type: "number", title: "Option 1" },
-          { value: 2, enum: [2], type: "number", title: "Option 2" },
-        ],
-      },
       formContext: data.query,
+    }),
+    defaultQueryResolver: mockQueryPayload,
+    defaultComponentProps: {
+      id: "test-id",
+      label: "Revision Status",
+      value: "Draft",
+      default: undefined,
+      enum: undefined,
+      type: "string",
+      schema: {
+        anyOf: widgetOptions,
+      },
       options: {
         text: "just for testing", //This is a required prop but not required for the test
       },
-    }),
-    defaultQueryResolver: mockQueryPayload,
-    defaultQueryVariables: { projectRevision: "Test Revision ID" },
+      onChange: handleChangeStatus,
+    },
   });
 
 describe("The RevisionStatusWidget", () => {
@@ -70,6 +82,11 @@ describe("The RevisionStatusWidget", () => {
   it("renders the select widget along with an action button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
+    const dropdown: HTMLInputElement = screen.getByRole("combobox", {
+      name: /revision status/i,
+    });
+    expect(dropdown).toBeInTheDocument();
+    expect(dropdown.value).toEqual("Draft");
 
     expect(
       screen.getByRole("button", {
@@ -78,26 +95,49 @@ describe("The RevisionStatusWidget", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls updateProjectRevision with the select widget value when click button", async () => {
+  it("calls updateProjectRevision with the select widget value when click button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    fireEvent.click(
-      screen.getByRole("button", {
+    const dropdown: HTMLInputElement = screen.getByRole("combobox", {
+      name: /revision status/i,
+    });
+
+    act(() => {
+      fireEvent.change(dropdown, { target: { value: "In Discussion" } });
+    });
+    expect(handleChangeStatus).toHaveBeenCalledWith("In Discussion");
+
+    expect(
+      screen.getByText(
+        'To confirm your change, please click the "Update" button.'
+      )
+    ).toBeInTheDocument();
+
+    componentTestingHelper.rerenderComponent(undefined, {
+      value: "In Discussion",
+      schema: {
+        anyOf: widgetOptions,
+      },
+    });
+
+    act(() => {
+      const updateButton = screen.getByRole("button", {
         name: /update/i,
-      })
-    );
-    expect(updateProjectRevisionMutation).toHaveBeenCalledWith(
-      expect.objectContaining({
-        variables: expect.objectContaining({
-          input: expect.objectContaining({
-            id: "test-revision-id",
-            projectRevisionPatch: expect.objectContaining({
-              revisionStatus: "Option 1",
-            }),
-          }),
-        }),
-      })
+      });
+      expect(updateButton).not.toBeDisabled();
+      userEvent.click(updateButton);
+    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "updateProjectRevisionMutation",
+      {
+        input: {
+          id: "test-revision-id",
+          projectRevisionPatch: {
+            revisionStatus: "In Discussion",
+          },
+        },
+      }
     );
   });
   it("renders widget in readonly mode when revision status is not pending", () => {
@@ -117,5 +157,43 @@ describe("The RevisionStatusWidget", () => {
 
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     expect(screen.queryByText(/update/i)).not.toBeInTheDocument();
+  });
+  it("calls commitProjectRevision when the select value is `Applied`", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    const dropdown: HTMLInputElement = screen.getByRole("combobox");
+
+    act(() => {
+      fireEvent.change(dropdown, { target: { value: "Applied" } });
+    });
+    componentTestingHelper.rerenderComponent(undefined, {
+      value: "Applied",
+      schema: {
+        anyOf: widgetOptions,
+      },
+    });
+    expect(dropdown.value).toEqual("Applied");
+    expect(
+      screen.getByText(
+        /once approved, this revision will be immutable\. click the "update" button to confirm\./i
+      )
+    ).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(
+        screen.getByRole("button", {
+          name: /update/i,
+        })
+      );
+    });
+    componentTestingHelper.expectMutationToBeCalled(
+      "useCommitProjectRevisionMutation",
+      {
+        input: {
+          revisionToCommitId: "test-row-id",
+        },
+      }
+    );
   });
 });

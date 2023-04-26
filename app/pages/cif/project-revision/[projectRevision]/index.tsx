@@ -107,7 +107,9 @@ export function ProjectRevision({
   useEffect(() => {
     if (isCommittedRevision)
       router.push(getProjectRevisionFormPageRoute(query.projectRevision.id, 0));
-  }, [isCommittedRevision, query, router]);
+    // having isCommittedRevision or query in the dependency array causes `getProjectRevisionFormPageRoute` to be called before the
+    // `getProjectsPageRoute` when the project is committed.(we have changeStatus in the payload of the commitProjectRevision mutation and that triggers the useEffect)
+  }, [router]);
 
   const isRedirecting = useRedirectTo404IfFalsy(query.projectRevision);
   if (isRedirecting || isCommittedRevision) return null;

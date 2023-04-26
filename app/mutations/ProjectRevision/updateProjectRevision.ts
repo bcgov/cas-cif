@@ -12,6 +12,7 @@ const mutation = graphql`
           newFormData
         }
         revisionStatus
+        changeReason
       }
     }
   }

@@ -10,7 +10,7 @@ describe("the project amendment and revisions page", () => {
     cy.mockLogin("cif_admin");
   });
 
-  it("displays the list of project amendment and revisions", () => {
+  it("creates new revision/amendment", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
     cy.get("@firstViewButton").click();
@@ -118,5 +118,84 @@ describe("the project amendment and revisions page", () => {
     cy.get("input[aria-label='Budgets, Expenses & Payments']").should(
       "not.be.checked"
     );
+  });
+  it("changes the status, pending actions from and change reason for a revision/amendment", () => {
+    cy.sqlFixture("dev/009_cif_project_revision_logs");
+    cy.visit("/cif/projects");
+    cy.get("h2").contains(/cif projects/i);
+    cy.findAllByRole("button", { name: /view/i }).first().click();
+    cy.findByText(/Amendments & Other Revisions/i).click();
+    cy.url().should("include", "/project-revision-change-logs");
+    cy.get("h2").contains(/Amendments & Other Revisions/i);
+    cy.findAllByRole("button", { name: /^view \/ edit/i })
+      .first()
+      .click();
+    cy.url().should("include", "/view");
+    cy.get("h2").contains(/amendment 2/i);
+    cy.findByRole("link", { name: /view amendment 2/i }).should("exist");
+    cy.get('input[value="Amendment"]').should("be.checked");
+    cy.findByText(/status/i)
+      .next()
+      .contains("In Discussion");
+    cy.findByText("General Comments (optional)").should("be.visible");
+
+    // changing the status to non-applied
+    cy.findAllByRole("button", { name: /update/i })
+      .first()
+      .as("revisionStatusUpdateButton");
+    cy.get("@revisionStatusUpdateButton").should("be.disabled");
+    cy.get('[aria-label="Status"]').select("Pending Province Approval");
+    cy.get("@revisionStatusUpdateButton").should("not.be.disabled");
+    cy.contains(
+      'To confirm your change, please click the "Update" button.'
+    ).should("be.visible");
+    cy.get("@revisionStatusUpdateButton").click();
+    cy.findAllByText("Updated").should("have.length", 1);
+    cy.get("@revisionStatusUpdateButton").should("be.disabled");
+
+    // changing the pending actions from
+    cy.findAllByRole("button", { name: /update/i })
+      .eq(1)
+      .as("pendingActionsFromUpdateButton");
+    cy.get("@pendingActionsFromUpdateButton").should("be.disabled");
+    cy.get('[aria-label="Pending actions from"]').select("Tech Team");
+    cy.get("@pendingActionsFromUpdateButton").should("not.be.disabled");
+    cy.contains(
+      'To confirm your change, please click the "Update" button.'
+    ).should("be.visible");
+    cy.get("@pendingActionsFromUpdateButton").click();
+    cy.findAllByText("Updated").should("have.length", 2);
+    cy.get("@pendingActionsFromUpdateButton").should("be.disabled");
+
+    // changing the general comments(change reason)
+    cy.findAllByRole("button", { name: /update/i })
+      .last()
+      .as("changeReasonUpdateButton");
+    cy.get("@changeReasonUpdateButton").should("be.disabled");
+    cy.get("textarea").type("test change reason");
+    cy.get("@changeReasonUpdateButton").should("not.be.disabled");
+    cy.contains(
+      'To confirm your change, please click the "Update" button.'
+    ).should("be.visible");
+    cy.get("@changeReasonUpdateButton").click();
+    cy.findAllByText("Updated").should("have.length", 3);
+
+    // change the status to applied and make the page read only
+    cy.get("@revisionStatusUpdateButton").should("be.disabled");
+    cy.get('[aria-label="Status"]').select("Applied");
+    cy.contains(
+      'Once approved, this revision will be immutable. Click the "Update" button to confirm.'
+    ).should("be.visible");
+    cy.get("@revisionStatusUpdateButton").click();
+    cy.findAllByRole("button", { name: /update/i }).should("have.length", 0);
+    cy.findByText(/status/i)
+      .next()
+      .contains("Applied");
+    cy.findByText("Pending actions from (optional)")
+      .next()
+      .contains("Tech Team");
+    cy.findByText("General Comments (optional)")
+      .next()
+      .contains("test change reason");
   });
 });

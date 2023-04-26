@@ -8,6 +8,13 @@ const mutation = graphql`
     commitProjectRevision(input: $input) {
       projectRevision {
         id
+        changeStatus
+        changeReason
+        projectFormChange {
+          id
+          newFormData
+        }
+        revisionStatus
       }
     }
   }

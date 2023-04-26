@@ -10,10 +10,6 @@ export const createProjectRevisionSchema = {
       anyOf: undefined,
       enum: undefined,
     },
-    changeReason: {
-      type: "string",
-      title: "General Comments",
-    },
   },
   dependencies: {
     revisionType: {
@@ -146,8 +142,8 @@ export const projectRevisionUISchema = {
   "ui:order": [
     "revisionType",
     "amendmentTypes",
-    "pendingActionsFrom",
     "revisionStatus",
+    "pendingActionsFrom",
     "updatedForms",
     "changeReason",
   ],
@@ -159,12 +155,18 @@ export const projectRevisionUISchema = {
   },
   pendingActionsFrom: {
     "ui:widget": "SelectWithNotifyWidget",
+    "bcgov:size": "medium",
   },
   revisionStatus: {
     "ui:widget": "RevisionStatusWidget",
+    hideOptional: true,
+    "bcgov:size": "medium",
   },
   updatedForms: {
     "ui:widget": "UpdatedFormsWidget",
     hideOptional: true,
+  },
+  changeReason: {
+    "ui:widget": "ChangeReasonWidget",
   },
 };
