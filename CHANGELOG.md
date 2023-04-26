@@ -1,3 +1,24 @@
+# [1.7.0](https://github.com/bcgov/cas-cif/compare/1.6.0...1.7.0) (2023-04-26)
+
+### Bug Fixes
+
+- adding proper rfp ui ([978b838](https://github.com/bcgov/cas-cif/commit/978b8380c86a0712d26a50526a1fd6c4c8d42d7a))
+- new project rfp select ([6b6a7c0](https://github.com/bcgov/cas-cif/commit/6b6a7c07487f50ec74a6cadb9e13260289704ac4))
+- show expenses tracker on review and submit page ([bd5df5b](https://github.com/bcgov/cas-cif/commit/bd5df5b0f776ab49b4c18ae1bfb7f36385c9bcf6))
+
+### Features
+
+- calculate gross amount based on report type and received date and total eligible expenses ([5e6f73e](https://github.com/bcgov/cas-cif/commit/5e6f73e675100c1170097942f2f234a3981a5cba))
+- calculate holdback amount based on report type and received date and total eligible expenses ([1848331](https://github.com/bcgov/cas-cif/commit/184833187f4a2af106d388dc1366360fff60ce98))
+- calculate net amount based on report type and received date and total eligible expenses ([1fc6335](https://github.com/bcgov/cas-cif/commit/1fc633546c9981d2bbf50a735c4867af043217f6))
+- calculate total payment amount to date for ia project funding form using computed column ([1f6254e](https://github.com/bcgov/cas-cif/commit/1f6254ea9e14552d4c34f4e14b0e75b148fc1a0d))
+- commit revision when status is Applied ([0c7f7ea](https://github.com/bcgov/cas-cif/commit/0c7f7eab440a7c3187261e9ad104a3b5a7d3622e))
+- create application form structure, component, and routes ([f7ed709](https://github.com/bcgov/cas-cif/commit/f7ed709f9b681f668d5d0667530b5d1504ac8230))
+- external operator review page ([0ae491f](https://github.com/bcgov/cas-cif/commit/0ae491fd7f309e3bd97642ba4b0a24693371f61c))
+- renew ssl cert automatically with shipit ([7acccfe](https://github.com/bcgov/cas-cif/commit/7acccfebb3d97229d0bf9888f8a77701c1194e92))
+- revision type list only allows options that are not already in progress ([a79e7aa](https://github.com/bcgov/cas-cif/commit/a79e7aacfc7b8fa9501f35487bff9a0b83f42669))
+- show overwrite notifications in diffs ([6103241](https://github.com/bcgov/cas-cif/commit/610324199ea4d5c06a9906bfa5a56ee6f93645b3))
+
 # [1.6.0](https://github.com/bcgov/cas-cif/compare/1.5.3...1.6.0) (2023-03-29)
 
 ### Features
