@@ -74,55 +74,20 @@ const overwriteNotification = (
 
 const showStringDiff = (
   id: string,
-  oldData: string,
-  newData: string,
-  latestCommittedData: string,
+  oldData: string | undefined,
+  newData: string | undefined,
+  latestCommittedData: string | undefined,
   isDate?: boolean,
   contentSuffix?: string,
   isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
-  // defining the class names if we are showing a revision specific diff
-  const [diffOldClsName, diffNewClsName] = isAmendmentsAndOtherRevisionsSpecific
-    ? [
-        "diffAmendmentsAndOtherRevisionsOld",
-        "diffAmendmentsAndOtherRevisionsNew",
-      ]
-    : [
-        "diffReviewAndSubmitInformationOld",
-        "diffReviewAndSubmitInformationNew",
-      ];
-  return (
-    <>
-      <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-        {isDate ? getLocaleFormattedDate(oldData) : oldData}
-      </span>
-      <FontAwesomeIcon
-        className={"diff-arrow"}
-        size="lg"
-        color="black"
-        icon={faLongArrowAltRight}
-      />
-      <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-        {isDate ? getLocaleFormattedDate(newData) : newData}
-      </span>
-    </>
-  );
-};
-
-const showStringAdded = (
-  id: string,
-  newData: string,
-  latestCommittedData,
-  isDate: boolean = false,
-  contentSuffix?: string,
-  isAmendmentsAndOtherRevisionsSpecific?: boolean
-): JSX.Element => {
-  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-    ? "diffAmendmentsAndOtherRevisionsNew"
-    : "diffReviewAndSubmitInformationNew";
-
-  return (
-    <>
+  console.log("GURJ", oldData, newData, latestCommittedData, isDate);
+  // Case 1: Only new data is available
+  if (!oldData && newData && latestCommittedData && isDate !== undefined) {
+    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
+      ? "diffAmendmentsAndOtherRevisionsNew"
+      : "diffReviewAndSubmitInformationNew";
+    return (
       <>
         {overwriteNotification({ latestCommittedData, isDate })}
         <FontAwesomeIcon
@@ -133,47 +98,102 @@ const showStringAdded = (
         />
         <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
           {" "}
-          {newData} {"show string added"}
+          {newData}
         </span>
       </>
-    </>
-  );
-};
+    );
+  }
 
-const showStringRemoved = (
-  id: string,
-  oldData: string,
-  latestCommittedData: string,
-  isDate: boolean = false,
-  contentSuffix?: string,
-  isAmendmentsAndOtherRevisionsSpecific?: boolean
-): JSX.Element => {
-  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-    ? "diffAmendmentsAndOtherRevisionsOld"
-    : "diffReviewAndSubmitInformationOld";
-  return (
-    <>
-      <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-        {isDate ? getLocaleFormattedDate(oldData) : oldData}
-      </span>
-      {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {!isAmendmentsAndOtherRevisionsSpecific && (
-        <>
-          <FontAwesomeIcon
-            className={"diff-arrow"}
-            size="lg"
-            color="black"
-            icon={faLongArrowAltRight}
-          />
-          <span>
-            <strong>
-              <em>REMOVED{"show string removed"}</em>
-            </strong>
-          </span>
-        </>
-      )}
-    </>
-  );
+  // Case 2: Both old and new data are available
+  if (oldData && newData && latestCommittedData && isDate !== undefined) {
+    const [diffOldClsName, diffNewClsName] =
+      isAmendmentsAndOtherRevisionsSpecific
+        ? [
+            "diffAmendmentsAndOtherRevisionsOld",
+            "diffAmendmentsAndOtherRevisionsNew",
+          ]
+        : [
+            "diffReviewAndSubmitInformationOld",
+            "diffReviewAndSubmitInformationNew",
+          ];
+    return (
+      <>
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+        </span>
+        <FontAwesomeIcon
+          className={"diff-arrow"}
+          size="lg"
+          color="black"
+          icon={faLongArrowAltRight}
+        />
+        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
+          {isDate ? getLocaleFormattedDate(newData) : newData}
+        </span>
+      </>
+    );
+  }
+
+  // Case 3: Only old data is available
+  if (oldData && !newData && latestCommittedData && isDate !== undefined) {
+    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
+      ? "diffAmendmentsAndOtherRevisionsOld"
+      : "diffReviewAndSubmitInformationOld";
+    return (
+      <>
+        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
+          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+        </span>
+        {contentSuffix && contentSuffixElement(id, contentSuffix)}
+        {!isAmendmentsAndOtherRevisionsSpecific && (
+          <>
+            <FontAwesomeIcon
+              className={"diff-arrow"}
+              size="lg"
+              color="black"
+              icon={faLongArrowAltRight}
+            />
+            <span>
+              <strong>
+                <em>REMOVED</em>
+              </strong>
+            </span>
+          </>
+        )}
+      </>
+    );
+  }
+  // Case 4: New data is unavailable ex: Revision Type
+  if (oldData && !newData && !latestCommittedData && !isDate) {
+    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
+      ? "diffAmendmentsAndOtherRevisionsOld"
+      : "diffReviewAndSubmitInformationOld";
+    return (
+      <>
+        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
+          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+        </span>
+        {contentSuffix && contentSuffixElement(id, contentSuffix)}
+        {!isAmendmentsAndOtherRevisionsSpecific && (
+          <>
+            <FontAwesomeIcon
+              className={"diff-arrow"}
+              size="lg"
+              color="black"
+              icon={faLongArrowAltRight}
+            />
+            <span>
+              <strong>
+                <em>REMOVED</em>
+              </strong>
+            </span>
+          </>
+        )}
+      </>
+    );
+  }
+  // Case 5: None of the required parameters are available
+  return <>DISPLAY ERROR {newData}</>;
 };
 
 const showNumberDiff = (
@@ -377,7 +397,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           isAmendmentsAndOtherRevisionsSpecific
         );
       case "add":
-        return showStringAdded(
+        return showStringDiff(
           id,
           formData,
           latestCommittedValue,
@@ -386,7 +406,7 @@ const CUSTOM_DIFF_FIELDS: Record<
           isAmendmentsAndOtherRevisionsSpecific
         );
       case "remove":
-        return showStringRemoved(
+        return showStringDiff(
           id,
           previousValue,
           latestCommittedValue,
