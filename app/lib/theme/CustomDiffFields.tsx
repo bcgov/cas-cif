@@ -41,10 +41,10 @@ const overwriteNotification = (
     numberOfDecimalPlaces,
   } = specs;
 
-  const displayString = "Latest committed value: ";
+  const displayString = "";
 
   if (!latestCommittedData) {
-    return `${displayString}none`;
+    return `${displayString}Not Entered`;
   }
   if (latestCommittedData.isArray && latestCommittedData.length() === 0) {
     return `${displayString}none`;
@@ -96,24 +96,15 @@ const showStringDiff = (
       <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
         {isDate ? getLocaleFormattedDate(oldData) : oldData}
       </span>
-      {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {!isAmendmentsAndOtherRevisionsSpecific && (
-        <FontAwesomeIcon
-          className={"diff-arrow"}
-          size="lg"
-          color="black"
-          icon={faLongArrowAltRight}
-        />
-      )}
+      <FontAwesomeIcon
+        className={"diff-arrow"}
+        size="lg"
+        color="black"
+        icon={faLongArrowAltRight}
+      />
       <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
         {isDate ? getLocaleFormattedDate(newData) : newData}
       </span>
-      {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {/* Ultimately, we'll only show the latest committed value if there's a conflict, but show for now to facilitate manual testing. */}
-      {
-        // latestCommittedData && oldData && latestCommittedData !== oldData &&
-        overwriteNotification({ latestCommittedData, isDate })
-      }
     </>
   );
 };
@@ -132,39 +123,19 @@ const showStringAdded = (
 
   return (
     <>
-      <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-        {isDate ? getLocaleFormattedDate(newData) : newData}
-      </span>
-      {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      {isAmendmentsAndOtherRevisionsSpecific ? (
-        <span>
-          <em>(ADDED)</em>
-          <style jsx>{`
-            span {
-              color: #cd2026;
-            }
-          `}</style>
+      <>
+        {overwriteNotification({ latestCommittedData, isDate })}
+        <FontAwesomeIcon
+          className={"diff-arrow"}
+          size="lg"
+          color="black"
+          icon={faLongArrowAltRight}
+        />
+        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
+          {" "}
+          {newData} {"show string added"}
         </span>
-      ) : (
-        <>
-          <FontAwesomeIcon
-            className={"diff-arrow"}
-            size="lg"
-            color="black"
-            icon={faLongArrowAltRight}
-          />
-          <span>
-            <strong>
-              <em>ADDED</em>
-            </strong>
-          </span>
-        </>
-      )}
-
-      {
-        //   latestCommittedData &&
-        overwriteNotification({ latestCommittedData, isDate })
-      }
+      </>
     </>
   );
 };
@@ -196,15 +167,11 @@ const showStringRemoved = (
           />
           <span>
             <strong>
-              <em>REMOVED</em>
+              <em>REMOVED{"show string removed"}</em>
             </strong>
           </span>
         </>
       )}
-      {
-        // latestCommittedData && oldData && oldData !== latestCommittedData &&
-        overwriteNotification({ latestCommittedData, isDate })
-      }
     </>
   );
 };
@@ -260,17 +227,8 @@ const showNumberDiff = (
           displayType="text"
           value={newData}
         />
+        xx
       </span>
-      {
-        // latestCommittedData && oldData && latestCommittedData !== oldData &&
-        overwriteNotification({
-          latestCommittedData,
-          isNumber: true,
-          isMoney,
-          isPercentage,
-          numberOfDecimalPlaces,
-        })
-      }
     </>
   );
 };
@@ -325,16 +283,6 @@ const showNumberAdded = (
           </span>
         </>
       )}
-      {
-        // latestCommittedData &&
-        overwriteNotification({
-          latestCommittedData,
-          isNumber: true,
-          isMoney,
-          isPercentage,
-          numberOfDecimalPlaces,
-        })
-      }
     </>
   );
 };
@@ -379,22 +327,24 @@ const showNumberRemoved = (
           </span>
         </>
       )}
-      {
-        // latestCommittedData &&
-        //   oldData &&
-        //   oldData !== latestCommittedData &&
-        overwriteNotification({
-          latestCommittedData,
-          isNumber: true,
-          isMoney,
-          isPercentage,
-          numberOfDecimalPlaces,
-        })
-      }
     </>
   );
 };
-
+const getStringDiffType = (
+  prevValue: string,
+  newValue: string,
+  operation: string
+): string => {
+  if (operation === "ARCHIVE" || (!newValue && prevValue)) {
+    return "remove";
+  } else if (!prevValue && newValue && operation !== "ARCHIVE") {
+    return "add";
+  } else if (prevValue !== newValue && operation === "UPDATE") {
+    return "diff";
+  } else {
+    return "error";
+  }
+};
 const CUSTOM_DIFF_FIELDS: Record<
   string,
   React.FunctionComponent<FieldProps>
@@ -409,43 +359,43 @@ const CUSTOM_DIFF_FIELDS: Record<
     const isAmendmentsAndOtherRevisionsSpecific =
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
 
-    if (previousValue && formData && formContext.operation === "UPDATE") {
-      return showStringDiff(
-        id,
-        previousValue,
-        formData,
-        latestCommittedValue,
-        isDate,
-        contentSuffix as string,
-        isAmendmentsAndOtherRevisionsSpecific
-      );
-    } else if (
-      !previousValue &&
-      formData &&
-      formContext.operation !== "ARCHIVE"
-    ) {
-      return showStringAdded(
-        id,
-        formData,
-        latestCommittedValue,
-        isDate,
-        undefined,
-        isAmendmentsAndOtherRevisionsSpecific
-      );
-    } else if (
-      formContext.operation === "ARCHIVE" ||
-      (!formData && previousValue)
-    ) {
-      return showStringRemoved(
-        id,
-        previousValue,
-        latestCommittedValue,
-        isDate,
-        contentSuffix as string,
-        isAmendmentsAndOtherRevisionsSpecific
-      );
-    } else {
-      return <>DISPLAY ERROR</>;
+    const diffType = getStringDiffType(
+      previousValue,
+      formData,
+      formContext.operation
+    );
+
+    switch (diffType) {
+      case "diff":
+        return showStringDiff(
+          id,
+          previousValue,
+          formData,
+          latestCommittedValue,
+          isDate,
+          contentSuffix as string,
+          isAmendmentsAndOtherRevisionsSpecific
+        );
+      case "add":
+        return showStringAdded(
+          id,
+          formData,
+          latestCommittedValue,
+          isDate,
+          undefined,
+          isAmendmentsAndOtherRevisionsSpecific
+        );
+      case "remove":
+        return showStringRemoved(
+          id,
+          previousValue,
+          latestCommittedValue,
+          isDate,
+          contentSuffix as string,
+          isAmendmentsAndOtherRevisionsSpecific
+        );
+      default:
+        return <>DISPLAY ERROR</>;
     }
   },
   NumberField: (props) => {
