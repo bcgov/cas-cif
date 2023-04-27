@@ -1,3 +1,9 @@
+## [1.7.2](https://github.com/bcgov/cas-cif/compare/1.7.1...1.7.2) (2023-04-27)
+
+### Bug Fixes
+
+- rework migration function to fix equality check of migrated data ([469cdd9](https://github.com/bcgov/cas-cif/commit/469cdd908c4f3b975c6563ba977980abdd1c7ace))
+
 ## [1.7.1](https://github.com/bcgov/cas-cif/compare/1.7.0...1.7.1) (2023-04-27)
 
 ### Bug Fixes
