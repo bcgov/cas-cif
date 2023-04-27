@@ -285,3 +285,4 @@ migrations/004_delete_revision_type_minor_revision 2023-04-19T22:07:13Z Mike Ves
 mutations/commit_project_revision [mutations/commit_project_revision@1.6.0] 2023-04-06T23:09:06Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Allow project revisions to be committed without a change reason
 @1.7.0 2023-04-26T18:48:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.0
 @1.7.1 2023-04-27T18:19:45Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.1
+functions/migration_funding_parameter_form_changes_to_single_form_change [functions/migration_funding_parameter_form_changes_to_single_form_change@1.7.0] 2023-04-27T22:02:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Fixing the issue for checking the equality of the data after migration
