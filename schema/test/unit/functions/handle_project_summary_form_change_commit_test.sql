@@ -18,7 +18,8 @@ truncate table cif.form_change,
   cif.payment,
   cif.funding_parameter,
   cif.additional_funding_source,
-  cif.project_revision_amendment_type
+  cif.project_revision_amendment_type,
+  cif.project_attachment
 restart identity;
 
 insert into cif.operator (id, legal_name, trade_name, bc_registry_id, operator_code)
