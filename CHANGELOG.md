@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/bcgov/cas-cif/compare/1.7.0...1.7.1) (2023-04-27)
+
+### Bug Fixes
+
+- change sqitch plan order to fix additional funding sources migration ([360ae0c](https://github.com/bcgov/cas-cif/commit/360ae0c79a096d17290f61d4d747a3a592affd84))
+
 # [1.7.0](https://github.com/bcgov/cas-cif/compare/1.6.0...1.7.0) (2023-04-26)
 
 ### Bug Fixes
