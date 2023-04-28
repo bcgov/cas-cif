@@ -26,13 +26,5 @@ module.exports = {
     "edge-laptop-half-screen": new RemoteBrowserTarget("edge", {
       viewport: halfScreenViewport,
     }),
-    "safari-laptop": new RemoteBrowserTarget("safari", {
-      viewport: laptopViewport,
-      scrollStitch: true,
-    }),
-    "safari-laptop-half-screen": new RemoteBrowserTarget("safari", {
-      viewport: halfScreenViewport,
-      scrollStitch: true,
-    }),
   },
 };
