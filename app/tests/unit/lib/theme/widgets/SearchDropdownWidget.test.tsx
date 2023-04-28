@@ -45,4 +45,22 @@ describe("The SearchDropdown Widget", () => {
 
     expect(componentUnderTest.container).toMatchSnapshot();
   });
+
+  it("Returns 'No options' when no schema.anyOf is empty", () => {
+    const props: any = {
+      id: "1",
+      placeholder: "test placeholder",
+      onChange: jest.fn(),
+      label: "Search",
+      value: 1,
+      required: false,
+      schema: {
+        anyOf: [],
+      },
+    };
+
+    const componentUnderTest = render(<SearchDropdownWidget {...props} />);
+
+    expect(componentUnderTest.container).toMatchSnapshot();
+  });
 });
