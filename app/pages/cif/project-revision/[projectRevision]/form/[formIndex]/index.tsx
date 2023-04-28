@@ -1,5 +1,4 @@
 /* eslint-disable relay/must-colocate-fragment-spreads*/
-import { Button } from "@button-inc/bcgov-theme";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import TaskList from "components/TaskList";
 import { TaskListMode } from "components/TaskList/types";
@@ -82,9 +81,6 @@ export function ProjectFormPage({
   const formIndex = Number(router.query.formIndex);
 
   const {
-    handleCreateRevision,
-    isCreatingProjectRevision,
-    handleResumeRevision,
     handleSubmit,
     isRedirecting,
     isRedirectingToLatestRevision,
@@ -105,9 +101,6 @@ export function ProjectFormPage({
     true
   );
 
-  const existingRevision =
-    query.projectRevision?.projectByProjectId?.pendingGeneralRevision;
-
   if (
     isRedirecting ||
     isRedirectingNoFundingStream ||
@@ -115,27 +108,6 @@ export function ProjectFormPage({
     isRedirectingToValidFormIndex
   )
     return null;
-
-  const createEditButton = () => {
-    return (
-      <div>
-        <Button
-          className="edit-button"
-          onClick={
-            existingRevision ? handleResumeRevision : handleCreateRevision
-          }
-          disabled={isCreatingProjectRevision}
-        >
-          {existingRevision ? "Resume Edition" : "Edit"}
-        </Button>
-        <style jsx>{`
-          div :global(.edit-button) {
-            float: right;
-          }
-        `}</style>
-      </div>
-    );
-  };
 
   const taskList = (
     <TaskList projectRevision={query.projectRevision} mode={mode} />
@@ -147,7 +119,6 @@ export function ProjectFormPage({
     <DefaultLayout session={query.session} leftSideNav={taskList}>
       {query.projectRevision.changeStatus === "committed" && ViewComponent ? (
         <>
-          {createEditButton()}
           <ViewComponent
             projectRevision={query.projectRevision}
             viewOnly={true}
