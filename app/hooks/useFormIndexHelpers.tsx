@@ -7,7 +7,8 @@ import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjec
 import { useRouter } from "next/router";
 import {
   getProjectRevisionFormPageRoute,
-  getProjectRevisionPageRoute,
+  getProjectRevisionViewPageRoute,
+  getExternalProjectRevisionViewPageRoute,
 } from "routes/pageRoutes";
 
 export const useFormIndexHelpers = (
@@ -58,8 +59,14 @@ export const useFormIndexHelpers = (
   const formPages = isInternal ? internalFormPages : externalFormPages;
 
   const handleSubmit = () => {
+    // if the mode is update or this is the review and sumbit page
     if (mode === "update" || formIndex === formPages.length - 1) {
-      router.push(getProjectRevisionPageRoute(projectRevisionId, isInternal));
+      if (isInternal) {
+        router.push(getProjectRevisionViewPageRoute(projectRevisionId));
+      }
+      if (!isInternal) {
+        router.push(getExternalProjectRevisionViewPageRoute(projectRevisionId));
+      }
     } else {
       router.push(
         getProjectRevisionFormPageRoute(
