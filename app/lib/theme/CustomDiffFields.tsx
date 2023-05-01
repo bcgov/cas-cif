@@ -4,72 +4,31 @@ import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
+import Tooltip from "@mui/material/Tooltip";
+import InfoRounded from "@mui/icons-material/InfoRounded";
+import IconButton from "@mui/material/IconButton";
 
-const contentSuffixElement = (
-  id: string,
-  contentSuffix: string
-): JSX.Element => {
-  return (
-    <span
-      id={id && `${id}-contentSuffix`}
-      className="contentSuffix"
-      style={{ paddingLeft: "1em" }}
-    >
-      {contentSuffix}
-    </span>
-  );
-};
-
-interface OverwriteNotificationArgument {
-  latestCommittedData: any;
-  isNumber?: boolean;
-  isDate?: boolean;
-  isMoney?: boolean;
-  isPercentage?: boolean;
-  numberOfDecimalPlaces?: number;
-}
-
-const overwriteNotification = (
-  specs: OverwriteNotificationArgument
-): string | number | JSX.Element => {
-  const {
-    latestCommittedData,
-    isNumber,
-    isDate,
-    isMoney,
-    isPercentage,
-    numberOfDecimalPlaces,
-  } = specs;
-
-  const displayString = "";
-
-  if (!latestCommittedData) {
-    return `${displayString}Not Entered`;
-  }
-  if (latestCommittedData.isArray && latestCommittedData.length() === 0) {
-    return `${displayString}none`;
-  }
+const renderData = (
+  isDate: boolean | undefined,
+  isNumber: boolean | undefined,
+  data: string | undefined
+) => {
   if (isDate) {
-    return `${displayString}${getLocaleFormattedDate(latestCommittedData)}`;
+    return getLocaleFormattedDate(data);
   }
   if (isNumber) {
-    const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
     return (
-      <>
-        {displayString}
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={latestCommittedData}
-        />
-      </>
+      <NumberFormat
+        value={data}
+        displayType="text"
+        thousandSeparator
+        fixedDecimalScale={false}
+        decimalScale={0}
+        className="decimal"
+      />
     );
   }
-  return `${displayString}${latestCommittedData}`;
+  return data;
 };
 
 const showStringDiff = (
@@ -77,49 +36,29 @@ const showStringDiff = (
   oldData: string | undefined,
   newData: string | undefined,
   latestCommittedData: string | undefined,
-  isDate?: boolean,
+  isDate: boolean,
   contentSuffix?: string,
   isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
-  console.log("GURJ", oldData, newData, latestCommittedData, isDate);
-  // Case 1: Only new data is available
-  if (!oldData && newData && latestCommittedData && isDate !== undefined) {
-    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-      ? "diffAmendmentsAndOtherRevisionsNew"
-      : "diffReviewAndSubmitInformationNew";
+  const [diffOldClsName, diffNewClsName] = ["diffOld", "diffNew"];
+  const todo = contentSuffix;
+  console.log("todo", todo);
+
+  // Case 7 -> binary 111
+  if (oldData && newData && latestCommittedData) {
     return (
       <>
-        {overwriteNotification({ latestCommittedData, isDate })}
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          {renderData(isDate, false, latestCommittedData)}
+        </span>
         <FontAwesomeIcon
           className={"diff-arrow"}
           size="lg"
           color="black"
           icon={faLongArrowAltRight}
         />
-        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-          {" "}
-          {newData}
-        </span>
-      </>
-    );
-  }
-
-  // Case 2: Both old and new data are available
-  if (oldData && newData && latestCommittedData && isDate !== undefined) {
-    const [diffOldClsName, diffNewClsName] =
-      isAmendmentsAndOtherRevisionsSpecific
-        ? [
-            "diffAmendmentsAndOtherRevisionsOld",
-            "diffAmendmentsAndOtherRevisionsNew",
-          ]
-        : [
-            "diffReviewAndSubmitInformationOld",
-            "diffReviewAndSubmitInformationNew",
-          ];
-    return (
-      <>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+          {renderData(isDate, false, oldData)}
         </span>
         <FontAwesomeIcon
           className={"diff-arrow"}
@@ -128,72 +67,119 @@ const showStringDiff = (
           icon={faLongArrowAltRight}
         />
         <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {isDate ? getLocaleFormattedDate(newData) : newData}
+          {renderData(isDate, false, newData)}
+        </span>
+        <Tooltip title="">
+          <IconButton>
+            <InfoRounded fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </>
+    );
+  }
+  // case 6 -> binary 110
+  if (oldData && newData && !latestCommittedData) {
+    return <>ERROR SD: 6</>;
+  }
+
+  // Case 5 -> binary 101
+  if (oldData && !newData && latestCommittedData) {
+    return (
+      <>
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+        </span>
+        {!isAmendmentsAndOtherRevisionsSpecific && (
+          <>
+            <FontAwesomeIcon
+              className={"diff-arrow"}
+              size="lg"
+              color="black"
+              icon={faLongArrowAltRight}
+            />
+            <span>
+              <strong>
+                <em>REMOVED</em>
+              </strong>
+            </span>
+          </>
+        )}
+      </>
+    );
+  }
+  // Case 4 -> binary 100
+  if (oldData && !newData && !latestCommittedData) {
+    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
+      ? "diffAmendmentsAndOtherRevisionsOld"
+      : "diffReviewAndSubmitInformationOld";
+    return (
+      <>
+        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
+          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+        </span>
+        {!isAmendmentsAndOtherRevisionsSpecific && (
+          <>
+            <FontAwesomeIcon
+              className={"diff-arrow"}
+              size="lg"
+              color="black"
+              icon={faLongArrowAltRight}
+            />
+            <span>
+              <strong>
+                <em>REMOVED</em>
+              </strong>
+            </span>
+          </>
+        )}
+      </>
+    );
+  }
+  // Case 3 -> binary 011
+  if (!oldData && newData && latestCommittedData) {
+    return (
+      <>
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          {renderData(isDate, false, latestCommittedData)}
+        </span>
+        <FontAwesomeIcon
+          className={"diff-arrow"}
+          size="lg"
+          color="black"
+          icon={faLongArrowAltRight}
+        />
+        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
+          {renderData(isDate, false, newData)}
+        </span>
+        <Tooltip title="">
+          <IconButton>
+            <InfoRounded fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </>
+    );
+  }
+
+  // Case 2 -> binary 010
+  if (!oldData && newData && !latestCommittedData) {
+    return (
+      <>
+        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
+          {renderData(isDate, false, newData)}
         </span>
       </>
     );
   }
 
-  // Case 3: Only old data is available
-  if (oldData && !newData && latestCommittedData && isDate !== undefined) {
-    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-      ? "diffAmendmentsAndOtherRevisionsOld"
-      : "diffReviewAndSubmitInformationOld";
-    return (
-      <>
-        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-          {isDate ? getLocaleFormattedDate(oldData) : oldData}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {!isAmendmentsAndOtherRevisionsSpecific && (
-          <>
-            <FontAwesomeIcon
-              className={"diff-arrow"}
-              size="lg"
-              color="black"
-              icon={faLongArrowAltRight}
-            />
-            <span>
-              <strong>
-                <em>REMOVED</em>
-              </strong>
-            </span>
-          </>
-        )}
-      </>
-    );
+  // Case 1 -> binary 001
+  if (!oldData && !newData && latestCommittedData) {
+    return <>ERROR SD: 1</>;
   }
-  // Case 4: New data is unavailable ex: Revision Type
-  if (oldData && !newData && !latestCommittedData && !isDate) {
-    const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-      ? "diffAmendmentsAndOtherRevisionsOld"
-      : "diffReviewAndSubmitInformationOld";
-    return (
-      <>
-        <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-          {isDate ? getLocaleFormattedDate(oldData) : oldData}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {!isAmendmentsAndOtherRevisionsSpecific && (
-          <>
-            <FontAwesomeIcon
-              className={"diff-arrow"}
-              size="lg"
-              color="black"
-              icon={faLongArrowAltRight}
-            />
-            <span>
-              <strong>
-                <em>REMOVED</em>
-              </strong>
-            </span>
-          </>
-        )}
-      </>
-    );
+
+  // Case 0 -> binary 000
+  if (!oldData && !newData && !latestCommittedData) {
+    return <>ERROR SD: 0</>;
   }
-  // Case 5: None of the required parameters are available
-  return <>DISPLAY ERROR {newData}</>;
 };
 
 const showNumberDiff = (
@@ -207,15 +193,96 @@ const showNumberDiff = (
   isAmendmentsAndOtherRevisionsSpecific?: boolean
 ): JSX.Element => {
   const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
-  const [diffOldClsName, diffNewClsName] = isAmendmentsAndOtherRevisionsSpecific
-    ? [
-        "diffAmendmentsAndOtherRevisionsOld",
-        "diffAmendmentsAndOtherRevisionsNew",
-      ]
-    : [
-        "diffReviewAndSubmitInformationOld",
-        "diffReviewAndSubmitInformationNew",
-      ];
+  const [diffOldClsName, diffNewClsName] = ["diffOld", "diffNew"];
+
+  // case 7 -> binary 111
+  if (oldData && newData && latestCommittedData) {
+    return (
+      <>
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          <NumberFormat
+            thousandSeparator
+            fixedDecimalScale={true}
+            decimalScale={decimalScale}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercentage ? " %" : ""}
+            displayType="text"
+            value={latestCommittedData}
+          />
+        </span>
+        <FontAwesomeIcon
+          className={"diff-arrow"}
+          size="lg"
+          color="black"
+          icon={faLongArrowAltRight}
+        />
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          <NumberFormat
+            thousandSeparator
+            fixedDecimalScale={true}
+            decimalScale={decimalScale}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercentage ? " %" : ""}
+            displayType="text"
+            value={oldData}
+          />
+        </span>
+        <FontAwesomeIcon
+          className={"diff-arrow"}
+          size="lg"
+          color="black"
+          icon={faLongArrowAltRight}
+        />
+        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
+          <NumberFormat
+            thousandSeparator
+            fixedDecimalScale={true}
+            decimalScale={decimalScale}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercentage ? " %" : ""}
+            displayType="text"
+            value={newData}
+          />
+        </span>
+        <Tooltip title="">
+          <IconButton>
+            <InfoRounded fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </>
+    );
+  }
+  // case 6 -> binary 110
+  else if (oldData && newData && !latestCommittedData) {
+    return <>ERROR ND: 6</>;
+  }
+  // case 5 -> binary 101
+  else if (oldData && !newData && latestCommittedData) {
+    return <>ERROR ND: 5</>;
+  }
+  // case 4 -> binary 100
+  else if (oldData && !newData && !latestCommittedData) {
+    return <>ERROR ND: 4</>;
+  }
+  // Case 3 -> binary 011
+  else if (!oldData && newData && latestCommittedData) {
+    return <>ERROR ND: 3</>;
+  }
+
+  // Case 2 -> binary 010
+  else if (!oldData && newData && !latestCommittedData) {
+    return <>ERROR ND: 2</>;
+  }
+
+  // Case 1 -> binary 001
+  else if (!oldData && !newData && latestCommittedData) {
+    return <>ERROR ND: 1</>;
+  }
+
+  // Case 0 -> binary 000
+  else if (!oldData && !newData && !latestCommittedData) {
+    return <>ERROR: 0</>;
+  }
   return (
     <>
       <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
@@ -247,124 +314,11 @@ const showNumberDiff = (
           displayType="text"
           value={newData}
         />
-        xx
       </span>
     </>
   );
 };
 
-const showNumberAdded = (
-  id: string,
-  newData: number,
-  latestCommittedData: number,
-  isMoney: boolean,
-  isPercentage: boolean,
-  numberOfDecimalPlaces: number = 0,
-  isAmendmentsAndOtherRevisionsSpecific?: boolean
-): JSX.Element => {
-  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-    ? "diffAmendmentsAndOtherRevisionsNew"
-    : "diffReviewAndSubmitInformationNew";
-
-  return (
-    <>
-      <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={isMoney ? 2 : numberOfDecimalPlaces ?? 0}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={newData}
-        />
-      </span>
-      {isAmendmentsAndOtherRevisionsSpecific ? (
-        <span>
-          <em>(ADDED)</em>
-          <style jsx>{`
-            span {
-              color: #cd2026;
-            }
-          `}</style>
-        </span>
-      ) : (
-        <>
-          <FontAwesomeIcon
-            className={"diff-arrow"}
-            size="lg"
-            color="black"
-            icon={faLongArrowAltRight}
-          />
-          <span>
-            <strong>
-              <em>ADDED</em>
-            </strong>
-          </span>
-        </>
-      )}
-    </>
-  );
-};
-
-const showNumberRemoved = (
-  id: string,
-  oldData: number,
-  latestCommittedData: number,
-  isMoney: boolean,
-  isPercentage: boolean,
-  numberOfDecimalPlaces: number = 0,
-  isAmendmentsAndOtherRevisionsSpecific?: boolean
-): JSX.Element => {
-  const diffClsName = isAmendmentsAndOtherRevisionsSpecific
-    ? "diffAmendmentsAndOtherRevisionsOld"
-    : "diffReviewAndSubmitInformationOld";
-  return (
-    <>
-      <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={isMoney ? 2 : numberOfDecimalPlaces ?? 0}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={oldData}
-        />
-      </span>
-      {!isAmendmentsAndOtherRevisionsSpecific && (
-        <>
-          <FontAwesomeIcon
-            className={"diff-arrow"}
-            size="lg"
-            color="black"
-            icon={faLongArrowAltRight}
-          />
-          <span>
-            <strong>
-              <em>REMOVED</em>
-            </strong>
-          </span>
-        </>
-      )}
-    </>
-  );
-};
-const getStringDiffType = (
-  prevValue: string,
-  newValue: string,
-  operation: string
-): string => {
-  if (operation === "ARCHIVE" || (!newValue && prevValue)) {
-    return "remove";
-  } else if (!prevValue && newValue && operation !== "ARCHIVE") {
-    return "add";
-  } else if (prevValue !== newValue && operation === "UPDATE") {
-    return "diff";
-  } else {
-    return "error";
-  }
-};
 const CUSTOM_DIFF_FIELDS: Record<
   string,
   React.FunctionComponent<FieldProps>
@@ -379,176 +333,32 @@ const CUSTOM_DIFF_FIELDS: Record<
     const isAmendmentsAndOtherRevisionsSpecific =
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
 
-    const diffType = getStringDiffType(
+    return showStringDiff(
+      id,
       previousValue,
       formData,
-      formContext.operation
+      latestCommittedValue,
+      isDate,
+      contentSuffix as string,
+      isAmendmentsAndOtherRevisionsSpecific
     );
-
-    switch (diffType) {
-      case "diff":
-        return showStringDiff(
-          id,
-          previousValue,
-          formData,
-          latestCommittedValue,
-          isDate,
-          contentSuffix as string,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      case "add":
-        return showStringDiff(
-          id,
-          formData,
-          latestCommittedValue,
-          isDate,
-          undefined,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      case "remove":
-        return showStringDiff(
-          id,
-          previousValue,
-          latestCommittedValue,
-          isDate,
-          contentSuffix as string,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      default:
-        return <>DISPLAY ERROR</>;
-    }
   },
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const previousValue = formContext?.oldData?.[props.name];
     const latestCommittedValue = formContext?.latestCommittedData?.[props.name];
-    const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-    const isAmendmentsAndOtherRevisionsSpecific =
-      formContext?.isAmendmentsAndOtherRevisionsSpecific;
-
-    if (uiSchema["ui:options"]) {
-      const oldDataOptionText =
-        formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
-        previousValue;
-
-      const newDataOptionText = uiSchema["ui:options"].text || formData;
-
-      const latestCommittedDataOptionText =
-        formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]
-          ?.text || latestCommittedValue;
-
-      if (
-        previousValue !== null &&
-        previousValue !== undefined &&
-        formData !== null &&
-        formData !== undefined &&
-        formContext.operation === "UPDATE"
-      ) {
-        return showStringDiff(
-          id,
-          oldDataOptionText,
-          newDataOptionText as string,
-          latestCommittedDataOptionText,
-          false,
-          undefined,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else if (
-        (previousValue === null || previousValue === undefined) &&
-        formData &&
-        formContext.operation !== "ARCHIVE"
-      ) {
-        // const newData = uiSchema["ui:options"].text || formData;
-        return showStringAdded(
-          id,
-          newDataOptionText,
-          latestCommittedDataOptionText,
-          false,
-          contentSuffix as string,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else if (
-        formContext.operation === "ARCHIVE" ||
-        ((formData === null || formData === undefined) &&
-          previousValue !== null &&
-          previousValue !== undefined)
-      ) {
-        // const oldData =
-        //   formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
-        //   formContext?.oldData?.[props.name];
-        return showStringRemoved(
-          id,
-          oldDataOptionText,
-          latestCommittedDataOptionText,
-          false,
-          contentSuffix as string,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else if (
-        !previousValue &&
-        !formData &&
-        formContext.operation === "CREATE"
-      ) {
-        return showStringAdded(
-          id,
-          (uiSchema["ui:options"].text as string) ?? formData,
-          latestCommittedDataOptionText,
-          isDate,
-          contentSuffix as string,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else {
-        return <>DISPLAY ERROR</>;
-      }
-    } else {
-      if (
-        previousValue !== undefined &&
-        formData !== undefined &&
-        formContext.operation === "UPDATE"
-      ) {
-        return showNumberDiff(
-          id,
-          formContext?.oldData?.[props.name],
-          formData,
-          latestCommittedValue,
-          uiSchema?.isMoney,
-          uiSchema?.isPercentage,
-          uiSchema?.numberOfDecimalPlaces,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else if (
-        !previousValue &&
-        formData !== undefined &&
-        formContext.operation !== "ARCHIVE"
-      ) {
-        return showNumberAdded(
-          id,
-          formData,
-          latestCommittedValue,
-          uiSchema?.isMoney,
-          uiSchema?.isPercentage,
-          uiSchema?.numberOfDecimalPlaces,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else if (
-        formContext.operation === "ARCHIVE" ||
-        (!formData && previousValue !== undefined)
-      ) {
-        return showNumberRemoved(
-          id,
-          formContext?.oldData?.[props.name],
-          latestCommittedValue,
-          uiSchema?.isMoney,
-          uiSchema?.isPercentage,
-          uiSchema?.numberOfDecimalPlaces,
-          isAmendmentsAndOtherRevisionsSpecific
-        );
-      } else {
-        return <>DISPLAY ERROR</>;
-      }
-    }
+    console.log("TODO", contentSuffix);
+    return showNumberDiff(
+      id,
+      previousValue,
+      formData,
+      latestCommittedValue,
+      uiSchema?.isMoney,
+      uiSchema?.isPercentage,
+      uiSchema?.numberOfDecimalPlaces
+    );
   },
 };
 
