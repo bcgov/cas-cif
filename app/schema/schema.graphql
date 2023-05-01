@@ -44452,6 +44452,9 @@ type FormChange implements Node {
     orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionIdManyToManyConnection!
 
+  """Computed column to determine the rank of a project"""
+  rank: Int
+
   """
   A computed column to return the status for a reporting requirement form_change record based on the report_due_date and submitted_date
   """
@@ -44823,6 +44826,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `projectRevisionId` field."""
   projectRevisionId: IntFilter
+
+  """Filter by the object’s `rank` field."""
+  rank: IntFilter
 
   """Filter by the object’s `reportingRequirementStatus` field."""
   reportingRequirementStatus: StringFilter
