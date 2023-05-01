@@ -21,6 +21,8 @@ import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { useState } from "react";
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
+import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
+import { utils } from "@rjsf/core";
 
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
@@ -149,7 +151,9 @@ export function ProjectRevisionView({
         ? node.name !== "Draft"
         : !node.isAmendmentSpecific
   );
-
+  const { fields } = utils.getDefaultRegistry();
+  const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
+  console.log("GURJ", customFields);
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
@@ -160,20 +164,21 @@ export function ProjectRevisionView({
         </header>
         <div>
           <FormBase
-            id={`form-${projectRevision.id}`}
-            tagName={"dl"}
             className="project-revision-view-form"
+            fields={customFields}
+            formContext={{ projectRevision, query }}
+            formData={formData}
+            id={`form-${projectRevision.id}`}
+            ObjectFieldTemplate={EmptyObjectFieldTemplate}
+            onChange={onChange}
             schema={createProjectRevisionViewSchema(
               allRevisionTypes.edges,
               filteredRevisionStatuses,
               projectRevision.revisionType
             )}
-            uiSchema={createProjectRevisionUISchema()}
-            ObjectFieldTemplate={EmptyObjectFieldTemplate}
+            tagName={"dl"}
             theme={readOnlyTheme}
-            onChange={onChange}
-            formData={formData}
-            formContext={{ projectRevision, query }}
+            uiSchema={createProjectRevisionUISchema()}
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,
