@@ -8,7 +8,7 @@ import { createProjectUiSchema } from "./ProjectForm";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/getFilteredSchema";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
 import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
@@ -27,14 +27,13 @@ const ProjectFormSummary: React.FC<Props> = ({
   const {
     projectFormChange,
     isFirstRevision,
-    rank,
     latestCommittedProjectFormChanges,
   } = useFragment(
     graphql`
       fragment ProjectFormSummary_projectRevision on ProjectRevision {
         isFirstRevision
-        rank
         projectFormChange {
+          rank
           newFormData
           operation
           isPristine
@@ -54,6 +53,7 @@ const ProjectFormSummary: React.FC<Props> = ({
             }
           }
           formChangeByPreviousFormChangeId {
+            rank
             newFormData
             asProject {
               operatorByOperatorId {
@@ -107,6 +107,11 @@ const ProjectFormSummary: React.FC<Props> = ({
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
 
+  const oldData = {
+    ...projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
+    rank: projectFormChange.formChangeByPreviousFormChangeId?.rank,
+  };
+
   const newDataAsProject = projectFormChange.asProject;
   const previousDataAsProject =
     projectFormChange.formChangeByPreviousFormChangeId?.asProject;
@@ -135,7 +140,20 @@ const ProjectFormSummary: React.FC<Props> = ({
         formSchema: projectSchema,
         formData: projectFormChange.newFormData,
       }
-    : getFilteredSchema(projectSchema as JSONSchema7, projectFormChange);
+    : {
+        ...getSchemaAndDataIncludingCalculatedValues(
+          projectSchema as JSONSchema7,
+
+          { ...projectFormChange?.newFormData, rank: projectFormChange.rank },
+          oldData,
+          {
+            rank: {
+              type: "number",
+              title: "Rank",
+            },
+          }
+        ),
+      };
 
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
@@ -177,9 +195,8 @@ const ProjectFormSummary: React.FC<Props> = ({
           )}
           formData={formData}
           formContext={{
-            calculatedRank: rank,
-            oldData:
-              projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
+            calculatedRank: projectFormChange.rank,
+            oldData,
             oldUiSchema,
             latestCommittedData: latestCommittedProjectData?.newFormData,
             latestCommittedUiSchema,
