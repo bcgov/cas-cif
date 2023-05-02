@@ -49,9 +49,9 @@ $$;
 select is(
   (
     with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=9
-    ) select * from cif.project_revision_rank((select * from record))
+      select row(form_change.*)::cif.form_change
+      from cif.form_change where id=9
+    ) select * from cif.form_change_rank((select * from record))
   ),
   null,
   'Returns a null rank where a project has no score.'
@@ -60,9 +60,9 @@ select is(
 select is(
   (
     with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=10
-    ) select * from cif.project_revision_rank((select * from record))
+      select row(form_change.*)::cif.form_change
+      from cif.form_change where id=10
+    ) select * from cif.form_change_rank((select * from record))
   ),
   1,
   'Returns the correct rank (only ranking against projects in the same year and funding stream) when a project has a tied score.'
@@ -71,9 +71,9 @@ select is(
 select is(
   (
     with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=8
-    ) select * from cif.project_revision_rank((select * from record))
+      select row(form_change.*)::cif.form_change
+      from cif.form_change where id=8
+    ) select * from cif.form_change_rank((select * from record))
   ),
   3,
   'Returns the correct rank when scoring the first revision of a project (no project id in database)'
@@ -86,9 +86,9 @@ select cif.commit_project_revision(8);
 select is(
   (
     with record as (
-      select row(project_revision.*)::cif.project_revision
-      from cif.project_revision where id=8
-    ) select * from cif.project_revision_rank((select * from record))
+      select row(form_change.*)::cif.form_change
+      from cif.form_change where id=8
+    ) select * from cif.form_change_rank((select * from record))
   ),
   3,
   'Returns the correct rank when scoring a subsequent revision of a project'
