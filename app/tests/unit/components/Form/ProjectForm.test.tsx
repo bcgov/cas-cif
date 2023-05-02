@@ -20,9 +20,8 @@ const testQuery = graphql`
 const mockQueryPayload = {
   ProjectRevision() {
     const result = {
-      // rank needs to be placed here because for any nested ProjectRevision type, the Relay testing environment uses this top-level ProjectRevision() generator
-      rank: 123,
       projectFormChange: {
+        rank: 123,
         changeStatus: "pending",
         rowId: 1,
         id: "Test Project Form Change ID",

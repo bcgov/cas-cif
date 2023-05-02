@@ -117,13 +117,11 @@ const ProjectForm: React.FC<Props> = (props) => {
       fragment ProjectForm_projectRevision on ProjectRevision {
         projectFormChange {
           id
+          rank
           rowId
           newFormData
           changeStatus
           isUniqueValue(columnName: "proposalReference")
-          projectRevisionByProjectRevisionId {
-            rank
-          }
           asProject {
             fundingStreamRfpByFundingStreamRfpId {
               year
@@ -375,9 +373,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           query,
           form: revision.projectFormChange.newFormData,
           operatorCode: selectedOperator?.node?.operatorCode,
-          calculatedRank:
-            revision.projectFormChange.projectRevisionByProjectRevisionId
-              .rank ?? null,
+          calculatedRank: revision.projectFormChange.rank ?? null,
           projectRevision: revision,
         }}
         widgets={{
