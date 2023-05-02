@@ -20,12 +20,14 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /edit/i }).should("be.visible");
     cy.findByRole("button", { name: /edit/i }).click();
 
-    // edit overview -- change project name
+    // edit overview -- change project name and score
 
     cy.findByLabelText(/Project Name/i)
       .should("have.value", "Test EP Project 001")
       .clear()
       .type("Bar");
+
+    cy.findByLabelText(/Score/i).should("have.value", 1).clear().type(99);
 
     cy.contains("Changes saved.").should("be.visible");
     cy.findByText("Edit Project Overview")
@@ -194,6 +196,24 @@ describe("when editing a project, the project page", () => {
     cy.get("#root_projectName-diffReviewAndSubmitInformationNew").should(
       "have.text",
       "Bar"
+    );
+
+    cy.get("#root_score-diffReviewAndSubmitInformationOld").should(
+      "have.text",
+      "1.000"
+    );
+    cy.get("#root_score-diffReviewAndSubmitInformationNew").should(
+      "have.text",
+      "99.000"
+    );
+
+    cy.get("#root_rank-diffReviewAndSubmitInformationOld").should(
+      "have.text",
+      50
+    );
+    cy.get("#root_rank-diffReviewAndSubmitInformationNew").should(
+      "have.text",
+      1
     );
 
     cy.get("#root_cifUserId-diffReviewAndSubmitInformationOld").should(
