@@ -20,7 +20,7 @@ export default function useRedirectToValidFormIndex(
         pathname: router.pathname,
         query: {
           ...router.query,
-          fornIndex: 0,
+          formIndex: 0,
         },
       });
   }, [formIndex, formPagesLength, router]);
