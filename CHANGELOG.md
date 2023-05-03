@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/bcgov/cas-cif/compare/1.7.2...1.7.3) (2023-05-02)
+
+### Bug Fixes
+
+- fix migration equality in-place ([ee4e09c](https://github.com/bcgov/cas-cif/commit/ee4e09c7b07dd12a36092460b62c64f037f51f4e))
+- set default value for options in widget when no schema.anyOf ([ea0c8c3](https://github.com/bcgov/cas-cif/commit/ea0c8c3fc697ddb2eaa9fe7befe039e8355407ab))
+
 ## [1.7.2](https://github.com/bcgov/cas-cif/compare/1.7.1...1.7.2) (2023-04-27)
 
 ### Bug Fixes

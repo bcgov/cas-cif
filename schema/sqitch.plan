@@ -286,3 +286,4 @@ mutations/commit_project_revision [mutations/commit_project_revision@1.6.0] 2023
 @1.7.0 2023-04-26T18:48:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.0
 @1.7.1 2023-04-27T18:19:45Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.1
 @1.7.2 2023-04-27T22:51:18Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.2
+@1.7.3 2023-05-02T23:54:44Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.3
