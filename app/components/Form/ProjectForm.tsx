@@ -98,7 +98,7 @@ export const createProjectUiSchema = (
       calculatedValueFormContextProperty: "calculatedRank",
       hideOptional: true,
       message:
-        "Enter a project score to see the ranking compared to other scored projects.",
+        "Enter 'Score' first to see the rank of this project compared to others",
     },
     comments: {
       "ui:widget": "TextAreaWidget",
