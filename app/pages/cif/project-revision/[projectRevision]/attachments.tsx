@@ -12,28 +12,31 @@ import { FilePicker } from "@button-inc/bcgov-theme";
 import { useCreateAttachment } from "mutations/attachment/createAttachment";
 import bytesToSize from "lib/helpers/bytesToText";
 import LoadingSpinner from "components/LoadingSpinner";
-import { useArchiveAttachment } from "mutations/attachment/archiveAttachment";
+import { useAddProjectAttachmentToRevision } from "mutations/attachment/addProjectAttachmentToRevision";
 
-const pageQuery = graphql`
+const AttachmentsQuery = graphql`
   query attachmentsQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
     projectRevision(id: $projectRevision) {
+      rowId
       project: projectByProjectId {
         projectName
         rowId
-        attachments: attachmentsByProjectId(
-          first: 2147483647
-          filter: { archivedAt: { equalTo: null } }
-        ) @connection(key: "connection_attachments") {
-          __id
-          totalCount
-          edges {
-            node {
-              file
-              ...AttachmentTableRow_attachment
-            }
+      }
+      projectAttachmentFormChanges: formChangesFor(
+        first: 500
+        formDataTableName: "project_attachment"
+        filter: { operation: { notEqualTo: ARCHIVE } }
+      ) @connection(key: "connection_projectAttachmentFormChanges") {
+        __id
+        totalCount
+        edges {
+          node {
+            id
+            rowId
+            newFormData
           }
         }
       }
@@ -55,47 +58,45 @@ export function ProjectAttachments({
   preloadedQuery,
 }: RelayProps<{}, attachmentsQuery>) {
   const { session, projectRevision } = usePreloadedQuery(
-    pageQuery,
+    AttachmentsQuery,
     preloadedQuery
   );
-
   const [createAttachment, isCreatingAttachment] = useCreateAttachment();
-  const [archiveAttachment, isArchivingAttachment] = useArchiveAttachment();
+  const [addProjectAttachment, isCreatingProjectAttachment] =
+    useAddProjectAttachmentToRevision();
 
   const isRedirecting = useRedirectTo404IfFalsy(projectRevision);
   if (isRedirecting) return null;
 
-  const saveAttachment = async (e) => {
-    const file = e.target.files[0];
-    const variables = {
-      input: {
-        attachment: {
-          file: file,
-          fileName: file.name,
-          fileSize: bytesToSize(file.size),
-          fileType: file.type,
+  const addProjectAttachmentFormChange = async (attachmentId) => {
+    await addProjectAttachment({
+      variables: {
+        input: {
           projectId: projectRevision.project.rowId,
+          attachmentId,
+          revisionId: projectRevision.rowId,
         },
+        connections: [projectRevision.projectAttachmentFormChanges.__id],
       },
-      connections: [projectRevision.project.attachments.__id],
-    };
-    createAttachment({
-      variables,
-      onError: (err) => console.error(err),
     });
   };
 
-  const archiveAttachmentByID = (id: string) => {
-    archiveAttachment({
+  const saveAttachment = async (e) => {
+    const file = e.target.files[0];
+    await createAttachment({
       variables: {
-        connections: [projectRevision.project.attachments.__id],
         input: {
-          id,
-          attachmentPatch: {
-            archivedAt: new Date().toISOString(),
+          attachment: {
+            file,
+            fileName: file.name,
+            fileSize: bytesToSize(file.size),
+            fileType: file.type,
           },
         },
       },
+      onCompleted: (data) =>
+        addProjectAttachmentFormChange(data.createAttachment.attachment.rowId),
+      onError: (err) => console.error(err),
     });
   };
 
@@ -105,7 +106,7 @@ export function ProjectAttachments({
     <DefaultLayout session={session} leftSideNav={taskList}>
       <h2>{projectRevision.project.projectName}</h2>
       <h3>Attachments List</h3>
-      {isCreatingAttachment ? (
+      {isCreatingAttachment || isCreatingProjectAttachment ? (
         <div>
           <div className="loadingSpinnerContainer">
             <LoadingSpinner></LoadingSpinner>
@@ -119,16 +120,16 @@ export function ProjectAttachments({
       )}
       <Table
         paginated
-        totalRowCount={projectRevision.project.attachments.totalCount}
+        totalRowCount={projectRevision.projectAttachmentFormChanges.totalCount}
         filters={tableFilters}
-        pageQuery={pageQuery}
+        pageQuery={AttachmentsQuery}
       >
-        {projectRevision.project.attachments.edges.map(({ node }) => (
+        {projectRevision.projectAttachmentFormChanges.edges.map(({ node }) => (
           <AttachmentTableRow
-            key={node.file}
-            attachment={node}
-            isArchivingAttachment={isArchivingAttachment}
-            archiveAttachmentByID={archiveAttachmentByID}
+            key={node.id}
+            attachmentRowId={node.newFormData?.attachmentId}
+            formChangeRowId={node.rowId}
+            connectionId={projectRevision.projectAttachmentFormChanges.__id}
           />
         ))}
       </Table>
@@ -151,4 +152,8 @@ export function ProjectAttachments({
   );
 }
 
-export default withRelay(ProjectAttachments, pageQuery, withRelayOptions);
+export default withRelay(
+  ProjectAttachments,
+  AttachmentsQuery,
+  withRelayOptions
+);

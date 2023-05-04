@@ -1,19 +1,44 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
 import { getAttachmentDownloadRoute } from "routes/pageRoutes";
-import { useFragment, graphql } from "react-relay";
-import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
+import { graphql, useLazyLoadQuery } from "react-relay";
+import { AttachmentTableRowQuery } from "__generated__/AttachmentTableRowQuery.graphql";
+import useDeleteProjectAttachmentFormChange from "mutations/attachment/archiveProjectAttachmentFormChange";
+
 interface Props {
-  attachment: AttachmentTableRow_attachment$key;
-  isArchivingAttachment: boolean;
-  archiveAttachmentByID: (id: string) => void;
+  attachmentRowId: number;
+  connectionId: string;
+  formChangeRowId: number;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
-  attachment,
-  isArchivingAttachment,
-  archiveAttachmentByID,
+  attachmentRowId,
+  connectionId,
+  formChangeRowId,
 }) => {
+  const [
+    archiveProjectAttachmentFormChange,
+    isArchivingProjectAttachmentFormChange,
+  ] = useDeleteProjectAttachmentFormChange();
+
+  const { attachmentByRowId } = useLazyLoadQuery<AttachmentTableRowQuery>(
+    graphql`
+      query AttachmentTableRowQuery($id: Int!) {
+        attachmentByRowId(rowId: $id) {
+          id
+          fileName
+          fileType
+          fileSize
+          createdAt
+          cifUserByCreatedBy {
+            fullName
+          }
+        }
+      }
+    `,
+    { id: attachmentRowId }
+  );
+
   const {
     id,
     fileName,
@@ -21,24 +46,20 @@ const AttachmentTableRow: React.FC<Props> = ({
     fileSize,
     createdAt,
     cifUserByCreatedBy: { fullName },
-  } = useFragment(
-    graphql`
-      fragment AttachmentTableRow_attachment on Attachment {
-        id
-        fileName
-        fileType
-        fileSize
-        createdAt
-        cifUserByCreatedBy {
-          fullName
-        }
-      }
-    `,
-    attachment
-  );
+  } = attachmentByRowId;
 
   const handleArchiveAttachment = () => {
-    archiveAttachmentByID(id);
+    archiveProjectAttachmentFormChange({
+      variables: {
+        input: {
+          rowId: formChangeRowId,
+          formChangePatch: {
+            operation: "ARCHIVE",
+          },
+        },
+        connections: [connectionId],
+      },
+    });
   };
 
   return (
@@ -55,7 +76,7 @@ const AttachmentTableRow: React.FC<Props> = ({
           </Link>
           <Button
             onClick={handleArchiveAttachment}
-            disabled={isArchivingAttachment}
+            disabled={isArchivingProjectAttachmentFormChange}
             size="small"
           >
             Delete
