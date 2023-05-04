@@ -13,7 +13,7 @@ interface SelectParentComponentProps extends WidgetProps {
   parent: EntitySchema;
   child: EntitySchema;
   foreignKey: string;
-  displayIfChildrenEmpty: string | number;
+  isInternal: boolean;
 }
 
 const SelectParentWidget: React.FunctionComponent<
@@ -28,27 +28,48 @@ const SelectParentWidget: React.FunctionComponent<
     parent,
     child,
     foreignKey,
-    displayIfChildrenEmpty,
+    isInternal,
   } = props;
 
-  const parentValue =
-    child.list.find((opt) => opt.rowId == parseInt(value))?.[foreignKey] || "";
-  const [selectedParentId, setSelectedParentId] = useState(parentValue);
+  const {
+    list: childList,
+    displayField: childDisplayField,
+    label: childLabel,
+    placeholder: childPlaceholder,
+  } = child;
+
+  const {
+    list: parentList,
+    displayField: parentDisplayField,
+    label: parentLabel,
+    placeholder: parentPlaceholder,
+  } = parent;
+
+  const parentValue = childList.find((opt) => opt.rowId == parseInt(value))?.[
+    foreignKey
+  ];
+  const [selectedParentId, setSelectedParentId] = useState(parentValue); //fundingStreamId
 
   const onParentChange = (e) => {
-    onChange(undefined);
-    setSelectedParentId(parseInt(e.target.value) || undefined);
+    // If the parent is changed, we need to reset the child value to undefined
+    // but we keep the previous behavior if this widget is being used for external users since we only show the current year
+    const newParentValue = parseInt(e.target.value) || undefined;
+    onChange(
+      isInternal
+        ? undefined
+        : childList.reverse().find((opt) => opt[foreignKey] === newParentValue)
+            ?.rowId
+    );
+    setSelectedParentId(newParentValue);
   };
 
   const childOptions = useMemo(() => {
-    return child.list.filter((opt) => {
-      return opt[foreignKey] === selectedParentId;
-    });
-  }, [child, foreignKey, selectedParentId]);
+    return childList.filter((opt) => opt[foreignKey] === selectedParentId);
+  }, [childList, foreignKey, selectedParentId]);
 
   return (
     <div>
-      <label htmlFor={`select-parent-dropdown-${id}`}>{parent.label}</label>
+      <label htmlFor={`select-parent-dropdown-${id}`}>{parentLabel}</label>
       <Dropdown
         id={`select-parent-dropdown-${id}`}
         onChange={onParentChange}
@@ -57,18 +78,18 @@ const SelectParentWidget: React.FunctionComponent<
         value={selectedParentId}
       >
         <option key={`option-placeholder-${id}`} value={undefined}>
-          {parent.placeholder}
+          {parentPlaceholder}
         </option>
-        {parent.list.map((opt) => {
+        {parentList.map((opt) => {
           return (
             <option key={opt.rowId} value={opt.rowId}>
-              {opt[parent.displayField]}
+              {opt[parentDisplayField]}
             </option>
           );
         })}
       </Dropdown>
 
-      <label htmlFor={`select-child-dropdown-${id}`}>{child.label}</label>
+      <label htmlFor={`select-child-dropdown-${id}`}>{childLabel}</label>
       <Dropdown
         id={`select-child-dropdown-${id}`}
         onChange={(e) => onChange(parseInt(e.target.value) || undefined)}
@@ -76,22 +97,18 @@ const SelectParentWidget: React.FunctionComponent<
         required={required}
         value={value}
       >
-        {child.placeholder && (
+        {childPlaceholder && (
           <option key={`option-placeholder-${id}`} value={undefined}>
-            {child.placeholder}
+            {childPlaceholder}
           </option>
         )}
-        {displayIfChildrenEmpty && childOptions.length === 0 ? (
-          <option>{displayIfChildrenEmpty}</option>
-        ) : (
-          childOptions.map((opt) => {
-            return (
-              <option key={opt.rowId} value={opt.rowId}>
-                {opt[child.displayField]}
-              </option>
-            );
-          })
-        )}
+        {childOptions.map((opt) => {
+          return (
+            <option key={opt.rowId} value={opt.rowId}>
+              {opt[childDisplayField]}
+            </option>
+          );
+        })}
       </Dropdown>
       <style jsx>
         {`
