@@ -77,6 +77,7 @@ const ProjectFormSummary: React.FC<Props> = ({
         ) {
           edges {
             node {
+              rank
               newFormData
               asProject {
                 operatorByOperatorId {
@@ -101,8 +102,10 @@ const ProjectFormSummary: React.FC<Props> = ({
     projectRevision
   );
 
-  const latestCommittedProjectData =
-    latestCommittedProjectFormChanges?.edges[0]?.node;
+  const latestCommittedData = {
+    ...latestCommittedProjectFormChanges?.edges[0]?.node?.newFormData,
+    rank: latestCommittedProjectFormChanges?.edges[0]?.node?.rank,
+  };
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
@@ -125,12 +128,12 @@ const ProjectFormSummary: React.FC<Props> = ({
       )
     : null;
 
-  const latestCommittedUiSchema = latestCommittedProjectData?.asProject
+  const latestCommittedUiSchema = latestCommittedData?.asProject
     ? createProjectUiSchema(
-        latestCommittedProjectData.asProject.operatorByOperatorId.legalName,
-        `${latestCommittedProjectData.asProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedProjectData.asProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
-        latestCommittedProjectData.asProject.operatorByOperatorId.bcRegistryId,
-        latestCommittedProjectData.asProject.projectStatusByProjectStatusId.name
+        latestCommittedData.asProject.operatorByOperatorId.legalName,
+        `${latestCommittedData.asProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedData.asProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+        latestCommittedData.asProject.operatorByOperatorId.bcRegistryId,
+        latestCommittedData.asProject.projectStatusByProjectStatusId.name
       )
     : null;
 
@@ -198,7 +201,7 @@ const ProjectFormSummary: React.FC<Props> = ({
             calculatedRank: projectFormChange.rank,
             oldData,
             oldUiSchema,
-            latestCommittedData: latestCommittedProjectData?.newFormData,
+            latestCommittedData,
             latestCommittedUiSchema,
             operation: projectFormChange.operation,
             isAmendmentsAndOtherRevisionsSpecific:
