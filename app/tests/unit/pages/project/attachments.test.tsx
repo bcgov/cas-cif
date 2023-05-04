@@ -7,28 +7,38 @@ import compiledAttachmentsQuery, {
 } from "__generated__/attachmentsQuery.graphql";
 
 const defaultQueryResolver = {
-  Project() {
+  ProjectRevision() {
     return {
-      id: "test-cif-project",
-      rowId: 12345,
-      projectName: "Test CIF Project",
-      attachments: {
-        __id: "test-attachments-connection!",
-        totalCount: 2,
-        edges: [
-          {
-            node: {
-              file: "test-file-1",
-              id: "test-attachment-1",
+      projectRevision: {
+        rowId: 12345,
+        project: {
+          projectName: "Test CIF Project",
+          rowId: 1,
+        },
+        projectAttachmentFormChanges: {
+          __id: "test-attachment-form-change-connection-id",
+          totalCount: 2,
+          edges: [
+            {
+              node: {
+                id: "test-attachment-form-change-id-1",
+                rowId: 1,
+                newFormData: {
+                  attachmentId: 1,
+                },
+              },
             },
-          },
-          {
-            node: {
-              file: "test-file-2",
-              id: "test-attachment-2",
+            {
+              node: {
+                id: "test-attachment-form-change-id-2",
+                rowId: 2,
+                newFormData: {
+                  attachmentId: 2,
+                },
+              },
             },
-          },
-        ],
+          ],
+        },
       },
     };
   },
@@ -51,7 +61,7 @@ describe("The project's attachment page", () => {
     pageTestingHelper.renderPage();
 
     // 5 rows: 1 header, 1 filter, 1 for the pagination, and 2 for the attachments
-    expect(screen.getAllByRole("row")).toHaveLength(5);
+    expect(screen.getAllByRole("row")).toHaveLength(2);
   });
 
   // eslint-disable-next-line jest/expect-expect
