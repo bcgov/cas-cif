@@ -24,6 +24,14 @@ import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 import ChangeReasonWidget from "components/ProjectRevision/ChangeReasonWidget";
 import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
 
+import DangerAlert from "lib/theme/ConfirmationAlert";
+import { Button } from "@button-inc/bcgov-theme";
+import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
+import { getProjectRevisionPageRoute } from "routes/pageRoutes";
+
 const createProjectRevisionViewSchema = (
   allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
   allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"],
@@ -75,6 +83,7 @@ export const ViewProjectRevisionQuery = graphql`
     projectRevision(id: $projectRevision) {
       ...NotifyModal_projectRevision
       id
+      rowId
       revisionType
       createdAt
       revisionStatus
@@ -92,6 +101,7 @@ export const ViewProjectRevisionQuery = graphql`
       changeReason
       projectByProjectId {
         latestCommittedProjectRevision {
+          id
           ...TaskList_projectRevision
         }
       }
@@ -125,11 +135,17 @@ export const ViewProjectRevisionQuery = graphql`
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
+  const router = useRouter();
   const query = usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     query;
 
   const [formData, setFormData] = useState(projectRevision);
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+
+  const [discardProjectRevision, discardingProjectRevision] =
+    useDeleteProjectRevisionMutation();
+
   const onChange = (e) => {
     setFormData(e.formData);
   };
@@ -153,6 +169,28 @@ export function ProjectRevisionView({
         ? node.name !== "Draft"
         : !node.isAmendmentSpecific
   );
+
+  // TODO create reusable discard revision component
+  const discardRevision = async () => {
+    await discardProjectRevision({
+      variables: {
+        input: {
+          revisionId: query.projectRevision.rowId,
+        },
+      },
+      onCompleted: async () => {
+        await router.push(
+          getProjectRevisionPageRoute(
+            query.projectRevision.projectByProjectId
+              .latestCommittedProjectRevision.id
+          )
+        );
+      },
+      onError: async (e) => {
+        console.error("Error discarding the project", e);
+      },
+    });
+  };
 
   return (
     <>
@@ -211,6 +249,27 @@ export function ProjectRevisionView({
               )}
             </dd>
           </div>
+          <div className="discard-revision-button">
+            {showDiscardConfirmation && (
+              <DangerAlert
+                onProceed={discardRevision}
+                onCancel={() => setShowDiscardConfirmation(false)}
+                alertText="All changes made will be permanently deleted."
+              />
+            )}
+            {!showDiscardConfirmation && (
+              <Button
+                id="discard-project-button"
+                size="small"
+                variant="secondary"
+                onClick={() => setShowDiscardConfirmation(true)}
+                disabled={discardingProjectRevision}
+              >
+                <FontAwesomeIcon icon={faTrash} id="discard-project-icon" />
+                Discard Project Revision
+              </Button>
+            )}
+          </div>
         </div>
       </DefaultLayout>
       <style jsx>{`
@@ -229,6 +288,10 @@ export function ProjectRevisionView({
         div :global(.revision-record-history-section > dd > em) {
           font-weight: bold;
           font-size: 0.9em;
+        }
+        .discard-revision-button {
+          margin-top: 1rem;
+          margin-bottom: 1rem;
         }
       `}</style>
     </>
