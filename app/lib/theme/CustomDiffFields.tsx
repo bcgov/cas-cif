@@ -535,6 +535,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     } else {
       if (
         previousValue !== undefined &&
+        previousValue !== null &&
         formData !== undefined &&
         formContext.operation === "UPDATE"
       ) {

@@ -22,6 +22,7 @@ const mockQueryPayload = {
     const result: Partial<ProjectFormSummary_projectRevision> = {
       isFirstRevision: false,
       projectFormChange: {
+        rank: 123456789,
         newFormData: {
           proposalReference: "Test Proposal Reference",
           operatorId: 2,
@@ -51,6 +52,7 @@ const mockQueryPayload = {
           },
         },
         formChangeByPreviousFormChangeId: {
+          rank: 987654321,
           newFormData: {
             proposalReference: "Test Proposal Reference PREVIOUS",
             operatorId: 1,
@@ -117,6 +119,7 @@ describe("The Project Form Summary", () => {
     expect(
       screen.getByText("Legal Operator Name and BC Registry ID")
     ).toBeInTheDocument();
+    expect(screen.getByText("Rank")).toBeInTheDocument();
 
     expect(screen.queryByText("RFP Year ID")).not.toBeInTheDocument();
     expect(screen.queryByText("Project Name")).not.toBeInTheDocument();
@@ -142,6 +145,8 @@ describe("The Project Form Summary", () => {
       screen.getByText("Test Legal Name PREVIOUS (Test BC Registry ID)")
     ).toBeInTheDocument();
     expect(screen.getByText("test project type PREVIOUS")).toBeInTheDocument();
+    expect(screen.getByText("123,456,789")).toBeInTheDocument();
+    expect(screen.getByText("987,654,321")).toBeInTheDocument();
   });
 
   it("Displays all data when isFirstRevision is true (Project Creation)", () => {
@@ -150,6 +155,7 @@ describe("The Project Form Summary", () => {
         const result: Partial<ProjectFormSummary_projectRevision> = {
           isFirstRevision: true,
           projectFormChange: {
+            rank: 10,
             newFormData: {
               proposalReference: "Test Proposal Reference",
               operatorId: 2,
@@ -179,6 +185,7 @@ describe("The Project Form Summary", () => {
               },
             },
             formChangeByPreviousFormChangeId: {
+              rank: 5,
               newFormData: {
                 proposalReference: "Test Proposal Reference PREVIOUS",
                 operatorId: 1,
@@ -224,5 +231,6 @@ describe("The Project Form Summary", () => {
     expect(screen.queryByText("Project Status")).toBeInTheDocument();
     expect(screen.queryByText("Project Type (optional)")).toBeInTheDocument();
     expect(screen.queryByText("Score (optional)")).toBeInTheDocument();
+    expect(screen.queryByText("Rank")).toBeInTheDocument();
   });
 });

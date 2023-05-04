@@ -98,7 +98,7 @@ export const createProjectUiSchema = (
       calculatedValueFormContextProperty: "calculatedRank",
       hideOptional: true,
       message:
-        "Enter a project score to see the ranking compared to other scored projects.",
+        "Enter 'Score' first to see the rank of this project compared to others",
     },
     comments: {
       "ui:widget": "TextAreaWidget",
@@ -117,13 +117,11 @@ const ProjectForm: React.FC<Props> = (props) => {
       fragment ProjectForm_projectRevision on ProjectRevision {
         projectFormChange {
           id
+          rank
           rowId
           newFormData
           changeStatus
           isUniqueValue(columnName: "proposalReference")
-          projectRevisionByProjectRevisionId {
-            rank
-          }
           asProject {
             fundingStreamRfpByFundingStreamRfpId {
               year
@@ -375,9 +373,7 @@ const ProjectForm: React.FC<Props> = (props) => {
           query,
           form: revision.projectFormChange.newFormData,
           operatorCode: selectedOperator?.node?.operatorCode,
-          calculatedRank:
-            revision.projectFormChange.projectRevisionByProjectRevisionId
-              .rank ?? null,
+          calculatedRank: revision.projectFormChange.rank ?? null,
           projectRevision: revision,
         }}
         widgets={{

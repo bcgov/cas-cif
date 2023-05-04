@@ -287,3 +287,5 @@ mutations/commit_project_revision [mutations/commit_project_revision@1.6.0] 2023
 @1.7.1 2023-04-27T18:19:45Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.1
 @1.7.2 2023-04-27T22:51:18Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.2
 @1.7.3 2023-05-02T23:54:44Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.7.3
+computed_columns/form_change_rank 2023-05-01T17:39:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add form_change_rank computed column to replace project_revision_rank
+computed_columns/project_revision_rank [computed_columns/project_revision_rank@1.7.2] 2023-05-01T22:38:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove project_revision_rank
