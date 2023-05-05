@@ -6,6 +6,8 @@ import SelectWidget from "lib/theme/widgets/SelectWidget";
 import { useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
+import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
+import { useRouter } from "next/router";
 
 const RevisionStatusWidgetFragment = graphql`
   fragment RevisionStatusWidget_projectRevision on ProjectRevision {
@@ -24,6 +26,8 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
     RevisionStatusWidgetFragment,
     projectRevision
   );
+
+  const router = useRouter();
 
   if (!(schema && schema.anyOf && typeof schema.anyOf !== "undefined")) {
     throw new Error("schema.anyOf does not exist!");
@@ -52,6 +56,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
           },
         },
       },
+      onCompleted: () => router.replace(getProjectRevisionViewPageRoute(id)),
     });
 
   const updateRevisionStatus = () =>
