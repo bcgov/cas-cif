@@ -155,7 +155,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     return null;
 
   if (
-    allFormChangesPristine ||
+    (allFormChangesPristine && !viewOnly) ||
     (!summaryReportingRequirement && !summaryEmissionIntensityReport)
   )
     return (
@@ -177,6 +177,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
       )}
       {/* Show this part if none of the emission intensity report form properties have been updated */}
       {allFormChangesPristine &&
+        !viewOnly &&
         summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
