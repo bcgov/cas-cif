@@ -6,6 +6,7 @@ import compiledRevisionStatusWidgetQuery, {
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
+import { MockPayloadGenerator } from "relay-test-utils";
 
 const testQuery = graphql`
   query RevisionStatusWidgetQuery($projectRevision: ID!) @relay_test_operation {
@@ -158,7 +159,7 @@ describe("The RevisionStatusWidget", () => {
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     expect(screen.queryByText(/update/i)).not.toBeInTheDocument();
   });
-  it("calls commitProjectRevision when the select value is `Applied`", () => {
+  it("calls commitProjectRevision and redirects to view page when the select value is `Applied`", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -180,7 +181,7 @@ describe("The RevisionStatusWidget", () => {
       )
     ).toBeInTheDocument();
 
-    act(() => {
+    await act(() => {
       userEvent.click(
         screen.getByRole("button", {
           name: /update/i,
@@ -195,5 +196,19 @@ describe("The RevisionStatusWidget", () => {
         },
       }
     );
+    const operation =
+      componentTestingHelper.environment.mock.getMostRecentOperation();
+    act(() => {
+      componentTestingHelper.environment.mock.resolve(
+        operation,
+        MockPayloadGenerator.generate(operation)
+      );
+    });
+    expect(componentTestingHelper.router.replace).toHaveBeenCalledWith({
+      pathname: "/cif/project-revision/[projectRevision]/view",
+      query: {
+        projectRevision: "test-revision-id",
+      },
+    });
   });
 });
