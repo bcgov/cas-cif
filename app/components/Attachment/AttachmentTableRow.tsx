@@ -1,18 +1,18 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
 import { getAttachmentDownloadRoute } from "routes/pageRoutes";
-import { graphql, useLazyLoadQuery } from "react-relay";
-import { AttachmentTableRowQuery } from "__generated__/AttachmentTableRowQuery.graphql";
+import { graphql, useFragment } from "react-relay";
 import useDeleteProjectAttachmentFormChange from "mutations/attachment/archiveProjectAttachmentFormChange";
+import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
 
 interface Props {
-  attachmentRowId: number;
+  attachment: AttachmentTableRow_attachment$key;
   connectionId: string;
   formChangeRowId: number;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
-  attachmentRowId,
+  attachment,
   connectionId,
   formChangeRowId,
 }) => {
@@ -20,25 +20,6 @@ const AttachmentTableRow: React.FC<Props> = ({
     archiveProjectAttachmentFormChange,
     isArchivingProjectAttachmentFormChange,
   ] = useDeleteProjectAttachmentFormChange();
-
-  const { attachmentByRowId } = useLazyLoadQuery<AttachmentTableRowQuery>(
-    graphql`
-      query AttachmentTableRowQuery($id: Int!) {
-        attachmentByRowId(rowId: $id) {
-          id
-          fileName
-          fileType
-          fileSize
-          createdAt
-          cifUserByCreatedBy {
-            fullName
-          }
-        }
-      }
-    `,
-    { id: attachmentRowId }
-  );
-
   const {
     id,
     fileName,
@@ -46,7 +27,21 @@ const AttachmentTableRow: React.FC<Props> = ({
     fileSize,
     createdAt,
     cifUserByCreatedBy: { fullName },
-  } = attachmentByRowId;
+  } = useFragment(
+    graphql`
+      fragment AttachmentTableRow_attachment on Attachment {
+        id
+        fileName
+        fileType
+        fileSize
+        createdAt
+        cifUserByCreatedBy {
+          fullName
+        }
+      }
+    `,
+    attachment
+  );
 
   const handleArchiveAttachment = () => {
     archiveProjectAttachmentFormChange({

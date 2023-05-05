@@ -295,3 +295,4 @@ functions/migration_attachment_table_to_project_attachment_table [tables/attachm
 migrations/005_attachment_data_into_project_attachment_table [functions/migration_attachment_table_to_project_attachment_table] 2023-04-26T23:47:57Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Migrating all id and project_id from attachment table to project_attachment table
 tables/attachment_001_drop_project_id_project_status_id [tables/attachment] 2023-04-27T20:00:38Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Dropping project_id and project_status_id columns
 mutations/add_project_attachment_to_revision 2023-04-28T23:02:34Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Creates an attachment and then adds a project_attachment form_change
+computed_columns/form_change_as_project_attachment [tables/attachment tables/form_change] 2023-05-04T23:00:57Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Computed column returns a attachment record type for a project_attachment form_change

@@ -45459,6 +45459,11 @@ type FormChange implements Node {
   asProject: Project
 
   """
+  Computed column returns data from the new_form_data column as if it were an attachment record to allow graph traversal via the foreign keys.
+  """
+  asProjectAttachment: ProjectAttachment
+
+  """
   Computed column returns data from the new_form_data column as if it were a project_contact record to allow graph traversal via the foreign keys.
   """
   asProjectContact: ProjectContact

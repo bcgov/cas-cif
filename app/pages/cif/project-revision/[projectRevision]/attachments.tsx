@@ -36,7 +36,11 @@ const AttachmentsQuery = graphql`
           node {
             id
             rowId
-            newFormData
+            asProjectAttachment {
+              attachmentByAttachmentId {
+                ...AttachmentTableRow_attachment
+              }
+            }
           }
         }
       }
@@ -127,7 +131,7 @@ export function ProjectAttachments({
         {projectRevision.projectAttachmentFormChanges.edges.map(({ node }) => (
           <AttachmentTableRow
             key={node.id}
-            attachmentRowId={node.newFormData?.attachmentId}
+            attachment={node.asProjectAttachment.attachmentByAttachmentId}
             formChangeRowId={node.rowId}
             connectionId={projectRevision.projectAttachmentFormChanges.__id}
           />

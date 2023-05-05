@@ -13,9 +13,11 @@ const mutation = graphql`
         node {
           id
           rowId
-          newFormData
-          operation
-          changeStatus
+          asProjectAttachment {
+            attachmentByAttachmentId {
+              ...AttachmentTableRow_attachment
+            }
+          }
         }
       }
     }
