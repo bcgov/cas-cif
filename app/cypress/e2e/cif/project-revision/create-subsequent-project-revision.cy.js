@@ -78,15 +78,7 @@ describe("the project amendment and revisions page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     //current flow for reaching to the project amendment/revision
-    cy.visit("/cif/projects");
-    cy.get("@firstViewButton").click();
-    cy.findByText(/Amendments & Other Revisions/i).click();
-
-    // checking the view page for a draft revision
-    cy.findAllByRole("button", { name: /^view \/ edit/i })
-      .first()
-      .click();
-    cy.url().should("include", "/view");
+    cy.navigateToFirstProjectEditRevisionPage();
     cy.findByText(/forms updated/i).should("be.visible");
     // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
     // cy.happoAndAxe("Project Revision View", "Forms Updated", "main", true);
@@ -121,18 +113,8 @@ describe("the project amendment and revisions page", () => {
   });
   it("changes the status, pending actions from and change reason for a revision/amendment", () => {
     cy.sqlFixture("dev/009_cif_project_revision_logs");
-    cy.visit("/cif/projects");
-    cy.get("h2").contains(/cif projects/i);
-    cy.findAllByRole("button", { name: /view/i }).first().click();
-    cy.findByText(/Amendments & Other Revisions/i).click();
-    cy.url().should("include", "/project-revision-change-logs");
-    cy.get("h2").contains(/Amendments & Other Revisions/i);
-    cy.findAllByRole("button", { name: /^view \/ edit/i })
-      .first()
-      .click();
-    cy.url().should("include", "/view");
+    cy.navigateToFirstProjectEditRevisionPage();
     cy.get("h2").contains(/amendment 2/i);
-    cy.findByRole("link", { name: /view amendment 2/i }).should("exist");
     cy.get('input[value="Amendment"]').should("be.checked");
     cy.findByText(/status/i)
       .next()

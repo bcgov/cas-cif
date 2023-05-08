@@ -658,3 +658,16 @@ Cypress.Commands.add("setDateInPicker", (ariaLabel, date, reportNumber = 0) => {
     .contains(`${receivedDateTZ.toFormat("MMM dd, yyyy")}`);
   cy.contains("Changes saved").should("be.visible");
 });
+
+Cypress.Commands.add("navigateToFirstProjectEditRevisionPage", () => {
+  cy.visit("/cif/projects");
+  cy.get("button").contains("View").first().as("firstViewButton");
+  cy.get("@firstViewButton").click();
+  cy.findByText(/Amendments & Other Revisions/i).click();
+  cy.url().should("include", "/project-revision-change-logs");
+  cy.get("h2").contains(/Amendments & Other Revisions/i);
+  cy.findAllByRole("button", { name: /^view \/ edit/i })
+    .first()
+    .click();
+  cy.url().should("include", "/edit");
+});

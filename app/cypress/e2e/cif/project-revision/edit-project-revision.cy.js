@@ -9,17 +9,17 @@ describe("when editing a project, the project page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
+    cy.sqlFixture("dev/009_cif_project_revision_logs");
     cy.clock(new Date(2020, 5, 10), ["Date"]); // months are zero-indexed
   });
 
   it("allows multiple users to edit an existing project", () => {
     cy.mockLogin("cif_admin");
-    cy.visit("/cif/projects");
-    cy.get("button").contains("View").first().as("firstViewButton");
-    cy.get("@firstViewButton").click();
-    cy.findByRole("button", { name: /edit/i }).should("be.visible");
-    cy.findByRole("button", { name: /edit/i }).click();
-
+    cy.navigateToFirstProjectEditRevisionPage();
+    cy.findByText(/Amendment 2/i).should("be.visible");
+    cy.findByText(/1. Project Overview/i).click();
+    cy.findByText(/Edit Project Overview/i).click();
+    cy.url().should("include", "/form/0");
     // edit overview -- change project name and score
 
     cy.findByLabelText(/Project Name/i)
@@ -267,10 +267,10 @@ describe("when editing a project, the project page", () => {
 
     // Verify that the revision can be accessed by other users
     cy.mockLogin("cif_internal");
-    cy.visit("/cif/projects");
-    cy.get("@firstViewButton").click();
-    cy.findByRole("button", { name: /edit/i }).should("be.visible");
-    cy.findByRole("button", { name: /edit/i }).click();
+    cy.navigateToFirstProjectEditRevisionPage();
+    cy.findByText(/1. Project Overview/i).click();
+    cy.findByText(/Edit Project Overview/i).click();
+    cy.url().should("include", "/form/0");
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
     cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
@@ -278,10 +278,7 @@ describe("when editing a project, the project page", () => {
 
     // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
-    cy.visit("/cif/projects");
-    cy.get("@firstViewButton").click();
-    cy.findByText(/resume edition/i).click();
-    cy.findByText(/submit change/i).click();
+    cy.navigateToFirstProjectEditRevisionPage();
     cy.findByText(/Review and Submit information/i).click();
     cy.findByText(/review and submit project/i).should("exist");
     cy.get("textarea").click().type("foo");
