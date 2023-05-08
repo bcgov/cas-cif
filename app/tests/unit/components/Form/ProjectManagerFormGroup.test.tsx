@@ -209,7 +209,6 @@ describe("The ProjectManagerForm", () => {
               projectId: 1,
               projectManagerLabelId: 2,
             },
-            operation: "UPDATE",
           },
         },
       }

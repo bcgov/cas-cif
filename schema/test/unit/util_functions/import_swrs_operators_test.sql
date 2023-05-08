@@ -51,7 +51,7 @@ select results_eq(
       (new_form_data->'swrsOrganisationId')::int,
       operation::text,
       change_status::text
-    from cif.form_change where form_data_table_name='operator'
+    from cif.form_change where form_data_table_name='operator' order by id
   $$,
   $$
     values
@@ -86,7 +86,7 @@ select results_eq(
       new_form_data->>'tradeName',
       new_form_data->>'legalName',
       operation::text
-    from cif.form_change where form_data_table_name='operator'
+    from cif.form_change where form_data_table_name='operator' order by id
   $$,
   $$
     values
