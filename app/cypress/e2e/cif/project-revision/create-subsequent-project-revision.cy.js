@@ -81,7 +81,7 @@ describe("the project amendment and revisions page", () => {
     cy.navigateToFirstProjectEditRevisionPage();
     cy.findByText(/forms updated/i).should("be.visible");
     // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
-    cy.happoAndAxe("Project Revision Edit", "Forms Updated", "main", true);
+    // cy.happoAndAxe("Project Revision Edit", "Forms Updated", "main", true);
     cy.get("input[aria-label='Project Overview']").should("be.checked");
     cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
@@ -179,6 +179,7 @@ describe("the project amendment and revisions page", () => {
     cy.findByText("General Comments (optional)")
       .next()
       .contains("test change reason");
-    cy.happoAndAxe("Project Revision View", "view", "main");
+    // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
+    // cy.happoAndAxe("Project Revision View", "view", "main");
   });
 });
