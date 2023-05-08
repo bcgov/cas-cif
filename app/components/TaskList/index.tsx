@@ -243,7 +243,8 @@ const TaskList: React.FC<Props> = ({
         })}
 
         {/* Project Summary Section */}
-        {mode !== "view" && (
+        {/* Show only if a new project */}
+        {mode !== "view" && mode !== "update" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
             listItemNumber={String(
