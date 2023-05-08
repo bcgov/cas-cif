@@ -36,7 +36,6 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
         id
         rowId
         changeStatus
-        isFirstRevision
         managerFormChanges: projectManagerFormChangesByLabel(first: 1000)
           @connection(key: "ProjectManagerFormGroup_managerFormChanges") {
           edges {
@@ -137,8 +136,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
           rowId,
           formChangePatch: {
             newFormData,
-            // a temporary fix to make sure the form change operation is set correctly
-            operation: projectRevision.isFirstRevision ? "CREATE" : "UPDATE",
+            operation: undefined,
           },
         },
       },
@@ -148,7 +146,7 @@ const ProjectManagerFormGroup: React.FC<Props> = (props) => {
             id: formChangeId,
             changeStatus: "pending",
             newFormData,
-            operation: projectRevision.isFirstRevision ? "CREATE" : "UPDATE",
+            operation: undefined,
             projectRevisionByProjectRevisionId: undefined,
           },
         },
