@@ -264,13 +264,15 @@ const TaskList: React.FC<Props> = ({
           </TaskListSection>
         )}
         {/* Amendments & Other Revisions section */}
-        {useShowGrowthbookFeature("amendments") && mode === "view" && (
+        {/* if no projectByProjectId then it is a new project (don't show amendments) */}
+        {useShowGrowthbookFeature("amendments") && projectByProjectId && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
             defaultExpandedState={[
               getProjectRevisionChangeLogsPageRoute(id).pathname,
               projectRevisionViewPagePathName,
               projectRevisionCreatePagePathName,
+              "/cif/project-revision/[projectRevision]/form/[formIndex]",
             ].includes(router.pathname)}
             listItemName="Amendments & Other Revisions"
           >
