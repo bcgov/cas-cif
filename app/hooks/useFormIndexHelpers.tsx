@@ -9,6 +9,7 @@ import {
   getProjectRevisionFormPageRoute,
   getProjectRevisionViewPageRoute,
   getExternalProjectRevisionViewPageRoute,
+  getProjectRevisionPageRoute,
 } from "routes/pageRoutes";
 
 export const useFormIndexHelpers = (
@@ -59,8 +60,12 @@ export const useFormIndexHelpers = (
   const formPages = isInternal ? internalFormPages : externalFormPages;
 
   const handleSubmit = () => {
-    // if the mode is update or this is the review and sumbit page
-    if (mode === "update" || formIndex === formPages.length - 1) {
+    // if creating a new project and submitting the last form
+    if (mode === "create" && formIndex === formPages.length - 1) {
+      router.push(getProjectRevisionPageRoute(projectRevisionId, isInternal));
+    }
+    // if project revision, route to preview revision
+    if (mode === "update") {
       if (isInternal) {
         router.push(getProjectRevisionViewPageRoute(projectRevisionId));
       }

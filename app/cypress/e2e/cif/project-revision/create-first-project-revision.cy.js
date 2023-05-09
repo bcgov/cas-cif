@@ -291,10 +291,11 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Submit Project Summary/).click();
 
     //review and submit
-    cy.findByRole("heading", {
-      name: /6. Submit Changes/i,
-    }).click();
-    cy.findByText(/Review and Submit information/i).click();
+    // TODO: should this be the flow? see useFormIndexHelpers for how the review and submit page routed if the last form is submitted
+    // cy.findByRole("heading", {
+    //   name: /6. Submit Changes/i,
+    // }).click();
+    // cy.findByText(/Review and Submit information/i).click();
     cy.contains("Review and Submit Project");
 
     // project overview section
