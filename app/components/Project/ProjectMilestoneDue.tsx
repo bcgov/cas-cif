@@ -14,7 +14,7 @@ const ProjectMilestoneDue: React.FC<Props> = ({ project }) => {
         fragment ProjectMilestoneDue_project on Project {
           nextMilestoneDueDate
           latestCompletedReportingRequirements: reportingRequirementsByProjectId(
-            orderBy: REPORT_DUE_DATE_ASC
+            orderBy: REPORT_DUE_DATE_DESC
             filter: {
               submittedDate: { isNull: false }
               reportTypeByReportType: { isMilestone: { equalTo: true } }
