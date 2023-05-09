@@ -5,7 +5,10 @@ import {
 } from "lib/helpers/reportStatusHelpers";
 import { useRouter } from "next/router";
 import { useFragment, graphql } from "react-relay";
-import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
+import {
+  getProjectRevisionEditPageRoute,
+  getProjectRevisionViewPageRoute,
+} from "routes/pageRoutes";
 import { ProjectRevisionTableRow_projectRevision$key } from "__generated__/ProjectRevisionTableRow_projectRevision.graphql";
 
 interface Props {
@@ -52,8 +55,6 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
     typeRowNumber,
   } = projectRevisionData;
 
-  const handleClick = () => router.push(getProjectRevisionViewPageRoute(id));
-
   return (
     <tr>
       <td>
@@ -79,7 +80,14 @@ const ProjectRevisionTableRow: React.FC<Props> = ({ projectRevision }) => {
       </td>
       <td>
         <div>
-          <Button size="small" onClick={handleClick}>
+          <Button
+            size="small"
+            onClick={() =>
+              !effectiveDate
+                ? router.push(getProjectRevisionEditPageRoute(id))
+                : router.push(getProjectRevisionViewPageRoute(id))
+            }
+          >
             View {!effectiveDate && "/ Edit"}
           </Button>
         </div>

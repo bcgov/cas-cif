@@ -16,10 +16,6 @@ const defaultMockResolver = {
       revisionType: "General Revision",
       typeRowNumber: 1,
       changeReason: "Test comment",
-      createdAt: "2021-01-01T23:59:59.999-07:00",
-      cifUserByCreatedBy: { fullName: "test-user-1" },
-      updatedAt: "2021-02-01T23:59:59.999-07:00",
-      cifUserByUpdatedBy: { fullName: "test-user-2" },
     };
   },
   Query() {
@@ -72,18 +68,15 @@ describe("ProjectRevisionView Page", () => {
 
     expect(screen.getByText(/revision type/i)).toBeInTheDocument();
     expect(screen.getByText(/test comment/i)).toBeInTheDocument();
-    expect(screen.getByText(/test-user-2/i)).toBeInTheDocument();
-    expect(screen.getByText(/Feb[.]? 1, 2021/i)).toBeInTheDocument();
-    expect(screen.getByText(/test-user-1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Jan[.]? 1, 2021/i)).toBeInTheDocument();
-    expect(screen.getByText(/Pending actions from/i)).toBeInTheDocument();
-    expect(screen.getByText(/forms updated/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Editing:/i)).not.toBeInTheDocument(); // tasklist should be in view mode
+    expect(screen.queryByRole("input")).not.toBeInTheDocument(); // entire form should be read-only
 
     expect(
       screen.getByRole("checkbox", {
         name: /project overview/i,
       })
     ).toBeInTheDocument();
+    expect(screen.getByText(/Revision record history/i)).toBeInTheDocument();
   });
 
   it("Takes user to amendments and revisions table when they click Amendments & Other Revisions on the tasklist", async () => {
@@ -100,8 +93,9 @@ describe("ProjectRevisionView Page", () => {
         name: /amendments & other revisions/i,
       })
     );
+    // the `generateId` function runs for every node in the query. Here, the node containing `latestCommittedProjectRevision` is the third node in the query, so we look for id="mock-proj-rev-3"
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      getProjectRevisionChangeLogsPageRoute("mock-proj-rev-8")
+      getProjectRevisionChangeLogsPageRoute("mock-proj-rev-3")
     );
   });
 });

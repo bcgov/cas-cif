@@ -39,10 +39,10 @@ describe("the project amendment and revisions page", () => {
     cy.findAllByRole("button", { name: /^view \/ edit/i })
       .first()
       .click();
-    cy.url().should("include", "/view");
+    cy.url().should("include", "/edit");
     cy.get("h2").contains(/amendment 2/i);
     cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
-    cy.findByRole("link", { name: /view amendment 2/i }).should("exist");
+    cy.findByText(/editing:/i).should("be.visible");
     cy.get('input[value="Amendment"]').should("be.checked");
     cy.findByText(/status/i)
       .next()

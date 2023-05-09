@@ -145,12 +145,13 @@ describe("when undoing, the project revision page", () => {
     cy.sqlFixture("dev/005_cif_reporting_requirement");
     cy.sqlFixture("dev/006_cif_funding_parameter");
     cy.sqlFixture("dev/007_commit_project_revision");
+    cy.sqlFixture("dev/009_cif_project_revision_logs");
     cy.mockLogin("cif_admin");
-    cy.visit("/cif/projects");
-
-    cy.get("button").contains("View").first().as("firstViewButton");
-    cy.get("@firstViewButton").click();
-    cy.findByRole("button", { name: /edit/i }).click();
+    cy.navigateToFirstProjectEditRevisionPage();
+    cy.findByText(/Amendment 2/i).should("be.visible");
+    cy.findByText(/1. Project Overview/i).click();
+    cy.findByText(/Edit Project Overview/i).click();
+    cy.url().should("include", "/form/0");
 
     //undo overview
     cy.findByLabelText(/Proposal Reference/i)

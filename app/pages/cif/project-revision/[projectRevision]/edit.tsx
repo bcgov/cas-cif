@@ -1,42 +1,39 @@
 import FormBase from "components/Form/FormBase";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import ChangeReasonWidget from "components/ProjectRevision/ChangeReasonWidget";
+import NotifyModal from "components/ProjectRevision/NotifyModal";
 import RevisionRecordHistory from "components/ProjectRevision/RevisionRecordHistory";
 import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidget";
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 import TaskList from "components/TaskList";
-import {
-  viewProjectRevisionSchema,
-  projectRevisionUISchema,
-} from "data/jsonSchemaForm/projectRevisionSchema";
+import { projectRevisionUISchema } from "data/jsonSchemaForm/projectRevisionSchema";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
+import { useState } from "react";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import { viewProjectRevisionQuery$data } from "__generated__/viewProjectRevisionQuery.graphql";
+import { editProjectRevisionQuery } from "__generated__/editProjectRevisionQuery.graphql";
+import {
+  buildProjectRevisionSchema,
+  createProjectRevisionUISchema,
+} from "./view";
 
-export const ViewProjectRevisionQuery = graphql`
-  query viewProjectRevisionQuery($projectRevision: ID!) {
+export const EditProjectRevisionQuery = graphql`
+  query editProjectRevisionQuery($projectRevision: ID!) {
     session {
       ...DefaultLayout_session
     }
     projectRevision(id: $projectRevision) {
+      ...NotifyModal_projectRevision
       id
       revisionType
-      revisionStatus
+      # eslint-disable-next-line relay/unused-fields
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
       changeReason
-      projectByProjectId {
-        latestCommittedProjectRevision {
-          ...TaskList_projectRevision
-        }
-      }
       ...RevisionStatusWidget_projectRevision
       ...SelectWithNotifyWidget_projectRevision
       # eslint-disable-next-line relay/must-colocate-fragment-spreads
@@ -44,6 +41,7 @@ export const ViewProjectRevisionQuery = graphql`
       ...UpdatedFormsWidget_projectRevision
       ...ChangeReasonWidget_projectRevision
       ...RevisionRecordHistory_projectRevision
+      ...TaskList_projectRevision
     }
     allRevisionTypes {
       # type is passed to the helper function that builds the schema
@@ -55,8 +53,6 @@ export const ViewProjectRevisionQuery = graphql`
       }
     }
     allRevisionStatuses(orderBy: SORTING_ORDER_ASC) {
-      # node is passed to the helper function that builds the schema
-      # eslint-disable-next-line relay/unused-fields
       edges {
         node {
           name
@@ -69,68 +65,31 @@ export const ViewProjectRevisionQuery = graphql`
   }
 `;
 
-export const buildProjectRevisionSchema = (
-  allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
-  allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"],
-  revisionType: string
-): JSONSchema7 => {
-  const schema = viewProjectRevisionSchema;
-  schema.properties.revisionType = {
-    ...schema.properties.revisionType,
-    anyOf: allRevisionTypesEdges.map(({ node }) => {
-      return {
-        type: "string",
-        title: node.type,
-        enum: [node.type],
-        value: node.type,
-      } as JSONSchema7Definition;
-    }),
-  };
-
-  schema.properties.revisionStatus = {
-    ...schema.properties.revisionStatus,
-    anyOf: allRevisionStatusesEdges.map(({ node }) => {
-      return {
-        type: "string",
-        // relabel "Applied" to "Approved" for amendments
-        title:
-          revisionType === "Amendment" && node.name === "Applied"
-            ? "Approved"
-            : node.name,
-        enum: [node.name],
-        value: node.name,
-      } as JSONSchema7Definition;
-    }),
-  };
-
-  return schema as JSONSchema7;
-};
-
-export const createProjectRevisionUISchema = (uiSchema) => {
-  const localUiSchema = JSON.parse(JSON.stringify(uiSchema));
-  localUiSchema.revisionType["ui:readonly"] = true;
-  return localUiSchema;
-};
-
-export function ProjectRevisionView({
+export function ProjectRevisionEdit({
   preloadedQuery,
-}: RelayProps<{}, viewProjectRevisionQuery>) {
-  const query = usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
+}: RelayProps<{}, editProjectRevisionQuery>) {
+  const query = usePreloadedQuery(EditProjectRevisionQuery, preloadedQuery);
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     query;
 
+  const [formData, setFormData] = useState(projectRevision);
+  const onChange = (e) => {
+    setFormData(e.formData);
+  };
+
   const taskList = (
-    <TaskList
-      // This ensures that when a user clicks on the tasklist, they see the latest data for a project, even if they're accessing the tasklist from an old revision
-      projectRevision={
-        projectRevision.projectByProjectId.latestCommittedProjectRevision
-      }
-      mode={"view"}
-      projectRevisionUnderReview={projectRevision}
-    />
+    <TaskList projectRevision={projectRevision} mode={"update"} />
   );
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
+
+  // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
+  const filteredRevisionStatuses = allRevisionStatuses.edges.filter(
+    ({ node }) =>
+      projectRevision.revisionType === "Amendment"
+        ? node.name !== "Draft"
+        : !node.isAmendmentSpecific
+  );
 
   return (
     <>
@@ -143,17 +102,17 @@ export function ProjectRevisionView({
         <div>
           <FormBase
             id={`form-${projectRevision.id}`}
-            tagName={"dl"}
-            className="project-revision-view-form"
+            className="project-revision-edit-form"
             schema={buildProjectRevisionSchema(
               allRevisionTypes.edges,
-              allRevisionStatuses.edges,
+              filteredRevisionStatuses,
               projectRevision.revisionType
             )}
             uiSchema={createProjectRevisionUISchema(projectRevisionUISchema)}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
-            formData={projectRevision}
+            onChange={onChange}
+            formData={formData}
             formContext={{ projectRevision, query }}
             widgets={{
               RevisionStatusWidget,
@@ -164,6 +123,7 @@ export function ProjectRevisionView({
               SelectWithNotifyWidget,
             }}
           ></FormBase>
+          <NotifyModal projectRevision={projectRevision} />
           <RevisionRecordHistory projectRevision={projectRevision} />
         </div>
       </DefaultLayout>
@@ -177,7 +137,7 @@ export function ProjectRevisionView({
   );
 }
 export default withRelay(
-  ProjectRevisionView,
-  ViewProjectRevisionQuery,
+  ProjectRevisionEdit,
+  EditProjectRevisionQuery,
   withRelayOptions
 );
