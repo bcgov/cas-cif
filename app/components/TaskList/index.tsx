@@ -243,7 +243,7 @@ const TaskList: React.FC<Props> = ({
         })}
 
         {/* Project Summary Section */}
-        {mode !== "view" && (
+        {mode !== "view" && mode !== "update" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
             listItemNumber={String(
@@ -263,7 +263,7 @@ const TaskList: React.FC<Props> = ({
           </TaskListSection>
         )}
         {/* Amendments & Other Revisions section */}
-        {useShowGrowthbookFeature("amendments") && mode === "view" && (
+        {useShowGrowthbookFeature("amendments") && projectByProjectId && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
             defaultExpandedState={[
