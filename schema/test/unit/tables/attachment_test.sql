@@ -32,7 +32,7 @@ select indexes_are('cif', 'attachment', array[
   'cif_attachment_created_by_foreign_key',
   'cif_attachment_updated_by_foreign_key'
   ],
-'Indexes on cif.attachment table does not match expected indexes');
+'Indexes on cif.attachment table does match expected indexes');
 
 -- Test setup
 truncate cif.attachment restart identity cascade;
@@ -64,7 +64,7 @@ select lives_ok(
   $$
     update cif.attachment set archived_at = now() where id=4;
   $$,
-    'cif_admin can archive data in attachment table'
+    'cif_admin can archive/update data in attachment table'
 );
 
 select results_eq(
@@ -114,7 +114,7 @@ select lives_ok(
   $$
     update cif.attachment set archived_at = now() where id=5;
   $$,
-    'cif_internal can update data in the attachment table'
+    'cif_internal can archive/update data in the attachment table'
 );
 
 select results_eq(

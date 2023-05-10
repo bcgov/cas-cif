@@ -44,13 +44,13 @@ select results_eq(
   $$
     select project_id, id from cif.attachment order by project_id, id;
   $$,
-  'It creates a project_attachment record for each attachment record'
+  'It creates a project_attachment record for each attachment record and ids match'
 );
 
 select is(
   (select count(*) from cif.project_attachment pa join cif.attachment a on pa.attachment_id = a.id where pa.project_id = a.project_id),
   (select count(*) from cif.attachment),
-  'all attachment ids match project attachment ids'
+  'Checking that the number of attachments linked to projects matches the total number of attachments in the database.'
 );
 
 -- function is idempotent

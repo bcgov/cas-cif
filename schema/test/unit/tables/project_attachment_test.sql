@@ -28,7 +28,7 @@ select indexes_are('cif', 'project_attachment', array[
   'cif_project_attachment_created_by_foreign_key',
   'cif_project_attachment_updated_by_foreign_key'
   ],
-'Indexes on cif.project_attachment table does not match expected indexes');
+'Indexes on cif.project_attachment table does match expected indexes');
 
 -- Test setup
 set jwt.claims.sub to '11111111-1111-1111-1111-111111111111';
@@ -84,7 +84,7 @@ select lives_ok(
   $$
     update cif.project_attachment set archived_at = now() where project_id=1 and attachment_id=4;
   $$,
-    'cif_admin can archive data in project_attachment table'
+    'cif_admin can archive/update data in project_attachment table'
 );
 
 select results_eq(
@@ -142,7 +142,7 @@ select lives_ok(
   $$
     update cif.project_attachment set archived_at = now() where project_id=1 and attachment_id=5;
   $$,
-    'cif_internal can update data in the project_attachment table'
+    'cif_internal can archive/update data in the project_attachment table'
 );
 
 select results_eq(

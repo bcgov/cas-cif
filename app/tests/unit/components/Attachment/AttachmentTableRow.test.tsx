@@ -97,7 +97,7 @@ describe("The Attachment table row component", () => {
     act(() => deleteButton.click());
 
     componentTestingHelper.expectMutationToBeCalled(
-      "archiveProjectAttachmentFormChangeMutation",
+      "discardProjectAttachmentFormChangeMutation",
       {
         input: {
           rowId: "test-form-change-row-id",

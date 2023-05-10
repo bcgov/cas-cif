@@ -66,14 +66,14 @@ export function ProjectAttachments({
     preloadedQuery
   );
   const [createAttachment, isCreatingAttachment] = useCreateAttachment();
-  const [addProjectAttachment, isCreatingProjectAttachment] =
+  const [createProjectAttachment, isCreatingProjectAttachment] =
     useAddProjectAttachmentToRevision();
 
   const isRedirecting = useRedirectTo404IfFalsy(projectRevision);
   if (isRedirecting) return null;
 
-  const addProjectAttachmentFormChange = async (attachmentId) => {
-    await addProjectAttachment({
+  const addProjectAttachment = async (attachmentId) => {
+    await createProjectAttachment({
       variables: {
         input: {
           projectId: projectRevision.project.rowId,
@@ -99,7 +99,7 @@ export function ProjectAttachments({
         },
       },
       onCompleted: (data) =>
-        addProjectAttachmentFormChange(data.createAttachment.attachment.rowId),
+        addProjectAttachment(data.createAttachment.attachment.rowId),
       onError: (err) => console.error(err),
     });
   };
