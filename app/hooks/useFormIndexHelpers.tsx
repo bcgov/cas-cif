@@ -9,7 +9,7 @@ import {
   getExternalProjectRevisionViewPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
-  getProjectRevisionViewPageRoute,
+  getProjectRevisionEditPageRoute,
 } from "routes/pageRoutes";
 
 export const useFormIndexHelpers = (
@@ -66,7 +66,7 @@ export const useFormIndexHelpers = (
     // if project revision, route to preview revision
     if (mode === "update") {
       if (isInternal) {
-        router.push(getProjectRevisionViewPageRoute(projectRevisionId));
+        router.push(getProjectRevisionEditPageRoute(projectRevisionId));
       }
       if (!isInternal) {
         router.push(getExternalProjectRevisionViewPageRoute(projectRevisionId));
