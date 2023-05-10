@@ -21,10 +21,9 @@ describe("when discarding a project revision, the project page", () => {
       .should("have.value", "Test EP Project 001")
       .clear()
       .type("this will be discarded");
-    cy.findByText(/Submit Changes/i).click();
+    cy.findByText(/submit/i).click();
 
-    cy.findByText(/Review and Submit information/i).click();
-    cy.contains("Review and Submit Project").should("be.visible");
+    cy.findByText(/revision type/i).click();
     cy.findByRole("button", { name: /^discard/i }).click();
     cy.findByText("Proceed").click();
 

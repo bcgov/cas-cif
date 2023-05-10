@@ -36,9 +36,10 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project Overview Form", "editing", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    cy.contains(/revision type/i); // on revision summary page
+
     // edit managers -- delete a manager
-    cy.contains("Review and Submit Project");
-    cy.findByText(/Project Details/i).click();
+    cy.get(":nth-child(2) > h3.jsx-1435705197 > .accordionTrigger").click();
     cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/1");
     cy.findByText("Project Managers").should("be.visible");
@@ -59,9 +60,10 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    cy.contains(/revision type/i); // on revision summary page
+
     // edit contacts -- add a secondary contact
-    cy.contains("Review and Submit Project");
-    cy.findByText(/Project Details/i).click();
+    cy.get(":nth-child(2) > h3.jsx-1435705197 > .accordionTrigger").click();
     cy.findByText(/Edit project contacts/i).click();
     cy.url().should("include", "/form/2");
 
@@ -77,7 +79,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains("Review and Submit Project").should("be.visible");
+    cy.contains(/revision type/i); // on revision summary page
 
     // edit budgets, expenses, and payments -- change funding agreement
     cy.contains(/Budgets, Expenses & Payments/i).click();
@@ -101,8 +103,9 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project budgets Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
+    cy.contains(/revision type/i); // on revision summary page
+
     // edit milestone reports -- change date
-    cy.contains("Review and Submit Project");
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
     cy.findByRole("button", { name: /Milestone reports/i }).click();
     cy.findByText(/Edit milestone 1/i).click();
@@ -119,10 +122,10 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Changes saved.");
-    cy.findByText(/Review and Submit information/i).click();
+
+    cy.contains(/revision type/i); // on revision summary page
 
     // edit quarterly reports -- delete a report
-    cy.contains("Review and Submit Project");
     cy.findByRole("button", { name: /Quarterly reports/i }).click();
     cy.findByText(/Edit quarterly reports/i).click();
     cy.findByText(/Quarterly Report 1/i).click();
@@ -142,10 +145,10 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Changes saved.");
-    cy.findByText(/Review and Submit information/i).click();
+    cy.contains(/revision type/i); // on revision summary page
 
     // edit teimp
-    cy.contains("Review and Submit Project");
+
     cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
     cy.findByText(/Edit emissions intensity report/i).click();
     cy.findByRole("button", {
@@ -165,10 +168,10 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Submit Emissions Intensity Report/i).click();
 
     cy.contains("Changes saved.");
-    cy.findByText(/Review and submit information/i).click();
+
+    cy.contains(/revision type/i); // on revision summary page
 
     // edit annual reports -- change comments
-    cy.contains("Review and Submit Project");
     cy.findByRole("heading", { name: /7. Annual reports/i }).click();
     cy.findByText(/Edit annual reports/i).click();
     cy.findByText("Annual Report 1").click();
@@ -184,10 +187,9 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Changes saved.");
-    cy.findByText(/Review and Submit information/i).click();
 
     // check diffs
-    cy.contains("Review and Submit Project");
+    cy.contains(/revision type/i); // on revision summary page
 
     cy.get("#root_projectName-diffReviewAndSubmitInformationOld").should(
       "have.text",
@@ -268,29 +270,32 @@ describe("when editing a project, the project page", () => {
     // Verify that the revision can be accessed by other users
     cy.mockLogin("cif_internal");
     cy.navigateToFirstProjectEditRevisionPage();
+    cy.contains(/revision type/i);
     cy.findByText(/1. Project Overview/i).click();
     cy.findByText(/Edit Project Overview/i).click();
     cy.url().should("include", "/form/0");
     cy.findByLabelText("Project Name").eq(0).should("have.value", "Bar");
     cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
-    cy.findByText(/review and submit project/i).should("exist");
+
+    cy.contains(/revision type/i); // on revision summary page
 
     // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.navigateToFirstProjectEditRevisionPage();
-    cy.findByText(/Review and Submit information/i).click();
-    cy.findByText(/review and submit project/i).should("exist");
+    cy.contains(/revision type/i); // on revision summary page
     cy.get("textarea").click().type("foo");
 
     // Allow the component to finish saving before taking screenshot
-    cy.contains("Changes saved").should("be.visible");
+    cy.contains(
+      /To confirm your change, please click the \"Update\" button./i
+    ).should("be.visible");
     cy.happoAndAxe(
       "Project revision summary",
       "with_change_reason",
       "main",
       true
     );
-    cy.findByRole("button", { name: /^submit/i }).click();
+    cy.get(":nth-child(1) > div.jsx-2559693295").click(); // update button (multiple update buttons on page)
   });
 });
