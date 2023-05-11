@@ -90,10 +90,7 @@ export const getProjectRevisionFormPageRoute = (
     },
   };
 
-  if (anchor) {
-    urlObject.query.anchor = anchor;
-    urlObject.hash = anchor;
-  }
+  if (anchor) urlObject.hash = anchor;
 
   if (isRoutedFromNew) {
     urlObject.query.isRoutedFromNew = isRoutedFromNew;
