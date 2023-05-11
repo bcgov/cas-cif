@@ -36,7 +36,12 @@ do $$
         'maximumAmount', 1,
         'totalEligibleExpenses', 1,
         'certifiedBy', 'Elliot Page',
-        'hasExpenses', true
+        'hasExpenses', true,
+        -- hardcoded calculated values since we don't have the functions to calculate them when we insert the data
+        'calculatedGrossAmount', 0.50,
+        'calculatedNetAmount', 0.90,
+        'calculatedHoldbackAmount', 0.10
+
       )
       where form_data_table_name = 'reporting_requirement' and project_revision_id = temp_row.project_revision_id;
 
