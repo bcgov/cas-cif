@@ -82,7 +82,6 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
     proposalReference: (Math.random() * 1000).toString(),
     summary: "This is a summary of the project",
     operatorId: 1,
-    fundingStreamRfpId: 1,
     comments: "some amendment comment",
     contractNumber: "654321",
     totalFundingRequest: 1000,

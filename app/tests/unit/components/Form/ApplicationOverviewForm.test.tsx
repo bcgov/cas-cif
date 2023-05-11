@@ -93,7 +93,7 @@ describe("The Application Overview Form", () => {
             newFormData: {
               projectName: "projectynew",
               legalName: "legaly",
-              fundingStreamRfpId: 1,
+              fundingStreamRfpId: 7,
               proposalReference: expect.anything(),
               summary: expect.anything(),
               operatorId: expect.anything(),
@@ -140,7 +140,7 @@ describe("The Application Overview Form", () => {
         rowId: 999,
         formChangePatch: {
           newFormData: {
-            fundingStreamRfpId: 1,
+            fundingStreamRfpId: 7,
             projectName: "projecty",
             legalName: "legaly",
             proposalReference: expect.anything(),
