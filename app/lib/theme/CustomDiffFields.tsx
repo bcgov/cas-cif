@@ -351,6 +351,7 @@ const showNumberRemoved = (
   const diffClsName = isAmendmentsAndOtherRevisionsSpecific
     ? "diffAmendmentsAndOtherRevisionsOld"
     : "diffReviewAndSubmitInformationOld";
+
   return (
     <>
       <span id={id && `${id}-${diffClsName}`} className={diffClsName}>
@@ -490,7 +491,6 @@ const CUSTOM_DIFF_FIELDS: Record<
         formData &&
         formContext.operation !== "ARCHIVE"
       ) {
-        // const newData = uiSchema["ui:options"].text || formData;
         return showStringAdded(
           id,
           newDataOptionText,
@@ -505,9 +505,6 @@ const CUSTOM_DIFF_FIELDS: Record<
           previousValue !== null &&
           previousValue !== undefined)
       ) {
-        // const oldData =
-        //   formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text ??
-        //   formContext?.oldData?.[props.name];
         return showStringRemoved(
           id,
           oldDataOptionText,
@@ -537,6 +534,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         previousValue !== undefined &&
         previousValue !== null &&
         formData !== undefined &&
+        formData !== null &&
         formContext.operation === "UPDATE"
       ) {
         return showNumberDiff(
