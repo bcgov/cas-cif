@@ -60,7 +60,7 @@ export const useFormIndexHelpers = (
   const formPages = isInternal ? internalFormPages : externalFormPages;
 
   const handleSubmit = () => {
-    if (mode === "create" || formIndex === formPages.length - 1) {
+    if (mode === "create" && formIndex === formPages.length - 1) {
       router.push(getProjectRevisionPageRoute(projectRevisionId, isInternal));
     }
     // if project revision, route to preview revision
