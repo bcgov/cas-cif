@@ -24,7 +24,6 @@ describe("The project revision form route function", () => {
       hash: "test-anchor",
       pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
       query: {
-        anchor: "test-anchor",
         formIndex: 123,
         projectRevision: "another-revision",
       },
@@ -42,7 +41,6 @@ describe("The project revision form route function", () => {
       hash: "test-anchor",
       pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
       query: {
-        anchor: "test-anchor",
         formIndex: 123,
         projectRevision: "another-revision",
       },

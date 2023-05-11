@@ -345,8 +345,8 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Milestone 1/i));
 
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4&anchor=Milestone1#Milestone1",
-      "/cif/project-revision/test-project-revision-id/form/4?anchor=Milestone1#Milestone1",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=4#Milestone1",
+      "/cif/project-revision/test-project-revision-id/form/4#Milestone1",
       expect.any(Object)
     );
   });
