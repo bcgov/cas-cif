@@ -223,7 +223,7 @@ describe("when editing a project, the project page", () => {
     cy.get("#root_cifUserId-diffReviewAndSubmitInformationOld")
       .next()
       .next()
-      .should("have.text", "REMOVED");
+      .should("have.text", "cif_internal Testuser");
 
     cy.get("#root_contactId-diffReviewAndSubmitInformationNew").should(
       "have.text",
