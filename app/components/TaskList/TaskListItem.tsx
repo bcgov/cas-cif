@@ -5,7 +5,7 @@ import { TaskListLinkUrl, TaskListMode } from "./types";
 
 interface Props {
   stepName: string;
-  linkUrl: TaskListLinkUrl;
+  linkUrl?: TaskListLinkUrl;
   formTitle: string;
   formStatus: string;
   currentStep: string;
@@ -16,7 +16,7 @@ interface Props {
 
 const TaskListItem: React.FC<Props> = ({
   stepName,
-  linkUrl,
+  linkUrl = undefined,
   formTitle,
   formStatus,
   currentStep,
@@ -29,13 +29,19 @@ const TaskListItem: React.FC<Props> = ({
       aria-current={currentStep === stepName ? "step" : false}
       className="bordered"
     >
-      <Link passHref href={linkUrl} scroll={!hasAnchor} legacyBehavior>
-        <BCGovLink>
-          {mode === "view" || stepName === "summary"
-            ? formTitle
-            : `${mode === "update" || hasAnchor ? "Edit" : "Add"} ${formTitle}`}
-        </BCGovLink>
-      </Link>
+      {linkUrl ? (
+        <Link passHref href={linkUrl} scroll={!hasAnchor} legacyBehavior>
+          <BCGovLink>
+            {mode === "view" || stepName === "summary"
+              ? formTitle
+              : `${
+                  mode === "update" || hasAnchor ? "Edit" : "Add"
+                } ${formTitle}`}
+          </BCGovLink>
+        </Link>
+      ) : (
+        formTitle
+      )}
       {mode !== "view" && <TaskListStatus formStatus={formStatus} />}
       {mode === "view" && milestoneDueDate && (
         <TaskListStatus formStatus={milestoneDueDate} />
