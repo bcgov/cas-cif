@@ -6,9 +6,10 @@ import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidge
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 import TaskList from "components/TaskList";
 import {
-  viewProjectRevisionSchema,
   projectRevisionUISchema,
+  viewProjectRevisionSchema,
 } from "data/jsonSchemaForm/projectRevisionSchema";
+import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -16,17 +17,10 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import { viewProjectRevisionQuery$data } from "__generated__/viewProjectRevisionQuery.graphql";
-import DangerAlert from "lib/theme/ConfirmationAlert";
-import { Button } from "@button-inc/bcgov-theme";
-import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
-import { getProjectRevisionPageRoute } from "routes/pageRoutes";
-import { useState } from "react";
+import {
+  viewProjectRevisionQuery,
+  viewProjectRevisionQuery$data,
+} from "__generated__/viewProjectRevisionQuery.graphql";
 
 export const ViewProjectRevisionQuery = graphql`
   query viewProjectRevisionQuery($projectRevision: ID!) {
@@ -35,7 +29,6 @@ export const ViewProjectRevisionQuery = graphql`
     }
     projectRevision(id: $projectRevision) {
       id
-      rowId
       revisionType
       revisionStatus
       typeRowNumber
@@ -43,7 +36,6 @@ export const ViewProjectRevisionQuery = graphql`
       changeReason
       projectByProjectId {
         latestCommittedProjectRevision {
-          id
           ...TaskList_projectRevision
         }
       }
@@ -125,13 +117,9 @@ export const createProjectRevisionUISchema = (uiSchema) => {
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
-  const router = useRouter();
   const query = usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     query;
-  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
-  const [discardProjectRevision, discardingProjectRevision] =
-    useDeleteProjectRevisionMutation();
 
   const taskList = (
     <TaskList
@@ -143,27 +131,6 @@ export function ProjectRevisionView({
       projectRevisionUnderReview={projectRevision}
     />
   );
-
-  const discardRevision = async () => {
-    await discardProjectRevision({
-      variables: {
-        input: {
-          revisionId: query.projectRevision.rowId,
-        },
-      },
-      onCompleted: async () => {
-        await router.push(
-          getProjectRevisionPageRoute(
-            query.projectRevision.projectByProjectId
-              .latestCommittedProjectRevision.id
-          )
-        );
-      },
-      onError: async (e) => {
-        console.error("Error discarding the project", e);
-      },
-    });
-  };
 
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
@@ -201,37 +168,12 @@ export function ProjectRevisionView({
             }}
           ></FormBase>
           <RevisionRecordHistory projectRevision={projectRevision} />
-          <div className="discard-revision-button">
-            {showDiscardConfirmation && (
-              <DangerAlert
-                onProceed={discardRevision}
-                onCancel={() => setShowDiscardConfirmation(false)}
-                alertText="All changes made will be permanently deleted."
-              />
-            )}
-            {!showDiscardConfirmation && (
-              <Button
-                id="discard-project-button"
-                size="small"
-                variant="secondary"
-                onClick={() => setShowDiscardConfirmation(true)}
-                disabled={discardingProjectRevision}
-              >
-                <FontAwesomeIcon icon={faTrash} id="discard-project-icon" />
-                Discard Project Revision
-              </Button>
-            )}
-          </div>
         </div>
       </DefaultLayout>
       <style jsx>{`
         div :global(.definition-container) {
           flex-direction: column;
           gap: 0.5rem;
-        }
-        .discard-revision-button {
-          margin-top: 1rem;
-          margin-bottom: 1rem;
         }
       `}</style>
     </>
