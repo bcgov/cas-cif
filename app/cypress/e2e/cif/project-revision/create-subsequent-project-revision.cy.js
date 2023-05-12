@@ -61,7 +61,7 @@ describe("the project amendment and revisions page", () => {
     cy.contains(/revision type/i); // ensure the submit page has loaded
 
     // edit contacts -- add a secondary contact
-    cy.get(":nth-child(2) > h3.jsx-1435705197 > .accordionTrigger").click();
+    cy.findByRole("button", { name: /^2. Project Details/i }).click();
     cy.findByText(/edit project contacts/i).click();
     cy.url().should("include", "/form/2");
 
