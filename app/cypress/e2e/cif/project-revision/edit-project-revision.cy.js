@@ -39,7 +39,7 @@ describe("when editing a project, the project page", () => {
     cy.contains(/revision type/i); // on revision summary page
 
     // edit managers -- delete a manager
-    cy.get(":nth-child(2) > h3.jsx-1435705197 > .accordionTrigger").click();
+    cy.findByRole("button", { name: /^2. Project Details/i }).click();
     cy.findByText(/Edit project managers/i).click();
     cy.url().should("include", "/form/1");
     cy.findByText("Project Managers").should("be.visible");
@@ -63,7 +63,7 @@ describe("when editing a project, the project page", () => {
     cy.contains(/revision type/i); // on revision summary page
 
     // edit contacts -- add a secondary contact
-    cy.get(":nth-child(2) > h3.jsx-1435705197 > .accordionTrigger").click();
+    cy.findByRole("button", { name: /^2. Project Details/i }).click();
     cy.findByText(/Edit project contacts/i).click();
     cy.url().should("include", "/form/2");
 
@@ -243,22 +243,18 @@ describe("when editing a project, the project page", () => {
       "#root_projectAssetsLifeEndDate-diffAmendmentsAndOtherRevisionsNew"
     ).contains(/Dec(\.)? 31, 2020/);
 
-    // Quarterly report
-    cy.get("dd.jsx-3405638060 > .jsx-3405638060").should(
-      "have.text",
-      "Quarterly Report "
-    );
+    // Quarterly report removed
+    cy.findAllByText(/Quarterly report/i)
+      .eq(3)
+      .should("have.class", "diffAmendmentsAndOtherRevisionsOld");
 
-    // How to test that quarterly reports removed?
-    // cy.findByText("Quarterly Report removed").should("be.visible");
-
+    // TEIMP
     cy.get(
       "#root_teimpReporting_measurementPeriodStartDate-diffAmendmentsAndOtherRevisionsNew"
     ).should("have.text", "Jan 1, 2022");
 
-    cy.get(
-      ".jsx-2961984116 > :nth-child(1) > :nth-child(1) > :nth-child(1) > :nth-child(1) > .jsx-2146271977 > span.jsx-144616015 > .jsx-144616015"
-    ).should("have.text", "(ADDED)");
+    cy.contains("Jan 1, 2022").next().should("have.text", "(ADDED)");
+    cy.pause();
 
     cy.get("#root_comments-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
@@ -270,8 +266,6 @@ describe("when editing a project, the project page", () => {
       "new comment"
     );
 
-    // cy.findByRole("button", { name: /^submit/i }).should("be.disabled");
-    // Unsure if this is a necessary check
     cy.get("#root_revisionStatus").contains(/In Discussion/i);
 
     cy.happoAndAxe(
@@ -310,6 +304,8 @@ describe("when editing a project, the project page", () => {
       "main",
       true
     );
-    cy.get(":nth-child(1) > div.jsx-2559693295").click(); // update button (multiple update buttons on page)
+    cy.findAllByRole("button", { name: /^update/i })
+      .eq(2)
+      .click();
   });
 });
