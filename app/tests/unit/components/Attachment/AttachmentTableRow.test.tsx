@@ -1,12 +1,11 @@
-import { Button } from "@button-inc/bcgov-theme";
-import { render, screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledAttachmentTableRowTestQuery, {
   AttachmentTableRowTestQuery,
 } from "__generated__/AttachmentTableRowTestQuery.graphql";
-import { AttachmentTableRow_attachment } from "__generated__/AttachmentTableRow_attachment.graphql";
+import { AttachmentTableRow_attachment$data } from "__generated__/AttachmentTableRow_attachment.graphql";
 
 const testQuery = graphql`
   query AttachmentTableRowTestQuery @relay_test_operation {
@@ -20,7 +19,7 @@ const testQuery = graphql`
 
 const mockPayload = {
   Attachment() {
-    const result: AttachmentTableRow_attachment = {
+    const result: AttachmentTableRow_attachment$data = {
       " $fragmentType": "AttachmentTableRow_attachment",
       id: "Cif Test Attachment ID",
       fileName: "test.jpg",
@@ -53,13 +52,16 @@ const componentTestingHelper =
     compiledQuery: compiledAttachmentTableRowTestQuery,
     testQuery: testQuery,
     defaultQueryResolver: mockPayload,
-    getPropsFromTestQuery: (data) => ({ attachment: data.query.attachment }),
+    getPropsFromTestQuery: (data) => ({
+      attachment: data.query.attachment,
+      formChangeRowId: "test-form-change-row-id",
+      connectionId: "test-attachment-form-change-connection-id",
+    }),
   });
 
 describe("The Attachment table row component", () => {
   beforeEach(() => {
     jest.resetAllMocks();
-
     componentTestingHelper.reinit();
   });
 
@@ -87,26 +89,24 @@ describe("The Attachment table row component", () => {
       expect.anything()
     );
   });
+  it("calls the archiveAttachmentMutation when the delete button is clicked", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
 
-  it("has a working delete button", () => {
-    const handleArchiveAttachment = jest.fn();
-    render(
-      <tr>
-        <td className="links">
-          <Button
-            onClick={handleArchiveAttachment}
-            disabled={false}
-            size="small"
-          >
-            Delete
-          </Button>
-        </td>
-      </tr>
+    const deleteButton = screen.getAllByText("Delete")[0];
+    act(() => deleteButton.click());
+
+    componentTestingHelper.expectMutationToBeCalled(
+      "discardProjectAttachmentFormChangeMutation",
+      {
+        input: {
+          rowId: "test-form-change-row-id",
+          formChangePatch: {
+            operation: "ARCHIVE",
+          },
+        },
+        connections: ["test-attachment-form-change-connection-id"],
+      }
     );
-
-    const deleteButton = screen.getByText("Delete");
-    deleteButton.click();
-
-    expect(handleArchiveAttachment).toHaveBeenCalledTimes(1);
   });
 });

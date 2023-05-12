@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProjectAttachments } from "pages/cif/project-revision/[projectRevision]/attachments";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
@@ -7,28 +7,56 @@ import compiledAttachmentsQuery, {
 } from "__generated__/attachmentsQuery.graphql";
 
 const defaultQueryResolver = {
-  Project() {
+  Query() {
     return {
-      id: "test-cif-project",
-      rowId: 12345,
-      projectName: "Test CIF Project",
-      attachments: {
-        __id: "test-attachments-connection!",
-        totalCount: 2,
-        edges: [
-          {
-            node: {
-              file: "test-file-1",
-              id: "test-attachment-1",
+      projectRevision: {
+        rowId: 12345,
+        project: {
+          projectName: "Test CIF Project",
+          rowId: 1,
+        },
+        projectAttachmentFormChanges: {
+          __id: "test-attachment-form-change-connection-id",
+          totalCount: 2,
+          edges: [
+            {
+              node: {
+                id: "test-attachment-form-change-id-1",
+                rowId: 1,
+                asProjectAttachment: {
+                  attachmentByAttachmentId: {
+                    id: "test-attachment-id-1",
+                    fileName: "test-attachment-1.jpg",
+                    fileType: "image/jpeg",
+                    fileSize: 123456,
+                    createdAt: "2021-01-01T00:00:00.000Z",
+                    cifUserByCreatedBy: {
+                      fullName: "Test User",
+                    },
+                  },
+                },
+              },
             },
-          },
-          {
-            node: {
-              file: "test-file-2",
-              id: "test-attachment-2",
+            {
+              node: {
+                id: "test-attachment-form-change-id-2",
+                rowId: 2,
+                asProjectAttachment: {
+                  attachmentByAttachmentId: {
+                    id: "test-attachment-id-2",
+                    fileName: "test-attachment-2.jpg",
+                    fileType: "image/jpeg",
+                    fileSize: 123456,
+                    createdAt: "2021-01-02T00:00:00.000Z",
+                    cifUserByCreatedBy: {
+                      fullName: "Test User 2",
+                    },
+                  },
+                },
+              },
             },
-          },
-        ],
+          ],
+        },
       },
     };
   },
@@ -38,7 +66,7 @@ const pageTestingHelper = new PageTestingHelper<attachmentsQuery>({
   pageComponent: ProjectAttachments,
   compiledQuery: compiledAttachmentsQuery,
   defaultQueryResolver: defaultQueryResolver,
-  defaultQueryVariables: { projectRevision: "test-cif-project-revision" },
+  defaultQueryVariables: { projectRevision: "test-project-revision" },
 });
 
 describe("The project's attachment page", () => {
@@ -62,7 +90,7 @@ describe("The project's attachment page", () => {
     const testFile = new File(["O.o"], "eyes.jpg", { type: "image/jpeg" });
     const uploadControl = screen.getByLabelText("upload-attachment");
 
-    userEvent.upload(uploadControl, [testFile]);
+    act(() => userEvent.upload(uploadControl, [testFile]));
 
     pageTestingHelper.expectMutationToBeCalled("createAttachmentMutation", {
       input: {
@@ -71,28 +99,6 @@ describe("The project's attachment page", () => {
           fileName: "eyes.jpg",
           fileSize: "3 Bytes",
           fileType: "image/jpeg",
-          projectId: 12345,
-        },
-      },
-      connections: [
-        'client:test-cif-project:__connection_attachments_connection(filter:{"archivedAt":{"equalTo":null}})',
-      ],
-    });
-  });
-
-  it("calls the archiveAttachmentMutation when the delete button is clicked", () => {
-    pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPage();
-
-    const deleteButton = screen.getAllByText("Delete")[0];
-    deleteButton.click();
-
-    pageTestingHelper.expectMutationToBeCalled("archiveAttachmentMutation", {
-      connections: expect.any(Array),
-      input: {
-        id: "test-attachment-1",
-        attachmentPatch: {
-          archivedAt: expect.any(String),
         },
       },
     });

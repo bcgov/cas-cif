@@ -3,22 +3,15 @@ import type { createAttachmentMutation } from "createAttachmentMutation.graphql"
 import useMutationWithErrorMessage from "mutations/useMutationWithErrorMessage";
 
 const mutation = graphql`
-  mutation createAttachmentMutation(
-    $connections: [ID!]!
-    $input: CreateAttachmentInput!
-  ) {
+  mutation createAttachmentMutation($input: CreateAttachmentInput!) {
     createAttachment(input: $input) {
-      attachmentEdge @appendEdge(connections: $connections) {
-        cursor
-        node {
-          file
-          fileName
-          fileSize
-          fileType
-          createdBy
-          projectId
-          ...AttachmentTableRow_attachment
-        }
+      attachment {
+        rowId
+        file
+        fileName
+        fileSize
+        fileType
+        createdBy
       }
     }
   }

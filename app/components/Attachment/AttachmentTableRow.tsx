@@ -1,19 +1,25 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
 import { getAttachmentDownloadRoute } from "routes/pageRoutes";
-import { useFragment, graphql } from "react-relay";
+import { graphql, useFragment } from "react-relay";
+import useDiscardProjectAttachmentFormChange from "mutations/attachment/discardProjectAttachmentFormChange";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
+
 interface Props {
   attachment: AttachmentTableRow_attachment$key;
-  isArchivingAttachment: boolean;
-  archiveAttachmentByID: (id: string) => void;
+  connectionId: string;
+  formChangeRowId: number;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
   attachment,
-  isArchivingAttachment,
-  archiveAttachmentByID,
+  connectionId,
+  formChangeRowId,
 }) => {
+  const [
+    discardProjectAttachmentFormChange,
+    isDiscardingProjectAttachmentFormChange,
+  ] = useDiscardProjectAttachmentFormChange();
   const {
     id,
     fileName,
@@ -38,7 +44,17 @@ const AttachmentTableRow: React.FC<Props> = ({
   );
 
   const handleArchiveAttachment = () => {
-    archiveAttachmentByID(id);
+    discardProjectAttachmentFormChange({
+      variables: {
+        input: {
+          rowId: formChangeRowId,
+          formChangePatch: {
+            operation: "ARCHIVE",
+          },
+        },
+        connections: [connectionId],
+      },
+    });
   };
 
   return (
@@ -55,7 +71,7 @@ const AttachmentTableRow: React.FC<Props> = ({
           </Link>
           <Button
             onClick={handleArchiveAttachment}
-            disabled={isArchivingAttachment}
+            disabled={isDiscardingProjectAttachmentFormChange}
             size="small"
           >
             Delete

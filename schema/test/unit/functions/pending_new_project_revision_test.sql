@@ -3,9 +3,22 @@ select plan(5);
 
 -- restart the id sequences
 truncate table
-cif.project, cif.project_contact,
-cif.project_manager, cif.project_revision, cif.emission_intensity_report, cif.milestone_report,
-cif.operator, cif.contact, cif.form_change, cif.attachment, cif.reporting_requirement, cif.payment, cif.funding_parameter, cif.additional_funding_source, cif.project_revision_amendment_type
+cif.project,
+cif.project_contact,
+cif.project_manager,
+cif.project_revision,
+cif.emission_intensity_report,
+cif.milestone_report,
+cif.operator,
+cif.contact,
+cif.form_change,
+cif.attachment,
+cif.reporting_requirement,
+cif.payment,
+cif.funding_parameter,
+cif.additional_funding_source,
+cif.project_revision_amendment_type,
+cif.project_attachment
 restart identity;
 
 insert into cif.cif_user (session_sub, given_name, family_name, email_address)

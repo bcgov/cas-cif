@@ -74,6 +74,58 @@ type AddEmissionIntensityReportToRevisionPayload {
   query: Query
 }
 
+"""All input for the `addProjectAttachmentToRevision` mutation."""
+input AddProjectAttachmentToRevisionInput {
+  attachmentId: Int!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  projectId: Int!
+  revisionId: Int!
+}
+
+"""The output of our `addProjectAttachmentToRevision` mutation."""
+type AddProjectAttachmentToRevisionPayload {
+  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Form` that is related to this `FormChange`."""
+  formByJsonSchemaName: Form
+  formChange: FormChange
+
+  """Reads a single `FormChange` that is related to this `FormChange`."""
+  formChangeByPreviousFormChangeId: FormChange
+
+  """An edge for our `FormChange`. May be used by Relay 1."""
+  formChangeEdge(
+    """The method to use when ordering `FormChange`."""
+    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormChangesEdge
+
+  """Reads a single `ProjectRevision` that is related to this `FormChange`."""
+  projectRevisionByProjectRevisionId: ProjectRevision
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """
 Table containing information about funding provided through sources other than CIF and the proponent; often needed for program review and data request purposes.
 """
@@ -2167,6 +2219,123 @@ type Attachment implements Node {
   """Reads a single `CifUser` that is related to this `Attachment`."""
   cifUserByUpdatedBy: CifUser
 
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentAttachmentIdAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttachmentCifUsersByProjectAttachmentAttachmentIdAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentAttachmentIdAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttachmentCifUsersByProjectAttachmentAttachmentIdAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentAttachmentIdAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttachmentCifUsersByProjectAttachmentAttachmentIdAndUpdatedByManyToManyConnection!
+
   """created at timestamp"""
   createdAt: Datetime!
 
@@ -2195,21 +2364,83 @@ type Attachment implements Node {
   """
   id: ID!
 
-  """Reads a single `Project` that is related to this `Attachment`."""
-  projectByProjectId: Project
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
 
-  """
-  The id of the project (cif.project.id) that the attachment was uploaded to
-  """
-  projectId: Int!
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
 
-  """Reads a single `ProjectStatus` that is related to this `Attachment`."""
-  projectStatusByProjectStatusId: ProjectStatus
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
 
-  """
-  The id of the project_status (cif.project_status.id) that the attachment references
-  """
-  projectStatusId: Int
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByProjectAttachmentAttachmentIdAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttachmentProjectsByProjectAttachmentAttachmentIdAndProjectIdManyToManyConnection!
 
   """Unique ID for the attachment"""
   rowId: Int!
@@ -2219,6 +2450,213 @@ type Attachment implements Node {
 
   """updated by user id"""
   updatedBy: Int
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type AttachmentCifUsersByProjectAttachmentAttachmentIdAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [AttachmentCifUsersByProjectAttachmentAttachmentIdAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type AttachmentCifUsersByProjectAttachmentAttachmentIdAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type AttachmentCifUsersByProjectAttachmentAttachmentIdAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [AttachmentCifUsersByProjectAttachmentAttachmentIdAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type AttachmentCifUsersByProjectAttachmentAttachmentIdAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type AttachmentCifUsersByProjectAttachmentAttachmentIdAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [AttachmentCifUsersByProjectAttachmentAttachmentIdAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type AttachmentCifUsersByProjectAttachmentAttachmentIdAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
 }
 
 """
@@ -2252,12 +2690,6 @@ input AttachmentCondition {
 
   """Checks for equality with the object’s `fileType` field."""
   fileType: String
-
-  """Checks for equality with the object’s `projectId` field."""
-  projectId: Int
-
-  """Checks for equality with the object’s `projectStatusId` field."""
-  projectStatusId: Int
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
@@ -2327,20 +2759,11 @@ input AttachmentFilter {
   """Checks for any expressions in this list."""
   or: [AttachmentFilter!]
 
-  """Filter by the object’s `projectByProjectId` relation."""
-  projectByProjectId: ProjectFilter
+  """Filter by the object’s `projectAttachmentsByAttachmentId` relation."""
+  projectAttachmentsByAttachmentId: AttachmentToManyProjectAttachmentFilter
 
-  """Filter by the object’s `projectId` field."""
-  projectId: IntFilter
-
-  """Filter by the object’s `projectStatusByProjectStatusId` relation."""
-  projectStatusByProjectStatusId: ProjectStatusFilter
-
-  """A related `projectStatusByProjectStatusId` exists."""
-  projectStatusByProjectStatusIdExists: Boolean
-
-  """Filter by the object’s `projectStatusId` field."""
-  projectStatusId: IntFilter
+  """Some related `projectAttachmentsByAttachmentId` exist."""
+  projectAttachmentsByAttachmentIdExist: Boolean
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
@@ -2383,16 +2806,6 @@ input AttachmentInput {
   """Original uploaded file type"""
   fileType: String
 
-  """
-  The id of the project (cif.project.id) that the attachment was uploaded to
-  """
-  projectId: Int!
-
-  """
-  The id of the project_status (cif.project_status.id) that the attachment references
-  """
-  projectStatusId: Int
-
   """updated at timestamp"""
   updatedAt: Datetime
 
@@ -2433,21 +2846,100 @@ input AttachmentPatch {
   """Original uploaded file type"""
   fileType: String
 
-  """
-  The id of the project (cif.project.id) that the attachment was uploaded to
-  """
-  projectId: Int
-
-  """
-  The id of the project_status (cif.project_status.id) that the attachment references
-  """
-  projectStatusId: Int
-
   """updated at timestamp"""
   updatedAt: Datetime
 
   """updated by user id"""
   updatedBy: Int
+}
+
+"""
+A connection to a list of `Project` values, with data from `ProjectAttachment`.
+"""
+type AttachmentProjectsByProjectAttachmentAttachmentIdAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [AttachmentProjectsByProjectAttachmentAttachmentIdAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `ProjectAttachment`.
+"""
+type AttachmentProjectsByProjectAttachmentAttachmentIdAndProjectIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A filter to be used against many `ProjectAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input AttachmentToManyProjectAttachmentFilter {
+  """
+  Every related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ProjectAttachmentFilter
+
+  """
+  No related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ProjectAttachmentFilter
+
+  """
+  Some related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ProjectAttachmentFilter
 }
 
 """A connection to a list of `Attachment` values."""
@@ -2579,70 +3071,8 @@ enum AttachmentsOrderBy {
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
-  PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_ASC
-  PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_DESC
-  PROJECT_BY_PROJECT_ID__ARCHIVED_AT_ASC
-  PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
-  PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
-  PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
-  PROJECT_BY_PROJECT_ID__COMMENTS_ASC
-  PROJECT_BY_PROJECT_ID__COMMENTS_DESC
-  PROJECT_BY_PROJECT_ID__CONTRACT_NUMBER_ASC
-  PROJECT_BY_PROJECT_ID__CONTRACT_NUMBER_DESC
-  PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
-  PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
-  PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
-  PROJECT_BY_PROJECT_ID__CREATED_BY_DESC
-  PROJECT_BY_PROJECT_ID__FUNDING_STREAM_RFP_ID_ASC
-  PROJECT_BY_PROJECT_ID__FUNDING_STREAM_RFP_ID_DESC
-  PROJECT_BY_PROJECT_ID__ID_ASC
-  PROJECT_BY_PROJECT_ID__ID_DESC
-  PROJECT_BY_PROJECT_ID__NEXT_MILESTONE_DUE_DATE_ASC
-  PROJECT_BY_PROJECT_ID__NEXT_MILESTONE_DUE_DATE_DESC
-  PROJECT_BY_PROJECT_ID__OPERATOR_ID_ASC
-  PROJECT_BY_PROJECT_ID__OPERATOR_ID_DESC
-  PROJECT_BY_PROJECT_ID__PROJECT_NAME_ASC
-  PROJECT_BY_PROJECT_ID__PROJECT_NAME_DESC
-  PROJECT_BY_PROJECT_ID__PROJECT_STATUS_ID_ASC
-  PROJECT_BY_PROJECT_ID__PROJECT_STATUS_ID_DESC
-  PROJECT_BY_PROJECT_ID__PROJECT_TYPE_ASC
-  PROJECT_BY_PROJECT_ID__PROJECT_TYPE_DESC
-  PROJECT_BY_PROJECT_ID__PROPOSAL_REFERENCE_ASC
-  PROJECT_BY_PROJECT_ID__PROPOSAL_REFERENCE_DESC
-  PROJECT_BY_PROJECT_ID__SCORE_ASC
-  PROJECT_BY_PROJECT_ID__SCORE_DESC
-  PROJECT_BY_PROJECT_ID__SECTOR_NAME_ASC
-  PROJECT_BY_PROJECT_ID__SECTOR_NAME_DESC
-  PROJECT_BY_PROJECT_ID__SUMMARY_ASC
-  PROJECT_BY_PROJECT_ID__SUMMARY_DESC
-  PROJECT_BY_PROJECT_ID__TOTAL_FUNDING_REQUEST_ASC
-  PROJECT_BY_PROJECT_ID__TOTAL_FUNDING_REQUEST_DESC
-  PROJECT_BY_PROJECT_ID__UPDATED_AT_ASC
-  PROJECT_BY_PROJECT_ID__UPDATED_AT_DESC
-  PROJECT_BY_PROJECT_ID__UPDATED_BY_ASC
-  PROJECT_BY_PROJECT_ID__UPDATED_BY_DESC
-  PROJECT_ID_ASC
-  PROJECT_ID_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__ARCHIVED_AT_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__ARCHIVED_AT_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__ARCHIVED_BY_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__ARCHIVED_BY_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__CREATED_AT_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__CREATED_AT_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__CREATED_BY_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__CREATED_BY_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__DESCRIPTION_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__DESCRIPTION_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__ID_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__ID_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__NAME_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__UPDATED_AT_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__UPDATED_AT_DESC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__UPDATED_BY_ASC
-  PROJECT_STATUS_BY_PROJECT_STATUS_ID__UPDATED_BY_DESC
-  PROJECT_STATUS_ID_ASC
-  PROJECT_STATUS_ID_DESC
+  PROJECT_ATTACHMENTS_BY_ATTACHMENT_ID__COUNT_ASC
+  PROJECT_ATTACHMENTS_BY_ATTACHMENT_ID__COUNT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   UPDATED_BY_ASC
@@ -4894,6 +5324,123 @@ type CifUser implements Node {
     """The method to use when ordering `Attachment`."""
     orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
   ): AttachmentsConnection!
+
+  """Reads and enables pagination through a set of `Attachment`."""
+  attachmentsByProjectAttachmentArchivedByAndAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Attachment`."""
+    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserAttachmentsByProjectAttachmentArchivedByAndAttachmentIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Attachment`."""
+  attachmentsByProjectAttachmentCreatedByAndAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Attachment`."""
+    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserAttachmentsByProjectAttachmentCreatedByAndAttachmentIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Attachment`."""
+  attachmentsByProjectAttachmentUpdatedByAndAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Attachment`."""
+    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserAttachmentsByProjectAttachmentUpdatedByAndAttachmentIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Attachment`."""
   attachmentsByUpdatedBy(
@@ -9427,6 +9974,240 @@ type CifUser implements Node {
     """The method to use when ordering `CifUser`."""
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): CifUserCifUsersByProjectArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentArchivedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByProjectAttachmentArchivedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentArchivedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByProjectAttachmentArchivedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentCreatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByProjectAttachmentCreatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByProjectAttachmentCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentUpdatedByAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByProjectAttachmentUpdatedByAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserCifUsersByProjectAttachmentUpdatedByAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByProjectContactArchivedByAndCreatedBy(
@@ -14636,6 +15417,123 @@ type CifUser implements Node {
     orderBy: [PaymentsOrderBy!] = [PRIMARY_KEY_ASC]
   ): PaymentsConnection!
 
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+
   """Reads and enables pagination through a set of `ProjectContact`."""
   projectContactsByArchivedBy(
     """Read all values in the set after (below) this cursor."""
@@ -15583,123 +16481,6 @@ type CifUser implements Node {
   ): ProjectStatusesConnection!
 
   """Reads and enables pagination through a set of `ProjectStatus`."""
-  projectStatusesByAttachmentArchivedByAndProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectStatusCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectStatusFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ProjectStatus`."""
-    orderBy: [ProjectStatusesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserProjectStatusesByAttachmentArchivedByAndProjectStatusIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `ProjectStatus`."""
-  projectStatusesByAttachmentCreatedByAndProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectStatusCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectStatusFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ProjectStatus`."""
-    orderBy: [ProjectStatusesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserProjectStatusesByAttachmentCreatedByAndProjectStatusIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `ProjectStatus`."""
-  projectStatusesByAttachmentUpdatedByAndProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectStatusCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectStatusFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ProjectStatus`."""
-    orderBy: [ProjectStatusesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserProjectStatusesByAttachmentUpdatedByAndProjectStatusIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `ProjectStatus`."""
   projectStatusesByCreatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -16402,123 +17183,6 @@ type CifUser implements Node {
   ): ProjectsConnection!
 
   """Reads and enables pagination through a set of `Project`."""
-  projectsByAttachmentArchivedByAndProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Project`."""
-    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserProjectsByAttachmentArchivedByAndProjectIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `Project`."""
-  projectsByAttachmentCreatedByAndProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Project`."""
-    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserProjectsByAttachmentCreatedByAndProjectIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `Project`."""
-  projectsByAttachmentUpdatedByAndProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Project`."""
-    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CifUserProjectsByAttachmentUpdatedByAndProjectIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `Project`."""
   projectsByCreatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -16673,6 +17337,123 @@ type CifUser implements Node {
     """The method to use when ordering `Project`."""
     orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
   ): CifUserProjectsByFundingParameterUpdatedByAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByProjectAttachmentArchivedByAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserProjectsByProjectAttachmentArchivedByAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByProjectAttachmentCreatedByAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserProjectsByProjectAttachmentCreatedByAndProjectIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Project`."""
+  projectsByProjectAttachmentUpdatedByAndProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Project`."""
+    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CifUserProjectsByProjectAttachmentUpdatedByAndProjectIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Project`."""
   projectsByProjectContactArchivedByAndProjectId(
@@ -18952,6 +19733,213 @@ type CifUserAmendmentTypesByProjectRevisionAmendmentTypeUpdatedByAndAmendmentTyp
     """The method to use when ordering `ProjectRevisionAmendmentType`."""
     orderBy: [ProjectRevisionAmendmentTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionAmendmentTypesConnection!
+}
+
+"""
+A connection to a list of `Attachment` values, with data from `ProjectAttachment`.
+"""
+type CifUserAttachmentsByProjectAttachmentArchivedByAndAttachmentIdManyToManyConnection {
+  """
+  A list of edges which contains the `Attachment`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserAttachmentsByProjectAttachmentArchivedByAndAttachmentIdManyToManyEdge!]!
+
+  """A list of `Attachment` objects."""
+  nodes: [Attachment]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Attachment` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Attachment` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserAttachmentsByProjectAttachmentArchivedByAndAttachmentIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attachment` at the end of the edge."""
+  node: Attachment
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `Attachment` values, with data from `ProjectAttachment`.
+"""
+type CifUserAttachmentsByProjectAttachmentCreatedByAndAttachmentIdManyToManyConnection {
+  """
+  A list of edges which contains the `Attachment`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserAttachmentsByProjectAttachmentCreatedByAndAttachmentIdManyToManyEdge!]!
+
+  """A list of `Attachment` objects."""
+  nodes: [Attachment]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Attachment` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Attachment` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserAttachmentsByProjectAttachmentCreatedByAndAttachmentIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attachment` at the end of the edge."""
+  node: Attachment
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `Attachment` values, with data from `ProjectAttachment`.
+"""
+type CifUserAttachmentsByProjectAttachmentUpdatedByAndAttachmentIdManyToManyConnection {
+  """
+  A list of edges which contains the `Attachment`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserAttachmentsByProjectAttachmentUpdatedByAndAttachmentIdManyToManyEdge!]!
+
+  """A list of `Attachment` objects."""
+  nodes: [Attachment]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Attachment` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Attachment` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserAttachmentsByProjectAttachmentUpdatedByAndAttachmentIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attachment` at the end of the edge."""
+  node: Attachment
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
 }
 
 """
@@ -26355,6 +27343,420 @@ type CifUserCifUsersByProjectArchivedByAndUpdatedByManyToManyEdge {
 }
 
 """
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentArchivedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByProjectAttachmentArchivedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentArchivedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentArchivedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByProjectAttachmentArchivedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentArchivedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentCreatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByProjectAttachmentCreatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentCreatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByProjectAttachmentCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentCreatedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentUpdatedByAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByProjectAttachmentUpdatedByAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentUpdatedByAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserCifUsersByProjectAttachmentUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserCifUsersByProjectAttachmentUpdatedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
 A connection to a list of `CifUser` values, with data from `ProjectContact`.
 """
 type CifUserCifUsersByProjectContactArchivedByAndCreatedByManyToManyConnection {
@@ -32244,6 +33646,24 @@ input CifUserFilter {
   """Some related `paymentsByUpdatedBy` exist."""
   paymentsByUpdatedByExist: Boolean
 
+  """Filter by the object’s `projectAttachmentsByArchivedBy` relation."""
+  projectAttachmentsByArchivedBy: CifUserToManyProjectAttachmentFilter
+
+  """Some related `projectAttachmentsByArchivedBy` exist."""
+  projectAttachmentsByArchivedByExist: Boolean
+
+  """Filter by the object’s `projectAttachmentsByCreatedBy` relation."""
+  projectAttachmentsByCreatedBy: CifUserToManyProjectAttachmentFilter
+
+  """Some related `projectAttachmentsByCreatedBy` exist."""
+  projectAttachmentsByCreatedByExist: Boolean
+
+  """Filter by the object’s `projectAttachmentsByUpdatedBy` relation."""
+  projectAttachmentsByUpdatedBy: CifUserToManyProjectAttachmentFilter
+
+  """Some related `projectAttachmentsByUpdatedBy` exist."""
+  projectAttachmentsByUpdatedByExist: Boolean
+
   """Filter by the object’s `projectContactsByArchivedBy` relation."""
   projectContactsByArchivedBy: CifUserToManyProjectContactFilter
 
@@ -34281,207 +35701,6 @@ type CifUserProjectRevisionsByProjectRevisionAmendmentTypeUpdatedByAndProjectRev
 }
 
 """
-A connection to a list of `ProjectStatus` values, with data from `Attachment`.
-"""
-type CifUserProjectStatusesByAttachmentArchivedByAndProjectStatusIdManyToManyConnection {
-  """
-  A list of edges which contains the `ProjectStatus`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserProjectStatusesByAttachmentArchivedByAndProjectStatusIdManyToManyEdge!]!
-
-  """A list of `ProjectStatus` objects."""
-  nodes: [ProjectStatus]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `ProjectStatus` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `ProjectStatus` edge in the connection, with data from `Attachment`."""
-type CifUserProjectStatusesByAttachmentArchivedByAndProjectStatusIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `ProjectStatus` at the end of the edge."""
-  node: ProjectStatus
-}
-
-"""
-A connection to a list of `ProjectStatus` values, with data from `Attachment`.
-"""
-type CifUserProjectStatusesByAttachmentCreatedByAndProjectStatusIdManyToManyConnection {
-  """
-  A list of edges which contains the `ProjectStatus`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserProjectStatusesByAttachmentCreatedByAndProjectStatusIdManyToManyEdge!]!
-
-  """A list of `ProjectStatus` objects."""
-  nodes: [ProjectStatus]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `ProjectStatus` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `ProjectStatus` edge in the connection, with data from `Attachment`."""
-type CifUserProjectStatusesByAttachmentCreatedByAndProjectStatusIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `ProjectStatus` at the end of the edge."""
-  node: ProjectStatus
-}
-
-"""
-A connection to a list of `ProjectStatus` values, with data from `Attachment`.
-"""
-type CifUserProjectStatusesByAttachmentUpdatedByAndProjectStatusIdManyToManyConnection {
-  """
-  A list of edges which contains the `ProjectStatus`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserProjectStatusesByAttachmentUpdatedByAndProjectStatusIdManyToManyEdge!]!
-
-  """A list of `ProjectStatus` objects."""
-  nodes: [ProjectStatus]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `ProjectStatus` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `ProjectStatus` edge in the connection, with data from `Attachment`."""
-type CifUserProjectStatusesByAttachmentUpdatedByAndProjectStatusIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `ProjectStatus` at the end of the edge."""
-  node: ProjectStatus
-}
-
-"""
 A connection to a list of `ProjectStatus` values, with data from `FundingStreamProjectStatus`.
 """
 type CifUserProjectStatusesByFundingStreamProjectStatusArchivedByAndProjectStatusIdManyToManyConnection {
@@ -35310,207 +36529,6 @@ type CifUserProjectsByAdditionalFundingSourceUpdatedByAndProjectIdManyToManyEdge
 }
 
 """
-A connection to a list of `Project` values, with data from `Attachment`.
-"""
-type CifUserProjectsByAttachmentArchivedByAndProjectIdManyToManyConnection {
-  """
-  A list of edges which contains the `Project`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserProjectsByAttachmentArchivedByAndProjectIdManyToManyEdge!]!
-
-  """A list of `Project` objects."""
-  nodes: [Project]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Project` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Project` edge in the connection, with data from `Attachment`."""
-type CifUserProjectsByAttachmentArchivedByAndProjectIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Project` at the end of the edge."""
-  node: Project
-}
-
-"""
-A connection to a list of `Project` values, with data from `Attachment`.
-"""
-type CifUserProjectsByAttachmentCreatedByAndProjectIdManyToManyConnection {
-  """
-  A list of edges which contains the `Project`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserProjectsByAttachmentCreatedByAndProjectIdManyToManyEdge!]!
-
-  """A list of `Project` objects."""
-  nodes: [Project]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Project` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Project` edge in the connection, with data from `Attachment`."""
-type CifUserProjectsByAttachmentCreatedByAndProjectIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Project` at the end of the edge."""
-  node: Project
-}
-
-"""
-A connection to a list of `Project` values, with data from `Attachment`.
-"""
-type CifUserProjectsByAttachmentUpdatedByAndProjectIdManyToManyConnection {
-  """
-  A list of edges which contains the `Project`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [CifUserProjectsByAttachmentUpdatedByAndProjectIdManyToManyEdge!]!
-
-  """A list of `Project` objects."""
-  nodes: [Project]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Project` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Project` edge in the connection, with data from `Attachment`."""
-type CifUserProjectsByAttachmentUpdatedByAndProjectIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Project` at the end of the edge."""
-  node: Project
-}
-
-"""
 A connection to a list of `Project` values, with data from `FundingParameter`.
 """
 type CifUserProjectsByFundingParameterArchivedByAndProjectIdManyToManyConnection {
@@ -35709,6 +36727,213 @@ type CifUserProjectsByFundingParameterUpdatedByAndProjectIdManyToManyEdge {
 
   """The `Project` at the end of the edge."""
   node: Project
+}
+
+"""
+A connection to a list of `Project` values, with data from `ProjectAttachment`.
+"""
+type CifUserProjectsByProjectAttachmentArchivedByAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserProjectsByProjectAttachmentArchivedByAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserProjectsByProjectAttachmentArchivedByAndProjectIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `Project` values, with data from `ProjectAttachment`.
+"""
+type CifUserProjectsByProjectAttachmentCreatedByAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserProjectsByProjectAttachmentCreatedByAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserProjectsByProjectAttachmentCreatedByAndProjectIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `Project` values, with data from `ProjectAttachment`.
+"""
+type CifUserProjectsByProjectAttachmentUpdatedByAndProjectIdManyToManyConnection {
+  """
+  A list of edges which contains the `Project`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [CifUserProjectsByProjectAttachmentUpdatedByAndProjectIdManyToManyEdge!]!
+
+  """A list of `Project` objects."""
+  nodes: [Project]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Project` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Project` edge in the connection, with data from `ProjectAttachment`.
+"""
+type CifUserProjectsByProjectAttachmentUpdatedByAndProjectIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Project` at the end of the edge."""
+  node: Project
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
 }
 
 """
@@ -38195,6 +39420,26 @@ input CifUserToManyPaymentFilter {
 }
 
 """
+A filter to be used against many `ProjectAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input CifUserToManyProjectAttachmentFilter {
+  """
+  Every related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ProjectAttachmentFilter
+
+  """
+  No related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ProjectAttachmentFilter
+
+  """
+  Some related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ProjectAttachmentFilter
+}
+
+"""
 A filter to be used against many `ProjectContact` object types. All fields are combined with a logical ‘and.’
 """
 input CifUserToManyProjectContactFilter {
@@ -38697,6 +39942,12 @@ enum CifUsersOrderBy {
   PROJECTS_BY_CREATED_BY__COUNT_DESC
   PROJECTS_BY_UPDATED_BY__COUNT_ASC
   PROJECTS_BY_UPDATED_BY__COUNT_DESC
+  PROJECT_ATTACHMENTS_BY_ARCHIVED_BY__COUNT_ASC
+  PROJECT_ATTACHMENTS_BY_ARCHIVED_BY__COUNT_DESC
+  PROJECT_ATTACHMENTS_BY_CREATED_BY__COUNT_ASC
+  PROJECT_ATTACHMENTS_BY_CREATED_BY__COUNT_DESC
+  PROJECT_ATTACHMENTS_BY_UPDATED_BY__COUNT_ASC
+  PROJECT_ATTACHMENTS_BY_UPDATED_BY__COUNT_DESC
   PROJECT_CONTACTS_BY_ARCHIVED_BY__COUNT_ASC
   PROJECT_CONTACTS_BY_ARCHIVED_BY__COUNT_DESC
   PROJECT_CONTACTS_BY_CREATED_BY__COUNT_ASC
@@ -39916,12 +41167,6 @@ type CreateAttachmentPayload {
   """
   clientMutationId: String
 
-  """Reads a single `Project` that is related to this `Attachment`."""
-  projectByProjectId: Project
-
-  """Reads a single `ProjectStatus` that is related to this `Attachment`."""
-  projectStatusByProjectStatusId: ProjectStatus
-
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
@@ -40474,6 +41719,58 @@ type CreateMilestoneReportPayload {
   Reads a single `ReportingRequirement` that is related to this `MilestoneReport`.
   """
   reportingRequirementByReportingRequirementId: ReportingRequirement
+}
+
+"""All input for the create `ProjectAttachment` mutation."""
+input CreateProjectAttachmentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `ProjectAttachment` to be created by this mutation."""
+  projectAttachment: ProjectAttachmentInput!
+}
+
+"""The output of our create `ProjectAttachment` mutation."""
+type CreateProjectAttachmentPayload {
+  """
+  Reads a single `Attachment` that is related to this `ProjectAttachment`.
+  """
+  attachmentByAttachmentId: Attachment
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `ProjectAttachment` that was created by this mutation."""
+  projectAttachment: ProjectAttachment
+
+  """An edge for our `ProjectAttachment`. May be used by Relay 1."""
+  projectAttachmentEdge(
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsEdge
+
+  """Reads a single `Project` that is related to this `ProjectAttachment`."""
+  projectByProjectId: Project
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the create `ProjectContact` mutation."""
@@ -41377,12 +42674,6 @@ type DeleteAttachmentPayload {
   clientMutationId: String
   deletedAttachmentId: ID
 
-  """Reads a single `Project` that is related to this `Attachment`."""
-  projectByProjectId: Project
-
-  """Reads a single `ProjectStatus` that is related to this `Attachment`."""
-  projectStatusByProjectStatusId: ProjectStatus
-
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
@@ -42127,6 +43418,73 @@ type DeleteMilestoneReportPayload {
   Reads a single `ReportingRequirement` that is related to this `MilestoneReport`.
   """
   reportingRequirementByReportingRequirementId: ReportingRequirement
+}
+
+"""All input for the `deleteProjectAttachmentByRowId` mutation."""
+input DeleteProjectAttachmentByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the project attachment record"""
+  rowId: Int!
+}
+
+"""All input for the `deleteProjectAttachment` mutation."""
+input DeleteProjectAttachmentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `ProjectAttachment` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `ProjectAttachment` mutation."""
+type DeleteProjectAttachmentPayload {
+  """
+  Reads a single `Attachment` that is related to this `ProjectAttachment`.
+  """
+  attachmentByAttachmentId: Attachment
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedProjectAttachmentId: ID
+
+  """The `ProjectAttachment` that was deleted by this mutation."""
+  projectAttachment: ProjectAttachment
+
+  """An edge for our `ProjectAttachment`. May be used by Relay 1."""
+  projectAttachmentEdge(
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsEdge
+
+  """Reads a single `Project` that is related to this `ProjectAttachment`."""
+  projectByProjectId: Project
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `deleteProjectContactByRowId` mutation."""
@@ -44099,6 +45457,11 @@ type FormChange implements Node {
   Computed column returns data from the new_form_data column as if it were a project to allow graph traversal via the foreign keys.
   """
   asProject: Project
+
+  """
+  Computed column returns data from the new_form_data column as if it were an attachment record to allow graph traversal via the foreign keys.
+  """
+  asProjectAttachment: ProjectAttachment
 
   """
   Computed column returns data from the new_form_data column as if it were a project_contact record to allow graph traversal via the foreign keys.
@@ -50106,6 +51469,17 @@ type Mutation {
   ): AddEmissionIntensityReportToRevisionPayload
 
   """
+    Creates a new project_attachment form_change record for the given project_id, attachment_id, and revision_id.
+  
+  """
+  addProjectAttachmentToRevision(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: AddProjectAttachmentToRevisionInput!
+  ): AddProjectAttachmentToRevisionPayload
+
+  """
   Custom mutation to commit a form_change record via the API. Only used for records that are independent of a project such as the lists of contacts and operators.
   """
   commitFormChange(
@@ -50251,6 +51625,14 @@ type Mutation {
     """
     input: CreateProjectInput!
   ): CreateProjectPayload
+
+  """Creates a single `ProjectAttachment`."""
+  createProjectAttachment(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateProjectAttachmentInput!
+  ): CreateProjectAttachmentPayload
 
   """Creates a single `ProjectContact`."""
   createProjectContact(
@@ -50603,6 +51985,22 @@ type Mutation {
     """
     input: DeleteMilestoneReportByRowIdInput!
   ): DeleteMilestoneReportPayload
+
+  """Deletes a single `ProjectAttachment` using its globally unique id."""
+  deleteProjectAttachment(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteProjectAttachmentInput!
+  ): DeleteProjectAttachmentPayload
+
+  """Deletes a single `ProjectAttachment` using a unique key."""
+  deleteProjectAttachmentByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteProjectAttachmentByRowIdInput!
+  ): DeleteProjectAttachmentPayload
 
   """Deletes a single `ProjectContact` using its globally unique id."""
   deleteProjectContact(
@@ -51142,6 +52540,24 @@ type Mutation {
     """
     input: UpdateOrCreateUserFromSessionInput!
   ): UpdateOrCreateUserFromSessionPayload
+
+  """
+  Updates a single `ProjectAttachment` using its globally unique id and a patch.
+  """
+  updateProjectAttachment(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateProjectAttachmentInput!
+  ): UpdateProjectAttachmentPayload
+
+  """Updates a single `ProjectAttachment` using a unique key and a patch."""
+  updateProjectAttachmentByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateProjectAttachmentByRowIdInput!
+  ): UpdateProjectAttachmentPayload
 
   """
   Updates a single `ProjectContact` using its globally unique id and a patch.
@@ -52937,7 +54353,7 @@ type Project implements Node {
   archivedBy: Int
 
   """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectId(
+  attachmentsByProjectAttachmentProjectIdAndAttachmentId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -52960,7 +54376,7 @@ type Project implements Node {
     """
     Indicates whether archived items should be included in the results or not.
     """
-    includeArchived: IncludeArchivedOption = INHERIT
+    includeArchived: IncludeArchivedOption = NO
 
     """Only read the last `n` values of the set."""
     last: Int
@@ -52973,7 +54389,7 @@ type Project implements Node {
 
     """The method to use when ordering `Attachment`."""
     orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
+  ): ProjectAttachmentsByProjectAttachmentProjectIdAndAttachmentIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `ChangeStatus`."""
   changeStatusesByProjectRevisionProjectIdAndChangeStatus(
@@ -53141,123 +54557,6 @@ type Project implements Node {
   ): ProjectCifUsersByAdditionalFundingSourceProjectIdAndUpdatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByAttachmentProjectIdAndArchivedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectCifUsersByAttachmentProjectIdAndArchivedByManyToManyConnection!
-
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByAttachmentProjectIdAndCreatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectCifUsersByAttachmentProjectIdAndCreatedByManyToManyConnection!
-
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByAttachmentProjectIdAndUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectCifUsersByAttachmentProjectIdAndUpdatedByManyToManyConnection!
-
-  """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByFundingParameterProjectIdAndArchivedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -53373,6 +54672,123 @@ type Project implements Node {
     """The method to use when ordering `CifUser`."""
     orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectCifUsersByFundingParameterProjectIdAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentProjectIdAndArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectCifUsersByProjectAttachmentProjectIdAndArchivedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentProjectIdAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectCifUsersByProjectAttachmentProjectIdAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `CifUser`."""
+  cifUsersByProjectAttachmentProjectIdAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CifUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CifUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CifUser`."""
+    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectCifUsersByProjectAttachmentProjectIdAndUpdatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByProjectContactProjectIdAndArchivedBy(
@@ -53972,6 +55388,45 @@ type Project implements Node {
   """
   primaryManagers: String
 
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByProjectId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = INHERIT
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+
   """Reads and enables pagination through a set of `ProjectContact`."""
   projectContactsByProjectId(
     """Read all values in the set after (below) this cursor."""
@@ -54133,45 +55588,6 @@ type Project implements Node {
   The id of the project_status (cif.project_status.id) that the project is currently in
   """
   projectStatusId: Int!
-
-  """Reads and enables pagination through a set of `ProjectStatus`."""
-  projectStatusesByAttachmentProjectIdAndProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectStatusCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectStatusFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ProjectStatus`."""
-    orderBy: [ProjectStatusesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectProjectStatusesByAttachmentProjectIdAndProjectStatusIdManyToManyConnection!
 
   """The type of the project (e.g. fuel switching)"""
   projectType: String
@@ -54436,6 +55852,478 @@ type ProjectAdditionalFundingSourceStatusesByAdditionalFundingSourceProjectIdAnd
 
   """The `AdditionalFundingSourceStatus` at the end of the edge."""
   node: AdditionalFundingSourceStatus
+}
+
+"""Join table to track assignment of attachments to projects"""
+type ProjectAttachment implements Node {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """
+  Reads a single `Attachment` that is related to this `ProjectAttachment`.
+  """
+  attachmentByAttachmentId: Attachment
+
+  """Foreign key to the attachment"""
+  attachmentId: Int!
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByUpdatedBy: CifUser
+
+  """created at timestamp"""
+  createdAt: Datetime!
+
+  """created by user id"""
+  createdBy: Int
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Reads a single `Project` that is related to this `ProjectAttachment`."""
+  projectByProjectId: Project
+
+  """Foreign key to the project"""
+  projectId: Int!
+
+  """Unique ID for the project attachment record"""
+  rowId: Int!
+
+  """updated at timestamp"""
+  updatedAt: Datetime!
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A condition to be used against `ProjectAttachment` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input ProjectAttachmentCondition {
+  """Checks for equality with the object’s `archivedAt` field."""
+  archivedAt: Datetime
+
+  """Checks for equality with the object’s `archivedBy` field."""
+  archivedBy: Int
+
+  """Checks for equality with the object’s `attachmentId` field."""
+  attachmentId: Int
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `createdBy` field."""
+  createdBy: Int
+
+  """Checks for equality with the object’s `projectId` field."""
+  projectId: Int
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+
+  """Checks for equality with the object’s `updatedBy` field."""
+  updatedBy: Int
+}
+
+"""
+A filter to be used against `ProjectAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input ProjectAttachmentFilter {
+  """Checks for all expressions in this list."""
+  and: [ProjectAttachmentFilter!]
+
+  """Filter by the object’s `archivedAt` field."""
+  archivedAt: DatetimeFilter
+
+  """Filter by the object’s `archivedBy` field."""
+  archivedBy: IntFilter
+
+  """Filter by the object’s `attachmentByAttachmentId` relation."""
+  attachmentByAttachmentId: AttachmentFilter
+
+  """Filter by the object’s `attachmentId` field."""
+  attachmentId: IntFilter
+
+  """Filter by the object’s `cifUserByArchivedBy` relation."""
+  cifUserByArchivedBy: CifUserFilter
+
+  """A related `cifUserByArchivedBy` exists."""
+  cifUserByArchivedByExists: Boolean
+
+  """Filter by the object’s `cifUserByCreatedBy` relation."""
+  cifUserByCreatedBy: CifUserFilter
+
+  """A related `cifUserByCreatedBy` exists."""
+  cifUserByCreatedByExists: Boolean
+
+  """Filter by the object’s `cifUserByUpdatedBy` relation."""
+  cifUserByUpdatedBy: CifUserFilter
+
+  """A related `cifUserByUpdatedBy` exists."""
+  cifUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `createdBy` field."""
+  createdBy: IntFilter
+
+  """Negates the expression."""
+  not: ProjectAttachmentFilter
+
+  """Checks for any expressions in this list."""
+  or: [ProjectAttachmentFilter!]
+
+  """Filter by the object’s `projectByProjectId` relation."""
+  projectByProjectId: ProjectFilter
+
+  """Filter by the object’s `projectId` field."""
+  projectId: IntFilter
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `updatedBy` field."""
+  updatedBy: IntFilter
+}
+
+"""An input for mutations affecting `ProjectAttachment`"""
+input ProjectAttachmentInput {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """Foreign key to the attachment"""
+  attachmentId: Int!
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """Foreign key to the project"""
+  projectId: Int!
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+Represents an update to a `ProjectAttachment`. Fields that are set will be updated.
+"""
+input ProjectAttachmentPatch {
+  """archived at timestamp"""
+  archivedAt: Datetime
+
+  """archived by user id"""
+  archivedBy: Int
+
+  """Foreign key to the attachment"""
+  attachmentId: Int
+
+  """created at timestamp"""
+  createdAt: Datetime
+
+  """created by user id"""
+  createdBy: Int
+
+  """Foreign key to the project"""
+  projectId: Int
+
+  """updated at timestamp"""
+  updatedAt: Datetime
+
+  """updated by user id"""
+  updatedBy: Int
+}
+
+"""
+A connection to a list of `Attachment` values, with data from `ProjectAttachment`.
+"""
+type ProjectAttachmentsByProjectAttachmentProjectIdAndAttachmentIdManyToManyConnection {
+  """
+  A list of edges which contains the `Attachment`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectAttachmentsByProjectAttachmentProjectIdAndAttachmentIdManyToManyEdge!]!
+
+  """A list of `Attachment` objects."""
+  nodes: [Attachment]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Attachment` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Attachment` edge in the connection, with data from `ProjectAttachment`.
+"""
+type ProjectAttachmentsByProjectAttachmentProjectIdAndAttachmentIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attachment` at the end of the edge."""
+  node: Attachment
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByAttachmentId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""A connection to a list of `ProjectAttachment` values."""
+type ProjectAttachmentsConnection {
+  """
+  A list of edges which contains the `ProjectAttachment` and cursor to aid in pagination.
+  """
+  edges: [ProjectAttachmentsEdge!]!
+
+  """A list of `ProjectAttachment` objects."""
+  nodes: [ProjectAttachment]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `ProjectAttachment` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `ProjectAttachment` edge in the connection."""
+type ProjectAttachmentsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ProjectAttachment` at the end of the edge."""
+  node: ProjectAttachment
+}
+
+"""Methods to use when ordering `ProjectAttachment`."""
+enum ProjectAttachmentsOrderBy {
+  ARCHIVED_AT_ASC
+  ARCHIVED_AT_DESC
+  ARCHIVED_BY_ASC
+  ARCHIVED_BY_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__ARCHIVED_AT_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__ARCHIVED_AT_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__ARCHIVED_BY_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__ARCHIVED_BY_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__CREATED_AT_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__CREATED_AT_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__CREATED_BY_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__CREATED_BY_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__DESCRIPTION_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__DESCRIPTION_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_NAME_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_NAME_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_SIZE_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_SIZE_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_TYPE_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__FILE_TYPE_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__ID_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__ID_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__UPDATED_AT_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__UPDATED_AT_DESC
+  ATTACHMENT_BY_ATTACHMENT_ID__UPDATED_BY_ASC
+  ATTACHMENT_BY_ATTACHMENT_ID__UPDATED_BY_DESC
+  ATTACHMENT_ID_ASC
+  ATTACHMENT_ID_DESC
+  CIF_USER_BY_ARCHIVED_BY__ALLOW_SUB_UPDATE_ASC
+  CIF_USER_BY_ARCHIVED_BY__ALLOW_SUB_UPDATE_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__CREATED_BY_DESC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_ARCHIVED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__FULL_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__FULL_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_ARCHIVED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_ARCHIVED_BY__ID_ASC
+  CIF_USER_BY_ARCHIVED_BY__ID_DESC
+  CIF_USER_BY_ARCHIVED_BY__SESSION_SUB_ASC
+  CIF_USER_BY_ARCHIVED_BY__SESSION_SUB_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_ARCHIVED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__ALLOW_SUB_UPDATE_ASC
+  CIF_USER_BY_CREATED_BY__ALLOW_SUB_UPDATE_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_CREATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_CREATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_CREATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_CREATED_BY__FULL_NAME_ASC
+  CIF_USER_BY_CREATED_BY__FULL_NAME_DESC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_CREATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_CREATED_BY__ID_ASC
+  CIF_USER_BY_CREATED_BY__ID_DESC
+  CIF_USER_BY_CREATED_BY__SESSION_SUB_ASC
+  CIF_USER_BY_CREATED_BY__SESSION_SUB_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_CREATED_BY__UPDATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__ALLOW_SUB_UPDATE_ASC
+  CIF_USER_BY_UPDATED_BY__ALLOW_SUB_UPDATE_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__ARCHIVED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__CREATED_BY_DESC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_ASC
+  CIF_USER_BY_UPDATED_BY__EMAIL_ADDRESS_DESC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__FAMILY_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__FULL_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__FULL_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_ASC
+  CIF_USER_BY_UPDATED_BY__GIVEN_NAME_DESC
+  CIF_USER_BY_UPDATED_BY__ID_ASC
+  CIF_USER_BY_UPDATED_BY__ID_DESC
+  CIF_USER_BY_UPDATED_BY__SESSION_SUB_ASC
+  CIF_USER_BY_UPDATED_BY__SESSION_SUB_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_AT_DESC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_ASC
+  CIF_USER_BY_UPDATED_BY__UPDATED_BY_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  CREATED_BY_ASC
+  CREATED_BY_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_ASC
+  PROJECT_BY_PROJECT_ID__ADDITIONAL_SECTOR_INFORMATION_DESC
+  PROJECT_BY_PROJECT_ID__ARCHIVED_AT_ASC
+  PROJECT_BY_PROJECT_ID__ARCHIVED_AT_DESC
+  PROJECT_BY_PROJECT_ID__ARCHIVED_BY_ASC
+  PROJECT_BY_PROJECT_ID__ARCHIVED_BY_DESC
+  PROJECT_BY_PROJECT_ID__COMMENTS_ASC
+  PROJECT_BY_PROJECT_ID__COMMENTS_DESC
+  PROJECT_BY_PROJECT_ID__CONTRACT_NUMBER_ASC
+  PROJECT_BY_PROJECT_ID__CONTRACT_NUMBER_DESC
+  PROJECT_BY_PROJECT_ID__CREATED_AT_ASC
+  PROJECT_BY_PROJECT_ID__CREATED_AT_DESC
+  PROJECT_BY_PROJECT_ID__CREATED_BY_ASC
+  PROJECT_BY_PROJECT_ID__CREATED_BY_DESC
+  PROJECT_BY_PROJECT_ID__FUNDING_STREAM_RFP_ID_ASC
+  PROJECT_BY_PROJECT_ID__FUNDING_STREAM_RFP_ID_DESC
+  PROJECT_BY_PROJECT_ID__ID_ASC
+  PROJECT_BY_PROJECT_ID__ID_DESC
+  PROJECT_BY_PROJECT_ID__NEXT_MILESTONE_DUE_DATE_ASC
+  PROJECT_BY_PROJECT_ID__NEXT_MILESTONE_DUE_DATE_DESC
+  PROJECT_BY_PROJECT_ID__OPERATOR_ID_ASC
+  PROJECT_BY_PROJECT_ID__OPERATOR_ID_DESC
+  PROJECT_BY_PROJECT_ID__PROJECT_NAME_ASC
+  PROJECT_BY_PROJECT_ID__PROJECT_NAME_DESC
+  PROJECT_BY_PROJECT_ID__PROJECT_STATUS_ID_ASC
+  PROJECT_BY_PROJECT_ID__PROJECT_STATUS_ID_DESC
+  PROJECT_BY_PROJECT_ID__PROJECT_TYPE_ASC
+  PROJECT_BY_PROJECT_ID__PROJECT_TYPE_DESC
+  PROJECT_BY_PROJECT_ID__PROPOSAL_REFERENCE_ASC
+  PROJECT_BY_PROJECT_ID__PROPOSAL_REFERENCE_DESC
+  PROJECT_BY_PROJECT_ID__SCORE_ASC
+  PROJECT_BY_PROJECT_ID__SCORE_DESC
+  PROJECT_BY_PROJECT_ID__SECTOR_NAME_ASC
+  PROJECT_BY_PROJECT_ID__SECTOR_NAME_DESC
+  PROJECT_BY_PROJECT_ID__SUMMARY_ASC
+  PROJECT_BY_PROJECT_ID__SUMMARY_DESC
+  PROJECT_BY_PROJECT_ID__TOTAL_FUNDING_REQUEST_ASC
+  PROJECT_BY_PROJECT_ID__TOTAL_FUNDING_REQUEST_DESC
+  PROJECT_BY_PROJECT_ID__UPDATED_AT_ASC
+  PROJECT_BY_PROJECT_ID__UPDATED_AT_DESC
+  PROJECT_BY_PROJECT_ID__UPDATED_BY_ASC
+  PROJECT_BY_PROJECT_ID__UPDATED_BY_DESC
+  PROJECT_ID_ASC
+  PROJECT_ID_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  UPDATED_BY_ASC
+  UPDATED_BY_DESC
 }
 
 """
@@ -54716,207 +56604,6 @@ type ProjectCifUsersByAdditionalFundingSourceProjectIdAndUpdatedByManyToManyEdge
 }
 
 """
-A connection to a list of `CifUser` values, with data from `Attachment`.
-"""
-type ProjectCifUsersByAttachmentProjectIdAndArchivedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectCifUsersByAttachmentProjectIdAndArchivedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `Attachment`."""
-type ProjectCifUsersByAttachmentProjectIdAndArchivedByManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByArchivedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `Attachment`.
-"""
-type ProjectCifUsersByAttachmentProjectIdAndCreatedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectCifUsersByAttachmentProjectIdAndCreatedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `Attachment`."""
-type ProjectCifUsersByAttachmentProjectIdAndCreatedByManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByCreatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `Attachment`.
-"""
-type ProjectCifUsersByAttachmentProjectIdAndUpdatedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectCifUsersByAttachmentProjectIdAndUpdatedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `Attachment`."""
-type ProjectCifUsersByAttachmentProjectIdAndUpdatedByManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
-}
-
-"""
 A connection to a list of `CifUser` values, with data from `FundingParameter`.
 """
 type ProjectCifUsersByFundingParameterProjectIdAndArchivedByManyToManyConnection {
@@ -55115,6 +56802,213 @@ type ProjectCifUsersByFundingParameterProjectIdAndUpdatedByManyToManyEdge {
 
   """The `CifUser` at the end of the edge."""
   node: CifUser
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type ProjectCifUsersByProjectAttachmentProjectIdAndArchivedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectCifUsersByProjectAttachmentProjectIdAndArchivedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type ProjectCifUsersByProjectAttachmentProjectIdAndArchivedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByArchivedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type ProjectCifUsersByProjectAttachmentProjectIdAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectCifUsersByProjectAttachmentProjectIdAndCreatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type ProjectCifUsersByProjectAttachmentProjectIdAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
+}
+
+"""
+A connection to a list of `CifUser` values, with data from `ProjectAttachment`.
+"""
+type ProjectCifUsersByProjectAttachmentProjectIdAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `CifUser`, info from the `ProjectAttachment`, and the cursor to aid in pagination.
+  """
+  edges: [ProjectCifUsersByProjectAttachmentProjectIdAndUpdatedByManyToManyEdge!]!
+
+  """A list of `CifUser` objects."""
+  nodes: [CifUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CifUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `CifUser` edge in the connection, with data from `ProjectAttachment`.
+"""
+type ProjectCifUsersByProjectAttachmentProjectIdAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CifUser` at the end of the edge."""
+  node: CifUser
+
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  projectAttachmentsByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection!
 }
 
 """
@@ -56502,12 +58396,6 @@ input ProjectFilter {
   """Filter by the object’s `archivedBy` field."""
   archivedBy: IntFilter
 
-  """Filter by the object’s `attachmentsByProjectId` relation."""
-  attachmentsByProjectId: ProjectToManyAttachmentFilter
-
-  """Some related `attachmentsByProjectId` exist."""
-  attachmentsByProjectIdExist: Boolean
-
   """Filter by the object’s `cifUserByArchivedBy` relation."""
   cifUserByArchivedBy: CifUserFilter
 
@@ -56569,6 +58457,12 @@ input ProjectFilter {
 
   """Filter by the object’s `primaryManagers` field."""
   primaryManagers: StringFilter
+
+  """Filter by the object’s `projectAttachmentsByProjectId` relation."""
+  projectAttachmentsByProjectId: ProjectToManyProjectAttachmentFilter
+
+  """Some related `projectAttachmentsByProjectId` exist."""
+  projectAttachmentsByProjectIdExist: Boolean
 
   """Filter by the object’s `projectContactsByProjectId` relation."""
   projectContactsByProjectId: ProjectToManyProjectContactFilter
@@ -58077,73 +59971,6 @@ type ProjectProjectManagerLabelsByProjectManagerProjectIdAndProjectManagerLabelI
     """The method to use when ordering `ProjectManager`."""
     orderBy: [ProjectManagersOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectManagersConnection!
-}
-
-"""
-A connection to a list of `ProjectStatus` values, with data from `Attachment`.
-"""
-type ProjectProjectStatusesByAttachmentProjectIdAndProjectStatusIdManyToManyConnection {
-  """
-  A list of edges which contains the `ProjectStatus`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectProjectStatusesByAttachmentProjectIdAndProjectStatusIdManyToManyEdge!]!
-
-  """A list of `ProjectStatus` objects."""
-  nodes: [ProjectStatus]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `ProjectStatus` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `ProjectStatus` edge in the connection, with data from `Attachment`."""
-type ProjectProjectStatusesByAttachmentProjectIdAndProjectStatusIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `ProjectStatus` at the end of the edge."""
-  node: ProjectStatus
 }
 
 """
@@ -60483,45 +62310,6 @@ type ProjectStatus implements Node {
   """archived by user id"""
   archivedBy: Int
 
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectStatusId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = INHERIT
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
   """Reads a single `CifUser` that is related to this `ProjectStatus`."""
   cifUserByArchivedBy: CifUser
 
@@ -60530,123 +62318,6 @@ type ProjectStatus implements Node {
 
   """Reads a single `CifUser` that is related to this `ProjectStatus`."""
   cifUserByUpdatedBy: CifUser
-
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByAttachmentProjectStatusIdAndArchivedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectStatusCifUsersByAttachmentProjectStatusIdAndArchivedByManyToManyConnection!
-
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByAttachmentProjectStatusIdAndCreatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectStatusCifUsersByAttachmentProjectStatusIdAndCreatedByManyToManyConnection!
-
-  """Reads and enables pagination through a set of `CifUser`."""
-  cifUsersByAttachmentProjectStatusIdAndUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CifUserCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CifUserFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CifUser`."""
-    orderBy: [CifUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectStatusCifUsersByAttachmentProjectStatusIdAndUpdatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `CifUser`."""
   cifUsersByFundingStreamProjectStatusProjectStatusIdAndArchivedBy(
@@ -61097,45 +62768,6 @@ type ProjectStatus implements Node {
   ): ProjectStatusProjectTypesByProjectProjectStatusIdAndProjectTypeManyToManyConnection!
 
   """Reads and enables pagination through a set of `Project`."""
-  projectsByAttachmentProjectStatusIdAndProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProjectCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProjectFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Project`."""
-    orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ProjectStatusProjectsByAttachmentProjectStatusIdAndProjectIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `Project`."""
   projectsByProjectStatusId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -61221,207 +62853,6 @@ type ProjectStatus implements Node {
 
   """updated by user id"""
   updatedBy: Int
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `Attachment`.
-"""
-type ProjectStatusCifUsersByAttachmentProjectStatusIdAndArchivedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectStatusCifUsersByAttachmentProjectStatusIdAndArchivedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `Attachment`."""
-type ProjectStatusCifUsersByAttachmentProjectStatusIdAndArchivedByManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByArchivedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `Attachment`.
-"""
-type ProjectStatusCifUsersByAttachmentProjectStatusIdAndCreatedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectStatusCifUsersByAttachmentProjectStatusIdAndCreatedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `Attachment`."""
-type ProjectStatusCifUsersByAttachmentProjectStatusIdAndCreatedByManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByCreatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
-}
-
-"""
-A connection to a list of `CifUser` values, with data from `Attachment`.
-"""
-type ProjectStatusCifUsersByAttachmentProjectStatusIdAndUpdatedByManyToManyConnection {
-  """
-  A list of edges which contains the `CifUser`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectStatusCifUsersByAttachmentProjectStatusIdAndUpdatedByManyToManyEdge!]!
-
-  """A list of `CifUser` objects."""
-  nodes: [CifUser]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CifUser` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `CifUser` edge in the connection, with data from `Attachment`."""
-type ProjectStatusCifUsersByAttachmentProjectStatusIdAndUpdatedByManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CifUser` at the end of the edge."""
-  node: CifUser
 }
 
 """
@@ -61878,12 +63309,6 @@ input ProjectStatusFilter {
   """Filter by the object’s `archivedBy` field."""
   archivedBy: IntFilter
 
-  """Filter by the object’s `attachmentsByProjectStatusId` relation."""
-  attachmentsByProjectStatusId: ProjectStatusToManyAttachmentFilter
-
-  """Some related `attachmentsByProjectStatusId` exist."""
-  attachmentsByProjectStatusIdExist: Boolean
-
   """Filter by the object’s `cifUserByArchivedBy` relation."""
   cifUserByArchivedBy: CifUserFilter
 
@@ -62272,73 +63697,6 @@ type ProjectStatusProjectTypesByProjectProjectStatusIdAndProjectTypeManyToManyEd
   ): ProjectsConnection!
 }
 
-"""
-A connection to a list of `Project` values, with data from `Attachment`.
-"""
-type ProjectStatusProjectsByAttachmentProjectStatusIdAndProjectIdManyToManyConnection {
-  """
-  A list of edges which contains the `Project`, info from the `Attachment`, and the cursor to aid in pagination.
-  """
-  edges: [ProjectStatusProjectsByAttachmentProjectStatusIdAndProjectIdManyToManyEdge!]!
-
-  """A list of `Project` objects."""
-  nodes: [Project]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Project` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Project` edge in the connection, with data from `Attachment`."""
-type ProjectStatusProjectsByAttachmentProjectStatusIdAndProjectIdManyToManyEdge {
-  """Reads and enables pagination through a set of `Attachment`."""
-  attachmentsByProjectId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttachmentCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttachmentFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """
-    Indicates whether archived items should be included in the results or not.
-    """
-    includeArchived: IncludeArchivedOption = NO
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Attachment`."""
-    orderBy: [AttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttachmentsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Project` at the end of the edge."""
-  node: Project
-}
-
 """A connection to a list of `Sector` values, with data from `Project`."""
 type ProjectStatusSectorsByProjectProjectStatusIdAndSectorNameManyToManyConnection {
   """
@@ -62402,26 +63760,6 @@ type ProjectStatusSectorsByProjectProjectStatusIdAndSectorNameManyToManyEdge {
     """The method to use when ordering `Project`."""
     orderBy: [ProjectsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectsConnection!
-}
-
-"""
-A filter to be used against many `Attachment` object types. All fields are combined with a logical ‘and.’
-"""
-input ProjectStatusToManyAttachmentFilter {
-  """
-  Every related `Attachment` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: AttachmentFilter
-
-  """
-  No related `Attachment` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: AttachmentFilter
-
-  """
-  Some related `Attachment` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: AttachmentFilter
 }
 
 """
@@ -62496,8 +63834,6 @@ enum ProjectStatusesOrderBy {
   ARCHIVED_AT_DESC
   ARCHIVED_BY_ASC
   ARCHIVED_BY_DESC
-  ATTACHMENTS_BY_PROJECT_STATUS_ID__COUNT_ASC
-  ATTACHMENTS_BY_PROJECT_STATUS_ID__COUNT_DESC
   CIF_USER_BY_ARCHIVED_BY__ALLOW_SUB_UPDATE_ASC
   CIF_USER_BY_ARCHIVED_BY__ALLOW_SUB_UPDATE_DESC
   CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
@@ -62620,26 +63956,6 @@ input ProjectToManyAdditionalFundingSourceFilter {
 }
 
 """
-A filter to be used against many `Attachment` object types. All fields are combined with a logical ‘and.’
-"""
-input ProjectToManyAttachmentFilter {
-  """
-  Every related `Attachment` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: AttachmentFilter
-
-  """
-  No related `Attachment` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: AttachmentFilter
-
-  """
-  Some related `Attachment` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: AttachmentFilter
-}
-
-"""
 A filter to be used against many `FundingParameter` object types. All fields are combined with a logical ‘and.’
 """
 input ProjectToManyFundingParameterFilter {
@@ -62657,6 +63973,26 @@ input ProjectToManyFundingParameterFilter {
   Some related `FundingParameter` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
   some: FundingParameterFilter
+}
+
+"""
+A filter to be used against many `ProjectAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input ProjectToManyProjectAttachmentFilter {
+  """
+  Every related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ProjectAttachmentFilter
+
+  """
+  No related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ProjectAttachmentFilter
+
+  """
+  Some related `ProjectAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ProjectAttachmentFilter
 }
 
 """
@@ -63880,8 +65216,6 @@ enum ProjectsOrderBy {
   ARCHIVED_AT_DESC
   ARCHIVED_BY_ASC
   ARCHIVED_BY_DESC
-  ATTACHMENTS_BY_PROJECT_ID__COUNT_ASC
-  ATTACHMENTS_BY_PROJECT_ID__COUNT_DESC
   CIF_USER_BY_ARCHIVED_BY__ALLOW_SUB_UPDATE_ASC
   CIF_USER_BY_ARCHIVED_BY__ALLOW_SUB_UPDATE_DESC
   CIF_USER_BY_ARCHIVED_BY__ARCHIVED_AT_ASC
@@ -64027,6 +65361,8 @@ enum ProjectsOrderBy {
   OPERATOR_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROJECT_ATTACHMENTS_BY_PROJECT_ID__COUNT_ASC
+  PROJECT_ATTACHMENTS_BY_PROJECT_ID__COUNT_DESC
   PROJECT_CONTACTS_BY_PROJECT_ID__COUNT_ASC
   PROJECT_CONTACTS_BY_PROJECT_ID__COUNT_DESC
   PROJECT_MANAGERS_BY_PROJECT_ID__COUNT_ASC
@@ -64836,6 +66172,45 @@ type Query implements Node {
     orderBy: [PaymentsOrderBy!] = [PRIMARY_KEY_ASC]
   ): PaymentsConnection
 
+  """Reads and enables pagination through a set of `ProjectAttachment`."""
+  allProjectAttachments(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProjectAttachmentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProjectAttachmentFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """
+    Indicates whether archived items should be included in the results or not.
+    """
+    includeArchived: IncludeArchivedOption = NO
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsConnection
+
   """Reads and enables pagination through a set of `ProjectContact`."""
   allProjectContacts(
     """Read all values in the set after (below) this cursor."""
@@ -65546,6 +66921,15 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Project`."""
     id: ID!
   ): Project
+
+  """Reads a single `ProjectAttachment` using its globally unique `ID`."""
+  projectAttachment(
+    """
+    The globally unique `ID` to be used in selecting a single `ProjectAttachment`.
+    """
+    id: ID!
+  ): ProjectAttachment
+  projectAttachmentByRowId(rowId: Int!): ProjectAttachment
   projectByProposalReference(proposalReference: String!): Project
   projectByRowId(rowId: Int!): Project
 
@@ -71675,12 +73059,6 @@ type UpdateAttachmentPayload {
   """
   clientMutationId: String
 
-  """Reads a single `Project` that is related to this `Attachment`."""
-  projectByProjectId: Project
-
-  """Reads a single `ProjectStatus` that is related to this `Attachment`."""
-  projectStatusByProjectStatusId: ProjectStatus
-
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
@@ -72592,6 +73970,82 @@ type UpdateOrCreateUserFromSessionPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateProjectAttachmentByRowId` mutation."""
+input UpdateProjectAttachmentByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `ProjectAttachment` being updated.
+  """
+  projectAttachmentPatch: ProjectAttachmentPatch!
+
+  """Unique ID for the project attachment record"""
+  rowId: Int!
+}
+
+"""All input for the `updateProjectAttachment` mutation."""
+input UpdateProjectAttachmentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `ProjectAttachment` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `ProjectAttachment` being updated.
+  """
+  projectAttachmentPatch: ProjectAttachmentPatch!
+}
+
+"""The output of our update `ProjectAttachment` mutation."""
+type UpdateProjectAttachmentPayload {
+  """
+  Reads a single `Attachment` that is related to this `ProjectAttachment`.
+  """
+  attachmentByAttachmentId: Attachment
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByArchivedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `ProjectAttachment`."""
+  cifUserByUpdatedBy: CifUser
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `ProjectAttachment` that was updated by this mutation."""
+  projectAttachment: ProjectAttachment
+
+  """An edge for our `ProjectAttachment`. May be used by Relay 1."""
+  projectAttachmentEdge(
+    """The method to use when ordering `ProjectAttachment`."""
+    orderBy: [ProjectAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProjectAttachmentsEdge
+
+  """Reads a single `Project` that is related to this `ProjectAttachment`."""
+  projectByProjectId: Project
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
