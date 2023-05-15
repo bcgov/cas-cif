@@ -6,6 +6,7 @@ import compiledTaskListQuery, {
   TaskListQuery,
 } from "__generated__/TaskListQuery.graphql";
 import { DateTime, Settings } from "luxon";
+import userEvent from "@testing-library/user-event";
 
 const testQuery = graphql`
   query TaskListQuery($projectRevision: ID!) @relay_test_operation {
@@ -24,6 +25,8 @@ const mockQueryPayload = {
       projectRevision: {
         id: "test-project-revision-id",
         rowId: 42,
+        revisionType: "test-amendment",
+        typeRowNumber: 6,
         projectFormChange: {
           asProject: {
             fundingStreamRfpByFundingStreamRfpId: {
@@ -54,10 +57,10 @@ const componentTestingHelper = new ComponentTestingHelper<TaskListQuery>({
   compiledQuery: compiledTaskListQuery,
   getPropsFromTestQuery: (data) => ({
     projectRevision: data.query.projectRevision,
+    mode: "update",
   }),
   defaultQueryResolver: mockQueryPayload,
   defaultQueryVariables: { projectRevision: "Test Revision ID" },
-  defaultComponentProps: { mode: "update" },
 });
 
 describe("The ProjectManagerForm", () => {
@@ -470,7 +473,159 @@ describe("The ProjectManagerForm", () => {
     expect(screen.queryByText(/emissions intensity report/i)).toBeNull();
     expect(screen.queryByText(/quarterly reports/i)).toBeNull();
     expect(screen.queryByText(/annual reports/i)).toBeNull();
-    // TODO: use assertion when the project summary report is implemented
-    // expect(screen.getByText(/project summary report/i)).toBeVisible();
+    expect(screen.getByText(/project summary report/i)).toBeVisible();
+  });
+
+  it("does not show any items under `Amendments & Other Revisions` when mode is `view` but route is not `/cif/project-revision/[projectRevision]/view`", () => {
+    componentTestingHelper.router.pathname = "a-path";
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            revisionType: "test-amendment",
+            typeRowNumber: 6,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "test-project-managers-status",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            milestoneReportStatuses: {
+              edges: [],
+            },
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent((data) => ({
+      projectRevision: data.query.projectRevision,
+      mode: "view",
+    }));
+    expect(screen.queryByText(/test-amendment 6/i)).not.toBeInTheDocument();
+  });
+
+  it("shows `View` and the revision name under `Amendments & Other Revisions` when viewing a revision and correctly redirects", () => {
+    componentTestingHelper.router.pathname =
+      "/cif/project-revision/[projectRevision]/view";
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            revisionType: "test-amendment",
+            typeRowNumber: 6,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "test-project-managers-status",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            milestoneReportStatuses: {
+              edges: [],
+            },
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent((data) => ({
+      projectRevision: data.query.projectRevision,
+      mode: "view",
+      projectRevisionUnderReview: {
+        id: "proj-rev-under-review-id",
+        revisionType: "test-general-rev",
+        typeRowNumber: 99,
+      },
+    }));
+
+    expect(screen.getByText(/view test-general-rev 99/i)).toBeInTheDocument();
+    userEvent.click(screen.getByText(/view test-general-rev 99/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/view?projectRevision=proj-rev-under-review-id",
+      "/cif/project-revision/proj-rev-under-review-id/view",
+      expect.any(Object)
+    );
+  });
+
+  it("shows `Edit` and the revision name under `Amendments & Other Revisions` when Edit a revision and correctly redirects", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+    expect(screen.getByText(/edit test-amendment 6/i)).toBeInTheDocument();
+
+    userEvent.click(screen.getByText(/edit test-amendment 6/i));
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      "/cif/project-revision/[projectRevision]/edit?projectRevision=test-project-revision-id",
+      "/cif/project-revision/test-project-revision-id/edit",
+      expect.any(Object)
+    );
+  });
+
+  it("shows `New Revision` under `Amendments & Other Revisions` when on create route and does not redirect", () => {
+    componentTestingHelper.router.pathname =
+      "/cif/project-revision/[projectRevision]/create";
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-project-revision-id",
+            rowId: 42,
+            revisionType: "test-amendment",
+            typeRowNumber: 6,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
+            projectByProjectId: {
+              proposalReference: "test-project-proposal-reference",
+            },
+            projectOverviewStatus: "test-project-overview-status",
+            projectContactsStatus: "test-project-contacts-status",
+            projectManagersStatus: "test-project-managers-status",
+            quarterlyReportsStatus: "test-project-quarterly-reports-status",
+            milestoneReportStatuses: {
+              edges: [],
+            },
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent((data) => ({
+      projectRevision: data.query.projectRevision,
+      mode: "view",
+      projectRevisionUnderReview: data.query.projectRevision,
+    }));
+    expect(screen.getByText(/new revision/i)).toBeInTheDocument();
+    userEvent.click(screen.getByText(/new revision/i));
+
+    expect(componentTestingHelper.router.push).not.toHaveBeenCalled();
   });
 });
