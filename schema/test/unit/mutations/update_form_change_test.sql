@@ -1,7 +1,7 @@
 
 begin;
 
-select plan(5);
+select plan(6);
 
 insert into cif.form_change(
       id,
@@ -207,8 +207,59 @@ select results_eq(
   $$,
   'The update_form_change custom mutation correctly handles create operation'
 );
-;
 
+insert into cif.form_change(
+      id,
+      new_form_data,
+      operation,
+      form_data_schema_name,
+      form_data_table_name,
+      form_data_record_id,
+      project_revision_id,
+      change_status,
+      json_schema_name
+    ) overriding system value values (
+      777,
+      '{"project_contact": 123}'::jsonb,
+      'create',
+      'cif',
+      'project_contact',
+      444,
+      null,
+      'staged',
+      'project_contact'
+    );
+    select results_eq(
+  $$
+    select
+      id,
+      new_form_data,
+      operation,
+      form_data_schema_name,
+      form_data_table_name,
+      form_data_record_id,
+      project_revision_id,
+      change_status,
+      json_schema_name
+    from cif.update_form_change(
+      777, (select row( 444, '{"test":2}'::jsonb, null, 'project_contact', 'project_contact', 1111, 2222, 'committed', 'project_contact', '[]'::jsonb, null, null, null, null, null)::cif.form_change)
+    );
+  $$,
+  $$
+    values (
+       777,
+      '{"test":2}'::jsonb,
+      'archive'::cif.form_change_operation,
+      'cif'::varchar,
+      'project_contact'::varchar,
+      444,
+      null::int,
+      'pending'::varchar,
+      'project_contact'::varchar
+    )
+  $$,
+  'The update_form_change custom mutation correctly handles the removal of a project contact, marking it archived'
+);
 select finish();
 
 rollback;

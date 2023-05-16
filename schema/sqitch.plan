@@ -297,5 +297,9 @@ tables/attachment_001_drop_project_id_project_status_id [tables/attachment] 2023
 mutations/add_project_attachment_to_revision 2023-04-28T23:02:34Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Creates an attachment and then adds a project_attachment form_change
 computed_columns/form_change_as_project_attachment [tables/attachment tables/form_change] 2023-05-04T23:00:57Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Computed column returns a attachment record type for a project_attachment form_change
 mutations/update_milestone_form_change [mutations/update_milestone_form_change@1.7.0] 2023-05-10T23:41:13Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Remove total eligible expenses from the form data when milestone type is not General
+<<<<<<< HEAD
 mutations/update_form_change [mutations/update_form_change@1.6.0] 2023-04-19T23:31:07Z Gurjeet Matharu <gurjeet@matharuco.com> # fix in update_form_change to handle a null operation for archived forms.  Should now set to update.
 @1.8.0 2023-05-16T21:39:16Z Dylan Leard <dylan@button.is> # release v1.8.0
+=======
+mutations/update_form_change [mutations/update_form_change@1.7.4] 2023-05-16T20:47:18Z Gurjeet Matharu <gurjeet@matharuco.com> # Handling case when project contact is removed, and marking form as archived
+>>>>>>> 69294d32 (fix: handling project contact form removal, marking form as archived)
