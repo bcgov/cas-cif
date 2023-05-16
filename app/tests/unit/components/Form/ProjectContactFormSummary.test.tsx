@@ -115,11 +115,6 @@ const mockQueryPayload = {
                 contactId: 4,
                 projectId: 1,
               },
-              asProjectContact: {
-                contactByContactId: {
-                  fullName: "I was removed",
-                },
-              },
               operation: "ARCHIVE",
               formChangeByPreviousFormChangeId: {
                 newFormData: {

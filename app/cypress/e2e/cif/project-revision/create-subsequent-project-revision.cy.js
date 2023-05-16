@@ -83,29 +83,20 @@ describe("the project amendment and revisions page", () => {
     // Screenshot below is commented out because of flakiness. Documented in ticket #1194.
     // cy.happoAndAxe("Project Revision Edit", "Forms Updated", "main", true);
     cy.get("input[aria-label='Project Overview']").should("be.checked");
-    cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsOld").should(
+    cy.get("#root_projectName-diffOld").should(
       "have.text",
       "Test EP Project 001"
     );
-    cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      "Bar"
-    );
+    cy.get("#root_projectName-diffNew").should("have.text", "Bar");
     cy.get("input[aria-label='Project Details']").should("be.checked");
     cy.findByText(/project managers/i);
-    cy.get("#root_cifUserId-diffAmendmentsAndOtherRevisionsOld").should(
+    cy.get("#root_cifUserId-diffOld").should(
       "have.text",
       "cif_internal Testuser"
     );
     cy.findByText(/project contacts/i);
-    cy.get("#root_contactId-diffAmendmentsAndOtherRevisionsOld").should(
-      "have.text",
-      "Bob001 Loblaw001"
-    );
-    cy.get("#root_contactId-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      "Bob003 Loblaw003"
-    );
+    cy.get("#root_contactId-diffOld").should("have.text", "Bob001 Loblaw001");
+    cy.get("#root_contactId-diffNew").should("have.text", "Bob003 Loblaw003");
     // just checking one of other forms are not checked
     cy.get("input[aria-label='Budgets, Expenses & Payments']").should(
       "not.be.checked"
