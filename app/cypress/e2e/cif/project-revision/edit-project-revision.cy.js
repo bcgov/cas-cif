@@ -192,79 +192,47 @@ describe("when editing a project, the project page", () => {
     // check diffs
     cy.contains(/revision type/i); // on revision summary page
 
-    cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsOld").should(
+    cy.get("#root_projectName-diffOld").should(
       "have.text",
       "Test EP Project 001"
     );
-    cy.get("#root_projectName-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      "Bar"
-    );
+    cy.get("#root_projectName-diffNew").should("have.text", "Bar");
 
-    cy.get("#root_score-diffAmendmentsAndOtherRevisionsOld").should(
-      "have.text",
-      "1.000"
-    );
-    cy.get("#root_score-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      "99.000"
-    );
+    cy.get("#root_score-diffOld").should("have.text", "1.000");
+    cy.get("#root_score-diffNew").should("have.text", "99.000");
 
-    cy.get("#root_rank-diffAmendmentsAndOtherRevisionsOld").should(
-      "have.text",
-      50
-    );
-    cy.get("#root_rank-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      1
-    );
+    cy.get("#root_rank-diffOld").should("have.text", 50);
+    cy.get("#root_rank-diffNew").should("have.text", 1);
 
-    cy.get("#root_cifUserId-diffAmendmentsAndOtherRevisionsOld").should(
+    cy.get("#root_cifUserId-diffOld").should(
       "have.text",
       "cif_internal Testuser"
     );
-    cy.get("#root_cifUserId-diffAmendmentsAndOtherRevisionsOld").should(
+    cy.get("#root_cifUserId-diffOld")
+      .next()
+      .next()
+      .should("have.text", "cif_internal Testuser");
+
+    cy.get("#root_contactId-diffNew").should("have.text", "Bob003 Loblaw003");
+
+    cy.get("#root_contractStartDate-diffNew").contains(/Jan(\.)? 1, 2020/);
+    cy.get("#root_projectAssetsLifeEndDate-diffNew").contains(
+      /Dec(\.)? 31, 2020/
+    );
+
+    cy.findByText("Quarterly Report removed").should("be.visible");
+
+    cy.get("#root_teimpReporting_measurementPeriodStartDate-diffNew").should(
       "have.text",
-      "cif_internal Testuser"
+      "Jan 1, 2022"
     );
 
-    cy.get("#root_cifUserId-diffAmendmentsAndOtherRevisionsNew").should(
-      "not.exist"
-    );
-
-    cy.get("#root_contactId-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      "Bob003 Loblaw003"
-    );
-
-    cy.get(
-      "#root_contractStartDate-diffAmendmentsAndOtherRevisionsNew"
-    ).contains(/Jan(\.)? 1, 2020/);
-    cy.get(
-      "#root_projectAssetsLifeEndDate-diffAmendmentsAndOtherRevisionsNew"
-    ).contains(/Dec(\.)? 31, 2020/);
-
-    // Quarterly report removed
-    cy.findAllByText(/Quarterly report/i)
-      .eq(3)
-      .should("have.class", "diffAmendmentsAndOtherRevisionsOld");
-
-    // TEIMP
-    cy.get(
-      "#root_teimpReporting_measurementPeriodStartDate-diffAmendmentsAndOtherRevisionsNew"
-    ).should("have.text", "Jan 1, 2022");
-
-    cy.contains("Jan 1, 2022").next().should("have.text", "(ADDED)");
-
-    cy.get("#root_comments-diffAmendmentsAndOtherRevisionsOld").should(
+    cy.get("#root_comments-diffOld").should(
       "have.text",
       "annual report comments 1"
     );
 
-    cy.get("#root_comments-diffAmendmentsAndOtherRevisionsNew").should(
-      "have.text",
-      "new comment"
-    );
+    cy.get("#root_comments-diffNew").should("have.text", "new comment");
 
     cy.get("#root_revisionStatus").contains(/In Discussion/i);
 

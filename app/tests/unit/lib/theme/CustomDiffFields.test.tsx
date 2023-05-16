@@ -77,7 +77,8 @@ const latestCommittedData = {
 };
 
 describe("The Object Field Template", () => {
-  it("shows the latest committed value", () => {
+  // 111
+  it("shows diffs when there is an old, new, and latest committed value, and old !== latest committed", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -95,9 +96,6 @@ describe("The Object Field Template", () => {
       />
     );
 
-    expect(
-      componentUnderTest.getAllByText(/Latest committed value:/i)
-    ).toHaveLength(3);
     expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
     expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
     expect(
@@ -117,7 +115,44 @@ describe("The Object Field Template", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows a diff when there is oldData, newData & the operation is 'UPDATE'", () => {
+  it("shows diffs when there is an old, new, and latest committed value and old === latest committed", () => {
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formData}
+        formContext={{
+          oldData: oldFormData,
+          latestCommittedData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          latestCommittedUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+        }}
+      />
+    );
+
+    expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
+    expect(
+      componentUnderTest.queryByText(/^(.*?)stringTest LAST COMMITTED/)
+    ).not.toBeInTheDocument();
+    expect(componentUnderTest.getByText("$100.00")).toBeInTheDocument();
+    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
+    expect(componentUnderTest.queryByText("$300.00")).not.toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText("I replaced the ID")
+    ).toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText("I replaced the OLD ID")
+    ).toBeInTheDocument();
+    expect(
+      componentUnderTest.queryByText(/I am the last committed value/i)
+    ).not.toBeInTheDocument();
+  });
+  // 110--figure out where this shows up and how happens
+  it("shows a diff when there is oldData, newData, no latest committed & the operation is 'UPDATE'", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -145,7 +180,44 @@ describe("The Object Field Template", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows data has been added when there is newData, the operation is 'CREATE' & there is no old data", () => {
+  // 101
+  it("shows data has been removed when there is old data and latest committed data but no new data", () => {
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={null}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "CREATE",
+          latestCommittedData,
+        }}
+      />
+    );
+    expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
+      "diffOld"
+    );
+    expect(componentUnderTest.getByText("$200.00")).toHaveClass("diffOld");
+    expect(componentUnderTest.getByText("I replaced the OLD ID")).toHaveClass(
+      "diffOld"
+    );
+  });
+
+  // 100
+  it("shows diffs when there is old but nothing else", () => {
+    // probably not possible--there is no diff
+  });
+
+  // 011
+  it("shows diffs when there is no old data, but yes new and latest committed (does this happen", () => {
+    // probably not possible--can't have old without latest committed
+  });
+
+  // 010
+  it("shows data has been added when there is newData, the operation is 'CREATE' & there is no old data or latest committed", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -161,38 +233,45 @@ describe("The Object Field Template", () => {
       />
     );
 
-    expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$100.00")).toBeInTheDocument();
-    expect(
-      componentUnderTest.getByText("I replaced the ID")
-    ).toBeInTheDocument();
-    expect(componentUnderTest.getAllByText("ADDED")).toHaveLength(3);
+    expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
+      "diffNew"
+    );
+    expect(componentUnderTest.getByText("$100.00")).toHaveClass("diffNew");
+    expect(componentUnderTest.getByText("I replaced the ID")).toHaveClass(
+      "diffNew"
+    );
   });
 
-  it("shows data has been removed when there is old data and no new data", () => {
+  // 001
+  it("shows diffs when there is only laest commited (not real)", () => {
+    // can't have
+  });
+
+  // 000
+  it("shows diffs when there is only new data", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
         fields={CUSTOM_DIFF_FIELDS}
         schema={testSchema as JSONSchema7}
         uiSchema={uiTestSchema}
-        formData={null}
+        formData={formData}
         formContext={{
-          oldData: oldFormData,
-          oldUiSchema: oldUiTestSchema,
           operation: "CREATE",
         }}
       />
     );
 
-    expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
-    expect(
-      componentUnderTest.getByText("I replaced the OLD ID")
-    ).toBeInTheDocument();
-    expect(componentUnderTest.getAllByText("REMOVED")).toHaveLength(3);
+    expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
+      "diffNew"
+    );
+    expect(componentUnderTest.getByText("$100.00")).toHaveClass("diffNew");
+    expect(componentUnderTest.getByText("I replaced the ID")).toHaveClass(
+      "diffNew"
+    );
   });
 
+  // come back
   it("shows data has been removed when operation is 'ARCHIVE'", () => {
     const componentUnderTest = render(
       <FormBase
@@ -209,12 +288,13 @@ describe("The Object Field Template", () => {
       />
     );
 
-    expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("$200.00")).toBeInTheDocument();
-    expect(
-      componentUnderTest.getByText("I replaced the OLD ID")
-    ).toBeInTheDocument();
-    expect(componentUnderTest.getAllByText("REMOVED")).toHaveLength(3);
+    expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
+      "diffOld"
+    );
+    expect(componentUnderTest.getByText("$200.00")).toHaveClass("diffOld");
+    expect(componentUnderTest.getByText("I replaced the OLD ID")).toHaveClass(
+      "diffOld"
+    );
   });
 
   it("shows the text from 'ui:options' when 'ui:options' exists in a NumberField's uiSchema", () => {
@@ -298,7 +378,9 @@ describe("The Object Field Template", () => {
       componentUnderTest.getByText("I replaced the ID")
     ).toBeInTheDocument();
   });
+
   it("shows updated forms widget specific styles", () => {
+    // might all be covered
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -316,10 +398,10 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
-      "diffAmendmentsAndOtherRevisionsNew"
+      "diffNew" // TODO: should this be deleted?
     );
     expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
-      "diffAmendmentsAndOtherRevisionsOld"
+      "diffOld"
     );
   });
 });
