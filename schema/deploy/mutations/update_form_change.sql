@@ -11,7 +11,7 @@ $$
     new_form_data = coalesce(form_change_patch.new_form_data, new_form_data),
     operation = case
       when form_change_patch.operation is null and operation = 'archive' then 'update'
-      WHEN form_change.form_data_table_name = 'project_contact' AND NOT EXISTS (SELECT 1 FROM jsonb_path_query(new_form_data, '$.project_id')) THEN 'archive'
+        when form_change.form_data_table_name = 'project_contact' and not exists (select 1 from jsonb_path_query(new_form_data, '$.project_id')) then 'archive'
       else coalesce(form_change_patch.operation, operation)
     end,    validation_errors = coalesce(form_change_patch.validation_errors, validation_errors),
     change_status = 'pending'
