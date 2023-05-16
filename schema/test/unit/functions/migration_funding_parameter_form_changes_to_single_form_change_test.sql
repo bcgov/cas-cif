@@ -3,7 +3,7 @@
 begin;
 
 
-select plan(5);
+select plan(6);
 
 
 -- Test Setup --
@@ -74,7 +74,7 @@ values
             'projectId', 2,
             'sourceIndex', 1,
             'source', 'awaiting approval source',
-            'amount', 1000,
+            'amount', 1000.5,
             'status', 'Awaiting Approval'
           ),
         'create',
@@ -156,26 +156,32 @@ select results_eq(
                                     "additionalFundingSources": [
                                         {
                                         "source": "awaiting approval source",
-                                        "amount": 1000,
+                                        "amount": 1000.5,
                                         "status": "Awaiting Approval"},
                                         {
                                         "source": "approved source",
                                         "amount": 2000,
                                         "status": "Approved"}
                                     ]
-                                      }'::jsonb)
+                                      }'::jsonb),
+          ('pending'::varchar, '{"projectId": 1 }'::jsonb)
 
   $$,
-  'It add the additional_funding_source records into the funding_parameter so we have only one single form_change. If there are no additional_funding_sources, nothing is added to the new_form_data.'
+  'It adds the additional_funding_source records into the funding_parameter so we have only one single form_change. If there are no additional_funding_sources, nothing is added to the new_form_data.'
 );
 
 
--- It is idempotent
--- We re-run the first 3 tests to make sure nothing has changed
+-- It does not change data if run again
 
 alter table cif.form_change disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
 
+select throws_like(
+$$
 select cif_private.migration_funding_parameter_form_changes_to_single_form_change();
+$$,
+'Some additional funding sources have not been correctly migrated'
+);
+
 
 alter table cif.form_change enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
 
@@ -191,7 +197,7 @@ select is(
   -- for pending form changes
 select results_eq(
   $$
-    select change_status, new_form_data from cif.form_change where form_data_table_name='funding_parameter' order by id limit 2;
+    select change_status, new_form_data from cif.form_change where form_data_table_name='funding_parameter' order by id;
   $$,
   $$
    values ('committed'::varchar, '{"projectId": 1 }'::jsonb),
@@ -206,14 +212,15 @@ select results_eq(
                                     "additionalFundingSources": [
                                         {
                                         "source": "awaiting approval source",
-                                        "amount": 1000,
+                                        "amount": 1000.5,
                                         "status": "Awaiting Approval"},
                                         {
                                         "source": "approved source",
                                         "amount": 2000,
                                         "status": "Approved"}
                                     ]
-                                      }'::jsonb)
+                                      }'::jsonb),
+          ('pending'::varchar, '{"projectId": 1 }'::jsonb)
 
   $$,
   'It transforms the double (funding_parameter and additional_funding_sources) into one single form_change'
@@ -251,7 +258,7 @@ values
 select throws_like(
   $$
   with record as (
-    select row(form_change.*)::cif.form_change from cif.form_change where id = 2
+    select row(form_change.*)::cif.form_change from cif.form_change where id = 1
   ) select cif_private.handle_funding_parameter_form_change_commit((select * from record));
   $$,
   'Cannot commit form_change. It has already been committed.',
