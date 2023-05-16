@@ -21,6 +21,8 @@ import {
   viewProjectRevisionQuery,
   viewProjectRevisionQuery$data,
 } from "__generated__/viewProjectRevisionQuery.graphql";
+import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
+import { utils } from "@rjsf/core";
 
 export const ViewProjectRevisionQuery = graphql`
   query viewProjectRevisionQuery($projectRevision: ID!) {
@@ -135,6 +137,8 @@ export function ProjectRevisionView({
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
 
+  const { fields } = utils.getDefaultRegistry();
+  const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
@@ -145,19 +149,20 @@ export function ProjectRevisionView({
         </header>
         <div>
           <FormBase
-            id={`form-${projectRevision.id}`}
-            tagName={"dl"}
             className="project-revision-view-form"
             schema={buildProjectRevisionSchema(
               allRevisionTypes.edges,
               allRevisionStatuses.edges,
               projectRevision.revisionType
             )}
-            uiSchema={createProjectRevisionUISchema(projectRevisionUISchema)}
+            fields={customFields}
+            formContext={{ projectRevision, query }}
+            formData={projectRevision}
+            id={`form-${projectRevision.id}`}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
-            formData={projectRevision}
-            formContext={{ projectRevision, query }}
+            tagName={"dl"}
+            uiSchema={createProjectRevisionUISchema(projectRevisionUISchema)}
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,
