@@ -75,22 +75,20 @@ const FormBase: React.ForwardRefRenderFunction<any, FormPropsWithTheme<any>> = (
         :global(label) {
           font-weight: bold;
         }
-        :global(.diffReviewAndSubmitInformationOld) {
-          text-decoration: line-through;
-        }
-        :global(.diffReviewAndSubmitInformationNew) {
-          color: #ff0000;
-        }
         :global(.diff-arrow) {
           margin-left: 10px;
           margin-right: 10px;
         }
-        :global(.diffAmendmentsAndOtherRevisionsOld) {
-          color: #cd2026;
-          text-decoration: line-through;
+        :global(.diffOld) {
+          color: #323232;
           font-size: 0.7em;
+          text-decoration: line-through;
         }
-        :global(.diffAmendmentsAndOtherRevisionsNew) {
+        :global(.diffNew) {
+          font-size: 0.7em;
+          color: #e70000;
+        }
+        :global(.diffText) {
           font-size: 0.7em;
         }
       `}</style>
