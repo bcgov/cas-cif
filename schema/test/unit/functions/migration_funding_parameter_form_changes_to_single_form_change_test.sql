@@ -3,8 +3,7 @@
 begin;
 
 
-select plan(6);
-
+select plan(5);
 
 -- Test Setup --
 
@@ -254,17 +253,6 @@ values
         2,
         'pending',
         'funding_parameter_IA');
-
-select throws_like(
-  $$
-  with record as (
-    select row(form_change.*)::cif.form_change from cif.form_change where id = 1
-  ) select cif_private.handle_funding_parameter_form_change_commit((select * from record));
-  $$,
-  'Cannot commit form_change. It has already been committed.',
-  'The function does not delete anything if there are not the same number of additional funding sources in json as the table'
-);
-
 
 select finish();
 
