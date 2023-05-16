@@ -1,6 +1,6 @@
 begin;
 
-select plan(15);
+select plan(14);
 
 /** SETUP **/
 truncate table cif.form_change,
@@ -18,7 +18,7 @@ truncate table cif.form_change,
   cif.funding_parameter,
   cif.additional_funding_source,
   cif.project_revision_amendment_type
-restart identity;
+restart identity cascade;
 
 insert into cif.operator (id, legal_name, trade_name, bc_registry_id, operator_code)
 overriding system value
