@@ -1,3 +1,22 @@
+# [1.8.0](https://github.com/bcgov/cas-cif/compare/1.7.2...1.8.0) (2023-05-16)
+
+### Bug Fixes
+
+- fix migration equality in-place ([ee4e09c](https://github.com/bcgov/cas-cif/commit/ee4e09c7b07dd12a36092460b62c64f037f51f4e))
+- fix milestone calculations when changing milestone type ([0bc4c7d](https://github.com/bcgov/cas-cif/commit/0bc4c7d482dba90fc6a6bbd725d5ea7ba67659e0))
+- fix selecting the wrong funding stream id for external users ([952eae8](https://github.com/bcgov/cas-cif/commit/952eae81dc47b10637abf96bd5ae92c639c66b39))
+- integer cast should be numeric ([6708c2d](https://github.com/bcgov/cas-cif/commit/6708c2d97f8ba029b1d966f51c3fd6dcb2706fa4))
+- not using hardcoded rfp ID ([8e5b5af](https://github.com/bcgov/cas-cif/commit/8e5b5af0a104f43cac30d5e33d293da55ab830f6))
+- set default value for options in widget when no schema.anyOf ([ea0c8c3](https://github.com/bcgov/cas-cif/commit/ea0c8c3fc697ddb2eaa9fe7befe039e8355407ab))
+- show emission intensity data on view mode ([3627617](https://github.com/bcgov/cas-cif/commit/3627617344b8f9257b273f8c2c3b8461c9846969))
+- update_form_change now handles the case when form data operator is null and form is currently archived. Sets it to updated. ([a2a8c95](https://github.com/bcgov/cas-cif/commit/a2a8c95342ffb92a0cc76ed70ef97006735cfb6f))
+
+### Features
+
+- add project_attachment table ([5ed430b](https://github.com/bcgov/cas-cif/commit/5ed430bedc9892b74b62d7b7e164a9dc3db3e628))
+- redirect to editable forms from open amendment ([90489b8](https://github.com/bcgov/cas-cif/commit/90489b859d222a0eb35f530de5a1a68a6dd0eebd))
+- show calculated value diffs on overview summary ([0cde36e](https://github.com/bcgov/cas-cif/commit/0cde36efa820557f669f4b0c5b4b57ea80809175))
+
 ## [1.7.3](https://github.com/bcgov/cas-cif/compare/1.7.2...1.7.3) (2023-05-02)
 
 ### Bug Fixes
