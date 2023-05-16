@@ -174,6 +174,7 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByText("Baseline Emission Intensity (BEI)")
     ).toBeInTheDocument();
+
     expect(
       screen.getByText("Target Emission Intensity (TEI)")
     ).toBeInTheDocument();
@@ -186,17 +187,13 @@ describe("the emission intensity report form component", () => {
       screen.getByText("Total Project Lifetime Emissions Reductions (optional)")
     ).toBeInTheDocument();
 
-    expect(screen.getAllByText("ADDED")).toHaveLength(4);
     expect(screen.getAllByText("0")).toHaveLength(2);
     expect(screen.getAllByText("0.12345678")).toHaveLength(1);
-    expect(screen.getByText("0.12345678")).toHaveClass(
-      "diffReviewAndSubmitInformationNew"
-    );
-    expect(screen.getAllByText("123")).toHaveLength(1);
-    expect(screen.getByText("123")).toHaveClass(
-      "diffReviewAndSubmitInformationNew"
-    );
+    expect(screen.getByText("0.12345678")).toHaveClass("diffNew");
+    expect(screen.getAllByText("123.00000000")).toHaveLength(1);
+    expect(screen.getByText("123.00000000")).toHaveClass("diffNew");
   });
+
   it("displays the correct data when we have zero values and decimal points on BEI/TEI/PEI and Total Lifetime Emission Reduction and updating an emission intensity report form", () => {
     const customPayload = {
       ProjectRevision() {
@@ -258,22 +255,22 @@ describe("the emission intensity report form component", () => {
 
     expect(screen.getAllByText("0")).toHaveLength(2);
     expect(screen.getAllByText("0")[0]).toHaveClass(
-      "diffReviewAndSubmitInformationOld"
+      "diffNew"
     );
     expect(screen.getAllByText("0")[1]).toHaveClass(
-      "diffReviewAndSubmitInformationNew"
+      "diffNew"
     );
     expect(screen.getByText("0.87654321")).toHaveClass(
-      "diffReviewAndSubmitInformationNew"
+      "diffNew"
     );
     expect(screen.getByText("0.12345678")).toHaveClass(
-      "diffReviewAndSubmitInformationOld"
+      "diffOld"
     );
     expect(screen.getByText("654")).toHaveClass(
-      "diffReviewAndSubmitInformationOld"
+      "diffOld"
     );
     expect(screen.getByText("456")).toHaveClass(
-      "diffReviewAndSubmitInformationOld"
+      "diffOld"
     );
   });
   it("displays calculated values diff", () => {
