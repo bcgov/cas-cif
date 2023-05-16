@@ -18,7 +18,7 @@ with
             select project_revision_id, array_agg(
                 json_build_object(
                     'source',(new_form_data ->> 'source'),
-                    'amount',(new_form_data ->> 'amount')::int,
+                    'amount',(new_form_data ->> 'amount')::numeric,
                     'status',(new_form_data ->> 'status')
                 )
             ) as source
