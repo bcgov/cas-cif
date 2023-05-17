@@ -118,7 +118,7 @@ const showStringDiff = (
   if (oldData && !newData && !latestCommittedData) {
     return (
       <>
-        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
           {isDate ? getLocaleFormattedDate(oldData) : oldData}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
@@ -166,13 +166,7 @@ const showStringDiff = (
 
   // Case 0 ->  000
   if (!oldData && !newData && !latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffTextClsName}`} className={diffTextClsName}>
-          {"Not Entered"}
-        </span>
-      </>
-    );
+    return <></>;
   }
 };
 
@@ -407,20 +401,20 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedValue = formContext?.latestCommittedData?.[props.name];
 
     // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
-    const textValue = uiSchema?.["ui:options"]?.text as string;
+    const data = uiSchema?.["ui:options"]?.text as string;
 
-    const oldTextValue =
+    const oldData =
       formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    const latestCommittedTextValue =
+    const latestCommittedData =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    if (textValue || oldTextValue) {
+    if (data || oldData || latestCommittedData) {
       return showStringDiff(
         id,
-        oldTextValue,
-        textValue,
-        latestCommittedTextValue,
+        oldData,
+        data,
+        latestCommittedData,
         false,
         null
       );
