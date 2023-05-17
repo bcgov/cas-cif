@@ -20,7 +20,7 @@ const contentSuffixElement = (
   );
 };
 
-const renderData = (isDate: boolean | undefined, data: string | undefined) => {
+const formatData = (isDate: boolean | undefined, data: string | undefined) => {
   if (isDate) {
     return getLocaleFormattedDate(data);
   }
@@ -66,19 +66,19 @@ const showStringDiff = (
               id={id && `${id}-${diffOldClsName}1`}
               className={diffOldClsName}
             >
-              {renderData(isDate, latestCommittedData)}
+              {formatData(isDate, latestCommittedData)}
             </span>
             {contentSuffix && contentSuffixElement(id, contentSuffix)}
             {renderArrow()}
           </>
         )}
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {renderData(isDate, oldData)}
+          {formatData(isDate, oldData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
         {renderArrow()}
         <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {renderData(isDate, newData)}
+          {formatData(isDate, newData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
         {renderTooltip()}
@@ -90,12 +90,12 @@ const showStringDiff = (
     return (
       <>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {renderData(isDate, oldData)}
+          {formatData(isDate, oldData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
         {renderArrow()}
         <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {renderData(isDate, newData)}
+          {formatData(isDate, newData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
         {renderTooltip()}
@@ -130,12 +130,12 @@ const showStringDiff = (
     return (
       <>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {renderData(isDate, latestCommittedData)}
+          {formatData(isDate, latestCommittedData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
         {renderArrow()}
         <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {renderData(isDate, newData)}
+          {formatData(isDate, newData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
         {renderTooltip()}
@@ -152,7 +152,7 @@ const showStringDiff = (
         </span>
         {renderArrow()}
         <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {renderData(isDate, newData)}
+          {formatData(isDate, newData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
       </>
