@@ -273,7 +273,6 @@ const TaskList: React.FC<Props> = ({
         {useShowGrowthbookFeature("amendments") && mode !== "create" && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
-            defaultExpandedState={true}
             listItemName="Amendments & Other Revisions"
           >
             {router.pathname === projectRevisionViewPagePathName && (
