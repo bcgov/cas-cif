@@ -6,9 +6,10 @@ import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidge
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 import TaskList from "components/TaskList";
 import {
-  viewProjectRevisionSchema,
   projectRevisionUISchema,
+  viewProjectRevisionSchema,
 } from "data/jsonSchemaForm/projectRevisionSchema";
+import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -16,9 +17,10 @@ import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import SelectWithNotifyWidget from "lib/theme/widgets/SelectWithNotifyWidget";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { viewProjectRevisionQuery } from "__generated__/viewProjectRevisionQuery.graphql";
-import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import { viewProjectRevisionQuery$data } from "__generated__/viewProjectRevisionQuery.graphql";
+import {
+  viewProjectRevisionQuery,
+  viewProjectRevisionQuery$data,
+} from "__generated__/viewProjectRevisionQuery.graphql";
 
 export const ViewProjectRevisionQuery = graphql`
   query viewProjectRevisionQuery($projectRevision: ID!) {
@@ -129,6 +131,7 @@ export function ProjectRevisionView({
       projectRevisionUnderReview={projectRevision}
     />
   );
+
   // Growthbook - amendments
   if (!useShowGrowthbookFeature("amendments")) return null;
 

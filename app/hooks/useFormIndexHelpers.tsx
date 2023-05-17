@@ -6,8 +6,10 @@ import useRedirectToValidFormIndex from "hooks/useRedirectToValidFormIndex";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import { useRouter } from "next/router";
 import {
+  getExternalProjectRevisionViewPageRoute,
   getProjectRevisionFormPageRoute,
   getProjectRevisionPageRoute,
+  getProjectRevisionEditPageRoute,
 } from "routes/pageRoutes";
 
 export const useFormIndexHelpers = (
@@ -58,8 +60,17 @@ export const useFormIndexHelpers = (
   const formPages = isInternal ? internalFormPages : externalFormPages;
 
   const handleSubmit = () => {
-    if (mode === "update" || formIndex === formPages.length - 1) {
+    if (mode === "create" && formIndex === formPages.length - 1) {
       router.push(getProjectRevisionPageRoute(projectRevisionId, isInternal));
+    }
+    // if project revision, route to preview revision
+    if (mode === "update") {
+      if (isInternal) {
+        router.push(getProjectRevisionEditPageRoute(projectRevisionId));
+      }
+      if (!isInternal) {
+        router.push(getExternalProjectRevisionViewPageRoute(projectRevisionId));
+      }
     } else {
       router.push(
         getProjectRevisionFormPageRoute(

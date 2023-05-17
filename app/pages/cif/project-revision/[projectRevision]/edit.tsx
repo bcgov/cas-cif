@@ -20,6 +20,13 @@ import {
   buildProjectRevisionSchema,
   createProjectRevisionUISchema,
 } from "./view";
+import DangerAlert from "lib/theme/ConfirmationAlert";
+import { Button } from "@button-inc/bcgov-theme";
+import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
+import { getProjectRevisionPageRoute } from "routes/pageRoutes";
 
 export const EditProjectRevisionQuery = graphql`
   query editProjectRevisionQuery($projectRevision: ID!) {
@@ -29,6 +36,7 @@ export const EditProjectRevisionQuery = graphql`
     projectRevision(id: $projectRevision) {
       ...NotifyModal_projectRevision
       id
+      rowId
       revisionType
       # eslint-disable-next-line relay/unused-fields
       typeRowNumber
@@ -42,6 +50,11 @@ export const EditProjectRevisionQuery = graphql`
       ...ChangeReasonWidget_projectRevision
       ...RevisionRecordHistory_projectRevision
       ...TaskList_projectRevision
+      projectByProjectId {
+        latestCommittedProjectRevision {
+          id
+        }
+      }
     }
     allRevisionTypes {
       # type is passed to the helper function that builds the schema
@@ -68,6 +81,7 @@ export const EditProjectRevisionQuery = graphql`
 export function ProjectRevisionEdit({
   preloadedQuery,
 }: RelayProps<{}, editProjectRevisionQuery>) {
+  const router = useRouter();
   const query = usePreloadedQuery(EditProjectRevisionQuery, preloadedQuery);
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     query;
@@ -77,11 +91,13 @@ export function ProjectRevisionEdit({
     setFormData(e.formData);
   };
 
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const [discardProjectRevision, discardingProjectRevision] =
+    useDeleteProjectRevisionMutation();
+
   const taskList = (
     <TaskList projectRevision={projectRevision} mode={"update"} />
   );
-  // Growthbook - amendments
-  if (!useShowGrowthbookFeature("amendments")) return null;
 
   // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
   const filteredRevisionStatuses = allRevisionStatuses.edges.filter(
@@ -90,6 +106,30 @@ export function ProjectRevisionEdit({
         ? node.name !== "Draft"
         : !node.isAmendmentSpecific
   );
+
+  const discardRevision = async () => {
+    await discardProjectRevision({
+      variables: {
+        input: {
+          revisionId: query.projectRevision.rowId,
+        },
+      },
+      onCompleted: async () => {
+        await router.push(
+          getProjectRevisionPageRoute(
+            query.projectRevision.projectByProjectId
+              .latestCommittedProjectRevision.id
+          )
+        );
+      },
+      onError: async (e) => {
+        console.error("Error discarding the project", e);
+      },
+    });
+  };
+
+  // Growthbook - amendments
+  if (!useShowGrowthbookFeature("amendments")) return null;
 
   return (
     <>
@@ -125,6 +165,27 @@ export function ProjectRevisionEdit({
           ></FormBase>
           <NotifyModal projectRevision={projectRevision} />
           <RevisionRecordHistory projectRevision={projectRevision} />
+          <div className="discard-revision-button">
+            {showDiscardConfirmation && (
+              <DangerAlert
+                onProceed={discardRevision}
+                onCancel={() => setShowDiscardConfirmation(false)}
+                alertText="All changes made will be permanently deleted."
+              />
+            )}
+            {!showDiscardConfirmation && (
+              <Button
+                id="discard-project-button"
+                size="small"
+                variant="secondary"
+                onClick={() => setShowDiscardConfirmation(true)}
+                disabled={discardingProjectRevision}
+              >
+                <FontAwesomeIcon icon={faTrash} id="discard-project-icon" />
+                Discard Project Revision
+              </Button>
+            )}
+          </div>
         </div>
       </DefaultLayout>
       <style jsx>{`

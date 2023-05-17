@@ -3,7 +3,7 @@ import { cleanup, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   getProjectRevisionFormPageRoute,
-  getProjectRevisionPageRoute,
+  getProjectRevisionEditPageRoute,
 } from "routes/pageRoutes";
 import ProjectFormPage from "pages/cif/project-revision/[projectRevision]/form/[formIndex]";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
@@ -106,7 +106,7 @@ describe("The form index page", () => {
     pageTestingHelper.renderPage();
     await userEvent.click(screen.getByText(/submit project managers/i));
     expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      getProjectRevisionPageRoute("mock-proj-rev-1")
+      getProjectRevisionEditPageRoute("mock-proj-rev-1")
     );
   });
 

@@ -45,7 +45,6 @@ describe("the project amendment and revisions page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit managers -- delete a manager
-    cy.contains("Review and Submit Project");
     cy.findByText(/project details/i).click();
     cy.findByText(/edit project managers/i).click();
     cy.url().should("include", "/form/1");
@@ -59,13 +58,14 @@ describe("the project amendment and revisions page", () => {
 
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
+    cy.contains(/revision type/i); // ensure the submit page has loaded
 
     // edit contacts -- add a secondary contact
-    cy.contains("Review and Submit Project");
-    cy.findByText(/project details/i).click();
+    cy.findByRole("button", { name: /^2. Project Details/i }).click();
     cy.findByText(/edit project contacts/i).click();
     cy.url().should("include", "/form/2");
 
+    cy.findByText(/project details/i).click();
     cy.findByLabelText(/primary contact/i).click();
     cy.contains("Loblaw003").click();
 

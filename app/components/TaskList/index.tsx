@@ -4,9 +4,9 @@ import { useStageDirtyFormChanges } from "mutations/FormChange/stageDirtyFormCha
 import {
   getProjectRevisionPageRoute,
   getProjectRevisionAttachmentsPageRoute,
-  getProjectRevisionChangeLogsPageRoute,
   getProjectRevisionViewPageRoute,
   getProjectRevisionCreatePageRoute,
+  getProjectRevisionEditPageRoute,
 } from "routes/pageRoutes";
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
@@ -35,6 +35,8 @@ const TaskList: React.FC<Props> = ({
   const {
     id,
     rowId,
+    revisionType,
+    typeRowNumber,
     projectFormChange,
     projectByProjectId,
     projectOverviewStatus,
@@ -54,6 +56,8 @@ const TaskList: React.FC<Props> = ({
         id
         rowId
         changeStatus
+        revisionType
+        typeRowNumber
         projectFormChange {
           asProject {
             fundingStreamRfpByFundingStreamRfpId {
@@ -174,6 +178,9 @@ const TaskList: React.FC<Props> = ({
   const projectRevisionCreatePagePathName =
     getProjectRevisionCreatePageRoute(id).pathname;
 
+  const projectRevisionEditPagePathName =
+    getProjectRevisionEditPageRoute(id).pathname;
+
   return (
     <div className="container">
       <h2>
@@ -243,7 +250,7 @@ const TaskList: React.FC<Props> = ({
         })}
 
         {/* Project Summary Section */}
-        {mode !== "view" && (
+        {mode === "create" && (
           <TaskListSection
             defaultExpandedState={currentStep === "summary"}
             listItemNumber={String(
@@ -263,14 +270,9 @@ const TaskList: React.FC<Props> = ({
           </TaskListSection>
         )}
         {/* Amendments & Other Revisions section */}
-        {useShowGrowthbookFeature("amendments") && mode === "view" && (
+        {useShowGrowthbookFeature("amendments") && mode !== "create" && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
-            defaultExpandedState={[
-              getProjectRevisionChangeLogsPageRoute(id).pathname,
-              projectRevisionViewPagePathName,
-              projectRevisionCreatePagePathName,
-            ].includes(router.pathname)}
             listItemName="Amendments & Other Revisions"
           >
             {router.pathname === projectRevisionViewPagePathName && (
@@ -285,10 +287,21 @@ const TaskList: React.FC<Props> = ({
                 mode={mode}
               />
             )}
+            {/* need to check mode instead of pathname because we always want task list items to show when the tasklist is in edit/update mode regardless of route */}
+            {mode === "update" && (
+              <TaskListItem
+                stepName={projectRevisionEditPagePathName}
+                linkUrl={getProjectRevisionEditPageRoute(id)}
+                // don't need to include 'Edit' in the form title because it's already added by TaskListItem
+                formTitle={`${revisionType} ${typeRowNumber}`}
+                formStatus={null}
+                currentStep={projectRevisionEditPagePathName}
+                mode={mode}
+              />
+            )}
             {router.pathname === projectRevisionCreatePagePathName && (
               <TaskListItem
                 stepName={projectRevisionCreatePagePathName}
-                linkUrl={getProjectRevisionCreatePageRoute(id)}
                 formTitle={`New Revision`}
                 formStatus={null}
                 currentStep={projectRevisionCreatePagePathName}
