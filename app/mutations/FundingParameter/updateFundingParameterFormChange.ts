@@ -16,10 +16,11 @@ const mutation = graphql`
       formChange {
         id
         changeStatus
+        totalProjectValue
+        proponentsSharePercentage
         newFormData
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
-          totalProjectValue
         }
         calculatedTotalPaymentAmountToDate
       }
