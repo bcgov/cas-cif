@@ -4,9 +4,6 @@ import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
-// import Tooltip from "@mui/material/Tooltip";
-// import InfoRounded from "@mui/icons-material/InfoRounded";
-// import IconButton from "@mui/material/IconButton";
 
 const contentSuffixElement = (
   id: string,
@@ -31,7 +28,6 @@ const renderData = (isDate: boolean | undefined, data: string | undefined) => {
 };
 
 const renderTooltip = () => {
-  // TODO: implement this
   return <></>;
 };
 
