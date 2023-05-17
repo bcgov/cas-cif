@@ -397,33 +397,33 @@ const CUSTOM_DIFF_FIELDS: Record<
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
-    const previousValue = formContext?.oldData?.[props.name];
-    const latestCommittedValue = formContext?.latestCommittedData?.[props.name];
+    const previousData = formContext?.oldData?.[props.name];
+    const latestCommittedData = formContext?.latestCommittedData?.[props.name];
 
     // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
-    const data = uiSchema?.["ui:options"]?.text as string;
+    const textValue = uiSchema?.["ui:options"]?.text as string;
 
-    const oldData =
+    const oldTextValue =
       formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    const latestCommittedData =
+    const latestCommittedTextValue =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    if (data || oldData || latestCommittedData) {
+    if (textValue || oldTextValue || latestCommittedTextValue) {
       return showStringDiff(
         id,
-        oldData,
-        data,
-        latestCommittedData,
+        oldTextValue,
+        textValue,
+        latestCommittedTextValue,
         false,
         null
       );
     } else {
       return showNumberDiff(
         id,
-        previousValue,
+        previousData,
         formData,
-        latestCommittedValue,
+        latestCommittedData,
         uiSchema?.isMoney,
         uiSchema?.isPercentage,
         uiSchema?.numberOfDecimalPlaces
