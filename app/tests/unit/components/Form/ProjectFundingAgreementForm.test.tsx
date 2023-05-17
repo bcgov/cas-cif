@@ -36,17 +36,24 @@ const defaultMockResolver = {
           },
         },
       },
-      anticipatedFundingAmountPerFiscalYear: {
+      formChangesByProjectRevisionId: {
         edges: [
           {
             node: {
-              anticipatedFundingAmount: "5",
-              fiscalYear: "2021/2022",
+              anticipatedFundingAmountPerFiscalYear: {
+                edges: [
+                  {
+                    node: {
+                      anticipatedFundingAmount: "5",
+                      fiscalYear: "2021/2022",
+                    },
+                  },
+                ],
+              },
             },
           },
         ],
       },
-      totalProjectValue: "350",
       id: "Test Project Revision ID",
       rowId: 1234,
       projectFundingAgreementFormChanges: {
@@ -61,6 +68,8 @@ const defaultMockResolver = {
               holdbackAmountToDate: "6",
               netPaymentsToDate: "7",
               grossPaymentsToDate: "8",
+              totalProjectValue: 12,
+              proponentsSharePercentage: 3.65,
               newFormData: {
                 projectId: 51,
                 maxFundingAmount: 200,
@@ -150,7 +159,7 @@ describe("The ProjectFundingAgreementForm", () => {
     componentTestingHelper.renderComponent();
     expect(
       screen.getByLabelText<HTMLLabelElement>(/total project value/i)
-    ).toHaveTextContent("$350.00");
+    ).toHaveTextContent("$12.00");
     expect(
       screen.getByLabelText<HTMLInputElement>(/Maximum Funding Amount/i).value
     ).toBe("$200.00");
@@ -178,7 +187,7 @@ describe("The ProjectFundingAgreementForm", () => {
     ).toBe("$800.00");
     expect(
       screen.getByLabelText<HTMLSelectElement>(/Proponent's Share Percentage/i)
-    ).toHaveTextContent("228.57%");
+    ).toHaveTextContent("3.65%");
     expect(
       screen.getByLabelText<HTMLInputElement>(/Contract Start Date/i)
     ).toHaveTextContent(/Jan[.]? 01, 2021/);
@@ -252,12 +261,20 @@ describe("The ProjectFundingAgreementForm", () => {
                 },
               },
             },
-            anticipatedFundingAmountPerFiscalYear: {
+            formChangesByProjectRevisionId: {
               edges: [
                 {
                   node: {
-                    anticipatedFundingAmount: "5",
-                    fiscalYear: "2021/2022",
+                    anticipatedFundingAmountPerFiscalYear: {
+                      edges: [
+                        {
+                          node: {
+                            anticipatedFundingAmount: "5",
+                            fiscalYear: "2021/2022",
+                          },
+                        },
+                      ],
+                    },
                   },
                 },
               ],
@@ -274,6 +291,8 @@ describe("The ProjectFundingAgreementForm", () => {
                     rowId: 1,
                     changeStatus: "pending",
                     calculatedTotalPaymentAmountToDate: 160,
+                    totalProjectValue: 350,
+                    proponentsSharePercentage: 228.57,
                     newFormData: {
                       projectId: 51,
                       maxFundingAmount: 200,
