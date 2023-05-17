@@ -1,24 +1,21 @@
+import { utils } from "@rjsf/core";
+import { SummaryFormProps } from "data/formPages/types";
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import type { JSONSchema7 } from "json-schema";
-import readOnlyTheme from "lib/theme/ReadOnlyTheme";
-import { graphql, useFragment } from "react-relay";
-import FormBase from "./FormBase";
-
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
-import { utils } from "@rjsf/core";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/getFilteredSchema";
+import readOnlyTheme from "lib/theme/ReadOnlyTheme";
+import React, { useEffect, useMemo } from "react";
+import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementFormSummary_projectRevision$key } from "__generated__/ProjectFundingAgreementFormSummary_projectRevision.graphql";
-import { useEffect, useMemo } from "react";
-import React from "react";
-import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
-import { SummaryFormProps } from "data/formPages/types";
+import { ProjectFundingAgreementFormSummary_query$key } from "__generated__/ProjectFundingAgreementFormSummary_query.graphql";
+import FormBase from "./FormBase";
+import ReadOnlyAdditionalFundingSourcesArrayFieldTemplate from "./ReadOnlyAdditionalFundingSourcesArrayFieldTemplate";
 import {
   FormNotAddedOrUpdated,
   FormRemoved,
 } from "./SummaryFormCommonComponents";
-import { ProjectFundingAgreementFormSummary_query$key } from "__generated__/ProjectFundingAgreementFormSummary_query.graphql";
-import ReadOnlyAdditionalFundingSourcesArrayFieldTemplate from "./ReadOnlyAdditionalFundingSourcesArrayFieldTemplate";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -43,7 +40,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         # eslint-disable-next-line relay/must-colocate-fragment-spreads
         ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
-        totalProjectValue
         projectFormChange {
           asProject {
             fundingStreamRfpByFundingStreamRfpId {
@@ -64,10 +60,19 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               netPaymentsToDate
               grossPaymentsToDate
               calculatedTotalPaymentAmountToDate
+              proponentsSharePercentage
+              totalProjectValue
               isPristine
               operation
               formChangeByPreviousFormChangeId {
                 newFormData
+                eligibleExpensesToDate
+                holdbackAmountToDate
+                netPaymentsToDate
+                grossPaymentsToDate
+                calculatedTotalPaymentAmountToDate
+                proponentsSharePercentage
+                totalProjectValue
               }
             }
           }
@@ -78,6 +83,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           edges {
             node {
               newFormData
+              eligibleExpensesToDate
+              holdbackAmountToDate
+              netPaymentsToDate
+              grossPaymentsToDate
+              calculatedTotalPaymentAmountToDate
+              proponentsSharePercentage
+              totalProjectValue
             }
           }
         }
@@ -86,12 +98,57 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     projectRevision
   );
 
-  const {
-    summaryProjectFundingAgreementFormChanges,
-    isFirstRevision,
-    totalProjectValue,
-    latestCommittedFundingFormChanges,
-  } = revision;
+  const { summaryProjectFundingAgreementFormChanges, isFirstRevision } =
+    revision;
+
+  const fundingFormChanges =
+    summaryProjectFundingAgreementFormChanges.edges[0]?.node;
+
+  const newData = {
+    ...fundingFormChanges?.newFormData,
+    eligibleExpensesToDate: fundingFormChanges?.eligibleExpensesToDate,
+    holdbackAmountToDate: fundingFormChanges?.holdbackAmountToDate,
+    netPaymentsToDate: fundingFormChanges?.netPaymentsToDate,
+    grossPaymentsToDate: fundingFormChanges?.grossPaymentsToDate,
+    totalPaymentAmountToDate:
+      fundingFormChanges?.calculatedTotalPaymentAmountToDate,
+    proponentsSharePercentage: fundingFormChanges?.proponentsSharePercentage,
+    totalProjectValue: fundingFormChanges?.totalProjectValue,
+  };
+
+  const latestCommittedFundingFormChanges =
+    revision.latestCommittedFundingFormChanges?.edges[0]?.node;
+
+  const latestCommittedData = {
+    ...latestCommittedFundingFormChanges?.newFormData,
+    eligibleExpensesToDate:
+      latestCommittedFundingFormChanges?.eligibleExpensesToDate,
+    holdbackAmountToDate:
+      latestCommittedFundingFormChanges?.holdbackAmountToDate,
+    netPaymentsToDate: latestCommittedFundingFormChanges?.netPaymentsToDate,
+    grossPaymentsToDate: latestCommittedFundingFormChanges?.grossPaymentsToDate,
+    totalPaymentAmountToDate:
+      latestCommittedFundingFormChanges?.calculatedTotalPaymentAmountToDate,
+    proponentsSharePercentage:
+      latestCommittedFundingFormChanges?.proponentsSharePercentage,
+    totalProjectValue: latestCommittedFundingFormChanges?.totalProjectValue,
+  };
+
+  const oldFundingFormChanges =
+    revision.summaryProjectFundingAgreementFormChanges.edges[0]?.node
+      .formChangeByPreviousFormChangeId;
+
+  const oldData = {
+    ...oldFundingFormChanges?.newFormData,
+    eligibleExpensesToDate: oldFundingFormChanges?.eligibleExpensesToDate,
+    holdbackAmountToDate: oldFundingFormChanges?.holdbackAmountToDate,
+    netPaymentsToDate: oldFundingFormChanges?.netPaymentsToDate,
+    grossPaymentsToDate: oldFundingFormChanges?.grossPaymentsToDate,
+    totalPaymentAmountToDate:
+      oldFundingFormChanges?.calculatedTotalPaymentAmountToDate,
+    proponentsSharePercentage: oldFundingFormChanges?.proponentsSharePercentage,
+    totalProjectValue: oldFundingFormChanges?.totalProjectValue,
+  };
 
   const fundingStream =
     revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
@@ -122,16 +179,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     ? epFundingParameterFormBySlug.jsonSchema.schema
     : iaFundingParameterFormBySlug.jsonSchema.schema;
 
-  const proponentCost =
-    summaryProjectFundingAgreementFormChanges.edges[0]?.node.newFormData
-      .proponentCost;
-
-  const calculatedProponentsSharePercentage =
-    calculateProponentsSharePercentage(
-      proponentCost,
-      Number(totalProjectValue)
-    );
-
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
 
@@ -144,7 +191,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         formSchema: schema,
         formData: fundingAgreementSummary?.newFormData,
       }
-    : getFilteredSchema(schema, fundingAgreementSummary || {});
+    : {
+        ...getSchemaAndDataIncludingCalculatedValues(
+          schema as JSONSchema7,
+          newData,
+          oldData
+        ),
+      };
 
   const fundingAgreementFormNotUpdated = useMemo(
     () =>
@@ -219,30 +272,22 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           formContext={{
             projectRevision: revision,
             operation: fundingAgreementSummary?.operation,
-            calculatedTotalProjectValue: totalProjectValue,
-            calculatedProponentsSharePercentage,
-            oldData:
-              fundingAgreementSummary?.formChangeByPreviousFormChangeId
-                ?.newFormData,
-            latestCommittedData:
-              latestCommittedFundingFormChanges?.edges[0]?.node.newFormData,
+            calculatedTotalProjectValue: fundingFormChanges?.totalProjectValue,
+            calculatedProponentsSharePercentage:
+              fundingFormChanges?.proponentsSharePercentage,
+            oldData,
+            latestCommittedData,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,
             calculatedEligibleExpensesToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .eligibleExpensesToDate,
+              fundingFormChanges?.eligibleExpensesToDate,
             calculatedHoldbackAmountToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .holdbackAmountToDate,
-            calculatedNetPaymentsToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .netPaymentsToDate,
+              fundingFormChanges?.holdbackAmountToDate,
+            calculatedNetPaymentsToDate: fundingFormChanges?.netPaymentsToDate,
             calculatedGrossPaymentsToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .grossPaymentsToDate,
+              fundingFormChanges?.grossPaymentsToDate,
             calculatedTotalPaymentAmountToDate:
-              summaryProjectFundingAgreementFormChanges.edges[0]?.node
-                .calculatedTotalPaymentAmountToDate,
+              fundingFormChanges?.calculatedTotalPaymentAmountToDate,
           }}
           ArrayFieldTemplate={
             ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
