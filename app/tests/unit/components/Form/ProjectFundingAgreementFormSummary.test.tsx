@@ -38,6 +38,8 @@ const mockQueryPayloadEP = {
           edges: [
             {
               node: {
+                proponentsSharePercentage: 5, // will trigger three diffs
+                totalProjectValue: 6, // will trigger three diffs
                 newFormData: {
                   projectId: "Test Project ID",
                   maxFundingAmount: 200,
@@ -62,6 +64,8 @@ const mockQueryPayloadEP = {
                 isPristine: false,
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
+                  proponentsSharePercentage: 10, // will trigger three diffs
+                  totalProjectValue: 12, // will trigger three diffs
                   newFormData: {
                     projectId: "Test Project ID",
                     maxFundingAmount: 200,
@@ -80,6 +84,25 @@ const mockQueryPayloadEP = {
                     ],
                   },
                 },
+              },
+            },
+          ],
+        },
+        latestCommittedFundingFormChanges: {
+          edges: [
+            {
+              node: {
+                proponentsSharePercentage: 15, // will trigger three diffs
+                totalProjectValue: 18, // will trigger three diffs
+                newFormData: {
+                  // add data as required
+                },
+                eligibleExpensesToDate: "1.00",
+                holdbackAmountToDate: "0.00",
+                netPaymentsToDate: "1.00",
+                grossPaymentsToDate: "1.00",
+                isPristine: false,
+                operation: "UPDATE",
               },
             },
           ],
@@ -117,6 +140,8 @@ const mockQueryPayloadIA = {
           edges: [
             {
               node: {
+                proponentsSharePercentage: 7, // will trigger three diffs
+                totalProjectValue: 8, // will trigger three diffs
                 newFormData: {
                   projectId: "Test Project ID",
                   maxFundingAmount: 501,
@@ -130,6 +155,8 @@ const mockQueryPayloadIA = {
                 isPristine: false,
                 operation: "UPDATE",
                 formChangeByPreviousFormChangeId: {
+                  proponentsSharePercentage: 14, // will trigger three diffs
+                  totalProjectValue: 16, // will trigger three diffs
                   newFormData: {
                     projectId: "Test Project ID",
                     maxFundingAmount: 500,
@@ -141,6 +168,20 @@ const mockQueryPayloadIA = {
                       "2023-03-28T14:41:23.626132-07:00",
                   },
                 },
+              },
+            },
+          ],
+        },
+        latestCommittedFundingFormChanges: {
+          edges: [
+            {
+              node: {
+                proponentsSharePercentage: 21, // will trigger three diffs
+                totalProjectValue: 24, // will trigger three diffs
+                newFormData: {},
+                calculatedTotalPaymentAmountToDate: "511.0",
+                isPristine: false,
+                operation: "UPDATE",
               },
             },
           ],
@@ -196,6 +237,10 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText("Performance Milestone Holdback Percentage")
     ).toBeInTheDocument();
     expect(
+      screen.getByText("Proponent's Share Percentage")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Total Project Value")).toBeInTheDocument();
+    expect(
       screen.queryByText("Maximum Funding Amount")
     ).not.toBeInTheDocument();
     expect(
@@ -213,6 +258,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
+    expect(
+      screen.getByText("Proponent's Share Percentage")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Total Project Value")).toBeInTheDocument();
     expect(
       screen.queryByText("Performance Milestone Holdback Percentage")
     ).not.toBeInTheDocument();
@@ -239,6 +288,12 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
     expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
     expect(screen.getByText("Approved")).toBeInTheDocument();
+    expect(screen.getByText("5.00 %")).toBeInTheDocument(); // new proponentsSharePercentage
+    expect(screen.getByText("10.00 %")).toBeInTheDocument(); // old proponentsSharePercentage
+    expect(screen.getByText("15.00 %")).toBeInTheDocument(); // latest committed proponentsSharePercentage
+    expect(screen.getByText("$6.00")).toBeInTheDocument(); // new totalProjectValue
+    expect(screen.getByText("$12.00")).toBeInTheDocument(); // old totalProjectValue
+    expect(screen.getByText("$18.00")).toBeInTheDocument(); // latest committed totalProjectValue
   });
 
   it("Displays diffs of the the data fields that have changed for an IA form", () => {
@@ -250,6 +305,13 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(screen.getByText("$500.00")).toBeInTheDocument(); //max funding changes
     expect(screen.getByText("$501.00")).toBeInTheDocument(); // max funding changes
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
+    expect(screen.getByText("7.00 %")).toBeInTheDocument(); // new proponent's share percentage
+    expect(screen.getByText("14.00 %")).toBeInTheDocument(); // old proponent's share percentage
+    expect(screen.getByText("21.00 %")).toBeInTheDocument(); // latest committed proponent's share percentage
+
+    expect(screen.getByText("$8.00")).toBeInTheDocument(); // new total project value
+    expect(screen.getByText("$16.00")).toBeInTheDocument(); // old total project value
+    expect(screen.getByText("$24.00")).toBeInTheDocument(); // latest committed total project value
   });
 
   it("Displays all data for an EP project when isFirstRevision is true (Project Creation)", () => {
@@ -267,12 +329,20 @@ describe("The Project Funding Agreement Form Summary", () => {
                 },
               },
             },
-            anticipatedFundingAmountPerFiscalYear: {
+            formChangesByProjectRevisionId: {
               edges: [
                 {
                   node: {
-                    anticipatedFundingAmount: "5",
-                    fiscalYear: "2021/2022",
+                    anticipatedFundingAmountPerFiscalYear: {
+                      edges: [
+                        {
+                          node: {
+                            anticipatedFundingAmount: "5",
+                            fiscalYear: "2021/2022",
+                          },
+                        },
+                      ],
+                    },
                   },
                 },
               ],
@@ -281,6 +351,8 @@ describe("The Project Funding Agreement Form Summary", () => {
               edges: [
                 {
                   node: {
+                    proponentsSharePercentage: 77,
+                    totalProjectValue: 777,
                     newFormData: {
                       projectId: "Test Project ID",
                       maxFundingAmount: 200,
@@ -324,6 +396,9 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Total Project Value")).toBeInTheDocument();
+    expect(
+      screen.getByText("Proponent's Share Percentage")
+    ).toBeInTheDocument();
     expect(screen.getByText("Maximum Funding Amount")).toBeInTheDocument();
     expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
     expect(
@@ -378,12 +453,20 @@ describe("The Project Funding Agreement Form Summary", () => {
                 },
               },
             },
-            anticipatedFundingAmountPerFiscalYear: {
+            formChangesByProjectRevisionId: {
               edges: [
                 {
                   node: {
-                    anticipatedFundingAmount: "5",
-                    fiscalYear: "2021/2022",
+                    anticipatedFundingAmountPerFiscalYear: {
+                      edges: [
+                        {
+                          node: {
+                            anticipatedFundingAmount: "5",
+                            fiscalYear: "2021/2022",
+                          },
+                        },
+                      ],
+                    },
                   },
                 },
               ],
@@ -392,6 +475,8 @@ describe("The Project Funding Agreement Form Summary", () => {
               edges: [
                 {
                   node: {
+                    totalProjectValue: 63,
+                    proponentsSharePercentage: 54,
                     newFormData: {
                       projectId: "Test Project ID",
                       maxFundingAmount: 200,
@@ -424,6 +509,9 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.renderComponent();
 
     expect(screen.getByText("Total Project Value")).toBeInTheDocument();
+    expect(
+      screen.getByText("Proponent's Share Percentage")
+    ).toBeInTheDocument();
     expect(screen.getByText("Maximum Funding Amount")).toBeInTheDocument();
     expect(screen.getByText("Province's Share Percentage")).toBeInTheDocument();
     expect(
