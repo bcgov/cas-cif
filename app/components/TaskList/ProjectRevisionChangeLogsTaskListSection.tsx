@@ -1,31 +1,26 @@
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getProjectRevisionChangeLogsPageRoute } from "routes/pageRoutes";
 
 interface Props {
   projectRevisionId: string;
-  defaultExpandedState: boolean;
   listItemName: string;
   children?: Array<React.ReactNode | Boolean>;
 }
 
 const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
   projectRevisionId,
-  defaultExpandedState,
   listItemName,
   children,
 }) => {
   const router = useRouter();
-  const [isExpanded, setIsExpanded] = useState(defaultExpandedState);
+  const [isExpanded, setIsExpanded] = useState(true);
   const toggleCustomAccordion = () => {
     router.push(getProjectRevisionChangeLogsPageRoute(projectRevisionId));
     setIsExpanded(true);
   };
-  useEffect(() => {
-    setIsExpanded(defaultExpandedState);
-  }, [defaultExpandedState]);
 
   const hasChildren = useMemo(
     () => children.some((child) => child),

@@ -254,7 +254,6 @@ describe("when editing a project, the project page", () => {
     ).should("have.text", "Jan 1, 2022");
 
     cy.contains("Jan 1, 2022").next().should("have.text", "(ADDED)");
-    cy.pause();
 
     cy.get("#root_comments-diffAmendmentsAndOtherRevisionsOld").should(
       "have.text",
