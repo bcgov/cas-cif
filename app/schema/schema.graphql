@@ -45451,6 +45451,33 @@ type Form implements Node {
 
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
+  """
+  Computed column to calculate the anticipated amount of funding for a project by fiscal year
+  """
+  anticipatedFundingAmountPerFiscalYear(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SumByFiscalYearFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): SumByFiscalYearsConnection!
   asEmissionIntensityReport: EmissionIntensityReport
 
   """
@@ -45815,6 +45842,9 @@ type FormChange implements Node {
     orderBy: [ProjectRevisionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): FormChangeProjectRevisionsByFormChangePreviousFormChangeIdAndProjectRevisionIdManyToManyConnection!
 
+  """Computed column returns the calculated proponents share percentage."""
+  proponentsSharePercentage: BigFloat
+
   """Computed column to determine the rank of a project"""
   rank: Int
 
@@ -45825,6 +45855,14 @@ type FormChange implements Node {
 
   """Unique ID for the form_change"""
   rowId: Int!
+
+  """
+      Computed column to return the total project value.
+      Calculation:
+      - Total Project Value = Maximum Funding Amount + Proponent Cost + approved Additional Funding Amount(s)
+  
+  """
+  totalProjectValue: BigFloat
 
   """updated at timestamp"""
   updatedAt: Datetime!
@@ -46190,6 +46228,9 @@ input FormChangeFilter {
   """Filter by the object’s `projectRevisionId` field."""
   projectRevisionId: IntFilter
 
+  """Filter by the object’s `proponentsSharePercentage` field."""
+  proponentsSharePercentage: BigFloatFilter
+
   """Filter by the object’s `rank` field."""
   rank: IntFilter
 
@@ -46198,6 +46239,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
+
+  """Filter by the object’s `totalProjectValue` field."""
+  totalProjectValue: BigFloatFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
@@ -60083,34 +60127,6 @@ type ProjectRevision implements Node {
     orderBy: [AmendmentTypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ProjectRevisionAmendmentTypesByProjectRevisionAmendmentTypeProjectRevisionIdAndAmendmentTypeManyToManyConnection!
 
-  """
-  Computed column to calculate the anticipated amount of funding for a project by fiscal year
-  """
-  anticipatedFundingAmountPerFiscalYear(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: SumByFiscalYearFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-  ): SumByFiscalYearsConnection!
-
   """Explanation of why the revision was made"""
   changeReason: String
 
@@ -60689,12 +60705,27 @@ type ProjectRevision implements Node {
   tasklistStatusFor(formDataTableName: String!, jsonMatcher: String): String
 
   """
-      Computed column to return the total project value.
-      Calculation:
-      - Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount(s)
+      Computed column to return the TEIMP payment amount, based on:
+      - X% being the TEIMP payment percentage calculated from the emissions performance (Schedule G)
+      - Gross and Net payment amounts to date
+      Formula:
+      TEIMP payment amount = X% * (Gross payment to date - Net payment to date)
   
   """
-  totalProjectValue: BigFloat
+  teimpPaymentAmount: BigFloat
+
+  """
+      Computed column to return the TEIMP payment percentage, calculated as specified in the schedule G.
+      The calculation for determining emission intensity performance uses three metrics and a calculation:
+      Metrics:
+      - BEI: Baseline Emission Intensity
+      - PEI: Post-Project Emission Intensity
+      - TEI: Target Emission Intensity
+      Calculation:
+      - Emission Intensity Payment Percentage = (BEI - PEI) / (BEI - TEI) * 100
+  
+  """
+  teimpPaymentPercentage: BigFloat
 
   """
   Returns the row number of the project revision within the scope of a project and among all other revisions of the same type.
@@ -61714,8 +61745,11 @@ input ProjectRevisionFilter {
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
 
-  """Filter by the object’s `totalProjectValue` field."""
-  totalProjectValue: BigFloatFilter
+  """Filter by the object’s `teimpPaymentAmount` field."""
+  teimpPaymentAmount: BigFloatFilter
+
+  """Filter by the object’s `teimpPaymentPercentage` field."""
+  teimpPaymentPercentage: BigFloatFilter
 
   """Filter by the object’s `typeRowNumber` field."""
   typeRowNumber: IntFilter

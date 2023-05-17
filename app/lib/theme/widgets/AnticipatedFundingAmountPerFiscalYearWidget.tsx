@@ -4,11 +4,17 @@ import CalculatedValueWidget from "./CalculatedValueWidget";
 
 const AnticipatedFundingAmountPerFiscalYearWidgetFragment = graphql`
   fragment AnticipatedFundingAmountPerFiscalYearWidget_projectRevision on ProjectRevision {
-    anticipatedFundingAmountPerFiscalYear {
+    formChangesByProjectRevisionId {
       edges {
         node {
-          anticipatedFundingAmount
-          fiscalYear
+          anticipatedFundingAmountPerFiscalYear {
+            edges {
+              node {
+                anticipatedFundingAmount
+                fiscalYear
+              }
+            }
+          }
         }
       }
     }
@@ -23,9 +29,13 @@ const AnticipatedFundingAmountPerFiscalYearWidget: React.FC<WidgetProps> = (
     props.formContext.projectRevision
   );
 
-  const anticipatedFunding = [
-    ...query.anticipatedFundingAmountPerFiscalYear.edges,
-  ];
+  const anticipatedFunding = query.formChangesByProjectRevisionId?.edges[0]
+    ?.node.anticipatedFundingAmountPerFiscalYear?.edges[0]
+    ? [
+        query.formChangesByProjectRevisionId?.edges[0]?.node
+          .anticipatedFundingAmountPerFiscalYear?.edges[0],
+      ]
+    : [];
 
   // This ensures that a minimum of three fiscal years are displayed, even if the user hasn't filled out any milestone information yet
   const placeholderFiscalYears = 3 - anticipatedFunding.length;
