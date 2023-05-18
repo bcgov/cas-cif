@@ -220,7 +220,7 @@ describe("when editing a project, the project page", () => {
       /Dec(\.)? 31, 2020/
     );
 
-    cy.findByText("Quarterly Report removed").should("be.visible");
+    cy.findByText("Quarterly Report").should("be.visible");
 
     cy.get("#root_teimpReporting_measurementPeriodStartDate-diffNew").should(
       "have.text",
