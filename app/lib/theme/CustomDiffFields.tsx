@@ -130,6 +130,9 @@ const showStringDiff = (
   if (!oldData && newData && latestCommittedData) {
     return (
       <>
+        <span id={id && `${id}-${diffTextClsName}`} className={diffTextClsName}>
+          {"Not Entered"}
+        </span>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
           {formatData(isDate, latestCommittedData)}
         </span>
