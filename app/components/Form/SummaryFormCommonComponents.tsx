@@ -14,13 +14,7 @@ export const FormRemoved: React.FC<FormRemovedProps> = ({
   formTitle,
 }) => (
   <dd>
-    <em
-      className={
-        isOnAmendmentsAndOtherRevisionsPage
-          ? "diffAmendmentsAndOtherRevisionsOld"
-          : "diffReviewAndSubmitInformationOld"
-      }
-    >
+    <em className={isOnAmendmentsAndOtherRevisionsPage ? "diffOld" : "diffOld"}>
       {/* No need to show `removed` on Amendments/Revisions page */}
       {formTitle} {!isOnAmendmentsAndOtherRevisionsPage && "removed"}
     </em>
