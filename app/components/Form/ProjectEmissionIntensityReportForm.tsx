@@ -174,6 +174,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               newFormData
               changeStatus
               paymentPercentage
+              actualPerformanceMilestoneAmount
             }
           }
         }
@@ -198,18 +199,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const paymentPercentageOfPerformanceMilestoneAmount =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .paymentPercentage;
-  let actualPerformanceMilestoneAmount;
-  if (
-    maximumPerformanceMilestoneAmount == null ||
-    paymentPercentageOfPerformanceMilestoneAmount == null
-  ) {
-    actualPerformanceMilestoneAmount = null;
-  } else {
-    actualPerformanceMilestoneAmount =
-      (Number(maximumPerformanceMilestoneAmount ?? null) *
-        Number(paymentPercentageOfPerformanceMilestoneAmount ?? null)) /
-      100;
-  }
 
   // Mutations
   const [
@@ -378,7 +367,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               maximumPerformanceMilestoneAmount:
                 maximumPerformanceMilestoneAmount ?? null,
               actualPerformanceMilestoneAmount:
-                actualPerformanceMilestoneAmount ?? null,
+                projectRevision.emissionIntensityReportFormChange.edges[0]?.node
+                  .actualPerformanceMilestoneAmount,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
               emissionIntensityReportFormChange?.newFormData
