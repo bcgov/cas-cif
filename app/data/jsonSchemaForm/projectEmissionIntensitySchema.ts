@@ -61,12 +61,12 @@ export const emissionIntensityReportSchema = {
           title: "Date Invoice Sent to CSNR",
           default: undefined,
         },
-        paymentPercentageOfPerformanceMilestoneAmount: {
+        paymentPercentage: {
           type: "number",
           title: "Payment Percentage of Performance Milestone Amount (%)",
           default: undefined,
         },
-        maximumPerformanceMilestoneAmount: {
+        holdbackAmountToDate: {
           type: "number",
           title: "Maximum Performance Milestone Amount",
           default: undefined,
@@ -152,7 +152,7 @@ export const emissionIntensityReportUiSchema = {
       hideOptional: true,
       calculatedValueFormContextProperty: "teimpPaymentPercentage",
     },
-    paymentPercentageOfPerformanceMilestoneAmount: {
+    paymentPercentage: {
       "ui:widget": "CalculatedValueWidget",
       calculatedValueFormContextProperty:
         "paymentPercentageOfPerformanceMilestoneAmount",
@@ -166,7 +166,7 @@ export const emissionIntensityReportUiSchema = {
       isMoney: true,
       hideOptional: true,
     },
-    maximumPerformanceMilestoneAmount: {
+    holdbackAmountToDate: {
       "ui:widget": "CalculatedValueWidget",
       calculatedValueFormContextProperty: "maximumPerformanceMilestoneAmount",
       isMoney: true,
@@ -174,6 +174,14 @@ export const emissionIntensityReportUiSchema = {
     },
     dateSentToCsnr: {
       "ui:widget": "DateWidget",
+    },
+  },
+  calculatedValues: {
+    calculatedEiPerformance: {
+      "ui:widget": "NumberWidget",
+      hideOptional: true,
+      isPercentage: true,
+      numberOfDecimalPlaces: 2,
     },
   },
 };
