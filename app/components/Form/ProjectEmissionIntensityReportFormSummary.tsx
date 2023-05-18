@@ -62,11 +62,18 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           edges {
             node {
               calculatedEiPerformance
+              paymentPercentage
+              holdbackAmountToDate
+              actualPerformanceMilestoneAmount
               newFormData
               operation
               isPristine
               formChangeByPreviousFormChangeId {
                 newFormData
+                calculatedEiPerformance
+                paymentPercentage
+                holdbackAmountToDate
+                actualPerformanceMilestoneAmount
               }
             }
           }
@@ -87,6 +94,10 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           edges {
             node {
               newFormData
+              calculatedEiPerformance
+              paymentPercentage
+              holdbackAmountToDate
+              actualPerformanceMilestoneAmount
             }
           }
         }
@@ -103,6 +114,42 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
 
   const summaryEmissionIntensityReport =
     summaryEmissionIntensityReportFormChange?.edges[0]?.node;
+
+  const oldData = {
+    ...summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+      ?.newFormData,
+    //calculated values
+    calculatedEiPerformance:
+      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+        ?.calculatedEiPerformance,
+    paymentPercentage:
+      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+        ?.paymentPercentage,
+    holdbackAmountToDate:
+      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+        ?.holdbackAmountToDate,
+    actualPerformanceMilestoneAmount:
+      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+        ?.actualPerformanceMilestoneAmount,
+  };
+
+  const latestCommittedData = {
+    ...latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
+      ?.newFormData,
+    //calculated values
+    calculatedEiPerformance:
+      latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
+        ?.calculatedEiPerformance,
+    paymentPercentage:
+      latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
+        ?.paymentPercentage,
+    holdbackAmountToDate:
+      latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
+        ?.holdbackAmountToDate,
+    actualPerformanceMilestoneAmount:
+      latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
+        ?.actualPerformanceMilestoneAmount,
+  };
 
   // Set the formSchema and formData based on showing the diff or not
   const reportingRequirementDiffObject = !renderDiff
@@ -121,7 +168,21 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         formData: summaryEmissionIntensityReport?.newFormData,
       }
     : getFilteredEmissionIntensitySchema(
-        emissionIntensityReportSchema as JSONSchema7,
+        {
+          ...emissionIntensityReportSchema,
+          properties: {
+            ...emissionIntensityReportSchema.properties,
+            // Add calculatedEiPerformance to the schema since this field is using `AdjustableCalculatedValueWidget` and is not directly in the schema
+            calculatedValues: {
+              properties: {
+                calculatedEiPerformance: {
+                  type: "number",
+                  title: "GHG Emission Intensity Performance (Calculated)",
+                },
+              },
+            },
+          },
+        } as JSONSchema7,
         summaryEmissionIntensityReport || {}
       );
 
@@ -231,13 +292,15 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         formContext={{
           calculatedEiPerformance:
             summaryEmissionIntensityReport?.calculatedEiPerformance ?? 0,
+          paymentPercentageOfPerformanceMilestoneAmount:
+            summaryEmissionIntensityReport?.paymentPercentage,
+          maximumPerformanceMilestoneAmount:
+            summaryEmissionIntensityReport?.holdbackAmountToDate,
+          actualPerformanceMilestoneAmount:
+            summaryEmissionIntensityReport?.actualPerformanceMilestoneAmount,
           operation: summaryEmissionIntensityReport?.operation,
-          oldData:
-            summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
-              ?.newFormData,
-          latestCommittedData:
-            latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
-              ?.newFormData,
+          oldData,
+          latestCommittedData,
           isAmendmentsAndOtherRevisionsSpecific:
             isOnAmendmentsAndOtherRevisionsPage,
         }}
