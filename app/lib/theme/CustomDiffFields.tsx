@@ -109,7 +109,7 @@ const showStringDiff = (
     return (
       <>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {isDate ? getLocaleFormattedDate(oldData) : oldData}
+          {formatData(isDate, oldData)}
         </span>
         {contentSuffix && contentSuffixElement(id, contentSuffix)}
       </>
