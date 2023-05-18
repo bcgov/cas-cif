@@ -32,7 +32,7 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
               id={id}
               prefix={isMoney ? "$" : ""}
               suffix={isPercentage ? "%" : ""}
-              value={value}
+              value={calculatedValue}
               displayType="text"
             />
           }
