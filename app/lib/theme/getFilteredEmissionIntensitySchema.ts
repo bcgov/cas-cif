@@ -1,46 +1,61 @@
 import type { JSONSchema7 } from "json-schema";
 
-// Filter out fields from the formSchema that have not changed from the previous revision so the summary ignores these fields
-// This is mainly used when the form has multiple fields within it and we want to check each field data with the previous revision
 export const getFilteredEmissionIntensitySchema = (
   formSchema: JSONSchema7,
   formChange
 ) => {
   const filteredSchema = JSON.parse(JSON.stringify(formSchema));
-  const newDataObject = {
+  const formDataObject = {
     teimpReporting: {},
     uponCompletion: {},
+    calculatedValues: {},
   };
 
-  // teimpReporting
-  for (const key of Object.keys(
-    filteredSchema.properties.teimpReporting.properties
-  )) {
-    if (
-      formChange?.newFormData?.teimpReporting?.[key] ===
-      formChange?.formChangeByPreviousFormChangeId?.newFormData
-        ?.teimpReporting?.[key]
-    )
-      delete filteredSchema.properties.teimpReporting.properties[key];
-    else
-      newDataObject.teimpReporting[key] =
-        formChange.newFormData?.teimpReporting?.[key];
-  }
+  /*
+   * This function filters out the properties that are unchanged from the previous form change.
+   * It also filters out the properties that are not changed in the current form change.
+   * We have some calculated values which are not directly in the schema so we need to treat them separately.(like calculatedEiPerformance)
+   */
 
-  // uponCompletion
-  for (const key of Object.keys(
-    filteredSchema.properties.uponCompletion.properties
-  )) {
-    if (
-      formChange?.newFormData?.uponCompletion?.[key] ===
-      formChange?.formChangeByPreviousFormChangeId?.newFormData
-        ?.uponCompletion?.[key]
-    )
-      delete filteredSchema.properties.uponCompletion.properties[key];
-    else
-      newDataObject.uponCompletion[key] =
-        formChange.newFormData?.uponCompletion?.[key];
-  }
+  const filterProperties = (properties, newDataObject) => {
+    const propertiesObj = filteredSchema.properties[properties]?.properties;
+    const newFormDataValues = formChange.newFormData?.[properties] || {};
+    const previousFormData =
+      formChange.formChangeByPreviousFormChangeId?.newFormData?.[properties] ||
+      {};
+    for (const key of Object.keys(propertiesObj)) {
+      // used to filter out the properties that are in the form data
+      const isNewFormDataUnchanged =
+        newFormDataValues[key] &&
+        newFormDataValues[key] === previousFormData[key];
 
-  return { formSchema: filteredSchema, formData: newDataObject };
+      // used to filter out the properties that are in the form change like calculated values
+      const isFormChangeDataUnchanged =
+        formChange[key] &&
+        formChange[key] === formChange.formChangeByPreviousFormChangeId?.[key];
+
+      // used to filter out the properties that never appeared in the form
+      const keyNotAppearedInForm =
+        !newFormDataValues[key] &&
+        !previousFormData[key] &&
+        !formChange[key] &&
+        !formChange.formChangeByPreviousFormChangeId?.[key];
+
+      if (
+        isNewFormDataUnchanged ||
+        isFormChangeDataUnchanged ||
+        keyNotAppearedInForm
+      )
+        delete propertiesObj[key];
+      else
+        newDataObject[properties][key] =
+          newFormDataValues[key] ?? formChange[key];
+    }
+  };
+
+  filterProperties("teimpReporting", formDataObject);
+  filterProperties("uponCompletion", formDataObject);
+  filterProperties("calculatedValues", formDataObject);
+
+  return { formSchema: filteredSchema, formData: formDataObject };
 };
