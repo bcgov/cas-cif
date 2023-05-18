@@ -42,8 +42,8 @@ export const getFilteredEmissionIntensitySchema = (
         !formChange.formChangeByPreviousFormChangeId?.[key];
 
       if (
-        isNewFormDataUnchanged ||
-        isFormChangeDataUnchanged ||
+        isNewFormDataUnchanged ??
+        isFormChangeDataUnchanged ??
         keyNotAppearedInForm
       )
         delete propertiesObj[key];
