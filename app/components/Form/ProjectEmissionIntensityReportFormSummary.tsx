@@ -172,12 +172,24 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           ...emissionIntensityReportSchema,
           properties: {
             ...emissionIntensityReportSchema.properties,
+            // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
+            uponCompletion: {
+              ...emissionIntensityReportSchema.properties.uponCompletion,
+              properties: {
+                ...emissionIntensityReportSchema.properties.uponCompletion
+                  .properties,
+                adjustedEmissionsIntensityPerformance: {
+                  title: "GHG Emission Intensity Performance (Adjusted)",
+                  type: "number",
+                },
+              },
+            },
             // Add calculatedEiPerformance to the schema since this field is using `AdjustableCalculatedValueWidget` and is not directly in the schema
             calculatedValues: {
               properties: {
                 calculatedEiPerformance: {
                   type: "number",
-                  title: "GHG Emission Intensity Performance (Calculated)",
+                  title: "GHG Emission Intensity Performance",
                 },
               },
             },
