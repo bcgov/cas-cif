@@ -56,6 +56,7 @@ const showStringDiff = (
     "diffText",
   ];
 
+  // The numbers show the truth values of oldData, newData, latestCommittedData
   // Case 7 ->  111
   if (oldData && newData && latestCommittedData) {
     return (
@@ -381,15 +382,15 @@ const CUSTOM_DIFF_FIELDS: Record<
   StringField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
-    const previousValue = formContext?.oldData?.[props.name];
-    const latestCommittedValue = formContext?.latestCommittedData?.[props.name];
+    const oldData = formContext?.oldData?.[props.name];
+    const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
     return showStringDiff(
       id,
-      previousValue,
+      oldData,
       formData,
-      latestCommittedValue,
+      latestCommittedData,
       isDate,
       contentSuffix as string
     );
@@ -397,7 +398,7 @@ const CUSTOM_DIFF_FIELDS: Record<
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
-    const previousData = formContext?.oldData?.[props.name];
+    const oldData = formContext?.oldData?.[props.name];
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
 
     // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
@@ -421,7 +422,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     } else {
       return showNumberDiff(
         id,
-        previousData,
+        oldData,
         formData,
         latestCommittedData,
         uiSchema?.isMoney,
