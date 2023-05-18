@@ -39,7 +39,6 @@ const defaultMockResolver = {
               reportType: "TEIMP",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
-              holdbackAmountToDate: "100",
             },
           },
         ],
@@ -52,6 +51,8 @@ const defaultMockResolver = {
               id: `mock-project-milestone-report-form-${generateID()}`,
               calculatedEiPerformance: 200,
               paymentPercentage: 60,
+              holdbackAmountToDate: "100",
+              actualPerformanceMilestoneAmount: "200",
               rowId: 1,
               newFormData: {
                 measurementPeriodStartDate: "2022-01-02",
@@ -176,7 +177,6 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByLabelText(/Total Project Lifetime Emissions Reductions*/i)
     ).toHaveValue("5");
-
     // We can't query by label for text elements,
     // See 'note' field here https://testing-library.com/docs/queries/bylabeltext/#options
     expect(
@@ -197,7 +197,7 @@ describe("the emission intensity report form component", () => {
     ).toHaveTextContent("$100");
     expect(
       screen.getByLabelText("Actual Performance Milestone Amount")
-    ).toHaveTextContent("$60.00");
+    ).toHaveTextContent("$200.00");
     expect(
       screen.getByLabelText(/Date invoice sent to CSNR/i)
     ).toHaveTextContent(/Feb[.]? 11, 2022/);
