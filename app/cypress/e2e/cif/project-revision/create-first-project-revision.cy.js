@@ -79,6 +79,13 @@ describe("when creating a project, the project page", () => {
       "2020-02-02",
       20
     );
+    cy.findByText(/Total Project Value$/i)
+      .next()
+      .should("have.text", "$1,022.00"); // check that calculated value updates
+    cy.findByText(/Proponent's Share Percentage$/i)
+      .next()
+      .should("have.text", "78.27%"); // check that calculated value updates
+
     cy.findByRole("button", { name: /Add funding source/i }).click();
     cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
     cy.contains("Changes saved").should("be.visible");
@@ -167,18 +174,33 @@ describe("when creating a project, the project page", () => {
 
     // funding agreement section
     cy.checkFundingAgreementForm(
+      true,
       "$222.00",
       "60.00 %",
-      "$333.00",
       "$800.00",
+      "70.60%",
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
+      "$333.00",
       "$1,133.00",
-      true,
       "20 %"
     );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
+
+    // payment tracker section
+    cy.findByText(/Total Net Payment Amount to Date$/i)
+      .next()
+      .should("have.text", "$48.00");
+    cy.findByText(/Total Gross Payment Amount to Date$/i)
+      .next()
+      .should("have.text", "$60.00");
+    cy.findByText(/Total Holdback Amount to Date$/i)
+      .next()
+      .should("have.text", "$12.00");
+    cy.findByText(/Total Eligible Expenses to Date$/i)
+      .next()
+      .should("have.text", "$100.00");
 
     // project managers section
     cy.findByText(/tech team primary/i)
@@ -304,18 +326,24 @@ describe("when creating a project, the project page", () => {
 
     // funding agreement section
     cy.checkFundingAgreementForm(
+      true,
       "$222.00",
       "60.00 %",
-      "$333.00",
       "$800.00",
+      "70.60%",
       /Jan(\.)? 1, 2020/,
       /Feb(\.)? 2, 2020/,
+      "$333.00",
       "$1,133.00",
-      true,
       undefined
     );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
+
+    // payment tracker section
+    cy.findByText(/Total Payment Amount to Date$/i)
+      .next()
+      .should("have.text", "$4,498.60");
 
     // project summary report section
     cy.contains(/Project Summary Report/i).should("be.visible");
