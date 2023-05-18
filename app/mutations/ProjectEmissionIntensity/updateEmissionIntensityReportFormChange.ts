@@ -17,6 +17,7 @@ const mutation = graphql`
           ...TaskList_projectRevision
         }
         paymentPercentage
+        holdbackAmountToDate
         actualPerformanceMilestoneAmount
       }
     }
