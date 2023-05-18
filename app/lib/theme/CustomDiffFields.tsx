@@ -64,7 +64,7 @@ const showStringDiff = (
         {latestCommittedData !== oldData && (
           <>
             <span
-              id={id && `${id}-${diffOldClsName}1`}
+              id={id && `${id}-${diffOldClsName}`}
               className={diffOldClsName}
             >
               {formatData(isDate, latestCommittedData)}
@@ -160,15 +160,7 @@ const showStringDiff = (
     );
   }
 
-  // Case 1 ->  001
-  if (!oldData && !newData && latestCommittedData) {
-    return <>ERROR SD: 1</>;
-  }
-
-  // Case 0 ->  000
-  if (!oldData && !newData && !latestCommittedData) {
-    return <></>;
-  }
+  return <>Error</>;
 };
 
 const showNumberDiff = (
@@ -236,7 +228,7 @@ const showNumberDiff = (
     );
   }
   // case 6 ->  110
-  else if (oldData && newData && !latestCommittedData) {
+  if (oldData && newData && !latestCommittedData) {
     return (
       <>
         <NumberFormat
@@ -267,7 +259,7 @@ const showNumberDiff = (
     );
   }
   // case 5 ->  101
-  else if (oldData && !newData && latestCommittedData) {
+  if (oldData && !newData && latestCommittedData) {
     // this happens when you remove a contact
     return (
       <NumberFormat
@@ -284,7 +276,7 @@ const showNumberDiff = (
     );
   }
   // case 4 ->  100
-  else if (oldData && !newData && !latestCommittedData) {
+  if (oldData && !newData && !latestCommittedData) {
     return (
       <>
         <NumberFormat
@@ -301,13 +293,9 @@ const showNumberDiff = (
       </>
     );
   }
-  // Case 3 ->  011
-  else if (!oldData && newData && latestCommittedData) {
-    return <>ERROR ND: 3</>;
-  }
 
   // Case 2 ->  010
-  else if (!oldData && newData && !latestCommittedData) {
+  if (!oldData && newData && !latestCommittedData) {
     return (
       <>
         <NumberFormat
@@ -338,13 +326,8 @@ const showNumberDiff = (
     );
   }
 
-  // Case 1 ->  001
-  else if (!oldData && !newData && latestCommittedData) {
-    return <>ERROR ND: 1</>;
-  }
-
   // Case 0 ->  000
-  else if (!oldData && !newData && !latestCommittedData) {
+  if (!oldData && !newData && !latestCommittedData) {
     // This is a special case for when the value is 0. We want to show 0, not "Not Entered"
     if (newData === 0) {
       return (
@@ -373,6 +356,7 @@ const showNumberDiff = (
 
     return <>Not Entered</>;
   }
+  return <>Error</>;
 };
 
 const CUSTOM_DIFF_FIELDS: Record<
