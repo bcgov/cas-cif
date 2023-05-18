@@ -524,46 +524,46 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "checkFundingAgreementForm",
   (
+    summaryPageMode,
     maxFundingAmount,
     provinceSharePercentage,
-    anticipatedFundingAmount,
     proponentCost,
+    proponentsSharePercentage,
     contractStartDate,
     projectAssetsLifeEndDate,
-    totalProjectValue = "$0.00",
-    summaryPageMode = false,
-    holdbackPercentage = undefined
+    anticipatedFundingAmount,
+    totalProjectValue,
+    holdbackPercentage
   ) => {
-    cy.findByText(/Total Project Value$/i)
-      .next()
-      .should("have.text", totalProjectValue);
     cy.findByText(/Maximum Funding Amount$/i)
       .next()
       .should("have.text", maxFundingAmount);
     cy.findByText(/Province's Share Percentage$/i)
       .next()
       .should("have.text", provinceSharePercentage);
-    if (holdbackPercentage) {
-      cy.findByText(/Performance Milestone Holdback Percentage$/i)
-        .next()
-        .should("have.text", holdbackPercentage);
-    }
-    cy.findByText(/Anticipated\/Actual Funding Amount$/i)
-      .next()
-      .should("have.text", anticipatedFundingAmount);
     cy.findByText(/Proponent Cost$/i)
       .next()
       .should("have.text", proponentCost);
-
+    cy.findByText(/Proponent's Share Percentage$/i)
+      .next()
+      .should("have.text", proponentsSharePercentage);
     cy.findByText(/Contract Start Date$/i)
       .next()
       .contains(contractStartDate);
     cy.findByText(/Project Assets Life End Date$/i)
       .next()
       .contains(projectAssetsLifeEndDate);
+    cy.findByText(/Anticipated\/Actual Funding Amount$/i)
+      .next()
+      .should("have.text", anticipatedFundingAmount);
     cy.findByText(/Total Project Value$/i)
       .next()
       .should("have.text", totalProjectValue);
+    if (holdbackPercentage) {
+      cy.findByText(/Performance Milestone Holdback Percentage$/i)
+        .next()
+        .should("have.text", holdbackPercentage);
+    }
     if (!summaryPageMode) return cy.url().should("include", "/form/3");
   }
 );
