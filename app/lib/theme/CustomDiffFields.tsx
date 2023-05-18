@@ -59,6 +59,7 @@ const showStringDiff = (
   // The numbers show the truth values of oldData, newData, latestCommittedData
   // Case 7 ->  111
   if (oldData && newData && latestCommittedData) {
+    console.log("GURJ", "here", oldData, newData, latestCommittedData);
     return (
       <>
         {latestCommittedData !== oldData && (
@@ -106,14 +107,19 @@ const showStringDiff = (
 
   // Case 5 ->  101
   if (oldData && !newData && latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {formatData(isDate, oldData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      </>
-    );
+    if (oldData == latestCommittedData) {
+      // TODO: not sure if this is possible
+      return <></>;
+    } else {
+      return (
+        <>
+          <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+            {formatData(isDate, oldData)}
+          </span>
+          {contentSuffix && contentSuffixElement(id, contentSuffix)}
+        </>
+      );
+    }
   }
   // Case 4 ->  100
   if (oldData && !newData && !latestCommittedData) {
@@ -133,6 +139,7 @@ const showStringDiff = (
         <span id={id && `${id}-${diffTextClsName}`} className={diffTextClsName}>
           {"Not Entered"}
         </span>
+        {renderArrow()}
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
           {formatData(isDate, latestCommittedData)}
         </span>
@@ -373,6 +380,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
+    console.log("GURJ", oldData, formData, latestCommittedData);
     return showStringDiff(
       id,
       oldData,
