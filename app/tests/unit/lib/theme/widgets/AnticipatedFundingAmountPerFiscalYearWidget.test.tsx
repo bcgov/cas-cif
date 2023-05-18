@@ -20,30 +20,38 @@ const testQuery = graphql`
 const mockPayload = {
   ProjectRevision() {
     const result = {
-      anticipatedFundingAmountPerFiscalYear: {
+      formChangesByProjectRevisionId: {
         edges: [
           {
             node: {
-              anticipatedFundingAmount: "20082009.00",
-              fiscalYear: "2008/2009",
-            },
-          },
-          {
-            node: {
-              anticipatedFundingAmount: "20212022.00",
-              fiscalYear: "2021/2022",
-            },
-          },
-          {
-            node: {
-              anticipatedFundingAmount: "20222023.00",
-              fiscalYear: "2022/2023",
-            },
-          },
-          {
-            node: {
-              anticipatedFundingAmount: "20372038.00",
-              fiscalYear: "2037/2038",
+              anticipatedFundingAmountPerFiscalYear: {
+                edges: [
+                  {
+                    node: {
+                      anticipatedFundingAmount: "20082009.00",
+                      fiscalYear: "2008/2009",
+                    },
+                  },
+                  {
+                    node: {
+                      anticipatedFundingAmount: "20212022.00",
+                      fiscalYear: "2021/2022",
+                    },
+                  },
+                  {
+                    node: {
+                      anticipatedFundingAmount: "20222023.00",
+                      fiscalYear: "2022/2023",
+                    },
+                  },
+                  {
+                    node: {
+                      anticipatedFundingAmount: "20372038.00",
+                      fiscalYear: "2037/2038",
+                    },
+                  },
+                ],
+              },
             },
           },
         ],
@@ -100,18 +108,26 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
         const result = {
-          anticipatedFundingAmountPerFiscalYear: {
+          formChangesByProjectRevisionId: {
             edges: [
               {
                 node: {
-                  anticipatedFundingAmount: "20082009.00",
-                  fiscalYear: "2008/2009",
-                },
-              },
-              {
-                node: {
-                  anticipatedFundingAmount: "20212022.00",
-                  fiscalYear: "2021/2022",
+                  anticipatedFundingAmountPerFiscalYear: {
+                    edges: [
+                      {
+                        node: {
+                          anticipatedFundingAmount: "20082009.00",
+                          fiscalYear: "2008/2009",
+                        },
+                      },
+                      {
+                        node: {
+                          anticipatedFundingAmount: "20212022.00",
+                          fiscalYear: "2021/2022",
+                        },
+                      },
+                    ],
+                  },
                 },
               },
             ],
@@ -145,8 +161,16 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
     componentTestingHelper.loadQuery({
       ProjectRevision() {
         const result = {
-          anticipatedFundingAmountPerFiscalYear: {
-            edges: [],
+          formChangesByProjectRevisionId: {
+            edges: [
+              {
+                node: {
+                  anticipatedFundingAmountPerFiscalYear: {
+                    edges: [],
+                  },
+                },
+              },
+            ],
           },
         };
         return result;
