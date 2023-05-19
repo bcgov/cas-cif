@@ -22,9 +22,9 @@ $computed_column$
   emission_intensity_performance as (
     select coalesce(
       (select (eir::cif.emission_intensity_report).adjusted_emissions_intensity_performance from emission_intensity_report)::decimal,
-      cif.form_change_calculated_ei_performance((
-      select * from emission_intensity_report_form_change
-    ))
+      cif.emission_intensity_report_calculated_ei_performance((
+        select * from emission_intensity_report
+      ))
     )
   )
   select min(payment_percentage)
