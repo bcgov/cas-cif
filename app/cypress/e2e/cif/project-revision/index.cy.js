@@ -224,7 +224,6 @@ describe("the new project page", () => {
       "$778.00",
       "10 %"
     );
-    cy.pause();
     // additional funding sources
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
