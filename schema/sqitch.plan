@@ -299,4 +299,5 @@ computed_columns/form_change_as_project_attachment [tables/attachment tables/for
 mutations/update_milestone_form_change [mutations/update_milestone_form_change@1.7.0] 2023-05-10T23:41:13Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Remove total eligible expenses from the form data when milestone type is not General
 mutations/update_form_change [mutations/update_form_change@1.6.0] 2023-04-19T23:31:07Z Gurjeet Matharu <gurjeet@matharuco.com> # fix in update_form_change to handle a null operation for archived forms.  Should now set to update.
 @1.8.0 2023-05-16T21:39:16Z Dylan Leard <dylan@button.is> # release v1.8.0
+computed_columns/project_revision_teimp_payment_amount [computed_columns/project_revision_teimp_payment_amount@1.8.0] 2023-05-19T20:22:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Depreacte unused project_revision_teimp_payment_amount computed column
 computed_columns/project_revision_teimp_payment_percentage [computed_columns/project_revision_teimp_payment_percentage@1.8.0] 2023-05-19T20:19:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate unused project_revision_teimp_payment_percentage computed column
