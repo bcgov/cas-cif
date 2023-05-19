@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.project_revision_teimp_payment_amount(cif.project_revision)'::regprocedure);
+select cif_private.verify_function_not_present('cif', 'project_revision_teimp_payment_amount', 1);
 
 rollback;
