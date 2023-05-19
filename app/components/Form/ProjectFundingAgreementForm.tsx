@@ -91,8 +91,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     projectRevision.projectFormChange.asProject
       .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
 
-  const fundingFormChanges =
-    projectRevision.projectFundingAgreementFormChanges?.edges[0]?.node;
+  const fundingAgreement =
+    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
 
   const isFundingStreamEP = fundingStream === "EP";
 
@@ -121,9 +121,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     props.query
   );
 
-  const fundingAgreement =
-    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
-
   // Update schema to include additional funding source dropdown options
   const schema = isFundingStreamEP
     ? { ...epFundingParameterFormBySlug.jsonSchema.schema }
@@ -140,8 +137,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       } as JSONSchema7Definition;
     }),
   };
-
-  // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
 
   // putting the conditional directly in the mutation throws errors
   const jsonSchemaName = isFundingStreamEP
@@ -310,20 +305,18 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               formContext={{
                 projectRevision,
                 form: fundingAgreement?.newFormData,
-                calculatedTotalProjectValue:
-                  fundingFormChanges.totalProjectValue,
+                calculatedTotalProjectValue: fundingAgreement.totalProjectValue,
                 calculatedProponentsSharePercentage:
-                  fundingFormChanges.proponentsSharePercentage,
+                  fundingAgreement.proponentsSharePercentage,
                 calculatedTotalPaymentAmountToDate:
-                  fundingFormChanges.calculatedTotalPaymentAmountToDate,
+                  fundingAgreement.calculatedTotalPaymentAmountToDate,
                 calculatedEligibleExpensesToDate:
-                  fundingFormChanges.eligibleExpensesToDate,
+                  fundingAgreement.eligibleExpensesToDate,
                 calculatedHoldbackAmountToDate:
-                  fundingFormChanges.holdbackAmountToDate,
-                calculatedNetPaymentsToDate:
-                  fundingFormChanges.netPaymentsToDate,
+                  fundingAgreement.holdbackAmountToDate,
+                calculatedNetPaymentsToDate: fundingAgreement.netPaymentsToDate,
                 calculatedGrossPaymentsToDate:
-                  fundingFormChanges.grossPaymentsToDate,
+                  fundingAgreement.grossPaymentsToDate,
               }}
               uiSchema={
                 isFundingStreamEP
