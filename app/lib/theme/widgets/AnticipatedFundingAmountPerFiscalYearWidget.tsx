@@ -37,7 +37,6 @@ const AnticipatedFundingAmountPerFiscalYearWidget: React.FC<WidgetProps> = (
       ]
     : [];
 
-  console.log("anticipatedFunding", anticipatedFunding);
   // This ensures that a minimum of three fiscal years are displayed, even if the user hasn't filled out any milestone information yet
   const placeholderFiscalYears = 3 - anticipatedFunding.length;
   if (anticipatedFunding.length < 3) {

@@ -101,19 +101,20 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const { summaryProjectFundingAgreementFormChanges, isFirstRevision } =
     revision;
 
-  const fundingFormChanges =
+  const fundingAgreementSummary =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node;
 
   const newData = {
-    ...fundingFormChanges?.newFormData,
-    eligibleExpensesToDate: fundingFormChanges?.eligibleExpensesToDate,
-    holdbackAmountToDate: fundingFormChanges?.holdbackAmountToDate,
-    netPaymentsToDate: fundingFormChanges?.netPaymentsToDate,
-    grossPaymentsToDate: fundingFormChanges?.grossPaymentsToDate,
+    ...fundingAgreementSummary?.newFormData,
+    eligibleExpensesToDate: fundingAgreementSummary?.eligibleExpensesToDate,
+    holdbackAmountToDate: fundingAgreementSummary?.holdbackAmountToDate,
+    netPaymentsToDate: fundingAgreementSummary?.netPaymentsToDate,
+    grossPaymentsToDate: fundingAgreementSummary?.grossPaymentsToDate,
     totalPaymentAmountToDate:
-      fundingFormChanges?.calculatedTotalPaymentAmountToDate,
-    proponentsSharePercentage: fundingFormChanges?.proponentsSharePercentage,
-    totalProjectValue: fundingFormChanges?.totalProjectValue,
+      fundingAgreementSummary?.calculatedTotalPaymentAmountToDate,
+    proponentsSharePercentage:
+      fundingAgreementSummary?.proponentsSharePercentage,
+    totalProjectValue: fundingAgreementSummary?.totalProjectValue,
   };
 
   const latestCommittedFundingFormChanges =
@@ -181,9 +182,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
-
-  const fundingAgreementSummary =
-    summaryProjectFundingAgreementFormChanges.edges[0]?.node;
 
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
@@ -272,22 +270,24 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           formContext={{
             projectRevision: revision,
             operation: fundingAgreementSummary?.operation,
-            calculatedTotalProjectValue: fundingFormChanges?.totalProjectValue,
+            calculatedTotalProjectValue:
+              fundingAgreementSummary?.totalProjectValue,
             calculatedProponentsSharePercentage:
-              fundingFormChanges?.proponentsSharePercentage,
+              fundingAgreementSummary?.proponentsSharePercentage,
             oldData,
             latestCommittedData,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,
             calculatedEligibleExpensesToDate:
-              fundingFormChanges?.eligibleExpensesToDate,
+              fundingAgreementSummary?.eligibleExpensesToDate,
             calculatedHoldbackAmountToDate:
-              fundingFormChanges?.holdbackAmountToDate,
-            calculatedNetPaymentsToDate: fundingFormChanges?.netPaymentsToDate,
+              fundingAgreementSummary?.holdbackAmountToDate,
+            calculatedNetPaymentsToDate:
+              fundingAgreementSummary?.netPaymentsToDate,
             calculatedGrossPaymentsToDate:
-              fundingFormChanges?.grossPaymentsToDate,
+              fundingAgreementSummary?.grossPaymentsToDate,
             calculatedTotalPaymentAmountToDate:
-              fundingFormChanges?.calculatedTotalPaymentAmountToDate,
+              fundingAgreementSummary?.calculatedTotalPaymentAmountToDate,
           }}
           ArrayFieldTemplate={
             ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
