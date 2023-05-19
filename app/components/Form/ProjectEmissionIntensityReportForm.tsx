@@ -142,8 +142,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
       fragment ProjectEmissionIntensityReportForm_projectRevision on ProjectRevision {
         id
         rowId
-        teimpPaymentPercentage
-        teimpPaymentAmount
         emissionIntensityReportingRequirementFormChange: formChangesFor(
           first: 1
           formDataTableName: "reporting_requirement"
@@ -381,10 +379,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
                 maximumPerformanceMilestoneAmount ?? null,
               actualPerformanceMilestoneAmount:
                 actualPerformanceMilestoneAmount ?? null,
-              teimpPaymentPercentage:
-                projectRevision.teimpPaymentPercentage ?? "-",
-              teimpPaymentAmount: projectRevision.teimpPaymentAmount ?? "-",
-              isPercentage: true,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
               emissionIntensityReportFormChange?.newFormData

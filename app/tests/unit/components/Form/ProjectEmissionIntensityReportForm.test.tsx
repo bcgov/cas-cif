@@ -21,8 +21,6 @@ const testQuery = graphql`
 const defaultMockResolver = {
   ProjectRevision(context, generateID) {
     return {
-      teimpPaymentPercentage: "60",
-      teimpPaymentAmount: "99",
       emissionIntensityReportingRequirementFormChange: {
         edges: [
           {
@@ -243,7 +241,6 @@ describe("the emission intensity report form component", () => {
       ProjectRevision: (context, generateID) => ({
         ...defaultMockResolver.ProjectRevision(context, generateID),
         teimpPaymentPercentage: null,
-        teimpPaymentAmount: null,
         emissionIntensityReportFormChange: {
           edges: [
             {
