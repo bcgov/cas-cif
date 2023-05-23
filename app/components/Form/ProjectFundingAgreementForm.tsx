@@ -2,8 +2,6 @@ import { Button, RadioButton } from "@button-inc/bcgov-theme";
 import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameterEPUiSchema";
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import { JSONSchema7Definition } from "json-schema";
-import { calculateProponentsSharePercentage } from "lib/helpers/fundingAgreementCalculations";
-
 import FormBorder from "lib/theme/components/FormBorder";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
@@ -62,7 +60,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             }
           }
         }
-        totalProjectValue
         projectFundingAgreementFormChanges: formChangesFor(
           first: 500
           formDataTableName: "funding_parameter"
@@ -80,6 +77,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               netPaymentsToDate
               grossPaymentsToDate
               calculatedTotalPaymentAmountToDate
+              totalProjectValue
+              proponentsSharePercentage
             }
           }
         }
@@ -91,6 +90,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const fundingStream =
     projectRevision.projectFormChange.asProject
       .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
+
+  const fundingAgreement =
+    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
 
   const isFundingStreamEP = fundingStream === "EP";
 
@@ -119,9 +121,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     props.query
   );
 
-  const fundingAgreement =
-    projectRevision.projectFundingAgreementFormChanges.edges[0]?.node;
-
   // Update schema to include additional funding source dropdown options
   const schema = isFundingStreamEP
     ? { ...epFundingParameterFormBySlug.jsonSchema.schema }
@@ -138,14 +137,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       } as JSONSchema7Definition;
     }),
   };
-
-  const calculatedProponentsSharePercentage =
-    calculateProponentsSharePercentage(
-      fundingAgreement?.newFormData.proponentCost,
-      Number(projectRevision.totalProjectValue)
-    );
-
-  // We should explicitly filter out archived form changes here (filtering on the fragment doesn't work)
 
   // putting the conditional directly in the mutation throws errors
   const jsonSchemaName = isFundingStreamEP
@@ -314,23 +305,18 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               formContext={{
                 projectRevision,
                 form: fundingAgreement?.newFormData,
-                calculatedTotalProjectValue: projectRevision.totalProjectValue,
-                calculatedProponentsSharePercentage,
+                calculatedTotalProjectValue: fundingAgreement.totalProjectValue,
+                calculatedProponentsSharePercentage:
+                  fundingAgreement.proponentsSharePercentage,
                 calculatedTotalPaymentAmountToDate:
-                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                    .node.calculatedTotalPaymentAmountToDate,
+                  fundingAgreement.calculatedTotalPaymentAmountToDate,
                 calculatedEligibleExpensesToDate:
-                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                    .node.eligibleExpensesToDate,
+                  fundingAgreement.eligibleExpensesToDate,
                 calculatedHoldbackAmountToDate:
-                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                    .node.holdbackAmountToDate,
-                calculatedNetPaymentsToDate:
-                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                    .node.netPaymentsToDate,
+                  fundingAgreement.holdbackAmountToDate,
+                calculatedNetPaymentsToDate: fundingAgreement.netPaymentsToDate,
                 calculatedGrossPaymentsToDate:
-                  projectRevision.projectFundingAgreementFormChanges?.edges[0]
-                    .node.grossPaymentsToDate,
+                  fundingAgreement.grossPaymentsToDate,
               }}
               uiSchema={
                 isFundingStreamEP

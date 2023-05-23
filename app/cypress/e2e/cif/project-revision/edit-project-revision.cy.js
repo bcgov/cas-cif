@@ -267,6 +267,10 @@ describe("when editing a project, the project page", () => {
 
     cy.get("#root_revisionStatus").contains(/In Discussion/i);
 
+    cy.get('svg[data-icon="caret-down"]')
+      .should("have.length", 8)
+      .and("be.visible"); // to fix happo diffs
+
     cy.happoAndAxe(
       "Project revision summary",
       "no_change_reason",
@@ -297,6 +301,10 @@ describe("when editing a project, the project page", () => {
     cy.contains(
       /To confirm your change, please click the \"Update\" button./i
     ).should("be.visible");
+
+    cy.get('svg[data-icon="caret-down"]')
+      .should("have.length", 8)
+      .and("be.visible"); // to fix happo diffs
     cy.happoAndAxe(
       "Project revision summary",
       "with_change_reason",

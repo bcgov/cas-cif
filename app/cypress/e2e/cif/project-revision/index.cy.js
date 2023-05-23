@@ -213,12 +213,14 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
+      false,
       "$1.00",
       "50.00 %",
-      "$1.00",
       "$777.00",
+      "99.87%",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
+      "$1.00",
       "$778.00",
       "10 %"
     );
@@ -259,13 +261,16 @@ describe("the new project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByRole("button", { name: /submit/i }).should("not.exist");
     cy.checkFundingAgreementForm(
+      false,
       "$500.00",
       "50.00 %",
-      "$200.00",
       "$3,000.00",
+      "75.00%",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
-      "$4,000.00"
+      "$200.00",
+      "$4,000.00",
+      undefined
     );
     // additional funding sources
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");

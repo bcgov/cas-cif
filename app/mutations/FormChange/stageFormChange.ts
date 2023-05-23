@@ -7,12 +7,13 @@ const mutation = graphql`
     stageFormChange(input: $input) {
       formChange {
         id
-        rank
+        rank # overview form calculated value
+        totalProjectValue # funding form calculated value
+        proponentsSharePercentage # funding form calculated value
         newFormData
         changeStatus
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
-          totalProjectValue
         }
       }
     }

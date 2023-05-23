@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.project_revision_anticipated_funding_amount_per_fiscal_year(cif.project_revision)'::regprocedure);
+select cif_private.verify_function_not_present('cif', 'project_revision_anticipated_funding_amount_per_fiscal_year', 1);
 
 rollback;
