@@ -8,6 +8,9 @@ const mutation = graphql`
     $input: AddProjectAttachmentToRevisionInput!
   ) {
     addProjectAttachmentToRevision(input: $input) {
+      projectRevisionByProjectRevisionId {
+        ...TaskList_projectRevision
+      }
       formChangeEdge @appendEdge(connections: $connections) {
         cursor
         node {

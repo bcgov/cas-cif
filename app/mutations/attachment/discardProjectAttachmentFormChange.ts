@@ -9,6 +9,9 @@ const mutation = graphql`
   ) {
     discardProjectAttachmentFormChange(input: $input) {
       formChanges {
+        projectRevisionByProjectRevisionId {
+          ...TaskList_projectRevision
+        }
         id @deleteEdge(connections: $connections)
       }
     }

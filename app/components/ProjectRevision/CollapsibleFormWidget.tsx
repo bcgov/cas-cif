@@ -24,6 +24,7 @@ const collapsibleFormWidgetFragment = graphql`
     ...ProjectFundingAgreementFormSummary_projectRevision
     ...ProjectEmissionIntensityReportFormSummary_projectRevision
     ...ProjectSummaryReportFormSummary_projectRevision
+    ...ProjectAttachmentsFormSummary_projectRevision
   }
 `;
 

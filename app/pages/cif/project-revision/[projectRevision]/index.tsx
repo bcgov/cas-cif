@@ -32,6 +32,7 @@ import ProjectEmissionsIntensityReportFormSummary from "components/Form/ProjectE
 import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryReportFormSummary";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
+import ProjectAttachmentsFormSummary from "components/Form/ProjectAttachmentsFormSummary";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -56,6 +57,7 @@ const pageQuery = graphql`
         ...ProjectFundingAgreementFormSummary_projectRevision
         ...ProjectEmissionIntensityReportFormSummary_projectRevision
         ...ProjectSummaryReportFormSummary_projectRevision
+        ...ProjectAttachmentsFormSummary_projectRevision
         projectByProjectId {
           latestCommittedProjectRevision {
             id
@@ -242,6 +244,9 @@ export function ProjectRevision({
               projectRevision={query.projectRevision}
             />
             <ProjectAnnualReportFormSummary
+              projectRevision={query.projectRevision}
+            />
+            <ProjectAttachmentsFormSummary
               projectRevision={query.projectRevision}
             />
           </>
