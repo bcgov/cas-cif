@@ -221,6 +221,29 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     [allFormChangesPristine, setHasDiff]
   );
 
+  let modifiedEmissionIntensityReportUiSchema =
+    createEmissionIntensityReportUiSchema(
+      summaryEmissionIntensityReport?.newFormData?.emissionFunctionalUnit,
+      summaryEmissionIntensityReport?.newFormData?.productionFunctionalUnit,
+      summaryEmissionIntensityReport?.newFormData?.measurementPeriodStartDate,
+      summaryEmissionIntensityReport?.newFormData?.measurementPeriodEndDate,
+      false
+    );
+
+  // To show the calculatedEiPerformance field in the diff view with proper formatting
+  if (renderDiff)
+    modifiedEmissionIntensityReportUiSchema = {
+      ...modifiedEmissionIntensityReportUiSchema,
+      calculatedValues: {
+        calculatedEiPerformance: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isPercentage: true,
+          numberOfDecimalPlaces: 2,
+        },
+      },
+    };
+
   // Growthbook - teimp
   if (!useShowGrowthbookFeature("teimp")) return null;
 
@@ -292,21 +315,14 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         theme={readOnlyTheme}
         fields={renderDiff ? customFields : fields}
         schema={emissionIntensityReportDiffObject.formSchema as JSONSchema7}
-        uiSchema={createEmissionIntensityReportUiSchema(
-          summaryEmissionIntensityReport?.newFormData?.emissionFunctionalUnit,
-          summaryEmissionIntensityReport?.newFormData?.productionFunctionalUnit,
-          summaryEmissionIntensityReport?.newFormData
-            ?.measurementPeriodStartDate,
-          summaryEmissionIntensityReport?.newFormData?.measurementPeriodEndDate,
-          false
-        )}
+        uiSchema={modifiedEmissionIntensityReportUiSchema}
         formData={emissionIntensityReportDiffObject.formData}
         formContext={{
           calculatedEiPerformance:
             summaryEmissionIntensityReport?.calculatedEiPerformance ?? 0,
           paymentPercentageOfPerformanceMilestoneAmount:
             summaryEmissionIntensityReport?.paymentPercentage,
-          maximumPerformanceMilestoneAmount:
+          holdbackAmountToDate:
             summaryEmissionIntensityReport?.holdbackAmountToDate,
           actualPerformanceMilestoneAmount:
             summaryEmissionIntensityReport?.actualPerformanceMilestoneAmount,

@@ -20,6 +20,7 @@ $$
     Computed column to return the actual performance milestone amount.
     Calculation:
     - Actual Performance Milestone Amount = (Maximum Performance Milestone Amount * Payment Percentage Of Performance Milestone Amount) / 100
+    - Maximum Performance Milestone Amount is Holdback Amount To Date on front end code
 $$;
 
 commit;
