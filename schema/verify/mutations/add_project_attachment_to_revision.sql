@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('cif.add_project_attachment_to_revision(int, int, int)'::regprocedure);
+select pg_get_functiondef('cif.add_project_attachment_to_revision(int, int)'::regprocedure);
 
 rollback;

@@ -83,7 +83,6 @@ input AddProjectAttachmentToRevisionInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  projectId: Int!
   revisionId: Int!
 }
 
@@ -51469,7 +51468,7 @@ type Mutation {
   ): AddEmissionIntensityReportToRevisionPayload
 
   """
-    Creates a new project_attachment form_change record for the given project_id, attachment_id, and revision_id.
+    Creates a new project_attachment form_change record for the given revision_id and attachment_id.
   
   """
   addProjectAttachmentToRevision(
