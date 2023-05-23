@@ -13,6 +13,9 @@ const mutation = graphql`
         calculatedEiPerformance
         rowId
         newFormData
+        paymentPercentage
+        holdbackAmountToDate
+        actualPerformanceMilestoneAmount
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
           ...ProjectEmissionIntensityReportForm_projectRevision

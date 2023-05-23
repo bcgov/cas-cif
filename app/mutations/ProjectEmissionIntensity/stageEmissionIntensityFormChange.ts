@@ -13,6 +13,9 @@ const mutation = graphql`
         newFormData
         operation
         changeStatus
+        paymentPercentage
+        holdbackAmountToDate
+        actualPerformanceMilestoneAmount
         projectRevisionByProjectRevisionId {
           ...TaskList_projectRevision
         }
