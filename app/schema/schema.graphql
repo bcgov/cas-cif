@@ -60705,29 +60705,6 @@ type ProjectRevision implements Node {
   tasklistStatusFor(formDataTableName: String!, jsonMatcher: String): String
 
   """
-      Computed column to return the TEIMP payment amount, based on:
-      - X% being the TEIMP payment percentage calculated from the emissions performance (Schedule G)
-      - Gross and Net payment amounts to date
-      Formula:
-      TEIMP payment amount = X% * (Gross payment to date - Net payment to date)
-  
-  """
-  teimpPaymentAmount: BigFloat
-
-  """
-      Computed column to return the TEIMP payment percentage, calculated as specified in the schedule G.
-      The calculation for determining emission intensity performance uses three metrics and a calculation:
-      Metrics:
-      - BEI: Baseline Emission Intensity
-      - PEI: Post-Project Emission Intensity
-      - TEI: Target Emission Intensity
-      Calculation:
-      - Emission Intensity Payment Percentage = (BEI - PEI) / (BEI - TEI) * 100
-  
-  """
-  teimpPaymentPercentage: BigFloat
-
-  """
   Returns the row number of the project revision within the scope of a project and among all other revisions of the same type.
   """
   typeRowNumber: Int
@@ -61744,12 +61721,6 @@ input ProjectRevisionFilter {
 
   """Filter by the object’s `rowId` field."""
   rowId: IntFilter
-
-  """Filter by the object’s `teimpPaymentAmount` field."""
-  teimpPaymentAmount: BigFloatFilter
-
-  """Filter by the object’s `teimpPaymentPercentage` field."""
-  teimpPaymentPercentage: BigFloatFilter
 
   """Filter by the object’s `typeRowNumber` field."""
   typeRowNumber: IntFilter
