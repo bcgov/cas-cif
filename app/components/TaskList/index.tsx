@@ -1,9 +1,7 @@
-import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useStageDirtyFormChanges } from "mutations/FormChange/stageDirtyFormChanges";
 import {
   getProjectRevisionPageRoute,
-  getProjectRevisionAttachmentsPageRoute,
   getProjectRevisionViewPageRoute,
   getProjectRevisionCreatePageRoute,
   getProjectRevisionEditPageRoute,
@@ -11,7 +9,6 @@ import {
 import { useMemo, useEffect } from "react";
 import { graphql, useFragment } from "react-relay";
 import { TaskList_projectRevision$key } from "__generated__/TaskList_projectRevision.graphql";
-import AttachmentsTaskListSection from "./AttachmentsTaskListSection";
 import TaskListItem from "./TaskListItem";
 import TaskListSection from "./TaskListSection";
 import { TaskListMode, TaskListDynamicConfiguration } from "./types";
@@ -48,6 +45,7 @@ const TaskList: React.FC<Props> = ({
     fundingAgreementStatus,
     teimpStatus,
     projectSummaryReportStatus,
+    projectAttachmentsStatus,
   } = useFragment(
     // The JSON string is tripping up eslint
     // eslint-disable-next-line relay/graphql-syntax
@@ -102,6 +100,9 @@ const TaskList: React.FC<Props> = ({
         projectSummaryReportStatus: tasklistStatusFor(
           formDataTableName: "reporting_requirement"
           jsonMatcher: "{\"reportType\":\"Project Summary Report\"}"
+        )
+        projectAttachmentsStatus: tasklistStatusFor(
+          formDataTableName: "project_attachment"
         )
       }
     `,
@@ -168,6 +169,10 @@ const TaskList: React.FC<Props> = ({
     },
     projectSummaryReport: {
       context: [{ status: projectSummaryReportStatus }],
+      ItemsComponent: BaseTaskListItemComponent,
+    },
+    projectAttachments: {
+      context: [{ status: projectAttachmentsStatus }],
       ItemsComponent: BaseTaskListItemComponent,
     },
   };
@@ -309,14 +314,6 @@ const TaskList: React.FC<Props> = ({
               />
             )}
           </ProjectRevisionChangeLogsTaskListSection>
-        )}
-        {/* Attachments Section */}
-        {mode === "view" && (
-          <AttachmentsTaskListSection
-            icon={faPaperclip}
-            title="Attachments"
-            linkUrl={getProjectRevisionAttachmentsPageRoute(id)}
-          />
         )}
       </ol>
       <style jsx>{`
