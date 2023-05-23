@@ -303,6 +303,20 @@ describe("the emission intensity report form component", () => {
               },
             ],
           },
+          latestCommittedEmissionIntensityReportFormChange: {
+            edges: [
+              {
+                node: {
+                  isPristine: false,
+                  operation: "UPDATE",
+                  calculatedEiPerformance: 22,
+                  paymentPercentage: 13,
+                  holdbackAmountToDate: 741,
+                  actualPerformanceMilestoneAmount: 357,
+                },
+              },
+            ],
+          },
         };
       },
     };
@@ -311,28 +325,30 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByText(/ghg emission intensity performance/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/20\.00 %/i)).toBeInTheDocument();
-    expect(screen.getByText(/10\.00 %/i)).toBeInTheDocument();
+    expect(screen.getByText(/20\.00 %/i)).toBeInTheDocument(); //old calculatedEiPerformance
+    expect(screen.getByText(/10\.00 %/i)).toBeInTheDocument(); //new calculatedEiPerformance
+    expect(screen.getByText(/22\.00 %/i)).toBeInTheDocument(); //latest committed calculatedEiPerformance
 
     expect(
       screen.getByText(
         /payment percentage of performance milestone amount \(%\)/i
       )
     ).toBeInTheDocument();
-    expect(screen.getByText(/44\.00 %/i)).toBeInTheDocument();
-    expect(screen.getByText(/40\.00 %/i)).toBeInTheDocument();
+    expect(screen.getByText(/44\.00 %/i)).toBeInTheDocument(); //old paymentPercentage
+    expect(screen.getByText(/40\.00 %/i)).toBeInTheDocument(); //new paymentPercentage
+    expect(screen.getByText(/13\.00 %/i)).toBeInTheDocument(); //latest committed paymentPercentage
 
     expect(
-      screen.getByText(
-        /payment percentage of performance milestone amount \(%\)/i
-      )
+      screen.getByText(/maximum performance milestone amount/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/\$321\.00/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$123\.00/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$321\.00/i)).toBeInTheDocument(); //old holdbackAmountToDate
+    expect(screen.getByText(/\$123\.00/i)).toBeInTheDocument(); //new holdbackAmountToDate
+    expect(screen.getByText(/\$741\.00/i)).toBeInTheDocument(); //latest committed holdbackAmountToDate
 
     expect(
       screen.getByText(/actual performance milestone amount/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/\$789\.00/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$789\.00/i)).toBeInTheDocument(); //old actualPerformanceMilestoneAmount
+    expect(screen.getByText(/\$357\.00/i)).toBeInTheDocument(); //latest committed actualPerformanceMilestoneAmount
   });
 });
