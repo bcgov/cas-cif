@@ -168,20 +168,12 @@ export const emissionIntensityReportUiSchema = {
     },
     holdbackAmountToDate: {
       "ui:widget": "CalculatedValueWidget",
-      calculatedValueFormContextProperty: "maximumPerformanceMilestoneAmount",
+      calculatedValueFormContextProperty: "holdbackAmountToDate",
       isMoney: true,
       hideOptional: true,
     },
     dateSentToCsnr: {
       "ui:widget": "DateWidget",
-    },
-  },
-  calculatedValues: {
-    calculatedEiPerformance: {
-      "ui:widget": "NumberWidget",
-      hideOptional: true,
-      isPercentage: true,
-      numberOfDecimalPlaces: 2,
     },
   },
 };
