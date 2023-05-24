@@ -72,7 +72,7 @@ select results_eq(
   $$
     select count(*) from cif.project_type
   $$,
-  -- 11 project types + project type added in earlier test = 12
+  -- 12 project types + project type added in earlier test = 13
   ARRAY['12'::bigint],
     'cif_internal can view all data from project_type table'
 );
