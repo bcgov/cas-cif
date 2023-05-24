@@ -39,6 +39,7 @@ export const EditProjectRevisionQuery = graphql`
       rowId
       revisionType
       # eslint-disable-next-line relay/unused-fields
+      revisionStatus
       typeRowNumber
       # eslint-disable-next-line relay/unused-fields
       changeReason
@@ -86,6 +87,9 @@ export function ProjectRevisionEdit({
   const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
     query;
 
+  const { id, revisionType, rowId, typeRowNumber, projectByProjectId } =
+    projectRevision;
+
   const [formData, setFormData] = useState(projectRevision);
   const onChange = (e) => {
     setFormData(e.formData);
@@ -102,7 +106,7 @@ export function ProjectRevisionEdit({
   // filtering to show only the amendment statuses that are allowed to be selected based on the revision type
   const filteredRevisionStatuses = allRevisionStatuses.edges.filter(
     ({ node }) =>
-      projectRevision.revisionType === "Amendment"
+      revisionType === "Amendment"
         ? node.name !== "Draft"
         : !node.isAmendmentSpecific
   );
@@ -111,14 +115,13 @@ export function ProjectRevisionEdit({
     await discardProjectRevision({
       variables: {
         input: {
-          revisionId: query.projectRevision.rowId,
+          revisionId: rowId,
         },
       },
       onCompleted: async () => {
         await router.push(
           getProjectRevisionPageRoute(
-            query.projectRevision.projectByProjectId
-              .latestCommittedProjectRevision.id
+            projectByProjectId.latestCommittedProjectRevision.id
           )
         );
       },
@@ -136,17 +139,17 @@ export function ProjectRevisionEdit({
       <DefaultLayout session={session} leftSideNav={taskList}>
         <header>
           <h2>
-            {projectRevision.revisionType} {projectRevision.typeRowNumber}
+            {revisionType} {typeRowNumber}
           </h2>
         </header>
         <div>
           <FormBase
-            id={`form-${projectRevision.id}`}
+            id={`form-${id}`}
             className="project-revision-edit-form"
             schema={buildProjectRevisionSchema(
               allRevisionTypes.edges,
               filteredRevisionStatuses,
-              projectRevision.revisionType
+              revisionType
             )}
             uiSchema={createProjectRevisionUISchema(projectRevisionUISchema)}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
