@@ -121,10 +121,26 @@ describe("when creating a project, the project page", () => {
       "1",
       "2",
       "3",
-      "G"
+      "G",
+      100
     );
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
+    cy.findByLabelText("GHG Emission Intensity Performance").should(
+      "have.text",
+      "200.00%"
+    );
+    cy.findByLabelText(
+      "Payment Percentage of Performance Milestone Amount (%)"
+    ).should("have.text", "100.00%");
+    cy.findByLabelText("Maximum Performance Milestone Amount").should(
+      "have.text",
+      "$12.00"
+    );
+    cy.findByLabelText("Actual Performance Milestone Amount").should(
+      "have.text",
+      "$12.00"
+    );
     cy.happoAndAxe("Emission Intensity Form", "filled", "main");
     cy.findByText(/Submit Emissions Intensity Report/).click();
 
@@ -236,6 +252,19 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/^Production Functional Unit/i)
       .next()
       .should("have.text", "G");
+    cy.get("#root_uponCompletion_adjustedEmissionsIntensityPerformance").should(
+      "have.text",
+      "200.00%"
+    );
+    cy.findByText("Payment Percentage of Performance Milestone Amount (%)")
+      .next()
+      .should("have.text", "100.00%");
+    cy.findByText("Maximum Performance Milestone Amount")
+      .next()
+      .should("have.text", "$12.00");
+    cy.findByText("Actual Performance Milestone Amount")
+      .next()
+      .should("have.text", "$12.00");
 
     cy.happoAndAxe("Project summary Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();

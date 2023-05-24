@@ -157,7 +157,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
-              holdbackAmountToDate
             }
           }
         }
@@ -174,6 +173,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               newFormData
               changeStatus
               paymentPercentage
+              holdbackAmountToDate
+              actualPerformanceMilestoneAmount
             }
           }
         }
@@ -192,24 +193,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .calculatedEiPerformance;
 
-  const maximumPerformanceMilestoneAmount =
-    projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
-      ?.node.holdbackAmountToDate;
+  const holdbackAmountToDate =
+    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
+      .holdbackAmountToDate;
+
   const paymentPercentageOfPerformanceMilestoneAmount =
     projectRevision.emissionIntensityReportFormChange.edges[0]?.node
       .paymentPercentage;
-  let actualPerformanceMilestoneAmount;
-  if (
-    maximumPerformanceMilestoneAmount == null ||
-    paymentPercentageOfPerformanceMilestoneAmount == null
-  ) {
-    actualPerformanceMilestoneAmount = null;
-  } else {
-    actualPerformanceMilestoneAmount =
-      (Number(maximumPerformanceMilestoneAmount ?? null) *
-        Number(paymentPercentageOfPerformanceMilestoneAmount ?? null)) /
-      100;
-  }
 
   // Mutations
   const [
@@ -375,10 +365,10 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               calculatedEiPerformance: calculatedEiPerformance ?? null,
               paymentPercentageOfPerformanceMilestoneAmount:
                 paymentPercentageOfPerformanceMilestoneAmount ?? null,
-              maximumPerformanceMilestoneAmount:
-                maximumPerformanceMilestoneAmount ?? null,
+              holdbackAmountToDate: holdbackAmountToDate ?? null,
               actualPerformanceMilestoneAmount:
-                actualPerformanceMilestoneAmount ?? null,
+                projectRevision.emissionIntensityReportFormChange.edges[0]?.node
+                  .actualPerformanceMilestoneAmount,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
               emissionIntensityReportFormChange?.newFormData

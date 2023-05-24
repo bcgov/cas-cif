@@ -45452,6 +45452,15 @@ type Form implements Node {
 """Table tracking individual changes to database records"""
 type FormChange implements Node {
   """
+      Computed column to return the actual performance milestone amount.
+      Calculation:
+      - Actual Performance Milestone Amount = (Maximum Performance Milestone Amount * Payment Percentage Of Performance Milestone Amount) / 100
+      - Maximum Performance Milestone Amount is Holdback Amount To Date on front end code
+  
+  """
+  actualPerformanceMilestoneAmount: BigFloat
+
+  """
   Computed column to calculate the anticipated amount of funding for a project by fiscal year
   """
   anticipatedFundingAmountPerFiscalYear(
@@ -46117,6 +46126,9 @@ input FormChangeCondition {
 A filter to be used against `FormChange` object types. All fields are combined with a logical ‘and.’
 """
 input FormChangeFilter {
+  """Filter by the object’s `actualPerformanceMilestoneAmount` field."""
+  actualPerformanceMilestoneAmount: BigFloatFilter
+
   """Checks for all expressions in this list."""
   and: [FormChangeFilter!]
 
