@@ -397,7 +397,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
 
     // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
-    const textValue = uiSchema?.["ui:options"]?.text as string;
+    const textData = uiSchema?.["ui:options"]?.text as string;
 
     const oldTextValue =
       formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
@@ -405,11 +405,11 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedTextValue =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    if (textValue || oldTextValue || latestCommittedTextValue) {
+    if (textData || oldTextValue || latestCommittedTextValue) {
       return showStringDiff(
         id,
         oldTextValue,
-        textValue,
+        textData,
         latestCommittedTextValue,
         false,
         null
