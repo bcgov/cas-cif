@@ -11,7 +11,6 @@ import {
   emissionIntensityReportingRequirementUiSchema,
 } from "data/jsonSchemaForm/projectEmissionIntensitySchema";
 import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import { createEmissionIntensityReportUiSchema } from "./ProjectEmissionIntensityReportForm";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
@@ -243,9 +242,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         },
       },
     };
-
-  // Growthbook - teimp
-  if (!useShowGrowthbookFeature("teimp")) return null;
 
   if (isOnAmendmentsAndOtherRevisionsPage && allFormChangesPristine)
     return null;
