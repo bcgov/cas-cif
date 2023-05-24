@@ -232,6 +232,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
   // To show the calculatedEiPerformance field in the diff view with proper formatting
   if (renderDiff)
     modifiedEmissionIntensityReportUiSchema = {
+      // this is to keep th fields in the same order as form when showing the diffs
+      "ui:order": ["teimpReporting", "calculatedValues", "uponCompletion"],
       ...modifiedEmissionIntensityReportUiSchema,
       calculatedValues: {
         calculatedEiPerformance: {
