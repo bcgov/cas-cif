@@ -358,7 +358,8 @@ Cypress.Commands.add(
     baselineEmissionIntensity,
     targetEmissionIntensity,
     postProjectEmissionIntensity,
-    productionFunctionalUnit = undefined
+    productionFunctionalUnit = undefined,
+    adjustedEmissionsIntensityPerformance = undefined
   ) => {
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");
@@ -389,6 +390,12 @@ Cypress.Commands.add(
         productionFunctionalUnit ? `/${productionFunctionalUnit}` : ""
       }`
     ).should("have.length", 3);
+
+    if (adjustedEmissionsIntensityPerformance) {
+      cy.get('[aria-label="GHG Emission Intensity Performance (Adjusted)"]')
+        .clear()
+        .type(adjustedEmissionsIntensityPerformance);
+    }
 
     return cy.url().should("include", "/form/5");
   }

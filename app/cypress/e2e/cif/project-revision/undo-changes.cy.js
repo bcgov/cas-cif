@@ -96,7 +96,8 @@ describe("when undoing, the project revision page", () => {
       "1",
       "2",
       "3",
-      "G"
+      "G",
+      100
     );
     cy.findByRole("button", { name: /undo changes/i }).click();
     cy.findByRole("button", { name: /Add Emissions Intensity Report/i }).should(

@@ -161,7 +161,8 @@ describe("when editing a project, the project page", () => {
       "1",
       "2",
       "3",
-      "G"
+      "G",
+      100
     );
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project teimp agreement form", "editing", "main");
