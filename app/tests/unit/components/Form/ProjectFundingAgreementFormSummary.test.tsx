@@ -627,7 +627,7 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.renderComponent();
 
     expect(
-      screen.getByText(/budgets, expenses & payments removed/i)
+      screen.queryAllByText(/budgets, expenses & payments/i)[1]
     ).toHaveClass("diffOld");
   });
 });

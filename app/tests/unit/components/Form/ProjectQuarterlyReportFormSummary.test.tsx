@@ -163,7 +163,7 @@ describe("The Project Quarterly Report Form Summary", () => {
     expect(screen.getByText(/Jan[.]? 4, 2020/)).toBeInTheDocument();
 
     // Fourth Node
-    expect(screen.getByText("Quarterly Report removed")).toBeInTheDocument();
+    expect(screen.getByText("Quarterly Report")).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that were updated", () => {
