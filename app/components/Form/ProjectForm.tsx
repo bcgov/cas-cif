@@ -169,7 +169,7 @@ const ProjectForm: React.FC<Props> = (props) => {
             }
           }
         }
-        allProjectTypes(orderBy: PRIMARY_KEY_ASC) {
+        allProjectTypes(orderBy: NAME_ASC) {
           edges {
             node {
               name
@@ -313,14 +313,20 @@ const ProjectForm: React.FC<Props> = (props) => {
         },
         projectType: {
           ...projectSchema.properties.projectType,
-          anyOf: query.allProjectTypes.edges.map(({ node }) => {
-            return {
-              type: "string",
-              title: node.name,
-              enum: [node.name],
-              value: node.name,
-            };
-          }),
+          anyOf: query.allProjectTypes.edges
+            .map(({ node }) => {
+              return {
+                type: "string",
+                title: node.name,
+                enum: [node.name],
+                value: node.name,
+              };
+            })
+            .sort((a, b) => {
+              if (b.value === "Other") {
+                return -1;
+              } else return 0;
+            }),
         },
         projectStatusId: {
           ...projectSchema.properties.projectStatusId,
@@ -342,7 +348,6 @@ const ProjectForm: React.FC<Props> = (props) => {
     query.allProjectTypes.edges,
     query.allSectors.edges,
   ]);
-
   const handleSubmit = async (e: ISubmitEvent<any>) => {
     await handleStage(e.formData);
     props.onSubmit();
