@@ -380,7 +380,6 @@ describe("The Object Field Template", () => {
   });
 
   it("shows updated forms widget specific styles", () => {
-    // might all be covered
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -398,7 +397,7 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
-      "diffNew" // TODO: should this be deleted?
+      "diffNew"
     );
     expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
       "diffOld"
