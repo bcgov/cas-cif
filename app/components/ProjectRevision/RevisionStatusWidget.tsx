@@ -3,7 +3,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 import { WidgetProps } from "@rjsf/core";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
@@ -14,6 +14,13 @@ const RevisionStatusWidgetFragment = graphql`
     id
     rowId
     changeStatus
+    formChangesByProjectRevisionId {
+      edges {
+        node {
+          validationErrors
+        }
+      }
+    }
   }
 `;
 
@@ -22,9 +29,15 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const { schema, value, formContext, onChange } = props;
   const projectRevision = formContext.projectRevision;
 
-  const { id, rowId, changeStatus } = useFragment(
-    RevisionStatusWidgetFragment,
-    projectRevision
+  const { id, rowId, changeStatus, formChangesByProjectRevisionId } =
+    useFragment(RevisionStatusWidgetFragment, projectRevision);
+
+  const hasValidationErrors: boolean = useMemo(
+    () =>
+      formChangesByProjectRevisionId.edges.some(
+        (edge) => edge.node.validationErrors.length > 0
+      ),
+    [formChangesByProjectRevisionId.edges]
   );
 
   const router = useRouter();
@@ -35,6 +48,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
 
   const [informationalText, setInformationalText] = useState("");
   const [initialValue, setInitialValue] = useState(value);
+  const [disabled, setDisabled] = useState(true);
 
   const [updateProjectRevision, isUpdatingProjectRevision] =
     useUpdateProjectRevision();
@@ -77,14 +91,26 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
       onCompleted: () => {
         setInformationalText("Updated");
         setInitialValue(value);
+        setDisabled(true);
       },
       debounceKey: id,
     });
 
   const statusChangeHandler = (newStatus: string) => {
+    const committingNotAllowed =
+      hasValidationErrors && ["Applied", "Approved"].includes(newStatus);
+
+    setDisabled(
+      initialValue === newStatus ||
+        isUpdatingProjectRevision ||
+        isCommittingProjectRevision ||
+        committingNotAllowed
+    );
     // set the text next to the button based on whether the value has changed or not
     setInformationalText(
-      newStatus === "Applied"
+      committingNotAllowed
+        ? 'You can not commit this revision/amendment. Please see "Attention Required".'
+        : newStatus === "Applied"
         ? 'Once approved, this revision will be immutable. Click the "Update" button to confirm.'
         : initialValue !== newStatus
         ? 'To confirm your change, please click the "Update" button.'
@@ -106,11 +132,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
               type="submit"
               onClick={clickHandler}
               style={{ marginRight: "1rem" }}
-              disabled={
-                initialValue === value ||
-                isUpdatingProjectRevision ||
-                isCommittingProjectRevision
-              }
+              disabled={disabled}
               size="small"
             >
               Update
