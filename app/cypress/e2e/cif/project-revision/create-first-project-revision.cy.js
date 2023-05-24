@@ -121,7 +121,8 @@ describe("when creating a project, the project page", () => {
       "1",
       "2",
       "3",
-      "G"
+      "G",
+      100
     );
     cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
     cy.contains("Changes saved").should("be.visible");
