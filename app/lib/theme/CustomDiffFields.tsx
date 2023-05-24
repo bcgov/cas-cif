@@ -59,7 +59,6 @@ const showStringDiff = (
   // The numbers show the truth values of oldData, newData, latestCommittedData
   // Case 7 ->  111
   if (oldData && newData && latestCommittedData) {
-    console.log("GURJ", "here", oldData, newData, latestCommittedData);
     return (
       <>
         {latestCommittedData !== oldData && (
@@ -108,7 +107,6 @@ const showStringDiff = (
   // Case 5 ->  101
   if (oldData && !newData && latestCommittedData) {
     if (oldData == latestCommittedData) {
-      // TODO: not sure if this is possible
       return <></>;
     } else {
       return (
@@ -170,7 +168,7 @@ const showStringDiff = (
     );
   }
 
-  return <>Error</>;
+  return <></>;
 };
 
 const showNumberDiff = (
@@ -380,7 +378,6 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-    console.log("GURJ", oldData, formData, latestCommittedData);
     return showStringDiff(
       id,
       oldData,
