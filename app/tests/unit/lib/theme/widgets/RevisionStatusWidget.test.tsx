@@ -26,6 +26,9 @@ const mockQueryPayload = {
         id: "test-revision-id",
         rowId: "test-row-id",
         changeStatus: "pending",
+        formChangesByProjectRevisionId: {
+          edges: [],
+        },
       },
     };
   },
@@ -210,5 +213,49 @@ describe("The RevisionStatusWidget", () => {
         projectRevision: "test-revision-id",
       },
     });
+  });
+  it("can not change the status to Applied/Approved if there are validation errors", () => {
+    componentTestingHelper.loadQuery({
+      Query() {
+        return {
+          projectRevision: {
+            id: "test-revision-id",
+            rowId: "test-row-id",
+            changeStatus: "pending",
+            formChangesByProjectRevisionId: {
+              edges: {
+                node: {
+                  validationErrors: ["validation error 1"],
+                },
+              },
+            },
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    const dropdown: HTMLInputElement = screen.getByRole("combobox");
+
+    act(() => {
+      fireEvent.change(dropdown, { target: { value: "Applied" } });
+    });
+    componentTestingHelper.rerenderComponent(undefined, {
+      value: "Applied",
+      schema: {
+        anyOf: widgetOptions,
+      },
+    });
+    expect(dropdown.value).toEqual("Applied");
+    expect(
+      screen.getByText(
+        /you can not commit this revision\/amendment\. please see "attention required"\./i
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: /update/i,
+      })
+    ).toBeDisabled();
   });
 });
