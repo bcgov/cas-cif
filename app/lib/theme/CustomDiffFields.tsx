@@ -186,7 +186,6 @@ const showNumberDiff = (
     "diffNew",
     "diffText",
   ];
-
   // case 7 ->  111
   if (oldData && newData && latestCommittedData) {
     return (
@@ -270,17 +269,33 @@ const showNumberDiff = (
   if (oldData && !newData && latestCommittedData) {
     // this happens when you remove a contact
     return (
-      <NumberFormat
-        thousandSeparator
-        fixedDecimalScale={true}
-        decimalScale={decimalScale}
-        prefix={isMoney ? "$" : ""}
-        suffix={isPercentage ? " %" : ""}
-        displayType="text"
-        value={oldData}
-        id={id && `${id}-${diffOldClsName}`}
-        className={diffOldClsName}
-      />
+      <>
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={oldData}
+          id={id && `${id}-${diffOldClsName}`}
+          className={diffOldClsName}
+        />
+        {newData === 0 && renderArrow()}
+        {newData === 0 && (
+          <NumberFormat
+            thousandSeparator
+            fixedDecimalScale={true}
+            decimalScale={decimalScale}
+            prefix={isMoney ? "$" : ""}
+            suffix={isPercentage ? " %" : ""}
+            displayType="text"
+            value={newData}
+            id={id && `${id}-${diffNewClsName}`}
+            className={diffNewClsName}
+          />
+        )}{" "}
+      </>
     );
   }
   // case 4 ->  100
@@ -396,18 +411,17 @@ const CUSTOM_DIFF_FIELDS: Record<
     // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
     const textData = uiSchema?.["ui:options"]?.text as string;
 
-    const oldTextValue =
+    const oldTextData =
       formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    const latestCommittedTextValue =
+    const latestCommittedTextData =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
-
-    if (textData || oldTextValue || latestCommittedTextValue) {
+    if (textData || oldTextData || latestCommittedTextData) {
       return showStringDiff(
         id,
-        oldTextValue,
+        oldTextData,
         textData,
-        latestCommittedTextValue,
+        latestCommittedTextData,
         false,
         null
       );

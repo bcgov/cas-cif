@@ -121,7 +121,7 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText("Milestone Type")).toBeInTheDocument();
 
     // Archive milestone report
-    expect(screen.getByText("Milestone Report removed")).toBeInTheDocument();
+    expect(screen.getByText("Milestone Report")).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that were updated", () => {
