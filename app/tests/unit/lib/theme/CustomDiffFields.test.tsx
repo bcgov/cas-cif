@@ -206,16 +206,6 @@ describe("The Object Field Template", () => {
     );
   });
 
-  // 100
-  it("shows diffs when there is old but nothing else", () => {
-    // probably not possible--there is no diff
-  });
-
-  // 011
-  it("shows diffs when there is no old data, but yes new and latest committed (does this happen", () => {
-    // probably not possible--can't have old without latest committed
-  });
-
   // 010
   it("shows data has been added when there is newData, the operation is 'CREATE' & there is no old data or latest committed", () => {
     const componentUnderTest = render(
@@ -241,12 +231,6 @@ describe("The Object Field Template", () => {
       "diffNew"
     );
   });
-
-  // 001
-  it("shows diffs when there is only laest commited (not real)", () => {
-    // can't have
-  });
-
   // 000
   it("shows diffs when there is only new data", () => {
     const componentUnderTest = render(
@@ -270,33 +254,6 @@ describe("The Object Field Template", () => {
       "diffNew"
     );
   });
-
-  // come back
-  it("shows data has been removed when operation is 'ARCHIVE'", () => {
-    const componentUnderTest = render(
-      <FormBase
-        tagName={"dl"}
-        fields={CUSTOM_DIFF_FIELDS}
-        schema={testSchema as JSONSchema7}
-        uiSchema={uiTestSchema}
-        formData={formData}
-        formContext={{
-          oldData: oldFormData,
-          oldUiSchema: oldUiTestSchema,
-          operation: "ARCHIVE",
-        }}
-      />
-    );
-
-    expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
-      "diffOld"
-    );
-    expect(componentUnderTest.getByText("$200.00")).toHaveClass("diffOld");
-    expect(componentUnderTest.getByText("I replaced the OLD ID")).toHaveClass(
-      "diffOld"
-    );
-  });
-
   it("shows the text from 'ui:options' when 'ui:options' exists in a NumberField's uiSchema", () => {
     const componentUnderTest = render(
       <FormBase
@@ -380,6 +337,30 @@ describe("The Object Field Template", () => {
   });
 
   it("shows updated forms widget specific styles", () => {
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formData}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+        }}
+      />
+    );
+
+    expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
+      "diffNew"
+    );
+    expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
+      "diffOld"
+    );
+  });
+  it("handles 0", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
