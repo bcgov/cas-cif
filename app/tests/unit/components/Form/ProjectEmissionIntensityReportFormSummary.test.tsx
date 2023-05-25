@@ -110,7 +110,7 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByText(/baseline emission intensity \(bei\)/i)
     ).toBeInTheDocument();
-    expect(screen.getByText("0.985145")).toBeInTheDocument();
+    expect(screen.getByText("0.98514500")).toBeInTheDocument();
     expect(screen.getByText("0.87654321")).toBeInTheDocument();
   });
 
@@ -253,14 +253,13 @@ describe("the emission intensity report form component", () => {
       screen.getByText("Total Project Lifetime Emissions Reductions (optional)")
     ).toBeInTheDocument();
 
-    screen.logTestingPlaygroundURL();
-    expect(screen.getAllByText("0.0")).toHaveLength(1);
-    expect(screen.getAllByText("0.00000000")[0]).toHaveClass("diffNew");
-    expect(screen.getAllByText("0")[1]).toHaveClass("diffNew");
+    expect(screen.getAllByText("0.00000000")).toHaveLength(4);
+    expect(screen.getAllByText("0.00000000")[0]).toHaveClass("diffOld");
+    expect(screen.getAllByText("0.00000000")[1]).toHaveClass("diffNew");
     expect(screen.getByText("0.87654321")).toHaveClass("diffNew");
     expect(screen.getByText("0.12345678")).toHaveClass("diffOld");
-    expect(screen.getByText("654")).toHaveClass("diffOld");
-    expect(screen.getByText("456")).toHaveClass("diffOld");
+    expect(screen.getByText("654.00000000")).toHaveClass("diffOld");
+    expect(screen.getByText("456.00000000")).toHaveClass("diffOld");
   });
   it("displays calculated values diff", () => {
     const customPayload = {

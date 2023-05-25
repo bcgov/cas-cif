@@ -90,6 +90,7 @@ const showStringDiff = (
   if (oldData && newData && !latestCommittedData) {
     return (
       <>
+        <>110</>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
           {formatData(isDate, oldData)}
         </span>
@@ -186,7 +187,6 @@ const showNumberDiff = (
     "diffNew",
     "diffText",
   ];
-  console.log("GURJ", oldData, newData, latestCommittedData);
   // case 7 ->  111
   if (oldData && newData && latestCommittedData) {
     return (
@@ -261,7 +261,6 @@ const showNumberDiff = (
           className={diffNewClsName}
           id={id && `${id}-${diffNewClsName}`}
         />
-        {renderTooltip()}
       </>
     );
   }
@@ -297,19 +296,24 @@ const showNumberDiff = (
           className={diffOldClsName}
           id={id && `${id}-${diffOldClsName}`}
         />
-        {renderArrow()}
-
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={newData}
-          className={diffNewClsName}
-          id={id && `${id}-${diffNewClsName}`}
-        />
+        {newData === 0 ? (
+          <>
+            {renderArrow()}
+            <NumberFormat
+              thousandSeparator
+              fixedDecimalScale={true}
+              decimalScale={decimalScale}
+              prefix={isMoney ? "$" : ""}
+              suffix={isPercentage ? " %" : ""}
+              displayType="text"
+              value={newData}
+              className={diffNewClsName}
+              id={id && `${id}-${diffNewClsName}`}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </>
     );
   }
@@ -324,7 +328,7 @@ const showNumberDiff = (
           prefix={isMoney ? "$" : ""}
           suffix={isPercentage ? " %" : ""}
           displayType="text"
-          value={newData}
+          value={oldData}
           id={id && `${id}-${diffOldClsName}`}
           className={diffOldClsName}
         />
@@ -338,7 +342,7 @@ const showNumberDiff = (
               prefix={isMoney ? "$" : ""}
               suffix={isPercentage ? " %" : ""}
               displayType="text"
-              value={newData}
+              value={0}
               id={id && `${id}-${diffNewClsName}`}
               className={diffNewClsName}
             />
@@ -383,12 +387,12 @@ const showNumberDiff = (
   if (!oldData && newData && !latestCommittedData) {
     return (
       <>
-        {oldData == 0 ? (
+        {oldData === 0 ? (
           <>
             <NumberFormat
               thousandSeparator
               fixedDecimalScale={true}
-              decimalScale={0}
+              decimalScale={decimalScale}
               prefix={isMoney ? "$" : ""}
               suffix={isPercentage ? " %" : ""}
               displayType="text"
