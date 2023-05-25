@@ -145,6 +145,15 @@ begin
                 )::integer)
           ))
     )='IA'
+    union
+      select
+        id,
+        'update'::cif.form_change_operation as operation,
+        'project_attachment' as form_data_table_name,
+        'project_attachment' as json_schema_name
+      from cif.project_attachment
+      where project_attachment.project_id = $1
+      and archived_at is null
   )
   loop
     perform cif.create_form_change(

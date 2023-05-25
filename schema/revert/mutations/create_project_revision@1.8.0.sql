@@ -11,12 +11,7 @@ declare
   _amendment_type varchar(1000);
 begin
   insert into cif.project_revision(project_id, change_status, revision_type, revision_status)
-  -- conditionally set revision_status to `In Discussion` if revision_type is Amendment otherwise set it to `Draft`
-  values ($1, 'pending', $2,
-        case
-          when $2 = 'Amendment' then 'In Discussion'
-          else 'Draft'
-        end) returning * into revision_row;
+  values ($1, 'pending', $2, 'Draft') returning * into revision_row;
 
   foreach _amendment_type in array $3
     loop
@@ -145,6 +140,15 @@ begin
                 )::integer)
           ))
     )='IA'
+  union
+    select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'additional_funding_source' as form_data_table_name,
+      'additional_funding_source' as json_schema_name
+    from cif.additional_funding_source
+    where additional_funding_source.project_id = $1
+    and archived_at is null
   )
   loop
     perform cif.create_form_change(
