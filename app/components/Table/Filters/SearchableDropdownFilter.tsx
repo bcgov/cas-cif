@@ -67,7 +67,6 @@ export default class SearchableDropdownFilter extends TableFilter<string> {
                   ...params.InputProps,
                   disableUnderline: true,
                   style: {
-                    fontFamily: "BC Sans",
                     padding: "0",
                     fontSize: "14.4px",
                   },
