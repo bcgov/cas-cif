@@ -13,6 +13,7 @@ const DATABASE_SCHEMAS = [
   "operator",
   "funding_parameter_EP",
   "funding_parameter_IA",
+  "project_attachment",
 ];
 
 export default DATABASE_SCHEMAS;
