@@ -64,7 +64,7 @@ export const useFormIndexHelpers = (
       router.push(getProjectRevisionPageRoute(projectRevisionId, isInternal));
     }
     // if project revision, route to preview revision
-    if (mode === "update") {
+    else if (mode === "update") {
       if (isInternal) {
         router.push(getProjectRevisionEditPageRoute(projectRevisionId));
       }
