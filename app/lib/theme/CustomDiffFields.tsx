@@ -186,6 +186,7 @@ const showNumberDiff = (
     "diffNew",
     "diffText",
   ];
+  console.log("GURJ", oldData, newData, latestCommittedData);
   // case 7 ->  111
   if (oldData && newData && latestCommittedData) {
     return (
@@ -230,7 +231,6 @@ const showNumberDiff = (
           className={diffNewClsName}
           id={id && `${id}-${diffNewClsName}`}
         />
-        {renderTooltip()}
       </>
     );
   }
@@ -267,9 +267,25 @@ const showNumberDiff = (
   }
   // case 5 ->  101
   if (oldData && !newData && latestCommittedData) {
-    // this happens when you remove a contact
     return (
       <>
+        {latestCommittedData !== oldData && (
+          <>
+            <NumberFormat
+              thousandSeparator
+              fixedDecimalScale={true}
+              decimalScale={decimalScale}
+              prefix={isMoney ? "$" : ""}
+              suffix={isPercentage ? " %" : ""}
+              displayType="text"
+              value={latestCommittedData}
+              className={diffOldClsName}
+              id={id && `${id}-${diffOldClsName}`}
+            />
+
+            {renderArrow()}
+          </>
+        )}
         <NumberFormat
           thousandSeparator
           fixedDecimalScale={true}
@@ -278,23 +294,22 @@ const showNumberDiff = (
           suffix={isPercentage ? " %" : ""}
           displayType="text"
           value={oldData}
-          id={id && `${id}-${diffOldClsName}`}
           className={diffOldClsName}
+          id={id && `${id}-${diffOldClsName}`}
         />
-        {newData === 0 && renderArrow()}
-        {newData === 0 && (
-          <NumberFormat
-            thousandSeparator
-            fixedDecimalScale={true}
-            decimalScale={decimalScale}
-            prefix={isMoney ? "$" : ""}
-            suffix={isPercentage ? " %" : ""}
-            displayType="text"
-            value={newData}
-            id={id && `${id}-${diffNewClsName}`}
-            className={diffNewClsName}
-          />
-        )}{" "}
+        {renderArrow()}
+
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={newData}
+          className={diffNewClsName}
+          id={id && `${id}-${diffNewClsName}`}
+        />
       </>
     );
   }
@@ -309,9 +324,56 @@ const showNumberDiff = (
           prefix={isMoney ? "$" : ""}
           suffix={isPercentage ? " %" : ""}
           displayType="text"
-          value={oldData}
+          value={newData}
           id={id && `${id}-${diffOldClsName}`}
           className={diffOldClsName}
+        />
+        {~~newData === 0 && (
+          <>
+            {renderArrow()}
+            <NumberFormat
+              thousandSeparator
+              fixedDecimalScale={true}
+              decimalScale={decimalScale}
+              prefix={isMoney ? "$" : ""}
+              suffix={isPercentage ? " %" : ""}
+              displayType="text"
+              value={newData}
+              id={id && `${id}-${diffNewClsName}`}
+              className={diffNewClsName}
+            />
+          </>
+        )}
+      </>
+    );
+  }
+
+  // case 3 ->  011
+  if (!oldData && newData && latestCommittedData) {
+    return (
+      <>
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={latestCommittedData}
+          id={id && `${id}-${diffOldClsName}`}
+          className={diffOldClsName}
+        />
+        {renderTooltip()}
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={newData}
+          id={id && `${id}-${diffNewClsName}`}
+          className={diffNewClsName}
         />
       </>
     );
@@ -321,18 +383,33 @@ const showNumberDiff = (
   if (!oldData && newData && !latestCommittedData) {
     return (
       <>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={1}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={0}
-          id={id && `${id}-${diffOldClsName}`}
-          className={diffOldClsName}
-        />
-        {renderArrow()}
+        {oldData == 0 ? (
+          <>
+            <NumberFormat
+              thousandSeparator
+              fixedDecimalScale={true}
+              decimalScale={0}
+              prefix={isMoney ? "$" : ""}
+              suffix={isPercentage ? " %" : ""}
+              displayType="text"
+              value={oldData}
+              id={id && `${id}-${diffOldClsName}`}
+              className={diffOldClsName}
+            />
+            {renderArrow()}
+          </>
+        ) : (
+          <>
+            <span
+              id={id && `${id}-${diffTextClsName}`}
+              className={diffTextClsName}
+            >
+              {"Not Entered"}
+            </span>
+            {renderArrow()}
+          </>
+        )}
+
         <NumberFormat
           thousandSeparator
           fixedDecimalScale={true}
@@ -351,17 +428,35 @@ const showNumberDiff = (
 
   // Case 0 ->  000
   if (!oldData && !newData && !latestCommittedData) {
-    // This is a special case for when the value is 0. We want to show 0, not "Not Entered"
     if (newData === 0) {
       return (
         <>
-          <span
-            id={id && `${id}-${diffTextClsName}`}
-            className={diffTextClsName}
-          >
-            {"Not Entered"}
-          </span>
+          {oldData == 0 ? (
+            <>
+              <NumberFormat
+                thousandSeparator
+                fixedDecimalScale={true}
+                decimalScale={0}
+                prefix={isMoney ? "$" : ""}
+                suffix={isPercentage ? " %" : ""}
+                displayType="text"
+                value={oldData}
+                id={id && `${id}-${diffOldClsName}`}
+                className={diffOldClsName}
+              />
+            </>
+          ) : (
+            <>
+              <span
+                id={id && `${id}-${diffTextClsName}`}
+                className={diffTextClsName}
+              >
+                {"Not Entered"}
+              </span>
+            </>
+          )}
           {renderArrow()}
+
           <NumberFormat
             thousandSeparator
             fixedDecimalScale={true}
