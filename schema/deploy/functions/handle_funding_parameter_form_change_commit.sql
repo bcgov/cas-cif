@@ -36,11 +36,11 @@ begin
     project_assets_life_end_date)
   values(
     (select form_data_record_id from cif.form_change where form_data_table_name = 'project' and project_revision_id = $1.project_revision_id),
-    (fc.new_form_data->>'maxFundingAmount')::int,
-    (fc.new_form_data->>'provinceSharePercentage')::int,
-    (fc.new_form_data->>'holdbackPercentage')::int,
-    (fc.new_form_data->>'anticipatedFundingAmount')::int,
-    (fc.new_form_data->>'proponentCost')::int,
+    (fc.new_form_data->>'maxFundingAmount')::numeric,
+    (fc.new_form_data->>'provinceSharePercentage')::numeric,
+    (fc.new_form_data->>'holdbackPercentage')::numeric,
+    (fc.new_form_data->>'anticipatedFundingAmount')::numeric,
+    (fc.new_form_data->>'proponentCost')::numeric,
     (fc.new_form_data->>'contractStartDate')::timestamptz,
     (fc.new_form_data->>'projectAssetsLifeEndDate')::timestamptz
   ) returning id into funding_parameter_record_id;
@@ -56,7 +56,7 @@ begin
     (select form_data_record_id from cif.form_change where form_data_table_name = 'project' and project_revision_id = $1.project_revision_id),
     (value::jsonb->>'status'),
     (value::jsonb->>'source'),
-    (value::jsonb->>'amount')::int,
+    (value::jsonb->>'amount')::numeric,
     row_number () over ()
   from jsonb_array_elements(($1.new_form_data->>'additionalFundingSources')::jsonb);
 
@@ -68,11 +68,11 @@ begin
   elsif fc.operation = 'update' then
 
   update cif.funding_parameter fp set
-    max_funding_amount = (fc.new_form_data->>'maxFundingAmount')::int,
-    province_share_percentage = (fc.new_form_data->>'provinceSharePercentage')::int,
-    holdback_percentage = (fc.new_form_data->>'holdbackPercentage')::int,
-    anticipated_funding_amount = (fc.new_form_data->>'anticipatedFundingAmount')::int,
-    proponent_cost = (fc.new_form_data->>'proponentCost')::int,
+    max_funding_amount = (fc.new_form_data->>'maxFundingAmount')::numeric,
+    province_share_percentage = (fc.new_form_data->>'provinceSharePercentage')::numeric,
+    holdback_percentage = (fc.new_form_data->>'holdbackPercentage')::numeric,
+    anticipated_funding_amount = (fc.new_form_data->>'anticipatedFundingAmount')::numeric,
+    proponent_cost = (fc.new_form_data->>'proponentCost')::numeric,
     contract_start_date = (fc.new_form_data->>'contractStartDate')::timestamptz,
     project_assets_life_end_date =(fc.new_form_data->>'projectAssetsLifeEndDate')::timestamptz
   where fp.id = fc.form_data_record_id;
@@ -100,7 +100,7 @@ begin
     (select form_data_record_id from cif.form_change where form_data_table_name = 'project' and project_revision_id = $1.project_revision_id),
     (value::jsonb->>'status'),
     (value::jsonb->>'source'),
-    (value::jsonb->>'amount')::int,
+    (value::jsonb->>'amount')::numeric,
     row_number () over ()
   from jsonb_array_elements(($1.new_form_data->>'additionalFundingSources')::jsonb)
   on conflict(project_id, source_index) where archived_at is null do update set
