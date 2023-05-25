@@ -20,7 +20,6 @@ import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItem
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 import { useNumberedFormStructure } from "data/formPages/formStructure";
 import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLogsTaskListSection";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -270,7 +269,7 @@ const TaskList: React.FC<Props> = ({
           </TaskListSection>
         )}
         {/* Amendments & Other Revisions section */}
-        {useShowGrowthbookFeature("amendments") && mode !== "create" && (
+        {mode !== "create" && (
           <ProjectRevisionChangeLogsTaskListSection
             projectRevisionId={id}
             listItemName="Amendments & Other Revisions"

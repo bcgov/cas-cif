@@ -10,7 +10,6 @@ import {
   viewProjectRevisionSchema,
 } from "data/jsonSchemaForm/projectRevisionSchema";
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -131,9 +130,6 @@ export function ProjectRevisionView({
       projectRevisionUnderReview={projectRevision}
     />
   );
-
-  // Growthbook - amendments
-  if (!useShowGrowthbookFeature("amendments")) return null;
 
   return (
     <>
