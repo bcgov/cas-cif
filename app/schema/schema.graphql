@@ -44213,6 +44213,31 @@ type DiscardFundingParameterFormChangePayload {
   query: Query
 }
 
+"""All input for the `discardProjectAttachmentFormChange` mutation."""
+input DiscardProjectAttachmentFormChangeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  formChangeId: Int!
+}
+
+"""The output of our `discardProjectAttachmentFormChange` mutation."""
+type DiscardProjectAttachmentFormChangePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  formChanges: [FormChange]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """
   Table containing information about how CIF emission_intensity values map to a payment_percentage.
   This table is a lookup table that maps the emission intensity performance of a project to a payment percentage used to determine payments.
@@ -52191,6 +52216,12 @@ type Mutation {
     """
     input: DiscardFundingParameterFormChangeInput!
   ): DiscardFundingParameterFormChangePayload
+  discardProjectAttachmentFormChange(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DiscardProjectAttachmentFormChangeInput!
+  ): DiscardProjectAttachmentFormChangePayload
 
   """
     Custom mutation to generate annual reports for a revision between emissions intensity report_due_date and project_assets_life_end_date.

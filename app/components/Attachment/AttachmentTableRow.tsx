@@ -47,10 +47,7 @@ const AttachmentTableRow: React.FC<Props> = ({
     discardProjectAttachmentFormChange({
       variables: {
         input: {
-          rowId: formChangeRowId,
-          formChangePatch: {
-            operation: "ARCHIVE",
-          },
+          formChangeId: formChangeRowId,
         },
         connections: [connectionId],
       },
