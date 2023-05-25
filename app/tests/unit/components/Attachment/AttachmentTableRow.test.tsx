@@ -89,7 +89,7 @@ describe("The Attachment table row component", () => {
       expect.anything()
     );
   });
-  it("calls the archiveAttachmentMutation when the delete button is clicked", () => {
+  it("calls the discardProjectAttachmentFormChangeMutation when the delete button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -100,10 +100,7 @@ describe("The Attachment table row component", () => {
       "discardProjectAttachmentFormChangeMutation",
       {
         input: {
-          rowId: "test-form-change-row-id",
-          formChangePatch: {
-            operation: "ARCHIVE",
-          },
+          formChangeId: "test-form-change-row-id",
         },
         connections: ["test-attachment-form-change-connection-id"],
       }
