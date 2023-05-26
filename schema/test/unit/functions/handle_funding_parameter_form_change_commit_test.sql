@@ -39,32 +39,32 @@ insert into cif.project_revision(id, change_status, project_id)
     (2, 'pending', 2);
 
 select cif.create_form_change('create', 'funding_parameter_EP', 'cif', 'funding_parameter', '{}', 7, null, 'staged', '[]');
-select cif.create_form_change('update', 'funding_parameter_IA', 'cif', 'funding_parameter', '{"anticipatedFundingAmount": 5}', null, null, 'committed', '[]');
+select cif.create_form_change('update', 'funding_parameter_IA', 'cif', 'funding_parameter', '{"anticipatedFundingAmount": 5.5}', null, null, 'committed', '[]');
 
 
 select cif.create_form_change('create', 'funding_parameter_EP', 'cif', 'funding_parameter',
   '{
     "projectId":1,
-    "holdbackPercentage":10,
-    "provinceSharePercentage":50,
+    "holdbackPercentage":10.5,
+    "provinceSharePercentage":50.5,
     "contractStartDate":"2023-03-09T23:59:59.999-08:00",
     "projectAssetsLifeEndDate":"2023-03-25T23:59:59.999-07:00",
-    "maxFundingAmount":500,
-    "proponentCost":5,
-    "anticipatedFundingAmount":55,
-    "additionalFundingSources":[{"source":"oldEPsource1","amount":555,"status":"Awaiting Approval"},{"source":"oldEPsource2","amount":666,"status":"Approved"}]
+    "maxFundingAmount":500.5,
+    "proponentCost":5.5,
+    "anticipatedFundingAmount":55.5,
+    "additionalFundingSources":[{"source":"oldEPsource1","amount":555.5,"status":"Awaiting Approval"},{"source":"oldEPsource2","amount":666.6,"status":"Approved"}]
   }', null, 1, 'staged', '[]');
 
 select cif.create_form_change('create', 'funding_parameter_IA', 'cif', 'funding_parameter',
   '{
        "projectId":2,
-       "provinceSharePercentage":50,
+       "provinceSharePercentage":50.5,
        "additionalFundingSources":[{"source":"oldIAsource","amount":1,"status":"Awaiting Approval"}],
-       "maxFundingAmount":100,
-       "proponentCost":10,
+       "maxFundingAmount":100.5,
+       "proponentCost":10.5,
        "contractStartDate":"2023-03-09T23:59:59.999-08:00",
        "projectAssetsLifeEndDate":"2023-03-24T23:59:59.999-07:00",
-       "anticipatedFundingAmount":10
+       "anticipatedFundingAmount":10.5
   }', null, 2, 'staged', '[]');
 
 
@@ -115,13 +115,13 @@ select results_eq(
   $$,
   $$
   values (
-        10::numeric,
-        50::numeric,
+        10.5::numeric,
+        50.5::numeric,
         '2023-03-09T23:59:59.999-08:00'::timestamptz,
         '2023-03-25T23:59:59.999-07:00'::timestamptz,
-        500::numeric,
-        5::numeric,
-        55::numeric
+        500.5::numeric,
+        5.5::numeric,
+        55.5::numeric
   )
   $$,
   'The correct EP values were added to the funding_parameter table on create'
@@ -136,13 +136,13 @@ select results_eq(
   $$
   values (
     'oldEPsource1'::varchar,
-    555::numeric,
+    555.5::numeric,
     'Awaiting Approval'::varchar,
     1
   ),
   (
     'oldEPsource2'::varchar,
-    666::numeric,
+    666.6::numeric,
     'Approved'::varchar,
     2
   )
@@ -160,12 +160,12 @@ select results_eq(
   $$,
   $$
   values (
-        50::numeric,
+        50.5::numeric,
         '2023-03-09T23:59:59.999-08:00'::timestamptz,
         '2023-03-24T23:59:59.999-07:00'::timestamptz,
-        100::numeric,
-        10::numeric,
-        10::numeric
+        100.5::numeric,
+        10.5::numeric,
+        10.5::numeric
   )
   $$,
   'The correct IA values were added to the funding_parameter table on create'
@@ -206,25 +206,25 @@ select cif.create_form_change('update', 'project', 'cif', 'project', '{}', 2, 4,
 select cif.create_form_change('update', 'funding_parameter_EP', 'cif', 'funding_parameter',
   '{
     "projectId":1,
-    "holdbackPercentage":7,
-    "provinceSharePercentage":7,
+    "holdbackPercentage":7.5,
+    "provinceSharePercentage":7.5,
     "contractStartDate":"2027-03-09T23:59:59.999-08:00",
     "projectAssetsLifeEndDate":"2027-03-25T23:59:59.999-07:00",
-    "maxFundingAmount":7,
-    "proponentCost":5,
-    "anticipatedFundingAmount":55,
+    "maxFundingAmount":7.5,
+    "proponentCost":5.5,
+    "anticipatedFundingAmount":55.5,
     "additionalFundingSources":[{"source":"newEPsource1","amount":7,"status":"Awaiting Approval"}]
   }', 1, 3, 'staged', '[]');
   select cif.create_form_change('update', 'funding_parameter_IA', 'cif', 'funding_parameter',
   '{
     "projectId":1,
-    "provinceSharePercentage":9,
+    "provinceSharePercentage":9.5,
     "contractStartDate":"2029-03-09T23:59:59.999-08:00",
     "projectAssetsLifeEndDate":"2029-03-25T23:59:59.999-07:00",
-    "maxFundingAmount":9,
-    "proponentCost":5,
-    "anticipatedFundingAmount":55,
-    "additionalFundingSources":[{"source":"iasource","amount":11,"status":"Awaiting Approval"}, {"source":"iasource2","amount":22,"status":"Awaiting Approval"}, {"source":"iasource3","amount":33,"status":"Awaiting Approval"}]
+    "maxFundingAmount":9.5,
+    "proponentCost":5.5,
+    "anticipatedFundingAmount":55.5,
+    "additionalFundingSources":[{"source":"iasource","amount":11.5,"status":"Awaiting Approval"}, {"source":"iasource2","amount":22,"status":"Awaiting Approval"}, {"source":"iasource3","amount":33.5,"status":"Awaiting Approval"}]
   }', 2, 4, 'staged', '[]');
 
 -- EP projects
@@ -237,13 +237,13 @@ select results_eq(
   $$,
   $$
   values (
-        7::numeric,
-        7::numeric,
+        7.5::numeric,
+        7.5::numeric,
         '2027-03-09T23:59:59.999-08:00'::timestamptz,
         '2027-03-25T23:59:59.999-07:00'::timestamptz,
-        7::numeric,
-        5::numeric,
-        55::numeric
+        7.5::numeric,
+        5.5::numeric,
+        55.5::numeric
   )
   $$,
   'The correct EP values were updated in the funding_parameter table on update'
@@ -280,12 +280,12 @@ select results_eq(
   $$,
   $$
   values (
-        9::numeric,
+        9.5::numeric,
         '2029-03-09T23:59:59.999-08:00'::timestamptz,
         '2029-03-25T23:59:59.999-07:00'::timestamptz,
-        9::numeric,
-        5::numeric,
-        55::numeric
+        9.5::numeric,
+        5.5::numeric,
+        55.5::numeric
   )
   $$,
   'The correct IA values were added to the funding_parameter table on update'
@@ -300,7 +300,7 @@ select results_eq(
   $$
   values (
     'iasource'::varchar,
-    11::numeric,
+    11.5::numeric,
     'Awaiting Approval'::varchar,
     1
   ),
@@ -312,7 +312,7 @@ select results_eq(
   ),
   (
     'iasource3'::varchar,
-    33::numeric,
+    33.5::numeric,
     'Awaiting Approval'::varchar,
     3
   )
