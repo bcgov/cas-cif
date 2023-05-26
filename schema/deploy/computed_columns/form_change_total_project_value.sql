@@ -16,7 +16,7 @@ with additional_funding_sources as
         and fc.form_data_table_name = 'funding_parameter'
         and operation != 'archive'
         )::jsonb
-      ) as x(source text, amount int, status text)
+      ) as x(source text, amount numeric, status text)
     )
   select
     (
