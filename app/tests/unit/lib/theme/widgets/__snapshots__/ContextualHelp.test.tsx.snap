@@ -3,9 +3,8 @@
 exports[`ContextualHelp component renders the tooltip with correct title and label and matches the snapshot 1`] = `
 <div>
   <span
-    aria-label="Tooltip Title"
-    aria-labelledby="field-label-tooltip"
-    class="tooltip jsx-2692232591"
+    aria-label="field-label-tooltip"
+    class="tooltip jsx-87318494"
     data-mui-internal-clone-element="true"
     role="tooltip"
     tabindex="0"
@@ -13,7 +12,7 @@ exports[`ContextualHelp component renders the tooltip with correct title and lab
     <svg
       aria-hidden="true"
       class="svg-inline--fa fa-exclamation-circle fa-w-16 "
-      color="#767676"
+      color="#1A5A96"
       data-icon="exclamation-circle"
       data-prefix="fas"
       focusable="false"

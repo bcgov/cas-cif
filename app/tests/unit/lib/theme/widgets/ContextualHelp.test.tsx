@@ -19,10 +19,7 @@ describe("ContextualHelp component", () => {
       hidden: true,
     });
     expect(tooltipElement).toBeInTheDocument();
-    expect(tooltipElement).toHaveAttribute(
-      "aria-labelledby",
-      "field-label-tooltip"
-    );
+    expect(tooltipElement).toHaveAttribute("aria-label", "field-label-tooltip");
     expect(tooltipIcon).toBeInTheDocument();
 
     expect(componentUnderTest.container).toMatchSnapshot();
