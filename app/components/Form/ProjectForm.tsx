@@ -61,12 +61,16 @@ export const createProjectUiSchema = (
     operatorId: {
       "ui:placeholder": "Select an Operator",
       "ui:widget": "SearchWidget",
-      "ui:options": {
-        text: `${
-          (legalName ? `${legalName}` : "") +
-          (bcRegistryId ? ` (${bcRegistryId})` : "")
-        }`,
-      },
+      ...(legalName || bcRegistryId
+        ? {
+            "ui:options": {
+              text: `${
+                (legalName ? `${legalName}` : "") +
+                (bcRegistryId ? ` (${bcRegistryId})` : "")
+              }`,
+            },
+          }
+        : {}),
     },
     fundingStreamRfpId: {
       "ui:widget": "SelectRfpWidget",
@@ -78,9 +82,7 @@ export const createProjectUiSchema = (
     projectStatusId: {
       "ui:placeholder": "Select a Project Status",
       "ui:widget": "SearchWidget",
-      "ui:options": {
-        text: `${projectStatus}`,
-      },
+      ...(projectStatus ? { "ui:options": { text: projectStatus } } : {}),
     },
     sectorName: {
       "ui:placeholder": "Select a Sector",
