@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TaskListLinkUrl } from "./types";
+import { BC_GOV_LINKS_COLOR } from "lib/theme/colors";
 
 interface Props {
   title: string;
@@ -50,7 +51,7 @@ const ExternalTaskListSection: React.FC<Props> = ({ title, url }) => {
           margin: 0;
           display: flex;
           justify-content: space-between;
-          color: #1a5a96;
+          color: ${BC_GOV_LINKS_COLOR};
           text-decoration: ${textDecoration};
         }
         }

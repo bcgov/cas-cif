@@ -13,6 +13,7 @@ import {
 import { Dashboard_query$key } from "__generated__/Dashboard_query.graphql";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import Link from "next/link";
+import { BC_GOV_LINKS_COLOR } from "lib/theme/colors";
 
 interface Props {
   query: Dashboard_query$key;
@@ -147,7 +148,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
         }
 
         :global(button) {
-          color: #1a5a96;
+          color: ${BC_GOV_LINKS_COLOR};
           background: transparent;
           border: none;
           cursor: pointer;
@@ -159,7 +160,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           color: blue;
         }
         :global(a) {
-          color: #1a5a96;
+          color: ${BC_GOV_LINKS_COLOR};
           text-decoration: underline;
         }
         :global(a:hover) {
@@ -167,7 +168,7 @@ const Dashboard: React.FC<Props> = ({ query: queryKey }) => {
           color: blue;
         }
         :global(i.fa-external-link-alt) {
-          color: #1a5a96;
+          color: ${BC_GOV_LINKS_COLOR};
         }
       `}</style>
     </>

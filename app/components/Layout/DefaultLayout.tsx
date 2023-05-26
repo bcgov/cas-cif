@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { ErrorContext } from "contexts/ErrorContext";
 import footerLinks from "data/dashboardLinks/footerLinks";
 import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
+import { MAIN_BG_COLOR } from "lib/theme/colors";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -64,7 +65,7 @@ const DefaultLayout: React.FC<Props> = ({
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: #fafafc;
+            background-color: ${MAIN_BG_COLOR};
           }
 
           #page-content {

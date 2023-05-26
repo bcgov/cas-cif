@@ -1,4 +1,5 @@
 import { Chip } from "@mui/material";
+import { BC_GOV_PRIMARY_BRAND_COLOR_BLUE } from "lib/theme/colors";
 
 interface Props {
   label?: string;
@@ -25,7 +26,7 @@ const colours = {
   },
   onTrack: {
     labelColour: "#FFFFFF",
-    badgeColour: "#003366",
+    badgeColour: BC_GOV_PRIMARY_BRAND_COLOR_BLUE,
     label: "On track",
   },
   none: {
@@ -34,18 +35,18 @@ const colours = {
     label: "None",
   },
   inReview: {
-    labelColour: "#003366",
+    labelColour: BC_GOV_PRIMARY_BRAND_COLOR_BLUE,
     badgeColour: "#E6EBF0",
     label: "In review",
   },
   notDue: {
-    labelColour: "#003366",
+    labelColour: BC_GOV_PRIMARY_BRAND_COLOR_BLUE,
     badgeColour: "#E6EBF0",
     label: "Not due",
   },
   dueIn: {
     labelColour: "#FFFFFF",
-    badgeColour: "#003366",
+    badgeColour: BC_GOV_PRIMARY_BRAND_COLOR_BLUE,
     label: "Due in",
   },
 };

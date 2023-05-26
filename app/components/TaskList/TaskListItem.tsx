@@ -2,6 +2,7 @@ import TaskListStatus from "./TaskListStatus";
 import BCGovLink from "@button-inc/bcgov-theme/Link";
 import Link from "next/link";
 import { TaskListLinkUrl, TaskListMode } from "./types";
+import { MAIN_BG_COLOR } from "lib/theme/colors";
 
 interface Props {
   stepName: string;
@@ -55,7 +56,7 @@ const TaskListItem: React.FC<Props> = ({
         }
         li[aria-current="step"],
         li[aria-current="step"] div {
-          background-color: #fafafc;
+          background-color: ${MAIN_BG_COLOR};
           padding-left: 15px;
         }
         .bordered {

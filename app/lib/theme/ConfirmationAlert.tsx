@@ -1,5 +1,6 @@
 import React from "react";
 import { Alert } from "@button-inc/bcgov-theme";
+import { BC_GOV_LINKS_COLOR } from "./colors";
 
 interface Props {
   onProceed: () => void;
@@ -38,7 +39,7 @@ const ConfirmationAlert: React.FC<Props> = ({
             margin-top: 1em;
           }
           div :global(a) {
-            color: #1a5a96;
+            color: ${BC_GOV_LINKS_COLOR};
           }
           div :global(a:hover) {
             text-decoration: none;
