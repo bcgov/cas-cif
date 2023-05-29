@@ -5,7 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { BC_GOV_LINKS_COLOR, TASKLIST_GREY_BG_COLOR } from "../colors";
 
 /**
- * @param {string} title - The title of the tooltip to be displayed (can be HTML)
+ * @param {string} text - The text of the tooltip to be displayed (can be HTML)
  * @param {IconDefinition} icon - The icon to display in the tooltip; defaults to faExclamationCircle
  * @param {string} placement - The placement of the tooltip; defaults to "top"
  * @param {string} label - The label of the tooltip to be used as the aria-labelledby attribute; this gets passed by the parent component(FieldLabel)
@@ -13,14 +13,14 @@ import { BC_GOV_LINKS_COLOR, TASKLIST_GREY_BG_COLOR } from "../colors";
  * To use this component, simply add "ui:tooltip" object to the uiSchema of the field you want to add a tooltip to.
  * Example:
  * "ui:tooltip": {
- *   "title": "<div>Some content here with <a>Links</a> and other HTML tags</div>",
+ *   "text": "<div>Some content here with <a>Links</a> and other HTML tags</div>",
  *   "icon": faExclamationCircle,
  *   "placement": "top"
  * }
  */
 
 interface ContextualHelpProps {
-  title: string;
+  text: string;
   icon?: IconDefinition;
   placement?:
     | "top"
@@ -39,7 +39,7 @@ interface ContextualHelpProps {
 }
 
 const ContextualHelp: React.FC<ContextualHelpProps> = ({
-  title,
+  text,
   icon = faExclamationCircle,
   placement = "bottom",
   label,
@@ -49,7 +49,7 @@ const ContextualHelp: React.FC<ContextualHelpProps> = ({
   return (
     <>
       <Tooltip
-        title={<span dangerouslySetInnerHTML={{ __html: title }} />}
+        title={<span dangerouslySetInnerHTML={{ __html: text }} />}
         arrow
         placement={placement}
         role="tooltip"

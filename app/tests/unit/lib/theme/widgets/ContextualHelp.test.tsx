@@ -3,13 +3,13 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import ContextualHelp from "lib/theme/widgets/ContextualHelp";
 
 describe("ContextualHelp component", () => {
-  const titleMock = "Tooltip Title";
+  const textMock = "Tooltip Text";
   const labelMock = "Field Label";
 
-  test("renders the tooltip with correct title and label and matches the snapshot", () => {
+  test("renders the tooltip with correct text and label and matches the snapshot", () => {
     const componentUnderTest = render(
       <ContextualHelp
-        title={titleMock}
+        text={textMock}
         icon={faExclamationCircle}
         label={labelMock}
       />
@@ -18,6 +18,7 @@ describe("ContextualHelp component", () => {
     const tooltipIcon = screen.getByRole("img", {
       hidden: true,
     });
+    screen.logTestingPlaygroundURL();
     expect(tooltipElement).toBeInTheDocument();
     expect(tooltipElement).toHaveAttribute("aria-label", "field-label-tooltip");
     expect(tooltipIcon).toBeInTheDocument();
@@ -26,7 +27,7 @@ describe("ContextualHelp component", () => {
   });
 
   test("renders the tooltip with default icon when not provided", () => {
-    render(<ContextualHelp title={titleMock} label={labelMock} />);
+    render(<ContextualHelp text={textMock} label={labelMock} />);
 
     const defaultIcon = screen.getByRole("img", {
       hidden: true,

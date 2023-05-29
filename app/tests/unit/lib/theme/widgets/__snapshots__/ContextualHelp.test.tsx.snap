@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ContextualHelp component renders the tooltip with correct title and label and matches the snapshot 1`] = `
+exports[`ContextualHelp component renders the tooltip with correct text and label and matches the snapshot 1`] = `
 <div>
   <span
     aria-label="field-label-tooltip"
