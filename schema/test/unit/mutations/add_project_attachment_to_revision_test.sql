@@ -14,7 +14,7 @@ values
   ('description2', 'file_name2', 'file_type2', 100),
   ('description3', 'file_name3', 'file_type3', 100);
 
-select cif.add_project_attachment_to_revision(1, 1, (select id from cif.project_revision order by id desc limit 1));
+select cif.add_project_attachment_to_revision((select id from cif.project_revision order by id desc limit 1),1);
 
 -- End Test Setup
 
@@ -29,7 +29,7 @@ select is(
 select set_eq(
   $$
     select project_revision_id, (new_form_data ->> 'projectId')::integer as project_id, (new_form_data ->> 'attachmentId')::integer as attachment_id
-    from cif.add_project_attachment_to_revision(1, 2, (select id from cif.project_revision order by id desc limit 1))
+    from cif.add_project_attachment_to_revision((select id from cif.project_revision order by id desc limit 1),2)
   $$,
   $$
     values (1, 1, 2)
