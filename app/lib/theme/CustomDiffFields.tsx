@@ -62,6 +62,11 @@ const showStringDiff = (
   if (oldData && newData && latestCommittedData) {
     return (
       <>
+        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
+          {formatData(isDate, oldData)}
+        </span>
+        {contentSuffix && contentSuffixElement(id, contentSuffix)}
+        {renderArrow()}
         {latestCommittedData !== oldData && (
           <>
             <span
@@ -74,11 +79,6 @@ const showStringDiff = (
             {renderArrow()}
           </>
         )}
-        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {formatData(isDate, oldData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderArrow()}
         <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
           {formatData(isDate, newData)}
         </span>
@@ -206,6 +206,18 @@ const showNumberDiff = (
   if (oldData && newData && latestCommittedData) {
     return (
       <>
+        <NumberFormat
+          thousandSeparator
+          fixedDecimalScale={true}
+          decimalScale={decimalScale}
+          prefix={isMoney ? "$" : ""}
+          suffix={isPercentage ? " %" : ""}
+          displayType="text"
+          value={oldData}
+          className={diffOldClsName}
+          id={id && `${id}-${diffOldClsName}`}
+        />
+        {renderArrow()}
         {latestCommittedData !== oldData && (
           <>
             <NumberFormat
@@ -223,18 +235,7 @@ const showNumberDiff = (
             {renderArrow()}
           </>
         )}
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={oldData}
-          className={diffOldClsName}
-          id={id && `${id}-${diffOldClsName}`}
-        />
-        {renderArrow()}
+
         <NumberFormat
           thousandSeparator
           fixedDecimalScale={true}
@@ -507,6 +508,7 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
+    console.log("GURJ", oldData, formData, latestCommittedData);
     return showStringDiff(
       id,
       oldData,
