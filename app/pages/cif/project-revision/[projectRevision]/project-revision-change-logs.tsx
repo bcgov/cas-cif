@@ -14,7 +14,6 @@ import { Button } from "@button-inc/bcgov-theme";
 import { projectRevisionChangeLogsQuery } from "__generated__/projectRevisionChangeLogsQuery.graphql";
 import router from "next/router";
 import { getProjectRevisionCreatePageRoute } from "routes/pageRoutes";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 
 export const ProjectRevisionChangeLogsQuery = graphql`
   query projectRevisionChangeLogsQuery(
@@ -133,8 +132,6 @@ export function ProjectRevisionChangeLogs({
     router.push(getProjectRevisionCreatePageRoute(projectRevision.id));
   };
 
-  // Growthbook - amendments
-  if (!useShowGrowthbookFeature("amendments")) return null;
   return (
     <DefaultLayout session={session} leftSideNav={taskList}>
       <header>

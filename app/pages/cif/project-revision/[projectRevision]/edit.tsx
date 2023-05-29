@@ -7,7 +7,6 @@ import RevisionStatusWidget from "components/ProjectRevision/RevisionStatusWidge
 import UpdatedFormsWidget from "components/ProjectRevision/UpdatedFormsWidget";
 import TaskList from "components/TaskList";
 import { projectRevisionUISchema } from "data/jsonSchemaForm/projectRevisionSchema";
-import useShowGrowthbookFeature from "lib/growthbookWrapper";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
@@ -130,9 +129,6 @@ export function ProjectRevisionEdit({
       },
     });
   };
-
-  // Growthbook - amendments
-  if (!useShowGrowthbookFeature("amendments")) return null;
 
   return (
     <>
