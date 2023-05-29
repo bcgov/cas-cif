@@ -1,4 +1,5 @@
 -- Deploy cif:mutations/add_project_attachment_to_revision to pg
+-- requires: tables/form_change
 
 begin;
 

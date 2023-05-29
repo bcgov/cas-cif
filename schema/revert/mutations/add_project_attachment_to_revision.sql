@@ -2,6 +2,7 @@
 
 begin;
 
+drop function cif.add_project_attachment_to_revision(revision_id int, attachment_id int);
 create or replace function cif.add_project_attachment_to_revision(project_id int, attachment_id int, revision_id int)
 returns cif.form_change
 as $function$
@@ -30,10 +31,10 @@ as $function$
   ) returning *;
 $function$ language sql volatile;
 
-grant execute on function cif.add_project_attachment_to_revision to cif_internal, cif_external, cif_admin;
+grant execute on function cif.add_project_attachment_to_revision(int, int, int) to cif_internal, cif_external, cif_admin;
 grant usage, select on sequence cif.project_attachment_id_seq to cif_internal, cif_external, cif_admin;
 
-comment on function cif.add_project_attachment_to_revision is
+comment on function cif.add_project_attachment_to_revision(int, int, int) is
 $comment$
   Creates a new project_attachment form_change record for the given project_id, attachment_id, and revision_id.
 $comment$;
