@@ -30,7 +30,7 @@ do $$
     perform cif.commit_project_revision(current_revision.id) from cif.project_revision;
     raise notice 'currentrevid %',current_revision.id;
 
-   
+
 
   end
 $$;
