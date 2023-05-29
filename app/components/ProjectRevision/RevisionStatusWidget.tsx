@@ -22,10 +22,17 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
   const { schema, value, formContext, onChange } = props;
   const projectRevision = formContext.projectRevision;
 
-  const { id, rowId, changeStatus } = useFragment(
-    RevisionStatusWidgetFragment,
-    projectRevision
-  );
+  const { id, rowId, changeStatus, formChangesByProjectRevisionId } =
+    useFragment(RevisionStatusWidgetFragment, projectRevision);
+
+  const hasValidationErrors: boolean = useMemo(() => {
+    if (!formChangesByProjectRevisionId) {
+      return null;
+    }
+    return formChangesByProjectRevisionId.edges.some(
+      (edge) => edge.node.validationErrors.length > 0
+    );
+  }, [formChangesByProjectRevisionId.edges]);
 
   const router = useRouter();
 
