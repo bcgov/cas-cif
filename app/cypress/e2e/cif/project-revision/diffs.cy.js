@@ -153,13 +153,13 @@ describe("the project amendment and revisions page", () => {
     cy.screenshot("diffs just before committing general revision 2");
 
     // committing
-    // cy.findAllByRole("button", { name: /update/i })
-    //   .first()
-    //   .as("revisionStatusUpdateButton");
-    // cy.get("@revisionStatusUpdateButton").should("be.disabled");
-    // cy.get('[aria-label="Status"]').select("Applied");
-    // cy.get("@revisionStatusUpdateButton").should("not.be.disabled");
-    // cy.get("@revisionStatusUpdateButton").click();
+    cy.findAllByRole("button", { name: /update/i })
+      .first()
+      .as("revisionStatusUpdateButton");
+    cy.get("@revisionStatusUpdateButton").should("be.disabled");
+    cy.get('[aria-label="Status"]').select("Applied");
+    cy.get("@revisionStatusUpdateButton").should("not.be.disabled");
+    cy.get("@revisionStatusUpdateButton").click();
   });
 
   xit("creates a project with the minimum required information, opens and amendment with no changes, opens a general revision with many changes and commits, returns to the amendment and makes changes", () => {
