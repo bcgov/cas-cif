@@ -3,7 +3,7 @@ import { Button } from "@button-inc/bcgov-theme";
 import ReadOnlyWidget from "lib/theme/widgets/ReadOnlyWidget";
 import { WidgetProps } from "@rjsf/core";
 import SelectWidget from "lib/theme/widgets/SelectWidget";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 import { getProjectRevisionViewPageRoute } from "routes/pageRoutes";
@@ -32,7 +32,7 @@ const RevisionStatusWidget: React.FC<WidgetProps> = (props) => {
     return formChangesByProjectRevisionId.edges.some(
       (edge) => edge.node.validationErrors.length > 0
     );
-  }, [formChangesByProjectRevisionId.edges]);
+  }, [formChangesByProjectRevisionId]);
 
   const router = useRouter();
 
