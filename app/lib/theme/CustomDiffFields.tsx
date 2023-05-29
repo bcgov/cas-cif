@@ -48,7 +48,8 @@ const showStringDiff = (
   newData: string | undefined,
   latestCommittedData: string | undefined,
   isDate: boolean,
-  contentSuffix?: string
+  contentSuffix?: string,
+  archive?: boolean
 ): JSX.Element => {
   const [diffOldClsName, diffNewClsName, diffTextClsName] = [
     "diffOld",
@@ -90,7 +91,6 @@ const showStringDiff = (
   if (oldData && newData && !latestCommittedData) {
     return (
       <>
-        <>110</>
         <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
           {formatData(isDate, oldData)}
         </span>
@@ -107,18 +107,33 @@ const showStringDiff = (
 
   // Case 5 ->  101
   if (oldData && !newData && latestCommittedData) {
-    if (oldData == latestCommittedData) {
-      return <></>;
-    } else {
-      return (
-        <>
-          <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-            {formatData(isDate, oldData)}
-          </span>
-          {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        </>
-      );
-    }
+    return (
+      <>
+        {archive && (
+          <>
+            <span
+              id={id && `${id}-${diffOldClsName}`}
+              className={diffOldClsName}
+            >
+              {formatData(isDate, oldData)}
+            </span>
+          </>
+        )}
+        {oldData == latestCommittedData ? (
+          <></>
+        ) : (
+          <>
+            <span
+              id={id && `${id}-${diffOldClsName}`}
+              className={diffOldClsName}
+            >
+              {formatData(isDate, oldData)}
+            </span>
+            {contentSuffix && contentSuffixElement(id, contentSuffix)}
+          </>
+        )}
+      </>
+    );
   }
   // Case 4 ->  100
   if (oldData && !newData && !latestCommittedData) {
@@ -508,14 +523,30 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
 
     // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
-    const textData = uiSchema?.["ui:options"]?.text as string;
+    let textData = uiSchema?.["ui:options"]?.text as string;
 
-    const oldTextData =
+    let oldTextData =
       formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
 
-    const latestCommittedTextData =
+    let latestCommittedTextData =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
-    if (textData || oldTextData || latestCommittedTextData) {
+
+    if (formContext?.operation === "ARCHIVE") {
+      // project contact and manager form changes need a special check for archive
+      if (oldTextData === textData && textData === latestCommittedTextData) {
+        textData = undefined;
+        return showStringDiff(
+          id,
+          oldTextData,
+          textData,
+          latestCommittedTextData,
+          false,
+          null,
+          true
+        );
+      }
+    }
+    if (oldTextData || textData || latestCommittedTextData) {
       return showStringDiff(
         id,
         oldTextData,
