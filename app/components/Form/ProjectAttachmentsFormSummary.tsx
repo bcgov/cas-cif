@@ -17,8 +17,8 @@ const tableFilters = [
 
 interface Props {
   projectRevision: ProjectAttachmentsFormSummary_projectRevision$key;
-  isOnAmendmentsAndOtherRevisionsPage;
-  viewOnly: boolean;
+  isOnAmendmentsAndOtherRevisionsPage?;
+  viewOnly?: boolean;
 }
 
 const ProjectAttachmentsFormSummary: React.FC<Props> = ({
