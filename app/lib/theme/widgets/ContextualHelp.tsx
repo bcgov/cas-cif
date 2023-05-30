@@ -3,6 +3,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tooltip from "@mui/material/Tooltip";
 import { BC_GOV_LINKS_COLOR, DARK_GREY_BG_COLOR } from "../colors";
+import parse from "html-react-parser";
 
 /**
  * @param {string} text - The text of the tooltip to be displayed (can be HTML)
@@ -17,6 +18,7 @@ import { BC_GOV_LINKS_COLOR, DARK_GREY_BG_COLOR } from "../colors";
  *   "icon": faExclamationCircle,
  *   "placement": "top"
  * }
+ * NOTE: we are using html-react-parser package to parse the text of the tooltip to allow for HTML tags and avoid using dangerouslySetInnerHTML
  */
 
 interface ContextualHelpProps {
@@ -49,7 +51,7 @@ const ContextualHelp: React.FC<ContextualHelpProps> = ({
   return (
     <>
       <Tooltip
-        title={<span dangerouslySetInnerHTML={{ __html: text }} />}
+        title={parse(text)}
         arrow
         placement={placement}
         role="tooltip"
