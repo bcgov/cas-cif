@@ -20,7 +20,7 @@ import BaseTaskListItemComponent from "./TaskListItemComponents/BaseTaskListItem
 import MilestoneTaskListItemsComponent from "./TaskListItemComponents/MilestoneTaskListItemsComponent";
 import { useNumberedFormStructure } from "data/formPages/formStructure";
 import ProjectRevisionChangeLogsTaskListSection from "./ProjectRevisionChangeLogsTaskListSection";
-import { BC_GOV_LINKS_COLOR, TASKLIST_GREY_BG_COLOR } from "lib/theme/colors";
+import { BC_GOV_LINKS_COLOR, DARK_GREY_BG_COLOR } from "lib/theme/colors";
 
 interface Props {
   projectRevision: TaskList_projectRevision$key;
@@ -343,7 +343,7 @@ const TaskList: React.FC<Props> = ({
         }
 
         div.container {
-          background-color: ${TASKLIST_GREY_BG_COLOR};
+          background-color: ${DARK_GREY_BG_COLOR};
           width: 400px;
         }
       `}</style>

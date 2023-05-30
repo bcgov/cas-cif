@@ -2,7 +2,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tooltip from "@mui/material/Tooltip";
-import { BC_GOV_LINKS_COLOR, TASKLIST_GREY_BG_COLOR } from "../colors";
+import { BC_GOV_LINKS_COLOR, DARK_GREY_BG_COLOR } from "../colors";
 
 /**
  * @param {string} text - The text of the tooltip to be displayed (can be HTML)
@@ -71,12 +71,12 @@ const ContextualHelp: React.FC<ContextualHelpProps> = ({
           cursor: pointer;
         }
         :global(.MuiTooltip-tooltip) {
-          background-color: ${TASKLIST_GREY_BG_COLOR};
+          background-color: ${DARK_GREY_BG_COLOR};
           box-shadow: 5px 5px 5px #888888;
           color: black;
         }
         :global(.MuiTooltip-tooltip .MuiTooltip-arrow) {
-          color: ${TASKLIST_GREY_BG_COLOR};
+          color: ${DARK_GREY_BG_COLOR};
         }
         :global(.MuiTooltip-tooltip a) {
           color: ${BC_GOV_LINKS_COLOR};

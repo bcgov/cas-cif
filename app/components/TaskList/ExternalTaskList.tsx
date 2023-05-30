@@ -6,7 +6,7 @@ import {
 } from "routes/pageRoutes";
 import ExternalTaskListSection from "./ExternalTaskListSection";
 import { ExternalTaskList_projectRevision$key } from "__generated__/ExternalTaskList_projectRevision.graphql";
-import { BC_GOV_LINKS_COLOR, TASKLIST_GREY_BG_COLOR } from "lib/theme/colors";
+import { BC_GOV_LINKS_COLOR, DARK_GREY_BG_COLOR } from "lib/theme/colors";
 
 interface Props {
   projectRevision: ExternalTaskList_projectRevision$key;
@@ -77,7 +77,7 @@ const ExternalTaskList: React.FC<Props> = ({ projectRevision }) => {
           }
 
           div.container {
-            background-color: ${TASKLIST_GREY_BG_COLOR};
+            background-color: ${DARK_GREY_BG_COLOR};
             width: 400px;
             margin-top: 20px;
           }

@@ -11,7 +11,7 @@ import { ErrorContext } from "contexts/ErrorContext";
 
 import footerLinks from "data/externalLinks/footerLinks";
 import subHeaderLinks from "data/externalLinks/subHeaderLinks";
-import { MAIN_BG_COLOR } from "lib/theme/colors";
+import { LIGHT_GREY_BG_COLOR } from "lib/theme/colors";
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
 interface Props {
@@ -65,7 +65,7 @@ const ExternalLayout: React.FC<Props> = ({
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: ${MAIN_BG_COLOR};
+            background-color: ${LIGHT_GREY_BG_COLOR};
           }
 
           #page-content {
