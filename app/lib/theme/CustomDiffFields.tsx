@@ -48,8 +48,7 @@ const showStringDiff = (
   newData: string | undefined,
   latestCommittedData: string | undefined,
   isDate: boolean,
-  contentSuffix?: string,
-  archive?: boolean
+  contentSuffix?: string
 ): JSX.Element => {
   const [diffOldClsName, diffNewClsName, diffTextClsName] = [
     "diffOld",
@@ -109,7 +108,7 @@ const showStringDiff = (
   if (oldData && !newData && latestCommittedData) {
     return (
       <>
-        {archive && (
+        {oldData == latestCommittedData ? (
           <>
             <span
               id={id && `${id}-${diffOldClsName}`}
@@ -118,9 +117,6 @@ const showStringDiff = (
               {formatData(isDate, oldData)}
             </span>
           </>
-        )}
-        {oldData == latestCommittedData ? (
-          <></>
         ) : (
           <>
             <span
@@ -508,7 +504,6 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-    console.log("GURJ", oldData, formData, latestCommittedData);
     return showStringDiff(
       id,
       oldData,
@@ -535,18 +530,17 @@ const CUSTOM_DIFF_FIELDS: Record<
 
     if (formContext?.operation === "ARCHIVE") {
       // project contact and manager form changes need a special check for archive
-      if (oldTextData === textData && textData === latestCommittedTextData) {
-        textData = undefined;
-        return showStringDiff(
-          id,
-          oldTextData,
-          textData,
-          latestCommittedTextData,
-          false,
-          null,
-          true
-        );
-      }
+
+      textData = undefined;
+      return showStringDiff(
+        id,
+        oldTextData,
+        textData,
+        latestCommittedTextData,
+        false,
+        null,
+        true
+      );
     }
     if (oldTextData || textData || latestCommittedTextData) {
       return showStringDiff(
