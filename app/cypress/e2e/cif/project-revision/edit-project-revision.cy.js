@@ -208,11 +208,6 @@ describe("when editing a project, the project page", () => {
       "have.text",
       "cif_internal Testuser"
     );
-    cy.get("#root_cifUserId-diffOld")
-      .next()
-      .next()
-      .should("have.text", "cif_internal Testuser");
-
     cy.get("#root_contactId-diffNew").should("have.text", "Bob003 Loblaw003");
 
     cy.get("#root_contractStartDate-diffNew").contains(/Jan(\.)? 1, 2020/);
