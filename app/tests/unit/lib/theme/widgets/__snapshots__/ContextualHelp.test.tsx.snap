@@ -4,7 +4,7 @@ exports[`ContextualHelp component renders the tooltip with correct text and labe
 <div>
   <span
     aria-label="field-label-tooltip"
-    class="tooltip jsx-87318494"
+    class="tooltip jsx-1838332117"
     data-mui-internal-clone-element="true"
     role="tooltip"
     tabindex="0"
