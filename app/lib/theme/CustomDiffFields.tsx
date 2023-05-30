@@ -538,8 +538,7 @@ const CUSTOM_DIFF_FIELDS: Record<
         textData,
         latestCommittedTextData,
         false,
-        null,
-        true
+        null
       );
     }
     if (oldTextData || textData || latestCommittedTextData) {
