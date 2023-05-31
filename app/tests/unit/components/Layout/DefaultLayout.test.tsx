@@ -59,7 +59,28 @@ describe("The DefaultLayout component", () => {
     expect(screen.queryByText("Projects")).toBeNull();
   });
 
-  it("should render the subheader links if the user is logged in", () => {
+  it("should not render the subheader links if the user is logged in but their IDIR is unauthorized", () => {
+    componentTestingHelper.setMockRouterValues({
+      pathname: "/unauthorized_idir",
+    });
+    componentTestingHelper.loadQuery({
+      KeycloakJwt() {
+        return {
+          cifUserBySub: {
+            id: "1",
+          },
+          userGroups: ["cif_admin"],
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText("CleanBC Industry Fund")).toBeVisible();
+    expect(screen.queryByText("Home")).toBeNull();
+    expect(screen.queryByText("Projects")).toBeNull();
+  });
+
+  it("should render the subheader links if the user is logged in and their IDIR is authorized", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
