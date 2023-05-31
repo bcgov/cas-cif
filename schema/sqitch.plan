@@ -301,10 +301,11 @@ mutations/update_form_change [mutations/update_form_change@1.6.0] 2023-04-19T23:
 @1.8.0 2023-05-16T21:39:16Z Dylan Leard <dylan@button.is> # release v1.8.0
 computed_columns/project_revision_teimp_payment_amount [computed_columns/project_revision_teimp_payment_amount@1.8.0] 2023-05-19T20:22:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Depreacte unused project_revision_teimp_payment_amount computed column
 computed_columns/project_revision_teimp_payment_percentage [computed_columns/project_revision_teimp_payment_percentage@1.8.0] 2023-05-19T20:19:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate unused project_revision_teimp_payment_percentage computed column
-computed_columns/form_change_total_project_value 2023-05-15T22:36:09Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Create computed column to calculate total project value using form change
+computed_columns/form_change_total_project_value 2023-05-15T22:36:09Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create computed column to calculate total project value using form change
 computed_columns/form_change_proponents_share_percentage 2023-05-15T22:17:41Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create computed column for calculated proponents share percentage
 computed_columns/project_revision_total_project_value [computed_columns/project_revision_total_project_value@1.7.0] 2023-05-16T15:17:37Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate project_revision_total_project_value
 computed_columns/form_change_anticipated_funding_amount_per_fiscal_year 2023-05-16T15:59:21Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create a computed column for anticipated funding amount per fiscal year
 computed_columns/project_revision_anticipated_funding_amount_per_fiscal_year [computed_columns/project_revision_anticipated_funding_amount_per_fiscal_year@1.7.0] 2023-05-16T18:19:04Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate project_revision_anticipated_funding_amount_per_fiscal_year
 computed_columns/form_change_actual_performance_milestone_amount [tables/form_change] 2023-05-16T18:49:48Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Returns the calculated actual performance milestone amount
 tables/project_type_001 2023-05-11T21:32:24Z Josh Larouche <joshua.larouche@gov.bc.ca> # adding methane capture to the project type table
+util_functions/snake_to_camel_case.sql 2023-05-30T23:51:12Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Add private util to change snake case texts to camel case
