@@ -1,6 +1,5 @@
 begin;
-
-select plan(11);
+select plan(12);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -22,7 +21,7 @@ insert into cif.form(slug, json_schema, description) values ('test_schema', '{}'
 
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values (
-  '{"textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
+  '{"textCol":"test text", "intCol":234, "boolCol": true, "requiredCol": "req", "defaultedCol": 1}',
   'create', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_schema', 'pending'
 );
 /** END SETUP **/
@@ -122,7 +121,7 @@ delete from cif.form_change;
 truncate mock_schema.mock_table restart identity;
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, json_schema_name, change_status)
 values (
-  '{"textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
+  '{"textCol":"test text", "intCol":234, "boolCol": true, "requiredCol": "req", "defaultedCol": 1}',
   'create', 'mock_schema', 'mock_table', 'test_schema', 'pending'
 );
 
@@ -147,7 +146,7 @@ delete from cif.form_change;
 truncate mock_schema.mock_table restart identity;
 insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
 values (
-  '{"notATableCol": "shouldBeIgnored", "textCol":"test text", "intCol":234, "bool_col": true, "requiredCol": "req", "defaultedCol": 1}',
+  '{"notATableCol": "shouldBeIgnored", "textCol":"test text", "intCol":234, "boolCol": true, "requiredCol": "req", "defaultedCol": 1}',
   'create', 'mock_schema', 'mock_table', nextval(pg_get_serial_sequence('mock_schema.mock_table', 'id')), 'test_schema', 'pending'
 );
 
@@ -169,6 +168,32 @@ select results_eq(
     values (1::integer, 'test text'::text, 234::integer, true::boolean, 'req'::text, 1::int, null::timestamptz)
   $$,
   'All proper values were inserted when form_data includes a key that does not correspond to a column in the target table'
+);
+
+-- function updates the table with null values when the form_data does not include a key that corresponds to a column in the target table
+truncate mock_schema.mock_table restart identity;
+insert into mock_schema.mock_table (text_col, int_col, bool_col, required_col, defaulted_col)
+values ('test text', 234, true, 'req', 1);
+
+-- this form change does not include the int_col
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
+values (
+  '{"textCol":"updated test text", "boolCol": false, "requiredCol": "updated req", "defaultedCol": 1}',
+  'update', 'mock_schema', 'mock_table', 1, 'test_schema', 'pending'
+);
+
+with record as (
+  select row(form_change.*)::cif.form_change from cif.form_change where id=8
+) select cif_private.handle_default_form_change_commit((select * from record));
+
+select results_eq(
+  $$
+    select * from mock_schema.mock_table where id=1
+  $$,
+  $$
+    values (1::integer, 'updated test text'::text, null::integer, false::boolean, 'updated req'::text, 1::int, null::timestamptz)
+  $$,
+  'Function updates the table with null values when the form_data does not include a key that corresponds to a column in the target table'
 );
 
 select finish();

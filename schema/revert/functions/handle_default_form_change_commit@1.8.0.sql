@@ -11,9 +11,6 @@ declare
   keys text;
   vals text;
   record_id int;
-  json_key text;
-  json_data jsonb;
-  table_column_name text;
 begin
 
   select fc.form_data_record_id into record_id;
@@ -27,46 +24,9 @@ begin
     raise exception 'Cannot commit form_change. It has already been committed.';
   end if;
 
-  /**
-    Prune the form_data object of any deprecated columns.
-    If a column is deprecated, but the key still exists in older form data records
-    it will cause an error when trying to insert data into that column.
-  **/
-  json_data = fc.new_form_data;
-  for json_key in (select key from jsonb_each(json_data))
-  loop
-    if (select quote_ident(cif_private.camel_to_snake_case(json_key))) not in (
-      select column_name::text
-        from information_schema.columns
-        where table_schema = fc.form_data_schema_name
-        and table_name   = fc.form_data_table_name
-    ) then
-      json_data = json_data - json_key;
-    end if;
-  end loop;
-
-  /**
-  we need to add null values for any columns that are not in the form_data object
-  this is necessary because we may remove an optional field from the form but we don't update the data in the table because it is not in the form_data object
-  We don't want this to happen when operation is create since we need to use the default values provided by the table
-  **/
-  if fc.operation = 'update' then
-    for table_column_name in (
-        select column_name::text
-        from information_schema.columns
-        where table_schema = fc.form_data_schema_name
-          and table_name = fc.form_data_table_name
-          and (select cif_private.snake_to_camel_case(column_name)) not in (select key from jsonb_each(json_data))
-          and column_name::text not in ('id', 'created_at', 'updated_at', 'archived_at')
-    )
-    loop
-      json_data = json_data || jsonb_build_object((select cif_private.snake_to_camel_case(table_column_name)), null);
-    end loop;
-  end if;
-
   schema_table := quote_ident(fc.form_data_schema_name) || '.' || quote_ident(fc.form_data_table_name);
-  keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(json_data)), ','));
-  vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(json_data)), ','));
+  keys := (select array_to_string(array(select quote_ident(cif_private.camel_to_snake_case(key)) from jsonb_each(fc.new_form_data)), ','));
+  vals := (select array_to_string(array(select quote_nullable(value) from jsonb_each_text(fc.new_form_data)), ','));
 
   if fc.operation = 'create' then
     if fc.form_data_record_id is not null then
