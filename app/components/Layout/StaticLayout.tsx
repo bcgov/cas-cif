@@ -4,6 +4,7 @@ import Footer from "components/Layout/Footer";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
 import footerLinks from "data/dashboardLinks/footerLinks";
 import subHeaderLinks from "data/dashboardLinks/subHeaderLinks";
+import { LIGHT_GREY_BG_COLOR } from "lib/theme/colors";
 
 const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 
@@ -37,7 +38,7 @@ const StaticLayout: React.FC<Props> = ({
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: #fafafc;
+            background-color: ${LIGHT_GREY_BG_COLOR};
           }
           main {
             padding: 30px 40px;

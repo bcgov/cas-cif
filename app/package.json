@@ -108,6 +108,7 @@
     "graphql": "^15.6.1",
     "graphql-upload": "^15.0.2",
     "helmet": "^4.6.0",
+    "html-react-parser": "^3.0.16",
     "json-schema": "^0.4.0",
     "lightship": "^7.1.1",
     "luxon": "^3.2.1",

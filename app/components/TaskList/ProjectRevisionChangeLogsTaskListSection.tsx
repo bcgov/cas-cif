@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getProjectRevisionChangeLogsPageRoute } from "routes/pageRoutes";
+import { LIGHT_GREY_BG_COLOR } from "lib/theme/colors";
 
 interface Props {
   projectRevisionId: string;
@@ -58,7 +59,7 @@ const ProjectRevisionChangeLogsTaskListSection: React.FC<Props> = ({
         }
         li[aria-current="step"],
         li[aria-current="step"] div {
-          background-color: #fafafc;
+          background-color: ${LIGHT_GREY_BG_COLOR};
         }
         h3 {
           font-size: 1rem;

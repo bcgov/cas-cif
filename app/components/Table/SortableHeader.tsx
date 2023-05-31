@@ -6,6 +6,7 @@ import {
   faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { BC_GOV_PRIMARY_BRAND_COLOR_BLUE } from "lib/theme/colors";
 
 interface Props {
   orderByPrefix?: string;
@@ -90,7 +91,7 @@ const SortableHeader: React.FC<Props> = ({
         th {
           position: relative;
           cursor: pointer;
-          background-color: #003366;
+          background-color: ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE};
           color: white;
           text-align: left;
           padding: 0.5rem;
@@ -103,15 +104,15 @@ const SortableHeader: React.FC<Props> = ({
 
         th:first-child {
           border-top-left-radius: 0.25rem;
-          border-left: 1px solid #003366;
-          border-top: 1px solid #003366;
+          border-left: 1px solid ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE};
+          border-top: 1px solid ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE};
           padding: 0.5rem;
         }
 
         th:last-child {
           border-top-right-radius: 0.25rem;
-          border-right: 1px solid #003366;
-          border-top: 1px solid #003366;
+          border-right: 1px solid ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE};
+          border-top: 1px solid ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE};
         }
 
         .loading {
@@ -120,9 +121,9 @@ const SortableHeader: React.FC<Props> = ({
           animation: shimmer-animation 2s infinite linear;
           background: linear-gradient(
             to right,
-            #003366 4%,
+            ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE} 4%,
             #38598a 25%,
-            #003366 36%
+            ${BC_GOV_PRIMARY_BRAND_COLOR_BLUE} 36%
           );
           background-size: 500px 100%;
         }
