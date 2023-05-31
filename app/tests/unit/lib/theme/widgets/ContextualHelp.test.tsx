@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import ContextualHelp from "lib/theme/widgets/ContextualHelp";
 
@@ -18,7 +18,6 @@ describe("ContextualHelp component", () => {
     const tooltipIcon = screen.getByRole("img", {
       hidden: true,
     });
-    screen.logTestingPlaygroundURL();
     expect(tooltipElement).toBeInTheDocument();
     expect(tooltipElement).toHaveAttribute("aria-label", "field-label-tooltip");
     expect(tooltipIcon).toBeInTheDocument();
@@ -33,5 +32,21 @@ describe("ContextualHelp component", () => {
       hidden: true,
     });
     expect(defaultIcon).toHaveAttribute("data-icon", "exclamation-circle");
+  });
+  test("renders the tooltip with correct HTML text", async () => {
+    const htmlText =
+      "<div data-testid='test-id'>html text which has a <a href='#'>Link</a></div>";
+    render(<ContextualHelp text={htmlText} label={labelMock} />);
+    const tooltipElement = screen.getByRole("tooltip");
+    expect(tooltipElement).toBeInTheDocument();
+    expect(tooltipElement).toHaveAttribute("aria-label", "field-label-tooltip");
+
+    fireEvent.mouseOver(tooltipElement);
+    await waitFor(() => {
+      expect(screen.getByTestId("test-id")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id").innerHTML).toBe(
+        'html text which has a <a href="#">Link</a>'
+      );
+    });
   });
 });
