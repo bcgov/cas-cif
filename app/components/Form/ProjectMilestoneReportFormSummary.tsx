@@ -49,6 +49,9 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               formDataRecordId
               isPristine
               newFormData
+              calculatedHoldbackAmountThisMilestone
+              calculatedGrossAmountThisMilestone
+              calculatedNetAmountThisMilestone
               operation
               formChangeByPreviousFormChangeId {
                 newFormData
@@ -105,9 +108,40 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       // Set the formSchema and formData based on showing the diff or not
       const milestoneFormDiffObject = renderDiff
         ? getMilestoneFilteredSchema(
-            milestoneReport.formByJsonSchemaName.jsonSchema
-              .schema as JSONSchema7,
-            milestoneReport
+            {
+              ...(milestoneReport.formByJsonSchemaName.jsonSchema
+                .schema as JSONSchema7),
+              properties: {
+                ...(
+                  milestoneReport.formByJsonSchemaName.jsonSchema
+                    .schema as JSONSchema7
+                ).properties,
+                calculatedHoldbackAmount: {
+                  title: "Calculated Holdback Amount",
+                  type: "number",
+                },
+                calculatedGrossAmount: {
+                  title: "Calculated Gross Amount",
+                  type: "number",
+                },
+                calculatedNetAmount: {
+                  title: "Calculated Net Amount",
+                  type: "number",
+                },
+              },
+            },
+            {
+              ...milestoneReport,
+              newFormData: {
+                ...milestoneReport.newFormData,
+                calculatedHoldbackAmount:
+                  milestoneReport.calculatedHoldbackAmountThisMilestone,
+                calculatedGrossAmount:
+                  milestoneReport.calculatedGrossAmountThisMilestone,
+                calculatedNetAmount:
+                  milestoneReport.calculatedNetAmountThisMilestone,
+              },
+            }
           )
         : {
             formSchema: milestoneReport.formByJsonSchemaName.jsonSchema.schema,
@@ -131,6 +165,24 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
           }
         )?.node?.newFormData;
 
+      const updatedUiSchema = {
+        ...projectMilestoneUiSchema,
+        calculatedHoldbackAmount: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isMoney: true,
+        },
+        calculatedGrossAmount: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isMoney: true,
+        },
+        calculatedNetAmount: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isMoney: true,
+        },
+      };
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -161,7 +213,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
             schema={milestoneFormDiffObject.formSchema as JSONSchema7}
-            uiSchema={projectMilestoneUiSchema}
+            uiSchema={updatedUiSchema}
             formData={milestoneFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
@@ -184,6 +236,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
   }, [
     isFirstRevision,
     isOnAmendmentsAndOtherRevisionsPage,
+    latestCommittedMilestoneFormChanges?.edges,
     renderDiff,
     sortedMilestoneReports,
   ]);
