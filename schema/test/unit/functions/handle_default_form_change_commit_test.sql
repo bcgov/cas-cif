@@ -1,5 +1,5 @@
 begin;
-select plan(12);
+select plan(13);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -194,6 +194,31 @@ select results_eq(
     values (1::integer, 'updated test text'::text, null::integer, false::boolean, 'updated req'::text, 1::int, null::timestamptz)
   $$,
   'Function updates the table with null values when the form_data does not include a key that corresponds to a column in the target table'
+);
+
+-- function doesn't touch values that are not manipulated by the form change like the archived_at column
+truncate mock_schema.mock_table restart identity;
+insert into mock_schema.mock_table (text_col, int_col, bool_col, required_col, defaulted_col, archived_at)
+values ('test text', 234, true, 'req', 1, '2023-06-01T12:00:01-07'::timestamptz);
+
+insert into cif.form_change(new_form_data, operation, form_data_schema_name, form_data_table_name, form_data_record_id, json_schema_name, change_status)
+values (
+  '{"textCol":"updated test text", "requiredCol": "updated req"}',
+  'update', 'mock_schema', 'mock_table', 1, 'test_schema', 'pending'
+);
+
+with record as (
+  select row(form_change.*)::cif.form_change from cif.form_change where id=9
+) select cif_private.handle_default_form_change_commit((select * from record));
+
+select results_eq(
+  $$
+    select * from mock_schema.mock_table where id=1
+  $$,
+  $$
+    values (1::integer, 'updated test text'::text, null::integer, null::boolean, 'updated req'::text, null::int, '2023-06-01T12:00:01-07'::timestamptz)
+  $$,
+  'Function does not touch values that are not manipulated by the form change like the archived_at column'
 );
 
 select finish();
