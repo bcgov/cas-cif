@@ -32,7 +32,11 @@ const mockQueryPayload = {
             node: {
               id: "Test Reporting Requirement ID - 1",
               isPristine: false,
+              calculatedNetAmountThisMilestone: 100,
+              calculatedGrossAmountThisMilestone: 900,
+              calculatedHoldbackAmountThisMilestone: 800,
               newFormData: {
+                totalEligibleExpenses: 1000,
                 description: "charmander",
                 projectId: 1,
                 reportingRequirementIndex: 1,
@@ -141,5 +145,10 @@ describe("The Project Milestone Report Form Summary", () => {
     // report due date diff
     expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 10, 2020/i)).toBeInTheDocument();
+
+    // calculated values
+    expect(screen.getByText(/\$1,000\.00/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$100\.00/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$800\.00/i)).toBeInTheDocument();
   });
 });
