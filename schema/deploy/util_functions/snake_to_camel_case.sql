@@ -1,4 +1,4 @@
--- Deploy cif:util_functions/snake_to_camel_case.sql to pg
+-- Deploy cif:util_functions/snake_to_camel_case to pg
 
 begin;
 

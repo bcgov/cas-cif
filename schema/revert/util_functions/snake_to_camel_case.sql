@@ -1,4 +1,4 @@
--- Revert cif:util_functions/snake_to_camel_case.sql from pg
+-- Revert cif:util_functions/snake_to_camel_case from pg
 
 begin;
 

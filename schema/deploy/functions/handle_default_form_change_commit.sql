@@ -57,7 +57,7 @@ begin
         where table_schema = fc.form_data_schema_name
           and table_name = fc.form_data_table_name
           and (select cif_private.snake_to_camel_case(column_name)) not in (select key from jsonb_each(json_data))
-          and column_name::text not in ('id', 'created_at', 'updated_at', 'archived_at')
+          and column_name::text not in ('id', 'created_at', 'updated_at', 'archived_at', 'created_by', 'updated_by', 'archived_by')
     )
     loop
       json_data = json_data || jsonb_build_object((select cif_private.snake_to_camel_case(table_column_name)), null);

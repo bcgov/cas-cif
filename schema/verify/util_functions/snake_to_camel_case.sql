@@ -1,4 +1,4 @@
--- Verify cif:util_functions/snake_to_camel_case.sql on pg
+-- Verify cif:util_functions/snake_to_camel_case on pg
 
 begin;
 
