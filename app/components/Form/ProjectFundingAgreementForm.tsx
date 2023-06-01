@@ -46,8 +46,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const projectRevision = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_projectRevision on ProjectRevision {
-        # eslint-disable-next-line relay/must-colocate-fragment-spreads
-        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         id
         rowId
         projectFormChange {
@@ -79,12 +77,19 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               calculatedTotalPaymentAmountToDate
               totalProjectValue
               proponentsSharePercentage
+              # eslint-disable-next-line relay/must-colocate-fragment-spreads
+              ...AnticipatedFundingAmountPerFiscalYearWidget_formChange
             }
           }
         }
       }
     `,
     props.projectRevision
+  );
+
+  console.log(
+    "proj revision",
+    projectRevision.projectFundingAgreementFormChanges.edges[0].node
   );
 
   const fundingStream =
