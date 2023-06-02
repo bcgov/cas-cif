@@ -160,9 +160,6 @@ describe("when creating a project, the project page", () => {
 
     // Add attachments
     cy.url().should("include", "/form/8");
-    // temporarily commented out until hard delete is implemented in #1703
-    // cy.get("input[type=file]").selectFile("./cypress/fixtures/1dummy.pdf");
-    // cy.findByText("1dummy.pdf").should("be.visible");
     cy.findByText(/Submit project attachments/i).click();
 
     //review and submit
@@ -272,10 +269,8 @@ describe("when creating a project, the project page", () => {
     cy.findByText("Actual Performance Milestone Amount")
       .next()
       .should("have.text", "$12.00");
-    // attachments sections
-    // temporarily commented out until hard delete is implemented in #1703
-    // cy.findByText("1dummy.pdf").should("be.visible");
 
+    // summary
     cy.happoAndAxe("Project summary Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");

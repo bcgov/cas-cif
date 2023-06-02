@@ -91,7 +91,6 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
             revision.summaryProjectAttachmentFormChanges.totalCount
           }
           filters={tableFilters}
-          // pageQuery={AttachmentsQuery}
         >
           {revision.summaryProjectAttachmentFormChanges.edges.map(
             ({ node }) => (
