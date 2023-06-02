@@ -135,6 +135,7 @@ describe("The Object Field Template", () => {
 
     expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
     expect(componentUnderTest.getByText("stringTest OLD")).toBeInTheDocument();
+    // unicorn -- shouldn't see latest committed when old=latest
     expect(
       componentUnderTest.queryByText(/^(.*?)stringTest LAST COMMITTED/)
     ).not.toBeInTheDocument();
@@ -151,8 +152,8 @@ describe("The Object Field Template", () => {
       componentUnderTest.queryByText(/I am the last committed value/i)
     ).not.toBeInTheDocument();
   });
-  // 110--figure out where this shows up and how happens
-  it("shows a diff when there is oldData, newData, no latest committed & the operation is 'UPDATE'", () => {
+  // 110--unicorn this is the same as above
+  it("shows a diff when there is oldData, newData, no latest committed", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -181,6 +182,7 @@ describe("The Object Field Template", () => {
   });
 
   // 101
+  // unicorn -- need to check both old=latest and old!=latest
   it("shows data has been removed when there is old data and latest committed data but no new data", () => {
     const componentUnderTest = render(
       <FormBase
@@ -197,6 +199,7 @@ describe("The Object Field Template", () => {
         }}
       />
     );
+    // unicorn needs to check for latest committed in the case where old!=latest
     expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
       "diffOld"
     );
@@ -207,7 +210,7 @@ describe("The Object Field Template", () => {
   });
 
   // 010
-  it("shows data has been added when there is newData, the operation is 'CREATE' & there is no old data or latest committed", () => {
+  it("shows data has been added when there is newData, the  & there is no old data or no latest committed", () => {
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -231,7 +234,9 @@ describe("The Object Field Template", () => {
       "diffNew"
     );
   });
-  // 000
+  // unicorn -- 011 old and latest, someone changed something since it was open
+
+  // 000 -- unicorn, duplicate of above
   it("shows diffs when there is only new data", () => {
     const componentUnderTest = render(
       <FormBase
@@ -254,6 +259,8 @@ describe("The Object Field Template", () => {
       "diffNew"
     );
   });
+
+  // numericId test
   it("shows the text from 'ui:options' when 'ui:options' exists in a NumberField's uiSchema", () => {
     const componentUnderTest = render(
       <FormBase
@@ -275,6 +282,7 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.queryByText("1")).not.toBeInTheDocument();
   });
 
+  // number specific tests
   it("shows the number with a preceding $ when uiSchema.isMoney is true in a NumberField's uiSchema", () => {
     const componentUnderTest = render(
       <FormBase
@@ -314,6 +322,9 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.queryByText("$100.00")).not.toBeInTheDocument();
   });
 
+  // unicorn -- test for decimals in general
+
+  // for an entire form--unicorn, is this handled in the summary components
   it("shows form has been added when there is no formData, the operation is 'CREATE' & there is no old data", () => {
     delete uiTestSchema.numberTest["ui:widget"];
 
@@ -360,6 +371,13 @@ describe("The Object Field Template", () => {
       "diffOld"
     );
   });
+
+  // operation ones,
+  // numericId
+  // operations ARCHIVE unicorn add one test
+  // if (formContext?.operation === "ARCHIVE") in this case show correct thing
+
+  // zeros - unicorn needs test everything with !!, repeat the above test cases but replace undefined with 0
   it("handles 0", () => {
     const componentUnderTest = render(
       <FormBase
