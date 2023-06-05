@@ -64,6 +64,14 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               totalProjectValue
               isPristine
               operation
+              anticipatedFundingAmountPerFiscalYear {
+                edges {
+                  node {
+                    anticipatedFundingAmount
+                    fiscalYear
+                  }
+                }
+              }
               formChangeByPreviousFormChangeId {
                 newFormData
                 eligibleExpensesToDate
@@ -73,6 +81,14 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
                 calculatedTotalPaymentAmountToDate
                 proponentsSharePercentage
                 totalProjectValue
+                anticipatedFundingAmountPerFiscalYear {
+                  edges {
+                    node {
+                      anticipatedFundingAmount
+                      fiscalYear
+                    }
+                  }
+                }
               }
             }
           }
@@ -90,6 +106,14 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               calculatedTotalPaymentAmountToDate
               proponentsSharePercentage
               totalProjectValue
+              anticipatedFundingAmountPerFiscalYear {
+                edges {
+                  node {
+                    anticipatedFundingAmount
+                    fiscalYear
+                  }
+                }
+              }
             }
           }
         }
@@ -104,6 +128,22 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const fundingAgreementSummary =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node;
 
+  const cleanup = (array) => {
+    const result = [];
+    array.forEach(({ node }) => {
+      result.push(node);
+    });
+    return result;
+  };
+
+  // you don't have form data because they're readonly
+
+  const filterAnticipatedFundingPerFiscalYear = (array) => {
+    array.forEach(({ node }) => {
+      return {};
+    });
+  };
+
   const newData = {
     ...fundingAgreementSummary?.newFormData,
     eligibleExpensesToDate: fundingAgreementSummary?.eligibleExpensesToDate,
@@ -115,7 +155,28 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       fundingAgreementSummary?.proponentsSharePercentage,
     totalProjectValue: fundingAgreementSummary?.totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear: cleanup(
+      fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear?.edges
+    ),
   };
+
+  // don't have to change the widget at all probably, just need to pass in the old, new and latest to customdiffs cause those aren't form-related
+
+  // console.log(
+  //   "anticip",
+  //   fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear?.edges
+  // );
+  // console.log(
+  //   "additional",
+  //   fundingAgreementSummary?.newFormData.additionalFundingSources
+  // );
+
+  // console.log(
+  //   "cleanup",
+  //   cleanup(
+  //     fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear?.edges
+  //   )
+  // );
 
   const latestCommittedFundingFormChanges =
     revision.latestCommittedFundingFormChanges?.edges[0]?.node;
@@ -133,6 +194,10 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       latestCommittedFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: latestCommittedFundingFormChanges?.totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear: cleanup(
+      latestCommittedFundingFormChanges?.anticipatedFundingAmountPerFiscalYear
+        ?.edges
+    ),
   };
 
   const oldFundingFormChanges =
@@ -149,6 +214,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       oldFundingFormChanges?.calculatedTotalPaymentAmountToDate,
     proponentsSharePercentage: oldFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: oldFundingFormChanges?.totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear: cleanup(
+      oldFundingFormChanges?.anticipatedFundingAmountPerFiscalYear?.edges
+    ),
   };
 
   const fundingStream =
@@ -240,7 +308,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       </div>
     );
   }
-
   return (
     <div>
       {!isOnAmendmentsAndOtherRevisionsPage && (
@@ -266,6 +333,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               ? fundingParameterEPUiSchema
               : fundingParameterIAUiSchema
           }
+          // brianna you would probably have to add it here to make it show, consequences?
           formData={formData}
           formContext={{
             projectRevision: revision,
@@ -288,6 +356,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               fundingAgreementSummary?.grossPaymentsToDate,
             calculatedTotalPaymentAmountToDate:
               fundingAgreementSummary?.calculatedTotalPaymentAmountToDate,
+            // calculatedAnticipatedFundingAmountPerFiscalYear:
+            //   fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear,
           }}
           ArrayFieldTemplate={
             ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
