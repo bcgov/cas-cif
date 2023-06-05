@@ -55,10 +55,6 @@ values (
 -- if an attachment has never been committed, hard delete
 select results_eq(
   $$
-    with record as (
-    select row(form_change.*)::cif.form_change
-    from cif.form_change where id=2
-    )
     select
       id,
       operation,
