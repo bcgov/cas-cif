@@ -1,17 +1,20 @@
 import { ArrayFieldTemplateProps } from "@rjsf/core";
+import CalculatedValueWidget from "lib/theme/widgets/CalculatedValueWidget";
 
-const ReadOnlyAdditionalFundingSourcesArrayFieldTemplate = (
+const ReadOnlyAnticipatedFundingPerFiscalYearArrayFieldTemplate = (
   props: ArrayFieldTemplateProps
 ) => {
-  // brianna how to pass calculated value to array field template
-  console.log("props in array field", props);
-  console.log("props.items in additional", props.items);
+  console.log("props.items", props.items);
   return (
     <>
       {props.items.map((item, i) => {
+        //   can i map item.children? did I try that already?
+
         return (
           <div key={item.key} className="additionalFundingSourceWithNumber">
-            <div className="sourceTitle">Additional Funding Source {i + 1}</div>
+            <div className="sourceTitle">
+              Anticipated Funding Amount Fiscal Year {i + 1}
+            </div>
             <div key={item.key} className="additionalFundingSourceSection">
               <div className="additionalFundingSourceForm">{item.children}</div>
             </div>
@@ -41,4 +44,4 @@ const ReadOnlyAdditionalFundingSourcesArrayFieldTemplate = (
   );
 };
 
-export default ReadOnlyAdditionalFundingSourcesArrayFieldTemplate;
+export default ReadOnlyAnticipatedFundingPerFiscalYearArrayFieldTemplate;
