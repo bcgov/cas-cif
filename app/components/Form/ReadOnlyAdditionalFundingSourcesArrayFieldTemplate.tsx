@@ -3,9 +3,6 @@ import { ArrayFieldTemplateProps } from "@rjsf/core";
 const ReadOnlyAdditionalFundingSourcesArrayFieldTemplate = (
   props: ArrayFieldTemplateProps
 ) => {
-  // brianna how to pass calculated value to array field template
-  console.log("props in array field", props);
-  console.log("props.items in additional", props.items);
   return (
     <>
       {props.items.map((item, i) => {

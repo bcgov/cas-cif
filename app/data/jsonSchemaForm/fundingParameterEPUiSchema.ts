@@ -1,5 +1,3 @@
-import ReadOnlyAnticipatedFundingPerFiscalYearArrayFieldTemplate from "components/Form/ReadOnlyAnticipatedFundingPerFiscalYearArrayFieldTemplate";
-
 export const fundingParameterEPUiSchema = {
   "ui:order": [
     "contractStartDate",
@@ -49,21 +47,12 @@ export const fundingParameterEPUiSchema = {
     isMoney: true,
   },
   anticipatedFundingAmountPerFiscalYear: {
-    items: {
-      "ui:order": ["anticipatedFundingAmount", "fiscalYear"],
-      anticipatedFundingAmount: {
-        "ui:title": `in ui schema brianna`,
-        // "ui:widget": "CalculatedValueWidget",
-        // calculatedValueFormContextProperty:
-        //   "calculatedAnticipatedFundingAmountPerFiscalYear",
-        isMoney: true,
-      },
-      fiscalYear: {
-        "ui:widget": "TextWidget",
-      },
+    "ui:options": {
+      label: false,
     },
-    "ui:ArrayFieldTemplate":
-      ReadOnlyAnticipatedFundingPerFiscalYearArrayFieldTemplate,
+    "ui:widget": "AnticipatedFundingAmountPerFiscalYearWidget",
+    title: "",
+    hideOptional: true,
   },
   proponentCost: {
     "ui:widget": "NumberWidget",
