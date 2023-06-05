@@ -21,7 +21,6 @@ const { fields } = utils.getDefaultRegistry();
 
 // Set custom rjsf fields to display diffs
 const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
-console.log("customFields", customFields);
 
 interface Props
   extends SummaryFormProps<ProjectFundingAgreementFormSummary_projectRevision$key> {
@@ -39,6 +38,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
         # eslint-disable-next-line relay/must-colocate-fragment-spreads
+        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         projectFormChange {
           asProject {
@@ -64,16 +64,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               totalProjectValue
               isPristine
               operation
-              # eslint-disable-next-line relay/must-colocate-fragment-spreads
-              ...AnticipatedFundingAmountPerFiscalYearWidget_formChange
-              anticipatedFundingAmountPerFiscalYear {
-                edges {
-                  node {
-                    anticipatedFundingAmount
-                    fiscalYear
-                  }
-                }
-              }
               formChangeByPreviousFormChangeId {
                 newFormData
                 eligibleExpensesToDate
@@ -83,16 +73,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
                 calculatedTotalPaymentAmountToDate
                 proponentsSharePercentage
                 totalProjectValue
-                # eslint-disable-next-line relay/must-colocate-fragment-spreads
-                ...AnticipatedFundingAmountPerFiscalYearWidget_formChange
-                anticipatedFundingAmountPerFiscalYear {
-                  edges {
-                    node {
-                      anticipatedFundingAmount
-                      fiscalYear
-                    }
-                  }
-                }
               }
             }
           }
@@ -110,16 +90,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               calculatedTotalPaymentAmountToDate
               proponentsSharePercentage
               totalProjectValue
-              # eslint-disable-next-line relay/must-colocate-fragment-spreads
-              ...AnticipatedFundingAmountPerFiscalYearWidget_formChange
-              anticipatedFundingAmountPerFiscalYear {
-                edges {
-                  node {
-                    anticipatedFundingAmount
-                    fiscalYear
-                  }
-                }
-              }
             }
           }
         }
@@ -133,16 +103,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
 
   const fundingAgreementSummary =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node;
-  console.log(
-    "antic",
-    fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear?.edges
-  );
-
-  const transformAnticipatedFundingAmountPerFiscalYear = (fundingArray) => {
-    const result = {};
-
-    return result;
-  };
 
   const newData = {
     ...fundingAgreementSummary?.newFormData,
@@ -155,9 +115,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       fundingAgreementSummary?.proponentsSharePercentage,
     totalProjectValue: fundingAgreementSummary?.totalProjectValue,
-    // anticipatedFundingAmountPerFiscalYear:
-    //   fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges[0]
-    //     .node,
   };
 
   const latestCommittedFundingFormChanges =
@@ -176,9 +133,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       latestCommittedFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: latestCommittedFundingFormChanges?.totalProjectValue,
-    // anticipatedFundingAmountPerFiscalYear:
-    //   latestCommittedFundingFormChanges?.anticipatedFundingAmountPerFiscalYear
-    //     .edges[0].node,
   };
 
   const oldFundingFormChanges =
@@ -195,9 +149,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       oldFundingFormChanges?.calculatedTotalPaymentAmountToDate,
     proponentsSharePercentage: oldFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: oldFundingFormChanges?.totalProjectValue,
-    // anticipatedFundingAmountPerFiscalYear:
-    //   oldFundingFormChanges?.anticipatedFundingAmountPerFiscalYear.edges[0]
-    //     .node,
   };
 
   const fundingStream =

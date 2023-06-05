@@ -458,12 +458,6 @@ const CUSTOM_DIFF_FIELDS: Record<
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
     const isAmendmentsAndOtherRevisionsSpecific =
       formContext?.isAmendmentsAndOtherRevisionsSpecific;
-    console.log("formcontext", formContext);
-    console.log("----------------");
-    console.log("props.name", props.name);
-    console.log("previousValue", previousValue);
-    console.log("latestCommittedValue", latestCommittedValue);
-    console.log("formData", formData);
 
     if (uiSchema["ui:options"]) {
       const oldDataOptionText =

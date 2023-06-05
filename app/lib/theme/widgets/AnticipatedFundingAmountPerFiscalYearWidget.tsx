@@ -3,12 +3,18 @@ import { graphql, useFragment } from "react-relay";
 import CalculatedValueWidget from "./CalculatedValueWidget";
 
 const AnticipatedFundingAmountPerFiscalYearWidgetFragment = graphql`
-  fragment AnticipatedFundingAmountPerFiscalYearWidget_formChange on FormChange {
-    anticipatedFundingAmountPerFiscalYear {
+  fragment AnticipatedFundingAmountPerFiscalYearWidget_projectRevision on ProjectRevision {
+    formChangesByProjectRevisionId {
       edges {
         node {
-          anticipatedFundingAmount
-          fiscalYear
+          anticipatedFundingAmountPerFiscalYear {
+            edges {
+              node {
+                anticipatedFundingAmount
+                fiscalYear
+              }
+            }
+          }
         }
       }
     }
@@ -20,13 +26,15 @@ const AnticipatedFundingAmountPerFiscalYearWidget: React.FC<WidgetProps> = (
 ) => {
   const query = useFragment(
     AnticipatedFundingAmountPerFiscalYearWidgetFragment,
-    props.formContext.projectRevision.projectFundingAgreementFormChanges
-      ?.edges[0]?.node
+    props.formContext.projectRevision
   );
 
-  const anticipatedFunding = query.anticipatedFundingAmountPerFiscalYear
-    ?.edges[0]
-    ? [...query.anticipatedFundingAmountPerFiscalYear?.edges]
+  const anticipatedFunding = query.formChangesByProjectRevisionId?.edges[0]
+    ?.node.anticipatedFundingAmountPerFiscalYear?.edges[0]
+    ? [
+        ...query.formChangesByProjectRevisionId?.edges[0]?.node
+          .anticipatedFundingAmountPerFiscalYear?.edges,
+      ]
     : [];
 
   // This ensures that a minimum of three fiscal years are displayed, even if the user hasn't filled out any milestone information yet
