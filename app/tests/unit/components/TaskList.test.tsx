@@ -46,6 +46,7 @@ const mockQueryPayload = {
         milestoneReportStatuses: {
           edges: [],
         },
+        projectAttachmentsStatus: "test-project-attachments-status",
       },
     };
   },
@@ -63,7 +64,7 @@ const componentTestingHelper = new ComponentTestingHelper<TaskListQuery>({
   defaultQueryVariables: { projectRevision: "Test Revision ID" },
 });
 
-describe("The ProjectManagerForm", () => {
+describe("The Tasklist", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     componentTestingHelper.reinit();
@@ -76,21 +77,21 @@ describe("The ProjectManagerForm", () => {
     expect(
       screen.getByText("Editing: test-project-proposal-reference")
     ).toBeInTheDocument();
-    expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
   });
 
   it("Renders the TaskList In create", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent(undefined, { mode: "create" });
     expect(screen.getByText("Add a Project")).toBeInTheDocument();
-    expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
   });
 
   it("Renders the TaskList in view", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent(undefined, { mode: "view" });
 
-    expect(screen.queryByText("Attachments")).toBeInTheDocument();
+    expect(
+      screen.getByText("test-project-proposal-reference")
+    ).toBeInTheDocument();
   });
 
   it("Renders the proper form statuses", () => {
@@ -112,6 +113,11 @@ describe("The ProjectManagerForm", () => {
     fireEvent.click(screen.getByText(/Quarterly Reports/i));
     expect(
       screen.getByText("test-project-quarterly-reports-status")
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText(/Project Attachments/i));
+    expect(
+      screen.getByText("test-project-attachments-status")
     ).toBeInTheDocument();
   });
 
@@ -211,14 +217,15 @@ describe("The ProjectManagerForm", () => {
     );
   });
 
-  it("Calls the proper getRoute function when clicking Attachments", () => {
+  it("Calls the proper getRoute function when clicking Project Attachments", () => {
     componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent(undefined, { mode: "view" });
+    componentTestingHelper.renderComponent();
 
-    fireEvent.click(screen.getByText(/Attachments/i));
+    fireEvent.click(screen.getByText(/Project Attachments/i));
+    fireEvent.click(screen.getByText(/Edit Project Attachments/i));
     expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
-      "/cif/project-revision/[projectRevision]/attachments?projectRevision=test-project-revision-id",
-      "/cif/project-revision/test-project-revision-id/attachments",
+      "/cif/project-revision/[projectRevision]/form/[formIndex]?projectRevision=test-project-revision-id&formIndex=8",
+      "/cif/project-revision/test-project-revision-id/form/8",
       expect.any(Object)
     );
   });

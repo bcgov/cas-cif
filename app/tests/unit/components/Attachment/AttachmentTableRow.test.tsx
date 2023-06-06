@@ -76,6 +76,13 @@ describe("The Attachment table row component", () => {
     expect(screen.getByText("2019-01-01")).toBeInTheDocument();
   });
 
+  it("hides the delete button when hideDelete prop is true", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, { hideDelete: true });
+
+    expect(screen.queryByText("Delete")).not.toBeInTheDocument();
+  });
+
   it("has a working download button", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -89,7 +96,7 @@ describe("The Attachment table row component", () => {
       expect.anything()
     );
   });
-  it("calls the archiveAttachmentMutation when the delete button is clicked", () => {
+  it("calls the discardProjectAttachmentFormChangeMutation when the delete button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -100,10 +107,7 @@ describe("The Attachment table row component", () => {
       "discardProjectAttachmentFormChangeMutation",
       {
         input: {
-          rowId: "test-form-change-row-id",
-          formChangePatch: {
-            operation: "ARCHIVE",
-          },
+          formChangeId: "test-form-change-row-id",
         },
         connections: ["test-attachment-form-change-connection-id"],
       }

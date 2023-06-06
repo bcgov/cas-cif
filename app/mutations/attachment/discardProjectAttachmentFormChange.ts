@@ -4,11 +4,14 @@ import { graphql } from "react-relay";
 
 const mutation = graphql`
   mutation discardProjectAttachmentFormChangeMutation(
-    $input: UpdateFormChangeInput!
+    $input: DiscardProjectAttachmentFormChangeInput!
     $connections: [ID!]!
   ) {
-    updateFormChange(input: $input) {
-      formChange {
+    discardProjectAttachmentFormChange(input: $input) {
+      formChanges {
+        projectRevisionByProjectRevisionId {
+          ...TaskList_projectRevision
+        }
         id @deleteEdge(connections: $connections)
       }
     }

@@ -308,3 +308,6 @@ computed_columns/form_change_anticipated_funding_amount_per_fiscal_year 2023-05-
 computed_columns/project_revision_anticipated_funding_amount_per_fiscal_year [computed_columns/project_revision_anticipated_funding_amount_per_fiscal_year@1.7.0] 2023-05-16T18:19:04Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate project_revision_anticipated_funding_amount_per_fiscal_year
 computed_columns/form_change_actual_performance_milestone_amount [tables/form_change] 2023-05-16T18:49:48Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Returns the calculated actual performance milestone amount
 tables/project_type_001 2023-05-11T21:32:24Z Josh Larouche <joshua.larouche@gov.bc.ca> # adding methane capture to the project type table
+mutations/add_project_attachment_to_revision [mutations/add_project_attachment_to_revision@1.8.0] 2023-05-23T22:31:20Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove project_id argument from mutation
+mutations/discard_project_attachment_form_change 2023-05-25T16:23:00Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Mutation to discard a project attachment form change
+mutations/create_project_revision [mutations/create_project_revision@1.8.0] 2023-05-25T18:40:23Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add project attachments to create_project_revision

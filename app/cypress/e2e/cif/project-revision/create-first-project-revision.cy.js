@@ -158,6 +158,10 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/form/7");
     cy.findByText(/Submit Annual Reports/i).click();
 
+    // Add attachments
+    cy.url().should("include", "/form/8");
+    cy.findByText(/Submit project attachments/i).click();
+
     //review and submit
     cy.contains("Review and Submit Project");
 
@@ -266,6 +270,7 @@ describe("when creating a project, the project page", () => {
       .next()
       .should("have.text", "$12.00");
 
+    // summary
     cy.happoAndAxe("Project summary Form", "filled", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
     cy.url().should("include", "/cif/projects");
@@ -343,7 +348,7 @@ describe("when creating a project, the project page", () => {
 
     //review and submit
     cy.findByRole("heading", {
-      name: /6. Submit Changes/i,
+      name: /7. Submit Changes/i,
     }).click();
     cy.findByText(/Review and Submit information/i).click();
     cy.contains("Review and Submit Project");

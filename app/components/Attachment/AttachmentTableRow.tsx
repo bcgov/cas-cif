@@ -9,12 +9,14 @@ interface Props {
   attachment: AttachmentTableRow_attachment$key;
   connectionId: string;
   formChangeRowId: number;
+  hideDelete?: boolean;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
   attachment,
   connectionId,
   formChangeRowId,
+  hideDelete,
 }) => {
   const [
     discardProjectAttachmentFormChange,
@@ -47,10 +49,7 @@ const AttachmentTableRow: React.FC<Props> = ({
     discardProjectAttachmentFormChange({
       variables: {
         input: {
-          rowId: formChangeRowId,
-          formChangePatch: {
-            operation: "ARCHIVE",
-          },
+          formChangeId: formChangeRowId,
         },
         connections: [connectionId],
       },
@@ -69,13 +68,15 @@ const AttachmentTableRow: React.FC<Props> = ({
           <Link href={getAttachmentDownloadRoute(id)} passHref>
             <Button size="small">Download</Button>
           </Link>
-          <Button
-            onClick={handleArchiveAttachment}
-            disabled={isDiscardingProjectAttachmentFormChange}
-            size="small"
-          >
-            Delete
-          </Button>
+          {!hideDelete && (
+            <Button
+              onClick={handleArchiveAttachment}
+              disabled={isDiscardingProjectAttachmentFormChange}
+              size="small"
+            >
+              Delete
+            </Button>
+          )}
         </td>
       </tr>
       <style jsx>{`

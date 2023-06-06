@@ -22,6 +22,8 @@ import {
 } from "../../lib/pages/formStructureFunctions";
 import { IFormSection } from "./types";
 import { useMemo } from "react";
+import ProjectAttachmentsFormSummary from "components/Form/ProjectAttachmentsFormSummary";
+import ProjectAttachmentsForm from "components/Form/ProjectAttachmentsForm";
 
 export const useFormStructure: (fundingStream: String) => IFormSection[] = (
   fundingStream: String
@@ -154,6 +156,19 @@ export const useFormStructure: (fundingStream: String) => IFormSection[] = (
         : []),
       ,
       ,
+      {
+        title: "Project Attachments",
+        items: [
+          {
+            title: "Project Attachments",
+            formConfiguration: {
+              slug: "projectAttachments",
+              editComponent: ProjectAttachmentsForm,
+              viewComponent: ProjectAttachmentsFormSummary,
+            },
+          },
+        ],
+      },
     ],
     [showEP, showIA]
   );

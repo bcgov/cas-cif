@@ -1,4 +1,3 @@
-import "cypress-file-upload";
 import "happo-cypress";
 import "@testing-library/cypress/add-commands";
 import { DateTime } from "luxon";
