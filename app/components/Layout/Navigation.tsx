@@ -32,7 +32,9 @@ const Navigation: React.FC<Props> = ({
     </>
   );
   const router = useRouter();
-  const unauthorizedIdir = router?.pathname === "/unauthorized_idir";
+
+  const unauthorizedIdir = title === "Access required";
+
   return (
     <>
       <BaseNavigation>

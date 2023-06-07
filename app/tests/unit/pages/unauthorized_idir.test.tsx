@@ -56,4 +56,12 @@ describe("The unauthorized_idir page", () => {
       })
     ).toBeInTheDocument();
   });
+
+  it("should render the Navigation component without subheader links", () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+    expect(screen.getByText(/Access required/i)).toBeVisible();
+    expect(screen.queryByText("Home")).toBeNull();
+    expect(screen.queryByText("Projects")).toBeNull();
+  });
 });

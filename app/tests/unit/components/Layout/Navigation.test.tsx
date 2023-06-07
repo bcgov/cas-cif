@@ -11,20 +11,6 @@ const links = [
     },
     highlightOn: ["/cif/project(.*)"],
   },
-  {
-    name: "Operators",
-    href: {
-      pathname: "/cif/operators/",
-    },
-    highlightOn: ["/cif/operator(.*)"],
-  },
-  {
-    name: "Contacts",
-    href: {
-      pathname: "/cif/contacts/",
-    },
-    highlightOn: ["/cif/contact(.*)"],
-  },
 ];
 
 jest.mock("next/router", () => ({
@@ -34,11 +20,11 @@ jest.mock("next/router", () => ({
 describe("The Navigation Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-  it("should not render the subheader links if the user is logged out", () => {
     mocked(useRouter).mockReturnValue({
       pathname: "/",
     } as any);
+  });
+  it("should not render the subheader links if the user is logged out", () => {
     render(<Navigation isLoggedIn={false} links={links} />);
     expect(screen.getByText("CleanBC Industry Fund")).toBeVisible();
     expect(screen.queryByText("Home")).toBeNull();
@@ -46,20 +32,16 @@ describe("The Navigation Component", () => {
   });
 
   it("should not render the subheader links if the user is logged in but their IDIR is unauthorized", () => {
-    mocked(useRouter).mockReturnValue({
-      pathname: "/unauthorized_idir",
-    } as any);
-    render(<Navigation isLoggedIn={true} links={links} />);
+    render(
+      <Navigation isLoggedIn={true} links={links} title="Access required" />
+    );
 
-    expect(screen.getByText("CleanBC Industry Fund")).toBeVisible();
+    expect(screen.getByText(/Access required/i)).toBeVisible();
     expect(screen.queryByText("Home")).toBeNull();
     expect(screen.queryByText("Projects")).toBeNull();
   });
 
   it("should render the subheader links if the user is logged in and their IDIR is authorized", () => {
-    mocked(useRouter).mockReturnValue({
-      pathname: "/",
-    } as any);
     render(<Navigation isLoggedIn={true} links={links} />);
 
     expect(screen.getByText("Home")).toBeVisible();
