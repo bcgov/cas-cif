@@ -23,7 +23,6 @@ describe("when discarding a project revision, the project page", () => {
       .type("this will be discarded");
     cy.findByText(/submit/i).click();
 
-    cy.findByText(/revision type/i).click();
     cy.findByRole("button", { name: /^discard/i }).click();
     cy.findByText("Proceed").click();
 

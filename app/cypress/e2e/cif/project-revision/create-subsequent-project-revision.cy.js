@@ -58,7 +58,7 @@ describe("the project amendment and revisions page", () => {
 
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.contains(/revision type/i); // ensure the submit page has loaded
+    cy.findByText("General Revision 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit contacts -- add a secondary contact
     cy.findByRole("button", { name: /^2. Project Details/i }).click();
@@ -106,7 +106,6 @@ describe("the project amendment and revisions page", () => {
     cy.sqlFixture("dev/009_cif_project_revision_logs");
     cy.navigateToFirstProjectEditRevisionPage();
     cy.get("h2").contains(/amendment 2/i);
-    cy.get('input[value="Amendment"]').should("be.checked");
     cy.findByText(/status/i)
       .next()
       .contains("In Discussion");
