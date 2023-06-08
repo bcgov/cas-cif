@@ -48,15 +48,6 @@ export const ViewProjectRevisionQuery = graphql`
       ...ChangeReasonWidget_projectRevision
       ...RevisionRecordHistory_projectRevision
     }
-    allRevisionTypes {
-      # type is passed to the helper function that builds the schema
-      # eslint-disable-next-line relay/unused-fields
-      edges {
-        node {
-          type
-        }
-      }
-    }
     allRevisionStatuses(orderBy: SORTING_ORDER_ASC) {
       # node is passed to the helper function that builds the schema
       # eslint-disable-next-line relay/unused-fields
@@ -73,23 +64,10 @@ export const ViewProjectRevisionQuery = graphql`
 `;
 
 export const buildProjectRevisionSchema = (
-  allRevisionTypesEdges: viewProjectRevisionQuery$data["allRevisionTypes"]["edges"],
   allRevisionStatusesEdges: viewProjectRevisionQuery$data["allRevisionStatuses"]["edges"],
   revisionType: string
 ): JSONSchema7 => {
   const schema = viewProjectRevisionSchema;
-  schema.properties.revisionType = {
-    ...schema.properties.revisionType,
-    anyOf: allRevisionTypesEdges.map(({ node }) => {
-      return {
-        type: "string",
-        title: node.type,
-        enum: [node.type],
-        value: node.type,
-      } as JSONSchema7Definition;
-    }),
-  };
-
   schema.properties.revisionStatus = {
     ...schema.properties.revisionStatus,
     anyOf: allRevisionStatusesEdges.map(({ node }) => {
@@ -109,18 +87,11 @@ export const buildProjectRevisionSchema = (
   return schema as JSONSchema7;
 };
 
-export const createProjectRevisionUISchema = (uiSchema) => {
-  const localUiSchema = JSON.parse(JSON.stringify(uiSchema));
-  localUiSchema.revisionType["ui:readonly"] = true;
-  return localUiSchema;
-};
-
 export function ProjectRevisionView({
   preloadedQuery,
 }: RelayProps<{}, viewProjectRevisionQuery>) {
   const query = usePreloadedQuery(ViewProjectRevisionQuery, preloadedQuery);
-  const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
-    query;
+  const { session, projectRevision, allRevisionStatuses } = query;
 
   const taskList = (
     <TaskList
@@ -147,7 +118,6 @@ export function ProjectRevisionView({
           <FormBase
             className="project-revision-view-form"
             schema={buildProjectRevisionSchema(
-              allRevisionTypes.edges,
               allRevisionStatuses.edges,
               projectRevision.revisionType
             )}
@@ -155,10 +125,10 @@ export function ProjectRevisionView({
             formContext={{ projectRevision, query }}
             formData={projectRevision}
             id={`form-${projectRevision.id}`}
+            uiSchema={projectRevisionUISchema}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
             tagName={"dl"}
-            uiSchema={createProjectRevisionUISchema(projectRevisionUISchema)}
             widgets={{
               RevisionStatusWidget,
               UpdatedFormsWidget,

@@ -15,10 +15,7 @@ import { useState } from "react";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { editProjectRevisionQuery } from "__generated__/editProjectRevisionQuery.graphql";
-import {
-  buildProjectRevisionSchema,
-  createProjectRevisionUISchema,
-} from "./view";
+import { buildProjectRevisionSchema } from "./view";
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import { Button } from "@button-inc/bcgov-theme";
 import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/deleteProjectRevision";
@@ -83,8 +80,7 @@ export function ProjectRevisionEdit({
 }: RelayProps<{}, editProjectRevisionQuery>) {
   const router = useRouter();
   const query = usePreloadedQuery(EditProjectRevisionQuery, preloadedQuery);
-  const { session, projectRevision, allRevisionTypes, allRevisionStatuses } =
-    query;
+  const { session, projectRevision, allRevisionStatuses } = query;
 
   const { id, revisionType, rowId, typeRowNumber, projectByProjectId } =
     projectRevision;
@@ -143,11 +139,10 @@ export function ProjectRevisionEdit({
             id={`form-${id}`}
             className="project-revision-edit-form"
             schema={buildProjectRevisionSchema(
-              allRevisionTypes.edges,
               filteredRevisionStatuses,
               revisionType
             )}
-            uiSchema={createProjectRevisionUISchema(projectRevisionUISchema)}
+            uiSchema={projectRevisionUISchema}
             ObjectFieldTemplate={EmptyObjectFieldTemplate}
             theme={readOnlyTheme}
             onChange={onChange}
