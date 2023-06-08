@@ -298,7 +298,7 @@ const showNumberDiff = (
               prefix={isMoney ? "$" : ""}
               suffix={isPercentage ? " %" : ""}
               displayType="text"
-              value={latestCommittedData}
+              value={oldData}
               className={diffOldClsName}
               id={id && `${id}-${diffOldClsName}`}
             />
@@ -313,7 +313,7 @@ const showNumberDiff = (
           prefix={isMoney ? "$" : ""}
           suffix={isPercentage ? " %" : ""}
           displayType="text"
-          value={oldData}
+          value={latestCommittedData}
           className={diffOldClsName}
           id={id && `${id}-${diffOldClsName}`}
         />
