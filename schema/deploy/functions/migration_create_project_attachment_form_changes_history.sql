@@ -36,6 +36,7 @@ begin
         select * from cif.form_change
         where project_revision_id = project_revision_record.id
         and form_data_record_id = form_change_record.form_data_record_id
+        and form_data_table_name = 'project_attachment'
       ) then
         insert into cif.form_change (
           operation, form_data_schema_name,
@@ -52,11 +53,7 @@ begin
           'project_attachment',
           form_change_record.form_data_record_id,
           form_change_record.new_form_data,
-          -- form_change change_status can be only pending or committed but project_revision change_status can be pending, committed or staged
-          case
-            when project_revision_record.change_status = 'committed' then 'committed'
-            else 'pending'
-          end,
+          project_revision_record.change_status,
           form_change_record.created_by,
           project_revision_record.created_at,
           form_change_record.updated_by,
