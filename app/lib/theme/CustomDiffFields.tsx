@@ -125,6 +125,15 @@ const showStringDiff = (
             >
               {formatData(isDate, oldData)}
             </span>
+
+            {contentSuffix && contentSuffixElement(id, contentSuffix)}
+            {renderArrow()}
+            <span
+              id={id && `${id}-${diffOldClsName}`}
+              className={diffOldClsName}
+            >
+              {formatData(isDate, latestCommittedData)}
+            </span>
             {contentSuffix && contentSuffixElement(id, contentSuffix)}
           </>
         )}
