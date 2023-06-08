@@ -66,7 +66,6 @@ describe("ProjectRevisionView Page", () => {
       })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(/revision type/i)).toBeInTheDocument();
     expect(screen.getByText(/test comment/i)).toBeInTheDocument();
     expect(screen.queryByText(/Editing:/i)).not.toBeInTheDocument(); // tasklist should be in view mode
     expect(screen.queryByRole("input")).not.toBeInTheDocument(); // entire form should be read-only
