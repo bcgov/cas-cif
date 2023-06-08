@@ -49,7 +49,7 @@ overriding system value
 values
 -- project 1 revisions (two pending revisions)
 (1, 'committed', 1, 'General Revision', '1999-01-05 09:00:00.000000-07'::timestamptz, '1999-01-07 09:00:00.000000-07'::timestamptz),
-(2, 'committed', 1, 'General Revision', '1999-02-05 09:00:00.000000-07'::timestamptz, '1999-02-07 09:00:00.000000-07'::timestamptz), -- this is the revision that project attachment form change was created
+(2, 'committed', 1, 'General Revision', '1999-02-05 09:00:00.000000-07'::timestamptz, '1999-02-07 09:00:00.000000-07'::timestamptz), -- this is the revision that first project attachment form change was created
 (3, 'committed', 1, 'General Revision', '1999-05-05 09:00:00.000000-07'::timestamptz, '1999-05-07 09:00:00.000000-07'::timestamptz),
 (4, 'pending', 1, 'General Revision', '1999-06-05 09:00:00.000000-07'::timestamptz, '1999-06-07 09:00:00.000000-07'::timestamptz),
 (5, 'pending', 1, 'Amendment', '1999-06-06 09:00:00.000000-07'::timestamptz, '1999-06-07 09:00:00.000000-07'::timestamptz),
@@ -187,12 +187,12 @@ select results_eq(
   $$
     values
     ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 2, 'committed'::varchar,'project_attachment'::varchar,'1999-03-05 08:00:00-08'::timestamptz,'1999-03-05 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 3, 'committed'::varchar,'project_attachment'::varchar,'1999-05-05 08:00:00-08'::timestamptz,'1999-05-07 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 6, 3, 'committed'::varchar,'project_attachment'::varchar,'1999-05-05 08:00:00-08'::timestamptz,'1999-05-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 6, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 6, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
     ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 7, 3, 'committed'::varchar,'project_attachment'::varchar,'1999-05-05 08:00:00-08'::timestamptz,'1999-05-05 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 7, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 7, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz);
+    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 7, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 7, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz);
   $$,
   'Returns the correct history of form changes for project 1'
 );
@@ -205,7 +205,7 @@ select results_eq(
   $$
     values
     ('{"projectId": 2, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 8, 6, 'committed'::varchar,'project_attachment'::varchar,'1999-07-07 08:00:00-08'::timestamptz,'1999-07-08 08:00:00-08'::timestamptz),
-    ('{"projectId": 2, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 8, 7, 'committed'::varchar,'project_attachment'::varchar,'1999-08-07 08:00:00-08'::timestamptz,'1999-08-08 08:00:00-08'::timestamptz);
+    ('{"projectId": 2, "attachmentId": 7}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 8, 7, 'committed'::varchar,'project_attachment'::varchar,'1999-08-07 08:00:00-08'::timestamptz,'1999-08-08 08:00:00-08'::timestamptz);
   $$,
   'Returns the correct history of form changes for project 2'
 );
@@ -266,12 +266,12 @@ select results_eq(
   $$
     values
     ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 2, 'committed'::varchar,'project_attachment'::varchar,'1999-03-05 08:00:00-08'::timestamptz,'1999-03-05 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 3, 'committed'::varchar,'project_attachment'::varchar,'1999-05-05 08:00:00-08'::timestamptz,'1999-05-07 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 6, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 6, 3, 'committed'::varchar,'project_attachment'::varchar,'1999-05-05 08:00:00-08'::timestamptz,'1999-05-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 6, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 6}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 6, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
     ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 7, 3, 'committed'::varchar,'project_attachment'::varchar,'1999-05-05 08:00:00-08'::timestamptz,'1999-05-05 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 7, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
-    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 7, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz);
+    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 7, 4, 'pending'::varchar,'project_attachment'::varchar,'1999-06-05 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz),
+    ('{"projectId": 1, "attachmentId": 7}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 7, 5, 'pending'::varchar,'project_attachment'::varchar,'1999-06-06 08:00:00-08'::timestamptz,'1999-06-07 08:00:00-08'::timestamptz);
   $$,
   'Returns the same form_change records after running the migration twice'
 );
@@ -284,7 +284,7 @@ select results_eq(
   $$
     values
     ('{"projectId": 2, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 8, 6, 'committed'::varchar,'project_attachment'::varchar,'1999-07-07 08:00:00-08'::timestamptz,'1999-07-08 08:00:00-08'::timestamptz),
-    ('{"projectId": 2, "attachmentId": 7}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 8, 7, 'committed'::varchar,'project_attachment'::varchar,'1999-08-07 08:00:00-08'::timestamptz,'1999-08-08 08:00:00-08'::timestamptz);
+    ('{"projectId": 2, "attachmentId": 7}'::jsonb, 'update'::cif.form_change_operation, 'project_attachment'::varchar, 8, 7, 'committed'::varchar,'project_attachment'::varchar,'1999-08-07 08:00:00-08'::timestamptz,'1999-08-08 08:00:00-08'::timestamptz);
   $$,
   'Returns the correct history of form changes for project 2'
 );

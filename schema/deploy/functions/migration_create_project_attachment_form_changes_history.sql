@@ -46,7 +46,7 @@ begin
           created_by, created_at,
           updated_by, updated_at
         ) values (
-          'create',
+          'update', -- need to set this to update to prevent duplicate key error on inserting the same form_change
           'cif',
           'project_attachment',
           project_revision_record.id,
