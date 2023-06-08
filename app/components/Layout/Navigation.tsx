@@ -2,7 +2,6 @@ import Image from "next/legacy/image";
 import { BaseNavigation } from "@button-inc/bcgov-theme/Navigation";
 import { BaseHeader } from "@button-inc/bcgov-theme/Header";
 import LogoutForm from "components/Session/LogoutForm";
-
 import SubHeader from "./SubHeader";
 import { useRouter } from "next/router";
 
@@ -32,8 +31,10 @@ const Navigation: React.FC<Props> = ({
       <LogoutForm />
     </>
   );
-
   const router = useRouter();
+
+  const unauthorizedIdir = title === "Access required";
+
   return (
     <>
       <BaseNavigation>
@@ -72,7 +73,9 @@ const Navigation: React.FC<Props> = ({
             {rightSide}
           </BaseHeader.Group>
         </BaseHeader>
-        {(isLoggedIn || alwaysShowSubheader) && <SubHeader links={links} />}
+        {((isLoggedIn && !unauthorizedIdir) || alwaysShowSubheader) && (
+          <SubHeader links={links} />
+        )}
       </BaseNavigation>
       <style jsx>{`
         h1 {

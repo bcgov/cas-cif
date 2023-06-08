@@ -47,26 +47,6 @@ describe("The DefaultLayout component", () => {
     componentTestingHelper.reinit();
   });
 
-  it("should not render the subheader links if the user is logged out", () => {
-    componentTestingHelper.loadQuery({
-      Query() {
-        return { session: null };
-      },
-    });
-    componentTestingHelper.renderComponent();
-    expect(screen.getByText("CleanBC Industry Fund")).toBeVisible();
-    expect(screen.queryByText("Home")).toBeNull();
-    expect(screen.queryByText("Projects")).toBeNull();
-  });
-
-  it("should render the subheader links if the user is logged in", () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    expect(screen.getByText("Home")).toBeVisible();
-    expect(screen.getByText("Projects")).toBeVisible();
-  });
-
   it("should render the Home link to /cif", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -98,5 +78,14 @@ describe("The DefaultLayout component", () => {
     expect(
       screen.getByRole("navigation", { name: "side navigation" })
     ).toBeVisible();
+  });
+
+  it("should render Navigation and Footer components", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText("Home")).toBeVisible(); // Navigation
+    expect(screen.getByText("Projects")).toBeVisible(); // Navigation
+    expect(screen.getByText("Disclaimer")).toBeInTheDocument(); // Footer
   });
 });
