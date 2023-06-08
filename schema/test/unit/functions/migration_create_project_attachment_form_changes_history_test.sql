@@ -1,6 +1,6 @@
 
 begin;
-select plan(9);
+select plan(11);
 
 -- Test Setup --
 truncate table cif.form_change,
@@ -299,6 +299,35 @@ select results_eq(
     ('{"projectId": 3, "attachmentId": 8}'::jsonb, 'create'::cif.form_change_operation, 'project_attachment'::varchar, 9, 8, 'pending'::varchar,'project_attachment'::varchar,'1999-12-08 08:00:00-08'::timestamptz,'1999-12-08 08:00:00-08'::timestamptz);
   $$,
   'Returns the correct history of form changes for project 3'
+);
+
+-- test 10: committing revisions related to project 1 should not cause any issues
+select cif.commit_project_revision(id) from cif.project_revision where id in (4,5);
+
+select results_eq(
+  $$
+    select id, change_status, revision_type, revision_status from cif.project_revision where id in (4,5);
+  $$,
+  $$
+    values
+    (4, 'committed'::varchar, 'General Revision'::varchar, 'Applied'::varchar),
+    (5, 'committed'::varchar, 'Amendment'::varchar, 'Applied'::varchar);
+  $$,
+  'Committing revision related to project 1 should not cause any issues'
+);
+
+-- test 11: committing revision related to project 3 should not cause any issues
+select cif.commit_project_revision(8);
+
+select results_eq(
+  $$
+    select id, change_status, revision_type, revision_status from cif.project_revision where id = 8;
+  $$,
+  $$
+    values
+    (8, 'committed'::varchar, 'General Revision'::varchar, 'Applied'::varchar);
+  $$,
+  'Committing revision related to project 3 should not cause any issues'
 );
 
 select finish();
