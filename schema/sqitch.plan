@@ -320,3 +320,4 @@ migrations/007_create_form_changes_for_existing_project_attachments [tables/form
 tables/project_type_002 2023-06-30T17:42:14Z Sam Warren <samwarren4@gmail.com> # add Energy Efficiency to list of project types
 tables/sector_001 2023-06-30T17:44:24Z Sam Warren <samwarren4@gmail.com> # add Waste and Manufacturing to sectors list
 functions/handle_emission_intensity_form_change_commit 2023-06-08T21:57:23Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create custom commit handler for emission intensity report form changes
+functions/migration_emission_intensity_report_form_changes_to_single_form_change 2023-06-09T15:41:52Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # idempotent function called by the migration with the same name. Aggregates the multiple form_changes for emission intensity reports(reporting_requirement, emission_intensity_report) into a new,single emission intensity report form_change
