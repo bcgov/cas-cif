@@ -1,0 +1,80 @@
+{
+  "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Emissions Intensity Report",
+    "required": [
+      "measurementPeriodStartDate",
+      "measurementPeriodEndDate",
+      "emissionFunctionalUnit",
+      "baselineEmissionIntensity",
+      "targetEmissionIntensity"
+    ],
+    "properties": {
+      "reportDueDate": {
+        "type": "string",
+        "title": "Report Due Date"
+      },
+      "submittedDate": {
+        "type": "string",
+        "title": "Report Received Date"
+      },
+      "comments": {
+        "type": "string",
+        "title": "General Comments"
+      },
+      "measurementPeriodStartDate": {
+        "title": "TEIMP Start Date",
+        "type": "string"
+      },
+      "measurementPeriodEndDate": {
+        "title": "TEIMP End Date",
+        "type": "string"
+      },
+      "emissionFunctionalUnit": {
+        "title": "Functional Unit",
+        "type": "string"
+      },
+      "productionFunctionalUnit": {
+        "title": "Production Functional Unit",
+        "type": "string"
+      },
+      "baselineEmissionIntensity": {
+        "title": "Baseline Emission Intensity (BEI)",
+        "type": "number"
+      },
+      "targetEmissionIntensity": {
+        "title": "Target Emission Intensity (TEI)",
+        "type": "number"
+      },
+      "postProjectEmissionIntensity": {
+        "title": "Post-Project Emission Intensity (PEI)",
+        "type": "number"
+      },
+      "totalLifetimeEmissionReduction": {
+        "title": "Total Project Lifetime Emissions Reductions",
+        "type": "number"
+      },
+      "adjustedEmissionsIntensityPerformance": {
+        "title": "GHG Emission Intensity Performance",
+        "type": "number"
+      },
+      "paymentPercentage": {
+        "title": "Payment Percentage of Performance Milestone Amount (%)",
+        "type": "number"
+      },
+      "holdbackAmountToDate": {
+        "type": "number",
+        "title": "Maximum Performance Milestone Amount"
+      },
+      "actualPerformanceMilestoneAmount": {
+        "type": "number",
+        "title": "Actual Performance Milestone Amount"
+      },
+      "dateSentToCsnr": {
+        "type": "string",
+        "title": "Date Invoice Sent to CSNR"
+      }
+    }
+  }
+}
