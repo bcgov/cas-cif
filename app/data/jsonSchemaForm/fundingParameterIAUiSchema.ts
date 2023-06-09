@@ -14,21 +14,33 @@ export const fundingParameterIAUiSchema = {
   ],
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
+    "ui:tooltip": {
+      text: "<div>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</div>",
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedTotalProjectValue",
   },
   maxFundingAmount: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: "<div>The maximum payment amount that the proponent can receive from CIF.</div>",
+    },
     isMoney: true,
   },
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: "<div>Typically, 50% at most.</div>",
+    },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
   },
   proponentsSharePercentage: {
     "ui:widget": "CalculatedValueWidget",
+    "ui:tooltip": {
+      text: "<div><ul><li>Proponent's share percentage = Proponent Cost / Total Project Value</li><li>The Proponent's Share Percentage should be NO LESS than 25%.</li><li>For 2021 projects, the Proponent's Share Percentage should be NO LESS than 25%.</li></ul></div>",
+    },
     numberOfDecimalPlaces: 2,
     isPercentage: true,
     calculatedValueFormContextProperty: "calculatedProponentsSharePercentage",
@@ -48,6 +60,9 @@ export const fundingParameterIAUiSchema = {
   },
   proponentCost: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: "<div>The amount of expenses paid by the proponent.</div>",
+    },
     isMoney: true,
   },
   contractStartDate: {
@@ -72,6 +87,9 @@ export const fundingParameterIAUiSchema = {
       amount: {
         "ui:title": `Additional Funding Amount`,
         "ui:widget": "NumberWidget",
+        "ui:tooltip": {
+          text: "<div><ul><li>The amount of payment from Funding Source N other than CIF.</li><li>Typically found in the original proposal (solicitation folder of the LAN).</li></ul></div>",
+        },
         isMoney: true,
       },
       status: {
