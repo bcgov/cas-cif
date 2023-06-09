@@ -84,7 +84,8 @@ const TaskList: React.FC<Props> = ({
           jsonMatcher: "{\"reportType\":\"Annual\"}"
         )
         teimpStatus: tasklistStatusFor(
-          formDataTableName: "emission_intensity_report"
+          formDataTableName: "reporting_requirement"
+          jsonMatcher: "{\"reportType\":\"TEIMP\"}"
         )
         fundingAgreementStatus: tasklistStatusFor(formDataTableName: "funding_parameter")
         milestoneReportStatuses {
