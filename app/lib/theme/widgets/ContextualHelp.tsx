@@ -1,5 +1,5 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tooltip from "@mui/material/Tooltip";
 import { BC_GOV_LINKS_COLOR, DARK_GREY_BG_COLOR } from "../colors";
@@ -7,7 +7,7 @@ import parse from "html-react-parser";
 
 /**
  * @param {string} text - The text of the tooltip to be displayed (can be HTML)
- * @param {IconDefinition} icon - The icon to display in the tooltip; defaults to faExclamationCircle
+ * @param {IconDefinition} icon - The icon to display in the tooltip; defaults to faInfoCircle
  * @param {string} placement - The placement of the tooltip; defaults to "top"
  * @param {string} label - The label of the tooltip to be used as the aria-labelledby attribute; this gets passed by the parent component(FieldLabel)
  * @returns {ReactElement} - The tooltip component
@@ -15,7 +15,7 @@ import parse from "html-react-parser";
  * Example:
  * "ui:tooltip": {
  *   "text": "<div>Some content here with <a>Links</a> and other HTML tags</div>",
- *   "icon": faExclamationCircle,
+ *   "icon": faInfoCircle,
  *   "placement": "top"
  * }
  * NOTE: we are using html-react-parser package to parse the text of the tooltip to allow for HTML tags and avoid using dangerouslySetInnerHTML
@@ -42,7 +42,7 @@ interface ContextualHelpProps {
 
 const ContextualHelp: React.FC<ContextualHelpProps> = ({
   text,
-  icon = faExclamationCircle,
+  icon = faInfoCircle,
   placement = "bottom",
   label,
 }) => {
