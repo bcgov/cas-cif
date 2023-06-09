@@ -85,6 +85,8 @@ export const createEmissionIntensityReportUiSchema = (
   if (viewOnly)
     uiSchemaCopy.teimpReporting.productionFunctionalUnit["ui:label"] = "";
 
+  console.log("uiSchemaCopy", uiSchemaCopy);
+
   uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"] = {
     ...uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
@@ -119,6 +121,24 @@ export const createEmissionIntensityReportUiSchema = (
   uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"] = {
     ...uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"],
     contentSuffix: emissionFunctionalUnitSuffix(),
+  };
+
+  uiSchemaCopy.uponCompletion.adjustedEmissionsIntensityPerformance[
+    "ui:tooltip"
+  ] = {
+    text: "<div>GHG Emission Intensity Performance = (BEI - PEI) / (BEI - TEI) x 100</div>",
+  };
+
+  uiSchemaCopy.uponCompletion.paymentPercentage["ui:tooltip"] = {
+    text: "<div>Payment Percentage of Performance Milestone Amount = 100 – ((-1.5) x GHG Emission Intensity Performance + 145)</div>",
+  };
+
+  uiSchemaCopy.uponCompletion.holdbackAmountToDate["ui:tooltip"] = {
+    text: "<div>Maximum Performance Milestone Amount = Holdback Payment Amount (Milestone Report 1) + Holdback Payment Amount (Milestone Report 2) + ... + Holdback Payment Amount (Milestone Report N)</div>",
+  };
+
+  uiSchemaCopy.uponCompletion.actualPerformanceMilestoneAmount["ui:tooltip"] = {
+    text: "<div>Actual Performance Milestone Amount = Maximum Performance Milestone Amount x Payment Percentage of Performance Milestone Amount</div>",
   };
 
   /**
