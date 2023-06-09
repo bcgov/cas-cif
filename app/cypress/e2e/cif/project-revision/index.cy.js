@@ -66,7 +66,7 @@ describe("the new project page", () => {
     );
     cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
       "have.value",
-      "10 %"
+      "10.23 %"
     );
 
     // MILESTONE REPORTS

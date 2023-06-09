@@ -282,8 +282,8 @@ describe("The Project Funding Agreement Form Summary", () => {
 
     expect(screen.getByText("50.00 %")).toBeInTheDocument();
     expect(screen.getByText("60.00 %")).toBeInTheDocument();
-    expect(screen.getByText("10 %")).toBeInTheDocument();
-    expect(screen.getByText("20 %")).toBeInTheDocument();
+    expect(screen.getByText("10.23 %")).toBeInTheDocument();
+    expect(screen.getByText("20.15 %")).toBeInTheDocument();
     expect(screen.getByText("$2,500.00")).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
     expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();

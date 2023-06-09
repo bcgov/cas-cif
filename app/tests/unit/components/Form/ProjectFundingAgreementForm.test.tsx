@@ -171,7 +171,7 @@ describe("The ProjectFundingAgreementForm", () => {
       screen.getByLabelText<HTMLSelectElement>(
         /Performance Milestone Holdback Percentage/i
       ).value
-    ).toBe("10 %");
+    ).toBe("10.23 %");
     expect(
       screen.getByLabelText<HTMLSelectElement>(
         /Anticipated\/Actual Funding Amount/i
