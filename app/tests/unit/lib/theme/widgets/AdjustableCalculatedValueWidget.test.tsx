@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdjustableCalculatedValueWidget } from "lib/theme/widgets/AdjustableCalculatedValueWidget";
 
@@ -69,5 +69,24 @@ describe("The AdjustableCalculatedValueWidget", () => {
     );
 
     expect(props.onChange).toHaveBeenLastCalledWith(undefined);
+  });
+
+  it("renders the help tooltip", () => {
+    const props: any = {
+      uiSchema: { isMoney: true, calculatedValueFormContextProperty: "myProp" },
+      schema: { type: "number", title: "Test Label", default: undefined },
+      id: "test-id",
+      label: "Test Label",
+      onChange: jest.fn(),
+      value: "1",
+      formContext: { myProp: "100" },
+    };
+    render(<AdjustableCalculatedValueWidget {...props} />);
+
+    const helpIcon = screen.getByLabelText("test-label-(adjusted)-tooltip");
+    expect(helpIcon).toBeInTheDocument();
+
+    fireEvent.mouseOver(helpIcon);
+    expect(screen.getByRole("tooltip")).toBeInTheDocument();
   });
 });
