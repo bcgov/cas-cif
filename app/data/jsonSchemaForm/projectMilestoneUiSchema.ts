@@ -55,12 +55,18 @@ const projectMilestoneUiSchema = {
   },
   maximumAmount: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: "<div><ul><li>The maximum paymen amount that the proponent can receive from CIF for this milestone.</li><li>Typically found in schedule D.</ul></div>",
+    },
     isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
   },
   totalEligibleExpenses: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: "<div>The amount of total eligible expenses paid by the proponent for this milestone.</div>",
+    },
     isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -76,18 +82,27 @@ const projectMilestoneUiSchema = {
   },
   adjustedGrossAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
+    "ui:tooltip": {
+      text: "<div><ul><li>Gross Payment Amount This Milestone = Total Eligible Expenses This Milestone x Province's Share Percentage.</li><li>The Gross Payment Amount This Milestone is the smaller value between the calculated value above and the Maximum Milestone Payment Amount This Milestone.</li></ul></div>",
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedGrossAmount",
   },
   adjustedNetAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
+    "ui:tooltip": {
+      text: "<div>Net Payment Amount This Milestone = Gross Payment Amount This Milestone - Holdback Payment Amount This Milestone.</div>",
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedNetAmount",
   },
   adjustedHoldBackAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
+    "ui:tooltip": {
+      text: "<div>Holdback Payment Amount This Milestone = Gross Payment Amount This Milestone x Performance Milestone Holdback Percentage.</div>",
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedHoldbackAmount",
