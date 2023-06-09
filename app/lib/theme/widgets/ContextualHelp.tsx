@@ -83,6 +83,12 @@ const ContextualHelp: React.FC<ContextualHelpProps> = ({
         :global(.MuiTooltip-tooltip a) {
           color: ${BC_GOV_LINKS_COLOR};
         }
+        :global(.MuiTooltip-tooltip ul) {
+          margin-bottom: 0; /* Remove the default bottom margin for lists */
+        }
+        :global(.MuiTooltip-tooltip li) {
+          margin: 0; /* Remove the default margin between list items */
+        }
       `}</style>
     </>
   );
