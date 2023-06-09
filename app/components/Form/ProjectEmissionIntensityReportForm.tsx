@@ -1,26 +1,22 @@
-import {
-  emissionIntensityReportSchema,
-  emissionIntensityReportingRequirementSchema,
-  emissionIntensityReportUiSchema,
-  emissionIntensityReportingRequirementUiSchema,
-} from "data/jsonSchemaForm/projectEmissionIntensitySchema";
-import { JSONSchema7 } from "json-schema";
-import { graphql, useFragment } from "react-relay";
-import FormBase from "./FormBase";
-import { ProjectEmissionIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportForm_projectRevision.graphql";
 import { Button } from "@button-inc/bcgov-theme";
-import { useCreateProjectEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/addEmissionIntensityReportToRevision";
-import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
-import UndoChangesButton from "./UndoChangesButton";
-import SavingIndicator from "./SavingIndicator";
-import { MutableRefObject, useRef } from "react";
-import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
-import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
-import { useStageEmissionIntensityFormChange } from "mutations/ProjectEmissionIntensity/stageEmissionIntensityFormChange";
-import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
+import {
+  emissionIntensityReportingRequirementGroupSchema,
+  emissionIntensityReportingRequirementUiSchema,
+} from "data/jsonSchemaForm/emissionIntensityUiSchema";
+import { JSONSchema7 } from "json-schema";
 import getDurationFromDates from "lib/helpers/getDurationFromDates";
-import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import ReadOnlyEmptyFieldTempalte from "lib/theme/ReadOnlyEmptyFieldTemplate";
+import GroupedObjectFieldTemplateWrapper from "lib/theme/GroupedObjectFieldTemplateWrapper";
+import { useCreateEmissionIntensityReport } from "mutations/ProjectEmissionIntensity/createEmissionIntensityReport";
+import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
+import { useStageReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/stageReportingRequirementFormChange";
+import { MutableRefObject, useRef } from "react";
+import { graphql, useFragment } from "react-relay";
+import { ProjectEmissionIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportForm_projectRevision.graphql";
+import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
+import FormBase from "./FormBase";
+import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
+import SavingIndicator from "./SavingIndicator";
+import UndoChangesButton from "./UndoChangesButton";
 interface Props {
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
@@ -37,7 +33,7 @@ export const createEmissionIntensityReportUiSchema = (
 ) => {
   // setting a deep copy of the ui schema to avoid mutating the original
   const uiSchemaCopy = JSON.parse(
-    JSON.stringify(emissionIntensityReportUiSchema)
+    JSON.stringify(emissionIntensityReportingRequirementUiSchema)
   );
 
   // Example: tCO2e/GJ if we have emissionFunctionalUnit
@@ -70,6 +66,7 @@ export const createEmissionIntensityReportUiSchema = (
     measurementPeriodStartDate,
     measurementPeriodEndDate
   );
+
   const reportDurationSuffix = reportDuration && (
     <b className="contentSuffix">
       Duration: {reportDuration}
@@ -82,54 +79,43 @@ export const createEmissionIntensityReportUiSchema = (
   );
 
   // We only show the label of this field on view mode and summary page
-  if (viewOnly)
-    uiSchemaCopy.teimpReporting.productionFunctionalUnit["ui:label"] = "";
+  if (viewOnly) uiSchemaCopy.productionFunctionalUnit["ui:label"] = "";
 
-  uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"],
+  uiSchemaCopy.baselineEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.baselineEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.teimpReporting.targetEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.teimpReporting.targetEmissionIntensity["ui:options"],
+  uiSchemaCopy.targetEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.targetEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.teimpReporting.postProjectEmissionIntensity["ui:options"] = {
-    ...uiSchemaCopy.teimpReporting.postProjectEmissionIntensity["ui:options"],
+  uiSchemaCopy.postProjectEmissionIntensity["ui:options"] = {
+    ...uiSchemaCopy.postProjectEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
       emissionFunctionalUnit,
       productionFunctionalUnit
     ),
   };
-  uiSchemaCopy.teimpReporting.totalLifetimeEmissionReduction["ui:options"] = {
-    ...uiSchemaCopy.teimpReporting.totalLifetimeEmissionReduction["ui:options"],
+  uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"] = {
+    ...uiSchemaCopy.totalLifetimeEmissionReduction["ui:options"],
     contentSuffix: contentSuffix(emissionFunctionalUnit),
   };
 
-  uiSchemaCopy.teimpReporting.measurementPeriodEndDate["ui:options"] = {
-    ...uiSchemaCopy.teimpReporting.measurementPeriodEndDate["ui:options"],
+  uiSchemaCopy.measurementPeriodEndDate["ui:options"] = {
+    ...uiSchemaCopy.measurementPeriodEndDate["ui:options"],
     contentSuffix: reportDurationSuffix,
   };
 
-  uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"] = {
-    ...uiSchemaCopy.teimpReporting.emissionFunctionalUnit["ui:options"],
+  uiSchemaCopy.emissionFunctionalUnit["ui:options"] = {
+    ...uiSchemaCopy.emissionFunctionalUnit["ui:options"],
     contentSuffix: emissionFunctionalUnitSuffix(),
   };
-
-  /**
-   * We need to set the ui:FieldTemplate to the EmptyFieldTemplate
-   * and ui:ObjectFieldTemplate to the EmptyObjectFieldTemplate
-   * to avoid showing field labels and outlines on parent object.
-   * There is room for improvement on how this is done
-   * but for now it is the best solution.
-   */
-  uiSchemaCopy["ui:FieldTemplate"] = ReadOnlyEmptyFieldTempalte;
-  uiSchemaCopy["ui:ObjectFieldTemplate"] = EmptyObjectFieldTemplate;
 
   return uiSchemaCopy;
 };
@@ -157,24 +143,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               rowId
               newFormData
               changeStatus
-            }
-          }
-        }
-        emissionIntensityReportFormChange: formChangesFor(
-          first: 1
-          formDataTableName: "emission_intensity_report"
-          filter: { operation: { notEqualTo: ARCHIVE } }
-        ) @connection(key: "connection_emissionIntensityReportFormChange") {
-          edges {
-            node {
               calculatedEiPerformance
-              id
-              rowId
-              newFormData
-              changeStatus
               paymentPercentage
               holdbackAmountToDate
               actualPerformanceMilestoneAmount
+              formByJsonSchemaName {
+                jsonSchema
+              }
             }
           }
         }
@@ -182,30 +157,23 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     `,
     props.projectRevision
   );
-  const emissionIntensityReportFormChange =
-    projectRevision.emissionIntensityReportFormChange.edges[0]?.node;
 
-  const reportingRequirementFormChange =
+  const emissionIntensityReportingRequirementFormChange =
     projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
       ?.node;
 
   const calculatedEiPerformance =
-    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
-      .calculatedEiPerformance;
+    emissionIntensityReportingRequirementFormChange?.calculatedEiPerformance;
 
   const holdbackAmountToDate =
-    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
-      .holdbackAmountToDate;
+    emissionIntensityReportingRequirementFormChange?.holdbackAmountToDate;
 
   const paymentPercentageOfPerformanceMilestoneAmount =
-    projectRevision.emissionIntensityReportFormChange.edges[0]?.node
-      .paymentPercentage;
+    emissionIntensityReportingRequirementFormChange?.paymentPercentage;
 
   // Mutations
-  const [
-    addProjectEmissionsIntensityReport,
-    isAddingEmissionsIntensityReportFormChange,
-  ] = useCreateProjectEmissionIntensityFormChange();
+  const [createEmissionsIntensityReport, isCreatingEmissionsIntensityReport] =
+    useCreateEmissionIntensityReport();
   const [
     updateEmissionsIntensityReportFormChange,
     isUpdatingEmissionsIntensityReportFormChange,
@@ -216,46 +184,13 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
     isStagingReportingRequirement,
   ] = useStageReportingRequirementFormChange();
 
-  const [
-    applyStageEmissionIntensityFormChangeMutation,
-    isStagingEmissionIntensity,
-  ] = useStageEmissionIntensityFormChange();
-
-  const formData = emissionIntensityReportFormChange?.newFormData;
-
-  // Restructure form data to be in the same format as the schema
-  const formattedFormData = {
-    teimpReporting: {},
-    uponCompletion: {},
-  };
-
-  /* We should ideally offload the parsing of this data to a custom commit handler on the database.
-   * Opportunity for future tech debt work captured in ZenHub.
-   */
-  Object.keys(emissionIntensityReportSchema.properties).forEach(
-    (schemaProperty) =>
-      Object.keys(
-        emissionIntensityReportSchema.properties[schemaProperty].properties
-      ).forEach(
-        (key) =>
-          formData?.[key] !== null &&
-          formData?.[key] !== undefined &&
-          Object.assign(formattedFormData[schemaProperty], {
-            [key]: formData[key],
-          })
-      )
-  );
-
   const handleChange = (formChangeObject, changeData) => {
     // don't trigger a change if the form data is an empty object
     if (changeData && Object.keys(changeData).length === 0) return;
 
-    // Expand TEIMP reporting and Upon Completion data to the top level of the form data
     const updatedFormData = {
       ...formChangeObject.newFormData,
       ...changeData,
-      ...changeData.teimpReporting,
-      ...changeData.uponCompletion,
     };
 
     updateEmissionsIntensityReportFormChange({
@@ -263,7 +198,10 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
         input: {
           rowId: formChangeObject.rowId,
           formChangePatch: {
-            newFormData: updatedFormData,
+            newFormData: {
+              ...formChangeObject.newFormData,
+              ...changeData,
+            },
           },
         },
       },
@@ -282,14 +220,24 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
 
   return (
     <>
-      {projectRevision.emissionIntensityReportFormChange.edges.length === 0 && (
+      {projectRevision.emissionIntensityReportingRequirementFormChange.edges
+        .length === 0 && (
         <Button
-          disabled={isAddingEmissionsIntensityReportFormChange}
+          disabled={isCreatingEmissionsIntensityReport}
           onClick={() =>
-            addProjectEmissionsIntensityReport({
+            createEmissionsIntensityReport({
               variables: {
                 input: {
-                  revisionId: projectRevision.rowId,
+                  operation: "CREATE",
+                  formDataSchemaName: "cif",
+                  formDataTableName: "reporting_requirement",
+                  jsonSchemaName: "emission_intensity",
+                  newFormData: {
+                    reportType: "TEIMP",
+                    reportingRequirementIndex: 1,
+                    emissionFunctionalUnit: "tCO2e",
+                  },
+                  projectRevisionId: projectRevision.rowId,
                 },
               },
             })
@@ -299,90 +247,86 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
           Add Emissions Intensity Report
         </Button>
       )}
-      {projectRevision.emissionIntensityReportFormChange.edges.length > 0 && (
+      {projectRevision.emissionIntensityReportingRequirementFormChange.edges
+        .length > 0 && (
         <>
           <header>
             <h3>Emission Intensity Report</h3>
             <UndoChangesButton
               formChangeIds={[
-                emissionIntensityReportFormChange.rowId,
-                reportingRequirementFormChange.rowId,
+                emissionIntensityReportingRequirementFormChange.rowId,
               ]}
               formRefs={formRefs}
             />
             <SavingIndicator
               isSaved={
                 !isUpdatingEmissionsIntensityReportFormChange &&
-                !isAddingEmissionsIntensityReportFormChange
+                !isCreatingEmissionsIntensityReport
               }
             />
           </header>
           <EmissionIntensityReportStatus
             reportDueDateString={
-              reportingRequirementFormChange?.newFormData.reportDueDate
+              emissionIntensityReportingRequirementFormChange?.newFormData
+                .reportDueDate
             }
             submittedDateString={
-              reportingRequirementFormChange?.newFormData.submittedDate
+              emissionIntensityReportingRequirementFormChange?.newFormData
+                .submittedDate
             }
             emissionIntensityEndDateString={
-              emissionIntensityReportFormChange?.newFormData
+              emissionIntensityReportingRequirementFormChange?.newFormData
                 .measurementPeriodEndDate
             }
           />
           <FormBase
             id="TEIMP_ReportingRequirementForm"
             ref={(el) =>
-              el && (formRefs.current[reportingRequirementFormChange.id] = el)
+              el &&
+              (formRefs.current[
+                emissionIntensityReportingRequirementFormChange.id
+              ] = el)
             }
             validateOnMount={
-              reportingRequirementFormChange?.changeStatus === "staged"
+              emissionIntensityReportingRequirementFormChange?.changeStatus ===
+              "staged"
             }
             idPrefix="TEIMP_ReportingRequirementForm"
-            schema={emissionIntensityReportingRequirementSchema as JSONSchema7}
-            formData={reportingRequirementFormChange?.newFormData}
+            schema={
+              emissionIntensityReportingRequirementFormChange
+                .formByJsonSchemaName.jsonSchema.schema as JSONSchema7
+            }
+            formData={
+              emissionIntensityReportingRequirementFormChange?.newFormData
+            }
             formContext={{
-              form: reportingRequirementFormChange?.newFormData,
-            }}
-            uiSchema={emissionIntensityReportingRequirementUiSchema}
-            onChange={(change) =>
-              handleChange(reportingRequirementFormChange, change.formData)
-            }
-          />
-          <FormBase
-            id="TEIMP_EmissionIntensityReportForm"
-            ref={(el) =>
-              el &&
-              (formRefs.current[emissionIntensityReportFormChange.id] = el)
-            }
-            validateOnMount={
-              emissionIntensityReportFormChange?.changeStatus === "staged"
-            }
-            idPrefix="TEIMP_EmissionIntensityReportForm"
-            schema={emissionIntensityReportSchema as JSONSchema7}
-            formData={formattedFormData}
-            formContext={{
-              form: emissionIntensityReportFormChange?.newFormData,
+              form: emissionIntensityReportingRequirementFormChange?.newFormData,
               calculatedEiPerformance: calculatedEiPerformance ?? null,
               paymentPercentageOfPerformanceMilestoneAmount:
                 paymentPercentageOfPerformanceMilestoneAmount ?? null,
               holdbackAmountToDate: holdbackAmountToDate ?? null,
               actualPerformanceMilestoneAmount:
-                projectRevision.emissionIntensityReportFormChange.edges[0]?.node
-                  .actualPerformanceMilestoneAmount,
+                projectRevision.emissionIntensityReportingRequirementFormChange
+                  .edges[0]?.node.actualPerformanceMilestoneAmount,
+              groupSchema: emissionIntensityReportingRequirementGroupSchema,
             }}
             uiSchema={createEmissionIntensityReportUiSchema(
-              emissionIntensityReportFormChange?.newFormData
+              emissionIntensityReportingRequirementFormChange?.newFormData
                 ?.emissionFunctionalUnit,
-              emissionIntensityReportFormChange?.newFormData
+              emissionIntensityReportingRequirementFormChange?.newFormData
                 ?.productionFunctionalUnit,
-              emissionIntensityReportFormChange?.newFormData
+              emissionIntensityReportingRequirementFormChange?.newFormData
                 ?.measurementPeriodStartDate,
-              emissionIntensityReportFormChange?.newFormData
+              emissionIntensityReportingRequirementFormChange?.newFormData
                 ?.measurementPeriodEndDate,
               true
             )}
+            ObjectFieldTemplate={GroupedObjectFieldTemplateWrapper}
             onChange={(change) =>
-              handleChange(emissionIntensityReportFormChange, change.formData)
+              handleChange(
+                emissionIntensityReportingRequirementFormChange,
+                change.formData
+              )
             }
           />
           <Button
@@ -396,17 +340,14 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
                 [
                   ...projectRevision
                     .emissionIntensityReportingRequirementFormChange.edges,
-                  ...projectRevision.emissionIntensityReportFormChange.edges,
                 ],
-                "TEIMP",
-                applyStageEmissionIntensityFormChangeMutation
+                "TEIMP"
               );
             }}
             disabled={
-              isAddingEmissionsIntensityReportFormChange ||
+              isCreatingEmissionsIntensityReport ||
               isUpdatingEmissionsIntensityReportFormChange ||
-              isStagingReportingRequirement ||
-              isStagingEmissionIntensity
+              isStagingReportingRequirement
             }
           >
             Submit Emissions Intensity Report

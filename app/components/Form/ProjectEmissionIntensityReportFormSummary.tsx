@@ -4,12 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import FormBase from "./FormBase";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
-import {
-  emissionIntensityReportSchema,
-  emissionIntensityReportingRequirementSchema,
-  emissionIntensityReportingRequirementUiSchema,
-} from "data/jsonSchemaForm/projectEmissionIntensitySchema";
+import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/schemaFilteringHelpers";
 import { ProjectEmissionIntensityReportFormSummary_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_projectRevision.graphql";
 import { createEmissionIntensityReportUiSchema } from "./ProjectEmissionIntensityReportForm";
 import { SummaryFormProps } from "data/formPages/types";
@@ -18,7 +13,6 @@ import {
   FormNotAddedOrUpdated,
   FormRemoved,
 } from "./SummaryFormCommonComponents";
-import { getFilteredEmissionIntensitySchema } from "lib/theme/getFilteredEmissionIntensitySchema";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props
@@ -31,10 +25,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
   setHasDiff,
 }) => {
   const {
-    summaryEmissionIntensityReportFormChange,
     summaryEmissionIntensityReportingRequirementFormChange,
     isFirstRevision,
-    latestCommittedEmissionIntensityReportingRequirementFormChange,
     latestCommittedEmissionIntensityReportFormChange,
   } = useFragment(
     graphql`
@@ -46,20 +38,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         ) {
           edges {
             node {
-              newFormData
-              operation
-              isPristine
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
-            }
-          }
-        }
-        summaryEmissionIntensityReportFormChange: formChangesFor(
-          formDataTableName: "emission_intensity_report"
-        ) {
-          edges {
-            node {
               calculatedEiPerformance
               paymentPercentage
               holdbackAmountToDate
@@ -67,6 +45,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
               newFormData
               operation
               isPristine
+              formByJsonSchemaName {
+                jsonSchema
+              }
               formChangeByPreviousFormChangeId {
                 newFormData
                 calculatedEiPerformance
@@ -74,16 +55,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
                 holdbackAmountToDate
                 actualPerformanceMilestoneAmount
               }
-            }
-          }
-        }
-        latestCommittedEmissionIntensityReportingRequirementFormChange: latestCommittedFormChangesFor(
-          formDataTableName: "reporting_requirement"
-          reportType: "TEIMP"
-        ) {
-          edges {
-            node {
-              newFormData
             }
           }
         }
@@ -111,24 +82,32 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
   const summaryReportingRequirement =
     summaryEmissionIntensityReportingRequirementFormChange?.edges[0]?.node;
 
-  const summaryEmissionIntensityReport =
-    summaryEmissionIntensityReportFormChange?.edges[0]?.node;
+  const newData = {
+    ...summaryReportingRequirement?.newFormData,
+    //calculated values
+    calculatedEiPerformance:
+      summaryReportingRequirement?.calculatedEiPerformance,
+    paymentPercentage: summaryReportingRequirement?.paymentPercentage,
+    holdbackAmountToDate: summaryReportingRequirement?.holdbackAmountToDate,
+    actualPerformanceMilestoneAmount:
+      summaryReportingRequirement?.actualPerformanceMilestoneAmount,
+  };
 
   const oldData = {
-    ...summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+    ...summaryReportingRequirement?.formChangeByPreviousFormChangeId
       ?.newFormData,
     //calculated values
     calculatedEiPerformance:
-      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+      summaryReportingRequirement?.formChangeByPreviousFormChangeId
         ?.calculatedEiPerformance,
     paymentPercentage:
-      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+      summaryReportingRequirement?.formChangeByPreviousFormChangeId
         ?.paymentPercentage,
     holdbackAmountToDate:
-      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+      summaryReportingRequirement?.formChangeByPreviousFormChangeId
         ?.holdbackAmountToDate,
     actualPerformanceMilestoneAmount:
-      summaryEmissionIntensityReport?.formChangeByPreviousFormChangeId
+      summaryReportingRequirement?.formChangeByPreviousFormChangeId
         ?.actualPerformanceMilestoneAmount,
   };
 
@@ -150,69 +129,14 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         ?.actualPerformanceMilestoneAmount,
   };
 
-  // Set the formSchema and formData based on showing the diff or not
-  const reportingRequirementDiffObject = !renderDiff
-    ? {
-        formSchema: emissionIntensityReportingRequirementSchema,
-        formData: summaryReportingRequirement?.newFormData,
-      }
-    : getFilteredSchema(
-        emissionIntensityReportingRequirementSchema as JSONSchema7,
-        summaryReportingRequirement || {}
-      );
-
-  const emissionIntensityReportDiffObject = !renderDiff
-    ? {
-        formSchema: emissionIntensityReportSchema,
-        formData: summaryEmissionIntensityReport?.newFormData,
-      }
-    : getFilteredEmissionIntensitySchema(
-        {
-          ...emissionIntensityReportSchema,
-          properties: {
-            ...emissionIntensityReportSchema.properties,
-            // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
-            uponCompletion: {
-              ...emissionIntensityReportSchema.properties.uponCompletion,
-              properties: {
-                ...emissionIntensityReportSchema.properties.uponCompletion
-                  .properties,
-                adjustedEmissionsIntensityPerformance: {
-                  title: "GHG Emission Intensity Performance (Adjusted)",
-                  type: "number",
-                },
-              },
-            },
-            // Add calculatedEiPerformance to the schema since this field is using `AdjustableCalculatedValueWidget` and is not directly in the schema
-            calculatedValues: {
-              properties: {
-                calculatedEiPerformance: {
-                  type: "number",
-                  title: "GHG Emission Intensity Performance",
-                },
-              },
-            },
-          },
-        } as JSONSchema7,
-        summaryEmissionIntensityReport || {}
-      );
-
-  // Set custom rjsf fields to display diffs
-  const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
-
   const allFormChangesPristine = useMemo(() => {
     if (
-      summaryEmissionIntensityReport?.isPristine === false ||
       summaryReportingRequirement?.isPristine === false ||
-      summaryEmissionIntensityReport?.isPristine === null ||
       summaryReportingRequirement?.isPristine === null
     )
       return false;
     return true;
-  }, [
-    summaryEmissionIntensityReport?.isPristine,
-    summaryReportingRequirement?.isPristine,
-  ]);
+  }, [summaryReportingRequirement?.isPristine]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -220,38 +144,10 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     [allFormChangesPristine, setHasDiff]
   );
 
-  let modifiedEmissionIntensityReportUiSchema =
-    createEmissionIntensityReportUiSchema(
-      summaryEmissionIntensityReport?.newFormData?.emissionFunctionalUnit,
-      summaryEmissionIntensityReport?.newFormData?.productionFunctionalUnit,
-      summaryEmissionIntensityReport?.newFormData?.measurementPeriodStartDate,
-      summaryEmissionIntensityReport?.newFormData?.measurementPeriodEndDate,
-      false
-    );
-
-  // To show the calculatedEiPerformance field in the diff view with proper formatting
-  if (renderDiff)
-    modifiedEmissionIntensityReportUiSchema = {
-      // this is to keep th fields in the same order as form when showing the diffs
-      "ui:order": ["teimpReporting", "calculatedValues", "uponCompletion"],
-      ...modifiedEmissionIntensityReportUiSchema,
-      calculatedValues: {
-        calculatedEiPerformance: {
-          "ui:widget": "NumberWidget",
-          hideOptional: true,
-          isPercentage: true,
-          numberOfDecimalPlaces: 2,
-        },
-      },
-    };
-
   if (isOnAmendmentsAndOtherRevisionsPage && allFormChangesPristine)
     return null;
 
-  if (
-    (allFormChangesPristine && !viewOnly) ||
-    (!summaryReportingRequirement && !summaryEmissionIntensityReport)
-  )
+  if ((allFormChangesPristine && !viewOnly) || !summaryReportingRequirement)
     return (
       <>
         {!isOnAmendmentsAndOtherRevisionsPage && (
@@ -264,6 +160,58 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
       </>
     );
 
+  // Set the formSchema and formData based on showing the diff or not
+  const reportingRequirementDiffObject = !renderDiff
+    ? {
+        formSchema: summaryReportingRequirement.formByJsonSchemaName.jsonSchema
+          .schema as JSONSchema7,
+        formData: summaryReportingRequirement?.newFormData,
+      }
+    : getSchemaAndDataIncludingCalculatedValues(
+        summaryReportingRequirement.formByJsonSchemaName.jsonSchema
+          ?.schema as JSONSchema7,
+        newData,
+        oldData,
+        {
+          // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
+          adjustedEmissionsIntensityPerformance: {
+            title: "GHG Emission Intensity Performance (Adjusted)",
+            type: "number",
+          },
+          // Add calculatedEiPerformance to the schema since this field is using `AdjustableCalculatedValueWidget` and is not directly in the schema
+          calculatedEiPerformance: {
+            type: "number",
+            title: "GHG Emission Intensity Performance",
+          },
+        }
+      );
+
+  // Set custom rjsf fields to display diffs
+  const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
+
+  let modifiedEmissionIntensityReportUiSchema =
+    createEmissionIntensityReportUiSchema(
+      summaryReportingRequirement?.newFormData?.emissionFunctionalUnit,
+      summaryReportingRequirement?.newFormData?.productionFunctionalUnit,
+      summaryReportingRequirement?.newFormData?.measurementPeriodStartDate,
+      summaryReportingRequirement?.newFormData?.measurementPeriodEndDate,
+      false
+    );
+
+  // To show the calculatedEiPerformance field in the diff view with proper formatting
+  if (renderDiff)
+    modifiedEmissionIntensityReportUiSchema = {
+      ...modifiedEmissionIntensityReportUiSchema,
+      calculatedValues: {
+        calculatedEiPerformance: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isPercentage: true,
+          numberOfDecimalPlaces: 2,
+        },
+      },
+    };
+
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && (
@@ -272,59 +220,39 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
       {/* Show this part if none of the emission intensity report form properties have been updated */}
       {allFormChangesPristine &&
         !viewOnly &&
-        summaryEmissionIntensityReport?.operation !== "ARCHIVE" && (
+        summaryReportingRequirement?.operation !== "ARCHIVE" && (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
             formTitle="Emission Intensity Report"
           />
         )}
       {/* Show this part if the whole emission intensity report has been removed */}
-      {renderDiff &&
-        summaryEmissionIntensityReport?.operation === "ARCHIVE" && (
-          <FormRemoved
-            isOnAmendmentsAndOtherRevisionsPage={
-              isOnAmendmentsAndOtherRevisionsPage
-            }
-            formTitle="Emission Intensity Report"
-          />
-        )}
+      {renderDiff && summaryReportingRequirement?.operation === "ARCHIVE" && (
+        <FormRemoved
+          isOnAmendmentsAndOtherRevisionsPage={
+            isOnAmendmentsAndOtherRevisionsPage
+          }
+          formTitle="Emission Intensity Report"
+        />
+      )}
 
       <FormBase
         tagName={"dl"}
         theme={readOnlyTheme}
         fields={renderDiff ? customFields : fields}
         schema={reportingRequirementDiffObject.formSchema as JSONSchema7}
-        uiSchema={emissionIntensityReportingRequirementUiSchema}
+        uiSchema={modifiedEmissionIntensityReportUiSchema}
         formData={reportingRequirementDiffObject.formData}
         formContext={{
-          operation: summaryReportingRequirement?.operation,
-          oldData:
-            summaryReportingRequirement?.formChangeByPreviousFormChangeId
-              ?.newFormData,
-          latestCommittedData:
-            latestCommittedEmissionIntensityReportingRequirementFormChange
-              ?.edges[0]?.node?.newFormData,
-          isAmendmentsAndOtherRevisionsSpecific:
-            isOnAmendmentsAndOtherRevisionsPage,
-        }}
-      />
-      <FormBase
-        tagName={"dl"}
-        theme={readOnlyTheme}
-        fields={renderDiff ? customFields : fields}
-        schema={emissionIntensityReportDiffObject.formSchema as JSONSchema7}
-        uiSchema={modifiedEmissionIntensityReportUiSchema}
-        formData={emissionIntensityReportDiffObject.formData}
-        formContext={{
           calculatedEiPerformance:
-            summaryEmissionIntensityReport?.calculatedEiPerformance ?? 0,
+            summaryReportingRequirement?.calculatedEiPerformance ?? 0,
           paymentPercentageOfPerformanceMilestoneAmount:
-            summaryEmissionIntensityReport?.paymentPercentage,
+            summaryReportingRequirement?.paymentPercentage,
           holdbackAmountToDate:
-            summaryEmissionIntensityReport?.holdbackAmountToDate,
+            summaryReportingRequirement?.holdbackAmountToDate,
           actualPerformanceMilestoneAmount:
-            summaryEmissionIntensityReport?.actualPerformanceMilestoneAmount,
-          operation: summaryEmissionIntensityReport?.operation,
+            summaryReportingRequirement?.actualPerformanceMilestoneAmount,
+          operation: summaryReportingRequirement?.operation,
           oldData,
           latestCommittedData,
           isAmendmentsAndOtherRevisionsSpecific:
