@@ -6,7 +6,8 @@
     "properties": {
       "contactId": {
         "title": "Contact",
-        "type": "number"
+        "type": ["null", "number"],
+        "default": "undefined"
       }
     }
   }

@@ -10,24 +10,29 @@
         "title": "Report Due Date"
       },
       "submittedDate": {
-        "type": "string",
-        "title": "Received Date"
+        "type": ["null", "string"],
+        "title": "Received Date",
+        "default": "undefined"
       },
       "comments": {
-        "type": "string",
-        "title": "General Comments"
+        "type": ["null", "string"],
+        "title": "General Comments",
+        "default": "undefined"
       },
       "projectSummaryReportPayment": {
         "title": "Project Summary Report Payment",
-        "type": "number"
+        "type": ["null", "number"],
+        "default": "undefined"
       },
       "paymentNotes": {
         "title": "Notes for the Payment",
-        "type": "string"
+        "type": ["null", "string"],
+        "default": "undefined"
       },
       "dateSentToCsnr": {
         "title": "Date Invoice Sent to CSNR",
-        "type": "string"
+        "type": ["null", "string"],
+        "default": "undefined"
       }
     }
   }

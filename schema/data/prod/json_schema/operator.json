@@ -14,14 +14,16 @@
         "title": "Trade Name"
       },
       "bcRegistryId": {
-        "type": "string",
+        "type": ["null", "string"],
         "title": "BC Registry ID",
-        "pattern": "^[a-zA-Z]{1,3}[0-9]{7}$"
+        "pattern": "^[a-zA-Z]{1,3}[0-9]{7}$",
+        "default": "undefined"
       },
       "operatorCode": {
-        "type": "string",
+        "type": ["null", "string"],
         "title": "Operator Code",
-        "pattern": "^[A-Z]{4}$"
+        "pattern": "^[A-Z]{4}$",
+        "default": "undefined"
       }
     }
   }
