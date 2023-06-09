@@ -14,6 +14,7 @@ const DATABASE_SCHEMAS = [
   "funding_parameter_EP",
   "funding_parameter_IA",
   "project_attachment",
+  "emission_intensity",
 ];
 
 export default DATABASE_SCHEMAS;
