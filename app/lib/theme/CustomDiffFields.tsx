@@ -33,7 +33,7 @@ const NumberFormatWrapper = ({
     fixedDecimalScale={true}
     decimalScale={decimalScale}
     prefix={isMoney ? "$" : ""}
-    suffix={isPercentage ? "%" : ""}
+    suffix={isPercentage ? " %" : ""}
     displayType="text"
     value={value}
     className={className}
@@ -83,11 +83,11 @@ const renderDiffData = ({
         decimalScale={decimalScale}
       />
     );
-    components.push(renderArrow());
     if (contentSuffix) {
       components.push(
         contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
+      components.push(renderArrow());
     }
   }
 
@@ -109,7 +109,26 @@ const renderDiffData = ({
     components.push(renderArrow());
   }
 
-  if (newData !== null && newData !== undefined) {
+  if (
+    newData !== null &&
+    newData !== undefined &&
+    oldData !== undefined &&
+    oldData !== undefined
+  ) {
+    components.push(renderArrow());
+    components.push(
+      <NumberFormatWrapper
+        value={newData}
+        className={diffNewClsName}
+        id={`${id}-${diffNewClsName}`}
+        isMoney={isMoney}
+        isPercentage={isPercentage}
+        decimalScale={decimalScale}
+      />
+    );
+  } else if (newData !== null && newData !== undefined) {
+    components.push(<span className={diffOldClsName}>Not Entered</span>);
+    components.push(renderArrow());
     components.push(
       <NumberFormatWrapper
         value={newData}
