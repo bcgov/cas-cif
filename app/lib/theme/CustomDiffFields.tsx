@@ -1,9 +1,9 @@
 import React from "react";
-import { FieldProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
+import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
-import { getLocaleFormattedDate } from "./getLocaleFormattedDate";
 
 const contentSuffixElement = (
   id: string,
@@ -20,21 +20,37 @@ const contentSuffixElement = (
   );
 };
 
-const formatData = (isDate: boolean | undefined, data: string | undefined) => {
-  if (isDate) {
-    return getLocaleFormattedDate(data);
-  }
-  return data;
-};
+const NumberFormatWrapper = ({
+  value,
+  className,
+  id,
+  isMoney,
+  isPercentage,
+  decimalScale,
+}) => (
+  <NumberFormat
+    thousandSeparator
+    fixedDecimalScale={true}
+    decimalScale={decimalScale}
+    prefix={isMoney ? "$" : ""}
+    suffix={isPercentage ? "%" : ""}
+    displayType="text"
+    value={value}
+    className={className}
+    id={id}
+  />
+);
 
-const renderTooltip = () => {
-  return <></>;
-};
+const StringFormatWrapper = ({ value, className, id }) => (
+  <span id={id} className={className}>
+    {value}
+  </span>
+);
 
 const renderArrow = () => {
   return (
     <FontAwesomeIcon
-      className={"diff-arrow"}
+      className="diff-arrow"
       size="lg"
       color="black"
       icon={faLongArrowAltRight}
@@ -42,470 +58,148 @@ const renderArrow = () => {
   );
 };
 
-const showStringDiff = (
-  id: string,
-  oldData: string | undefined,
-  newData: string | undefined,
-  latestCommittedData: string | undefined,
-  isDate: boolean,
-  contentSuffix?: string
-): JSX.Element => {
-  const [diffOldClsName, diffNewClsName, diffTextClsName] = [
-    "diffOld",
-    "diffNew",
-    "diffText",
-  ];
+const renderDiffData = ({
+  oldData,
+  newData,
+  latestCommittedData,
+  id,
+  isMoney,
+  isPercentage,
+  decimalScale,
+  diffOldClsName,
+  diffNewClsName,
+  contentSuffix,
+}) => {
+  let components = [];
 
-  // The numbers show the truth values of oldData, newData, latestCommittedData
-  // Case 7 ->  111
-  if (oldData && newData && latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {formatData(isDate, oldData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderArrow()}
-        {latestCommittedData !== oldData && (
-          <>
-            <span
-              id={id && `${id}-${diffOldClsName}`}
-              className={diffOldClsName}
-            >
-              {formatData(isDate, latestCommittedData)}
-            </span>
-            {contentSuffix && contentSuffixElement(id, contentSuffix)}
-            {renderArrow()}
-          </>
-        )}
-        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {formatData(isDate, newData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderTooltip()}
-      </>
+  if (oldData !== null && oldData !== undefined) {
+    components.push(
+      <NumberFormatWrapper
+        value={oldData}
+        className={diffOldClsName}
+        id={`${id}-${diffOldClsName}`}
+        isMoney={isMoney}
+        isPercentage={isPercentage}
+        decimalScale={decimalScale}
+      />
     );
-  }
-  // case 6 ->  110
-  if (oldData && newData && !latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {formatData(isDate, oldData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderArrow()}
-        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {formatData(isDate, newData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderTooltip()}
-      </>
-    );
-  }
-
-  // Case 5 ->  101
-  if (oldData && !newData && latestCommittedData) {
-    return (
-      <>
-        {oldData == latestCommittedData ? (
-          <>
-            <span
-              id={id && `${id}-${diffOldClsName}`}
-              className={diffOldClsName}
-            >
-              {formatData(isDate, oldData)}
-            </span>
-          </>
-        ) : (
-          <>
-            <span
-              id={id && `${id}-${diffOldClsName}`}
-              className={diffOldClsName}
-            >
-              {formatData(isDate, oldData)}
-            </span>
-
-            {contentSuffix && contentSuffixElement(id, contentSuffix)}
-            {renderArrow()}
-            <span
-              id={id && `${id}-${diffOldClsName}`}
-              className={diffOldClsName}
-            >
-              {formatData(isDate, latestCommittedData)}
-            </span>
-            {contentSuffix && contentSuffixElement(id, contentSuffix)}
-          </>
-        )}
-      </>
-    );
-  }
-  // Case 4 ->  100
-  if (oldData && !newData && !latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {isDate ? getLocaleFormattedDate(oldData) : oldData}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      </>
-    );
-  }
-  // Case 3 ->  011
-  if (!oldData && newData && latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffTextClsName}`} className={diffTextClsName}>
-          {"Not Entered"}
-        </span>
-        {renderArrow()}
-        <span id={id && `${id}-${diffOldClsName}`} className={diffOldClsName}>
-          {formatData(isDate, latestCommittedData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderArrow()}
-        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {formatData(isDate, newData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-        {renderTooltip()}
-      </>
-    );
-  }
-
-  // Case 2 ->  010
-  if (!oldData && newData && !latestCommittedData) {
-    return (
-      <>
-        <span id={id && `${id}-${diffTextClsName}`} className={diffTextClsName}>
-          {"Not Entered"}
-        </span>
-        {renderArrow()}
-        <span id={id && `${id}-${diffNewClsName}`} className={diffNewClsName}>
-          {formatData(isDate, newData)}
-        </span>
-        {contentSuffix && contentSuffixElement(id, contentSuffix)}
-      </>
-    );
-  }
-
-  return <></>;
-};
-
-const showNumberDiff = (
-  id: string,
-  oldData: number,
-  newData: number,
-  latestCommittedData: number,
-  isMoney: boolean,
-  isPercentage: boolean,
-  numberOfDecimalPlaces: number = 0
-): JSX.Element => {
-  const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
-  const [diffOldClsName, diffNewClsName, diffTextClsName] = [
-    "diffOld",
-    "diffNew",
-    "diffText",
-  ];
-  // case 7 ->  111
-  if (oldData && newData && latestCommittedData) {
-    return (
-      <>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={oldData}
-          className={diffOldClsName}
-          id={id && `${id}-${diffOldClsName}`}
-        />
-        {renderArrow()}
-        {latestCommittedData !== oldData && (
-          <>
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={true}
-              decimalScale={decimalScale}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? " %" : ""}
-              displayType="text"
-              value={latestCommittedData}
-              className={diffOldClsName}
-              id={id && `${id}-${diffOldClsName}`}
-            />
-
-            {renderArrow()}
-          </>
-        )}
-
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={newData}
-          className={diffNewClsName}
-          id={id && `${id}-${diffNewClsName}`}
-        />
-      </>
-    );
-  }
-  // case 6 ->  110
-  if (oldData && newData && !latestCommittedData) {
-    return (
-      <>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={oldData}
-          className={diffOldClsName}
-          id={id && `${id}-${diffOldClsName}`}
-        />
-        {renderArrow()}
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={newData}
-          className={diffNewClsName}
-          id={id && `${id}-${diffNewClsName}`}
-        />
-      </>
-    );
-  }
-  // case 5 ->  101
-  if (oldData && !newData && latestCommittedData) {
-    return (
-      <>
-        {latestCommittedData !== oldData && (
-          <>
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={true}
-              decimalScale={decimalScale}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? " %" : ""}
-              displayType="text"
-              value={oldData}
-              className={diffOldClsName}
-              id={id && `${id}-${diffOldClsName}`}
-            />
-
-            {renderArrow()}
-          </>
-        )}
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={latestCommittedData}
-          className={diffOldClsName}
-          id={id && `${id}-${diffOldClsName}`}
-        />
-        {newData === 0 ? (
-          <>
-            {renderArrow()}
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={true}
-              decimalScale={decimalScale}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? " %" : ""}
-              displayType="text"
-              value={newData}
-              className={diffNewClsName}
-              id={id && `${id}-${diffNewClsName}`}
-            />
-          </>
-        ) : (
-          <></>
-        )}
-      </>
-    );
-  }
-  // case 4 ->  100
-  if (oldData && !newData && !latestCommittedData) {
-    return (
-      <>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={oldData}
-          id={id && `${id}-${diffOldClsName}`}
-          className={diffOldClsName}
-        />
-        {~~newData === 0 && (
-          <>
-            {renderArrow()}
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={true}
-              decimalScale={decimalScale}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? " %" : ""}
-              displayType="text"
-              value={0}
-              id={id && `${id}-${diffNewClsName}`}
-              className={diffNewClsName}
-            />
-          </>
-        )}
-      </>
-    );
-  }
-
-  // case 3 ->  011
-  if (!oldData && newData && latestCommittedData) {
-    return (
-      <>
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={latestCommittedData}
-          id={id && `${id}-${diffOldClsName}`}
-          className={diffOldClsName}
-        />
-        {renderTooltip()}
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={newData}
-          id={id && `${id}-${diffNewClsName}`}
-          className={diffNewClsName}
-        />
-      </>
-    );
-  }
-
-  // Case 2 ->  010
-  if (!oldData && newData && !latestCommittedData) {
-    return (
-      <>
-        {oldData === 0 ? (
-          <>
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={true}
-              decimalScale={decimalScale}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? " %" : ""}
-              displayType="text"
-              value={oldData}
-              id={id && `${id}-${diffOldClsName}`}
-              className={diffOldClsName}
-            />
-            {renderArrow()}
-          </>
-        ) : (
-          <>
-            <span
-              id={id && `${id}-${diffTextClsName}`}
-              className={diffTextClsName}
-            >
-              {"Not Entered"}
-            </span>
-            {renderArrow()}
-          </>
-        )}
-
-        <NumberFormat
-          thousandSeparator
-          fixedDecimalScale={true}
-          decimalScale={decimalScale}
-          prefix={isMoney ? "$" : ""}
-          suffix={isPercentage ? " %" : ""}
-          displayType="text"
-          value={newData}
-          id={id && `${id}-${diffNewClsName}`}
-          className={diffNewClsName}
-        />
-        {renderTooltip()}
-      </>
-    );
-  }
-
-  // Case 0 ->  000
-  if (!oldData && !newData && !latestCommittedData) {
-    if (newData === 0) {
-      return (
-        <>
-          {oldData == 0 ? (
-            <>
-              <NumberFormat
-                thousandSeparator
-                fixedDecimalScale={true}
-                decimalScale={0}
-                prefix={isMoney ? "$" : ""}
-                suffix={isPercentage ? " %" : ""}
-                displayType="text"
-                value={oldData}
-                id={id && `${id}-${diffOldClsName}`}
-                className={diffOldClsName}
-              />
-            </>
-          ) : (
-            <>
-              <span
-                id={id && `${id}-${diffTextClsName}`}
-                className={diffTextClsName}
-              >
-                {"Not Entered"}
-              </span>
-            </>
-          )}
-          {renderArrow()}
-
-          <NumberFormat
-            thousandSeparator
-            fixedDecimalScale={true}
-            decimalScale={0}
-            prefix={isMoney ? "$" : ""}
-            suffix={isPercentage ? " %" : ""}
-            displayType="text"
-            value={0}
-            id={id && `${id}-${diffNewClsName}`}
-            className={diffNewClsName}
-          />
-        </>
+    components.push(renderArrow());
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
     }
-
-    return <>Not Entered</>;
   }
-  return <>Error</>;
+
+  if (
+    latestCommittedData !== null &&
+    latestCommittedData !== undefined &&
+    latestCommittedData !== oldData
+  ) {
+    components.push(
+      <NumberFormatWrapper
+        value={latestCommittedData}
+        className={diffOldClsName}
+        id={`${id}-${diffOldClsName}`}
+        isMoney={isMoney}
+        isPercentage={isPercentage}
+        decimalScale={decimalScale}
+      />
+    );
+    components.push(renderArrow());
+  }
+
+  if (newData !== null && newData !== undefined) {
+    components.push(
+      <NumberFormatWrapper
+        value={newData}
+        className={diffNewClsName}
+        id={`${id}-${diffNewClsName}`}
+        isMoney={isMoney}
+        isPercentage={isPercentage}
+        decimalScale={decimalScale}
+      />
+    );
+  }
+
+  return <>{components}</>;
 };
 
-const CUSTOM_DIFF_FIELDS: Record<
-  string,
-  React.FunctionComponent<FieldProps>
-> = {
+const renderDiffString = ({
+  oldData,
+  newData,
+  latestCommittedData,
+  id,
+  isDate,
+  contentSuffix,
+  diffOldClsName,
+  diffNewClsName,
+}) => {
+  let components = [];
+
+  if (oldData !== null && oldData !== undefined) {
+    components.push(
+      <StringFormatWrapper
+        value={isDate ? getLocaleFormattedDate(oldData) : oldData}
+        className={diffOldClsName}
+        id={`${id}-${diffOldClsName}`}
+      />
+    );
+    components.push(renderArrow());
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
+      );
+    }
+  }
+
+  if (
+    latestCommittedData !== null &&
+    latestCommittedData !== undefined &&
+    latestCommittedData !== oldData
+  ) {
+    components.push(
+      <StringFormatWrapper
+        value={
+          isDate
+            ? getLocaleFormattedDate(latestCommittedData)
+            : latestCommittedData
+        }
+        className={diffOldClsName}
+        id={`${id}-${diffOldClsName}`}
+      />
+    );
+    components.push(renderArrow());
+  }
+
+  if (
+    newData !== null &&
+    newData !== undefined &&
+    oldData !== null &&
+    oldData !== undefined
+  ) {
+    components.push(
+      <StringFormatWrapper
+        value={isDate ? getLocaleFormattedDate(newData) : newData}
+        className={diffNewClsName}
+        id={`${id}-${diffNewClsName}`}
+      />
+    );
+  } else if (newData !== null && newData !== undefined) {
+    components.push(<span className={diffOldClsName}>Not Entered</span>);
+    components.push(renderArrow());
+    components.push(
+      <StringFormatWrapper
+        value={isDate ? getLocaleFormattedDate(newData) : newData}
+        className={diffNewClsName}
+        id={`${id}-${diffNewClsName}`}
+      />
+    );
+  }
+
+  return <>{components}</>;
+};
+const CUSTOM_DIFF_FIELDS = {
   StringField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
@@ -513,62 +207,73 @@ const CUSTOM_DIFF_FIELDS: Record<
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-    return showStringDiff(
-      id,
+
+    return renderDiffString({
       oldData,
-      formData,
+      newData: formData,
       latestCommittedData,
+      id,
       isDate,
-      contentSuffix as string
-    );
+      contentSuffix,
+      diffOldClsName: "diffOld",
+      diffNewClsName: "diffNew",
+    });
   },
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
     const oldData = formContext?.oldData?.[props.name];
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
+    const isMoney = uiSchema?.isMoney;
+    const isPercentage = uiSchema?.isPercentage;
+    const decimalScale = uiSchema?.numberOfDecimalPlaces;
 
-    // Some number values correspond to fk ids and therefore need to be mapped to text. The text value is found in the uiSchema
+    // Handle text data mapping for certain number values
     let textData = uiSchema?.["ui:options"]?.text as string;
-
     let oldTextData =
       formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
-
     let latestCommittedTextData =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
 
     if (formContext?.operation === "ARCHIVE") {
-      // project contact and manager form changes need a special check for archive
-
+      // Switch to string rendering for archive
       textData = undefined;
-      return showStringDiff(
+      return renderDiffString({
+        oldData: oldTextData,
+        newData: textData,
+        latestCommittedData: latestCommittedTextData,
         id,
-        oldTextData,
-        textData,
-        latestCommittedTextData,
-        false,
-        null
-      );
+        isDate: false,
+        contentSuffix: null,
+        diffOldClsName: "diffOld",
+        diffNewClsName: "diffNew",
+      });
     }
+
     if (oldTextData || textData || latestCommittedTextData) {
-      return showStringDiff(
+      return renderDiffString({
+        oldData: oldTextData,
+        newData: textData,
+        latestCommittedData: latestCommittedTextData,
         id,
-        oldTextData,
-        textData,
-        latestCommittedTextData,
-        false,
-        null
-      );
+        isDate: false,
+        contentSuffix: null,
+        diffOldClsName: "diffOld",
+        diffNewClsName: "diffNew",
+      });
     } else {
-      return showNumberDiff(
-        id,
+      return renderDiffData({
         oldData,
-        formData,
+        newData: formData,
         latestCommittedData,
-        uiSchema?.isMoney,
-        uiSchema?.isPercentage,
-        uiSchema?.numberOfDecimalPlaces
-      );
+        id,
+        isMoney,
+        isPercentage,
+        decimalScale,
+        diffOldClsName: "diffOld",
+        diffNewClsName: "diffNew",
+        contentSuffix: uiSchema?.["ui:options"]?.contentSuffix,
+      });
     }
   },
 };
