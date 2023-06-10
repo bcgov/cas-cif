@@ -293,7 +293,7 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText("20 %", { selector: ".diffNew" })
     ).toBeInTheDocument();
     expect(
-      screen.getByText("$2,500", { selector: ".diffNew" })
+      screen.getByText("$2,500.00", { selector: ".diffNew" })
     ).toBeInTheDocument();
     expect(
       screen.getByText(/Jan[.]? 1, 2021/, { selector: ".diffOld" })
@@ -310,13 +310,13 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText("15.00 %", { selector: ".diffOld" })
     ).toBeInTheDocument(); // latest committed proponentsSharePercentage
     expect(
-      screen.getByText("$6", { selector: ".diffNew" })
+      screen.getByText("$6.00", { selector: ".diffNew" })
     ).toBeInTheDocument(); // new totalProjectValue
     expect(
-      screen.getByText("$12", { selector: ".diffOld" })
+      screen.getByText("$12.00", { selector: ".diffOld" })
     ).toBeInTheDocument(); // old totalProjectValue
     expect(
-      screen.getByText("$18", { selector: ".diffOld" })
+      screen.getByText("$18.00", { selector: ".diffOld" })
     ).toBeInTheDocument(); // latest committed totalProjectValue
   });
 
@@ -329,10 +329,10 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("60.00 %")).toBeInTheDocument();
     expect(
-      screen.getByText("$500", { selector: ".diffOld" })
+      screen.getByText("$500.00", { selector: ".diffOld" })
     ).toBeInTheDocument();
     expect(
-      screen.getByText("$501", { selector: ".diffNew" })
+      screen.getByText("$501.00", { selector: ".diffNew" })
     ).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
     expect(
@@ -346,13 +346,13 @@ describe("The Project Funding Agreement Form Summary", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText("$8", { selector: ".diffNew" })
+      screen.getByText("$8.00", { selector: ".diffNew" })
     ).toBeInTheDocument();
     expect(
-      screen.getByText("$16", { selector: ".diffOld" })
+      screen.getByText("$16.00", { selector: ".diffOld" })
     ).toBeInTheDocument();
     expect(
-      screen.getByText("$24", { selector: ".diffOld" })
+      screen.getByText("$24.00", { selector: ".diffOld" })
     ).toBeInTheDocument();
   });
 
