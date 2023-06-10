@@ -245,7 +245,8 @@ const CUSTOM_DIFF_FIELDS = {
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isMoney = uiSchema?.isMoney;
     const isPercentage = uiSchema?.isPercentage;
-    const decimalScale = uiSchema?.numberOfDecimalPlaces;
+    const numberOfDecimalPlaces = uiSchema?.numberOfDecimalPlaces;
+    const decimalScale = isMoney ? 2 : numberOfDecimalPlaces ?? 0;
 
     // Handle text data mapping for certain number values
     let textData = uiSchema?.["ui:options"]?.text as string;
