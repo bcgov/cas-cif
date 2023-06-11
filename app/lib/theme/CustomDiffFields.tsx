@@ -164,11 +164,13 @@ const renderDiffString = ({
         id={`${id}-${diffOldClsName}`}
       />
     );
-    components.push(renderArrow());
     if (contentSuffix) {
       components.push(
         contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
+    }
+    if (newData !== null && newData !== undefined) {
+      components.push(renderArrow());
     }
   }
 
