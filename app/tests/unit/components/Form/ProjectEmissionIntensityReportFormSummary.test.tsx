@@ -186,7 +186,6 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByText("Total Project Lifetime Emissions Reductions (optional)")
     ).toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
     expect(screen.getAllByText("0.00000000")).toHaveLength(2);
     expect(screen.getAllByText("0.12345678")).toHaveLength(1);
     expect(screen.getByText("0.12345678")).toHaveClass("diffNew");

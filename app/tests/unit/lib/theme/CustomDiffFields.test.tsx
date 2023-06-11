@@ -338,8 +338,14 @@ describe("The Object Field Template", () => {
       "diffOld"
     );
   });
-
-  it("handles 0", () => {
+  // old, new, latest
+  //001
+  it("handles 0 when latest committed data is 0", () => {
+    const latestCommittedDataWithZero = {
+      stringTest: "stringTest LAST COMMITTED",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
     const componentUnderTest = render(
       <FormBase
         tagName={"dl"}
@@ -352,15 +358,197 @@ describe("The Object Field Template", () => {
           oldUiSchema: oldUiTestSchema,
           operation: "UPDATE",
           isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData: latestCommittedDataWithZero,
+        }}
+      />
+    );
+    expect(componentUnderTest.getByText("0")).toHaveClass("diffOld");
+  });
+
+  //010
+  it("handles 0 when new formdata is 0", () => {
+    const formDataWithZero = {
+      stringTest: "",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formDataWithZero}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData,
+        }}
+      />
+    );
+    expect(componentUnderTest.getByText("0")).toHaveClass("diffNew");
+  });
+  // 011
+  it("handles 0 when latestCommittedData and formData are 0", () => {
+    const latestCommittedDataWithZero = {
+      stringTest: "stringTest LAST COMMITTED",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+
+    const formDataWithZero = {
+      stringTest: "stringTest FORM DATA",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formDataWithZero}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData: latestCommittedDataWithZero,
+        }}
+      />
+    );
+    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
+    expect(componentUnderTest.getAllByText("0")[1]).toHaveClass("diffNew");
+  });
+  // 100
+  it("handles 0 when oldData is 0", () => {
+    const oldDataWithZero = {
+      stringTest: "",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formData}
+        formContext={{
+          oldData: oldDataWithZero,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData,
         }}
       />
     );
 
-    expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
-      "diffNew"
+    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
+    expect(componentUnderTest.getAllByText("0")).toHaveLength(1);
+  });
+
+  // 101
+  it("handles 0 when oldData and latest data is 0", () => {
+    const oldDataWithZero = {
+      stringTest: "",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+    const latestCommittedDataWithZero = {
+      stringTest: "",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formData}
+        formContext={{
+          oldData: oldDataWithZero,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData: latestCommittedDataWithZero,
+        }}
+      />
     );
-    expect(componentUnderTest.getByText("stringTest OLD")).toHaveClass(
-      "diffOld"
+
+    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
+    expect(componentUnderTest.getAllByText("0")).toHaveLength(1);
+  });
+  // 110
+  it("handles 0 when newData and latest data is 0", () => {
+    const formDataWithZero = {
+      stringTest: "",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+    const latestCommittedDataWithZero = {
+      stringTest: "",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formDataWithZero}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData: latestCommittedDataWithZero,
+        }}
+      />
     );
+
+    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
+    expect(componentUnderTest.getAllByText("0")[1]).toHaveClass("diffNew");
+    expect(componentUnderTest.getAllByText("0")).toHaveLength(2);
+  });
+  // 111
+  it("handles 0 when latestCommittedData,oldData formData are all 0", () => {
+    const latestCommittedDataWithZero = {
+      stringTest: "stringTest LAST COMMITTED",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+
+    const formDataWithZero = {
+      stringTest: "stringTest FORM DATA",
+      numberTest: 0,
+      numericIdTest: 0,
+    };
+
+    const componentUnderTest = render(
+      <FormBase
+        tagName={"dl"}
+        fields={CUSTOM_DIFF_FIELDS}
+        schema={testSchema as JSONSchema7}
+        uiSchema={uiTestSchema}
+        formData={formDataWithZero}
+        formContext={{
+          oldData: oldFormData,
+          oldUiSchema: oldUiTestSchema,
+          operation: "UPDATE",
+          isAmendmentsAndOtherRevisionsSpecific: true,
+          latestCommittedData: latestCommittedDataWithZero,
+        }}
+      />
+    );
+
+    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
+    expect(componentUnderTest.getAllByText("0")[1]).toHaveClass("diffNew");
+    expect(componentUnderTest.getAllByText("0")).toHaveLength(2);
   });
 });
