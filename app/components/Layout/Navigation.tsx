@@ -5,6 +5,9 @@ import LogoutForm from "components/Session/LogoutForm";
 import SubHeader from "./SubHeader";
 import { useRouter } from "next/router";
 
+import LoginForm from "components/Session/LoginForm";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
+
 interface Props {
   isLoggedIn?: boolean;
   alwaysShowSubheader?: boolean;
@@ -25,10 +28,20 @@ const Navigation: React.FC<Props> = ({
   userProfileComponent,
   links,
 }) => {
-  let rightSide = isLoggedIn && (
+  // Growthbook - external-operators
+  const showExternalOperatorsLogin =
+    useShowGrowthbookFeature("external-operators");
+
+  let rightSide = isLoggedIn ? (
     <>
       {userProfileComponent}
       <LogoutForm />
+    </>
+  ) : (
+    <>
+      {userProfileComponent}
+      <LoginForm />
+      {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
     </>
   );
   const router = useRouter();
@@ -46,7 +59,9 @@ const Navigation: React.FC<Props> = ({
             */}
             <a
               href={
-                router.pathname.includes("/cif-external")
+                !isLoggedIn
+                  ? "/"
+                  : router.pathname.includes("/cif-external")
                   ? "/cif-external"
                   : "/cif"
               }
