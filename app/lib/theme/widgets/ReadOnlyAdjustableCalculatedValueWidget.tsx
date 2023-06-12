@@ -21,11 +21,10 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   const adjustedInputId = `${id}_adjusted`;
 
   return (
-    <>
+    <div>
       {calculatedValue && (
-        <div className={calculatedValue && "calculatedValue"}>
-          <dt>{label}</dt>
-          <dd>
+        <>
+          {
             <NumberFormat
               thousandSeparator
               fixedDecimalScale={numberOfDecimalPlaces}
@@ -36,12 +35,12 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
               value={calculatedValue}
               displayType="text"
             />
-          </dd>
-        </div>
+          }
+        </>
       )}
       {value !== calculatedValue && (
         <div className={calculatedValue && "adjustedValue"}>
-          <dt>{label} (Adjusted)</dt>
+          {calculatedValue && <dt>{label} (Adjusted)</dt>}
           <dd>
             <NumberFormat
               thousandSeparator
@@ -58,14 +57,17 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
       )}
       {!value && <em>Not added</em>}
       <style jsx>{`
-        div {
-          display: inline;
+        div.adjustedValue {
+          position: relative;
+          display: flex;
+          right: 12.1rem;
+          margin-top: 0.5em;
         }
         dt {
           margin-right: 1em;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 
