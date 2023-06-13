@@ -6,6 +6,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
+import emissionsIntensityProdSchema from "/schema/data/prod/json_schema/emission_intensity.json";
 
 const testQuery = graphql`
   query ProjectEmissionIntensityReportFormQuery @relay_test_operation {
@@ -33,28 +34,6 @@ const defaultMockResolver = {
                 reportType: "TEIMP",
                 comments: "general comments",
                 reportingRequirementIndex: 1,
-              },
-              operation: "CREATE",
-              changeStatus: "pending",
-              reportType: "TEIMP",
-              formChangeByPreviousFormChangeId: null,
-              formDataRecordId: 1,
-            },
-          },
-        ],
-        __id: "client:mock:__connection_emissionIntensityReportingRequirementFormChange_connection",
-      },
-      emissionIntensityReportFormChange: {
-        edges: [
-          {
-            node: {
-              id: `mock-project-milestone-report-form-${generateID()}`,
-              calculatedEiPerformance: 200,
-              paymentPercentage: 60,
-              holdbackAmountToDate: "100",
-              actualPerformanceMilestoneAmount: "200",
-              rowId: 1,
-              newFormData: {
                 measurementPeriodStartDate: "2022-01-02",
                 measurementPeriodEndDate: "2023-01-02",
                 emissionFunctionalUnit: "tCO2e",
@@ -68,11 +47,24 @@ const defaultMockResolver = {
               },
               operation: "CREATE",
               changeStatus: "pending",
+              reportType: "TEIMP",
               formChangeByPreviousFormChangeId: null,
+              formDataRecordId: 1,
+
+              calculatedEiPerformance: 200,
+              paymentPercentage: 60,
+              holdbackAmountToDate: "100",
+              actualPerformanceMilestoneAmount: "200",
             },
           },
         ],
+        __id: "client:mock:__connection_emissionIntensityReportingRequirementFormChange_connection",
       },
+    };
+  },
+  Form() {
+    return {
+      jsonSchema: emissionsIntensityProdSchema,
     };
   },
   Query() {
@@ -125,10 +117,6 @@ describe("the emission intensity report form component", () => {
             edges: [],
             __id: "client:mock:__connection_emissionIntensityReportingRequirementFormChange_connection",
           },
-          emissionIntensityReportFormChange: {
-            edges: [],
-            __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
-          },
         };
       },
     };
@@ -141,7 +129,7 @@ describe("the emission intensity report form component", () => {
     const mutationUnderTest =
       componentTestingHelper.environment.mock.getAllOperations()[1];
     expect(mutationUnderTest.fragment.node.name).toBe(
-      "addEmissionIntensityReportToRevisionMutation"
+      "createEmissionIntensityReportMutation"
     );
   });
 
@@ -209,12 +197,11 @@ describe("the emission intensity report form component", () => {
       ProjectRevision(context, generateID) {
         return {
           ...defaultMockResolver.ProjectRevision(context, generateID),
-          emissionIntensityReportFormChange: {
+          emissionIntensityReportingRequirementFormChange: {
             edges: [
               {
                 node: {
-                  ...defaultMockResolver.ProjectRevision(context, generateID)
-                    .emissionIntensityReportFormChange.edges[0].node,
+                  ...defaultMockResolver.ProjectRevision(context, generateID),
                   calculatedEiPerformance: null,
                 },
               },
@@ -237,11 +224,11 @@ describe("the emission intensity report form component", () => {
 
   it("renders the TEIMP form with placeholders for calculated values, when the form is not filled", () => {
     const mockResolver = {
+      Form: defaultMockResolver.Form,
       Query: defaultMockResolver.Query,
       ProjectRevision: (context, generateID) => ({
         ...defaultMockResolver.ProjectRevision(context, generateID),
-        teimpPaymentPercentage: null,
-        emissionIntensityReportFormChange: {
+        emissionIntensityReportingRequirementFormChange: {
           edges: [
             {
               node: {
@@ -284,10 +271,6 @@ describe("the emission intensity report form component", () => {
             edges: [],
             __id: "client:mock:__connection_emissionIntensityReportingRequirementFormChange_connection",
           },
-          emissionIntensityReportFormChange: {
-            edges: [],
-            __id: "client:mock:__connection_emissionIntensityReportFormChange_connection",
-          },
         };
       },
     };
@@ -307,7 +290,7 @@ describe("the emission intensity report form component", () => {
     );
   });
 
-  it("validates all forms when the submit button is clicked", () => {
+  it("validates form when the submit button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
     const validateFormWithErrors = jest.spyOn(
@@ -315,7 +298,7 @@ describe("the emission intensity report form component", () => {
       "default"
     );
     userEvent.click(screen.getByText(/submit.*/i));
-    expect(validateFormWithErrors).toHaveBeenCalledTimes(2);
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(1);
   });
 
   it("stages the form changes when the `submit` button is clicked", () => {
@@ -333,16 +316,6 @@ describe("the emission intensity report form component", () => {
         reportType: "TEIMP",
       }
     );
-
-    componentTestingHelper.expectMutationToBeCalled(
-      "stageEmissionIntensityFormChangeMutation",
-      {
-        input: {
-          rowId: 1,
-          formChangePatch: expect.any(Object),
-        },
-      }
-    );
   });
 
   it("calls the undoFormChangesMutation when the user clicks the Undo Changes button", () => {
@@ -353,14 +326,18 @@ describe("the emission intensity report form component", () => {
 
     userEvent.click(screen.getByText(/Undo Changes/i));
 
-    // expect 4 operations update and undo for requirements and emision intensity report
+    // expect the following operations: form index query, stage, update, undo
     expect(
       componentTestingHelper.environment.mock.getAllOperations()
-    ).toHaveLength(5);
+    ).toHaveLength(4);
+
+    componentTestingHelper.environment.mock
+      .getAllOperations()
+      .map((op) => console.log(op?.fragment?.node));
 
     componentTestingHelper.expectMutationToBeCalled("undoFormChangesMutation", {
       input: {
-        formChangesIds: [1, 1],
+        formChangesIds: [1],
       },
     });
   });
