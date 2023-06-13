@@ -27,7 +27,7 @@ describe("ContextualHelp component", () => {
     const defaultIcon = screen.getByRole("img", {
       hidden: true,
     });
-    expect(defaultIcon).toHaveAttribute("data-icon", "exclamation-circle");
+    expect(defaultIcon).toHaveAttribute("data-icon", "info-circle");
   });
   test("renders the tooltip with correct HTML text", async () => {
     const htmlText =
