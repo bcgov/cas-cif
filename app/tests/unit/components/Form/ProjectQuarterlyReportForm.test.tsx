@@ -195,7 +195,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     );
   });
 
-  it("Validates all contact forms when the submit button is clicked", () => {
+  it("Validates forms when the submit button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -247,5 +247,63 @@ describe("The ProjectQuarterlyReportForm", () => {
         formChangesIds: [1, 2],
       },
     });
+  });
+
+  it("renders correct contract start date and TEIMP end date", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        return {
+          id: "an id",
+          rowId: 245,
+          projectQuarterlyReportFormChanges: {
+            edges: [],
+          },
+          upcomingQuarterlyReportFormChange: null,
+          projectFundingAgreementFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "funding-id",
+                  newFormData: {
+                    projectId: 62,
+                    contractStartDate: "2023-06-01T23:59:59.999-07:00",
+                    holdbackPercentage: 10,
+                    provinceSharePercentage: 50,
+                  },
+                },
+              },
+            ],
+          },
+          emissionIntensityReportFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "ei-id",
+                  newFormData: {
+                    reportType: "TEIMP",
+                    reportDueDate: "2028-05-29T23:59:59.999-07:00",
+                    emissionFunctionalUnit: "tCO2e",
+                    measurementPeriodEndDate: "2028-06-14T23:59:59.999-07:00",
+                    reportingRequirementIndex: 1,
+                    measurementPeriodStartDate: "2023-06-01T23:59:59.999-07:00",
+                  },
+                },
+              },
+            ],
+          },
+          projectFormChange: {
+            formDataRecordId: 62,
+          },
+        };
+      },
+    });
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByText(/Contract Start Date/i).nextSibling
+    ).toHaveTextContent(/Jun[.]? 1, 2023/i);
+    expect(screen.getByText(/TEIMP end date/i).nextSibling).toHaveTextContent(
+      /Jun[.]? 14, 2028/i
+    );
   });
 });
