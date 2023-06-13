@@ -56,7 +56,7 @@ const projectMilestoneUiSchema = {
   maximumAmount: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The maximum paymen amount that the proponent can receive from CIF for this milestone.</li><li>Typically found in schedule D.</ul></div>",
+      text: "<div><ul><li>The maximum payment amount that the proponent can receive from CIF for this milestone.</li><li>Typically found in schedule D.</ul></div>",
     },
     isMoney: true,
     "ui:col-md": 12,
