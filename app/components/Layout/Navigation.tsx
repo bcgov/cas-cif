@@ -32,19 +32,28 @@ const Navigation: React.FC<Props> = ({
   const showExternalOperatorsLogin =
     useShowGrowthbookFeature("external-operators");
 
+  const router = useRouter();
+
   let rightSide = isLoggedIn ? (
     <>
       {userProfileComponent}
       <LogoutForm />
     </>
+  ) : router.pathname === "/" ? (
+    isLoggedIn
   ) : (
-    <>
-      {userProfileComponent}
+    <div
+      id="login-buttons"
+      style={{
+        display: "flex",
+        "flex-direction": "row",
+        gap: "1.25em",
+      }}
+    >
       <LoginForm />
       {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
-    </>
+    </div>
   );
-  const router = useRouter();
 
   const unauthorizedIdir = title === "Access required";
 
