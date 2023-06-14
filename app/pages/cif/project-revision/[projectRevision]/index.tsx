@@ -246,9 +246,6 @@ export function ProjectRevision({
             <ProjectAnnualReportFormSummary
               projectRevision={query.projectRevision}
             />
-            <ProjectAttachmentsFormSummary
-              projectRevision={query.projectRevision}
-            />
           </>
         )}
         {fundingStream == "IA" && (
@@ -256,6 +253,9 @@ export function ProjectRevision({
             projectRevision={query.projectRevision}
           />
         )}
+        <ProjectAttachmentsFormSummary
+          projectRevision={query.projectRevision}
+        />
 
         {query.projectRevision.projectId && (
           <div>
