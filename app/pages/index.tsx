@@ -64,6 +64,7 @@ function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
             display: flex;
             justify-content: center;
             flex-direction: column;
+            gap: 1em;
           }
         `}
       </style>
