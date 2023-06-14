@@ -8,7 +8,7 @@ import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
 import { reportingRequirementUiSchema } from "data/jsonSchemaForm/projectReportingRequirementUiSchema";
 import { ProjectQuarterlyReportFormSummary_projectRevision$key } from "__generated__/ProjectQuarterlyReportFormSummary_projectRevision.graphql";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { getFilteredSchema } from "lib/theme/schemaFilteringHelpers";
 import { SummaryFormProps } from "data/formPages/types";
 import {
   FormNotAddedOrUpdated,

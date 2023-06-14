@@ -8,7 +8,7 @@ import { ProjectSummaryReportFormSummary_projectRevision$key } from "__generated
 import { graphql, useFragment } from "react-relay";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { getFilteredSchema } from "lib/theme/schemaFilteringHelpers";
 import {
   FormNotAddedOrUpdated,
   FormRemoved,

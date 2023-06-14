@@ -8,7 +8,7 @@ import { createProjectUiSchema } from "./ProjectForm";
 
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
 import { utils } from "@rjsf/core";
-import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/getFilteredSchema";
+import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/schemaFilteringHelpers";
 import { SummaryFormProps } from "data/formPages/types";
 import { useEffect, useMemo } from "react";
 import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
