@@ -2,7 +2,7 @@ import { utils } from "@rjsf/core";
 import { reportingRequirementUiSchema } from "data/jsonSchemaForm/projectReportingRequirementUiSchema";
 import { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
-import { getFilteredSchema } from "lib/theme/getFilteredSchema";
+import { getFilteredSchema } from "lib/theme/schemaFilteringHelpers";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";

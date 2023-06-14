@@ -12,7 +12,10 @@ export const getSchemaAndDataIncludingCalculatedValues = (
 ) => {
   const filteredSchema = {
     ...JSON.parse(JSON.stringify(formSchema)),
-    ...additionalSchemaProperties,
+    properties: {
+      ...JSON.parse(JSON.stringify(formSchema)).properties,
+      ...additionalSchemaProperties,
+    },
   };
 
   const newDataObject = {};

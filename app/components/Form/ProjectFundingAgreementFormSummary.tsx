@@ -4,7 +4,7 @@ import { fundingParameterEPUiSchema } from "data/jsonSchemaForm/fundingParameter
 import { fundingParameterIAUiSchema } from "data/jsonSchemaForm/fundingParameterIAUiSchema";
 import type { JSONSchema7 } from "json-schema";
 import CUSTOM_DIFF_FIELDS from "lib/theme/CustomDiffFields";
-import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/getFilteredSchema";
+import { getSchemaAndDataIncludingCalculatedValues } from "lib/theme/schemaFilteringHelpers";
 import readOnlyTheme from "lib/theme/ReadOnlyTheme";
 import React, { useEffect, useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
