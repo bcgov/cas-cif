@@ -44,7 +44,7 @@ const mockQueryPayloadEP = {
                   projectId: "Test Project ID",
                   maxFundingAmount: 200,
                   provinceSharePercentage: 60,
-                  holdbackPercentage: 20,
+                  holdbackPercentage: 20.15,
                   anticipatedFundingAmount: 300,
                   proponentCost: 100,
                   contractStartDate: "2021-02-02T23:59:59.999-07:00",
@@ -70,7 +70,7 @@ const mockQueryPayloadEP = {
                     projectId: "Test Project ID",
                     maxFundingAmount: 200,
                     provinceSharePercentage: 50,
-                    holdbackPercentage: 10,
+                    holdbackPercentage: 10.23,
                     anticipatedFundingAmount: 300,
                     proponentCost: 100,
                     contractStartDate: "2021-01-01T23:59:59.999-07:00",
@@ -282,8 +282,8 @@ describe("The Project Funding Agreement Form Summary", () => {
 
     expect(screen.getByText("50.00 %")).toBeInTheDocument();
     expect(screen.getByText("60.00 %")).toBeInTheDocument();
-    expect(screen.getByText("10 %")).toBeInTheDocument();
-    expect(screen.getByText("20 %")).toBeInTheDocument();
+    expect(screen.getByText("10.23 %")).toBeInTheDocument();
+    expect(screen.getByText("20.15 %")).toBeInTheDocument();
     expect(screen.getByText("$2,500.00")).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
     expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
@@ -357,7 +357,7 @@ describe("The Project Funding Agreement Form Summary", () => {
                       projectId: "Test Project ID",
                       maxFundingAmount: 200,
                       provinceSharePercentage: 60,
-                      holdbackPercentage: 20,
+                      holdbackPercentage: 20.15,
                       anticipatedFundingAmount: 300,
                       proponentCost: 800,
                       contractStartDate: "2021-01-01",
@@ -595,7 +595,7 @@ describe("The Project Funding Agreement Form Summary", () => {
                       projectId: "Test Project ID",
                       maxFundingAmount: 200,
                       provinceSharePercentage: 60,
-                      holdbackPercentage: 20,
+                      holdbackPercentage: 20.15,
                       anticipatedFundingAmount: 300,
                       proponentCost: 100,
                       contractStartDate: "2021-02-02T23:59:59.999-07:00",
@@ -608,7 +608,7 @@ describe("The Project Funding Agreement Form Summary", () => {
                         projectId: "Test Project ID",
                         maxFundingAmount: 200,
                         provinceSharePercentage: 50,
-                        holdbackPercentage: 10,
+                        holdbackPercentage: 10.23,
                         anticipatedFundingAmount: 300,
                         proponentCost: 100,
                         contractStartDate: "2021-01-01T23:59:59.999-07:00",

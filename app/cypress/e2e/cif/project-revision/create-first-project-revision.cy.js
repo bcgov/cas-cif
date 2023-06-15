@@ -67,7 +67,7 @@ describe("when creating a project, the project page", () => {
     );
     cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
       "have.value",
-      "10 %"
+      "10.00 %"
     );
 
     cy.fillFundingAgreementForm(
@@ -203,7 +203,7 @@ describe("when creating a project, the project page", () => {
       /Feb(\.)? 2, 2020/,
       "$333.00",
       "$1,133.00",
-      "20 %"
+      "20.00 %"
     );
     // additional funding sources section
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
