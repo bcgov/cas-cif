@@ -85,8 +85,6 @@ export const createEmissionIntensityReportUiSchema = (
   if (viewOnly)
     uiSchemaCopy.teimpReporting.productionFunctionalUnit["ui:label"] = "";
 
-  console.log("uiSchemaCopy", uiSchemaCopy);
-
   uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"] = {
     ...uiSchemaCopy.teimpReporting.baselineEmissionIntensity["ui:options"],
     contentSuffix: contentSuffix(
