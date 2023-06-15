@@ -43,10 +43,9 @@ const Navigation: React.FC<Props> = ({
     isLoggedIn
   ) : (
     <div
-      id="login-buttons"
       style={{
         display: "flex",
-        "flex-direction": "row",
+        flexDirection: "row",
         gap: "1.25em",
       }}
     >
