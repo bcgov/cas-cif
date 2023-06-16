@@ -39,32 +39,36 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
         </>
       )}
       {value !== calculatedValue && (
-        <div className={calculatedValue && "adjustedValue"}>
-          {calculatedValue && <dt>{label} (Adjusted)</dt>}
-          <dd>
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={isMoney}
-              id={adjustedInputId}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? "%" : ""}
-              decimalScale={isMoney || isPercentage ? 2 : 10}
-              value={value}
-              displayType="text"
-            />
-          </dd>
+        <div className={"adjustedValue"}>
+          <dt>{label} (Adjusted)</dt>
+          {value ? (
+            <dd>
+              <NumberFormat
+                thousandSeparator
+                fixedDecimalScale={isMoney}
+                id={adjustedInputId}
+                prefix={isMoney ? "$" : ""}
+                suffix={isPercentage ? "%" : ""}
+                decimalScale={isMoney || isPercentage ? 2 : 10}
+                value={value}
+                displayType="text"
+              />
+            </dd>
+          ) : (
+            <em>Not added</em>
+          )}
         </div>
       )}
-      {!value && <em>Not added</em>}
+
       <style jsx>{`
         div.adjustedValue {
-          position: relative;
           display: flex;
-          right: 12.1rem;
-          margin-top: 0.5em;
+        }
+        div.better {
+          display: flex;
         }
         dt {
-          margin-right: 1em;
+          margin: 0 1em 0 1em;
         }
       `}</style>
     </div>
