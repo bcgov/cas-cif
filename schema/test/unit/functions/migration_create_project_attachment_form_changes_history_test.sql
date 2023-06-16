@@ -137,9 +137,20 @@ values
   '1999-12-08 09:00:00.000000-07'::timestamptz
 ),
 -- unrelated form change
+('{"score": 29, "summary": "lorem ipsum dolor sit amet adipiscing eli", "operatorId": 1, "sectorName": "Agriculture", "projectName": "Test EP Project 029", "projectType": "Carbon Capture", "projectStatusId": 1, "proposalReference": "EP029", "fundingStreamRfpId": 1, "totalFundingRequest": 290}'::jsonb,
+  'create',
+  'cif',
+  'project',
+  (select nextval(pg_get_serial_sequence('cif.project', 'id'))),
+  8,
+  'pending',
+  'project',
+  '1999-12-08 09:00:00.000000-07'::timestamptz,
+  '1999-12-08 09:00:00.000000-07'::timestamptz
+),
 (
   format(
-    '{"project_id": %s, "reportType": "%s", "reportingRequirementIndex": %s }',
+    '{"projectId": %s, "reportType": "%s", "reportingRequirementIndex": %s }',
     1,
     'TEIMP',
     1
@@ -150,10 +161,12 @@ values
   (select nextval(pg_get_serial_sequence('cif.reporting_requirement', 'id'))),
   8,
   'pending',
-  'emission_intensity_reporting_requirement',
+  'emission_intensity',
   '1999-12-08 09:00:00.000000-07'::timestamptz,
   '1999-12-08 09:00:00.000000-07'::timestamptz
 );
+
+
 -- End Test Setup --
 
 select cif_private.migration_create_project_attachment_form_changes_history();
@@ -229,7 +242,7 @@ select results_eq(
   $$,
   $$
     values
-    ('{"project_id": 1, "reportType": "TEIMP", "reportingRequirementIndex": 1}'::jsonb, 'create'::cif.form_change_operation, 'reporting_requirement'::varchar, 1, 8, 'pending'::varchar, 'emission_intensity_reporting_requirement'::varchar, '1999-12-08 08:00:00-08'::timestamptz,'1999-12-08 08:00:00-08'::timestamptz);
+    ('{"projectId": 1, "reportType": "TEIMP", "reportingRequirementIndex": 1}'::jsonb, 'create'::cif.form_change_operation, 'reporting_requirement'::varchar, 1, 8, 'pending'::varchar, 'emission_intensity'::varchar, '1999-12-08 08:00:00-08'::timestamptz,'1999-12-08 08:00:00-08'::timestamptz);
   $$,
   'Does not touch unrelated form_change records'
 );
@@ -317,6 +330,7 @@ select results_eq(
 );
 
 -- test 11: committing revision related to project 3 should not cause any issues
+
 select cif.commit_project_revision(8);
 
 select results_eq(

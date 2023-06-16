@@ -20,50 +20,50 @@ values (
   1,
   'create',
   'cif',
-  'emission_intensity_report',
+  'reporting_requirement',
   1,
   1,
-  'emission_intensity_report',
+  'emission_intensity',
   '{"baselineEmissionIntensity":1,"targetEmissionIntensity":2,"postProjectEmissionIntensity":3,"totalLifetimeEmissionReduction":4}'
 ),
 (
   2,
   'create',
   'cif',
-  'emission_intensity_report',
+  'reporting_requirement',
   2,
   1,
-  'emission_intensity_report',
+  'emission_intensity',
   '{"targetEmissionIntensity":2,"postProjectEmissionIntensity":3,"totalLifetimeEmissionReduction":4}'
 ),
 (
   3,
   'create',
   'cif',
-  'emission_intensity_report',
+  'reporting_requirement',
   3,
   1,
-  'emission_intensity_report',
+  'emission_intensity',
   '{"baselineEmissionIntensity":1,"postProjectEmissionIntensity":3,"totalLifetimeEmissionReduction":4}'
 ),
 (
   4,
   'create',
   'cif',
-  'emission_intensity_report',
+  'reporting_requirement',
   4,
   1,
-  'emission_intensity_report',
+  'emission_intensity',
   '{"baselineEmissionIntensity":1,"targetEmissionIntensity":2,"totalLifetimeEmissionReduction":3}'
 ),
 (
   5,
   'create',
   'cif',
-  'emission_intensity_report',
+  'reporting_requirement',
   5,
   1,
-  'emission_intensity_report',
+  'emission_intensity',
   '{"baselineEmissionIntensity":1,"targetEmissionIntensity":1,"postProjectEmissionIntensity":2}'
 );
 
