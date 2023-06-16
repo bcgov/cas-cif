@@ -313,3 +313,4 @@ mutations/discard_project_attachment_form_change 2023-05-25T16:23:00Z Brianna Ce
 mutations/create_project_revision [mutations/create_project_revision@1.8.0] 2023-05-25T18:40:23Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add project attachments to create_project_revision
 functions/migration_create_project_attachment_form_changes_history [tables/form_change tables/project_attachment] 2023-06-02T16:30:16Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # idempotent function called by the migration. creates the history of project attachment form changes
 migrations/006-create-project-attachment-form-changes_history [tables/form_change] 2023-06-02T16:24:44Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Migration to create the history of project attachment form changes
+@1.9.0 2023-06-16T22:13:57Z Dylan Leard <dylan@button.is> # release v1.9.0
