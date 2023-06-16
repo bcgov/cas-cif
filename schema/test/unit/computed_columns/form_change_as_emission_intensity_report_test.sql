@@ -26,7 +26,7 @@ insert into cif.form_change(id, operation, form_data_schema_name, form_data_tabl
       'emission_intensity_report',
       1,
       1,
-      'emission_intensity_report',
+      'emission_intensity',
       '{
           "baselineEmissionIntensity":"50"
 

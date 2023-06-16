@@ -29,7 +29,7 @@ values (
     null,
     1,
     'pending',
-    'emission_intensity_reporting_requirement'
+    'emission_intensity'
   );
 
 /** SETUP END **/
