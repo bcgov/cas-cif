@@ -1,3 +1,24 @@
+# [1.9.0](https://github.com/bcgov/cas-cif/compare/1.8.0...1.9.0) (2023-06-16)
+
+### Bug Fixes
+
+- add arrow to dropdown, make font consistent with other filters ([79bd778](https://github.com/bcgov/cas-cif/commit/79bd778e7d6e64c06fe6bf169a33da3f59566a87))
+- add migration to generate project attachment form change history ([bab5746](https://github.com/bcgov/cas-cif/commit/bab5746da1733d73080f7fc749f35e00fca0e9a3))
+- change incorrect integer casts to numeric ([9e5be9e](https://github.com/bcgov/cas-cif/commit/9e5be9e4f88e24b0ebcff4814107457b57e78b2d))
+- fix committing a revision when forms have error ([b64b6db](https://github.com/bcgov/cas-cif/commit/b64b6db770559ae2c20c9b1b9e6d604e8244be47))
+- fix holdback percentage not allowing decimals ([5f6e5b3](https://github.com/bcgov/cas-cif/commit/5f6e5b33e9b041a7dc5f07c8f26f1ded6b2e092e))
+- hide nav bar when user IDIR is unauthorized ([a405a4c](https://github.com/bcgov/cas-cif/commit/a405a4cda8297e1af9936b90482e9f2ca183e64a))
+- showing `not added` when project status and operator not filled out ([72085b7](https://github.com/bcgov/cas-cif/commit/72085b7f73a11ebba8fae085fe7dc2ad50883ddc))
+
+### Features
+
+- add calculated values diff ([e462a44](https://github.com/bcgov/cas-cif/commit/e462a446e715052e04dc07114a9e484776d408b6))
+- add diffs for budgets calculated fields ([c45e786](https://github.com/bcgov/cas-cif/commit/c45e786efcbf869d261ff8fba93b73ddd2d3db35))
+- add diffs for budgets calculated fields ([123d919](https://github.com/bcgov/cas-cif/commit/123d919f4549188ad7001549f4b08d5c2f7ff6ba))
+- add tooltip component ([579f3a3](https://github.com/bcgov/cas-cif/commit/579f3a38c1ec8389e7e274366d0b888a299e5148))
+- added methane capture project type ([e5e5414](https://github.com/bcgov/cas-cif/commit/e5e5414104161aeeabf19848cf98cdd3a63cfb92))
+- create ProjectAttachmentsForm and summary component ([82fb12b](https://github.com/bcgov/cas-cif/commit/82fb12bcaedb449913fcad63fc5e4d22899113db))
+
 # [1.8.0](https://github.com/bcgov/cas-cif/compare/1.7.2...1.8.0) (2023-05-16)
 
 ### Bug Fixes
