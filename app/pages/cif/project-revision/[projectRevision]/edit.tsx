@@ -182,7 +182,7 @@ export function ProjectRevisionEdit({
                 disabled={discardingProjectRevision}
               >
                 <FontAwesomeIcon icon={faTrash} id="discard-project-icon" />
-                Discard Project Revision
+                Discard {projectRevision.revisionType}
               </Button>
             )}
           </div>
