@@ -338,8 +338,6 @@ describe("The Object Field Template", () => {
       "diffOld"
     );
   });
-  // old, new, latest
-  //001
   it("handles 0 when latest committed data is 0", () => {
     const latestCommittedDataWithZero = {
       stringTest: "stringTest LAST COMMITTED",
@@ -365,7 +363,6 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.getByText("0")).toHaveClass("diffOld");
   });
 
-  //010
   it("handles 0 when new formdata is 0", () => {
     const formDataWithZero = {
       stringTest: "",
@@ -390,18 +387,15 @@ describe("The Object Field Template", () => {
     );
     expect(componentUnderTest.getByText("0")).toHaveClass("diffNew");
   });
-  // 011
-  it("handles 0 when latestCommittedData and formData are 0", () => {
+  it("handles 0 when latestCommittedData and oldData are 0, (the same), and newFormData exists", () => {
     const latestCommittedDataWithZero = {
       stringTest: "stringTest LAST COMMITTED",
       numberTest: 0,
-      numericIdTest: 0,
     };
 
-    const formDataWithZero = {
+    const oldDataWithZero = {
       stringTest: "stringTest FORM DATA",
       numberTest: 0,
-      numericIdTest: 0,
     };
 
     const componentUnderTest = render(
@@ -410,9 +404,9 @@ describe("The Object Field Template", () => {
         fields={CUSTOM_DIFF_FIELDS}
         schema={testSchema as JSONSchema7}
         uiSchema={uiTestSchema}
-        formData={formDataWithZero}
+        formData={formData}
         formContext={{
-          oldData: oldFormData,
+          oldData: oldDataWithZero,
           oldUiSchema: oldUiTestSchema,
           operation: "UPDATE",
           isAmendmentsAndOtherRevisionsSpecific: true,
@@ -421,9 +415,9 @@ describe("The Object Field Template", () => {
       />
     );
     expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
-    expect(componentUnderTest.getAllByText("0")[1]).toHaveClass("diffNew");
+    expect(componentUnderTest.getAllByText("0")).toHaveLength(1);
+    expect(componentUnderTest.getByText("100")).toHaveClass("diffNew");
   });
-  // 100
   it("handles 0 when oldData is 0", () => {
     const oldDataWithZero = {
       stringTest: "",
@@ -451,7 +445,6 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.getAllByText("0")).toHaveLength(1);
   });
 
-  // 101
   it("handles 0 when oldData and latest data is 0", () => {
     const oldDataWithZero = {
       stringTest: "",
@@ -483,7 +476,6 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
     expect(componentUnderTest.getAllByText("0")).toHaveLength(1);
   });
-  // 110
   it("handles 0 when newData and latest data is 0", () => {
     const formDataWithZero = {
       stringTest: "",
