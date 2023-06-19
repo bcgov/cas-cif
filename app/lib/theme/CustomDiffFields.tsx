@@ -87,6 +87,8 @@ const renderDiffData = ({
       components.push(
         contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
+    }
+    if (newData !== null && newData !== undefined) {
       components.push(renderArrow());
     }
   }
@@ -106,6 +108,11 @@ const renderDiffData = ({
         decimalScale={decimalScale}
       />
     );
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
+      );
+    }
     components.push(renderArrow());
   }
 
@@ -115,7 +122,6 @@ const renderDiffData = ({
     oldData !== undefined &&
     oldData !== undefined
   ) {
-    components.push(renderArrow());
     components.push(
       <NumberFormatWrapper
         value={newData}
@@ -126,6 +132,11 @@ const renderDiffData = ({
         decimalScale={decimalScale}
       />
     );
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffNewClsName}`, contentSuffix)
+      );
+    }
   } else if (newData !== null && newData !== undefined) {
     components.push(<span className={diffOldClsName}>Not Entered</span>);
     components.push(renderArrow());
@@ -139,6 +150,11 @@ const renderDiffData = ({
         decimalScale={decimalScale}
       />
     );
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffNewClsName}`, contentSuffix)
+      );
+    }
   }
 
   return <>{components}</>;
@@ -190,6 +206,11 @@ const renderDiffString = ({
         id={`${id}-${diffOldClsName}`}
       />
     );
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
+      );
+    }
     components.push(renderArrow());
   }
 
@@ -206,6 +227,11 @@ const renderDiffString = ({
         id={`${id}-${diffNewClsName}`}
       />
     );
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
+      );
+    }
   } else if (newData !== null && newData !== undefined) {
     components.push(<span className={diffOldClsName}>Not Entered</span>);
     components.push(renderArrow());
@@ -216,6 +242,11 @@ const renderDiffString = ({
         id={`${id}-${diffNewClsName}`}
       />
     );
+    if (contentSuffix) {
+      components.push(
+        contentSuffixElement(`${id}-${diffNewClsName}`, contentSuffix)
+      );
+    }
   }
 
   return <>{components}</>;
@@ -266,7 +297,7 @@ const CUSTOM_DIFF_FIELDS = {
         latestCommittedData: latestCommittedTextData,
         id,
         isDate: false,
-        contentSuffix: null,
+        contentSuffix: uiSchema?.["ui:options"]?.contentSuffix,
         diffOldClsName: "diffOld",
         diffNewClsName: "diffNew",
       });
@@ -279,7 +310,7 @@ const CUSTOM_DIFF_FIELDS = {
         latestCommittedData: latestCommittedTextData,
         id,
         isDate: false,
-        contentSuffix: null,
+        contentSuffix: uiSchema?.["ui:options"]?.contentSuffix,
         diffOldClsName: "diffOld",
         diffNewClsName: "diffNew",
       });
