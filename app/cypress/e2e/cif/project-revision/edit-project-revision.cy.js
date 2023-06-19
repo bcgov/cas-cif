@@ -216,6 +216,7 @@ describe("when editing a project, the project page", () => {
     );
 
     cy.findByText("Quarterly Report").should("be.visible");
+    cy.get(".diffOld").contains("Quarterly Report").should("be.visible");
 
     cy.get("#root_teimpReporting_measurementPeriodStartDate-diffNew").should(
       "have.text",
