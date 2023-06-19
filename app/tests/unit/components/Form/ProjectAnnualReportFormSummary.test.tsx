@@ -218,5 +218,7 @@ describe("The Project Annual Report Form Summary", () => {
 
     // Fourth Node
     expect(screen.getByText("Annual Report")).toBeInTheDocument();
+    const annualReportText = document.querySelector("dd > em.diffOld");
+    expect(annualReportText.textContent).toBe("Annual Report");
   });
 });

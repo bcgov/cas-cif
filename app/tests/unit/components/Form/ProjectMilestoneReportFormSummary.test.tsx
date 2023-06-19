@@ -122,6 +122,8 @@ describe("The Project Milestone Report Form Summary", () => {
 
     // Archive milestone report
     expect(screen.getByText("Milestone Report")).toBeInTheDocument();
+    const milestoneReport = document.querySelector("dd > em.diffOld");
+    expect(milestoneReport.textContent).toBe("Milestone Report");
   });
 
   it("Displays diffs of the the data fields that were updated", () => {

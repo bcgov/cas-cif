@@ -286,11 +286,12 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("60.00 %", { selector: ".diffNew" })
     ).toBeInTheDocument();
+    screen.logTestingPlaygroundURL();
     expect(
-      screen.getByText("10 %", { selector: ".diffOld" })
+      screen.getByText("10.23 %", { selector: ".diffOld" })
     ).toBeInTheDocument();
     expect(
-      screen.getByText("20 %", { selector: ".diffNew" })
+      screen.getByText("20.15 %", { selector: ".diffNew" })
     ).toBeInTheDocument();
     expect(
       screen.getByText("$2,500.00", { selector: ".diffNew" })
@@ -323,7 +324,6 @@ describe("The Project Funding Agreement Form Summary", () => {
   it("Displays diffs of the the data fields that have changed for an IA form", () => {
     componentTestingHelper.loadQuery(mockQueryPayloadIA);
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
     expect(
       screen.getByText("50.00 %", { selector: ".diffOld" })
     ).toBeInTheDocument();
