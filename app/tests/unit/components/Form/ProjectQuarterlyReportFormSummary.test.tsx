@@ -164,6 +164,8 @@ describe("The Project Quarterly Report Form Summary", () => {
 
     // Fourth Node
     expect(screen.getByText("Quarterly Report")).toBeInTheDocument();
+    const quarterlyReport = document.querySelector("dd > em.diffOld");
+    expect(quarterlyReport.textContent).toBe("Quarterly Report");
   });
 
   it("Displays diffs of the the data fields that were updated", () => {

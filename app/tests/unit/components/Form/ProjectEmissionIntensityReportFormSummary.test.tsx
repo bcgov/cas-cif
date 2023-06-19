@@ -187,9 +187,7 @@ describe("the emission intensity report form component", () => {
       screen.getByText("Total Project Lifetime Emissions Reductions (optional)")
     ).toBeInTheDocument();
     expect(screen.getAllByText("0.00000000")).toHaveLength(2);
-    expect(screen.getAllByText("0.12345678")).toHaveLength(1);
     expect(screen.getByText("0.12345678")).toHaveClass("diffNew");
-    expect(screen.getAllByText("123.00000000")).toHaveLength(1);
     expect(screen.getByText("123.00000000")).toHaveClass("diffNew");
   });
 
@@ -333,6 +331,6 @@ describe("the emission intensity report form component", () => {
       screen.getByText(/actual performance milestone amount/i)
     ).toBeInTheDocument();
     expect(screen.getByText(/\$789\.00/i)).toBeInTheDocument(); //old actualPerformanceMilestoneAmount
-    expect(screen.getByText(/\$357\.00/i)).toBeInTheDocument(); //latest.t committed actualPerformanceMilestoneAmount
+    expect(screen.getByText(/\$357\.00/i)).toBeInTheDocument(); //latest committed actualPerformanceMilestoneAmount
   });
 });
