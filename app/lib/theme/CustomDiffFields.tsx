@@ -71,7 +71,6 @@ const renderDiffData = ({
   contentSuffix,
 }) => {
   let components = [];
-
   if (oldData !== null && oldData !== undefined) {
     components.push(
       <NumberFormatWrapper
@@ -120,7 +119,7 @@ const renderDiffData = ({
   if (
     newData !== null &&
     newData !== undefined &&
-    oldData !== undefined &&
+    oldData !== null &&
     oldData !== undefined
   ) {
     components.push(
@@ -172,7 +171,6 @@ const renderDiffString = ({
   diffNewClsName,
 }) => {
   let components = [];
-
   if (oldData !== null && oldData !== undefined) {
     components.push(
       <StringFormatWrapper
@@ -186,7 +184,10 @@ const renderDiffString = ({
         contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
     }
-    if (newData !== null && newData !== undefined) {
+    if (
+      (newData !== null && newData !== undefined) ||
+      (latestCommittedData !== null && latestCommittedData !== undefined)
+    ) {
       components.push(renderArrow());
     }
   }
@@ -213,7 +214,9 @@ const renderDiffString = ({
         contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
     }
-    components.push(renderArrow());
+    if (newData !== null && newData !== undefined) {
+      components.push(renderArrow());
+    }
   }
 
   if (
