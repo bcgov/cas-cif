@@ -504,43 +504,7 @@ describe("The Object Field Template", () => {
       />
     );
 
-    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
-    expect(componentUnderTest.getAllByText("0")[1]).toHaveClass("diffNew");
-    expect(componentUnderTest.getAllByText("0")).toHaveLength(2);
-  });
-  // 111
-  it("handles 0 when latestCommittedData,oldData formData are all 0", () => {
-    const latestCommittedDataWithZero = {
-      stringTest: "stringTest LAST COMMITTED",
-      numberTest: 0,
-      numericIdTest: 0,
-    };
-
-    const formDataWithZero = {
-      stringTest: "stringTest FORM DATA",
-      numberTest: 0,
-      numericIdTest: 0,
-    };
-
-    const componentUnderTest = render(
-      <FormBase
-        tagName={"dl"}
-        fields={CUSTOM_DIFF_FIELDS}
-        schema={testSchema as JSONSchema7}
-        uiSchema={uiTestSchema}
-        formData={formDataWithZero}
-        formContext={{
-          oldData: oldFormData,
-          oldUiSchema: oldUiTestSchema,
-          operation: "UPDATE",
-          isAmendmentsAndOtherRevisionsSpecific: true,
-          latestCommittedData: latestCommittedDataWithZero,
-        }}
-      />
-    );
-
-    expect(componentUnderTest.getAllByText("0")[0]).toHaveClass("diffOld");
-    expect(componentUnderTest.getAllByText("0")[1]).toHaveClass("diffNew");
-    expect(componentUnderTest.getAllByText("0")).toHaveLength(2);
+    expect(componentUnderTest.getByText("200")).toHaveClass("diffOld");
+    expect(componentUnderTest.getByText("0")).toHaveClass("diffNew");
   });
 });

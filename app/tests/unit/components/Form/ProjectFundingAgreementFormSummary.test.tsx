@@ -286,7 +286,6 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("60.00 %", { selector: ".diffNew" })
     ).toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
     expect(
       screen.getByText("10.23 %", { selector: ".diffOld" })
     ).toBeInTheDocument();
