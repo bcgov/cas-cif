@@ -16,7 +16,7 @@ describe("when editing a project, the project page", () => {
   it("allows multiple users to edit an existing project", () => {
     cy.mockLogin("cif_admin");
     cy.navigateToFirstProjectEditRevisionPage();
-    cy.findByText(/Amendment 2/i).should("be.visible");
+    cy.findByRole("heading", { name: /Amendment 2/i }).should("be.visible");
     cy.findByText(/1. Project Overview/i).click();
     cy.findByText(/Edit Project Overview/i).click();
     cy.url().should("include", "/form/0");
