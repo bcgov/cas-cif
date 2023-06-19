@@ -324,3 +324,4 @@ functions/migration_emission_intensity_report_form_changes_to_single_form_change
 migrations/006_emission_intensity_report_form_changes_to_single_form_change 2023-06-09T16:10:26Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration function and call to move reporting_requirement and emissions_intensity_report to a single emissions intensity report form_change
 data/010_insert_json_schema_form_data_refactor_emissions_schema 2023-06-09T18:28:28Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration to update db emissions intensity form schema
 mutations/create_project_revision [mutations/create_project_revision@1.9.0] 2023-06-19T16:04:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update emission intensity schema names
+mutations/add_emission_intensity_report_to_revision [mutations/add_emission_intensity_report_to_revision@1.9.0] 2023-06-19T16:14:50Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate add_emission_intensity_report_to_revision

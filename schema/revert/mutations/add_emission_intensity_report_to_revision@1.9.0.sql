@@ -37,7 +37,7 @@ as $add_emission_intensity_form_change$
         (select nextval(pg_get_serial_sequence('cif.reporting_requirement', 'id'))),
         $1,
         'pending',
-        'emission_intensity_reporting_requirement'
+        'reporting_requirement'
       ) returning *
   ), emission_intensity_report as (
       insert into cif.form_change(
