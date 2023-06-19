@@ -23,22 +23,22 @@ const contactSchema = {
         "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
     },
     phoneExt: {
-      type: [null, "string"],
+      type: ["null", "string"],
       title: "Phone Extension",
       default: undefined,
     },
     companyName: {
-      type: [null, "string"],
+      type: ["null", "string"],
       title: "Company Name",
       default: undefined,
     },
     contactPosition: {
-      type: [null, "string"],
+      type: ["null", "string"],
       title: "Position",
       default: undefined,
     },
     comments: {
-      type: [null, "string"],
+      type: ["null", "string"],
       title: "Comments",
       default: undefined,
     },
