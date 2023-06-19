@@ -13,12 +13,7 @@ as $$
         in the data in new_form_data.
       **/
       ($1.id * -1) as id,
-     (new_form_data->>'projectId')::integer as project_id,
-      new_form_data->>'reportType' as report_type,
-      (new_form_data->>'reportDueDate')::timestamptz as report_due_date,
-      (new_form_data->>'submittedDate')::timestamptz as submitted_date,
-      new_form_data->>'comments' as comments,
-      (new_form_data->>'reportingRequirementIndex')::integer as reporting_requirement_index,
+      (new_form_data->>'reportingRequirementId')::integer as reporting_requirement_id,
       (new_form_data->>'measurementPeriodStartDate')::timestamptz as measurement_period_start_date,
       (new_form_data->>'measurementPeriodEndDate')::timestamptz as measurement_period_end_date,
       (new_form_data->>'emissionFunctionalUnit')::varchar as emission_functional_unit,
@@ -36,7 +31,7 @@ as $$
       null::timestamptz as archived_at,
       (new_form_data->>'adjustedHoldbackPaymentAmount')::numeric as adjusted_holdback_payment_amount,
       (new_form_data->>'dateSentToCsnr')::timestamptz as date_sent_to_csnr
-    from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'emission_intensity'
+    from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'emission_intensity_report'
 
 $$ language sql stable;
 
