@@ -96,7 +96,8 @@ const renderDiffData = ({
   if (
     latestCommittedData !== null &&
     latestCommittedData !== undefined &&
-    latestCommittedData !== oldData
+    latestCommittedData !== oldData &&
+    latestCommittedData !== newData
   ) {
     components.push(
       <NumberFormatWrapper
@@ -193,7 +194,8 @@ const renderDiffString = ({
   if (
     latestCommittedData !== null &&
     latestCommittedData !== undefined &&
-    latestCommittedData !== oldData
+    latestCommittedData !== oldData &&
+    latestCommittedData !== newData
   ) {
     components.push(
       <StringFormatWrapper
