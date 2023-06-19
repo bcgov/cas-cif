@@ -328,4 +328,3 @@ migrations/006_emission_intensity_report_form_changes_to_single_form_change 2023
 data/010_insert_json_schema_form_data_refactor_emissions_schema 2023-06-09T18:28:28Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration to update db emissions intensity form schema
 mutations/create_project_revision [mutations/create_project_revision@1.9.0] 2023-06-19T16:04:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update emission intensity schema names
 mutations/add_emission_intensity_report_to_revision [mutations/add_emission_intensity_report_to_revision@1.9.0] 2023-06-19T16:14:50Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate add_emission_intensity_report_to_revision
-computed_columns/form_change_as_emission_intensity_report [computed_columns/form_change_as_emission_intensity_report@1.9.0] 2023-06-19T16:21:18Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add reporting_requirement form_data to the computed column

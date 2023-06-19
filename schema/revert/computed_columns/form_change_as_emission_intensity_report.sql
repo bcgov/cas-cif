@@ -2,6 +2,15 @@
 
 begin;
 
+/**
+  The revert for the preceding change emission_intensity_report_001 must be done here or the revert for form_change_as_emission_intensity_report
+  will not work. It will complain that it is returning too few columns.
+**/
+
+alter table cif.emission_intensity_report
+  drop column if exists adjusted_holdback_payment_amount,
+  drop column if exists date_sent_to_csnr;
+
 create or replace function cif.form_change_as_emission_intensity_report(cif.form_change)
 returns cif.emission_intensity_report
 as $$
@@ -28,9 +37,7 @@ as $$
       null::int as updated_by,
       now()::timestamptz updated_at,
       null::int as archived_by,
-      null::timestamptz as archived_at,
-      (new_form_data->>'adjustedHoldbackPaymentAmount')::numeric as adjusted_holdback_payment_amount,
-      (new_form_data->>'dateSentToCsnr')::timestamptz as date_sent_to_csnr
+      null::timestamptz as archived_at
     from cif.form_change fc where fc.id = $1.id and fc.form_data_table_name = 'emission_intensity_report'
 
 $$ language sql stable;
