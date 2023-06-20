@@ -263,10 +263,13 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/^Production Functional Unit/i)
       .next()
       .should("have.text", "G");
-    cy.get("#root_uponCompletion_adjustedEmissionsIntensityPerformance").should(
-      "have.text",
-      "200.00%"
-    );
+    // GHG performance uses the ReadOnlyAdjustableCalculatedValueWidget, which has a different HTML structure than the other fields
+    cy.findByText("GHG Emission Intensity Performance")
+      .next()
+      .should(
+        "have.text",
+        "200.00%GHG Emission Intensity Performance (Adjusted)100%"
+      );
     cy.findByText("Payment Percentage of Performance Milestone Amount (%)")
       .next()
       .should("have.text", "100.00%");
