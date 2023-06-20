@@ -217,6 +217,8 @@ describe("The Project Annual Report Form Summary", () => {
     expect(screen.getByText(/Jan[.]? 1, 2022/)).toBeInTheDocument();
 
     // Fourth Node
-    expect(screen.getByText("Annual Report removed")).toBeInTheDocument();
+    expect(screen.getByText("Annual Report")).toBeInTheDocument();
+    const annualReportText = document.querySelector("dd > em.diffOld");
+    expect(annualReportText.textContent).toBe("Annual Report");
   });
 });

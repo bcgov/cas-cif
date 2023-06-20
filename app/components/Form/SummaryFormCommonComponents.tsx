@@ -9,21 +9,9 @@ interface FormRemovedProps {
   formTitle: string;
 }
 
-export const FormRemoved: React.FC<FormRemovedProps> = ({
-  isOnAmendmentsAndOtherRevisionsPage,
-  formTitle,
-}) => (
+export const FormRemoved: React.FC<FormRemovedProps> = ({ formTitle }) => (
   <dd>
-    <em
-      className={
-        isOnAmendmentsAndOtherRevisionsPage
-          ? "diffAmendmentsAndOtherRevisionsOld"
-          : "diffReviewAndSubmitInformationOld"
-      }
-    >
-      {/* No need to show `removed` on Amendments/Revisions page */}
-      {formTitle} {!isOnAmendmentsAndOtherRevisionsPage && "removed"}
-    </em>
+    <em className={"diffOld"}>{formTitle}</em>
     <style jsx>{`
       :global(.diffReviewAndSubmitInformationOld) {
         background-color: #fad980;

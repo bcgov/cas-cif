@@ -132,11 +132,9 @@ describe("The CollapsibleFormWidget", () => {
     componentTestingHelper.renderComponent();
 
     // testing some classnames that are used to style the diff
-    expect(screen.getByText("Test Proposal Reference")).toHaveClass(
-      "diffAmendmentsAndOtherRevisionsNew"
-    );
+    expect(screen.getByText("Test Proposal Reference")).toHaveClass("diffNew");
     expect(screen.getByText("Test Proposal Reference PREVIOUS")).toHaveClass(
-      "diffAmendmentsAndOtherRevisionsOld"
+      "diffOld"
     );
   });
 });

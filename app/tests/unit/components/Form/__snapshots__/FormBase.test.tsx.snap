@@ -3,7 +3,7 @@
 exports[`The FormBase component renders a test schema with the default theme 1`] = `
 <div>
   <form
-    class="jsx-2217509096 "
+    class="jsx-337939564 "
     novalidate=""
   >
     <div
@@ -67,7 +67,7 @@ exports[`The FormBase component renders a test schema with the default theme 1`]
 exports[`The FormBase component renders a test schema with the readonly theme 1`] = `
 <div>
   <form
-    class="jsx-2217509096 "
+    class="jsx-337939564 "
     novalidate=""
   >
     <div

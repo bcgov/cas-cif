@@ -280,38 +280,79 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getByText("50.00 %")).toBeInTheDocument();
-    expect(screen.getByText("60.00 %")).toBeInTheDocument();
-    expect(screen.getByText("10.23 %")).toBeInTheDocument();
-    expect(screen.getByText("20.15 %")).toBeInTheDocument();
-    expect(screen.getByText("$2,500.00")).toBeInTheDocument();
-    expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
+    expect(
+      screen.getByText("50.00 %", { selector: ".diffOld" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("60.00 %", { selector: ".diffNew" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("10.23 %", { selector: ".diffOld" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("20.15 %", { selector: ".diffNew" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("$2,500.00", { selector: ".diffNew" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Jan[.]? 1, 2021/, { selector: ".diffOld" })
+    ).toBeInTheDocument();
     expect(screen.getByText(/Feb[.]? 2, 2021/)).toBeInTheDocument();
     expect(screen.getByText("Approved")).toBeInTheDocument();
-    expect(screen.getByText("5.00 %")).toBeInTheDocument(); // new proponentsSharePercentage
-    expect(screen.getByText("10.00 %")).toBeInTheDocument(); // old proponentsSharePercentage
-    expect(screen.getByText("15.00 %")).toBeInTheDocument(); // latest committed proponentsSharePercentage
-    expect(screen.getByText("$6.00")).toBeInTheDocument(); // new totalProjectValue
-    expect(screen.getByText("$12.00")).toBeInTheDocument(); // old totalProjectValue
-    expect(screen.getByText("$18.00")).toBeInTheDocument(); // latest committed totalProjectValue
+    expect(
+      screen.getByText("5.00 %", { selector: ".diffNew" })
+    ).toBeInTheDocument(); // new proponentsSharePercentage
+    expect(
+      screen.getByText("10.00 %", { selector: ".diffOld" })
+    ).toBeInTheDocument(); // old proponentsSharePercentage
+    expect(
+      screen.getByText("15.00 %", { selector: ".diffOld" })
+    ).toBeInTheDocument(); // latest committed proponentsSharePercentage
+    expect(
+      screen.getByText("$6.00", { selector: ".diffNew" })
+    ).toBeInTheDocument(); // new totalProjectValue
+    expect(
+      screen.getByText("$12.00", { selector: ".diffOld" })
+    ).toBeInTheDocument(); // old totalProjectValue
+    expect(
+      screen.getByText("$18.00", { selector: ".diffOld" })
+    ).toBeInTheDocument(); // latest committed totalProjectValue
   });
 
   it("Displays diffs of the the data fields that have changed for an IA form", () => {
     componentTestingHelper.loadQuery(mockQueryPayloadIA);
     componentTestingHelper.renderComponent();
-
-    expect(screen.getByText("50.00 %")).toBeInTheDocument();
+    expect(
+      screen.getByText("50.00 %", { selector: ".diffOld" })
+    ).toBeInTheDocument();
     expect(screen.getByText("60.00 %")).toBeInTheDocument();
-    expect(screen.getByText("$500.00")).toBeInTheDocument(); //max funding changes
-    expect(screen.getByText("$501.00")).toBeInTheDocument(); // max funding changes
+    expect(
+      screen.getByText("$500.00", { selector: ".diffOld" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("$501.00", { selector: ".diffNew" })
+    ).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 1, 2021/)).toBeInTheDocument();
-    expect(screen.getByText("7.00 %")).toBeInTheDocument(); // new proponent's share percentage
-    expect(screen.getByText("14.00 %")).toBeInTheDocument(); // old proponent's share percentage
-    expect(screen.getByText("21.00 %")).toBeInTheDocument(); // latest committed proponent's share percentage
+    expect(
+      screen.getByText("7.00 %", { selector: ".diffNew" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("14.00 %", { selector: ".diffOld" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("21.00 %", { selector: ".diffOld" })
+    ).toBeInTheDocument();
 
-    expect(screen.getByText("$8.00")).toBeInTheDocument(); // new total project value
-    expect(screen.getByText("$16.00")).toBeInTheDocument(); // old total project value
-    expect(screen.getByText("$24.00")).toBeInTheDocument(); // latest committed total project value
+    expect(
+      screen.getByText("$8.00", { selector: ".diffNew" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("$16.00", { selector: ".diffOld" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("$24.00", { selector: ".diffOld" })
+    ).toBeInTheDocument();
   });
 
   it("Displays all data for an EP project when isFirstRevision is true (Project Creation)", () => {
@@ -627,7 +668,7 @@ describe("The Project Funding Agreement Form Summary", () => {
     componentTestingHelper.renderComponent();
 
     expect(
-      screen.getByText(/budgets, expenses & payments removed/i)
-    ).toHaveClass("diffReviewAndSubmitInformationOld");
+      screen.queryAllByText(/budgets, expenses & payments/i)[1]
+    ).toHaveClass("diffOld");
   });
 });
