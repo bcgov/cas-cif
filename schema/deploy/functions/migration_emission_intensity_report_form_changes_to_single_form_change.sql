@@ -18,17 +18,18 @@ with
   ei_data as
         (
           select id, project_revision_id, rep_req_id,  jsonb_strip_nulls(jsonb_build_object(
-              'measurementPeriodStartDate', raw_ei_data.new_form_data->>'measurementPeriodStartDate',
-              'measurementPeriodEndDate', raw_ei_data.new_form_data->>'measurementPeriodEndDate',
-              'emissionFunctionalUnit', raw_ei_data.new_form_data->>'emissionFunctionalUnit',
-              'productionFunctionalUnit', raw_ei_data.new_form_data->>'productionFunctionalUnit',
-              'baselineEmissionIntensity', raw_ei_data.new_form_data->>'baselineEmissionIntensity',
-              'targetEmissionIntensity', raw_ei_data.new_form_data->>'targetEmissionIntensity',
-              'postProjectEmissionIntensity', raw_ei_data.new_form_data->>'postProjectEmissionIntensity',
-              'totalLifetimeEmissioSnReduction',  raw_ei_data.new_form_data->>'totalLifetimeEmissioSnReduction',
-              'adjustedEmissionsIntensityPerformance', raw_ei_data.new_form_data->>'adjustedEmissionsIntensityPerformance',
-              'adjustedHoldbackPaymentAmount', raw_ei_data.new_form_data->>'adjustedHoldbackPaymentAmount',
-              'dateSentToCsnr', raw_ei_data.new_form_data->>'dateSentToCsnr'))::jsonb
+              'measurementPeriodStartDate', (raw_ei_data.new_form_data->>'measurementPeriodStartDate')::timestamptz,
+              'measurementPeriodEndDate', (raw_ei_data.new_form_data->>'measurementPeriodEndDate')::timestamptz,
+              'emissionFunctionalUnit', (raw_ei_data.new_form_data->>'emissionFunctionalUnit')::varchar,
+              'productionFunctionalUnit', (raw_ei_data.new_form_data->>'productionFunctionalUnit')::varchar,
+              'baselineEmissionIntensity', (raw_ei_data.new_form_data->>'baselineEmissionIntensity')::numeric,
+              'targetEmissionIntensity', (raw_ei_data.new_form_data->>'targetEmissionIntensity')::numeric,
+              'postProjectEmissionIntensity', (raw_ei_data.new_form_data->>'postProjectEmissionIntensity')::numeric,
+              'totalLifetimeEmissionReduction',  (raw_ei_data.new_form_data->>'totalLifetimeEmissionReduction')::numeric,
+              'adjustedEmissionsIntensityPerformance', (raw_ei_data.new_form_data->>'adjustedEmissionsIntensityPerformance')::numeric,
+              'adjustedHoldbackPaymentAmount', (raw_ei_data.new_form_data->>'adjustedHoldbackPaymentAmount')::numeric,
+              'dateSentToCsnr', (raw_ei_data.new_form_data->>'dateSentToCsnr')::timestamptz)
+              )::jsonb
             as clean_new_form_data
         from raw_ei_data
         )
@@ -37,12 +38,12 @@ with
       set
         -- Need to rewrite rather than just copy the new_form_data because project id key was project_id instead of projectId
         new_form_data =  jsonb_strip_nulls(jsonb_build_object(
-          'projectId', new_form_data->>'project_id',
-          'reportType', new_form_data->>'reportType',
-          'reportDueDate', new_form_data->>'reportDueDate',
-          'submittedDate', new_form_data->>'submittedDate',
-          'comments', new_form_data->>'comments',
-          'reportingRequirementIndex', new_form_data->>'reportingRequirementIndex'
+          'projectId', (new_form_data->>'project_id')::int,
+          'reportType', (new_form_data->>'reportType')::varchar,
+          'reportDueDate', (new_form_data->>'reportDueDate')::timestamptz,
+          'submittedDate', (new_form_data->>'submittedDate')::timestamptz,
+          'comments', (new_form_data->>'comments')::varchar,
+          'reportingRequirementIndex', (new_form_data->>'reportingRequirementIndex')::int
         ))::jsonb || (
                 select clean_new_form_data from ei_data
                 where ei_data.rep_req_id = fc1.form_data_record_id
