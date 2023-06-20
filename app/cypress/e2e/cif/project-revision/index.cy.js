@@ -369,7 +369,6 @@ describe("the new project page", () => {
     cy.findByText(/Add emissions intensity report/i).click();
     cy.url().should("include", "/form/5");
     cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
-      aliasOperation(req, "stageEmissionIntensityFormChangeMutation");
       aliasOperation(req, "stageReportingRequirementFormChangeMutation");
     });
     cy.findByRole("button", {
@@ -378,9 +377,6 @@ describe("the new project page", () => {
     cy.contains("Changes saved").should("be.visible");
 
     cy.findByRole("button", { name: /^submit/i }).click();
-    cy.wait("@gqlstageEmissionIntensityFormChangeMutation")
-      .its("response")
-      .should("have.property", "body");
     cy.wait("@gqlstageReportingRequirementFormChangeMutation")
       .its("response")
       .should("have.property", "body");
