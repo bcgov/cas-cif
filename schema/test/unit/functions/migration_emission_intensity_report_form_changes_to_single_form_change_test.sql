@@ -3,7 +3,7 @@
 begin;
 
 
-select plan(6);
+select plan(9);
 
 -- Test Setup --
 
@@ -51,15 +51,14 @@ values
        -- first project with no data
 
        (101,
-        '{"project_id": 1, "reportType": "TEIMP", "reportingRequirementIndex": 1 }'::jsonb,
+        json_build_object('project_id', 1, 'reportType','TEIMP', 'reportingRequirementIndex', 1 )::jsonb,
         'create',
         'cif',
         'reporting_requirement',
         1,
         1,
         'pending',
-        'emission_intensity_reporting_requirement')
-       ,
+        'emission_intensity_reporting_requirement'),
        (102,
         '{"reportingRequirementId": 1 }'::jsonb,
         'create',
@@ -145,7 +144,7 @@ values
             "measurementPeriodEndDate": "2023-06-15T23:59:59.999-07:00",
             "productionFunctionalUnit": "unit",
             "baselineEmissionIntensity": 2569.555,
-            "measurementPeriodStartDate": "2021-06-01T23: 59:59.999-07:00",
+            "measurementPeriodStartDate": "2021-06-15T23:59:59.999-07:00",
             "postProjectEmissionIntensity": 654.12345678,
             "adjustedEmissionsIntensityPerformance": 95.86,
             "dateSentToCsnr": "2023-06-22T23:59:59.999-07:00",
@@ -242,7 +241,7 @@ select results_eq(
             "reportType": "TEIMP",
             "reportingRequirementIndex": 1,
             "projectId": 1}'::jsonb),
-        (102, 'pending'::varchar, '{
+        (201, 'pending'::varchar, '{
             "adjustedEmissionsIntensityPerformance": 98,
             "baselineEmissionIntensity": 324.25364,
             "comments": "comments",
@@ -260,9 +259,9 @@ select results_eq(
             "totalLifetimeEmissionReduction": 44.4224,
             "projectId": 2
           }'::jsonb),
-        (103,'pending'::varchar, '{
+        (301,'pending'::varchar, '{
             "comments": "comments",
-            "project_id": 3,
+            "projectId": 3,
             "reportType": "TEIMP",
             "reportDueDate": "2023-06-01T23:59:59.999-07:00",
             "submittedDate": "2023-06-15T23:59:59.999-07:00",
@@ -272,13 +271,12 @@ select results_eq(
             "measurementPeriodEndDate": "2023-06-15T23:59:59.999-07:00",
             "productionFunctionalUnit": "unit",
             "baselineEmissionIntensity": 2569.555,
-            "measurementPeriodStartDate": "2023-06-01T23: 59: 59.999-07:00",
+            "measurementPeriodStartDate": "2021-06-15T23:59:59.999-07:00",
             "postProjectEmissionIntensity": 654.12345678,
             "totalLifetimeEmissionReduction": 66,
-            "dateSentToCsnr": "2023-06-22T23: 59: 59.999-07:00",
+            "dateSentToCsnr": "2023-06-22T23:59:59.999-07:00",
             "adjustedEmissionsIntensityPerformance": 95.86,
-            "totalLifetimeEmissionReduction": 66,
-            "reportingRequirementId": 66
+            "totalLifetimeEmissionReduction": 66
           }'::jsonb)
   $$,
   'It transforms the double (reporting_requirement, emission_intensity_report) into one single form_change without nulls'
@@ -324,7 +322,25 @@ select cif_private.migration_milestone_form_changes_to_single_form_change();
 alter table cif.form_change enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
 
 
--- monkeyfuzz add first three tests once they're complete here
+select is(
+  (select count(*) from cif.form_change where (form_data_table_name='emission_intensity_report')),
+  0::bigint,
+  'There are no form_change records left for the emission_intensity_report table'
+);
+
+select is(
+  (select count(*) from cif.form_change where (json_schema_name='emission_intensity_reporting_requirement')),
+  0::bigint,
+  'There are no form_change records left using the emission_intensity_reporting_requirement json schema'
+);
+
+
+select is(
+  (select count(*) from cif.form_change where form_data_table_name='reporting_requirement' and json_schema_name='emission_intensity'),
+  4::bigint, -- existing ids 101, 201, 301, and 5 which was created as part of the new project revision
+  'The reporting requirements for emission intensity reports have been converted to the new schema'
+);
+
 
 
 select finish();
