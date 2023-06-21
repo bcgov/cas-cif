@@ -13,6 +13,16 @@ const links = [
   },
 ];
 
+const linksHomepage = [
+  {
+    name: "Homepage",
+    href: {
+      pathname: "/",
+    },
+    highlightOn: ["/(.*)"],
+  },
+];
+
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
@@ -46,5 +56,19 @@ describe("The Navigation Component", () => {
 
     expect(screen.getByText("Home")).toBeVisible();
     expect(screen.getByText("Projects")).toBeVisible();
+  });
+
+  it("should not render the login buttons if the user is logged in", () => {
+    render(<Navigation isLoggedIn={true} links={links} />);
+
+    expect(screen.queryByText("Administrator Login")).toBeNull();
+    expect(screen.queryByText("External User Login")).toBeNull();
+  });
+
+  it("should not render the login buttons if the user is logged out but on the homepage", () => {
+    render(<Navigation isLoggedIn={false} links={linksHomepage} />);
+
+    expect(screen.queryByText("Administrator Login")).toBeNull();
+    expect(screen.queryByText("External User Login")).toBeNull();
   });
 });

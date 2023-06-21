@@ -22,33 +22,19 @@ const LoginForm: React.FC<Props> = ({ isExternal }) => {
     <>
       <form id="login-buttons" action={loginURI} method="post">
         {isExternal && router.pathname.includes("login-redirect") ? (
-          <Button
-            className="loginButton externalUser"
-            type="submit"
-            variant="secondary-inverse"
-          >
+          <Button type="submit" variant="secondary-inverse">
             External User Login
           </Button>
         ) : isExternal ? (
-          <Button
-            className="loginButton externalUser"
-            type="submit"
-            variant="secondary"
-          >
+          <Button type="submit" variant="secondary">
             External User Login
           </Button>
         ) : router.pathname.includes("login-redirect") ? (
-          <Button
-            className="loginButton"
-            type="submit"
-            variant="secondary-inverse"
-          >
+          <Button type="submit" variant="secondary-inverse">
             Administrator Login
           </Button>
         ) : (
-          <Button className="loginButton" type="submit">
-            Administrator Login
-          </Button>
+          <Button type="submit">Administrator Login</Button>
         )}
       </form>
       <style jsx>{`
