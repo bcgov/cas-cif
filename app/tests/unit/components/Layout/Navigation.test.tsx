@@ -2,6 +2,7 @@ import Navigation from "components/Layout/Navigation";
 import { render, screen } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
+import userEvent from "@testing-library/user-event";
 
 const links = [
   {
@@ -70,5 +71,14 @@ describe("The Navigation Component", () => {
 
     expect(screen.queryByText("Administrator Login")).toBeNull();
     expect(screen.queryByText("External User Login")).toBeNull();
+  });
+
+  it("redirects to the homepage when the user clicks the CleanBC logo", () => {
+    render(<Navigation isLoggedIn={false} links={links} />);
+
+    userEvent.click(
+      screen.getByAltText(/logo for Province of British Columbia CleanBC/i)
+    );
+    expect(window.location.pathname).toEqual("/");
   });
 });

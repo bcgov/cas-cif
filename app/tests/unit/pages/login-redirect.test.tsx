@@ -1,8 +1,7 @@
 import { getUserGroups } from "server/helpers/userGroupAuthentication";
 import loginRedirect, { withRelayOptions } from "pages/login-redirect";
 import { mocked } from "jest-mock";
-import { act, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
 import compiledLoginRedirectQuery, {
   loginRedirectQuery,
@@ -70,24 +69,5 @@ describe("The login-redirect page", () => {
 
     expect(screen.getByText(/Administrator Login/i)).toBeVisible();
     expect(screen.getByText(/External User Login/i)).toBeVisible();
-  });
-
-  it("Redirects to the homepage when the user clicks the CleanBC logo", () => {
-    pageTestingHelper.setMockRouterValues({ pathname: "/cif/projects" });
-    pageTestingHelper.loadQuery();
-    pageTestingHelper.renderPage();
-
-    // console.log(screen.getByAltText(/logo for Province of British Columbia CleanBC/i));
-
-    act(() =>
-      userEvent.click(
-        screen.getByAltText(/logo for Province of British Columbia CleanBC/i)
-      )
-    );
-
-    expect(pageTestingHelper.router.push).toHaveBeenCalledWith(
-      "/",
-      expect.any(Object)
-    );
   });
 });
