@@ -206,6 +206,31 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText("Remove")).toHaveLength(3);
   });
 
+  it("renders the tooltips for the mock form", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByLabelText(/maximum-amount-this-milestone-tooltip/)
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByLabelText(/total-eligible-expenses-tooltip/)
+    ).toHaveLength(1);
+
+    expect(
+      screen.getAllByLabelText(/gross-payment-amount-this-milestone-tooltip/)
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByLabelText(/net-payment-amount-this-milestone-tooltip/)
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByLabelText(/holdback-amount-this-milestone-tooltip/)
+    ).toHaveLength(2);
+  });
+
   it("Calls the createMilestoneMutation mutation when the Add button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
@@ -557,35 +582,5 @@ describe("The ProjectMilestoneReportForm", () => {
         /This field cannot be calculated due to lack of information now./i
       )
     ).toHaveLength(3);
-  });
-
-  it("renders the maximum amount this milestone tooltip button and text", async () => {
-    componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
-
-    const tooltipButton = screen.getAllByLabelText(
-      "maximum-amount-this-milestone-tooltip"
-    );
-
-    expect(tooltipButton).toBeArray();
-    expect(tooltipButton).toHaveLength(2);
-    // expect(tooltipButton).toBeInTheDocument();
-    // expect(tooltipButton).toHaveAttribute(
-    //   "aria-label",
-    //   "maximum-amount-this-milestone-tooltip"
-    // );
-
-    // fireEvent.mouseOver(tooltipButton);
-    // await waitFor(() => {
-    //   expect(
-    //     screen.getByTestId("maximum-amount-this-milestone-tooltip-text")
-    //   ).toBeInTheDocument();
-    //   expect(
-    //     screen.getByTestId("maximum-amount-this-milestone-tooltip-text")
-    //       .innerHTML
-    //   ).toBe(
-    //     "<div><ul><li>The maximum payment amount that the proponent can receive from CIF for this milestone.</li><li>Typically found in schedule D.</ul></div>"
-    //   );
-    // });
   });
 });
