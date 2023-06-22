@@ -32,9 +32,6 @@ const mockQueryPayload = {
             node: {
               id: "Test Reporting Requirement ID - 1",
               isPristine: false,
-              calculatedNetAmountThisMilestone: 100,
-              calculatedGrossAmountThisMilestone: 900,
-              calculatedHoldbackAmountThisMilestone: 800,
               newFormData: {
                 totalEligibleExpenses: 1000,
                 description: "charmander",
@@ -44,6 +41,12 @@ const mockQueryPayload = {
                 reportDueDate: "2020-01-10T23:59:59.999-07:00",
                 reportingRequirementId: 1,
                 hasExpenses: true,
+                calculatedNetAmount: 111,
+                calculatedGrossAmount: 999,
+                calculatedHoldbackAmount: 888,
+                adjustedNetAmount: 11,
+                adjustedGrossAmount: 99,
+                adjustedHoldBackAmount: 88,
               },
               operation: "UPDATE",
               formChangeByPreviousFormChangeId: {
@@ -147,8 +150,31 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText(/Jan[.]? 10, 2020/i)).toBeInTheDocument();
 
     // calculated values
-    expect(screen.getByText(/\$1,000\.00/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$100\.00/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$800\.00/i)).toBeInTheDocument();
+    expect(
+      screen.getByText("Gross Payment Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$999\.00/i)).toBeInTheDocument();
+    expect(
+      screen.getByText("Net Payment Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$888\.00/i)).toBeInTheDocument();
+    expect(
+      screen.getByText("Holdback Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$111\.00/i)).toBeInTheDocument();
+
+    // adjusted values
+    expect(
+      screen.getByText("Gross Payment Amount This Milestone (Adjusted)")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$99\.00/i)).toBeInTheDocument();
+    expect(
+      screen.getByText("Net Payment Amount This Milestone (Adjusted)")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$11\.00/i)).toBeInTheDocument();
+    expect(
+      screen.getByText("Holdback Amount This Milestone (Adjusted)")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$88\.00/i)).toBeInTheDocument();
   });
 });
