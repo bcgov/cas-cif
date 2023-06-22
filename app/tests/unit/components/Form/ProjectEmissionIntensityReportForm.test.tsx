@@ -458,34 +458,25 @@ describe("the emission intensity report form component", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    const GHGEmissionIntensityPerformanceTooltip = screen.getByRole("tooltip", {
-      name: "ghg-emission-intensity-performance-tooltip",
-    });
-
-    const paymentPercentageOfPerformanceMilestoneAmountTooltip =
+    expect(
+      screen.getByRole("tooltip", {
+        name: "ghg-emission-intensity-performance-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole("tooltip", {
         name: "payment-percentage-of-performance-milestone-amount-(%)-tooltip",
-      });
-
-    const maximumPerformanceMilestoneAmountTooltip = screen.getByRole(
-      "tooltip",
-      {
-        name: "maximum-performance-milestone-amount-tooltip",
-      }
-    );
-
-    const actualPerformanceMilestoneAmountTooltip = screen.getByRole(
-      "tooltip",
-      {
-        name: "actual-performance-milestone-amount-tooltip",
-      }
-    );
-
-    expect(GHGEmissionIntensityPerformanceTooltip).toBeInTheDocument();
-    expect(
-      paymentPercentageOfPerformanceMilestoneAmountTooltip
+      })
     ).toBeInTheDocument();
-    expect(maximumPerformanceMilestoneAmountTooltip).toBeInTheDocument();
-    expect(actualPerformanceMilestoneAmountTooltip).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "maximum-performance-milestone-amount-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "actual-performance-milestone-amount-tooltip",
+      })
+    ).toBeInTheDocument();
   });
 });
