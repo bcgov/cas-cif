@@ -183,75 +183,61 @@ describe("The Project Milestone Report Form Summary", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/\$88\.00/i)).toBeInTheDocument();
   });
-});
 
-const latestCommittedData = {
-  latestCommittedMilestoneFormChanges: {
-    edges: [
-      {
-        node: {
-          newFormData: {
-            totalEligibleExpenses: 1000,
-            description: "charmander",
-            projectId: 1,
-            reportingRequirementIndex: 1,
-            reportType: "General",
-            reportDueDate: "2020-01-10T23:59:59.999-07:00",
-            reportingRequirementId: 1,
-            hasExpenses: true,
-            calculatedGrossAmount: 567,
-            calculatedNetAmount: 789,
-            calculatedHoldbackAmount: 891,
-            adjustedNetAmount: 89,
-            adjustedGrossAmount: 67,
-            adjustedHoldBackAmount: 91,
-          },
-        },
-      },
-    ],
-  },
-};
-
-const modifiedMockQueryPayload = {
-  ...mockQueryPayload,
-  ProjectRevision() {
-    const originalProjectRevision = mockQueryPayload.ProjectRevision();
-    const modifiedProjectRevision = {
-      ...originalProjectRevision,
-      latestCommittedMilestoneFormChanges: {
-        edges: [
-          {
-            node: {
-              newFormData:
-                latestCommittedData.latestCommittedMilestoneFormChanges.edges[0]
-                  .node.newFormData,
+  const latestCommittedData = {
+    latestCommittedMilestoneFormChanges: {
+      edges: [
+        {
+          node: {
+            newFormData: {
+              totalEligibleExpenses: 1000,
+              description: "charmander",
+              projectId: 1,
+              reportingRequirementIndex: 1,
+              reportType: "General",
+              reportDueDate: "2020-01-10T23:59:59.999-07:00",
+              reportingRequirementId: 1,
+              hasExpenses: true,
+              calculatedGrossAmount: 567,
+              calculatedNetAmount: 789,
+              calculatedHoldbackAmount: 891,
+              adjustedNetAmount: 89,
+              adjustedGrossAmount: 67,
+              adjustedHoldBackAmount: 91,
             },
           },
-        ],
-      },
-    };
-    return modifiedProjectRevision;
-  },
-};
+        },
+      ],
+    },
+  };
 
-describe("Project Milestone Summary with latest committed data", () => {
+  const mockQueryPayloadLatestCommitted = {
+    ...mockQueryPayload,
+    ProjectRevision() {
+      const originalProjectRevision = mockQueryPayload.ProjectRevision();
+      const modifiedProjectRevision = {
+        ...originalProjectRevision,
+        latestCommittedMilestoneFormChanges: {
+          edges: [
+            {
+              node: {
+                newFormData:
+                  latestCommittedData.latestCommittedMilestoneFormChanges
+                    .edges[0].node.newFormData,
+              },
+            },
+          ],
+        },
+      };
+      return modifiedProjectRevision;
+    },
+  };
+
   it("Displays diffs of the data fields that were updated and shows latest committed values", () => {
-    const componentTestingHelperWithLatestCommittedData =
-      new ComponentTestingHelper<ProjectMilestoneReportFormSummaryQuery>({
-        component: ProjectMilestoneReportFormSummary,
-        testQuery: testQuery,
-        compiledQuery: compiledProjectMilestoneReportFormSummaryQuery,
-        getPropsFromTestQuery: (data) => ({
-          query: data.query,
-          projectRevision: data.query.projectRevision,
-        }),
-        defaultQueryResolver: modifiedMockQueryPayload,
-        defaultQueryVariables: {},
-        defaultComponentProps: defaultComponentProps,
-      });
-
-    componentTestingHelperWithLatestCommittedData.loadQuery();
-    componentTestingHelperWithLatestCommittedData.renderComponent();
+    componentTestingHelper.defaultQueryResolver =
+      mockQueryPayloadLatestCommitted;
+    componentTestingHelper.loadQuery(mockQueryPayloadLatestCommitted);
+    componentTestingHelper.renderComponent();
 
     // calculated values
     expect(
@@ -288,85 +274,69 @@ describe("Project Milestone Summary with latest committed data", () => {
     expect(screen.getByText(/\$88\.00/i)).toBeInTheDocument();
     expect(screen.getByText(/\$91\.00/i)).toBeInTheDocument();
   });
-});
-
-const mockQueryPayloadWithDiffs = {
-  Form() {
-    return {
-      jsonSchema: milestoneProdSchema,
-    };
-  },
-  ProjectRevision() {
-    const result = {
-      isFirstRevision: false,
-      summaryMilestoneFormChanges: {
-        edges: [
-          {
-            node: {
-              id: "Test Reporting Requirement ID - 1",
-              isPristine: false,
-              newFormData: {
-                totalEligibleExpenses: 1000,
-                description: "charmander",
-                projectId: 1,
-                reportingRequirementIndex: 1,
-                reportType: "General",
-                reportDueDate: "2020-01-10T23:59:59.999-07:00",
-                reportingRequirementId: 1,
-                hasExpenses: true,
-                calculatedNetAmount: 221,
-                calculatedGrossAmount: 222,
-                calculatedHoldbackAmount: 223,
-                adjustedNetAmount: 21,
-                adjustedGrossAmount: 22,
-                adjustedHoldBackAmount: 23,
-              },
-              operation: "UPDATE",
-              formChangeByPreviousFormChangeId: {
+  const mockQueryPayloadWithDiffs = {
+    Form() {
+      return {
+        jsonSchema: milestoneProdSchema,
+      };
+    },
+    ProjectRevision() {
+      const result = {
+        isFirstRevision: false,
+        summaryMilestoneFormChanges: {
+          edges: [
+            {
+              node: {
+                id: "Test Reporting Requirement ID - 1",
+                isPristine: false,
                 newFormData: {
-                  description: "bulbasaur",
+                  totalEligibleExpenses: 1000,
+                  description: "charmander",
                   projectId: 1,
                   reportingRequirementIndex: 1,
-                  reportDueDate: "2020-01-01T13:59:59.999-07:00",
-                  reportType: "Advanced",
+                  reportType: "General",
+                  reportDueDate: "2020-01-10T23:59:59.999-07:00",
                   reportingRequirementId: 1,
                   hasExpenses: true,
-                  calculatedNetAmount: 111,
-                  calculatedGrossAmount: 112,
-                  calculatedHoldbackAmount: 113,
-                  adjustedNetAmount: 11,
-                  adjustedGrossAmount: 12,
-                  adjustedHoldBackAmount: 13,
+                  calculatedNetAmount: 221,
+                  calculatedGrossAmount: 222,
+                  calculatedHoldbackAmount: 223,
+                  adjustedNetAmount: 21,
+                  adjustedGrossAmount: 22,
+                  adjustedHoldBackAmount: 23,
                 },
+                operation: "UPDATE",
+                formChangeByPreviousFormChangeId: {
+                  newFormData: {
+                    description: "bulbasaur",
+                    projectId: 1,
+                    reportingRequirementIndex: 1,
+                    reportDueDate: "2020-01-01T13:59:59.999-07:00",
+                    reportType: "Advanced",
+                    reportingRequirementId: 1,
+                    hasExpenses: true,
+                    calculatedNetAmount: 111,
+                    calculatedGrossAmount: 112,
+                    calculatedHoldbackAmount: 113,
+                    adjustedNetAmount: 11,
+                    adjustedGrossAmount: 12,
+                    adjustedHoldBackAmount: 13,
+                  },
+                },
+                formDataRecordId: 1,
               },
-              formDataRecordId: 1,
             },
-          },
-        ],
-      },
-    };
-    return result;
-  },
-};
+          ],
+        },
+      };
+      return result;
+    },
+  };
 
-describe("Project Milestone Summary with diffs, without latestCommittedData", () => {
   it("Displays diffs of the data fields that were updated and the old values", () => {
-    const componentTestingHelperWithLatestCommittedData =
-      new ComponentTestingHelper<ProjectMilestoneReportFormSummaryQuery>({
-        component: ProjectMilestoneReportFormSummary,
-        testQuery: testQuery,
-        compiledQuery: compiledProjectMilestoneReportFormSummaryQuery,
-        getPropsFromTestQuery: (data) => ({
-          query: data.query,
-          projectRevision: data.query.projectRevision,
-        }),
-        defaultQueryResolver: mockQueryPayloadWithDiffs,
-        defaultQueryVariables: {},
-        defaultComponentProps: defaultComponentProps,
-      });
-
-    componentTestingHelperWithLatestCommittedData.loadQuery();
-    componentTestingHelperWithLatestCommittedData.renderComponent();
+    componentTestingHelper.defaultQueryResolver = mockQueryPayloadWithDiffs;
+    componentTestingHelper.loadQuery(mockQueryPayloadWithDiffs);
+    componentTestingHelper.renderComponent();
 
     // calculated values
     expect(
