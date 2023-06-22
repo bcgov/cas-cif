@@ -46,7 +46,7 @@ describe("The DefaultLayout component", () => {
   beforeEach(() => {
     componentTestingHelper.reinit();
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => {
-      return { pathname: "/cif-external" };
+      return { pathname: "/cif-external", query: testQuery };
     });
   });
 
