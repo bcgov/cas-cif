@@ -13,7 +13,6 @@ import { useMemo, useRef, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
-import AdditionalFundingSourcesArrayFieldTemplate from "./AdditionalFundingSourcesArrayFieldTemplate";
 import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
@@ -78,6 +77,15 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               grossPaymentsToDate
               calculatedTotalPaymentAmountToDate
               totalProjectValue
+              anticipatedFundingAmountPerFiscalYear {
+                edges {
+                  # eslint-disable-next-line relay/unused-fields
+                  node {
+                    anticipatedFundingAmount
+                    fiscalYear
+                  }
+                }
+              }
               proponentsSharePercentage
             }
           }
@@ -317,6 +325,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 calculatedNetPaymentsToDate: fundingAgreement.netPaymentsToDate,
                 calculatedGrossPaymentsToDate:
                   fundingAgreement.grossPaymentsToDate,
+                anticipatedFundingAmountPerFiscalYear:
+                  fundingAgreement.anticipatedFundingAmountPerFiscalYear,
               }}
               uiSchema={
                 isFundingStreamEP
@@ -324,7 +334,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                   : fundingParameterIAUiSchema
               }
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
-              ArrayFieldTemplate={AdditionalFundingSourcesArrayFieldTemplate}
               ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
               onChange={(change) => handleChange(change.formData)}
               onError={handleError}
