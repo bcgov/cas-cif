@@ -149,6 +149,12 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText(/Jan[.]? 1, 2020/i)).toBeInTheDocument();
     expect(screen.getByText(/Jan[.]? 10, 2020/i)).toBeInTheDocument();
 
+    // total eligible expenses
+    expect(
+      screen.getByText("Total Eligible Expenses (optional)")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/\$1,000\.00/i)).toBeInTheDocument();
+
     // calculated values
     expect(
       screen.getByText("Gross Payment Amount This Milestone")
