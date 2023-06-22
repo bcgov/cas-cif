@@ -53,15 +53,6 @@ export const EditProjectRevisionQuery = graphql`
         }
       }
     }
-    allRevisionTypes {
-      # type is passed to the helper function that builds the schema
-      # eslint-disable-next-line relay/unused-fields
-      edges {
-        node {
-          type
-        }
-      }
-    }
     allRevisionStatuses(orderBy: SORTING_ORDER_ASC) {
       edges {
         node {
