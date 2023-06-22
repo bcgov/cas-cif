@@ -49,9 +49,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               formDataRecordId
               isPristine
               newFormData
-              calculatedHoldbackAmountThisMilestone
-              calculatedGrossAmountThisMilestone
-              calculatedNetAmountThisMilestone
               operation
               formChangeByPreviousFormChangeId {
                 newFormData
@@ -117,30 +114,21 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
                     .schema as JSONSchema7
                 ).properties,
                 calculatedHoldbackAmount: {
-                  title: "Calculated Holdback Amount",
+                  title: "Holdback Amount This Milestone",
                   type: "number",
                 },
                 calculatedGrossAmount: {
-                  title: "Calculated Gross Amount",
+                  title: "Gross Payment Amount This Milestone",
                   type: "number",
                 },
                 calculatedNetAmount: {
-                  title: "Calculated Net Amount",
+                  title: "Net Payment Amount This Milestone",
                   type: "number",
                 },
               },
             },
             {
               ...milestoneReport,
-              newFormData: {
-                ...milestoneReport.newFormData,
-                calculatedHoldbackAmount:
-                  milestoneReport.calculatedHoldbackAmountThisMilestone,
-                calculatedGrossAmount:
-                  milestoneReport.calculatedGrossAmountThisMilestone,
-                calculatedNetAmount:
-                  milestoneReport.calculatedNetAmountThisMilestone,
-              },
             }
           )
         : {
@@ -183,6 +171,22 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
           isMoney: true,
         },
       };
+
+      // Clone milestoneFormDiffObject and overwrite the titles
+      const titleMap = {
+        adjustedGrossAmount: "Gross Payment Amount This Milestone (Adjusted)",
+        adjustedNetAmount: "Net Payment Amount This Milestone (Adjusted)",
+        adjustedHoldBackAmount: "Holdback Amount This Milestone (Adjusted)",
+      };
+      const clonedMilestoneFormDiffObject = JSON.parse(
+        JSON.stringify(milestoneFormDiffObject)
+      );
+      Object.entries(titleMap).forEach(([key, title]) => {
+        if (clonedMilestoneFormDiffObject.formSchema.properties[key]) {
+          clonedMilestoneFormDiffObject.formSchema.properties[key].title =
+            title;
+        }
+      });
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -212,7 +216,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={milestoneFormDiffObject.formSchema as JSONSchema7}
+            schema={clonedMilestoneFormDiffObject.formSchema as JSONSchema7}
             uiSchema={updatedUiSchema}
             formData={milestoneFormDiffObject.formData}
             formContext={{
