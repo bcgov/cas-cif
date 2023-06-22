@@ -347,22 +347,22 @@ describe("the emission intensity report form component", () => {
 
     expect(
       screen.getByRole("tooltip", {
-        name: "ghg-emission-intensity-performance-tooltip",
+        name: /ghg-emission-intensity-performance-tooltip/,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("tooltip", {
-        name: "payment-percentage-of-performance-milestone-amount-(%)-tooltip",
+        name: /payment-percentage-of-performance-milestone-amount-(%)-tooltip/,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("tooltip", {
-        name: "maximum-performance-milestone-amount-tooltip",
+        name: /maximum-performance-milestone-amount-tooltip/,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("tooltip", {
-        name: "actual-performance-milestone-amount-tooltip",
+        name: /actual-performance-milestone-amount-tooltip/,
       })
     ).toBeInTheDocument();
   });
