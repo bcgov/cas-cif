@@ -36,7 +36,7 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project Overview Form", "editing", "main", true);
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit managers -- delete a manager
     cy.findByRole("button", { name: /^2. Project Details/i }).click();
@@ -60,7 +60,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit contacts -- add a secondary contact
     cy.findByRole("button", { name: /^2. Project Details/i }).click();
@@ -79,7 +79,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.").should("be.visible");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit budgets, expenses, and payments -- change funding agreement
     cy.contains(/Budgets, Expenses & Payments/i).click();
@@ -103,7 +103,7 @@ describe("when editing a project, the project page", () => {
     cy.happoAndAxe("Project budgets Form", "editing", "main");
     cy.findByRole("button", { name: /^submit/i }).click();
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit milestone reports -- change date
     cy.useMockedTime(new Date("June 10, 2020 09:00:01"));
@@ -123,7 +123,7 @@ describe("when editing a project, the project page", () => {
 
     cy.contains("Changes saved.");
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit quarterly reports -- delete a report
     cy.findByRole("button", { name: /Quarterly reports/i }).click();
@@ -145,7 +145,7 @@ describe("when editing a project, the project page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     cy.contains("Changes saved.");
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit teimp
 
@@ -170,7 +170,7 @@ describe("when editing a project, the project page", () => {
 
     cy.contains("Changes saved.");
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit annual reports -- change comments
     cy.findByRole("heading", { name: /7. Annual reports/i }).click();
@@ -190,7 +190,7 @@ describe("when editing a project, the project page", () => {
     cy.contains("Changes saved.");
 
     // check diffs
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     cy.get("#root_projectName-diffOld").should(
       "have.text",
@@ -246,7 +246,7 @@ describe("when editing a project, the project page", () => {
     // Verify that the revision can be accessed by other users
     cy.mockLogin("cif_internal");
     cy.navigateToFirstProjectEditRevisionPage();
-    cy.contains(/revision type/i);
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
     cy.findByText(/1. Project Overview/i).click();
     cy.findByText(/Edit Project Overview/i).click();
     cy.url().should("include", "/form/0");
@@ -254,12 +254,12 @@ describe("when editing a project, the project page", () => {
     cy.findByLabelText("Project Name").eq(0).clear().type("Baz");
     cy.findByRole("button", { name: /submit project overview/i }).click();
 
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // Navigate back to the Review and Submit information page
     cy.mockLogin("cif_admin");
     cy.navigateToFirstProjectEditRevisionPage();
-    cy.contains(/revision type/i); // on revision summary page
+    cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
     cy.get("textarea").click().type("foo");
 
     // Allow the component to finish saving before taking screenshot

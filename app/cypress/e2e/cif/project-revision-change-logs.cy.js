@@ -43,7 +43,6 @@ describe("the project amendment and revisions page", () => {
     cy.get("h2").contains(/amendment 2/i);
     cy.happoAndAxe("Amendment & Revision View", "view", "main", true);
     cy.findByText(/editing:/i).should("be.visible");
-    cy.get('input[value="Amendment"]').should("be.checked");
     cy.findByText(/status/i)
       .next()
       .contains("In Discussion");

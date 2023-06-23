@@ -64,13 +64,8 @@ describe("ProjectRevisionEdit Page", () => {
       })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(/revision type/i)).toBeInTheDocument();
     expect(screen.getByText(/test comment/i)).toBeInTheDocument();
     expect(screen.queryByText(/Editing:/i)).toBeInTheDocument(); // tasklist should be in edit mode
-
-    // revision type is immutable
-    expect(screen.getByDisplayValue("Amendment")).toBeDisabled();
-    expect(screen.getByDisplayValue("General Revision")).toBeDisabled();
 
     expect(
       screen.getByRole("checkbox", {
