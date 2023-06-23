@@ -36,24 +36,7 @@ const defaultMockResolver = {
           },
         },
       },
-      formChangesByProjectRevisionId: {
-        edges: [
-          {
-            node: {
-              anticipatedFundingAmountPerFiscalYear: {
-                edges: [
-                  {
-                    node: {
-                      anticipatedFundingAmount: "5",
-                      fiscalYear: "2021/2022",
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      },
+
       id: "Test Project Revision ID",
       rowId: 1234,
       projectFundingAgreementFormChanges: {
@@ -70,6 +53,16 @@ const defaultMockResolver = {
               grossPaymentsToDate: "8",
               totalProjectValue: 12,
               proponentsSharePercentage: 3.65,
+              anticipatedFundingAmountPerFiscalYear: {
+                edges: [
+                  {
+                    node: {
+                      anticipatedFundingAmount: "5",
+                      fiscalYear: "2021/2022",
+                    },
+                  },
+                ],
+              },
               newFormData: {
                 projectId: 51,
                 maxFundingAmount: 200,
@@ -261,24 +254,7 @@ describe("The ProjectFundingAgreementForm", () => {
                 },
               },
             },
-            formChangesByProjectRevisionId: {
-              edges: [
-                {
-                  node: {
-                    anticipatedFundingAmountPerFiscalYear: {
-                      edges: [
-                        {
-                          node: {
-                            anticipatedFundingAmount: "5",
-                            fiscalYear: "2021/2022",
-                          },
-                        },
-                      ],
-                    },
-                  },
-                },
-              ],
-            },
+
             totalProjectValue: "350",
             id: "Test Project Revision ID",
             rowId: 1234,
@@ -293,6 +269,16 @@ describe("The ProjectFundingAgreementForm", () => {
                     calculatedTotalPaymentAmountToDate: 160,
                     totalProjectValue: 350,
                     proponentsSharePercentage: 228.57,
+                    anticipatedFundingAmountPerFiscalYear: {
+                      edges: [
+                        {
+                          node: {
+                            anticipatedFundingAmount: "5",
+                            fiscalYear: "2021/2022",
+                          },
+                        },
+                      ],
+                    },
                     newFormData: {
                       projectId: 51,
                       maxFundingAmount: 200,
