@@ -40,7 +40,8 @@ const Navigation: React.FC<Props> = ({
       <LogoutForm />
     </>
   ) : (
-    router.pathname !== "/" && (
+    router.pathname !== "/" &&
+    !router.pathname.includes("/500") && (
       <div
         style={{
           display: "flex",
