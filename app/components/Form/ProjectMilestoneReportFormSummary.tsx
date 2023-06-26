@@ -113,18 +113,31 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
                   milestoneReport.formByJsonSchemaName.jsonSchema
                     .schema as JSONSchema7
                 ).properties,
-                calculatedHoldbackAmount: {
-                  title: "Holdback Amount This Milestone",
-                  type: "number",
-                },
-                calculatedGrossAmount: {
-                  title: "Gross Payment Amount This Milestone",
-                  type: "number",
-                },
-                calculatedNetAmount: {
-                  title: "Net Payment Amount This Milestone",
-                  type: "number",
-                },
+                ...(milestoneReport.newFormData.calculatedHoldbackAmount !==
+                null
+                  ? {
+                      calculatedHoldbackAmount: {
+                        title: "Holdback Amount This Milestone",
+                        type: "number",
+                      },
+                    }
+                  : {}),
+                ...(milestoneReport.newFormData.calculatedGrossAmount !== null
+                  ? {
+                      calculatedGrossAmount: {
+                        title: "Gross Payment Amount This Milestone",
+                        type: "number",
+                      },
+                    }
+                  : {}),
+                ...(milestoneReport.newFormData.calculatedNetAmount !== null
+                  ? {
+                      calculatedNetAmount: {
+                        title: "Net Payment Amount This Milestone",
+                        type: "number",
+                      },
+                    }
+                  : {}),
               },
             },
             {
@@ -181,8 +194,12 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       const clonedMilestoneFormDiffObject = JSON.parse(
         JSON.stringify(milestoneFormDiffObject)
       );
+      console.log("GURJ", clonedMilestoneFormDiffObject);
       Object.entries(titleMap).forEach(([key, title]) => {
-        if (clonedMilestoneFormDiffObject.formSchema.properties[key]) {
+        if (
+          clonedMilestoneFormDiffObject.formData[key] !== null &&
+          clonedMilestoneFormDiffObject.formSchema.properties[key]
+        ) {
           clonedMilestoneFormDiffObject.formSchema.properties[key].title =
             title;
         }
