@@ -3,42 +3,73 @@ import ReadOnlyArrayFieldTemplate from "components/Form/ReadOnlyArrayFieldTempla
 import FormBase from "components/Form/FormBase";
 import { JSONSchema7 } from "json-schema";
 
-import epSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
-import iaSchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
+const schema = {
+  $schema: "http://json-schema.org/draft-07/schema",
+  type: "object",
 
+  properties: {
+    testProperty: {
+      title: "Test property",
+      minItems: 0,
+      type: "array",
+      items: {
+        $ref: "#/definitions/testPropertyItems",
+      },
+    },
+  },
+  definitions: {
+    testPropertyItems: {
+      type: "object",
+      properties: {
+        property2: {
+          title: "Property 2",
+          type: "string",
+        },
+        property3: {
+          title: "Property 3",
+          type: "number",
+        },
+      },
+    },
+  },
+};
+
+const uiSchema = {
+  testProperty: {
+    itemTitle: "Test Item title",
+    items: {
+      property2: {
+        "ui:widget": "TextWidget",
+        hideOptional: true,
+      },
+      property3: {
+        "ui:widget": "NumberWidget",
+        isMoney: true,
+      },
+    },
+  },
+};
 describe("ReadOnlyArrayFieldTemplate", () => {
-  it("Displays only an Add button when there are no additional funding sources", () => {
-    // cannot render the ArrayFieldComponent directly because rjsf does some behind-the-scenes work to map the items, and outside of a form the following error occurs: Objects are not valid as a React child
+  it("Displays data and itemTitle for every item, and does not display any add or remove buttons", () => {
     render(
       <FormBase
-        schema={epSchema.schema as JSONSchema7}
-        ArrayFieldTemplate={ReadOnlyArrayFieldTemplate}
-      />
-    );
-    expect(
-      screen.getByRole("button", { name: /add funding source/i })
-    ).toBeVisible();
-    expect(screen.queryByRole("button", { name: /remove/i })).toBeNull();
-  });
-
-  it("Displays a form and a remove button for every item, and displays an Add button", () => {
-    render(
-      <FormBase
-        schema={iaSchema.schema as JSONSchema7}
+        schema={schema as JSONSchema7}
+        uiSchema={uiSchema}
         ArrayFieldTemplate={ReadOnlyArrayFieldTemplate}
         formData={{
-          additionalFundingSources: [
-            { source: "a", amount: 5, status: "Approved" },
-            { source: "b", amount: 5, status: "Approved" },
+          testProperty: [
+            { property2: "a", property3: 5 },
+            { property2: "b", property3: 500 },
           ],
         }}
       />
     );
-    expect(screen.getByText(/additional funding source 1/i)).toBeVisible();
-    expect(screen.getByText(/additional funding source 2/i)).toBeVisible();
-    expect(screen.getAllByRole("button", { name: /remove/i })).toHaveLength(2);
-    expect(
-      screen.getByRole("button", { name: /add funding source/i })
-    ).toBeVisible();
+    expect(screen.getByText(/Test Item title 1/i)).toBeVisible();
+    expect(screen.getByText(/Test Item title 2/i)).toBeVisible();
+    expect(screen.getAllByLabelText(/Property 2/i)[0]).toHaveValue("a");
+    expect(screen.getAllByLabelText(/property 3/i)[0]).toHaveValue("$5.00");
+    expect(screen.getAllByLabelText(/property 2/i)[1]).toHaveValue("b");
+    expect(screen.getAllByLabelText(/property 3/i)[1]).toHaveValue("$500.00");
+    expect(screen.queryByRole("button")).toBeNull();
   });
 });
