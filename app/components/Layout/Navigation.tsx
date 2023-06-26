@@ -27,6 +27,7 @@ const Navigation: React.FC<Props> = ({
   title = "CleanBC Industry Fund",
   userProfileComponent,
   links,
+  hideLoginButton,
 }) => {
   // Growthbook - external-operators
   const showExternalOperatorsLogin =
@@ -34,14 +35,17 @@ const Navigation: React.FC<Props> = ({
 
   const router = useRouter();
 
-  let rightSide = isLoggedIn ? (
-    <>
-      {userProfileComponent}
-      <LogoutForm />
-    </>
-  ) : (
-    router.pathname !== "/" &&
-    !router.pathname.includes("/500") && (
+  let rightSide = null;
+
+  if (isLoggedIn) {
+    rightSide = (
+      <>
+        {userProfileComponent}
+        <LogoutForm />
+      </>
+    );
+  } else if (!hideLoginButton) {
+    rightSide = router.pathname !== "/" && (
       <div
         style={{
           display: "flex",
@@ -52,8 +56,8 @@ const Navigation: React.FC<Props> = ({
         <LoginForm />
         {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
       </div>
-    )
-  );
+    );
+  }
 
   const unauthorizedIdir = title === "Access required";
 
