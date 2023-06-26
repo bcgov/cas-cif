@@ -105,9 +105,44 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       // Set the formSchema and formData based on showing the diff or not
       const milestoneFormDiffObject = renderDiff
         ? getMilestoneFilteredSchema(
-            milestoneReport.formByJsonSchemaName.jsonSchema
-              .schema as JSONSchema7,
-            milestoneReport
+            {
+              ...(milestoneReport.formByJsonSchemaName.jsonSchema
+                .schema as JSONSchema7),
+              properties: {
+                ...(
+                  milestoneReport.formByJsonSchemaName.jsonSchema
+                    .schema as JSONSchema7
+                ).properties,
+                ...(milestoneReport.newFormData.calculatedHoldbackAmount !==
+                null
+                  ? {
+                      calculatedHoldbackAmount: {
+                        title: "Holdback Amount This Milestone",
+                        type: "number",
+                      },
+                    }
+                  : {}),
+                ...(milestoneReport.newFormData.calculatedGrossAmount !== null
+                  ? {
+                      calculatedGrossAmount: {
+                        title: "Gross Payment Amount This Milestone",
+                        type: "number",
+                      },
+                    }
+                  : {}),
+                ...(milestoneReport.newFormData.calculatedNetAmount !== null
+                  ? {
+                      calculatedNetAmount: {
+                        title: "Net Payment Amount This Milestone",
+                        type: "number",
+                      },
+                    }
+                  : {}),
+              },
+            },
+            {
+              ...milestoneReport,
+            }
           )
         : {
             formSchema: milestoneReport.formByJsonSchemaName.jsonSchema.schema,
@@ -131,6 +166,43 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
           }
         )?.node?.newFormData;
 
+      const updatedUiSchema = {
+        ...projectMilestoneUiSchema,
+        calculatedHoldbackAmount: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isMoney: true,
+        },
+        calculatedGrossAmount: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isMoney: true,
+        },
+        calculatedNetAmount: {
+          "ui:widget": "NumberWidget",
+          hideOptional: true,
+          isMoney: true,
+        },
+      };
+
+      // Clone milestoneFormDiffObject and overwrite the titles
+      const titleMap = {
+        adjustedGrossAmount: "Gross Payment Amount This Milestone (Adjusted)",
+        adjustedNetAmount: "Net Payment Amount This Milestone (Adjusted)",
+        adjustedHoldBackAmount: "Holdback Amount This Milestone (Adjusted)",
+      };
+      const clonedMilestoneFormDiffObject = JSON.parse(
+        JSON.stringify(milestoneFormDiffObject)
+      );
+      Object.entries(titleMap).forEach(([key, title]) => {
+        if (
+          clonedMilestoneFormDiffObject.formData[key] !== null &&
+          clonedMilestoneFormDiffObject.formSchema.properties[key]
+        ) {
+          clonedMilestoneFormDiffObject.formSchema.properties[key].title =
+            title;
+        }
+      });
       return (
         <div key={index} className="reportContainer">
           <header>
@@ -160,8 +232,8 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             tagName={"dl"}
             theme={readOnlyTheme}
             fields={renderDiff ? customFields : fields}
-            schema={milestoneFormDiffObject.formSchema as JSONSchema7}
-            uiSchema={projectMilestoneUiSchema}
+            schema={clonedMilestoneFormDiffObject.formSchema as JSONSchema7}
+            uiSchema={updatedUiSchema}
             formData={milestoneFormDiffObject.formData}
             formContext={{
               operation: milestoneReport.operation,
@@ -184,6 +256,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
   }, [
     isFirstRevision,
     isOnAmendmentsAndOtherRevisionsPage,
+    latestCommittedMilestoneFormChanges?.edges,
     renderDiff,
     sortedMilestoneReports,
   ]);
