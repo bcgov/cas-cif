@@ -194,7 +194,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       const clonedMilestoneFormDiffObject = JSON.parse(
         JSON.stringify(milestoneFormDiffObject)
       );
-      console.log("GURJ", clonedMilestoneFormDiffObject);
       Object.entries(titleMap).forEach(([key, title]) => {
         if (
           clonedMilestoneFormDiffObject.formData[key] !== null &&
