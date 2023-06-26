@@ -39,19 +39,19 @@ const Navigation: React.FC<Props> = ({
       {userProfileComponent}
       <LogoutForm />
     </>
-  ) : router.pathname === "/" ? (
-    isLoggedIn
   ) : (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "1.25em",
-      }}
-    >
-      <LoginForm />
-      {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
-    </div>
+    router.pathname !== "/" && (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "1.25em",
+        }}
+      >
+        <LoginForm />
+        {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
+      </div>
+    )
   );
 
   const unauthorizedIdir = title === "Access required";
