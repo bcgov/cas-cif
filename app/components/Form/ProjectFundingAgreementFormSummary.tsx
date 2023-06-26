@@ -38,8 +38,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const revision = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
-        # eslint-disable-next-line relay/must-colocate-fragment-spreads
-        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         projectFormChange {
           asProject {
@@ -227,7 +225,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
 
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
-  console.log("renderDiff", renderDiff);
 
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
@@ -266,8 +263,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     [fundingAgreementSummary, showAnticipatedFundingPerFiscalYearDiffs]
   );
 
-  console.log("fundingAgreementSummary", fundingAgreementSummary);
-
   const readOnlyArrayProperties = {
     additionalFundingSources: {
       ...fundingParameterEPUiSchema.additionalFundingSources,
@@ -286,8 +281,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     () => setHasDiff && setHasDiff(!fundingAgreementFormNotUpdated),
     [fundingAgreementFormNotUpdated, setHasDiff]
   );
-
-  console.log("formdata", formData);
 
   // This condition handles the case where the form is archived
   if (

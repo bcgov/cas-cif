@@ -45,8 +45,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const projectRevision = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_projectRevision on ProjectRevision {
-        # eslint-disable-next-line relay/must-colocate-fragment-spreads
-        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         id
         rowId
         projectFormChange {
