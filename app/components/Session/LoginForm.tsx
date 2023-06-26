@@ -9,33 +9,30 @@ interface Props {
 
 const LoginForm: React.FC<Props> = ({ isExternal }) => {
   const router = useRouter();
-  let loginURI = isExternal
-    ? `/login?redirectTo=${getExternalUserLandingPageRoute().pathname}`
-    : "/login";
+  let loginURI = "/login";
 
   if (router.query.redirectTo)
     loginURI += `?redirectTo=${encodeURIComponent(
       router.query.redirectTo as string
     )}`;
+  else if (isExternal)
+    loginURI += `?redirectTo=${encodeURIComponent(
+      getExternalUserLandingPageRoute().pathname as string
+    )}`;
 
   return (
     <>
       <form id="login-buttons" action={loginURI} method="post">
-        {isExternal && router.pathname.includes("login-redirect") ? (
-          <Button type="submit" variant="secondary-inverse">
-            External User Login
-          </Button>
-        ) : isExternal ? (
-          <Button type="submit" variant="secondary">
-            External User Login
-          </Button>
-        ) : router.pathname.includes("login-redirect") ? (
-          <Button type="submit" variant="secondary-inverse">
-            Administrator Login
-          </Button>
-        ) : (
-          <Button type="submit">Administrator Login</Button>
-        )}
+        <Button
+          type="submit"
+          variant={
+            router.pathname.includes("login-redirect")
+              ? "secondary-inverse"
+              : isExternal && "secondary"
+          }
+        >
+          {isExternal ? "External User Login" : "Administrator Login"}
+        </Button>
       </form>
       <style jsx>{`
         #login-buttons {
