@@ -372,4 +372,39 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText(/\$21\.00/i)).toBeInTheDocument();
     expect(screen.getByText(/\$11\.00/i)).toBeInTheDocument();
   });
+
+  it("renders the tooltips for the mock summary", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "maximum-amount-this-milestone-tooltip",
+      })
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-eligible-expenses-tooltip",
+      })
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "gross-payment-amount-this-milestone-tooltip",
+      })
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "net-payment-amount-this-milestone-tooltip",
+      })
+    ).toHaveLength(2);
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "holdback-amount-this-milestone-tooltip",
+      })
+    ).toHaveLength(2);
+  });
 });
