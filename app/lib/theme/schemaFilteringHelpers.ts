@@ -21,12 +21,18 @@ export const getSchemaAndDataIncludingCalculatedValues = (
   const newDataObject = {};
 
   for (const key of Object.keys(filteredSchema.properties)) {
+    // null new data with undefined old data occurs when an optional form (e.g. budgets) is created but not filled
     if (
+      formDataIncludingCalculatedValues?.[key] === null &&
+      oldFormDataIncludingCalculatedValues?.[key] === undefined
+    ) {
+      delete filteredSchema.properties[key];
+    } else if (
       formDataIncludingCalculatedValues?.[key] ===
       oldFormDataIncludingCalculatedValues?.[key]
-    )
+    ) {
       delete filteredSchema.properties[key];
-    else newDataObject[key] = formDataIncludingCalculatedValues?.[key];
+    } else newDataObject[key] = formDataIncludingCalculatedValues?.[key];
   }
 
   return {
