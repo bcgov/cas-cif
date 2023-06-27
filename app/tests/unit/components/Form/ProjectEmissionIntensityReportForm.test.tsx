@@ -12,6 +12,7 @@ const testQuery = graphql`
   query ProjectEmissionIntensityReportFormQuery @relay_test_operation {
     query {
       # Spread the fragment you want to test here
+      ...ProjectEmissionIntensityReportForm_query
       projectRevision(id: "Test Project Revision ID") {
         ...ProjectEmissionIntensityReportForm_projectRevision
       }
