@@ -12,12 +12,14 @@ import { useStageReportingRequirementFormChange } from "mutations/ProjectReporti
 import { MutableRefObject, useRef } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectEmissionIntensityReportForm_projectRevision$key } from "__generated__/ProjectEmissionIntensityReportForm_projectRevision.graphql";
+import { ProjectEmissionIntensityReportForm_query$key } from "__generated__/ProjectEmissionIntensityReportForm_query.graphql";
 import { EmissionIntensityReportStatus } from "./EmissionIntensityReportStatus";
 import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
 interface Props {
+  query: ProjectEmissionIntensityReportForm_query$key;
   projectRevision: ProjectEmissionIntensityReportForm_projectRevision$key;
   viewOnly?: boolean;
   onSubmit: () => void;
@@ -123,6 +125,17 @@ export const createEmissionIntensityReportUiSchema = (
 const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const formRefs: MutableRefObject<{}> = useRef({});
 
+  const { eiFormBySlug } = useFragment(
+    graphql`
+      fragment ProjectEmissionIntensityReportForm_query on Query {
+        eiFormBySlug: formBySlug(slug: "emission_intensity") {
+          jsonSchema
+        }
+      }
+    `,
+    props.query
+  );
+
   const projectRevision = useFragment(
     graphql`
       fragment ProjectEmissionIntensityReportForm_projectRevision on ProjectRevision {
@@ -147,9 +160,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               paymentPercentage
               holdbackAmountToDate
               actualPerformanceMilestoneAmount
-              formByJsonSchemaName {
-                jsonSchema
-              }
             }
           }
         }
@@ -292,10 +302,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               "staged"
             }
             idPrefix="TEIMP_ReportingRequirementForm"
-            schema={
-              emissionIntensityReportingRequirementFormChange
-                .formByJsonSchemaName.jsonSchema.schema as JSONSchema7
-            }
+            schema={eiFormBySlug.jsonSchema.schema as JSONSchema7}
             formData={
               emissionIntensityReportingRequirementFormChange?.newFormData
             }

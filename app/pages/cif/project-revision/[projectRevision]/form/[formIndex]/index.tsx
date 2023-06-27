@@ -65,6 +65,7 @@ const pageQuery = graphql`
       ...ProjectMilestoneReportForm_query
       ...ProjectFundingAgreementForm_query
       ...ProjectFundingAgreementFormSummary_query
+      ...ProjectEmissionIntensityReportForm_query
     }
   }
 `;

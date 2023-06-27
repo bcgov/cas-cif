@@ -331,10 +331,6 @@ describe("the emission intensity report form component", () => {
       componentTestingHelper.environment.mock.getAllOperations()
     ).toHaveLength(4);
 
-    componentTestingHelper.environment.mock
-      .getAllOperations()
-      .map((op) => console.log(op?.fragment?.node));
-
     componentTestingHelper.expectMutationToBeCalled("undoFormChangesMutation", {
       input: {
         formChangesIds: [1],
