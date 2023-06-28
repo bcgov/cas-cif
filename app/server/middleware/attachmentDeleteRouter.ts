@@ -16,7 +16,6 @@ export const handleDelete = async (req, res, next) => {
     const attachmentQueryVariables = {
       attachmentId: req.params.attachmentId,
     };
-
     const result = await performQuery(
       attachmentDetailsQuery,
       attachmentQueryVariables,
@@ -33,6 +32,7 @@ export const handleDelete = async (req, res, next) => {
     const bucketName = config.get("attachmentsBucket");
 
     const response = await storageClient.bucket(bucketName).file(file).delete();
+
     return res.sendStatus(response[0].statusCode);
   } catch (error) {
     next(error);

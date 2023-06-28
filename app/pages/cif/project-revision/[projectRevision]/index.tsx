@@ -14,7 +14,7 @@ import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/dele
 import SavingIndicator from "components/Form/SavingIndicator";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { getAttachmentDeleteRoute } from "routes/pageRoutes";
 import {
   getProjectsPageRoute,
   getProjectRevisionFormPageRoute,
@@ -33,6 +33,7 @@ import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryRepor
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 import ProjectAttachmentsFormSummary from "components/Form/ProjectAttachmentsFormSummary";
+import next from "next";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -68,6 +69,23 @@ const pageQuery = graphql`
             fundingStreamRfpByFundingStreamRfpId {
               fundingStreamByFundingStreamId {
                 name
+              }
+            }
+          }
+        }
+        projectAttachmentFormChanges: formChangesFor(
+          first: 500
+          formDataTableName: "project_attachment"
+          filter: { operation: { notEqualTo: ARCHIVE } }
+        ) @connection(key: "connection_projectAttachmentFormChanges") {
+          totalCount
+          edges {
+            node {
+              id
+              asProjectAttachment {
+                attachmentByAttachmentId {
+                  id
+                }
               }
             }
           }
@@ -164,27 +182,52 @@ export function ProjectRevision({
   };
 
   const discardRevision = async () => {
-    await discardProjectRevision({
-      variables: {
-        input: {
-          revisionId: query.projectRevision.rowId,
+    const deleteFromApp = () =>
+      discardProjectRevision({
+        variables: {
+          input: {
+            revisionId: query.projectRevision.rowId,
+          },
         },
-      },
-      onCompleted: async () => {
-        if (query.projectRevision.isFirstRevision)
-          await router.push(getProjectsPageRoute());
-        else
-          await router.push(
-            getProjectRevisionPageRoute(
-              query.projectRevision.projectByProjectId
-                .latestCommittedProjectRevision.id
-            )
-          );
-      },
-      onError: async (e) => {
-        console.error("Error discarding the project", e);
-      },
-    });
+        onCompleted: async () => {
+          if (query.projectRevision.isFirstRevision)
+            await router.push(getProjectsPageRoute());
+          else
+            await router.push(
+              getProjectRevisionPageRoute(
+                query.projectRevision.projectByProjectId
+                  .latestCommittedProjectRevision.id
+              )
+            );
+        },
+        onError: async (e) => {
+          console.error("Error discarding the project", e);
+        },
+      });
+    // attachments should only be hard deleted if it's the first revision
+    if (
+      query.projectRevision.projectAttachmentFormChanges.totalCount === 0 ||
+      (!query.projectRevision.isFirstRevision &&
+        query.projectRevision.projectAttachmentFormChanges.totalCount > 0)
+    ) {
+      deleteFromApp();
+    } else {
+      await Promise.all(
+        query.projectRevision.projectAttachmentFormChanges.edges.map(
+          async ({ node }) => {
+            try {
+              fetch(
+                getAttachmentDeleteRoute(
+                  node.asProjectAttachment.attachmentByAttachmentId.id
+                ).pathname
+              );
+            } catch (err) {
+              next(err);
+            }
+          }
+        )
+      ).then(() => deleteFromApp());
+    }
   };
 
   let mode: TaskListMode;

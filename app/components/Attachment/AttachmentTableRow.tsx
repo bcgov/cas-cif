@@ -1,6 +1,9 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
-import { getAttachmentDownloadRoute } from "routes/pageRoutes";
+import {
+  getAttachmentDeleteRoute,
+  getAttachmentDownloadRoute,
+} from "routes/pageRoutes";
 import { graphql, useFragment } from "react-relay";
 import useDiscardProjectAttachmentFormChange from "mutations/attachment/discardProjectAttachmentFormChange";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
@@ -10,6 +13,7 @@ interface Props {
   connectionId: string;
   formChangeRowId: number;
   hideDelete?: boolean;
+  isFirstRevision: boolean;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
@@ -17,6 +21,7 @@ const AttachmentTableRow: React.FC<Props> = ({
   connectionId,
   formChangeRowId,
   hideDelete,
+  isFirstRevision,
 }) => {
   const [
     discardProjectAttachmentFormChange,
@@ -45,15 +50,25 @@ const AttachmentTableRow: React.FC<Props> = ({
     attachment
   );
 
-  const handleArchiveAttachment = () => {
-    discardProjectAttachmentFormChange({
-      variables: {
-        input: {
-          formChangeId: formChangeRowId,
+  const handleArchiveAttachment = (attachmentId) => {
+    const deleteFromApp = () =>
+      discardProjectAttachmentFormChange({
+        variables: {
+          input: {
+            formChangeId: formChangeRowId,
+          },
+          connections: [connectionId],
         },
-        connections: [connectionId],
-      },
-    });
+      });
+
+    if (isFirstRevision) {
+      // delete from cloud storage
+      fetch(getAttachmentDeleteRoute(attachmentId).pathname).then(() => {
+        return deleteFromApp();
+      });
+    } else {
+      deleteFromApp();
+    }
   };
 
   return (
@@ -70,7 +85,7 @@ const AttachmentTableRow: React.FC<Props> = ({
           </Link>
           {!hideDelete && (
             <Button
-              onClick={handleArchiveAttachment}
+              onClick={() => handleArchiveAttachment(id)}
               disabled={isDiscardingProjectAttachmentFormChange}
               size="small"
             >
