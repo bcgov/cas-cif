@@ -149,6 +149,10 @@ export const getAttachmentDownloadRoute = (attachmentId: string) => ({
   pathname: `/download/${attachmentId}`,
 });
 
+export const getAttachmentDeleteRoute = (attachmentId: string) => ({
+  pathname: `/delete/${attachmentId}`,
+});
+
 //// External User
 
 export const getExternalUserLandingPageRoute = () => ({
