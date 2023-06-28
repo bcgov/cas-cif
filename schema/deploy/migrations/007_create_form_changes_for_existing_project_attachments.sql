@@ -1,4 +1,4 @@
--- Deploy cif:migrations/007_create_form_changes_for_existing_rpoject_attachments to pg
+-- Deploy cif:migrations/007_create_form_changes_for_existing_project_attachments to pg
 -- requires: tables/form_change
 -- requires: tables/project_attachment
 

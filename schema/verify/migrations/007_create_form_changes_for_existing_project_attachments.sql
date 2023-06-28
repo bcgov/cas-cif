@@ -1,4 +1,4 @@
--- Verify cif:migrations/007_create_form_changes_for_existing_rpoject_attachments on pg
+-- Verify cif:migrations/007_create_form_changes_for_existing_project_attachments on pg
 
 begin;
 
