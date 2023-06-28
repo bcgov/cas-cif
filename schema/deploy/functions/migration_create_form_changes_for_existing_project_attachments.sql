@@ -52,10 +52,23 @@ begin
         record.updated_by,
         record.updated_at
       );
-    else
-      raise notice 'I EXIST. PROJECT_ID: %, ATTACHMENT_ID %', record.project_id, record.attachment_id;
     end if;
   end loop;
+
+  -- taking care of the project attachment form changes with null new_form_data
+ update cif.form_change fc1
+ set new_form_data = (
+    select new_form_data from cif.form_change
+    where form_data_record_id = fc1.form_data_record_id
+    and form_data_table_name='project_attachment' order by id desc limit 1
+  ),
+  previous_form_change_id = (
+    select id from cif.form_change
+    where form_data_record_id = fc1.form_data_record_id
+    and form_data_table_name='project_attachment' order by id desc limit 1
+  )
+  where new_form_data is null and form_data_table_name = 'project_attachment';
+
 end;
 $migration$ language plpgsql volatile;
 
