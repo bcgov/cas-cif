@@ -167,9 +167,12 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Submit Annual Reports/i).click();
 
     // Add attachments
-    cy.url().should("include", "/form/8");
-    cy.findByText(/Submit project attachments/i).click();
 
+    cy.url().should("include", "/form/8");
+    cy.get("input[type=file]").selectFile("cypress/e2e/cif/fixtures/mock.pdf");
+    cy.findByText("mock.pdf").should("be.visible");
+
+    cy.findByText(/Submit project attachments/i).click();
     //review and submit
     cy.contains("Review and Submit Project");
 
@@ -288,6 +291,14 @@ describe("when creating a project, the project page", () => {
     cy.findByText("TEST-123-12345").should("be.visible");
     // this checks that the project view list shows the milestone report status vs. the other report statuses
     cy.findAllByRole("status").should("have.text", "Complete");
+
+    // cleanup attachments
+
+    cy.request({
+      method: "GET",
+      url: "http://localhost:3004/delete/WyJhdHRhY2htZW50cyIsMV0=",
+      failOnStatusCode: false,
+    });
   });
 
   it("allows an admin user to create an IA project", () => {
