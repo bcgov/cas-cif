@@ -5,6 +5,9 @@ import LogoutForm from "components/Session/LogoutForm";
 import SubHeader from "./SubHeader";
 import { useRouter } from "next/router";
 
+import LoginForm from "components/Session/LoginForm";
+import useShowGrowthbookFeature from "lib/growthbookWrapper";
+
 interface Props {
   isLoggedIn?: boolean;
   alwaysShowSubheader?: boolean;
@@ -24,14 +27,37 @@ const Navigation: React.FC<Props> = ({
   title = "CleanBC Industry Fund",
   userProfileComponent,
   links,
+  hideLoginButton,
 }) => {
-  let rightSide = isLoggedIn && (
-    <>
-      {userProfileComponent}
-      <LogoutForm />
-    </>
-  );
+  // Growthbook - external-operators
+  const showExternalOperatorsLogin =
+    useShowGrowthbookFeature("external-operators");
+
   const router = useRouter();
+
+  let rightSide = null;
+
+  if (isLoggedIn) {
+    rightSide = (
+      <>
+        {userProfileComponent}
+        <LogoutForm />
+      </>
+    );
+  } else if (!hideLoginButton) {
+    rightSide = router.pathname !== "/" && (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "1.25em",
+        }}
+      >
+        <LoginForm />
+        {showExternalOperatorsLogin && <LoginForm isExternal={true} />}
+      </div>
+    );
+  }
 
   const unauthorizedIdir = title === "Access required";
 
@@ -46,7 +72,9 @@ const Navigation: React.FC<Props> = ({
             */}
             <a
               href={
-                router.pathname.includes("/cif-external")
+                !isLoggedIn
+                  ? "/"
+                  : router.pathname.includes("/cif-external")
                   ? "/cif-external"
                   : "/cif"
               }

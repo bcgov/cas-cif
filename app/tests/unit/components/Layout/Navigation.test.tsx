@@ -2,6 +2,7 @@ import Navigation from "components/Layout/Navigation";
 import { render, screen } from "@testing-library/react";
 import { mocked } from "jest-mock";
 import { useRouter } from "next/router";
+import userEvent from "@testing-library/user-event";
 
 const links = [
   {
@@ -10,6 +11,16 @@ const links = [
       pathname: "/cif/projects/",
     },
     highlightOn: ["/cif/project(.*)"],
+  },
+];
+
+const linksHomepage = [
+  {
+    name: "Homepage",
+    href: {
+      pathname: "/",
+    },
+    highlightOn: ["/(.*)"],
   },
 ];
 
@@ -46,5 +57,28 @@ describe("The Navigation Component", () => {
 
     expect(screen.getByText("Home")).toBeVisible();
     expect(screen.getByText("Projects")).toBeVisible();
+  });
+
+  it("should not render the login buttons if the user is logged in", () => {
+    render(<Navigation isLoggedIn={true} links={links} />);
+
+    expect(screen.queryByText("Administrator Login")).toBeNull();
+    expect(screen.queryByText("External User Login")).toBeNull();
+  });
+
+  it("should not render the login buttons if the user is logged out but on the homepage", () => {
+    render(<Navigation isLoggedIn={false} links={linksHomepage} />);
+
+    expect(screen.queryByText("Administrator Login")).toBeNull();
+    expect(screen.queryByText("External User Login")).toBeNull();
+  });
+
+  it("redirects to the homepage when the user clicks the CleanBC logo", () => {
+    render(<Navigation isLoggedIn={false} links={links} />);
+
+    userEvent.click(
+      screen.getByAltText(/logo for Province of British Columbia CleanBC/i)
+    );
+    expect(window.location.pathname).toEqual("/");
   });
 });

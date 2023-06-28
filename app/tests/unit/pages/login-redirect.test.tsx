@@ -1,14 +1,33 @@
-/**
- * @jest-environment node
- */
-
 import { getUserGroups } from "server/helpers/userGroupAuthentication";
-import { withRelayOptions } from "pages/login-redirect";
+import loginRedirect, { withRelayOptions } from "pages/login-redirect";
 import { mocked } from "jest-mock";
+import { screen } from "@testing-library/react";
+import PageTestingHelper from "tests/helpers/pageTestingHelper";
+import compiledLoginRedirectQuery, {
+  loginRedirectQuery,
+} from "__generated__/loginRedirectQuery.graphql";
 jest.mock("server/helpers/userGroupAuthentication");
 jest.mock("lib/relay/server");
 
+const defaultMockResolver = {
+  Query() {
+    return {
+      session: null,
+    };
+  },
+};
+
+const pageTestingHelper = new PageTestingHelper<loginRedirectQuery>({
+  pageComponent: loginRedirect,
+  compiledQuery: compiledLoginRedirectQuery,
+  defaultQueryResolver: defaultMockResolver,
+});
+
 describe("The login-redirect page", () => {
+  beforeEach(() => {
+    pageTestingHelper.reinit();
+  });
+
   it("redirects a logged in cif_admin to the requested route", async () => {
     mocked(getUserGroups).mockReturnValue(["cif_admin"]);
     const ctx = {
@@ -41,5 +60,14 @@ describe("The login-redirect page", () => {
     expect(await withRelayOptions.serverSideProps(ctx)).toEqual({
       redirect: { destination: "/" },
     });
+  });
+
+  it("renders the login buttons for a logged out user", () => {
+    pageTestingHelper.setMockRouterValues({ pathname: "/cif/projects" });
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.renderPage();
+
+    expect(screen.getByText(/Administrator Login/i)).toBeVisible();
+    expect(screen.getByText(/External User Login/i)).toBeVisible();
   });
 });
