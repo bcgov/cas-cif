@@ -28,10 +28,11 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
   projectRevision,
   onSubmit,
 }) => {
-  const { rowId, projectAttachmentFormChanges } = useFragment(
+  const { rowId, projectAttachmentFormChanges, isFirstRevision } = useFragment(
     graphql`
       fragment ProjectAttachmentsForm_projectRevision on ProjectRevision {
         rowId
+        isFirstRevision
         projectAttachmentFormChanges: formChangesFor(
           first: 500
           formDataTableName: "project_attachment"
@@ -149,6 +150,7 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
             attachment={node.asProjectAttachment.attachmentByAttachmentId}
             formChangeRowId={node.rowId}
             connectionId={projectAttachmentFormChanges.__id}
+            isFirstRevision={isFirstRevision}
           />
         ))}
       </Table>
