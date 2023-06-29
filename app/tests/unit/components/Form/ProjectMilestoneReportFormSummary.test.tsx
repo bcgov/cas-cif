@@ -41,6 +41,7 @@ const mockQueryPayload = {
                 reportDueDate: "2020-01-10T23:59:59.999-07:00",
                 reportingRequirementId: 1,
                 hasExpenses: true,
+                maximumAmount: 123,
                 calculatedNetAmount: 111,
                 calculatedGrossAmount: 999,
                 calculatedHoldbackAmount: 888,
@@ -374,37 +375,75 @@ describe("The Project Milestone Report Form Summary", () => {
   });
 
   it("renders the tooltips for the mock summary", () => {
-    componentTestingHelper.loadQuery();
+    const mockTooltipPayload = {
+      Form() {
+        return {
+          jsonSchema: milestoneProdSchema,
+        };
+      },
+      ProjectRevision() {
+        const result = {
+          isFirstRevision: true,
+          summaryMilestoneFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "Tooltip Test 1",
+                  isPristine: null,
+                  formChangeByPreviousFormChangeId: null,
+                  newFormData: {
+                    calculatedGrossAmount: 123,
+                    calculatedHoldbackAmount: 456,
+                    calculatedNetAmount: 789,
+                    certifierProfessionalDesignation: "Professional Engineer",
+                    hasExpenses: true,
+                    maximumAmount: 23,
+                    reportType: "General Milestone",
+                    totalEligibleExpenses: 1000,
+                    adjustedGrossAmount: 1000,
+                    reportingRequirementIndex: 1,
+                  },
+                  operation: "CREATE",
+                },
+              },
+            ],
+          },
+        };
+        return result;
+      },
+    };
+    componentTestingHelper.loadQuery(mockTooltipPayload);
     componentTestingHelper.renderComponent();
+    screen.logTestingPlaygroundURL();
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "maximum-amount-this-milestone-tooltip",
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "total-eligible-expenses-tooltip",
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "gross-payment-amount-this-milestone-tooltip",
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "net-payment-amount-this-milestone-tooltip",
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "holdback-amount-this-milestone-tooltip",
       })
-    ).toHaveLength(2);
+    ).toHaveLength(1);
   });
 });
