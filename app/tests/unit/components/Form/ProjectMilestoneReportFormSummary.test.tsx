@@ -414,7 +414,6 @@ describe("The Project Milestone Report Form Summary", () => {
     };
     componentTestingHelper.loadQuery(mockTooltipPayload);
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
 
     expect(
       screen.getAllByRole("tooltip", {
