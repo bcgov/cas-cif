@@ -14,5 +14,8 @@ In the event that a hotfix needs to be pushed to production ahead of the work cu
 10. Enable `Allow Force Pushes` in the branch protections for the `develop` branch in github as the rebase is going to require a force push to the origin.
 11. Ensure your local `develop` is up to date and then rebase `develop` on `main` without a PR (`git rebase main` when on the `develop` branch) & push
 12. Re-enable the `Require pull request before merging` protection on the `develop` branch in github
-13. Notify the rest of the dev team that the hotfix is finished & remind them that their in-progress PRs will need rebasing on `develop`
-14. Write a postmortem on the issue if deemed necessary (ie: the problem caused downtime, data loss / leak or other significant issues worth documenting)
+13. Disable `Allow Force Pushes` in the branch protections for the `develop` branch in github
+14. Enable `Require status checks to pass before merging` in the branch protections for the `develop` branch in github(see: [require status checks](./img/required-ci-status-checks.png)
+15. Add required status checks back to the `develop` branch in github
+16. Notify the rest of the dev team that the hotfix is finished & remind them that their in-progress PRs will need rebasing on `develop`
+17. Write a postmortem on the issue if deemed necessary (ie: the problem caused downtime, data loss / leak or other significant issues worth documenting)
