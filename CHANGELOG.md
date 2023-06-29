@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/bcgov/cas-cif/compare/1.9.0...1.9.1) (2023-06-29)
+
+### Bug Fixes
+
+- add a migration to create form changes for the project_attachment that do not already exist ([d2ed295](https://github.com/bcgov/cas-cif/commit/d2ed295a88c0c9ee3a430604110b0a2f2a2135a3))
+
 # [1.9.0](https://github.com/bcgov/cas-cif/compare/1.8.0...1.9.0) (2023-06-16)
 
 ### Bug Fixes

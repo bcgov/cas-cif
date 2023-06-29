@@ -316,3 +316,4 @@ migrations/006-create-project-attachment-form-changes_history [tables/form_chang
 @1.9.0 2023-06-16T22:13:57Z Dylan Leard <dylan@button.is> # release v1.9.0
 functions/migration_create_form_changes_for_existing_project_attachments [tables/form_change tables/project_attachment] 2023-06-28T20:14:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # idempotent function called by the migration. creates project_attachment form_changes that are not already exist
 migrations/007_create_form_changes_for_existing_project_attachments [tables/form_change tables/project_attachment] 2023-06-28T20:22:28Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Migration to call the function to create the project_attachment form_changes that are not already exist
+@1.9.1 2023-06-29T19:00:39Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.9.1
