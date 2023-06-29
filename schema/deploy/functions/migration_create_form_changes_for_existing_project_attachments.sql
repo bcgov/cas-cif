@@ -21,9 +21,7 @@ begin
       where (new_form_data->>'projectId')::int = record.project_id
       and (new_form_data->>'attachmentId')::int = record.attachment_id
       )then
-      raise notice 'I do not exist. PROJECT_ID: %, ATTACHMENT_ID %', record.project_id, record.attachment_id;
       revision_id = (select id from cif.project_latest_committed_project_revision((select row(project.*)::cif.project from cif.project where id=record.project_id)));
-      raise notice 'My Latest Revision: %', revision_id;
       insert into cif.form_change (
         operation,
         form_data_schema_name,
