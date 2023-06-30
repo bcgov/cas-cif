@@ -129,7 +129,7 @@ export const fundingParameterEPUiSchema = {
         "ui:title": `Additional Funding Amount`,
         "ui:widget": "NumberWidget",
         "ui:tooltip": {
-          text: "<div><ul><li>The amount of payment from Funding Source N other than CIF.</li><li>Typically found in the original proposal (solicitation folder of the LAN).</li></ul></div>",
+          text: "<div><ul><li>The amount of payment from Funding Source N other than CIF.</li><li>Typically found in the original proposal (solicitation folder on the LAN).</li></ul></div>",
         },
         isMoney: true,
       },
