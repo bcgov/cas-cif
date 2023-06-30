@@ -28,7 +28,7 @@ select concat('current user is: ', (select current_user));
 
 select is(
   (select count(*) from cif.sector),
-  9::bigint,
+  11::bigint,
     'cif_admin can view all data in sector table'
 );
 
@@ -70,7 +70,7 @@ select results_eq(
   $$
     select count(*) from cif.sector
   $$,
-  ARRAY['10'::bigint],
+  ARRAY['12'::bigint],
     'cif_internal can view all data from sector table'
 );
 
