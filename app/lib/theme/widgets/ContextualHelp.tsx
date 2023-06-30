@@ -71,11 +71,13 @@ const ContextualHelp: React.FC<ContextualHelpProps> = ({
       <style jsx>{`
         .tooltip {
           cursor: pointer;
+          margin-left: 0.2rem;
         }
         :global(.MuiTooltip-tooltip) {
           background-color: ${DARK_GREY_BG_COLOR};
           box-shadow: 5px 5px 5px #888888;
           color: black;
+          font-size: 0.8rem;
         }
         :global(.MuiTooltip-tooltip .MuiTooltip-arrow) {
           color: ${DARK_GREY_BG_COLOR};
