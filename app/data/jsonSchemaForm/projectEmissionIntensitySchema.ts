@@ -55,6 +55,9 @@ export const emissionIntensityReportSchema = {
         adjustedEmissionsIntensityPerformance: {
           title: "GHG Emission Intensity Performance",
           type: "number",
+          "ui:tooltip": {
+            text: "<div>GHG Emission Intensity Performance = (BEI - PEI) / (BEI - TEI) x 100</div>",
+          },
         },
         dateSentToCsnr: {
           type: "string",
@@ -65,16 +68,25 @@ export const emissionIntensityReportSchema = {
           type: "number",
           title: "Payment Percentage of Performance Milestone Amount (%)",
           default: undefined,
+          "ui:tooltip": {
+            text: "<div>Payment Percentage of Performance Milestone Amount = 100 – ((-1.5) x GHG Emission Intensity Performance + 145)</div>",
+          },
         },
         holdbackAmountToDate: {
           type: "number",
           title: "Maximum Performance Milestone Amount",
           default: undefined,
+          "ui:tooltip": {
+            text: "<div>Maximum Performance Milestone Amount = Holdback Payment Amount (Milestone Report 1) + Holdback Payment Amount (Milestone Report 2) + ... + Holdback Payment Amount (Milestone Report N)</div>",
+          },
         },
         actualPerformanceMilestoneAmount: {
           type: "number",
           title: "Actual Performance Milestone Amount",
           default: undefined,
+          "ui:tooltip": {
+            text: "<div>Actual Performance Milestone Amount = Maximum Performance Milestone Amount x Payment Percentage of Performance Milestone Amount</div>",
+          },
         },
       },
     },
