@@ -1,7 +1,7 @@
 -- Revert cif:tables/project_type_002 from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+delete from cif.project_type where name = 'Energy Efficiency';
 
-COMMIT;
+commit;

@@ -1,7 +1,9 @@
 -- Deploy cif:tables/project_type_002 to pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+insert into cif.project_type (name)
+values
+  ('Energy Efficiency');
 
-COMMIT;
+commit;
