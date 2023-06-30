@@ -65,7 +65,7 @@ const projectMilestoneUiSchema = {
   totalEligibleExpenses: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>The amount of total eligible expenses paid by the proponent for this milestone.</div>",
+      text: "<div><ul><li>The amount of total eligible expenses paid by the proponent for this milestone.</li></ul></div>",
     },
     isMoney: true,
     "ui:col-md": 12,
@@ -101,7 +101,7 @@ const projectMilestoneUiSchema = {
   adjustedHoldbackAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>Holdback Payment Amount This Milestone = Gross Payment Amount This Milestone x Performance Milestone Holdback Percentage.</div>",
+      text: "<div><ul><li>Holdback Payment Amount This Milestone = Gross Payment Amount This Milestone x Performance Milestone Holdback Percentage.</li></ul></div>",
     },
     isMoney: true,
     hideOptional: true,
