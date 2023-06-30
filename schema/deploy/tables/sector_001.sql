@@ -1,7 +1,10 @@
 -- Deploy cif:tables/sector_001 to pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+insert into cif.sector (sector_name)
+values
+    ('Waste'),
+    ('Manufacturing');
 
-COMMIT;
+commit;

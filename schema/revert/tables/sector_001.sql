@@ -1,7 +1,8 @@
 -- Revert cif:tables/sector_001 from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+delete from cif.sector where sector_name = 'Waste';
+delete from cif.sector where sector_name = 'Manufacturing';
 
-COMMIT;
+commit;
