@@ -15,7 +15,7 @@ export const fundingParameterIAUiSchema = {
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</div>",
+      text: "<div><ul><li>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</li></ul></div>",
     },
     isMoney: true,
     hideOptional: true,
@@ -24,14 +24,14 @@ export const fundingParameterIAUiSchema = {
   maxFundingAmount: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>The maximum payment amount that the proponent can receive from CIF.</div>",
+      text: "<div>The maximum payment amount that the proponent can receive from CIF.</li></ul></div>",
     },
     isMoney: true,
   },
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>Typically, 50% at most.</div>",
+      text: "<div><ul><li>Typically, 50% at most.</div>",
     },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
@@ -61,7 +61,7 @@ export const fundingParameterIAUiSchema = {
   proponentCost: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>The amount of expenses paid by the proponent.</div>",
+      text: "<div><ul><li>The amount of expenses paid by the proponent.</li></ul></div>",
     },
     isMoney: true,
   },

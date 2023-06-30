@@ -19,7 +19,7 @@ export const fundingParameterEPUiSchema = {
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</div>",
+      text: "<div><ul><li>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</li></ul></div>",
     },
     isMoney: true,
     hideOptional: true,
@@ -28,14 +28,14 @@ export const fundingParameterEPUiSchema = {
   maxFundingAmount: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>The maximum payment amount that the proponent can receive from CIF.</div>",
+      text: "<div><ul><li>The maximum payment amount that the proponent can receive from CIF.</li></ul></div>",
     },
     isMoney: true,
   },
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>Typically, 50% at most.</div>",
+      text: "<div><ul><li>Typically, 50% at most.</li></ul></div>",
     },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
@@ -73,7 +73,7 @@ export const fundingParameterEPUiSchema = {
   proponentCost: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>The amount of expenses paid by the proponent.</div>",
+      text: "<div><ul><li>The amount of expenses paid by the proponent.</li></ul></div>",
     },
     isMoney: true,
   },
@@ -86,7 +86,7 @@ export const fundingParameterEPUiSchema = {
   eligibleExpensesToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>The accumulated Total Eligible Expenses from all completed Milestone Reports.</div>",
+      text: "<div><ul><li>The accumulated Total Eligible Expenses from all completed Milestone Reports.</li></ul></div>",
     },
     calculatedValueFormContextProperty: "calculatedEligibleExpensesToDate",
     hideOptional: true,
@@ -104,7 +104,7 @@ export const fundingParameterEPUiSchema = {
   holdbackAmountToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>The accumulated Holdback Payment Amounts from all completed Milestone Reports.</div>",
+      text: "<div><ul><li>The accumulated Holdback Payment Amounts from all completed Milestone Reports.</li></ul></div>",
     },
     calculatedValueFormContextProperty: "calculatedHoldbackAmountToDate",
     hideOptional: true,
@@ -113,7 +113,7 @@ export const fundingParameterEPUiSchema = {
   netPaymentsToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>The accumulated Net Payment Amounts from all completed Milestone Reports.</div>",
+      text: "<div><ul><li>The accumulated Net Payment Amounts from all completed Milestone Reports.</li></ul></div>",
     },
     calculatedValueFormContextProperty: "calculatedNetPaymentsToDate",
     hideOptional: true,

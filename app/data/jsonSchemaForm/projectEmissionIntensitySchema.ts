@@ -56,7 +56,7 @@ export const emissionIntensityReportSchema = {
           title: "GHG Emission Intensity Performance",
           type: "number",
           "ui:tooltip": {
-            text: "<div>GHG Emission Intensity Performance = (BEI - PEI) / (BEI - TEI) x 100</div>",
+            text: "<div><ul><li>GHG Emission Intensity Performance = (BEI - PEI) / (BEI - TEI) x 100</li></ul></div>",
           },
         },
         dateSentToCsnr: {
@@ -69,7 +69,7 @@ export const emissionIntensityReportSchema = {
           title: "Payment Percentage of Performance Milestone Amount (%)",
           default: undefined,
           "ui:tooltip": {
-            text: "<div>Payment Percentage of Performance Milestone Amount = 100 – ((-1.5) x GHG Emission Intensity Performance + 145)</div>",
+            text: "<div><ul><li>Payment Percentage of Performance Milestone Amount = 100 – ((-1.5) x GHG Emission Intensity Performance + 145)</li></ul></div>",
           },
         },
         holdbackAmountToDate: {
@@ -77,7 +77,7 @@ export const emissionIntensityReportSchema = {
           title: "Maximum Performance Milestone Amount",
           default: undefined,
           "ui:tooltip": {
-            text: "<div>Maximum Performance Milestone Amount = Holdback Payment Amount (Milestone Report 1) + Holdback Payment Amount (Milestone Report 2) + ... + Holdback Payment Amount (Milestone Report N)</div>",
+            text: "<div><ul><li>Maximum Performance Milestone Amount = Holdback Payment Amount (Milestone Report 1) + Holdback Payment Amount (Milestone Report 2) + ... + Holdback Payment Amount (Milestone Report N)</li></ul></div>",
           },
         },
         actualPerformanceMilestoneAmount: {
@@ -85,7 +85,7 @@ export const emissionIntensityReportSchema = {
           title: "Actual Performance Milestone Amount",
           default: undefined,
           "ui:tooltip": {
-            text: "<div>Actual Performance Milestone Amount = Maximum Performance Milestone Amount x Payment Percentage of Performance Milestone Amount</div>",
+            text: "<div><ul><li>Actual Performance Milestone Amount = Maximum Performance Milestone Amount x Payment Percentage of Performance Milestone Amount</li></ul></div>",
           },
         },
       },
