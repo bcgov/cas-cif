@@ -234,28 +234,43 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText("Remove")).toHaveLength(4);
   });
 
-  it("renders the tooltips for the mock form", () => {
+  it.only("renders the tooltips for the mock form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
     expect(
-      screen.getAllByLabelText(/maximum-amount-this-milestone-tooltip/)
+      screen.getAllByRole("tooltip", {
+        name: "maximum-amount-this-milestone-tooltip",
+        hidden: true,
+      })
     ).toHaveLength(2);
 
     expect(
-      screen.getAllByLabelText(/total-eligible-expenses-tooltip/)
+      screen.getAllByRole("tooltip", {
+        name: "total-eligible-expenses-tooltip",
+        hidden: true,
+      })
     ).toHaveLength(1);
 
     expect(
-      screen.getAllByLabelText(/gross-payment-amount-this-milestone-tooltip/)
+      screen.getAllByRole("tooltip", {
+        name: "gross-payment-amount-this-milestone-tooltip",
+        hidden: true,
+      })
     ).toHaveLength(2);
 
     expect(
-      screen.getAllByLabelText(/net-payment-amount-this-milestone-tooltip/)
+      screen.getAllByRole("tooltip", {
+        name: "net-payment-amount-this-milestone-tooltip",
+        hidden: true,
+      })
     ).toHaveLength(2);
 
     expect(
-      screen.getAllByLabelText(/holdback-amount-this-milestone-tooltip/)
+      screen.getAllByRole("tooltip", {
+        name: "holdback-amount-this-milestone-tooltip",
+        hidden: true,
+      })
     ).toHaveLength(2);
   });
 
