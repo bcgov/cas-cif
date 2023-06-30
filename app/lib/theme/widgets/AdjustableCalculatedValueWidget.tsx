@@ -29,7 +29,7 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
       >
         <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
         <ContextualHelp
-          text="<div><ul><li>This field is mainly used for rounding purposes.</li><li>If filled out, the adjusted value here will be used for other calculations.</li></ul></div>"
+          text="<div data-testid='calc-value-tooltip'><ul><li>This field is mainly used for rounding purposes.</li><li>If filled out, the adjusted value here will be used for other calculations.</li></ul></div>"
           label={`${label} (Adjusted)`}
         />
       </div>
