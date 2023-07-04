@@ -107,7 +107,7 @@ values
   (select nextval(pg_get_serial_sequence('cif.reporting_requirement', 'id'))),
   4,
   'pending',
-  'emission_intensity_reporting_requirement',
+  'emission_intensity',
   null
 );
 -- End Test Setup --
