@@ -1,5 +1,6 @@
 import AdditionalFundingSourcesArrayFieldTemplate from "components/Form/AdditionalFundingSourcesArrayFieldTemplate";
 import AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate from "components/Form/AnticipatedFundingAmountByFiscalYearArrayFieldTemplate";
+import { fundingTooltips } from "./tooltipText";
 
 export const fundingParameterEPUiSchema = {
   "ui:order": [
@@ -22,7 +23,7 @@ export const fundingParameterEPUiSchema = {
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</li></ul></div>",
+      text: fundingTooltips.totalProjectValue,
     },
     isMoney: true,
     hideOptional: true,
@@ -31,14 +32,14 @@ export const fundingParameterEPUiSchema = {
   maxFundingAmount: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The maximum payment amount that the proponent can receive from CIF.</li></ul></div>",
+      text: fundingTooltips.maxFundingAmount,
     },
     isMoney: true,
   },
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Typically, 50% at most.</li></ul></div>",
+      text: fundingTooltips.provinceSharePercentage,
     },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
@@ -46,7 +47,7 @@ export const fundingParameterEPUiSchema = {
   holdbackPercentage: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Typically, 10%.</li><li>2019 projects may have percentages higher than 10%.</li></ul></div>",
+      text: fundingTooltips.holdbackPercentage,
     },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
@@ -54,7 +55,7 @@ export const fundingParameterEPUiSchema = {
   proponentsSharePercentage: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Proponent's share percentage = Proponent Cost / Total Project Value</li><li>The Proponent's Share Percentage should be NO LESS than 25%.</li><li>For 2021 projects, the Proponent's Share Percentage should be NO LESS than 25%.</li></ul></div>",
+      text: fundingTooltips.proponentsSharePercentage,
     },
     numberOfDecimalPlaces: 2,
     isPercentage: true,
@@ -84,7 +85,7 @@ export const fundingParameterEPUiSchema = {
   proponentCost: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The amount of expenses paid by the proponent.</li></ul></div>",
+      text: fundingTooltips.proponentCost,
     },
     isMoney: true,
   },
@@ -97,7 +98,7 @@ export const fundingParameterEPUiSchema = {
   eligibleExpensesToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The accumulated Total Eligible Expenses from all completed Milestone Reports.</li></ul></div>",
+      text: fundingTooltips.eligibleExpensesToDate,
     },
     calculatedValueFormContextProperty: "calculatedEligibleExpensesToDate",
     hideOptional: true,
@@ -106,7 +107,7 @@ export const fundingParameterEPUiSchema = {
   grossPaymentsToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The accumulated Gross Payment Amounts from all completed Milestone Reports.</li><li>The Total Gross Payment Amoun To Date should be NO GREATER than the Maximum Funding Amount.</li></ul></div>",
+      text: fundingTooltips.grossPaymentsToDate,
     },
     calculatedValueFormContextProperty: "calculatedGrossPaymentsToDate",
     hideOptional: true,
@@ -115,7 +116,7 @@ export const fundingParameterEPUiSchema = {
   holdbackAmountToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The accumulated Holdback Payment Amounts from all completed Milestone Reports.</li></ul></div>",
+      text: fundingTooltips.holdbackAmountToDate,
     },
     calculatedValueFormContextProperty: "calculatedHoldbackAmountToDate",
     hideOptional: true,
@@ -124,7 +125,7 @@ export const fundingParameterEPUiSchema = {
   netPaymentsToDate: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The accumulated Net Payment Amounts from all completed Milestone Reports.</li></ul></div>",
+      text: fundingTooltips.netPaymentsToDate,
     },
     calculatedValueFormContextProperty: "calculatedNetPaymentsToDate",
     hideOptional: true,
@@ -142,7 +143,7 @@ export const fundingParameterEPUiSchema = {
         "ui:title": `Additional Funding Amount`,
         "ui:widget": "NumberWidget",
         "ui:tooltip": {
-          text: "<div><ul><li>The amount of payment from Funding Source N other than CIF.</li><li>Typically found in the original proposal (solicitation folder on the LAN).</li></ul></div>",
+          text: fundingTooltips.additionalFundingSourcesAmount,
         },
         isMoney: true,
       },

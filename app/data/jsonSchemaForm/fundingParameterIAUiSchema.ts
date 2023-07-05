@@ -1,5 +1,6 @@
 import AdditionalFundingSourcesArrayFieldTemplate from "components/Form/AdditionalFundingSourcesArrayFieldTemplate";
 import AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate from "components/Form/AnticipatedFundingAmountByFiscalYearArrayFieldTemplate";
+import { fundingTooltips } from "./tooltipText";
 
 export const fundingParameterIAUiSchema = {
   "ui:order": [
@@ -18,7 +19,7 @@ export const fundingParameterIAUiSchema = {
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Total Project Value = Maximum Funding Amount + Proponent Cost + Additional Funding Amount (Source 1) + Additional Funding Amount (Source 2) + ... + Additional Funding amount (Source N).</li></ul></div>",
+      text: fundingTooltips.totalProjectValue,
     },
     isMoney: true,
     hideOptional: true,
@@ -27,14 +28,14 @@ export const fundingParameterIAUiSchema = {
   maxFundingAmount: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div>The maximum payment amount that the proponent can receive from CIF.</li></ul></div>",
+      text: fundingTooltips.maxFundingAmount,
     },
     isMoney: true,
   },
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Typically, 50% at most.</div>",
+      text: fundingTooltips.provinceSharePercentage,
     },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
@@ -42,7 +43,7 @@ export const fundingParameterIAUiSchema = {
   proponentsSharePercentage: {
     "ui:widget": "CalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Proponent's share percentage = Proponent Cost / Total Project Value</li><li>The Proponent's Share Percentage should be NO LESS than 25%.</li><li>For 2021 projects, the Proponent's Share Percentage should be NO LESS than 25%.</li></ul></div>",
+      text: fundingTooltips.proponentsSharePercentage,
     },
     numberOfDecimalPlaces: 2,
     isPercentage: true,
@@ -72,7 +73,7 @@ export const fundingParameterIAUiSchema = {
   proponentCost: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The amount of expenses paid by the proponent.</li></ul></div>",
+      text: fundingTooltips.proponentCost,
     },
     isMoney: true,
   },
@@ -101,7 +102,7 @@ export const fundingParameterIAUiSchema = {
         "ui:title": `Additional Funding Amount`,
         "ui:widget": "NumberWidget",
         "ui:tooltip": {
-          text: "<div><ul><li>The amount of payment from Funding Source N other than CIF.</li><li>Typically found in the original proposal (solicitation folder on the LAN).</li></ul></div>",
+          text: fundingTooltips.additionalFundingSourcesAmount,
         },
         isMoney: true,
       },

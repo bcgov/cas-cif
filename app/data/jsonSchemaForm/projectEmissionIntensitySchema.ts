@@ -1,3 +1,5 @@
+import { emissionsIntentityTooltips } from "./tooltipText";
+
 export const emissionIntensityReportSchema = {
   $schema: "http://json-schema.org/draft-07/schema",
   type: "object",
@@ -55,9 +57,6 @@ export const emissionIntensityReportSchema = {
         adjustedEmissionsIntensityPerformance: {
           title: "GHG Emission Intensity Performance",
           type: "number",
-          "ui:tooltip": {
-            text: "<div><ul><li>GHG Emission Intensity Performance = (BEI - PEI) / (BEI - TEI) x 100</li></ul></div>",
-          },
         },
         dateSentToCsnr: {
           type: "string",
@@ -68,25 +67,16 @@ export const emissionIntensityReportSchema = {
           type: "number",
           title: "Payment Percentage of Performance Milestone Amount (%)",
           default: undefined,
-          "ui:tooltip": {
-            text: "<div><ul><li>Payment Percentage of Performance Milestone Amount = 100 – ((-1.5) x GHG Emission Intensity Performance + 145)</li></ul></div>",
-          },
         },
         holdbackAmountToDate: {
           type: "number",
           title: "Maximum Performance Milestone Amount",
           default: undefined,
-          "ui:tooltip": {
-            text: "<div><ul><li>Maximum Performance Milestone Amount = Holdback Payment Amount (Milestone Report 1) + Holdback Payment Amount (Milestone Report 2) + ... + Holdback Payment Amount (Milestone Report N)</li></ul></div>",
-          },
         },
         actualPerformanceMilestoneAmount: {
           type: "number",
           title: "Actual Performance Milestone Amount",
           default: undefined,
-          "ui:tooltip": {
-            text: "<div><ul><li>Actual Performance Milestone Amount = Maximum Performance Milestone Amount x Payment Percentage of Performance Milestone Amount</li></ul></div>",
-          },
         },
       },
     },
@@ -152,6 +142,9 @@ export const emissionIntensityReportUiSchema = {
   uponCompletion: {
     adjustedEmissionsIntensityPerformance: {
       "ui:widget": "AdjustableCalculatedValueWidget",
+      "ui:tooltip": {
+        text: emissionsIntentityTooltips.adjustedEmissionsIntensityPerformance,
+      },
       calculatedValueFormContextProperty: "calculatedEiPerformance",
       isPercentage: true,
       numberOfDecimalPlaces: 2,
@@ -166,6 +159,9 @@ export const emissionIntensityReportUiSchema = {
     },
     paymentPercentage: {
       "ui:widget": "CalculatedValueWidget",
+      "ui:tooltip": {
+        text: emissionsIntentityTooltips.paymentPercentage,
+      },
       calculatedValueFormContextProperty:
         "paymentPercentageOfPerformanceMilestoneAmount",
       isPercentage: true,
@@ -174,12 +170,18 @@ export const emissionIntensityReportUiSchema = {
     },
     actualPerformanceMilestoneAmount: {
       "ui:widget": "CalculatedValueWidget",
+      "ui:tooltip": {
+        text: emissionsIntentityTooltips.actualPerformanceMilestoneAmount,
+      },
       calculatedValueFormContextProperty: "actualPerformanceMilestoneAmount",
       isMoney: true,
       hideOptional: true,
     },
     holdbackAmountToDate: {
       "ui:widget": "CalculatedValueWidget",
+      "ui:tooltip": {
+        text: emissionsIntentityTooltips.holdbackAmountToDate,
+      },
       calculatedValueFormContextProperty: "holdbackAmountToDate",
       isMoney: true,
       hideOptional: true,

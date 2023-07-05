@@ -1,3 +1,5 @@
+import { milestoneTooltips } from "./tooltipText";
+
 const projectMilestoneUiSchema = {
   "ui:order": [
     "description",
@@ -56,7 +58,7 @@ const projectMilestoneUiSchema = {
   maximumAmount: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The maximum payment amount that the proponent can receive from CIF for this milestone.</li><li>Typically found in schedule D.</ul></div>",
+      text: milestoneTooltips.maximumAmount,
     },
     isMoney: true,
     "ui:col-md": 12,
@@ -65,7 +67,7 @@ const projectMilestoneUiSchema = {
   totalEligibleExpenses: {
     "ui:widget": "NumberWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>The amount of total eligible expenses paid by the proponent for this milestone.</li></ul></div>",
+      text: milestoneTooltips.totalEligibleExpenses,
     },
     isMoney: true,
     "ui:col-md": 12,
@@ -83,7 +85,7 @@ const projectMilestoneUiSchema = {
   adjustedGrossAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Gross Payment Amount This Milestone = Total Eligible Expenses This Milestone x Province's Share Percentage.</li><li>The Gross Payment Amount This Milestone is the smaller value between the calculated value above and the Maximum Milestone Payment Amount This Milestone.</li></ul></div>",
+      text: milestoneTooltips.adjustedGrossAmount,
     },
     isMoney: true,
     hideOptional: true,
@@ -92,7 +94,7 @@ const projectMilestoneUiSchema = {
   adjustedNetAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div>Net Payment Amount This Milestone = Gross Payment Amount This Milestone - Holdback Payment Amount This Milestone.</div>",
+      text: milestoneTooltips.adjustedNetAmount,
     },
     isMoney: true,
     hideOptional: true,
@@ -101,7 +103,7 @@ const projectMilestoneUiSchema = {
   adjustedHoldbackAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
     "ui:tooltip": {
-      text: "<div><ul><li>Holdback Payment Amount This Milestone = Gross Payment Amount This Milestone x Performance Milestone Holdback Percentage.</li></ul></div>",
+      text: milestoneTooltips.adjustedHoldBackAmount,
     },
     isMoney: true,
     hideOptional: true,
