@@ -10,8 +10,7 @@ $fn$
 
   select case
     when ($1.new_form_data->>'hasExpenses')::boolean = false then 0
-    when ($1.new_form_data->>'reportType')::text in ('general milestone', 'interim summary report') and ($1.new_form_data->>'totalEligibleExpenses')::numeric is null then null
-    when ($1.new_form_data->>'hasExpenses')::boolean = true and ($1.new_form_data->>'submittedDate')::timestamptz is not null then
+    when ($1.new_form_data->>'hasExpenses')::boolean = true then
       (
         coalesce(
           ($1.new_form_data->>'adjustedGrossAmount')::numeric, cif.form_change_calculated_gross_amount_this_milestone($1)
@@ -21,7 +20,6 @@ $fn$
           ($1.new_form_data->>'adjustedHoldbackAmount')::numeric, cif.form_change_calculated_holdback_amount_this_milestone($1)
         )
       )
-    else null
   end;
 
 $fn$ language sql stable;
