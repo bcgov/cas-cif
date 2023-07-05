@@ -206,7 +206,7 @@ describe("The ProjectMilestoneReportForm", () => {
     expect(screen.getAllByText("Remove")).toHaveLength(3);
   });
 
-  it.only("renders the tooltips for the mock form", () => {
+  it("renders the tooltips for the mock form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
