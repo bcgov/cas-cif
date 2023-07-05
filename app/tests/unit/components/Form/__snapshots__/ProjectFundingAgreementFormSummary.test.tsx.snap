@@ -1024,3 +1024,772 @@ exports[`The Project Funding Agreement Form Summary renders the tooltips for the
   </div>
 </div>
 `;
+
+exports[`The Project Funding Agreement Form Summary renders the tooltips for the IA form 1`] = `
+<div>
+  <div
+    class="jsx-2419477931"
+  >
+    <h3
+      class="jsx-2419477931"
+    >
+      Budgets, Expenses & Payments
+    </h3>
+    <dl
+      class="jsx-337939564 "
+      novalidate=""
+    >
+      <div
+        class="jsx-2146271977"
+      >
+        <div
+          class="jsx-2146271977 definition-container"
+        >
+          <div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Contract Start Date 
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_contractStartDate-diffOld"
+                >
+                  Jan 1, 2029
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_contractStartDate-diffNew"
+                >
+                  Feb 2, 2021
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Project Assets Life End Date 
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_projectAssetsLifeEndDate-diffOld"
+                >
+                  Dec 31, 2029
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_projectAssetsLifeEndDate-diffNew"
+                >
+                  Dec 31, 2021
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Maximum Funding Amount 
+                  <span
+                    aria-label="maximum-funding-amount-tooltip"
+                    class="tooltip jsx-2050293192"
+                    data-mui-internal-clone-element="true"
+                    role="tooltip"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                      color="#1A5A96"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      name="tooltip"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_maxFundingAmount-diffOld"
+                >
+                  $555.00
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_maxFundingAmount-diffNew"
+                >
+                  $200.00
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Province's Share Percentage 
+                  <span
+                    aria-label="province's-share-percentage-tooltip"
+                    class="tooltip jsx-2050293192"
+                    data-mui-internal-clone-element="true"
+                    role="tooltip"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                      color="#1A5A96"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      name="tooltip"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_provinceSharePercentage-diffOld"
+                >
+                  555.00 %
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_provinceSharePercentage-diffNew"
+                >
+                  60.00 %
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Performance Milestone Holdback Percentage 
+                  <span
+                    aria-label="performance-milestone-holdback-percentage-tooltip"
+                    class="tooltip jsx-2050293192"
+                    data-mui-internal-clone-element="true"
+                    role="tooltip"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                      color="#1A5A96"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      name="tooltip"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_holdbackPercentage-diffOld"
+                >
+                  5.55 %
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_holdbackPercentage-diffNew"
+                >
+                  20.15 %
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Proponent Cost 
+                  <span
+                    aria-label="proponent-cost-tooltip"
+                    class="tooltip jsx-2050293192"
+                    data-mui-internal-clone-element="true"
+                    role="tooltip"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                      color="#1A5A96"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      name="tooltip"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_proponentCost-diffOld"
+                >
+                  $555.00
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_proponentCost-diffNew"
+                >
+                  $100.00
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Proponent's Share Percentage
+                  <span
+                    aria-label="proponent's-share-percentage-tooltip"
+                    class="tooltip jsx-2050293192"
+                    data-mui-internal-clone-element="true"
+                    role="tooltip"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                      color="#1A5A96"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      name="tooltip"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_proponentsSharePercentage-diffOld"
+                >
+                  555.00 %
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffOld"
+                  id="root_proponentsSharePercentage-diffOld"
+                />
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_proponentsSharePercentage-diffNew"
+                >
+                  5.00 %
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Anticipated/Actual Funding Amount 
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_anticipatedFundingAmount-diffOld"
+                >
+                  $555.00
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_anticipatedFundingAmount-diffNew"
+                >
+                  $300.00
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <dt
+                  class="jsx-156197991"
+                >
+                  Total Project Value
+                  <span
+                    aria-label="total-project-value-tooltip"
+                    class="tooltip jsx-2050293192"
+                    data-mui-internal-clone-element="true"
+                    role="tooltip"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                      color="#1A5A96"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      name="tooltip"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </dt>
+                <span
+                  class="diffOld"
+                  id="root_totalProjectValue-diffOld"
+                >
+                  $555.00
+                </span>
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffOld"
+                  id="root_totalProjectValue-diffOld"
+                />
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                  color="black"
+                  data-icon="long-arrow-alt-right"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="diffNew"
+                  id="root_totalProjectValue-diffNew"
+                >
+                  $6.00
+                </span>
+              </div>
+            </div>
+            <div
+              class="jsx-2146271977"
+            >
+              <div
+                class="jsx-2146271977 definition-container"
+              >
+                <div
+                  class="jsx-1618102489 additionalFundingSourceWithNumber"
+                >
+                  <div
+                    class="jsx-1618102489 sourceTitle"
+                  >
+                    Additional Funding Source 
+                    1
+                  </div>
+                  <div
+                    class="jsx-1618102489 additionalFundingSourceSection"
+                  >
+                    <div
+                      class="jsx-1618102489 additionalFundingSourceForm"
+                    >
+                      <div
+                        class="jsx-2146271977"
+                      >
+                        <div
+                          class="jsx-2146271977 definition-container"
+                        >
+                          <div>
+                            <div
+                              class="jsx-2146271977"
+                            >
+                              <div
+                                class="jsx-2146271977 definition-container"
+                              >
+                                <dt
+                                  class="jsx-156197991"
+                                >
+                                  Additional Funding Source 
+                                </dt>
+                                <span
+                                  class="diffOld"
+                                >
+                                  Not Entered
+                                </span>
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                                  color="black"
+                                  data-icon="long-arrow-alt-right"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 448 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <span
+                                  class="diffNew"
+                                  id="root_additionalFundingSources_0_source-diffNew"
+                                >
+                                  Test Source Name
+                                </span>
+                              </div>
+                            </div>
+                            <div
+                              class="jsx-2146271977"
+                            >
+                              <div
+                                class="jsx-2146271977 definition-container"
+                              >
+                                <dt
+                                  class="jsx-156197991"
+                                >
+                                  Additional Funding Amount 
+                                  <span
+                                    aria-label="additional-funding-amount-tooltip"
+                                    class="tooltip jsx-2050293192"
+                                    data-mui-internal-clone-element="true"
+                                    role="tooltip"
+                                    tabindex="0"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="svg-inline--fa fa-info-circle fa-w-16 "
+                                      color="#1A5A96"
+                                      data-icon="info-circle"
+                                      data-prefix="fas"
+                                      focusable="false"
+                                      name="tooltip"
+                                      role="img"
+                                      viewBox="0 0 512 512"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                </dt>
+                                <span
+                                  class="diffOld"
+                                >
+                                  Not Entered
+                                </span>
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                                  color="black"
+                                  data-icon="long-arrow-alt-right"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 448 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <span
+                                  class="diffNew"
+                                  id="root_additionalFundingSources_0_amount-diffNew"
+                                >
+                                  $2,500.00
+                                </span>
+                              </div>
+                            </div>
+                            <div
+                              class="jsx-2146271977"
+                            >
+                              <div
+                                class="jsx-2146271977 definition-container"
+                              >
+                                <dt
+                                  class="jsx-156197991"
+                                >
+                                  Additional Funding Status 
+                                </dt>
+                                <span
+                                  class="diffOld"
+                                >
+                                  Not Entered
+                                </span>
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-long-arrow-alt-right fa-w-14 fa-lg diff-arrow"
+                                  color="black"
+                                  data-icon="long-arrow-alt-right"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 448 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                <span
+                                  class="diffNew"
+                                  id="root_additionalFundingSources_0_status-diffNew"
+                                >
+                                  Approved
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dl>
+  </div>
+</div>
+`;
