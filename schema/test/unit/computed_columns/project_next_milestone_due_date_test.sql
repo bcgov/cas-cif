@@ -75,14 +75,14 @@ values
 (8, 3, 'AM', '2023-04-22 13:42:59.085 -0800', null, 'milestone 8', 1, 'upcoming milestone', null),
 (9, 3, 'Q', '2023-06-15 13:42:59.085 -0800', null, 'milestone 9', 1, 'upcoming milestone', null),
 (10, 3, 'GM', '2023-04-04 13:42:59.085 -0800', null, 'milestone 10', 1, 'upcoming milestone', null),
-(11, 3, 'GM', '2023-04-05 13:42:59.085 -0800', null, 'milestone 10', 1, 'upcoming milestone', '2023-04-06 13:42:59.085 -0800');
+(11, 3, 'GM', '2023-04-01 13:42:59.085 -0800', null, 'milestone 10', 1, 'upcoming milestone', '2023-04-06 13:42:59.085 -0800');
 
 select is (
   (select cif.project_next_milestone_due_date(
     (select row(project.*)::cif.project from cif.project where id=1)
   )),
   '2023-01-23 13:42:59.085 -0800'::timestamptz,
-  'returns the next upcoming milestone due date for project id=1'
+  'returns the next_due_date for project id=1 when there are two upcoming milestones with null submitted_date'
 );
 
 select is (
@@ -90,7 +90,7 @@ select is (
     (select row(project.*)::cif.project from cif.project where id=2)
   )),
   '2023-09-01 13:42:59.085 -0800'::timestamptz,
-  'returns the next upcoming milestone due date for project id=2'
+  'returns the latest_submitted_date for project id=2 when there are no upcoming milestones'
 );
 
 select is (
