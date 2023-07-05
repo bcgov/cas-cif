@@ -329,3 +329,8 @@ migrations/006_emission_intensity_report_form_changes_to_single_form_change 2023
 mutations/create_project_revision [mutations/create_project_revision@1.9.0] 2023-06-19T16:04:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Update emission intensity schema names
 mutations/add_emission_intensity_report_to_revision [mutations/add_emission_intensity_report_to_revision@1.9.0] 2023-06-19T16:14:50Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Deprecate add_emission_intensity_report_to_revision
 computed_columns/project_next_milestone_due_date [computed_columns/project_next_milestone_due_date@1.9.1] 2023-06-30T17:15:20Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Exclude archived reports
+tables/report_type_004 2023-07-04T22:56:31Z Gurjeet Matharu <gurj@Gurjeets-MacBook-Pro.local> # iadding interm summary report
+data/010_insert_json_schema_form_data_add_interim_report_type_milestone 2023-07-05T20:33:36Z Gurjeet Matharu <gurjeet@matharuco.com> # adding interim report type for milestones
+computed_columns/form_change_calculated_net_amount_this_milestone [computed_columns/form_change_calculated_net_amount_this_milestone@1.9.1] 2023-07-05T21:58:28Z Gurjeet Matharu <gurjeet@matharuco.com> # adding Interm Summary Report to calculated net amount this milestone
+computed_columns/form_change_calculated_holdback_amount_this_milestone [computed_columns/form_change_calculated_holdback_amount_this_milestone@1.9.1] 2023-07-05T22:31:15Z System Administrator <root@Gurjeets-MacBook-Pro.local> # adding Interim Report
+computed_columns/form_change_calculated_gross_amount_this_milestone [computed_columns/form_change_calculated_gross_amount_this_milestone@1.9.1] 2023-07-05T23:13:07Z System Administrator <root@Gurjeets-MacBook-Pro.local> # wip
