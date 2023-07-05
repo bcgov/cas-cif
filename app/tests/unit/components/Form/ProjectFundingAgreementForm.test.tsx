@@ -122,6 +122,109 @@ const defaultMockResolver = {
   },
 };
 
+const iaMockResolver = {
+  ProjectRevision() {
+    const result: Partial<ProjectFundingAgreementForm_projectRevision$data> = {
+      " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
+      projectFormChange: {
+        formDataRecordId: 51,
+        asProject: {
+          fundingStreamRfpByFundingStreamRfpId: {
+            fundingStreamByFundingStreamId: {
+              name: "IA",
+            },
+          },
+        },
+      },
+      formChangesByProjectRevisionId: {
+        edges: [
+          {
+            node: {
+              anticipatedFundingAmountPerFiscalYear: {
+                edges: [
+                  {
+                    node: {
+                      anticipatedFundingAmount: "5",
+                      fiscalYear: "2021/2022",
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
+      totalProjectValue: "350",
+      id: "Test Project Revision ID",
+      rowId: 1234,
+      projectFundingAgreementFormChanges: {
+        __id: "connection Id",
+        edges: [
+          {
+            node: {
+              id: "Test Form Change ID 1",
+              rowId: 1,
+              changeStatus: "pending",
+              calculatedTotalPaymentAmountToDate: 160,
+              totalProjectValue: 350,
+              proponentsSharePercentage: 228.57,
+              newFormData: {
+                projectId: 51,
+                maxFundingAmount: 200,
+                provinceSharePercentage: 50,
+                holdbackPercentage: 10.23,
+                anticipatedFundingAmount: 300,
+                proponentCost: 800,
+                contractStartDate: "2021-01-01",
+                projectAssetsLifeEndDate: "2021-12-31",
+                additionalFundingSources: [
+                  {
+                    source: "Test Source IA",
+                    amount: 100,
+                    status: "Approved",
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
+    };
+    return result;
+  },
+  Form() {
+    return {
+      jsonSchema: projectFundingParameterIASchema,
+    };
+  },
+  Query() {
+    return {
+      allAdditionalFundingSourceStatuses: {
+        edges: [
+          {
+            node: {
+              rowId: 1,
+              statusName: "Awaiting Approval",
+            },
+          },
+          {
+            node: {
+              rowId: 2,
+              statusName: "Approved",
+            },
+          },
+          {
+            node: {
+              rowId: 3,
+              statusName: "Denied",
+            },
+          },
+        ],
+      },
+    };
+  },
+};
+
 const defaultComponentProps = {
   setValidatingForm: jest.fn(),
   onSubmit: jest.fn(),
@@ -552,5 +655,103 @@ describe("The ProjectFundingAgreementForm", () => {
         formChangesIds: [999999999],
       },
     });
+  });
+
+  it("renders the tooltips for the EP form", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "maximum-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "province's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "performance-milestone-holdback-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent-cost-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-project-value-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "additional-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-net-payment-amount-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-gross-payment-amount-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-holdback-amount-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-eligible-expenses-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+  });
+
+  it("renders the tooltips for the IA form", () => {
+    componentTestingHelper.loadQuery(iaMockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "maximum-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "province's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent-cost-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-project-value-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "additional-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
   });
 });

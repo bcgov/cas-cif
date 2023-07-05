@@ -413,7 +413,7 @@ describe("The Project Milestone Report Form Summary", () => {
       },
     };
     componentTestingHelper.loadQuery(mockTooltipPayload);
-    componentTestingHelper.renderComponent();
+    const component = componentTestingHelper.renderComponent();
 
     expect(
       screen.getAllByRole("tooltip", {
@@ -444,5 +444,7 @@ describe("The Project Milestone Report Form Summary", () => {
         name: "holdback-amount-this-milestone-tooltip",
       })
     ).toHaveLength(1);
+    // check that tooltip text hasn't changed
+    expect(component.container).toMatchSnapshot();
   });
 });

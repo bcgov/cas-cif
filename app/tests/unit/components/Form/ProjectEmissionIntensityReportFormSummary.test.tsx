@@ -340,7 +340,7 @@ describe("the emission intensity report form component", () => {
       },
     };
     componentTestingHelper.loadQuery(customPayload);
-    componentTestingHelper.renderComponent();
+    const component = componentTestingHelper.renderComponent();
 
     // Note the exclusion of the GHG Emission Intensity Performance (Adjusted) field here
     // This is captured in AdjustableCalculatedValueWidget.test.tsx
@@ -365,5 +365,8 @@ describe("the emission intensity report form component", () => {
         name: "actual-performance-milestone-amount-tooltip",
       })
     ).toBeInTheDocument();
+
+    // check that tooltip text hasn't changed
+    expect(component.container).toMatchSnapshot();
   });
 });
