@@ -319,3 +319,4 @@ migrations/007_create_form_changes_for_existing_project_attachments [tables/form
 @1.9.1 2023-06-29T19:00:39Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.9.1
 tables/project_type_002 2023-06-30T17:42:14Z Sam Warren <samwarren4@gmail.com> # add Energy Efficiency to list of project types
 tables/sector_001 2023-06-30T17:44:24Z Sam Warren <samwarren4@gmail.com> # add Waste and Manufacturing to sectors list
+tables/project_status_002_update_hardcoded_values 2023-07-05T16:29:30Z Josh Larouche <joshua.larouche@gov.bc.ca> # adding a project status value and renaming one other value
