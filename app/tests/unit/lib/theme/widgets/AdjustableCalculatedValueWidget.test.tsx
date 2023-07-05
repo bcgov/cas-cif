@@ -71,7 +71,7 @@ describe("The AdjustableCalculatedValueWidget", () => {
     expect(props.onChange).toHaveBeenLastCalledWith(undefined);
   });
 
-  it.only("renders the help tooltip", async () => {
+  it("renders the help tooltip", async () => {
     const props: any = {
       uiSchema: { isMoney: true, calculatedValueFormContextProperty: "myProp" },
       schema: { type: "number", title: "Test Label", default: undefined },
