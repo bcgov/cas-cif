@@ -1,6 +1,6 @@
 begin;
 
-select plan(5);
+select plan(10);
 
 /** SETUP **/
 
@@ -62,6 +62,55 @@ values (
 ),
 (
   5,
+  'create',
+  'cif',
+  'reporting_requirement',
+  5,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 14000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
+),(
+  7,
+  'create',
+  'cif',
+  'reporting_requirement',
+  8,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
+),
+(
+  8,
+  'create',
+  'cif',
+  'reporting_requirement',
+  2,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}'
+),
+(
+  9,
+  'create',
+  'cif',
+  'reporting_requirement',
+  3,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": false, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+),
+(
+  10,
+  'create',
+  'cif',
+  'reporting_requirement',
+  4,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 12000, "totalEligibleExpenses": 30000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+),
+(
+  11,
   'create',
   'cif',
   'reporting_requirement',
@@ -157,6 +206,71 @@ select is(
     null
   ),
   'Returns null when milestoneType is General Milestone and totalEligibleExpenses is null'
+);
+-- Interim Summary Report
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=7
+    ) select cif.form_change_calculated_gross_amount_this_milestone((select * from record))
+  ),
+  (
+    10000.00::numeric
+  ),
+  'Returns the correct calculated amount when the amount does not exceed the maximum amount for the milestone: totalEligibleExpenses(20000) * provinceSharePercentage(50%)'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=8
+    ) select cif.form_change_calculated_gross_amount_this_milestone((select * from record))
+  ),
+  (
+    12000.00::numeric
+  ),
+  'Returns the maximumAmount value when the calculated amount exceeds the maximum amount for the milestone'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=9
+    ) select cif.form_change_calculated_gross_amount_this_milestone((select * from record))
+  ),
+  (
+    0::numeric
+  ),
+  'Returns 0 when hasExpenses is false'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=10
+    ) select cif.form_change_calculated_gross_amount_this_milestone((select * from record))
+  ),
+  (
+    null
+  ),
+  'Returns null when submittedDate not provided'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=11
+    ) select cif.form_change_calculated_gross_amount_this_milestone((select * from record))
+  ),
+  (
+    null
+  ),
+  'Returns null when milestoneType is Interim Summary Report and totalEligibleExpenses is null'
 );
 
 select finish();

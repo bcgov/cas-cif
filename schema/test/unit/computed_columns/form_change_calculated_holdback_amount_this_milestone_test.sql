@@ -1,6 +1,6 @@
 begin;
 
-select plan(5);
+select plan(10);
 
 /** SETUP **/
 
