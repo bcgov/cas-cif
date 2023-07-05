@@ -113,7 +113,7 @@
           {
             "properties": {
               "reportType": {
-                "enum": ["General Milestone"],
+                "enum": ["General Milestone", "Interim Summary Report"],
                 "title": "Milestone Type"
               },
               "totalEligibleExpenses": {
