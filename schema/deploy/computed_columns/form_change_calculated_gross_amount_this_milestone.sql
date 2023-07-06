@@ -28,5 +28,3 @@ $fn$ language sql stable;
 comment on function cif.form_change_calculated_gross_amount_this_milestone(cif.form_change) is 'Computed column returns the calculated gross payment amount for a particular milestone based on the provinceSharePercentage for the project and eligible expenses for the milestone.';
 
 commit;
-
-commit;
