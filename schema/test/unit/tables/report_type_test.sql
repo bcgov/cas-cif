@@ -73,7 +73,7 @@ select results_eq(
   $$
     select count(*) from cif.report_type
   $$,
-  ARRAY['9'::bigint],
+  ARRAY['10'::bigint],
     'cif_internal can view all data from report_type table'
 );
 
