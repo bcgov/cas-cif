@@ -22,7 +22,7 @@ anticipated_funding as (
             coalesce((new_form_data->>'dateSentToCsnr')::timestamptz, (new_form_data->>'submittedDate')::timestamptz, (new_form_data->>'reportDueDate')::timestamptz))) as year,
         sum(
             coalesce(
-                (select new_form_data->'adjustedGrossAmount')::numeric,
+                (select new_form_data->>'adjustedGrossAmount')::numeric,
                 (select cif.form_change_calculated_gross_amount_this_milestone(row(form_changes.*))),
                 (new_form_data->>'maximumAmount')::numeric
             )
