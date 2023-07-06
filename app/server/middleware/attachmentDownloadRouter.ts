@@ -5,6 +5,8 @@ import config from "../../config";
 
 const attachmentDownloadRouter = Router();
 
+// this would be a graphql mutation deleting the file. AttachmentDetailsDeleteMutation
+// add some documentationv
 const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!){
   attachment(id: $attachmentId) {
     file
@@ -52,7 +54,7 @@ export const handleDownload = async (req, res, next) => {
     next(error);
   }
 };
-
+// whichever route makes the most sense, readability
 attachmentDownloadRouter.get("/download/:attachmentId", handleDownload);
 
 export default attachmentDownloadRouter;
