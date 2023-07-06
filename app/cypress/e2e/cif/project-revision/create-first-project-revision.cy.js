@@ -529,8 +529,9 @@ describe("when creating a project, the project page", () => {
         "Project in Progress",
         "Amendment Pending",
         "Project in TEIMP",
-        "Emissions Intensity Report Complete",
+        "Emissions Intensity Report Pending",
         "Project in Annual Reporting",
+        "Emissions Intensity Report Submission",
         "Agreement Terminated",
         "Closed",
       ]);
