@@ -42,6 +42,7 @@ $function$
   from cif.form_change fc
   where fc.project_revision_id = $1
   and fc.form_data_table_name = $2
+  and fc.operation != 'archive'
   and coalesce(fc.new_form_data, '{}'::jsonb) @> json_matcher
 
 $function$ language sql stable;

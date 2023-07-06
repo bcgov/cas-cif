@@ -20,16 +20,6 @@ $function$
       when fc.change_status = 'pending'
         and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
         then 'In Progress'
-      when fc.change_status = 'pending'
-        and (fc.new_form_data::jsonb ? 'fundingStreamRfpId'
-        and (select count(*) from jsonb_object_keys(fc.new_form_data::jsonb)) =1
-        )
-        then 'In Progress'
-      when fc.change_status= 'staged'
-        and (fc.new_form_data::jsonb ? 'fundingStreamRfpId'
-        and (select count(*) from jsonb_object_keys(fc.new_form_data::jsonb)) =1
-        )
-        then 'Attention Required'
       when fc.change_status= 'staged'
         and json_array_length(fc.validation_errors::json) = 0
         and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
