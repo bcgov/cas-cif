@@ -4,7 +4,6 @@
     "type": "object",
     "title": "Emissions Intensity Report",
     "required": [
-      "reportDueDate",
       "measurementPeriodStartDate",
       "measurementPeriodEndDate",
       "emissionFunctionalUnit",
