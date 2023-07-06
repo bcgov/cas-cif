@@ -18,29 +18,30 @@
         "pattern": "^[\\.\\w-]+@([\\w-]+\\.)+[\\w-]{2,4}$"
       },
       "phone": {
-        "type": "string",
+        "type": ["null", "string"],
         "title": "Phone",
-        "pattern": "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$"
+        "pattern": "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+        "default": null
       },
       "phoneExt": {
         "type": ["null", "string"],
         "title": "Phone Extension",
-        "default": "undefined"
+        "default": null
       },
       "companyName": {
         "type": ["null", "string"],
         "title": "Company Name",
-        "default": "undefined"
+        "default": null
       },
       "contactPosition": {
         "type": ["null", "string"],
         "title": "Position",
-        "default": "undefined"
+        "default": null
       },
       "comments": {
         "type": ["null", "string"],
         "title": "Comments",
-        "default": "undefined"
+        "default": null
       }
     }
   }

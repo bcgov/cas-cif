@@ -3,19 +3,21 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
     "title": "Reporting Requirement",
-    "required": ["reportDueDate"],
     "properties": {
       "reportDueDate": {
-        "type": "string",
-        "title": "Report Due Date"
+        "type": ["null", "string"],
+        "title": "Report Due Date",
+        "default": null
       },
       "submittedDate": {
-        "type": "string",
-        "title": "Report Received Date"
+        "type": ["null", "string"],
+        "title": "Report Received Date",
+        "default": null
       },
       "comments": {
-        "type": "string",
-        "title": "General Comments"
+        "type": ["null", "string"],
+        "title": "General Comments",
+        "default": null
       }
     }
   }

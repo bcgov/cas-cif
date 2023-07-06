@@ -31,12 +31,11 @@ const projectSchema = {
     score: {
       type: ["null", "number"],
       title: "Score",
-      default: undefined,
+      default: null,
     },
     rank: {
-      type: ["null", "number"],
+      type: "number",
       title: "Rank",
-      default: undefined,
     },
     operatorId: {
       type: "number",
@@ -64,17 +63,17 @@ const projectSchema = {
     additionalSectorInformation: {
       type: ["null", "string"],
       title: "Additional Sector Information",
-      default: undefined,
+      default: null,
     },
     contractNumber: {
       type: ["null", "string"],
       title: "Contract Number",
-      default: undefined,
+      default: null,
     },
     comments: {
       type: ["null", "string"],
       title: "General Comments",
-      default: undefined,
+      default: null,
     },
   },
 };

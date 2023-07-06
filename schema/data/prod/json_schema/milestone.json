@@ -27,8 +27,7 @@
       },
       "submittedDate": {
         "type": ["null", "string"],
-        "title": "Report Received Date",
-        "default": "undefined"
+        "title": "Report Received Date"
       },
       "substantialCompletionDate": {
         "type": "string",
@@ -37,7 +36,7 @@
       "certifiedBy": {
         "type": ["null", "string"],
         "title": "Certifier",
-        "default": "undefined"
+        "default": null
       },
       "certifierProfessionalDesignation": {
         "type": ["null", "string"],
@@ -84,7 +83,7 @@
               "adjustedGrossAmount": {
                 "type": ["null", "number"],
                 "title": "Gross Payment Amount This Milestone",
-                "default": "undefined"
+                "default": null
               },
               "adjustedHoldbackAmount": {
                 "type": "number",
@@ -93,12 +92,11 @@
               "adjustedNetAmount": {
                 "type": ["null", "number"],
                 "title": "Net Payment Amount This Milestone",
-                "default": "undefined"
+                "default": null
               },
               "dateSentToCsnr": {
                 "type": ["null", "string"],
-                "title": "Date Invoice Sent to CSNR",
-                "default": "undefined"
+                "title": "Date Invoice Sent to CSNR"
               }
             },
             "required": ["maximumAmount"]
@@ -124,7 +122,7 @@
               "totalEligibleExpenses": {
                 "type": ["null", "number"],
                 "title": "Total Eligible Expenses",
-                "default": "undefined"
+                "default": null
               }
             }
           }

@@ -17,13 +17,13 @@
         "type": ["null", "string"],
         "title": "BC Registry ID",
         "pattern": "^[a-zA-Z]{1,3}[0-9]{7}$",
-        "default": "undefined"
+        "default": null
       },
       "operatorCode": {
         "type": ["null", "string"],
         "title": "Operator Code",
         "pattern": "^[A-Z]{4}$",
-        "default": "undefined"
+        "default": null
       }
     }
   }

@@ -30,7 +30,8 @@ export const emissionIntensityReportSchema = {
         },
         productionFunctionalUnit: {
           title: "Production Functional Unit",
-          type: "string",
+          type: ["null", "string"],
+          default: null,
         },
         baselineEmissionIntensity: {
           title: "Baseline Emission Intensity (BEI)",
@@ -42,11 +43,13 @@ export const emissionIntensityReportSchema = {
         },
         postProjectEmissionIntensity: {
           title: "Post-Project Emission Intensity (PEI)",
-          type: "number",
+          type: ["null", "number"],
+          default: null,
         },
         totalLifetimeEmissionReduction: {
           title: "Total Project Lifetime Emissions Reductions",
-          type: "number",
+          type: ["null", "number"],
+          default: null,
         },
       },
     },
@@ -56,17 +59,17 @@ export const emissionIntensityReportSchema = {
       properties: {
         adjustedEmissionsIntensityPerformance: {
           title: "GHG Emission Intensity Performance",
-          type: "number",
+          type: ["null", "number"],
+          default: null,
         },
         dateSentToCsnr: {
-          type: "string",
+          type: ["null", "string"],
           title: "Date Invoice Sent to CSNR",
-          default: undefined,
+          default: null,
         },
         paymentPercentage: {
           type: "number",
           title: "Payment Percentage of Performance Milestone Amount (%)",
-          default: undefined,
         },
         holdbackAmountToDate: {
           type: "number",
@@ -90,18 +93,19 @@ export const emissionIntensityReportingRequirementSchema = {
   required: [],
   properties: {
     reportDueDate: {
-      type: "string",
+      type: ["null", "string"],
       title: "Report Due Date",
-      default: undefined,
+      default: null,
     },
     submittedDate: {
-      type: "string",
+      type: ["null", "string"],
       title: "Report Received Date",
-      default: undefined,
+      default: null,
     },
     comments: {
-      type: "string",
+      type: ["null", "string"],
       title: "General Comments",
+      default: null,
     },
   },
 };
