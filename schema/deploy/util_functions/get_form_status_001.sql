@@ -26,6 +26,7 @@ $function$
         )
         then 'In Progress'
       when fc.change_status= 'staged'
+        and fc.operation != 'archive'
         and (fc.new_form_data::jsonb ? 'fundingStreamRfpId'
         and (select count(*) from jsonb_object_keys(fc.new_form_data::jsonb)) =1
         )
@@ -35,6 +36,7 @@ $function$
         and (select cif.form_change_is_pristine((select row(form_change.*)::cif.form_change from cif.form_change where id=fc.id)) is distinct from true)
         then 'Filled'
       when fc.change_status= 'staged'
+        and fc.operation != 'archive'
         and json_array_length(fc.validation_errors::json) > 0
         then 'Attention Required'
       else 'Not Started'
@@ -42,7 +44,6 @@ $function$
   from cif.form_change fc
   where fc.project_revision_id = $1
   and fc.form_data_table_name = $2
-  and fc.operation != 'archive'
   and coalesce(fc.new_form_data, '{}'::jsonb) @> json_matcher
 
 $function$ language sql stable;
