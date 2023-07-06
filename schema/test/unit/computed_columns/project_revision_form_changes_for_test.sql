@@ -154,6 +154,17 @@ values (
   null,
   1,
   '[]'
+),
+(
+  '{"testField": "test value", "reportType":"Interim Summary Report"}',
+  'create',
+  'pending',
+  'cif',
+  'reporting_requirement',
+  'schema',
+  null,
+  1,
+  '[]'
 );
 
 /* END SETUP */
@@ -203,7 +214,7 @@ select results_eq(
     select (fc).id from cif.project_revision_form_changes_for((select row(project_revision.*)::cif.project_revision from cif.project_revision where id=1), 'reporting_requirement', report_type => 'Milestone') fc
   $$,
   $$
-    values (8), (9), (10), (11)
+    values (8), (9), (10), (11), (12)
   $$,
   'Returns the correct form_change records when queried with report_type Milestone'
 );
