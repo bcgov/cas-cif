@@ -169,7 +169,7 @@ describe("when creating a project, the project page", () => {
     // Add attachments
 
     cy.url().should("include", "/form/8");
-    cy.get("input[type=file]").selectFile("cypress/e2e/cif/fixtures/mock.pdf");
+    cy.get("input[type=file]").selectFile(cy.fixture("e2e/mock.pdf"));
     cy.findByText("mock.pdf").should("be.visible");
 
     cy.findByText(/Submit project attachments/i).click();
