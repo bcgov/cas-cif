@@ -8,15 +8,33 @@ export const attachmentDeleteRouter = Router();
 const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!){
   attachment(id: $attachmentId) {
     file
+    id
   }
 }`;
+
+const discardProjectAttachmentFormChangeMutation = `mutation discardProjectAttachmentFormChangeMutation($input: DiscardProjectAttachmentFormChangeInput!){
+  discardProjectAttachmentFormChange(input:$input) {
+    formChanges {
+      id 
+    }
+  }
+}`;
+
+const deleteAttachmentMutation = `mutation deleteAttachmentMutation($input: DeleteAttachmentInput!) {
+  deleteAttachment(input:$input){
+    attachment {
+      id
+    }
+  }
+}
+`;
 
 export const handleDelete = async (req, res, next) => {
   try {
     const attachmentQueryVariables = {
       attachmentId: req.params.attachmentId,
     };
-    const result = await performQuery(
+    const queryResponse = await performQuery(
       attachmentDetailsQuery,
       attachmentQueryVariables,
       req
@@ -24,9 +42,31 @@ export const handleDelete = async (req, res, next) => {
 
     const {
       data: {
-        attachment: { file },
+        attachment: { file, id },
       },
-    } = result;
+    } = queryResponse;
+
+    // delete the form_change related to the attachment
+    const attachmentFormChangeResponse = await performQuery(
+      discardProjectAttachmentFormChangeMutation,
+      req.body.variables,
+      req
+    );
+
+    // delete the attachment from the attachment table
+    const deleteAttachmentResponse = await performQuery(
+      deleteAttachmentMutation,
+      { input: { id } },
+      req
+    );
+
+    if (
+      queryResponse.errors ||
+      attachmentFormChangeResponse.errors ||
+      deleteAttachmentResponse.errors
+    ) {
+      throw new Error(`Failed to delete attachment`);
+    }
 
     const storageClient = new Storage();
     const bucketName = config.get("attachmentsBucket");
@@ -39,4 +79,4 @@ export const handleDelete = async (req, res, next) => {
   }
 };
 
-attachmentDeleteRouter.get("/delete/:attachmentId", handleDelete);
+attachmentDeleteRouter.delete("/delete/:attachmentId", handleDelete);

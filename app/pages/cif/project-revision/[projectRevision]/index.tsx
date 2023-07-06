@@ -225,7 +225,7 @@ export function ProjectRevision({
             }
           }
         )
-      ).then(() => deleteFromApp());
+      );
     }
   };
 
