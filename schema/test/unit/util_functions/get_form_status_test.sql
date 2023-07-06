@@ -114,45 +114,18 @@ update cif.form_change set new_form_data='{}', change_status='staged'
     and form_data_table_name='project_contact';
 
 /* test 7 */
-insert into cif.form_change(
-  new_form_data,
-  operation,
-  form_data_schema_name,
-  form_data_table_name,
-  json_schema_name,
-  change_status,
-  project_revision_id,
-  validation_errors
-)
-  values
-(
-  json_build_object(
-    'projectId', 1,
-    'contactId', 1,
-    'contactIndex', 1
-  ),
-  'create', 'cif', 'project_manager', 'project_manager', 'staged', 1, '[]'
-),
-(
-  json_build_object(
-    'projectId', 1,
-    'contactId', 2,
-    'contactIndex', 2
-  ),
-  'create', 'cif', 'project_manager', 'project_manager', 'staged', 1, '{"error": "I have an error but should be ignored"}'
-);
 
 update cif.form_change set operation='archive', change_status='staged'
   where project_revision_id=1
     and validation_errors != '[]'
-    and form_data_table_name= 'project_manager';
+    and form_data_table_name= 'project_contact';
 
 select results_eq(
   $$
-  select cif.get_form_status(1, 'project_manager')
+  select cif.get_form_status(1, 'project_contact')
   $$,
   $$
-  values('Filled')
+  values('Not Started')
   $$,
   'Ignores form_change records that are being archived when calculating the overall form_status'
 );
