@@ -12,7 +12,6 @@ const projectMilestoneUiSchema = {
     "certifierProfessionalDesignation",
     "submittedDate",
     "totalEligibleExpenses",
-    "grossPaymentAmount",
     "calculatedGrossAmount",
     "adjustedGrossAmount",
     "calculatedNetAmount",
