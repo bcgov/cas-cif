@@ -44,6 +44,13 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
         # eslint-disable-next-line relay/unused-fields
         projectFormChange {
           formDataRecordId
+          asProject {
+            fundingStreamRfpByFundingStreamRfpId {
+              fundingStreamByFundingStreamId {
+                name
+              }
+            }
+          }
         }
         milestoneFormChanges: formChangesFor(
           formDataTableName: "reporting_requirement"
@@ -98,21 +105,31 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
     props.query
   );
 
-  const schema = JSON.parse(JSON.stringify(query.formBySlug.jsonSchema.schema));
+  const fundingStream =
+    projectRevision.projectFormChange.asProject
+      .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
 
+  const isFundingStreamEP = fundingStream === "EP";
+
+  const schema = JSON.parse(JSON.stringify(query.formBySlug.jsonSchema.schema));
   // Opportunity for a refactor here to populate the anyOf array on the server with a computed column
   schema.properties.reportType = {
     ...schema.properties.reportType,
-    anyOf: query.allReportTypes.edges.map(({ node }) => {
-      const replaceRegex = /\sMilestone/i;
-      const displayValue = node.name.replace(replaceRegex, "");
-      return {
-        type: "string",
-        title: displayValue,
-        enum: [node.name],
-        value: node.name,
-      } as JSONSchema7Definition;
-    }),
+    anyOf: query.allReportTypes.edges
+      .filter(
+        ({ node }) =>
+          !(isFundingStreamEP && node.name === "Interim Summary Report")
+      )
+      .map(({ node }) => {
+        const replaceRegex = /\sMilestone/i;
+        const displayValue = node.name.replace(replaceRegex, "");
+        return {
+          type: "string",
+          title: displayValue,
+          enum: [node.name],
+          value: node.name,
+        } as JSONSchema7Definition;
+      }),
     default: "General Milestone",
   };
 
