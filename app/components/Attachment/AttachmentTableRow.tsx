@@ -51,7 +51,25 @@ const AttachmentTableRow: React.FC<Props> = ({
   );
 
   const handleArchiveAttachment = (attachmentId) => {
-    const deleteFromApp = () =>
+    // safer to delete from our app and then delete from GCS, then if breaks in the middle we don't have weird data, just storing extra stuff
+    // best to do it as middleware so it's one request, if it fails the whole thing fails
+    // have the server call the graphql endpoint
+
+    if (isFirstRevision) {
+      // delete from cloud storage and call discard mutation
+      fetch(getAttachmentDeleteRoute(attachmentId).pathname, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          variables: {
+            input: {
+              formChangeId: formChangeRowId,
+            },
+            // connections: [connectionId],
+          },
+        }),
+      });
+    } else {
       discardProjectAttachmentFormChange({
         variables: {
           input: {
@@ -60,14 +78,6 @@ const AttachmentTableRow: React.FC<Props> = ({
           connections: [connectionId],
         },
       });
-
-    if (isFirstRevision) {
-      // delete from cloud storage
-      fetch(getAttachmentDeleteRoute(attachmentId).pathname).then(() => {
-        return deleteFromApp();
-      });
-    } else {
-      deleteFromApp();
     }
   };
 
