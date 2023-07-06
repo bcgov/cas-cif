@@ -7,6 +7,8 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import milestoneProdSchema from "../../../../../schema/data/prod/json_schema/milestone.json";
+import { useUpdateMilestone } from "mutations/MilestoneReport/updateMilestone";
+import { mocked } from "jest-mock";
 
 const testQuery = graphql`
   query ProjectMilestoneReportFormQuery @relay_test_operation {
@@ -187,6 +189,14 @@ const defaultComponentProps = {
   onSubmit: jest.fn(),
 };
 
+jest.mock("mutations/MilestoneReport/updateMilestone");
+const updateFormChange = jest.fn();
+let isUpdating = false;
+mocked(useUpdateMilestone).mockImplementation(() => [
+  updateFormChange,
+  isUpdating,
+]);
+
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
   component: ProjectMilestoneReportForm,
   testQuery: testQuery,
@@ -303,39 +313,38 @@ describe("The ProjectMilestoneReportForm", () => {
     });
   });
 
-  it("Calls updateMilestoneFormChangeMutation when changing the milestone form", async () => {
+  it("Calls updateMilestoneFormChangeMutation when changing the milestone form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    await act(async () => {
+    act(() => {
       userEvent.click(screen.getAllByLabelText(/milestone type/i)[1]);
     });
-    await userEvent.click(
+    userEvent.click(
       within(screen.getByRole("presentation")).getByText("General")
     );
-    await act(async () => {
-      const updateMutationUnderTest =
-        await componentTestingHelper.environment.mock.getMostRecentOperation();
 
-      await expect(updateMutationUnderTest.fragment.node.name).toBe(
-        "updateMilestoneFormChangeMutation"
-      );
-      expect(updateMutationUnderTest.request.variables).toMatchObject({
-        reportType: "Milestone",
-        input: {
-          rowId: 2,
-          formChangePatch: {
-            newFormData: {
-              reportType: "General Milestone",
-              reportDueDate: "2022-10-28",
-              projectId: 51,
-              submittedDate: "2022-05-02",
-              description: "i am the second description",
-              reportingRequirementIndex: 2,
-            },
+    const updateMutationUnderTest =
+      componentTestingHelper.environment.mock.getMostRecentOperation();
+
+    expect(updateMutationUnderTest.fragment.node.name).toBe(
+      "updateMilestoneFormChangeMutation"
+    );
+    expect(updateMutationUnderTest.request.variables).toMatchObject({
+      reportType: "Milestone",
+      input: {
+        rowId: 2,
+        formChangePatch: {
+          newFormData: {
+            reportType: "General Milestone",
+            reportDueDate: "2022-10-28",
+            projectId: 51,
+            submittedDate: "2022-05-02",
+            description: "i am the second description",
+            reportingRequirementIndex: 2,
           },
         },
-      });
+      },
     });
   });
 

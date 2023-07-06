@@ -7,6 +7,8 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import reportingRequirementProdSchema from "../../../../../schema/data/prod/json_schema/reporting_requirement.json";
+import { mocked } from "jest-mock";
+import { useUpdateReportingRequirementFormChange } from "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange";
 
 const testQuery = graphql`
   query ProjectAnnualReportFormQuery @relay_test_operation {
@@ -84,6 +86,16 @@ const defaultComponentProps = {
   setValidatingForm: jest.fn(),
   onSubmit: jest.fn(),
 };
+
+jest.mock(
+  "mutations/ProjectReportingRequirement/updateReportingRequirementFormChange"
+);
+const updateFormChange = jest.fn();
+let isUpdating = false;
+mocked(useUpdateReportingRequirementFormChange).mockImplementation(() => [
+  updateFormChange,
+  isUpdating,
+]);
 
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
   component: ProjectAnnualReportForm,
@@ -197,7 +209,7 @@ describe("The ProjectAnnualReportForm", () => {
     );
   });
 
-  it("Validates all contact forms when the submit button is clicked", () => {
+  it("Validates all forms when the submit button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 

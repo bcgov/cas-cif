@@ -7,6 +7,8 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import emissionsIntensityProdSchema from "/schema/data/prod/json_schema/emission_intensity.json";
+import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
+import { mocked } from "jest-mock";
 
 const testQuery = graphql`
   query ProjectEmissionIntensityReportFormQuery @relay_test_operation {
@@ -87,6 +89,16 @@ const defaultComponentProps = {
   setValidatingForm: jest.fn(),
   onSubmit: jest.fn(),
 };
+
+jest.mock(
+  "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange"
+);
+const updateFormChange = jest.fn();
+let isUpdating = false;
+mocked(useUpdateEmissionIntensityReportFormChange).mockImplementation(() => [
+  updateFormChange,
+  isUpdating,
+]);
 
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
   component: ProjectEmissionIntensityReportForm,
@@ -342,7 +354,7 @@ describe("the emission intensity report form component", () => {
   it("calls the updateformchange mutation when the user types in data", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    userEvent.click(screen.getByText(/submit.*/i));
+    userEvent.clear(screen.getAllByLabelText(/comments/i)[0]);
     userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
     componentTestingHelper.expectMutationToBeCalled(
       "updateEmissionIntensityReportFormChangeMutation",
