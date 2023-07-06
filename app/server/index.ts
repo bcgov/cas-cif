@@ -17,7 +17,7 @@ import ssoMiddleware from "./middleware/sso";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 import config from "../config";
 import attachmentDownloadRouter from "./middleware/attachmentDownloadRouter";
-import { attachmentDeleteRouter } from "/home/briannacerkiewicz/cas-cif/app/server/middleware/attachmentDeleteRouter";
+import { attachmentDeleteRouter } from "./middleware/attachmentDeleteRouter";
 
 const port = config.get("port");
 const dev = config.get("env") !== "production";
