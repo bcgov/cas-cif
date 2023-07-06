@@ -116,6 +116,34 @@ const defaultMockResolver = {
               calculatedHoldbackAmountThisMilestone: 1,
             },
           },
+          {
+            node: {
+              id: `mock-project-milestone-report-form-${generateID()}`,
+              rowId: 4,
+              newFormData: {
+                substantialCompletionDate: "2022-10-28",
+                reportDueDate: "2022-11-28",
+                projectId: 51,
+                reportType: "Interim Summary Report",
+                submittedDate: "2022-05-02",
+                description: "i am the third description",
+                reportingRequirementIndex: 3,
+                hasExpenses: true,
+                reportingRequirementId: 2,
+                certifierProfessionalDesignation: "Professional Engineer",
+                calculatedGrossAmount: 1,
+                calculatedNetAmount: 1,
+                calculatedHoldbackAmount: 1,
+              },
+              operation: "CREATE",
+              changeStatus: "pending",
+              formChangeByPreviousFormChangeId: null,
+              formDataRecordId: 2,
+              calculatedGrossAmountThisMilestone: 1,
+              calculatedNetAmountThisMilestone: 1,
+              calculatedHoldbackAmountThisMilestone: 1,
+            },
+          },
         ],
         __id: "client:mock:__connection_milestoneReportingRequirementFormChanges_connection",
       },
@@ -203,7 +231,7 @@ describe("The ProjectMilestoneReportForm", () => {
     // select the overall status badge
     expect(screen.getAllByRole("status")[0]).toHaveTextContent("Late");
 
-    expect(screen.getAllByText("Remove")).toHaveLength(3);
+    expect(screen.getAllByText("Remove")).toHaveLength(4);
   });
 
   it("Calls the createMilestoneMutation mutation when the Add button is clicked", () => {
@@ -339,7 +367,7 @@ describe("The ProjectMilestoneReportForm", () => {
     userEvent.click(screen.getByText(/submit.*/i));
 
     // Once per form
-    expect(validateFormWithErrors).toHaveBeenCalledTimes(3);
+    expect(validateFormWithErrors).toHaveBeenCalledTimes(4);
   });
 
   it("Stages the form changes when the `submit` button is clicked", async () => {
@@ -424,7 +452,7 @@ describe("The ProjectMilestoneReportForm", () => {
     );
     expect(mutationUnderTest.request.variables).toMatchObject({
       input: {
-        formChangesIds: [1, 2, 3],
+        formChangesIds: [1, 2, 3, 4],
       },
     });
   });
@@ -432,21 +460,21 @@ describe("The ProjectMilestoneReportForm", () => {
   it("Only renders the payment form for milestone types with associated expenses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    expect(screen.getAllByText(/milestone description/i)).toHaveLength(3);
-    expect(screen.getAllByText(/Certifier/i)).toHaveLength(3);
+    expect(screen.getAllByText(/milestone description/i)).toHaveLength(4);
+    expect(screen.getAllByText(/Certifier/i)).toHaveLength(4);
     expect(
       screen.getAllByText(/^gross payment amount this milestone/i)
-    ).toHaveLength(4);
+    ).toHaveLength(6);
   });
 
   it("Only renders the totalEligibleExpenses and maximumAmount fields for milestone types with associated expenses", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getAllByText(/milestone description/i)).toHaveLength(3);
-    expect(screen.getAllByText(/Certifier/i)).toHaveLength(3);
-    expect(screen.getAllByText(/maximum amount/i)).toHaveLength(2);
-    expect(screen.getAllByText(/total eligible expenses/i)).toHaveLength(1);
+    expect(screen.getAllByText(/milestone description/i)).toHaveLength(4);
+    expect(screen.getAllByText(/Certifier/i)).toHaveLength(4);
+    expect(screen.getAllByText(/maximum amount/i)).toHaveLength(3);
+    expect(screen.getAllByText(/total eligible expenses/i)).toHaveLength(2);
   });
 
   it("Shows `This field cannot be calculated due to lack of information now.` message for calculated fields when submittedDate not provided", () => {
