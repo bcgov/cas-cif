@@ -51,10 +51,12 @@ with
                 and ei_data.rep_req_id is not null
               ),
         json_schema_name = 'emission_intensity'
-      where json_schema_name = 'emission_intensity_reporting_requirement';
+      where (new_form_data->>'reportType')::text = 'TEIMP';
 
-delete from cif.form_change
-    where json_schema_name = 'emission_intensity_report';
+delete from cif.form_change where json_schema_name = 'emission_intensity_report';
+
+delete from cif.form where slug='emission_intensity_report';
+delete from cif.form where slug='emission_intensity_reporting_requirement';
 
 $migration$ language sql volatile;
 

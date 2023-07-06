@@ -2,9 +2,6 @@
 
 begin;
 
-delete from cif.form where slug='emission_intensity_report';
-delete from cif.form where slug='emission_intensity_reporting_requirement';
-
 create temporary table emission_intensity (json_data jsonb);
 \copy emission_intensity(json_data) from program 'sed ''s/\\/\\\\/g'' < data/prod/json_schema/emission_intensity.json | tr -d ''\n''';
 

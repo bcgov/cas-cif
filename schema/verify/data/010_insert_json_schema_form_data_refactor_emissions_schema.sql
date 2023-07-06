@@ -5,7 +5,7 @@ begin;
 do $$
   begin
     assert (
-      (select count(*) from cif.form) = 12
+      (select count(*) from cif.form) = 14
     ), 'The proper number of values were not inserted in the cif.form table';
   end;
 $$;
