@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(6);
+select plan(7);
 
 truncate cif.form_change, cif.project_revision, cif.project_contact restart identity cascade;
 
@@ -107,6 +107,54 @@ select results_eq(
   values('Not Started')
   $$,
   'Returns Not Started when new form data is null and form change is pending'
+);
+
+update cif.form_change set new_form_data='{}', change_status='staged'
+  where project_revision_id=1
+    and form_data_table_name='project_contact';
+
+/* test 7 */
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  change_status,
+  project_revision_id,
+  validation_errors
+)
+  values
+(
+  json_build_object(
+    'projectId', 1,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'create', 'cif', 'project_manager', 'project_manager', 'staged', 1, '[]'
+),
+(
+  json_build_object(
+    'projectId', 1,
+    'contactId', 2,
+    'contactIndex', 2
+  ),
+  'create', 'cif', 'project_manager', 'project_manager', 'staged', 1, '{"error": "I have an error but should be ignored"}'
+);
+
+update cif.form_change set operation='archive', change_status='staged'
+  where project_revision_id=1
+    and validation_errors != '[]'
+    and form_data_table_name= 'project_manager';
+
+select results_eq(
+  $$
+  select cif.get_form_status(1, 'project_manager')
+  $$,
+  $$
+  values('Filled')
+  $$,
+  'Ignores form_change records that are being archived when calculating the overall form_status'
 );
 
 
