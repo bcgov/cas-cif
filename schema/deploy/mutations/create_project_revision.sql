@@ -65,6 +65,7 @@ begin
     and archived_at is null
     and report_type not in (select name from cif.report_type where is_milestone = true)
     and report_type != 'Project Summary Report'
+    and report_type != 'TEIMP'
   union
     select
       id,
