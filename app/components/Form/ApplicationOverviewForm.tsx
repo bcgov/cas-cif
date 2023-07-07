@@ -86,7 +86,7 @@ const ApplicationOverviewForm: React.FC<Props> = (props) => {
     contractNumber: "654321",
     totalFundingRequest: 1000,
     projectStatusId: 1,
-    operatorTradeName: "test trade name",
+    operatorLegalName: "test legal name",
     sectorName: "Lime",
     projectType: "Carbon Capture",
   };

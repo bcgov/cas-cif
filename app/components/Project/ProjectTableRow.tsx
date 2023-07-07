@@ -23,7 +23,7 @@ const ProjectTableRow: React.FC<Props> = ({ project, isInternal }) => {
         proposalReference
         totalFundingRequest
         operatorByOperatorId {
-          tradeName
+          legalName
         }
         projectStatusByProjectStatusId {
           name
@@ -59,7 +59,7 @@ const ProjectTableRow: React.FC<Props> = ({ project, isInternal }) => {
     proposalReference,
     projectStatusByProjectStatusId: { name },
     totalFundingRequest,
-    operatorByOperatorId: { tradeName },
+    operatorByOperatorId: { legalName },
     projectManagersByProjectId,
     latestCommittedProjectRevision,
   } = projectData;
@@ -77,7 +77,7 @@ const ProjectTableRow: React.FC<Props> = ({ project, isInternal }) => {
       {isInternal ? (
         <>
           <td className="project-name">{projectName}</td>
-          <td className="op-trade-name">{tradeName}</td>
+          <td className="op-legal-name">{legalName}</td>
           <td className="proposal-reference">{proposalReference}</td>
           <td className="status-container">
             <span className="status-badge">{name}</span>
@@ -131,7 +131,7 @@ const ProjectTableRow: React.FC<Props> = ({ project, isInternal }) => {
           vertical-align: top;
         }
         .project-name,
-        .op-trade-name {
+        .op-legal-name {
           max-width: 15rem;
         }
         .proposal-reference {
