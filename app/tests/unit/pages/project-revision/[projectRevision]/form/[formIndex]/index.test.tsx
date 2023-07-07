@@ -178,23 +178,16 @@ describe("The form index page", () => {
     });
     pageTestingHelper.renderPage();
     expect(screen.getByText("Is this a funded project?")).toBeInTheDocument();
-
     const submitButton = screen.getByText(/Submit/i);
-
     expect(submitButton).toBeDisabled();
 
-    // Click on the button
     await userEvent.click(submitButton);
     expect(pageTestingHelper.router.push).not.toHaveBeenCalled();
-    // Get the submit button and the radio button
-    const radioButton = screen.getByLabelText("Yes");
 
+    const radioButton = screen.getByLabelText("No");
     await userEvent.click(radioButton);
-
     expect(submitButton).toBeEnabled();
-
     await userEvent.click(submitButton);
-    console.log(pageTestingHelper.router.push.mock.calls);
     expect(pageTestingHelper.router.push).not.toHaveBeenCalled();
   });
 });
