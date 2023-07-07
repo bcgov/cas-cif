@@ -260,7 +260,7 @@ describe("The Project Form", () => {
               projectName: "test project name",
               totalFundingRequest: 12345,
               projectStatusId: 1,
-              operatorTradeName: "test trade name",
+              operatorLegalName: "test legal name",
             },
           },
         };

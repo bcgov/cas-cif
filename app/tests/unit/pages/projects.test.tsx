@@ -44,7 +44,7 @@ const pageTestingHelper = new PageTestingHelper<projectsQuery>({
   defaultQueryResolver: defaultMockResolver,
   defaultQueryVariables: {
     projectName: null,
-    operatorTradeName: null,
+    operatorLegalName: null,
     proposalReference: null,
     status: null,
     primaryProjectManager: null,
@@ -114,7 +114,7 @@ describe("The projects page", () => {
       screen.queryByLabelText("Filter by Project Name")
     ).toBeInTheDocument();
     expect(
-      screen.queryByLabelText("Filter by Operator Trade Name")
+      screen.queryByLabelText("Filter by Operator Legal Name")
     ).toBeInTheDocument();
     expect(
       screen.queryByLabelText("Filter by Proposal Reference")
