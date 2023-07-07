@@ -28,7 +28,7 @@ const mockQueryPayload = {
       totalFundingRequest: "1.00",
 
       operatorByOperatorId: {
-        tradeName: "Operator 1 trade name",
+        legalName: "Operator 1 legal name",
       },
       projectStatusByProjectStatusId: {
         name: "Technical Review",
@@ -96,7 +96,7 @@ describe("The ProjectTableRow", () => {
     expect(screen.getByText(/Project 1/i)).toBeInTheDocument();
     expect(screen.getByText(/12345/i)).toBeInTheDocument();
     expect(screen.getByText(/1.00/i)).toBeInTheDocument();
-    expect(screen.getByText(/Operator 1 trade name/i)).toBeInTheDocument();
+    expect(screen.getByText(/Operator 1 legal name/i)).toBeInTheDocument();
     expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager full name 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Manager full name 2/i)).toBeInTheDocument();
@@ -110,7 +110,7 @@ describe("The ProjectTableRow", () => {
     expect(screen.getByText(/12345/i)).toBeInTheDocument();
     expect(screen.queryByText(/1.00/i)).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/Operator 1 trade name/i)
+      screen.queryByText(/Operator 1 legal name/i)
     ).not.toBeInTheDocument();
     expect(screen.getByText(/Technical Review/i)).toBeInTheDocument();
     expect(screen.queryByText(/Manager full name 1/i)).not.toBeInTheDocument();

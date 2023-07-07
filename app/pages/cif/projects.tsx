@@ -22,7 +22,7 @@ import { projectsQuery } from "__generated__/projectsQuery.graphql";
 export const ProjectsQuery = graphql`
   query projectsQuery(
     $projectName: String
-    $operatorTradeName: String
+    $operatorLegalName: String
     $proposalReference: String
     $status: String
     $primaryProjectManager: String
@@ -45,7 +45,7 @@ export const ProjectsQuery = graphql`
       filter: {
         projectName: { includesInsensitive: $projectName }
         operatorByOperatorId: {
-          tradeName: { includesInsensitive: $operatorTradeName }
+          legalName: { includesInsensitive: $operatorLegalName }
         }
         proposalReference: { includesInsensitive: $proposalReference }
         projectStatusByProjectStatusId: {
@@ -103,8 +103,8 @@ export function Projects({ preloadedQuery }: RelayProps<{}, projectsQuery>) {
   const tableFilters = useMemo(
     () => [
       new TextFilter("Project Name", "projectName"),
-      new TextFilter("Operator Trade Name", "operatorTradeName", {
-        orderByPrefix: "OPERATOR_BY_OPERATOR_ID__TRADE_NAME",
+      new TextFilter("Operator Legal Name", "operatorLegalName", {
+        orderByPrefix: "OPERATOR_BY_OPERATOR_ID__LEGAL_NAME",
       }),
       new TextFilter("Proposal Reference", "proposalReference"),
       new SearchableDropdownFilter(

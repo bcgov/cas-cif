@@ -40,7 +40,7 @@ export const createProjectUiSchema = (
       "additionalSectorInformation",
       "contractNumber",
       "operatorId",
-      "operatorTradeName",
+      "operatorLegalName",
       "totalFundingRequest",
       "comments",
     ],
@@ -158,7 +158,6 @@ const ProjectForm: React.FC<Props> = (props) => {
             node {
               rowId
               legalName
-              tradeName
               bcRegistryId
               operatorCode
             }
@@ -198,7 +197,7 @@ const ProjectForm: React.FC<Props> = (props) => {
   const rfpStream = `${rfpDescription} - ${rfpYear}`;
   const uiSchema = useMemo(() => {
     return createProjectUiSchema(
-      selectedOperator ? selectedOperator.node.tradeName : "",
+      selectedOperator ? selectedOperator.node.legalName : "",
       rfpStream
     );
   }, [rfpStream, selectedOperator]);
