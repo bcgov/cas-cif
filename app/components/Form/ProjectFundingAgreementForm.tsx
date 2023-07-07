@@ -9,7 +9,7 @@ import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
@@ -17,6 +17,8 @@ import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
+import router from "next/router";
+import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
@@ -234,25 +236,49 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     return [fundingAgreementFormChangeId];
   }, [projectRevision.projectFundingAgreementFormChanges]);
 
+  const [isRadioButtonSelected, setIsRadioButtonSelected] = useState(false);
+  useEffect(() => {
+    if (projectRevision.projectFundingAgreementFormChanges.edges.length === 0) {
+      setIsRadioButtonSelected(false);
+    }
+  }, [projectRevision.projectFundingAgreementFormChanges.edges.length]);
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
         0 && (
-        <div>
-          <h3>Is this a funded project?</h3>
-          <RadioButton
-            name="funding-agreement"
-            label="Yes"
-            className="radio-button"
-            onClick={addFundingAgreement}
-            disabled={isDiscardingFundingParameterFormChange}
-          />
-          <RadioButton
-            name="funding-agreement"
-            label="No"
-            className="radio-button"
-          />
-        </div>
+        <>
+          <div>
+            <h3>Is this a funded project?</h3>
+            <RadioButton
+              name="funding-agreement"
+              label="Yes"
+              className="radio-button"
+              onClick={() => {
+                addFundingAgreement();
+                setIsRadioButtonSelected(true);
+              }}
+              disabled={isDiscardingFundingParameterFormChange}
+            />
+            <RadioButton
+              name="funding-agreement"
+              label="No"
+              className="radio-button"
+              onClick={() => setIsRadioButtonSelected(true)}
+            />
+          </div>
+          <Button
+            type="submit"
+            onClick={() =>
+              router.push(
+                getProjectRevisionFormPageRoute(projectRevision.id, 8)
+              )
+            }
+            style={{ marginRight: "1rem" }}
+            disabled={!isRadioButtonSelected}
+          >
+            Submit
+          </Button>
+        </>
       )}
       {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
         <>
