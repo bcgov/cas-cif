@@ -18,7 +18,6 @@ import projectFundingParameterEPSchema from "/schema/data/prod/json_schema/fundi
  * `console.log(JSON.stringify(operation, null, 2))`
  * just before returning the MockPayloadGenerator and looking for concreteType instances *
  */
-
 const defaultMockResolver = {
   ProjectRevision() {
     return {
@@ -45,6 +44,9 @@ const defaultMockResolver = {
         edges: [],
       },
       milestoneReportStatuses: {
+        edges: [],
+      },
+      projectFundingAgreementFormChanges: {
         edges: [],
       },
     };
@@ -167,5 +169,32 @@ describe("The form index page", () => {
     pageTestingHelper.renderPage();
     // for internal users, formIndex 1 is the project managers form
     expect(screen.getByText(/Submit Project Managers/i)).toBeInTheDocument();
+  });
+  it("disables the submit button when there are no form changes", async () => {
+    pageTestingHelper.loadQuery();
+    pageTestingHelper.setMockRouterValues({
+      pathname: "/cif/project-revision/[projectRevision]/form/[formIndex]",
+      query: { projectRevision: "mock-id", formIndex: "3" },
+    });
+    pageTestingHelper.renderPage();
+    expect(screen.getByText("Is this a funded project?")).toBeInTheDocument();
+
+    const submitButton = screen.getByText(/Submit/i);
+
+    expect(submitButton).toBeDisabled();
+
+    // Click on the button
+    await userEvent.click(submitButton);
+    expect(pageTestingHelper.router.push).not.toHaveBeenCalled();
+    // Get the submit button and the radio button
+    const radioButton = screen.getByLabelText("Yes");
+
+    await userEvent.click(radioButton);
+
+    expect(submitButton).toBeEnabled();
+
+    await userEvent.click(submitButton);
+    console.log(pageTestingHelper.router.push.mock.calls);
+    expect(pageTestingHelper.router.push).not.toHaveBeenCalled();
   });
 });
