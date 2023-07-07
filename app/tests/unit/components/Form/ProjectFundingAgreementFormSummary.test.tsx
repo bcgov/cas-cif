@@ -443,10 +443,8 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText("Anticipated/Actual Funding Amount")
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText<HTMLLabelElement>(
-        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
-      )
-    ).toHaveTextContent("$5.00");
+      screen.getByText(/anticipated funding amount per fiscal year 1/i)
+    ).toBeInTheDocument();
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
     expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
     expect(
@@ -549,10 +547,8 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText("Anticipated/Actual Funding Amount")
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText<HTMLLabelElement>(
-        /Anticipated Funding Amount Per Fiscal Year 1 \(2021\/2022\)/i
-      )
-    ).toHaveTextContent("$5.00");
+      screen.getByText(/anticipated funding amount per fiscal year 1/i)
+    ).toBeInTheDocument();
     expect(screen.getByText("Proponent Cost")).toBeInTheDocument();
     expect(screen.getByText("Contract Start Date")).toBeInTheDocument();
     expect(

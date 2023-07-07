@@ -1,97 +1,83 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate from "components/Form/AnticipatedFundingAmountByFiscalYearArrayFieldTemplate";
-import FormBase from "components/Form/FormBase";
-import { JSONSchema7 } from "json-schema";
+import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
+import compiledAnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery, {
+  AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery,
+} from "__generated__/AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery.graphql";
 
-const schema = {
-  $schema: "http://json-schema.org/draft-07/schema",
-  type: "object",
+const testQuery = graphql`
+  query AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery
+  @relay_test_operation {
+    query {
+      formChange(id: "test") {
+        ...AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange
+      }
+    }
+  }
+`;
 
-  properties: {
-    anticipatedFundingAmountPerFiscalYear: {
-      title: "Anticipated Funding Amount Per Fiscal Year",
-      minItems: 0,
-      type: "array",
-      items: {
-        $ref: "#/definitions/anticipatedFundingAmount",
+const mockQueryPayload = {
+  FormChange() {
+    const result = {
+      anticipatedFundingAmountPerFiscalYear: {
+        edges: [
+          {
+            node: {
+              anticipatedFundingAmount: "20082009.00",
+              fiscalYear: "2008/2009",
+            },
+          },
+          {
+            node: {
+              anticipatedFundingAmount: "20212022.00",
+              fiscalYear: "2021/2022",
+            },
+          },
+          {
+            node: {
+              anticipatedFundingAmount: "20222023.00",
+              fiscalYear: "2022/2023",
+            },
+          },
+          {
+            node: {
+              anticipatedFundingAmount: "20372038.00",
+              fiscalYear: "2037/2038",
+            },
+          },
+        ],
       },
-    },
-  },
-  definitions: {
-    anticipatedFundingAmount: {
-      type: "object",
-      required: ["fiscalYear", "anticipatedFundingAmount"],
-      properties: {
-        fiscalYear: {
-          title: "Fiscal Year",
-          type: "string",
-        },
-        anticipatedFundingAmount: {
-          title: "Anticipated Funding Amount Per Year",
-          type: "number",
-        },
-      },
-    },
-  },
-};
-
-const uiSchema = {
-  anticipatedFundingAmountPerFiscalYear: {
-    "ui:ArrayFieldTemplate":
-      AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate,
-    itemTitle: "Anticipated Funding Amount Per Fiscal Year",
-    "ui:order": ["fiscalyear", "anticipatedFundingAmount"],
-    items: {
-      fiscalYear: {
-        "ui:widget": "TextWidget",
-      },
-      anticipatedFundingAmount: {
-        "ui:title": `Anticipated Amount Per Fiscal Year`,
-        "ui:widget": "NumberWidget",
-        isMoney: true,
-      },
-    },
+    };
+    return result;
   },
 };
+
+const componentTestingHelper =
+  new ComponentTestingHelper<AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery>(
+    {
+      component: AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate,
+      testQuery: testQuery,
+      compiledQuery:
+        compiledAnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery,
+      getPropsFromTestQuery: (data) => ({
+        query: data.query,
+        formContext: {
+          formChange: data.query.formChange,
+        },
+      }),
+      defaultQueryResolver: mockQueryPayload,
+      defaultQueryVariables: {},
+      defaultComponentProps: { idSchema: { $id: null } },
+    }
+  );
 
 describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
+  beforeEach(() => {
+    componentTestingHelper.reinit();
+  });
   it("when four years' worth of data is available, renders anticipated values for four fiscal years and renders fiscal year dates in labels", () => {
-    render(
-      <FormBase
-        schema={schema as JSONSchema7}
-        uiSchema={uiSchema}
-        formContext={{
-          anticipatedFundingAmountPerFiscalYear: {
-            edges: [
-              {
-                node: {
-                  anticipatedFundingAmount: "20082009.00",
-                  fiscalYear: "2008/2009",
-                },
-              },
-              {
-                node: {
-                  anticipatedFundingAmount: "20212022.00",
-                  fiscalYear: "2021/2022",
-                },
-              },
-              {
-                node: {
-                  anticipatedFundingAmount: "20222023.00",
-                  fiscalYear: "2022/2023",
-                },
-              },
-              {
-                node: {
-                  anticipatedFundingAmount: "20372038.00",
-                  fiscalYear: "2037/2038",
-                },
-              },
-            ],
-          },
-        }}
-      />
-    );
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
     expect(
       screen.getByLabelText<HTMLLabelElement>(
         /Anticipated Funding Amount Per Fiscal Year 1 \(2008\/2009\)/i
@@ -115,11 +101,9 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
   });
 
   it("when two years' worth of data is available, renders anticipated values for two years and renders fiscal year dates in labels, and renders a message with a shortened label", () => {
-    render(
-      <FormBase
-        schema={schema as JSONSchema7}
-        uiSchema={uiSchema}
-        formContext={{
+    componentTestingHelper.loadQuery({
+      FormChange() {
+        const result = {
           anticipatedFundingAmountPerFiscalYear: {
             edges: [
               {
@@ -136,9 +120,11 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
               },
             ],
           },
-        }}
-      />
-    );
+        };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
 
     expect(
       screen.getByLabelText<HTMLLabelElement>(
@@ -161,13 +147,17 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
   });
 
   it("when no data is available, renders anticipated values for three fiscal years and shortened labels", () => {
-    render(
-      <FormBase
-        schema={schema as JSONSchema7}
-        uiSchema={uiSchema}
-        formContext={{ anticipatedFundingAmountPerFiscalYear: { edges: [] } }}
-      />
-    );
+    componentTestingHelper.loadQuery({
+      FormChange() {
+        const result = {
+          anticipatedFundingAmountPerFiscalYear: {
+            edges: [],
+          },
+        };
+        return result;
+      },
+    });
+    componentTestingHelper.renderComponent();
     expect(
       screen.getByText(/Anticipated Funding Amount Per Fiscal Year 1/i)
     ).toBeInTheDocument();

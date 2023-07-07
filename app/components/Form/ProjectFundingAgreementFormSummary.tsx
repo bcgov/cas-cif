@@ -17,6 +17,7 @@ import {
 } from "./SummaryFormCommonComponents";
 import ReadOnlyArrayFieldTemplate from "./ReadOnlyArrayFieldTemplate";
 import { isEqual } from "lodash";
+import { cleanupNestedNodes } from "components/helpers";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -130,13 +131,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const fundingAgreementSummary =
     summaryProjectFundingAgreementFormChanges.edges[0]?.node;
 
-  const cleanup = (array) => {
-    if (!array) return undefined;
-    return array.map(({ node }) => {
-      return node;
-    });
-  };
-
   const newData = {
     ...fundingAgreementSummary?.newFormData,
     eligibleExpensesToDate: fundingAgreementSummary?.eligibleExpensesToDate,
@@ -148,7 +142,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       fundingAgreementSummary?.proponentsSharePercentage,
     totalProjectValue: fundingAgreementSummary?.totalProjectValue,
-    anticipatedFundingAmountPerFiscalYear: cleanup(
+    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
       fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges
     ),
   };
@@ -169,7 +163,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       latestCommittedFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: latestCommittedFundingFormChanges?.totalProjectValue,
-    anticipatedFundingAmountPerFiscalYear: cleanup(
+    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
       latestCommittedFundingFormChanges?.anticipatedFundingAmountPerFiscalYear
         .edges
     ),
@@ -189,7 +183,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       oldFundingFormChanges?.calculatedTotalPaymentAmountToDate,
     proponentsSharePercentage: oldFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: oldFundingFormChanges?.totalProjectValue,
-    anticipatedFundingAmountPerFiscalYear: cleanup(
+    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
       oldFundingFormChanges?.anticipatedFundingAmountPerFiscalYear.edges
     ),
   };
@@ -230,7 +224,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const { formSchema, formData } = !renderDiff
     ? {
         formSchema: schema,
-        formData: fundingAgreementSummary?.newFormData,
+        formData: {
+          ...fundingAgreementSummary?.newFormData,
+          anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
+            fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges
+          ),
+        },
       }
     : {
         ...getSchemaAndDataIncludingCalculatedValues(
@@ -263,18 +262,32 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     [fundingAgreementSummary, showAnticipatedFundingPerFiscalYearDiffs]
   );
 
-  const readOnlyArrayProperties = {
-    additionalFundingSources: {
-      ...fundingParameterEPUiSchema.additionalFundingSources,
-      "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
-    },
-    anticipatedFundingAmountPerFiscalYear: isFirstRevision
-      ? fundingParameterEPUiSchema.anticipatedFundingAmountPerFiscalYear
-      : {
+  const createUiSchema = useMemo(() => {
+    if (isFundingStreamEP) {
+      return {
+        ...fundingParameterEPUiSchema,
+        additionalFundingSources: {
+          ...fundingParameterEPUiSchema.additionalFundingSources,
+          "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
+        },
+        anticipatedFundingAmountPerFiscalYear: {
           ...fundingParameterEPUiSchema.anticipatedFundingAmountPerFiscalYear,
           "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
         },
-  };
+      };
+    }
+    return {
+      ...fundingParameterIAUiSchema,
+      additionalFundingSources: {
+        ...fundingParameterIAUiSchema.additionalFundingSources,
+        "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
+      },
+      anticipatedFundingAmountPerFiscalYear: {
+        ...fundingParameterIAUiSchema.anticipatedFundingAmountPerFiscalYear,
+        "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
+      },
+    };
+  }, []);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -330,17 +343,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
-          uiSchema={
-            fundingStream === "EP"
-              ? {
-                  ...fundingParameterEPUiSchema,
-                  ...readOnlyArrayProperties,
-                }
-              : {
-                  ...fundingParameterIAUiSchema,
-                  ...readOnlyArrayProperties,
-                }
-          }
+          uiSchema={createUiSchema}
           formData={formData}
           formContext={{
             projectRevision: revision,
@@ -363,8 +366,8 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               fundingAgreementSummary?.grossPaymentsToDate,
             calculatedTotalPaymentAmountToDate:
               fundingAgreementSummary?.calculatedTotalPaymentAmountToDate,
-            anticipatedFundingAmountPerFiscalYear:
-              fundingAgreementSummary.anticipatedFundingAmountPerFiscalYear,
+            // anticipatedFundingAmountPerFiscalYear:
+            //   fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear,
           }}
         />
       )}

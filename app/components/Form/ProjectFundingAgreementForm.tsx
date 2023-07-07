@@ -65,6 +65,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           __id
           edges {
             node {
+              # eslint-disable-next-line relay/must-colocate-fragment-spreads
+              ...AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange
               id
               rowId
               newFormData
@@ -75,15 +77,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               grossPaymentsToDate
               calculatedTotalPaymentAmountToDate
               totalProjectValue
-              anticipatedFundingAmountPerFiscalYear {
-                edges {
-                  # eslint-disable-next-line relay/unused-fields
-                  node {
-                    anticipatedFundingAmount
-                    fiscalYear
-                  }
-                }
-              }
               proponentsSharePercentage
             }
           }
@@ -310,6 +303,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               formData={fundingAgreement?.newFormData}
               formContext={{
                 projectRevision,
+                formChange: fundingAgreement,
                 form: fundingAgreement?.newFormData,
                 calculatedTotalProjectValue: fundingAgreement.totalProjectValue,
                 calculatedProponentsSharePercentage:
@@ -323,8 +317,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                 calculatedNetPaymentsToDate: fundingAgreement.netPaymentsToDate,
                 calculatedGrossPaymentsToDate:
                   fundingAgreement.grossPaymentsToDate,
-                anticipatedFundingAmountPerFiscalYear:
-                  fundingAgreement.anticipatedFundingAmountPerFiscalYear,
               }}
               uiSchema={
                 isFundingStreamEP

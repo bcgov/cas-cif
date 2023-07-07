@@ -81,3 +81,8 @@ export const generateModalUiSchema = (
     },
   };
 };
+
+export const cleanupNestedNodes = (array) => {
+  if (!array) return undefined;
+  return array.map(({ node }) => node);
+};

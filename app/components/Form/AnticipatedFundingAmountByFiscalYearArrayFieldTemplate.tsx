@@ -1,13 +1,30 @@
 import { ArrayFieldTemplateProps } from "@rjsf/core";
 import CalculatedValueWidget from "lib/theme/widgets/CalculatedValueWidget";
+import { graphql, useFragment } from "react-relay";
 
 const AnticipatedFundingAmountByFiscalYearArrayFieldTemplate = (
   props: ArrayFieldTemplateProps
 ) => {
-  const anticipatedFunding = props.formContext
-    .anticipatedFundingAmountPerFiscalYear?.edges
-    ? [...props.formContext.anticipatedFundingAmountPerFiscalYear?.edges]
-    : [];
+  const { anticipatedFundingAmountPerFiscalYear } = useFragment(
+    // eslint-disable-next-line relay/graphql-syntax
+    graphql`
+      fragment AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange on FormChange {
+        anticipatedFundingAmountPerFiscalYear {
+          edges {
+            node {
+              anticipatedFundingAmount
+              fiscalYear
+            }
+          }
+        }
+      }
+    `,
+    props.formContext.formChange
+  );
+
+  const anticipatedFunding = [
+    ...(anticipatedFundingAmountPerFiscalYear?.edges ?? []),
+  ];
 
   // This ensures that a minimum of three fiscal years are displayed, even if the user hasn't filled out any milestone information yet
   const placeholderFiscalYears = 3 - anticipatedFunding.length;
@@ -24,7 +41,7 @@ const AnticipatedFundingAmountByFiscalYearArrayFieldTemplate = (
         let id = props.idSchema.$id + (index + 1);
         return (
           <>
-            <div className="anticipatedFundingAmount">
+            <div className="anticipatedFundingAmount" key={id}>
               <label htmlFor={id}>
                 Anticipated Funding Amount Per Fiscal Year {index + 1}{" "}
                 {yearLabel}
@@ -54,16 +71,16 @@ const AnticipatedFundingAmountByFiscalYearArrayFieldTemplate = (
                 ${yearLabel}`}
               />
             </div>
-            <style jsx>{`
-               {
-                .anticipatedFundingAmount {
-                  margin-bottom: 1em;
-                }
-              }
-            `}</style>
           </>
         );
       })}
+      <style jsx>{`
+         {
+          .anticipatedFundingAmount {
+            margin-bottom: 1em;
+          }
+        }
+      `}</style>
     </div>
   );
 };
