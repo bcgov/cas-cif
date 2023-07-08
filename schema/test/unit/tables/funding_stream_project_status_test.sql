@@ -34,10 +34,10 @@ select results_eq(
 -- test EP only statuses
 select results_eq(
   $$
-    select count(*) from cif.funding_stream_project_status where project_status_id in (select id from cif.project_status where name in ('Project in TEIMP', 'Emissions Intensity Report Complete', 'Project in Annual Reporting'));
+    select count(*) from cif.funding_stream_project_status where project_status_id in (select id from cif.project_status where name in ('Project in TEIMP', 'Emissions Intensity Report Pending', 'Emissions Intensity Report Submission', 'Project in Annual Reporting'));
   $$,
-  ARRAY['3'::bigint],
-    'There are 3 EP only statuses'
+  ARRAY['4'::bigint],
+    'There are 4 EP only statuses'
 );
 
 -- test IA only statuses
