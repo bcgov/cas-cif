@@ -14,17 +14,16 @@
     "properties": {
       "reportDueDate": {
         "type": "string",
-        "title": "Report Due Date",
-        "default": "undefined"
+        "title": "Report Due Date"
       },
       "submittedDate": {
-        "type": "string",
-        "title": "Received Date",
-        "default": "undefined"
+        "type": ["null", "string"],
+        "title": "Received Date"
       },
       "comments": {
-        "type": "string",
-        "title": "General Comments"
+        "type": ["null", "string"],
+        "title": "General Comments",
+        "default": "null"
       },
       "measurementPeriodStartDate": {
         "title": "TEIMP Start Date",
@@ -40,7 +39,8 @@
       },
       "productionFunctionalUnit": {
         "title": "Production Functional Unit",
-        "type": "string"
+        "type": ["null", "string"],
+        "default": "null"
       },
       "baselineEmissionIntensity": {
         "title": "Baseline Emission Intensity (BEI)",
@@ -52,32 +52,37 @@
       },
       "postProjectEmissionIntensity": {
         "title": "Post-Project Emission Intensity (PEI)",
-        "type": "number"
+        "type": ["null", "number"],
+        "default": null
       },
       "totalLifetimeEmissionReduction": {
         "title": "Total Project Lifetime Emissions Reductions",
-        "type": "number"
+        "type": ["null", "number"],
+        "default": null
       },
       "adjustedEmissionsIntensityPerformance": {
         "title": "GHG Emission Intensity Performance",
-        "type": "number"
+        "type": ["null", "number"],
+        "default": null
       },
       "calculatedPaymentPercentage": {
         "title": "Payment Percentage of Performance Milestone Amount",
-        "type": "number"
+        "type": ["null", "number"],
+        "default": null
       },
       "holdbackAmountToDate": {
-        "type": "number",
+        "type": ["null", "number"],
+        "default": null,
         "title": "Maximum Performance Milestone Amount"
       },
       "actualPerformanceMilestoneAmount": {
-        "type": "number",
+        "type": ["null", "number"],
+        "default": null,
         "title": "Actual Performance Milestone Amount"
       },
       "dateSentToCsnr": {
-        "type": "string",
-        "title": "Date Invoice Sent to CSNR",
-        "default": "undefined"
+        "type": ["null", "string"],
+        "title": "Date Invoice Sent to CSNR"
       }
     }
   }
