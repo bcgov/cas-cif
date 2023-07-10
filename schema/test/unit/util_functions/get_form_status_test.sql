@@ -109,16 +109,28 @@ select results_eq(
   'Returns Not Started when new form data is null and form change is pending'
 );
 
-update cif.form_change set new_form_data='{}', change_status='staged'
-  where project_revision_id=1
-    and form_data_table_name='project_contact';
-
 /* test 7 */
+truncate cif.form_change restart identity cascade;
 
-update cif.form_change set operation='archive', change_status='staged'
-  where project_revision_id=1
-    and validation_errors != '[]'
-    and form_data_table_name= 'project_contact';
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  change_status,
+  project_revision_id,
+  validation_errors
+)
+  values
+(
+  json_build_object(
+    'projectId', 1,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'archive', 'cif', 'project_contact', 'project_contact', 'staged', 1, '[{"error": "true"}]'
+);
 
 select results_eq(
   $$
