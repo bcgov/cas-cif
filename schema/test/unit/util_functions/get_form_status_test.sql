@@ -2,7 +2,7 @@
 
 begin;
 
-select plan(6);
+select plan(7);
 
 truncate cif.form_change, cif.project_revision, cif.project_contact restart identity cascade;
 
@@ -107,6 +107,39 @@ select results_eq(
   values('Not Started')
   $$,
   'Returns Not Started when new form data is null and form change is pending'
+);
+
+/* test 7 */
+truncate cif.form_change restart identity cascade;
+
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  change_status,
+  project_revision_id,
+  validation_errors
+)
+  values
+(
+  json_build_object(
+    'projectId', 1,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'archive', 'cif', 'project_contact', 'project_contact', 'staged', 1, '[{"error": "true"}]'
+);
+
+select results_eq(
+  $$
+  select cif.get_form_status(1, 'project_contact')
+  $$,
+  $$
+  values('Not Started')
+  $$,
+  'Ignores form_change records that are being archived when calculating the overall form_status'
 );
 
 
