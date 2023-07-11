@@ -1,7 +1,15 @@
 import { ArrayFieldTemplateProps } from "@rjsf/core";
 
+// brianna this is making a mess on the diffs
 const ReadOnlyArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
-  return (
+  return props.items.length === 0 ? (
+    <>
+      <dt style={{ margin: "0 1em 0 0" }}>{props.uiSchema.itemTitle}</dt>
+      <dd style={{ marginBottom: "0px" }}>
+        <em>Not added</em>
+      </dd>
+    </>
+  ) : (
     <div>
       {props.items.map((item, i) => {
         return (
