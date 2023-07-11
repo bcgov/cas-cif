@@ -2,6 +2,16 @@
 
 BEGIN;
 
--- XXX Add verifications here.
+select
+  do $$
+    begin
+      assert (
+        select count(*) = 0
+        from cif.form_change
+        where json_schema_name='milestone'
+        and (new_form_data->>'adjustedHoldBackAmount') is not null
+      );
+    end;
+  $$;
 
 ROLLBACK;
