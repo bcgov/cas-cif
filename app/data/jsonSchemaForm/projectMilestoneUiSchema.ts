@@ -16,7 +16,7 @@ const projectMilestoneUiSchema = {
     "calculatedNetAmount",
     "adjustedNetAmount",
     "calculatedHoldbackAmount",
-    "adjustedHoldBackAmount",
+    "adjustedHoldbackAmount",
     "dateSentToCsnr",
   ],
   description: {
@@ -86,7 +86,7 @@ const projectMilestoneUiSchema = {
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedNetAmount",
   },
-  adjustedHoldBackAmount: {
+  adjustedHoldbackAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
     isMoney: true,
     hideOptional: true,
