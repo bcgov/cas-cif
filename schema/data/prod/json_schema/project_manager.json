@@ -5,9 +5,8 @@
     "title": "Project Manager",
     "properties": {
       "cifUserId": {
-        "type": ["null", "number"],
-        "title": "Project Manager",
-        "default": "undefined"
+        "type": "number",
+        "title": "Project Manager"
       }
     }
   }

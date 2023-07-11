@@ -26,7 +26,7 @@
         "title": "Report Due Date"
       },
       "submittedDate": {
-        "type": ["null", "string"],
+        "type": "string",
         "title": "Report Received Date"
       },
       "substantialCompletionDate": {
@@ -34,12 +34,11 @@
         "title": "Substantial Completion Date"
       },
       "certifiedBy": {
-        "type": ["null", "string"],
-        "title": "Certifier",
-        "default": null
+        "type": "string",
+        "title": "Certifier"
       },
       "certifierProfessionalDesignation": {
-        "type": ["null", "string"],
+        "type": "string",
         "title": "Professional Designation",
         "default": "Professional Engineer",
         "anyOf": [
@@ -56,7 +55,7 @@
           {
             "type": "string",
             "title": "N/A",
-            "enum": [""]
+            "enum": [null]
           }
         ]
       }
@@ -81,21 +80,19 @@
                 "title": "Maximum Amount This Milestone"
               },
               "adjustedGrossAmount": {
-                "type": ["null", "number"],
-                "title": "Gross Payment Amount This Milestone",
-                "default": null
+                "type": "number",
+                "title": "Gross Payment Amount This Milestone"
               },
               "adjustedHoldbackAmount": {
                 "type": "number",
                 "title": "Holdback Amount This Milestone"
               },
               "adjustedNetAmount": {
-                "type": ["null", "number"],
-                "title": "Net Payment Amount This Milestone",
-                "default": null
+                "type": "number",
+                "title": "Net Payment Amount This Milestone"
               },
               "dateSentToCsnr": {
-                "type": ["null", "string"],
+                "type": "string",
                 "title": "Date Invoice Sent to CSNR"
               }
             },
@@ -120,9 +117,8 @@
                 "title": "Milestone Type"
               },
               "totalEligibleExpenses": {
-                "type": ["null", "number"],
-                "title": "Total Eligible Expenses",
-                "default": null
+                "type": "number",
+                "title": "Total Eligible Expenses"
               }
             }
           }
