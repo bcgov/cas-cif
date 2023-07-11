@@ -16,7 +16,6 @@ import {
   FormRemoved,
 } from "./SummaryFormCommonComponents";
 import ReadOnlyArrayFieldTemplate from "./ReadOnlyArrayFieldTemplate";
-import { isEqual } from "lodash";
 import { cleanupNestedNodes } from "components/helpers";
 
 const { fields } = utils.getDefaultRegistry();
@@ -239,27 +238,13 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         ),
       };
 
-  // Anticipated Funding Per Fiscal Year is calculated from data in the milestones form, so it won't show if there are no other changes to the funding form
-  const showAnticipatedFundingPerFiscalYearDiffs =
-    !isEqual(
-      fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges,
-      latestCommittedFundingFormChanges?.anticipatedFundingAmountPerFiscalYear
-        .edges
-    ) &&
-    !isEqual(
-      fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges,
-      oldFundingFormChanges?.anticipatedFundingAmountPerFiscalYear.edges
-    );
-
   const fundingAgreementFormNotUpdated = useMemo(
     () =>
       !fundingAgreementSummary ||
-      (fundingAgreementSummary?.isPristine &&
-        !showAnticipatedFundingPerFiscalYearDiffs) ||
+      fundingAgreementSummary?.isPristine ||
       (fundingAgreementSummary?.isPristine === null &&
-        Object.keys(fundingAgreementSummary?.newFormData).length === 0 &&
-        !showAnticipatedFundingPerFiscalYearDiffs),
-    [fundingAgreementSummary, showAnticipatedFundingPerFiscalYearDiffs]
+        Object.keys(fundingAgreementSummary?.newFormData).length === 0),
+    [fundingAgreementSummary]
   );
 
   const createUiSchema = useMemo(() => {
@@ -366,8 +351,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               fundingAgreementSummary?.grossPaymentsToDate,
             calculatedTotalPaymentAmountToDate:
               fundingAgreementSummary?.calculatedTotalPaymentAmountToDate,
-            // anticipatedFundingAmountPerFiscalYear:
-            //   fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear,
           }}
         />
       )}

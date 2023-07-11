@@ -2,7 +2,7 @@ import { ArrayFieldTemplateProps } from "@rjsf/core";
 
 const ReadOnlyArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
   return (
-    <>
+    <div>
       {props.items.map((item, i) => {
         return (
           <div key={item.key} className="itemWrapper">
@@ -34,7 +34,7 @@ const ReadOnlyArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
           flex-direction: column;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 
