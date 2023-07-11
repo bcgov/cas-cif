@@ -37,8 +37,7 @@ values
 ('reporting_requirement', default, (select json_data from reporting_requirement), 'schema data relating to the quarterly report and annual report forms and the reporting_requirement table'),
 ('contact', default, (select json_data from contact), 'schema data relating to the contact form and the contact table'),
 ('operator', default, (select json_data from operator), 'schema data relating to the operator form and the operator table'),
-('milestone', 'handle_milestone_form_change_commit', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables'),
-('project_summary_report', 'handle_project_summary_report_form_change_commit', (select json_data from project_summary_report), 'schema data relating to the project summary report')
+('milestone', 'handle_milestone_form_change_commit', (select json_data from milestone), 'schema data relating to the milestone form and the reporting_requirement, milestone_report and payment tables')
 on conflict(slug) do update
 set json_schema=excluded.json_schema,
     description=excluded.description,
