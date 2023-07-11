@@ -7,8 +7,6 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import milestoneProdSchema from "../../../../../schema/data/prod/json_schema/milestone.json";
-import { useUpdateMilestone } from "mutations/MilestoneReport/updateMilestone";
-import { mocked } from "jest-mock";
 
 const testQuery = graphql`
   query ProjectMilestoneReportFormQuery @relay_test_operation {
@@ -189,14 +187,6 @@ const defaultComponentProps = {
   onSubmit: jest.fn(),
 };
 
-jest.mock("mutations/MilestoneReport/updateMilestone");
-const updateFormChange = jest.fn();
-let isUpdating = false;
-mocked(useUpdateMilestone).mockImplementation(() => [
-  updateFormChange,
-  isUpdating,
-]);
-
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
   component: ProjectMilestoneReportForm,
   testQuery: testQuery,
@@ -320,8 +310,11 @@ describe("The ProjectMilestoneReportForm", () => {
     act(() => {
       userEvent.click(screen.getAllByLabelText(/milestone type/i)[1]);
     });
-    userEvent.click(
-      within(screen.getByRole("presentation")).getByText("General")
+
+    act(() =>
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText("General")
+      )
     );
 
     const updateMutationUnderTest =

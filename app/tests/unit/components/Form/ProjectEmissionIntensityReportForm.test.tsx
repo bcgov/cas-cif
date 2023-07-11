@@ -7,8 +7,6 @@ import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
 import emissionsIntensityProdSchema from "/schema/data/prod/json_schema/emission_intensity.json";
-import { useUpdateEmissionIntensityReportFormChange } from "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange";
-import { mocked } from "jest-mock";
 
 const testQuery = graphql`
   query ProjectEmissionIntensityReportFormQuery @relay_test_operation {
@@ -89,16 +87,6 @@ const defaultComponentProps = {
   setValidatingForm: jest.fn(),
   onSubmit: jest.fn(),
 };
-
-jest.mock(
-  "mutations/ProjectEmissionIntensity/updateEmissionIntensityReportFormChange"
-);
-const updateFormChange = jest.fn();
-let isUpdating = false;
-mocked(useUpdateEmissionIntensityReportFormChange).mockImplementation(() => [
-  updateFormChange,
-  isUpdating,
-]);
 
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
   component: ProjectEmissionIntensityReportForm,
@@ -366,7 +354,7 @@ describe("the emission intensity report form component", () => {
       }
     );
   });
-  it("shows the correct emission functional unit and production functional unit", () => {
+  it("shows the correct emission functional unit and production functional unit", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -382,11 +370,12 @@ describe("the emission intensity report form component", () => {
     expect(emissionFunctionalUnitInput).toHaveValue("tCO2e");
     expect(productionFunctionalUnitInput).toHaveValue("GJ");
 
-    userEvent.clear(emissionFunctionalUnitInput);
-    userEvent.type(emissionFunctionalUnitInput, "tCO2");
-    userEvent.clear(productionFunctionalUnitInput);
-    userEvent.type(productionFunctionalUnitInput, "G");
-
+    act(() => {
+      userEvent.clear(emissionFunctionalUnitInput);
+      userEvent.type(emissionFunctionalUnitInput, "tCO2");
+      userEvent.clear(productionFunctionalUnitInput);
+      userEvent.type(productionFunctionalUnitInput, "G");
+    });
     expect(screen.getAllByText(/tco2\/g/i)).toHaveLength(3);
   });
   it("can call updateEmissionIntensityReportFormChangeMutation with zero values and decimal points on BEI/TEI/PEI and Total Lifetime Emission Reduction", () => {
