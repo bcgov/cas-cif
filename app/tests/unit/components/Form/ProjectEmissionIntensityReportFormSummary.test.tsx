@@ -5,6 +5,7 @@ import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
+import emissionsIntensityProdSchema from "/schema/data/prod/json_schema/emission_intensity.json";
 
 const testQuery = graphql`
   query ProjectEmissionIntensityReportFormSummaryQuery @relay_test_operation {
@@ -18,6 +19,11 @@ const testQuery = graphql`
 `;
 
 const defaultMockResolver = {
+  Form() {
+    return {
+      jsonSchema: emissionsIntensityProdSchema,
+    };
+  },
   ProjectRevision() {
     return {
       isFirstRevision: false,
@@ -32,6 +38,7 @@ const defaultMockResolver = {
                 reportType: "TEIMP",
                 projectId: 1,
                 reportingRequirementIndex: 1,
+                baselineEmissionIntensity: 0.87654321,
               },
               operation: "UPDATE",
               formChangeByPreviousFormChangeId: {
@@ -40,36 +47,11 @@ const defaultMockResolver = {
                   reportType: "TEIMP",
                   projectId: 1,
                   reportingRequirementIndex: 1,
+                  reportingRequirementId: 1,
+                  baselineEmissionIntensity: 0.985145,
                 },
               },
               formDataRecordId: 1,
-            },
-          },
-        ],
-      },
-      summaryEmissionIntensityReportFormChange: {
-        edges: [
-          {
-            node: {
-              id: "2",
-              isPristine: false,
-              newFormData: {
-                reportingRequirementId: 1,
-                baselineEmissionIntensity: 0.87654321,
-                teimpReporting: {
-                  baselineEmissionIntensity: 0.87654321,
-                },
-              },
-              operation: "UPDATE",
-              formChangeByPreviousFormChangeId: {
-                newFormData: {
-                  reportingRequirementId: 1,
-                  baselineEmissionIntensity: 0.985145,
-                  teimpReporting: {
-                    baselineEmissionIntensity: 0.985145,
-                  },
-                },
-              },
             },
           },
         ],
@@ -120,11 +102,7 @@ describe("the emission intensity report form component", () => {
       ProjectRevision() {
         return {
           ...defaultMockResolver.ProjectRevision(),
-
           summaryEmissionIntensityReportingRequirementFormChange: {
-            edges: [],
-          },
-          summaryEmissionIntensityReportFormChange: {
             edges: [],
           },
         };
@@ -140,10 +118,15 @@ describe("the emission intensity report form component", () => {
 
   it("displays the correct data when we have zero values and decimal points on BEI/TEI/PEI and Total Lifetime Emission Reduction and creating an emission intensity report form", () => {
     const customPayload = {
+      Form() {
+        return {
+          jsonSchema: emissionsIntensityProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           isFirstRevision: false,
-          summaryEmissionIntensityReportFormChange: {
+          summaryEmissionIntensityReportingRequirementFormChange: {
             edges: [
               {
                 node: {
@@ -151,12 +134,10 @@ describe("the emission intensity report form component", () => {
                   rowId: 2,
                   isPristine: false,
                   newFormData: {
-                    teimpReporting: {
-                      baselineEmissionIntensity: 0,
-                      targetEmissionIntensity: 0.12345678,
-                      postProjectEmissionIntensity: 0,
-                      totalLifetimeEmissionReduction: 123,
-                    },
+                    baselineEmissionIntensity: 0,
+                    targetEmissionIntensity: 0.12345678,
+                    postProjectEmissionIntensity: 0,
+                    totalLifetimeEmissionReduction: 123,
                   },
                   operation: "CREATE",
                   formChangeByPreviousFormChangeId: {
@@ -193,10 +174,15 @@ describe("the emission intensity report form component", () => {
 
   it("displays the correct data when we have zero values and decimal points on BEI/TEI/PEI and Total Lifetime Emission Reduction and updating an emission intensity report form", () => {
     const customPayload = {
+      Form() {
+        return {
+          jsonSchema: emissionsIntensityProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           isFirstRevision: false,
-          summaryEmissionIntensityReportFormChange: {
+          summaryEmissionIntensityReportingRequirementFormChange: {
             edges: [
               {
                 node: {
@@ -206,10 +192,6 @@ describe("the emission intensity report form component", () => {
                   newFormData: {
                     baselineEmissionIntensity: 0.87654321,
                     targetEmissionIntensity: 0,
-                    teimpReporting: {
-                      baselineEmissionIntensity: 0.87654321,
-                      targetEmissionIntensity: 0,
-                    },
                   },
                   operation: "UPDATE",
                   formChangeByPreviousFormChangeId: {
@@ -218,12 +200,6 @@ describe("the emission intensity report form component", () => {
                       targetEmissionIntensity: 0.12345678,
                       postProjectEmissionIntensity: 654,
                       totalLifetimeEmissionReduction: 456,
-                      teimpReporting: {
-                        baselineEmissionIntensity: 0,
-                        targetEmissionIntensity: 0.12345678,
-                        postProjectEmissionIntensity: 654,
-                        totalLifetimeEmissionReduction: 456,
-                      },
                     },
                   },
                 },
@@ -260,10 +236,15 @@ describe("the emission intensity report form component", () => {
   });
   it("displays calculated values diff", () => {
     const customPayload = {
+      Form() {
+        return {
+          jsonSchema: emissionsIntensityProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           isFirstRevision: false,
-          summaryEmissionIntensityReportFormChange: {
+          summaryEmissionIntensityReportingRequirementFormChange: {
             edges: [
               {
                 node: {

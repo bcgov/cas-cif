@@ -195,7 +195,7 @@ describe("The ProjectQuarterlyReportForm", () => {
     );
   });
 
-  it("Validates all contact forms when the submit button is clicked", () => {
+  it("Validates forms when the submit button is clicked", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 

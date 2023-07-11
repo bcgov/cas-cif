@@ -87,7 +87,8 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
         }
         emissionIntensityReportFormChanges: formChangesFor(
           first: 500
-          formDataTableName: "emission_intensity_report"
+          formDataTableName: "reporting_requirement"
+          reportType: "TEIMP"
           filter: { operation: { notEqualTo: ARCHIVE } }
         ) @connection(key: "connection_emissionIntensityReportFormChanges") {
           edges {

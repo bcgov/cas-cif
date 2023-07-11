@@ -259,7 +259,9 @@ const renderDiffString = ({
 const CUSTOM_DIFF_FIELDS = {
   StringField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
-    const id = idSchema?.$id;
+    const id = uiSchema?.renamedId
+      ? `root_${uiSchema?.renamedId}`
+      : idSchema?.$id;
     const oldData = formContext?.oldData?.[props.name];
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
@@ -278,7 +280,9 @@ const CUSTOM_DIFF_FIELDS = {
   },
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
-    const id = idSchema?.$id;
+    const id = uiSchema?.renamedId
+      ? `root_${uiSchema?.renamedId}`
+      : idSchema?.$id;
     const oldData = formContext?.oldData?.[props.name];
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isMoney = uiSchema?.isMoney;

@@ -65,6 +65,7 @@ begin
     and archived_at is null
     and report_type not in (select name from cif.report_type where is_milestone = true)
     and report_type != 'Project Summary Report'
+    and report_type != 'TEIMP'
   union
     select
       id,
@@ -75,6 +76,16 @@ begin
     where reporting_requirement.project_id = $1
     and archived_at is null
     and report_type = 'Project Summary Report'
+    union
+  select
+      id,
+      'update'::cif.form_change_operation as operation,
+      'reporting_requirement' as form_data_table_name,
+      'emission_intensity' as json_schema_name
+    from cif.reporting_requirement
+    where reporting_requirement.project_id = $1
+    and archived_at is null
+    and report_type = 'TEIMP'
   -- milestone reporting requirements
   union
     select
@@ -86,17 +97,6 @@ begin
     where reporting_requirement.project_id = $1
     and archived_at is null
     and report_type in (select name from cif.report_type where is_milestone = true)
-  union
-    select
-      eir.id,
-      'update'::cif.form_change_operation as operation,
-      'emission_intensity_report' as form_data_table_name,
-      'emission_intensity_report' as json_schema_name
-    from cif.emission_intensity_report eir
-    join cif.reporting_requirement rr
-    on eir.reporting_requirement_id = rr.id
-    and rr.project_id = $1
-    and eir.archived_at is null
   union
      select
       id,

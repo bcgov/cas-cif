@@ -49,31 +49,6 @@ type AddContactToRevisionPayload {
   query: Query
 }
 
-"""All input for the `addEmissionIntensityReportToRevision` mutation."""
-input AddEmissionIntensityReportToRevisionInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  revisionId: Int!
-}
-
-"""The output of our `addEmissionIntensityReportToRevision` mutation."""
-type AddEmissionIntensityReportToRevisionPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  formChanges: [FormChange]
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `addProjectAttachmentToRevision` mutation."""
 input AddProjectAttachmentToRevisionInput {
   attachmentId: Int!
@@ -51541,12 +51516,6 @@ type Mutation {
     """
     input: AddContactToRevisionInput!
   ): AddContactToRevisionPayload
-  addEmissionIntensityReportToRevision(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: AddEmissionIntensityReportToRevisionInput!
-  ): AddEmissionIntensityReportToRevisionPayload
 
   """
     Creates a new project_attachment form_change record for the given revision_id and attachment_id.
