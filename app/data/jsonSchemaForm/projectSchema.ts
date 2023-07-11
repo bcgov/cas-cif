@@ -26,7 +26,6 @@ const projectSchema = {
     projectType: {
       type: ["null", "string"],
       title: "Project Type",
-      default: undefined,
     },
     score: {
       type: ["null", "number"],

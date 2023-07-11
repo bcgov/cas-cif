@@ -32,8 +32,7 @@
       },
       "projectType": {
         "type": ["null", "string"],
-        "title": "Project Type",
-        "default": null
+        "title": "Project Type"
       },
       "score": {
         "type": ["null", "number"],
