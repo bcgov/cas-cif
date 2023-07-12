@@ -1,4 +1,4 @@
--- Deploy cif:data/011_fix_milestone_schema_capitalization to pg
+-- Deploy cif:data/012_fix_milestone_schema_capitalization to pg
 
 begin;
 
