@@ -1,6 +1,6 @@
 -- Verify cif:migrations/008_replace_bad_field_capitalization on pg
 
-BEGIN;
+begin;
 
   do $$
     begin
@@ -13,4 +13,4 @@ BEGIN;
     end;
   $$;
 
-ROLLBACK;
+rollback;
