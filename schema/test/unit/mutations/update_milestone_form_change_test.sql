@@ -1,7 +1,7 @@
 
 begin;
 
-select plan(10);
+select plan(19);
 
 /** SETUP **/
 
@@ -192,6 +192,124 @@ select is(
   10000.00,
   'The update_mutation_form_change custom mutation updates the total eligible expenses with the correct value when updating the total eligible expenses field'
 );
+
+-- It returns the updated record with the proper calculated value for gross amount
+select is(
+  (
+    select
+      (new_form_data->>'calculatedGrossAmount')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  10000.00,
+  'The update_mutation_form_change custom mutation returns the updated record with the proper calculatedGrossAmount in the form data'
+);
+
+-- It returns the updated record with the proper calculated value for gross amount
+select is(
+  (
+    select
+      (new_form_data->>'calculatedNetAmount')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  9000.00,
+  'The update_mutation_form_change custom mutation returns the updated record with the proper calculatedNetAmount in the form data'
+);
+
+-- It returns the updated record with the proper calculated value for holdback amount
+select is(
+  (
+    select
+      (new_form_data->>'calculatedHoldbackAmount')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  1000.00,
+  'The update_mutation_form_change custom mutation returns the updated record with the proper calculatedHoldbackAmount in the form data'
+);
+
+-- It returns the updated record with the proper adjusted value for gross amount
+select is(
+  (
+    select
+      (new_form_data->>'adjustedGrossAmount')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  500.00,
+  'The update_mutation_form_change custom mutation returns the updated record with the proper adjustedCalculatedAmount in the form data'
+);
+
+-- It returns the updated record with the proper calculated value for net amount when gross amount is adjusted
+select is(
+  (
+    select
+      (new_form_data->>'calculatedNetAmount')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  450.00,
+  'The update_mutation_form_change custom mutation returns the updated record with the proper calculated value for net amount when gross amount is adjusted in the form data'
+);
+
+-- It returns the updated record with the proper calculated value for holdback amount when gross amount is adjusted
+select is(
+  (
+    select
+      (new_form_data->>'calculatedHoldbackAmount')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "adjustedGrossAmount": 500, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer", "submittedDate":"2002-02-20T12:00:01-07"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  50.00,
+  'The update_mutation_form_change custom mutation returns the updated record with the proper calculated value for holdback amount when gross amount is adjusted in the form data'
+);
+
+-- It properly updates form data other than calculated values
+select is(
+  (
+    select
+      (new_form_data->>'hasExpenses')::boolean
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": false, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  false,
+  'The update_mutation_form_change custom mutation properly updates data other than calculated values'
+);
+
+-- It populates the total eligible expenses with the correct value when report type is Interim Summary Report
+select is(
+  (
+    select
+      (new_form_data->>'totalEligibleExpenses')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  20000.00,
+  'The update_mutation_form_change custom mutation populates the total eligible expenses with the correct value when report type is Interim Summary Report'
+);
+
+-- It updates the total eligible expenses with the correct value when updating the total eligible expenses field
+select is(
+  (
+    select
+      (new_form_data->>'totalEligibleExpenses')::numeric
+    from cif.update_milestone_form_change(
+      1, (select row( null, '{"reportType": "Interim Summary Report", "hasExpenses": true, "maximumAmount": 15000, "totalEligibleExpenses": 10000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    )
+  ),
+  10000.00,
+  'The update_mutation_form_change custom mutation updates the total eligible expenses with the correct value when updating the total eligible expenses field'
+);
+
 
 select finish();
 

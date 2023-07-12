@@ -24,7 +24,7 @@ $computed_column$
         when $4 is null
         then new_form_data->>'reportType' is null
         when $4 = 'Milestone'
-        then new_form_data->>'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone', 'Interim Summary Report')
+        then new_form_data->>'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone')
         else new_form_data->>'reportType' = $4 end
 
 $computed_column$ language sql stable;

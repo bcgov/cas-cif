@@ -10,7 +10,7 @@ $fn$
 
   select case
     when ($1.new_form_data->>'hasExpenses')::boolean = false then 0
-    when ($1.new_form_data->>'reportType')::text = 'General Milestone' and ($1.new_form_data->>'totalEligibleExpenses')::numeric is null then null
+    when ($1.new_form_data->>'reportType')::text in ('General Milestone', 'Interim Summary Report') and ($1.new_form_data->>'totalEligibleExpenses')::numeric is null then null
     when ($1.new_form_data->>'hasExpenses')::boolean = true and ($1.new_form_data->>'submittedDate')::timestamptz is not null then
       round(least(
         (

@@ -23,7 +23,7 @@ $computed_column$
         when $3 is null
         then new_form_data->>'reportType' is null
         when $3 = 'Milestone'
-        then new_form_data->>'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone')
+        then new_form_data->>'reportType' in ('General Milestone', 'Advanced Milestone', 'Performance Milestone', 'Reporting Milestone', 'Interim Summary Report')
         else new_form_data->>'reportType' = $3 end
     order by updated_at desc;
 

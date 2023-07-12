@@ -10,14 +10,9 @@ $$
 
 select cif.update_form_change($1, $2);
 
--- remove the totalEligibleExpenses field if the reportType is not General Milestone
-update cif.form_change
-set new_form_data = new_form_data - 'totalEligibleExpenses'
-where id = $1
-  and new_form_data->>'reportType' not in ('General Milestone', 'Interim Summary Report');
-
 update cif.form_change set
-  new_form_data = new_form_data || jsonb_build_object(
+  -- remove the totalEligibleExpenses field if the reportType is not General Milestone
+  new_form_data = case when new_form_data->>'reportType' != 'General Milestone' then new_form_data - 'totalEligibleExpenses' else new_form_data end  || jsonb_build_object(
     'calculatedGrossAmount',cif.form_change_calculated_gross_amount_this_milestone((select row(form_change.*)::cif.form_change from cif.form_change where id = row_id)),
     'calculatedNetAmount',cif.form_change_calculated_net_amount_this_milestone((select row(form_change.*)::cif.form_change from cif.form_change where id = row_id)),
     'calculatedHoldbackAmount',cif.form_change_calculated_holdback_amount_this_milestone((select row(form_change.*)::cif.form_change from cif.form_change where id = row_id)))
