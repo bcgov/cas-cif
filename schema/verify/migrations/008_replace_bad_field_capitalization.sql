@@ -2,7 +2,6 @@
 
 BEGIN;
 
-select
   do $$
     begin
       assert (
