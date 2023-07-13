@@ -11,11 +11,12 @@ import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementFormSummary_projectRevision$key } from "__generated__/ProjectFundingAgreementFormSummary_projectRevision.graphql";
 import { ProjectFundingAgreementFormSummary_query$key } from "__generated__/ProjectFundingAgreementFormSummary_query.graphql";
 import FormBase from "./FormBase";
-import ReadOnlyAdditionalFundingSourcesArrayFieldTemplate from "./ReadOnlyAdditionalFundingSourcesArrayFieldTemplate";
 import {
   FormNotAddedOrUpdated,
   FormRemoved,
 } from "./SummaryFormCommonComponents";
+import ReadOnlyArrayFieldTemplate from "./ReadOnlyArrayFieldTemplate";
+import { cleanupNestedNodes } from "components/helpers";
 
 const { fields } = utils.getDefaultRegistry();
 
@@ -37,8 +38,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const revision = useFragment(
     graphql`
       fragment ProjectFundingAgreementFormSummary_projectRevision on ProjectRevision {
-        # eslint-disable-next-line relay/must-colocate-fragment-spreads
-        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         isFirstRevision
         projectFormChange {
           asProject {
@@ -62,6 +61,15 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               calculatedTotalPaymentAmountToDate
               proponentsSharePercentage
               totalProjectValue
+              anticipatedFundingAmountPerFiscalYear {
+                edges {
+                  # eslint-disable-next-line relay/unused-fields
+                  node {
+                    anticipatedFundingAmount
+                    fiscalYear
+                  }
+                }
+              }
               isPristine
               operation
               formChangeByPreviousFormChangeId {
@@ -73,6 +81,15 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
                 calculatedTotalPaymentAmountToDate
                 proponentsSharePercentage
                 totalProjectValue
+                anticipatedFundingAmountPerFiscalYear {
+                  edges {
+                    # eslint-disable-next-line relay/unused-fields
+                    node {
+                      anticipatedFundingAmount
+                      fiscalYear
+                    }
+                  }
+                }
               }
             }
           }
@@ -90,6 +107,15 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               calculatedTotalPaymentAmountToDate
               proponentsSharePercentage
               totalProjectValue
+              anticipatedFundingAmountPerFiscalYear {
+                edges {
+                  # eslint-disable-next-line relay/unused-fields
+                  node {
+                    anticipatedFundingAmount
+                    fiscalYear
+                  }
+                }
+              }
             }
           }
         }
@@ -115,6 +141,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       fundingAgreementSummary?.proponentsSharePercentage,
     totalProjectValue: fundingAgreementSummary?.totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
+      fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges
+    ),
   };
 
   const latestCommittedFundingFormChanges =
@@ -133,6 +162,10 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     proponentsSharePercentage:
       latestCommittedFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: latestCommittedFundingFormChanges?.totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
+      latestCommittedFundingFormChanges?.anticipatedFundingAmountPerFiscalYear
+        .edges
+    ),
   };
 
   const oldFundingFormChanges =
@@ -149,6 +182,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       oldFundingFormChanges?.calculatedTotalPaymentAmountToDate,
     proponentsSharePercentage: oldFundingFormChanges?.proponentsSharePercentage,
     totalProjectValue: oldFundingFormChanges?.totalProjectValue,
+    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
+      oldFundingFormChanges?.anticipatedFundingAmountPerFiscalYear.edges
+    ),
   };
 
   const fundingStream =
@@ -187,7 +223,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const { formSchema, formData } = !renderDiff
     ? {
         formSchema: schema,
-        formData: fundingAgreementSummary?.newFormData,
+        formData: {
+          ...fundingAgreementSummary?.newFormData,
+          anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
+            fundingAgreementSummary?.anticipatedFundingAmountPerFiscalYear.edges
+          ),
+        },
       }
     : {
         ...getSchemaAndDataIncludingCalculatedValues(
@@ -205,6 +246,24 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
         Object.keys(fundingAgreementSummary?.newFormData).length === 0),
     [fundingAgreementSummary]
   );
+
+  const createUiSchema = useMemo(() => {
+    const baseUiSchema = isFundingStreamEP
+      ? fundingParameterEPUiSchema
+      : fundingParameterIAUiSchema;
+
+    return {
+      ...baseUiSchema,
+      additionalFundingSources: {
+        ...baseUiSchema.additionalFundingSources,
+        "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
+      },
+      anticipatedFundingAmountPerFiscalYear: {
+        ...baseUiSchema.anticipatedFundingAmountPerFiscalYear,
+        "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
+      },
+    };
+  }, []);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -240,7 +299,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
       </div>
     );
   }
-
   return (
     <div>
       {!isOnAmendmentsAndOtherRevisionsPage && (
@@ -261,11 +319,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           theme={readOnlyTheme}
           fields={renderDiff ? customFields : fields}
           schema={formSchema as JSONSchema7}
-          uiSchema={
-            fundingStream === "EP"
-              ? fundingParameterEPUiSchema
-              : fundingParameterIAUiSchema
-          }
+          uiSchema={createUiSchema}
           formData={formData}
           formContext={{
             projectRevision: revision,
@@ -289,9 +343,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
             calculatedTotalPaymentAmountToDate:
               fundingAgreementSummary?.calculatedTotalPaymentAmountToDate,
           }}
-          ArrayFieldTemplate={
-            ReadOnlyAdditionalFundingSourcesArrayFieldTemplate
-          }
         />
       )}
       <style jsx>{`

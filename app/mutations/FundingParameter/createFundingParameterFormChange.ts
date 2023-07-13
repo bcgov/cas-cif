@@ -12,6 +12,7 @@ export const mutation = graphql`
       formChangeEdge @appendEdge(connections: $connections) {
         cursor
         node {
+          ...AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange
           id
           rowId
           newFormData

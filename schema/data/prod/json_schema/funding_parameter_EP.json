@@ -34,7 +34,11 @@
       },
       "anticipatedFundingAmountPerFiscalYear": {
         "title": "Anticipated Funding Amount Per Fiscal Year",
-        "type": "string"
+        "minItems": 0,
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/anticipatedFundingAmount"
+        }
       },
       "proponentCost": {
         "title": "Proponent Cost",
@@ -93,6 +97,20 @@
           "status": {
             "title": "Additional Funding Status",
             "type": "string"
+          }
+        }
+      },
+      "anticipatedFundingAmount": {
+        "type": "object",
+        "required": ["fiscalYear", "anticipatedFundingAmount"],
+        "properties": {
+          "fiscalYear": {
+            "title": "Fiscal Year",
+            "type": "string"
+          },
+          "anticipatedFundingAmount": {
+            "title": "Anticipated Funding Amount Per Year",
+            "type": "number"
           }
         }
       }

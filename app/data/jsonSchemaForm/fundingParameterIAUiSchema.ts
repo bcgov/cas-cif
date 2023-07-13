@@ -1,3 +1,6 @@
+import AdditionalFundingSourcesArrayFieldTemplate from "components/Form/AdditionalFundingSourcesArrayFieldTemplate";
+import AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate from "components/Form/AnticipatedFundingAmountByFiscalYearArrayFieldTemplate";
+
 export const fundingParameterIAUiSchema = {
   "ui:order": [
     "maxFundingAmount",
@@ -39,12 +42,20 @@ export const fundingParameterIAUiSchema = {
     isMoney: true,
   },
   anticipatedFundingAmountPerFiscalYear: {
-    "ui:options": {
-      label: false,
+    "ui:ArrayFieldTemplate":
+      AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate,
+    itemTitle: "Anticipated Funding Amount Per Fiscal Year",
+    "ui:order": ["fiscalyear", "anticipatedFundingAmount"],
+    items: {
+      fiscalYear: {
+        "ui:widget": "TextWidget",
+      },
+      anticipatedFundingAmount: {
+        "ui:title": `Anticipated Amount Per Fiscal Year`,
+        "ui:widget": "NumberWidget",
+        isMoney: true,
+      },
     },
-    "ui:widget": "AnticipatedFundingAmountPerFiscalYearWidget",
-    title: "",
-    hideOptional: true,
   },
   proponentCost: {
     "ui:widget": "NumberWidget",
@@ -63,6 +74,8 @@ export const fundingParameterIAUiSchema = {
     isMoney: true,
   },
   additionalFundingSources: {
+    itemTitle: "Additional Funding Source",
+    "ui:ArrayFieldTemplate": AdditionalFundingSourcesArrayFieldTemplate,
     items: {
       "ui:order": ["source", "amount", "status"],
       source: {

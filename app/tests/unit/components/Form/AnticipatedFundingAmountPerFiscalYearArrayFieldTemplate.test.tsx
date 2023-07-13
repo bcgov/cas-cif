@@ -1,57 +1,48 @@
 import { screen } from "@testing-library/react";
-import AnticipatedFundingAmountPerFiscalYearWidget from "lib/theme/widgets/AnticipatedFundingAmountPerFiscalYearWidget";
-import { graphql } from "react-relay";
+import AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate from "components/Form/AnticipatedFundingAmountByFiscalYearArrayFieldTemplate";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
-import compiledAnticipatedFundingAmountPerFiscalYearWidgetTestQuery, {
-  AnticipatedFundingAmountPerFiscalYearWidgetTestQuery,
-} from "__generated__/AnticipatedFundingAmountPerFiscalYearWidgetTestQuery.graphql";
+import compiledAnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery, {
+  AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery,
+} from "__generated__/AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery.graphql";
 
 const testQuery = graphql`
-  query AnticipatedFundingAmountPerFiscalYearWidgetTestQuery
+  query AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery
   @relay_test_operation {
     query {
-      projectRevision(id: "test-widget") {
-        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
+      formChange(id: "test") {
+        ...AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange
       }
     }
   }
 `;
 
-const mockPayload = {
-  ProjectRevision() {
+const mockQueryPayload = {
+  FormChange() {
     const result = {
-      formChangesByProjectRevisionId: {
+      anticipatedFundingAmountPerFiscalYear: {
         edges: [
           {
             node: {
-              anticipatedFundingAmountPerFiscalYear: {
-                edges: [
-                  {
-                    node: {
-                      anticipatedFundingAmount: "20082009.00",
-                      fiscalYear: "2008/2009",
-                    },
-                  },
-                  {
-                    node: {
-                      anticipatedFundingAmount: "20212022.00",
-                      fiscalYear: "2021/2022",
-                    },
-                  },
-                  {
-                    node: {
-                      anticipatedFundingAmount: "20222023.00",
-                      fiscalYear: "2022/2023",
-                    },
-                  },
-                  {
-                    node: {
-                      anticipatedFundingAmount: "20372038.00",
-                      fiscalYear: "2037/2038",
-                    },
-                  },
-                ],
-              },
+              anticipatedFundingAmount: "20082009.00",
+              fiscalYear: "2008/2009",
+            },
+          },
+          {
+            node: {
+              anticipatedFundingAmount: "20212022.00",
+              fiscalYear: "2021/2022",
+            },
+          },
+          {
+            node: {
+              anticipatedFundingAmount: "20222023.00",
+              fiscalYear: "2022/2023",
+            },
+          },
+          {
+            node: {
+              anticipatedFundingAmount: "20372038.00",
+              fiscalYear: "2037/2038",
             },
           },
         ],
@@ -62,16 +53,21 @@ const mockPayload = {
 };
 
 const componentTestingHelper =
-  new ComponentTestingHelper<AnticipatedFundingAmountPerFiscalYearWidgetTestQuery>(
+  new ComponentTestingHelper<AnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery>(
     {
-      component: AnticipatedFundingAmountPerFiscalYearWidget,
-      compiledQuery:
-        compiledAnticipatedFundingAmountPerFiscalYearWidgetTestQuery,
+      component: AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate,
       testQuery: testQuery,
-      defaultQueryResolver: mockPayload,
+      compiledQuery:
+        compiledAnticipatedFundingAmountPerFiscalYearArrayFieldTemplateTestQuery,
       getPropsFromTestQuery: (data) => ({
-        formContext: { projectRevision: data.query.projectRevision },
+        query: data.query,
+        formContext: {
+          formChange: data.query.formChange,
+        },
       }),
+      defaultQueryResolver: mockQueryPayload,
+      defaultQueryVariables: {},
+      defaultComponentProps: { idSchema: { $id: null } },
     }
   );
 
@@ -106,28 +102,20 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
 
   it("when two years' worth of data is available, renders anticipated values for two years and renders fiscal year dates in labels, and renders a message with a shortened label", () => {
     componentTestingHelper.loadQuery({
-      ProjectRevision() {
+      FormChange() {
         const result = {
-          formChangesByProjectRevisionId: {
+          anticipatedFundingAmountPerFiscalYear: {
             edges: [
               {
                 node: {
-                  anticipatedFundingAmountPerFiscalYear: {
-                    edges: [
-                      {
-                        node: {
-                          anticipatedFundingAmount: "20082009.00",
-                          fiscalYear: "2008/2009",
-                        },
-                      },
-                      {
-                        node: {
-                          anticipatedFundingAmount: "20212022.00",
-                          fiscalYear: "2021/2022",
-                        },
-                      },
-                    ],
-                  },
+                  anticipatedFundingAmount: "20082009.00",
+                  fiscalYear: "2008/2009",
+                },
+              },
+              {
+                node: {
+                  anticipatedFundingAmount: "20212022.00",
+                  fiscalYear: "2021/2022",
                 },
               },
             ],
@@ -137,6 +125,7 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
       },
     });
     componentTestingHelper.renderComponent();
+
     expect(
       screen.getByLabelText<HTMLLabelElement>(
         /Anticipated Funding Amount Per Fiscal Year 1 \(2008\/2009\)/i
@@ -159,18 +148,10 @@ describe("The AnticipatedFundingAmountPerFiscalYearWidget", () => {
 
   it("when no data is available, renders anticipated values for three fiscal years and shortened labels", () => {
     componentTestingHelper.loadQuery({
-      ProjectRevision() {
+      FormChange() {
         const result = {
-          formChangesByProjectRevisionId: {
-            edges: [
-              {
-                node: {
-                  anticipatedFundingAmountPerFiscalYear: {
-                    edges: [],
-                  },
-                },
-              },
-            ],
+          anticipatedFundingAmountPerFiscalYear: {
+            edges: [],
           },
         };
         return result;

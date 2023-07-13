@@ -13,7 +13,6 @@ import { useMemo, useRef, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
-import AdditionalFundingSourcesArrayFieldTemplate from "./AdditionalFundingSourcesArrayFieldTemplate";
 import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
@@ -46,8 +45,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const projectRevision = useFragment(
     graphql`
       fragment ProjectFundingAgreementForm_projectRevision on ProjectRevision {
-        # eslint-disable-next-line relay/must-colocate-fragment-spreads
-        ...AnticipatedFundingAmountPerFiscalYearWidget_projectRevision
         id
         rowId
         projectFormChange {
@@ -68,6 +65,8 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           __id
           edges {
             node {
+              # eslint-disable-next-line relay/must-colocate-fragment-spreads
+              ...AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange
               id
               rowId
               newFormData
@@ -304,6 +303,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               formData={fundingAgreement?.newFormData}
               formContext={{
                 projectRevision,
+                formChange: fundingAgreement,
                 form: fundingAgreement?.newFormData,
                 calculatedTotalProjectValue: fundingAgreement.totalProjectValue,
                 calculatedProponentsSharePercentage:
@@ -324,7 +324,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
                   : fundingParameterIAUiSchema
               }
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
-              ArrayFieldTemplate={AdditionalFundingSourcesArrayFieldTemplate}
               ref={(el) => el && (formRefs.current[fundingAgreement.id] = el)}
               onChange={(change) => handleChange(change.formData)}
               onError={handleError}
