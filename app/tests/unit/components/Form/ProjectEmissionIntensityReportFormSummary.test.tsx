@@ -317,6 +317,11 @@ describe("the emission intensity report form component", () => {
 
   it("renders the help tooltips", () => {
     const customPayload = {
+      Form() {
+        return {
+          jsonSchema: emissionsIntensityProdSchema,
+        };
+      },
       ProjectRevision() {
         return {
           isFirstRevision: true,
