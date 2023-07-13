@@ -348,13 +348,19 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-2883199698"
+                  class="jsx-3871683389"
                 >
                   <div
-                    class="jsx-2883199698 "
+                    class="jsx-3871683389 adjustedValue"
                   >
+                    <dt
+                      class="jsx-3871683389"
+                    >
+                      Gross Payment Amount This Milestone
+                       (Adjusted)
+                    </dt>
                     <dd
-                      class="jsx-2883199698"
+                      class="jsx-3871683389"
                     >
                       <span
                         id="root_adjustedGrossAmount_adjusted"
@@ -403,14 +409,8 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-2883199698"
-                >
-                  <em
-                    class="jsx-2883199698"
-                  >
-                    Not added
-                  </em>
-                </div>
+                  class="jsx-3871683389"
+                />
               </div>
             </div>
             <div
@@ -450,14 +450,8 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-2883199698"
-                >
-                  <em
-                    class="jsx-2883199698"
-                  >
-                    Not added
-                  </em>
-                </div>
+                  class="jsx-3871683389"
+                />
               </div>
             </div>
             <div
