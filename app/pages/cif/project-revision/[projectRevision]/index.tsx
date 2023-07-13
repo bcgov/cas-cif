@@ -14,7 +14,6 @@ import { useDeleteProjectRevisionMutation } from "mutations/ProjectRevision/dele
 import SavingIndicator from "components/Form/SavingIndicator";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getAttachmentDeleteRoute } from "routes/pageRoutes";
 import {
   getProjectsPageRoute,
   getProjectRevisionFormPageRoute,
@@ -34,6 +33,7 @@ import DangerAlert from "lib/theme/ConfirmationAlert";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 import ProjectAttachmentsFormSummary from "components/Form/ProjectAttachmentsFormSummary";
 import next from "next";
+import hardDeleteAttachment from "components/Attachment/hardDeleteAttachement";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -83,9 +83,7 @@ const pageQuery = graphql`
             node {
               id
               asProjectAttachment {
-                attachmentByAttachmentId {
-                  id
-                }
+                attachmentId
               }
             }
           }
@@ -181,8 +179,26 @@ export function ProjectRevision({
   };
 
   const discardRevision = async () => {
-    const deleteFromApp = () =>
-      discardProjectRevision({
+    // attachments should only be hard deleted if it's the first revision
+    if (
+      query.projectRevision.projectAttachmentFormChanges.totalCount === 0 ||
+      (!query.projectRevision.isFirstRevision &&
+        query.projectRevision.projectAttachmentFormChanges.totalCount > 0)
+    ) {
+      query.projectRevision.projectAttachmentFormChanges.edges.map(
+        async ({ node }) => {
+          try {
+            hardDeleteAttachment(
+              node.asProjectAttachment.attachmentId,
+              node.id
+            );
+          } catch (err) {
+            next(err);
+          }
+        }
+      );
+    } else {
+      await discardProjectRevision({
         variables: {
           input: {
             revisionId: query.projectRevision.rowId,
@@ -203,29 +219,6 @@ export function ProjectRevision({
           console.error("Error discarding the project", e);
         },
       });
-    // attachments should only be hard deleted if it's the first revision
-    if (
-      query.projectRevision.projectAttachmentFormChanges.totalCount === 0 ||
-      (!query.projectRevision.isFirstRevision &&
-        query.projectRevision.projectAttachmentFormChanges.totalCount > 0)
-    ) {
-      deleteFromApp();
-    } else {
-      await Promise.all(
-        query.projectRevision.projectAttachmentFormChanges.edges.map(
-          async ({ node }) => {
-            try {
-              fetch(
-                getAttachmentDeleteRoute(
-                  node.asProjectAttachment.attachmentByAttachmentId.id
-                ).pathname
-              );
-            } catch (err) {
-              next(err);
-            }
-          }
-        )
-      );
     }
   };
 
