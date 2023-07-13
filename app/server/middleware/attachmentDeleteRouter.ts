@@ -15,7 +15,7 @@ const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!)
 const discardProjectAttachmentFormChangeMutation = `mutation discardProjectAttachmentFormChangeMutation($input: DiscardProjectAttachmentFormChangeInput!){
   discardProjectAttachmentFormChange(input:$input) {
     formChanges {
-      id 
+      id
     }
   }
 }`;
