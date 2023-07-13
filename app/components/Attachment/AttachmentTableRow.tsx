@@ -25,28 +25,22 @@ const AttachmentTableRow: React.FC<Props> = ({
     discardProjectAttachmentFormChange,
     isDiscardingProjectAttachmentFormChange,
   ] = useDiscardProjectAttachmentFormChange();
-  const {
-    id,
-    fileName,
-    fileType,
-    fileSize,
-    createdAt,
-    cifUserByCreatedBy: { fullName },
-  } = useFragment(
-    graphql`
-      fragment AttachmentTableRow_attachment on Attachment {
-        id
-        fileName
-        fileType
-        fileSize
-        createdAt
-        cifUserByCreatedBy {
-          fullName
+  const { id, fileName, fileType, fileSize, createdAt, cifUserByCreatedBy } =
+    useFragment(
+      graphql`
+        fragment AttachmentTableRow_attachment on Attachment {
+          id
+          fileName
+          fileType
+          fileSize
+          createdAt
+          cifUserByCreatedBy {
+            fullName
+          }
         }
-      }
-    `,
-    attachment
-  );
+      `,
+      attachment
+    );
 
   const handleArchiveAttachment = (attachmentId) => {
     if (isFirstRevision) {
@@ -69,7 +63,7 @@ const AttachmentTableRow: React.FC<Props> = ({
         <td>{fileName}</td>
         <td>{fileType}</td>
         <td>{fileSize}</td>
-        <td>{fullName}</td>
+        <td>{cifUserByCreatedBy?.fullName}</td>
         <td>{createdAt}</td>
         <td className="links">
           <Link href={getAttachmentDownloadRoute(id)} passHref>

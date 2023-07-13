@@ -88,6 +88,9 @@ describe("The Create Project page", () => {
           summaryMilestonePaymentFormChanges: {
             edges: [],
           },
+          summaryProjectAttachmentFormChanges: {
+            edges: [],
+          },
         };
       },
     });
