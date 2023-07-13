@@ -32,8 +32,6 @@ import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryRepor
 import DangerAlert from "lib/theme/ConfirmationAlert";
 import { useCommitProjectRevision } from "mutations/ProjectRevision/useCommitProjectRevision";
 import ProjectAttachmentsFormSummary from "components/Form/ProjectAttachmentsFormSummary";
-import next from "next";
-import hardDeleteAttachment from "components/Attachment/hardDeleteAttachement";
 
 const pageQuery = graphql`
   query ProjectRevisionQuery($projectRevision: ID!) {
@@ -73,21 +71,7 @@ const pageQuery = graphql`
             }
           }
         }
-        projectAttachmentFormChanges: formChangesFor(
-          first: 500
-          formDataTableName: "project_attachment"
-          filter: { operation: { notEqualTo: ARCHIVE } }
-        ) @connection(key: "connection_projectAttachmentFormChanges") {
-          totalCount
-          edges {
-            node {
-              id
-              asProjectAttachment {
-                attachmentId
-              }
-            }
-          }
-        }
+
         formChangesByProjectRevisionId {
           edges {
             node {
@@ -180,47 +164,27 @@ export function ProjectRevision({
   };
 
   const discardRevision = async () => {
-    // attachments should only be hard deleted if it's the first revision
-    if (
-      query.projectRevision.projectAttachmentFormChanges.totalCount === 0 ||
-      (!query.projectRevision.isFirstRevision &&
-        query.projectRevision.projectAttachmentFormChanges.totalCount > 0)
-    ) {
-      query.projectRevision.projectAttachmentFormChanges.edges.map(
-        async ({ node }) => {
-          try {
-            hardDeleteAttachment(
-              node.asProjectAttachment.attachmentId,
-              node.id
-            );
-          } catch (err) {
-            next(err);
-          }
-        }
-      );
-    } else {
-      await discardProjectRevision({
-        variables: {
-          input: {
-            revisionId: query.projectRevision.rowId,
-          },
+    await discardProjectRevision({
+      variables: {
+        input: {
+          revisionId: query.projectRevision.rowId,
         },
-        onCompleted: async () => {
-          if (query.projectRevision.isFirstRevision)
-            await router.push(getProjectsPageRoute());
-          else
-            await router.push(
-              getProjectRevisionPageRoute(
-                query.projectRevision.projectByProjectId
-                  .latestCommittedProjectRevision.id
-              )
-            );
-        },
-        onError: async (e) => {
-          console.error("Error discarding the project", e);
-        },
-      });
-    }
+      },
+      onCompleted: async () => {
+        if (query.projectRevision.isFirstRevision)
+          await router.push(getProjectsPageRoute());
+        else
+          await router.push(
+            getProjectRevisionPageRoute(
+              query.projectRevision.projectByProjectId
+                .latestCommittedProjectRevision.id
+            )
+          );
+      },
+      onError: async (e) => {
+        console.error("Error discarding the project", e);
+      },
+    });
   };
 
   let mode: TaskListMode;
