@@ -485,6 +485,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/TEIMP End Date/i)
       .next()
       .contains(/Jan(\.)? 1, 2022/);
+    cy.contains("Changes saved").should("be.visible"); // a check to make sure happo is taking the right screenshot
     cy.happoAndAxe("Auto-generate quarterly reports", "generated", "main");
 
     //generate annual reports
@@ -509,6 +510,7 @@ describe("when creating a project, the project page", () => {
       .next()
       .contains(/Feb(\.)? 2, 2024/);
     cy.findAllByText(/^on track$/i).should("have.length", 5);
+    cy.contains("Changes saved").should("be.visible"); // a check to make sure happo is taking the right screenshot
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
   });
 
