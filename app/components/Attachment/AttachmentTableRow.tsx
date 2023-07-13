@@ -1,12 +1,10 @@
 import { Button } from "@button-inc/bcgov-theme";
 import Link from "next/link";
-import {
-  getAttachmentDeleteRoute,
-  getAttachmentDownloadRoute,
-} from "routes/pageRoutes";
+import { getAttachmentDownloadRoute } from "routes/pageRoutes";
 import { graphql, useFragment } from "react-relay";
 import useDiscardProjectAttachmentFormChange from "mutations/attachment/discardProjectAttachmentFormChange";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
+import hardDeleteAttachment from "./hardDeleteAttachement";
 
 interface Props {
   attachment: AttachmentTableRow_attachment$key;
@@ -51,24 +49,8 @@ const AttachmentTableRow: React.FC<Props> = ({
   );
 
   const handleArchiveAttachment = (attachmentId) => {
-    // safer to delete from our app and then delete from GCS, then if breaks in the middle we don't have weird data, just storing extra stuff
-    // best to do it as middleware so it's one request, if it fails the whole thing fails
-    // have the server call the graphql endpoint
-
     if (isFirstRevision) {
-      // delete from cloud storage and call discard mutation
-      fetch(getAttachmentDeleteRoute(attachmentId).pathname, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          variables: {
-            input: {
-              formChangeId: formChangeRowId,
-            },
-            // connections: [connectionId],
-          },
-        }),
-      });
+      hardDeleteAttachment(attachmentId, formChangeRowId);
     } else {
       discardProjectAttachmentFormChange({
         variables: {
