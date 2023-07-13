@@ -243,35 +243,35 @@ describe("The ProjectMilestoneReportForm", () => {
         name: "maximum-amount-this-milestone-tooltip",
         hidden: true,
       })
-    ).toHaveLength(2);
+    ).toHaveLength(3);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "total-eligible-expenses-tooltip",
         hidden: true,
       })
-    ).toHaveLength(1);
+    ).toHaveLength(2);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "gross-payment-amount-this-milestone-tooltip",
         hidden: true,
       })
-    ).toHaveLength(2);
+    ).toHaveLength(3);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "net-payment-amount-this-milestone-tooltip",
         hidden: true,
       })
-    ).toHaveLength(2);
+    ).toHaveLength(3);
 
     expect(
       screen.getAllByRole("tooltip", {
         name: "holdback-amount-this-milestone-tooltip",
         hidden: true,
       })
-    ).toHaveLength(2);
+    ).toHaveLength(3);
   });
 
   it("Calls the createMilestoneMutation mutation when the Add button is clicked", () => {
