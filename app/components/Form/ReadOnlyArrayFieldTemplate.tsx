@@ -1,6 +1,5 @@
 import { ArrayFieldTemplateProps } from "@rjsf/core";
 
-// brianna this is making a mess on the diffs
 const ReadOnlyArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
   return props.items.length === 0 ? (
     <>

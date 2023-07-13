@@ -248,27 +248,18 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   );
 
   const createUiSchema = useMemo(() => {
-    if (isFundingStreamEP) {
-      return {
-        ...fundingParameterEPUiSchema,
-        additionalFundingSources: {
-          ...fundingParameterEPUiSchema.additionalFundingSources,
-          "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
-        },
-        anticipatedFundingAmountPerFiscalYear: {
-          ...fundingParameterEPUiSchema.anticipatedFundingAmountPerFiscalYear,
-          "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
-        },
-      };
-    }
+    const baseUiSchema = isFundingStreamEP
+      ? fundingParameterEPUiSchema
+      : fundingParameterIAUiSchema;
+
     return {
-      ...fundingParameterIAUiSchema,
+      ...baseUiSchema,
       additionalFundingSources: {
-        ...fundingParameterIAUiSchema.additionalFundingSources,
+        ...baseUiSchema.additionalFundingSources,
         "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
       },
       anticipatedFundingAmountPerFiscalYear: {
-        ...fundingParameterIAUiSchema.anticipatedFundingAmountPerFiscalYear,
+        ...baseUiSchema.anticipatedFundingAmountPerFiscalYear,
         "ui:ArrayFieldTemplate": ReadOnlyArrayFieldTemplate,
       },
     };
