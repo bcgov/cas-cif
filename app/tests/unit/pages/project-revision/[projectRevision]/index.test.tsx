@@ -44,9 +44,6 @@ const defaultMockResolver = {
       summaryMilestonePaymentFormChanges: {
         edges: [],
       },
-      projectAttachmentFormChanges: {
-        edges: [],
-      },
     };
   },
 };
@@ -92,9 +89,6 @@ describe("The Create Project page", () => {
             edges: [],
           },
           summaryProjectAttachmentFormChanges: {
-            edges: [],
-          },
-          projectAttachmentFormChanges: {
             edges: [],
           },
         };
@@ -152,9 +146,6 @@ describe("The Create Project page", () => {
             edges: [],
           },
           summaryMilestonePaymentFormChanges: {
-            edges: [],
-          },
-          projectAttachmentFormChanges: {
             edges: [],
           },
         };
@@ -241,9 +232,7 @@ describe("The Create Project page", () => {
           summaryMilestonePaymentFormChanges: {
             edges: [],
           },
-          projectAttachmentFormChanges: {
-            edges: [],
-          },
+
           projectManagerFormChangesByLabel: {
             edges: [
               {
@@ -581,9 +570,6 @@ describe("The Create Project page", () => {
           summaryMilestonePaymentFormChanges: {
             edges: [],
           },
-          projectAttachmentFormChanges: {
-            edges: [],
-          },
         };
       },
     };
@@ -630,9 +616,6 @@ describe("The Create Project page", () => {
             edges: [],
           },
           summaryMilestonePaymentFormChanges: {
-            edges: [],
-          },
-          projectAttachmentFormChanges: {
             edges: [],
           },
         };
