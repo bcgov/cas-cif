@@ -189,7 +189,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
       const titleMap = {
         adjustedGrossAmount: "Gross Payment Amount This Milestone (Adjusted)",
         adjustedNetAmount: "Net Payment Amount This Milestone (Adjusted)",
-        adjustedHoldBackAmount: "Holdback Amount This Milestone (Adjusted)",
+        adjustedHoldbackAmount: "Holdback Amount This Milestone (Adjusted)",
       };
       const clonedMilestoneFormDiffObject = JSON.parse(
         JSON.stringify(milestoneFormDiffObject)

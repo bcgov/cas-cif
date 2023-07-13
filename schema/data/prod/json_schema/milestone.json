@@ -83,7 +83,7 @@
                 "type": "number",
                 "title": "Gross Payment Amount This Milestone"
               },
-              "adjustedHoldBackAmount": {
+              "adjustedHoldbackAmount": {
                 "type": "number",
                 "title": "Holdback Amount This Milestone"
               },
