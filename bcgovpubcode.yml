@@ -1,0 +1,61 @@
+---
+data_management_roles:
+  data_custodian: Adria Fradley
+  product_owner: Pierre Bastianelli
+product_external_dependencies:
+  common_components:
+    - Design-System
+  identity_authorization:
+    - BCGov-SSO-Keycloak
+  notification_standard:
+    - Common-Hosted-Email-Service
+  other_dependencies: Postgraphile, GraphQL
+product_information:
+  api_specifications: []
+  business_capabilities_standard:
+    - Climate Action
+    - Program Management
+  ministry:
+    - Environment and Climate Change Strategy
+  product_acronym: CIF
+  product_description: >-
+    The CleanBC Industry Fund supports the development, trial and deployment of
+    projects that reduce greenhouse gas (GHG) emissions from large industrial
+    operations in British Columbia. This application supports internal
+    management of the project intake, funding and tracking, as well as surfacing
+    progam-wide data analytics.
+  product_name: CleanBC Industry Fund
+  product_status: maturing
+  product_urls:
+    - https://cif.gov.bc.ca
+  program_area: Clean Growth Branch, CleanBC Program for Industry (CPI)
+product_technology_information:
+  backend_frameworks:
+    - name: Node.js
+      version: "16"
+    - name: Next.js
+      version: "13"
+  backend_languages_version:
+    - name: Other
+      version: SQL and PL/PgSQL v14
+    - name: JavaScript
+      version: ECMAScript 6
+  ci_cd_tools:
+    - GitHub-Actions
+    - Helm
+    - Terraform
+  data_storage_platforms:
+    - Postgresql
+    - Other
+  data_storage_platforms_custom: Google Cloud Storage
+  frontend_frameworks:
+    - name: React
+      version: "18"
+    - name: Other
+      version: Relay v13
+  frontend_languages:
+    - name: TypeScript
+      version: "5"
+  hosting_platforms:
+    - Private-Cloud-Openshift
+version: 1
