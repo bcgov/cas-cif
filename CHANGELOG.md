@@ -1,3 +1,28 @@
+# [1.10.0](https://github.com/bcgov/cas-cif/compare/1.9.0...1.10.0) (2023-07-13)
+
+### Bug Fixes
+
+- add a migration to create form changes for the project_attachment that do not already exist ([d2ed295](https://github.com/bcgov/cas-cif/commit/d2ed295a88c0c9ee3a430604110b0a2f2a2135a3))
+- fix project_next_milestone_due_date computed_column and exclude archived reports ([6b2b338](https://github.com/bcgov/cas-cif/commit/6b2b338f419672f4be67c9d787833d2fcb4d7f99))
+- ignore forms being archived for overall form status ([6e05d65](https://github.com/bcgov/cas-cif/commit/6e05d650bf02f56c6bb1016c73fe3898ffb60fba))
+- ordering of data when we have old, new and latest ([52662a4](https://github.com/bcgov/cas-cif/commit/52662a4b63876476d45a0c5855ae9ffcb64c11a8))
+- project forms ([a9c52ea](https://github.com/bcgov/cas-cif/commit/a9c52ea2fe07c27093e8058d6899787dcd081773))
+- properly capitalize adjustedHoldbackAmount in milestone schema ([46ae6ab](https://github.com/bcgov/cas-cif/commit/46ae6ab6ab24f354342bdb935377de0fdd7a1452))
+
+### Features
+
+- add anticipated funding per year to funding summary diffs ([262ca32](https://github.com/bcgov/cas-cif/commit/262ca3252c2bbb1b549aa60bb5527e6b9a56b7c6))
+- add db schema to the EI form ([1e4350b](https://github.com/bcgov/cas-cif/commit/1e4350ba3c314903ddfc802c0fbf04028712cf11))
+- add Waste and Manufacturing to Sector table ([b3b2e89](https://github.com/bcgov/cas-cif/commit/b3b2e89f9def0c3eed36f36223e87961e3f0e8cd))
+- added draft unit testing ([52e1c50](https://github.com/bcgov/cas-cif/commit/52e1c50258bef49e041186612038edcfd7f7ee55))
+- added login buttons to login redirect page ([deec456](https://github.com/bcgov/cas-cif/commit/deec4563b1e36b01f745c3a21ad1385884afda63))
+- calculated milestone values diffing ([6f03130](https://github.com/bcgov/cas-cif/commit/6f031303333a7c4483dc13b120dcf9def35de60d))
+- display operator legal name instead of trade name in projects list ([6a73085](https://github.com/bcgov/cas-cif/commit/6a7308508bdbd24c047c0c8d235a661b546ddff6))
+- linked new project status to funding stream ([5e02a15](https://github.com/bcgov/cas-cif/commit/5e02a15ccd71470b48f2a551c0c73616d7a8cc3d))
+- remove read-only revision type radio buttons ([648d9f4](https://github.com/bcgov/cas-cif/commit/648d9f49aa21375aaa8807cda80805bdef8d1e5b))
+- updated e2e test ([9dbaca5](https://github.com/bcgov/cas-cif/commit/9dbaca5a92559dc236f4dad2fd5dbdc0c75e8bd0))
+- updating project_status table ([f10a437](https://github.com/bcgov/cas-cif/commit/f10a4372b2daee1a67e08fcc41e1cbb517362779))
+
 ## [1.9.1](https://github.com/bcgov/cas-cif/compare/1.9.0...1.9.1) (2023-06-29)
 
 ### Bug Fixes
