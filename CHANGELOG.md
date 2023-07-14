@@ -23,12 +23,6 @@
 - updated e2e test ([9dbaca5](https://github.com/bcgov/cas-cif/commit/9dbaca5a92559dc236f4dad2fd5dbdc0c75e8bd0))
 - updating project_status table ([f10a437](https://github.com/bcgov/cas-cif/commit/f10a4372b2daee1a67e08fcc41e1cbb517362779))
 
-### Reverts
-
-- Revert "chore: install lodash" ([4958056](https://github.com/bcgov/cas-cif/commit/495805688ea953294cf72896f4c024c27c0f0d51))
-- Revert "chore: update form_change_as_emission_intensity_report" ([d7cf328](https://github.com/bcgov/cas-cif/commit/d7cf328b34068363c00eabf8e30c503dc8f31d61))
-- Revert "chore: spec work on adjustable calculated value widget" ([29280fa](https://github.com/bcgov/cas-cif/commit/29280faf865a20b57f1d09d745a3d850ba9e2031))
-
 ## [1.9.1](https://github.com/bcgov/cas-cif/compare/1.9.0...1.9.1) (2023-06-29)
 
 ### Bug Fixes
