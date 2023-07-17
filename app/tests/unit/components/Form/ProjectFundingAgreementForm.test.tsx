@@ -753,5 +753,43 @@ describe("The ProjectFundingAgreementForm", () => {
         name: "additional-funding-amount-tooltip",
       })
     ).toHaveLength(1);
+  it("after selecting No, the submit button should allow the user to navigate away from the page", () => {
+    const mockResolver = {
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementForm_projectRevision$data> =
+          {
+            " $fragmentType": "ProjectFundingAgreementForm_projectRevision",
+            id: "Test Project Revision ID",
+            rowId: 1234,
+            projectFormChange: {
+              formDataRecordId: 51,
+            },
+            projectFundingAgreementFormChanges: {
+              __id: "connection Id",
+              edges: [],
+            },
+          };
+        return result;
+      },
+      Form() {
+        return {
+          jsonSchema: projectFundingParameterEPSchema,
+        };
+      },
+    };
+
+    componentTestingHelper.loadQuery(mockResolver);
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText("Is this a funded project?")).toBeInTheDocument();
+    const submitButton = screen.getByText(/Submit/i);
+    expect(submitButton).toBeDisabled();
+
+    const radioButton = screen.getByLabelText("No");
+    userEvent.click(radioButton);
+    expect(submitButton).toBeEnabled();
+    userEvent.click(submitButton);
+
+    expect(componentTestingHelper.router.push).toHaveBeenCalled();
   });
 });
