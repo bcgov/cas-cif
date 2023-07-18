@@ -168,10 +168,15 @@ describe("when creating a project, the project page", () => {
     // Add attachments
 
     cy.url().should("include", "/form/8");
+    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
+      aliasOperation(req, "addProjectAttachment");
+    });
 
     cy.fixture("e2e/mock.pdf").as("mockFile");
     cy.get("input[type=file]").selectFile("@mockFile");
-
+    cy.wait("@gqladdProjectAttachment")
+      .its("response")
+      .should("have.property", "body");
     cy.findByText("mock.pdf").should("be.visible");
 
     cy.findByText(/Submit project attachments/i).click();
