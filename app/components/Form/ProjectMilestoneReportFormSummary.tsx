@@ -236,6 +236,12 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             uiSchema={updatedUiSchema}
             formData={milestoneFormDiffObject.formData}
             formContext={{
+              calculatedHoldbackAmount:
+                milestoneReport?.newFormData?.calculatedHoldbackAmount,
+              calculatedGrossAmount:
+                milestoneReport?.newFormData?.calculatedGrossAmount,
+              calculatedNetAmount:
+                milestoneReport?.newFormData?.calculatedNetAmount,
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
