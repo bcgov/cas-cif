@@ -134,6 +134,41 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(milestoneReport.textContent).toBe("Milestone Report");
   });
 
+  it("Displays calculated and adjusted values and labels for calculated fields", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    // Gross Payment Amount
+    expect(
+      screen.getByText("Gross Payment Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText("$999.00")).toBeInTheDocument();
+    expect(
+      screen.getByText(/gross payment amount this milestone \(adjusted\)/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText("$99.00")).toBeInTheDocument();
+
+    // Net Payment Amount
+    expect(
+      screen.getByText("Net Payment Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText("$111.00")).toBeInTheDocument();
+    expect(
+      screen.getByText(/net payment amount this milestone \(adjusted\)/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText("$11.00")).toBeInTheDocument();
+
+    // Holdback Amount
+    expect(
+      screen.getByText("Holdback Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText("$888.00")).toBeInTheDocument();
+    expect(
+      screen.getByText(/holdback amount this milestone \(adjusted\)/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText("$88.00")).toBeInTheDocument();
+  });
+
   it("Displays diffs of the the data fields that were updated", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
