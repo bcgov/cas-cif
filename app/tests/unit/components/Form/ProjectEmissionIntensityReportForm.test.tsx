@@ -425,4 +425,32 @@ describe("the emission intensity report form component", () => {
       }
     );
   });
+
+  it("renders the help tooltips for the Upon Completion form", () => {
+    // Note the exclusion of the GHG Emission Intensity Performance (Adjusted) field here
+    // This is captured in AdjustableCalculatedValueWidget.test.tsx
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getByRole("tooltip", {
+        name: "ghg-emission-intensity-performance-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "payment-percentage-of-performance-milestone-amount-(%)-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "maximum-performance-milestone-amount-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "actual-performance-milestone-amount-tooltip",
+      })
+    ).toBeInTheDocument();
+  });
 });

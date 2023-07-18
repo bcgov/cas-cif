@@ -1,0 +1,510 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the emission intensity report form component renders the help tooltips 1`] = `
+<div>
+  <h3>
+    Emission Intensity Report
+  </h3>
+  <dl
+    class="jsx-337939564 "
+    novalidate=""
+  >
+    <div
+      class="jsx-2146271977"
+    >
+      <div
+        class="jsx-2146271977 definition-container"
+      >
+        <div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Report Due Date (optional) 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Report Received Date (optional) 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                General Comments (optional) 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                TEIMP Start Date 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                TEIMP End Date 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Functional Unit 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Production Functional Unit (optional) 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Baseline Emission Intensity (BEI) 
+              </dt>
+              <dd
+                class="jsx-2240123068"
+              >
+                <em
+                  class="jsx-2240123068"
+                >
+                  Not added
+                </em>
+              </dd>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Target Emission Intensity (TEI) 
+              </dt>
+              <dd
+                class="jsx-2240123068"
+              >
+                <em
+                  class="jsx-2240123068"
+                >
+                  Not added
+                </em>
+              </dd>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Post-Project Emission Intensity (PEI) (optional) 
+              </dt>
+              <dd
+                class="jsx-2240123068"
+              >
+                <em
+                  class="jsx-2240123068"
+                >
+                  Not added
+                </em>
+              </dd>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Total Project Lifetime Emissions Reductions (optional) 
+              </dt>
+              <dd
+                class="jsx-2240123068"
+              >
+                <em
+                  class="jsx-2240123068"
+                >
+                  Not added
+                </em>
+              </dd>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                GHG Emission Intensity Performance
+                <span
+                  aria-label="ghg-emission-intensity-performance-tooltip"
+                  class="tooltip jsx-2050293192"
+                  data-mui-internal-clone-element="true"
+                  role="tooltip"
+                  tabindex="0"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-info-circle fa-w-16 "
+                    color="#1A5A96"
+                    data-icon="info-circle"
+                    data-prefix="fas"
+                    focusable="false"
+                    name="tooltip"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </dt>
+              <div
+                class="jsx-3871683389"
+              >
+                <span
+                  id="root_adjustedEmissionsIntensityPerformance"
+                />
+                <div
+                  class="jsx-3871683389 adjustedValue"
+                >
+                  <dt
+                    class="jsx-3871683389"
+                  >
+                    GHG Emission Intensity Performance
+                     (Adjusted)
+                  </dt>
+                  <em
+                    class="jsx-3871683389"
+                  >
+                    Not added
+                  </em>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Date Invoice Sent to CSNR (optional) 
+              </dt>
+              <dd
+                class="jsx-41823073"
+              >
+                <em
+                  class="jsx-41823073"
+                >
+                  Not added
+                </em>
+              </dd>
+              <dd
+                class="jsx-41823073 contentSuffix"
+              />
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Payment Percentage of Performance Milestone Amount (%)
+                <span
+                  aria-label="payment-percentage-of-performance-milestone-amount-(%)-tooltip"
+                  class="tooltip jsx-2050293192"
+                  data-mui-internal-clone-element="true"
+                  role="tooltip"
+                  tabindex="0"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-info-circle fa-w-16 "
+                    color="#1A5A96"
+                    data-icon="info-circle"
+                    data-prefix="fas"
+                    focusable="false"
+                    name="tooltip"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </dt>
+              <div
+                class="jsx-1028981674"
+              >
+                <span
+                  aria-label="Payment Percentage of Performance Milestone Amount (%)"
+                  id="root_paymentPercentage"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Actual Performance Milestone Amount
+                <span
+                  aria-label="actual-performance-milestone-amount-tooltip"
+                  class="tooltip jsx-2050293192"
+                  data-mui-internal-clone-element="true"
+                  role="tooltip"
+                  tabindex="0"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-info-circle fa-w-16 "
+                    color="#1A5A96"
+                    data-icon="info-circle"
+                    data-prefix="fas"
+                    focusable="false"
+                    name="tooltip"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </dt>
+              <div
+                class="jsx-1028981674"
+              >
+                <span
+                  aria-label="Actual Performance Milestone Amount"
+                  id="root_actualPerformanceMilestoneAmount"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="jsx-2146271977"
+          >
+            <div
+              class="jsx-2146271977 definition-container"
+            >
+              <dt
+                class="jsx-156197991"
+              >
+                Maximum Performance Milestone Amount
+                <span
+                  aria-label="maximum-performance-milestone-amount-tooltip"
+                  class="tooltip jsx-2050293192"
+                  data-mui-internal-clone-element="true"
+                  role="tooltip"
+                  tabindex="0"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-info-circle fa-w-16 "
+                    color="#1A5A96"
+                    data-icon="info-circle"
+                    data-prefix="fas"
+                    focusable="false"
+                    name="tooltip"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </dt>
+              <div
+                class="jsx-1028981674"
+              >
+                <span
+                  aria-label="Maximum Performance Milestone Amount"
+                  id="maximumPerformanceMilestoneAmount"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dl>
+</div>
+`;

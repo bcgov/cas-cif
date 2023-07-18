@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdjustableCalculatedValueWidget } from "lib/theme/widgets/AdjustableCalculatedValueWidget";
 
@@ -69,5 +69,37 @@ describe("The AdjustableCalculatedValueWidget", () => {
     );
 
     expect(props.onChange).toHaveBeenLastCalledWith(undefined);
+  });
+
+  it("renders the help tooltip", async () => {
+    const props: any = {
+      uiSchema: { isMoney: true, calculatedValueFormContextProperty: "myProp" },
+      schema: { type: "number", title: "Test Label", default: undefined },
+      id: "test-id",
+      label: "Test Label",
+      onChange: jest.fn(),
+      value: "1",
+      formContext: { myProp: "100" },
+    };
+
+    render(<AdjustableCalculatedValueWidget {...props} />);
+
+    const tooltipIcon = screen.getByRole("tooltip", {
+      name: "test-label-(adjusted)-tooltip",
+    });
+
+    expect(tooltipIcon).toBeInTheDocument();
+    expect(tooltipIcon).toHaveAttribute(
+      "aria-label",
+      "test-label-(adjusted)-tooltip"
+    );
+
+    fireEvent.mouseOver(tooltipIcon);
+    await waitFor(() => {
+      expect(screen.getByTestId("calc-value-tooltip")).toBeInTheDocument();
+      expect(screen.getByTestId("calc-value-tooltip").innerHTML).toBe(
+        "<ul><li>This field is mainly used for rounding purposes.</li><li>If filled out, the adjusted value here will be used for other calculations.</li></ul>"
+      );
+    });
   });
 });

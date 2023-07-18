@@ -654,4 +654,266 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.queryAllByText(/budgets, expenses & payments/i)[1]
     ).toHaveClass("diffOld");
   });
+
+  it("renders the tooltips for the EP form", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+          {
+            isFirstRevision: false,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
+            summaryProjectFundingAgreementFormChanges: {
+              edges: [
+                {
+                  node: {
+                    proponentsSharePercentage: 5,
+                    totalProjectValue: 6,
+                    newFormData: {
+                      projectId: "Test Project ID",
+                      maxFundingAmount: 200,
+                      provinceSharePercentage: 60,
+                      holdbackPercentage: 20.15,
+                      anticipatedFundingAmount: 300,
+                      proponentCost: 100,
+                      contractStartDate: "2021-02-02T23:59:59.999-07:00",
+                      projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                      additionalFundingSources: [
+                        {
+                          source: "Test Source Name",
+                          amount: 2500,
+                          status: "Approved",
+                        },
+                      ],
+                    },
+                    eligibleExpensesToDate: "1.00",
+                    holdbackAmountToDate: "0.00",
+                    netPaymentsToDate: "1.00",
+                    grossPaymentsToDate: "1.00",
+                    isPristine: false,
+                    operation: "UPDATE",
+                    formChangeByPreviousFormChangeId: {
+                      proponentsSharePercentage: 555,
+                      totalProjectValue: 555,
+                      newFormData: {
+                        projectId: "Test Project ID",
+                        maxFundingAmount: 555,
+                        provinceSharePercentage: 555,
+                        holdbackPercentage: 5.55,
+                        anticipatedFundingAmount: 555,
+                        proponentCost: 555,
+                        contractStartDate: "2029-01-01T23:59:59.999-07:00",
+                        projectAssetsLifeEndDate:
+                          "2029-12-31T23:59:59.999-07:00",
+                        additionalFundingSources: [
+                          {
+                            source: "Test Source Name5",
+                            amount: 555,
+                            status: "Awaiting Approval",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          };
+        return result;
+      },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
+      },
+    });
+    const component = componentTestingHelper.renderComponent();
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "maximum-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "province's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "performance-milestone-holdback-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent-cost-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-project-value-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "additional-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-net-payment-amount-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-gross-payment-amount-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-holdback-amount-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-eligible-expenses-to-date-tooltip",
+      })
+    ).toHaveLength(1);
+
+    // check that tooltip text hasn't changed
+    expect(component.container).toMatchSnapshot();
+  });
+
+  it("renders the tooltips for the IA form", () => {
+    componentTestingHelper.loadQuery({
+      ProjectRevision() {
+        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
+          {
+            isFirstRevision: false,
+            projectFormChange: {
+              asProject: {
+                fundingStreamRfpByFundingStreamRfpId: {
+                  fundingStreamByFundingStreamId: {
+                    name: "EP",
+                  },
+                },
+              },
+            },
+            summaryProjectFundingAgreementFormChanges: {
+              edges: [
+                {
+                  node: {
+                    proponentsSharePercentage: 5,
+                    totalProjectValue: 6,
+                    newFormData: {
+                      projectId: "Test Project ID",
+                      maxFundingAmount: 200,
+                      provinceSharePercentage: 60,
+                      holdbackPercentage: 20.15,
+                      anticipatedFundingAmount: 300,
+                      proponentCost: 100,
+                      contractStartDate: "2021-02-02T23:59:59.999-07:00",
+                      projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                      additionalFundingSources: [
+                        {
+                          source: "Test Source Name",
+                          amount: 2500,
+                          status: "Approved",
+                        },
+                      ],
+                    },
+                    isPristine: false,
+                    operation: "UPDATE",
+                    formChangeByPreviousFormChangeId: {
+                      proponentsSharePercentage: 555,
+                      totalProjectValue: 555,
+                      newFormData: {
+                        projectId: "Test Project ID",
+                        maxFundingAmount: 555,
+                        provinceSharePercentage: 555,
+                        holdbackPercentage: 5.55,
+                        anticipatedFundingAmount: 555,
+                        proponentCost: 555,
+                        contractStartDate: "2029-01-01T23:59:59.999-07:00",
+                        projectAssetsLifeEndDate:
+                          "2029-12-31T23:59:59.999-07:00",
+                        additionalFundingSources: [
+                          {
+                            source: "Test Source Name5",
+                            amount: 555,
+                            status: "Awaiting Approval",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          };
+        return result;
+      },
+      Query() {
+        return {
+          epFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterEPSchema,
+          },
+          iaFundingParameterFormBySlug: {
+            jsonSchema: projectFundingParameterIASchema,
+          },
+        };
+      },
+    });
+    const component = componentTestingHelper.renderComponent();
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "maximum-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "province's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent-cost-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "proponent's-share-percentage-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "total-project-value-tooltip",
+      })
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("tooltip", {
+        name: "additional-funding-amount-tooltip",
+      })
+    ).toHaveLength(1);
+    // check that tooltip text hasn't changed
+    expect(component.container).toMatchSnapshot();
+  });
 });

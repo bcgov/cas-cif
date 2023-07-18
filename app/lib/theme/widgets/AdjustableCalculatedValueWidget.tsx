@@ -1,6 +1,7 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
 import CalculatedValueWidget from "./CalculatedValueWidget";
+import ContextualHelp from "./ContextualHelp";
 
 export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   props
@@ -27,6 +28,10 @@ export const AdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
         }}
       >
         <label htmlFor={adjustedInputId}>{label} (Adjusted)</label>
+        <ContextualHelp
+          text="<div data-testid='calc-value-tooltip'><ul><li>This field is mainly used for rounding purposes.</li><li>If filled out, the adjusted value here will be used for other calculations.</li></ul></div>"
+          label={`${label} (Adjusted)`}
+        />
       </div>
       <NumberFormat
         thousandSeparator

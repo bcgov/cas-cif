@@ -1,5 +1,6 @@
 import AdditionalFundingSourcesArrayFieldTemplate from "components/Form/AdditionalFundingSourcesArrayFieldTemplate";
 import AnticipatedFundingAmountPerFiscalYearArrayFieldTemplate from "components/Form/AnticipatedFundingAmountByFiscalYearArrayFieldTemplate";
+import { fundingTooltips } from "./tooltipText";
 
 export const fundingParameterIAUiSchema = {
   "ui:order": [
@@ -17,21 +18,33 @@ export const fundingParameterIAUiSchema = {
   ],
   totalProjectValue: {
     "ui:widget": "CalculatedValueWidget",
+    "ui:tooltip": {
+      text: fundingTooltips.totalProjectValue,
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedTotalProjectValue",
   },
   maxFundingAmount: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: fundingTooltips.maxFundingAmount,
+    },
     isMoney: true,
   },
   provinceSharePercentage: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: fundingTooltips.provinceSharePercentage,
+    },
     isPercentage: true,
     numberOfDecimalPlaces: 2,
   },
   proponentsSharePercentage: {
     "ui:widget": "CalculatedValueWidget",
+    "ui:tooltip": {
+      text: fundingTooltips.proponentsSharePercentage,
+    },
     numberOfDecimalPlaces: 2,
     isPercentage: true,
     calculatedValueFormContextProperty: "calculatedProponentsSharePercentage",
@@ -59,6 +72,9 @@ export const fundingParameterIAUiSchema = {
   },
   proponentCost: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: fundingTooltips.proponentCost,
+    },
     isMoney: true,
   },
   contractStartDate: {
@@ -85,6 +101,9 @@ export const fundingParameterIAUiSchema = {
       amount: {
         "ui:title": `Additional Funding Amount`,
         "ui:widget": "NumberWidget",
+        "ui:tooltip": {
+          text: fundingTooltips.additionalFundingSourcesAmount,
+        },
         isMoney: true,
       },
       status: {

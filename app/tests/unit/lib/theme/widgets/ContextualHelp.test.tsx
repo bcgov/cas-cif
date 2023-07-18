@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import ContextualHelp from "lib/theme/widgets/ContextualHelp";
 
 describe("ContextualHelp component", () => {
@@ -8,11 +8,7 @@ describe("ContextualHelp component", () => {
 
   test("renders the tooltip with correct text and label and matches the snapshot", () => {
     const componentUnderTest = render(
-      <ContextualHelp
-        text={textMock}
-        icon={faExclamationCircle}
-        label={labelMock}
-      />
+      <ContextualHelp text={textMock} icon={faInfoCircle} label={labelMock} />
     );
     const tooltipElement = screen.getByRole("tooltip");
     const tooltipIcon = screen.getByRole("img", {
@@ -31,7 +27,7 @@ describe("ContextualHelp component", () => {
     const defaultIcon = screen.getByRole("img", {
       hidden: true,
     });
-    expect(defaultIcon).toHaveAttribute("data-icon", "exclamation-circle");
+    expect(defaultIcon).toHaveAttribute("data-icon", "info-circle");
   });
   test("renders the tooltip with correct HTML text", async () => {
     const htmlText =

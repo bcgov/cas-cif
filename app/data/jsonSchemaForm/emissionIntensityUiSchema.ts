@@ -1,3 +1,5 @@
+import { emissionsIntentityTooltips } from "./tooltipText";
+
 export const emissionIntensityReportingRequirementUiSchema = {
   "ui:order": [
     "reportDueDate",
@@ -54,8 +56,10 @@ export const emissionIntensityReportingRequirementUiSchema = {
     isPercentage: true,
     numberOfDecimalPlaces: 2,
     hideOptional: true,
+    "ui:tooltip": {
+      text: emissionsIntentityTooltips.adjustedEmissionsIntensityPerformance,
+    },
   },
-
   calculatedEiPerformance: {
     isPercentage: true,
     numberOfDecimalPlaces: 2,
@@ -68,13 +72,18 @@ export const emissionIntensityReportingRequirementUiSchema = {
     hideOptional: true,
     calculatedValueFormContextProperty:
       "paymentPercentageOfPerformanceMilestoneAmount",
+    "ui:tooltip": {
+      text: emissionsIntentityTooltips.paymentPercentage,
+    },
   },
-
   actualPerformanceMilestoneAmount: {
     "ui:widget": "CalculatedValueWidget",
     calculatedValueFormContextProperty: "actualPerformanceMilestoneAmount",
     isMoney: true,
     hideOptional: true,
+    "ui:tooltip": {
+      text: emissionsIntentityTooltips.actualPerformanceMilestoneAmount,
+    },
   },
   holdbackAmountToDate: {
     "ui:widget": "CalculatedValueWidget",
@@ -82,6 +91,9 @@ export const emissionIntensityReportingRequirementUiSchema = {
     isMoney: true,
     hideOptional: true,
     renamedId: "maximumPerformanceMilestoneAmount",
+    "ui:tooltip": {
+      text: emissionsIntentityTooltips.holdbackAmountToDate,
+    },
   },
   dateSentToCsnr: {
     "ui:widget": "DateWidget",

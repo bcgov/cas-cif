@@ -1,3 +1,5 @@
+import { milestoneTooltips } from "./tooltipText";
+
 const projectMilestoneUiSchema = {
   "ui:order": [
     "description",
@@ -55,12 +57,18 @@ const projectMilestoneUiSchema = {
   },
   maximumAmount: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: milestoneTooltips.maximumAmount,
+    },
     isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
   },
   totalEligibleExpenses: {
     "ui:widget": "NumberWidget",
+    "ui:tooltip": {
+      text: milestoneTooltips.totalEligibleExpenses,
+    },
     isMoney: true,
     "ui:col-md": 12,
     "bcgov:size": "small",
@@ -76,18 +84,27 @@ const projectMilestoneUiSchema = {
   },
   adjustedGrossAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
+    "ui:tooltip": {
+      text: milestoneTooltips.adjustedGrossAmount,
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedGrossAmount",
   },
   adjustedNetAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
+    "ui:tooltip": {
+      text: milestoneTooltips.adjustedNetAmount,
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedNetAmount",
   },
   adjustedHoldbackAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
+    "ui:tooltip": {
+      text: milestoneTooltips.adjustedHoldBackAmount,
+    },
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedHoldbackAmount",

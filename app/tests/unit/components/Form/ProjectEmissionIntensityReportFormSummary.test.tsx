@@ -314,4 +314,64 @@ describe("the emission intensity report form component", () => {
     expect(screen.getByText(/\$789\.00/i)).toBeInTheDocument(); //old actualPerformanceMilestoneAmount
     expect(screen.getByText(/\$357\.00/i)).toBeInTheDocument(); //latest committed actualPerformanceMilestoneAmount
   });
+
+  it("renders the help tooltips", () => {
+    const customPayload = {
+      Form() {
+        return {
+          jsonSchema: emissionsIntensityProdSchema,
+        };
+      },
+      ProjectRevision() {
+        return {
+          isFirstRevision: true,
+          summaryEmissionIntensityReportFormChange: {
+            edges: [
+              {
+                node: {
+                  id: "mock-emission-intensity-report-form-change-id",
+                  rowId: 4,
+                  isPristine: true,
+                  calculatedEiPerformance: 10,
+                  paymentPercentage: 40,
+                  holdbackAmountToDate: 123,
+                  actualPerformanceMilestoneAmount: null,
+                  operation: "CREATE",
+                },
+              },
+            ],
+          },
+        };
+      },
+    };
+    componentTestingHelper.loadQuery(customPayload);
+    const component = componentTestingHelper.renderComponent();
+
+    // Note the exclusion of the GHG Emission Intensity Performance (Adjusted) field here
+    // This is captured in AdjustableCalculatedValueWidget.test.tsx
+
+    expect(
+      screen.getByRole("tooltip", {
+        name: "ghg-emission-intensity-performance-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "payment-percentage-of-performance-milestone-amount-(%)-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "maximum-performance-milestone-amount-tooltip",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "actual-performance-milestone-amount-tooltip",
+      })
+    ).toBeInTheDocument();
+
+    // check that tooltip text hasn't changed
+    expect(component.container).toMatchSnapshot();
+  });
 });
