@@ -9,6 +9,7 @@ import compiledFormIndexPageQuery, {
 import { ProjectFundingAgreementForm_projectRevision$data } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import projectFundingParameterEPSchema from "/schema/data/prod/json_schema/funding_parameter_EP.json";
 import projectFundingParameterIASchema from "/schema/data/prod/json_schema/funding_parameter_IA.json";
+import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 
 const testQuery = graphql`
   query ProjectFundingAgreementFormQuery @relay_test_operation {
@@ -790,6 +791,8 @@ describe("The ProjectFundingAgreementForm", () => {
     expect(submitButton).toBeEnabled();
     userEvent.click(submitButton);
 
-    expect(componentTestingHelper.router.push).toHaveBeenCalled();
+    expect(componentTestingHelper.router.push).toHaveBeenCalledWith(
+      getProjectRevisionFormPageRoute("Test Project Revision ID", 8)
+    );
   });
 });

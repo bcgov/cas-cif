@@ -17,7 +17,7 @@ import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 
 interface Props {
@@ -29,6 +29,8 @@ interface Props {
 
 const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const formRefs = useRef<Record<string, any>>({});
+  const router = useRouter();
+
   // Mutations
   const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
     useCreateFundingParameterFormChange();
