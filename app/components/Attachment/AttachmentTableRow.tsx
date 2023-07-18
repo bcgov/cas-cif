@@ -25,26 +25,29 @@ const AttachmentTableRow: React.FC<Props> = ({
     discardProjectAttachmentFormChange,
     isDiscardingProjectAttachmentFormChange,
   ] = useDiscardProjectAttachmentFormChange();
-  const { id, fileName, fileType, fileSize, createdAt, cifUserByCreatedBy } =
-    useFragment(
-      graphql`
-        fragment AttachmentTableRow_attachment on Attachment {
-          id
-          fileName
-          fileType
-          fileSize
-          createdAt
-          cifUserByCreatedBy {
-            fullName
-          }
+  const attachmentRow = useFragment(
+    graphql`
+      fragment AttachmentTableRow_attachment on Attachment {
+        id
+        fileName
+        fileType
+        fileSize
+        createdAt
+        cifUserByCreatedBy {
+          fullName
         }
-      `,
-      attachment
-    );
-
+      }
+    `,
+    attachment
+  );
+  if (!attachmentRow) return null;
+  console.log("attachment", attachment);
+  console.log("attachmentRow", attachmentRow);
+  const { id, fileName, fileType, fileSize, createdAt, cifUserByCreatedBy } =
+    attachmentRow;
   const handleArchiveAttachment = (attachmentId) => {
     if (isFirstRevision) {
-      hardDeleteAttachment(attachmentId, formChangeRowId);
+      hardDeleteAttachment(attachmentId, formChangeRowId, connectionId);
     } else {
       discardProjectAttachmentFormChange({
         variables: {
@@ -56,7 +59,7 @@ const AttachmentTableRow: React.FC<Props> = ({
       });
     }
   };
-
+  console.log("connectionid", connectionId);
   return (
     <>
       <tr>
