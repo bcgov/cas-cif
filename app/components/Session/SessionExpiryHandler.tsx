@@ -44,18 +44,17 @@ const SessionExpiryHandler: React.FC = () => {
   };
 
   if (hasSession)
-    if (hasSession)
-      return (
-        <SessionTimeoutHandler
-          modalDisplaySecondsBeforeLogout={120}
-          onSessionExpired={handleSessionExpired}
-          extendSessionOnEvents={{
-            enabled: true,
-            throttleTime: 300000,
-            events: ["keydown", "scroll"],
-          }}
-        />
-      );
+    return (
+      <SessionTimeoutHandler
+        modalDisplaySecondsBeforeLogout={120}
+        onSessionExpired={handleSessionExpired}
+        extendSessionOnEvents={{
+          enabled: true,
+          throttleTime: 4 * 60 * 1000, // 4 minutes
+          events: ["keydown", "mousedown", "scroll"],
+        }}
+      />
+    );
 
   return null;
 };
