@@ -12,10 +12,13 @@ const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!)
   }
 }`;
 
-const discardProjectAttachmentFormChangeMutation = `mutation discardProjectAttachmentFormChangeMutation($input: DiscardProjectAttachmentFormChangeInput!){
-  discardProjectAttachmentFormChange(input:$input) {
+const discardProjectAttachmentFormChangeMutation = `mutation discardProjectAttachmentFormChangeMutation(
+  $input: DiscardProjectAttachmentFormChangeInput!
+  $connections: [ID!]!
+) {
+  discardProjectAttachmentFormChange(input: $input) {
     formChanges {
-      id
+      id @deleteEdge(connections: $connections)
     }
   }
 }`;
@@ -45,13 +48,15 @@ export const handleDelete = async (req, res, next) => {
         attachment: { file, id },
       },
     } = queryResponse;
-
+    console.log("req.body.variables", req.body.variables);
     // delete the form_change related to the attachment
     const attachmentFormChangeResponse = await performQuery(
       discardProjectAttachmentFormChangeMutation,
       req.body.variables,
       req
     );
+
+    console.log("attachmentFormChangeResponse", attachmentFormChangeResponse);
 
     // delete the attachment from the attachment table
     const deleteAttachmentResponse = await performQuery(
