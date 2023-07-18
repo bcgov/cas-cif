@@ -21,7 +21,7 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   const adjustedInputId = `${id}_adjusted`;
 
   return (
-    <div>
+    <div className="readOnlyAdjustableCalculatedValueWidgetWrapper">
       {calculatedValue && (
         <>
           {
@@ -59,12 +59,11 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           )}
         </div>
       )}
-
       <style jsx>{`
-        div.adjustedValue {
+        .readOnlyAdjustableCalculatedValueWidgetWrapper {
           display: flex;
         }
-        div.better {
+        .adjustedValue {
           display: flex;
         }
         dt {
