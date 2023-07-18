@@ -316,22 +316,22 @@ exports[`the emission intensity report form component renders the help tooltips 
                 </span>
               </dt>
               <div
-                class="jsx-3871683389"
+                class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
               >
                 <span
                   id="root_adjustedEmissionsIntensityPerformance"
                 />
                 <div
-                  class="jsx-3871683389 adjustedValue"
+                  class="jsx-2935470220 adjustedValue"
                 >
                   <dt
-                    class="jsx-3871683389"
+                    class="jsx-2935470220"
                   >
                     GHG Emission Intensity Performance
                      (Adjusted)
                   </dt>
                   <em
-                    class="jsx-3871683389"
+                    class="jsx-2935470220"
                   >
                     Not added
                   </em>

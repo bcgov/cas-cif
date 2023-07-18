@@ -348,19 +348,24 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-3871683389"
+                  class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
                 >
+                  <span
+                    id="root_adjustedGrossAmount"
+                  >
+                    $123.00
+                  </span>
                   <div
-                    class="jsx-3871683389 adjustedValue"
+                    class="jsx-2935470220 adjustedValue"
                   >
                     <dt
-                      class="jsx-3871683389"
+                      class="jsx-2935470220"
                     >
                       Gross Payment Amount This Milestone
                        (Adjusted)
                     </dt>
                     <dd
-                      class="jsx-3871683389"
+                      class="jsx-2935470220"
                     >
                       <span
                         id="root_adjustedGrossAmount_adjusted"
@@ -409,8 +414,29 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-3871683389"
-                />
+                  class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
+                >
+                  <span
+                    id="root_adjustedNetAmount"
+                  >
+                    $789.00
+                  </span>
+                  <div
+                    class="jsx-2935470220 adjustedValue"
+                  >
+                    <dt
+                      class="jsx-2935470220"
+                    >
+                      Net Payment Amount This Milestone
+                       (Adjusted)
+                    </dt>
+                    <em
+                      class="jsx-2935470220"
+                    >
+                      Not added
+                    </em>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -450,8 +476,29 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-3871683389"
-                />
+                  class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
+                >
+                  <span
+                    id="root_adjustedHoldbackAmount"
+                  >
+                    $456.00
+                  </span>
+                  <div
+                    class="jsx-2935470220 adjustedValue"
+                  >
+                    <dt
+                      class="jsx-2935470220"
+                    >
+                      Holdback Amount This Milestone
+                       (Adjusted)
+                    </dt>
+                    <em
+                      class="jsx-2935470220"
+                    >
+                      Not added
+                    </em>
+                  </div>
+                </div>
               </div>
             </div>
             <div
