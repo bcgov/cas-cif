@@ -754,6 +754,7 @@ describe("The ProjectFundingAgreementForm", () => {
         name: "additional-funding-amount-tooltip",
       })
     ).toHaveLength(1);
+  });
   it("after selecting No, the submit button should allow the user to navigate away from the page", () => {
     const mockResolver = {
       ProjectRevision() {
