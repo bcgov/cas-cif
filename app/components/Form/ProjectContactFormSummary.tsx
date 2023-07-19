@@ -113,9 +113,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
   const secondaryContacts = useMemo(
     () =>
       contactFormChanges.filter(
-        ({ node }) =>
-          node.newFormData?.contactIndex !== 1 &&
-          (node.isPristine === false || node.isPristine === null)
+        ({ node }) => node.newFormData?.contactIndex !== 1
       ),
     [contactFormChanges]
   );
@@ -150,6 +148,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
 
   const contactsJSX = useMemo(() => {
     return secondaryContacts.map(({ node }) => {
+      if (node.isPristine && renderDiff) return null;
       const latestCommittedContactNode = lastCommittedSecondaryContacts.find(
         (latestCommittedNode) => {
           return (
