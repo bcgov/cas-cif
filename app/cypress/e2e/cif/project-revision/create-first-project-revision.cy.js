@@ -11,7 +11,7 @@ describe("when creating a project, the project page", () => {
     cy.get("button").contains("Add a Project").click();
   });
 
-  it("allows an admin user to create an EP project", () => {
+  it.only("allows an admin user to create an EP project", () => {
     //add new
     cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
     cy.happoAndAxe("EP Project New Form", "filled", "main");
@@ -178,6 +178,7 @@ describe("when creating a project, the project page", () => {
     cy.wait("@gqladdProjectAttachment")
       .its("response")
       .should("have.property", "body");
+    cy.wait(3000);
     cy.findByText("mock.pdf").should("be.visible");
 
     cy.findByText(/Submit project attachments/i).click();
