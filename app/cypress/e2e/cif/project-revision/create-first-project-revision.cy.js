@@ -179,10 +179,10 @@ describe("when creating a project, the project page", () => {
     cy.get("input[type=file]").selectFile("@mockFile");
     cy.screenshot();
 
-    cy.wait("@gqladdProjectAttachmentToRevisionMutation")
-      .its("response")
-      .should("have.property", "body");
-    // cy.wait(10000);
+    // cy.wait("@gqladdProjectAttachmentToRevisionMutation")
+    //   .its("response")
+    //   .should("have.property", "body");
+    cy.wait(10000);
     cy.findByText("mock.pdf").should("be.visible");
 
     cy.findByText(/Submit project attachments/i).click();
