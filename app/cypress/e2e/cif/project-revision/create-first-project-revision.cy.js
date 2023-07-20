@@ -1,5 +1,10 @@
+import { aliasOperation } from "../../../utils/graphql-test-utils";
+
 describe("when creating a project, the project page", () => {
   beforeEach(() => {
+    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
+      aliasOperation(req, "addProjectAttachmentToRevisionMutation");
+    });
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
@@ -168,16 +173,13 @@ describe("when creating a project, the project page", () => {
     // Add attachments
 
     cy.url().should("include", "/form/8");
-    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
-      aliasOperation(req, "addProjectAttachment");
-    });
 
     cy.fixture("e2e/mock.pdf").as("mockFile");
     cy.get("input[type=file]").selectFile("@mockFile");
-    cy.wait("@gqladdProjectAttachment")
+    cy.wait("@gqladdProjectAttachmentToRevisionMutation")
       .its("response")
       .should("have.property", "body");
-    cy.wait(3000);
+    // cy.wait(3000);
     cy.findByText("mock.pdf").should("be.visible");
 
     cy.findByText(/Submit project attachments/i).click();
