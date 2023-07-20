@@ -14,11 +14,10 @@ const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!)
 
 const discardProjectAttachmentFormChangeMutation = `mutation discardProjectAttachmentFormChangeMutation(
   $input: DiscardProjectAttachmentFormChangeInput!
-  $connections: [ID!]!
 ) {
   discardProjectAttachmentFormChange(input: $input) {
     formChanges {
-      id @deleteEdge(connections: $connections)
+      id
     }
   }
 }`;
@@ -55,7 +54,7 @@ export const handleDelete = async (req, res, next) => {
       req.body.variables,
       req
     );
-
+    // brianna this isn't working since change to the discard mutation
     console.log("attachmentFormChangeResponse", attachmentFormChangeResponse);
 
     // delete the attachment from the attachment table

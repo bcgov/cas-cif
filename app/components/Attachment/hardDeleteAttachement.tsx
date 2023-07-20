@@ -1,6 +1,6 @@
 import { getAttachmentDeleteRoute } from "routes/pageRoutes";
 
-const hardDeleteAttachment = (attachmentId, formChangeRowId, connectionId) => {
+const hardDeleteAttachment = (attachmentId, formChangeRowId) => {
   fetch(getAttachmentDeleteRoute(attachmentId).pathname, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
@@ -9,7 +9,6 @@ const hardDeleteAttachment = (attachmentId, formChangeRowId, connectionId) => {
         input: {
           formChangeId: formChangeRowId,
         },
-        connections: [connectionId],
       },
     }),
   });
