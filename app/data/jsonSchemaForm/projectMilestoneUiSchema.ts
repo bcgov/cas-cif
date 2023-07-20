@@ -80,6 +80,7 @@ const projectMilestoneUiSchema = {
     "ui:col-md": 12,
     "bcgov:size": "small",
     "ui:widget": "SearchWidget",
+    "ui:placeholder": "Select a Professional Designation",
   },
   adjustedGrossAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
