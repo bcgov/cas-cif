@@ -107,8 +107,8 @@ select is(
       from cif.form_change where id=1
     ) select * from cif.form_change_total_project_value((select * from record))
   ),
-  0::numeric,
-  'Returns zero if proponent cost, max funding amount and additional funding sources are missing'
+  null,
+  'Returns null if proponent cost, max funding amount and additional funding sources are missing'
 );
 
 select is(
@@ -129,8 +129,8 @@ select is(
       from cif.form_change where id=3
     ) select * from cif.form_change_total_project_value((select * from record))
   ),
-  500000::numeric,
-  'Returns sum of proponent cost and max funding amount when additional funding sources are missing'
+  null,
+  'Returns null when additional funding sources are missing'
 );
 
 select finish();
