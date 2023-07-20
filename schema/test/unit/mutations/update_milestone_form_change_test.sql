@@ -1,11 +1,11 @@
 
 begin;
 
-select plan(19);
+select plan(20);
 
 /** SETUP **/
 
-truncate cif.project_revision restart identity cascade;
+truncate cif.project_revision, cif.operator restart identity cascade;
 
 insert into cif.operator (id, legal_name, trade_name, bc_registry_id, operator_code)
 overriding system value
@@ -310,6 +310,42 @@ select is(
   'The update_mutation_form_change custom mutation updates the total eligible expenses with the correct value when updating the total eligible expenses field'
 );
 
+-- It removes calculated values from new_form_data if report type is not eligible for expenses
+insert into cif.form_change(
+  id,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  form_data_record_id,
+  project_revision_id,
+  json_schema_name,
+  new_form_data
+) overriding system value
+values (
+  2,
+  'create',
+  'cif',
+  'reporting_requirement',
+  1,
+  1,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "maximumAmount": 25000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "adjustedGrossAmount": 10000, "adjustedNetAmount": 9000, "adjustedHoldbackAmount": 1000, "calculatedGrossAmount": 20000, "calculatedNetAmount": 18000, "calculatedHoldbackAmount": 2000}'
+);
+select results_eq(
+  $$
+    select
+      new_form_data
+    from cif.update_milestone_form_change(
+      2, (select row( null, '{"reportType": "Reporting Milestone", "hasExpenses": false, "maximumAmount": 25000, "totalEligibleExpenses": 20000, "reportingRequirementIndex": 1, "adjustedGrossAmount": 10000, "adjustedNetAmount": 9000, "adjustedHoldbackAmount": 1000, "calculatedGrossAmount": 20000, "calculatedNetAmount": 18000, "calculatedHoldbackAmount": 2000}', null, null, null, null, null, null, null, null, null, null, null, null, null)::cif.form_change)
+    );
+  $$,
+  $$
+    values (
+      '{"reportType": "Reporting Milestone", "hasExpenses": false, "maximumAmount": 25000, "reportingRequirementIndex": 1}'::jsonb
+    )
+  $$,
+  'The update_form_change custom mutation removes calculated values from new_form_data if report type is not eligible for expenses'
+);
 
 select finish();
 
