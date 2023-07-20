@@ -167,12 +167,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - name: run app locally
         uses: ./.github/actions/local-app-run
-      - name: Cypress run with env
-        uses: cypress-io/github-action@v5
+      - name: run e2e tests
         env:
           CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
           CYPRESS_TEST_INTERNAL_PASSWORD: ${{ secrets.TEST_INTERNAL_PASSWORD }}
@@ -182,15 +186,7 @@ jobs:
           CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
           HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
-      - name: artifacts
-        uses: actions/upload-artifact@v3
-          # add the line below to store screenshots only on failures
-          # if: failure()
-          with:
-            name: cypress-screenshots
-            path: cypress/screenshots
-            if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
-        # run: yarn test:e2e
+        run: yarn test:e2e
         working-directory: ./app
 
   zap-owasp:
