@@ -171,6 +171,22 @@ describe("The ProjectContactFormSummary", () => {
     componentTestingHelper.reinit();
   });
 
+  it("Displays primary contact and secondary contacts on view mode", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, {
+      viewOnly: true,
+    });
+
+    // Primary contact
+    expect(screen.getByText(/primary contact/i)).toBeInTheDocument();
+    expect(screen.getByText(/Test Full Name primary/i)).toBeInTheDocument();
+
+    // Secondary contacts
+    expect(screen.getByText(/secondary contacts/i)).toBeInTheDocument();
+    expect(screen.getByText(/I did not change/i)).toBeInTheDocument();
+    expect(screen.getByText(/I was added/i)).toBeInTheDocument();
+  });
+
   it("Only displays the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
