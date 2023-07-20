@@ -1,5 +1,3 @@
--- Deploy cif:computed_columns/form_change_total_project_value to pg
-
 begin;
 
 create or replace function cif.form_change_total_project_value(cif.form_change)
@@ -18,15 +16,25 @@ with additional_funding_sources as
         )::jsonb
       ) as x(source text, amount numeric, status text)
     )
-  select
-    (
-      (select coalesce(($1.new_form_data ->> 'proponentCost')::numeric, 0) + coalesce(($1.new_form_data ->> 'maxFundingAmount')::numeric, 0))
-      +
-      coalesce((select sum(amount::numeric)
-        from additional_funding_sources
-        where status = 'Approved'
-          ), 0)
-    );
+select
+  case
+    when
+      (
+        ($1.new_form_data ->> 'proponentCost')::numeric IS NULL
+        OR
+        ($1.new_form_data ->> 'maxFundingAmount')::numeric IS NULL
+        OR
+        (select sum(amount::numeric) from additional_funding_sources where status = 'Approved') IS NULL
+      ) THEN NULL
+    else
+      (
+        coalesce(($1.new_form_data ->> 'proponentCost')::numeric, 0)
+        +
+        coalesce(($1.new_form_data ->> 'maxFundingAmount')::numeric, 0)
+        +
+        coalesce((select sum(amount::numeric) from additional_funding_sources where status = 'Approved'), 0)
+      )
+  end;
 $computed_column$ language sql stable;
 
 grant execute on function cif.form_change_total_project_value to cif_internal, cif_external, cif_admin;
@@ -36,6 +44,7 @@ $$
     Computed column to return the total project value.
     Calculation:
     - Total Project Value = Maximum Funding Amount + Proponent Cost + approved Additional Funding Amount(s)
+    Only returns the total project value if all values are present. If any value is missing, returns NULL.
 $$;
 
 commit;
