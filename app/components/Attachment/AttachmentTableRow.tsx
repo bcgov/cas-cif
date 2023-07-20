@@ -1,8 +1,9 @@
 import { Button } from "@button-inc/bcgov-theme";
-import Link from "next/link";
-import { getAttachmentDownloadRoute } from "routes/pageRoutes";
-import { graphql, useFragment } from "react-relay";
 import useDiscardProjectAttachmentFormChange from "mutations/attachment/discardProjectAttachmentFormChange";
+import Link from "next/link";
+// import { useEffect } from "react";
+import { graphql, useFragment } from "react-relay";
+import { getAttachmentDownloadRoute } from "routes/pageRoutes";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
 import hardDeleteAttachment from "./hardDeleteAttachement";
 
@@ -12,6 +13,8 @@ interface Props {
   formChangeRowId: number;
   hideDelete?: boolean;
   isFirstRevision: boolean;
+  triggerRefresh?: boolean;
+  setTriggerRefresh?: any;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
@@ -20,6 +23,8 @@ const AttachmentTableRow: React.FC<Props> = ({
   formChangeRowId,
   hideDelete,
   isFirstRevision,
+  triggerRefresh,
+  setTriggerRefresh,
 }) => {
   const [
     discardProjectAttachmentFormChange,
@@ -40,14 +45,16 @@ const AttachmentTableRow: React.FC<Props> = ({
     `,
     attachment
   );
+
   if (!attachmentRow) return null;
-  console.log("attachment", attachment);
-  console.log("attachmentRow", attachmentRow);
   const { id, fileName, fileType, fileSize, createdAt, cifUserByCreatedBy } =
     attachmentRow;
+
   const handleArchiveAttachment = (attachmentId) => {
     if (isFirstRevision) {
-      hardDeleteAttachment(attachmentId, formChangeRowId, connectionId);
+      console.log("in if handlearchiveattachment");
+      hardDeleteAttachment(attachmentId, formChangeRowId);
+      setTriggerRefresh(!triggerRefresh);
     } else {
       discardProjectAttachmentFormChange({
         variables: {
