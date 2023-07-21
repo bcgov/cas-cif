@@ -16,7 +16,7 @@ const discardProjectAttachmentFormChangeMutation = `mutation discardProjectAttac
   $input: DiscardProjectAttachmentFormChangeInput!
 ) {
   discardProjectAttachmentFormChange(input: $input) {
-    formChanges {
+    formChange {
       id
     }
   }
@@ -54,7 +54,7 @@ export const handleDelete = async (req, res, next) => {
       req.body.variables,
       req
     );
-    // brianna this isn't working since change to the discard mutation
+    // brianna this isn't working since change to the discard mutation--I think this middleware isn't actually transactional. If this doesn't work the next mutation still fires
     console.log("attachmentFormChangeResponse", attachmentFormChangeResponse);
 
     // delete the attachment from the attachment table
