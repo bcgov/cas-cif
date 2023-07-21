@@ -2,7 +2,9 @@
 
 exports[`the emission intensity report form component renders the help tooltips 1`] = `
 <div>
-  <h3>
+  <h3
+    class="jsx-338519335"
+  >
     Emission Intensity Report
   </h3>
   <dl
@@ -283,7 +285,7 @@ exports[`the emission intensity report form component renders the help tooltips 
             class="jsx-2146271977"
           >
             <div
-              class="jsx-2146271977 definition-container"
+              class="jsx-2146271977 adjustable-calculated-value-widget"
             >
               <dt
                 class="jsx-156197991"
@@ -316,26 +318,27 @@ exports[`the emission intensity report form component renders the help tooltips 
                 </span>
               </dt>
               <div
-                class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
+                class="jsx-1028981674"
               >
                 <span
+                  aria-label="GHG Emission Intensity Performance"
                   id="root_adjustedEmissionsIntensityPerformance"
                 />
-                <div
-                  class="jsx-2935470220 adjustedValue"
+              </div>
+              <div
+                class="jsx-2513829846 adjustedValue"
+              >
+                <dt
+                  class="jsx-2513829846"
                 >
-                  <dt
-                    class="jsx-2935470220"
-                  >
-                    GHG Emission Intensity Performance
-                     (Adjusted)
-                  </dt>
-                  <em
-                    class="jsx-2935470220"
-                  >
-                    Not added
-                  </em>
-                </div>
+                  GHG Emission Intensity Performance
+                   (Adjusted)
+                </dt>
+                <em
+                  class="jsx-2513829846"
+                >
+                  Not added
+                </em>
               </div>
             </div>
           </div>

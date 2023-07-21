@@ -6,13 +6,13 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
     Project Milestone Reports
   </h3>
   <div
-    class="jsx-1509299673 reportContainer"
+    class="jsx-913932966 reportContainer"
   >
     <header
-      class="jsx-1509299673"
+      class="jsx-913932966"
     >
       <h4
-        class="jsx-1509299673"
+        class="jsx-913932966"
       >
         Milestone Report 
         1
@@ -315,7 +315,7 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
               class="jsx-2146271977"
             >
               <div
-                class="jsx-2146271977 definition-container"
+                class="jsx-2146271977 adjustable-calculated-value-widget"
               >
                 <dt
                   class="jsx-156197991"
@@ -348,32 +348,33 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
+                  class="jsx-1028981674"
                 >
                   <span
+                    aria-label="Gross Payment Amount This Milestone"
                     id="root_adjustedGrossAmount"
                   >
                     $123.00
                   </span>
-                  <div
-                    class="jsx-2935470220 adjustedValue"
+                </div>
+                <div
+                  class="jsx-2513829846 adjustedValue"
+                >
+                  <dt
+                    class="jsx-2513829846"
                   >
-                    <dt
-                      class="jsx-2935470220"
+                    Gross Payment Amount This Milestone
+                     (Adjusted)
+                  </dt>
+                  <dd
+                    class="jsx-2513829846"
+                  >
+                    <span
+                      id="root_adjustedGrossAmount_adjusted"
                     >
-                      Gross Payment Amount This Milestone
-                       (Adjusted)
-                    </dt>
-                    <dd
-                      class="jsx-2935470220"
-                    >
-                      <span
-                        id="root_adjustedGrossAmount_adjusted"
-                      >
-                        $1,000.00
-                      </span>
-                    </dd>
-                  </div>
+                      $1,000.00
+                    </span>
+                  </dd>
                 </div>
               </div>
             </div>
@@ -381,7 +382,7 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
               class="jsx-2146271977"
             >
               <div
-                class="jsx-2146271977 definition-container"
+                class="jsx-2146271977 adjustable-calculated-value-widget"
               >
                 <dt
                   class="jsx-156197991"
@@ -414,28 +415,29 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
+                  class="jsx-1028981674"
                 >
                   <span
+                    aria-label="Net Payment Amount This Milestone"
                     id="root_adjustedNetAmount"
                   >
                     $789.00
                   </span>
-                  <div
-                    class="jsx-2935470220 adjustedValue"
+                </div>
+                <div
+                  class="jsx-2513829846 adjustedValue"
+                >
+                  <dt
+                    class="jsx-2513829846"
                   >
-                    <dt
-                      class="jsx-2935470220"
-                    >
-                      Net Payment Amount This Milestone
-                       (Adjusted)
-                    </dt>
-                    <em
-                      class="jsx-2935470220"
-                    >
-                      Not added
-                    </em>
-                  </div>
+                    Net Payment Amount This Milestone
+                     (Adjusted)
+                  </dt>
+                  <em
+                    class="jsx-2513829846"
+                  >
+                    Not added
+                  </em>
                 </div>
               </div>
             </div>
@@ -443,7 +445,7 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
               class="jsx-2146271977"
             >
               <div
-                class="jsx-2146271977 definition-container"
+                class="jsx-2146271977 adjustable-calculated-value-widget"
               >
                 <dt
                   class="jsx-156197991"
@@ -476,28 +478,29 @@ exports[`The Project Milestone Report Form Summary renders the tooltips for the 
                   </span>
                 </dt>
                 <div
-                  class="jsx-2935470220 readOnlyAdjustableCalculatedValueWidgetWrapper"
+                  class="jsx-1028981674"
                 >
                   <span
+                    aria-label="Holdback Amount This Milestone"
                     id="root_adjustedHoldbackAmount"
                   >
                     $456.00
                   </span>
-                  <div
-                    class="jsx-2935470220 adjustedValue"
+                </div>
+                <div
+                  class="jsx-2513829846 adjustedValue"
+                >
+                  <dt
+                    class="jsx-2513829846"
                   >
-                    <dt
-                      class="jsx-2935470220"
-                    >
-                      Holdback Amount This Milestone
-                       (Adjusted)
-                    </dt>
-                    <em
-                      class="jsx-2935470220"
-                    >
-                      Not added
-                    </em>
-                  </div>
+                    Holdback Amount This Milestone
+                     (Adjusted)
+                  </dt>
+                  <em
+                    class="jsx-2513829846"
+                  >
+                    Not added
+                  </em>
                 </div>
               </div>
             </div>
