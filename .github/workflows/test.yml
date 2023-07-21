@@ -177,7 +177,6 @@ jobs:
       - name: run app locally
         uses: ./.github/actions/local-app-run
       - name: run e2e tests
-        uses: mxschmitt/action-tmate@v3
         env:
           CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
           CYPRESS_TEST_INTERNAL_PASSWORD: ${{ secrets.TEST_INTERNAL_PASSWORD }}
