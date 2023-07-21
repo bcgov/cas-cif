@@ -90,6 +90,7 @@ const projectMilestoneUiSchema = {
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedGrossAmount",
+    "ui:classNames": "adjustable-calculated-value-widget",
   },
   adjustedNetAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
@@ -99,6 +100,7 @@ const projectMilestoneUiSchema = {
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedNetAmount",
+    "ui:classNames": "adjustable-calculated-value-widget",
   },
   adjustedHoldbackAmount: {
     "ui:widget": "AdjustableCalculatedValueWidget",
@@ -108,6 +110,7 @@ const projectMilestoneUiSchema = {
     isMoney: true,
     hideOptional: true,
     calculatedValueFormContextProperty: "calculatedHoldbackAmount",
+    "ui:classNames": "adjustable-calculated-value-widget",
   },
   dateSentToCsnr: {
     "ui:widget": "DateWidget",

@@ -38,19 +38,18 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           ) : (
             <em>Not added</em>
           )}
+          <style jsx>{`
+            .adjustedValue {
+              display: flex;
+              flex-basis: 100%;
+              padding-top: 0.5em;
+            }
+            dt {
+              margin: 0 1em 0 0;
+            }
+          `}</style>
         </div>
       )}
-      <style jsx>{`
-        .readOnlyAdjustableCalculatedValueWidgetWrapper {
-          display: flex;
-        }
-        .adjustedValue {
-          display: flex;
-        }
-        dt {
-          margin: 0 1em 0 1em;
-        }
-      `}</style>
     </>
   );
 };

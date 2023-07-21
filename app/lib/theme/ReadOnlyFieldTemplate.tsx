@@ -15,7 +15,7 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
 }) => {
   return (
     <div>
-      <div className="definition-container">
+      <div className={`${uiSchema["ui:classNames"] ?? "definition-container"}`}>
         {displayLabel && (
           <FieldLabel
             label={label}

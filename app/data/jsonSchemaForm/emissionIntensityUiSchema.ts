@@ -59,6 +59,7 @@ export const emissionIntensityReportingRequirementUiSchema = {
     "ui:tooltip": {
       text: emissionsIntentityTooltips.adjustedEmissionsIntensityPerformance,
     },
+    "ui:classNames": "adjustable-calculated-value-widget",
   },
   calculatedEiPerformance: {
     isPercentage: true,

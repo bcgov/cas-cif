@@ -250,10 +250,13 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
                 isOnAmendmentsAndOtherRevisionsPage,
             }}
           />
-
           <style jsx>{`
             div.reportContainer {
               padding-top: 1em;
+            }
+            :global(.adjustable-calculated-value-widget) {
+              display: flex;
+              flex-wrap: wrap;
             }
           `}</style>
         </div>
