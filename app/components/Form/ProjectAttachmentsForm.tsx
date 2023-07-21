@@ -9,7 +9,6 @@ import { useCreateAttachment } from "mutations/attachment/createAttachment";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAttachmentsForm_projectRevision$key } from "__generated__/ProjectAttachmentsForm_projectRevision.graphql";
 import { useStageFormChange } from "mutations/FormChange/stageFormChange";
-import { useState } from "react";
 
 const tableFilters = [
   new TextFilter("File Name", "fileName"),
@@ -60,13 +59,6 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
     projectRevision
   );
 
-  const [triggerRefresh, setTriggerRefresh] = useState(false);
-
-  // brianna - this is infinite rendering but it doesn't seem to trigger relay anyway
-  // useEffect(
-  //   () => setTriggerRefresh && setTriggerRefresh(!triggerRefresh),
-  //   [triggerRefresh]
-  // );
   const { rowId, projectAttachmentFormChanges, isFirstRevision } = brianna;
   const attachmentFormChange = projectAttachmentFormChanges.edges[0]?.node;
   const [createAttachment, isCreatingAttachment] = useCreateAttachment();
@@ -163,8 +155,6 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
               formChangeRowId={node.rowId}
               connectionId={projectAttachmentFormChanges.__id}
               isFirstRevision={isFirstRevision}
-              triggerRefresh={triggerRefresh}
-              setTriggerRefresh={setTriggerRefresh}
             />
           );
         })}
