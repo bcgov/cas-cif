@@ -1,5 +1,6 @@
 import { WidgetProps } from "@rjsf/core";
 import NumberFormat from "react-number-format";
+import CalculatedValueWidget from "./CalculatedValueWidget";
 
 const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   props
@@ -10,34 +11,14 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
   const isMoney = uiSchema?.isMoney;
   const isPercentage = uiSchema?.isPercentage;
 
-  // If we need to set the amount of decimal places, we can set it in the uiSchema, otherwise there will be no decimal places.
-  const numberOfDecimalPlaces = isMoney
-    ? 2
-    : uiSchema?.numberOfDecimalPlaces ?? 0;
-
   const calculatedValue =
     formContext[uiSchema.calculatedValueFormContextProperty];
 
   const adjustedInputId = `${id}_adjusted`;
 
   return (
-    <div className="readOnlyAdjustableCalculatedValueWidgetWrapper">
-      {calculatedValue && (
-        <>
-          {
-            <NumberFormat
-              thousandSeparator
-              fixedDecimalScale={numberOfDecimalPlaces}
-              decimalScale={numberOfDecimalPlaces}
-              id={id}
-              prefix={isMoney ? "$" : ""}
-              suffix={isPercentage ? "%" : ""}
-              value={calculatedValue}
-              displayType="text"
-            />
-          }
-        </>
-      )}
+    <>
+      <CalculatedValueWidget {...props} />
       {value !== calculatedValue && (
         <div className={"adjustedValue"}>
           <dt>{label} (Adjusted)</dt>
@@ -70,7 +51,7 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
           margin: 0 1em 0 1em;
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
