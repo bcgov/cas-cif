@@ -11,14 +11,14 @@ form_change_record record;
 
 begin
 
-    if form_change_record.operation = 'create' then
-      delete from cif.form_change where id = $1;
-      return form_change_record;
-    else
-      update cif.form_change set operation = 'archive' where id = $1;
-      return form_change_record;
-    end if;
+  select * from cif.form_change where id = $1 into form_change_record;
 
+  if form_change_record.operation = 'create' then
+    delete from cif.form_change where id = form_change_record.id;
+  else
+    update cif.form_change set operation = 'archive' where id = form_change_record.id;
+  end if;
+  return form_change_record;
 end;
 
 $discard_project_attachment_form_change$ language plpgsql volatile;
