@@ -23,10 +23,14 @@ const projectSchema = {
       default: undefined,
     },
     summary: { type: "string", title: "Project Description" },
-    projectType: { type: "string", title: "Project Type" },
+    projectType: {
+      type: ["null", "string"],
+      title: "Project Type",
+    },
     score: {
-      type: "number",
+      type: ["null", "number"],
       title: "Score",
+      default: null,
     },
     rank: {
       type: "number",
@@ -56,14 +60,20 @@ const projectSchema = {
       anyOf: undefined,
     },
     additionalSectorInformation: {
-      type: "string",
+      type: ["null", "string"],
       title: "Additional Sector Information",
+      default: null,
     },
     contractNumber: {
-      type: "string",
+      type: ["null", "string"],
       title: "Contract Number",
+      default: null,
     },
-    comments: { type: "string", title: "General Comments" },
+    comments: {
+      type: ["null", "string"],
+      title: "General Comments",
+      default: null,
+    },
   },
 };
 

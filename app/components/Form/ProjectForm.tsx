@@ -314,20 +314,27 @@ const ProjectForm: React.FC<Props> = (props) => {
         },
         projectType: {
           ...projectSchema.properties.projectType,
-          anyOf: query.allProjectTypes.edges
-            .map(({ node }) => {
+          anyOf: [
+            ...query.allProjectTypes.edges.map(({ node }) => {
               return {
                 type: "string",
                 title: node.name,
                 enum: [node.name],
                 value: node.name,
               };
-            })
-            .sort((a, b) => {
-              if (b.value === "Other") {
-                return -1;
-              } else return 0;
             }),
+            // Add null as an option
+            {
+              type: "null",
+              value: null,
+              enum: [null],
+              title: "N/A",
+            },
+          ].sort((a, b) => {
+            if (b.value === "Other") {
+              return -1;
+            } else return 0;
+          }),
         },
         projectStatusId: {
           ...projectSchema.properties.projectStatusId,

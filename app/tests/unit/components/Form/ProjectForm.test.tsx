@@ -150,6 +150,8 @@ describe("The Project Form", () => {
               comments: "some amendment comment",
               contractNumber: "654321",
               projectType: "project type 1",
+              score: null,
+              additionalSectorInformation: null,
             },
           },
         },
@@ -174,6 +176,8 @@ describe("The Project Form", () => {
               comments: "some amendment comment",
               contractNumber: "654321",
               projectType: "project type 1",
+              score: null,
+              additionalSectorInformation: null,
             },
           },
         },
@@ -418,6 +422,10 @@ describe("The Project Form", () => {
               fundingStreamRfpId: 1,
               projectName: "test project name2",
               totalFundingRequest: 12345,
+              score: null,
+              additionalSectorInformation: null,
+              contractNumber: null,
+              comments: null,
             },
           },
         },
@@ -460,6 +468,8 @@ describe("The Project Form", () => {
               contractNumber: "654321",
               projectType: "project type 1",
               sectorName: "test sector 1",
+              score: null,
+              additionalSectorInformation: null,
             },
           },
         },
@@ -501,6 +511,8 @@ describe("The Project Form", () => {
               comments: "some amendment comment",
               contractNumber: "654321",
               projectType: "project type 2",
+              score: null,
+              additionalSectorInformation: null,
             },
           },
         },
@@ -514,12 +526,13 @@ describe("The Project Form", () => {
 
     userEvent.click(screen.getByText(/Undo Changes/i));
 
+    // we get one extra operation (update mutation) because of default null values
     expect(
       componentTestingHelper.environment.mock.getAllOperations()
-    ).toHaveLength(2);
+    ).toHaveLength(3);
 
     const mutationUnderTest =
-      componentTestingHelper.environment.mock.getAllOperations()[1];
+      componentTestingHelper.environment.mock.getAllOperations()[2];
 
     expect(mutationUnderTest.fragment.node.name).toBe(
       "undoFormChangesMutation"

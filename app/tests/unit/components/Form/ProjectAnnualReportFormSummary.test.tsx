@@ -175,7 +175,7 @@ describe("The Project Annual Report Form Summary", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    expect(screen.getAllByText("Report Due Date")).toHaveLength(2);
+    expect(screen.getAllByText(/Report Due Date/i)).toHaveLength(2);
     expect(screen.getAllByText("Report Received Date (optional)")).toHaveLength(
       2
     );

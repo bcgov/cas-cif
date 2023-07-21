@@ -140,7 +140,7 @@ const ContactForm: React.FC<Props> = (props) => {
             id: formChange.id,
             formDataRecordId: formChange.formDataRecordId,
             newFormData: formData,
-            isUniqueValue: true,
+            isUniqueValue: isUniqueValue,
             changeStatus: "pending",
           },
         },

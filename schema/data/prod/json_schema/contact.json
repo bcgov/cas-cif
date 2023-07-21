@@ -2,7 +2,7 @@
   "schema": {
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
-    "required": ["givenName", "familyName", "email", "phone"],
+    "required": ["givenName", "familyName", "email"],
     "properties": {
       "givenName": {
         "type": "string",
@@ -14,27 +14,34 @@
       },
       "email": {
         "type": "string",
-        "title": "Email"
+        "title": "Email",
+        "pattern": "^[\\.\\w-]+@([\\w-]+\\.)+[\\w-]{2,4}$"
       },
       "phone": {
-        "type": "string",
-        "title": "Phone"
+        "type": ["null", "string"],
+        "title": "Phone",
+        "pattern": "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+        "default": null
       },
       "phoneExt": {
-        "type": "string",
-        "title": "Phone Extension"
+        "type": ["null", "string"],
+        "title": "Phone Extension",
+        "default": null
       },
       "companyName": {
-        "type": "string",
-        "title": "Company Name"
+        "type": ["null", "string"],
+        "title": "Company Name",
+        "default": null
       },
       "contactPosition": {
-        "type": "string",
-        "title": "Position"
+        "type": ["null", "string"],
+        "title": "Position",
+        "default": null
       },
       "comments": {
-        "type": "string",
-        "title": "Comments"
+        "type": ["null", "string"],
+        "title": "Comments",
+        "default": null
       }
     }
   }

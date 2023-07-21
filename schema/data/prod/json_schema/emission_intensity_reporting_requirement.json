@@ -6,18 +6,17 @@
     "required": [],
     "properties": {
       "reportDueDate": {
-        "type": "string",
-        "title": "Report Due Date",
-        "default": "undefined"
+        "type": ["null", "string"],
+        "title": "Report Due Date"
       },
       "submittedDate": {
-        "type": "string",
-        "title": "Received Date",
-        "default": "undefined"
+        "type": ["null", "string"],
+        "title": "Report Received Date"
       },
       "comments": {
-        "type": "string",
-        "title": "General Comments"
+        "type": ["null", "string"],
+        "title": "General Comments",
+        "default": null
       }
     }
   }

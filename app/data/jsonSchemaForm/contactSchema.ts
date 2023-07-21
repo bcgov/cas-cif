@@ -17,26 +17,31 @@ const contactSchema = {
       pattern: "^[\\.\\w-]+@([\\w-]+\\.)+[\\w-]{2,4}$",
     },
     phone: {
-      type: "string",
+      type: ["null", "string"],
       title: "Phone",
       pattern:
         "^(\\+?\\d{1,2}[\\s,-]?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+      default: null,
     },
     phoneExt: {
-      type: "string",
+      type: ["null", "string"],
       title: "Phone Extension",
+      default: null,
     },
     companyName: {
-      type: "string",
+      type: ["null", "string"],
       title: "Company Name",
+      default: null,
     },
     contactPosition: {
-      type: "string",
+      type: ["null", "string"],
       title: "Position",
+      default: null,
     },
     comments: {
-      type: "string",
+      type: ["null", "string"],
       title: "Comments",
+      default: null,
     },
   },
 };

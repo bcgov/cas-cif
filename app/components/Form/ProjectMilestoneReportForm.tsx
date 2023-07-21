@@ -221,7 +221,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
           formChangePatch: {
             newFormData: {
               ...formData,
-              hasExpenses: reportTypeRecord.node.hasExpenses,
+              hasExpenses: reportTypeRecord?.node.hasExpenses,
             },
           },
         },
@@ -233,7 +233,7 @@ const ProjectMilestoneReportForm: React.FC<Props> = (props) => {
             id: milestoneNode.id,
             newFormData: {
               ...milestoneChangeData,
-              hasExpenses: reportTypeRecord.node.hasExpenses,
+              hasExpenses: reportTypeRecord?.node.hasExpenses,
             },
             changeStatus: "pending",
           },

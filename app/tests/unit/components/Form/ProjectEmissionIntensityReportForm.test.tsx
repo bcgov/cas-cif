@@ -342,7 +342,7 @@ describe("the emission intensity report form component", () => {
   it("calls the updateformchange mutation when the user types in data", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    userEvent.click(screen.getByText(/submit.*/i));
+    userEvent.clear(screen.getAllByLabelText(/comments/i)[0]);
     userEvent.type(screen.getAllByLabelText(/comments/i)[0], " edited");
     componentTestingHelper.expectMutationToBeCalled(
       "updateEmissionIntensityReportFormChangeMutation",
@@ -354,7 +354,7 @@ describe("the emission intensity report form component", () => {
       }
     );
   });
-  it("shows the correct emission functional unit and production functional unit", () => {
+  it("shows the correct emission functional unit and production functional unit", async () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -370,11 +370,12 @@ describe("the emission intensity report form component", () => {
     expect(emissionFunctionalUnitInput).toHaveValue("tCO2e");
     expect(productionFunctionalUnitInput).toHaveValue("GJ");
 
-    userEvent.clear(emissionFunctionalUnitInput);
-    userEvent.type(emissionFunctionalUnitInput, "tCO2");
-    userEvent.clear(productionFunctionalUnitInput);
-    userEvent.type(productionFunctionalUnitInput, "G");
-
+    act(() => {
+      userEvent.clear(emissionFunctionalUnitInput);
+      userEvent.type(emissionFunctionalUnitInput, "tCO2");
+      userEvent.clear(productionFunctionalUnitInput);
+      userEvent.type(productionFunctionalUnitInput, "G");
+    });
     expect(screen.getAllByText(/tco2\/g/i)).toHaveLength(3);
   });
   it("can call updateEmissionIntensityReportFormChangeMutation with zero values and decimal points on BEI/TEI/PEI and Total Lifetime Emission Reduction", () => {

@@ -303,39 +303,41 @@ describe("The ProjectMilestoneReportForm", () => {
     });
   });
 
-  it("Calls updateMilestoneFormChangeMutation when changing the milestone form", async () => {
+  it("Calls updateMilestoneFormChangeMutation when changing the milestone form", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
-    await act(async () => {
+    act(() => {
       userEvent.click(screen.getAllByLabelText(/milestone type/i)[1]);
     });
-    await userEvent.click(
-      within(screen.getByRole("presentation")).getByText("General")
-    );
-    await act(async () => {
-      const updateMutationUnderTest =
-        await componentTestingHelper.environment.mock.getMostRecentOperation();
 
-      await expect(updateMutationUnderTest.fragment.node.name).toBe(
-        "updateMilestoneFormChangeMutation"
-      );
-      expect(updateMutationUnderTest.request.variables).toMatchObject({
-        reportType: "Milestone",
-        input: {
-          rowId: 2,
-          formChangePatch: {
-            newFormData: {
-              reportType: "General Milestone",
-              reportDueDate: "2022-10-28",
-              projectId: 51,
-              submittedDate: "2022-05-02",
-              description: "i am the second description",
-              reportingRequirementIndex: 2,
-            },
+    act(() =>
+      userEvent.click(
+        within(screen.getByRole("presentation")).getByText("General")
+      )
+    );
+
+    const updateMutationUnderTest =
+      componentTestingHelper.environment.mock.getMostRecentOperation();
+
+    expect(updateMutationUnderTest.fragment.node.name).toBe(
+      "updateMilestoneFormChangeMutation"
+    );
+    expect(updateMutationUnderTest.request.variables).toMatchObject({
+      reportType: "Milestone",
+      input: {
+        rowId: 2,
+        formChangePatch: {
+          newFormData: {
+            reportType: "General Milestone",
+            reportDueDate: "2022-10-28",
+            projectId: 51,
+            submittedDate: "2022-05-02",
+            description: "i am the second description",
+            reportingRequirementIndex: 2,
           },
         },
-      });
+      },
     });
   });
 

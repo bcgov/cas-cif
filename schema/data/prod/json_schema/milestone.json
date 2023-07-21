@@ -38,7 +38,7 @@
         "title": "Certifier"
       },
       "certifierProfessionalDesignation": {
-        "type": "string",
+        "type": ["null", "string"],
         "title": "Professional Designation",
         "default": "Professional Engineer",
         "anyOf": [
@@ -53,9 +53,9 @@
             "enum": ["Certified Professional Accountant"]
           },
           {
-            "type": "string",
-            "title": "N/A",
-            "enum": [""]
+            "type": "null",
+            "enum": [null],
+            "title": "N/A"
           }
         ]
       }

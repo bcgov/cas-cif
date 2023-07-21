@@ -10,12 +10,14 @@
         "title": "Report Due Date"
       },
       "submittedDate": {
-        "type": "string",
-        "title": "Report Received Date"
+        "type": ["null", "string"],
+        "title": "Report Received Date",
+        "default": null
       },
       "comments": {
-        "type": "string",
-        "title": "General Comments"
+        "type": ["null", "string"],
+        "title": "General Comments",
+        "default": null
       }
     }
   }

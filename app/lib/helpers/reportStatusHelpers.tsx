@@ -83,9 +83,10 @@ export const getBadgeForOverallReportStatus = (
   const reportsExist = reportSubmittedDates?.length !== 0;
   if (!reportsExist) {
     return <StatusBadge variant="none" />;
-  } else if (reportsExist && !reportSubmittedDates.includes(undefined)) {
-    return <StatusBadge variant="complete" />;
-  } else {
+  }
+
+  const hasNullValues = reportSubmittedDates.some((date) => date == null); //this comparison covers both null and undefined
+  if (hasNullValues) {
     const dueIn = getDaysUntilDue(parsedDueDate);
     return dueIn < 0 ? (
       <StatusBadge variant="late" />
@@ -93,6 +94,8 @@ export const getBadgeForOverallReportStatus = (
       <StatusBadge variant="onTrack" />
     );
   }
+
+  return <StatusBadge variant="complete" />;
 };
 
 export const getBadgeForIndividualReportStatus = (

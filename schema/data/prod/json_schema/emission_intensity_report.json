@@ -4,7 +4,6 @@
     "type": "object",
     "title": "Emissions Intensity Report",
     "required": [
-      "reportDueDate",
       "measurementPeriodStartDate",
       "measurementPeriodEndDate",
       "emissionFunctionalUnit",
@@ -23,7 +22,7 @@
       "comments": {
         "type": ["null", "string"],
         "title": "General Comments",
-        "default": "null"
+        "default": null
       },
       "measurementPeriodStartDate": {
         "title": "TEIMP Start Date",
@@ -40,7 +39,7 @@
       "productionFunctionalUnit": {
         "title": "Production Functional Unit",
         "type": ["null", "string"],
-        "default": "null"
+        "default": null
       },
       "baselineEmissionIntensity": {
         "title": "Baseline Emission Intensity (BEI)",

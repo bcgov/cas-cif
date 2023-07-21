@@ -31,12 +31,17 @@
         "title": "Project Description"
       },
       "projectType": {
-        "type": "string",
+        "type": ["null", "string"],
         "title": "Project Type"
       },
       "score": {
+        "type": ["null", "number"],
+        "title": "Score",
+        "default": null
+      },
+      "rank": {
         "type": "number",
-        "title": "Score"
+        "title": "Rank"
       },
       "operatorId": {
         "type": "number",
@@ -62,16 +67,19 @@
         "anyOf": "undefined"
       },
       "additionalSectorInformation": {
-        "type": "string",
-        "title": "Additional Sector Information"
+        "type": ["null", "string"],
+        "title": "Additional Sector Information",
+        "default": null
       },
       "contractNumber": {
-        "type": "string",
-        "title": "Contract Number"
+        "type": ["null", "string"],
+        "title": "Contract Number",
+        "default": null
       },
       "comments": {
-        "type": "string",
-        "title": "General Comments"
+        "type": ["null", "string"],
+        "title": "General Comments",
+        "default": null
       }
     }
   }
