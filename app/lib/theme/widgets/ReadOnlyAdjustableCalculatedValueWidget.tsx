@@ -47,6 +47,9 @@ const ReadOnlyAdjustableCalculatedValueWidget: React.FC<WidgetProps> = (
             dt {
               margin: 0 1em 0 0;
             }
+            dd {
+              margin-bottom: 0; // Override default margin-bottom for styling consistency
+            }
           `}</style>
         </div>
       )}
