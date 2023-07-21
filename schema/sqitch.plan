@@ -357,3 +357,4 @@ functions/handle_milestone_form_change_commit [functions/handle_milestone_form_c
 @1.13.0 2023-09-05T22:09:47Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.13.0
 tables/attachment_002_delete_permission 2023-07-31T18:06:38Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Allow hard deletion of attachments
 mutations/discard_project_attachment_form_change [mutations/discard_project_attachment_form_change@1.11.0] 2023-07-31T18:05:23Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove loop from discard mutation
+computed_columns/form_change_total_project_value_001 2023-07-21T00:06:15Z Gurjeet Matharu <gurjeet@matharuco.com> # Modified cif.form_change_total_project_value function to return null if any input values are missing
