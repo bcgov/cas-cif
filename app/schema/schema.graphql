@@ -44200,12 +44200,36 @@ input DiscardProjectAttachmentFormChangeInput {
 
 """The output of our `discardProjectAttachmentFormChange` mutation."""
 type DiscardProjectAttachmentFormChangePayload {
+  """Reads a single `ChangeStatus` that is related to this `FormChange`."""
+  changeStatusByChangeStatus: ChangeStatus
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByCreatedBy: CifUser
+
+  """Reads a single `CifUser` that is related to this `FormChange`."""
+  cifUserByUpdatedBy: CifUser
+
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-  formChanges: [FormChange]
+
+  """Reads a single `Form` that is related to this `FormChange`."""
+  formByJsonSchemaName: Form
+  formChange: FormChange
+
+  """Reads a single `FormChange` that is related to this `FormChange`."""
+  formChangeByPreviousFormChangeId: FormChange
+
+  """An edge for our `FormChange`. May be used by Relay 1."""
+  formChangeEdge(
+    """The method to use when ordering `FormChange`."""
+    orderBy: [FormChangesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormChangesEdge
+
+  """Reads a single `ProjectRevision` that is related to this `FormChange`."""
+  projectRevisionByProjectRevisionId: ProjectRevision
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
