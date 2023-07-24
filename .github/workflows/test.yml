@@ -167,17 +167,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # - id: "auth"
-      #   name: "Authenticate to Google Cloud"
-      #   uses: "google-github-actions/auth@v1"
-      #   with:
-      #     credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - name: run app locally
         uses: ./.github/actions/local-app-run
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
       - name: run e2e tests
         env:
           CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
@@ -188,7 +181,7 @@ jobs:
           CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
           HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
-        # run: yarn test:e2e
+        run: yarn test:e2e
         working-directory: ./app
 
   zap-owasp:
