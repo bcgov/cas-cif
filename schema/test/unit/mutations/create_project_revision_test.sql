@@ -1,5 +1,5 @@
 begin;
-select plan (13);
+select plan (14);
 
 -- restart the id sequences
 truncate table
@@ -76,6 +76,69 @@ insert into cif.form_change(new_form_data,
     "reportingRequirementIndex": 1
     }','create','cif','reporting_requirement',null,1,'pending','reporting_requirement');
 
+insert into cif.form_change(new_form_data,
+    operation,
+    form_data_schema_name,
+    form_data_table_name,
+    form_data_record_id,
+    project_revision_id,
+    change_status,
+    json_schema_name)
+    values
+    ('{
+    "projectId":1,
+    "adjustedEmissionsIntensityPerformance": 98,
+    "baselineEmissionIntensity": 324.25364,
+    "comments": "comments",
+    "dateSentToCsnr": "2023-07-01T00:00:00-07:00",
+    "emissionFunctionalUnit":"tCO2e",
+    "measurementPeriodEndDate":"2023-07-01T00:00:00-07:00",
+    "measurementPeriodStartDate": "2023-06-01T00:00:00-07:00",
+    "postProjectEmissionIntensity": 124.35,
+    "productionFunctionalUnit": "unit",
+    "reportDueDate": "2023-06-15T00:00:00-07:00",
+    "reportType": "TEIMP",
+    "reportingRequirementIndex": 1,
+    "submittedDate": "2023-06-30T00:00:00-07:00",
+    "targetEmissionIntensity": 23.2357,
+    "totalLifetimeEmissionReduction": 44.4224
+    }','create','cif','reporting_requirement',null,1,'pending','emission_intensity');
+
+insert into cif.form_change(new_form_data,
+    operation,
+    form_data_schema_name,
+    form_data_table_name,
+    form_data_record_id,
+    project_revision_id,
+    change_status,
+    json_schema_name)
+    values
+    ('{
+    "projectId":1,
+    "reportType": "Project Summary Report",
+    "reportDueDate": "2021-08-31 14:24:46.318423-07",
+    "submittedDate": "2021-08-31 14:24:46.318423-07",
+    "comments": "comments",
+    "reportingRequirementIndex": 1,
+    "projectSummaryReportPayment": 111,
+    "paymentNotes": "payment notes",
+    "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
+    }','create','cif','reporting_requirement',null,1,'pending','project_summary_report');
+
+insert into cif.form_change(new_form_data,
+    operation,
+    form_data_schema_name,
+    form_data_table_name,
+    form_data_record_id,
+    project_revision_id,
+    change_status,
+    json_schema_name)
+    values
+    ('{
+    "projectId":1,
+    "attachmentId": 1
+    }','create','cif','project_attachment',null,1,'pending','project_attachment');
+
 update cif.form_change
 set new_form_data =
 '{
@@ -87,6 +150,9 @@ set new_form_data =
   "operatorId": 1
 }'::jsonb
 where form_data_table_name = 'project';
+
+insert into cif.attachment(description)
+values ('test-file-description');
 
 select cif.commit_project_revision(1);
 
@@ -134,22 +200,20 @@ select results_eq(
   'creating a project revision without revision type and creates a new project revision in pending state and defaults revision_type to General Revision and revision_status to Draft'
 );
 
-
-
 select results_eq(
   $$
-  select new_form_data from cif.form_change
+  select form_data_record_id, previous_form_change_id, new_form_data from cif.form_change
   where form_data_table_name = 'project' and project_revision_id = 2
   $$,
   $$
-  select '{
+  values(1,1, '{
     "projectName": "name",
     "summary": "lorem ipsum",
     "fundingStreamRfpId": 1,
     "projectStatusId": 1,
     "proposalReference": "1235",
     "operatorId": 1
-  }'::jsonb
+  }'::jsonb)
   $$,
   'creating a new project revision should create a form_change record for the project'
 );
@@ -177,27 +241,73 @@ select is_empty(
   'creating a new project revision should not create a form_change record for the project_contact'
 );
 
+
+
 select results_eq(
   $$
-    select new_form_data, json_schema_name from cif.form_change
+    select form_data_record_id, previous_form_change_id, new_form_data, json_schema_name from cif.form_change
     where form_data_table_name = 'reporting_requirement' and project_revision_id = 2
     order by json_schema_name
   $$,
   $$
   values
-    ('{
+    (3,5,'{
+      "projectId":1,
+      "adjustedEmissionsIntensityPerformance": 98,
+      "baselineEmissionIntensity": 324.25364,
+      "comments": "comments",
+      "dateSentToCsnr": "2023-07-01T00:00:00-07:00",
+      "emissionFunctionalUnit":"tCO2e",
+      "measurementPeriodEndDate":"2023-07-01T00:00:00-07:00",
+      "measurementPeriodStartDate": "2023-06-01T00:00:00-07:00",
+      "postProjectEmissionIntensity": 124.35,
+      "productionFunctionalUnit": "unit",
+      "reportDueDate": "2023-06-15T00:00:00-07:00",
+      "reportType": "TEIMP",
+      "reportingRequirementIndex": 1,
+      "submittedDate": "2023-06-30T00:00:00-07:00",
+      "targetEmissionIntensity": 23.2357,
+      "totalLifetimeEmissionReduction": 44.4224
+      }'::jsonb, 'emission_intensity'::varchar),
+    (1,3,'{
       "projectId":1,
       "reportType": "General Milestone",
       "reportingRequirementIndex": 1
       }'::jsonb, 'milestone'::varchar),
-    ('{
+    (4,6,'{
+      "projectId":1,
+      "reportType": "Project Summary Report",
+      "reportDueDate": "2021-08-31 14:24:46.318423-07",
+      "submittedDate": "2021-08-31 14:24:46.318423-07",
+      "comments": "comments",
+      "reportingRequirementIndex": 1,
+      "projectSummaryReportPayment": 111,
+      "paymentNotes": "payment notes",
+      "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
+      }'::jsonb, 'project_summary_report'::varchar),
+    (2,4,'{
       "projectId":1,
       "reportType": "Annual",
       "reportingRequirementIndex": 1
       }'::jsonb, 'reporting_requirement'::varchar)
   $$,
-  'creating a new project revision should create a form_change record for the reporting_requirement, either for the milestone schema, or the generic reporting_requirement schema'
+  'creating a new project revision should create a form_change record for the reporting_requirement, for the milestone schema, generic reporting_requirement schema, emission_intensity and project_summary_report schemas'
 );
+
+select results_eq(
+  $$
+  select new_form_data from cif.form_change
+  where form_data_table_name = 'project_attachment' and project_revision_id = 2
+  $$,
+  $$
+  select '{
+    "projectId":1,
+    "attachmentId":1
+    }'::jsonb
+  $$,
+  'creating a new project revision should create a form_change record for the project_attachment'
+);
+
 
 select results_eq(
 $$
@@ -241,6 +351,38 @@ select lives_ok(
   $$,
   'allows creating a pending General Revision on a project with a pending Amendment'
 );
+
+select '-----------';
+select form_data_record_id, previous_form_change_id, new_form_data, json_schema_name from cif.form_change
+    where form_data_table_name = 'reporting_requirement' and project_revision_id = 2
+    order by form_data_record_id;
+select '-----------';
+
+select '-----------';
+select form_data_record_id, previous_form_change_id, new_form_data
+  from cif.form_change
+      where form_data_record_id = 4
+      and form_data_schema_name = 'cif'
+      and form_data_table_name = 'reporting_requirement'
+      and json_schema_name='project_summary_report'
+      and change_status = 'committed'
+      order by updated_at desc, id desc;
+      -- limit 1;
+select '-----------';
+
+select '======';
+select id,
+  operation ,
+  form_data_schema_name,
+  form_data_table_name,
+  form_data_record_id ,
+  project_revision_id ,
+  change_status ,
+  json_schema_name,
+  validation_errors ,
+  previous_form_change_id from cif.form_change where json_schema_name='project_summary_report';
+select '======';
+
 
 select finish();
 rollback;
