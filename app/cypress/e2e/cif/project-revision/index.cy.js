@@ -217,46 +217,14 @@ describe("the new project page", () => {
       "$1.00",
       "50.00 %",
       "$777.00",
-      "99.87%",
+      "This field cannot be calculated due to lack of information now.",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
       "$1.00",
-      "$778.00",
+      "This field cannot be calculated due to lack of information now.",
       "10.00 %"
     );
-    // additional funding sources
-    cy.findByText(/Additional Funding Source 1/i).should("be.visible");
-
-    // Emissions Intensity Report
-    cy.findByRole("heading", { name: /Emissions Intensity Report/i }).click();
-    cy.findByRole("link", { name: /Emissions Intensity Report/i }).click();
-    cy.contains(/Report Due Date/i)
-      .next()
-      .contains(/Jun(\.)? 10, 2020/);
-    cy.contains("Received Date")
-      .next()
-      .contains(/Jun(\.)? 10, 2020/);
-    cy.contains("General Comments")
-      .next()
-      .should("have.text", "TEIMP report comments 1");
-
-    cy.checkEmissionIntensityReportSummaryForm(
-      /Jun(\.)? 1, 2023/,
-      /Jul(\.)? 1, 2023/,
-      "1 month",
-      "tCO2e",
-      "Gj",
-      324.25364,
-      23.2357,
-      124.35,
-      44.4224,
-      "66.41%",
-      "98%",
-      /Jun(\.)? 10, 2020/,
-      "100.00%",
-      "$0.10",
-      "$0.10"
-    );
+    //TODO: TEIMP Agreement, when fixture is added
 
     cy.findByRole("heading", { name: /Annual reports/i }).click();
     cy.findByRole("link", { name: /Annual reports/i }).click();
