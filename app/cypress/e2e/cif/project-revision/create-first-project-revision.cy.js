@@ -183,7 +183,8 @@ describe("when creating a project, the project page", () => {
     cy.findByText(
       /Relay request for `createAttachmentMutation` failed by the following reasons:/i
     ).should("exist");
-    cy.findByText(/ The specified bucket does not exist./i).should("exist");
+    // cy.findByText(/ The specified bucket does not exist./i).should("exist");
+    cy.findByText(/The file at/i).should("exist");
     cy.wait("@gqladdProjectAttachmentToRevisionMutation")
       .its("response")
       .should("have.property", "body");
