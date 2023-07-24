@@ -13,3 +13,5 @@ cypress.env.json
 app/cypress.env.json
 dev/db/data
 **/.DS_Store
+
+gha-creds-*.json
