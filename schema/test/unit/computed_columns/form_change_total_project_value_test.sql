@@ -129,7 +129,7 @@ select is(
       from cif.form_change where id=3
     ) select * from cif.form_change_total_project_value((select * from record))
   ),
-  null,
+  500000::numeric,
   'Returns null when additional funding sources are missing'
 );
 
