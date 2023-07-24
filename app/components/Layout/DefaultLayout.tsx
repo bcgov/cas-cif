@@ -41,6 +41,7 @@ const DefaultLayout: React.FC<Props> = ({
 
   return (
     <div id="page-wrap">
+      <div>{error}</div>
       <Navigation
         links={subHeaderLinks}
         isLoggedIn={Boolean(session)}

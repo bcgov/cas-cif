@@ -6,7 +6,7 @@ export default defineConfig({
   screenshotOnRunFailure: false,
   defaultCommandTimeout: 10000,
   retries: {
-    runMode: 3,
+    runMode: 0,
     openMode: 0,
   },
   fixturesFolder: "../schema/data",
