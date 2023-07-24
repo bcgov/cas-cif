@@ -266,10 +266,10 @@ describe("when creating a project, the project page", () => {
     // GHG performance uses the ReadOnlyAdjustableCalculatedValueWidget, which has a different HTML structure than the other fields
     cy.findByText("GHG Emission Intensity Performance")
       .next()
-      .should(
-        "have.text",
-        "200.00%GHG Emission Intensity Performance (Adjusted)100%"
-      );
+      .should("have.text", "200.00%");
+    cy.findByText("GHG Emission Intensity Performance (Adjusted)")
+      .next()
+      .should("have.text", "100%");
     cy.findByText("Payment Percentage of Performance Milestone Amount (%)")
       .next()
       .should("have.text", "100.00%");

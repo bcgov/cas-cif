@@ -15,7 +15,13 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
 }) => {
   return (
     <div>
-      <div className="definition-container">
+      <div
+        className={
+          uiSchema.calculatedValueFormContextProperty
+            ? "adjustable-calculated-value-widget"
+            : "definition-container"
+        }
+      >
         {displayLabel && (
           <FieldLabel
             label={label}

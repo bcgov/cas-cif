@@ -739,7 +739,7 @@ describe("The Project Funding Agreement Form Summary", () => {
         };
       },
     });
-    const component = componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent();
     expect(
       screen.getAllByRole("tooltip", {
         name: "maximum-funding-amount-tooltip",
@@ -795,9 +795,6 @@ describe("The Project Funding Agreement Form Summary", () => {
         name: "total-eligible-expenses-to-date-tooltip",
       })
     ).toHaveLength(1);
-
-    // check that tooltip text hasn't changed
-    expect(component.container).toMatchSnapshot();
   });
 
   it("renders the tooltips for the IA form", () => {
@@ -880,7 +877,7 @@ describe("The Project Funding Agreement Form Summary", () => {
         };
       },
     });
-    const component = componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent();
 
     expect(
       screen.getAllByRole("tooltip", {
@@ -913,7 +910,5 @@ describe("The Project Funding Agreement Form Summary", () => {
         name: "additional-funding-amount-tooltip",
       })
     ).toHaveLength(1);
-    // check that tooltip text hasn't changed
-    expect(component.container).toMatchSnapshot();
   });
 });

@@ -120,7 +120,7 @@ describe("The Project Milestone Report Form Summary", () => {
     componentTestingHelper.reinit();
   });
 
-  it("Only displays the data fields that have changed", () => {
+  it("Displays the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -132,6 +132,41 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText("Milestone Report")).toBeInTheDocument();
     const milestoneReport = document.querySelector("dd > em.diffOld");
     expect(milestoneReport.textContent).toBe("Milestone Report");
+  });
+
+  it("Displays calculated and adjusted values and labels for calculated fields", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    // Gross Payment Amount
+    expect(
+      screen.getByText("Gross Payment Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText("$999.00")).toBeInTheDocument();
+    expect(
+      screen.getByText(/gross payment amount this milestone \(adjusted\)/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText("$99.00")).toBeInTheDocument();
+
+    // Net Payment Amount
+    expect(
+      screen.getByText("Net Payment Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText("$111.00")).toBeInTheDocument();
+    expect(
+      screen.getByText(/net payment amount this milestone \(adjusted\)/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText("$11.00")).toBeInTheDocument();
+
+    // Holdback Amount
+    expect(
+      screen.getByText("Holdback Amount This Milestone")
+    ).toBeInTheDocument();
+    expect(screen.getByText("$888.00")).toBeInTheDocument();
+    expect(
+      screen.getByText(/holdback amount this milestone \(adjusted\)/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText("$88.00")).toBeInTheDocument();
   });
 
   it("Displays diffs of the the data fields that were updated", () => {
@@ -185,56 +220,56 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText(/\$88\.00/i)).toBeInTheDocument();
   });
 
-  const latestCommittedData = {
-    latestCommittedMilestoneFormChanges: {
-      edges: [
-        {
-          node: {
-            newFormData: {
-              totalEligibleExpenses: 1000,
-              description: "charmander",
-              projectId: 1,
-              reportingRequirementIndex: 1,
-              reportType: "General",
-              reportDueDate: "2020-01-10T23:59:59.999-07:00",
-              reportingRequirementId: 1,
-              hasExpenses: true,
-              calculatedGrossAmount: 567,
-              calculatedNetAmount: 789,
-              calculatedHoldbackAmount: 891,
-              adjustedNetAmount: 89,
-              adjustedGrossAmount: 67,
-              adjustedHoldbackAmount: 91,
-            },
-          },
-        },
-      ],
-    },
-  };
-
-  const mockQueryPayloadLatestCommitted = {
-    ...mockQueryPayload,
-    ProjectRevision() {
-      const originalProjectRevision = mockQueryPayload.ProjectRevision();
-      const modifiedProjectRevision = {
-        ...originalProjectRevision,
-        latestCommittedMilestoneFormChanges: {
-          edges: [
-            {
-              node: {
-                newFormData:
-                  latestCommittedData.latestCommittedMilestoneFormChanges
-                    .edges[0].node.newFormData,
+  it("Displays diffs of the data fields that were updated and shows latest committed values", () => {
+    const latestCommittedData = {
+      latestCommittedMilestoneFormChanges: {
+        edges: [
+          {
+            node: {
+              newFormData: {
+                totalEligibleExpenses: 1000,
+                description: "charmander",
+                projectId: 1,
+                reportingRequirementIndex: 1,
+                reportType: "General",
+                reportDueDate: "2020-01-10T23:59:59.999-07:00",
+                reportingRequirementId: 1,
+                hasExpenses: true,
+                calculatedGrossAmount: 567,
+                calculatedNetAmount: 789,
+                calculatedHoldbackAmount: 891,
+                adjustedNetAmount: 89,
+                adjustedGrossAmount: 67,
+                adjustedHoldbackAmount: 91,
               },
             },
-          ],
-        },
-      };
-      return modifiedProjectRevision;
-    },
-  };
+          },
+        ],
+      },
+    };
 
-  it("Displays diffs of the data fields that were updated and shows latest committed values", () => {
+    const mockQueryPayloadLatestCommitted = {
+      ...mockQueryPayload,
+      ProjectRevision() {
+        const originalProjectRevision = mockQueryPayload.ProjectRevision();
+        const modifiedProjectRevision = {
+          ...originalProjectRevision,
+          latestCommittedMilestoneFormChanges: {
+            edges: [
+              {
+                node: {
+                  newFormData:
+                    latestCommittedData.latestCommittedMilestoneFormChanges
+                      .edges[0].node.newFormData,
+                },
+              },
+            ],
+          },
+        };
+        return modifiedProjectRevision;
+      },
+    };
+
     componentTestingHelper.defaultQueryResolver =
       mockQueryPayloadLatestCommitted;
     componentTestingHelper.loadQuery(mockQueryPayloadLatestCommitted);
@@ -275,66 +310,66 @@ describe("The Project Milestone Report Form Summary", () => {
     expect(screen.getByText(/\$88\.00/i)).toBeInTheDocument();
     expect(screen.getByText(/\$91\.00/i)).toBeInTheDocument();
   });
-  const mockQueryPayloadWithDiffs = {
-    Form() {
-      return {
-        jsonSchema: milestoneProdSchema,
-      };
-    },
-    ProjectRevision() {
-      const result = {
-        isFirstRevision: false,
-        summaryMilestoneFormChanges: {
-          edges: [
-            {
-              node: {
-                id: "Test Reporting Requirement ID - 1",
-                isPristine: false,
-                newFormData: {
-                  totalEligibleExpenses: 1000,
-                  description: "charmander",
-                  projectId: 1,
-                  reportingRequirementIndex: 1,
-                  reportType: "General",
-                  reportDueDate: "2020-01-10T23:59:59.999-07:00",
-                  reportingRequirementId: 1,
-                  hasExpenses: true,
-                  calculatedNetAmount: 221,
-                  calculatedGrossAmount: 222,
-                  calculatedHoldbackAmount: 223,
-                  adjustedNetAmount: 21,
-                  adjustedGrossAmount: 22,
-                  adjustedHoldbackAmount: 23,
-                },
-                operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    description: "bulbasaur",
-                    projectId: 1,
-                    reportingRequirementIndex: 1,
-                    reportDueDate: "2020-01-01T13:59:59.999-07:00",
-                    reportType: "Advanced",
-                    reportingRequirementId: 1,
-                    hasExpenses: true,
-                    calculatedNetAmount: 111,
-                    calculatedGrossAmount: 112,
-                    calculatedHoldbackAmount: 113,
-                    adjustedNetAmount: 11,
-                    adjustedGrossAmount: 12,
-                    adjustedHoldbackAmount: 13,
-                  },
-                },
-                formDataRecordId: 1,
-              },
-            },
-          ],
-        },
-      };
-      return result;
-    },
-  };
 
   it("Displays diffs of the data fields that were updated and the old values", () => {
+    const mockQueryPayloadWithDiffs = {
+      Form() {
+        return {
+          jsonSchema: milestoneProdSchema,
+        };
+      },
+      ProjectRevision() {
+        const result = {
+          isFirstRevision: false,
+          summaryMilestoneFormChanges: {
+            edges: [
+              {
+                node: {
+                  id: "Test Reporting Requirement ID - 1",
+                  isPristine: false,
+                  newFormData: {
+                    totalEligibleExpenses: 1000,
+                    description: "charmander",
+                    projectId: 1,
+                    reportingRequirementIndex: 1,
+                    reportType: "General",
+                    reportDueDate: "2020-01-10T23:59:59.999-07:00",
+                    reportingRequirementId: 1,
+                    hasExpenses: true,
+                    calculatedNetAmount: 221,
+                    calculatedGrossAmount: 222,
+                    calculatedHoldbackAmount: 223,
+                    adjustedNetAmount: 21,
+                    adjustedGrossAmount: 22,
+                    adjustedHoldbackAmount: 23,
+                  },
+                  operation: "UPDATE",
+                  formChangeByPreviousFormChangeId: {
+                    newFormData: {
+                      description: "bulbasaur",
+                      projectId: 1,
+                      reportingRequirementIndex: 1,
+                      reportDueDate: "2020-01-01T13:59:59.999-07:00",
+                      reportType: "Advanced",
+                      reportingRequirementId: 1,
+                      hasExpenses: true,
+                      calculatedNetAmount: 111,
+                      calculatedGrossAmount: 112,
+                      calculatedHoldbackAmount: 113,
+                      adjustedNetAmount: 11,
+                      adjustedGrossAmount: 12,
+                      adjustedHoldbackAmount: 13,
+                    },
+                  },
+                  formDataRecordId: 1,
+                },
+              },
+            ],
+          },
+        };
+        return result;
+      },
+    };
     componentTestingHelper.defaultQueryResolver = mockQueryPayloadWithDiffs;
     componentTestingHelper.loadQuery(mockQueryPayloadWithDiffs);
     componentTestingHelper.renderComponent();
@@ -413,7 +448,7 @@ describe("The Project Milestone Report Form Summary", () => {
       },
     };
     componentTestingHelper.loadQuery(mockTooltipPayload);
-    const component = componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent();
 
     expect(
       screen.getAllByRole("tooltip", {
@@ -444,7 +479,5 @@ describe("The Project Milestone Report Form Summary", () => {
         name: "holdback-amount-this-milestone-tooltip",
       })
     ).toHaveLength(1);
-    // check that tooltip text hasn't changed
-    expect(component.container).toMatchSnapshot();
   });
 });

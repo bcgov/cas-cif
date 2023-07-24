@@ -259,6 +259,12 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
             isOnAmendmentsAndOtherRevisionsPage,
         }}
       />
+      <style jsx>{`
+        :global(.adjustable-calculated-value-widget) {
+          display: flex;
+          flex-wrap: wrap;
+        }
+      `}</style>
     </>
   );
 };

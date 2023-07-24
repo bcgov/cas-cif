@@ -236,6 +236,12 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             uiSchema={updatedUiSchema}
             formData={milestoneFormDiffObject.formData}
             formContext={{
+              calculatedHoldbackAmount:
+                milestoneReport?.newFormData?.calculatedHoldbackAmount,
+              calculatedGrossAmount:
+                milestoneReport?.newFormData?.calculatedGrossAmount,
+              calculatedNetAmount:
+                milestoneReport?.newFormData?.calculatedNetAmount,
               operation: milestoneReport.operation,
               oldData:
                 milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
@@ -244,10 +250,13 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
                 isOnAmendmentsAndOtherRevisionsPage,
             }}
           />
-
           <style jsx>{`
             div.reportContainer {
               padding-top: 1em;
+            }
+            :global(.adjustable-calculated-value-widget) {
+              display: flex;
+              flex-wrap: wrap;
             }
           `}</style>
         </div>
