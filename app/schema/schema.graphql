@@ -45893,7 +45893,6 @@ type FormChange implements Node {
       Computed column to return the total project value.
       Calculation:
       - Total Project Value = Maximum Funding Amount + Proponent Cost + approved Additional Funding Amount(s)
-      Only returns the total project value if all values are present. If any value is missing, returns NULL.
   
   """
   totalProjectValue: BigFloat
