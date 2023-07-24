@@ -6,18 +6,21 @@ begin;
 create or replace function cif_private.handle_project_summary_report_form_change_commit(fc cif.form_change)
     returns int as $$
 declare
-    reporting_requirement_record_id int;
+  reporting_requirement_record_id int;
 begin
-    -- If there is no change in the form data, return the form_change record and do not touch the associated table.
-    if (fc.new_form_data = '{}') then
-        return fc.form_data_record_id;
-    end if;
 
-    if (fc.change_status = 'committed') then
-        raise exception 'Cannot commit form_change. It has already been committed.';
-    end if;
+  -- If there is no change in the form data, return the form_change record and do not touch the associated table.
+  if (fc.new_form_data = '{}') then
+    return fc.form_data_record_id; -- can be null if creating with empty form data...problem?
+  end if;
 
-    if fc.operation = 'create' then
+  if (fc.change_status = 'committed') then
+    raise exception 'Cannot commit form_change. It has already been committed.';
+  end if;
+
+  reporting_requirement_record_id := fc.form_data_record_id;
+
+  if fc.operation = 'create' then
         insert into cif.reporting_requirement(
             project_id,
             report_type,
