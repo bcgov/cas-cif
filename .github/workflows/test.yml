@@ -185,6 +185,8 @@ jobs:
           export_environment_variables: true
           workload_identity_provider: ${{secrets.IDENTITY_PROVIDER}}
           service_account: ${{secrets.GCS_SERVICE_ACCOUNT}}
+        run: | # pragma: allowlist secret
+          echo $GOOGLE_APPLICATION_CREDENTIALS >> $GITHUB_ENV
       - name: run e2e tests
         env:
           CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
