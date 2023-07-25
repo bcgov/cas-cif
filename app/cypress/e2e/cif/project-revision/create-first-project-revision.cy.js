@@ -182,7 +182,7 @@ describe("when creating a project, the project page", () => {
     cy.fixture("e2e/mock.pdf").as("mockFile");
     cy.get("input[type=file]").selectFile("@mockFile");
     // cy.screenshot();
-    cy.findByText(
+    cy.findAllByText(
       /Relay request for `createAttachmentMutation` failed by the following reasons:/i
     ).should("exist");
     // cy.findByText(/ The specified bucket does not exist./i).should("exist");
