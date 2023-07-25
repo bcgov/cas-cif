@@ -59,7 +59,6 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
 
   const attachmentsSummary =
     revision.summaryProjectAttachmentFormChanges.edges[0]?.node;
-
   const projectAttachmentsFormNotUpdated = useMemo(
     () =>
       !attachmentsSummary ||
