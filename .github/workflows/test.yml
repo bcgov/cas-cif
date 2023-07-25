@@ -179,8 +179,8 @@ jobs:
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v1"
         with:
-          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
-        # run: gcloud auth application-default login
+          workload_identity_provider: ${{secrets.IDENTITY_PROVIDER}}
+          service_account: ${{secrets.GCS_SERVICE_ACCOUNT}}
       - name: run e2e tests
         env:
           CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
