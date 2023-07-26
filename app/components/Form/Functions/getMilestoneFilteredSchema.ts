@@ -35,9 +35,14 @@ export const getMilestoneFilteredSchema = (
   const newDataObject: any = {};
 
   for (const key of Object.keys(filteredSchema.properties)) {
+    const [updatedFormData, prevFormData] = [
+      formChange?.newFormData?.[key],
+      formChange?.formChangeByPreviousFormChangeId?.newFormData?.[key],
+    ];
     if (
-      formChange?.newFormData?.[key] ===
-      formChange?.formChangeByPreviousFormChangeId?.newFormData?.[key]
+      updatedFormData === prevFormData ||
+      (updatedFormData === undefined && prevFormData === null) ||
+      (updatedFormData === null && prevFormData === undefined)
     )
       delete filteredSchema.properties[key];
     else newDataObject[key] = formChange.newFormData?.[key];
