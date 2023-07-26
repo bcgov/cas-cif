@@ -9,7 +9,7 @@ import { useStageFormChange } from "mutations/FormChange/stageFormChange";
 import { useCreateFundingParameterFormChange } from "mutations/FundingParameter/createFundingParameterFormChange";
 import useDiscardFundingParameterFormChange from "mutations/FundingParameter/discardFundingParameterFormChange";
 import { useUpdateFundingParameterFormChange } from "mutations/FundingParameter/updateFundingParameterFormChange";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectFundingAgreementForm_projectRevision$key } from "__generated__/ProjectFundingAgreementForm_projectRevision.graphql";
 import { ProjectFundingAgreementForm_query$key } from "__generated__/ProjectFundingAgreementForm_query.graphql";
@@ -17,8 +17,6 @@ import FormBase from "./FormBase";
 import { stageReportFormChanges } from "./Functions/reportingRequirementFormChangeFunctions";
 import SavingIndicator from "./SavingIndicator";
 import UndoChangesButton from "./UndoChangesButton";
-import { useRouter } from "next/router";
-import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 
 interface Props {
   query: ProjectFundingAgreementForm_query$key;
@@ -29,7 +27,6 @@ interface Props {
 
 const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const formRefs = useRef<Record<string, any>>({});
-  const router = useRouter();
 
   // Mutations
   const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
@@ -219,8 +216,18 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    const fundingAgreementFormChangeId =
+      projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.rowId;
+    return [fundingAgreementFormChangeId];
+  }, [projectRevision.projectFundingAgreementFormChanges]);
+
+  const [isFunded, setIsFunded] = useState(null);
+
   const handleDiscard = () => {
     setShowDiscardConfirmation(false);
+    setIsFunded("no");
     discardFundingParameterFormChange({
       variables: {
         input: {
@@ -231,19 +238,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       },
     });
   };
-  // Get all form changes ids to get used in the undo changes button
-  const formChangeIds = useMemo(() => {
-    const fundingAgreementFormChangeId =
-      projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.rowId;
-    return [fundingAgreementFormChangeId];
-  }, [projectRevision.projectFundingAgreementFormChanges]);
 
-  const [isRadioButtonSelected, setIsRadioButtonSelected] = useState(false);
-  useEffect(() => {
-    if (projectRevision.projectFundingAgreementFormChanges.edges.length === 0) {
-      setIsRadioButtonSelected(false);
-    }
-  }, [projectRevision.projectFundingAgreementFormChanges.edges.length]);
   return (
     <>
       {projectRevision.projectFundingAgreementFormChanges.edges.length ===
@@ -255,28 +250,26 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               name="funding-agreement"
               label="Yes"
               className="radio-button"
-              onClick={() => {
+              onChange={() => {
                 addFundingAgreement();
-                setIsRadioButtonSelected(true);
+                setIsFunded("yes");
               }}
               disabled={isDiscardingFundingParameterFormChange}
+              checked={isFunded === "yes"}
             />
             <RadioButton
               name="funding-agreement"
               label="No"
               className="radio-button"
-              onClick={() => setIsRadioButtonSelected(true)}
+              checked={isFunded === "no"}
+              onChange={() => setIsFunded("no")}
             />
           </div>
           <Button
             type="submit"
-            onClick={() =>
-              router.push(
-                getProjectRevisionFormPageRoute(projectRevision.id, 8)
-              )
-            }
+            onClick={() => props.onSubmit()}
             style={{ marginRight: "1rem" }}
-            disabled={!isRadioButtonSelected}
+            disabled={!isFunded}
           >
             Submit
           </Button>
@@ -290,20 +283,27 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               name="funding-agreement"
               label="Yes"
               className="radio-button"
-              checked={true}
+              checked={isFunded === "yes"}
+              onChange={() => setIsFunded("yes")}
             />
             <RadioButton
               name="funding-agreement"
               label="No"
               className="radio-button"
-              onClick={() => setShowDiscardConfirmation(true)}
+              onChange={() => {
+                setShowDiscardConfirmation(true);
+                setIsFunded("no");
+              }}
               disabled={isDiscardingFundingParameterFormChange}
-              checked={false}
+              checked={isFunded === "no"}
             />
             {showDiscardConfirmation && (
               <DangerAlert
                 onProceed={handleDiscard}
-                onCancel={() => setShowDiscardConfirmation(false)}
+                onCancel={() => {
+                  setIsFunded("yes");
+                  setShowDiscardConfirmation(false);
+                }}
                 alertText="All changes made will be deleted."
               />
             )}
