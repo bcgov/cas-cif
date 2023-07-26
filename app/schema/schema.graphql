@@ -45772,7 +45772,7 @@ type FormChange implements Node {
   grossPaymentsToDate: BigFloat
 
   """
-  Computed column returns sum all holdback amounts for a project. Preference for value selection is adjustedHoldbackAmount > calculuatedHoldbackAmount > amount calculated via maximum milestone amount
+  Computed column returns the sum of all holdback amounts for a project IF all milestones have been paid out (ie, all milestones have a value for date sent to CSNR
   """
   holdbackAmountToDate: BigFloat
 
@@ -45785,6 +45785,7 @@ type FormChange implements Node {
 
   """The name of the JSON schema to use for validation of this form data"""
   jsonSchemaName: String!
+  maximumPerformanceMilestoneAmount: BigFloat
 
   """
   Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount > amount calculated via maximum milestone amount
@@ -46208,6 +46209,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `jsonSchemaName` field."""
   jsonSchemaName: StringFilter
+
+  """Filter by the object’s `maximumPerformanceMilestoneAmount` field."""
+  maximumPerformanceMilestoneAmount: BigFloatFilter
 
   """Filter by the object’s `netPaymentsToDate` field."""
   netPaymentsToDate: BigFloatFilter

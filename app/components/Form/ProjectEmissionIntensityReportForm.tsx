@@ -158,7 +158,7 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               changeStatus
               calculatedEiPerformance
               paymentPercentage
-              holdbackAmountToDate
+              maximumPerformanceMilestoneAmount
               actualPerformanceMilestoneAmount
             }
           }
@@ -171,12 +171,15 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const emissionIntensityReportingRequirementFormChange =
     projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
       ?.node;
-
+  console.log(
+    "emissionIntensityReportingRequirementFormChange",
+    emissionIntensityReportingRequirementFormChange
+  );
   const calculatedEiPerformance =
     emissionIntensityReportingRequirementFormChange?.calculatedEiPerformance;
 
-  const holdbackAmountToDate =
-    emissionIntensityReportingRequirementFormChange?.holdbackAmountToDate;
+  const maximumPerformanceMilestoneAmount =
+    emissionIntensityReportingRequirementFormChange?.maximumPerformanceMilestoneAmount;
 
   const paymentPercentageOfPerformanceMilestoneAmount =
     emissionIntensityReportingRequirementFormChange?.paymentPercentage;
@@ -311,7 +314,8 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
               calculatedEiPerformance: calculatedEiPerformance ?? null,
               paymentPercentageOfPerformanceMilestoneAmount:
                 paymentPercentageOfPerformanceMilestoneAmount ?? null,
-              holdbackAmountToDate: holdbackAmountToDate ?? null,
+              maximumPerformanceMilestoneAmount:
+                maximumPerformanceMilestoneAmount ?? null,
               actualPerformanceMilestoneAmount:
                 projectRevision.emissionIntensityReportingRequirementFormChange
                   .edges[0]?.node.actualPerformanceMilestoneAmount,

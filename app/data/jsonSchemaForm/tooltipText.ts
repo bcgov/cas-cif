@@ -45,6 +45,9 @@ export const emissionsIntentityTooltips = {
 
   actualPerformanceMilestoneAmount:
     "<div><ul><li>Actual Performance Milestone Amount = Maximum Performance Milestone Amount x Payment Percentage of Performance Milestone Amount</li></ul></div>",
+
+  maximumPerformanceMilestoneAmount:
+    "<div><ul><li>Maximum Performance Milestone Amount = Holdback Payment Amount (Milestone Report 1) + Holdback Payment Amount (Milestone Report 2) + ... + Holdback Payment Amount (Milestone Report N)</li></ul></div>",
 };
 
 export const milestoneTooltips = {

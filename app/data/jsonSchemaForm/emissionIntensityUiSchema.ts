@@ -18,7 +18,7 @@ export const emissionIntensityReportingRequirementUiSchema = {
     "dateSentToCsnr",
     "paymentPercentage", // aka Payment Percentage of Performance Milestone Amount (%)
     "actualPerformanceMilestoneAmount", // aka Actual Performance Milestone Amount
-    "holdbackAmountToDate", // aka Maximum Performance Milestone Amount
+    "maximumPerformanceMilestoneAmount", // aka Maximum Performance Milestone Amount
   ],
   emissionFunctionalUnit: {
     "ui:widget": "TextWidget",
@@ -85,14 +85,14 @@ export const emissionIntensityReportingRequirementUiSchema = {
       text: emissionsIntentityTooltips.actualPerformanceMilestoneAmount,
     },
   },
-  holdbackAmountToDate: {
+  maximumPerformanceMilestoneAmount: {
     "ui:widget": "CalculatedValueWidget",
-    calculatedValueFormContextProperty: "holdbackAmountToDate",
+    calculatedValueFormContextProperty: "maximumPerformanceMilestoneAmount",
     isMoney: true,
     hideOptional: true,
     renamedId: "maximumPerformanceMilestoneAmount",
     "ui:tooltip": {
-      text: emissionsIntentityTooltips.holdbackAmountToDate,
+      text: emissionsIntentityTooltips.maximumPerformanceMilestoneAmount,
     },
   },
   dateSentToCsnr: {
@@ -136,7 +136,7 @@ export const emissionIntensityReportingRequirementGroupSchema = [
       "dateSentToCsnr",
       "paymentPercentage",
       "actualPerformanceMilestoneAmount",
-      "holdbackAmountToDate",
+      "maximumPerformanceMilestoneAmount",
     ],
   },
 ];
