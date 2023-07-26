@@ -254,13 +254,13 @@ describe("the emission intensity report form component", () => {
                   isPristine: false,
                   calculatedEiPerformance: 10,
                   paymentPercentage: 40,
-                  holdbackAmountToDate: 123,
+                  maximumPerformanceMilestoneAmount: 123,
                   actualPerformanceMilestoneAmount: null,
                   operation: "UPDATE",
                   formChangeByPreviousFormChangeId: {
                     calculatedEiPerformance: 20,
                     paymentPercentage: 44,
-                    holdbackAmountToDate: 321,
+                    maximumPerformanceMilestoneAmount: 321,
                     actualPerformanceMilestoneAmount: 789,
                   },
                 },
@@ -275,7 +275,7 @@ describe("the emission intensity report form component", () => {
                   operation: "UPDATE",
                   calculatedEiPerformance: 22,
                   paymentPercentage: 13,
-                  holdbackAmountToDate: 741,
+                  maximumPerformanceMilestoneAmount: 741,
                   actualPerformanceMilestoneAmount: 357,
                 },
               },
@@ -305,9 +305,9 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByText(/maximum performance milestone amount/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/\$321\.00/i)).toBeInTheDocument(); //old holdbackAmountToDate
-    expect(screen.getByText(/\$123\.00/i)).toBeInTheDocument(); //new holdbackAmountToDate
-    expect(screen.getByText(/\$741\.00/i)).toBeInTheDocument(); //latest committed holdbackAmountToDate
+    expect(screen.getByText(/\$321\.00/i)).toBeInTheDocument(); //old maximumPerformanceMilestoneAmount
+    expect(screen.getByText(/\$123\.00/i)).toBeInTheDocument(); //new maximumPerformanceMilestoneAmount
+    expect(screen.getByText(/\$741\.00/i)).toBeInTheDocument(); //latest committed maximumPerformanceMilestoneAmount
 
     expect(
       screen.getByText(/actual performance milestone amount/i)
@@ -335,7 +335,7 @@ describe("the emission intensity report form component", () => {
                   isPristine: true,
                   calculatedEiPerformance: 10,
                   paymentPercentage: 40,
-                  holdbackAmountToDate: 123,
+                  maximumPerformanceMilestoneAmount: 123,
                   actualPerformanceMilestoneAmount: null,
                   operation: "CREATE",
                 },
