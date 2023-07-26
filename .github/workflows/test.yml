@@ -197,6 +197,7 @@ jobs:
           CYPRESS_TEST_UNAUTHORIZED_PASSWORD: ${{ secrets.TEST_UNAUTHORIZED_PASSWORD }}
           HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
+          TEST_ENV: "test"
         run: yarn test:e2e
         working-directory: ./app
 
