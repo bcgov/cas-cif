@@ -197,7 +197,10 @@ jobs:
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
           TEST_ENV: "test"
           GOOGLE_APPLICATION_CREDENTIALS: ${{env.GOOGLE_APPLICATION_CREDENTIALS}}
-        run: yarn test:e2e
+        run: |
+          echo $GOOGLE_APPLICATION_CREDENTIALS
+          echo $TEST_ENV
+          yarn test:e2e
         working-directory: ./app
 
   zap-owasp:
