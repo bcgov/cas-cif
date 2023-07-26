@@ -14,6 +14,7 @@ const testQuery = graphql`
       projectRevision(id: "Test Project Revision ID") {
         ...ProjectEmissionIntensityReportFormSummary_projectRevision
       }
+      ...ProjectEmissionIntensityReportFormSummary_query
     }
   }
 `;
@@ -325,7 +326,7 @@ describe("the emission intensity report form component", () => {
       ProjectRevision() {
         return {
           isFirstRevision: true,
-          summaryEmissionIntensityReportFormChange: {
+          summaryEmissionIntensityReportingRequirementFormChange: {
             edges: [
               {
                 node: {

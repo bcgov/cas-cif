@@ -16,6 +16,7 @@ const pageQuery = graphql`
         ...DefaultLayout_session
       }
       ...ProjectFundingAgreementFormSummary_query
+      ...ProjectEmissionIntensityReportFormSummary_query
       projectRevision(id: $projectRevision) {
         id
         changeStatus
@@ -66,7 +67,6 @@ const pageQuery = graphql`
       ...ProjectFundingAgreementForm_query
       ...ProjectFundingAgreementFormSummary_query
       ...ProjectEmissionIntensityReportForm_query
-      ...ProjectEmissionIntensityReportFormSummary_query
       ...ProjectEmissionIntensityReportFormSummary_query
     }
   }
