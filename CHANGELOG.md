@@ -1,3 +1,17 @@
+# [1.11.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.11.0) (2023-07-26)
+
+### Bug Fixes
+
+- add milestone calculated values to form context ([ef015d5](https://github.com/bcgov/cas-cif/commit/ef015d52812e7fdf50297287b6b35f71cd39657b))
+- add null and undefined values to optional fields in json schemas ([e84c8a1](https://github.com/bcgov/cas-cif/commit/e84c8a15455eafdc0e9496f6a2dad4de46402113))
+- change obsolete images for PGO in backup test chart ([8e2a4fb](https://github.com/bcgov/cas-cif/commit/8e2a4fb3985b1134e99cccc0fe61a7616345f084))
+- set milestone `certifierProfessionalDesignation` field to null when user selects N/A ([4ba0cae](https://github.com/bcgov/cas-cif/commit/4ba0cae7a3346161008a66128022e86b8412f565))
+- shows secondary contacts in project contact summary form ([0aee342](https://github.com/bcgov/cas-cif/commit/0aee3421f7276f72b7ac402057cfc9e91a77d8ff))
+
+### Features
+
+- move EI tooltips to UI schema ([8319d31](https://github.com/bcgov/cas-cif/commit/8319d3158786890e35a6e8462ab268398b83e17f))
+
 # [1.10.0](https://github.com/bcgov/cas-cif/compare/1.9.0...1.10.0) (2023-07-13)
 
 ### Bug Fixes
