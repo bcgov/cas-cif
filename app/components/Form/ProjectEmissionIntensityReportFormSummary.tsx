@@ -13,16 +13,20 @@ import {
   FormNotAddedOrUpdated,
   FormRemoved,
 } from "./SummaryFormCommonComponents";
+import { ProjectEmissionIntensityReportFormSummary_query$key } from "__generated__/ProjectEmissionIntensityReportFormSummary_query.graphql";
 const { fields } = utils.getDefaultRegistry();
 
 interface Props
-  extends SummaryFormProps<ProjectEmissionIntensityReportFormSummary_projectRevision$key> {}
+  extends SummaryFormProps<ProjectEmissionIntensityReportFormSummary_projectRevision$key> {
+  query: ProjectEmissionIntensityReportFormSummary_query$key;
+}
 
 const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
   projectRevision,
   viewOnly,
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
+  query,
 }) => {
   const {
     summaryEmissionIntensityReportingRequirementFormChange,
@@ -44,7 +48,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
               actualPerformanceMilestoneAmount
               newFormData
               operation
-              isPristine
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -129,14 +132,39 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         ?.actualPerformanceMilestoneAmount,
   };
 
-  const allFormChangesPristine = useMemo(() => {
-    if (
-      summaryReportingRequirement?.isPristine === false ||
-      summaryReportingRequirement?.isPristine === null
-    )
-      return false;
-    return true;
-  }, [summaryReportingRequirement?.isPristine]);
+  const { emissionIntensityFormBySlug } = useFragment(
+    graphql`
+      fragment ProjectEmissionIntensityReportFormSummary_query on Query {
+        emissionIntensityFormBySlug: formBySlug(slug: "emission_intensity") {
+          jsonSchema
+        }
+      }
+    `,
+    query
+  );
+
+  const filteredSchema = getSchemaAndDataIncludingCalculatedValues(
+    emissionIntensityFormBySlug.jsonSchema.schema as JSONSchema7,
+    newData,
+    oldData,
+    {
+      // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
+      adjustedEmissionsIntensityPerformance: {
+        title: "GHG Emission Intensity Performance (Adjusted)",
+        type: "number",
+      },
+      // Add calculatedEiPerformance to the schema since this field is using `AdjustableCalculatedValueWidget` and is not directly in the schema
+      calculatedEiPerformance: {
+        type: "number",
+        title: "GHG Emission Intensity Performance",
+      },
+    }
+  );
+
+  const allFormChangesPristine = useMemo(
+    () => Object.keys(filteredSchema.formData).length === 0,
+    [filteredSchema.formData]
+  );
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
   useEffect(
@@ -167,24 +195,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           .schema as JSONSchema7,
         formData: summaryReportingRequirement?.newFormData,
       }
-    : getSchemaAndDataIncludingCalculatedValues(
-        summaryReportingRequirement.formByJsonSchemaName.jsonSchema
-          ?.schema as JSONSchema7,
-        newData,
-        oldData,
-        {
-          // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
-          adjustedEmissionsIntensityPerformance: {
-            title: "GHG Emission Intensity Performance (Adjusted)",
-            type: "number",
-          },
-          // Add calculatedEiPerformance to the schema since this field is using `AdjustableCalculatedValueWidget` and is not directly in the schema
-          calculatedEiPerformance: {
-            type: "number",
-            title: "GHG Emission Intensity Performance",
-          },
-        }
-      );
+    : filteredSchema;
 
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };

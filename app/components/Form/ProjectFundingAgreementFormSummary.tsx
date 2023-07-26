@@ -70,7 +70,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
                   }
                 }
               }
-              isPristine
               operation
               formChangeByPreviousFormChangeId {
                 newFormData
@@ -219,6 +218,12 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
 
+  const filteredSchema = getSchemaAndDataIncludingCalculatedValues(
+    schema as JSONSchema7,
+    newData,
+    oldData
+  );
+
   // Set the formSchema and formData based on showing the diff or not
   const { formSchema, formData } = !renderDiff
     ? {
@@ -230,21 +235,11 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
           ),
         },
       }
-    : {
-        ...getSchemaAndDataIncludingCalculatedValues(
-          schema as JSONSchema7,
-          newData,
-          oldData
-        ),
-      };
+    : filteredSchema;
 
   const fundingAgreementFormNotUpdated = useMemo(
-    () =>
-      !fundingAgreementSummary ||
-      fundingAgreementSummary?.isPristine ||
-      (fundingAgreementSummary?.isPristine === null &&
-        Object.keys(fundingAgreementSummary?.newFormData).length === 0),
-    [fundingAgreementSummary]
+    () => Object.keys(filteredSchema.formData).length === 0,
+    [filteredSchema.formData]
   );
 
   const createUiSchema = useMemo(() => {

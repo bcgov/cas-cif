@@ -60,6 +60,8 @@ export const ViewProjectRevisionQuery = graphql`
     }
     # eslint-disable-next-line relay/must-colocate-fragment-spreads
     ...ProjectFundingAgreementFormSummary_query
+    # eslint-disable-next-line relay/must-colocate-fragment-spreads
+    ...ProjectEmissionIntensityReportFormSummary_query
   }
 `;
 
