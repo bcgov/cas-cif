@@ -201,6 +201,7 @@ jobs:
           echo $GOOGLE_APPLICATION_CREDENTIALS
           echo $TEST_ENV
           pwd
+          echo $ATTACHMENTS_BUCKET
           yarn test:e2e
         working-directory: ./app
 
