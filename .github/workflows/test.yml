@@ -178,13 +178,13 @@ jobs:
           detached: true
       - name: run app locally
         uses: ./.github/actions/local-app-run
-      # - id: "auth"
-      #   name: "Authenticate to Google Cloud"
-      #   uses: "google-github-actions/auth@v1"
-      #   with:
-      #     export_environment_variables: true
-      #     workload_identity_provider: ${{secrets.IDENTITY_PROVIDER}}
-      #     service_account: ${{secrets.GCS_SERVICE_ACCOUNT}}
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v1"
+        with:
+          export_environment_variables: true
+          workload_identity_provider: ${{secrets.IDENTITY_PROVIDER}}
+          service_account: ${{secrets.GCS_SERVICE_ACCOUNT}}
       - name: run e2e tests
         env:
           CYPRESS_TEST_INTERNAL_USERNAME: ${{ secrets.TEST_INTERNAL_USERNAME }}
@@ -196,6 +196,7 @@ jobs:
           HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
           TEST_ENV: "test"
+          GOOGLE_APPLICATION_CREDENTIALS: ${{env.GOOGLE_APPLICATION_CREDENTIALS}}
         run: yarn test:e2e
         working-directory: ./app
 
