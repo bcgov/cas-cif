@@ -171,10 +171,6 @@ const ProjectEmissionsIntensityReport: React.FC<Props> = (props) => {
   const emissionIntensityReportingRequirementFormChange =
     projectRevision.emissionIntensityReportingRequirementFormChange.edges[0]
       ?.node;
-  console.log(
-    "emissionIntensityReportingRequirementFormChange",
-    emissionIntensityReportingRequirementFormChange
-  );
   const calculatedEiPerformance =
     emissionIntensityReportingRequirementFormChange?.calculatedEiPerformance;
 

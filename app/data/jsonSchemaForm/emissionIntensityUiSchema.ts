@@ -90,7 +90,6 @@ export const emissionIntensityReportingRequirementUiSchema = {
     calculatedValueFormContextProperty: "maximumPerformanceMilestoneAmount",
     isMoney: true,
     hideOptional: true,
-    renamedId: "maximumPerformanceMilestoneAmount",
     "ui:tooltip": {
       text: emissionsIntentityTooltips.maximumPerformanceMilestoneAmount,
     },
