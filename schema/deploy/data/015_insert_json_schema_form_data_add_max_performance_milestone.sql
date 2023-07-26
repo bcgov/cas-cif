@@ -1,4 +1,4 @@
--- Deploy cif:data/010_insert_json_schema_form_data_refactor_emission_schema to pg
+-- Deploy cif:data/015_insert_json_schema_form_data_add_max_performance_milestone to pg
 
 begin;
 
