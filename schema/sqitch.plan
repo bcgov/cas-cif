@@ -346,3 +346,4 @@ data/014_insert_json_schema_form_data_add_default_value_for_optional_fields 2023
 @1.11.0 2023-07-26T15:05:29Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.11.0
 mutations/update_milestone_form_change [mutations/update_milestone_form_change@1.10.0] 2023-07-20T15:40:59Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Remove payment related fields when report type does not support payment
 functions/handle_milestone_form_change_commit [functions/handle_milestone_form_change_commit@1.10.0] 2023-07-25T19:29:40Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update commit handler to support reports that are not associated with expense
+computed_columns/form_change_maximum_performance_milestone_amount 2023-07-26T16:05:38Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create computed column to calculate maximum performance mmilestone amount
