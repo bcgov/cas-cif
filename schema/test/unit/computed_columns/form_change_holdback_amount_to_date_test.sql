@@ -108,9 +108,9 @@ select is(
     ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
-    null
+  40000::numeric
   ),
-  'Returns null when either adjustedHoldbackAmount or calculatedHoldbackAmount are NULL'
+  'Returns a value when either adjustedHoldbackAmount or calculatedHoldbackAmount exist'
 );
 
 -- adjustedHoldbackAmount and calculatedHoldbackAmount are NULL
