@@ -45772,7 +45772,7 @@ type FormChange implements Node {
   grossPaymentsToDate: BigFloat
 
   """
-  Computed column returns sum all holdback amounts for a project. If any of the milestones have null values for adjustedHoldbackAmount or calculatedHoldbackAmount, then null is returned. Preference for value selection is adjustedHoldbackAmount > calculatedHoldbackAmount > amount calculated via maximum milestone amount
+  Computed column returns sum all holdback amounts for a project. If any of the milestones have null values for adjustedHoldbackAmount and calculatedHoldbackAmount, then null is returned. Preference for value selection is adjustedHoldbackAmount > calculatedHoldbackAmount > amount calculated via maximum milestone amount
   """
   holdbackAmountToDate: BigFloat
 
