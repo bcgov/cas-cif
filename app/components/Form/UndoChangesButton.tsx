@@ -4,9 +4,14 @@ import { MutableRefObject } from "react";
 interface Props {
   formChangeIds: number[];
   formRefs?: MutableRefObject<{}>;
+  callback?: () => void;
 }
 
-const UndoChangesButton: React.FC<Props> = ({ formChangeIds, formRefs }) => {
+const UndoChangesButton: React.FC<Props> = ({
+  formChangeIds,
+  formRefs,
+  callback,
+}) => {
   const [undoFormChanges] = useUndoFormChanges();
 
   const handleClick = () => {
@@ -22,6 +27,7 @@ const UndoChangesButton: React.FC<Props> = ({ formChangeIds, formRefs }) => {
             if (!formRefs.current[key]) delete formRefs.current[key];
           });
         }
+        if (callback) callback();
       },
     });
   };
