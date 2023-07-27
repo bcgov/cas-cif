@@ -7,15 +7,26 @@ create or replace function cif.form_change_holdback_amount_to_date(parameter_fc 
 returns numeric as
 $fn$
 
-  select
-    round(sum(coalesce((fc.new_form_data->>'adjustedHoldbackAmount')::numeric, (fc.new_form_data->>'calculatedHoldbackAmount')::numeric, 0)), 2)
+  with results as (
+    select
+        (fc.new_form_data->>'adjustedHoldbackAmount')::numeric as adjustedHoldbackAmount,
+        (fc.new_form_data->>'calculatedHoldbackAmount')::numeric as calculatedHoldbackAmount
     from cif.form_change fc
     where fc.project_revision_id = $1.project_revision_id
     and json_schema_name = 'milestone'
-    and (fc.new_form_data->>'hasExpenses')::boolean = true;
+    and (fc.new_form_data->>'hasExpenses')::boolean = true
+    and fc.operation <> 'archive'
+  )
+
+  select
+    case
+      when count(*) filter (where adjustedHoldbackAmount is null and calculatedHoldbackAmount is null) > 0 then null
+      else round(sum(coalesce(adjustedHoldbackAmount, calculatedHoldbackAmount)), 0)
+    end
+  from results;
 
 $fn$ language sql stable;
 
-comment on function cif.form_change_holdback_amount_to_date(cif.form_change) is 'Computed column returns sum all holdback amounts for a project. Preference for value selection is adjustedHoldbackAmount > calculuatedHoldbackAmount > amount calculated via maximum milestone amount';
+comment on function cif.form_change_holdback_amount_to_date(cif.form_change) is 'Computed column returns sum all holdback amounts for a project. If any of the milestones have null values for adjustedHoldbackAmount and calculatedHoldbackAmount, then null is returned. Preference for value selection is adjustedHoldbackAmount > calculatedHoldbackAmount > amount calculated via maximum milestone amount';
 
 commit;

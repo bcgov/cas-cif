@@ -1,4 +1,4 @@
--- Verify cif:computed_columns/form_change_holdback_amount_to_date_001 on pg
+-- Verify cif:computed_columns/form_change_holdback_amount_to_date on pg
 
 begin;
 
