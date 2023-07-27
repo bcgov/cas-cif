@@ -223,7 +223,13 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     return [fundingAgreementFormChangeId];
   }, [projectRevision.projectFundingAgreementFormChanges]);
 
-  const [isFunded, setIsFunded] = useState(null);
+  const projectFundingAgreementFormChangesLength = useMemo(() => {
+    return projectRevision.projectFundingAgreementFormChanges.edges.length;
+  }, [projectRevision.projectFundingAgreementFormChanges]);
+
+  const [isFunded, setIsFunded] = useState(
+    projectFundingAgreementFormChangesLength ? "yes" : null
+  );
 
   const handleDiscard = () => {
     setShowDiscardConfirmation(false);
@@ -241,8 +247,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   return (
     <>
-      {projectRevision.projectFundingAgreementFormChanges.edges.length ===
-        0 && (
+      {projectFundingAgreementFormChangesLength === 0 && (
         <>
           <div>
             <h3>Is this a funded project?</h3>
@@ -275,7 +280,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           </Button>
         </>
       )}
-      {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
+      {projectFundingAgreementFormChangesLength > 0 && (
         <>
           <div>
             <h3>Is this a funded project?</h3>
@@ -313,6 +318,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             <UndoChangesButton
               formChangeIds={formChangeIds}
               formRefs={formRefs}
+              callback={() => setIsFunded(null)}
             />
             <SavingIndicator
               isSaved={
