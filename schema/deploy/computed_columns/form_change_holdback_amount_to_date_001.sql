@@ -20,13 +20,13 @@ $fn$
 
   select
     case
-      when count(*) filter (where adjustedHoldbackAmount is null or calculatedHoldbackAmount is null) > 0 then null
+      when count(*) filter (where adjustedHoldbackAmount is null and calculatedHoldbackAmount is null) > 0 then null
       else round(sum(coalesce(adjustedHoldbackAmount, calculatedHoldbackAmount)), 0)
     end
   from results;
 
 $fn$ language sql stable;
 
-comment on function cif.form_change_holdback_amount_to_date(cif.form_change) is 'Computed column returns sum all holdback amounts for a project. If any of the milestones have null values for adjustedHoldbackAmount or calculatedHoldbackAmount, then null is returned. Preference for value selection is adjustedHoldbackAmount > calculatedHoldbackAmount > amount calculated via maximum milestone amount';
+comment on function cif.form_change_holdback_amount_to_date(cif.form_change) is 'Computed column returns sum all holdback amounts for a project. If any of the milestones have null values for adjustedHoldbackAmount and calculatedHoldbackAmount, then null is returned. Preference for value selection is adjustedHoldbackAmount > calculatedHoldbackAmount > amount calculated via maximum milestone amount';
 
 commit;
