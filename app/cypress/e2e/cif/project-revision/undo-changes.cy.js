@@ -70,6 +70,7 @@ describe("when undoing, the project revision page", () => {
 
     // undo additional funding source
     cy.findByText(/Yes/i).click();
+    cy.contains("Changes saved.");
     cy.findByRole("button", { name: /Add funding source/i }).click();
     cy.fillAdditionalFundingSourceForm(
       "Test Additional Source",
