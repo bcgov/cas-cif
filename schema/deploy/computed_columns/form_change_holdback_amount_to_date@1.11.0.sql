@@ -1,4 +1,5 @@
--- Revert cif:computed_columns/form_change_holdback_amount_to_date_001 from pg
+-- Deploy cif:computed_columns/form_change_holdback_amount_to_date to pg
+-- requires: tables/form_change
 
 begin;
 

@@ -1,4 +1,4 @@
--- Verify cif:computed_columns/form_change_total_project_value_001 on pg
+-- Verify cif:computed_columns/form_change_total_project_value on pg
 
 begin;
 
