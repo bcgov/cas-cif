@@ -754,7 +754,7 @@ describe("The ProjectFundingAgreementForm", () => {
       })
     ).toHaveLength(1);
   });
-  it("after selecting No, the submit button should allow the user to navigate away from the page", () => {
+  it("after selecting either yes/no then the submit buttons should be enabled", () => {
     const mockResolver = {
       ProjectRevision() {
         const result: Partial<ProjectFundingAgreementForm_projectRevision$data> =
