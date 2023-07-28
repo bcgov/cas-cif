@@ -100,6 +100,7 @@ describe("when creating a project, the project page", () => {
       "1991-05-17",
       "Professional Engineer",
       true,
+      "2020-01-01",
       "2020-01-01"
     );
     cy.contains("Changes saved").should("be.visible");
@@ -112,6 +113,7 @@ describe("when creating a project, the project page", () => {
     );
     cy.get('[aria-label="Holdback Amount This Milestone"]').contains("$12.00");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
+    cy.pause();
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add emissions intensity reports
