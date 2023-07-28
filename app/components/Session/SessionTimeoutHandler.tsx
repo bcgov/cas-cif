@@ -61,12 +61,14 @@ const SessionTimeoutHandler: React.FunctionComponent<
   // default values will be used for throttleTime
   // and events if they are undefined.
   useEffect(() => {
-    if (extendSessionOnEvents?.enabled)
-      throttleEventsEffect(
+    if (extendSessionOnEvents?.enabled) {
+      const throttleEffect = throttleEventsEffect(
         fetchSessionTimeout,
         extendSessionOnEvents.throttleTime,
         extendSessionOnEvents.events
       );
+      throttleEffect();
+    }
   }, []);
 
   useEffect(() => {
