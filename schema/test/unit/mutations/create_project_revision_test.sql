@@ -352,37 +352,5 @@ select lives_ok(
   'allows creating a pending General Revision on a project with a pending Amendment'
 );
 
-select '-----------';
-select form_data_record_id, previous_form_change_id, new_form_data, json_schema_name from cif.form_change
-    where form_data_table_name = 'reporting_requirement' and project_revision_id = 2
-    order by form_data_record_id;
-select '-----------';
-
-select '-----------';
-select form_data_record_id, previous_form_change_id, new_form_data
-  from cif.form_change
-      where form_data_record_id = 4
-      and form_data_schema_name = 'cif'
-      and form_data_table_name = 'reporting_requirement'
-      and json_schema_name='project_summary_report'
-      and change_status = 'committed'
-      order by updated_at desc, id desc;
-      -- limit 1;
-select '-----------';
-
-select '======';
-select id,
-  operation ,
-  form_data_schema_name,
-  form_data_table_name,
-  form_data_record_id ,
-  project_revision_id ,
-  change_status ,
-  json_schema_name,
-  validation_errors ,
-  previous_form_change_id from cif.form_change where json_schema_name='project_summary_report';
-select '======';
-
-
 select finish();
 rollback;
