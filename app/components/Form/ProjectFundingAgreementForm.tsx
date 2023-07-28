@@ -27,6 +27,7 @@ interface Props {
 
 const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
   const formRefs = useRef<Record<string, any>>({});
+
   // Mutations
   const [createFundingParameterFormChange, isAddingFundingParameterFormChange] =
     useCreateFundingParameterFormChange();
@@ -215,8 +216,24 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
 
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
+  // Get all form changes ids to get used in the undo changes button
+  const formChangeIds = useMemo(() => {
+    const fundingAgreementFormChangeId =
+      projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.rowId;
+    return [fundingAgreementFormChangeId];
+  }, [projectRevision.projectFundingAgreementFormChanges]);
+
+  const projectFundingAgreementFormChangesLength = useMemo(() => {
+    return projectRevision.projectFundingAgreementFormChanges.edges.length;
+  }, [projectRevision.projectFundingAgreementFormChanges]);
+
+  const [isFunded, setIsFunded] = useState(
+    projectFundingAgreementFormChangesLength ? "yes" : null
+  );
+
   const handleDiscard = () => {
     setShowDiscardConfirmation(false);
+    setIsFunded("no");
     discardFundingParameterFormChange({
       variables: {
         input: {
@@ -227,34 +244,10 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
       },
     });
   };
-  // Get all form changes ids to get used in the undo changes button
-  const formChangeIds = useMemo(() => {
-    const fundingAgreementFormChangeId =
-      projectRevision.projectFundingAgreementFormChanges.edges[0]?.node?.rowId;
-    return [fundingAgreementFormChangeId];
-  }, [projectRevision.projectFundingAgreementFormChanges]);
 
   return (
     <>
-      {projectRevision.projectFundingAgreementFormChanges.edges.length ===
-        0 && (
-        <div>
-          <h3>Is this a funded project?</h3>
-          <RadioButton
-            name="funding-agreement"
-            label="Yes"
-            className="radio-button"
-            onClick={addFundingAgreement}
-            disabled={isDiscardingFundingParameterFormChange}
-          />
-          <RadioButton
-            name="funding-agreement"
-            label="No"
-            className="radio-button"
-          />
-        </div>
-      )}
-      {projectRevision.projectFundingAgreementFormChanges.edges.length > 0 && (
+      {projectFundingAgreementFormChangesLength === 0 && (
         <>
           <div>
             <h3>Is this a funded project?</h3>
@@ -262,20 +255,60 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
               name="funding-agreement"
               label="Yes"
               className="radio-button"
-              checked={true}
+              onChange={() => {
+                addFundingAgreement();
+                setIsFunded("yes");
+              }}
+              disabled={isDiscardingFundingParameterFormChange}
+              checked={isFunded === "yes"}
             />
             <RadioButton
               name="funding-agreement"
               label="No"
               className="radio-button"
-              onClick={() => setShowDiscardConfirmation(true)}
+              checked={isFunded === "no"}
+              onChange={() => setIsFunded("no")}
+            />
+          </div>
+          <Button
+            type="submit"
+            onClick={() => props.onSubmit()}
+            style={{ marginRight: "1rem" }}
+            disabled={!isFunded}
+          >
+            Submit
+          </Button>
+        </>
+      )}
+      {projectFundingAgreementFormChangesLength > 0 && (
+        <>
+          <div>
+            <h3>Is this a funded project?</h3>
+            <RadioButton
+              name="funding-agreement"
+              label="Yes"
+              className="radio-button"
+              checked={isFunded === "yes"}
+              onChange={() => setIsFunded("yes")}
+            />
+            <RadioButton
+              name="funding-agreement"
+              label="No"
+              className="radio-button"
+              onChange={() => {
+                setShowDiscardConfirmation(true);
+                setIsFunded("no");
+              }}
               disabled={isDiscardingFundingParameterFormChange}
-              checked={false}
+              checked={isFunded === "no"}
             />
             {showDiscardConfirmation && (
               <DangerAlert
                 onProceed={handleDiscard}
-                onCancel={() => setShowDiscardConfirmation(false)}
+                onCancel={() => {
+                  setIsFunded("yes");
+                  setShowDiscardConfirmation(false);
+                }}
                 alertText="All changes made will be deleted."
               />
             )}
@@ -285,6 +318,7 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             <UndoChangesButton
               formChangeIds={formChangeIds}
               formRefs={formRefs}
+              callback={() => setIsFunded(null)}
             />
             <SavingIndicator
               isSaved={
