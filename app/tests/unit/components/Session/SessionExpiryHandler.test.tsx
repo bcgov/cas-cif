@@ -6,7 +6,7 @@ describe("The SessionExpiryHandler component", () => {
     let onSessionExpiredCallback;
 
     jest
-      .spyOn(require("@bcgov-cas/sso-react"), "SessionTimeoutHandler")
+      .spyOn(require("app/components/Session/SessionTimeoutHandler"), "default")
       .mockImplementation((props: any) => {
         onSessionExpiredCallback = props.onSessionExpired;
         return <div>Test Timeout Handler Render</div>;
