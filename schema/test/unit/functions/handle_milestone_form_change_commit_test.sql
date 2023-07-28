@@ -1,6 +1,6 @@
 begin;
 
-select plan(14);
+select plan(17);
 
 /** SETUP **/
 truncate table cif.form_change,
@@ -53,6 +53,19 @@ select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
     "calculatedGrossAmount": 350,
     "calculatedNetAmount": 450,
     "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
+  }', null, 1, 'staged', '[]');
+
+select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
+  '{
+    "reportType": "Reporting Milestone",
+    "reportDueDate": "2021-10-31 14:24:46.318423-07",
+    "submittedDate": "2021-09-30 14:24:46.318423-07",
+    "comments": "reporting milestone comments",
+    "reportingRequirementIndex": 2,
+    "description": "desc",
+    "substantialCompletionDate": "2021-09-29 14:24:46.318423-07",
+    "certifiedBy": "Reporting Jon",
+    "certifierProfessionalDesignation": "Reporting Eng"
   }', null, 1, 'staged', '[]');
 
 select cif.create_form_change('update', 'project', 'cif', 'project', '{}', 1, 1, 'pending', '[]');
@@ -148,6 +161,60 @@ select results_eq(
   'The correct values were added to the payment table on create'
 );
 
+/** The next three tests confirm that the correct values were added to their three corresponding tables (reporting_requirement, milestone_report, & not payment)
+ after performing the commit, when the form_change operation is "create" for a non-expense report type
+
+**/
+select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 4));
+-- reporting_requirement table
+-- Test 6
+select results_eq(
+  $$
+  select report_due_date, submitted_date, comments, reporting_requirement_index from cif.reporting_requirement where id = 2;
+  $$,
+  $$
+  values (
+  '2021-10-31 14:24:46.318423-07'::timestamptz,
+  '2021-09-30 14:24:46.318423-07'::timestamptz,
+  'reporting milestone comments'::varchar,
+  2
+  )
+  $$,
+  'The correct values were added to the reporting_requirement table on create for a non-expense report type'
+);
+-- milestone_report table
+-- Test 7
+select results_eq(
+  $$
+    select reporting_requirement_id,
+      substantial_completion_date,
+      certified_by,
+      certifier_professional_designation,
+      maximum_amount,
+      total_eligible_expenses
+    from cif.milestone_report where id = 2;
+  $$,
+  $$
+  values (
+    2,
+    '2021-09-29 14:24:46.318423-07'::timestamptz,
+    'Reporting Jon'::varchar,
+    'Reporting Eng'::varchar,
+    null::numeric,
+    null::numeric
+  )
+  $$,
+  'The correct values were added to the milestone_report table on create for a non-expense report type'
+);
+-- payment table
+-- Test 8
+select is_empty(
+  $$
+  select * from cif.payment where reporting_requirement_id = 2;
+  $$,
+  'No payment record was created for a non-expense report type'
+);
+
 -- The next three tests confirm that the correct values were added to their three corresponding tables when the form_change operation is "update"
 update cif.project_revision set change_status = 'committed' where id = 1;
 insert into cif.project_revision(id, change_status, project_id)
@@ -173,9 +240,9 @@ select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
     "dateSentToCsnr": "2021-09-29 14:24:46.318423-07"
   }', 1, 2, 'staged', '[]');
 
-select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 5));
+select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 6));
 -- reporting_requirement table
--- Test 6
+-- Test 9
 select results_eq(
   $$
   select report_due_date, submitted_date, comments, reporting_requirement_index from cif.reporting_requirement where id = 1;
@@ -188,10 +255,10 @@ select results_eq(
   1
   )
   $$,
-  'The correct values were added to the reporting_requirement table on update'
+  'The values were correctly updated in reporting_requirement table on update'
 );
 -- milestone_report table
--- Test 7
+-- Test 10
 select results_eq(
   $$
     select reporting_requirement_id,
@@ -212,10 +279,10 @@ select results_eq(
     222::numeric
   )
   $$,
-  'The correct values were added to the milestone_report table on update'
+  'The values were correctly updated in the milestone_report table on update'
 );
 -- payment table
--- Test 8
+-- Test 11
 select results_eq(
   $$
   select reporting_requirement_id, gross_amount, net_amount, date_sent_to_csnr from cif.payment where id = 1;
@@ -228,7 +295,7 @@ select results_eq(
     '2021-09-29 14:24:46.318423-07'::timestamptz
   )
   $$,
-  'The correct values were added to the payment table on update'
+  'The values were correctly updated in the payment table on update'
 );
 
 
@@ -252,9 +319,9 @@ select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
   }', 1, 3, 'staged', '[]');
 
 
-select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 6));
+select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 7));
 -- reporting_requirement table
--- Test 9
+-- Test 12
 select results_eq(
   $$
   select report_due_date, submitted_date, comments, reporting_requirement_index from cif.reporting_requirement where id = 1;
@@ -267,10 +334,10 @@ select results_eq(
   1
   )
   $$,
-  'The correct values were are preserved in the reporting_requirement table on update'
+  'The values were correctly updated in reporting_requirement table on update with a non-expense report type'
 );
 -- -- milestone_report table
--- -- Test 10
+-- -- Test 13
 select results_eq(
   $$
     select reporting_requirement_id,
@@ -289,10 +356,10 @@ select results_eq(
     null::numeric
   )
   $$,
-  'The correct values were added to the milestone_report table on update'
+  'The values were correctly updated in the milestone_report table on update with a non-expense report type'
 );
 -- -- payment table
--- -- Test 11
+-- -- Test 14
 select results_eq(
   $$
   select reporting_requirement_id, gross_amount, net_amount, date_sent_to_csnr, archived_at from cif.payment where id = 1;
@@ -306,7 +373,7 @@ select results_eq(
     now()::timestamptz
   )
   $$,
-  'The correct values were added to the payment table on update'
+  'Correctly archive the payment record when updating a expense report type milestone with a non-expense report type'
 );
 
 -- Testing updating a non-expense report type milestone with a expense report type
@@ -335,10 +402,10 @@ select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
     "dateSentToCsnr": "2021-09-29 14:24:46.318423-07"
   }', 1, 4, 'staged', '[]');
 
-select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 7));
+select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 8));
 
 -- reporting_requirement table
--- Test 12
+-- Test 15
 select results_eq(
   $$
   select report_due_date, submitted_date, comments, reporting_requirement_index from cif.reporting_requirement where id = 1;
@@ -351,10 +418,10 @@ select results_eq(
   1
   )
   $$,
-  'The correct values were are preserved in the reporting_requirement table on update'
+  'The values were correctly updated in reporting_requirement table on update with a expense report type'
 );
 -- -- milestone_report table
--- -- Test 13
+-- -- Test 16
 select results_eq(
   $$
     select reporting_requirement_id,
@@ -373,10 +440,10 @@ select results_eq(
     789.65::numeric
   )
   $$,
-  'The correct values were added to the milestone_report table on update'
+  'The values were correctly updated in the milestone_report table on update with a expense report type'
 );
 -- -- payment table
--- -- Test 14
+-- -- Test 17
 select results_eq(
   $$
   select reporting_requirement_id, gross_amount, net_amount, date_sent_to_csnr, archived_at from cif.payment where reporting_requirement_id = 1 and id = 2;
@@ -390,7 +457,7 @@ select results_eq(
     null::timestamptz
   )
   $$,
-  'The correct values were added to the payment table on update'
+  'Correctly add a new payment record when updating a non-expense report type milestone with a expense report type'
 );
 
 select finish();
