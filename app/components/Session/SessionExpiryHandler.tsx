@@ -49,7 +49,7 @@ const SessionExpiryHandler: React.FC = () => {
         onSessionExpired={handleSessionExpired}
         extendSessionOnEvents={{
           enabled: true,
-          throttleTime: 5 * 60 * 1000, // 5 minutes
+          throttleTime: 4 * 60 * 1000, // 4 minutes
           events: ["keydown", "mousedown", "scroll"],
         }}
       />
