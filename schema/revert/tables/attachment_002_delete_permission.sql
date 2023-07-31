@@ -5,5 +5,4 @@ begin;
 revoke delete on cif.attachment from cif_internal;
 revoke delete on cif.attachment from cif_admin;
 
-
 commit;
