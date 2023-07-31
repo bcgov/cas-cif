@@ -49,7 +49,6 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
         id
         rowId
         projectFormChange {
-          formDataRecordId
           asProject {
             fundingStreamRfpByFundingStreamRfpId {
               fundingStreamByFundingStreamId {
@@ -82,11 +81,37 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
             }
           }
         }
+        projectFundingAgreementFormChangesArchived: formChangesFor(
+          first: 500
+          formDataTableName: "funding_parameter"
+          filter: { operation: { equalTo: ARCHIVE } }
+        )
+          @connection(
+            key: "connection_projectFundingAgreementFormChangesArchived"
+          ) {
+          __id
+          edges {
+            node {
+              # eslint-disable-next-line relay/must-colocate-fragment-spreads
+              ...AnticipatedFundingAmountByFiscalYearArrayFieldTemplate_formChange
+              id
+              rowId
+              newFormData
+              changeStatus
+              eligibleExpensesToDate
+              holdbackAmountToDate
+              netPaymentsToDate
+              grossPaymentsToDate
+              calculatedTotalPaymentAmountToDate
+              totalProjectValue
+              proponentsSharePercentage
+            }
+          }
+        }
       }
     `,
     props.projectRevision
   );
-
   const fundingStream =
     projectRevision.projectFormChange.asProject
       .fundingStreamRfpByFundingStreamRfpId.fundingStreamByFundingStreamId.name;
@@ -144,6 +169,32 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
     : "funding_parameter_IA";
 
   const addFundingAgreement = () => {
+    console.log("GURJ", projectRevision);
+
+    // Check if there are any archived form changes and sort them by updated_at
+    const archivedFormChanges =
+      projectRevision.projectFundingAgreementFormChangesArchived.edges;
+    const sortedArchivedFormChanges = archivedFormChanges
+      .slice()
+      .sort((a, b) => {
+        return new Date(b.node.updated_at) - new Date(a.node.updated_at);
+      });
+
+    // Get the newFormData from the most recent archived form change (if it exists)
+    const previousFormData =
+      sortedArchivedFormChanges.length > 0
+        ? sortedArchivedFormChanges[0].node.newFormData
+        : null;
+
+    // If there is a previous form change, use its id as the previousFormChangeId
+    const previousFormChangeId =
+      sortedArchivedFormChanges.length > 0
+        ? sortedArchivedFormChanges[0].node.id
+        : null;
+
+    // Use the previousFormData if available, otherwise, use an empty object
+    const newFormData = previousFormData || {};
+
     createFundingParameterFormChange({
       variables: {
         input: {
@@ -152,11 +203,9 @@ const ProjectFundingAgreementForm: React.FC<Props> = (props) => {
           formDataTableName: "funding_parameter",
           jsonSchemaName,
           operation: "CREATE",
-          newFormData: {
-            projectId: projectRevision.projectFormChange.formDataRecordId,
-            provinceSharePercentage: 50, // Default to 50%
-            ...(isFundingStreamEP && { holdbackPercentage: 10 }), // Default to 10%
-          },
+          newFormData: newFormData,
+          formChangeByPreviousFormChangeId: previousFormChangeId,
+          // the above will not work, we need a different approach...
         },
         connections: [projectRevision.projectFundingAgreementFormChanges.__id],
       },
