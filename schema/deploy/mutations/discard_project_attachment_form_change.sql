@@ -2,27 +2,23 @@
 
 begin;
 
-create or replace function cif.discard_project_attachment_form_change(form_change_id int)
-returns setof cif.form_change
+drop function cif.discard_project_attachment_form_change;
+create function cif.discard_project_attachment_form_change(form_change_id int)
+returns cif.form_change
 as $discard_project_attachment_form_change$
 declare
 form_change_record record;
 
 begin
 
-  for form_change_record in select * from cif.form_change
-    where id = $1
-    and form_data_table_name = 'project_attachment'
-  loop
-    if form_change_record.operation = 'create' then
-      delete from cif.form_change where id = $1;
-      return next form_change_record;
-    else
-      update cif.form_change set operation = 'archive' where id = $1;
-      return next form_change_record;
-    end if;
-  end loop;
+  select * from cif.form_change where id = $1 into form_change_record;
 
+  if form_change_record.operation = 'create' then
+    delete from cif.form_change where id = form_change_record.id;
+  else
+    update cif.form_change set operation = 'archive' where id = form_change_record.id;
+  end if;
+  return form_change_record;
 end;
 
 $discard_project_attachment_form_change$ language plpgsql volatile;

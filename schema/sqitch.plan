@@ -349,4 +349,4 @@ functions/handle_milestone_form_change_commit [functions/handle_milestone_form_c
 computed_columns/form_change_maximum_performance_milestone_amount 2023-07-26T16:05:38Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create computed column to calculate maximum performance mmilestone amount
 data/015_insert_json_schema_form_data_add_max_performance_milestone 2023-07-26T20:23:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add new maximum performance milestone calculation to emission_intensity schema
 tables/attachment_002_delete_permission 2023-07-31T18:06:38Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Allow hard deletion of attachments
-
+mutations/discard_project_attachment_form_change [mutations/discard_project_attachment_form_change@1.11.0] 2023-07-31T18:05:23Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove loop from discard mutation
