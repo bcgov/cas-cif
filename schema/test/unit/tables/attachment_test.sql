@@ -75,12 +75,11 @@ select results_eq(
     'Data was archived by cif_admin'
 );
 
-select throws_like(
+select lives_ok(
   $$
     delete from cif.attachment where id=4;
   $$,
-  'permission denied%',
-    'Administrator cannot delete rows from table attachment'
+    'cif_admin can delete data in attachment table'
 );
 
 -- -- cif_internal
@@ -91,7 +90,7 @@ select results_eq(
   $$
     select count(*) from cif.attachment
   $$,
-  ARRAY[4::bigint],
+  ARRAY[3::bigint],
     'cif_internal can view all data from attachment table'
 );
 
@@ -102,24 +101,23 @@ select lives_ok(
     'cif_internal can insert data in attachment table'
 );
 
-select throws_like(
+select lives_ok(
   $$
-    delete from cif.attachment where id=5;
+    delete from cif.attachment where id=4;
   $$,
-  'permission denied%',
-    'cif_internal cannot delete rows from attachment table'
+    'cif_internal can delete rows from attachment table'
 );
 
 select lives_ok(
   $$
-    update cif.attachment set archived_at = now() where id=5;
+    update cif.attachment set archived_at = now() where id=3;
   $$,
     'cif_internal can archive/update data in the attachment table'
 );
 
 select results_eq(
   $$
-    select count(id) from cif.attachment where id=5 and archived_at is not null
+    select count(id) from cif.attachment where id=3 and archived_at is not null
   $$,
   ARRAY[1::bigint],
     'Data was archived by cif_internal'
