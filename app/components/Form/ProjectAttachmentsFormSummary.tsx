@@ -59,7 +59,6 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
 
   const attachmentsSummary =
     revision.summaryProjectAttachmentFormChanges.edges[0]?.node;
-
   const projectAttachmentsFormNotUpdated = useMemo(
     () =>
       !attachmentsSummary ||
@@ -100,6 +99,7 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
                 formChangeRowId={node.rowId}
                 connectionId={revision.summaryProjectAttachmentFormChanges.__id}
                 hideDelete={true}
+                isFirstRevision={revision.isFirstRevision}
               />
             )
           )}
