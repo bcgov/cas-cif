@@ -119,6 +119,7 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
                 formChangeRowId={node.rowId}
                 connectionId={revision.summaryProjectAttachmentFormChanges.__id}
                 hideDelete={true}
+                isFirstRevision={revision.isFirstRevision}
               />
             )
           )}
