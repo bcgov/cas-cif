@@ -172,10 +172,10 @@ jobs:
       - uses: actions/checkout@v3
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          detached: true
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
       - name: run app locally
         uses: ./.github/actions/local-app-run
       - id: "auth"
