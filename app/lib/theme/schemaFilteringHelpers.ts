@@ -1,4 +1,5 @@
 import type { JSONSchema7 } from "json-schema";
+import { isEqual } from "lodash";
 
 // The two functions below filter out fields from the formSchema that have not changed from the previous revision so the summary ignores these fields
 // This is mainly used when the form has multiple fields within it and we want to check each field data with the previous revision
@@ -22,14 +23,17 @@ export const getSchemaAndDataIncludingCalculatedValues = (
 
   for (const key of Object.keys(filteredSchema.properties)) {
     // null new data with undefined old data occurs when an optional form (e.g. budgets) is created but not filled
+
     if (
       formDataIncludingCalculatedValues?.[key] === null &&
       oldFormDataIncludingCalculatedValues?.[key] === undefined
     ) {
       delete filteredSchema.properties[key];
     } else if (
-      formDataIncludingCalculatedValues?.[key] ===
-      oldFormDataIncludingCalculatedValues?.[key]
+      isEqual(
+        formDataIncludingCalculatedValues?.[key],
+        oldFormDataIncludingCalculatedValues?.[key]
+      )
     ) {
       delete filteredSchema.properties[key];
     } else newDataObject[key] = formDataIncludingCalculatedValues?.[key];

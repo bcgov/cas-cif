@@ -81,6 +81,7 @@ const pageQuery = graphql`
         }
       }
       ...ProjectFundingAgreementFormSummary_query
+      ...ProjectEmissionIntensityReportFormSummary_query
     }
   }
 `;
@@ -242,6 +243,7 @@ export function ProjectRevision({
             />
             <ProjectEmissionsIntensityReportFormSummary
               projectRevision={query.projectRevision}
+              query={query}
             />
             <ProjectAnnualReportFormSummary
               projectRevision={query.projectRevision}
