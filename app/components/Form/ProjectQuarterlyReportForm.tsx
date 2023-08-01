@@ -198,9 +198,7 @@ const ProjectQuarterlyReportForm: React.FC<Props> = (props) => {
           }}
           mutationFunction={generateQuarterlyReports}
           isGenerating={isGenerating}
-          readonly={
-            projectRevision.projectQuarterlyReportFormChanges.edges.length !== 0
-          }
+          hasReports={sortedQuarterlyReports.length !== 0}
         />
         <Button
           variant="secondary"
