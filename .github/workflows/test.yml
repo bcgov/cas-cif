@@ -200,8 +200,10 @@ jobs:
           CYPRESS_ATTACHMENTS_BUCKET: ${{env.ATTACHMENTS_BUCKET}}
         run: |
           echo $GOOGLE_APPLICATION_CREDENTIALS
+          echo $CYPRESS_GOOGLE_APPLICATION_CREDENTIALS
           echo $TEST_ENV
           echo $ATTACHMENTS_BUCKET
+          echo $CYPRESS_ATTACHMENTS_BUCKET
           pwd
           yarn test:e2e
         working-directory: ./app
