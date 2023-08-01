@@ -13,11 +13,15 @@ const FieldTemplate: React.FC<FieldTemplateProps> = ({
   id,
   uiSchema,
 }) => {
+  const isAdjustableCalculatedValueWidget =
+    uiSchema?.["ui:widget"] &&
+    uiSchema["ui:widget"] === "AdjustableCalculatedValueWidget";
+
   return (
     <div>
       <div
         className={
-          uiSchema.calculatedValueFormContextProperty
+          isAdjustableCalculatedValueWidget
             ? "adjustable-calculated-value-widget"
             : "definition-container"
         }

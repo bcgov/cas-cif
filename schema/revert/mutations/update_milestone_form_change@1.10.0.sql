@@ -14,7 +14,7 @@ select cif.update_form_change($1, $2);
 update cif.form_change
 set new_form_data = new_form_data - 'totalEligibleExpenses'
 where id = $1
-  and new_form_data->>'reportType' not in ('General Milestone', 'Interim Summary Report');
+  and new_form_data->>'reportType' != 'General Milestone';
 
 update cif.form_change set
   new_form_data = new_form_data || jsonb_build_object(

@@ -344,3 +344,5 @@ data/013_insert_json_schema_form_data_anticipated_funding_per_year_to_array_type
 computed_columns/form_change_anticipated_funding_amount_per_fiscal_year [computed_columns/form_change_anticipated_funding_amount_per_fiscal_year@1.9.0] 2023-07-05T23:20:07Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Using double arrow to return null if new form data prop value is null
 data/014_insert_json_schema_form_data_add_default_value_for_optional_fields 2023-07-10T17:50:36Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update json schema form data to have default value for optional fields
 @1.11.0 2023-07-26T15:05:29Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.11.0
+mutations/update_milestone_form_change [mutations/update_milestone_form_change@1.10.0] 2023-07-20T15:40:59Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Remove payment related fields when report type does not support payment
+functions/handle_milestone_form_change_commit [functions/handle_milestone_form_change_commit@1.10.0] 2023-07-25T19:29:40Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update commit handler to support reports that are not associated with expense
