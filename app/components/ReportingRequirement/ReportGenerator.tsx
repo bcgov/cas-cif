@@ -16,7 +16,7 @@ interface Props {
   reportType: string;
   startDateObject: DateFieldObject;
   endDateObject: DateFieldObject;
-  readonly: boolean;
+  hasReports: boolean;
   mutationFunction: (args: {
     variables:
       | generateQuarterlyReportsMutation$variables
@@ -30,13 +30,13 @@ const ReportGenerator: React.FC<Props> = ({
   reportType,
   startDateObject,
   endDateObject,
-  readonly,
+  hasReports,
   mutationFunction,
   isGenerating,
 }) => {
   return (
     <div className="reportGenerator">
-      {!readonly && <h3>Generate reports</h3>}
+      {!hasReports && <h3>Generate reports</h3>}
       <dl key={startDateObject.id}>
         <FieldLabel
           label={startDateObject.label}
@@ -67,7 +67,7 @@ const ReportGenerator: React.FC<Props> = ({
           )}
         </dd>
       </dl>
-      {!readonly && (
+      {!hasReports && (
         <Button
           variant="secondary"
           onClick={() =>

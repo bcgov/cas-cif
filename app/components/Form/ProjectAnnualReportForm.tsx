@@ -210,9 +210,7 @@ const ProjectAnnualReportForm: React.FC<Props> = (props) => {
           }}
           mutationFunction={generateAnnualReports}
           isGenerating={isGenerating}
-          readonly={
-            projectRevision.projectAnnualReportFormChanges.edges.length !== 0
-          }
+          hasReports={sortedAnnualReports.length !== 0}
         />
         <Button
           variant="secondary"
