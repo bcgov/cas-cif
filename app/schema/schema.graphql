@@ -45785,6 +45785,7 @@ type FormChange implements Node {
 
   """The name of the JSON schema to use for validation of this form data"""
   jsonSchemaName: String!
+  maximumPerformanceMilestoneAmount: BigFloat
 
   """
   Computed column returns cumulative sum of all net payments. Preference for value selection is adjustedNetAmount > calculuatedNetAmount > amount calculated via maximum milestone amount
@@ -46208,6 +46209,9 @@ input FormChangeFilter {
 
   """Filter by the object’s `jsonSchemaName` field."""
   jsonSchemaName: StringFilter
+
+  """Filter by the object’s `maximumPerformanceMilestoneAmount` field."""
+  maximumPerformanceMilestoneAmount: BigFloatFilter
 
   """Filter by the object’s `netPaymentsToDate` field."""
   netPaymentsToDate: BigFloatFilter
