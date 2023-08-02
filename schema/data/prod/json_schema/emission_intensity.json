@@ -63,7 +63,7 @@
         "title": "Payment Percentage of Performance Milestone Amount (%)",
         "type": "number"
       },
-      "holdbackAmountToDate": {
+      "maximumPerformanceMilestoneAmount": {
         "type": "number",
         "title": "Maximum Performance Milestone Amount"
       },

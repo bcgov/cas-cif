@@ -100,6 +100,7 @@ describe("when creating a project, the project page", () => {
       "1991-05-17",
       "Professional Engineer",
       true,
+      "2020-01-01",
       "2020-01-01"
     );
     cy.contains("Changes saved").should("be.visible");

@@ -440,7 +440,8 @@ Cypress.Commands.add(
     reportSubstantialCompletionDate,
     professionalDesignation,
     reportMaxAmount = undefined,
-    receivedDate = undefined
+    receivedDate = undefined,
+    dateSentToCsnr = undefined
   ) => {
     cy.findByRole("button", {
       name: /Add another milestone report/i,
@@ -480,6 +481,13 @@ Cypress.Commands.add(
 
     if (receivedDate) {
       cy.setDateInPicker("Report Received Date", receivedDate, reportNumber);
+    }
+    if (dateSentToCsnr) {
+      cy.setDateInPicker(
+        "Date Invoice Sent to CSNR",
+        dateSentToCsnr,
+        reportNumber
+      );
     }
 
     // need to return a Cypress promise (could be any cy. command) to let Cypress know that it has to wait for this call

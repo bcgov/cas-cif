@@ -44,7 +44,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
             node {
               calculatedEiPerformance
               paymentPercentage
-              holdbackAmountToDate
+              maximumPerformanceMilestoneAmount
               actualPerformanceMilestoneAmount
               newFormData
               operation
@@ -55,7 +55,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
                 newFormData
                 calculatedEiPerformance
                 paymentPercentage
-                holdbackAmountToDate
+                maximumPerformanceMilestoneAmount
                 actualPerformanceMilestoneAmount
               }
             }
@@ -69,7 +69,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
               newFormData
               calculatedEiPerformance
               paymentPercentage
-              holdbackAmountToDate
+              maximumPerformanceMilestoneAmount
               actualPerformanceMilestoneAmount
             }
           }
@@ -91,7 +91,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     calculatedEiPerformance:
       summaryReportingRequirement?.calculatedEiPerformance,
     paymentPercentage: summaryReportingRequirement?.paymentPercentage,
-    holdbackAmountToDate: summaryReportingRequirement?.holdbackAmountToDate,
+    maximumPerformanceMilestoneAmount:
+      summaryReportingRequirement?.maximumPerformanceMilestoneAmount,
     actualPerformanceMilestoneAmount:
       summaryReportingRequirement?.actualPerformanceMilestoneAmount,
   };
@@ -106,9 +107,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     paymentPercentage:
       summaryReportingRequirement?.formChangeByPreviousFormChangeId
         ?.paymentPercentage,
-    holdbackAmountToDate:
+    maximumPerformanceMilestoneAmount:
       summaryReportingRequirement?.formChangeByPreviousFormChangeId
-        ?.holdbackAmountToDate,
+        ?.maximumPerformanceMilestoneAmount,
     actualPerformanceMilestoneAmount:
       summaryReportingRequirement?.formChangeByPreviousFormChangeId
         ?.actualPerformanceMilestoneAmount,
@@ -124,9 +125,9 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
     paymentPercentage:
       latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
         ?.paymentPercentage,
-    holdbackAmountToDate:
+    maximumPerformanceMilestoneAmount:
       latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
-        ?.holdbackAmountToDate,
+        ?.maximumPerformanceMilestoneAmount,
     actualPerformanceMilestoneAmount:
       latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
         ?.actualPerformanceMilestoneAmount,
@@ -259,8 +260,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
             summaryReportingRequirement?.calculatedEiPerformance ?? 0,
           paymentPercentageOfPerformanceMilestoneAmount:
             summaryReportingRequirement?.paymentPercentage,
-          holdbackAmountToDate:
-            summaryReportingRequirement?.holdbackAmountToDate,
+          maximumPerformanceMilestoneAmount:
+            summaryReportingRequirement?.maximumPerformanceMilestoneAmount,
           actualPerformanceMilestoneAmount:
             summaryReportingRequirement?.actualPerformanceMilestoneAmount,
           operation: summaryReportingRequirement?.operation,

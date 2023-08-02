@@ -51,10 +51,9 @@ const defaultMockResolver = {
               reportType: "TEIMP",
               formChangeByPreviousFormChangeId: null,
               formDataRecordId: 1,
-
               calculatedEiPerformance: 200,
               paymentPercentage: 60,
-              holdbackAmountToDate: "100",
+              maximumPerformanceMilestoneAmount: 100,
               actualPerformanceMilestoneAmount: "200",
             },
           },
@@ -183,7 +182,7 @@ describe("the emission intensity report form component", () => {
     ).toHaveTextContent("60.00%");
     expect(
       screen.getByLabelText("Maximum Performance Milestone Amount")
-    ).toHaveTextContent("$100");
+    ).toHaveTextContent("$100.00");
     expect(
       screen.getByLabelText("Actual Performance Milestone Amount")
     ).toHaveTextContent("$200.00");
