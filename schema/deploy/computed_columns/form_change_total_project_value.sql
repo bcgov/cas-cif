@@ -19,9 +19,14 @@ additional_funding_sources_sum as
         select
             sum(case when status = 'Approved' then amount::numeric
                      when status = 'Denied' then 0
-                     when status = 'Awaiting Approval' then 0
             end) as total
         from additional_funding_sources
+    ),
+check_awaiting_approval as
+    (
+        select
+            case when exists (select 1 from additional_funding_sources where status = 'Awaiting Approval')
+            then 1 else 0 end as awaiting_approval
     )
 select
   case
@@ -30,6 +35,8 @@ select
         ($1.new_form_data ->> 'proponentCost')::numeric IS NULL
         OR
         ($1.new_form_data ->> 'maxFundingAmount')::numeric IS NULL
+        OR
+        (select awaiting_approval from check_awaiting_approval) = 1
       ) THEN NULL
     else
       (
