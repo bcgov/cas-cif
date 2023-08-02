@@ -113,7 +113,6 @@ describe("when creating a project, the project page", () => {
     );
     cy.get('[aria-label="Holdback Amount This Milestone"]').contains("$12.00");
     cy.happoAndAxe("Project milestone reports Form", "filled", "main");
-    cy.pause();
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // add emissions intensity reports
