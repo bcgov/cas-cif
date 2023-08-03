@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { SessionExpiryHandlerQuery } from "__generated__/SessionExpiryHandlerQuery.graphql";
 import { graphql, fetchQuery, useRelayEnvironment } from "react-relay";
-import { SessionTimeoutHandler } from "@bcgov-cas/sso-react";
+import SessionTimeoutHandler from "./SessionTimeoutHandler";
 
 const sessionQuery = graphql`
   query SessionExpiryHandlerQuery {
@@ -44,18 +44,16 @@ const SessionExpiryHandler: React.FC = () => {
   };
 
   if (hasSession)
-    if (hasSession)
-      return (
-        <SessionTimeoutHandler
-          modalDisplaySecondsBeforeLogout={120}
-          onSessionExpired={handleSessionExpired}
-          extendSessionOnEvents={{
-            enabled: true,
-            throttleTime: 300000,
-            events: ["keydown", "scroll"],
-          }}
-        />
-      );
+    return (
+      <SessionTimeoutHandler
+        onSessionExpired={handleSessionExpired}
+        extendSessionOnEvents={{
+          enabled: true,
+          throttleTime: 4 * 60 * 1000, // 4 minutes
+          events: ["keydown", "mousedown", "scroll"],
+        }}
+      />
+    );
 
   return null;
 };
