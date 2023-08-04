@@ -4,7 +4,7 @@ import Link from "next/link";
 import { graphql, useFragment } from "react-relay";
 import { getAttachmentDownloadRoute } from "routes/pageRoutes";
 import { AttachmentTableRow_attachment$key } from "__generated__/AttachmentTableRow_attachment.graphql";
-import hardDeleteAttachment from "./hardDeleteAttachement";
+import hardDeleteAttachment from "./hardDeleteAttachment";
 import { useRouter } from "next/router";
 
 interface Props {

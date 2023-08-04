@@ -28,7 +28,7 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
   projectRevision,
   onSubmit,
 }) => {
-  const brianna = useFragment(
+  const revision = useFragment(
     graphql`
       fragment ProjectAttachmentsForm_projectRevision on ProjectRevision {
         id
@@ -59,7 +59,7 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
     projectRevision
   );
 
-  const { rowId, projectAttachmentFormChanges, isFirstRevision } = brianna;
+  const { rowId, projectAttachmentFormChanges, isFirstRevision } = revision;
   const attachmentFormChange = projectAttachmentFormChanges.edges[0]?.node;
   const [createAttachment, isCreatingAttachment] = useCreateAttachment();
   const [createProjectAttachment, isCreatingProjectAttachment] =

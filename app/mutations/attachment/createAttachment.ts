@@ -20,8 +20,7 @@ const mutation = graphql`
 const useCreateAttachment = () =>
   useMutationWithErrorMessage<createAttachmentMutation>(
     mutation,
-    (error) =>
-      `"An error occurred while attempting to create an attachment."|${error}|`
+    () => "An error occurred while attempting to create an attachment."
   );
 
 export { mutation, useCreateAttachment };

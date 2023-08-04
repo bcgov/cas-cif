@@ -1,6 +1,6 @@
 import { act, screen } from "@testing-library/react";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
-import hardDeleteAttachment from "components/Attachment/hardDeleteAttachement";
+import hardDeleteAttachment from "components/Attachment/hardDeleteAttachment";
 import { mocked } from "jest-mock";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
@@ -8,7 +8,7 @@ import compiledAttachmentTableRowTestQuery, {
   AttachmentTableRowTestQuery,
 } from "__generated__/AttachmentTableRowTestQuery.graphql";
 import { AttachmentTableRow_attachment$data } from "__generated__/AttachmentTableRow_attachment.graphql";
-jest.mock("components/Attachment/hardDeleteAttachement");
+jest.mock("components/Attachment/hardDeleteAttachment");
 
 const testQuery = graphql`
   query AttachmentTableRowTestQuery @relay_test_operation {

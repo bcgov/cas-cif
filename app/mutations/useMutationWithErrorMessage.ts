@@ -29,7 +29,6 @@ export default function useMutationWithErrorMessage<
     const commitConfig: MutationConfig<TMutation> = {
       ...config,
       onError: (error) => {
-        console.log("error", error);
         config.onError?.(error);
         setError(getErrorMessage(error));
         Sentry.captureException(error);
