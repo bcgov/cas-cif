@@ -11,7 +11,8 @@ const contentSuffixElement = (
 ): JSX.Element => {
   return (
     <span
-      id={id && `${id}-contentSuffix`}
+      // Add random number to id to avoid duplicate ids when multiple fields have the same contentSuffix
+      id={id && `${id}-contentSuffix-${Math.random().toFixed(2)}`}
       className="contentSuffix"
       style={{ paddingLeft: "1em" }}
     >

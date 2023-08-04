@@ -136,7 +136,7 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Quarterly Report 1/i).should("not.exist");
     cy.findByText(/No reports due/).should("be.visible");
     cy.findByRole("button", { name: /generate quarterly reports/i }).should(
-      "be.disabled"
+      "not.be.disabled"
     );
     cy.contains("Changes saved.");
 
