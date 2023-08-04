@@ -173,6 +173,7 @@ describe("when creating a project, the project page", () => {
 
     cy.fixture("e2e/mock.pdf").as("mockFile");
     cy.get("input[type=file]").selectFile("@mockFile");
+    cy.wait(30000);
     cy.happoAndAxe("Project attachments", "filled", "main", true);
 
     cy.findByText(/Submit project attachments/i).click();
