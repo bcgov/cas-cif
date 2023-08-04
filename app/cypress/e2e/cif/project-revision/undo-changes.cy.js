@@ -1,5 +1,6 @@
 describe("when undoing, the project revision page", () => {
   beforeEach(() => {
+    cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
     cy.sqlFixture("dev/002_cif_operator");
@@ -89,7 +90,7 @@ describe("when undoing, the project revision page", () => {
     cy.findByRole("button", {
       name: /Add Emissions Intensity Report/i,
     }).click();
-    cy.addEmissionIntensityReport(
+    cy.addOrEditEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
       "tCO",
@@ -255,23 +256,38 @@ describe("when undoing, the project revision page", () => {
     cy.findByText(/Edit Emissions Intensity Report/i)
       .should("be.visible")
       .click();
-    cy.findByRole("button", {
-      name: /Add Emissions Intensity Report/i,
-    }).click();
-    cy.addEmissionIntensityReport(
+    cy.findByText(/Edit Emissions Intensity Report/i).click();
+    cy.addOrEditEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
       "tCO",
-      "1",
-      "2",
-      "3",
+      "1.23",
+      "2.34",
+      "3.45",
       "G"
     );
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.findByRole("button", { name: /Add Emissions Intensity Report/i }).should(
-      "be.visible"
+    cy.checkEmissionIntensityReportForm(
+      "Jun 01, 2023",
+      "Jul 01, 2023",
+      "1 month",
+      "tCO2e",
+      "Gj",
+      324.25364,
+      23.2357,
+      124.35,
+      44.4224,
+      "66.41%",
+      "98.00%",
+      "Jun 10, 2020",
+      "100.00%",
+      "$0.10",
+      "$0.10"
     );
+    cy.findByText(/Edit Emissions Intensity Report/i)
+      .next()
+      .should("have.text", "No Changes");
 
     // undo quarterly reports
     cy.findByText(/Quarterly reports/i).click();
