@@ -5,6 +5,7 @@ import morgan from "morgan";
 import nextjs from "next";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import lusca from "lusca";
 import { createLightship } from "lightship";
 import session from "./middleware/session";
 import browserSupportMiddleware from "./middleware/browserSupport";
@@ -54,10 +55,10 @@ app.prepare().then(async () => {
 
   server.use(cookieParser());
 
-  server.use(graphqlUploadExpress());
-
   server.use(graphQlMiddleware());
 
+  server.use(lusca.csrf());
+  server.use(graphqlUploadExpress());
   server.use(attachmentDownloadRouter);
 
   server.get("*", async (req, res) => {
