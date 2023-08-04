@@ -2,8 +2,7 @@
 
 begin;
 
-drop function cif.discard_project_attachment_form_change(integer);
-
+drop function cif.discard_project_attachment_form_change;
 create function cif.discard_project_attachment_form_change(form_change_id int)
 returns setof cif.form_change
 as $discard_project_attachment_form_change$
