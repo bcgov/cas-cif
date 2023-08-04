@@ -349,7 +349,7 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "addEmissionIntensityReport",
+  "addOrEditEmissionIntensityReport",
   (
     measurementPeriodStartDate,
     measurementPeriodEndDate,
@@ -357,8 +357,8 @@ Cypress.Commands.add(
     baselineEmissionIntensity,
     targetEmissionIntensity,
     postProjectEmissionIntensity,
-    productionFunctionalUnit = undefined,
-    adjustedEmissionsIntensityPerformance = undefined
+    productionFunctionalUnit,
+    adjustedEmissionsIntensityPerformance
   ) => {
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");
@@ -390,11 +390,10 @@ Cypress.Commands.add(
       }`
     ).should("have.length", 3);
 
-    if (adjustedEmissionsIntensityPerformance) {
+    if (adjustedEmissionsIntensityPerformance)
       cy.get('[aria-label="GHG Emission Intensity Performance (Adjusted)"]')
         .clear()
         .type(adjustedEmissionsIntensityPerformance);
-    }
 
     return cy.url().should("include", "/form/5");
   }
@@ -754,9 +753,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "checkEmissionIntensityReportForm",
   (
-    reportDueDate,
-    receivedDate,
-    comments,
     measurementPeriodStartDate,
     measurementPeriodEndDate,
     duration,
@@ -774,21 +770,6 @@ Cypress.Commands.add(
     maximumPerformanceMilestoneAmount
   ) => {
     cy.url().should("include", "/form/5");
-    if (reportDueDate)
-      cy.get('[aria-label="Report Due Date"]').should(
-        "have.text",
-        reportDueDate
-      );
-
-    if (receivedDate)
-      cy.get('[aria-label="Report Received Date"]').should(
-        "have.text",
-        receivedDate
-      );
-
-    if (comments)
-      cy.get('[aria-label="General Comments"]').should("have.text", comments);
-
     cy.get('[aria-label="TEIMP Start Date"]').should(
       "have.text",
       measurementPeriodStartDate
@@ -800,42 +781,42 @@ Cypress.Commands.add(
     if (duration) cy.contains(`Duration: ${duration}`);
 
     cy.get('[aria-label="Functional Unit"]').should(
-      "have.text",
+      "have.value",
       emissionFunctionalUnit
     );
 
     cy.get('[aria-label="Production Functional Unit"]').should(
-      "have.text",
+      "have.value",
       productionFunctionalUnit
     );
 
     cy.get('[aria-label="Baseline Emission Intensity (BEI)"]').should(
-      "have.text",
+      "have.value",
       baselineEmissionIntensity
     );
 
     cy.get('[aria-label="Target Emission Intensity (TEI)"]').should(
-      "have.text",
+      "have.value",
       targetEmissionIntensity
     );
 
     if (postProjectEmissionIntensity)
       cy.get('[aria-label="Post-Project Emission Intensity (PEI)"]').should(
-        "have.text",
+        "have.value",
         postProjectEmissionIntensity
       );
 
     if (totalLifetimeEmissionReduction)
       cy.get(
         '[aria-label="Total Project Lifetime Emissions Reductions"]'
-      ).should("have.text", totalLifetimeEmissionReduction);
+      ).should("have.value", totalLifetimeEmissionReduction);
 
     cy.contains("GHG Emission Intensity Performance")
       .next()
       .contains(ghgEmissionIntensityPerformance);
     cy.get(
       '[aria-label="GHG Emission Intensity Performance (Adjusted)"]'
-    ).should("have.text", adjustedGhgEmissionIntensityPerformance);
+    ).should("have.value", adjustedGhgEmissionIntensityPerformance);
 
     if (dateSentToCsnr)
       cy.get('[aria-label="Date Invoice Sent to CSNR"]').should(

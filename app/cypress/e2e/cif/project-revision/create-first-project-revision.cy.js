@@ -122,13 +122,13 @@ describe("when creating a project, the project page", () => {
     }).click();
     cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
     cy.findAllByText("tCO2e").should("have.length", 4);
-    cy.addEmissionIntensityReport(
+    cy.addOrEditEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
       "tCO",
-      "1",
-      "2",
-      "3",
+      "1.23",
+      "2.34",
+      "3.45",
       "G",
       100
     );
