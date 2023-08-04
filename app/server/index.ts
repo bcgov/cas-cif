@@ -50,12 +50,11 @@ app.prepare().then(async () => {
 
   const { middleware: sessionMiddleware } = session();
   server.use(sessionMiddleware);
+  server.use(csrf());
 
   server.use(await ssoMiddleware());
 
   server.use(cookieParser());
-
-  server.use(csrf());
 
   server.use(graphqlUploadExpress());
 
