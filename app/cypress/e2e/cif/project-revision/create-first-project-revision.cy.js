@@ -1,11 +1,5 @@
-import { aliasOperation } from "../../../utils/graphql-test-utils";
-
 describe("when creating a project, the project page", () => {
   beforeEach(() => {
-    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
-      aliasOperation(req, "addProjectAttachmentToRevisionMutation");
-      // aliasOperation(req, "createAttachmentMutation");
-    });
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
@@ -17,7 +11,7 @@ describe("when creating a project, the project page", () => {
     cy.get("button").contains("Add a Project").click();
   });
 
-  it.only("allows an admin user to create an EP project", () => {
+  it("allows an admin user to create an EP project", () => {
     //add new
     cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
     cy.happoAndAxe("EP Project New Form", "filled", "main");
@@ -25,155 +19,153 @@ describe("when creating a project, the project page", () => {
 
     // add overview
     cy.url().should("include", "/form/0");
-    // cy.findByText("Emissions Performance - 2020");
-    // cy.fillOverviewForm(
-    //   "first operator legal name (AB1234567)",
-    //   "Cement",
-    //   "TEST-123-12345",
-    //   "Foo",
-    //   "Bar",
-    //   "100",
-    //   "Project in Progress",
-    //   "Some comments",
-    //   "78.456"
-    // );
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.findByText("Rank").next().should("have.text", "1");
-    // cy.happoAndAxe("Project Overview Form", "filled", "main", true);
-    // cy.findByRole("button", { name: /^submit/i }).click();
+    cy.findByText("Emissions Performance - 2020");
+    cy.fillOverviewForm(
+      "first operator legal name (AB1234567)",
+      "Cement",
+      "TEST-123-12345",
+      "Foo",
+      "Bar",
+      "100",
+      "Project in Progress",
+      "Some comments",
+      "78.456"
+    );
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByText("Rank").next().should("have.text", "1");
+    cy.happoAndAxe("Project Overview Form", "filled", "main", true);
+    cy.findByRole("button", { name: /^submit/i }).click();
 
-    // // add managers
-    // cy.url().should("include", "/form/1");
-    // cy.fillManagersForm("Swanson", "Ludgate", "Knope");
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.wait(1000);
-    // cy.happoAndAxe("Project manager Form", "filled", "main");
-    // cy.findByRole("button", { name: /^submit/i }).click();
+    // add managers
+    cy.url().should("include", "/form/1");
+    cy.fillManagersForm("Swanson", "Ludgate", "Knope");
+    cy.contains("Changes saved").should("be.visible");
+    cy.wait(1000);
+    cy.happoAndAxe("Project manager Form", "filled", "main");
+    cy.findByRole("button", { name: /^submit/i }).click();
 
-    // // add contacts
-    // cy.url().should("include", "/form/2");
-    // cy.fillContactsForm(
-    //   "Loblaw003",
-    //   "bob.l003@example.com",
-    //   "Loblaw004",
-    //   "bob.l004@example.com"
-    // );
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.happoAndAxe("Project Contacts Form", "filled", "main");
-    // cy.findByRole("button", { name: /^submit/i }).click();
+    // add contacts
+    cy.url().should("include", "/form/2");
+    cy.fillContactsForm(
+      "Loblaw003",
+      "bob.l003@example.com",
+      "Loblaw004",
+      "bob.l004@example.com"
+    );
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("Project Contacts Form", "filled", "main");
+    cy.findByRole("button", { name: /^submit/i }).click();
 
-    // // add budgets, expenses, and payments
-    // cy.url().should("include", "/form/3");
-    // cy.findByText(/Yes/i).click();
-    // cy.contains("Changes saved").should("be.visible");
-    // // checking default values
-    // cy.get('[aria-label="Province\'s Share Percentage"]').should(
-    //   "have.value",
-    //   "50.00 %"
-    // );
-    // cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
-    //   "have.value",
-    //   "10.00 %"
-    // );
+    // add budgets, expenses, and payments
+    cy.url().should("include", "/form/3");
+    cy.findByText(/Yes/i).click();
+    cy.contains("Changes saved").should("be.visible");
+    // checking default values
+    cy.get('[aria-label="Province\'s Share Percentage"]').should(
+      "have.value",
+      "50.00 %"
+    );
+    cy.get('[aria-label="Performance Milestone Holdback Percentage"]').should(
+      "have.value",
+      "10.00 %"
+    );
 
-    // cy.fillFundingAgreementForm(
-    //   222,
-    //   60,
-    //   333,
-    //   800,
-    //   "2020-01-01",
-    //   "2020-02-02",
-    //   20
-    // );
-    // cy.findByText(/Total Project Value$/i)
-    //   .next()
-    //   .should("have.text", "$1,022.00"); // check that calculated value updates
-    // cy.findByText(/Proponent's Share Percentage$/i)
-    //   .next()
-    //   .should("have.text", "78.27%"); // check that calculated value updates
+    cy.fillFundingAgreementForm(
+      222,
+      60,
+      333,
+      800,
+      "2020-01-01",
+      "2020-02-02",
+      20
+    );
+    cy.findByText(/Total Project Value$/i)
+      .next()
+      .should("have.text", "$1,022.00"); // check that calculated value updates
+    cy.findByText(/Proponent's Share Percentage$/i)
+      .next()
+      .should("have.text", "78.27%"); // check that calculated value updates
 
-    // cy.findByRole("button", { name: /Add funding source/i }).click();
-    // cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.happoAndAxe("EP Project budgets Form", "filled", "main");
-    // cy.findByRole("button", { name: /^submit/i }).click();
+    cy.findByRole("button", { name: /Add funding source/i }).click();
+    cy.fillAdditionalFundingSourceForm("Test Source 1", 111, "Approved", 1);
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("EP Project budgets Form", "filled", "main");
+    cy.findByRole("button", { name: /^submit/i }).click();
 
     // add milestone reports
-    // cy.addMilestoneReport(
-    //   1,
-    //   "desc",
-    //   "General",
-    //   "1991-05-17",
-    //   "Professional Engineer",
-    //   true,
-    //   "2020-01-01",
-    //   "2020-01-01"
-    // );
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.get('[aria-label*="Report Due Date"').contains(/Jun(\.)? 16, 1991/i);
-    // cy.get('[aria-label="Gross Payment Amount This Milestone"]').contains(
-    //   "$60.00"
-    // );
-    // cy.get('[aria-label="Net Payment Amount This Milestone"]').contains(
-    //   "$48.00"
-    // );
-    // cy.get('[aria-label="Holdback Amount This Milestone"]').contains("$12.00");
-    // cy.happoAndAxe("Project milestone reports Form", "filled", "main");
-    // cy.findByRole("button", { name: /^submit/i }).click();
-    
+    cy.addMilestoneReport(
+      1,
+      "desc",
+      "General",
+      "1991-05-17",
+      "Professional Engineer",
+      true,
+      "2020-01-01",
+      "2020-01-01"
+    );
+    cy.contains("Changes saved").should("be.visible");
+    cy.get('[aria-label*="Report Due Date"').contains(/Jun(\.)? 16, 1991/i);
+    cy.get('[aria-label="Gross Payment Amount This Milestone"]').contains(
+      "$60.00"
+    );
+    cy.get('[aria-label="Net Payment Amount This Milestone"]').contains(
+      "$48.00"
+    );
+    cy.get('[aria-label="Holdback Amount This Milestone"]').contains("$12.00");
+    cy.happoAndAxe("Project milestone reports Form", "filled", "main");
+    cy.findByRole("button", { name: /^submit/i }).click();
 
-    // // add emissions intensity reports
-    // cy.url().should("include", "/form/5");
-    // cy.findByRole("button", {
-    //   name: /Add Emissions Intensity Report/i,
-    // }).click();
-    // cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
-    // cy.findAllByText("tCO2e").should("have.length", 4);
-    // cy.addEmissionIntensityReport(
-    //   "2022-01-01",
-    //   "2022-02-02",
-    //   "tCO",
-    //   "1",
-    //   "2",
-    //   "3",
-    //   "G",
-    //   100
-    // );
-    // cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.findByLabelText("GHG Emission Intensity Performance").should(
-    //   "have.text",
-    //   "200.00%"
-    // );
-    // cy.findByLabelText(
-    //   "Payment Percentage of Performance Milestone Amount (%)"
-    // ).should("have.text", "100.00%");
-    // cy.findByLabelText("Maximum Performance Milestone Amount").should(
-    //   "have.text",
-    //   "$12.00"
-    // );
-    // cy.findByLabelText("Actual Performance Milestone Amount").should(
-    //   "have.text",
-    //   "$12.00"
-    // );
-    // cy.happoAndAxe("Emission Intensity Form", "filled", "main");
-    // cy.findByText(/Submit Emissions Intensity Report/).click();
+    // add emissions intensity reports
+    cy.url().should("include", "/form/5");
+    cy.findByRole("button", {
+      name: /Add Emissions Intensity Report/i,
+    }).click();
+    cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
+    cy.findAllByText("tCO2e").should("have.length", 4);
+    cy.addEmissionIntensityReport(
+      "2022-01-01",
+      "2022-02-02",
+      "tCO",
+      "1",
+      "2",
+      "3",
+      "G",
+      100
+    );
+    cy.contains(/Duration: 1 month, 1 day/i).should("be.visible");
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByLabelText("GHG Emission Intensity Performance").should(
+      "have.text",
+      "200.00%"
+    );
+    cy.findByLabelText(
+      "Payment Percentage of Performance Milestone Amount (%)"
+    ).should("have.text", "100.00%");
+    cy.findByLabelText("Maximum Performance Milestone Amount").should(
+      "have.text",
+      "$12.00"
+    );
+    cy.findByLabelText("Actual Performance Milestone Amount").should(
+      "have.text",
+      "$12.00"
+    );
+    cy.happoAndAxe("Emission Intensity Form", "filled", "main");
+    cy.findByText(/Submit Emissions Intensity Report/).click();
 
-    // // Add Quarterly Reports
-    // cy.url().should("include", "/form/6");
-    // cy.addQuarterlyReport(1, "2020-01-01", "2020-02-02", "1st comment");
-    // cy.addQuarterlyReport(2, "2022-01-01", "2022-02-02", "2nd comment");
-    // cy.findAllByRole("status").first().should("have.text", "Complete");
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.happoAndAxe("Project quarterly reports Form", "filled", "main");
-    // cy.contains("Changes saved").should("be.visible");
-    // cy.findByText(/^submit/i).click();
+    // Add Quarterly Reports
+    cy.url().should("include", "/form/6");
+    cy.addQuarterlyReport(1, "2020-01-01", "2020-02-02", "1st comment");
+    cy.addQuarterlyReport(2, "2022-01-01", "2022-02-02", "2nd comment");
+    cy.findAllByRole("status").first().should("have.text", "Complete");
+    cy.contains("Changes saved").should("be.visible");
+    cy.happoAndAxe("Project quarterly reports Form", "filled", "main");
+    cy.contains("Changes saved").should("be.visible");
+    cy.findByText(/^submit/i).click();
 
-    // // No annual reports
-    // cy.url().should("include", "/form/7");
-    // cy.findByText(/Submit Annual Reports/i).click();
+    // No annual reports
+    cy.url().should("include", "/form/7");
+    cy.findByText(/Submit Annual Reports/i).click();
 
-    // Add attachments
     // Add attachments
     cy.findByText(/Project Attachments/i).click();
     cy.findByText(/Add Project Attachments/i).click();
@@ -181,16 +173,7 @@ describe("when creating a project, the project page", () => {
 
     cy.fixture("e2e/mock.pdf").as("mockFile");
     cy.get("input[type=file]").selectFile("@mockFile");
-    // cy.screenshot();
-    cy.findAllByText(
-      /Relay request for `createAttachmentMutation` failed by the following reasons:/i
-    ).should("exist");
-    // cy.findByText(/ The specified bucket does not exist./i).should("exist");
-    cy.findByText(/The file at/i).should("exist");
-    cy.wait("@gqladdProjectAttachmentToRevisionMutation")
-      .its("response")
-      .should("have.property", "body");
-    cy.findByText("mock.pdf").should("be.visible");
+    cy.happoAndAxe("Project attachments", "filled", "main", true);
 
     cy.findByText(/Submit project attachments/i).click();
     //review and submit
@@ -311,14 +294,6 @@ describe("when creating a project, the project page", () => {
     cy.findByText("TEST-123-12345").should("be.visible");
     // this checks that the project view list shows the milestone report status vs. the other report statuses
     cy.findAllByRole("status").should("have.text", "Complete");
-
-    // cleanup attachments
-
-    cy.request({
-      method: "GET",
-      url: "http://localhost:3004/delete/WyJhdHRhY2htZW50cyIsMV0=",
-      failOnStatusCode: false,
-    });
   });
 
   it("allows an admin user to create an IA project", () => {
