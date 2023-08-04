@@ -12,7 +12,6 @@ import headersMiddleware from "./middleware/headers";
 import graphQlMiddleware from "./middleware/graphql";
 import { pgPool } from "./db";
 import ssoMiddleware from "./middleware/sso";
-import { csrf } from "lusca";
 // graphql-upload exports the `.js` in the path: https://github.com/jaydenseric/graphql-upload/blob/aa15ee0eb2b3a4e2421d098393bbbf9252f1a8c7/package.json#L41
 // eslint-disable-next-line import/extensions
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
@@ -50,7 +49,6 @@ app.prepare().then(async () => {
 
   const { middleware: sessionMiddleware } = session();
   server.use(sessionMiddleware);
-  server.use(csrf());
 
   server.use(await ssoMiddleware());
 
