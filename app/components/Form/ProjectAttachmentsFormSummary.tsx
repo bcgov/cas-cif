@@ -1,10 +1,10 @@
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
 import Table from "components/Table";
 import { NoHeaderFilter, TextFilter } from "components/Table/Filters";
-import { useMemo } from "react";
 import { graphql, useFragment } from "react-relay";
 import { ProjectAttachmentsFormSummary_projectRevision$key } from "__generated__/ProjectAttachmentsFormSummary_projectRevision.graphql";
 import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
+import { useEffect, useMemo } from "react";
 
 const tableFilters = [
   new TextFilter("File Name", "fileName"),
@@ -19,12 +19,14 @@ interface Props {
   projectRevision: ProjectAttachmentsFormSummary_projectRevision$key;
   isOnAmendmentsAndOtherRevisionsPage?;
   viewOnly?: boolean;
+  setHasDiff?: (hasDiff: boolean | ((prevState: boolean) => void)) => void;
 }
 
 const ProjectAttachmentsFormSummary: React.FC<Props> = ({
   projectRevision,
   isOnAmendmentsAndOtherRevisionsPage,
   viewOnly,
+  setHasDiff,
 }) => {
   const revision = useFragment(
     graphql`
@@ -44,6 +46,7 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
               rowId
               newFormData
               isPristine
+              operation
               asProjectAttachment {
                 attachmentByAttachmentId {
                   ...AttachmentTableRow_attachment
@@ -57,16 +60,32 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
     projectRevision
   );
 
-  const attachmentsSummary =
-    revision.summaryProjectAttachmentFormChanges.edges[0]?.node;
+  // Show diff if it is not the first revision and not view only (rendered from the contacts page)
+  const renderDiff = /* !isFirstRevision &&  */ !viewOnly;
+
+  // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
+  let attachmentFormChanges =
+    revision.summaryProjectAttachmentFormChanges.edges;
+  if (!renderDiff)
+    attachmentFormChanges =
+      revision.summaryProjectAttachmentFormChanges.edges.filter(
+        ({ node }) => node.operation !== "ARCHIVE"
+      );
 
   const projectAttachmentsFormNotUpdated = useMemo(
     () =>
-      !attachmentsSummary ||
-      attachmentsSummary?.isPristine ||
-      (attachmentsSummary?.isPristine === null &&
-        Object.keys(attachmentsSummary?.newFormData).length === 0),
-    [attachmentsSummary]
+      !attachmentFormChanges.some(
+        ({ node }) =>
+          node.isPristine === false ||
+          (node.isPristine === null && node.newFormData?.attachmentId !== null)
+      ),
+    [attachmentFormChanges]
+  );
+
+  // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
+  useEffect(
+    () => setHasDiff && setHasDiff(!projectAttachmentsFormNotUpdated),
+    [projectAttachmentsFormNotUpdated, setHasDiff]
   );
 
   if (isOnAmendmentsAndOtherRevisionsPage && projectAttachmentsFormNotUpdated)
