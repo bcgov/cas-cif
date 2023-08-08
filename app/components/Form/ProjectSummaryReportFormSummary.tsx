@@ -40,7 +40,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
         ) @connection(key: "connection_summaryProjectSummaryFormChanges") {
           edges {
             node {
-              isPristine
               newFormData
               operation
               formChangeByPreviousFormChangeId {
@@ -79,21 +78,29 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   // Set custom rjsf fields to display diffs
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
-  const allFormChangesPristine = useMemo(() => {
-    if (
-      projectSummaryReport?.isPristine === false ||
-      projectSummaryReport?.isPristine === null
-    )
-      return false;
-    return true;
-  }, [projectSummaryReport?.isPristine]);
+  const filteredSchema = getFilteredSchema(
+    projectSummaryReport.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
+    projectSummaryReport || {}
+  );
+
+  const allFormChangesPristine = useMemo(
+    () => Object.keys(filteredSchema.formData).length === 0,
+    [filteredSchema.formData]
+  );
 
   useEffect(
     () => setHasDiff && setHasDiff(!allFormChangesPristine),
     [allFormChangesPristine, setHasDiff]
   );
 
-  if (allFormChangesPristine || !projectSummaryReport)
+  // Set the formSchema and formData based on showing the diff or not
+  const projectSummaryFormDiffObject = !renderDiff
+    ? {
+        formSchema: projectSummaryReport.formByJsonSchemaName.jsonSchema.schema,
+        formData: projectSummaryReport.newFormData,
+      }
+    : filteredSchema;
+  if ((allFormChangesPristine && !viewOnly) || !projectSummaryReport)
     return (
       <>
         {!isOnAmendmentsAndOtherRevisionsPage && (
@@ -106,24 +113,11 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
       </>
     );
 
-  // Set the formSchema and formData based on showing the diff or not
-  const projectSummaryFormDiffObject = !renderDiff
-    ? {
-        formSchema: projectSummaryReport.formByJsonSchemaName.jsonSchema.schema,
-        formData: projectSummaryReport.newFormData,
-      }
-    : getFilteredSchema(
-        projectSummaryReport.formByJsonSchemaName.jsonSchema
-          .schema as JSONSchema7,
-        projectSummaryReport || {}
-      );
-
-  // todo: not displaying when reviewing changes
-
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Summary Report</h3>}
       {allFormChangesPristine &&
+        !viewOnly &&
         projectSummaryReport?.operation !== "ARCHIVE" && (
           <FormNotAddedOrUpdated
             isFirstRevision={isFirstRevision}
