@@ -63,7 +63,6 @@ app.prepare().then(async () => {
   server.use(attachmentDownloadRouter);
 
   server.use(attachmentDeleteRouter);
-
   server.get("*", async (req, res) => {
     return handle(req, res);
   });
