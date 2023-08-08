@@ -63,3 +63,11 @@ export const milestoneTooltips = {
   adjustedHoldBackAmount:
     "<div><ul><li>Holdback Payment Amount This Milestone = Gross Payment Amount This Milestone x Performance Milestone Holdback Percentage.</li></ul></div>",
 };
+
+export const amendmentGeneralRevisionTooltips = {
+  amendment:
+    "<div><ul><li>You cannot create a new Amendment before the in-progress Amendment is approved.</li></ul></div>",
+
+  generalRevision:
+    "<div><ul><li>You cannot create a new General Revision before the in-progress General Revision is applied.</li></ul></div>",
+};

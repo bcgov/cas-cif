@@ -110,7 +110,7 @@ export const projectRevisionUISchema = {
     "changeReason",
   ],
   revisionType: {
-    "ui:widget": "radio",
+    "ui:widget": "RadioWithContextWidget",
   },
   amendmentTypes: {
     "ui:widget": "checkboxes",

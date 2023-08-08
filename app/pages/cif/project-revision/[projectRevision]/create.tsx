@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import RadioWithContextWidget from "lib/theme/widgets/RadioWithContextWidget";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -104,6 +105,8 @@ export function ProjectRevisionCreate({
     },
   };
 
+  // console.log("modified ui schema: ", modifiedUiSchema);
+
   return (
     <>
       <DefaultLayout session={session} leftSideNav={taskList}>
@@ -117,6 +120,9 @@ export function ProjectRevisionCreate({
               uiSchema={modifiedUiSchema}
               onSubmit={handleCreateRevision}
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
+              widgets={{
+                RadioWithContextWidget,
+              }}
             >
               <Button
                 type="submit"
