@@ -47,15 +47,12 @@ export const handleDelete = async (req, res, next) => {
         attachment: { file, id },
       },
     } = queryResponse;
-    console.log("req.body.variables", req.body.variables);
     // delete the form_change related to the attachment
     const attachmentFormChangeResponse = await performQuery(
       discardProjectAttachmentFormChangeMutation,
       req.body.variables,
       req
     );
-    // brianna this isn't working since change to the discard mutation--I think this middleware isn't actually transactional. If this doesn't work the next mutation still fires
-    console.log("attachmentFormChangeResponse", attachmentFormChangeResponse);
 
     // delete the attachment from the attachment table
     const deleteAttachmentResponse = await performQuery(
