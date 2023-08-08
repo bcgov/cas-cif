@@ -752,7 +752,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "checkEmissionIntensityReportForm",
-  (
+  ({
     measurementPeriodStartDate,
     measurementPeriodEndDate,
     duration,
@@ -767,8 +767,8 @@ Cypress.Commands.add(
     dateSentToCsnr,
     paymentPercentageOfPerformanceMilestoneAmount,
     actualPerformanceMilestoneAmount,
-    maximumPerformanceMilestoneAmount
-  ) => {
+    maximumPerformanceMilestoneAmount,
+  }) => {
     cy.url().should("include", "/form/5");
     cy.get('[aria-label="TEIMP Start Date"]').should(
       "have.text",

@@ -268,23 +268,23 @@ describe("when undoing, the project revision page", () => {
     );
     cy.contains("Changes saved").should("be.visible");
     cy.findByRole("button", { name: /undo changes/i }).click();
-    cy.checkEmissionIntensityReportForm(
-      "Jun 01, 2023",
-      "Jul 01, 2023",
-      "1 month",
-      "tCO2e",
-      "Gj",
-      324.25364,
-      23.2357,
-      124.35,
-      44.4224,
-      "66.41%",
-      "98.00%",
-      "Jun 10, 2020",
-      "100.00%",
-      "$0.10",
-      "$0.10"
-    );
+    cy.checkEmissionIntensityReportForm({
+      measurementPeriodStartDate: "Jun 01, 2023",
+      measurementPeriodEndDate: "Jul 01, 2023",
+      duration: "1 month",
+      emissionFunctionalUnit: "tCO2e",
+      productionFunctionalUnit: "Gj",
+      baselineEmissionIntensity: 324.25364,
+      targetEmissionIntensity: 23.2357,
+      postProjectEmissionIntensity: 124.35,
+      totalLifetimeEmissionReduction: 44.4224,
+      ghgEmissionIntensityPerformance: "66.41%",
+      adjustedGhgEmissionIntensityPerformance: "98.00%",
+      dateSentToCsnr: "Jun 10, 2020",
+      paymentPercentageOfPerformanceMilestoneAmount: "100.00%",
+      actualPerformanceMilestoneAmount: "$0.10",
+      maximumPerformanceMilestoneAmount: "$0.10",
+    });
     cy.findByText(/Edit Emissions Intensity Report/i)
       .next()
       .should("have.text", "No Changes");
