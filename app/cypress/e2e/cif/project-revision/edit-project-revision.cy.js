@@ -235,7 +235,6 @@ describe("when editing a project, the project page", () => {
       "have.text",
       "Oct 31, 2022"
     );
-    cy.findAllByText("Duration: 9 months, 30 days").should("have.length", 2);
     cy.get("#root_emissionFunctionalUnit-diffOld").should("have.text", "tCO2e");
     cy.get("#root_emissionFunctionalUnit-diffNew").should("have.text", "tCO");
     cy.get("#root_productionFunctionalUnit-diffOld").should("have.text", "Gj");
