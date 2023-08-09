@@ -42,6 +42,17 @@ describe("The postgraphile form validation plugin", () => {
     expect(filter(testContext)).toEqual({});
   });
 
+  it("Has a filter method that returns an empty object for the updateMilestoneFormChange custom mutation", () => {
+    const testContext = {
+      scope: {
+        isRootMutation: true,
+        fieldName: "updateMilestoneFormChange",
+      },
+    };
+
+    expect(filter(testContext)).toEqual({});
+  });
+
   it("Has a filter method that returns an empty object for the stageFormChange mutation", () => {
     const testContext = {
       scope: {
