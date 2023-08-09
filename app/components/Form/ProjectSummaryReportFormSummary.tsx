@@ -109,7 +109,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   const projectSummaryFormDiffObject = !renderDiff
     ? {
         formSchema: projectSummaryReportFormBySlug.jsonSchema.schema,
-        formData: projectSummaryReport.newFormData,
+        formData: projectSummaryReport?.newFormData,
       }
     : filteredSchema;
   if ((allFormChangesPristine && !viewOnly) || !projectSummaryReport)
