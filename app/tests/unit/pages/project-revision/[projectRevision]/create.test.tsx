@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, screen } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProjectRevisionCreate } from "pages/cif/project-revision/[projectRevision]/create";
 import PageTestingHelper from "tests/helpers/pageTestingHelper";
@@ -170,7 +170,7 @@ describe("The project amendments and revisions page", () => {
       anchor: undefined,
     });
   });
-  it("Disables only the amendment revision type if one is already pending", () => {
+  it("Disables only the amendment revision type if one is already pending", async () => {
     pageTestingHelper.loadQuery({
       ...defaultMockResolver,
       Project() {
@@ -192,6 +192,53 @@ describe("The project amendments and revisions page", () => {
     });
     expect(amendmentRadio).toBeDisabled();
     expect(generalRevisionRadio).not.toBeDisabled();
+    const amendmentTooltip = screen.getByRole("tooltip", {
+      name: "amendment-tooltip",
+    });
+    expect(amendmentTooltip).toBeInTheDocument();
+    fireEvent.mouseOver(amendmentTooltip);
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          "You cannot create a new Amendment before the in-progress Amendment is approved."
+        )
+      ).toBeInTheDocument();
+    });
+  });
+  it("Disables only the general revision type if one is already pending", async () => {
+    pageTestingHelper.loadQuery({
+      ...defaultMockResolver,
+      Project() {
+        return {
+          id: "test-project",
+          rowId: 2345,
+          pendingGeneralRevision: {
+            id: 8765,
+          },
+          pendingAmendment: null,
+        };
+      },
+    });
+    pageTestingHelper.renderPage();
+
+    const amendmentRadio = screen.getByRole("radio", { name: /amendment/i });
+    const generalRevisionRadio = screen.getByRole("radio", {
+      name: /general revision/i,
+    });
+    expect(amendmentRadio).not.toBeDisabled();
+    expect(generalRevisionRadio).toBeDisabled();
+    const generalRevisionTooltip = screen.getByRole("tooltip", {
+      name: "general-revision-tooltip",
+    });
+    expect(generalRevisionTooltip).toBeInTheDocument();
+    fireEvent.mouseOver(generalRevisionTooltip);
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          "You cannot create a new General Revision before the in-progress General Revision is applied."
+        )
+      ).toBeInTheDocument();
+    });
   });
   it("Does not render the create form if a general revision and amendment are both already in progress", () => {
     pageTestingHelper.loadQuery({
