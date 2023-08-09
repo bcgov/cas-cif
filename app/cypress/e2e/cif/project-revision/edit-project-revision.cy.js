@@ -136,7 +136,7 @@ describe("when editing a project, the project page", () => {
     cy.findByText(/Quarterly Report 1/i).should("not.exist");
     cy.findByText(/No reports due/).should("be.visible");
     cy.findByRole("button", { name: /generate quarterly reports/i }).should(
-      "be.disabled"
+      "not.be.disabled"
     );
     cy.contains("Changes saved.");
 
@@ -151,22 +151,19 @@ describe("when editing a project, the project page", () => {
     cy.findByText("Amendment 2").should("be.visible"); // ensure the submit page has loaded
 
     // edit teimp
-
     cy.findByRole("button", { name: /Emissions Intensity Report/i }).click();
     cy.findByText(/Edit emissions intensity report/i).click();
-    cy.findByRole("button", {
-      name: /Add Emissions Intensity Report/i,
-    }).click();
-    cy.addEmissionIntensityReport(
+    cy.addOrEditEmissionIntensityReport(
       "2022-01-01",
-      "2022-02-02",
-      "tCO2",
-      "1",
-      "2",
-      "3",
+      "2022-10-31",
+      "tCO",
+      "1.23",
+      "2.34",
+      "3.45",
       "G",
       100
     );
+
     cy.contains("Changes saved.");
     cy.happoAndAxe("Project teimp agreement form", "editing", "main");
     cy.findByText(/Submit Emissions Intensity Report/i).click();
@@ -221,9 +218,82 @@ describe("when editing a project, the project page", () => {
     cy.findByText("Quarterly Report").should("be.visible");
     cy.get(".diffOld").contains("Quarterly Report").should("be.visible");
 
+    // TEIMP diffs
+    cy.get("#root_measurementPeriodStartDate-diffOld").should(
+      "have.text",
+      "Jun 1, 2023"
+    );
     cy.get("#root_measurementPeriodStartDate-diffNew").should(
       "have.text",
       "Jan 1, 2022"
+    );
+    cy.get("#root_measurementPeriodEndDate-diffOld").should(
+      "have.text",
+      "Jul 1, 2023"
+    );
+    cy.get("#root_measurementPeriodEndDate-diffNew").should(
+      "have.text",
+      "Oct 31, 2022"
+    );
+    cy.get("#root_emissionFunctionalUnit-diffOld").should("have.text", "tCO2e");
+    cy.get("#root_emissionFunctionalUnit-diffNew").should("have.text", "tCO");
+    cy.get("#root_productionFunctionalUnit-diffOld").should("have.text", "Gj");
+    cy.get("#root_productionFunctionalUnit-diffNew").should("have.text", "G");
+    cy.get("#root_baselineEmissionIntensity-diffOld").should(
+      "have.text",
+      "324.25364000"
+    );
+    cy.get("#root_baselineEmissionIntensity-diffNew").should(
+      "have.text",
+      "1.23000000"
+    );
+    cy.get("#root_targetEmissionIntensity-diffOld").should(
+      "have.text",
+      "23.23570000"
+    );
+    cy.get("#root_targetEmissionIntensity-diffNew").should(
+      "have.text",
+      "2.34000000"
+    );
+    cy.get("#root_postProjectEmissionIntensity-diffOld").should(
+      "have.text",
+      "124.35000000"
+    );
+    cy.get("#root_postProjectEmissionIntensity-diffNew").should(
+      "have.text",
+      "3.45000000"
+    );
+    cy.get("#root_calculatedEiPerformance-diffOld").should(
+      "have.text",
+      "66.41 %"
+    );
+    cy.get("#root_calculatedEiPerformance-diffNew").should(
+      "have.text",
+      "200.00 %"
+    );
+    cy.get("#root_adjustedEmissionsIntensityPerformance-diffOld").should(
+      "have.text",
+      "98.00 %"
+    );
+    cy.get("#root_adjustedEmissionsIntensityPerformance-diffNew").should(
+      "have.text",
+      "100.00 %"
+    );
+    cy.get("#root_actualPerformanceMilestoneAmount-diffOld").should(
+      "have.text",
+      "$0.10"
+    );
+    cy.get("#root_actualPerformanceMilestoneAmount-diffNew").should(
+      "have.text",
+      "$0.30"
+    );
+    cy.get("#root_maximumPerformanceMilestoneAmount-diffOld").should(
+      "have.text",
+      "$0.10"
+    );
+    cy.get("#root_maximumPerformanceMilestoneAmount-diffNew").should(
+      "have.text",
+      "$0.30"
     );
 
     cy.get("#root_comments-diffOld").should(

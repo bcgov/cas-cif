@@ -349,7 +349,7 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "addEmissionIntensityReport",
+  "addOrEditEmissionIntensityReport",
   (
     measurementPeriodStartDate,
     measurementPeriodEndDate,
@@ -357,8 +357,8 @@ Cypress.Commands.add(
     baselineEmissionIntensity,
     targetEmissionIntensity,
     postProjectEmissionIntensity,
-    productionFunctionalUnit = undefined,
-    adjustedEmissionsIntensityPerformance = undefined
+    productionFunctionalUnit,
+    adjustedEmissionsIntensityPerformance
   ) => {
     // Extra assertion to wait for the new milestone report to be added
     cy.contains("Changes saved").should("be.visible");
@@ -390,11 +390,10 @@ Cypress.Commands.add(
       }`
     ).should("have.length", 3);
 
-    if (adjustedEmissionsIntensityPerformance) {
+    if (adjustedEmissionsIntensityPerformance)
       cy.get('[aria-label="GHG Emission Intensity Performance (Adjusted)"]')
         .clear()
         .type(adjustedEmissionsIntensityPerformance);
-    }
 
     return cy.url().should("include", "/form/5");
   }
@@ -685,3 +684,154 @@ Cypress.Commands.add("navigateToFirstProjectEditRevisionPage", () => {
     .click();
   cy.url().should("include", "/edit");
 });
+
+Cypress.Commands.add(
+  "checkEmissionIntensityReportSummaryForm",
+  (
+    measurementPeriodStartDate,
+    measurementPeriodEndDate,
+    duration,
+    emissionFunctionalUnit,
+    productionFunctionalUnit,
+    baselineEmissionIntensity,
+    targetEmissionIntensity,
+    postProjectEmissionIntensity,
+    totalLifetimeEmissionReduction,
+    ghgEmissionIntensityPerformance,
+    adjustedGhgEmissionIntensityPerformance,
+    dateSentToCsnr,
+    paymentPercentageOfPerformanceMilestoneAmount,
+    actualPerformanceMilestoneAmount,
+    maximumPerformanceMilestoneAmount
+  ) => {
+    cy.contains("TEIMP Start Date").next().contains(measurementPeriodStartDate);
+    cy.contains("TEIMP End Date").next().contains(measurementPeriodEndDate);
+    if (duration) cy.contains(`Duration: ${duration}`);
+    cy.contains("Functional Unit").next().contains(emissionFunctionalUnit);
+    if (productionFunctionalUnit)
+      cy.contains("Production Functional Unit")
+        .next()
+        .contains(productionFunctionalUnit);
+    cy.contains("Baseline Emission Intensity (BEI)")
+      .next()
+      .contains(baselineEmissionIntensity);
+    cy.contains("Target Emission Intensity (TEI)")
+      .next()
+      .contains(targetEmissionIntensity);
+
+    if (postProjectEmissionIntensity)
+      cy.contains("Post-Project Emission Intensity (PEI)")
+        .next()
+        .contains(postProjectEmissionIntensity);
+
+    if (totalLifetimeEmissionReduction)
+      cy.contains("Total Project Lifetime Emissions Reductions")
+        .next()
+        .contains(totalLifetimeEmissionReduction);
+    cy.findByText("GHG Emission Intensity Performance")
+      .next()
+      .contains(ghgEmissionIntensityPerformance);
+    cy.findByText("GHG Emission Intensity Performance (Adjusted)")
+      .next()
+      .contains(adjustedGhgEmissionIntensityPerformance);
+
+    if (dateSentToCsnr)
+      cy.contains("Date Invoice Sent to CSNR").next().contains(dateSentToCsnr);
+    cy.contains("Payment Percentage of Performance Milestone Amount")
+      .next()
+      .contains(paymentPercentageOfPerformanceMilestoneAmount);
+
+    cy.contains("Actual Performance Milestone Amount")
+      .next()
+      .contains(actualPerformanceMilestoneAmount);
+    cy.contains("Maximum Performance Milestone Amount")
+      .next()
+      .contains(maximumPerformanceMilestoneAmount);
+  }
+);
+
+Cypress.Commands.add(
+  "checkEmissionIntensityReportForm",
+  ({
+    measurementPeriodStartDate,
+    measurementPeriodEndDate,
+    duration,
+    emissionFunctionalUnit,
+    productionFunctionalUnit,
+    baselineEmissionIntensity,
+    targetEmissionIntensity,
+    postProjectEmissionIntensity,
+    totalLifetimeEmissionReduction,
+    ghgEmissionIntensityPerformance,
+    adjustedGhgEmissionIntensityPerformance,
+    dateSentToCsnr,
+    paymentPercentageOfPerformanceMilestoneAmount,
+    actualPerformanceMilestoneAmount,
+    maximumPerformanceMilestoneAmount,
+  }) => {
+    cy.url().should("include", "/form/5");
+    cy.get('[aria-label="TEIMP Start Date"]').should(
+      "have.text",
+      measurementPeriodStartDate
+    );
+    cy.get('[aria-label="TEIMP End Date"]').should(
+      "have.text",
+      measurementPeriodEndDate
+    );
+    if (duration) cy.contains(`Duration: ${duration}`);
+
+    cy.get('[aria-label="Functional Unit"]').should(
+      "have.value",
+      emissionFunctionalUnit
+    );
+
+    cy.get('[aria-label="Production Functional Unit"]').should(
+      "have.value",
+      productionFunctionalUnit
+    );
+
+    cy.get('[aria-label="Baseline Emission Intensity (BEI)"]').should(
+      "have.value",
+      baselineEmissionIntensity
+    );
+
+    cy.get('[aria-label="Target Emission Intensity (TEI)"]').should(
+      "have.value",
+      targetEmissionIntensity
+    );
+
+    if (postProjectEmissionIntensity)
+      cy.get('[aria-label="Post-Project Emission Intensity (PEI)"]').should(
+        "have.value",
+        postProjectEmissionIntensity
+      );
+
+    if (totalLifetimeEmissionReduction)
+      cy.get(
+        '[aria-label="Total Project Lifetime Emissions Reductions"]'
+      ).should("have.value", totalLifetimeEmissionReduction);
+
+    cy.contains("GHG Emission Intensity Performance")
+      .next()
+      .contains(ghgEmissionIntensityPerformance);
+    cy.get(
+      '[aria-label="GHG Emission Intensity Performance (Adjusted)"]'
+    ).should("have.value", adjustedGhgEmissionIntensityPerformance);
+
+    if (dateSentToCsnr)
+      cy.get('[aria-label="Date Invoice Sent to CSNR"]').should(
+        "have.text",
+        dateSentToCsnr
+      );
+    cy.contains("Payment Percentage of Performance Milestone Amount")
+      .next()
+      .contains(paymentPercentageOfPerformanceMilestoneAmount);
+
+    cy.contains("Actual Performance Milestone Amount")
+      .next()
+      .contains(actualPerformanceMilestoneAmount);
+    cy.contains("Maximum Performance Milestone Amount")
+      .next()
+      .contains(maximumPerformanceMilestoneAmount);
+  }
+);

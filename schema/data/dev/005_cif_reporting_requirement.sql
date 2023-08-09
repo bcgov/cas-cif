@@ -164,7 +164,53 @@ do $$
           'dateSentToCsnr', now()
           ),
         'create', 'cif', 'reporting_requirement', 'pending', 'project_summary_report',temp_row.id);
-      end loop;
+    end loop;
+  -- insert TEIMP reports for EP projects
+    for temp_row in select pr.id from cif.project_revision pr
+      join cif.form_change fc
+      on pr.id=fc.project_revision_id
+      and fc.form_data_table_name='project'
+      and (fc.new_form_data->>'fundingStreamRfpId')::integer in
+          (select fsr.id from cif.funding_stream_rfp fsr
+          join cif.funding_stream fs
+          on fsr.funding_stream_id=fs.id
+          and fs.name='EP')
+    loop
+      insert into cif.form_change(
+        new_form_data,
+        operation,
+        form_data_schema_name,
+        form_data_table_name,
+        change_status,
+        json_schema_name,
+        project_revision_id
+      )
+      values
+      (
+        json_build_object(
+          'reportDueDate', now(),
+          'submittedDate', now(),
+          'comments','TEIMP report comments ' || temp_row.id,
+          'projectId', (select form_data_record_id
+                          from cif.form_change
+                          where project_revision_id = temp_row.id
+                          and form_data_table_name = 'project'
+                        ),
+          'reportType', 'TEIMP',
+          'reportingRequirementIndex', 1,
+          'emissionFunctionalUnit', 'tCO2e',
+          'productionFunctionalUnit', 'Gj',
+          'measurementPeriodEndDate', '2023-07-01T23:59:59.999-07:00',
+          'measurementPeriodStartDate', '2023-06-01T23:59:59.999-07:00',
+          'adjustedEmissionsIntensityPerformance', 98,
+          'postProjectEmissionIntensity', 124.35,
+          'baselineEmissionIntensity', 324.25364,
+          'dateSentToCsnr', now(),
+          'targetEmissionIntensity', 23.2357,
+          'totalLifetimeEmissionReduction', 44.4224
+          ),
+        'create', 'cif', 'reporting_requirement', 'pending', 'emission_intensity',temp_row.id);
+    end loop;
   end
 $$;
 

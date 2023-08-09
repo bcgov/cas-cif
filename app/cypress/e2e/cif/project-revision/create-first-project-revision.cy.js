@@ -122,13 +122,13 @@ describe("when creating a project, the project page", () => {
     }).click();
     cy.findByLabelText(/^Functional Unit/i).should("have.value", "tCO2e");
     cy.findAllByText("tCO2e").should("have.length", 4);
-    cy.addEmissionIntensityReport(
+    cy.addOrEditEmissionIntensityReport(
       "2022-01-01",
       "2022-02-02",
       "tCO",
-      "1",
-      "2",
-      "3",
+      "1.23",
+      "2.34",
+      "3.45",
       "G",
       100
     );
@@ -250,36 +250,23 @@ describe("when creating a project, the project page", () => {
       .should("have.text", "Bob004 Loblaw004");
 
     // TEIMP section
-    cy.findByText(/^TEIMP start date/i)
-      .next()
-      .contains(/Jan(\.)? 1, 2022/)
-      .should("be.visible");
-    cy.findByText(/TEIMP end date/i)
-      .next()
-      .next()
-      .contains(/Duration: 1 month, 1 day/i);
-    cy.findByText(/^Functional Unit/i)
-      .next()
-      .should("have.text", "tCO");
-    cy.findByText(/^Production Functional Unit/i)
-      .next()
-      .should("have.text", "G");
-    // GHG performance uses the ReadOnlyAdjustableCalculatedValueWidget, which has a different HTML structure than the other fields
-    cy.findByText("GHG Emission Intensity Performance")
-      .next()
-      .should("have.text", "200.00%");
-    cy.findByText("GHG Emission Intensity Performance (Adjusted)")
-      .next()
-      .should("have.text", "100%");
-    cy.findByText("Payment Percentage of Performance Milestone Amount (%)")
-      .next()
-      .should("have.text", "100.00%");
-    cy.findByText("Maximum Performance Milestone Amount")
-      .next()
-      .should("have.text", "$12.00");
-    cy.findByText("Actual Performance Milestone Amount")
-      .next()
-      .should("have.text", "$12.00");
+    cy.checkEmissionIntensityReportSummaryForm(
+      /Jan(\.)? 1, 2022/,
+      /Feb(\.)? 2, 2022/,
+      "1 month, 1 day",
+      "tCO",
+      "G",
+      1.23,
+      2.34,
+      3.45,
+      "Not added",
+      "200.00%",
+      "100%",
+      null,
+      "100.00%",
+      "$12.00",
+      "$12.00"
+    );
 
     // summary
     cy.happoAndAxe("Project summary Form", "filled", "main", true);
