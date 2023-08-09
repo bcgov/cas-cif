@@ -24,7 +24,22 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   viewOnly,
   isOnAmendmentsAndOtherRevisionsPage,
   setHasDiff,
+  query,
 }) => {
+  console.log("query", query);
+  const { projectSummaryReportFormBySlug } = useFragment(
+    graphql`
+      fragment ProjectSummaryReportFormSummary_query on Query {
+        projectSummaryReportFormBySlug: formBySlug(
+          slug: "project_summary_report"
+        ) {
+          jsonSchema
+        }
+      }
+    `,
+    query
+  );
+  console.log("projectSummaryReportFormBySlug", projectSummaryReportFormBySlug);
   const {
     summaryProjectSummaryFormChanges,
     isFirstRevision,
@@ -44,9 +59,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
               operation
               formChangeByPreviousFormChangeId {
                 newFormData
-              }
-              formByJsonSchemaName {
-                jsonSchema
               }
             }
           }
@@ -79,7 +91,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   const customFields = { ...fields, ...CUSTOM_DIFF_FIELDS };
 
   const filteredSchema = getFilteredSchema(
-    projectSummaryReport.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
+    projectSummaryReportFormBySlug.jsonSchema.schema as JSONSchema7,
     projectSummaryReport || {}
   );
 
@@ -96,7 +108,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   // Set the formSchema and formData based on showing the diff or not
   const projectSummaryFormDiffObject = !renderDiff
     ? {
-        formSchema: projectSummaryReport.formByJsonSchemaName.jsonSchema.schema,
+        formSchema: projectSummaryReportFormBySlug.jsonSchema.schema,
         formData: projectSummaryReport.newFormData,
       }
     : filteredSchema;
