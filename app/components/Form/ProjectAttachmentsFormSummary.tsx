@@ -60,8 +60,8 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
     projectRevision
   );
 
-  // Show diff if it is not the first revision and not view only (rendered from the contacts page)
-  const renderDiff = /* !isFirstRevision &&  */ !viewOnly;
+  // Show diff if it is not view only
+  const renderDiff = !viewOnly;
 
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   let attachmentFormChanges =
