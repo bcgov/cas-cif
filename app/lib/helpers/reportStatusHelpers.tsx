@@ -1,6 +1,7 @@
 import StatusBadge from "components/StatusBadge";
 import { DateTime } from "luxon";
 
+// These function are for use with in-progress revisions. See the milestone_status computed column for the statuses of committed revisions.
 export const parseStringDate = (stringDate: string) => {
   if (!stringDate) return null;
   return (
