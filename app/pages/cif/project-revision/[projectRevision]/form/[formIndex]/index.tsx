@@ -17,6 +17,8 @@ const pageQuery = graphql`
       }
       ...ProjectFundingAgreementFormSummary_query
       ...ProjectEmissionIntensityReportFormSummary_query
+      ...ProjectSummaryReportFormSummary_query
+
       projectRevision(id: $projectRevision) {
         id
         changeStatus

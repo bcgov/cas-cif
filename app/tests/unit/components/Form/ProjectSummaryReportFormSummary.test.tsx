@@ -5,7 +5,7 @@ import ProjectSummaryReportFormSummary from "components/Form/ProjectSummaryRepor
 import compiledFormIndexPageQuery, {
   FormIndexPageQuery,
 } from "__generated__/FormIndexPageQuery.graphql";
-import projectSummaryProdSchema from "../../../../../schema/data/prod/json_schema/project_summary_report.json";
+import projectSummaryProdSchema from "/schema/data/prod/json_schema/emission_intensity.json";
 
 const testQuery = graphql`
   query ProjectSummaryReportFormSummaryQuery @relay_test_operation {
@@ -13,11 +13,19 @@ const testQuery = graphql`
       projectRevision(id: "Test Project Revision ID") {
         ...ProjectSummaryReportFormSummary_projectRevision
       }
+      ...ProjectSummaryReportFormSummary_query
     }
   }
 `;
 
 const defaultMockResolver = {
+  Query() {
+    return {
+      projectSummaryReportFormBySlug: {
+        jsonSchema: projectSummaryProdSchema,
+      },
+    };
+  },
   ProjectRevision() {
     return {
       id: "mock-id-1",
