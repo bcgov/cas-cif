@@ -45,6 +45,8 @@ update cif.form_change set previous_form_change_id = 2, change_status='committed
 
 alter table cif.form_change disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
 
+select cif_private.migration_rebuild_project_summary_report_history();
+
 alter table cif.form_change enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
 
 select results_eq(
