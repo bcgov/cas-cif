@@ -55,10 +55,10 @@ app.prepare().then(async () => {
 
   server.use(cookieParser());
 
+  server.use(graphqlUploadExpress());
   server.use(graphQlMiddleware());
 
   server.use(lusca.csrf());
-  server.use(graphqlUploadExpress());
   server.use(attachmentDownloadRouter);
 
   server.get("*", async (req, res) => {
