@@ -175,10 +175,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
 
   if (isOnAmendmentsAndOtherRevisionsPage && allFormChangesPristine)
     return null;
-  console.log("emissions");
-  console.log("allFormChangesPristine", allFormChangesPristine);
-  console.log("viewOnly", viewOnly);
-  console.log("summaryReportingRequirement", summaryReportingRequirement);
+
   if ((allFormChangesPristine && !viewOnly) || !summaryReportingRequirement)
     return (
       <>
@@ -226,7 +223,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
         },
       },
     };
-  console.log("allFormChangesPristine", allFormChangesPristine);
+
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && (

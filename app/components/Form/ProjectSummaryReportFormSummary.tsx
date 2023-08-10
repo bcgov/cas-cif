@@ -26,7 +26,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
   setHasDiff,
   query,
 }) => {
-  console.log("query", query);
   const { projectSummaryReportFormBySlug } = useFragment(
     graphql`
       fragment ProjectSummaryReportFormSummary_query on Query {
@@ -39,7 +38,7 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
     `,
     query
   );
-  console.log("projectSummaryReportFormBySlug", projectSummaryReportFormBySlug);
+
   const {
     summaryProjectSummaryFormChanges,
     isFirstRevision,

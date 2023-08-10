@@ -30,22 +30,27 @@ update cif.form_change
   where form_data_table_name='project';
 
 
--- create has no previous_form_change_id and id=1
+-- create has no previous_form_change_id and id=2
 select cif.create_form_change('create', 'project_summary_report', 'cif', 'project_summary_report', '{}', 123, null, 'committed', '[]');
 
--- all updates have the same previous_form_change_id=1 and form_data_record_id=123 (bug=form_data_record_id clears on commit)
-select cif.create_form_change('update', 'project_summary_report', 'cif', 'project_summary_report', '{"description": "value"}', 123, 1, 'pending', '[]');
+-- all updates have the same previous_form_change_id=2 and form_data_record_id=null (to simulate the bug that deleted form_data_record_id on commit)
+select cif.create_form_change('update', 'project_summary_report', 'cif', 'project_summary_report', '{"description": "value"}', null, 1, 'pending', '[]');
 
-select cif.create_form_change('update', 'project_summary_report', 'cif', 'project_summary_report', '{"description": "most recent"}', 123, 1, 'pending', '[]');
+select cif.create_form_change('update', 'project_summary_report', 'cif', 'project_summary_report', '{"description": "most recent"}', null, 1, 'pending', '[]');
 
-select cif.commit_project_revision(1);
-
+-- mimic the commit and set previous form change id trigger
+update cif.form_change set previous_form_change_id = 2, change_status='committed' where id > 2;
 
 /** SETUP END **/
 
 alter table cif.form_change disable trigger _100_committed_changes_are_immutable, disable trigger _100_timestamps;
-
+select '-----';
+select * from cif.form_change order by id asc;
+select '-----';
 select cif_private.migration_rebuild_project_summary_report_history();
+select '-----';
+select * from cif.form_change order by id asc;
+select '-----';
 
 alter table cif.form_change enable trigger _100_committed_changes_are_immutable, enable trigger _100_timestamps;
 
