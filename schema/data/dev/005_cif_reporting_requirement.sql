@@ -4,7 +4,10 @@ begin;
 do $$
   declare
   temp_row record;
+  end_of_day_today timestamptz;
   begin
+
+  end_of_day_today:= (select date 'tomorrow' + time 'allballs' - interval '1 second')::timestamptz;
 
   -- insert milestone reports including payments
     for temp_row in select id, form_data_record_id, project_revision_id from cif.form_change where form_data_table_name = 'project'
@@ -23,16 +26,16 @@ do $$
       update cif.form_change set new_form_data =
       json_build_object(
         'projectId', temp_row.form_data_record_id,
-        'reportDueDate', now(),
-        'submittedDate', now(),
+        'reportDueDate', end_of_day_today,
+        'submittedDate', end_of_day_today,
         'reportType', 'General Milestone',
         'reportingRequirementIndex', 1,
         'description', 'general milestone report description ' || temp_row.form_data_record_id,
         'adjustedGrossAmount', 1,
         'adjustedNetAmount', 1,
-        'dateSentToCsnr', now(),
+        'dateSentToCsnr', end_of_day_today,
         'certifierProfessionalDesignation', 'Professional Engineer',
-        'substantialCompletionDate', now(),
+        'substantialCompletionDate', end_of_day_today,
         'maximumAmount', 1,
         'totalEligibleExpenses', 1,
         'certifiedBy', 'Elliot Page',
@@ -71,8 +74,8 @@ do $$
       values
       (
         json_build_object(
-          'reportDueDate', now(),
-          'submittedDate', now(),
+          'reportDueDate', end_of_day_today,
+          'submittedDate', end_of_day_today,
           'comments','annual report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
@@ -111,8 +114,8 @@ do $$
       (
         json_build_object(
 
-          'reportDueDate', now(),
-          'submittedDate', now(),
+          'reportDueDate', end_of_day_today,
+          'submittedDate', end_of_day_today,
           'comments','quarterly report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
@@ -149,8 +152,8 @@ do $$
       values
       (
         json_build_object(
-          'reportDueDate', now(),
-          'submittedDate', now(),
+          'reportDueDate', end_of_day_today,
+          'submittedDate', end_of_day_today,
           'comments','project summary report comments ' || temp_row.id,
           'projectId', (select form_data_record_id
                           from cif.form_change
@@ -161,7 +164,7 @@ do $$
           'reportingRequirementIndex', 1,
           'projectSummaryReportPayment', 111,
           'paymentNotes', 'payment notes',
-          'dateSentToCsnr', now()
+          'dateSentToCsnr', end_of_day_today
           ),
         'create', 'cif', 'reporting_requirement', 'pending', 'project_summary_report',temp_row.id);
     end loop;
