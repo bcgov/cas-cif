@@ -4,10 +4,8 @@ begin;
 do $$
   declare
   temp_row record;
-  end_of_day_today timestamptz;
   begin
 
-  end_of_day_today:= (select date 'tomorrow' + time 'allballs' - interval '1 second')::timestamptz;
 -- ep funding parameters
 for temp_row in select id, project_id from cif.project_revision
     where cif.project_revision.id = ((
@@ -46,8 +44,8 @@ for temp_row in select id, project_id from cif.project_revision
             'maxFundingAmount', 1,
             'anticipatedFundingAmount', 1,
             'proponentCost',777,
-            'contractStartDate', end_of_day_today,
-            'projectAssetsLifeEndDate', end_of_day_today,
+            'contractStartDate', now(),
+            'projectAssetsLifeEndDate', now(),
             'additionalFundingSources', json_build_array(
               json_build_object(
                 'source', 'cheese import taxes',
@@ -97,8 +95,8 @@ for temp_row in select id, project_id from cif.project_revision
             'maxFundingAmount', 500,
             'anticipatedFundingAmount', 200,
             'proponentCost',3000,
-            'contractStartDate', (select date 'tomorrow' + time 'allballs' - interval '1 second')::timestamptz,
-            'projectAssetsLifeEndDate', end_of_day_today,
+            'contractStartDate', now(),
+            'projectAssetsLifeEndDate', now(),
             'additionalFundingSources', json_build_array(
               json_build_object(
                 'source', 'pretzel import taxes',
