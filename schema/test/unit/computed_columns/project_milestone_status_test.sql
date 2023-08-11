@@ -30,14 +30,14 @@ insert into cif.reporting_requirement(id, project_id, report_type, report_due_da
 overriding system value
 values
 -- project 1, id=2 is late
-(1, 1, 'General Milestone', CURRENT_DATE + INTERVAL '1 day', null, 'milestone 1', 1, 'upcoming milestone', null),
+(1, 1, 'General Milestone', current_date + interval '1 day', null, 'milestone 1', 1, 'upcoming milestone', null),
 (2, 1, 'General Milestone', '1999-01-23 13:42:59.085 -0800', null, 'milestone 2', 1, 'late milestone', null),
 (3, 1, 'General Milestone', '2023-01-16 13:42:59.085 -0800', '2023-01-06 13:42:59.085 -0800', 'milestone 3', 1, 'completed milestone', null),
 -- project 2, all milestones complete
 (4, 2, 'General Milestone', '2023-04-15 13:42:59.085 -0800', '2023-02-15 13:42:59.085 -0800', 'milestone 4', 1, 'completed milestone', null) ,
 (5, 2, 'General Milestone', '2023-08-05 13:42:59.085 -0800', '2023-06-11 13:42:59.085 -0800', 'milestone 5', 1, 'completed milestone', null),
 (6, 2, 'General Milestone', '2023-03-02 13:42:59.085 -0800', '2023-02-21 13:42:59.085 -0800', 'milestone 6', 1, 'completed milestone', null),
-(7, 2, 'General Milestone', '2023-04-15 13:42:59.085 -0800', '2023-04-018 13:42:59.085 -0800', 'milestone 7', 1, 'completed milestone', null),
+(7, 2, 'General Milestone', '2023-04-15 13:42:59.085 -0800', '2023-04-18 13:42:59.085 -0800', 'milestone 7', 1, 'completed milestone', null),
 -- project 3, all milestones upcoming, id=11 checks for a same-day due date
 (8, 3, 'General Milestone', now() + interval '1 day', null, 'milestone 8', 1, 'upcoming milestone', null),
 (9, 3, 'General Milestone', now() + interval '1 day', null, 'milestone 9', 1, 'upcoming milestone', null),
