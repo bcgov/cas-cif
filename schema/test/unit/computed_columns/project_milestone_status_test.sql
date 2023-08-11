@@ -22,7 +22,8 @@ overriding system value
 values
   (1, 1, 1, 1, '000', 'summary', 'project 1'),
   (2, 2, 1, 1, '001', 'summary', 'project 2'),
-  (3, 3, 1, 1, '002', 'summary', 'project 3');
+  (3, 3, 1, 1, '002', 'summary', 'project 3'),
+  (4, 3, 1, 1, '003', 'summary', 'project 4');
 
 
 /** Create mock reporting requirement **/
@@ -46,7 +47,7 @@ values
 
 select is(
   (
-    select cif.project_milestone_status((select row(project.*)::cif.project from cif.project where id=123))
+    select cif.project_milestone_status((select row(project.*)::cif.project from cif.project where id=4))
   ),
   (
     'none'
