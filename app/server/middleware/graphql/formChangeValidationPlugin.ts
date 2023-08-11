@@ -17,6 +17,7 @@ export const filter = (context: Context<GraphQLObjectType<any, any>>) => {
   if (
     (context.scope.isRootMutation &&
       context.scope.fieldName === "updateFormChange") ||
+    context.scope.fieldName === "updateMilestoneFormChange" ||
     context.scope.fieldName === "stageFormChange" ||
     context.scope.fieldName === "commitFormChange"
   ) {
