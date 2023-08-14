@@ -282,8 +282,8 @@ describe("when undoing, the project revision page", () => {
       adjustedGhgEmissionIntensityPerformance: "98.00%",
       dateSentToCsnr: "Jun 10, 2020",
       paymentPercentageOfPerformanceMilestoneAmount: "100.00%",
-      actualPerformanceMilestoneAmount: "$0.10",
-      maximumPerformanceMilestoneAmount: "$0.10",
+      actualPerformanceMilestoneAmount: "$0.00",
+      maximumPerformanceMilestoneAmount: "$0.00",
     });
     cy.findByText(/Edit Emissions Intensity Report/i)
       .next()
