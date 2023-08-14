@@ -48,3 +48,14 @@ select
       )
   end;
 $computed_column$ language sql stable;
+
+grant execute on function cif.form_change_total_project_value to cif_internal, cif_external, cif_admin;
+
+comment on function cif.form_change_total_project_value is
+$$
+    Computed column to return the total project value.
+    Calculation:
+    - Total Project Value = Maximum Funding Amount + Proponent Cost + approved Additional Funding Amount(s)
+$$;
+
+commit;
