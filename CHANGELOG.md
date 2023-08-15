@@ -1,3 +1,20 @@
+# [1.12.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.12.0) (2023-08-15)
+
+### Bug Fixes
+
+- add milestone custom mutation to validation plugin ([202a847](https://github.com/bcgov/cas-cif/commit/202a847b5d2a61d0dfcea8bb7196b21cd5becb50))
+- add new maximumPerformanceMilestoneAmount calculation ([a7bdb58](https://github.com/bcgov/cas-cif/commit/a7bdb58abe8efc4e03631b9cb0c5307bb7df106a))
+- added submit button ([809b098](https://github.com/bcgov/cas-cif/commit/809b09819cb14f69570edc2d4b213280d43a7d9d))
+- lessen the throttleTime to be able to extend the session before it ends ([52fafdc](https://github.com/bcgov/cas-cif/commit/52fafdc3148c01e6457c8802a5b8180e8850581f))
+- project summary report correctly updates ([20a2959](https://github.com/bcgov/cas-cif/commit/20a2959d2645d2e2978296c649b552bb49422944))
+- remove calculated values from milestone if report type is not eligible for expenses ([f6fe8f1](https://github.com/bcgov/cas-cif/commit/f6fe8f1028d57c741afb74a75b0bf9ed58ecc462))
+- show diffs triggered by milestone changes ([5bcedb9](https://github.com/bcgov/cas-cif/commit/5bcedb9740cc359b4eb992423eae33b69ea28567))
+- show the Generate Reports button if we have an archived report ([a13d19d](https://github.com/bcgov/cas-cif/commit/a13d19de2f069945b5734a5f8627dede2c64f49a))
+
+### Features
+
+- add filter to projects table ([344e6d0](https://github.com/bcgov/cas-cif/commit/344e6d0bdcd84e22f6b16d7db70a540e9178154a))
+
 # [1.11.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.11.0) (2023-07-26)
 
 ### Bug Fixes
