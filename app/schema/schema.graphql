@@ -55425,6 +55425,9 @@ type Project implements Node {
   """
   latestCommittedProjectRevision: ProjectRevision
 
+  """Computed column returns the status of all milestones"""
+  milestoneStatus: String
+
   """
   Computed column to return the next milestone due date for a given project
   """
@@ -58498,6 +58501,9 @@ input ProjectFilter {
 
   """Filter by the object’s `fundingStreamRfpId` field."""
   fundingStreamRfpId: IntFilter
+
+  """Filter by the object’s `milestoneStatus` field."""
+  milestoneStatus: StringFilter
 
   """Filter by the object’s `nextMilestoneDueDate` field."""
   nextMilestoneDueDate: DatetimeFilter

@@ -51,7 +51,7 @@ const pageTestingHelper = new PageTestingHelper<projectsQuery>({
     offset: null,
     pageSize: DEFAULT_PAGE_SIZE,
     orderBy: null,
-    nextMilestoneDueDate: null,
+    milestoneStatus: null,
   },
 });
 
