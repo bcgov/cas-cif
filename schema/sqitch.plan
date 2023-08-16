@@ -352,3 +352,4 @@ functions/handle_project_summary_report_form_change_commit [functions/handle_pro
 functions/migration_rebuild_project_summary_report_history 2023-07-28T18:00:34Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create function to add missing form_data_record_id to project summary report records
 migrations/009_rebuild_project_summary_history 2023-08-04T22:08:03Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Migration to call fuction that rebuilds project summary report history
 computed_columns/project_milestone_status 2023-08-08T16:07:16Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create computed column to calculate a project's milestone status (late, complete, not due, etc.)
+@1.12.0 2023-08-15T23:37:54Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.12.0
