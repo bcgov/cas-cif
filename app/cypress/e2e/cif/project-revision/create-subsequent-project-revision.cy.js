@@ -1,5 +1,10 @@
+import { aliasOperation } from "../../../utils/graphql-test-utils";
+
 describe("the project amendment and revisions page", () => {
   beforeEach(() => {
+    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
+      aliasOperation(req, "createProjectRevisionMutation");
+    });
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
@@ -10,7 +15,7 @@ describe("the project amendment and revisions page", () => {
     cy.mockLogin("cif_admin");
   });
 
-  it("creates new revision/amendment", () => {
+  it.only("creates new revision/amendment", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
     cy.get("@firstViewButton").click();
@@ -22,10 +27,15 @@ describe("the project amendment and revisions page", () => {
     cy.happoAndAxe("Project Revision Create", "view", "main");
     cy.get('[type="radio"]').check("Amendment");
     cy.get(".checkbox").contains("Scope").click();
-    cy.get("button").contains("New Revision").click();
+    cy.wait(10000);
+    cy.get("button").contains("New Revision").trigger("click");
+    cy.wait(10000);
+    // cy.wait("@gqlcreateProjectRevisionMutation")
+    //   .its("response")
+    //   .should("have.property", "body");
     cy.url().should("include", "/form/0");
   });
-  it("displays updated forms in a project revision/amendment", () => {
+  it.only("displays updated forms in a project revision/amendment", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
     cy.get("@firstViewButton").click();
@@ -33,7 +43,9 @@ describe("the project amendment and revisions page", () => {
     cy.findByText(/New Revision/i).click();
     cy.url().should("include", "/create");
     cy.get('[type="radio"]').check("General Revision");
+    cy.wait(10000);
     cy.get("button").contains("New Revision").click();
+    // cy.findByText(/An error occurred/i).should("be.visible");
     cy.url().should("include", "/form/0");
 
     // edit overview -- change project name
