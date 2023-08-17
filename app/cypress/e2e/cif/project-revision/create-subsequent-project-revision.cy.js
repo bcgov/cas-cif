@@ -23,6 +23,7 @@ describe("the project amendment and revisions page", () => {
     cy.get('[type="radio"]').check("Amendment");
     cy.get(".checkbox").contains("Scope").click();
     cy.get("button").contains("New Revision").click();
+    cy.wait(1000);
     cy.url().should("include", "/form/0");
   });
   it("displays updated forms in a project revision/amendment", () => {
@@ -34,6 +35,7 @@ describe("the project amendment and revisions page", () => {
     cy.url().should("include", "/create");
     cy.get('[type="radio"]').check("General Revision");
     cy.get("button").contains("New Revision").click();
+    cy.wait(1000);
     cy.url().should("include", "/form/0");
 
     // edit overview -- change project name
