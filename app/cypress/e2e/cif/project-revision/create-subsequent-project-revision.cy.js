@@ -27,8 +27,7 @@ describe("the project amendment and revisions page", () => {
     cy.happoAndAxe("Project Revision Create", "view", "main");
     cy.get('[type="radio"]').check("Amendment");
     cy.get(".checkbox").contains("Scope").click();
-    cy.get("button").contains("New Revision").click();
-    cy.get("button").contains("New Revision").click();
+    cy.get("button").contains("New Revision").trigger("click");
     cy.wait(10000);
     // cy.wait("@gqlcreateProjectRevisionMutation")
     //   .its("response")
@@ -43,8 +42,7 @@ describe("the project amendment and revisions page", () => {
     cy.findByText(/New Revision/i).click();
     cy.url().should("include", "/create");
     cy.get('[type="radio"]').check("General Revision");
-    cy.get("button").contains("New Revision").click();
-    cy.get("button").contains("New Revision").click();
+    cy.get("button").contains("New Revision").trigger("click");
     cy.wait(10000);
     // cy.wait("@gqlcreateProjectRevisionMutation")
     //   .its("response")
