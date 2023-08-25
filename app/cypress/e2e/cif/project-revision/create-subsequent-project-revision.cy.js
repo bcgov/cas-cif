@@ -42,11 +42,8 @@ describe("the project amendment and revisions page", () => {
     cy.findByText(/New Revision/i).click();
     cy.url().should("include", "/create");
     cy.get('[type="radio"]').check("General Revision");
-    cy.get("button").contains("New Revision").trigger("click");
-    cy.wait(10000);
-    // cy.wait("@gqlcreateProjectRevisionMutation")
-    //   .its("response")
-    //   .should("have.property", "body");
+    cy.get("button").contains("New Revision").click();
+    cy.findByText(/An error occurred/i).should("be.visible");
     cy.url().should("include", "/form/0");
 
     // edit overview -- change project name
