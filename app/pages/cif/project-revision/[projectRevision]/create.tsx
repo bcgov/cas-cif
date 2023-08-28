@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
-import ContextualHelp from "lib/theme/widgets/ContextualHelp";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -83,49 +82,36 @@ export function ProjectRevisionCreate({
       },
     });
   };
-  const localSchema = JSON.parse(JSON.stringify(createProjectRevisionSchema));
 
-  const disabledEnums = existingAmendment
-    ? ["Amendment"]
-    : existingGeneralRevision
-    ? ["General Revision"]
-    : [];
-
-  localSchema.properties.revisionType.anyOf = allRevisionTypes.edges.map(
-    (e) => {
-      const tooltipText = `<div><ul><li>You cannot create a new ${
-        e.node.type
-      } before the in-progress ${e.node.type} is ${
-        e.node.type === "Amendment" ? "approved" : "applied"
-      }.</li></ul></div>`;
-      return {
-        title: (
-          <>
-            {e.node.type}
-            {disabledEnums.includes(e.node.type) && (
-              <ContextualHelp
-                text={tooltipText}
-                label={e.node.type}
-                placement="right"
-              />
-            )}
-          </>
-        ),
-        const: e.node.type,
-      };
-    }
-  );
+  const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
+  createProjectRevisionSchema.properties.revisionType.enum = revisionEnum;
 
   const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
 
+  const localSchema = JSON.parse(JSON.stringify(createProjectRevisionSchema));
   localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
     amendmentTypeEnum;
+
+  const existingRevisionType = existingAmendment
+    ? "Amendment"
+    : existingGeneralRevision
+    ? "General Revision"
+    : null;
+
+  const disabledEnums = existingRevisionType ? [existingRevisionType] : [];
 
   const modifiedUiSchema = {
     ...projectRevisionUISchema,
     revisionType: {
       ...projectRevisionUISchema.revisionType,
       "ui:enumDisabled": disabledEnums,
+      ...(existingRevisionType && {
+        "ui:tooltip": {
+          text: `<div><ul><li>You cannot create a new ${existingRevisionType} before the in-progress ${existingRevisionType} is ${
+            existingRevisionType === "Amendment" ? "approved" : "applied"
+          }.</li></ul></div>`,
+        },
+      }),
     },
   };
 
