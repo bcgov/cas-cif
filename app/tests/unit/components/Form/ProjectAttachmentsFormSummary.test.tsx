@@ -26,7 +26,7 @@ const defaultQueryResolver = {
           projectName: "Test CIF Project",
           rowId: 1,
         },
-        projectAttachmentFormChanges: {
+        summaryProjectAttachmentFormChanges: {
           __id: "test-attachment-form-change-connection-id",
           totalCount: 2,
           edges: [
@@ -73,8 +73,20 @@ const defaultQueryResolver = {
   },
 };
 
+// We're using a wrapper component to avoid rendering errors with <td> elements
+// not being in a table.
+const TestWrapper: React.FC = (props: any) => {
+  return (
+    <table>
+      <tbody>
+        <ProjectAttachmentsFormSummary {...props} />
+      </tbody>
+    </table>
+  );
+};
+
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
-  component: ProjectAttachmentsFormSummary,
+  component: TestWrapper,
   testQuery: testQuery,
   compiledQuery: compiledFormIndexPageQuery,
   getPropsFromTestQuery: (data) => ({
@@ -97,5 +109,13 @@ describe("The project's attachment page", () => {
     expect(
       screen.queryByLabelText("upload-attachment")
     ).not.toBeInTheDocument();
+  });
+
+  it("Displays all attachments", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getByText(/test-attachment-1.jpg/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-attachment-2.jpg/i)).toBeInTheDocument();
   });
 });
