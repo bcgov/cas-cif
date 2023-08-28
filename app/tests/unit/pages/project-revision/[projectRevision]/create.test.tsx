@@ -193,7 +193,7 @@ describe("The project amendments and revisions page", () => {
     expect(amendmentRadio).toBeDisabled();
     expect(generalRevisionRadio).not.toBeDisabled();
     const amendmentTooltip = screen.getByRole("tooltip", {
-      name: "amendment-tooltip",
+      name: "revision-type-tooltip",
     });
     expect(amendmentTooltip).toBeInTheDocument();
     fireEvent.mouseOver(amendmentTooltip);
@@ -228,7 +228,7 @@ describe("The project amendments and revisions page", () => {
     expect(amendmentRadio).not.toBeDisabled();
     expect(generalRevisionRadio).toBeDisabled();
     const generalRevisionTooltip = screen.getByRole("tooltip", {
-      name: "general-revision-tooltip",
+      name: "revision-type-tooltip",
     });
     expect(generalRevisionTooltip).toBeInTheDocument();
     fireEvent.mouseOver(generalRevisionTooltip);
