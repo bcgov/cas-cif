@@ -59,11 +59,20 @@ app.prepare().then(async () => {
   server.use(graphqlUploadExpress());
   server.use(graphQlMiddleware());
 
-  server.use(lusca.csrf());
+  server.use(
+    lusca.csrf({
+      csrf: true,
+      xframe: "SAMEORIGIN",
+      xssProtection: true,
+    })
+  );
   server.use(attachmentDownloadRouter);
 
   server.use(attachmentDeleteRouter);
   server.get("*", async (req, res) => {
+    console.log("$$$$$$$$$$$$$$$$$$$$$$res.locals._csrf", res.locals._csrf);
+    // res.cookie("CSRF-TOKEN", res.locals._csrf);
+
     return handle(req, res);
   });
 
