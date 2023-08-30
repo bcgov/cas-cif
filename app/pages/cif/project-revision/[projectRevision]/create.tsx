@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { getProjectRevisionFormPageRoute } from "routes/pageRoutes";
 import { useCreateProjectRevision } from "mutations/ProjectRevision/createProjectRevision";
 import EmptyObjectFieldTemplate from "lib/theme/EmptyObjectFieldTemplate";
+import ContextualHelp from "lib/theme/widgets/ContextualHelp";
 
 const pageQuery = graphql`
   query createProjectRevisionQuery($projectRevision: ID!) {
@@ -82,16 +83,6 @@ export function ProjectRevisionCreate({
       },
     });
   };
-
-  const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
-  createProjectRevisionSchema.properties.revisionType.enum = revisionEnum;
-
-  const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
-
-  const localSchema = JSON.parse(JSON.stringify(createProjectRevisionSchema));
-  localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
-    amendmentTypeEnum;
-
   const existingRevisionType = existingAmendment
     ? "Amendment"
     : existingGeneralRevision
@@ -99,20 +90,148 @@ export function ProjectRevisionCreate({
     : null;
 
   const disabledEnums = existingRevisionType ? [existingRevisionType] : [];
+  // (
+  //   <>
+  //     {e.node.type}
+  //     {disabledEnums.includes(e.node.type) && (
+  //       <ContextualHelp
+  //         text={tooltipText}
+  //         label={e.node.type}
+  //         placement="right"
+  //       />
+  //     )}
+  //   </>
+  // );
+
+  const revisionAnyOf = allRevisionTypes.edges.map((e) => {
+    return {
+      type: "string",
+      // title: (
+      //   <>
+      //     {e.node.type}
+      //     {disabledEnums.includes(e.node.type) && (
+      //       <ContextualHelp
+      //         text={"tooltipText"}
+      //         label={e.node.type}
+      //         placement="right"
+      //       />
+      //     )}
+      //   </>
+      // ),
+      title: "brai",
+      enum: [e.node.type],
+    };
+  });
+
+  const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
+  const revisionEnumNames = allRevisionTypes.edges.map((e) => {
+    return (
+      <>
+        {e.node.type}
+        {disabledEnums.includes(e.node.type) && (
+          <ContextualHelp
+            text={"tooltipText"}
+            label={e.node.type}
+            placement="right"
+          />
+        )}
+      </>
+    );
+  });
+
+  // console.log("createProjectRevisionSchema", createProjectRevisionSchema);
+  // const amendmentTypeEnum = allAmendmentTypes.edges.map((e) => e.node.name);
+
+  // const localSchema = JSON.parse(JSON.stringify(createProjectRevisionSchema));
+  // localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
+  //   amendmentTypeEnum;
+  createProjectRevisionSchema.properties.revisionType.enum = revisionEnum;
+  createProjectRevisionSchema.properties.revisionType.enumNames =
+    revisionEnumNames;
+  // console.log("createProjectRevisionSchema", createProjectRevisionSchema);
+
+  // console.log("localSchema", localSchema);
+
+  const schema = {
+    properties: {
+      field: {
+        type: "number",
+        anyOf: [
+          {
+            type: "number",
+            title: <div>djd</div>,
+            enum: [1],
+          },
+          {
+            type: "number",
+            title: "two",
+            enum: [2],
+          },
+          {
+            type: "number",
+            title: "three",
+            enum: [3],
+          },
+        ],
+      },
+    },
+  };
+  // localSchema.properties.revisionType.anyOf = allRevisionTypes.edges.map(
+  //   (e) => {
+  //     const tooltipText = `<div><ul><li>You cannot create a new ${
+  //       e.node.type
+  //     } before the in-progress ${e.node.type} is ${
+  //       e.node.type === "Amendment" ? "approved" : "applied"
+  //     }.</li></ul></div>`;
+  //     return {
+  //       title: (
+  //         <>
+  //           {e.node.type}
+  //           {disabledEnums.includes(e.node.type) && (
+  //             <ContextualHelp
+  //               text={tooltipText}
+  //               label={e.node.type}
+  //               placement="right"
+  //             />
+  //           )}
+  //         </>
+  //       ),
+  //       const: e.node.type,
+  //     };
+  //   }
+  // );
+
+  // createProjectRevisionSchema.properties.revisionType.anyOf = [
+  //   {
+  //     type: "string",
+  //     enum: [1],
+  //     title: <div>djd</div>,
+  //   },
+  //   {
+  //     type: "string",
+  //     title: "two",
+  //     enum: [2],
+  //   },
+  //   {
+  //     type: "string",
+  //     title: "three",
+  //     enum: [3],
+  //   },
+  // ];
 
   const modifiedUiSchema = {
     ...projectRevisionUISchema,
-    revisionType: {
-      ...projectRevisionUISchema.revisionType,
-      "ui:enumDisabled": disabledEnums,
-      ...(existingRevisionType && {
-        "ui:tooltip": {
-          text: `<div><ul><li>You cannot create a new ${existingRevisionType} before the in-progress ${existingRevisionType} is ${
-            existingRevisionType === "Amendment" ? "approved" : "applied"
-          }.</li></ul></div>`,
-        },
-      }),
-    },
+    // revisionType: {
+    //   ...projectRevisionUISchema.revisionType,
+    //   "ui:enumDisabled": disabledEnums,
+    //   ...(existingRevisionType && {
+    //     "ui:tooltip": {
+    //       text: `<div><ul><li>You cannot create a new ${existingRevisionType} before the in-progress ${existingRevisionType} is ${
+    //         existingRevisionType === "Amendment" ? "approved" : "applied"
+    //       }.</li></ul></div>`,
+    //     },
+    // }),
+    // },
   };
 
   return (
@@ -124,8 +243,12 @@ export function ProjectRevisionCreate({
           ) : (
             <FormBase
               id="ProjectRevisionCreateForm"
-              schema={localSchema as JSONSchema7}
-              uiSchema={modifiedUiSchema}
+              schema={createProjectRevisionSchema as JSONSchema7}
+              uiSchema={{
+                revisionType: {
+                  "ui:widget": "radio",
+                },
+              }}
               onSubmit={handleCreateRevision}
               ObjectFieldTemplate={EmptyObjectFieldTemplate}
             >
