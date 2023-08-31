@@ -7,19 +7,12 @@ create or replace function cif_private.handle_milestone_form_change_commit(fc ci
   returns int as $$
 declare
   reporting_requirement_record_id int;
-  report_is_eligible_for_expenses boolean;
-  adjusted_or_calculated_gross_amount numeric;
-  adjusted_or_calculated_net_amount numeric;
 begin
 
   -- If there is no change in the form data, return the form_change record and do not touch the associated table.
   if (fc.new_form_data = '{}') then
     return fc.form_data_record_id; -- can be null if creating with empty form data...problem?
   end if;
-
-  report_is_eligible_for_expenses := fc.new_form_data->>'reportType' in (select name from cif.report_type where has_expenses=true);
-  adjusted_or_calculated_gross_amount := coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric);
-  adjusted_or_calculated_net_amount := coalesce((fc.new_form_data->>'adjustedNetAmount')::numeric, (fc.new_form_data->>'calculatedNetAmount')::numeric);
 
   if (fc.change_status = 'committed') then
     raise exception 'Cannot commit form_change. It has already been committed.';
@@ -63,20 +56,17 @@ begin
       (fc.new_form_data->>'totalEligibleExpenses')::numeric
     );
 
-    -- Only create a payment if the report type is eligible for expenses
-    if report_is_eligible_for_expenses then
-      insert into cif.payment(
-        reporting_requirement_id,
-        gross_amount,
-        net_amount,
-        date_sent_to_csnr
-      ) values (
-        reporting_requirement_record_id,
-        adjusted_or_calculated_gross_amount,
-        adjusted_or_calculated_net_amount,
-        (fc.new_form_data->>'dateSentToCsnr')::timestamptz
-      );
-    end if;
+    insert into cif.payment(
+      reporting_requirement_id,
+      gross_amount,
+      net_amount,
+      date_sent_to_csnr
+    ) values (
+      reporting_requirement_record_id,
+      coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric),
+      coalesce((fc.new_form_data->>'adjustedNetAmount')::numeric, (fc.new_form_data->>'calculatedNetAmount')::numeric),
+      (fc.new_form_data->>'dateSentToCsnr')::timestamptz
+    );
 
     update cif.form_change set form_data_record_id = reporting_requirement_record_id where id = fc.id;
 
@@ -99,32 +89,12 @@ begin
       total_eligible_expenses = (fc.new_form_data->>'totalEligibleExpenses')::numeric
     where mr.reporting_requirement_id = fc.form_data_record_id;
 
-    if report_is_eligible_for_expenses then
-      -- This part is covering the case where the user changes the report type from a non-expense report type to an expense report type (or vice versa)
-      -- if there's a payment record with the same reporting_requirement_id, we update it
-      if exists(select 1 from cif.payment where reporting_requirement_id = fc.form_data_record_id and archived_at is null) then
-        update cif.payment set
-          gross_amount = adjusted_or_calculated_gross_amount,
-          net_amount = adjusted_or_calculated_net_amount,
-          date_sent_to_csnr = (fc.new_form_data->>'dateSentToCsnr')::timestamptz
-        where reporting_requirement_id = fc.form_data_record_id;
-      -- otherwise we create a new payment record
-      else
-        insert into cif.payment(
-          reporting_requirement_id,
-          gross_amount,
-          net_amount,
-          date_sent_to_csnr
-        ) values (
-          reporting_requirement_record_id,
-          adjusted_or_calculated_gross_amount,
-          adjusted_or_calculated_net_amount,
-          (fc.new_form_data->>'dateSentToCsnr')::timestamptz
-        );
-      end if;
-    else
-      update cif.payment set archived_at = now() where reporting_requirement_id = fc.form_data_record_id;
-    end if;
+
+    update cif.payment py set
+      gross_amount = coalesce((fc.new_form_data->>'adjustedGrossAmount')::numeric, (fc.new_form_data->>'calculatedGrossAmount')::numeric),
+      net_amount = coalesce((fc.new_form_data->>'adjustedNetAmount')::numeric, (fc.new_form_data->>'calculatedNetAmount')::numeric),
+      date_sent_to_csnr = (fc.new_form_data->>'dateSentToCsnr')::timestamptz
+    where py.reporting_requirement_id = fc.form_data_record_id;
 
   elsif fc.operation = 'archive' then
 
