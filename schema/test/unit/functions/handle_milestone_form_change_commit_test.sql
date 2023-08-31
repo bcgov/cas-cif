@@ -34,9 +34,9 @@ insert into cif.project_revision(id, change_status, project_id)
   values (1, 'pending', 1);
 
 
-select cif.create_form_change('create', 'milestone', 'cif', 'milestone', '{}', 7, null, 'staged', '[]');
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone', '{"description": "value"}', null, null, 'committed', '[]');
-select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('create', 'milestone', 'cif', 'reporting_requirement', '{}', 7, null, 'staged', '[]');
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement', '{"description": "value"}', null, null, 'committed', '[]');
+select cif.create_form_change('create', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "General Milestone",
     "reportDueDate": "2021-08-31 14:24:46.318423-07",
@@ -55,7 +55,7 @@ select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
     "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
   }', null, 1, 'staged', '[]');
 
-select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('create', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "Reporting Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -221,7 +221,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (2, 'pending', 1);
 
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "General Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -305,7 +305,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (3, 'pending', 1);
 
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "Reporting Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -382,7 +382,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (4, 'pending', 1);
 
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "Advanced Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
