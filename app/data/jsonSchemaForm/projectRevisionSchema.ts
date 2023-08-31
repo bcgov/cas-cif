@@ -7,10 +7,8 @@ export const createProjectRevisionSchema = {
       type: "string",
       title: "Revision Type",
       default: undefined,
-      // anyOf: undefined,
+      anyOf: undefined,
       enum: undefined,
-      enumNames: undefined,
-      required: true,
     },
   },
   dependencies: {
@@ -20,7 +18,6 @@ export const createProjectRevisionSchema = {
           properties: {
             revisionType: {
               const: !"Amendment",
-              title: "brianna",
             },
           },
         },
@@ -28,7 +25,6 @@ export const createProjectRevisionSchema = {
           properties: {
             revisionType: {
               const: "Amendment",
-              title: "brianna",
             },
             amendmentTypes: {
               type: "array",
