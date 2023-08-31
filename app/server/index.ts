@@ -64,14 +64,16 @@ app.prepare().then(async () => {
       csrf: true,
       xframe: "SAMEORIGIN",
       xssProtection: true,
+      cookie: "qwerty",
     })
   );
   server.use(attachmentDownloadRouter);
 
   server.use(attachmentDeleteRouter);
   server.get("*", async (req, res) => {
-    console.log("$$$$$$$$$$$$$$$$$$$$$$res.locals._csrf", res.locals._csrf);
+    // console.log("$$$$$$$$$$$$$$$$$$$$$$res.locals._csrf", res.locals._csrf);
     // res.cookie("CSRF-TOKEN", res.locals._csrf);
+    // console.log("res&&&&", res);
 
     return handle(req, res);
   });

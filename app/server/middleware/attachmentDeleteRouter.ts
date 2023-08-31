@@ -4,6 +4,7 @@ import { Storage } from "@google-cloud/storage";
 import config from "../../config";
 
 export const attachmentDeleteRouter = Router();
+console.log("attachmentDeleteRouter", attachmentDeleteRouter);
 
 const attachmentDetailsQuery = `query AttachmentDetailsQuery($attachmentId: ID!){
   attachment(id: $attachmentId) {
@@ -30,8 +31,9 @@ const deleteAttachmentMutation = `mutation deleteAttachmentMutation($input: Dele
   }
 }
 `;
-
 export const handleDelete = async (req, res, next) => {
+  console.log("************");
+  console.log("req.header", req.header);
   try {
     const attachmentQueryVariables = {
       attachmentId: req.params.attachmentId,
@@ -74,6 +76,7 @@ export const handleDelete = async (req, res, next) => {
 
     const response = await storageClient.bucket(bucketName).file(file).delete();
 
+    res.setHeader("X-CSRF-Token", document.cookie);
     return res.sendStatus(response[0].statusCode);
   } catch (error) {
     next(error);
