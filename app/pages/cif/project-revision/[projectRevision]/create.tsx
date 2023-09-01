@@ -82,6 +82,7 @@ export function ProjectRevisionCreate({
       },
     });
   };
+
   const revisionEnum = allRevisionTypes.edges.map((e) => e.node.type);
   createProjectRevisionSchema.properties.revisionType.enum = revisionEnum;
 
@@ -91,16 +92,26 @@ export function ProjectRevisionCreate({
   localSchema.dependencies.revisionType.oneOf[1].properties.amendmentTypes.items.enum =
     amendmentTypeEnum;
 
-  const disabledEnums = existingAmendment
-    ? ["Amendment"]
+  const existingRevisionType = existingAmendment
+    ? "Amendment"
     : existingGeneralRevision
-    ? ["General Revision"]
-    : [];
+    ? "General Revision"
+    : null;
+
+  const disabledEnums = existingRevisionType ? [existingRevisionType] : [];
+
   const modifiedUiSchema = {
     ...projectRevisionUISchema,
     revisionType: {
       ...projectRevisionUISchema.revisionType,
       "ui:enumDisabled": disabledEnums,
+      ...(existingRevisionType && {
+        "ui:tooltip": {
+          text: `<div><ul><li>You cannot create a new ${existingRevisionType} before the in-progress ${existingRevisionType} is ${
+            existingRevisionType === "Amendment" ? "approved" : "applied"
+          }.</li></ul></div>`,
+        },
+      }),
     },
   };
 

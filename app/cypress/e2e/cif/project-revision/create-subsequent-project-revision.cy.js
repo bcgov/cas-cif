@@ -1,5 +1,10 @@
+import { aliasOperation } from "../../../utils/graphql-test-utils";
+
 describe("the project amendment and revisions page", () => {
   beforeEach(() => {
+    cy.intercept("POST", "http://localhost:3004/graphql", (req) => {
+      aliasOperation(req, "createProjectRevisionMutation");
+    });
     cy.useMockedTime(new Date("June 10, 2020 09:00:00"));
     cy.sqlFixture("e2e/dbReset");
     cy.sqlFixture("dev/001_cif_user");
@@ -23,8 +28,12 @@ describe("the project amendment and revisions page", () => {
     cy.get('[type="radio"]').check("Amendment");
     cy.get(".checkbox").contains("Scope").click();
     cy.get("button").contains("New Revision").click();
+    cy.wait("@gqlcreateProjectRevisionMutation")
+      .its("response")
+      .should("have.property", "body");
     cy.url().should("include", "/form/0");
   });
+
   it("displays updated forms in a project revision/amendment", () => {
     cy.visit("/cif/projects");
     cy.get("button").contains("View").first().as("firstViewButton");
