@@ -18,7 +18,7 @@ import ssoMiddleware from "./middleware/sso";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 import config from "../config";
 import attachmentDownloadRouter from "./middleware/attachmentDownloadRouter";
-import { attachmentDeleteRouter } from "./middleware/attachmentDeleteRouter";
+import { brianna } from "./middleware/attachmentDeleteRouter";
 
 const port = config.get("port");
 const dev = config.get("env") !== "production";
@@ -58,18 +58,28 @@ app.prepare().then(async () => {
 
   server.use(graphqlUploadExpress());
   server.use(graphQlMiddleware());
-
   server.use(
     lusca.csrf({
-      csrf: true,
+      // csrf: true,
       xframe: "SAMEORIGIN",
       xssProtection: true,
       cookie: "qwerty",
     })
   );
+  server.use((req, res, next) => {
+    console.log("------------------------");
+    console.log("req", req.cookies);
+    console.log("res.locals", res.locals);
+    console.log("config", config.get("sessionSecret"));
+    console.log("xcrsf", res.get("X-CSRF-Token"));
+    console.log("_crsf", res.get("_csrf"));
+    console.log("------------------------");
+
+    res.get("X-CSRF-Token");
+    brianna(req, res, next);
+  });
   server.use(attachmentDownloadRouter);
 
-  server.use(attachmentDeleteRouter);
   server.get("*", async (req, res) => {
     // console.log("$$$$$$$$$$$$$$$$$$$$$$res.locals._csrf", res.locals._csrf);
     // res.cookie("CSRF-TOKEN", res.locals._csrf);
