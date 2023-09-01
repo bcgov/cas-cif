@@ -1,6 +1,6 @@
 begin;
 
-select plan(17);
+select plan(19);
 
 /** SETUP **/
 truncate table cif.form_change,
@@ -34,9 +34,9 @@ insert into cif.project_revision(id, change_status, project_id)
   values (1, 'pending', 1);
 
 
-select cif.create_form_change('create', 'milestone', 'cif', 'milestone', '{}', 7, null, 'staged', '[]');
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone', '{"description": "value"}', null, null, 'committed', '[]');
-select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('create', 'milestone', 'cif', 'reporting_requirement', '{}', 7, null, 'staged', '[]');
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement', '{"description": "value"}', null, null, 'committed', '[]');
+select cif.create_form_change('create', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "General Milestone",
     "reportDueDate": "2021-08-31 14:24:46.318423-07",
@@ -55,7 +55,7 @@ select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
     "dateSentToCsnr": "2021-08-29 14:24:46.318423-07"
   }', null, 1, 'staged', '[]');
 
-select cif.create_form_change('create', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('create', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "Reporting Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -221,7 +221,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (2, 'pending', 1);
 
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "General Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -305,7 +305,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (3, 'pending', 1);
 
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "Reporting Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -382,7 +382,7 @@ insert into cif.project_revision(id, change_status, project_id)
   overriding system value
   values (4, 'pending', 1);
 
-select cif.create_form_change('update', 'milestone', 'cif', 'milestone',
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
   '{
     "reportType": "Advanced Milestone",
     "reportDueDate": "2021-10-31 14:24:46.318423-07",
@@ -420,8 +420,8 @@ select results_eq(
   $$,
   'The values were correctly updated in reporting_requirement table on update with a expense report type'
 );
--- -- milestone_report table
--- -- Test 16
+-- milestone_report table
+-- Test 16
 select results_eq(
   $$
     select reporting_requirement_id,
@@ -442,8 +442,8 @@ select results_eq(
   $$,
   'The values were correctly updated in the milestone_report table on update with a expense report type'
 );
--- -- payment table
--- -- Test 17
+-- payment table
+-- Test 17
 select results_eq(
   $$
   select reporting_requirement_id, gross_amount, net_amount, date_sent_to_csnr, archived_at from cif.payment where reporting_requirement_id = 1 and id = 2;
@@ -458,6 +458,41 @@ select results_eq(
   )
   $$,
   'Correctly add a new payment record when updating a non-expense report type milestone with a expense report type'
+);
+
+-- Test 18
+select lives_ok(
+  $$
+    select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 8));
+  $$,
+    'Throws no -Deleted records cannot be modified- error and update the correct payment record that is not archived when updating a milestone with a expense report type'
+);
+
+-- Testing updating a non-expense report type milestone with a expense report type
+update cif.project_revision set change_status = 'committed' where id = 4;
+insert into cif.project_revision(id, change_status, project_id)
+  overriding system value
+  values (5, 'pending', 1);
+
+select cif.create_form_change('update', 'milestone', 'cif', 'reporting_requirement',
+  '{
+    "reportType": "Reporting Milestone",
+    "reportDueDate": "2021-10-31 14:24:46.318423-07",
+    "submittedDate": "2021-09-30 14:24:46.318423-07",
+    "comments": "reporting milestone comments",
+    "reportingRequirementIndex": 1,
+    "description": "desc",
+    "substantialCompletionDate": "2021-09-29 14:24:46.318423-07",
+    "certifiedBy": "Reporting Jon",
+    "certifierProfessionalDesignation": "Reporting Eng"
+  }', 1, 5, 'staged', '[]');
+
+-- Test 19
+select lives_ok(
+  $$
+    select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 9));
+  $$,
+    'Throws no -Deleted records cannot be modified- error and update the correct payment record that is not archived when updating a milestone with a non-expense report type'
 );
 
 select finish();
