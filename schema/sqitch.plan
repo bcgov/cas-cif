@@ -354,3 +354,4 @@ migrations/009_rebuild_project_summary_history 2023-08-04T22:08:03Z Brianna Cerk
 computed_columns/project_milestone_status 2023-08-08T16:07:16Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create computed column to calculate a project's milestone status (late, complete, not due, etc.)
 @1.12.0 2023-08-15T23:37:54Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.12.0
 functions/handle_milestone_form_change_commit [functions/handle_milestone_form_change_commit@1.12.0] 2023-08-31T18:47:59Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update commit handler to fix the issue with updating archived records
+@1.13.0 2023-09-05T22:09:47Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.13.0
