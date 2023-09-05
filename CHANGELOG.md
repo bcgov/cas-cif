@@ -1,3 +1,14 @@
+# [1.13.0](https://github.com/bcgov/cas-cif/compare/1.12.0...1.13.0) (2023-09-05)
+
+### Bug Fixes
+
+- update milestone form change commit handler to not update archived records ([a7d189a](https://github.com/bcgov/cas-cif/commit/a7d189adef59ffa39d56ccd2e38c00ae44c5b66f))
+- fixed multiple attachment diffs showing properly ([c4e8d3a](https://github.com/bcgov/cas-cif/commit/c4e8d3a5bc093f0f298dab303d0ed879a127f9fb))
+
+### Features
+
+- add tooltips to amendments and general revisions ([888289f](https://github.com/bcgov/cas-cif/commit/888289f22191b2d7bc78ba51080a309da0f37c8e))
+
 # [1.12.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.12.0) (2023-08-15)
 
 ### Bug Fixes
