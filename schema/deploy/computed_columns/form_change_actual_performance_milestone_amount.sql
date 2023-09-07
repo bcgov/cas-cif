@@ -10,7 +10,7 @@ $computed_column$
 
   select case
     when cif.form_change_payment_percentage($1) is null or cif.form_change_holdback_amount_to_date($1) is null then null
-    else cif.form_change_holdback_amount_to_date($1) * cif.form_change_payment_percentage($1) / 100
+    else cif.form_change_maximum_performance_milestone_amount($1) * cif.form_change_payment_percentage($1) / 100
   end;
 
 $computed_column$ language sql stable;
