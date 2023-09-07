@@ -18,7 +18,7 @@ import ssoMiddleware from "./middleware/sso";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 import config from "../config";
 import attachmentDownloadRouter from "./middleware/attachmentDownloadRouter";
-import { brianna } from "./middleware/attachmentDeleteRouter";
+import { attachmentDeleteRouter } from "./middleware/attachmentDeleteRouter";
 
 const port = config.get("port");
 const dev = config.get("env") !== "production";
@@ -66,18 +66,12 @@ app.prepare().then(async () => {
       cookie: "qwerty",
     })
   );
-  server.use((req, res, next) => {
-    console.log("------------------------");
-    console.log("req", req.cookies);
-    console.log("res.locals", res.locals);
-    console.log("config", config.get("sessionSecret"));
-    console.log("xcrsf", res.get("X-CSRF-Token"));
-    console.log("_crsf", res.get("_csrf"));
-    console.log("------------------------");
+  // server.use((req, res, next) => {
+  //   res.get("X-CSRF-Token");
+  //   brianna(req, res, next);
+  // });
 
-    res.get("X-CSRF-Token");
-    brianna(req, res, next);
-  });
+  server.use(attachmentDeleteRouter);
   server.use(attachmentDownloadRouter);
 
   server.get("*", async (req, res) => {
