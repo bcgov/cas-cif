@@ -98,7 +98,7 @@ values (
   5,
   2,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "calculatedHoldbackAmount": 10000, "adjustedHoldbackAmount": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "calculatedHoldbackAmount": 10000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
 );
 select is(
   (
@@ -108,9 +108,9 @@ select is(
     ) select cif.form_change_holdback_amount_to_date((select * from record))
   ),
   (
-  40000::numeric
+  30000::numeric
   ),
-  'Returns a value when either adjustedHoldbackAmount or calculatedHoldbackAmount exist'
+  'Returns the correct value when adjustedHoldbackAmount or calculatedHoldbackAmount exists'
 );
 
 -- adjustedHoldbackAmount and calculatedHoldbackAmount are NULL
