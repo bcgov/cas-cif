@@ -49,7 +49,6 @@ const AttachmentTableRow: React.FC<Props> = ({
 
   const handleArchiveAttachment = (attachmentId) => {
     if (isFirstRevision) {
-      // hardDeleteAttachment(attachmentId, formChangeRowId, csrfToken);
       hardDeleteAttachment(attachmentId, formChangeRowId);
       router.replace(router.asPath);
     } else {

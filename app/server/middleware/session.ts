@@ -7,9 +7,6 @@ const PgSession = connectPgSimple(expressSession);
 // True if the host has been configured to use https
 const secure = /^https/.test(config.get("host"));
 const secret = config.get("sessionSecret");
-console.log("************");
-console.log("secret", secret);
-console.log("************");
 
 const session = () => {
   const store = new PgSession({

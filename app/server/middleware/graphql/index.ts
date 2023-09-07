@@ -124,9 +124,6 @@ export async function performQuery(query, variables, request: Request) {
       pgSettings: settings,
     },
     async (context) => {
-      console.log("**************");
-      console.log("context", context);
-      console.log("**************");
       // Execute your GraphQL query in this function with the provided
       // `context` object, which should NOT be used outside of this
       // function.

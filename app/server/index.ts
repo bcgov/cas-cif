@@ -60,25 +60,15 @@ app.prepare().then(async () => {
   server.use(graphQlMiddleware());
   server.use(
     lusca.csrf({
-      // csrf: true,
       xframe: "SAMEORIGIN",
       xssProtection: true,
       cookie: "qwerty",
     })
   );
-  // server.use((req, res, next) => {
-  //   res.get("X-CSRF-Token");
-  //   brianna(req, res, next);
-  // });
-
   server.use(attachmentDeleteRouter);
   server.use(attachmentDownloadRouter);
 
   server.get("*", async (req, res) => {
-    // console.log("$$$$$$$$$$$$$$$$$$$$$$res.locals._csrf", res.locals._csrf);
-    // res.cookie("CSRF-TOKEN", res.locals._csrf);
-    // console.log("res&&&&", res);
-
     return handle(req, res);
   });
 
