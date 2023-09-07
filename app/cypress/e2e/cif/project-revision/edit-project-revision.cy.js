@@ -113,6 +113,7 @@ describe("when editing a project, the project page", () => {
       .contains(/milestone 1/i)
       .click();
     cy.setDateInPicker("Report Due Date", "1999-01-31");
+    cy.setDateInPicker("Date Invoice Sent to CSNR (optional)", "1999-01-31");
     cy.contains("Changes saved").should("be.visible");
     cy.get('[aria-label*="Substantial Completion Date"').contains(
       /Jan(\.)? 01, 1999/
@@ -279,22 +280,22 @@ describe("when editing a project, the project page", () => {
       "have.text",
       "100.00 %"
     );
-    // cy.get("#root_actualPerformanceMilestoneAmount-diffOld").should(
-    //   "have.text",
-    //   "$0.10"
-    // );
-    // cy.get("#root_actualPerformanceMilestoneAmount-diffNew").should(
-    //   "have.text",
-    //   "$0.30"
-    // );
-    // cy.get("#root_maximumPerformanceMilestoneAmount-diffOld").should(
-    //   "have.text",
-    //   "$0.10"
-    // );
-    // cy.get("#root_maximumPerformanceMilestoneAmount-diffNew").should(
-    //   "have.text",
-    //   "$0.30"
-    // );
+    cy.get("#root_actualPerformanceMilestoneAmount-diffOld").should(
+      "have.text",
+      "$0.10"
+    );
+    cy.get("#root_actualPerformanceMilestoneAmount-diffNew").should(
+      "have.text",
+      "$0.30"
+    );
+    cy.get("#root_maximumPerformanceMilestoneAmount-diffOld").should(
+      "have.text",
+      "$0.10"
+    );
+    cy.get("#root_maximumPerformanceMilestoneAmount-diffNew").should(
+      "have.text",
+      "$0.30"
+    );
 
     cy.get("#root_comments-diffOld").should(
       "have.text",
