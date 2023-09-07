@@ -17,8 +17,8 @@ export const emissionIntensityReportingRequirementUiSchema = {
     "adjustedEmissionsIntensityPerformance", // aka GHG Emission Intensity Performance (Adjusted)
     "dateSentToCsnr",
     "paymentPercentage", // aka Payment Percentage of Performance Milestone Amount (%)
-    "actualPerformanceMilestoneAmount", // aka Actual Performance Milestone Amount
     "maximumPerformanceMilestoneAmount", // aka Maximum Performance Milestone Amount
+    "actualPerformanceMilestoneAmount", // aka Actual Performance Milestone Amount
   ],
   emissionFunctionalUnit: {
     "ui:widget": "TextWidget",
