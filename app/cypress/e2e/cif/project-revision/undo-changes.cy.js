@@ -142,6 +142,7 @@ describe("when undoing, the project revision page", () => {
     cy.get('[label*="Due Date"]').should("have.length", 0);
   });
 
+  // flaky
   it("undoes changes on an existing project when the user clicks the Undo Changes button", () => {
     cy.sqlFixture("dev/004_cif_project");
     cy.sqlFixture("dev/005_cif_reporting_requirement");
