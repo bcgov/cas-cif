@@ -21,7 +21,7 @@ $fn$
   select
     case
       when count(*) filter (where adjustedHoldbackAmount is null and calculatedHoldbackAmount is null) > 0 then null
-      else round(sum(coalesce(adjustedHoldbackAmount, calculatedHoldbackAmount)), 0)
+      else round(sum(coalesce(adjustedHoldbackAmount, calculatedHoldbackAmount)), 2)
     end
   from results;
 
