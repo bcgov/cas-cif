@@ -30,7 +30,7 @@ const deleteAttachmentMutation = `mutation deleteAttachmentMutation($input: Dele
     }
   }
   `;
-const handleDelete = async (req, res, next) => {
+export const handleDelete = async (req, res, next) => {
   try {
     const attachmentQueryVariables = {
       attachmentId: req.params.attachmentId,
