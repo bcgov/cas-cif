@@ -1,11 +1,14 @@
 import { act, screen } from "@testing-library/react";
 import AttachmentTableRow from "components/Attachment/AttachmentTableRow";
+import hardDeleteAttachment from "components/Attachment/hardDeleteAttachment";
+import { mocked } from "jest-mock";
 import { graphql } from "react-relay";
 import ComponentTestingHelper from "tests/helpers/componentTestingHelper";
 import compiledAttachmentTableRowTestQuery, {
   AttachmentTableRowTestQuery,
 } from "__generated__/AttachmentTableRowTestQuery.graphql";
 import { AttachmentTableRow_attachment$data } from "__generated__/AttachmentTableRow_attachment.graphql";
+jest.mock("components/Attachment/hardDeleteAttachment");
 
 const testQuery = graphql`
   query AttachmentTableRowTestQuery @relay_test_operation {
@@ -46,6 +49,8 @@ const TestWrapper: React.FC = (props: any) => {
   );
 };
 
+const defaultComponentProps = { isFirstRevision: false };
+
 const componentTestingHelper =
   new ComponentTestingHelper<AttachmentTableRowTestQuery>({
     component: TestWrapper,
@@ -57,6 +62,7 @@ const componentTestingHelper =
       formChangeRowId: "test-form-change-row-id",
       connectionId: "test-attachment-form-change-connection-id",
     }),
+    defaultComponentProps,
   });
 
 describe("The Attachment table row component", () => {
@@ -96,7 +102,7 @@ describe("The Attachment table row component", () => {
       expect.anything()
     );
   });
-  it("calls the discardProjectAttachmentFormChangeMutation when the delete button is clicked", () => {
+  it("calls the discardProjectAttachmentFormChangeMutation when the delete button is clicked and it is not the first revision", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
@@ -112,5 +118,19 @@ describe("The Attachment table row component", () => {
         connections: ["test-attachment-form-change-connection-id"],
       }
     );
+  });
+  it("hits the delete endpoint when the delete button is clicked if it's the first revision", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(undefined, {
+      ...defaultComponentProps,
+      isFirstRevision: true,
+    });
+    const mockHardDelete = jest.fn();
+    mocked(hardDeleteAttachment).mockImplementation(mockHardDelete);
+
+    const deleteButton = screen.getAllByText("Delete")[0];
+    act(() => deleteButton.click());
+
+    expect(mockHardDelete).toHaveBeenCalled();
   });
 });

@@ -28,10 +28,12 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
   projectRevision,
   onSubmit,
 }) => {
-  const { rowId, projectAttachmentFormChanges } = useFragment(
+  const revision = useFragment(
     graphql`
       fragment ProjectAttachmentsForm_projectRevision on ProjectRevision {
+        id
         rowId
+        isFirstRevision
         projectAttachmentFormChanges: formChangesFor(
           first: 500
           formDataTableName: "project_attachment"
@@ -57,6 +59,7 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
     projectRevision
   );
 
+  const { rowId, projectAttachmentFormChanges, isFirstRevision } = revision;
   const attachmentFormChange = projectAttachmentFormChanges.edges[0]?.node;
   const [createAttachment, isCreatingAttachment] = useCreateAttachment();
   const [createProjectAttachment, isCreatingProjectAttachment] =
@@ -143,14 +146,18 @@ const ProjectAttachmentsForm: React.FC<Props> = ({
         totalRowCount={projectAttachmentFormChanges.totalCount}
         filters={tableFilters}
       >
-        {projectAttachmentFormChanges.edges.map(({ node }) => (
-          <AttachmentTableRow
-            key={node.id}
-            attachment={node.asProjectAttachment.attachmentByAttachmentId}
-            formChangeRowId={node.rowId}
-            connectionId={projectAttachmentFormChanges.__id}
-          />
-        ))}
+        {projectAttachmentFormChanges.edges.map(({ node }) => {
+          if (!node) return null;
+          return (
+            <AttachmentTableRow
+              key={node.id}
+              attachment={node.asProjectAttachment.attachmentByAttachmentId}
+              formChangeRowId={node.rowId}
+              connectionId={projectAttachmentFormChanges.__id}
+              isFirstRevision={isFirstRevision}
+            />
+          );
+        })}
       </Table>
       <Button
         type="submit"

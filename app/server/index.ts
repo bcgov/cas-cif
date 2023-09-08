@@ -18,6 +18,7 @@ import ssoMiddleware from "./middleware/sso";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.js";
 import config from "../config";
 import attachmentDownloadRouter from "./middleware/attachmentDownloadRouter";
+import { attachmentDeleteRouter } from "./middleware/attachmentDeleteRouter";
 
 const port = config.get("port");
 const dev = config.get("env") !== "production";
@@ -57,8 +58,14 @@ app.prepare().then(async () => {
 
   server.use(graphqlUploadExpress());
   server.use(graphQlMiddleware());
-
-  server.use(lusca.csrf());
+  server.use(
+    lusca.csrf({
+      xframe: "SAMEORIGIN",
+      xssProtection: true,
+      cookie: "qwerty",
+    })
+  );
+  server.use(attachmentDeleteRouter);
   server.use(attachmentDownloadRouter);
 
   server.get("*", async (req, res) => {

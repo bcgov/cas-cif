@@ -25,6 +25,7 @@ const nextConfig = {
     SENTRY_RELEASE: config.get("sentryRelease"),
     GROWTHBOOK_API_KEY: config.get("growthbookApiKey"),
     BYPASS_GROWTHBOOK: config.get("bypassGrowthbook"),
+    SESSION_SECRET: config.get("sessionSecret"),
   },
 };
 

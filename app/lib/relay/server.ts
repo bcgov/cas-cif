@@ -1,5 +1,6 @@
 import { Network, Environment, Store, RecordSource } from "relay-runtime";
 import getConfig from "next/config";
+
 const {
   serverRuntimeConfig: { PORT },
 } = getConfig();
