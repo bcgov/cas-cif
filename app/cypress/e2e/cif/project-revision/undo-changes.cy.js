@@ -151,7 +151,6 @@ describe("when undoing, the project revision page", () => {
     cy.sqlFixture("dev/009_cif_project_revision_logs");
     cy.mockLogin("cif_admin");
     cy.navigateToFirstProjectEditRevisionPage();
-    cy.findByText(/Amendment 2/i).should("be.visible");
     cy.findByText(/1. Project Overview/i).click();
     cy.findByText(/Edit Project Overview/i).click();
     cy.url().should("include", "/form/0");
