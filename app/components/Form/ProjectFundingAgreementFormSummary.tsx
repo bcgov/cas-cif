@@ -127,7 +127,9 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     revision;
 
   const fundingAgreementSummary =
-    summaryProjectFundingAgreementFormChanges.edges[0]?.node;
+    summaryProjectFundingAgreementFormChanges.edges.filter(
+      ({ node }) => node.operation !== "ARCHIVE"
+    )[0]?.node;
 
   const newData = {
     ...fundingAgreementSummary?.newFormData,
@@ -266,17 +268,34 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     [fundingAgreementFormNotUpdated, setHasDiff]
   );
 
-  // This condition handles the case where the form is archived
-  if (
-    !fundingAgreementFormNotUpdated &&
-    fundingAgreementSummary?.operation === "ARCHIVE"
-  ) {
+  if (summaryProjectFundingAgreementFormChanges.edges.length === 0) {
     return (
       <div>
-        {!isOnAmendmentsAndOtherRevisionsPage && (
-          <h3>Budgets, Expenses & Payments</h3>
-        )}
-        {!viewOnly ? (
+        {!isOnAmendmentsAndOtherRevisionsPage ? (
+          <>
+            <h3>Budgets, Expenses & Payments</h3>
+            <FormNotAddedOrUpdated
+              isFirstRevision={true}
+              formTitle="Budgets, Expenses & Payments"
+            />
+          </>
+        ) : null}
+      </div>
+    );
+  }
+
+  if (!fundingAgreementSummary) {
+    return (
+      <div>
+        {!isOnAmendmentsAndOtherRevisionsPage ? (
+          <>
+            <h3>Budgets, Expenses & Payments</h3>
+            <FormNotAddedOrUpdated
+              isFirstRevision={true}
+              formTitle="Budgets, Expenses & Payments"
+            />
+          </>
+        ) : !viewOnly ? (
           <>
             <FormRemoved
               isOnAmendmentsAndOtherRevisionsPage={
