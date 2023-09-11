@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(4);
 
 /** SETUP **/
 
@@ -109,6 +109,40 @@ select is(
   30000::numeric
   ),
   'Returns the correct value when adjustedHoldbackAmount or calculatedHoldbackAmount exists'
+);
+
+insert into cif.form_change(
+  id,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  form_data_record_id,
+  project_revision_id,
+  json_schema_name,
+  new_form_data
+) overriding system value
+values (
+  99,
+  'archive',
+  'cif',
+  'reporting_requirement',
+  99,
+  2,
+  'milestone',
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "adjustedHoldbackAmount": 20000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer"}'
+);
+
+select is(
+  (
+    with record as (
+    select row(form_change.*)::cif.form_change
+    from cif.form_change where id=4
+    ) select cif.form_change_holdback_amount_to_date((select * from record))
+  ),
+  (
+  30000::numeric
+  ),
+  'Ignores archived records'
 );
 
 -- adjustedHoldbackAmount and calculatedHoldbackAmount are NULL
