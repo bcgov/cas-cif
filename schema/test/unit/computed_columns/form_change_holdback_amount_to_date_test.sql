@@ -68,8 +68,6 @@ select is(
   'Returns the correct sum of all milestones with expenses'
 );
 
-
--- adjustedHoldbackAmount or calculatedHoldbackAmount are NULL
 insert into cif.form_change(
   id,
   operation,

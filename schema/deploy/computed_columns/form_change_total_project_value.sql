@@ -32,12 +32,12 @@ select
   case
     when
       (
-        ($1.new_form_data ->> 'proponentCost')::numeric IS NULL
+        ($1.new_form_data ->> 'proponentCost')::numeric is null
         OR
-        ($1.new_form_data ->> 'maxFundingAmount')::numeric IS NULL
+        ($1.new_form_data ->> 'maxFundingAmount')::numeric is null
         OR
         (select awaiting_approval from check_awaiting_approval) = 1
-      ) THEN NULL
+      ) then null
     else
       (
         coalesce(($1.new_form_data ->> 'proponentCost')::numeric, 0)
