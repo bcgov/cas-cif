@@ -224,7 +224,6 @@ describe("the new project page", () => {
       "This field cannot be calculated due to lack of information now.",
       "10.00 %"
     );
-    //TODO: TEIMP Agreement, when fixture is added
 
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
