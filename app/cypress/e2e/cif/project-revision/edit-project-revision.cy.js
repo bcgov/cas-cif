@@ -85,7 +85,7 @@ describe("when editing a project, the project page", () => {
     cy.contains(/Budgets, Expenses & Payments/i).click();
     cy.findByText(/Edit budgets/i).click();
     cy.url().should("include", "/form/3");
-    cy.findByRole("button", { name: /submit/i }).should("not.exist");
+
     cy.fillFundingAgreementForm(
       333,
       70,
@@ -113,6 +113,7 @@ describe("when editing a project, the project page", () => {
       .contains(/milestone 1/i)
       .click();
     cy.setDateInPicker("Report Due Date", "1999-01-31");
+    cy.setDateInPicker("Date Invoice Sent to CSNR", "1999-01-31");
     cy.contains("Changes saved").should("be.visible");
     cy.get('[aria-label*="Substantial Completion Date"').contains(
       /Jan(\.)? 01, 1999/

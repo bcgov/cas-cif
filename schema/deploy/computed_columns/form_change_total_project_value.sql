@@ -1,12 +1,8 @@
 -- Deploy cif:computed_columns/form_change_total_project_value to pg
-
-begin;
-
 create or replace function cif.form_change_total_project_value(cif.form_change)
 returns numeric
 as
 $computed_column$
-
 with additional_funding_sources as
     (
         select * from jsonb_to_recordset(
@@ -17,16 +13,40 @@ with additional_funding_sources as
         and operation != 'archive'
         )::jsonb
       ) as x(source text, amount numeric, status text)
-    )
-  select
+    ),
+additional_funding_sources_sum as
     (
-      (select coalesce(($1.new_form_data ->> 'proponentCost')::numeric, 0) + coalesce(($1.new_form_data ->> 'maxFundingAmount')::numeric, 0))
-      +
-      coalesce((select sum(amount::numeric)
+        select
+            sum(case when status = 'Approved' then amount::numeric
+                     when status = 'Denied' then 0
+            end) as total
         from additional_funding_sources
-        where status = 'Approved'
-          ), 0)
-    );
+    ),
+check_awaiting_approval as
+    (
+        select
+            case when exists (select 1 from additional_funding_sources where status = 'Awaiting Approval')
+            then 1 else 0 end as awaiting_approval
+    )
+select
+  case
+    when
+      (
+        ($1.new_form_data ->> 'proponentCost')::numeric is null
+        OR
+        ($1.new_form_data ->> 'maxFundingAmount')::numeric is null
+        OR
+        (select awaiting_approval from check_awaiting_approval) = 1
+      ) then null
+    else
+      (
+        coalesce(($1.new_form_data ->> 'proponentCost')::numeric, 0)
+        +
+        coalesce(($1.new_form_data ->> 'maxFundingAmount')::numeric, 0)
+        +
+        coalesce((select total from additional_funding_sources_sum), 0)
+      )
+  end;
 $computed_column$ language sql stable;
 
 grant execute on function cif.form_change_total_project_value to cif_internal, cif_external, cif_admin;

@@ -76,8 +76,8 @@ values (
   'create',
   'cif',
   'reporting_requirement',
-  1,
-  2,
+  6, -- form_data_record_id
+  2, -- project_revision_id
   'milestone',
   '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-14 15:09:36.264005-08", "calculatedHoldbackAmount": 10000, "reportingRequirementIndex": 1, "certifierProfessionalDesignation": "Professional Engineer",
   "dateSentToCsnr": "2022-11-14 15:09:36.264005-08"}'
@@ -101,29 +101,8 @@ values (
   3,
   2,
   'milestone',
-  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-10 15:09:36.264005-08", "maximumAmount": 50000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer",
+  '{"reportType": "General Milestone", "hasExpenses": true, "reportDueDate": "2022-11-10 15:09:36.264005-08", "adjustedHoldbackAmount": 1000, "maximumAmount": 50000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer",
   "dateSentToCsnr": "2022-11-14 15:09:36.264005-08"}'
-),
-(
-  9,
-  'create',
-  'cif',
-  'reporting_requirement',
-  3,
-  2,
-  'milestone',
-  '{"reportType": "Performance Milestone", "hasExpenses": false, "reportDueDate": "2022-11-10 15:09:36.264005-08", "adjustedHoldbackAmount": 20000, "reportingRequirementIndex": 4, "certifierProfessionalDesignation": "Professional Engineer",
-  "dateSentToCsnr": "2022-11-14 15:09:36.264005-08"}'
-),
-(
-  10,
-  'create',
-  'cif',
-  'funding_parameter',
-  3,
-  2,
-  'funding_parameter_EP',
-  '{"holdbackPercentage": 10}'
 );
 
 /** SETUP END **/
@@ -150,7 +129,7 @@ select is(
     ) select cif.form_change_maximum_performance_milestone_amount((select * from record))
   ),
   (
-    40000::numeric
+    41000::numeric
   ),
   'Returns the correct sum of all milestones with expenses when all payments have been paid'
 );

@@ -217,14 +217,14 @@ describe("the new project page", () => {
       "$1.00",
       "50.00 %",
       "$777.00",
-      "99.87%",
+      "This field cannot be calculated due to lack of information now.",
       /Jun(\.)? 10, 2020/,
       /Jun(\.)? 10, 2020/,
       "$1.00",
-      "$778.00",
+      "This field cannot be calculated due to lack of information now.",
       "10.00 %"
     );
-    // additional funding sources
+
     cy.findByText(/Additional Funding Source 1/i).should("be.visible");
 
     // Emissions Intensity Report
