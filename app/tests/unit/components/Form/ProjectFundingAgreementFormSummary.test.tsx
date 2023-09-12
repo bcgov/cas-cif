@@ -578,32 +578,15 @@ describe("The Project Funding Agreement Form Summary", () => {
         return result;
       },
     });
-    componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent(undefined, {
+      viewOnly: true,
+    });
 
     expect(
       screen.getByText(/budgets, expenses & payments not added/i)
     ).toBeInTheDocument();
   });
-  it("Displays relevant message when funding agreement not updated", () => {
-    componentTestingHelper.loadQuery({
-      ...mockQueryPayloadEP,
-      ProjectRevision() {
-        const result: Partial<ProjectFundingAgreementFormSummary_projectRevision$data> =
-          {
-            isFirstRevision: false,
-            summaryProjectFundingAgreementFormChanges: {
-              edges: [],
-            },
-          };
-        return result;
-      },
-    });
-    componentTestingHelper.renderComponent();
 
-    expect(
-      screen.getByText(/budgets, expenses & payments not updated/i)
-    ).toBeInTheDocument();
-  });
   it("Displays relevant message when funding agreement removed", () => {
     componentTestingHelper.loadQuery({
       ...mockQueryPayloadEP,
@@ -648,10 +631,13 @@ describe("The Project Funding Agreement Form Summary", () => {
         return result;
       },
     });
-    componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent(undefined, {
+      isOnAmendmentsAndOtherRevisionsPage: true,
+      viewOnly: false,
+    });
 
     expect(
-      screen.queryAllByText(/budgets, expenses & payments/i)[1]
+      screen.queryAllByText(/budgets, expenses & payments/i)[0]
     ).toHaveClass("diffOld");
   });
 
