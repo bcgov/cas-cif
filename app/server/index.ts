@@ -62,7 +62,7 @@ app.prepare().then(async () => {
     lusca.csrf({
       xframe: "SAMEORIGIN",
       xssProtection: true,
-      cookie: "qwerty",
+      cookie: "luscaCSRF",
     })
   );
   server.use(attachmentDeleteRouter);
