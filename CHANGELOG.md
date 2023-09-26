@@ -1,3 +1,14 @@
+# [1.14.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.14.0) (2023-09-26)
+
+### Bug Fixes
+
+- correct budgets diffs ([30fdcf9](https://github.com/bcgov/cas-cif/commit/30fdcf97a3a26250f9fcf57eca8ee3b90fd6c280))
+- total project value will only calculate with enough info present ([df396e2](https://github.com/bcgov/cas-cif/commit/df396e20c5dd958ff6e4efbfc060ca97d51b25bc))
+
+### Features
+
+- add hard delete for first project revision ([652327a](https://github.com/bcgov/cas-cif/commit/652327ad3b1540d3113566145e7559a3774114dc))
+
 # [1.13.0](https://github.com/bcgov/cas-cif/compare/1.12.0...1.13.0) (2023-09-05)
 
 ### Bug Fixes
