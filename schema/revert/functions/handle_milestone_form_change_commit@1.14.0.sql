@@ -107,7 +107,7 @@ begin
           gross_amount = adjusted_or_calculated_gross_amount,
           net_amount = adjusted_or_calculated_net_amount,
           date_sent_to_csnr = (fc.new_form_data->>'dateSentToCsnr')::timestamptz
-        where reporting_requirement_id = fc.form_data_record_id and archived_at is null;
+        where reporting_requirement_id = fc.form_data_record_id;
       -- otherwise we create a new payment record
       else
         insert into cif.payment(
@@ -123,14 +123,14 @@ begin
         );
       end if;
     else
-      update cif.payment set archived_at = now() where reporting_requirement_id = fc.form_data_record_id and archived_at is null;
+      update cif.payment set archived_at = now() where reporting_requirement_id = fc.form_data_record_id;
     end if;
 
   elsif fc.operation = 'archive' then
 
     update cif.reporting_requirement set archived_at = now() where id = fc.form_data_record_id;
     update cif.milestone_report set archived_at = now() where reporting_requirement_id = fc.form_data_record_id;
-    update cif.payment set archived_at = now() where reporting_requirement_id = fc.form_data_record_id and archived_at is null;
+    update cif.payment set archived_at = now() where reporting_requirement_id = fc.form_data_record_id;
 
   end if;
 

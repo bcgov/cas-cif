@@ -361,3 +361,4 @@ computed_columns/form_change_holdback_amount_to_date [computed_columns/form_chan
 computed_columns/form_change_total_project_value [computed_columns/form_change_total_project_value@1.13.0] 2023-07-27T22:19:30Z Gurjeet Matharu <gurjeet@matharuco.com> # Modified cif.form_change_total_project_value function to return null if any input values are missing
 computed_columns/form_change_actual_performance_milestone_amount [computed_columns/form_change_actual_performance_milestone_amount@1.13.0] 2023-09-07T20:12:19Z Dylan Leard <dylan@button.is> # Migration: actual amount should calculate based on maximum_performance_milestone_amount
 @1.14.0 2023-09-26T22:35:17Z Josh Larouche <joshua.larouche@gov.bc.ca> # release v1.14.0
+functions/handle_milestone_form_change_commit [functions/handle_milestone_form_change_commit@1.14.0] 2023-09-29T20:17:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update commit handler to fix the issue with archiving milestones
