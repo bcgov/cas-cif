@@ -1,3 +1,9 @@
+# [1.15.0](https://github.com/bcgov/cas-cif/compare/1.12.0...1.15.0) (2023-10-03)
+
+### Bug Fixes
+
+- update milestone form change commit handler to not update archived records ([bece997](https://github.com/bcgov/cas-cif/commit/bece9972a626d09e68eb1a57a4456fe93f240e26))
+
 # [1.14.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.14.0) (2023-09-26)
 
 ### Bug Fixes
