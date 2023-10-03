@@ -1,6 +1,6 @@
 begin;
 
-select plan(19);
+select plan(20);
 
 /** SETUP **/
 truncate table cif.form_change,
@@ -493,6 +493,33 @@ select lives_ok(
     select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 9));
   $$,
     'Throws no -Deleted records cannot be modified- error and update the correct payment record that is not archived when updating a milestone with a non-expense report type'
+);
+
+-- Test archiving a milestone with a non-expense report type and the payment record is already archived
+update cif.project_revision set change_status = 'committed' where id = 5;
+insert into cif.project_revision(id, change_status, project_id)
+  overriding system value
+  values (6, 'pending', 1);
+
+select cif.create_form_change('archive', 'milestone', 'cif', 'reporting_requirement',
+  '{
+    "reportType": "Reporting Milestone",
+    "reportDueDate": "2021-10-31 14:24:46.318423-07",
+    "submittedDate": "2021-09-30 14:24:46.318423-07",
+    "comments": "reporting milestone comments",
+    "reportingRequirementIndex": 1,
+    "description": "desc",
+    "substantialCompletionDate": "2021-09-29 14:24:46.318423-07",
+    "certifiedBy": "Reporting Jon",
+    "certifierProfessionalDesignation": "Reporting Eng"
+  }', 1, 6, 'staged', '[]');
+
+-- Test 20
+select lives_ok(
+  $$
+    select cif_private.handle_milestone_form_change_commit((select row(form_change.*)::cif.form_change from cif.form_change where id = 10));
+  $$,
+    'Throws no -Deleted records cannot be modified- error when archiving a milestone with a non-expense report type and the payment record is already archived'
 );
 
 select finish();
