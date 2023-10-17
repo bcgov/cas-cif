@@ -5,6 +5,8 @@ on:
     branches: [develop, main]
   pull_request:
     branches: [develop, main]
+  schedule:
+    - cron: "0 0 * * *"
 
 env:
   PGUSER: postgres
