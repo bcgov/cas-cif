@@ -6,7 +6,7 @@
 
 - [Developer and Application Documentation](./docs/README.md)
 
-## Release Process
+## Release Process test
 
 Before releasing our application to our `test` and `prod` environments, an essential step is to add a tag to our sqitch plan, to identify which database mutations are released to prod and should be immutable.
 
