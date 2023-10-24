@@ -1,3 +1,39 @@
+# [1.16.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.16.0) (2023-10-24)
+
+### Bug Fixes
+
+- add milestone calculated values to form context ([ef015d5](https://github.com/bcgov/cas-cif/commit/ef015d52812e7fdf50297287b6b35f71cd39657b))
+- add milestone custom mutation to validation plugin ([202a847](https://github.com/bcgov/cas-cif/commit/202a847b5d2a61d0dfcea8bb7196b21cd5becb50))
+- add new maximumPerformanceMilestoneAmount calculation ([a7bdb58](https://github.com/bcgov/cas-cif/commit/a7bdb58abe8efc4e03631b9cb0c5307bb7df106a))
+- add null and undefined values to optional fields in json schemas ([e84c8a1](https://github.com/bcgov/cas-cif/commit/e84c8a15455eafdc0e9496f6a2dad4de46402113))
+- added submit button ([809b098](https://github.com/bcgov/cas-cif/commit/809b09819cb14f69570edc2d4b213280d43a7d9d))
+- change obsolete images for PGO in backup test chart ([8e2a4fb](https://github.com/bcgov/cas-cif/commit/8e2a4fb3985b1134e99cccc0fe61a7616345f084))
+- correct budgets diffs ([30fdcf9](https://github.com/bcgov/cas-cif/commit/30fdcf97a3a26250f9fcf57eca8ee3b90fd6c280))
+- lessen the throttleTime to be able to extend the session before it ends ([52fafdc](https://github.com/bcgov/cas-cif/commit/52fafdc3148c01e6457c8802a5b8180e8850581f))
+- project summary report correctly updates ([20a2959](https://github.com/bcgov/cas-cif/commit/20a2959d2645d2e2978296c649b552bb49422944))
+- remove calculated values from milestone if report type is not eligible for expenses ([f6fe8f1](https://github.com/bcgov/cas-cif/commit/f6fe8f1028d57c741afb74a75b0bf9ed58ecc462))
+- set milestone `certifierProfessionalDesignation` field to null when user selects N/A ([4ba0cae](https://github.com/bcgov/cas-cif/commit/4ba0cae7a3346161008a66128022e86b8412f565))
+- show diffs triggered by milestone changes ([5bcedb9](https://github.com/bcgov/cas-cif/commit/5bcedb9740cc359b4eb992423eae33b69ea28567))
+- show the Generate Reports button if we have an archived report ([a13d19d](https://github.com/bcgov/cas-cif/commit/a13d19de2f069945b5734a5f8627dede2c64f49a))
+- shows secondary contacts in project contact summary form ([0aee342](https://github.com/bcgov/cas-cif/commit/0aee3421f7276f72b7ac402057cfc9e91a77d8ff))
+- total project value will only calculate with enough info present ([df396e2](https://github.com/bcgov/cas-cif/commit/df396e20c5dd958ff6e4efbfc060ca97d51b25bc))
+- update milestone form change commit handler to not update archived records ([bece997](https://github.com/bcgov/cas-cif/commit/bece9972a626d09e68eb1a57a4456fe93f240e26))
+- update milestone form change commit handler to not update archived records ([a7d189a](https://github.com/bcgov/cas-cif/commit/a7d189adef59ffa39d56ccd2e38c00ae44c5b66f))
+
+### Features
+
+- add contextual help ([d738b31](https://github.com/bcgov/cas-cif/commit/d738b317e677ecc75e6265fb703f2baf3c5772e3))
+- add filter to projects table ([344e6d0](https://github.com/bcgov/cas-cif/commit/344e6d0bdcd84e22f6b16d7db70a540e9178154a))
+- add hard delete for first project revision ([652327a](https://github.com/bcgov/cas-cif/commit/652327ad3b1540d3113566145e7559a3774114dc))
+- add tooltips to amendments and general revisions ([888289f](https://github.com/bcgov/cas-cif/commit/888289f22191b2d7bc78ba51080a309da0f37c8e))
+- fixed multiple attachment diffs showing properly ([c4e8d3a](https://github.com/bcgov/cas-cif/commit/c4e8d3a5bc093f0f298dab303d0ed879a127f9fb))
+- move EI tooltips to UI schema ([8319d31](https://github.com/bcgov/cas-cif/commit/8319d3158786890e35a6e8462ab268398b83e17f))
+- update milestone form tests for consistency ([89a3c41](https://github.com/bcgov/cas-cif/commit/89a3c41ce74dd90f1d6e19ff9a36764239ac7e39))
+
+### Reverts
+
+- Revert "chore: spec work" ([1767ecc](https://github.com/bcgov/cas-cif/commit/1767ecc2c2940d337aba82561dd7070dc45a4d04))
+
 # [1.15.0](https://github.com/bcgov/cas-cif/compare/1.12.0...1.15.0) (2023-10-03)
 
 ### Bug Fixes
