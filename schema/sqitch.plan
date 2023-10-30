@@ -367,3 +367,4 @@ functions/handle_milestone_form_change_commit [functions/handle_milestone_form_c
 @1.16.1 2023-11-22T17:01:35Z Dylan Leard <dylan@button.is> # release v1.16.1
 @1.16.2 2024-02-23T22:00:38Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.16.2
 functions/jsonb_minus 2023-10-30T19:55:55Z Mike Vesprini <mike@button.is> # Function to provide the object difference between two jsonb objects
+mutations/commit_form_change_internal [mutations/commit_form_change_internal@1.15.0] 2023-10-30T21:34:15Z Mike Vesprini <mike@button.is> # Handle rebasing when committing with another pending revision on the same project"
