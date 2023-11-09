@@ -7,6 +7,8 @@ declare
   recordId int;
   pending_form_change cif.form_change;
   parent_of_pending_form_change cif.form_change;
+  pending_minus_pendings_parent jsonb;
+  committing_minus_pendings_parent jsonb;
 begin
 
   if fc.validation_errors != '[]' then
@@ -48,12 +50,29 @@ begin
         and form_data_record_id = fc.form_data_record_id limit 1;
       select * into parent_of_pending_form_change from cif.form_change
         where id = pending_form_change.previous_form_change_id limit 1;
-      -- set the pending form change data to be the committing form change data, plus the changes made in the
-      -- pending revision
-      update cif.form_change
-        set new_form_data =
-          (fc.new_form_data || cif.jsonb_minus(pending_form_change.new_form_data, parent_of_pending_form_change.new_form_data))
-        where id = pending_form_change.id;
+
+      select (cif.jsonb_minus(pending_form_change.new_form_data, parent_of_pending_form_change.new_form_data))
+        into pending_minus_pendings_parent;
+      select (cif.jsonb_minus(fc.new_form_data, parent_of_pending_form_change.new_form_data))
+        into committing_minus_pendings_parent;
+
+      if committing_minus_pendings_parent is not null then
+        if pending_minus_pendings_parent is not null then
+          -- if the committing and pending form changes both have changes from the pending form change's parent,
+          -- then set the pending form change to be the committing form change, plus the changes made in the penging form change.
+          update cif.form_change
+            set new_form_data =
+              (fc.new_form_data || pending_minus_pendings_parent)
+            where id = pending_form_change.id;
+        else
+          -- The pending form change hasn't made any changes since its creation, but the committing form change has.
+          -- Set the pending form change ot be the committing form change as it is the latest information
+          update cif.form_change
+            set new_form_data =
+              (fc.new_form_data)
+            where id = pending_form_change.id;
+        end if;
+      end if;
 
     elsif fc.operation = 'archive' then
       delete from cif.form_change
