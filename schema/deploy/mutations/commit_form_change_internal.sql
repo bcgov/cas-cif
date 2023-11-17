@@ -43,7 +43,7 @@ begin
         new_form_data => fc.new_form_data
       );
     elsif fc.operation = 'update' then
-      -- store the other pending project revisions corresponding form_change, and its parent
+      -- store the pending project revisions corresponding form_change, and its parent
       select * into pending_form_change from cif.form_change
         where project_revision_id = pending_project_revision_id
         and form_data_table_name = fc.form_data_table_name
