@@ -1,6 +1,6 @@
 begin;
 
-select plan(6);
+select plan(10);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -77,7 +77,84 @@ select is(
   'The form_change status should be committed'
 );
 
--- Calls the proper function set in the form table
+
+-- Test the concurrent revision functinality
+
+truncate table cif.project, cif.operator restart identity cascade;
+insert into cif.operator(legal_name) values ('test operator');
+insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
+
+select cif.create_project(1); -- id = 1
+update cif.form_change set new_form_data='{
+      "projectName": "name",
+      "summary": "original (incorrect at point of test)",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=1
+    and form_data_table_name='project';
+select cif.commit_project_revision(1);
+
+
+select cif.create_project_revision(1, 'Amendment'); -- id = 2
+update cif.form_change set new_form_data='{
+      "projectName": "Correct",
+      "summary": "original (incorrect at point of test)",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=2
+    and form_data_table_name='project';
+
+select cif.create_project_revision(1, 'General Revision'); -- id = 3
+update cif.form_change set new_form_data='{
+      "projectName": "Incorrect",
+      "summary": "Correct",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=3
+    and form_data_table_name='project';
+
+select cif.commit_project_revision(3);
+
+select is (
+  (select new_form_data->>'projectName' from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
+  'Correct',
+  'When both the committing and pending form changes have changed the same field, the value from the pending should persist'
+);
+
+select is (
+  (select project_name from cif.project where id = 1),
+  'Incorrect',
+  'The project receives the value from the committing form change'
+);
+
+select is (
+  (select new_form_data->>'summary' from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
+  'Correct',
+  'When the commiting form change has updated a field that the pending has not, it updates the pending form change'
+);
+
+-- Commit the ammednment
+select cif.commit_project_revision(2);
+
+select results_eq (
+  $$
+    (select project_name, summary, funding_stream_rfp_id, project_status_id, proposal_reference, operator_id from cif.project where id = 1)
+  $$,
+  $$
+    values('Correct'::varchar, 'Correct'::varchar, 1::int, 1::int, '1235'::varchar, 1::int)
+  $$,
+  'After committing the pending form change, the project table has all of the correct values'
+);
+
 
 select finish();
 

@@ -24,7 +24,6 @@ restart identity;
 
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
-insert into cif.contact(given_name, family_name, email) values ('Mira', 'Test', 'bar@abc.com');
 
 select cif.create_project(1);
 
