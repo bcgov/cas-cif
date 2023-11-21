@@ -1,6 +1,7 @@
 -- Deploy cif:mutations/commit_form_change to pg
 begin;
 
+-- drop function if exists cif_private.commit_form_change_internal(cif.form_change, int);
 create or replace function cif_private.commit_form_change_internal(fc cif.form_change)
     returns cif.form_change as $$
 declare
@@ -30,7 +31,7 @@ begin
 end;
   $$ language plpgsql volatile;
 
-grant execute on function cif_private.commit_form_change_internal(fc cif.form_change) to cif_internal, cif_external, cif_admin;
+grant execute on function cif_private.commit_form_change_internal(cif.form_change) to cif_internal, cif_external, cif_admin;
 
 comment on function cif_private.commit_form_change_internal(cif.form_change) is 'Commits the form change and calls the corresponding commit handler.';
 
