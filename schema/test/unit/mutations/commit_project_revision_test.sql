@@ -284,19 +284,14 @@ select lives_ok (
   'The Amendment successfully commits after a General Revision being committed while the Amendment was pending'
 );
 
-select is (
-  (select new_form_data from cif.form_change where
-    project_revision_id=2
-    and form_data_table_name='project'),
-  '{
-      "projectName": "Correct",
-      "summary": "Correct",
-      "fundingStreamRfpId": 1,
-      "projectStatusId": 1,
-      "proposalReference": "1235",
-      "operatorId": 1
-    }'::jsonb,
-  'The project form_change has the correct data after the Amendment is committed'
+select results_eq (
+  $$
+    (select project_name, summary from cif.project where id = 1 limit 1)
+  $$,
+  $$
+    values("Correct", "Correct")
+  $$,
+  'The project table has the correct data after the Amendment is committed'
 );
 
 select isnt_empty (
