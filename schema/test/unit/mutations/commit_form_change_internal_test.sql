@@ -1,6 +1,6 @@
 begin;
 
-select plan(10);
+select plan(11);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -80,7 +80,7 @@ select is(
 
 -- Test the concurrent revision functinality
 
-truncate table cif.project, cif.operator restart identity cascade;
+truncate table cif.project, cif.operator, cif.contact restart identity cascade;
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
 
@@ -122,8 +122,11 @@ update cif.form_change set new_form_data='{
   where project_revision_id=3
     and form_data_table_name='project';
 
+select cif.add_contact_to_revision(3, 1, 1);
+
 select cif.commit_project_revision(3);
 
+-- Both committing and pending project revisions have made changes to the project form.
 select is (
   (select new_form_data->>'projectName' from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
   'Correct',
@@ -140,6 +143,12 @@ select is (
   (select new_form_data->>'summary' from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
   'Correct',
   'When the commiting form change has updated a field that the pending has not, it updates the pending form change'
+);
+
+select is (
+  (select new_form_data from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_contact'),
+  '{"contactId": 1, "projectId": 1, "contactIndex": 1}'::jsonb,
+  'When the committing form change has an operation create, the resource also gets created in the pending revision'
 );
 
 -- Commit the ammednment
