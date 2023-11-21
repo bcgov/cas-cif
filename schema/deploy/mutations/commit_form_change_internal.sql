@@ -2,7 +2,7 @@
 begin;
 
 -- We need to explicitly drop the old function here since we're changing the signature.
-drop function if exists cif_private.commit_form_change_internal(fc cif.form_change);
+drop function if exists cif_private.commit_form_change_internal(cif.form_change);
 create or replace function cif_private.commit_form_change_internal(fc cif.form_change, pending_project_revision_id int default null)
     returns cif.form_change as $$
 declare
