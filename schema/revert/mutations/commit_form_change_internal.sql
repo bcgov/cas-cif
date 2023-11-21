@@ -1,6 +1,7 @@
 -- Deploy cif:mutations/commit_form_change to pg
 begin;
 
+drop function if exists cif_private.commit_form_change_internal(cif.form_change, int);
 create or replace function cif_private.commit_form_change_internal(fc cif.form_change)
     returns cif.form_change as $$
 declare
