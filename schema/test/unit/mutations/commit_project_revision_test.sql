@@ -289,7 +289,7 @@ select results_eq (
     (select project_name, summary from cif.project where id = 1 limit 1)
   $$,
   $$
-    values("Correct"::varchar, "Correct"::varchar)
+    values('Correct'::varchar, 'Correct'::varchar)
   $$,
   'The project table has the correct data after the Amendment is committed'
 );
