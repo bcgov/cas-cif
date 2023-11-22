@@ -164,6 +164,8 @@ select results_eq (
   'After committing the pending form change, the project table has all of the correct values'
 );
 
+-- Test when committing has made changes to the form but the pending has not
+
 
 select finish();
 
