@@ -369,3 +369,4 @@ functions/handle_milestone_form_change_commit [functions/handle_milestone_form_c
 functions/jsonb_minus 2023-10-30T19:55:55Z Mike Vesprini <mike@button.is> # Function to provide the object difference between two jsonb objects
 mutations/commit_form_change_internal [mutations/commit_form_change_internal@1.15.0] 2023-10-30T21:34:15Z Mike Vesprini <mike@button.is> # Handle rebasing when committing with another pending revision on the same project"
 mutations/commit_project_revision [mutations/commit_project_revision@1.15.0] 2023-10-31T00:07:01Z Mike Vesprini <mike@button.is> # Update function to pass new parameters to commit_form_change_internal
+mutations/commit_form_change [mutations/commit_form_change@1.15.0] 2023-11-22T19:00:00Z Mike Vesprini <mike@button.is> # Add pending project revision id to args of commit_form_change_internal call
