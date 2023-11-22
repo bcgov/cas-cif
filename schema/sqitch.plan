@@ -364,3 +364,4 @@ computed_columns/form_change_actual_performance_milestone_amount [computed_colum
 functions/handle_milestone_form_change_commit [functions/handle_milestone_form_change_commit@1.14.0] 2023-09-29T20:17:51Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # Update commit handler to fix the issue with archiving milestones
 @1.15.0 2023-10-03T21:35:32Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.15.0
 @1.16.0 2023-10-24T17:15:40Z Dylan Leard <dylan@button.is> # release v1.16.0
+@1.16.1 2023-11-22T17:01:35Z Dylan Leard <dylan@button.is> # release v1.16.1
