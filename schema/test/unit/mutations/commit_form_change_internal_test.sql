@@ -1,6 +1,6 @@
 begin;
 
-select plan(11);
+select plan(13);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -165,7 +165,33 @@ select results_eq (
 );
 
 -- Test when committing has made changes to the form but the pending has not
+select cif.create_project_revision(1, 'Amendment'); -- id = 4
+select cif.create_project_revision(1, 'General Revision'); -- id = 5
+update cif.form_change set new_form_data='{
+      "projectName": "Correct only newer",
+      "summary": "Correct",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=5
+    and form_data_table_name='project';
 
+select cif.commit_project_revision(5);
+
+select is (
+  (select new_form_data->>'projectName' from cif.form_change where id = 6),
+  'Correct only newer',
+  'The pending form change should have the value from the committing form change'
+);
+
+select cif.commit_project_revision(4);
+select is (
+  (select project_name from cif.project where id = 1),
+  'Correct only newer',
+  'The project table should have the updated proejct name, even after the pending amendment is committed'
+);
 
 select finish();
 
