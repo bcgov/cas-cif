@@ -1,6 +1,6 @@
 begin;
 
-select plan(13);
+select plan(15);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -80,9 +80,11 @@ select is(
 
 -- Test the concurrent revision functinality
 
-truncate table cif.project, cif.operator, cif.contact restart identity cascade;
+truncate table cif.project, cif.operator, cif.contact, cif.attachment restart identity cascade;
 insert into cif.operator(legal_name) values ('test operator');
 insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com');
+insert into cif.attachment (description, file_name, file_type, file_size)
+  values ('description1', 'file_name1', 'file_type1', 100);
 
 select cif.create_project(1); -- id = 1
 update cif.form_change set new_form_data='{
@@ -123,6 +125,7 @@ update cif.form_change set new_form_data='{
     and form_data_table_name='project';
 
 select cif.add_contact_to_revision(3, 1, 1);
+select cif.add_project_attachment_to_revision(3,1);
 
 select cif.commit_project_revision(3);
 
@@ -148,7 +151,13 @@ select is (
 select is (
   (select new_form_data from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_contact'),
   '{"contactId": 1, "projectId": 1, "contactIndex": 1}'::jsonb,
-  'When the committing form change has an operation create, the resource also gets created in the pending revision'
+  'When the committing form change is creating a project contact, the contact also gets created in the pending revision'
+);
+
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_attachment'),
+  1::bigint,
+  'When the committing form change is creating a project attachment, the attachment also gets created in the pending revision'
 );
 
 -- Commit the ammednment
@@ -178,12 +187,20 @@ update cif.form_change set new_form_data='{
   where project_revision_id=5
     and form_data_table_name='project';
 
+select cif.discard_project_attachment_form_change((select id from cif.form_change where project_revision_id = 5 and form_data_table_name = 'project_attachment'));
+
 select cif.commit_project_revision(5);
 
 select is (
-  (select new_form_data->>'projectName' from cif.form_change where id = 6),
+  (select new_form_data->>'projectName' from cif.form_change where id = 8),
   'Correct only newer',
   'The pending form change should have the value from the committing form change'
+);
+
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 4 and form_data_table_name = 'project_attachment'),
+  0::bigint,
+  'When the committing form change is discarding a project attachment, the pending fc is deleted.'
 );
 
 select cif.commit_project_revision(4);
