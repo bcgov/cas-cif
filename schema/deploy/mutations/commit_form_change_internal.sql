@@ -11,6 +11,7 @@ declare
   parent_of_pending_form_change cif.form_change;
   pending_minus_pendings_parent jsonb;
   committing_minus_pendings_parent jsonb;
+  new_fc_in_pending_id int;
 begin
 
   if fc.validation_errors != '[]' then
@@ -35,7 +36,7 @@ begin
   if pending_project_revision_id is not null then
     -- If the committing form change is a create, then it needs to be created in the pending revision with an update operation.
     if fc.operation = 'create' then
-      perform cif.create_form_change(
+      select id into new_fc_in_pending_id from cif.create_form_change(
         operation => 'update'::cif.form_change_operation,
         form_data_schema_name => 'cif',
         form_data_table_name => fc.form_data_table_name,
@@ -44,6 +45,8 @@ begin
         json_schema_name => fc.json_schema_name,
         new_form_data => fc.new_form_data
       );
+      update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
+
     elsif fc.operation = 'update' then
       -- store the pending project revisions corresponding form_change, and its parent
       select * into pending_form_change from cif.form_change
@@ -82,6 +85,8 @@ begin
         and form_data_table_name = fc.form_data_table_name
         and form_data_record_id = fc.form_data_record_id;
     end if;
+    -- Set the previous_form_change_id to be the committing form change.
+    update cif.form_change set previous_form_change_id = fc.id where id = pending_form_change.id;
   end if;
   return (select row(form_change.*)::cif.form_change from cif.form_change where id = fc.id);
 end;
