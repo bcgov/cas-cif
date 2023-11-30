@@ -1,6 +1,6 @@
 begin;
 
-select plan(15);
+select plan(18);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -137,6 +137,13 @@ select is (
 );
 
 select is (
+  (select previous_form_change_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
+  3::int,
+  'When committing, the pending form change gets the committing form change as its previous form change'
+);
+
+
+select is (
   (select project_name from cif.project where id = 1),
   'Incorrect',
   'The project receives the value from the committing form change'
@@ -152,6 +159,18 @@ select is (
   (select new_form_data from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_contact'),
   '{"contactId": 1, "projectId": 1, "contactIndex": 1}'::jsonb,
   'When the committing form change is creating a project contact, the contact also gets created in the pending revision'
+);
+
+select is (
+  (select previous_form_change_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_contact'),
+  4::int,
+  'When committing has an operation of create, the pending form change gets the committing form change as its previous form change'
+);
+
+select is (
+  (select form_data_record_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_attachment'),
+  1::int,
+  'When committing has an operation of create, the form_data_record_id propogates to the pending form change'
 );
 
 select is (
