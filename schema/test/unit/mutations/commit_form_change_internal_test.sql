@@ -1,6 +1,6 @@
 begin;
 
-select plan(18);
+select plan(19);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -170,7 +170,13 @@ select is (
 select is (
   (select form_data_record_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_attachment'),
   1::int,
-  'When committing has an operation of create, the form_data_record_id propogates to the pending form change'
+  'When committing has an operation of create, the form_data_record_id propogates to the pending form change for attachments'
+);
+
+select is (
+  (select form_data_record_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_contact'),
+  1::int,
+  'When committing has an operation of create, the form_data_record_id propogates to the pending form change for contacts'
 );
 
 select is (
