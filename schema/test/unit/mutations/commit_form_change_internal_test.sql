@@ -1,6 +1,6 @@
 begin;
 
-select plan(19);
+select plan(21);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -126,10 +126,29 @@ update cif.form_change set new_form_data='{
 
 select cif.add_contact_to_revision(3, 1, 1);
 select cif.add_project_attachment_to_revision(3,1);
+select cif.create_form_change(
+        'create',
+        'funding_parameter_EP',
+        'cif',
+        'funding_parameter',
+        json_build_object(
+            'projectId', 1,
+            'provinceSharePercentage', 50,
+            'holdbackPercentage', 10,
+            'maxFundingAmount', 1,
+            'anticipatedFundingAmount', 1,
+            'proponentCost',777,
+            'contractStartDate', '2022-03-01 16:21:42.693489-07',
+            'projectAssetsLifeEndDate', '2022-03-01 16:21:42.693489-07'
+            )::jsonb,
+        null,
+        3
+      );
 
 select cif.commit_project_revision(3);
 
--- Both committing and pending project revisions have made changes to the project form.
+-- Test when both committing and pending project revisions have made changes to the project form,
+-- and creates of new records in committing that do not exist in pending yet.
 select is (
   (select new_form_data->>'projectName' from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
   'Correct',
@@ -169,13 +188,13 @@ select is (
 
 select is (
   (select form_data_record_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_attachment'),
-  1::int,
+  (select form_data_record_id from cif.form_change where project_revision_id = 3 and form_data_table_name = 'project_attachment'),
   'When committing has an operation of create, the form_data_record_id propogates to the pending form change for attachments'
 );
 
 select is (
   (select form_data_record_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_contact'),
-  1::int,
+  (select form_data_record_id from cif.form_change where project_revision_id = 3 and form_data_table_name = 'project_contact'),
   'When committing has an operation of create, the form_data_record_id propogates to the pending form change for contacts'
 );
 
@@ -183,6 +202,18 @@ select is (
   (select count(*) from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_attachment'),
   1::bigint,
   'When the committing form change is creating a project attachment, the attachment also gets created in the pending revision'
+);
+
+select is (
+  (select form_data_record_id from cif.form_change where project_revision_id = 2 and form_data_table_name = 'funding_parameter_EP'),
+  (select form_data_record_id from cif.form_change where project_revision_id = 3 and form_data_table_name = 'funding_parameter_EP'),
+  'When committing has an operation of create, the form_data_record_id propogates to the pending form change for funding parameter form'
+);
+
+select is (
+  (select new_form_data from cif.form_change where project_revision_id = 2 and form_data_table_name = 'funding_parameter_EP'),
+  (select new_form_data from cif.form_change where project_revision_id = 3 and form_data_table_name = 'funding_parameter_EP'),
+  'When committing has an operation of create, the form_data_record_id propogates to the pending form change for funding parameter form'
 );
 
 -- Commit the ammednment
@@ -198,7 +229,8 @@ select results_eq (
   'After committing the pending form change, the project table has all of the correct values'
 );
 
--- Test when committing has made changes to the form but the pending has not
+-- Test when committing has made changes to the form but the pending has not,
+-- and deleting a project attachment in the committing form change
 select cif.create_project_revision(1, 'Amendment'); -- id = 4
 select cif.create_project_revision(1, 'General Revision'); -- id = 5
 update cif.form_change set new_form_data='{
@@ -217,7 +249,7 @@ select cif.discard_project_attachment_form_change((select id from cif.form_chang
 select cif.commit_project_revision(5);
 
 select is (
-  (select new_form_data->>'projectName' from cif.form_change where id = 8),
+  (select new_form_data->>'projectName' from cif.form_change where project_revision_id = 4 and form_data_table_name = 'project'),
   'Correct only newer',
   'The pending form change should have the value from the committing form change'
 );
