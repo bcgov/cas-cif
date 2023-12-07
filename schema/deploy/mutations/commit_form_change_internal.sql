@@ -34,21 +34,6 @@ begin
   where id = fc.id;
 
   if pending_project_revision_id is not null then
-  /**
-        project_contact
-        project_manager
-        project_summary_report
-        funding_parameter_EP
-            operator (don't belong to project revisinos and thus aren't affected by concurrency)
-        milestone
-        project_attachment
-        funding_parameter_IA
-        project (create doesn't apply, update is handled.)
-        reporting_requirement
-            contact (don't belong to project revisinos and thus aren't affected by concurrency)
-        emission_intensity
-  */
-    
     if fc.operation = 'create' then
     -- These are the forms that a project can have at most one of.
     -- If pending has created one alredy, then we need to set the previous_form_change_id and the form_data_record_id.
