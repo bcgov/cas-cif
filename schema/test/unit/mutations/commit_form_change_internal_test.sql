@@ -99,7 +99,7 @@ update cif.form_change set new_form_data='{
     and form_data_table_name='project';
 select cif.commit_project_revision(1);
 
-
+-- create the amendment that will be "pending"
 select cif.create_project_revision(1, 'Amendment'); -- id = 2
 update cif.form_change set new_form_data='{
       "projectName": "Correct",
@@ -112,6 +112,7 @@ update cif.form_change set new_form_data='{
   where project_revision_id=2
     and form_data_table_name='project';
 
+-- create the general revision that will be "committing"
 select cif.create_project_revision(1, 'General Revision'); -- id = 3
 update cif.form_change set new_form_data='{
       "projectName": "Incorrect",
@@ -266,6 +267,186 @@ select is (
   'Correct only newer',
   'The project table should have the updated proejct name, even after the pending amendment is committed'
 );
+
+-- Test when committing is creating records of types that already exist in pending
+truncate table cif.project, cif.operator, cif.contact, cif.attachment restart identity cascade;
+insert into cif.operator(legal_name) values ('test operator');
+insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com'), ('Sandy', 'Olson', 'bar@abc.com');
+insert into cif.attachment (description, file_name, file_type, file_size)
+  values ('description1', 'file_name1', 'file_type1', 100), ('description2', 'file_name2', 'file_type1', 100);
+
+select cif.create_project(1); -- id = 1
+update cif.form_change set new_form_data='{
+      "projectName": "name",
+      "summary": "original (incorrect at point of test)",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=1
+    and form_data_table_name='project';
+select cif.commit_project_revision(1);
+
+-- create the amendment that will be "pending"
+select cif.create_project_revision(1, 'Amendment'); -- id = 2
+-- Add necessary form changes for tests
+select cif.add_contact_to_revision(2, 1, 1);
+select cif.create_form_change(
+  'create',
+  'funding_parameter_EP',
+  'cif',
+  'funding_parameter',
+  json_build_object(
+      'projectId', 1,
+      'provinceSharePercentage', 1
+      )::jsonb,
+  null,
+  2
+);
+select cif.create_form_change(
+  'create',
+  'project_manager',
+  'cif',
+  'project_manager',
+  json_build_object(
+      'projectManagerLabelId', 1,
+      'cifUserId', 1,
+      'projectId', 1
+      )::jsonb,
+  null,
+  2
+);
+select cif.create_form_change(
+  'create',
+  'reporting_requirement',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'reportType', 'Quarterly',
+      'reportingRequirementIndex', 1,
+      'projectId', 1
+      )::jsonb,
+  null,
+  2
+);
+select cif.create_form_change(
+  'create',
+  'milestone',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'reportType', 'General Milestone',
+      'reportingRequirementIndex', 1
+      )::jsonb,
+  null,
+  2
+);
+select cif.add_project_attachment_to_revision(2,1);
+
+-- create the general revision that will be "committing"
+select cif.create_project_revision(1, 'General Revision'); -- id = 3
+-- Add necessary form changes for tests
+select cif.add_contact_to_revision(3, 1, 2);
+select cif.create_form_change(
+  'create',
+  'funding_parameter_EP',
+  'cif',
+  'funding_parameter',
+  json_build_object(
+      'projectId', 1,
+      'provinceSharePercentage', 2
+      )::jsonb,
+  null,
+  3
+);
+select cif.create_form_change(
+  'create',
+  'project_manager',
+  'cif',
+  'project_manager',
+  json_build_object(
+      'projectManagerLabelId', 1,
+      'cifUserId', 1,
+      'projectId', 1
+      )::jsonb,
+  null,
+  3
+);
+select cif.create_form_change(
+  'create',
+  'project_manager',
+  'cif',
+  'project_manager',
+  json_build_object(
+      'projectManagerLabelId', 2,
+      'cifUserId', 2,
+      'projectId', 1
+      )::jsonb,
+  null,
+  3
+);
+select cif.create_form_change(
+  'create',
+  'reporting_requirement',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'reportType', 'Quarterly',
+      'reportingRequirementIndex', 1,
+      'projectId', 1
+      )::jsonb,
+  null,
+  3
+);
+select cif.create_form_change(
+  'create',
+  'reporting_requirement',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'reportType', 'Quarterly',
+      'reportingRequirementIndex', 2,
+      'projectId', 1
+      )::jsonb,
+  null,
+  3
+);
+select cif.create_form_change(
+  'create',
+  'milestone',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'reportType', 'General Milestone',
+      'reportingRequirementIndex', 1
+      )::jsonb,
+  null,
+  3
+);
+select cif.create_form_change(
+  'create',
+  'milestone',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'reportType', 'General Milestone',
+      'reportingRequirementIndex', 2
+      )::jsonb,
+  null,
+  3
+);
+select cif.add_project_attachment_to_revision(3,1);
+select cif.add_project_attachment_to_revision(3,2);
+
+select cif.commit_project_revision(3);
+
+-- emission_intensity
+-- project_contact
+-- project_manager  projectManagerLabelId 1 is update and 2 is created in pending
+-- reporting_requirement should be 3 total with 1,2,3 for reportingRequirementIndex
+-- milestone should be 3 total with 1,2,3 for reportingRequirementIndex
+-- attachment
 
 select finish();
 
