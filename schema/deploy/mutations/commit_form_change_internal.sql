@@ -41,7 +41,6 @@ begin
         (fc.json_schema_name in ('funding_parameter_EP', 'funding_parameter_IA', 'emission_intensity', 'project_summary_report')) and
         ((select count(id) from cif.form_change where project_revision_id = pending_project_revision_id and json_schema_name = fc.json_schema_name) > 0)
       ) then
-        -- MIKE consider updating null fields in pending with values from committing.
         update cif.form_change set
           previous_form_change_id = fc.id,
           form_data_record_id = recordId
@@ -61,10 +60,10 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"contactIndex": %s}',
-            (select max(new_form_data ->> contactIndex) from cif.form_change
+            (select max(new_form_data ->> 'contactIndex')::int from cif.form_change
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
-            ) + 1)
+            ) + 1)::jsonb
           )
         );
         update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
@@ -106,11 +105,11 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"reportingRequirementIndex": %s}',
-            (select max(new_form_data ->> reportingRequirementIndex) from cif.form_change 
+            (select max(new_form_data ->> 'reportingRequirementIndex')::int from cif.form_change 
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
               and new_form_data ->> 'reportType' = fc.new_form_data ->> 'reportType'
-            ) + 1)
+            ) + 1)::jsonb
           )
         );
         update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
@@ -132,10 +131,10 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"reportingRequirementIndex": %s}',
-            (select max(new_form_data ->> reportingRequirementIndex) from cif.form_change 
+            (select max(new_form_data ->> 'reportingRequirementIndex')::int from cif.form_change 
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
-            ) + 1)
+            ) + 1)::jsonb
           )
         );
         update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
