@@ -274,7 +274,13 @@ insert into cif.operator(legal_name) values ('test operator');
 insert into cif.contact(given_name, family_name, email) values ('John', 'Test', 'foo@abc.com'), ('Sandy', 'Olson', 'bar@abc.com');
 insert into cif.attachment (description, file_name, file_type, file_size)
   values ('description1', 'file_name1', 'file_type1', 100), ('description2', 'file_name2', 'file_type1', 100);
+insert into cif.cif_user(id, session_sub, given_name, family_name)
+  overriding system value
+  values (1, '11111111-1111-1111-1111-111111111111', 'Jan','Jansen'),
+         (2, '22222222-2222-2222-2222-222222222222', 'Max','Mustermann'),
+         (3, '33333333-3333-3333-3333-333333333333', 'Eva', 'Nováková');
 
+-- Create a project to update.
 select cif.create_project(1); -- id = 1
 update cif.form_change set new_form_data='{
       "projectName": "name",
