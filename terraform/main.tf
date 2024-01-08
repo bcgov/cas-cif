@@ -32,3 +32,12 @@ resource "google_storage_bucket" "bucket" {
   name = "${var.openshift_namespace}-${each.value}"
   location = local.region
 }
+
+# Create GCP service accounts for each GCS bucket
+resource "google_service_account" "account" {
+  for_each     = { for v in var.apps : v => v }
+  account_id   = "sa-${var.openshift_namespace}-${each.value}"
+  display_name = "${var.openshift_namespace}-${each.value} Service Account"
+  depends_on   = [google_storage_bucket.bucket]
+}
+

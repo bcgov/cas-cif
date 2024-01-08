@@ -3,7 +3,7 @@ SOURCE_STATE_PATH="./temp-state/tfcloud.tfstate"
 TARGET_STATE_PATH="./temp-state/local.tfstate"
 
 NAMESPACE="c53ff1-dev"
-declare -a PATHS=("google_storage_bucket.bucket")
+declare -a PATHS=("google_storage_bucket.bucket" "google_service_account.account")
 declare -a APPS=("cif-documents" "cif-backups")
 
 for path in "${PATHS[@]}"; do
