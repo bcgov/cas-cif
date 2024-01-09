@@ -31,3 +31,16 @@ variable "openshift_namespace" {
   type = string
   description = "The OCP project namespace"
 }
+
+variable "kubernetes_namespaces" {
+  type        = list(string)
+  description = "The OCP namespaces to run jobs"
+}
+
+variable "terraform_cloud_token" {
+  description = "The user/team token of Terraform Cloud"
+}
+
+variable "terraform_cloud_workspace_id" {
+  description = "The workspace id of Terraform Cloud"
+}
