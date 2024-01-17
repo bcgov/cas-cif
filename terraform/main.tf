@@ -57,18 +57,11 @@ resource "google_service_account" "viewer_account" {
   depends_on   = [google_storage_bucket.bucket]
 }
 
-resource "google_project_iam_custom_role" "viewer_role" {
-  role_id     = "casStorageViewer"
-  title       = "Storage Viewer Role"
-  description = "A role for accounts allowed to list the contents of buckets and to access files in them"
-  permissions = ["storage.buckets.get", "storage.buckets.list", "storage.objects.get", "storage.objects.list"]
-}
-
-# Assign Storage Viewer role for the corresponding service accounts
+# Assign (manually created) Storage Viewer role for the corresponding service accounts
 resource "google_storage_bucket_iam_member" "viewer" {
   for_each   = { for v in var.apps : v => v }
   bucket     = "${var.openshift_namespace}-${each.value}"
-  role       = google_project_iam_custom_role.viewer_role.id
+  role       = var.iam_storage_role_template_id
   member     = "serviceAccount:${google_service_account.viewer_account[each.key].email}"
   depends_on = [google_service_account.viewer_account]
 }

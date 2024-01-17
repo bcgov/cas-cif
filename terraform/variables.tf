@@ -31,3 +31,9 @@ variable "openshift_namespace" {
   type = string
   description = "The OCP project namespace"
 }
+
+variable "iam_storage_role_template_id" {
+  type = string
+  description = "ID for a custom IAM role template we manually created in GCP for Storage Viewers"
+  default = "casStorageViewer"
+}
