@@ -61,7 +61,7 @@ resource "google_service_account" "viewer_account" {
 resource "google_storage_bucket_iam_member" "viewer" {
   for_each   = { for v in var.apps : v => v }
   bucket     = "${var.openshift_namespace}-${each.value}"
-  role       = var.iam_storage_role_template_id
+  role       = "projects/${var.project_id}/roles/${var.iam_storage_role_template_id}"
   member     = "serviceAccount:${google_service_account.viewer_account[each.key].email}"
   depends_on = [google_service_account.viewer_account]
 }
