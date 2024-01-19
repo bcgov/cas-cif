@@ -16,13 +16,5 @@ for path in "${PATHS[@]}"; do
   done
 done
 
-# Need to think about this more
-declare -a UNLOOP_PATHS=("google_project_iam_custom_role.viewer_role")
-
-for path in "${UNLOOP_PATHS[@]}"; do
-  source_resource="${path}"
-  target_resource="${path}"
-
-  terraform state mv -state="${SOURCE_STATE_PATH}" -state-out="${TARGET_STATE_PATH}" "${source_resource}" "${target_resource}"
-  
-done
+# google_project_iam_custom_role.viewer_role resource is created manually in the Google Cloud Console. 
+# This resource should NOT be migrated, as it is shared across all CAS projects.
