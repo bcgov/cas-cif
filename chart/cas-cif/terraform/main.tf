@@ -11,6 +11,8 @@ terraform {
       version = "~> 5.2.0"
     }
   }
+
+    backend "gcs" {}
 }
 
 # Configure OCP infrastructure to setup the host and authentication token
