@@ -10,8 +10,6 @@ metadata:
 spec:
   backoffLimit: 0
   activeDeadlineSeconds: 900
-  parallelism: 2
-  completions: 4
   template:
     spec:
       serviceAccountName: "terraform-kubernetes-service-account"
