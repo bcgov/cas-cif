@@ -7,8 +7,8 @@ metadata:
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
     "helm.sh/hook-weight": "-10"
-data:
+binaryData:
 {{- range $path, $data := .Files.Glob "terraform/**.tf" }}
 {{ $path | base | indent 2 }}: >-
-{{- $data | toString | nindent 4 }}
+{{- $data | toString | b64enc | nindent 4 }}
 {{ end }}
