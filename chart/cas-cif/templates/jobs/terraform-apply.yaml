@@ -41,6 +41,8 @@ spec:
               value: {{ .Release.Namespace | quote }}
             - name: TF_VAR_kubernetes_host
               value: "https://api.silver.devops.gov.bc.ca:6443"
+            - name: TF_VAR_apps
+              value: '["cif-backups", "cif-documents"]'
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/etc/gcp/credentials.json"
           command:
