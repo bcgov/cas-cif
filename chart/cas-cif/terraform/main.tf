@@ -1,10 +1,12 @@
 # Terraform workspace configuration. To apply changes to this file, use `make create_workspace`
 
 terraform {
+  required_version = ">=1.4.6"
+
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.13" 
+      version = "~> 2.23"
     }
     google = {
       source = "hashicorp/google"
