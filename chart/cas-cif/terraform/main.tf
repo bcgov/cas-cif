@@ -1,5 +1,3 @@
-# Terraform workspace configuration. To apply changes to this file, use `make create_workspace`
-
 terraform {
   required_version = ">=1.4.6"
 
@@ -9,30 +7,30 @@ terraform {
       version = "~> 2.23"
     }
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
       version = "~> 5.2.0"
     }
   }
 
-    backend "gcs" {}
+  backend "gcs" {}
 }
 
 # Configure OCP infrastructure to setup the host and authentication token
 provider "kubernetes" {
-  host             = var.kubernetes_host
-  token            = var.kubernetes_token
+  host  = var.kubernetes_host
+  token = var.kubernetes_token
 }
 
 # Configure GCP infrastructure to setup the credentials, default project and location (zone and/or region) for your resources
 provider "google" {
-  project     = var.project_id
-  region      = local.region
+  project = var.project_id
+  region  = local.region
 }
 
 # Create GCS buckets
 resource "google_storage_bucket" "bucket" {
   for_each = { for v in var.apps : v => v }
-  name = "${var.openshift_namespace}-${each.value}"
+  name     = "${var.openshift_namespace}-${each.value}"
   location = local.region
 }
 
@@ -86,15 +84,15 @@ resource "kubernetes_secret" "secret_sa" {
   for_each = { for v in var.apps : v => v }
   metadata {
     name      = "gcp-${var.openshift_namespace}-${each.value}-service-account-key"
-    namespace = "${var.openshift_namespace}"
+    namespace = var.openshift_namespace
     labels = {
       created-by = "Terraform"
     }
   }
 
   data = {
-    "bucket_name"      = "${var.openshift_namespace}-${each.value}"
-    "credentials.json" = base64decode(google_service_account_key.key[each.key].private_key)
+    "bucket_name"             = "${var.openshift_namespace}-${each.value}"
+    "credentials.json"        = base64decode(google_service_account_key.key[each.key].private_key)
     "viewer_credentials.json" = base64decode(google_service_account_key.viewer_key[each.key].private_key)
   }
 }

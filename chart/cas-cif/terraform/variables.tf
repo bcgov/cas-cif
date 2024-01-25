@@ -16,24 +16,18 @@ variable "kubernetes_token" {
   description = "The authentication token of the OCP cluster"
 }
 
-# # TODO: Remove legacy (from cas-shelf) vars
-# variable "namespace_apps" {
-#   type        = list(string)
-#   description = "The list of namespace and app name pairs of the OCP project"
-# }
-
 variable "apps" {
-  type = list(string)
+  type        = list(string)
   description = "The list of app names for the OCP project in a namespace"
 }
 
 variable "openshift_namespace" {
-  type = string
+  type        = string
   description = "The OCP project namespace"
 }
 
 variable "iam_storage_role_template_id" {
-  type = string
+  type        = string
   description = "ID for a custom IAM role template we manually created in GCP for Storage Viewers"
-  default = "casStorageViewer"
+  default     = "casStorageViewer"
 }
