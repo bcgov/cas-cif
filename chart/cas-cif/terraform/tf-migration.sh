@@ -18,5 +18,5 @@ for path in "${PATHS[@]}"; do
   done
 done
 
-# google_project_iam_custom_role.viewer_role resource is created manually in the Google Cloud Console. 
+# google_project_iam_custom_role.viewer_role resource is created manually in the Google Cloud Console.
 # This resource should NOT be migrated, as it is shared across all CAS projects.
