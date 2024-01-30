@@ -25,7 +25,7 @@ spec:
             - mountPath: /etc/tf
               name: terraform-backend-config-volume
               readOnly: True
-            - name: tf-cache
+            - name: tf-working-dir
               mountPath: /working
               readOnly: False
             - name: terraform-modules
@@ -66,7 +66,7 @@ spec:
             items:
               - key: tf_backend
                 path: gcs.tfbackend
-        - name: tf-cache
+        - name: tf-working-dir
           emptyDir: {}
         - name: terraform-modules
           configMap:
