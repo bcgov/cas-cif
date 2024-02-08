@@ -14,4 +14,10 @@ app/cypress.env.json
 dev/db/data
 **/.DS_Store
 
-.terraform
+# Terraform files from local and migration runs
+.terraform/
+*.tfstate
+*.tfvars
+.terraform.lock.hcl
+credentials.json
+terraform/*.sh
