@@ -9,7 +9,7 @@ import {
 import { RelayProps } from "relay-nextjs";
 import { ConcreteRequest, OperationType } from "relay-runtime";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import { RouterContext } from "next/dist/shared/lib/router-context";
+import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
 import TestingHelper from "./TestingHelper";
 
 interface PageTestingHelperOptions<TQuery extends OperationType> {
