@@ -55,7 +55,7 @@ spec:
                   cd working;
                   export TF_VAR_kubernetes_token=$( cat /var/run/secrets/kubernetes.io/serviceaccount/token );
                   terraform init -backend-config=/etc/tf/gcs.tfbackend;
-                  terraform apply -var=\"kubernetes_host=$kubernetes_host\" -auto-approve";
+                  terraform apply -var="kubernetes_host=$kubernetes_host" -auto-approve;
       restartPolicy: Never
       volumes:
         - name: service-account-credentials-volume
