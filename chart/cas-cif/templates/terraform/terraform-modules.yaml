@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: terraform-modules
-  namespace: {{ .Release.Namespace }}
   # Because terraform-apply.yaml is pre-install, pre-upgrade, this configmap needs to be in place before it
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
