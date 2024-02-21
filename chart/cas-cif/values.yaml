@@ -92,3 +92,7 @@ devops:
     requests:
       cpu: 100m
       memory: 64Mi
+
+terraform-bucket-provision:
+  terraform:
+    namespace_apps: '["cif-backups", "cif-documents"]'
