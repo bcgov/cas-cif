@@ -96,4 +96,3 @@ devops:
 terraform-bucket-provision:
   terraform:
     namespace_apps: '["cif-backups", "cif-documents"]'
-
