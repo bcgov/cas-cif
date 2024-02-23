@@ -1,13 +1,13 @@
 {
   "name": "cas-cif",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "main": "index.js",
   "repository": "https://github.com/bcgov/cas-cif.git",
   "author": "ggircs@gov.bc.ca",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@release-it/conventional-changelog": "^7.0.2",
-    "release-it": "^16.2.1"
+    "@release-it/conventional-changelog": "^8.0.1",
+    "release-it": "^17.1.1"
   },
   "release-it": {
     "npm": {

@@ -1,3 +1,16 @@
+## [1.16.2](https://github.com/bcgov/cas-cif/compare/1.16.1...1.16.2) (2024-02-23)
+
+### Bug Fixes
+
+- add apps env var for Terraform ([3ca95a4](https://github.com/bcgov/cas-cif/commit/3ca95a4b9901ddfc7ebe1564448d4dd3962eba38))
+- include role path with id as per requirements ([67a42a8](https://github.com/bcgov/cas-cif/commit/67a42a8757f48e71e7ab2b4b0f2183947f698ef8))
+- move variable closer to Terraform command ([6c17d6f](https://github.com/bcgov/cas-cif/commit/6c17d6f14e50da0e64ba8a9de0339f2797f6cb25))
+- remove hanging quote ([4bf9422](https://github.com/bcgov/cas-cif/commit/4bf94227a0435a1359e86ea13c9d9337be301077))
+- remove unneeded spec from job ([f68153d](https://github.com/bcgov/cas-cif/commit/f68153d2496594e3077b672bd92b7ba1b86cb3dd))
+- trailing whitespace ([79ab2f1](https://github.com/bcgov/cas-cif/commit/79ab2f177cd093d691c0c177fc29874deb8bfdf3))
+- uncomment provider config ([46b38f7](https://github.com/bcgov/cas-cif/commit/46b38f78ecb45166303b1ea5a9ee1cbd5df31190))
+- use correct provider versions ([862f80a](https://github.com/bcgov/cas-cif/commit/862f80ac4bafd1e0be154fbeed5640b54e24afd3))
+
 ## [1.16.1](https://github.com/bcgov/cas-cif/compare/1.16.0...1.16.1) (2023-11-22)
 
 # [1.16.0](https://github.com/bcgov/cas-cif/compare/1.10.0...1.16.0) (2023-10-24)
