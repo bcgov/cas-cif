@@ -175,14 +175,14 @@ begin
       if committing_minus_pendings_parent is not null then
         if pending_minus_pendings_parent is not null then
           -- if the committing and pending form changes both have changes from the pending form change's parent,
-          -- then set the pending form change to be the committing form change, plus the changes made in the penging form change.
+          -- then set the pending form change's new_form_data to be the committing form change's, plus the changes made in the penging form change.
           update cif.form_change
             set new_form_data =
               (fc.new_form_data || pending_minus_pendings_parent)
             where id = pending_form_change.id;
         else
           -- The pending form change hasn't made any changes since its creation, but the committing form change has.
-          -- Set the pending form change ot be the committing form change as it is the latest information
+          -- Set the pending form change's new_form_data to be the committing form change's, as it is the latest information
           update cif.form_change
             set new_form_data =
               (fc.new_form_data)
