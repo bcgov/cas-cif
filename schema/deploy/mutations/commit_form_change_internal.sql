@@ -171,7 +171,7 @@ begin
         and json_schema_name = fc.json_schema_name
         and form_data_record_id = fc.form_data_record_id limit 1;
       select * into parent_of_pending_form_change from cif.form_change
-        where id = pending_form_change.previous_form_change_id limit 1;
+        where id = pending_form_change.previous_form_change_id;
 
       select (cif.jsonb_minus(pending_form_change.new_form_data, parent_of_pending_form_change.new_form_data))
         into pending_minus_pendings_parent;
@@ -195,6 +195,8 @@ begin
             where id = pending_form_change.id;
         end if;
       end if;
+      -- Set the previous_form_change_id to be the committing form change.
+      update cif.form_change set previous_form_change_id = fc.id where id = pending_form_change.id;
 
     elsif fc.operation = 'archive' then
       delete from cif.form_change
@@ -202,8 +204,6 @@ begin
         and form_data_table_name = fc.form_data_table_name
         and form_data_record_id = fc.form_data_record_id;
     end if;
-    -- Set the previous_form_change_id to be the committing form change.
-    update cif.form_change set previous_form_change_id = fc.id where id = pending_form_change.id;
   end if;
   return (select row(form_change.*)::cif.form_change from cif.form_change where id = fc.id);
 end;
