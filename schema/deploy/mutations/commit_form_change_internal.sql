@@ -1,6 +1,11 @@
 -- Deploy cif:mutations/commit_form_change to pg
 begin;
+/*
+To allow for pending project revisions to remain up to date with the project when other revisions are commit, a significant amount
+of conditional logic has been introduced in the form of nested if statements. This should be refactored to a more maintainable &
+readable structure.
 
+*/
 -- We need to explicitly drop the old function here since we're changing the signature.
 drop function if exists cif_private.commit_form_change_internal(cif.form_change);
 create or replace function cif_private.commit_form_change_internal(fc cif.form_change, pending_project_revision_id int default null)
@@ -60,7 +65,7 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"contactIndex": %s}',
-            (select max(new_form_data ->> 'contactIndex')::int from cif.form_change
+            (select max((new_form_data ->> 'contactIndex')::int) from cif.form_change
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
             ) + 1)::jsonb
@@ -105,7 +110,7 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"reportingRequirementIndex": %s}',
-            (select max(new_form_data ->> 'reportingRequirementIndex')::int from cif.form_change 
+            (select max((new_form_data ->> 'reportingRequirementIndex')::int) from cif.form_change 
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
               and new_form_data ->> 'reportType' = fc.new_form_data ->> 'reportType'
@@ -131,7 +136,7 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"reportingRequirementIndex": %s}',
-            (select max(new_form_data ->> 'reportingRequirementIndex')::int from cif.form_change 
+            (select max((new_form_data ->> 'reportingRequirementIndex')::int) from cif.form_change 
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
             ) + 1)::jsonb
