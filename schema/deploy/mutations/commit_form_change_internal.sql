@@ -76,17 +76,18 @@ begin
       elsif (
         fc.json_schema_name = 'project_manager'
         and (
-          (select count(id) from cif.form_change
+          (select count(*) from cif.form_change
           where project_revision_id=pending_project_revision_id
           and json_schema_name=fc.json_schema_name
           and new_form_data ->> 'projectManagerLabelId' = fc.new_form_data ->> 'projectManagerLabelId') > 0
         )
       ) then
-      -- If the projectManagerLabelId already exists in pending, set the form_data_record_id and previous_form_change_id.
-      -- If not, then the catch all case will handle it.
+      -- If the projectManagerLabelId already exists in pending, set the form_data_record_id and previous_form_change_id,
+      -- and the operation to 'update' to handle when pending has an opertion of 'create'. If not, then the catch all case will handle it.
         update cif.form_change set
           previous_form_change_id = fc.id,
-          form_data_record_id = recordId
+          form_data_record_id = recordId,
+          operation = 'update'::cif.form_change_operation
         where id = (select id from cif.form_change
           where project_revision_id=pending_project_revision_id
           and json_schema_name=fc.json_schema_name
