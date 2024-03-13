@@ -1,6 +1,6 @@
 begin;
 
-select plan(21);
+select plan(24);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -373,7 +373,7 @@ select cif.create_form_change(
   'project_manager',
   json_build_object(
       'projectManagerLabelId', 1,
-      'cifUserId', 1,
+      'cifUserId', 2,
       'projectId', 1
       )::jsonb,
   null,
@@ -386,7 +386,7 @@ select cif.create_form_change(
   'project_manager',
   json_build_object(
       'projectManagerLabelId', 2,
-      'cifUserId', 2,
+      'cifUserId', 1,
       'projectId', 1
       )::jsonb,
   null,
@@ -449,7 +449,24 @@ select cif.commit_project_revision(3);
 
 -- emission_intensity
 -- project_contact
--- project_manager  projectManagerLabelId 1 is update and 2 is created in pending
+-- project_manager
+select is (
+  (select operation from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_manager' and new_form_data->>'projectManagerLabelId' = '1'),
+  'update',
+  'When committing and pending both create a project manager with the same projectManagerLabelId, pendings operation becomes update'
+);
+
+select is (
+  (select (new_form_data->>'cifUserId')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_manager' and new_form_data->>'projectManagerLabelId' = '1'),
+  1,
+  'When committing and pending both create a project manager with the same projectManagerLabelId, pendings operation becomes update'
+);
+
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_manager'),
+  2::bigint,
+  'When committing and pending both create a project managers with different labels, all created manager labels persist to the pending form change'
+);
 -- reporting_requirement should be 3 total with 1,2,3 for reportingRequirementIndex
 -- milestone should be 3 total with 1,2,3 for reportingRequirementIndex
 -- attachment
