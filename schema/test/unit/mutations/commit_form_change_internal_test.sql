@@ -1,6 +1,6 @@
 begin;
 
-select plan(24);
+select plan(30);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -467,8 +467,45 @@ select is (
   2::bigint,
   'When committing and pending both create a project managers with different labels, all created manager labels persist to the pending form change'
 );
--- reporting_requirement should be 3 total with 1,2,3 for reportingRequirementIndex
--- milestone should be 3 total with 1,2,3 for reportingRequirementIndex
+
+-- Quarterly Reports
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'Quarterly'),
+  3::bigint,
+  'When committing and pending both create Quarterly reports, all of them are kept after the commit'
+);
+
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'Quarterly' and (new_form_data->>'reportingRequirementIndex')::int = 1),
+  1::bigint,
+  'When committing and pending both create Quarterly reports, reportingRequirementIndexes are not doubled up'
+);
+
+select is (
+  (select max((new_form_data->>'reportingRequirementIndex')::int) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'Quarterly'),
+  3,
+  'When committing and pending both create Quarterly reports, the indexes of those in pending are adjusted on commit'
+);
+
+-- Milestones
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'General Milestone'),
+  3::bigint,
+  'When committing and pending both create General Milestone reports, all of them are kept after the commit'
+);
+
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'General Milestone' and (new_form_data->>'reportingRequirementIndex')::int = 1),
+  1::bigint,
+  'When committing and pending both create General Milestone reports, reportingRequirementIndexes are not doubled up'
+);
+
+select is (
+  (select max((new_form_data->>'reportingRequirementIndex')::int) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'General Milestone'),
+  3,
+  'When committing and pending both create General Milestone reports, the indexes of those in pending are adjusted on commit'
+);
+
 -- attachment
 
 select finish();
