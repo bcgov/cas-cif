@@ -210,6 +210,6 @@ end;
   $$ language plpgsql volatile;
 
 grant execute on function cif_private.commit_form_change_internal(cif.form_change, int) to cif_internal, cif_external, cif_admin;
-comment on function cif_private.commit_form_change_internal(cif.form_change, int) is 'Commits the form change and calls the corresponding commit handler.';
+comment on function cif_private.commit_form_change_internal(cif.form_change, int) is 'Commits the form change and calls the corresponding commit handler.  Then, update a potential existing revision to include the changes that were just committed.';
 
 commit;

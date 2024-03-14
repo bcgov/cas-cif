@@ -11,6 +11,7 @@ begin
   -- defer FK constraints check to the end of the transaction
   set constraints all deferred;
 
+  -- Find a potential existing other pending revision that needs updating while we commit this one, that we pass as a reference for the internal commit functions
   select form_data_record_id into proj_id from cif.form_change where form_data_table_name='project' and project_revision_id=$1;
   select id into pending_project_revision_id from cif.project_revision
     where project_id = proj_id
