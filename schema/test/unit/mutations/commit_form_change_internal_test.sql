@@ -1,6 +1,6 @@
 begin;
 
-select plan(30);
+select plan(31);
 
 /** SETUP **/
 truncate cif.form_change restart identity;
@@ -503,7 +503,17 @@ select is (
 select is (
   (select max((new_form_data->>'reportingRequirementIndex')::int) from cif.form_change where project_revision_id = 2 and new_form_data->>'reportType' = 'General Milestone'),
   3,
-  'When committing and pending both create General Milestone reports, the indexes of those in pending are adjusted on commit'
+  'When committing and pending both create General Milestone reports, the next sequential index is assigned to the milestone form_change record being added in pending.'
+);
+
+select is (
+  (select max(counts.index_count) from (
+    select count(*) as index_count from cif.form_change
+      where project_revision_id = 2 and new_form_data->>'reportType' = 'General Milestone'
+      group by new_form_data->>'reportingRequirementIndex') as counts
+  ),
+  1::bigint,
+  'When committing and pending both create General Milestone reports, each milestone is given a unique reportingRequirementIndex.'
 );
 
 -- attachment
