@@ -40,8 +40,10 @@ begin
 
   if pending_project_revision_id is not null then
     if fc.operation = 'create' then
-    -- These are the forms that a project can have at most one of.
-    -- If pending has created one alredy, then we need to set the previous_form_change_id and the form_data_record_id.
+    /*
+      These are the forms that a project can have at most one of.
+      If pending has created one alredy, then we need to set the previous_form_change_id and the form_data_record_id.
+    */
       if (
         (fc.json_schema_name in ('funding_parameter_EP', 'funding_parameter_IA', 'emission_intensity', 'project_summary_report')) and
         ((select count(id) from cif.form_change where project_revision_id = pending_project_revision_id and json_schema_name = fc.json_schema_name) > 0)
@@ -73,6 +75,10 @@ begin
         );
         update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
 
+      /*
+        If the projectManagerLabelId already exists in pending, set the form_data_record_id and previous_form_change_id,
+        and the operation to 'update' to handle when pending has an opertion of 'create'. If not, then the catch all case will handle it.
+      */
       elsif (
         fc.json_schema_name = 'project_manager'
         and (
@@ -82,8 +88,6 @@ begin
           and new_form_data ->> 'projectManagerLabelId' = fc.new_form_data ->> 'projectManagerLabelId') > 0
         )
       ) then
-      -- If the projectManagerLabelId already exists in pending, set the form_data_record_id and previous_form_change_id,
-      -- and the operation to 'update' to handle when pending has an opertion of 'create'. If not, then the catch all case will handle it.
         update cif.form_change set
           previous_form_change_id = fc.id,
           form_data_record_id = recordId,
@@ -93,6 +97,10 @@ begin
           and json_schema_name=fc.json_schema_name
           and new_form_data ->> 'projectManagerLabelId' = fc.new_form_data ->> 'projectManagerLabelId');
 
+      /*
+        If  reporting_requirements of this reportType already exist in pending, create the new form_change and set the reportingRequirementIndex
+        to the highest existing in pending plus 1. If committing is the first reporting_requirement of this reportType, then the catch-all works.
+      */
       elsif (
         fc.json_schema_name = 'reporting_requirement'
         and (
@@ -101,8 +109,6 @@ begin
             and new_form_data ->> 'reportType' = fc.new_form_data ->> 'reportType')
         > 0)
       ) then
-      -- If  reporting_requirements of this reportType already exist in pending, create the new form_change and set the reportingRequirementIndex
-      -- to the highest existing in pending plus 1. If committing is the first reporting_requirement of this reportType, then the catch-all works.
         select id into new_fc_in_pending_id from cif.create_form_change(
           operation => 'update'::cif.form_change_operation,
           form_data_schema_name => 'cif',
@@ -120,6 +126,11 @@ begin
         );
         update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
 
+      /*
+        If committing is creating a milestone and milestones exist, create the milestone in pending and set the
+        reportingRequirementIndex to be the max existing in pending plus 1.
+        If pending has no milestones, the catch-all works.
+      */
       elsif (
         fc.json_schema_name = 'milestone'
         and (
@@ -127,8 +138,6 @@ begin
             and json_schema_name = fc.json_schema_name)
         > 0)
       ) then
-      -- If committing is creating a milestone and milestones exist, create the milestone in pending and set the reportingRequirementIndex
-      -- to be the max existing in pending plus 1. If pending has no milestones, the catch-all works.
         select id into new_fc_in_pending_id from cif.create_form_change(
           operation => 'update'::cif.form_change_operation,
           form_data_schema_name => 'cif',
@@ -144,11 +153,12 @@ begin
           )
         );
         update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
+
       /**
-      This next case acts as the catch-all for 'create'. It applies to any scenario in which the pending revision does not have an equivalent
-      form change to the one being committed. This includes unordered lists (e.g. attachments, milestones, etc.), the unique forms
-      like funding_parameter when pending has not created one yet, and ordered/pseudo ordered lists when the equivalent index does not
-      exist in pending.
+        This next case acts as the catch-all for 'create'. It applies to any scenario in which the pending revision does not have an equivalent
+        form change to the one being committed. This includes unordered lists (e.g. attachments, milestones, etc.), the unique forms
+        like funding_parameter when pending has not created one yet, and ordered/pseudo ordered lists when the equivalent index does not
+        exist in pending.
       **/
       else
 
@@ -178,17 +188,23 @@ begin
       select (cif.jsonb_minus(fc.new_form_data, parent_of_pending_form_change.new_form_data))
         into committing_minus_pendings_parent;
 
+      /*
+        If the committing and pending form changes both have changes from the pending form change's parent,
+        then set the pending form change's new_form_data to be the committing form change's, and apply the changes
+        made in the pending form change to that data.
+      */
       if committing_minus_pendings_parent is not null then
         if pending_minus_pendings_parent is not null then
-          -- if the committing and pending form changes both have changes from the pending form change's parent,
-          -- then set the pending form change's new_form_data to be the committing form change's, plus the changes made in the penging form change.
           update cif.form_change
             set new_form_data =
               (fc.new_form_data || pending_minus_pendings_parent)
             where id = pending_form_change.id;
+
+        /*
+          If the pending form change hasn't made any changes since its creation, but the committing form change has,
+          set the pending form change's new_form_data to be the committing form_change's, as it is the latest information.
+        */
         else
-          -- The pending form change hasn't made any changes since its creation, but the committing form change has.
-          -- Set the pending form change's new_form_data to be the committing form change's, as it is the latest information
           update cif.form_change
             set new_form_data =
               (fc.new_form_data)
@@ -199,10 +215,37 @@ begin
       update cif.form_change set previous_form_change_id = fc.id where id = pending_form_change.id;
 
     elsif fc.operation = 'archive' then
-      delete from cif.form_change
-      where project_revision_id = pending_project_revision_id
-        and form_data_table_name = fc.form_data_table_name
+      select * into pending_form_change from cif.form_change
+        where project_revision_id = pending_project_revision_id
+        and json_schema_name = fc.json_schema_name
         and form_data_record_id = fc.form_data_record_id;
+      select * into parent_of_pending_form_change from cif.form_change
+        where id = pending_form_change.previous_form_change_id;
+
+      select (cif.jsonb_minus(pending_form_change.new_form_data, parent_of_pending_form_change.new_form_data))
+        into pending_minus_pendings_parent;
+
+      /*
+        If pending has made changes, then set its operation to create and null the form data record id & previous form change id
+        since it's technically creating them now. This way the archiving still took place in the committing form change, and we
+        avoid trying to update the now archived record that form_data_record_id points to.
+      */
+      if pending_minus_pendings_parent is not null then
+        update cif.form_change set
+          operation = 'create'::cif.form_change_operation,
+          form_data_record_id = null,
+          previous_form_change_id = null
+        where id = pending_form_change.id;
+
+      else
+      /*
+        If pending has not made changes to the form data, the pending record can be deleted as it never would have been made
+      */
+        delete from cif.form_change
+        where project_revision_id = pending_project_revision_id
+          and form_data_table_name = fc.form_data_table_name
+          and form_data_record_id = fc.form_data_record_id;
+      end if;
     end if;
   end if;
   return (select row(form_change.*)::cif.form_change from cif.form_change where id = fc.id);
