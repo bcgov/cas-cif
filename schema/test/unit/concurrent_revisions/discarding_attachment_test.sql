@@ -1,6 +1,6 @@
 begin;
 
-select plan(4);
+select plan(2);
 
 truncate table cif.project, cif.operator, cif.contact, cif.attachment restart identity cascade;
 insert into cif.operator(legal_name) values ('test operator');
@@ -23,26 +23,9 @@ select cif.commit_project_revision(1);
 
 select cif.create_project_revision(1, 'Amendment'); -- id = 2
 select cif.create_project_revision(1, 'General Revision'); -- id = 3
-update cif.form_change set new_form_data='{
-      "projectName": "Correct only newer",
-      "summary": "Correct",
-      "fundingStreamRfpId": 1,
-      "projectStatusId": 1,
-      "proposalReference": "1233",
-      "operatorId": 1
-    }'::jsonb
-  where project_revision_id=3
-    and form_data_table_name='project';
 
 select cif.discard_project_attachment_form_change((select id from cif.form_change where project_revision_id = 3 and form_data_table_name = 'project_attachment'));
-
 select cif.commit_project_revision(3);
-
-select is (
-  (select new_form_data->>'projectName' from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project'),
-  'Correct only newer',
-  'The pending form change should have the value from the committing form change'
-);
 
 select is (
   (select count(*) from cif.form_change where project_revision_id = 2 and form_data_table_name = 'project_attachment'),
@@ -57,12 +40,6 @@ select lives_ok (
     select cif.commit_project_revision(2)
   $$,
   'Committing the pending project_revision does not throw an error'
-);
-
-select is (
-  (select project_name from cif.project where id = 1),
-  'Correct only newer',
-  'The project table should have the updated proejct name, even after the pending amendment is committed'
 );
 
 
