@@ -56,10 +56,13 @@ begin
 
 
 /*
-  If the committing form_change is creating a project contact, and the contactIndex already exists in the pending revision,
-  then update the index of the pending form_change to be the highest current index + 1 to avoid the clash.
-  If the contactIndex does not exist in the pending proejct revision, then the catch-all case for creates handles it.
+  If the committing form_change is creating a project contact, and the contactIndex already exists in the pending revision, then we want
+  the contactId in pending to remain at that contactIndex. To do this, we create a new form_change in the pending project revision with
+  the contactId being commit, set its operation to create, and its contactIndex to one higher than the current highest index. We then
+  update the pending form change to have an operation of update, and give it the same form_data_record_id as committing, and assign the
+  committing id to be the previous_form_change_id.
 */
+
       elsif (
         fc.json_schema_name = 'project_contact'
         and (select count(*) from cif.form_change where
@@ -68,20 +71,26 @@ begin
           new_form_data ->> 'contactIndex' = fc.new_form_data ->> 'contactIndex') > 0
       ) then
         select id into new_fc_in_pending_id from cif.create_form_change(
-          operation => 'update'::cif.form_change_operation,
+          operation => 'create'::cif.form_change_operation,
           form_data_schema_name => 'cif',
           form_data_table_name => fc.form_data_table_name,
-          form_data_record_id => recordId,
+          form_data_record_id =>  null,
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"contactIndex": %s}',
-            (select max((new_form_data ->> 'contactIndex')::int) from cif.form_change
+            ((select max((new_form_data ->> 'contactIndex')::int) from cif.form_change
               where project_revision_id = pending_project_revision_id
-              and json_schema_name = fc.json_schema_name
-            ) + 1)::jsonb
+              and json_schema_name = 'project_contact'
+            ) + 1))::jsonb
           )
         );
-        update cif.form_change set previous_form_change_id = fc.id where id = new_fc_in_pending_id;
+        update cif.form_change set
+          operation = 'update'::cif.form_change_operation,
+          form_data_record_id = recordId,
+          previous_form_change_id = fc.id
+        where project_revision_id = pending_project_revision_id
+          and json_schema_name = 'project_contact'
+          and new_form_data ->> 'contactIndex' = fc.new_form_data ->> 'contactIndex';
 
 /*
   If the projectManagerLabelId already exists in pending, set the form_data_record_id and previous_form_change_id,
