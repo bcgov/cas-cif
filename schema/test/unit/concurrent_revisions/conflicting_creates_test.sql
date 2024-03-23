@@ -1,6 +1,6 @@
 begin;
 
-select plan(14);
+select plan(15);
 
 
 truncate table cif.project, cif.operator, cif.contact, cif.attachment restart identity cascade;
@@ -85,7 +85,6 @@ select cif.add_project_attachment_to_revision(2,1);
 
 -- create the general revision that will be "committing"
 select cif.create_project_revision(1, 'General Revision'); -- id = 3
--- Add necessary form changes for tests
 select cif.add_contact_to_revision(3, 1, 2);
 select cif.create_form_change(
   'create',
@@ -175,7 +174,6 @@ select cif.create_form_change(
   null,
   3
 );
-select cif.add_project_attachment_to_revision(3,1);
 select cif.add_project_attachment_to_revision(3,2);
 
 select cif.commit_project_revision(3);
@@ -189,15 +187,15 @@ select is (
 );
 
 select is (
-  (select (new_form_data->>'contactId')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_contact' and new_form_data->>'contactIndex' = '2'),
-  2,
-  'When committing and pending both create a primary contact, the committing primary becomes the amendments secondary contact'
+  (select (new_form_data->>'contactId')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_contact' and new_form_data->>'contactIndex' = '1'),
+  1,
+  'When committing and pending both create a primary contact, the pending primary contact contactId maintains its value'
 );
 
 select is (
-  (select (new_form_data->>'contactId')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_contact' and new_form_data->>'contactIndex' = '1'),
-  1,
-  'When committing and pending both create a primary contact, the pending primary contact contactId maintains its value after commiting is commit'
+  (select (new_form_data->>'contactId')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_contact' and new_form_data->>'contactIndex' = '2'),
+  2,
+  'When committing and pending both create a primary contact, the committing primary becomes the amendments secondary contact'
 );
 
 -- project_manager
@@ -274,6 +272,12 @@ select lives_ok (
     select cif.commit_project_revision(2)
   $$,
   'Committing the pending project_revision does not throw an error'
+);
+
+select is (
+  (select count(*) from cif.form_change where form_data_record_id is null),
+  0::bigint,
+  'All of the committed form_change records have a form_data_record_id assigned after pending is committed.'
 );
 
 select finish();
