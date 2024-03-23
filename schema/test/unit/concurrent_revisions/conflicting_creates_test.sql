@@ -206,10 +206,6 @@ select cif.add_project_attachment_to_revision(3,2);
 
 select cif.commit_project_revision(3);
 
-/*
- emission_intensity
- project_summary_report
-*/
 select is (
   (select count(*) from cif.form_change where project_revision_id = 2 and json_schema_name = 'funding_parameter_EP'),
   1::bigint,

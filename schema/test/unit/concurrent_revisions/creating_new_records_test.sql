@@ -1,6 +1,6 @@
 begin;
 
-select plan(8);
+select plan(9);
 
 /*
   Test when the committing project_revision creates records that do not exist in the pending project_revision
@@ -112,6 +112,12 @@ select lives_ok (
     select cif.commit_project_revision(2)
   $$,
   'Committing the pending project_revision does not throw an error'
+);
+
+select is (
+  (select count(*) from cif.form_change where form_data_record_id is null),
+  0::bigint,
+  'All of the committed form_change records have a form_data_record_id assigned after pending is committed.'
 );
 
 select finish();
