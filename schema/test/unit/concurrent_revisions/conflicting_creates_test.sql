@@ -1,6 +1,6 @@
 begin;
 
-select plan(15);
+select plan(19);
 
 
 truncate table cif.project, cif.operator, cif.contact, cif.attachment restart identity cascade;
@@ -31,6 +31,20 @@ select cif.commit_project_revision(1);
 -- create the amendment that will be "pending"
 select cif.create_project_revision(1, 'Amendment'); -- id = 2
 select cif.add_contact_to_revision(2, 1, 1);
+select cif.create_form_change(
+  'create',
+  'emission_intensity',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'baselineEmissionIntensity', 1,
+      'targetEmissionIntensity', 2,
+      'postProjectEmissionIntensity', 3,
+      'totalLifetimeEmissionReduction', 4
+      )::jsonb,
+  null,
+  2
+);
 select cif.create_form_change(
   'create',
   'funding_parameter_EP',
@@ -86,6 +100,20 @@ select cif.add_project_attachment_to_revision(2,1);
 -- create the general revision that will be "committing"
 select cif.create_project_revision(1, 'General Revision'); -- id = 3
 select cif.add_contact_to_revision(3, 1, 2);
+select cif.create_form_change(
+  'create',
+  'emission_intensity',
+  'cif',
+  'reporting_requirement',
+  json_build_object(
+      'baselineEmissionIntensity', 5,
+      'targetEmissionIntensity', 6,
+      'postProjectEmissionIntensity', 7,
+      'totalLifetimeEmissionReduction', 8
+      )::jsonb,
+  null,
+  3
+);
 select cif.create_form_change(
   'create',
   'funding_parameter_EP',
@@ -178,8 +206,34 @@ select cif.add_project_attachment_to_revision(3,2);
 
 select cif.commit_project_revision(3);
 
--- emission_intensity
--- project_contact
+/*
+ emission_intensity
+ project_summary_report
+*/
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and json_schema_name = 'funding_parameter_EP'),
+  1::bigint,
+  'When committing and pending have both created a funding parameter form, only one exists in pending after the first is commit'
+);
+
+select is (
+  (select (new_form_data ->> 'provinceSharePercentage')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'funding_parameter_EP'),
+  1,
+  'When committing and pending have both created a funding parameter form, pending maintains its form values'
+);
+
+select is (
+  (select count(*) from cif.form_change where project_revision_id = 2 and json_schema_name = 'emission_intensity'),
+  1::bigint,
+  'When committing and pending have both created an emission intensity report form, only one exists in pending after the first is commit'
+);
+
+select is (
+  (select (new_form_data ->> 'baselineEmissionIntensity')::int from cif.form_change where project_revision_id = 2 and json_schema_name = 'emission_intensity'),
+  1,
+  'When committing and pending have both created an emission intensity report, pending maintains its form values'
+);
+
 select is (
   (select count(*) from cif.form_change where project_revision_id = 2 and json_schema_name = 'project_contact'),
   2::bigint,
