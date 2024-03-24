@@ -134,7 +134,7 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"reportingRequirementIndex": %s}',
-            (select max((new_form_data ->> 'reportingRequirementIndex')::int) from cif.form_change 
+            (select max((new_form_data ->> 'reportingRequirementIndex')::int) from cif.form_change
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
               and new_form_data ->> 'reportType' = fc.new_form_data ->> 'reportType'
@@ -163,7 +163,7 @@ begin
           project_revision_id => pending_project_revision_id,
           json_schema_name => fc.json_schema_name,
           new_form_data => (fc.new_form_data || format('{"reportingRequirementIndex": %s}',
-            (select max((new_form_data ->> 'reportingRequirementIndex')::int) from cif.form_change 
+            (select max((new_form_data ->> 'reportingRequirementIndex')::int) from cif.form_change
               where project_revision_id=pending_project_revision_id
               and json_schema_name = fc.json_schema_name
             ) + 1)::jsonb
