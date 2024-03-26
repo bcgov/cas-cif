@@ -50871,6 +50871,32 @@ input JSONFilter {
   notIn: [JSON!]
 }
 
+"""All input for the `jsonbMinus` mutation."""
+input JsonbMinusInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  minuend: JSON!
+  subtrahend: JSON!
+}
+
+"""The output of our `jsonbMinus` mutation."""
+type JsonbMinusPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  json: JSON
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 type KeycloakJwt {
   acr: String
   aud: String
@@ -52297,6 +52323,12 @@ type Mutation {
     """
     input: GenerateQuarterlyReportsInput!
   ): GenerateQuarterlyReportsPayload
+  jsonbMinus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: JsonbMinusInput!
+  ): JsonbMinusPayload
   stageDirtyFormChanges(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -66928,7 +66960,7 @@ type Query implements Node {
   paymentByRowId(rowId: Int!): Payment
 
   """
-  returns a form_change for a table in the pending state for the current user, i.e. allows to resume the creation of any table row
+  returns list of key-value pairs present in the first argument but not the second argument
   """
   pendingNewFormChangeForTable(tableName: String!): FormChange
 

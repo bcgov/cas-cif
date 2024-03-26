@@ -7,7 +7,7 @@ select plan(2);
 /** SETUP **/
 truncate cif.form_change restart identity;
 
-create or replace function cif_private.commit_form_change_internal(fc cif.form_change)
+create or replace function cif_private.commit_form_change_internal(fc cif.form_change, pending_project_revision_id int default null)
 returns cif.form_change as $$
 begin
   return fc;
@@ -54,7 +54,7 @@ select results_eq(
       validation_errors
     from cif.commit_form_change(
       12345,
-      (select row( null, '{"updated":true}', null, null, null, null, null, null, null, '["hazErrors"]', null, null, null, null, null)::cif.form_change)
+       (select row( null, '{"updated":true}', null, null, null, null, null, null, null, '[]', null, null, null, null, null)::cif.form_change)
     );
   $$,
   $$
@@ -68,7 +68,7 @@ select results_eq(
       null::int,
       'pending'::varchar,
       'reporting_requirement'::varchar,
-      '["hazErrors"]'::jsonb
+      '[]'::jsonb
     )
   $$,
   'commit_form_change calls the private commit_form_change_internal() function'

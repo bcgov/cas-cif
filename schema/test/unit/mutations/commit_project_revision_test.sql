@@ -1,6 +1,6 @@
 begin;
 
-select plan(9);
+select plan(13);
 
 /** BEGIN SETUP **/
 truncate table
@@ -208,6 +208,97 @@ select results_eq(
     values ('General Revision'::varchar, 'Applied'::varchar);
   $$,
   'commit_project_revision sets revision_status to Applied when revision_type is General Revision'
+);
+
+-- Test the concurrent revision functinality
+
+truncate cif.project restart identity cascade;
+
+select cif.create_project(1); -- id = 1
+update cif.form_change set new_form_data='{
+      "projectName": "name",
+      "summary": "original (incorrect at point of test)",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=1
+    and form_data_table_name='project';
+select cif.commit_project_revision(1);
+
+
+select cif.create_project_revision(1, 'Amendment'); -- id = 2
+update cif.form_change set new_form_data='{
+      "projectName": "Correct",
+      "summary": "original (incorrect at point of test)",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=2
+    and form_data_table_name='project';
+
+select cif.create_project_revision(1, 'General Revision'); -- id = 3
+update cif.form_change set new_form_data='{
+      "projectName": "Incorrect",
+      "summary": "Correct",
+      "fundingStreamRfpId": 1,
+      "projectStatusId": 1,
+      "proposalReference": "1235",
+      "operatorId": 1
+    }'::jsonb
+  where project_revision_id=3
+    and form_data_table_name='project';
+
+insert into cif.form_change(
+  new_form_data,
+  operation,
+  form_data_schema_name,
+  form_data_table_name,
+  json_schema_name,
+  project_revision_id
+)
+  values
+(
+  json_build_object(
+    'projectId', 1,
+    'contactId', 1,
+    'contactIndex', 1
+  ),
+  'create', 'cif', 'project_contact', 'project_contact', 3
+);
+
+select lives_ok (
+  $$
+    select cif.commit_project_revision(3)
+  $$,
+  'The General Revision successfully commits while there is a pending Amendment on the project'
+);
+
+select lives_ok (
+  $$
+    select cif.commit_project_revision(2)
+  $$,
+  'The Amendment successfully commits after a General Revision being committed while the Amendment was pending'
+);
+
+select results_eq (
+  $$
+    (select project_name, summary from cif.project where id = 1 limit 1)
+  $$,
+  $$
+    values('Correct'::varchar, 'Correct'::varchar)
+  $$,
+  'The project table has the correct data after the Amendment is committed'
+);
+
+select isnt_empty (
+  $$
+    select id from cif.project_contact where project_id=1;
+  $$,
+  'The project_contact added in the General Revision was succesfully added after the Amendment was committed'
 );
 
 select finish();
