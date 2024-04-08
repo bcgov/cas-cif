@@ -35,7 +35,7 @@ values (
 ;
 
 -- make sure the function exists
-select has_function('cif_private', 'commit_form_change_internal', ARRAY['cif.form_change'], 'Function commit_form_change_internal should exist');
+select has_function('cif_private', 'commit_form_change_internal', ARRAY['cif.form_change', 'int'], 'Function commit_form_change_internal should exist');
 
 select results_eq(
   $$
@@ -77,7 +77,8 @@ select is(
   'The form_change status should be committed'
 );
 
--- Calls the proper function set in the form table
+
+
 
 select finish();
 

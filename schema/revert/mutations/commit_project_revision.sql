@@ -8,11 +8,6 @@ begin
   -- defer FK constraints check to the end of the transaction
   set constraints all deferred;
 
-  if ((select project_id from cif.project_revision where id = $1) is not null)
-      and ((select change_reason from cif.project_revision where id = $1) is null) then
-    raise exception 'Cannot commit revision if change_reason is null.';
-  end if;
-
   -- Propagate the change_status to all related form_change records
   -- Save the project table first to avoid foreign key violations from other potential tables.
   perform cif_private.commit_form_change_internal(row(form_change.*)::cif.form_change)
