@@ -2,7 +2,6 @@
 
 - rebase pending revisions when committing a project revision ([983ad50](https://github.com/bcgov/cas-cif/commit/983ad506cf45862a717425152ca8ca8a054fc9bb))
 
-
 ## [1.16.2](https://github.com/bcgov/cas-cif/compare/1.16.1...1.16.2) (2024-02-23)
 
 ### Bug Fixes
