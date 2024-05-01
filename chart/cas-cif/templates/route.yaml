@@ -1,11 +1,12 @@
-{{- $route := (lookup "route.openshift.io/v1" "Route" .Release.Namespace "cas-cif" ) }}
-{{- $certificate := "" }}
-{{- $key := "" }}
-{{- $caCertificate := "" }}
-{{- if $route }}
-{{- $certificate = $route.spec.tls.certificate }}
-{{- $key = $route.spec.tls.key }}
-{{- $caCertificate = $route.spec.tls.caCertificate }}
+{{- $keySecret := "Secret not found" }}
+{{- $certSecret := "Secret not found" }}
+{{- $CACertSecret := "Secret not found" }}
+
+{{- $existingSSLSecret := (lookup "v1" "Secret" .Release.Namespace "ssl-cert-cas-cif" ) }}
+{{- if $existingSSLSecret }}
+{{- $keySecret = index $existingSSLSecret.data "private-key" | b64dec | quote}}
+{{- $certSecret = index $existingSSLSecret.data "certificate" | b64dec | quote}}
+{{- $CACertSecret = index $existingSSLSecret.data "CACert" | b64dec | quote}}
 {{- end -}}
 
 apiVersion: route.openshift.io/v1
@@ -20,15 +21,16 @@ spec:
   port:
     targetPort: {{ template "cas-cif.fullname" . }}
   tls:
-    termination: edge
     insecureEdgeTerminationPolicy: Redirect
-    {{- if $certificate }}
-    certificate: {{ $certificate | quote }}
-    key: {{ $key | quote }}
-    caCertificate: {{ $caCertificate | quote }}
-    {{- end }}
+    termination: edge
+{{- if hasSuffix "-prod" .Release.Namespace }}
+    key: {{ $keySecret }}
+    certificate: {{ $certSecret }}
+    caCertificate: {{ $CACertSecret }}
+{{- end }}
   to:
     kind: Service
     name: {{ template "cas-cif.fullname" . }}
     weight: 100
   wildcardPolicy: None
+
