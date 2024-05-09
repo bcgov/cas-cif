@@ -1,10 +1,7 @@
 hostName: cif.gov.bc.ca
 
 certbot:
-  certbot:
-    server:
-      secretName: cas-acme-url
-      secretKey: url
+  enabled: false
 
 deploy-db:
   airflowEndpoint: https://cas-airflow-prod.apps.silver.devops.gov.bc.ca

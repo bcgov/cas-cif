@@ -1,0 +1,38 @@
+{{- if hasSuffix "-prod" .Release.Namespace }}
+
+{{- $keySecret := "Secret not found" }}
+{{- $certSecret := "Secret not found" }}
+{{- $CACertSecret := "Secret not found" }}
+
+{{- $existingSSLSecret := (lookup "v1" "Secret" .Release.Namespace "ssl-cert-cas-cif" ) }}
+{{- if $existingSSLSecret }}
+{{- $keySecret = index $existingSSLSecret.data "private-key" | b64dec | quote}}
+{{- $certSecret = index $existingSSLSecret.data "certificate" | b64dec | quote}}
+{{- $CACertSecret = index $existingSSLSecret.data "CACert" | b64dec | quote}}
+{{- end -}}
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ template "cas-cif.fullname" . }}
+  labels: {{ include "cas-cif.labels" . | nindent 4 }}
+  annotations:
+    haproxy.router.openshift.io/balance: roundrobin
+
+spec:
+  host: {{ .Values.hostName }}
+  port:
+    targetPort: {{ template "cas-cif.fullname" . }}
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+    key: {{ $keySecret }}
+    certificate: {{ $certSecret }}
+    caCertificate: {{ $CACertSecret }}
+  to:
+    kind: Service
+    name: {{ template "cas-cif.fullname" . }}
+    weight: 100
+  wildcardPolicy: None
+
+{{- end }}

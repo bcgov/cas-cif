@@ -18,3 +18,6 @@ deploy-db:
 
 download-dags:
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+
+certbot:
+  enabled: true
