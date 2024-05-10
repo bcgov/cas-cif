@@ -47,9 +47,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
               isPristine
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -169,8 +166,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
               formData={formData}
               formContext={{
                 operation: quarterlyReport.operation,
-                oldData:
-                  quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
                 latestCommittedData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,

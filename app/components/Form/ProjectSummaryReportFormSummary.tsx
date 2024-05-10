@@ -56,9 +56,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
             node {
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
             }
           }
         }
@@ -153,8 +150,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
         uiSchema={projectSummaryReportUiSchema}
         formContext={{
           operation: projectSummaryReport.operation,
-          oldData:
-            projectSummaryReport.formChangeByPreviousFormChangeId?.newFormData,
           latestCommittedData:
             latestCommittedProjectSummaryFormChanges?.edges[0]?.node
               ?.newFormData,

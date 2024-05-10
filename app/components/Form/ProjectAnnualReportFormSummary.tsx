@@ -46,9 +46,6 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               isPristine
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -162,8 +159,6 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               uiSchema={reportingRequirementUiSchema}
               formContext={{
                 operation: annualReport.operation,
-                oldData:
-                  annualReport.formChangeByPreviousFormChangeId?.newFormData,
                 latestCommittedData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,

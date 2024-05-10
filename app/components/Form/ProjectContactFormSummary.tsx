@@ -181,11 +181,6 @@ const ProjectContactFormSummary: React.FC<Props> = ({
             formData={node.newFormData}
             formContext={{
               operation: node.operation,
-              oldData: node.formChangeByPreviousFormChangeId?.newFormData,
-              oldUiSchema: createProjectContactUiSchema(
-                node?.formChangeByPreviousFormChangeId?.asProjectContact
-                  ?.contactByContactId?.fullName
-              ),
               latestCommittedData:
                 latestCommittedContactNode?.node?.newFormData,
               latestCommittedUiSchema,
@@ -260,13 +255,6 @@ const ProjectContactFormSummary: React.FC<Props> = ({
               formData={primaryContact ? primaryContact.node.newFormData : null}
               formContext={{
                 operation: primaryContact?.node.operation,
-                oldData:
-                  primaryContact?.node.formChangeByPreviousFormChangeId
-                    ?.newFormData,
-                oldUiSchema: createProjectContactUiSchema(
-                  primaryContact?.node?.formChangeByPreviousFormChangeId
-                    ?.asProjectContact?.contactByContactId?.fullName
-                ),
                 latestCommittedData:
                   lastCommittedPrimaryContact?.node?.newFormData,
                 latestCommittedUiSchema: createProjectContactUiSchema(

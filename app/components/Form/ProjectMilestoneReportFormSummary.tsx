@@ -50,9 +50,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               isPristine
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -243,8 +240,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               calculatedNetAmount:
                 milestoneReport?.newFormData?.calculatedNetAmount,
               operation: milestoneReport.operation,
-              oldData:
-                milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
               latestCommittedData,
               isAmendmentsAndOtherRevisionsSpecific:
                 isOnAmendmentsAndOtherRevisionsPage,

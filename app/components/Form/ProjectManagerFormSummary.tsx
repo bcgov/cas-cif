@@ -42,14 +42,6 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
                     fullName
                   }
                 }
-                formChangeByPreviousFormChangeId {
-                  newFormData
-                  asProjectManager {
-                    cifUserByCifUserId {
-                      fullName
-                    }
-                  }
-                }
                 formByJsonSchemaName {
                   jsonSchema
                 }
@@ -146,12 +138,6 @@ const ProjectManagerFormSummary: React.FC<Props> = ({
           formData={node.formChange.newFormData}
           formContext={{
             operation: node.formChange?.operation,
-            oldData:
-              node.formChange?.formChangeByPreviousFormChangeId?.newFormData,
-            oldUiSchema: createProjectManagerUiSchema(
-              node.formChange?.formChangeByPreviousFormChangeId
-                ?.asProjectManager?.cifUserByCifUserId?.fullName
-            ),
             latestCommittedData: latestCommittedManagerNode?.node?.newFormData,
             latestCommittedUiSchema,
             isAmendmentsAndOtherRevisionsSpecific:

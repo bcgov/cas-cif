@@ -51,13 +51,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
               formByJsonSchemaName {
                 jsonSchema
               }
-              formChangeByPreviousFormChangeId {
-                newFormData
-                calculatedEiPerformance
-                paymentPercentage
-                maximumPerformanceMilestoneAmount
-                actualPerformanceMilestoneAmount
-              }
             }
           }
         }
@@ -97,24 +90,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
       summaryReportingRequirement?.actualPerformanceMilestoneAmount,
   };
 
-  const oldData = {
-    ...summaryReportingRequirement?.formChangeByPreviousFormChangeId
-      ?.newFormData,
-    //calculated values
-    calculatedEiPerformance:
-      summaryReportingRequirement?.formChangeByPreviousFormChangeId
-        ?.calculatedEiPerformance,
-    paymentPercentage:
-      summaryReportingRequirement?.formChangeByPreviousFormChangeId
-        ?.paymentPercentage,
-    maximumPerformanceMilestoneAmount:
-      summaryReportingRequirement?.formChangeByPreviousFormChangeId
-        ?.maximumPerformanceMilestoneAmount,
-    actualPerformanceMilestoneAmount:
-      summaryReportingRequirement?.formChangeByPreviousFormChangeId
-        ?.actualPerformanceMilestoneAmount,
-  };
-
   const latestCommittedData = {
     ...latestCommittedEmissionIntensityReportFormChange?.edges[0]?.node
       ?.newFormData,
@@ -147,7 +122,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
   const filteredSchema = getSchemaAndDataIncludingCalculatedValues(
     emissionIntensityFormBySlug.jsonSchema.schema as JSONSchema7,
     newData,
-    oldData,
     {
       // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
       adjustedEmissionsIntensityPerformance: {
@@ -265,7 +239,6 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           actualPerformanceMilestoneAmount:
             summaryReportingRequirement?.actualPerformanceMilestoneAmount,
           operation: summaryReportingRequirement?.operation,
-          oldData,
           latestCommittedData,
           isAmendmentsAndOtherRevisionsSpecific:
             isOnAmendmentsAndOtherRevisionsPage,
