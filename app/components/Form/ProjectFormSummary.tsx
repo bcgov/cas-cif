@@ -93,12 +93,13 @@ const ProjectFormSummary: React.FC<Props> = ({
 
   const newDataAsProject = projectFormChange.asProject;
 
-  const latestCommittedUiSchema = latestCommittedData?.asProject
+  const latestCommittedAsProject = latestCommittedProjectFormChanges?.edges[0]?.node?.asProject
+  const latestCommittedUiSchema = latestCommittedAsProject
     ? createProjectUiSchema(
-        latestCommittedData.asProject.operatorByOperatorId.legalName,
-        `${latestCommittedData.asProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedData.asProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
-        latestCommittedData.asProject.operatorByOperatorId.bcRegistryId,
-        latestCommittedData.asProject.projectStatusByProjectStatusId.name
+        latestCommittedAsProject.operatorByOperatorId.legalName,
+        `${latestCommittedAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+        latestCommittedAsProject.operatorByOperatorId.bcRegistryId,
+        latestCommittedAsProject.projectStatusByProjectStatusId.name
       )
     : null;
 
@@ -113,6 +114,7 @@ const ProjectFormSummary: React.FC<Props> = ({
           projectSchema as JSONSchema7,
 
           { ...projectFormChange?.newFormData, rank: projectFormChange.rank },
+          latestCommittedData,
           {
             rank: {
               type: "number",
