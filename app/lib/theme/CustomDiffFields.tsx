@@ -194,8 +194,7 @@ const renderDiffString = ({
         contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
       );
     }
-  }
-   else if (newData !== null && newData !== undefined) {
+  } else if (newData !== null && newData !== undefined) {
     components.push(<span className={diffOldClsName}>Not Entered</span>);
     components.push(renderArrow());
     components.push(

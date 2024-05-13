@@ -80,7 +80,6 @@ latestCommittedUiTestSchema.numericIdTest["ui:options"].text =
   "I am the last committed value";
 
 describe("The Object Field Template", () => {
-
   it("shows diffs when the latest committed value exists and has been changed in the new data", () => {
     const componentUnderTest = render(
       <FormBase
@@ -98,7 +97,9 @@ describe("The Object Field Template", () => {
     );
 
     expect(componentUnderTest.getByText("stringTest NEW")).toBeInTheDocument();
-    expect(componentUnderTest.getByText("stringTest LAST COMMITTED")).toBeInTheDocument();
+    expect(
+      componentUnderTest.getByText("stringTest LAST COMMITTED")
+    ).toBeInTheDocument();
 
     expect(componentUnderTest.getByText("100")).toBeInTheDocument();
     expect(componentUnderTest.getByText("300")).toBeInTheDocument();
@@ -125,17 +126,17 @@ describe("The Object Field Template", () => {
         formContext={{
           operation: "CREATE",
           latestCommittedData,
-          latestCommittedUiSchema: latestCommittedUiTestSchema
+          latestCommittedUiSchema: latestCommittedUiTestSchema,
         }}
       />
     );
-    expect(componentUnderTest.getByText("stringTest LAST COMMITTED")).toHaveClass(
-      "diffOld"
-    );
+    expect(
+      componentUnderTest.getByText("stringTest LAST COMMITTED")
+    ).toHaveClass("diffOld");
     expect(componentUnderTest.getByText("$30.00")).toHaveClass("diffOld");
-    expect(componentUnderTest.getByText("I am the last committed value")).toHaveClass(
-      "diffOld"
-    );
+    expect(
+      componentUnderTest.getByText("I am the last committed value")
+    ).toHaveClass("diffOld");
   });
 
   it("shows data has been added when there is newData, and there is no latest committed", () => {
@@ -286,9 +287,9 @@ describe("The Object Field Template", () => {
     expect(componentUnderTest.getByText("stringTest NEW")).toHaveClass(
       "diffNew"
     );
-    expect(componentUnderTest.getByText("stringTest LAST COMMITTED")).toHaveClass(
-      "diffOld"
-    );
+    expect(
+      componentUnderTest.getByText("stringTest LAST COMMITTED")
+    ).toHaveClass("diffOld");
   });
 
   it("handles 0 when latest committed data is 0", () => {

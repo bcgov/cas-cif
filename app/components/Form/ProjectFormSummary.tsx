@@ -93,7 +93,8 @@ const ProjectFormSummary: React.FC<Props> = ({
 
   const newDataAsProject = projectFormChange.asProject;
 
-  const latestCommittedAsProject = latestCommittedProjectFormChanges?.edges[0]?.node?.asProject
+  const latestCommittedAsProject =
+    latestCommittedProjectFormChanges?.edges[0]?.node?.asProject;
   const latestCommittedUiSchema = latestCommittedAsProject
     ? createProjectUiSchema(
         latestCommittedAsProject.operatorByOperatorId.legalName,
