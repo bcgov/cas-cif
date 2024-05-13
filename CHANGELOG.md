@@ -1,3 +1,5 @@
+## [1.16.4](https://github.com/bcgov/cas-cif/compare/1.16.3...1.16.4) (2024-05-13)
+
 ## [1.16.3](https://github.com/bcgov/cas-cif/compare/1.16.2...1.16.3) (2024-04-17)
 
 - rebase pending revisions when committing a project revision ([983ad50](https://github.com/bcgov/cas-cif/commit/983ad506cf45862a717425152ca8ca8a054fc9bb))
