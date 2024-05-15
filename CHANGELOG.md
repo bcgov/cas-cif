@@ -1,5 +1,7 @@
 ## [1.16.4](https://github.com/bcgov/cas-cif/compare/list...1.16.4) (2024-05-15)
 
+- add a separate route template specifically for prod ([01012d9](https://github.com/bcgov/cas-cif/commit/01012d9ba4eff19b80445da617b05dea96ce5029))
+
 ## [1.16.3](https://github.com/bcgov/cas-cif/compare/1.16.2...1.16.3) (2024-04-17)
 
 - rebase pending revisions when committing a project revision ([983ad50](https://github.com/bcgov/cas-cif/commit/983ad506cf45862a717425152ca8ca8a054fc9bb))
