@@ -39,18 +39,6 @@ const mockQueryPayload = {
                   fullName: "Test Full Name primary",
                 },
               },
-              formChangeByPreviousFormChangeId: {
-                newFormData: {
-                  contactIndex: 1,
-                  contactId: 1,
-                  projectId: 1,
-                },
-                asProjectContact: {
-                  contactByContactId: {
-                    fullName: "Test Full Name primary PREVIOUS",
-                  },
-                },
-              },
               formByJsonSchemaName: {
                 jsonSchema: projectContactProdSchema,
               },
@@ -68,18 +56,6 @@ const mockQueryPayload = {
               asProjectContact: {
                 contactByContactId: {
                   fullName: "I did not change",
-                },
-              },
-              formChangeByPreviousFormChangeId: {
-                newFormData: {
-                  contactIndex: 1,
-                  contactId: 2,
-                  projectId: 1,
-                },
-                asProjectContact: {
-                  contactByContactId: {
-                    fullName: "I did not change",
-                  },
                 },
               },
               formByJsonSchemaName: {
@@ -122,7 +98,44 @@ const mockQueryPayload = {
                 },
               },
               operation: "ARCHIVE",
-              formChangeByPreviousFormChangeId: {
+              formByJsonSchemaName: {
+                jsonSchema: projectContactProdSchema,
+              },
+            },
+          },
+        ],
+        latestCommittedProjectContactFormChanges: {
+          edges: [
+            {
+              node: {
+                newFormData: {
+                  contactIndex: 1,
+                  contactId: 1,
+                  projectId: 1,
+                },
+                asProjectContact: {
+                  contactByContactId: {
+                    fullName: "Test Full Name primary PREVIOUS",
+                  },
+                },
+              }
+            },
+            {
+              node: {
+                newFormData: {
+                  contactIndex: 1,
+                  contactId: 2,
+                  projectId: 1,
+                },
+                asProjectContact: {
+                  contactByContactId: {
+                    fullName: "I did not change",
+                  },
+                },
+              }
+            },
+            {
+              node: {
                 newFormData: {
                   contactIndex: 4,
                   contactId: 4,
@@ -133,13 +146,10 @@ const mockQueryPayload = {
                     fullName: "I was removed",
                   },
                 },
-              },
-              formByJsonSchemaName: {
-                jsonSchema: projectContactProdSchema,
-              },
-            },
-          },
-        ],
+              }
+            }
+          ]
+        }
       },
     };
     return result;

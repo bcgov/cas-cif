@@ -48,14 +48,6 @@ const ProjectContactFormSummary: React.FC<Props> = ({
                   ...ContactDetails_contact
                 }
               }
-              formChangeByPreviousFormChangeId {
-                newFormData
-                asProjectContact {
-                  contactByContactId {
-                    fullName
-                  }
-                }
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
