@@ -207,7 +207,6 @@ describe("The ProjectManagerForm", () => {
   it("Only displays diffs of the the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
-    screen.logTestingPlaygroundURL();
 
     expect(screen.getByText("Test Full Name Update")).toBeInTheDocument();
     expect(
