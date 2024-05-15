@@ -42,18 +42,6 @@ const mockQueryPayload = {
                       fullName: "Test Full Name Update",
                     },
                   },
-                  formChangeByPreviousFormChangeId: {
-                    newFormData: {
-                      projectId: 1,
-                      cifUserId: 1,
-                      projectManagerLabelId: 1,
-                    },
-                    asProjectManager: {
-                      cifUserByCifUserId: {
-                        fullName: "Test Full Name Update PREVIOUS",
-                      },
-                    },
-                  },
                 },
                 projectManagerLabel: {
                   label: "Test First Label",
@@ -73,18 +61,6 @@ const mockQueryPayload = {
                   asProjectManager: {
                     cifUserByCifUserId: {
                       fullName: "Test Full Name Archive",
-                    },
-                  },
-                  formChangeByPreviousFormChangeId: {
-                    newFormData: {
-                      projectId: 1,
-                      cifUserId: 1,
-                      projectManagerLabelId: 1,
-                    },
-                    asProjectManager: {
-                      cifUserByCifUserId: {
-                        fullName: "Test Full Name Archive PREVIOUS",
-                      },
                     },
                   },
                 },
@@ -130,18 +106,6 @@ const mockQueryPayload = {
                       fullName: "Test Full Name No Change",
                     },
                   },
-                  formChangeByPreviousFormChangeId: {
-                    newFormData: {
-                      projectId: 1,
-                      cifUserId: 4,
-                      projectManagerLabelId: 4,
-                    },
-                    asProjectManager: {
-                      cifUserByCifUserId: {
-                        fullName: "Test Full Name No Change",
-                      },
-                    },
-                  },
                 },
                 projectManagerLabel: {
                   label: "Test Fourth Label",
@@ -149,6 +113,52 @@ const mockQueryPayload = {
               },
             },
           ],
+        },
+        latestCommittedProjectManagerFormChanges: {
+          edges: [
+            {
+              node: {
+                newFormData: {
+                  projectId: 1,
+                  cifUserId: 1,
+                  projectManagerLabelId: 1,
+                },
+                asProjectManager: {
+                  cifUserByCifUserId: {
+                    fullName: "Test Full Name Update PREVIOUS",
+                  },
+                },
+              }
+            },
+            {
+              node: {
+                newFormData: {
+                  projectId: 1,
+                  cifUserId: 1,
+                  projectManagerLabelId: 1,
+                },
+                asProjectManager: {
+                  cifUserByCifUserId: {
+                    fullName: "Test Full Name Archive PREVIOUS",
+                  },
+                },
+              }
+            },
+            {
+              node: {
+                newFormData: {
+                  projectId: 1,
+                  cifUserId: 4,
+                  projectManagerLabelId: 4,
+                },
+                asProjectManager: {
+                  cifUserByCifUserId: {
+                    fullName: "Test Full Name No Change",
+                  },
+                },
+              }
+            }
+          ]
         },
       },
     };
@@ -197,6 +207,7 @@ describe("The ProjectManagerForm", () => {
   it("Only displays diffs of the the data fields that have changed", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
+    screen.logTestingPlaygroundURL();
 
     expect(screen.getByText("Test Full Name Update")).toBeInTheDocument();
     expect(

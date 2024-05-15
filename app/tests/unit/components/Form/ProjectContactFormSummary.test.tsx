@@ -104,53 +104,53 @@ const mockQueryPayload = {
             },
           },
         ],
-        latestCommittedProjectContactFormChanges: {
-          edges: [
-            {
-              node: {
-                newFormData: {
-                  contactIndex: 1,
-                  contactId: 1,
-                  projectId: 1,
-                },
-                asProjectContact: {
-                  contactByContactId: {
-                    fullName: "Test Full Name primary PREVIOUS",
-                  },
-                },
-              }
-            },
-            {
-              node: {
-                newFormData: {
-                  contactIndex: 1,
-                  contactId: 2,
-                  projectId: 1,
-                },
-                asProjectContact: {
-                  contactByContactId: {
-                    fullName: "I did not change",
-                  },
-                },
-              }
-            },
-            {
-              node: {
-                newFormData: {
-                  contactIndex: 4,
-                  contactId: 4,
-                  projectId: 1,
-                },
-                asProjectContact: {
-                  contactByContactId: {
-                    fullName: "I was removed",
-                  },
-                },
-              }
-            }
-          ]
-        }
       },
+      latestCommittedProjectContactFormChanges: {
+        edges: [
+          {
+            node: {
+              newFormData: {
+                contactIndex: 1,
+                contactId: 1,
+                projectId: 1,
+              },
+              asProjectContact: {
+                contactByContactId: {
+                  fullName: "Test Full Name primary PREVIOUS",
+                },
+              },
+            }
+          },
+          {
+            node: {
+              newFormData: {
+                contactIndex: 1,
+                contactId: 2,
+                projectId: 1,
+              },
+              asProjectContact: {
+                contactByContactId: {
+                  fullName: "I did not change",
+                },
+              },
+            }
+          },
+          {
+            node: {
+              newFormData: {
+                contactIndex: 4,
+                contactId: 4,
+                projectId: 1,
+              },
+              asProjectContact: {
+                contactByContactId: {
+                  fullName: "I was removed",
+                },
+              },
+            }
+          }
+        ]
+      }
     };
     return result;
   },
