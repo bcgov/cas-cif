@@ -77,7 +77,6 @@ const mockQueryPayload = {
                   fullName: "I was added",
                 },
               },
-              formChangeByPreviousFormChangeId: null,
               formByJsonSchemaName: {
                 jsonSchema: projectContactProdSchema,
               },

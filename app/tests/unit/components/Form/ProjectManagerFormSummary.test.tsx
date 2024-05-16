@@ -84,7 +84,6 @@ const mockQueryPayload = {
                       fullName: "Test Full Name Create",
                     },
                   },
-                  formChangeByPreviousFormChangeId: null,
                 },
                 projectManagerLabel: {
                   label: "Test Third Label",
