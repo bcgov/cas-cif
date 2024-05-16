@@ -94,7 +94,13 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
   const latestCommittedReportMap = useMemo(() => {
     const filteredReports = latestCommittedReports.map(({ node }) => node);
 
-    const reportMap = filteredReports.reduce((reports, current) => (reports[current.newFormData.reportingRequirementIndex] = current, reports),{})
+    const reportMap = filteredReports.reduce(
+      (reports, current) => (
+        (reports[current.newFormData.reportingRequirementIndex] = current),
+        reports
+      ),
+      {}
+    );
 
     return reportMap;
   }, [latestCommittedReports]);
@@ -119,7 +125,9 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
         : getFilteredSchema(
             annualReport.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
             annualReport,
-            latestCommittedReportMap[annualReport.newFormData.reportingRequirementIndex]
+            latestCommittedReportMap[
+              annualReport.newFormData.reportingRequirementIndex
+            ]
           );
 
       if (

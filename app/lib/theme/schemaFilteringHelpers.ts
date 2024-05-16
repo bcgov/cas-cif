@@ -46,7 +46,11 @@ export const getSchemaAndDataIncludingCalculatedValues = (
 };
 
 // `getFilteredSchema` can only be used when all form values are found in `newFormData` (most of the time, calculated values are queried outside of `newFormData`, so in forms with calculated values, use `getSchemaAndDataIncludingCalculatedValues` instead)
-export const getFilteredSchema = (formSchema: JSONSchema7, formChange, latestCommittedFormChange) => {
+export const getFilteredSchema = (
+  formSchema: JSONSchema7,
+  formChange,
+  latestCommittedFormChange
+) => {
   const filteredSchema = JSON.parse(JSON.stringify(formSchema));
   const newDataObject = {};
 

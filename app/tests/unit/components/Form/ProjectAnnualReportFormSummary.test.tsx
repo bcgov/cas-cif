@@ -126,7 +126,7 @@ const mockQueryPayload = {
                   submittedDate: "2025-07-01T23:59:59.999-07:00",
                   reportingRequirementIndex: 1,
                 },
-              }
+              },
             },
             {
               node: {
@@ -141,10 +141,10 @@ const mockQueryPayload = {
                     "I am an unchanged received date on Annual Report #2",
                   reportingRequirementIndex: 2,
                 },
-              }
+              },
             },
-          ]
-        }
+          ],
+        },
       };
     return result;
   },

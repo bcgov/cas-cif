@@ -127,7 +127,7 @@ const mockQueryPayload = {
                     fullName: "Test Full Name Update PREVIOUS",
                   },
                 },
-              }
+              },
             },
             {
               node: {
@@ -141,7 +141,7 @@ const mockQueryPayload = {
                     fullName: "Test Full Name Archive PREVIOUS",
                   },
                 },
-              }
+              },
             },
             {
               node: {
@@ -155,9 +155,9 @@ const mockQueryPayload = {
                     fullName: "Test Full Name No Change",
                   },
                 },
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
       },
     };

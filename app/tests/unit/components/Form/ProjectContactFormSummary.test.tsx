@@ -118,7 +118,7 @@ const mockQueryPayload = {
                   fullName: "Test Full Name primary PREVIOUS",
                 },
               },
-            }
+            },
           },
           {
             node: {
@@ -132,7 +132,7 @@ const mockQueryPayload = {
                   fullName: "I did not change",
                 },
               },
-            }
+            },
           },
           {
             node: {
@@ -146,10 +146,10 @@ const mockQueryPayload = {
                   fullName: "I was removed",
                 },
               },
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     };
     return result;
   },
