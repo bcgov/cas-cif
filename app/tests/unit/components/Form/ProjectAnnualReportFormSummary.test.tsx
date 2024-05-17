@@ -143,6 +143,19 @@ const mockQueryPayload = {
                 },
               },
             },
+            {
+              node: {
+                newFormData: {
+                  status: "on_track",
+                  comments: "I have been deleted",
+                  projectId: 1,
+                  reportType: "Annual",
+                  reportDueDate: "2022-06-03T23:59:59.999-07:00",
+                  submittedDate: "2022-06-24T23:59:59.999-07:00",
+                  reportingRequirementIndex: 4,
+                },
+              },
+            },
           ],
         },
       };

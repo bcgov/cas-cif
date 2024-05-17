@@ -126,8 +126,8 @@ const mockQueryPayload = {
                 },
               },
             },
-          ]
-        }
+          ],
+        },
       };
     return result;
   },

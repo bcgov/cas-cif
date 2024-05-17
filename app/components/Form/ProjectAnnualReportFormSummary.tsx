@@ -115,7 +115,10 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
 
   const annualReportsJSX = useMemo(() => {
     return sortedAnnualReports.map((annualReport, index) => {
-      const latestCommittedData = latestCommittedReportMap[annualReport.newFormData.reportingRequirementIndex]
+      const latestCommittedData =
+        latestCommittedReportMap[
+          annualReport.newFormData.reportingRequirementIndex
+        ];
       if (!annualReport) return;
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
@@ -188,7 +191,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
     isOnAmendmentsAndOtherRevisionsPage,
     renderDiff,
     sortedAnnualReports,
-    latestCommittedReportMap
+    latestCommittedReportMap,
   ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show

@@ -94,7 +94,8 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
     return [filteredReports];
   }, [quarterlyReportFormChanges]);
 
-  let latestCommittedReports = latestCommittedProjectQuarterlyReportFormChanges.edges;
+  let latestCommittedReports =
+    latestCommittedProjectQuarterlyReportFormChanges.edges;
   const latestCommittedReportMap = useMemo(() => {
     const filteredReports = latestCommittedReports.map(({ node }) => node);
 
@@ -132,7 +133,9 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
             quarterlyReport.formByJsonSchemaName.jsonSchema
               .schema as JSONSchema7,
             quarterlyReport,
-            latestCommittedReportMap[quarterlyReport.newFormData.reportingRequirementIndex]
+            latestCommittedReportMap[
+              quarterlyReport.newFormData.reportingRequirementIndex
+            ]
           );
 
       if (
