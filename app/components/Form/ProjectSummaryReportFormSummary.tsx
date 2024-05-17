@@ -88,7 +88,8 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
 
   const filteredSchema = getFilteredSchema(
     projectSummaryReportFormBySlug.jsonSchema.schema as JSONSchema7,
-    projectSummaryReport || {}
+    projectSummaryReport || {},
+    latestCommittedProjectSummaryFormChanges?.edges[0]?.node
   );
 
   const allFormChangesPristine = useMemo(
