@@ -36,14 +36,6 @@ const mockQueryPayload = {
                   reportingRequirementIndex: 1,
                 },
                 operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    comments: "Test comment",
-                    projectId: 1,
-                    reportDueDate: "2020-01-01T23:59:59.999-07:00",
-                    reportingRequirementIndex: 1,
-                  },
-                },
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
                 },
@@ -57,34 +49,9 @@ const mockQueryPayload = {
                   comments: "Not updated comment",
                   projectId: 1,
                   reportDueDate: "2020-01-03T23:59:59.999-07:00",
-                  reportingRequirementIndex: 1,
+                  reportingRequirementIndex: 2,
                 },
                 operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    comments: "Not updated comment",
-                    projectId: 1,
-                    reportDueDate: "2020-01-03T23:59:59.999-07:00",
-                    reportingRequirementIndex: 1,
-                  },
-                },
-                formByJsonSchemaName: {
-                  jsonSchema: reportingRequirementProdSchema,
-                },
-              },
-            },
-            {
-              node: {
-                id: "Test ID - 3",
-                isPristine: false,
-                newFormData: {
-                  comments: "Added comment",
-                  projectId: 1,
-                  reportDueDate: "2020-01-04T23:59:59.999-07:00",
-                  reportingRequirementIndex: 1,
-                },
-                operation: "CREATE",
-                formChangeByPreviousFormChangeId: null,
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
                 },
@@ -98,17 +65,25 @@ const mockQueryPayload = {
                   comments: "Removed comment",
                   projectId: 1,
                   reportDueDate: "2020-01-05T23:59:59.999-07:00",
-                  reportingRequirementIndex: 1,
+                  reportingRequirementIndex: 3,
                 },
                 operation: "ARCHIVE",
-                formChangeByPreviousFormChangeId: {
-                  newFormData: {
-                    comments: "Removed comment",
-                    projectId: 1,
-                    reportDueDate: "2020-01-05T23:59:59.999-07:00",
-                    reportingRequirementIndex: 1,
-                  },
+                formByJsonSchemaName: {
+                  jsonSchema: reportingRequirementProdSchema,
                 },
+              },
+            },
+            {
+              node: {
+                id: "Test ID - 3",
+                isPristine: false,
+                newFormData: {
+                  comments: "Added comment",
+                  projectId: 1,
+                  reportDueDate: "2020-01-04T23:59:59.999-07:00",
+                  reportingRequirementIndex: 4,
+                },
+                operation: "CREATE",
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
                 },
@@ -116,6 +91,43 @@ const mockQueryPayload = {
             },
           ],
         },
+        latestCommittedProjectQuarterlyReportFormChanges: {
+          edges: [
+            {
+              node: {
+                id: "Test ID 5",
+                newFormData: {
+                  comments: "Test comment",
+                  projectId: 1,
+                  reportDueDate: "2020-01-01T23:59:59.999-07:00",
+                  reportingRequirementIndex: 1,
+                },
+              },
+            },
+            {
+              node: {
+                id: "Test ID 6",
+                newFormData: {
+                  comments: "Not updated comment",
+                  projectId: 1,
+                  reportDueDate: "2020-01-03T23:59:59.999-07:00",
+                  reportingRequirementIndex: 2,
+                },
+              },
+            },
+            {
+              node: {
+                id: "Test ID 7",
+                newFormData: {
+                  comments: "Removed comment",
+                  projectId: 1,
+                  reportDueDate: "2020-01-05T23:59:59.999-07:00",
+                  reportingRequirementIndex: 3,
+                },
+              },
+            },
+          ]
+        }
       };
     return result;
   },
