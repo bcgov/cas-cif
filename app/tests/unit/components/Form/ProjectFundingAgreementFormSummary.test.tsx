@@ -63,27 +63,6 @@ const mockQueryPayloadEP = {
                 grossPaymentsToDate: "1.00",
                 isPristine: false,
                 operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  proponentsSharePercentage: 10, // will trigger three diffs
-                  totalProjectValue: 12, // will trigger three diffs
-                  newFormData: {
-                    projectId: "Test Project ID",
-                    maxFundingAmount: 200,
-                    provinceSharePercentage: 50,
-                    holdbackPercentage: 10.23,
-                    anticipatedFundingAmount: 300,
-                    proponentCost: 100,
-                    contractStartDate: "2021-01-01T23:59:59.999-07:00",
-                    projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
-                    additionalFundingSources: [
-                      {
-                        source: "Test Source Name",
-                        amount: 1000,
-                        status: "Awaiting Approval",
-                      },
-                    ],
-                  },
-                },
               },
             },
           ],
@@ -92,17 +71,25 @@ const mockQueryPayloadEP = {
           edges: [
             {
               node: {
-                proponentsSharePercentage: 15, // will trigger three diffs
-                totalProjectValue: 18, // will trigger three diffs
+                proponentsSharePercentage: 10, // will trigger three diffs
+                totalProjectValue: 12, // will trigger three diffs
                 newFormData: {
-                  // add data as required
+                  projectId: "Test Project ID",
+                  maxFundingAmount: 200,
+                  provinceSharePercentage: 50,
+                  holdbackPercentage: 10.23,
+                  anticipatedFundingAmount: 300,
+                  proponentCost: 100,
+                  contractStartDate: "2021-01-01T23:59:59.999-07:00",
+                  projectAssetsLifeEndDate: "2021-12-31T23:59:59.999-07:00",
+                  additionalFundingSources: [
+                    {
+                      source: "Test Source Name",
+                      amount: 1000,
+                      status: "Awaiting Approval",
+                    },
+                  ],
                 },
-                eligibleExpensesToDate: "1.00",
-                holdbackAmountToDate: "0.00",
-                netPaymentsToDate: "1.00",
-                grossPaymentsToDate: "1.00",
-                isPristine: false,
-                operation: "UPDATE",
               },
             },
           ],
@@ -154,20 +141,6 @@ const mockQueryPayloadIA = {
                 calculatedTotalPaymentAmountToDate: "511.0",
                 isPristine: false,
                 operation: "UPDATE",
-                formChangeByPreviousFormChangeId: {
-                  proponentsSharePercentage: 14, // will trigger three diffs
-                  totalProjectValue: 16, // will trigger three diffs
-                  newFormData: {
-                    projectId: "Test Project ID",
-                    maxFundingAmount: 500,
-                    provinceSharePercentage: 50,
-                    anticipatedFundingAmount: 200,
-                    proponentCost: 100,
-                    contractStartDate: "2021-01-01T23:59:59.999-07:00",
-                    projectAssetsLifeEndDate:
-                      "2023-03-28T14:41:23.626132-07:00",
-                  },
-                },
               },
             },
           ],
@@ -176,12 +149,17 @@ const mockQueryPayloadIA = {
           edges: [
             {
               node: {
-                proponentsSharePercentage: 21, // will trigger three diffs
-                totalProjectValue: 24, // will trigger three diffs
-                newFormData: {},
-                calculatedTotalPaymentAmountToDate: "511.0",
-                isPristine: false,
-                operation: "UPDATE",
+                proponentsSharePercentage: 14, // will trigger three diffs
+                totalProjectValue: 16, // will trigger three diffs
+                newFormData: {
+                  projectId: "Test Project ID",
+                  maxFundingAmount: 500,
+                  provinceSharePercentage: 50,
+                  anticipatedFundingAmount: 200,
+                  proponentCost: 100,
+                  contractStartDate: "2021-01-01T23:59:59.999-07:00",
+                  projectAssetsLifeEndDate: "2023-03-28T14:41:23.626132-07:00",
+                },
               },
             },
           ],
@@ -307,17 +285,11 @@ describe("The Project Funding Agreement Form Summary", () => {
       screen.getByText("10.00 %", { selector: ".diffOld" })
     ).toBeInTheDocument(); // old proponentsSharePercentage
     expect(
-      screen.getByText("15.00 %", { selector: ".diffOld" })
-    ).toBeInTheDocument(); // latest committed proponentsSharePercentage
-    expect(
       screen.getByText("$6.00", { selector: ".diffNew" })
     ).toBeInTheDocument(); // new totalProjectValue
     expect(
       screen.getByText("$12.00", { selector: ".diffOld" })
     ).toBeInTheDocument(); // old totalProjectValue
-    expect(
-      screen.getByText("$18.00", { selector: ".diffOld" })
-    ).toBeInTheDocument(); // latest committed totalProjectValue
   });
 
   it("Displays diffs of the the data fields that have changed for an IA form", () => {
@@ -340,18 +312,12 @@ describe("The Project Funding Agreement Form Summary", () => {
     expect(
       screen.getByText("14.00 %", { selector: ".diffOld" })
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("21.00 %", { selector: ".diffOld" })
-    ).toBeInTheDocument();
 
     expect(
       screen.getByText("$8.00", { selector: ".diffNew" })
     ).toBeInTheDocument();
     expect(
       screen.getByText("$16.00", { selector: ".diffOld" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("$24.00", { selector: ".diffOld" })
     ).toBeInTheDocument();
   });
 

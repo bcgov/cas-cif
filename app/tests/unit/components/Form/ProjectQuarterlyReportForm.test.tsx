@@ -48,7 +48,6 @@ const defaultMockResolver = {
               },
               operation: "CREATE",
               changeStatus: "pending",
-              formChangeByPreviousFormChangeId: null,
               formByJsonSchemaName: {
                 jsonSchema: reportingRequirementProdSchema,
               },
@@ -68,7 +67,6 @@ const defaultMockResolver = {
               },
               operation: "CREATE",
               changeStatus: "pending",
-              formChangeByPreviousFormChangeId: null,
               formByJsonSchemaName: {
                 jsonSchema: reportingRequirementProdSchema,
               },
