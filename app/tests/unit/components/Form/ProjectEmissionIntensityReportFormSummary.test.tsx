@@ -42,17 +42,23 @@ const defaultMockResolver = {
                 baselineEmissionIntensity: 0.87654321,
               },
               operation: "UPDATE",
-              formChangeByPreviousFormChangeId: {
-                newFormData: {
-                  comments: "squirtle",
-                  reportType: "TEIMP",
-                  projectId: 1,
-                  reportingRequirementIndex: 1,
-                  reportingRequirementId: 1,
-                  baselineEmissionIntensity: 0.985145,
-                },
-              },
               formDataRecordId: 1,
+            },
+          },
+        ],
+      },
+      latestCommittedEmissionIntensityReportFormChange: {
+        edges: [
+          {
+            node: {
+              newFormData: {
+                comments: "squirtle",
+                reportType: "TEIMP",
+                projectId: 1,
+                reportingRequirementIndex: 1,
+                reportingRequirementId: 1,
+                baselineEmissionIntensity: 0.985145,
+              },
             },
           },
         ],
@@ -195,13 +201,19 @@ describe("the emission intensity report form component", () => {
                     targetEmissionIntensity: 0,
                   },
                   operation: "UPDATE",
-                  formChangeByPreviousFormChangeId: {
-                    newFormData: {
-                      baselineEmissionIntensity: 0,
-                      targetEmissionIntensity: 0.12345678,
-                      postProjectEmissionIntensity: 654,
-                      totalLifetimeEmissionReduction: 456,
-                    },
+                },
+              },
+            ],
+          },
+          latestCommittedEmissionIntensityReportFormChange: {
+            edges: [
+              {
+                node: {
+                  newFormData: {
+                    baselineEmissionIntensity: 0,
+                    targetEmissionIntensity: 0.12345678,
+                    postProjectEmissionIntensity: 654,
+                    totalLifetimeEmissionReduction: 456,
                   },
                 },
               },
@@ -235,6 +247,7 @@ describe("the emission intensity report form component", () => {
     expect(screen.getByText("654.00000000")).toHaveClass("diffOld");
     expect(screen.getByText("456.00000000")).toHaveClass("diffOld");
   });
+
   it("displays calculated values diff", () => {
     const customPayload = {
       Form() {
@@ -257,12 +270,6 @@ describe("the emission intensity report form component", () => {
                   maximumPerformanceMilestoneAmount: 123,
                   actualPerformanceMilestoneAmount: null,
                   operation: "UPDATE",
-                  formChangeByPreviousFormChangeId: {
-                    calculatedEiPerformance: 20,
-                    paymentPercentage: 44,
-                    maximumPerformanceMilestoneAmount: 321,
-                    actualPerformanceMilestoneAmount: 789,
-                  },
                 },
               },
             ],
@@ -273,10 +280,10 @@ describe("the emission intensity report form component", () => {
                 node: {
                   isPristine: false,
                   operation: "UPDATE",
-                  calculatedEiPerformance: 22,
-                  paymentPercentage: 13,
-                  maximumPerformanceMilestoneAmount: 741,
-                  actualPerformanceMilestoneAmount: 357,
+                  calculatedEiPerformance: 20,
+                  paymentPercentage: 44,
+                  maximumPerformanceMilestoneAmount: 321,
+                  actualPerformanceMilestoneAmount: 789,
                 },
               },
             ],
@@ -289,31 +296,27 @@ describe("the emission intensity report form component", () => {
     expect(
       screen.getByText(/ghg emission intensity performance/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/20\.00 %/i)).toBeInTheDocument(); //old calculatedEiPerformance
+    expect(screen.getByText(/20\.00 %/i)).toBeInTheDocument(); //latest committed calculatedEiPerformance
     expect(screen.getByText(/10\.00 %/i)).toBeInTheDocument(); //new calculatedEiPerformance
-    expect(screen.getByText(/22\.00 %/i)).toBeInTheDocument(); //latest committed calculatedEiPerformance
 
     expect(
       screen.getByText(
         /payment percentage of performance milestone amount \(%\)/i
       )
     ).toBeInTheDocument();
-    expect(screen.getByText(/44\.00 %/i)).toBeInTheDocument(); //old paymentPercentage
+    expect(screen.getByText(/44\.00 %/i)).toBeInTheDocument(); //latest committed paymentPercentage
     expect(screen.getByText(/40\.00 %/i)).toBeInTheDocument(); //new paymentPercentage
-    expect(screen.getByText(/13\.00 %/i)).toBeInTheDocument(); //latest committed paymentPercentage
 
     expect(
       screen.getByText(/maximum performance milestone amount/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/\$321\.00/i)).toBeInTheDocument(); //old maximumPerformanceMilestoneAmount
+    expect(screen.getByText(/\$321\.00/i)).toBeInTheDocument(); //latest committed maximumPerformanceMilestoneAmount
     expect(screen.getByText(/\$123\.00/i)).toBeInTheDocument(); //new maximumPerformanceMilestoneAmount
-    expect(screen.getByText(/\$741\.00/i)).toBeInTheDocument(); //latest committed maximumPerformanceMilestoneAmount
 
     expect(
       screen.getByText(/actual performance milestone amount/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/\$789\.00/i)).toBeInTheDocument(); //old actualPerformanceMilestoneAmount
-    expect(screen.getByText(/\$357\.00/i)).toBeInTheDocument(); //latest committed actualPerformanceMilestoneAmount
+    expect(screen.getByText(/\$789\.00/i)).toBeInTheDocument(); //latest committed actualPerformanceMilestoneAmount
   });
 
   it("renders the help tooltips", () => {

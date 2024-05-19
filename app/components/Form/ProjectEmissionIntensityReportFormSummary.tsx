@@ -122,6 +122,7 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
   const filteredSchema = getSchemaAndDataIncludingCalculatedValues(
     emissionIntensityFormBySlug.jsonSchema.schema as JSONSchema7,
     newData,
+    latestCommittedData,
     {
       // This is only to add the (Adjusted) to the title of the field to differentiate it from the calculated field
       adjustedEmissionsIntensityPerformance: {
