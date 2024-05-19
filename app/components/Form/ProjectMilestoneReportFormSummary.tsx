@@ -83,6 +83,21 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
         ({ node }) => node.operation !== "ARCHIVE"
       );
 
+  let latestCommittedReports = latestCommittedMilestoneFormChanges.edges;
+  const latestCommittedReportMap = useMemo(() => {
+    const filteredReports = latestCommittedReports.map(({ node }) => node);
+
+    const reportMap = filteredReports.reduce(
+      (reports, current) => (
+        (reports[current.newFormData.reportingRequirementIndex] = current),
+        reports
+      ),
+      {}
+    );
+
+    return reportMap;
+  }, [latestCommittedReports]);
+
   // Sort consolidated milestone form change records
   const [sortedMilestoneReports] = useMemo(() => {
     return getSortedReports(milestoneReportFormChanges, true);
@@ -139,7 +154,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             },
             {
               ...milestoneReport,
-            }
+            },
+            latestCommittedReportMap[
+              milestoneReport.newFormData.reportingRequirementIndex
+            ]
           )
         : {
             formSchema: milestoneReport.formByJsonSchemaName.jsonSchema.schema,
