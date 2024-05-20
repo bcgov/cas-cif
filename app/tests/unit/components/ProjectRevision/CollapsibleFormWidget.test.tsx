@@ -50,34 +50,6 @@ const mockQueryPayload = {
             name: "Test Project Status Name",
           },
         },
-        // formChangeByPreviousFormChangeId: {
-        //   newFormData: {
-        //     proposalReference: "Test Proposal Reference PREVIOUS",
-        //     operatorId: 1,
-        //     fundingStreamRfpId: 1,
-        //     projectStatusId: 1,
-        //     summary: "Test Summary",
-        //     projectName: "Test Project Name",
-        //     totalFundingRequest: 100.0,
-        //     score: 1,
-        //     projectType: "test project type PREVIOUS",
-        //   },
-          // asProject: {
-          //   operatorByOperatorId: {
-          //     legalName: "Test Legal Name PREVIOUS",
-          //     bcRegistryId: "Test BC Registry ID",
-          //   },
-          //   fundingStreamRfpByFundingStreamRfpId: {
-          //     year: 2020,
-          //     fundingStreamByFundingStreamId: {
-          //       description: "Test Funding Stream Description",
-          //     },
-          //   },
-          //   projectStatusByProjectStatusId: {
-          //     name: "Test Project Status Name",
-          //   },
-          // },
-        // },
       },
       latestCommittedProjectFormChanges: {
         edges: [
@@ -109,10 +81,10 @@ const mockQueryPayload = {
                   name: "Test Project Status Name",
                 },
               },
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     };
   },
 };

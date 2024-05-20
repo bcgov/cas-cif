@@ -83,7 +83,7 @@ const mockQueryPayload = {
                 reportingRequirementId: 1,
                 hasExpenses: true,
               },
-            }
+            },
           },
           {
             node: {
@@ -94,10 +94,10 @@ const mockQueryPayload = {
                 reportingRequirementIndex: 2,
                 reportingRequirementId: 2,
               },
-            }
+            },
           },
-        ]
-      }
+        ],
+      },
     };
     return result;
   },
@@ -285,10 +285,10 @@ describe("The Project Milestone Report Form Summary", () => {
                     adjustedGrossAmount: 12,
                     adjustedHoldbackAmount: 13,
                   },
-                }
-              }
-            ]
-          }
+                },
+              },
+            ],
+          },
         };
         return result;
       },
