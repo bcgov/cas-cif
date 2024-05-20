@@ -281,6 +281,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
     latestCommittedMilestoneFormChanges?.edges,
     renderDiff,
     sortedMilestoneReports,
+    latestCommittedReportMap
   ]);
 
   const milestoneReportsNotUpdated = useMemo(
