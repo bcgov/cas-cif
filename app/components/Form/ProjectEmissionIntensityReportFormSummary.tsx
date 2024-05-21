@@ -55,7 +55,8 @@ const ProjectEmissionsIntensityReportFormSummary: React.FC<Props> = ({
           }
         }
         latestCommittedEmissionIntensityReportFormChange: latestCommittedFormChangesFor(
-          formDataTableName: "emission_intensity_report"
+          formDataTableName: "reporting_requirement"
+          reportType: "TEIMP"
         ) {
           edges {
             node {
