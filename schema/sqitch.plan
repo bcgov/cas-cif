@@ -372,3 +372,4 @@ mutations/commit_project_revision [mutations/commit_project_revision@1.15.0] 202
 mutations/commit_form_change [mutations/commit_form_change@1.15.0] 2023-11-22T19:00:00Z Mike Vesprini <mike@button.is> # Add pending project revision id to args of commit_form_change_internal call
 @1.16.3 2024-04-17T20:38:30Z Mike Vesprini <mike@button.is> # release v1.16.3
 @1.16.4 2024-05-15T17:36:42Z Mike Vesprini <mike@button.is> # release v1.16.4
+@1.16.5 2024-05-22T23:00:27Z Mike Vesprini <mike@button.is> # release v1.16.5

@@ -1,3 +1,5 @@
+## [1.16.5](https://github.com/bcgov/cas-cif/compare/1.16.4...1.16.5) (2024-05-22)
+
 ## [1.16.4](https://github.com/bcgov/cas-cif/compare/list...1.16.4) (2024-05-15)
 
 - add a separate route template specifically for prod ([01012d9](https://github.com/bcgov/cas-cif/commit/01012d9ba4eff19b80445da617b05dea96ce5029))
