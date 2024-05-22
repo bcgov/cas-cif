@@ -34,6 +34,7 @@ const defaultQueryResolver = {
               node: {
                 id: "test-attachment-form-change-id-1",
                 rowId: 1,
+                operation: "CREATE",
                 asProjectAttachment: {
                   attachmentByAttachmentId: {
                     id: "test-attachment-id-1",
@@ -52,6 +53,7 @@ const defaultQueryResolver = {
               node: {
                 id: "test-attachment-form-change-id-2",
                 rowId: 2,
+                operation: "CREATE",
                 asProjectAttachment: {
                   attachmentByAttachmentId: {
                     id: "test-attachment-id-2",
@@ -59,6 +61,25 @@ const defaultQueryResolver = {
                     fileType: "image/jpeg",
                     fileSize: 123456,
                     createdAt: "2021-01-02T00:00:00.000Z",
+                    cifUserByCreatedBy: {
+                      fullName: "Test User 2",
+                    },
+                  },
+                },
+              },
+            },
+            {
+              node: {
+                id: "test-attachment-form-change-id-3",
+                rowId: 3,
+                operation: "ARCHIVE",
+                asProjectAttachment: {
+                  attachmentByAttachmentId: {
+                    id: "test-attachment-id-3",
+                    fileName: "test-attachment-3.jpg",
+                    fileType: "image/jpeg",
+                    fileSize: 123456,
+                    createdAt: "2021-01-03T00:00:00.000Z",
                     cifUserByCreatedBy: {
                       fullName: "Test User 2",
                     },
@@ -111,11 +132,20 @@ describe("The project's attachment page", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("Displays all attachments", () => {
+  it("Displays all attachments that were created in this revision", () => {
     componentTestingHelper.loadQuery();
     componentTestingHelper.renderComponent();
 
+    expect(screen.getAllByText(/Create/i)).toHaveLength(2);
     expect(screen.getByText(/test-attachment-1.jpg/i)).toBeInTheDocument();
     expect(screen.getByText(/test-attachment-2.jpg/i)).toBeInTheDocument();
+  });
+
+  it("Displays all attachments that were archived in this revision", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent();
+
+    expect(screen.getAllByText(/Archive/i)).toHaveLength(1);
+    expect(screen.getByText(/test-attachment-3.jpg/i)).toBeInTheDocument();
   });
 });
