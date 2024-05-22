@@ -8,7 +8,7 @@ metadata:
     postgres-operator.crunchydata.com/pgbackrest-restore: {{ now | date "2006-01-02 15:04:05.000000" | quote }}
   {{- end }}
 spec:
-  image: artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-postgres:ubi8-14.7-0
+  image: ""
   metadata:
     labels: {{ include "cas-cif.labels" . | nindent 6 }}
   postgresVersion: 14
