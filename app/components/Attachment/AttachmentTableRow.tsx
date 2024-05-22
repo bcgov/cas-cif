@@ -68,7 +68,10 @@ const AttachmentTableRow: React.FC<Props> = ({
     <>
       <tr>
         {operation && (
-          <td>{operation.charAt(0).toUpperCase() + operation.slice(1).toLowerCase()}</td>
+          <td>
+            {operation.charAt(0).toUpperCase() +
+              operation.slice(1).toLowerCase()}
+          </td>
         )}
         <td>{fileName}</td>
         <td>{fileType}</td>
