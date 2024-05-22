@@ -7,6 +7,7 @@ import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 import { useEffect, useMemo } from "react";
 
 const tableFilters = [
+  new TextFilter("Operation", "operation"),
   new TextFilter("File Name", "fileName"),
   new TextFilter("Type", "type"),
   new TextFilter("Size", "size"),
@@ -36,7 +37,6 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
         summaryProjectAttachmentFormChanges: formChangesFor(
           first: 500
           formDataTableName: "project_attachment"
-          filter: { operation: { notEqualTo: ARCHIVE } }
         ) @connection(key: "connection_summaryProjectAttachmentFormChanges") {
           __id
           totalCount
@@ -115,6 +115,7 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
             ({ node }) => (
               <AttachmentTableRow
                 key={node.id}
+                operation={node.operation}
                 attachment={node.asProjectAttachment.attachmentByAttachmentId}
                 formChangeRowId={node.rowId}
                 connectionId={revision.summaryProjectAttachmentFormChanges.__id}

@@ -13,6 +13,7 @@ interface Props {
   formChangeRowId: number;
   hideDelete?: boolean;
   isFirstRevision: boolean;
+  operation?: string;
 }
 
 const AttachmentTableRow: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const AttachmentTableRow: React.FC<Props> = ({
   formChangeRowId,
   hideDelete,
   isFirstRevision,
+  operation,
 }) => {
   const [
     discardProjectAttachmentFormChange,
@@ -65,6 +67,9 @@ const AttachmentTableRow: React.FC<Props> = ({
   return (
     <>
       <tr>
+        {operation && (
+          <td>{operation.charAt(0).toUpperCase() + operation.slice(1).toLowerCase()}</td>
+        )}
         <td>{fileName}</td>
         <td>{fileType}</td>
         <td>{fileSize}</td>
