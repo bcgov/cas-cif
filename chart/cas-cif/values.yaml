@@ -31,6 +31,7 @@ db:
   ownerUser: cif
   # A shell script that will be executed in a pre-upgrade job, on the psql image.
   preUpgradeCommand: ~
+  crunchyImage: # it's not necessary to specify an image as the images specified in the Crunchy Postgres Operator will be pulled by default
   restore:
     enabled: false
     targetTimestamp: ~ # The target timestamp to restore the database to. Format: "2021-06-09 09:00:00-07"
