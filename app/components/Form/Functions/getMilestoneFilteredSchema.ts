@@ -12,7 +12,8 @@ import { JSONSchema7 } from "json-schema";
  */
 export const getMilestoneFilteredSchema = (
   formSchema: JSONSchema7,
-  formChange
+  formChange,
+  latestCommittedFormChange
 ) => {
   const properties = formSchema.properties;
   // schema dependencies
@@ -37,7 +38,7 @@ export const getMilestoneFilteredSchema = (
   for (const key of Object.keys(filteredSchema.properties)) {
     const [updatedFormData, prevFormData] = [
       formChange?.newFormData?.[key],
-      formChange?.formChangeByPreviousFormChangeId?.newFormData?.[key],
+      latestCommittedFormChange?.newFormData?.[key],
     ];
     if (
       updatedFormData === prevFormData ||

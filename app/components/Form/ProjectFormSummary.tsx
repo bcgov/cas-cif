@@ -52,25 +52,6 @@ const ProjectFormSummary: React.FC<Props> = ({
               name
             }
           }
-          formChangeByPreviousFormChangeId {
-            rank
-            newFormData
-            asProject {
-              operatorByOperatorId {
-                legalName
-                bcRegistryId
-              }
-              fundingStreamRfpByFundingStreamRfpId {
-                year
-                fundingStreamByFundingStreamId {
-                  description
-                }
-              }
-              projectStatusByProjectStatusId {
-                name
-              }
-            }
-          }
         }
         latestCommittedProjectFormChanges: latestCommittedFormChangesFor(
           formDataTableName: "project"
@@ -110,30 +91,16 @@ const ProjectFormSummary: React.FC<Props> = ({
   // Show diff if it is not the first revision and not view only (rendered from the overview page)
   const renderDiff = !isFirstRevision && !viewOnly;
 
-  const oldData = {
-    ...projectFormChange.formChangeByPreviousFormChangeId?.newFormData,
-    rank: projectFormChange.formChangeByPreviousFormChangeId?.rank,
-  };
-
   const newDataAsProject = projectFormChange.asProject;
-  const previousDataAsProject =
-    projectFormChange.formChangeByPreviousFormChangeId?.asProject;
 
-  const oldUiSchema = previousDataAsProject
+  const latestCommittedAsProject =
+    latestCommittedProjectFormChanges?.edges[0]?.node?.asProject;
+  const latestCommittedUiSchema = latestCommittedAsProject
     ? createProjectUiSchema(
-        previousDataAsProject.operatorByOperatorId.legalName,
-        `${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${previousDataAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
-        previousDataAsProject.operatorByOperatorId.bcRegistryId,
-        previousDataAsProject.projectStatusByProjectStatusId.name
-      )
-    : null;
-
-  const latestCommittedUiSchema = latestCommittedData?.asProject
-    ? createProjectUiSchema(
-        latestCommittedData.asProject.operatorByOperatorId.legalName,
-        `${latestCommittedData.asProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedData.asProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
-        latestCommittedData.asProject.operatorByOperatorId.bcRegistryId,
-        latestCommittedData.asProject.projectStatusByProjectStatusId.name
+        latestCommittedAsProject.operatorByOperatorId.legalName,
+        `${latestCommittedAsProject?.fundingStreamRfpByFundingStreamRfpId?.fundingStreamByFundingStreamId.description} - ${latestCommittedAsProject?.fundingStreamRfpByFundingStreamRfpId?.year}`,
+        latestCommittedAsProject.operatorByOperatorId.bcRegistryId,
+        latestCommittedAsProject.projectStatusByProjectStatusId.name
       )
     : null;
 
@@ -148,7 +115,7 @@ const ProjectFormSummary: React.FC<Props> = ({
           projectSchema as JSONSchema7,
 
           { ...projectFormChange?.newFormData, rank: projectFormChange.rank },
-          oldData,
+          latestCommittedData,
           {
             rank: {
               type: "number",
@@ -199,8 +166,6 @@ const ProjectFormSummary: React.FC<Props> = ({
           formData={formData}
           formContext={{
             calculatedRank: projectFormChange.rank,
-            oldData,
-            oldUiSchema,
             latestCommittedData,
             latestCommittedUiSchema,
             operation: projectFormChange.operation,

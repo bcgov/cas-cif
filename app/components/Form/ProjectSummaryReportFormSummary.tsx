@@ -56,9 +56,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
             node {
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
             }
           }
         }
@@ -91,7 +88,8 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
 
   const filteredSchema = getFilteredSchema(
     projectSummaryReportFormBySlug.jsonSchema.schema as JSONSchema7,
-    projectSummaryReport || {}
+    projectSummaryReport || {},
+    latestCommittedProjectSummaryFormChanges?.edges[0]?.node
   );
 
   const allFormChangesPristine = useMemo(
@@ -153,8 +151,6 @@ const ProjectSummaryReportFormSummary: React.FC<Props> = ({
         uiSchema={projectSummaryReportUiSchema}
         formContext={{
           operation: projectSummaryReport.operation,
-          oldData:
-            projectSummaryReport.formChangeByPreviousFormChangeId?.newFormData,
           latestCommittedData:
             latestCommittedProjectSummaryFormChanges?.edges[0]?.node
               ?.newFormData,

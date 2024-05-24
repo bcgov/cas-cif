@@ -41,18 +41,6 @@ const mockQueryPayload = {
                 },
                 operation: "UPDATE",
                 changeStatus: "committed",
-                formChangeByPreviousFormChangeId: {
-                  changeStatus: "committed",
-                  newFormData: {
-                    status: "on_track",
-                    comments: "I am the old comment on Annual Report #1",
-                    projectId: 1,
-                    reportType: "Annual",
-                    reportDueDate: "2025-06-18T23:59:59.999-07:00",
-                    submittedDate: "2025-07-01T23:59:59.999-07:00",
-                    reportingRequirementIndex: 1,
-                  },
-                },
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
                 },
@@ -76,20 +64,6 @@ const mockQueryPayload = {
                 },
                 operation: "UPDATE",
                 changeStatus: "committed",
-                formChangeByPreviousFormChangeId: {
-                  changeStatus: "committed",
-                  newFormData: {
-                    status: "on_track",
-                    comments: "I am an unchanged comment on Annual Report #2",
-                    projectId: 1,
-                    reportType: "Annual",
-                    reportDueDate:
-                      "I am an unchanged due date on Annual Report #2",
-                    submittedDate:
-                      "I am an unchanged received date on Annual Report #2",
-                    reportingRequirementIndex: 2,
-                  },
-                },
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
                 },
@@ -111,7 +85,6 @@ const mockQueryPayload = {
                 },
                 operation: "UPDATE",
                 changeStatus: "committed",
-                formChangeByPreviousFormChangeId: null,
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
                 },
@@ -133,9 +106,53 @@ const mockQueryPayload = {
                 },
                 operation: "ARCHIVE",
                 changeStatus: "committed",
-                formChangeByPreviousFormChangeId: null,
                 formByJsonSchemaName: {
                   jsonSchema: reportingRequirementProdSchema,
+                },
+              },
+            },
+          ],
+        },
+        latestCommittedAnnualReportFormChanges: {
+          edges: [
+            {
+              node: {
+                newFormData: {
+                  status: "on_track",
+                  comments: "I am the old comment on Annual Report #1",
+                  projectId: 1,
+                  reportType: "Annual",
+                  reportDueDate: "2025-06-18T23:59:59.999-07:00",
+                  submittedDate: "2025-07-01T23:59:59.999-07:00",
+                  reportingRequirementIndex: 1,
+                },
+              },
+            },
+            {
+              node: {
+                newFormData: {
+                  status: "on_track",
+                  comments: "I am an unchanged comment on Annual Report #2",
+                  projectId: 1,
+                  reportType: "Annual",
+                  reportDueDate:
+                    "I am an unchanged due date on Annual Report #2",
+                  submittedDate:
+                    "I am an unchanged received date on Annual Report #2",
+                  reportingRequirementIndex: 2,
+                },
+              },
+            },
+            {
+              node: {
+                newFormData: {
+                  status: "on_track",
+                  comments: "I have been deleted",
+                  projectId: 1,
+                  reportType: "Annual",
+                  reportDueDate: "2022-06-03T23:59:59.999-07:00",
+                  submittedDate: "2022-06-24T23:59:59.999-07:00",
+                  reportingRequirementIndex: 4,
                 },
               },
             },

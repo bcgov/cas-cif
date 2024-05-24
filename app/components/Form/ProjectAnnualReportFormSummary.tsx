@@ -46,9 +46,6 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               isPristine
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -93,6 +90,21 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
     return [filteredReports];
   }, [annualReportFormChanges]);
 
+  let latestCommittedReports = latestCommittedAnnualReportFormChanges.edges;
+  const latestCommittedReportMap = useMemo(() => {
+    const filteredReports = latestCommittedReports.map(({ node }) => node);
+
+    const reportMap = filteredReports.reduce(
+      (reports, current) => (
+        (reports[current.newFormData.reportingRequirementIndex] = current),
+        reports
+      ),
+      {}
+    );
+
+    return reportMap;
+  }, [latestCommittedReports]);
+
   const allFormChangesPristine = useMemo(
     () =>
       !annualReportFormChanges.some(
@@ -103,6 +115,10 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
 
   const annualReportsJSX = useMemo(() => {
     return sortedAnnualReports.map((annualReport, index) => {
+      const latestCommittedData =
+        latestCommittedReportMap[
+          annualReport.newFormData.reportingRequirementIndex
+        ];
       if (!annualReport) return;
       // Set the formSchema and formData based on showing the diff or not
       const { formSchema, formData } = !renderDiff
@@ -112,7 +128,8 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
           }
         : getFilteredSchema(
             annualReport.formByJsonSchemaName.jsonSchema.schema as JSONSchema7,
-            annualReport
+            annualReport,
+            latestCommittedData
           );
 
       if (
@@ -121,13 +138,6 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
         annualReport.operation !== "ARCHIVE"
       )
         return null;
-
-      const latestCommittedData =
-        latestCommittedAnnualReportFormChanges?.edges?.find(
-          ({ node }) =>
-            node.newFormData.reportingRequirementIndex ===
-            annualReport.newFormData.reportingRequirementIndex
-        )?.node?.newFormData;
 
       return (
         <div key={index} className="reportContainer">
@@ -162,9 +172,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
               uiSchema={reportingRequirementUiSchema}
               formContext={{
                 operation: annualReport.operation,
-                oldData:
-                  annualReport.formChangeByPreviousFormChangeId?.newFormData,
-                latestCommittedData,
+                latestCommittedData: latestCommittedData?.newFormData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,
               }}
@@ -183,6 +191,7 @@ const ProjectAnnualReportFormSummary: React.FC<Props> = ({
     isOnAmendmentsAndOtherRevisionsPage,
     renderDiff,
     sortedAnnualReports,
+    latestCommittedReportMap,
   ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show

@@ -60,7 +60,6 @@ const renderArrow = () => {
 };
 
 const renderDiffData = ({
-  oldData,
   newData,
   latestCommittedData,
   id,
@@ -72,31 +71,10 @@ const renderDiffData = ({
   contentSuffix,
 }) => {
   let components = [];
-  if (oldData !== null && oldData !== undefined) {
-    components.push(
-      <NumberFormatWrapper
-        value={oldData}
-        className={diffOldClsName}
-        id={`${id}-${diffOldClsName}`}
-        isMoney={isMoney}
-        isPercentage={isPercentage}
-        decimalScale={decimalScale}
-      />
-    );
-    if (contentSuffix) {
-      components.push(
-        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
-      );
-    }
-    if (newData !== null && newData !== undefined) {
-      components.push(renderArrow());
-    }
-  }
 
   if (
     latestCommittedData !== null &&
     latestCommittedData !== undefined &&
-    latestCommittedData !== oldData &&
     latestCommittedData !== newData
   ) {
     components.push(
@@ -120,8 +98,8 @@ const renderDiffData = ({
   if (
     newData !== null &&
     newData !== undefined &&
-    oldData !== null &&
-    oldData !== undefined
+    latestCommittedData !== null &&
+    latestCommittedData !== undefined
   ) {
     components.push(
       <NumberFormatWrapper
@@ -162,7 +140,6 @@ const renderDiffData = ({
 };
 
 const renderDiffString = ({
-  oldData,
   newData,
   latestCommittedData,
   id,
@@ -172,31 +149,10 @@ const renderDiffString = ({
   diffNewClsName,
 }) => {
   let components = [];
-  if (oldData !== null && oldData !== undefined) {
-    components.push(
-      <StringFormatWrapper
-        value={isDate ? getLocaleFormattedDate(oldData) : oldData}
-        className={diffOldClsName}
-        id={`${id}-${diffOldClsName}`}
-      />
-    );
-    if (contentSuffix) {
-      components.push(
-        contentSuffixElement(`${id}-${diffOldClsName}`, contentSuffix)
-      );
-    }
-    if (
-      (newData !== null && newData !== undefined) ||
-      (latestCommittedData !== null && latestCommittedData !== undefined)
-    ) {
-      components.push(renderArrow());
-    }
-  }
 
   if (
     latestCommittedData !== null &&
     latestCommittedData !== undefined &&
-    latestCommittedData !== oldData &&
     latestCommittedData !== newData
   ) {
     components.push(
@@ -223,8 +179,8 @@ const renderDiffString = ({
   if (
     newData !== null &&
     newData !== undefined &&
-    oldData !== null &&
-    oldData !== undefined
+    latestCommittedData !== null &&
+    latestCommittedData !== undefined
   ) {
     components.push(
       <StringFormatWrapper
@@ -261,13 +217,10 @@ const CUSTOM_DIFF_FIELDS = {
   StringField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
-    const oldData = formContext?.oldData?.[props.name];
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isDate = uiSchema["ui:widget"] === "DateWidget";
     const contentSuffix = uiSchema?.["ui:options"]?.contentSuffix;
-
     return renderDiffString({
-      oldData,
       newData: formData,
       latestCommittedData,
       id,
@@ -280,7 +233,6 @@ const CUSTOM_DIFF_FIELDS = {
   NumberField: (props) => {
     const { idSchema, formData, formContext, uiSchema } = props;
     const id = idSchema?.$id;
-    const oldData = formContext?.oldData?.[props.name];
     const latestCommittedData = formContext?.latestCommittedData?.[props.name];
     const isMoney = uiSchema?.isMoney;
     const isPercentage = uiSchema?.isPercentage;
@@ -289,8 +241,6 @@ const CUSTOM_DIFF_FIELDS = {
 
     // Handle text data mapping for certain number values
     let textData = uiSchema?.["ui:options"]?.text as string;
-    let oldTextData =
-      formContext?.oldUiSchema?.[props.name]?.["ui:options"]?.text;
     let latestCommittedTextData =
       formContext?.latestCommittedUiSchema?.[props.name]?.["ui:options"]?.text;
 
@@ -298,7 +248,6 @@ const CUSTOM_DIFF_FIELDS = {
       // Switch to string rendering for archive
       textData = undefined;
       return renderDiffString({
-        oldData: oldTextData,
         newData: textData,
         latestCommittedData: latestCommittedTextData,
         id,
@@ -309,9 +258,8 @@ const CUSTOM_DIFF_FIELDS = {
       });
     }
 
-    if (oldTextData || textData || latestCommittedTextData) {
+    if (textData || latestCommittedTextData) {
       return renderDiffString({
-        oldData: oldTextData,
         newData: textData,
         latestCommittedData: latestCommittedTextData,
         id,
@@ -322,7 +270,6 @@ const CUSTOM_DIFF_FIELDS = {
       });
     } else {
       return renderDiffData({
-        oldData,
         newData: formData,
         latestCommittedData,
         id,

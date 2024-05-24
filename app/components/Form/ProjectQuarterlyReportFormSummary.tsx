@@ -47,9 +47,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
               isPristine
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -97,6 +94,22 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
     return [filteredReports];
   }, [quarterlyReportFormChanges]);
 
+  let latestCommittedReports =
+    latestCommittedProjectQuarterlyReportFormChanges.edges;
+  const latestCommittedReportMap = useMemo(() => {
+    const filteredReports = latestCommittedReports.map(({ node }) => node);
+
+    const reportMap = filteredReports.reduce(
+      (reports, current) => (
+        (reports[current.newFormData.reportingRequirementIndex] = current),
+        reports
+      ),
+      {}
+    );
+
+    return reportMap;
+  }, [latestCommittedReports]);
+
   // Defines if all quarterly reports are pristine
   const allFormChangesPristine = useMemo(
     () =>
@@ -119,7 +132,10 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
         : getFilteredSchema(
             quarterlyReport.formByJsonSchemaName.jsonSchema
               .schema as JSONSchema7,
-            quarterlyReport
+            quarterlyReport,
+            latestCommittedReportMap[
+              quarterlyReport.newFormData.reportingRequirementIndex
+            ]
           );
 
       if (
@@ -169,8 +185,6 @@ const ProjectQuarterlyReportFormSummary: React.FC<Props> = ({
               formData={formData}
               formContext={{
                 operation: quarterlyReport.operation,
-                oldData:
-                  quarterlyReport.formChangeByPreviousFormChangeId?.newFormData,
                 latestCommittedData,
                 isAmendmentsAndOtherRevisionsSpecific:
                   isOnAmendmentsAndOtherRevisionsPage,

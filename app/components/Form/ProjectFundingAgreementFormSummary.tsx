@@ -71,25 +71,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
                 }
               }
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-                eligibleExpensesToDate
-                holdbackAmountToDate
-                netPaymentsToDate
-                grossPaymentsToDate
-                calculatedTotalPaymentAmountToDate
-                proponentsSharePercentage
-                totalProjectValue
-                anticipatedFundingAmountPerFiscalYear {
-                  edges {
-                    # eslint-disable-next-line relay/unused-fields
-                    node {
-                      anticipatedFundingAmount
-                      fiscalYear
-                    }
-                  }
-                }
-              }
             }
           }
         }
@@ -169,25 +150,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
     ),
   };
 
-  const oldFundingFormChanges =
-    revision.summaryProjectFundingAgreementFormChanges.edges[0]?.node
-      .formChangeByPreviousFormChangeId;
-
-  const oldData = {
-    ...oldFundingFormChanges?.newFormData,
-    eligibleExpensesToDate: oldFundingFormChanges?.eligibleExpensesToDate,
-    holdbackAmountToDate: oldFundingFormChanges?.holdbackAmountToDate,
-    netPaymentsToDate: oldFundingFormChanges?.netPaymentsToDate,
-    grossPaymentsToDate: oldFundingFormChanges?.grossPaymentsToDate,
-    totalPaymentAmountToDate:
-      oldFundingFormChanges?.calculatedTotalPaymentAmountToDate,
-    proponentsSharePercentage: oldFundingFormChanges?.proponentsSharePercentage,
-    totalProjectValue: oldFundingFormChanges?.totalProjectValue,
-    anticipatedFundingAmountPerFiscalYear: cleanupNestedNodes(
-      oldFundingFormChanges?.anticipatedFundingAmountPerFiscalYear.edges
-    ),
-  };
-
   const fundingStream =
     revision.projectFormChange.asProject.fundingStreamRfpByFundingStreamRfpId
       .fundingStreamByFundingStreamId.name;
@@ -223,7 +185,7 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
   const filteredSchema = getSchemaAndDataIncludingCalculatedValues(
     schema as JSONSchema7,
     newData,
-    oldData
+    latestCommittedData
   );
 
   // Set the formSchema and formData based on showing the diff or not
@@ -342,7 +304,6 @@ const ProjectFundingAgreementFormSummary: React.FC<Props> = ({
               fundingAgreementSummary?.totalProjectValue,
             calculatedProponentsSharePercentage:
               fundingAgreementSummary?.proponentsSharePercentage,
-            oldData,
             latestCommittedData,
             isAmendmentsAndOtherRevisionsSpecific:
               isOnAmendmentsAndOtherRevisionsPage,

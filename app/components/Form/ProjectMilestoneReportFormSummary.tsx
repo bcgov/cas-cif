@@ -50,9 +50,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               isPristine
               newFormData
               operation
-              formChangeByPreviousFormChangeId {
-                newFormData
-              }
               formByJsonSchemaName {
                 jsonSchema
               }
@@ -85,6 +82,21 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
     : summaryMilestoneFormChanges.edges.filter(
         ({ node }) => node.operation !== "ARCHIVE"
       );
+
+  let latestCommittedReports = latestCommittedMilestoneFormChanges.edges;
+  const latestCommittedReportMap = useMemo(() => {
+    const filteredReports = latestCommittedReports.map(({ node }) => node);
+
+    const reportMap = filteredReports.reduce(
+      (reports, current) => (
+        (reports[current.newFormData.reportingRequirementIndex] = current),
+        reports
+      ),
+      {}
+    );
+
+    return reportMap;
+  }, [latestCommittedReports]);
 
   // Sort consolidated milestone form change records
   const [sortedMilestoneReports] = useMemo(() => {
@@ -142,7 +154,10 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
             },
             {
               ...milestoneReport,
-            }
+            },
+            latestCommittedReportMap[
+              milestoneReport.newFormData.reportingRequirementIndex
+            ]
           )
         : {
             formSchema: milestoneReport.formByJsonSchemaName.jsonSchema.schema,
@@ -243,8 +258,6 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
               calculatedNetAmount:
                 milestoneReport?.newFormData?.calculatedNetAmount,
               operation: milestoneReport.operation,
-              oldData:
-                milestoneReport.formChangeByPreviousFormChangeId?.newFormData,
               latestCommittedData,
               isAmendmentsAndOtherRevisionsSpecific:
                 isOnAmendmentsAndOtherRevisionsPage,
@@ -268,6 +281,7 @@ const ProjectMilestoneReportFormSummary: React.FC<Props> = ({
     latestCommittedMilestoneFormChanges?.edges,
     renderDiff,
     sortedMilestoneReports,
+    latestCommittedReportMap,
   ]);
 
   const milestoneReportsNotUpdated = useMemo(
