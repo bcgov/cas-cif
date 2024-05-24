@@ -1,3 +1,9 @@
+# [1.17.0](https://github.com/bcgov/cas-cif/compare/1.16.5...1.17.0) (2024-05-24)
+
+### Features
+
+- switch diff fields to only show the latest committed, and what will change (no states in between) ([daed4ae](https://github.com/bcgov/cas-cif/commit/daed4aee09dd70066e74cfc0b1691a0c6cbeecae))
+
 ## [1.16.5](https://github.com/bcgov/cas-cif/compare/1.16.4...1.16.5) (2024-05-22)
 
 - use the default crunchy image instead of a pinned version ([f20c126](https://github.com/bcgov/cas-cif/commit/f20c1264065faa0d61a2c53a007a161021ad94fe))
