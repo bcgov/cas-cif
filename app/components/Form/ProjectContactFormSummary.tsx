@@ -192,7 +192,7 @@ const ProjectContactFormSummary: React.FC<Props> = ({
     secondaryContacts,
     renderDiff,
     isOnAmendmentsAndOtherRevisionsPage,
-    summaryContactFormChanges,
+    lastCommittedSecondaryContacts,
   ]);
 
   // Update the hasDiff state in the CollapsibleFormWidget to define if the form has diffs to show
