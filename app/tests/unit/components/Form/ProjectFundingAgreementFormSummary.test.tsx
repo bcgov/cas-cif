@@ -38,8 +38,8 @@ const mockQueryPayloadEP = {
           edges: [
             {
               node: {
-                proponentsSharePercentage: 5, // will trigger three diffs
-                totalProjectValue: 6, // will trigger three diffs
+                proponentsSharePercentage: 5, // will trigger diffs
+                totalProjectValue: 6, // will trigger diffs
                 newFormData: {
                   projectId: "Test Project ID",
                   maxFundingAmount: 200,
@@ -71,8 +71,8 @@ const mockQueryPayloadEP = {
           edges: [
             {
               node: {
-                proponentsSharePercentage: 10, // will trigger three diffs
-                totalProjectValue: 12, // will trigger three diffs
+                proponentsSharePercentage: 10, // will trigger diffs
+                totalProjectValue: 12, // will trigger diffs
                 newFormData: {
                   projectId: "Test Project ID",
                   maxFundingAmount: 200,
@@ -127,8 +127,8 @@ const mockQueryPayloadIA = {
           edges: [
             {
               node: {
-                proponentsSharePercentage: 7, // will trigger three diffs
-                totalProjectValue: 8, // will trigger three diffs
+                proponentsSharePercentage: 7, // will trigger diffs
+                totalProjectValue: 8, // will trigger diffs
                 newFormData: {
                   projectId: "Test Project ID",
                   maxFundingAmount: 501,
@@ -149,8 +149,8 @@ const mockQueryPayloadIA = {
           edges: [
             {
               node: {
-                proponentsSharePercentage: 14, // will trigger three diffs
-                totalProjectValue: 16, // will trigger three diffs
+                proponentsSharePercentage: 14, // will trigger diffs
+                totalProjectValue: 16, // will trigger diffs
                 newFormData: {
                   projectId: "Test Project ID",
                   maxFundingAmount: 500,
