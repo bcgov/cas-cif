@@ -13,13 +13,13 @@ describe("when creating a project, the project page", () => {
 
   it("allows an admin user to create an EP project", () => {
     //add new
-    cy.fillAndCheckNewProjectForm("Emissions Performance", "2020");
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2024");
     cy.happoAndAxe("EP Project New Form", "filled", "main");
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
     cy.url().should("include", "/form/0");
-    cy.findByText("Emissions Performance - 2020");
+    cy.findByText("Emissions Performance - 2024");
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
       "Cement",
@@ -176,7 +176,7 @@ describe("when creating a project, the project page", () => {
     // project overview section
     cy.findByText(/RFP Year ID/i)
       .next()
-      .should("have.text", "Emissions Performance - 2020");
+      .should("have.text", "Emissions Performance - 2024");
     cy.findByText(/Operator Name/i)
       .next()
       .should("have.text", "first operator legal name (AB1234567)");
