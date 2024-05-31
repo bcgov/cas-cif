@@ -16,4 +16,5 @@ Sentry.init({
   dsn: SENTRY_DSN,
   environment: SENTRY_ENVIRONMENT,
   release: SENTRY_RELEASE,
+  tracesSampleRate: 1.0,
 });
