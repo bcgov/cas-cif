@@ -92,7 +92,7 @@ describe("when undoing, the project revision page", () => {
     }).click();
     cy.addOrEditEmissionIntensityReport(
       "2022-01-01",
-      "2022-02-02",
+      "2022-04-02",
       "tCO",
       "1",
       "2",
