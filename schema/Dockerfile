@@ -1,5 +1,5 @@
 # Docker build should be run from parent directory
-FROM perl:5.34
+FROM perl:5.38
 
 ENV USER_ID=1001
 ENV HOME=/root
