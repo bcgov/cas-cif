@@ -1,3 +1,9 @@
+## [1.17.1](https://github.com/bcgov/cas-cif/compare/1.17.0...1.17.1) (2024-06-03)
+
+### Bug Fixes
+
+- updating sentry packages ([dab7419](https://github.com/bcgov/cas-cif/commit/dab7419816164ca1c5f0f2c9d266ae4833b2bba7))
+
 # [1.17.0](https://github.com/bcgov/cas-cif/compare/1.16.5...1.17.0) (2024-05-24)
 
 ### Features
