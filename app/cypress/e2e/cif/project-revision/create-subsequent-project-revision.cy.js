@@ -54,7 +54,9 @@ describe("the project amendment and revisions page", () => {
     cy.findByRole("button", { name: /^submit/i }).click();
 
     // edit managers -- delete a manager
-    cy.findByText(/project details/i).click();
+    cy.get("button")
+      .contains(/project details/i)
+      .click();
     cy.findByText(/edit project managers/i).click();
     cy.url().should("include", "/form/1");
     cy.get("label")

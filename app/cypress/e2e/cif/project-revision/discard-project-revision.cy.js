@@ -12,7 +12,9 @@ describe("when discarding a project revision, the project page", () => {
 
   it("discards a revision when the user clicks the Discard Revision button", () => {
     cy.navigateToFirstProjectEditRevisionPage();
-    cy.findByText(/Amendment 2/i).should("be.visible");
+    cy.get("header")
+      .contains(/Amendment 2/i)
+      .should("be.visible");
     cy.findByText(/1. Project Overview/i).click();
     cy.findByText(/Edit Project Overview/i).click();
     cy.url().should("include", "/form/0");
