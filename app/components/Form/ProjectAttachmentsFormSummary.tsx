@@ -116,7 +116,7 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
             <AttachmentTableRow
               key={node.id}
               operation={
-                isOnAmendmentsAndOtherRevisionsPage ? node.operation : undefined
+                isOnAmendmentsAndOtherRevisionsPage ? undefined : node.operation
               }
               attachment={node.asProjectAttachment.attachmentByAttachmentId}
               formChangeRowId={node.rowId}
