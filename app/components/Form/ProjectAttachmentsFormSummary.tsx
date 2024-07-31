@@ -6,8 +6,8 @@ import { ProjectAttachmentsFormSummary_projectRevision$key } from "__generated__
 import { FormNotAddedOrUpdated } from "./SummaryFormCommonComponents";
 import { useEffect, useMemo } from "react";
 
-const tableFilters = [
-  new TextFilter("Operation", "operation"),
+const operationTableFilter = new TextFilter("Operation", "operation");
+const mainTableFilters = [
   new TextFilter("File Name", "fileName"),
   new TextFilter("Type", "type"),
   new TextFilter("Size", "size"),
@@ -39,7 +39,6 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
           formDataTableName: "project_attachment"
         ) @connection(key: "connection_summaryProjectAttachmentFormChanges") {
           __id
-          totalCount
           edges {
             node {
               id
@@ -66,7 +65,7 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
   // If we are showing the diff then we want to see archived records, otherwise filter out the archived contacts
   let attachmentFormChanges =
     revision.summaryProjectAttachmentFormChanges.edges;
-  if (!renderDiff)
+  if (!renderDiff || isOnAmendmentsAndOtherRevisionsPage)
     attachmentFormChanges =
       revision.summaryProjectAttachmentFormChanges.edges.filter(
         ({ node }) => node.operation !== "ARCHIVE"
@@ -91,6 +90,10 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
   if (isOnAmendmentsAndOtherRevisionsPage && projectAttachmentsFormNotUpdated)
     return null;
 
+  const tableFilters = isOnAmendmentsAndOtherRevisionsPage
+    ? [operationTableFilter, ...mainTableFilters]
+    : mainTableFilters;
+
   return (
     <>
       {!isOnAmendmentsAndOtherRevisionsPage && <h3>Project Attachments</h3>}
@@ -106,24 +109,22 @@ const ProjectAttachmentsFormSummary: React.FC<Props> = ({
       ) : (
         <Table
           paginated
-          totalRowCount={
-            revision.summaryProjectAttachmentFormChanges.totalCount
-          }
+          totalRowCount={attachmentFormChanges.length}
           filters={tableFilters}
         >
-          {revision.summaryProjectAttachmentFormChanges.edges.map(
-            ({ node }) => (
-              <AttachmentTableRow
-                key={node.id}
-                operation={node.operation}
-                attachment={node.asProjectAttachment.attachmentByAttachmentId}
-                formChangeRowId={node.rowId}
-                connectionId={revision.summaryProjectAttachmentFormChanges.__id}
-                hideDelete={true}
-                isFirstRevision={revision.isFirstRevision}
-              />
-            )
-          )}
+          {attachmentFormChanges.map(({ node }) => (
+            <AttachmentTableRow
+              key={node.id}
+              operation={
+                isOnAmendmentsAndOtherRevisionsPage ? undefined : node.operation
+              }
+              attachment={node.asProjectAttachment.attachmentByAttachmentId}
+              formChangeRowId={node.rowId}
+              connectionId={revision.summaryProjectAttachmentFormChanges.__id}
+              hideDelete={true}
+              isFirstRevision={revision.isFirstRevision}
+            />
+          ))}
         </Table>
       )}
 

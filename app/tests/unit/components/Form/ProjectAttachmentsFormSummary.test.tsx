@@ -106,14 +106,16 @@ const TestWrapper: React.FC = (props: any) => {
   );
 };
 
+const getPropsFromTestQuery = (data) => ({
+  query: data.query,
+  projectRevision: data.query.projectRevision,
+});
+
 const componentTestingHelper = new ComponentTestingHelper<FormIndexPageQuery>({
   component: TestWrapper,
   testQuery: testQuery,
   compiledQuery: compiledFormIndexPageQuery,
-  getPropsFromTestQuery: (data) => ({
-    query: data.query,
-    projectRevision: data.query.projectRevision,
-  }),
+  getPropsFromTestQuery: getPropsFromTestQuery,
   defaultQueryResolver: defaultQueryResolver,
   defaultQueryVariables: { projectRevision: "mock-id" },
 });
@@ -132,20 +134,47 @@ describe("The project's attachment page", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("Displays all attachments that were created in this revision", () => {
+  it("Displays all attachments that were created in this revision if the isOnAmendmentsAndOtherRevisionsPage flag is false, and displays their create operation", () => {
     componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent(getPropsFromTestQuery, {
+      isOnAmendmentsAndOtherRevisionsPage: false,
+    });
 
     expect(screen.getAllByText(/Create/i)).toHaveLength(2);
     expect(screen.getByText(/test-attachment-1.jpg/i)).toBeInTheDocument();
     expect(screen.getByText(/test-attachment-2.jpg/i)).toBeInTheDocument();
   });
 
-  it("Displays all attachments that were archived in this revision", () => {
+  it("Displays all attachments that were archived in this revision if the isOnAmendmentsAndOtherRevisionsPage flag is false", () => {
     componentTestingHelper.loadQuery();
-    componentTestingHelper.renderComponent();
+    componentTestingHelper.renderComponent(getPropsFromTestQuery, {
+      isOnAmendmentsAndOtherRevisionsPage: false,
+    });
 
     expect(screen.getAllByText(/Archive/i)).toHaveLength(1);
     expect(screen.getByText(/test-attachment-3.jpg/i)).toBeInTheDocument();
+  });
+
+  it("Displays all attachments that were created in this revision if the isOnAmendmentsAndOtherRevisionsPage flag is false, without their create operation", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(getPropsFromTestQuery, {
+      isOnAmendmentsAndOtherRevisionsPage: true,
+    });
+
+    expect(screen.queryByText(/Create/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/test-attachment-1.jpg/i)).toBeInTheDocument();
+    expect(screen.getByText(/test-attachment-2.jpg/i)).toBeInTheDocument();
+  });
+
+  it("Doesn't display archived items if the isOnAmendmentsAndOtherRevisionsPage flag is false", () => {
+    componentTestingHelper.loadQuery();
+    componentTestingHelper.renderComponent(getPropsFromTestQuery, {
+      isOnAmendmentsAndOtherRevisionsPage: true,
+    });
+
+    expect(screen.queryByText(/Archive/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/test-attachment-3.jpg/i)
+    ).not.toBeInTheDocument();
   });
 });
