@@ -8,12 +8,11 @@ data:
     [SERVICE]
         Flush                5
         Daemon               Off
-        Parsers_File         /var/log/parsers.conf
+        Parsers_File         parsers.conf
         Log_Level            info
         HTTP_Server          On
         HTTP_Listen          0.0.0.0
         HTTP_Port            2020
-        Storage_Type         filesystem
 
     [INPUT]
         Name                tail

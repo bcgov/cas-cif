@@ -53,6 +53,7 @@ spec:
               sleep 10;
             done;
       imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 8 }}
+      serviceAccountName: pod-logger
       containers:
       - name: {{ template "cas-cif.fullname" . }}
         imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.app.pullPolicy }}
@@ -139,6 +140,51 @@ spec:
           - mountPath: "/attachments-credentials"
             name: gcs-documents-credentials
             readOnly: true
+      - name: oc-logs-container
+        image: openshift/origin-cli:latest
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            echo 'Starting log capture';
+            oc logs -f $POD_NAME -c {{ template "cas-cif.fullname" . }} --pod-running-timeout=20s >> /var/log/oc-cif-test.log;
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /var/log
+      - name: logrotate-container
+        image: skymatic/logrotate:latest
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "while true; do logrotate -s /var/log/logrotate.status -f /etc/logrotate.conf; sleep 5; done"
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /var/log
+          - name: logrotate-config
+            mountPath: /etc/logrotate.conf
+            subPath: logrotate.conf
+      - name: fluent-bit
+        image: fluent/fluent-bit:latest
+        env:
+          - name: FLUENT_ELASTICSEARCH_HOST
+            value: elasticsearch.9212c9-tools.svc.cluster.local
+          - name: FLUENT_ELASTICSEARCH_PORT
+            value: "9200"
+        command: [ "/fluent-bit/bin/fluent-bit", "-c", "/var/log/fluent-bit.conf" ]
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /var/log
+          - name: fluent-bit-config
+            mountPath: /var/log/fluent-bit.conf
+            subPath: fluent-bit.conf
+          - name: parsers-config
+            mountPath:  /var/log/parsers.conf
+            subPath: parsers.conf
       volumes:
         - name: gcs-documents-credentials
           secret:
@@ -146,4 +192,15 @@ spec:
             items:
             - key: credentials.json
               path: attachments-credentials.json
+        - name: shared-logs
+          emptyDir: { }
+        - name: logrotate-config
+          configMap:
+            name: logrotate-configmap
+        - name: fluent-bit-config
+          configMap:
+            name: fluent-bit-config
+        - name: parsers-config
+          configMap:
+            name: fluent-bit-config
       restartPolicy: Always
