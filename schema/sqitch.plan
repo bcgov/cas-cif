@@ -377,3 +377,4 @@ mutations/commit_form_change [mutations/commit_form_change@1.15.0] 2023-11-22T19
 
 tables/funding_stream_rfp_002 2024-05-28T22:41:57Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add 2024 funding streams values to funding_stream_rfp table
 @1.17.1 2024-06-03T23:17:40Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.17.1
+@1.17.2 2024-08-08T20:46:52Z Sepehr Sobhani <sepehr.sobhani@gov.bc.ca> # release v1.17.2
