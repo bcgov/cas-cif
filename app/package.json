@@ -118,7 +118,7 @@
     "next": "^14.1.1",
     "normalize.css": "^8.0.1",
     "openid-client": "^5.0.2",
-    "path-to-regexp": "^6.2.0",
+    "path-to-regexp": "^6.3.0",
     "pg": "^8.7.1",
     "postgraphile": "^4.12.4",
     "postgraphile-log-consola": "^1.0.1",
