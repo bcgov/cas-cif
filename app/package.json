@@ -95,7 +95,7 @@
     "@sentry/nextjs": "^6.19.6",
     "@sentry/react": "^6.19.6",
     "ajv": "^8.9.0",
-    "body-parser": "^1.20.0",
+    "body-parser": "^1.20.3",
     "bowser": "^2.11.0",
     "connect-pg-simple": "^7.0.0",
     "convict": "^6.2.4",
