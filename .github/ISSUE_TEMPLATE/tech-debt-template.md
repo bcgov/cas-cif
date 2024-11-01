@@ -1,10 +1,9 @@
 ---
 name: Tech Debt Template
 about: Tech Debt Template
-title: ''
+title: ""
 labels: Tech Debt
-assignees: ''
-
+assignees: ""
 ---
 
 #### Description of the Tech Debt
@@ -23,12 +22,12 @@ The purpose of our technical debt triage process is to analyze technical debt to
 
 | Technical Debt - Risk Types                                                                                                   | Level | Value |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----- | ----- |
-| Business Area Risk - Risk of business area visibility / damage to user experience                                             |    0   |   0    |
-| Developer Fault Risk - How likely will this tech debt cause a future error related to coding on top of it                     |    0   |   0    |
-| System Fault Risk - Risk of system errors or application downtime                                                             |    0   |   0    |
-| Time Scale Risk - Compound risk effect if left alone. How much more difficult to fix or dangerous will this become over time? |    0   |   0    |
-| Time Sink Risk - How much will this tech debt slow the development process down                                               |    0   |   0    |
-| <div align="right">**TOTAL SCORE:**                                                                                           |    0   |   0    |
+| Business Area Risk - Risk of business area visibility / damage to user experience                                             | 0     | 0     |
+| Developer Fault Risk - How likely will this tech debt cause a future error related to coding on top of it                     | 0     | 0     |
+| System Fault Risk - Risk of system errors or application downtime                                                             | 0     | 0     |
+| Time Scale Risk - Compound risk effect if left alone. How much more difficult to fix or dangerous will this become over time? | 0     | 0     |
+| Time Sink Risk - How much will this tech debt slow the development process down                                               | 0     | 0     |
+| <div align="right">**TOTAL SCORE:**                                                                                           | 0     | 0     |
 
 #### Development Checklist:
 

@@ -1,10 +1,9 @@
 ---
 name: Testing/Feedback Gathering Task Template
 about: Testing/Feedback Gathering Task Template
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 #### Describe the task
