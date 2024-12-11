@@ -22,6 +22,7 @@ spec:
         component: app
 {{ include "cas-cif.labels" . | indent 8 }}
     spec:
+      serviceAccountName: default
       initContainers:
       # The init container waits until the sqitch changes are deployed to the db
       - env: {{ include "cas-cif.cifUserPgEnv" . | nindent 10 }}
