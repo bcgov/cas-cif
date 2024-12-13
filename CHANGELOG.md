@@ -1,3 +1,9 @@
+## [1.17.3](https://github.com/bcgov/cas-cif/compare/1.17.1...1.17.3) (2024-12-13)
+
+### Bug Fixes
+
+- don't show archived attachments on the project attachment list ([5f14e11](https://github.com/bcgov/cas-cif/commit/5f14e112838d1d88127ba8dafa597cee37dd8c3d))
+
 ## [1.17.2](https://github.com/bcgov/cas-cif/compare/1.17.1...1.17.2) (2024-08-08)
 
 ### Bug Fixes

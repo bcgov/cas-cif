@@ -45423,7 +45423,7 @@ type Form implements Node {
   """
   A function that can be used to dynamically alter the schema, such as altering constraints based on the contents of a table.
   """
-  jsonSchemaGenerator: RegProcedure
+  jsonSchemaGenerator: String
 
   """Reads and enables pagination through a set of `ProjectRevision`."""
   projectRevisionsByFormChangeJsonSchemaNameAndProjectRevisionId(
@@ -46946,7 +46946,7 @@ input FormCondition {
   jsonSchema: JSON
 
   """Checks for equality with the object’s `jsonSchemaGenerator` field."""
-  jsonSchemaGenerator: RegProcedure
+  jsonSchemaGenerator: String
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
@@ -47012,6 +47012,9 @@ input FormFilter {
 
   """Filter by the object’s `jsonSchema` field."""
   jsonSchema: JSONFilter
+
+  """Filter by the object’s `jsonSchemaGenerator` field."""
+  jsonSchemaGenerator: StringFilter
 
   """Negates the expression."""
   not: FormFilter
@@ -47124,7 +47127,7 @@ input FormInput {
   """
   A function that can be used to dynamically alter the schema, such as altering constraints based on the contents of a table.
   """
-  jsonSchemaGenerator: RegProcedure
+  jsonSchemaGenerator: String
 
   """Unique short name identifier for the json_schema data."""
   slug: String!
@@ -47166,7 +47169,7 @@ input FormPatch {
   """
   A function that can be used to dynamically alter the schema, such as altering constraints based on the contents of a table.
   """
-  jsonSchemaGenerator: RegProcedure
+  jsonSchemaGenerator: String
 
   """Unique short name identifier for the json_schema data."""
   slug: String
@@ -67103,9 +67106,6 @@ type Query implements Node {
   sectorBySectorName(sectorName: String!): Sector
   session: KeycloakJwt
 }
-
-"""A builtin object identifier type for a function with argument types"""
-scalar RegProcedure
 
 """Table containing information about report types"""
 type ReportType implements Node {
