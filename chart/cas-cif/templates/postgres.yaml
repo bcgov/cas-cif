@@ -11,7 +11,7 @@ spec:
   image: ""
   metadata:
     labels: {{ include "cas-cif.labels" . | nindent 6 }}
-  postgresVersion: 14
+  postgresVersion: 16
   instances:
     - name: pgha1
       replicas: 3
