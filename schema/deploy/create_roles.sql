@@ -12,7 +12,7 @@ begin
     from   pg_catalog.pg_roles
     where  rolname = 'cif_internal') then
 
-    create role cif_internal;
+    create role cif_internal with admin current_user;
   end if;
 
   if not exists (
@@ -20,7 +20,7 @@ begin
     from   pg_catalog.pg_roles
     where  rolname = 'cif_external') then
 
-    create role cif_external;
+    create role cif_external with admin current_user;
   end if;
 
   if not exists (
@@ -28,7 +28,7 @@ begin
     from   pg_catalog.pg_roles
     where  rolname = 'cif_admin') then
 
-    create role cif_admin;
+    create role cif_admin with admin current_user;
   end if;
 
   if not exists (
@@ -36,7 +36,7 @@ begin
     from   pg_catalog.pg_roles
     where  rolname = 'cif_guest') then
 
-    create role cif_guest;
+    create role cif_guest with admin current_user;
   end if;
 
   if not exists (
@@ -44,7 +44,7 @@ begin
     from   pg_catalog.pg_roles
     where  rolname = 'cifapp') then
 
-    create user cifapp;
+    create user cifapp with admin current_user;
   end if;
 
   grant cif_admin, cif_internal, cif_external, cif_guest to cifapp;

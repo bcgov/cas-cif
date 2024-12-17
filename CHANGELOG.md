@@ -1,3 +1,9 @@
+## [1.18.1](https://github.com/bcgov/cas-cif/compare/1.18.0...1.18.1) (2024-12-17)
+
+### Reverts
+
+- Revert "chore: install oc" ([f6db743](https://github.com/bcgov/cas-cif/commit/f6db7436626dba58b33a0be41455ce9ffda0a0df))
+
 # [1.18.0](https://github.com/bcgov/cas-cif/compare/1.17.3...1.18.0) (2024-12-16)
 
 ## [1.17.3](https://github.com/bcgov/cas-cif/compare/1.17.1...1.17.3) (2024-12-13)
