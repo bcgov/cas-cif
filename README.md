@@ -57,3 +57,5 @@ Then we need to watch for any possible errors in the logs when deploying the app
 ### <u>Release to prod</u>
 
 We can follow the same steps as for the `test` environment, but this time we need to deploy the application to the `prod` environment in shipit. Once the application is deployed, we need to make a release tag in zenhub and assign it to all zenhub issues that were part of the release. We also need to move all zenhub issues that were part of the release to the `closed` column.
+
+test
