@@ -7,7 +7,7 @@ runs:
       uses: asdf-vm/actions/setup@v1
     - uses: shogo82148/actions-setup-perl@v1
     - name: install pg perl library
-      run: sudo apt-get install -y libpq-dev libdbd-pg-perl libreadline-dev uuid-dev
+      run: sudo apt-get install -y libpq-dev libdbd-pg-perl libreadline-dev uuid-dev libsqlite3-dev
       shell: bash
     - name: set perl env variables
       shell: bash
