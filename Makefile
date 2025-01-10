@@ -25,7 +25,7 @@ install_asdf_tools:
 	@cat .tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add || true
 	@asdf plugin-update --all
 	@#MAKELEVEL=0 is required because of https://www.postgresql.org/message-id/1118.1538056039%40sss.pgh.pa.us
-	@MAKELEVEL=0 POSTGRES_EXTRA_CONFIGURE_OPTIONS='--with-libxml --without-readline' asdf install
+	@MAKELEVEL=0 POSTGRES_EXTRA_CONFIGURE_OPTIONS='--with-libxml --without-readline --with-uuid' asdf install
 	@asdf reshim
 	@pip install -r requirements.txt
 	@asdf reshim
