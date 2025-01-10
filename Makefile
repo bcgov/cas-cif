@@ -14,7 +14,7 @@ SQITCH_VERSION=${word 3,${shell ${SQITCH} --version}}
 SQITCH_MIN_VERSION=1.1.0
 DB_NAME=cif
 PG_PROVE=pg_prove -h localhost
-PGTAP_VERSION=1.2.0
+PGTAP_VERSION=1.3.3
 
 help: ## Show this help.
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
