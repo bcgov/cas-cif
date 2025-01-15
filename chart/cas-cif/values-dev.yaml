@@ -3,7 +3,7 @@ app:
   sitewide_notice:
     content: <div class="alert alert-warning">This is the DEV environment.</div>
 
-hostName: dev.cif.gov.bc.ca
+hostName: cas-cif-dev.apps.silver.devops.gov.bc.ca
 
 db:
   preUpgradeCommand: |
@@ -18,6 +18,3 @@ deploy-db:
 
 download-dags:
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
-
-certbot:
-  enabled: true

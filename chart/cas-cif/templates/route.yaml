@@ -1,21 +1,10 @@
 {{- if not (hasSuffix "-prod" .Release.Namespace)}}
 
-{{- $route := (lookup "route.openshift.io/v1" "Route" .Release.Namespace "cas-cif" ) }}
-{{- $certificate := "" }}
-{{- $key := "" }}
-{{- $caCertificate := "" }}
-{{- if $route }}
-{{- $certificate = $route.spec.tls.certificate }}
-{{- $key = $route.spec.tls.key }}
-{{- $caCertificate = $route.spec.tls.caCertificate }}
-{{- end -}}
-
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: {{ template "cas-cif.fullname" . }}
   labels: {{ include "cas-cif.labels" . | nindent 4 }}
-    certbot-managed: "true"
 
 spec:
   host: {{ .Values.hostName }}
@@ -24,11 +13,6 @@ spec:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
-    {{- if $certificate }}
-    certificate: {{ $certificate | quote }}
-    key: {{ $key | quote }}
-    caCertificate: {{ $caCertificate | quote }}
-    {{- end }}
   to:
     kind: Service
     name: {{ template "cas-cif.fullname" . }}
