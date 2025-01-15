@@ -1,8 +1,5 @@
 hostName: cif.gov.bc.ca
 
-certbot:
-  enabled: false
-
 deploy-db:
   airflowEndpoint: https://cas-airflow-prod.apps.silver.devops.gov.bc.ca
 

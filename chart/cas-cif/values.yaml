@@ -37,12 +37,6 @@ db:
 
 hostName: ~
 
-certbot:
-  image:
-    pullPolicy: IfNotPresent
-  certbot:
-    email: ggircs@gov.bc.ca
-
 resources:
   limits:
     cpu: 800m

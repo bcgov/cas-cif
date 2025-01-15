@@ -2,7 +2,7 @@ app:
   sitewide_notice:
     content: <div class="alert alert-warning">This is the TEST environment.</div>
 
-hostName: test.cif.gov.bc.ca
+hostName: cas-cif-test.apps.silver.devops.gov.bc.ca
 
 db:
   postUpgradeCommandEnv: |
@@ -28,6 +28,3 @@ deploy-db:
 
 download-dags:
   airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
-
-certbot:
-  enabled: true
