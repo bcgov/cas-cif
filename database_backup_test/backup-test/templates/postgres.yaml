@@ -48,7 +48,6 @@ spec:
                   postgres-operator.crunchydata.com/instance-set: pgha1
   proxy:
     pgBouncer:
-      image: artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-pgbouncer:ubi8-1.18-0
       resources:
         requests:
           cpu: 10m
@@ -83,7 +82,6 @@ spec:
         - cif
   backups:
     pgbackrest:
-      image: artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-pgbackrest:ubi8-2.41-4
     {{- if .Values.db.restore.enabled }}
       restore:
         enabled: true
