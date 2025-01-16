@@ -71,13 +71,19 @@ spec:
                   postgres-operator.crunchydata.com/role: pgbouncer
   users:
     - name: cif
+      password:
+        type: AlphaNumeric
       databases:
         - cif
       options: "CREATEROLE"
     - name: cifapp
+      password:
+        type: AlphaNumeric
       databases:
         - cif
     - name: postgres
+      password:
+        type: AlphaNumeric
       databases:
         - cif
   backups:

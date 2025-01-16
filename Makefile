@@ -246,7 +246,13 @@ install:
 	@set -euo pipefail; \
 	dagConfig=$$(echo '{"org": "bcgov", "repo": "cas-cif", "ref": "$(GIT_SHA1)", "path": "dags/cas_cif_dags.py"}' | base64 -w0); \
 	helm dep up $(CHART_DIR); \
-	helm install $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR);
+	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
+		echo 'Installing the application'; \
+		helm install $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
+	else \
+		helm upgrade $(HELM_OPTS) $(CHART_INSTANCE) $(CHART_DIR); \
+	fi;
+
 
 
 restore_prereq: ## Prerequisites for the restore target
