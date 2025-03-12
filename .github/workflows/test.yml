@@ -15,7 +15,7 @@ jobs:
   install-dev-tools:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: make install_dev_tools
@@ -27,7 +27,7 @@ jobs:
     needs: install-dev-tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: yarn test
@@ -36,7 +36,7 @@ jobs:
     needs: install-dev-tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: yarn audit-deps
@@ -45,7 +45,7 @@ jobs:
     needs: install-dev-tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: make deploy_db_migrations
@@ -56,7 +56,7 @@ jobs:
     needs: install-dev-tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: make test_revert_migrations
@@ -64,7 +64,7 @@ jobs:
     needs: install-dev-tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - run: make db_unit_tests
@@ -74,7 +74,7 @@ jobs:
     needs: install-dev-tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - name: set pre-commit cache directory
@@ -89,7 +89,7 @@ jobs:
           else
               touch .git/COMMIT_EDITMSG
           fi
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ./.pre-commit-cache
@@ -115,7 +115,7 @@ jobs:
             name: testBackups
     name: Build ${{ matrix.name }} docker image
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -137,7 +137,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.name }}-${{ github.sha }}
@@ -166,7 +166,7 @@ jobs:
     needs: ["docker-build", "install-dev-tools"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - name: run app locally
@@ -188,7 +188,7 @@ jobs:
     needs: ["docker-build", "install-dev-tools"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dev env setup
         uses: ./.github/actions/dev-env-setup
       - name: run app locally
