@@ -1,3 +1,5 @@
+## [1.18.4](https://github.com/bcgov/cas-cif/compare/1.18.2...1.18.4) (2025-03-13)
+
 ## [1.18.3](https://github.com/bcgov/cas-cif/compare/1.18.2...1.18.3) (2025-01-16)
 
 ## [1.18.2](https://github.com/bcgov/cas-cif/compare/1.18.1...1.18.2) (2025-01-10)
