@@ -203,3 +203,4 @@ jobs:
           cmd_options: "-a -d -T 5 -m 2"
           issue_title: OWASP Baseline
           fail_action: false
+          artifact_name: zap_scan_cif
