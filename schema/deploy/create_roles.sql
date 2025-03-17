@@ -44,7 +44,7 @@ begin
     from   pg_catalog.pg_roles
     where  rolname = 'cifapp') then
 
-    create user cifapp with admin current_user;
+    create user cifapp;
   end if;
 
   grant cif_admin, cif_internal, cif_external, cif_guest to cifapp;
