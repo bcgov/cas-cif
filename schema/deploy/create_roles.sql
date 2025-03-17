@@ -39,14 +39,6 @@ begin
     create role cif_guest with admin current_user;
   end if;
 
-  if not exists (
-    select true
-    from   pg_catalog.pg_roles
-    where  rolname = 'cifapp') then
-
-    create user cifapp with admin current_user;
-  end if;
-
   grant cif_admin, cif_internal, cif_external, cif_guest to cifapp;
   execute format('grant create, connect on database %I to cifapp', current_database());
 
