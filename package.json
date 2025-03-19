@@ -1,6 +1,6 @@
 {
   "name": "cas-cif",
-  "version": "1.18.4",
+  "version": "1.18.5",
   "main": "index.js",
   "repository": "https://github.com/bcgov/cas-cif.git",
   "author": "ggircs@gov.bc.ca",
