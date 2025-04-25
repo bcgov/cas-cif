@@ -1,7 +1,7 @@
 ---
 data_management_roles:
-  data_custodian: Adria Fradley
-  product_owner: Pierre Bastianelli
+  data_custodian: Maral Sotoudehnia
+  product_owner: Patricia Russell
 product_external_dependencies:
   common_components:
     - Design-System
@@ -32,12 +32,12 @@ product_information:
 product_technology_information:
   backend_frameworks:
     - name: Node.js
-      version: "16"
+      version: "20"
     - name: Next.js
       version: "13"
   backend_languages_version:
     - name: Other
-      version: SQL and PL/PgSQL v14
+      version: SQL and PL/PgSQL v16
     - name: JavaScript
       version: ECMAScript 6
   ci_cd_tools:
