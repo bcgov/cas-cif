@@ -34,7 +34,7 @@ product_technology_information:
     - name: Node.js
       version: "20"
     - name: Next.js
-      version: "13"
+      version: "14"
   backend_languages_version:
     - name: Other
       version: SQL and PL/PgSQL v16
