@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
-from airflow.operators.python_operator import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from airflow import DAG
 import os
@@ -37,7 +37,7 @@ default_backup_test_args = {
 """
 
 
-deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule_interval=None,
+deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule=None,
     default_args=default_args, is_paused_upon_creation=False)
 
 cif_db_init = PythonOperator(
@@ -70,7 +70,7 @@ cif_db_init >> cif_app_schema >> cif_import_operator
 """
 
 
-db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule_interval='15 12 * * *',
+db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule='15 12 * * *',
     default_args=default_backup_test_args , is_paused_upon_creation=False)
 
 deploy_and_restore = PythonOperator(
@@ -96,7 +96,7 @@ deploy_and_restore >> test_backups
 """
 
 
-insert_timestamp_dag = DAG(INSERT_BACKUP_TIMESTAMP_DAG_NAME, schedule_interval='0 6 * * *',
+insert_timestamp_dag = DAG(INSERT_BACKUP_TIMESTAMP_DAG_NAME, schedule='0 6 * * *',
     default_args=default_args, is_paused_upon_creation=False)
 
 insert_timestamp = PythonOperator(
