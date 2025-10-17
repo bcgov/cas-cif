@@ -67,7 +67,7 @@ download-dags:
     hook: "pre-install,pre-upgrade"
 
 ggircs:
-  service: cas-ggircs-patroni
+  service: cas-ggircs-db-cas-postgres-cluster-pgbouncer
   instanceName: cas-ggircs
 
 metabase:
