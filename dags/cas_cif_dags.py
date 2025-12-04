@@ -3,7 +3,7 @@ from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime, timedelta
-from airflow import DAG
+from airflow.decorators import dag, task
 import os
 import sys
 
@@ -28,81 +28,76 @@ default_backup_test_args = {
     'retries': 0
 }
 
-"""
-###############################################################################
-#                                                                             #
-# DAG triggering cron jobs to setup the cif database                       #
-#                                                                             #
-###############################################################################
+CIF_DEPLOY_DB_DOC = """
+DAG triggering cron jobs to setup the cif database
 """
 
+@dag(
+    dag_id=DEPLOY_DB_DAG_NAME,
+    schedule=None,
+    default_args=default_args,
+    is_paused_upon_creation=False,
+    doc_md=CIF_DEPLOY_DB_DOC,
+)
+def cif_deploy_db():
+    @task
+    def cif_db_init():
+        trigger_k8s_cronjob('cas-cif-db-init', cif_namespace)
 
-deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule=None,
-    default_args=default_args, is_paused_upon_creation=False)
+    @task
+    def cif_app_schema():
+        trigger_k8s_cronjob('cas-cif-deploy-data', cif_namespace)
 
-cif_db_init = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cif_db_init',
-    op_args=['cas-cif-db-init', cif_namespace],
-    dag=deploy_db_dag)
+    @task
+    def cif_import_operator():
+        trigger_k8s_cronjob('cas-cif-swrs-operator-import', cif_namespace)
 
-cif_app_schema = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cif_app_schema',
-    op_args=['cas-cif-deploy-data', cif_namespace],
-    dag=deploy_db_dag)
+    cif_db_init() >> cif_app_schema() >> cif_import_operator()
 
-cif_import_operator = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cif_import_operator',
-    op_args=['cas-cif-swrs-operator-import', cif_namespace],
-    dag=deploy_db_dag)
+cif_deploy_db()
 
 
-cif_db_init >> cif_app_schema >> cif_import_operator
-
-"""
-###############################################################################
-#                                                                             #
-# DAG to test database backup integrity                                       #
-#                                                                             #
-###############################################################################
+CIF_BACKUP_TEST_DOC = """
+DAG to test database backup integrity
 """
 
+@dag(
+    dag_id=TEST_DB_BACKUPS_DAG_NAME,
+    schedule=None,
+    default_args=default_backup_test_args,
+    is_paused_upon_creation=False,
+    doc_md=CIF_BACKUP_TEST_DOC,
+)
+def cif_backup_test():
+    @task
+    def deploy_and_restore():
+        trigger_k8s_cronjob('deploy-database-backups', cif_namespace)
 
-db_backup_test_dag = DAG(TEST_DB_BACKUPS_DAG_NAME, schedule='15 12 * * *',
-    default_args=default_backup_test_args , is_paused_upon_creation=False)
+    @task
+    def test_backups():
+        trigger_k8s_cronjob('test-database-backups', cif_namespace)
 
-deploy_and_restore = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='deploy_and_restore',
-    op_args=['deploy-database-backups', cif_namespace],
-    dag=db_backup_test_dag)
+    deploy_and_restore() >> test_backups()
 
-test_backups = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='test_backups',
-    op_args=['test-database-backups', cif_namespace],
-    dag=db_backup_test_dag)
+cif_backup_test()
 
-deploy_and_restore >> test_backups
 
+CIF_INSERT_TIMESTAMP_DOC = """
+DAG to insert timestamp for backup testing
 """
-###############################################################################
-#                                                                             #
-# DAG to insert timestamp for backup testing                                  #
-#                                                                             #
-###############################################################################
-"""
 
+@dag(
+    dag_id=INSERT_BACKUP_TIMESTAMP_DAG_NAME,
+    schedule=None,
+    default_args=default_args,
+    is_paused_upon_creation=False,
+    doc_md=CIF_INSERT_TIMESTAMP_DOC,
+)
+def cif_insert_timestamp():
+    @task
+    def insert_timestamp():
+        trigger_k8s_cronjob('insert-backup-test-timestamp', cif_namespace)
 
-insert_timestamp_dag = DAG(INSERT_BACKUP_TIMESTAMP_DAG_NAME, schedule='0 6 * * *',
-    default_args=default_args, is_paused_upon_creation=False)
+    insert_timestamp()
 
-insert_timestamp = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='insert_timestamp',
-    op_args=['insert-backup-test-timestamp', cif_namespace],
-    dag=insert_timestamp_dag)
-
-insert_timestamp
+cif_insert_timestamp
