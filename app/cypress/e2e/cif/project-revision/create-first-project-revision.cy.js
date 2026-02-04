@@ -13,13 +13,13 @@ describe("when creating a project, the project page", () => {
 
   it("allows an admin user to create an EP project", () => {
     //add new
-    cy.fillAndCheckNewProjectForm("Emissions Performance", "2024");
+    cy.fillAndCheckNewProjectForm("Emissions Performance", "2025");
     cy.happoAndAxe("EP Project New Form", "filled", "main");
     cy.findByRole("button", { name: /^confirm/i }).click();
 
     // add overview
     cy.url().should("include", "/form/0");
-    cy.findByText("Emissions Performance - 2024");
+    cy.findByText("Emissions Performance - 2025");
     cy.fillOverviewForm(
       "first operator legal name (AB1234567)",
       "Cement",
@@ -176,7 +176,7 @@ describe("when creating a project, the project page", () => {
     // project overview section
     cy.findByText(/RFP Year ID/i)
       .next()
-      .should("have.text", "Emissions Performance - 2024");
+      .should("have.text", "Emissions Performance - 2025");
     cy.findByText(/Operator Name/i)
       .next()
       .should("have.text", "first operator legal name (AB1234567)");
@@ -437,7 +437,7 @@ describe("when creating a project, the project page", () => {
     cy.url().should("include", "/form/3");
     cy.findByText(/Yes/i).click();
     cy.setDateInPicker("Contract Start Date", "2020-01-01");
-    cy.setDateInPicker("Project Assets Life End Date", "2024-02-02");
+    cy.setDateInPicker("Project Assets Life End Date", "2025-02-02");
     cy.contains("Changes saved").should("be.visible");
 
     // add teimp reports
@@ -496,7 +496,7 @@ describe("when creating a project, the project page", () => {
       .contains(/Jan(\.)? 1, 2020/);
     cy.findByText(/Project Assets Life End Date/i)
       .next()
-      .contains(/Feb(\.)? 2, 2024/);
+      .contains(/Feb(\.)? 2, 2025/);
     cy.findAllByText(/^on track$/i).should("have.length", 5);
     cy.contains("Changes saved").should("be.visible"); // a check to make sure happo is taking the right screenshot
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
