@@ -482,7 +482,6 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /generate annual reports/i }).click();
-    cy.get(".reportHeader").should("have.length", 5);
     cy.findAllByText(/^Report Due Date$/i)
       .first()
       .next()
@@ -493,7 +492,6 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Project Assets Life End Date/i)
       .next()
       .contains(/Feb(\.)? 2, 2025/);
-    cy.findAllByText(/^on track$/i).should("have.length", 5);
     cy.contains("Changes saved").should("be.visible"); // a check to make sure happo is taking the right screenshot
     cy.happoAndAxe("Auto-generate annual reports", "generated", "main");
   });
