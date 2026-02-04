@@ -482,7 +482,7 @@ describe("when creating a project, the project page", () => {
     cy.findByText(/Add annual reports/i).click();
     cy.url().should("include", "/form/7");
     cy.findByRole("button", { name: /generate annual reports/i }).click();
-    cy.get(".reportHeader").should("have.length", 4);
+    cy.get(".reportHeader").should("have.length", 5);
     cy.findAllByText(/^Report Due Date$/i)
       .first()
       .next()
