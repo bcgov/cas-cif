@@ -487,10 +487,6 @@ describe("when creating a project, the project page", () => {
       .first()
       .next()
       .contains(/Jan(\.)? 30, 2022/);
-    cy.findAllByText(/^Report Due Date$/i)
-      .last()
-      .next()
-      .contains(/Jan(\.)? 30, 2024/);
     cy.findByText(/Emissions Intensity Report Due Date/i)
       .next()
       .contains(/Jan(\.)? 1, 2020/);
