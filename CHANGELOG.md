@@ -1,3 +1,9 @@
+## [1.18.8](https://github.com/bcgov/cas-cif/compare/1.18.6...1.18.8) (2026-02-05)
+
+### Bug Fixes
+
+- update helm value to match GGIRCS PGO cluster ([0e26e3f](https://github.com/bcgov/cas-cif/commit/0e26e3f262b995ec686c9975f3f472bb1153a422))
+
 ## [1.18.7](https://github.com/bcgov/cas-cif/compare/1.18.6...1.18.7) (2025-09-16)
 
 ## [1.18.6](https://github.com/bcgov/cas-cif/compare/1.18.5...1.18.6) (2025-03-24)
