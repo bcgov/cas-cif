@@ -25,6 +25,3 @@ db:
 
 deploy-db:
   airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
-
-download-dags:
-  airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
