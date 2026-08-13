@@ -1,3 +1,9 @@
+## [1.18.10](https://github.com/bcgov/cas-cif/compare/1.18.8...1.18.10) (2026-08-13)
+
+### Bug Fixes
+
+- update session_state claim attribute from uuid to text ([b033c71](https://github.com/bcgov/cas-cif/commit/b033c71f04546b46587292838f0bf29e441db265))
+
 ## [1.18.9](https://github.com/bcgov/cas-cif/compare/1.18.8...1.18.9) (2026-08-13)
 
 ### Bug Fixes
