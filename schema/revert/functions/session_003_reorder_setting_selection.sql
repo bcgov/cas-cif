@@ -44,4 +44,3 @@ $function$ language plpgsql stable;
 grant execute on function cif.session to cif_internal, cif_external, cif_admin, cif_guest;
 
 commit;
-
