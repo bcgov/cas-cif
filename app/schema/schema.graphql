@@ -50921,7 +50921,7 @@ type KeycloakJwt {
   nbf: Int
   preferredUsername: String
   priorityGroup: String
-  sessionState: UUID
+  sessionState: String
   sub: String
   typ: String
   userGroups: [String]
@@ -50998,7 +50998,7 @@ input KeycloakJwtFilter {
   priorityGroup: StringFilter
 
   """Filter by the object’s `sessionState` field."""
-  sessionState: UUIDFilter
+  sessionState: StringFilter
 
   """Filter by the object’s `sub` field."""
   sub: StringFilter

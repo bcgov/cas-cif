@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - name: asdf setup
-      uses: asdf-vm/actions/setup@v3
+      uses: asdf-vm/actions/setup@v4
     - uses: shogo82148/actions-setup-perl@v1
     - name: install pg perl library
       run: sudo apt-get update && sudo apt-get install -y libpq-dev libdbd-pg-perl libreadline-dev uuid-dev libsqlite3-dev
@@ -23,7 +23,7 @@ runs:
       with:
         path: |
           ~/.asdf
-        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}-v1
+        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}-v2
     - uses: actions/cache@v4
       id: perl-cache
       with:
