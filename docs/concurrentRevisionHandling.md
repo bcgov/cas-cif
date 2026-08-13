@@ -1,4 +1,4 @@
-# Handling of Concurrent Revisions
+# Handling of Concurrent Revision
 
 The purpose of this document is to outline how we allow concurrent revisions to be made to a proeject.
 
