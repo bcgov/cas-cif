@@ -394,3 +394,4 @@ tables/funding_stream_rfp_003 2026-02-04T21:17:58Z Dylan Leard <dylan@button.is>
 @1.18.8 2026-02-05T17:50:37Z Dylan Leard <dylan@button.is> # release v1.18.8
 types/keycloak_jwt [types/keycloak_jwt@1.18.8] 2026-08-13T21:04:50Z Dylan Leard <dleard@L7G9HM2LVW> # session_state is no longer a uuid
 functions/session_003_reorder_setting_selection 2026-08-13T22:48:43Z Dylan Leard <dleard@L7G9HM2LVW> # Reorder select row() items after update to keycloak_jwt type moved session_state to bottom of type definition
+@1.18.9 2026-08-13T23:38:11Z Dylan Leard <dleard@L7G9HM2LVW> # release v1.18.9
