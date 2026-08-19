@@ -238,13 +238,11 @@ install: CHART_DIR=./chart/cas-cif
 install: CHART_INSTANCE=cas-cif
 install: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESPACE) \
 										--set defaultImageTag=$(IMAGE_TAG) \
-	  								--set download-dags.dagConfiguration="$$dagConfig" \
 										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
 										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
 install:
 	@set -euo pipefail; \
-	dagConfig=$$(echo '{"org": "bcgov", "repo": "cas-cif", "ref": "$(GIT_SHA1)", "path": "dags/cas_cif_dags.py"}' | base64 -w0); \
 	helm dep up $(CHART_DIR); \
 	if ! helm status --namespace $(NAMESPACE) $(CHART_INSTANCE); then \
 		echo 'Installing the application'; \
@@ -284,7 +282,6 @@ restore: HELM_OPTS=--atomic --wait-for-jobs --timeout 2400s --namespace $(NAMESP
 										--set ggircs.namespace=$(GGIRCS_NAMESPACE) \
 										--set ciip.prefix=$(CIIP_NAMESPACE_PREFIX) \
 										--set deploy-db.enabled=false \
-										--set download-dags.enabled=false \
 										--set db.restore.enabled=true \
 										--set db.restore.targetTimestamp="$(TARGET_TIMESTAMP)" \
 										--values $(CHART_DIR)/values-$(ENVIRONMENT).yaml
