@@ -4,6 +4,8 @@ on:
   push:
     branches-ignore:
       - main
+permissions:
+  contents: read
 
 jobs:
   make-lint-chart:
