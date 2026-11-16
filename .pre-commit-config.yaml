@@ -45,3 +45,9 @@ repos:
       - id: commitlint
         stages: [commit-msg]
         additional_dependencies: ["@commitlint/config-conventional"]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.5
+    hooks:
+      # Cuff check Airflow Dags.
+      - id: ruff-check
+        args: ["dags/", "--select", "AIR3", "--fix"]
