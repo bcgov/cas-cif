@@ -1,5 +1,5 @@
 nodejs 22.23.5
 yarn 1.22.22
-postgres 18
-python 3.12
+postgres 17
+python 3.14
 golang 1.22.0
