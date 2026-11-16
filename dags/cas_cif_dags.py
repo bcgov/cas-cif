@@ -2,14 +2,14 @@
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from airflow.providers.standard.operators.python import PythonOperator
-from datetime import datetime, timedelta
-from airflow.decorators import dag, task
+from datetime import datetime, timezon
+from airflow.sdk import dag, task
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
+START_DATE = datetime(2021, 1, 1, tzinfo=timezone.utc)
 
 DEPLOY_DB_DAG_NAME = 'cas_cif_deploy_db'
 TEST_DB_BACKUPS_DAG_NAME = 'cas_cif_test_db_backups'
@@ -19,12 +19,12 @@ cif_namespace = os.getenv('CIF_NAMESPACE')
 
 default_args = {
     **default_dag_args,
-    'start_date': TWO_DAYS_AGO
+    'start_date': START_DATE
 }
 
 default_backup_test_args = {
     **default_dag_args,
-    'start_date': TWO_DAYS_AGO,
+    'start_date': START_DATE,
     'retries': 0
 }
 
@@ -38,6 +38,7 @@ DAG triggering cron jobs to setup the cif database
     default_args=default_args,
     is_paused_upon_creation=False,
     doc_md=CIF_DEPLOY_DB_DOC,
+    catchup=False,
 )
 def cif_deploy_db():
     @task
@@ -67,6 +68,7 @@ DAG to test database backup integrity
     default_args=default_backup_test_args,
     is_paused_upon_creation=False,
     doc_md=CIF_BACKUP_TEST_DOC,
+    catchup=False,
 )
 def cif_backup_test():
     @task
