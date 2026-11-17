@@ -201,6 +201,13 @@ rules:
   - verbs:
       - get
       - list
+    apiGroups:
+      - artifactory.devops.gov.bc.ca
+    resources:
+      - artifactoryserviceaccounts
+  - verbs:
+      - get
+      - list
       - create
       - update
       - patch

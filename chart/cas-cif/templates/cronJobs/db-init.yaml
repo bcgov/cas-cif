@@ -16,6 +16,7 @@ spec:
           name: {{ template "cas-cif.fullname" . }}-db-init
         spec:
           restartPolicy: Never
+          imagePullSecrets: {{ include "cas-cif.imagePullSecrets" . | nindent 12 }}
           containers:
             - env: {{ include "cas-cif.superUserPgEnv" . | nindent 16 }}
                 - name: CIF_USER
