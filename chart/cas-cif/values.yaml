@@ -1,6 +1,5 @@
 defaultImageTag: latest # set to the GIT SHA1 in the Makefile
 defaultImagePullPolicy: IfNotPresent
-artifactoryServiceAccount: cas-artifact-download # The name of the ArtifactoryServiceAccount object created in the cas-provision chart
 
 replicaCount: 2
 
