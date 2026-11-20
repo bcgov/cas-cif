@@ -23,7 +23,7 @@ runs:
       with:
         path: |
           ~/.asdf
-        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}-v2
+        key: ${{ runner.os }}-asdf-cache-${{ hashFiles('.tool-versions') }}-v3
     - uses: actions/cache@v4
       id: perl-cache
       with:
@@ -37,7 +37,7 @@ runs:
           ~/.cache/yarn
           ~/.cache/Cypress
           ./app/node_modules
-        key: ${{ runner.os }}-yarn-cache-${{ hashFiles('app/yarn.lock') }}-v2
+        key: ${{ runner.os }}-yarn-cache-${{ hashFiles('app/yarn.lock') }}-v3
     - name: update submodules
       run: git submodule update --init
       shell: bash

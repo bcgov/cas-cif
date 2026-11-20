@@ -18,7 +18,7 @@ describe("The DateWidget", () => {
   });
 
   it("calls onChange with the correct date", () => {
-    const expectedDate = "2050-12-15T23:59:59.999-08:00";
+    const expectedDate = "2050-12-15T23:59:59.999-07:00";
     const handleOnChange = jest.fn();
     const props: any = {
       id: "test-id",
@@ -98,9 +98,9 @@ describe("The DateWidget", () => {
     );
   });
 
-  it("saves the due date in PST when user is in another timezone", () => {
+  it("saves the due date in PCT when user is in another timezone", () => {
     Settings.defaultZone = "America/Edmonton";
-    const expectedDate = "2050-12-15T23:59:59.999-08:00";
+    const expectedDate = "2050-12-15T23:59:59.999-07:00";
     const handleOnChange = jest.fn();
     const props: any = {
       id: "test-id",
